@@ -141,6 +141,10 @@ test("A4: observer details report effort and perform zero side effects", () => {
 test("A6: positive and absent access controls remain keyboard-usable and no-JavaScript safe", async () => {
   await withPinnedClock("2026-09-15T12:00:00Z", () => {
     const day = todayISO();
+    const viewportContexts = [
+      { name: "desktop", width: 1440 },
+      { name: "narrow", width: 390 },
+    ];
     const cases = [
       normalizeBsaCalendarMeeting({
         bsa_session_id: "bsa-positive", title: "BSA observed session", event_date: day,
@@ -151,14 +155,32 @@ test("A6: positive and absent access controls remain keyboard-usable and no-Java
         bsa_session_id: "bsa-absent", title: "BSA access not published", event_date: day, source_url: source,
       }),
     ];
-    for (const record of cases) {
-      const html = renderMeetingDocument(record);
-      assert.match(html, /<meta name="viewport" content="width=device-width,initial-scale=1">/);
-      assert.match(html, /data-capability-reference="meeting\.get@1"/);
-      assert.match(html, /<main[^>]*tabindex="-1"/);
-      assert.doesNotMatch(html, /onclick=|onkeydown=/i);
+    for (const viewport of viewportContexts) {
+      for (const record of cases) {
+        const html = renderMeetingDocument(record);
+        assert.match(html, /<meta name="viewport" content="width=device-width,initial-scale=1">/,
+          `${viewport.name} render must declare a responsive viewport`);
+        assert.match(html, /data-capability-reference="meeting\.get@1"/,
+          `${viewport.name} render must retain the meeting capability anchor`);
+        assert.match(html, /<main[^>]*tabindex="-1"/,
+          `${viewport.name} render must keep the keyboard focus target`);
+        assert.doesNotMatch(html, /onclick=|onkeydown=/i,
+          `${viewport.name} render must not depend on inline keyboard handlers`);
+
+        const withoutJavaScript = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+        assert.doesNotMatch(withoutJavaScript, /<script\b/i,
+          `${viewport.name} no-JavaScript document must contain no executable script`);
+        assert.match(withoutJavaScript, /<main[^>]*tabindex="-1"/,
+          `${viewport.name} no-JavaScript document must retain the keyboard focus target`);
+      }
     }
-    assert.match(renderMeetingDocument(cases[0]), /observer-instructions-action/);
-    assert.doesNotMatch(renderMeetingDocument(cases[1]), /observer-instructions-action|watch_url|video\.example/i);
+    const positiveWithoutJavaScript = renderMeetingDocument(cases[0])
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    assert.match(positiveWithoutJavaScript, /<a class="[^"]*observer-instructions-action[^"]*"[^>]*href="https:\/\/example\.nyc\.gov\/calendar"/,
+      "positive no-JavaScript render must keep the observer action as a keyboard-reachable link");
+    const absentWithoutJavaScript = renderMeetingDocument(cases[1])
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    assert.doesNotMatch(absentWithoutJavaScript, /observer-instructions-action|watch_url|video\.example/i,
+      "absent no-JavaScript render must keep observer controls and watch addresses absent");
   });
 });
