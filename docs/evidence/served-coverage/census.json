@@ -13,10 +13,10 @@
     "unresolved"
   ],
   "disposition_counts": {
-    "publicly_represented": 18,
+    "publicly_represented": 19,
     "context_only": 28,
     "not_served": 8,
-    "unresolved": 11
+    "unresolved": 10
   },
   "served_units": [
     {
@@ -71,7 +71,18 @@
       "vintage_field": "sources.city_record.generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 570,
+      "value": 715,
+      "reason": null
+    },
+    {
+      "unit_id": "oath-trial-sessions",
+      "first_class_artifact_id": "oath-trial-calendar",
+      "artifact_path": "site/data/oath_trial_calendar.json",
+      "population_field": "records",
+      "vintage_field": "generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 145,
       "reason": null
     },
     {
@@ -370,6 +381,7 @@
     "nyc-council-legistar",
     "nyc-council-members",
     "nys-contract-reporter",
+    "oath-trial-calendar",
     "ocp-recent-contract-awards",
     "passport-public-contracts",
     "zap-api-outcomes",
@@ -621,7 +633,7 @@
           {
             "unit_id": "public-meetings",
             "route": "/browse/meetings/",
-            "served_records": 570,
+            "served_records": 715,
             "evidence_vintage": "2026-09-09T06:52:08.255Z"
           },
           {
@@ -1146,6 +1158,22 @@
       }
     },
     {
+      "source_id": "oath-trial-calendar",
+      "name": "NYC OATH conference and trial calendar",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "oath-trial-sessions",
+            "route": "/browse/meetings/",
+            "served_records": 145,
+            "evidence_vintage": "2026-09-15T12:00:00.000Z"
+          }
+        ]
+      }
+    },
+    {
       "source_id": "ocp-current-solicitations",
       "name": "Current Solicitations (OCP / Open Data)",
       "disposition": "context_only",
@@ -1215,19 +1243,6 @@
           "source_system": "passport_public_rfx",
           "served_observations": 0,
           "declared_input_rows": 0
-        }
-      }
-    },
-    {
-      "source_id": "public-consultations",
-      "name": "Public consultation invitations",
-      "disposition": "unresolved",
-      "reason": "Consultation invitations are served through a dedicated retained materialization, but no selected served-population unit counts them yet, so no served count is established.",
-      "evidence": {
-        "registry": {
-          "status": "live",
-          "delivery_tier": "inline-at-build",
-          "used_for": "Consultation browsing, local-scope placement, search evidence, and supported response-date actions."
         }
       }
     },

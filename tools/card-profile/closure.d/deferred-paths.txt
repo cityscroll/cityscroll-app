@@ -75,6 +75,7 @@ site/data/community_board_participation_sources.json
 site/data/community_board_payment_actuals.json
 site/data/community_board_payroll_staff_count.json
 site/data/community_board_request_project_links.json
+site/data/community_district_digests.json
 site/data/comparative_award_rank_receipts.json
 site/data/consultations.json
 site/data/contract_action_address_locations.json
