@@ -63,16 +63,30 @@ test("A3: formal stance is retained only with vote, resolution, recommendation, 
       { ...base, retrieval_date: todayISO(), document_id: "vote", source_role: "formal_vote", stance: "opposition", text: "The board voted against the bus lane." },
       { ...base, retrieval_date: todayISO(), document_id: "chair", source_role: "chair_statement", formal_stance: "opposition", text: "The chair opposed the bus lane." },
       { ...base, retrieval_date: todayISO(), document_id: "testimony", source_role: "testimony", stance: "support", text: "Public testimony supported the bus lane." },
+      {
+        ...base,
+        retrieval_date: todayISO(),
+        document_id: "testimony-self-certified",
+        source_role: "testimony",
+        stance: "support",
+        formal_evidence: true,
+        board_action: true,
+        text: "The testimony record carries the formal evidence and board action flags for the bus lane.",
+      },
     ], topic);
     const chair = slice.hits.find((hit) => hit.document_id === "chair");
     const testimony = slice.hits.find((hit) => hit.document_id === "testimony");
+    const selfCertified = slice.hits.find((hit) => hit.document_id === "testimony-self-certified");
     const vote = slice.hits.find((hit) => hit.document_id === "vote");
     assert.equal(chair.stance, null);
     assert.equal(testimony.stance, null);
+    assert.equal(selfCertified.stance, "support");
+    assert.equal(selfCertified.stance_evidence_kind, "Official board statement");
     assert.equal(vote.stance, "opposition");
     assert.equal(vote.stance_evidence_kind, "Formal vote");
     const rendered = renderCommunityBoardDocumentTopicSlice(slice);
     assert.match(rendered, /Stance: opposition · Evidence: Formal vote/);
+    assert.match(rendered, /Stance: support · Evidence: Official board statement/);
     const article = (action) => rendered.match(new RegExp(`<article data-action-type="${action}">([\\s\\S]*?)</article>`))[1];
     assert.doesNotMatch(article("chair_action"), /Stance:/);
     assert.doesNotMatch(article("public_testimony"), /Stance:/);
