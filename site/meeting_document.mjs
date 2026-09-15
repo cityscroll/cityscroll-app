@@ -18,6 +18,7 @@ import { participationActionVerbs } from "./participation_action_verbs.mjs";
 import { meetingPurposeAuthority } from "./meeting_purpose_authority.mjs";
 import { renderCouncilHearingMatterContinuation } from "./council_hearing_matter_continuation.mjs";
 import { renderLegislativeHearingConsequence } from "./legislative_hearing_consequence.mjs";
+import { observerRequestForTrial, observerRequestMailto, OATH_OBSERVER_EMAIL } from "./oath_trial_calendar.mjs";
 import {
   buildCrossSourceCoverageLedger,
   renderCrossSourceCoverageLedger,
@@ -595,6 +596,13 @@ function agendaItemsSection(record) {
   return `<section class="node-section civic-object-section meeting-section meeting-agenda-items" data-agenda-items="${record.agenda_items.length}"><h2>Cases on this day</h2><ol>${items}</ol></section>`;
 }
 
+function oathObserverRequestSection(record) {
+  if (record.source_system !== "oath_trial_calendar") return "";
+  const request = observerRequestForTrial(record);
+  const mailto = observerRequestMailto(record);
+  return `<section class="node-section civic-object-section meeting-section meeting-oath-observer-request" data-oath-observer-request="1"><h2>Request observer access</h2><p>OATH must confirm access before you go. OATH will provide the access instructions.</p><div class="meeting-request-actions"><button type="button" class="node-action civic-object-action primary" data-oath-copy-request>Copy observer request</button> <a class="node-action civic-object-action" data-oath-mailto href="${esc(mailto)}">Email ${esc(OATH_OBSERVER_EMAIL)}</a></div><p class="meeting-request-status" data-oath-copy-status role="status" aria-live="polite" hidden></p><label for="oath-observer-request-${esc(record.meeting_id)}">Editable request</label><textarea id="oath-observer-request-${esc(record.meeting_id)}" data-oath-request-text rows="10">${esc(request)}</textarea><p class="meeting-request-note">Sending is your choice. This draft is not a registration or confirmation of attendance.</p><script type="module" src="/oath_trial_observation.mjs"></script></section>`;
+}
+
 // PHC-02: purpose (the sourced pending question) and authority (the plain-
 // language body role, what a submission becomes, and the nearest exact next
 // official action) — placed before the participation controls so what this
@@ -824,6 +832,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   ${relatedLinksSection}
   ${consequenceSection(record)}
   ${observerAccessSection(record)}
+  ${oathObserverRequestSection(record)}
   ${participationSection}
   ${legislativeConsequenceSection}
   ${matterContinuationSection}

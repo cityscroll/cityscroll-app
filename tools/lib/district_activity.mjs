@@ -767,6 +767,16 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
  * @param {{ communityBoardGeography?: object|null }} [opts]
  */
 export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
+  // The OATH calendar publishes case-party names but no hearing location.
+  // Terms such as "Harlem" or "Citywide" can occur in those names and are
+  // not place evidence. Keep these sessions in the explicit unlocated bucket
+  // until OATH publishes a location; never turn party text into a borough or
+  // district subject.
+  if (row?.source_system === "oath_trial_calendar") {
+    const slots = [];
+    slots.unlocated_reason = "source_location_not_published";
+    return slots;
+  }
   const boardId = communityBoardIdForMeeting(row);
   const boardDistrict = communityDistrictIdFromBoardOntology(
     boardId,
