@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { withPinnedClock } from "./helpers/test_clock.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 import { renderProcurementDocument, procurementContractWatchHref, procurementVendorFollowHref } from "../site/procurement_document.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { resolveKeywordQuery, searchKeywordDocuments } from "../site/keyword_matcher.mjs";
@@ -54,12 +54,25 @@ test("A7: every retained destination is a native keyboard link and the layout re
   }
 });
 
-test("A7: the retained accessibility receipt reports no serious or critical findings", () => {
-  const findings = readback.accessibility.serious_or_critical_findings;
-  assert.deepEqual(Object.keys(findings).sort(), ["desktop", "mobile"]);
-  assert.deepEqual(findings.desktop, []);
-  assert.deepEqual(findings.mobile, []);
-  assert.match(readback.accessibility.engine, /^axe-core \d+\.\d+\.\d+$/);
+test("A7: the retained accessibility receipt proves both viewport scans ran", async () => {
+  await withPinnedClock("2026-09-09T06:33:01.880Z", () => {
+    const accessibility = readback.accessibility;
+    assert.equal(accessibility.engine.name, "axe-core");
+    assert.match(accessibility.engine.version, /^\d+\.\d+\.\d+$/);
+    assert.deepEqual(Object.keys(accessibility.viewports).sort(), ["desktop", "mobile"]);
+    for (const scan of Object.values(accessibility.viewports)) {
+      assert.ok(scan.rules_run.length > 0);
+      assert.ok(scan.rules_run.every((rule) => typeof rule === "string" && rule.length > 0));
+      assert.ok(scan.nodes_examined > 0);
+      assert.ok(Array.isArray(scan.violations));
+      assert.ok(scan.violations.every((violation) => ["minor", "moderate", "serious", "critical"].includes(violation.impact)));
+      if (scan.violations.length === 0) assert.ok(scan.passes.length > 0);
+      assert.ok(Array.isArray(scan.serious_or_critical));
+      assert.deepEqual(scan.serious_or_critical, scan.violations.filter((violation) => ["serious", "critical"].includes(violation.impact)));
+      assert.match(scan.markup_sha256, /^[a-f0-9]{64}$/);
+      assert.equal(scan.scanned_at, testClockISOString());
+    }
+  });
 });
 
 test("A8: the read-back artifact names its focused verification command", () => {
