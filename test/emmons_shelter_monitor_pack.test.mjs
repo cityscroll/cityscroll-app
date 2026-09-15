@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import { buildEmmonsShelterMonitorPack, createEmmonsWatchChildren, EMMONS_ANCHORS, EMMONS_ROUTES, renderEmmonsShelterMonitorPack } from "../site/emmons_shelter_monitor_pack.mjs";
+
+const captureManifest = JSON.parse(readFileSync(new URL("../docs/evidence/emmons-shelter-monitor-pack/capture-manifest.json", import.meta.url)));
+const captureDigest = (html) => createHash("sha256").update(html).digest("hex");
 
 test("the Emmons pack retains exact anchors and excludes the nearby address", () => {
   const pack = buildEmmonsShelterMonitorPack();
@@ -30,4 +35,32 @@ test("one reviewed action creates each child exactly once through an idempotent 
   assert.equal(result.child_count, 3);
   assert.equal(calls.length, 3);
   assert.deepEqual(result.created, ["exact-procurement", "project-alias-money", "cb15-meeting-alias"]);
+});
+
+test("the retained journey manifest distinguishes taken static captures from untaken behavior journeys", () => {
+  const expected = new Map([
+    ["desktop", (html) => ["What CityScroll knows", "Timeline", "What to watch", "Not yet covered"].every((text) => html.includes(text))],
+    ["narrow-touch", null],
+    ["keyboard", null],
+    ["no-javascript", (html) => html.includes("<!doctype html>") && !html.includes("<script")],
+    ["back-navigation", null],
+    ["failed-detail-load", null],
+  ]);
+  assert.equal(captureManifest.runner, "node --test test/emmons_shelter_monitor_pack.test.mjs test/tracked_issue_read_model.test.mjs");
+  assert.deepEqual(captureManifest.captures.map((capture) => capture.surface), [...expected.keys()]);
+  const html = renderEmmonsShelterMonitorPack();
+  for (const capture of captureManifest.captures) {
+    const assertion = expected.get(capture.surface);
+    if (!assertion) {
+      assert.equal(capture.state, "not-yet-taken", capture.surface);
+      assert.match(capture.reason, /requires|cannot evidence/i, capture.surface);
+      assert.equal("sha256" in capture, false, capture.surface);
+      continue;
+    }
+    assert.equal(capture.state, "complete", capture.surface);
+    assert.match(capture.method, /deterministic-render-fixture/, capture.surface);
+    assert.match(capture.sha256, /^[a-f0-9]{64}$/, capture.surface);
+    assert.equal(capture.sha256, captureDigest(html), capture.surface);
+    assert.equal(assertion(html), true, capture.surface);
+  }
 });
