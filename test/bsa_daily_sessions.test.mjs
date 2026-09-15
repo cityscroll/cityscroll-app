@@ -75,7 +75,7 @@ test("the rendered agenda exposes cases and returns through the canonical day ro
   assert.match(html, /K15/);
   assert.match(html, /22 Reade Street/);
   assert.match(html, /Executive review is a public observation phase/);
-  assert.match(html, /applicant response and public testimony/);
+  assert.match(html, /Applicant response and public testimony/);
   assert.match(html, /href="\/browse\/meetings\/"/);
   assert.match(html, new RegExp(`meeting:bsa_calendar:bsa-${fixtureDays[0]}`));
   });
@@ -99,6 +99,6 @@ test("BSA sessions cross the shared read-model boundary as native source rows", 
     value: `bsa-${day}`,
   })));
   assert.equal(bsaRows.every((row) => row.source_record.receipt?.schema === "cityscroll.document_processing_receipt.v1"), true);
-  assert.equal(bsaRows.find((row) => row.bsa_session_id === `bsa-${fixtureDays[0]}`).agenda_items.length, 21);
+  assert.equal(bsaRows.find((row) => row.source_keys[0].value === `bsa-${fixtureDays[0]}`).agenda_items.length, 21);
   });
 });
