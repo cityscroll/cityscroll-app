@@ -9,6 +9,7 @@ import { buildExamSearchDocuments } from "../site/exam_search_producer.mjs";
 import { buildLandSearchDocuments } from "../site/land_search_producer.mjs";
 import { buildBoardSearchDocuments } from "../site/board_search_producer.mjs";
 import { buildMeetingSearchDocuments } from "../site/meeting_search_producer.mjs";
+import { buildCouncilMatterSearchDocuments } from "../site/council_matter_search_producer.mjs";
 import { buildParcelSearchDocuments } from "../site/parcel_search_producer.mjs";
 import { buildPeopleSearchDocuments } from "../site/people_search_producer.mjs";
 import { buildCommunityBoardPersonSearchDocuments } from "../site/community_board_people_search_producer.mjs";
@@ -90,6 +91,8 @@ function compactDocument(document) {
       notice_evidence: provenance.notice_evidence || [],
       alias_object_refs: provenance.alias_object_refs || [],
       ...(provenance.search_aliases?.length ? { search_aliases: provenance.search_aliases } : {}),
+      ...(provenance.identifier_values?.length ? { identifier_values: provenance.identifier_values } : {}),
+      ...(provenance.site_history ? { site_history: provenance.site_history } : {}),
       ...(communityBoardContext ? { community_board_context: communityBoardContext } : {}),
     },
     outcome: document.outcome || "indexed",
@@ -120,6 +123,7 @@ const agencyIdentityReport = json("site/data/agency_route_identity_report.json")
 const agencyPublisherCrosswalk = json("worker/src/data/agency_crosswalk.json");
 const land = json("site/data/zap_projects_warehouse_lookup.json");
 const meetings = json("site/data/shared_meeting_read_model.json");
+const councilLandMatterLinks = json("site/data/council_land_matter_links.json");
 const exams = json("site/data/staffing_exams.json");
 const parcels = json("site/data/property_cross_domain_lookup.json");
 const propertyResidents = json("site/data/property_resident_snapshot.json");
@@ -225,7 +229,7 @@ const output = {
     meetings: family(
       "City Record, City Council calendar, and official community-board meeting snapshots",
       meetings.generated_at,
-      [buildMeetingSearchDocuments(meetings)],
+      [buildMeetingSearchDocuments(meetings), buildCouncilMatterSearchDocuments(councilLandMatterLinks)],
     ),
     exams: family(
       "Department of Citywide Administrative Services exam schedule",
@@ -258,6 +262,7 @@ const output = {
       community_board_decisions: "site/data/community_board_resolution_pilot.json",
       land: "site/data/zap_projects_warehouse_lookup.json",
       meetings: "site/data/shared_meeting_read_model.json",
+      council_land_matter_links: "site/data/council_land_matter_links.json",
       exams: "site/data/staffing_exams.json",
       parcels: "site/data/property_cross_domain_lookup.json",
       property_residents: "site/data/property_resident_snapshot.json",
