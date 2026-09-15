@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   MEETING_SOURCE_SYSTEMS,
   normalizeCityRecordMeeting,
@@ -141,10 +142,6 @@ test("A4: observer details report effort and perform zero side effects", () => {
 test("A6: positive and absent access controls remain keyboard-usable and no-JavaScript safe", async () => {
   await withPinnedClock("2026-09-15T12:00:00Z", () => {
     const day = todayISO();
-    const viewportContexts = [
-      { name: "desktop", width: 1440 },
-      { name: "narrow", width: 390 },
-    ];
     const cases = [
       normalizeBsaCalendarMeeting({
         bsa_session_id: "bsa-positive", title: "BSA observed session", event_date: day,
@@ -155,32 +152,46 @@ test("A6: positive and absent access controls remain keyboard-usable and no-Java
         bsa_session_id: "bsa-absent", title: "BSA access not published", event_date: day, source_url: source,
       }),
     ];
-    for (const viewport of viewportContexts) {
-      for (const record of cases) {
-        const html = renderMeetingDocument(record);
-        assert.match(html, /<meta name="viewport" content="width=device-width,initial-scale=1">/,
-          `${viewport.name} render must declare a responsive viewport`);
-        assert.match(html, /data-capability-reference="meeting\.get@1"/,
-          `${viewport.name} render must retain the meeting capability anchor`);
-        assert.match(html, /<main[^>]*tabindex="-1"/,
-          `${viewport.name} render must keep the keyboard focus target`);
-        assert.doesNotMatch(html, /onclick=|onkeydown=/i,
-          `${viewport.name} render must not depend on inline keyboard handlers`);
-
-        const withoutJavaScript = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
-        assert.doesNotMatch(withoutJavaScript, /<script\b/i,
-          `${viewport.name} no-JavaScript document must contain no executable script`);
-        assert.match(withoutJavaScript, /<main[^>]*tabindex="-1"/,
-          `${viewport.name} no-JavaScript document must retain the keyboard focus target`);
+    const rendered = cases.map((record) => renderMeetingDocument(record));
+    for (const [html, record] of rendered.map((html, index) => [html, cases[index]])) {
+      assert.match(html, /<meta name="viewport" content="width=device-width,initial-scale=1">/,
+        "meeting document must declare the responsive viewport used by desktop and narrow CSS");
+      assert.match(html, /data-capability-reference="meeting\.get@1"/,
+        "meeting document must retain the capability anchor");
+      assert.match(html, /<main[^>]*tabindex="-1"/,
+        "meeting document must keep the keyboard focus target");
+      assert.doesNotMatch(html, /onclick=|onkeydown=/i,
+        "meeting controls must not depend on inline keyboard handlers");
+      if (record.access_steps?.length) {
+        assert.match(html, /observer-instructions-action/,
+          "published observer access must render its positive control");
+      } else {
+        assert.doesNotMatch(html, /observer-instructions-action|watch_url|video\.example/i,
+          "unpublished observer access must render no observer control or watch address");
       }
     }
-    const positiveWithoutJavaScript = renderMeetingDocument(cases[0])
-      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    const positiveHtml = rendered[0];
+    assert.match(positiveHtml, /<script\b/i,
+      "the unmodified positive render must contain its script element before the no-JavaScript projection");
+    const positiveWithoutJavaScript = positiveHtml.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    assert.doesNotMatch(positiveWithoutJavaScript, /<script\b/i,
+      "positive no-JavaScript render must contain no executable script");
     assert.match(positiveWithoutJavaScript, /<a class="[^"]*observer-instructions-action[^"]*"[^>]*href="https:\/\/example\.nyc\.gov\/calendar"/,
       "positive no-JavaScript render must keep the observer action as a keyboard-reachable link");
-    const absentWithoutJavaScript = renderMeetingDocument(cases[1])
-      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    assert.match(positiveWithoutJavaScript, /<main[^>]*tabindex="-1"/,
+      "positive no-JavaScript render must retain the keyboard focus target");
+    const absentWithoutJavaScript = rendered[1].replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    assert.doesNotMatch(absentWithoutJavaScript, /<script\b/i,
+      "absent no-JavaScript render must contain no executable script");
     assert.doesNotMatch(absentWithoutJavaScript, /data-observer-access|observer-instructions-action|youtube\.com|watch_url|video\.example/i,
       "absent no-JavaScript render must keep observer controls and watch addresses absent");
+
+    const civicDocumentsCss = readFileSync(new URL("../site/civic-documents.css", import.meta.url), "utf8");
+    assert.match(civicDocumentsCss, /@media \(max-width: 560px\)[\s\S]*?\.document-mast-inner[\s\S]*?flex-direction: column/,
+      "narrow rendered pages must use the masthead's width-aware column layout");
+    assert.match(civicDocumentsCss, /@media \(max-width: 560px\)[\s\S]*?\.node-action,[\s\S]*?\.civic-object-action[\s\S]*?width: 100%/,
+      "narrow rendered controls must expand within the viewport instead of using a fixed width");
+    assert.match(civicDocumentsCss, /\.node-document,[\s\S]*?max-width: var\(--maxw\)[\s\S]*?padding-inline: clamp\(/,
+      "desktop rendered content must use a fluid max-width and responsive gutters rather than fixed-width layout");
   });
 });
