@@ -103,6 +103,13 @@ const SERVED_UNITS = Object.freeze([
     route: "/browse/meetings/",
   },
   {
+    unit_id: "oath-trial-sessions",
+    artifact_id: "oath-trial-calendar",
+    record_unit_key: "coverage_record_meeting",
+    counting_rule_key: "coverage_rule_declared",
+    route: "/browse/meetings/",
+  },
+  {
     unit_id: "board-meetings",
     artifact_id: "community-board-meetings",
     record_unit_key: "coverage_record_meeting",

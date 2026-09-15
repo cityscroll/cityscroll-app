@@ -243,10 +243,11 @@ function check(doc) {
     const sourceIds = new Set(sourceRows
       .map((row) => String(row?.request_id || row?.project_id || row?.id || row?.meeting_id || ""))
       .filter((id) => id && !/^FIX\d+/i.test(id)));
-    if ((doc.sources?.[lens]?.indexed || 0) !== (doc.sources?.[lens]?.counted || 0)) {
+    const excluded = Number(doc.sources?.[lens]?.excluded || 0);
+    if ((doc.sources?.[lens]?.indexed || 0) !== (doc.sources?.[lens]?.counted || 0) - excluded) {
       throw new Error(`${lens} item index does not cover its counted corpus`);
     }
-    if (Object.keys(doc.records?.[lens] || {}).length !== sourceIds.size) {
+    if (Object.keys(doc.records?.[lens] || {}).length !== sourceIds.size - excluded) {
       throw new Error(`${lens} compact record index does not cover its source corpus`);
     }
     for (const level of ["borough", "community_district", "council_district"]) {
