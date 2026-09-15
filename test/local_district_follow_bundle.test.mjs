@@ -32,6 +32,7 @@ test("district confirmation enumerates the exact board and supported children", 
 test("unsupported lenses are disclosed and omitted from the general district bundle", () => {
   const bundle = buildLocalDistrictFollowBundle({ scope, board: "community-board:brooklyn-cb-15" });
   const disclosure = localDistrictFollowDisclosure(bundle);
+  assert.equal(disclosure.frequency, "one weekly digest");
   assert.ok(disclosure.omitted.includes("people"));
   assert.ok(bundle.children.every((child) => !["entity", "award", "legal_code"].includes(child.lens)));
 });
