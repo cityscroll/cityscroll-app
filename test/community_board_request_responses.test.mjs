@@ -75,6 +75,7 @@ const SHIPPING_LANGS = globalThis.window.SHIPPING_LANGS;
 const read = (path) => JSON.parse(readFileSync(new URL(`../${path}`, import.meta.url), "utf8"));
 const BOUNDED_FIXTURE = read("test/fixtures/community_board_budget_requests/dense-long-title.json");
 const NAVIGATION_FIXTURE = read("test/fixtures/community_board_budget_requests/navigation-behaviors.json");
+const PRESERVATION_FIXTURE = read("test/fixtures/community_board_budget_requests/navigation-preservation.json");
 
 const navigationCase = (id) => {
   const proof = NAVIGATION_FIXTURE.cases.find((entry) => entry.id === id);
@@ -521,6 +522,43 @@ test("each surface links into the other at the scope the reader is already in", 
     `href="/community-boards/${BROOKLYN_CB14}/#${COMMUNITY_BOARD_BUDGET_REQUESTS_ANCHOR}-transportation"`,
   ));
   assert.ok(agencyRendered.includes(`id="${AGENCY_BUDGET_REQUESTS_ANCHOR}-${BROOKLYN_CB14}"`));
+});
+
+test("the preservation fixture proves inspect and full-record Back keep scope", () => {
+  const expected = PRESERVATION_FIXTURE;
+  const request = requestOf(expected.board_id, expected.request_code);
+  const group = groupOf(expected.board_id, expected.request_code);
+  assert.equal(request.agency.agency_id, expected.agency_id);
+  assert.equal(request.fiscal_year, expected.fiscal_year);
+  assert.equal(group.anchor, expected.group_anchor);
+  assert.equal(group.collapsed, true);
+
+  const rendered = boardSection(expected.board_id);
+  const row = rendered.match(new RegExp(`<li[^>]+id="${request.anchor}"[^>]*>`))?.[0];
+  assert.ok(row, "the inspected request has a stable row anchor");
+  assert.match(row, new RegExp(`data-fiscal-year="${expected.fiscal_year}"`));
+  assert.match(row, new RegExp(`data-agency-id="${expected.agency_id}"`));
+  assert.ok(rendered.includes(`id="${expected.group_anchor}"`));
+  assert.ok(rendered.includes(`href="#${expected.group_anchor}"`));
+
+  const { doc, container } = mountDocument(rendered);
+  const section = container.querySelector("[data-community-board-budget-requests]");
+  const controller = bindCommunityBoardBudgetRequests(section);
+  const control = container.querySelector(`[${BUDGET_REQUEST_ATTRIBUTE}="${expected.request_code}"]`);
+  click(control);
+  const dialog = doc.getElementById(BUDGET_REQUEST_BOOT_DIALOG_ID);
+  assert.ok(dialog.textContent.includes(`Fiscal year ${expected.fiscal_year}`));
+  assert.ok(dialog.textContent.includes(request.agency.source_label));
+  const close = dialog.querySelector("[data-budget-request-close]");
+  click(close);
+  assert.equal(doc.activeElement, control, "dismiss returns focus without changing the rendered scope");
+  assert.ok(container.querySelector(`[data-budget-request-group="${expected.agency_id}"][data-budget-request-group-collapsed]`));
+
+  const agencyRendered = agencySection(expected.agency_id);
+  assert.ok(rendered.includes(`href="${expected.agency_href}"`));
+  assert.ok(agencyRendered.includes(`href="/community-boards/${expected.board_id}/#${COMMUNITY_BOARD_BUDGET_REQUESTS_ANCHOR}-${expected.agency_id}"`));
+  assert.ok(rendered.includes(`href="${expected.return_href}"`), "the collapsed group has a browser-history return anchor");
+  controller.destroy();
 });
 
 test("an agency the register names but this site has no page for keeps its published spelling", () => {

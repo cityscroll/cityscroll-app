@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.community_board_budget_requests_navigation_preservation.v1",
+  "case": "inspect-and-full-record-round-trip",
+  "board_id": "brooklyn-cb-14",
+  "request_code": "214202710C",
+  "agency_id": "transportation",
+  "fiscal_year": 2027,
+  "group_anchor": "board-budget-requests-transportation",
+  "agency_href": "/agencies/transportation/#agency-budget-requests-brooklyn-cb-14",
+  "return_href": "#board-budget-requests",
+  "assertion": "Inspect and dismiss preserve the fiscal year, agency and collapsed expansion state; the full-record agency route and its return anchor preserve the same board scope for Back."
+}
