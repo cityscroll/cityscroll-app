@@ -124,8 +124,8 @@ export function projectProcurementFacts(object = {}, observations = []) {
     const add = (kind, value, field, normalize = (v) => text(v)) => addCandidate(
       groups, candidate(kind, value, observation, field, normalize),
     );
-    add("title", row.short_title || row.title || row.description,
-      row.short_title ? "short_title" : row.title ? "title" : "description", (v) => text(v, 500));
+    add("title", row.purpose || row.short_title || row.title || row.description,
+      row.purpose ? "purpose" : row.short_title ? "short_title" : row.title ? "title" : "description", (v) => text(v, 500));
     add("agency", row.agency_name || row.agency, row.agency_name ? "agency_name" : "agency", (v) => text(v, 240));
     if (vendorEligible) add("vendor", row.vendor_name || row.vendor || row.prime_vendor || row.payee_name,
       row.vendor_name ? "vendor_name" : row.vendor ? "vendor" : row.prime_vendor ? "prime_vendor" : "payee_name",
@@ -135,11 +135,15 @@ export function projectProcurementFacts(object = {}, observations = []) {
     add("amount", row.contract_amount ?? row.award_amount ?? row.current_amount ?? row.current ?? row.amount ?? row.check_amount,
       row.contract_amount != null ? "contract_amount" : row.award_amount != null ? "award_amount" : "current_amount",
       (v) => { const n = Number(String(v).replace(/[$,]/g, "")); return Number.isFinite(n) ? n : null; });
-    add("method", row.selection_method_description || row.procurement_method,
-      row.selection_method_description ? "selection_method_description" : "procurement_method", (v) => text(v, 240));
+    add("method", row.award_method || row.selection_method_description || row.procurement_method,
+      row.award_method ? "award_method" : row.selection_method_description ? "selection_method_description" : "procurement_method", (v) => text(v, 240));
     add("award_date", row.award_date, "award_date", (v) => text(v, 40));
     add("program", row.program, "program", (v) => text(v, 240));
     add("industry", row.industry, "industry", (v) => text(v, 120));
+    if (contractOwned) {
+      add("contract_type", row.contract_type, "contract_type", (v) => text(v, 160));
+      add("document_code", row.document_code, "document_code", (v) => text(v, 80));
+    }
     if (contractOwned) {
       add("contract_start", row.start_date || row.start || row.contract_start_date || row.begin_date,
         row.start_date ? "start_date" : row.start ? "start" : row.contract_start_date ? "contract_start_date" : "begin_date", normalizeProcurementDate);
@@ -188,6 +192,7 @@ export function projectProcurementFacts(object = {}, observations = []) {
       title: fact("title") || fact("program") || `Contract ${fact("canonical_contract_id") || fact("pin_epin") || object?.procurement_id || "record"}`,
       agency: fact("agency"), vendor: fact("vendor"), amount: fact("amount"), method: fact("method"),
       program: fact("program"), industry: fact("industry"),
+      contractType: fact("contract_type"), documentCode: fact("document_code"),
       startDate: fact("contract_start") || fact("legacy_start_date"),
       endDate: fact("contract_end") || fact("legacy_end_date"),
       start_date: fact("contract_start"), end_date: fact("contract_end"),
