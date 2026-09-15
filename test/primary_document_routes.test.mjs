@@ -27,9 +27,11 @@ import procurementProjectContextMaterialization from "../site/data/procurement_p
 import {
   BUNDLE_REQUEST_ID,
   BLANK_SCOPE_REQUEST_ID,
+  CROSS_AGENCY_COLLISION_REQUEST_ID,
   MUSEUM_REQUEST_ID,
   QUALIFICATION_REQUEST_ID,
   renderCase,
+  renderCrossAgencyCollisionCase,
   solicitationFixture,
 } from "./fixtures/procurement_project_context_fixtures.mjs";
 
@@ -75,6 +77,23 @@ function fakeKV(seed = {}) {
       return { keys: [...store.keys()].filter((key) => key.startsWith(prefix)).map((name) => ({ name })), list_complete: true };
     },
   };
+}
+
+class TestHTMLRewriter {
+  constructor(response) { this.response = response; this.handlers = []; }
+  on(selector, handlers) { this.handlers.push({ selector, handlers }); return this; }
+  async transform(response = this.response) {
+    let html = await response.text();
+    for (const { selector, handlers } of this.handlers) {
+      if (selector !== "#noticeview") continue;
+      html = html.replace(/<main id="noticeview"><\/main>/, () => {
+        const element = { setInnerContent: (value) => { element.content = value; } };
+        handlers.element(element);
+        return `<main id="noticeview">${element.content || ""}</main>`;
+      });
+    }
+    return new Response(html, { status: response.status, headers: response.headers });
+  }
 }
 
 test("notice handler renderer exposes the retained wider-project scope", () => {
@@ -177,6 +196,56 @@ test("production procurement handler composes the project materialization", asyn
   assert.match(html, /85026B0110/);
   const context = html.match(/<section class="project-context"[\s\S]*?<\/section>/)?.[0] || "";
   assert.doesNotMatch(context, /PASSPort|passportpublic/i);
+});
+
+test("production notice handler supplies the project materialization", async () => {
+  const fixture = solicitationFixture(MUSEUM_REQUEST_ID);
+  const row = fixture.observations[0].snapshot;
+  const priorFetch = globalThis.fetch;
+  const priorRewriter = globalThis.HTMLRewriter;
+  globalThis.HTMLRewriter = TestHTMLRewriter;
+  globalThis.fetch = async (request) => {
+    const url = new URL(request.url || request);
+    if (url.hostname === "api.cityscroll.org" && url.pathname === "/notice") {
+      assert.equal(url.searchParams.get("id"), MUSEUM_REQUEST_ID);
+      return new Response(JSON.stringify({ row, civic_time: null }), {
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+    throw new Error(`unexpected notice source request: ${url}`);
+  };
+  try {
+    const env = {
+      ASSETS: {
+        async fetch(request) {
+          const path = new URL(request.url).pathname;
+          if (path === "/data/meeting_outcomes_snapshot.json") return Response.json({ by_notice: {} });
+          if (path === "/data/notice_mandate_backlinks_lookup.json") return Response.json({});
+          return new Response("<!doctype html><html><head><title>CityScroll</title></head><body><main id=\"noticeview\"></main></body></html>");
+        },
+      },
+    };
+    const response = await edgeWorker.fetch(new Request(`https://cityscroll.org/notices/${MUSEUM_REQUEST_ID}/`), env);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, /BCM-HVAC Upgrades/);
+    assert.match(html, /ACEDCA215/);
+    assert.match(html, /19,905,485|19905485/);
+    assert.match(html, /85026B0110/);
+    assert.match(html, /class="project-context-official-link" href="https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\/20260810048/);
+    assert.doesNotMatch(html, /javascript:/i);
+  } finally {
+    globalThis.fetch = priorFetch;
+    globalThis.HTMLRewriter = priorRewriter;
+  }
+});
+
+test("cross-agency collision fixture stays unjoined while retaining its official notice", () => {
+  const html = renderCrossAgencyCollisionCase();
+  assert.match(html, new RegExp(`RequestDetail/${CROSS_AGENCY_COLLISION_REQUEST_ID}`));
+  assert.match(html, /MASPETH SUPPLY CO LLC/);
+  assert.doesNotMatch(html, /class="project-context"/);
+  assert.doesNotMatch(html, /javascript:/i);
 });
 
 test("primary navigation is four real document links on every promoted shell", () => {
