@@ -23,6 +23,7 @@ import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
 import { EXAMS_SURFACE, PEOPLE_ORGANIZATIONS_SURFACE, STAFFING_SURFACE } from "../site/browse_surface_contracts.mjs";
 import { buildPeopleOrganizationsReadModel } from "../site/people_organizations_read_model.mjs";
 import { buildConsultationCollection, buildConsultationDetail, renderConsultationCollectionDocument, renderConsultationDetailDocument } from "../site/consultation_documents.mjs";
+import { buildObserveSurface, renderObserveDocument } from "../site/government_observe.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -184,6 +185,7 @@ export function primaryDocumentOutputs(options = {}) {
     meetings: { ...sharedMeetings, status: "available", hearings: sharedMeetings.rows },
   };
   const outputs = [output("now", buildNowDocument(shell, nowSources))];
+  outputs.push(output("observe", renderObserveDocument(buildObserveSurface(sharedMeetings))));
   const consultationView = buildConsultationCollection();
   outputs.push(output("consultations", renderConsultationCollectionDocument(consultationView)));
   for (const record of consultationView.records) outputs.push(output(`consultations/${record.id}`, renderConsultationDetailDocument(buildConsultationDetail(record.id))));
