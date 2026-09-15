@@ -3,8 +3,54 @@ import { materializeConsultations } from "./consultation_acquisition.mjs";
 export const CONSULTATION_DOCUMENT_SCHEMA = "cityscroll.consultation_document.v1";
 export const CONSULTATIONS_ROUTE = "/consultations/";
 
+export const CONSULTATION_STRINGS = Object.freeze({
+  en: Object.freeze({
+    channel: Object.freeze({
+      survey: "Survey",
+      feedback_map: "Feedback map",
+      location_suggestion: "Location suggestion",
+      feedback_page: "Feedback information",
+      google_form: "Response form",
+      offline_pdf: "Paper form",
+    }),
+    source: Object.freeze({
+      organizer_invitation: "Organizer invitation",
+      "organizer project page": "Organizer project page",
+      survey: "Survey",
+      feedback_map: "Feedback map",
+      location_suggestion: "Location suggestion",
+      feedback_landing: "Feedback information",
+      microsoft_form: "Response form",
+    }),
+  }),
+  es: Object.freeze({
+    channel: Object.freeze({
+      survey: "Encuesta",
+      feedback_map: "Mapa de comentarios",
+      location_suggestion: "Sugerencia de ubicación",
+      feedback_page: "Información para enviar comentarios",
+      google_form: "Formulario de respuesta",
+      offline_pdf: "Formulario en papel",
+    }),
+    source: Object.freeze({
+      organizer_invitation: "Invitación del organizador",
+      "organizer project page": "Página del proyecto del organizador",
+      survey: "Encuesta",
+      feedback_map: "Mapa de comentarios",
+      location_suggestion: "Sugerencia de ubicación",
+      feedback_landing: "Información para enviar comentarios",
+      microsoft_form: "Formulario de respuesta",
+    }),
+  }),
+});
+
 const esc = (value) => String(value ?? "").replace(/[&<>\"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[char]));
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
+
+function consultationLabel(kind, value, locale = "en") {
+  const table = CONSULTATION_STRINGS[locale] || CONSULTATION_STRINGS.en;
+  return table[kind]?.[value] || table.channel.feedback_page;
+}
 
 const PILOT_EXTENSIONS = Object.freeze([
   {
@@ -89,9 +135,9 @@ function chrome(title, description, body, canonical) {
   return `<!doctype html><html lang="en"><head><base href="/"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} · CityScroll</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="https://cityscroll.org${esc(canonical)}"><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/civic-documents.css"></head><body><header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/browse/">Browse</a><a href="/consultations/" aria-current="page">Consultations</a><a href="/guide/">Guide</a></nav></div></header><main id="main" data-document-rendered="true" class="civic-document consultation-document" tabindex="-1">${body}</main></body></html>`;
 }
 
-function actionHTML(record) {
+function actionHTML(record, locale) {
   if (!record.responseChannels.length) return `<p class="consultation-passed" role="status">The published response date has passed. Response links are retained below as source details.</p>`;
-  return `<ul class="consultation-actions">${record.responseChannels.map((channel) => `<li><a href="${esc(channel.url)}" rel="noopener noreferrer">${esc(channel.label || "View response information")}</a>${channel.language ? ` <span lang="en">(${esc(channel.language)})</span>` : ""}</li>`).join("")}</ul>`;
+  return `<ul class="consultation-actions">${record.responseChannels.map((channel) => `<li><a href="${esc(channel.url)}" rel="noopener noreferrer">${esc(channel.label || consultationLabel("channel", channel.kind, locale))}</a>${channel.language ? ` <span lang="en">(${esc(channel.language)})</span>` : ""}</li>`).join("")}</ul>`;
 }
 
 export function renderConsultationCollectionDocument(view) {
@@ -102,8 +148,8 @@ export function renderConsultationCollectionDocument(view) {
   return chrome("Consultations", "Browse public consultations and inspect their response channels.", `<p class="node-back"><a href="/browse/">Back to Browse</a></p><header><p class="ftype">Resident participation</p><h1>Consultations</h1><p>Public invitations to share feedback, ideas, and priorities. Inspect the context before visiting a provider.</p></header><form method="get" class="consultation-filters" aria-label="Filter consultations">${options("Category", categories, query.get("category"))}<label>Place<input name="place" value="${esc(query.get("place") || "")}"></label><label>Lifecycle<select name="lifecycle"><option value="">Any</option><option value="dated"${query.get("lifecycle") === "dated" ? " selected" : ""}>Dated</option><option value="undated"${query.get("lifecycle") === "undated" ? " selected" : ""}>No date published</option><option value="closed"${query.get("lifecycle") === "closed" ? " selected" : ""}>Deadline passed</option></select></label><button type="submit">Apply filters</button></form><p data-consultation-count="${view.records.length}">${view.records.length} of ${view.total} consultations</p><section class="consultation-list" aria-label="Consultation results">${rows || "<p>No consultations match this scope.</p>"}</section>`, CONSULTATIONS_ROUTE);
 }
 
-export function renderConsultationDetailDocument(record) {
-  const sourceDetails = record.sources.length ? `<details><summary>Source details</summary><ul>${record.sources.map((source) => `<li><a href="${esc(source.url)}" rel="noopener noreferrer">${esc(source.role || "Publisher source")}</a></li>`).join("")}</ul></details>` : "";
+export function renderConsultationDetailDocument(record, { locale = "en" } = {}) {
+  const sourceDetails = record.sources.length ? `<details><summary>Source details</summary><ul>${record.sources.map((source) => `<li><a href="${esc(source.url)}" rel="noopener noreferrer">${esc(consultationLabel("source", source.role, locale))}</a></li>`).join("")}</ul></details>` : "";
   const dateSection = record.deadlineLabel ? `<p><strong>${record.deadline.historical ? "Published response date (passed)" : "Response date"}:</strong> <time datetime="${esc(record.deadline.value)}">${esc(record.deadlineLabel)}</time></p>` : "";
-  return chrome(record.title, `${record.title} consultation details.`, `<p class="node-back"><a href="${esc(record.backHref)}" data-return-focus="consultation-${esc(record.id)}">Back to consultations</a></p><header><p class="ftype">${esc(record.category || "Consultation")}</p><h1>${esc(record.title)}</h1><p class="document-lede">${esc(record.organizer)}${record.geography ? ` · ${esc(record.geography)}` : ""}</p></header><section aria-labelledby="about"><h2 id="about">About this invitation</h2>${record.purpose ? `<p>${esc(record.purpose)}</p>` : ""}${dateSection}<p><strong>Status:</strong> ${esc(record.lifecycleLabel)}</p></section><section aria-labelledby="respond"><h2 id="respond">How to respond</h2>${actionHTML(record)}</section>${sourceDetails}` , consultationHref(record.id));
+  return chrome(record.title, `${record.title} consultation details.`, `<p class="node-back"><a href="${esc(record.backHref)}" data-return-focus="consultation-${esc(record.id)}">Back to consultations</a></p><header><p class="ftype">${esc(record.category || "Consultation")}</p><h1>${esc(record.title)}</h1><p class="document-lede">${esc(record.organizer)}${record.geography ? ` · ${esc(record.geography)}` : ""}</p></header><section aria-labelledby="about"><h2 id="about">About this invitation</h2>${record.purpose ? `<p>${esc(record.purpose)}</p>` : ""}${dateSection}<p><strong>Status:</strong> ${esc(record.lifecycleLabel)}</p></section><section aria-labelledby="respond"><h2 id="respond">How to respond</h2>${actionHTML(record, locale)}</section>${sourceDetails}` , consultationHref(record.id));
 }

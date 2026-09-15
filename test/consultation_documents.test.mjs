@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildConsultationCollection, buildConsultationDetail, renderConsultationCollectionDocument, renderConsultationDetailDocument } from "../site/consultation_documents.mjs";
+import { CONSULTATION_STRINGS, buildConsultationCollection, buildConsultationDetail, renderConsultationCollectionDocument, renderConsultationDetailDocument } from "../site/consultation_documents.mjs";
 
 test("collection and safe detail documents expose resident-facing consultation facts", () => {
   const view = buildConsultationCollection();
@@ -29,6 +29,23 @@ test("undated and unresolved channels remain source-view actions", () => {
   assert.ok(microsoft.channels.some((channel) => channel.kind === "survey"));
   assert.ok(microsoft.channels.every((channel) => channel.open_now === false));
   assert.doesNotMatch(renderConsultationDetailDocument(microsoft), /open-now|available now/i);
+});
+
+test("channel and source classifications render as bilingual resident words", () => {
+  const detail = buildConsultationDetail("dot-public-ebike-charging");
+  const english = renderConsultationDetailDocument(detail);
+  const spanish = renderConsultationDetailDocument(detail, { locale: "es" });
+  assert.equal(CONSULTATION_STRINGS.en.source.microsoft_form, "Response form");
+  assert.equal(CONSULTATION_STRINGS.es.source.microsoft_form, "Formulario de respuesta");
+  assert.equal(CONSULTATION_STRINGS.en.channel.google_form, "Response form");
+  assert.equal(CONSULTATION_STRINGS.es.channel.offline_pdf, "Formulario en papel");
+  assert.match(english, />Feedback information</);
+  assert.match(english, />Response form</);
+  assert.match(spanish, />Información para enviar comentarios</);
+  assert.match(spanish, />Formulario de respuesta</);
+  for (const html of [english, spanish]) {
+    assert.doesNotMatch(html, /organizer_invitation|feedback_landing|microsoft_form|feedback_page|feedback_map|location_suggestion/);
+  }
 });
 
 test("filters preserve a return scope and omit empty optional sections", () => {
