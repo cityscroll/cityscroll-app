@@ -296,6 +296,10 @@ export function normalizeMeetingObject(row = {}) {
     description: optionalText(row.description || row.source_body),
     search_text: searchableText(row, fields),
     affected_area: row.affected_area || null,
+    ...(source === "bsa_calendar" && Array.isArray(row.agenda_items) ? { agenda_items: row.agenda_items } : {}),
+    ...(source === "bsa_calendar" && Array.isArray(row.phases) ? { phases: row.phases } : {}),
+    ...(source === "bsa_calendar" && row.schedule_relation ? { schedule_relation: row.schedule_relation } : {}),
+    ...(source === "bsa_calendar" && optionalText(row.agenda_url) ? { agenda_url: optionalText(row.agenda_url) } : {}),
     meeting_documents: Array.isArray(row.meeting_documents) ? row.meeting_documents : [],
     source_url: sourceHref,
     source_system: source,
@@ -429,6 +433,18 @@ export function normalizeBsaCalendarMeeting(row = {}) {
     publisher_identifier: row.publisher_identifier || row.bsa_session_id || row.session_id || row.source_record_id,
     source_url: row.source_url || row.record_url,
     activity: "observe",
+    observer_access: row.observer_access || {
+      watch_url: "https://www.youtube.com/@NYCBSA",
+      remote_join_url: row.remote_registration_url || null,
+    },
+    participation: row.participation || {
+      links: [{ label: "BSA attendance procedures", url: "https://www.nyc.gov/site/bsa/public-hearings/procedures-for-attendance.page" }],
+    },
+    access_steps: row.access_steps || [{
+      kind: "observer_instructions",
+      destination: "https://www.nyc.gov/site/bsa/public-hearings/public-hearing-format.page",
+      source_url: "https://www.nyc.gov/site/bsa/public-hearings/public-hearing-format.page",
+    }],
   });
 }
 

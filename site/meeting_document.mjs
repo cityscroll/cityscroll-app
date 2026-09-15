@@ -578,7 +578,21 @@ function observerAccessSection(record) {
     : "";
   const mode = projection.activity === "observe" ? "Observation is separate from attendance and speaking." : "";
   if (!steps.length && !speaking && !mode) return "";
-  return `<section class="node-section civic-object-section meeting-section meeting-observer-access" data-observer-access="1"><h2>How to observe</h2>${mode ? `<p>${esc(mode)}</p>` : ""}${speaking}${steps.length ? `<ul>${steps.join("")}</ul>` : ""}</section>`;
+  const bsaGuidance = record.source_system === "bsa_calendar"
+    ? `<div class="meeting-procedure-phases"><h3>How the hearing works</h3><p>Executive review is a public observation phase. Applicant response and public testimony belong to the later public-hearing phase; no separate start time is published for either phase.</p></div>`
+    : "";
+  return `<section class="node-section civic-object-section meeting-section meeting-observer-access" data-observer-access="1"><h2>How to observe</h2>${mode ? `<p>${esc(mode)}</p>` : ""}${speaking}${bsaGuidance}${steps.length ? `<ul>${steps.join("")}</ul>` : ""}</section>`;
+}
+
+function agendaItemsSection(record) {
+  if (record.source_system !== "bsa_calendar" || !Array.isArray(record.agenda_items) || !record.agenda_items.length) return "";
+  const items = record.agenda_items.map((item) => {
+    const area = item.affected_area || {};
+    const place = [...(area.addresses || []), ...(area.community_districts || [])].filter(Boolean).join(" · ");
+    const state = item.lifecycle?.state || item.status || "unknown";
+    return `<li data-agenda-item="${esc(item.item_id || item.case_id || "")}"><details><summary><bdi>${esc(item.case_id || "Unidentified case")}</bdi> — ${esc(item.section || "Agenda")}</summary><p>Case status: ${esc(state)}.</p>${place ? `<p>Affected place: ${esc(place)}</p>` : ""}${item.disposition ? `<p>Disposition: ${esc(item.disposition)}</p>` : ""}</details></li>`;
+  }).join("");
+  return `<section class="node-section civic-object-section meeting-section meeting-agenda-items" data-agenda-items="${record.agenda_items.length}"><h2>Cases on this day</h2><ol>${items}</ol></section>`;
 }
 
 // PHC-02: purpose (the sourced pending question) and authority (the plain-
@@ -800,6 +814,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   ${locationSection}
   ${descriptionSection}
   ${noticeDetailsSection}
+  ${agendaItemsSection(record)}
   ${contactSection}
   ${relatedLinksSection}
   ${consequenceSection(record)}
