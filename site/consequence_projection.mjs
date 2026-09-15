@@ -125,6 +125,7 @@ function freezeProjection(projection) {
   return Object.freeze({
     ...projection,
     participation_modes: Object.freeze([...projection.participation_modes]),
+    access_steps: Object.freeze((projection.access_steps || []).map((step) => Object.freeze({ ...step }))),
     evidence: Object.freeze(projection.evidence.map((entry) => Object.freeze({ ...entry }))),
   });
 }
@@ -137,10 +138,64 @@ export function emptyConsequenceProjection(unknownReason = null) {
     pending_question: null,
     body_role: "unknown",
     participation_modes: [],
+    activity: null,
+    speaking_rights: "unknown",
+    access_steps: [],
     record_destination: null,
     next_official_action: null,
     evidence: [],
     unknown_reason: unknownReason || null,
+  });
+}
+
+function observerAccessConsequence(record = {}) {
+  const sourceUrl = httpsUrl(record.source_url) || cityRecordUrl(record.request_id);
+  const profile = meetingProcessProjection(record);
+  const evidence = [];
+  const steps = Array.isArray(record.access_steps)
+    ? record.access_steps.filter((step) => step && (step.destination || step.source_url))
+    : [];
+  const modes = [];
+  const addMode = (mode, url, basis) => {
+    if (!modes.includes(mode)) modes.push(mode);
+    evidence.push({ field: `participation_modes:${mode}`, source_url: url || sourceUrl, basis });
+  };
+  if (record.venue?.address || record.venue?.name) {
+    addMode("attend_in_person", sourceUrl, "published_venue_address");
+  }
+  const watchUrl = httpsUrl(record.observer_access?.watch_url || record.watch_url);
+  if (watchUrl) addMode("watch", watchUrl, "published_observer_watch_link");
+  const joinUrl = recognizedMeetingUrl(record.observer_access?.remote_join_url || record.remote_join_url);
+  if (joinUrl) addMode("join_remote", joinUrl, "recognized_video_conference_join_url");
+  if (!modes.length && record.activity === "observe") {
+    evidence.push({ field: "activity", source_url: sourceUrl, basis: "explicit_observation_intent" });
+  }
+  const normalizedSteps = steps.map((step) => ({
+    kind: clean(step.kind || step.type) || "observer_instructions",
+    destination: clean(step.destination || step.url || step.href) || step.source_url,
+    required: step.required !== false,
+    effort: clean(step.effort) || "open_details",
+    source_url: httpsUrl(step.source_url || step.url || step.href) || sourceUrl,
+  }));
+  normalizedSteps.forEach((step) => evidence.push({
+    field: "access_steps",
+    source_url: step.source_url,
+    basis: "official_observer_instructions",
+  }));
+  const profileRole = profile.process_profile.process_role;
+  if (profileRole) evidence.push({ field: "procedure", source_url: sourceUrl, basis: `meeting_family:${profileRole}` });
+  return freezeProjection({
+    schema: CONSEQUENCE_PROJECTION_SCHEMA,
+    proceeding_kind: modes.length ? "public_meeting" : "unknown",
+    pending_question: null,
+    body_role: "unknown",
+    participation_modes: modes,
+    activity: record.activity || "observe",
+    speaking_rights: record.speaking_rights || profile.process_profile.observer_access?.speaking || "unknown",
+    access_steps: normalizedSteps,
+    record_destination: null,
+    next_official_action: null,
+    evidence,
   });
 }
 
@@ -459,6 +514,9 @@ export function meetingConsequence(record = {}) {
   const sourceUrl = httpsUrl(record.source_url) || cityRecordUrl(record.request_id);
   const evidence = [];
 
+  if (["pdc_session_v1", "bsa_session_v1", "oath_trial_session_v1"].includes(projection.meeting_family)) {
+    return observerAccessConsequence(record);
+  }
   if (projection.meeting_family !== "community_board_meeting_v0") {
     return emptyConsequenceProjection("unresolved_meeting_family");
   }
@@ -493,6 +551,9 @@ export function meetingConsequence(record = {}) {
     pending_question: null,
     body_role: "unknown",
     participation_modes: [...new Set(modes)],
+    activity: record.activity || null,
+    speaking_rights: record.speaking_rights || "unknown",
+    access_steps: [],
     record_destination,
     next_official_action,
     evidence,
@@ -565,6 +626,8 @@ export function buildConsequenceProjection(domain, record = {}, opts = {}) {
       return landHearingConsequence(opts);
     case "meeting":
       return meetingConsequence(record);
+    case "observer":
+      return observerAccessConsequence(record);
     case "contract_comment":
       return contractCommentConsequence(record);
     default:

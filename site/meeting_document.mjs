@@ -558,6 +558,29 @@ function evidencedParticipationActionRows(record) {
       : `<li>${esc(action.verb)}</li>`));
 }
 
+function observerAccessSection(record) {
+  const projection = buildConsequenceProjection("meeting", record, {});
+  if (projection.activity !== "observe" && !projection.access_steps?.length) return "";
+  const steps = (projection.access_steps || []).map((step) => {
+    const destination = safeHref(step.destination);
+    const label = step.kind === "request_observer_instructions"
+      ? "Request observer instructions"
+      : step.kind === "observer_instructions"
+        ? "Open observer instructions"
+        : readerText(step.kind, 120);
+    const target = destination
+      ? `<a class="observer-instructions-action" data-action-kind="observer-instructions" href="${esc(destination)}" rel="noopener noreferrer">${esc(label)}</a>`
+      : esc(label);
+    return `<li>${target} <span class="meeting-access-effort">(${esc(step.effort || "open details")})</span></li>`;
+  });
+  const speaking = projection.speaking_rights && projection.speaking_rights !== "unknown"
+    ? `<p class="meeting-speaking-rights">Speaking rights: ${esc(readerEnum(projection.speaking_rights))}.</p>`
+    : "";
+  const mode = projection.activity === "observe" ? "Observation is separate from attendance and speaking." : "";
+  if (!steps.length && !speaking && !mode) return "";
+  return `<section class="node-section civic-object-section meeting-section meeting-observer-access" data-observer-access="1"><h2>How to observe</h2>${mode ? `<p>${esc(mode)}</p>` : ""}${speaking}${steps.length ? `<ul>${steps.join("")}</ul>` : ""}</section>`;
+}
+
 // PHC-02: purpose (the sourced pending question) and authority (the plain-
 // language body role, what a submission becomes, and the nearest exact next
 // official action) — placed before the participation controls so what this
@@ -735,6 +758,17 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
     !legacy && source ? `<a class="node-action civic-object-action" href="${esc(source)}" rel="noopener noreferrer">Official source</a>` : "",
     documentReport,
   ].filter(Boolean).join("");
+  const sourceLabel = record.source_system === "community_board"
+    ? "Community board meeting"
+    : record.source_system === "nyc_legistar_events"
+      ? "City Council meeting"
+      : record.source_system === "pdc_calendar"
+        ? "Public Design Commission meeting"
+        : record.source_system === "bsa_calendar"
+          ? "Board of Standards and Appeals meeting"
+          : record.source_system === "oath_trial_calendar"
+            ? "OATH trial"
+            : "City Record meeting";
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -751,7 +785,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
 <header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/" aria-label="CityScroll home">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a><a href="/guide/">Guide</a></nav></div></header>
 <main id="main" class="civic-document node-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}" data-capability-reference="meeting.get@1" tabindex="-1">
   <p class="node-back"><a href="/browse/meetings/">Browse meetings and hearings</a></p>
-  <section class="node-hero civic-object-hero meeting-hero"><p class="node-kicker civic-object-kicker">${esc(record.source_system === "community_board" ? "Community board meeting" : record.source_system === "nyc_legistar_events" ? "City Council meeting" : "City Record meeting")}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(formatMeetingWhen(record.event_date) || record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(formatMeetingWhen(record.event_end) || record.event_end)}</time></p>` : ""}</section>
+  <section class="node-hero civic-object-hero meeting-hero"><p class="node-kicker civic-object-kicker">${esc(sourceLabel)}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(formatMeetingWhen(record.event_date) || record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(formatMeetingWhen(record.event_end) || record.event_end)}</time></p>` : ""}</section>
   ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}
   ${institutionSection}
   ${locationSection}
@@ -760,6 +794,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   ${contactSection}
   ${relatedLinksSection}
   ${consequenceSection(record)}
+  ${observerAccessSection(record)}
   ${participationSection}
   ${legislativeConsequenceSection}
   ${matterContinuationSection}

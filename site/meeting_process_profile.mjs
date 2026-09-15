@@ -14,6 +14,9 @@ export const MEETING_FAMILY = Object.freeze({
   AGENCY_RULEMAKING_HEARING: "agency_rulemaking_hearing",
   COMMUNITY_BOARD_MEETING_V0: "community_board_meeting_v0",
   DESCRIPTIVE_MEETING_V0: "descriptive_meeting_v0",
+  PDC_SESSION_V1: "pdc_session_v1",
+  BSA_SESSION_V1: "bsa_session_v1",
+  OATH_TRIAL_SESSION_V1: "oath_trial_session_v1",
 });
 
 export const MEETING_EVENT_STATES = Object.freeze([
@@ -65,6 +68,27 @@ const PROFILES = Object.freeze({
     expectation_mode: "descriptive",
     process_role: null,
     normative_expectations: null,
+  }),
+  [MEETING_FAMILY.PDC_SESSION_V1]: Object.freeze({
+    schema: MEETING_PROCESS_PROFILE_SCHEMA, id: "pdc_session", version: 1,
+    meeting_family: MEETING_FAMILY.PDC_SESSION_V1, expectation_mode: "descriptive",
+    process_role: "public_design_review", observer_access: Object.freeze({
+      right: "watch", speaking: "requires_registration", steps: ["open_official_instructions"],
+    }), normative_expectations: null,
+  }),
+  [MEETING_FAMILY.BSA_SESSION_V1]: Object.freeze({
+    schema: MEETING_PROCESS_PROFILE_SCHEMA, id: "bsa_session", version: 1,
+    meeting_family: MEETING_FAMILY.BSA_SESSION_V1, expectation_mode: "descriptive",
+    process_role: "zoning_review", observer_access: Object.freeze({
+      right: "watch", speaking: "requires_registration", steps: ["open_official_instructions"],
+    }), normative_expectations: null,
+  }),
+  [MEETING_FAMILY.OATH_TRIAL_SESSION_V1]: Object.freeze({
+    schema: MEETING_PROCESS_PROFILE_SCHEMA, id: "oath_trial_session", version: 1,
+    meeting_family: MEETING_FAMILY.OATH_TRIAL_SESSION_V1, expectation_mode: "descriptive",
+    process_role: "administrative_trial", observer_access: Object.freeze({
+      right: "request_instructions", speaking: "not_allowed", steps: ["request_observer_instructions"],
+    }), normative_expectations: null,
   }),
 });
 
@@ -123,6 +147,34 @@ function eventState(record) {
   return { value: "unknown", basis: null };
 }
 
+function sessionLifecycle(record) {
+  const explicit = clean(record?.session_event_state || record?.session_status)?.toLowerCase();
+  if (MEETING_EVENT_STATES.includes(explicit)) {
+    return { value: explicit, basis: "explicit_session_status" };
+  }
+  const text = noticeText(record);
+  // Adjournments and no-quorum notes describe a phase or outcome, not a
+  // cancelled parent session. Only an explicit session-level statement may
+  // override the published date.
+  if (/\b(?:cancelled|canceled)\s+(?:the\s+)?(?:meeting|session)\b/i.test(text)) {
+    return { value: "cancelled", basis: "published_session_status_statement" };
+  }
+  if (/\bpostponed\s+(?:the\s+)?(?:meeting|session)\b/i.test(text)) {
+    return { value: "postponed", basis: "published_session_status_statement" };
+  }
+  return eventState(record);
+}
+
+function phaseStates(record) {
+  const phases = Array.isArray(record?.phases) ? record.phases : [];
+  const items = Array.isArray(record?.agenda_items) ? record.agenda_items : [];
+  return Object.freeze([...phases, ...items].map((phase) => Object.freeze({
+    id: clean(phase?.id || phase?.case_id || phase?.item_id),
+    state: clean(phase?.state || phase?.status || phase?.disposition)?.toLowerCase() || "unknown",
+    kind: clean(phase?.kind || phase?.phase || "agenda_item"),
+  })));
+}
+
 function publication(state, basis = []) {
   return Object.freeze({ state, basis: Object.freeze([...basis]) });
 }
@@ -172,6 +224,12 @@ function publicationState(record, role) {
 export function resolveMeetingFamily(record = {}) {
   const explicit = clean(typeof record === "string" ? record : record?.meeting_family);
   if (REGISTERED_FAMILIES.has(explicit)) return explicit;
+  const sourceFamily = {
+    pdc_calendar: MEETING_FAMILY.PDC_SESSION_V1,
+    bsa_calendar: MEETING_FAMILY.BSA_SESSION_V1,
+    oath_trial_calendar: MEETING_FAMILY.OATH_TRIAL_SESSION_V1,
+  }[record?.source_system];
+  if (sourceFamily) return sourceFamily;
   if (record?.source_system === "community_board") {
     return MEETING_FAMILY.COMMUNITY_BOARD_MEETING_V0;
   }
@@ -187,7 +245,8 @@ export function meetingProcessProfile(record = {}) {
 export function meetingObservedState(record = {}) {
   return Object.freeze({
     schema: MEETING_OBSERVED_STATE_SCHEMA,
-    event_state: Object.freeze(eventState(record)),
+    event_state: Object.freeze(sessionLifecycle(record)),
+    phase_states: phaseStates(record),
     publications: Object.freeze({
       agenda: publicationState(record, "agenda"),
       minutes: publicationState(record, "minutes"),
