@@ -6,6 +6,9 @@
  * owns its channels; a channel URL is not an identity.
  */
 import { createBoundedCommunityBoardTransport, COMMUNITY_BOARD_TRANSPORT_DEFAULTS } from "./community_board_source_adapters.mjs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 export const CONSULTATION_SCHEMA = "cityscroll.consultation_materialization.v1";
 export const CONSULTATION_SOURCE_SCHEMA = "cityscroll.consultation_source_observation.v1";
@@ -175,3 +178,29 @@ export async function acquireConsultationSources({ fetchImpl = globalThis.fetch,
 }
 
 validateConsultationMaterialization();
+
+export function consultationRefreshDisabled({ root = dirname(dirname(fileURLToPath(import.meta.url))), env = process.env } = {}) {
+  const value = String(env.CITYSCROLL_CONSULTATIONS_REFRESH || "").toLowerCase();
+  return ["off", "0", "false", "disabled"].includes(value) || existsSync(join(root, ".consultations-refresh.off"));
+}
+
+export async function runConsultationRefresh({ root = dirname(dirname(fileURLToPath(import.meta.url))), asOf = new Date().toISOString(), fetchImpl = globalThis.fetch, env = process.env } = {}) {
+  const output = join(root, "site/data/consultations.json");
+  const previous = existsSync(output) ? JSON.parse(readFileSync(output, "utf8")) : null;
+  if (consultationRefreshDisabled({ root, env })) {
+    return { status: "skipped", reason: "kill_switch", materialization: previous, observations: [], receipt: { schema: CONSULTATION_SOURCE_SCHEMA, observed_at: asOf, failures: 0, last_good_preserved: true, kill_switch: true } };
+  }
+  const result = await acquireConsultationSources({ fetchImpl, asOf, previous });
+  if (result.materialization) writeFileSync(output, `${JSON.stringify(result.materialization, null, 2)}\n`);
+  return { status: result.receipt.failures ? "degraded" : "succeeded", ...result };
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  runConsultationRefresh().then((result) => {
+    process.stdout.write(`${JSON.stringify({ status: result.status, failures: result.receipt.failures, last_good_preserved: result.receipt.last_good_preserved })}\n`);
+    if (result.status === "degraded" && !result.materialization) process.exitCode = 1;
+  }).catch((error) => {
+    process.stderr.write(`consultation refresh failed: ${error.message}\n`);
+    process.exitCode = 1;
+  });
+}
