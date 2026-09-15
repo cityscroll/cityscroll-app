@@ -8,8 +8,8 @@
     "sources": {
       "city_record": "available",
       "community_board": "available",
-      "pdc_calendar": "available",
-      "nyc_legistar_events": "stale"
+      "nyc_legistar_events": "stale",
+      "pdc_calendar": "available"
     }
   },
   "sources": {
@@ -1589,9 +1589,9 @@
     "total": 574,
     "city_record": 119,
     "community_board": 450,
-    "pdc_calendar": 4,
     "meeting_documents": 4461,
     "attached_meeting_documents": 93,
+    "pdc_calendar": 4,
     "nyc_legistar_events": 1,
     "collection": 574,
     "suppressed": 0,
