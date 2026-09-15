@@ -17,9 +17,13 @@ const day = (value) => { const v = clean(value, 20).slice(0, 10); return /^\d{4}
 const href = (value) => { const v = clean(value, 2000); return v.startsWith("/") && !v.startsWith("//") || /^https?:\/\/[^\s<>\"]+$/.test(v) ? v : null; };
 const esc = (value) => clean(value, 20000).replace(/[<>&"']/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;" }[c]));
 
-function status(value) {
+function status(value, { date = null, source = null } = {}) {
   const candidate = clean(value, 40).toLowerCase();
-  return REQUEST_RESPONSE_TRAIL_STATUSES.includes(candidate) ? candidate : null;
+  if (!REQUEST_RESPONSE_TRAIL_STATUSES.includes(candidate)) return null;
+  // A publisher's stage label is an observation only when the observation
+  // itself retains both its date and source.  In particular, a recognized
+  // word without evidence must not advance the resident trail.
+  return candidate === "submitted" || (date && source) ? candidate : null;
 }
 
 function sourceUrl(row, fallback) {
@@ -62,7 +66,10 @@ export function buildLocalIssueRequestResponseTrail(request, options = {}) {
     text: clean(version.response || version.response_text || version.answer, 20000) || null,
     changed: version.changed === true,
     wrapper_only: version.wrapper_only === true,
-    status: status(version.status || version.stage),
+    status: status(version.status || version.stage, {
+      date: day(version.publication_date || version.response_date || version.date),
+      source: sourceUrl(version, request.source_url || request.source?.url),
+    }),
     source_url: sourceUrl(version, request.source_url || request.source?.url),
   }));
   const projects = (Array.isArray(request.project_links) ? request.project_links
@@ -82,7 +89,10 @@ export function buildLocalIssueRequestResponseTrail(request, options = {}) {
       Object.freeze({
         kind: "request", sequence: 0, date: day(request.request_date || request.submitted_date),
         text: clean(request.title || request.request || request.request_text || request.wording, 20000) || null,
-        status: status(request.status || request.stage) || "submitted",
+        status: status(request.status || request.stage, {
+          date: day(request.status_date || request.stage_date || request.request_date || request.submitted_date),
+          source: sourceUrl(request, null),
+        }) || "submitted",
         source_url: sourceUrl(request, null),
       }),
       ...responseEvents,
