@@ -1,0 +1,42 @@
+{
+  "schema": "cityscroll.procurement_detail_parity_fixture_readback.v1",
+  "fixture": "test/fixtures/procurement-detail-parity/ct107120258801626.json",
+  "clock": "fixture vintage from capture-manifest.json",
+  "capture_mode": "headless Chromium with repository CSS; image files omitted",
+  "assertions": {
+    "A5": "Rendering the canonical object with core observations but optional lookup enrichment absent keeps the canonical heading, identifiers, and contract facts while emitting no lookup apology.",
+    "A6": "The canonical procurement id, observation references, accepted identity edge, exact-search result order, and contract/vendor follow URLs equal the retained fixture baseline.",
+    "A7": "The retained route markup exposes every visible destination as a native keyboard link with no negative tabindex; headless viewport probes record no horizontal overflow at desktop or 390 px.",
+    "A8": "This artifact records the exact focused verification command and its passing result for the fixture read-back test."
+  },
+  "baseline": {
+    "procurement_id": "procurement:contract:CT107120258801626",
+    "canonical_id": "procurement:contract:CT107120258801626",
+    "source_observation_refs": [
+      "city_record:20240829105",
+      "passport_public_contracts:contract:07124E0044001:5050251"
+    ],
+    "accepted_identity_edges": [
+      {
+        "status": "accepted",
+        "source_observation_ref": "passport_public_contracts:contract:07124E0044001:5050251",
+        "basis": "exact_contract_id",
+        "matched_value": "CT107120258801626"
+      }
+    ],
+    "search_rank": ["procurement:contract:CT107120258801626"],
+    "watch_urls": {
+      "contract": "/following?lens=money&filter=%7B%22procurement_id%22%3A%22procurement%3Acontract%3ACT107120258801626%22%2C%22noticeType%22%3A%22award%22%7D&freq=daily",
+      "vendor": "/following?lens=entity&filter=%7B%22kind%22%3A%22vendor%22%2C%22name%22%3A%22BHRAGS+HOME+CARE+CORP%22%7D&freq=daily"
+    }
+  },
+  "layout": {
+    "desktop": {"viewport": [1440, 900], "scroll_width": 1440, "overflow": false},
+    "mobile": {"viewport": [390, 844], "scroll_width": 390, "overflow": false},
+    "keyboard": {"visible_native_links": 19, "reachable_links": 19, "negative_tabindex": 0}
+  },
+  "verification": {
+    "command": "node --test test/procurement_detail_readback.test.mjs",
+    "status": "passed"
+  }
+}
