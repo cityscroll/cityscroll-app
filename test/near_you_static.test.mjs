@@ -74,6 +74,11 @@ function fixtureActivity() {
           date: "2026-08-12T18:00:00.000",
           basis: "Affected area",
           confidence: "strong",
+          place: { geographies: [{
+            key: "geography:borough:4", type: "borough", label: "Queens", visibility: "public",
+            location_role: "affected_area", basis: "Affected area", confidence: "strong",
+            method: "matter_title_place", source_id: "fixture", boundary_vintage: "2026-05-26",
+          }] },
           route: "/#notice/m-queens",
           why_here_candidates: [{
             schema: "cityscroll.near_you_explanation_path.v1",
@@ -331,6 +336,8 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.match(deferred, /data-pivot-schema="cityscroll\.edge_summary\.v1"[^>]+data-pivot-target-kind="notice"/);
   assert.match(deferred, /Queens curb redesign hearing/);
   assert.match(deferred, /Affected area/);
+  const residentText = deferred.replace(/<details\b[\s\S]*?<\/details>/gi, "").replace(/<[^>]+>/g, " ");
+  assert.doesNotMatch(residentText, /strong basis|location evidence|community_board_ontology|placement_method/i);
   assert.equal((deferred.match(/data-why-here-path="1"/g) || []).length, 1);
   assert.match(deferred, /Why this is here/);
   assert.match(deferred, /Affected area: Queens/);

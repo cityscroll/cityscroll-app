@@ -113,6 +113,7 @@ select {
 
 .near-hero,
 .near-place-guide,
+.near-overview,
 .near-form,
 .near-map-section,
 .near-results,
@@ -2291,6 +2292,7 @@ select {
 .near-map-section,
 .near-results,
 .near-bags,
+.near-overview,
 .following-packs,
 .following-suggestions {
   padding-block: var(--space-7);
@@ -3495,16 +3497,48 @@ select {
   flex-direction: column;
 }
 [data-near-you-root] > .near-hero { order: 1; }
-[data-near-you-root] > .near-surface-switch { order: 2; }
+[data-near-you-root] > .near-place-guide { order: 2; }
+[data-near-you-root] > .near-surface-switch { order: 3; }
+[data-near-you-root] > .near-overview { order: 4; }
+[data-near-you-root] > .near-advanced { order: 5; }
 [data-near-you-root] > .near-results,
-[data-near-you-root] > .near-results-shell { order: 3; }
-[data-near-you-root] > .near-map-section { order: 4; }
+[data-near-you-root] > .near-results-shell { order: 6; }
+[data-near-you-root] > .near-map-section { order: 7; }
 [data-near-you-root] > .near-bags,
-[data-near-you-root] > .near-bags-shell { order: 5; }
-[data-near-you-root] > .near-place-guide { order: 6; }
-[data-near-you-root] > .near-advanced { order: 7; }
+[data-near-you-root] > .near-bags-shell { order: 8; }
 [data-near-you-root] > .near-explore,
-[data-near-you-root] > .local-constellation { order: 8; }
+[data-near-you-root] > .local-constellation { order: 9; }
+
+.near-overview {
+  padding-block: var(--space-7);
+  border-block: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.near-overview-section {
+  min-width: 0;
+  margin-block-start: var(--space-6);
+  padding-block-start: var(--space-5);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.near-overview h2 {
+  margin: 0 0 var(--space-3);
+  font-size: clamp(1.6rem, 4vw, 2.35rem);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.near-overview-note {
+  max-width: var(--measure);
+  margin: 0;
+  color: var(--color-text-soft);
+}
+
+.near-results-more {
+  margin-block: var(--space-5) 0;
+  font: 650 .95rem/1.4 var(--font-interface);
+}
 .near-surface-switch {
   display: flex;
   gap: var(--space-2);
