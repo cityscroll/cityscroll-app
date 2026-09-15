@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ru" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Как связаны записи · CityScroll</title><meta name="description" content="Связь двух записей на CityScroll — утверждение с указанным основанием. Здесь объясняется, что оно говорит, как проверить его и где его границы.">
+<title>Английский источник: How records are connected · CityScroll</title><meta name="description" content="Английский источник: A connection between two records on CityScroll is a claim with a stated basis. Here is what it asserts, how to check it, and where it stops.">
 <link rel="canonical" href="https://cityscroll.org/guide/ru/understand/how-records-are-connected/"><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -13,43 +13,43 @@
     <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
     <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
   </svg><span><bdi lang="en" dir="ltr">CityScroll</bdi></span></a>
-    <nav class="document-nav" aria-label="Основная"><a href="/now/?lang=ru">Сейчас</a><a href="/near-you/?lang=ru">Рядом с вами</a><a href="/following/?lang=ru">Оповещения</a><a href="/browse/?lang=ru">Обзор</a><a aria-current="page" href="/guide/ru/">Руководство</a></nav>
+    <nav class="document-nav" aria-label="Английский источник: Primary"><a href="/now/?lang=ru">Сейчас</a><a href="/near-you/?lang=ru">Рядом с вами</a><a href="/following/?lang=ru">Оповещения</a><a href="/browse/?lang=ru">Английский источник: Browse</a><a aria-current="page" href="/guide/ru/">Руководство</a></nav>
   </div></header>
 <nav class="guide-languages" aria-label="Язык"><a href="/guide/understand/how-records-are-connected/?lang=en" lang="en" hreflang="en" dir="ltr" data-guide-language="en">English</a><a href="/guide/es/understand/how-records-are-connected/" lang="es" hreflang="es" dir="ltr" data-guide-language="es">Español</a><a href="/guide/zh-Hans/understand/how-records-are-connected/" lang="zh-Hans" hreflang="zh-Hans" dir="ltr" data-guide-language="zh-Hans">中文（简体）</a><a href="/guide/ru/understand/how-records-are-connected/" lang="ru" hreflang="ru" dir="ltr" data-guide-language="ru" aria-current="true">Русский</a><a href="/guide/bn/understand/how-records-are-connected/" lang="bn" hreflang="bn" dir="ltr" data-guide-language="bn">বাংলা</a><a href="/guide/ht/understand/how-records-are-connected/" lang="ht" hreflang="ht" dir="ltr" data-guide-language="ht">Kreyòl ayisyen</a><a href="/guide/ko/understand/how-records-are-connected/" lang="ko" hreflang="ko" dir="ltr" data-guide-language="ko">한국어</a><a href="/guide/fr/understand/how-records-are-connected/" lang="fr" hreflang="fr" dir="ltr" data-guide-language="fr">Français</a><a href="/guide/pl/understand/how-records-are-connected/" lang="pl" hreflang="pl" dir="ltr" data-guide-language="pl">Polski</a><a href="/guide/ar/understand/how-records-are-connected/" lang="ar" hreflang="ar" dir="rtl" data-guide-language="ar">العربية</a><a href="/guide/ur/understand/how-records-are-connected/" lang="ur" hreflang="ur" dir="rtl" data-guide-language="ur">اردو</a></nav>
 <main class="node-document guide-document guide-article" id="main">
-  <p class="node-back"><a href="/guide/ru/">Вернуться к руководству</a></p>
+  <p class="node-back"><a href="/guide/ru/">Английский источник: <bdi lang="en" dir="ltr">Back</bdi> to the guide</a></p>
 <p class="guide-notice" data-guide-translation-state="machine-drafted">Этот перевод создан автоматически и ещё не прошёл проверку носителем языка.</p>
   <header class="node-hero guide-hero">
-    <p class="node-kicker">Понимание · Объяснение</p>
-    <h1>Как связаны записи</h1>
-    <p class="node-lede">Что <bdi lang="en" dir="ltr">CityScroll</bdi> подразумевает, связывая записи, как проверить утверждение и почему очевидные отношения могут остаться несвязанными.</p>
-    <p class="node-meta guide-reviewed">Последняя проверка 2026-09-06</p>
+    <p class="node-kicker">Английский источник: Understand · Английский источник: Explanation</p>
+    <h1>Английский источник: How records are connected</h1>
+    <p class="node-lede">Английский источник: What <bdi lang="en" dir="ltr">CityScroll</bdi> means when it links two records, how to inspect that claim, and why some obvious relationships stay unlinked.</p>
+    <p class="node-meta guide-reviewed">Английский источник: Last reviewed 2026-09-06</p>
   </header>
   <div class="guide-body">
-<h2>Что утверждает связь</h2>
-<p><bdi lang="en" dir="ltr">CityScroll</bdi> соединяет записи, которые город публикует отдельно: уведомление с выпустившим его ведомством, ведомство с поставщиком, которому присудило работу, правило с обязанностью-основанием. Каждая связь — утверждение, и у каждого есть доступное для чтения основание.</p>
-<p>Утверждение всегда узкое. Оно говорит, что две опубликованные записи относятся к одному предмету, и объясняет идентификацию. Оно никогда не говорит, что одна запись вызвала другую или кто-либо поступил неправильно.</p>
-<h2>Как проведена идентификация</h2>
-<p>Откройте <strong>Как установлена эта связь</strong> на связанной записи и получите основание, а не балл. Метки различают три вида доказательств.</p>
-<div class="guide-table" role="region" tabindex="0" aria-label="Как проведена идентификация"><table><thead><tr><th scope="col">Основание</th><th scope="col">Что означает</th><th scope="col">Насколько оно весомо</th></tr></thead><tbody><tr><td>Сопоставлено по опубликованной записи</td><td>Обе записи содержат один идентификатор издателя: закупки, код ведомства, номер проекта</td><td>Сильнейший вид. Связывание выполнено по собственному ключу города</td></tr><tr><td>Сопоставление связанных записей</td><td>Записи сопоставлены по содержимому, например названию организации, а не общему идентификатору</td><td>Слабее. Названия пишут непоследовательно, и разные организации могут называться одинаково</td></tr><tr><td>Подтверждено человеком</td><td>Кто-то проверил и принял пару</td><td>Надёжность зависит от проверки, поэтому основание обозначено, а не скрыто</td></tr></tbody></table></div>
-<p>Та же панель называет само отношение, например «<bdi lang="en" dir="ltr">issued rule</bdi>», и даёт официальный источник записей. Если связь важна, откройте именно эту ссылку.</p>
-<h2>У связи есть адрес</h2>
-<p>Открытая связь остаётся в адресе страницы. Скопировав его, можно отправить запись с уже открытым просмотром конкретного утверждения вместо объяснения, куда нажать. Это та же привычка, что сохранение адреса поиска: ссылка переносит состояние.</p>
-<h2>Почему очевидная связь может отсутствовать</h2>
-<p>Отношение, очевидно существующее в мире, может отсутствовать здесь; ни одна из следующих причин не означает, что оно нереально.</p>
-<ul><li><strong>Общий идентификатор не опубликован.</strong> Две записи могут описывать один контракт, не имея общего ключа. Тогда нет точного основания для связывания.</li><li><strong>Название написано иначе.</strong> Поставщик с одним написанием в уведомлении и другим в платёжной записи может не определиться как одна организация.</li><li><strong>Город не опубликовал соединяющую запись.</strong> Некоторые ссылки существуют лишь во внутренних системах ведомства или выпускаются в несопоставимой форме.</li><li><strong>Совпадение недостаточно надёжно для показа.</strong> Неклассифицированная связь исключается со страницы, а не показывается с оговорками. Отсутствие связи не отрицает существование отношения.</li></ul>
-<h2>Чем связь не является</h2>
-<p>Связь — не заключение. Соединение записей не доказывает неправомерное движение денег, проступок должностного лица или решение из-за другой записи. Названный получатель контракта не означает готовность поставщика сейчас принимать субподрядчиков; частое появление рядом с ведомством — счётчик, а не вывод.</p>
+<h2>Английский источник: What a connection claims</h2>
+<p>Английский источник: <bdi lang="en" dir="ltr">CityScroll</bdi> connects records the city publishes separately — a notice to the agency that issued it, an agency to a vendor it awarded work to, a rule to the duty behind it. Every one of those connections is a claim, and every claim has a basis you can read.</p>
+<p>Английский источник: The claim is always narrow. It says these two published records refer to the same thing, and here is what made that identification. It never says one record caused the other, and it never says anyone did anything wrong.</p>
+<h2>Английский источник: How the identification was made</h2>
+<p>Английский источник: Open <strong>Как установлена эта связь</strong> on a connected record and you get the basis rather than a score. The labels distinguish three kinds of evidence.</p>
+<div class="guide-table" role="region" tabindex="0" aria-label="Английский источник: How the identification was made"><table><thead><tr><th scope="col">Английский источник: Basis</th><th scope="col">Английский источник: What it means</th><th scope="col">Английский источник: How much weight it carries</th></tr></thead><tbody><tr><td>Сопоставлено по опубликованной записи</td><td>Английский источник: The two records carry the same identifier the publisher issued — a procurement identifier, an agency code, a project number</td><td>Английский источник: The strongest kind. The city&#39;s own key did the joining</td></tr><tr><td>Сопоставление связанных записей</td><td>Английский источник: The records were matched on their content, such as an organization&#39;s name, rather than on a shared identifier</td><td>Английский источник: Weaker. Names are written inconsistently, and different organizations share names</td></tr><tr><td>Подтверждено человеком</td><td>Английский источник: Someone reviewed the pair and accepted it</td><td>Английский источник: As good as the review, which is why it is labelled rather than hidden</td></tr></tbody></table></div>
+<p>Английский источник: The same panel names the relation itself — &quot;<bdi lang="en" dir="ltr">issued rule</bdi>&quot;, for instance — and links the official source the records came from. If a connection matters to you, that link is the thing to open.</p>
+<h2>Английский источник: The connection has an address</h2>
+<p>Английский источник: A connection you have opened stays in the address of the page. Copy the address and you can send someone the record with that specific claim already inspected, rather than telling them where to click. It is the same habit as keeping the address of a search: the link carries the state.</p>
+<h2>Английский источник: Why an obvious relationship can be missing</h2>
+<p>Английский источник: A connection that plainly exists in the world can still be absent here, and none of these reasons means the relationship is not real.</p>
+<ul><li>Английский источник: <strong>No shared identifier was published.</strong> Two records can describe the same contract without either one carrying a key the other has. There is then nothing exact to join on.</li><li>Английский источник: <strong>The name is written differently.</strong> A vendor filed as one spelling on a notice and another on a payment record may not resolve to one organization.</li><li>Английский источник: <strong>The city has not published the joining record.</strong> Some links exist only inside an agency&#39;s own systems, or are released in a form that cannot be joined.</li><li>Английский источник: <strong>The match was not good enough to show.</strong> A connection that could not be classified is left off the page rather than shown wrapped in hedges. An absent connection is not a denial that the relationship exists.</li></ul>
+<h2>Английский источник: What a connection is not</h2>
+<p>Английский источник: A connection is not a finding. Two records being linked is not evidence that money moved improperly, that an official acted wrongly, or that a decision was made because of the other record. A named awardee on a contract does not mean that vendor is currently open to subcontractors, and a vendor appearing beside an agency repeatedly is a count, not a conclusion.</p>
   </div>
   <section class="node-section guide-related" aria-labelledby="guide-related">
-    <h2 id="guide-related">Связанные страницы</h2>
-    <ul><li><a href="/guide/ru/understand/what-a-public-record-tells-you/">Что сообщает общедоступная запись</a></li><li><a href="/guide/ru/understand/dates-and-missing-information/">Что означают даты и пустые поля</a></li><li><a href="/guide/ru/reference/sources-and-coverage/">Откуда берутся записи</a></li></ul>
+    <h2 id="guide-related">Английский источник: Related pages</h2>
+    <ul><li><a href="/guide/ru/understand/what-a-public-record-tells-you/">Английский источник: What a public record tells you</a></li><li><a href="/guide/ru/understand/dates-and-missing-information/">Английский источник: What dates and blanks mean</a></li><li><a href="/guide/ru/reference/sources-and-coverage/">Английский источник: Where the records come from</a></li></ul>
   </section>
   <section class="node-section guide-sources" aria-labelledby="guide-sources">
-    <h2 id="guide-sources">Источники статьи</h2>
-    <ul><li><a href="https://a856-cityrecord.nyc.gov/"><bdi lang="en" dir="ltr">The City Record</bdi> Online, публикация City of New York</a></li></ul>
+    <h2 id="guide-sources">Английский источник: Sources used in this article</h2>
+    <ul><li><a href="https://a856-cityrecord.nyc.gov/">Английский источник: <bdi lang="en" dir="ltr">The City Record</bdi> Online, published by the City of New York</a></li></ul>
   </section>
-  <p class="guide-return"><a href="/browse/?lang=ru">Обзор общедоступных записей по видам</a></p>
+  <p class="guide-return"><a href="/browse/?lang=ru">Английский источник: Browse public records by type</a></p>
 </main>
-<footer class="node-footer guide-footer"><bdi lang="en" dir="ltr">CityScroll</bdi> — неофициальное пособие для чтения. Проверяйте каждую запись в официальном источнике. <a href="/guide/ru/">Руководство</a>. <a href="/about.html?lang=ru">О данных</a>.</footer>
+<footer class="node-footer guide-footer">Английский источник: <bdi lang="en" dir="ltr">CityScroll</bdi> is an unofficial reading aid. Check each record at its official source. <a href="/guide/ru/">Руководство</a>. <a href="/about.html?lang=ru">Английский источник: About the data</a>.</footer>
 </body></html>

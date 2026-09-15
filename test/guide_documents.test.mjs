@@ -179,13 +179,14 @@ test("the everyday-task how-tos are published and addressed as how-to guides", (
 
 // The budget-request article was already present in addition to this review's
 // eleven procedures. Preserve it without expanding the editorial scope.
+const newGovernmentGuides = new Set(["H10", "H11"]);
 const compactProcedures = articles.filter((article) =>
-  ["tutorial", "how-to"].includes(article.type) && article.id !== "H9");
+  ["tutorial", "how-to"].includes(article.type) && article.id !== "H9" && !newGovernmentGuides.has(article.id));
 const baseline = JSON.parse(readFileSync(new URL(
   "../docs/evidence/public-user-guide/compact-article-baseline.json", import.meta.url), "utf8"));
 
 test("the revision preserves every existing article route and category", () => {
-  assert.deepEqual(articles.map(({url, type}) => ({url, type})),
+  assert.deepEqual(articles.filter((article) => !newGovernmentGuides.has(article.id)).map(({url, type}) => ({url, type})),
     baseline.articles.map(({url, type}) => ({url, type})));
   assert.equal(compactProcedures.length, 11);
 });
