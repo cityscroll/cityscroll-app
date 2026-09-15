@@ -25,6 +25,7 @@ test("confirmation exposes exact children, place, literal query, cadence, and pr
   assert.match(html, /Community Board meetings/);
   assert.match(html, /3 preview matches/);
   assert.match(html, /“Shelter safety”/);
+  assert.match(html, /· weekly ·[\s\S]*· weekly ·/, "confirmation renders frequency for every child");
 });
 
 test("unsupported source families are omitted and never widened into watches", () => {
