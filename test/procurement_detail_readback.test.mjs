@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { withPinnedClock } from "./helpers/test_clock.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 import { renderProcurementDocument, procurementContractWatchHref, procurementVendorFollowHref } from "../site/procurement_document.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { resolveKeywordQuery, searchKeywordDocuments } from "../site/keyword_matcher.mjs";
@@ -70,7 +70,7 @@ test("A7: the retained accessibility receipt proves both viewport scans ran", as
       assert.ok(Array.isArray(scan.serious_or_critical));
       assert.deepEqual(scan.serious_or_critical, scan.violations.filter((violation) => ["serious", "critical"].includes(violation.impact)));
       assert.match(scan.markup_sha256, /^[a-f0-9]{64}$/);
-      assert.equal(scan.scanned_at, new Date().toISOString());
+      assert.equal(scan.scanned_at, testClockISOString());
     }
   });
 });
