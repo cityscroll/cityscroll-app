@@ -9,6 +9,7 @@ import {
   describeCrolAwardPublication,
 } from "../site/crol_notice_publication_policy.mjs";
 import { attachPassportPublicFields } from "../site/passport_public_fields.mjs";
+import { passportActionFields } from "../worker/src/lib/passport_parse.mjs";
 import { buildProcurementDigestSnapshot } from "../site/procurement_digest_compile.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
@@ -172,7 +173,11 @@ function checkbookNychaRecord(row, generatedAt) {
 
 function passportRecord(row, generatedAt) {
   const epin = norm(row.epin_norm || row.epin);
-  const snapshot = attachPassportPublicFields({ ...row, epin_norm: epin }, row);
+  const snapshot = attachPassportPublicFields({
+    ...row,
+    epin_norm: epin,
+    ...passportActionFields({ ...row, epin_norm: epin }),
+  }, row);
   return record(
     "passport_public_contracts",
     `contract:${epin}:${String(row.ctr_id || epin).trim()}`,
