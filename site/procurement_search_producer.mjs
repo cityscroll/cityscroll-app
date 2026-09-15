@@ -192,7 +192,12 @@ function browseRecord(object, observations, stages, evidence, facts, processStat
       ? { solicitation_id: object.identity_keys.solicitation_ids[0] } : {}),
     ...(object.identity_keys?.event_ids?.[0]
       ? { event_id: object.identity_keys.event_ids[0] } : {}),
-    contract_amount: facts.amount,
+    contract_amount: facts.baseAmount ?? facts.amount,
+    original_contract_amount: facts.originalAmount,
+    current_contract_amount: facts.currentAmount,
+    action_amount: facts.actionAmount,
+    paid_amount: facts.paidAmount,
+    encumbered_amount: facts.encumberedAmount,
     vendor_name: facts.vendor,
     official_url: first(snapshots, ["official_url", "official_source_url", "source_url"], 600),
     selection_method_description: facts.method,

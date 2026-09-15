@@ -58,7 +58,7 @@ function sourceSystem(entry) {
   return text(entry?.source_system, 100)?.toLowerCase() || null;
 }
 
-function candidate(kind, value, entry, sourceField, normalize = (v) => text(v)) {
+function candidate(kind, value, entry, sourceField, normalize = (v) => text(v), metadata = {}) {
   const normalized = normalize(value);
   if (normalized == null || normalized === "") return null;
   return {
@@ -67,6 +67,7 @@ function candidate(kind, value, entry, sourceField, normalize = (v) => text(v)) 
     source_system: sourceSystem(entry),
     source_observation_ref: sourceRef(entry),
     source_field: sourceField,
+    ...metadata,
   };
 }
 
@@ -121,8 +122,8 @@ export function projectProcurementFacts(object = {}, observations = []) {
     const cityRecord = ["city_record", "city_record_procurement", "crol"].includes(system);
     const vendorEligible = !(system === "passport_public_rfx"
       && String(row.rfx_status || "").trim().toLowerCase() === "selections made");
-    const add = (kind, value, field, normalize = (v) => text(v)) => addCandidate(
-      groups, candidate(kind, value, observation, field, normalize),
+    const add = (kind, value, field, normalize = (v) => text(v), metadata = {}) => addCandidate(
+      groups, candidate(kind, value, observation, field, normalize, metadata),
     );
     add("title", row.purpose || row.short_title || row.title || row.description,
       row.purpose ? "purpose" : row.short_title ? "short_title" : row.title ? "title" : "description", (v) => text(v, 500));
@@ -132,12 +133,21 @@ export function projectProcurementFacts(object = {}, observations = []) {
       (v) => text(v, 240));
     add("contract_number", row.contract_number || row.transaction_number,
       row.contract_number ? "contract_number" : "transaction_number", (v) => text(v, 240));
-    add("amount", row.contract_amount ?? row.award_amount ?? row.current_amount ?? row.current ?? row.amount ?? row.check_amount,
-      row.contract_amount != null ? "contract_amount" : row.award_amount != null ? "award_amount" : "current_amount",
-      (v) => { const n = Number(String(v).replace(/[$,]/g, "")); return Number.isFinite(n) ? n : null; });
+    const amount = (v) => { const n = Number(String(v).replace(/[$,]/g, "")); return Number.isFinite(n) ? n : null; };
+    const actionRole = row.action_role === "action" ? "action" : "base";
+    const amountMetadata = { action_key: row.action_key || row.epin || row.ctr_id || null, action_family_key: row.action_family_key || row.contract_id || row.epin || null, action_role: actionRole };
+    if (row.contract_amount != null) add("original_amount", row.contract_amount, "contract_amount", amount, amountMetadata);
+    else if (row.award_amount != null) add("original_amount", row.award_amount, "award_amount", amount, amountMetadata);
+    if (row.current_amount != null) add(actionRole === "action" ? "action_amount" : "current_amount", row.current_amount, "current_amount", amount, amountMetadata);
+    else if (row.current != null) add("current_amount", row.current, "current", amount, amountMetadata);
+    else if (row.amount != null) add(actionRole === "action" ? "action_amount" : "current_amount", row.amount, "amount", amount, amountMetadata);
+    else if (row.check_amount != null) add("paid_amount", row.check_amount, "check_amount", amount, amountMetadata);
+    if (row.encumbered_amount != null) add("encumbered_amount", row.encumbered_amount, "encumbered_amount", amount, amountMetadata);
+    if (row.paid_amount != null) add("paid_amount", row.paid_amount, "paid_amount", amount, amountMetadata);
+    if (row.spent != null) add("paid_amount", row.spent, "spent", amount, amountMetadata);
     add("method", row.award_method || row.selection_method_description || row.procurement_method,
       row.award_method ? "award_method" : row.selection_method_description ? "selection_method_description" : "procurement_method", (v) => text(v, 240));
-    add("award_date", row.award_date, "award_date", (v) => text(v, 40));
+    add("award_date", row.award_date, "award_date", (v) => text(v, 40), { date_basis: "award_decision" });
     add("program", row.program, "program", (v) => text(v, 240));
     add("industry", row.industry, "industry", (v) => text(v, 120));
     if (contractOwned) {
@@ -146,10 +156,10 @@ export function projectProcurementFacts(object = {}, observations = []) {
     }
     if (contractOwned) {
       add("contract_start", row.start_date || row.start || row.contract_start_date || row.begin_date,
-        row.start_date ? "start_date" : row.start ? "start" : row.contract_start_date ? "contract_start_date" : "begin_date", normalizeProcurementDate);
+        row.start_date ? "start_date" : row.start ? "start" : row.contract_start_date ? "contract_start_date" : "begin_date", normalizeProcurementDate, { date_basis: "contract" });
       add("contract_end", row.end_date || row.end || row.contract_end_date,
         row.end_date ? "end_date" : row.end ? "end" : "contract_end_date", normalizeProcurementDate);
-      add("registration_date", row.registration_date, "registration_date", normalizeProcurementDate);
+      add("registration_date", row.registration_date, "registration_date", normalizeProcurementDate, { date_basis: "registration" });
     }
     if (!contractOwned) {
       add("legacy_start_date", row.start_date || row.award_date || row.start || row.registered
@@ -164,10 +174,7 @@ export function projectProcurementFacts(object = {}, observations = []) {
     }
     if (cityRecord) {
       const noticeDate = normalizeProcurementDate(row.start_date);
-      add("notice_publication_date", noticeDate, "start_date", (v) => v);
-      if (/award/i.test(text(row.type_of_notice_description || row.type_of_notice, 120) || "")) {
-        add("award_date", noticeDate, "start_date", (v) => v);
-      }
+      add("notice_publication_date", noticeDate, "start_date", (v) => v, { date_basis: "publication" });
     }
   }
 
@@ -190,7 +197,11 @@ export function projectProcurementFacts(object = {}, observations = []) {
     entries: Object.freeze(entries),
     facts: Object.freeze({
       title: fact("title") || fact("program") || `Contract ${fact("canonical_contract_id") || fact("pin_epin") || object?.procurement_id || "record"}`,
-      agency: fact("agency"), vendor: fact("vendor"), amount: fact("amount"), method: fact("method"),
+      agency: fact("agency"), vendor: fact("vendor"),
+      amount: fact("action_amount") ?? fact("current_amount") ?? fact("original_amount") ?? fact("paid_amount"),
+      originalAmount: fact("original_amount"), currentAmount: fact("current_amount"), actionAmount: fact("action_amount"),
+      paidAmount: fact("paid_amount"), encumberedAmount: fact("encumbered_amount"),
+      baseAmount: fact("current_amount") ?? fact("original_amount"), method: fact("method"),
       program: fact("program"), industry: fact("industry"),
       contractType: fact("contract_type"), documentCode: fact("document_code"),
       startDate: fact("contract_start") || fact("legacy_start_date"),

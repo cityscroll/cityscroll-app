@@ -216,6 +216,7 @@ function baseEvent({ procurementId, observation, state, publisherState, stateBas
     state,
     publisher_state: publisherState,
     state_basis: stateBasis,
+    ...(extraMetadata.date_basis ? { date_basis: extraMetadata.date_basis } : {}),
     effective_at: effectiveAtValue,
     source_system: system,
     source_observation_ref: sourceObservationRef,
@@ -269,6 +270,7 @@ export function cityRecordProcessEvent({ procurementId, observation } = {}) {
     kind: mapped.state,
     extraMetadata: {
       publisher_field: "type_of_notice_description",
+      date_basis: "publication",
       ...(row.request_id ? { publisher_identifier: text(row.request_id) } : {}),
     },
   });
@@ -292,6 +294,7 @@ export function contractProcessEvent({ procurementId, observation } = {}) {
     kind: mapped.state,
     extraMetadata: {
       publisher_field: mapped.publisher_field,
+      date_basis: mapped.state === "registered" ? "registration" : "status",
       ...(text(row.contract_id || row.ctr_id || row.id) ? {
         publisher_identifier: text(row.contract_id || row.ctr_id || row.id),
       } : {}),

@@ -89,7 +89,18 @@ function factsFor(object, observations) {
   const officialUrl = observed.map((entry) => entry?.snapshot || {})
     .map((row) => clean(row.official_url || row.official_source_url || row.source_url))
     .find(Boolean) || null;
-  return { ...projected, amount: formatAmount(projected.amount), officialUrl, entries: projection.entries };
+  return {
+    ...projected,
+    amount: formatAmount(projected.amount),
+    originalAmount: formatAmount(projected.originalAmount),
+    currentAmount: formatAmount(projected.currentAmount),
+    actionAmount: formatAmount(projected.actionAmount),
+    paidAmount: formatAmount(projected.paidAmount),
+    encumberedAmount: formatAmount(projected.encumberedAmount),
+    baseAmount: formatAmount(projected.baseAmount),
+    officialUrl,
+    entries: projection.entries,
+  };
 }
 
 /** Return an exact internal search continuation for a retained identifier. */
@@ -572,7 +583,10 @@ export function renderProcurementDocument(object = {}, observations = [], {
   });
   const siteLifecycleContextHtml = renderSiteLifecycleContext(siteLifecycleContext);
   const factRows = [
-    ["Agency", facts.agency, "agency"], ["Vendor", facts.vendor, "vendor"], ["Amount", facts.amount], ["Award date", facts.awardDate],
+    ["Agency", facts.agency, "agency"], ["Vendor", facts.vendor, "vendor"], ["Amount", facts.amount],
+    ["Original contract amount", facts.originalAmount], ["Current contract total", facts.currentAmount],
+    ["Action amount", facts.actionAmount], ["Paid amount", facts.paidAmount], ["Encumbered amount", facts.encumberedAmount],
+    ["Award date", facts.awardDate], ["Award-notice publication", facts.noticePublicationDate],
     ["PASSPort contract number", facts.contractNumber], ["Method", facts.method], ["Contract type", facts.contractType],
     ["Program", facts.program], ["Industry", facts.industry],
     ["Contract start", facts.start_date || facts.startDate], ["Contract end", facts.end_date || facts.endDate],
