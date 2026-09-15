@@ -151,12 +151,14 @@ export function primaryDocumentOutputs(options = {}) {
   const upcomingCouncilMeetings = json("/data/upcoming_council_meetings.json");
   const bsaCalendar = json("/data/bsa_calendar.json");
   const pdcCalendar = json("/data/pdc_calendar.json");
+  const oathTrialCalendar = json("/data/oath_trial_calendar.json");
   const sharedMeetings = buildSharedMeetingReadModel({
     cityRecordRows,
     communityBoardIndex: communityBoardMeetings,
     nycLegistarEventsIndex: upcomingCouncilMeetings,
     bsaCalendarIndex: bsaCalendar,
     pdcCalendarIndex: pdcCalendar,
+    oathTrialCalendarIndex: oathTrialCalendar,
     meetingOutcomes: outcomes,
     generatedAt: materialization.generated_at,
     now: communityBoardMeetings.generated_at || materialization.generated_at,
@@ -299,11 +301,13 @@ function buildSharedMeetingArtifacts() {
   const communityBoardMeetings = json("/data/community_board_meeting_index.json");
   const upcomingCouncilMeetings = json("/data/upcoming_council_meetings.json");
   const pdcCalendar = json("/data/pdc_calendar.json");
+  const oathTrialCalendar = json("/data/oath_trial_calendar.json");
   const sharedMeetings = buildSharedMeetingReadModel({
     cityRecordRows,
     communityBoardIndex: communityBoardMeetings,
     nycLegistarEventsIndex: upcomingCouncilMeetings,
     pdcCalendarIndex: pdcCalendar,
+    oathTrialCalendarIndex: oathTrialCalendar,
     meetingOutcomes: outcomes,
     generatedAt: materialization.generated_at,
     now: communityBoardMeetings.generated_at || materialization.generated_at,

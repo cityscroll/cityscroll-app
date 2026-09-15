@@ -15,6 +15,7 @@ import {
   normalizeNycLegistarEventsMeeting,
   normalizeBsaCalendarMeeting,
   normalizePdcCalendarMeeting,
+  normalizeOathTrialCalendarMeeting,
 } from "./meeting_object_contract.mjs";
 import {
   attachMeetingDocuments,
@@ -125,6 +126,7 @@ function normalizeProducer(row, source) {
   if (source === "nyc_legistar_events") return normalizeNycLegistarEventsMeeting(row);
   if (source === "bsa_calendar") return normalizeBsaCalendarMeeting(row);
   if (source === "pdc_calendar") return normalizePdcCalendarMeeting(row);
+  if (source === "oath_trial_calendar") return normalizeOathTrialCalendarMeeting(row);
   return normalizeCommunityBoardMeeting(row);
 }
 
@@ -249,6 +251,7 @@ export function buildSharedMeetingReadModel({
   nycLegistarEventsIndex = undefined,
   bsaCalendarIndex = undefined,
   pdcCalendarIndex = undefined,
+  oathTrialCalendarIndex = undefined,
   meetingOutcomes = null,
   generatedAt = null,
   now = generatedAt || new Date().toISOString(),
@@ -260,6 +263,7 @@ export function buildSharedMeetingReadModel({
     .filter((row) => row.source_system === "community_board" || !row.source_system)
     .map((row) => normalizeRecord(row, "community_board", communityBoardIndex?.generated_at || generatedAt || now)));
   const includeLegistar = nycLegistarEventsIndex !== undefined;
+  const includeOath = oathTrialCalendarIndex !== undefined;
   const rawLegistarRows = includeLegistar
     ? dedupeRows(asRows(nycLegistarEventsIndex?.rows || nycLegistarEventsIndex?.meetings)
       .map((row) => normalizeRecord(row, "nyc_legistar_events", nycLegistarEventsIndex?.generated_at || generatedAt || now)))
@@ -279,6 +283,10 @@ export function buildSharedMeetingReadModel({
     : { cityRows, legistarRows: rawLegistarRows, relations: [] };
   const joinedCityRows = joined.cityRows;
   const legistarRows = joined.legistarRows;
+  const oathRows = includeOath
+    ? dedupeRows(asRows(oathTrialCalendarIndex?.rows || oathTrialCalendarIndex?.records)
+      .map((row) => normalizeRecord(row, "oath_trial_calendar", oathTrialCalendarIndex?.generated_at || generatedAt || now)))
+    : [];
   const boardGeneratedAt = communityBoardIndex?.generated_at || null;
   const boardStatus = sourceEnvelope({
     source: "community_board",
@@ -315,7 +323,7 @@ export function buildSharedMeetingReadModel({
     rows: bsaRows,
     index: bsaCalendarIndex,
   }) : null;
-  const catalogRows = [...joinedCityRows, ...boardRows, ...legistarRows, ...bsaRows, ...pdcRows];
+  const catalogRows = [...joinedCityRows, ...boardRows, ...legistarRows, ...bsaRows, ...pdcRows, ...oathRows];
   const suppliedDocuments = [
     ...joinedCityRows.flatMap((row) => row.meeting_documents || []),
     ...(Array.isArray(communityBoardIndex?.meeting_documents)
@@ -324,6 +332,7 @@ export function buildSharedMeetingReadModel({
     ...legistarRows.flatMap((row) => row.meeting_documents || []),
     ...bsaRows.flatMap((row) => row.meeting_documents || []),
     ...pdcRows.flatMap((row) => row.meeting_documents || []),
+    ...oathRows.flatMap((row) => row.meeting_documents || []),
   ];
   const documentJoin = attachMeetingDocuments(catalogRows, suppliedDocuments, { asOf: now });
   const rows = documentJoin.meetings.map((row) => materializeMeetingDetails(row, now)).sort(dateSort);
@@ -334,6 +343,7 @@ export function buildSharedMeetingReadModel({
     ...(legistarStatus ? { nyc_legistar_events: legistarStatus.status } : {}),
     ...(bsaStatus ? { bsa_calendar: bsaStatus.status } : {}),
     ...(includePdc ? { pdc_calendar: "available" } : {}),
+    ...(includeOath ? { oath_trial_calendar: "available" } : {}),
   };
   const sources = {
     city_record: cityStatus,
@@ -341,11 +351,13 @@ export function buildSharedMeetingReadModel({
     ...(legistarStatus ? { nyc_legistar_events: legistarStatus } : {}),
     ...(bsaStatus ? { bsa_calendar: bsaStatus } : {}),
     ...(includePdc ? { pdc_calendar: { source_system: "pdc_calendar", status: "available", available: true, generated_at: pdcCalendarIndex?.generated_at || generatedAt || null, max_age_ms: null, row_count: pdcRows.length, reason: null } } : {}),
+    ...(includeOath ? { oath_trial_calendar: { source_system: "oath_trial_calendar", status: "available", available: true, generated_at: oathTrialCalendarIndex?.generated_at || generatedAt || null, max_age_ms: null, row_count: oathRows.length, reason: null } } : {}),
   };
   const counts = {
     total: rows.length,
     city_record: joinedCityRows.length,
     community_board: boardRows.length,
+    ...(includeOath ? { oath_trial_calendar: oathRows.length } : {}),
     meeting_documents: documentJoin.documents.length,
     attached_meeting_documents: documentJoin.attached_documents.length,
     ...(includeBsa ? { bsa_calendar: bsaRows.length } : {}),

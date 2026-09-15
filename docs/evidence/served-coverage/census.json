@@ -2,8 +2,8 @@
   "schema": "cityscroll.served_coverage_census.v1",
   "purpose": "Disposition of every registered source contract against the served product, and the served-population evidence behind each published coverage unit. Not a served artifact: this is the receipt the public snapshot is derived from.",
   "registry": {
-    "reviewed_registry_size": 66,
-    "observed_registry_size": 66,
+    "reviewed_registry_size": 67,
+    "observed_registry_size": 67,
     "changed": false
   },
   "disposition_vocabulary": [
@@ -13,7 +13,7 @@
     "unresolved"
   ],
   "disposition_counts": {
-    "publicly_represented": 18,
+    "publicly_represented": 19,
     "context_only": 29,
     "not_served": 8,
     "unresolved": 11
@@ -71,7 +71,18 @@
       "vintage_field": "sources.city_record.generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 574,
+      "value": 719,
+      "reason": null
+    },
+    {
+      "unit_id": "oath-trial-sessions",
+      "first_class_artifact_id": "oath-trial-calendar",
+      "artifact_path": "site/data/oath_trial_calendar.json",
+      "population_field": "records",
+      "vintage_field": "generated_at",
+      "vintage_basis": "single",
+      "state": "measured",
+      "value": 145,
       "reason": null
     },
     {
@@ -370,6 +381,7 @@
     "nyc-council-legistar",
     "nyc-council-members",
     "nys-contract-reporter",
+    "oath-trial-calendar",
     "ocp-recent-contract-awards",
     "passport-public-contracts",
     "zap-api-outcomes",
@@ -621,7 +633,7 @@
           {
             "unit_id": "public-meetings",
             "route": "/browse/meetings/",
-            "served_records": 574,
+            "served_records": 719,
             "evidence_vintage": "2026-09-09T06:52:08.255Z"
           },
           {
@@ -1143,6 +1155,22 @@
             "canonical_route": "/procurements/procurement%3Acontract_reporter_number%3A2138505"
           }
         }
+      }
+    },
+    {
+      "source_id": "oath-trial-calendar",
+      "name": "NYC OATH conference and trial calendar",
+      "disposition": "publicly_represented",
+      "reason": "Declared source of a counted served population.",
+      "evidence": {
+        "units": [
+          {
+            "unit_id": "oath-trial-sessions",
+            "route": "/browse/meetings/",
+            "served_records": 145,
+            "evidence_vintage": "2026-09-15T12:00:00.000Z"
+          }
+        ]
       }
     },
     {

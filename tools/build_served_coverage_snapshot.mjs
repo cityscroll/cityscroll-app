@@ -42,7 +42,7 @@ export const SNAPSHOT_SCHEMA = "cityscroll.served_coverage_snapshot.v1";
 export const CENSUS_SCHEMA = "cityscroll.served_coverage_census.v1";
 
 /** The registry size this census was reviewed against. A change is reported, never absorbed. */
-export const REVIEWED_REGISTRY_SIZE = 66;
+export const REVIEWED_REGISTRY_SIZE = 67;
 
 export { SERVED_UNITS, DECLARED_DISPOSITIONS };
 
@@ -98,6 +98,13 @@ const SERVED_UNITS = Object.freeze([
   {
     unit_id: "public-meetings",
     artifact_id: "shared-meetings",
+    record_unit_key: "coverage_record_meeting",
+    counting_rule_key: "coverage_rule_declared",
+    route: "/browse/meetings/",
+  },
+  {
+    unit_id: "oath-trial-sessions",
+    artifact_id: "oath-trial-calendar",
     record_unit_key: "coverage_record_meeting",
     counting_rule_key: "coverage_rule_declared",
     route: "/browse/meetings/",
@@ -253,6 +260,7 @@ const DECLARED_DISPOSITIONS = Object.freeze({
   "city-council-committee-membership": ["context_only", "Committee membership evidence on official profiles; the served membership population is counted once from the committee graph."],
   "city-council-district-boundaries": ["context_only", "Resolves council districts for geocoded pins and location filters; a boundary is not a served record unit."],
   "city-council-meetings-open-data": ["not_served", "Registry status is disabled and the contract records no current product output for modern notice detail."],
+  "oath-trial-calendar": ["publicly_represented", "OATH trial sessions are served through the shared meetings calendar, detail, and search surfaces."],
   "citywide-payroll": ["unresolved", "Serves title and pay history in the staffing experience, but no first-class served-population artifact declares this contract as its source, so no served count is established."],
   "civil-service-list-certification": ["context_only", "Certification edges between exams and agency identities; exams are counted once as their own record unit."],
   "civil-service-titles": ["context_only", "Canonical title-code identities backing the alias registry; an identity registry is not a served record unit."],

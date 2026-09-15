@@ -305,6 +305,17 @@ export function normalizeMeetingObject(row = {}) {
     source_system: source,
     meeting_origin: optionalText(row.meeting_origin) || "unknown",
     source_receipt: sourceReceipt(row),
+    ...(row.source_raw_values && typeof row.source_raw_values === "object"
+      ? { source_raw_values: row.source_raw_values } : {}),
+    ...(optionalText(row.source_revision) ? { source_revision: optionalText(row.source_revision) } : {}),
+    ...(source === "oath_trial_calendar" && optionalText(row.oath_index)
+      ? { oath_index: optionalText(row.oath_index) } : {}),
+    ...(source === "oath_trial_calendar" && optionalText(row.source_index)
+      ? { source_index: optionalText(row.source_index) } : {}),
+    ...(source === "oath_trial_calendar" && optionalText(row.proceeding_type)
+      ? { proceeding_type: optionalText(row.proceeding_type) } : {}),
+    ...(source === "oath_trial_calendar" && optionalText(row.start_time)
+      ? { start_time: optionalText(row.start_time) } : {}),
     join_status: joinStatus(row, source),
     institution_refs: institutionRefs(row, source),
     compatibility: {

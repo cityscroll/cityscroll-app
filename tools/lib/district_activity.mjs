@@ -767,6 +767,16 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
  * @param {{ communityBoardGeography?: object|null }} [opts]
  */
 export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
+  // The OATH calendar publishes case-party names but no hearing location.
+  // Terms such as "Harlem" or "Citywide" can occur in those names and are
+  // not place evidence. Keep these sessions in the explicit unlocated bucket
+  // until OATH publishes a location; never turn party text into a borough or
+  // district subject.
+  if (row?.source_system === "oath_trial_calendar") {
+    const slots = [];
+    slots.unlocated_reason = "source_location_not_published";
+    return slots;
+  }
   const boardId = communityBoardIdForMeeting(row);
   const boardDistrict = communityDistrictIdFromBoardOntology(
     boardId,
@@ -1356,6 +1366,8 @@ export function buildDistrictActivity(opts = {}) {
       corpus: opts.districtCorpora?.meetings?.corpus || "meetings_domain_observations",
       counted: 0,
       located: 0,
+      excluded: 0,
+      excluded_by_source: Object.create(null),
       by_method: Object.create(null),
     },
     rules: { corpus: "rules_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
@@ -1699,6 +1711,17 @@ export function buildDistrictActivity(opts = {}) {
 
   // Meetings — venue geocode + boundary PIP / CD resolve; virtual → Virtual bag.
   for (const row of opts.meetingsRows || []) {
+    // OATH and PDC publish meeting identity and time but no hearing office or
+    // other place signal. Keep those sessions in the meetings calendar, while
+    // excluding them from district activity rather than presenting them as
+    // residual geography.
+    if (["oath_trial_calendar", "pdc_calendar"].includes(row?.source_system)) {
+      sources.meetings.counted += 1;
+      sources.meetings.excluded += 1;
+      sources.meetings.excluded_by_source[row.source_system] =
+        (sources.meetings.excluded_by_source[row.source_system] || 0) + 1;
+      continue;
+    }
     const placements = meetingPlacementsFromRow(row, boundaries, placeOpts);
     const itemId = record("meetings", row, placements);
     placeSlots("meetings", placements, itemId);

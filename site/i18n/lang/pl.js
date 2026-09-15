@@ -535,6 +535,8 @@
     guide_text_d06dee0ebe003a1d: "Część wydawców publikuje wraz ze zdarzeniami, część cyklicznie. To najczęstszy powód, dla którego coś już zrobione przez miasto jeszcze tu nie dotarło; warto znać rodzaj czytanego źródła.",
     guide_text_172ed63464284add: "60 publicznych źródeł tych dokumentów według częstotliwości zmian",
     guide_text_4519627edf694ca3: "61 publicznych źródeł tych dokumentów według tego, jak często każde z nich się zmienia",
+    guide_text_d56f9637f2ded084: "62 publiczne źródła tych dokumentów według tego, jak często każde z nich się zmieniają",
+    guide_text_419cfd637c426254: "63 publiczne źródła tych dokumentów według tego, jak często każde z nich się zmieniają",
     guide_text_804d092455f8f8d9: "W miarę zdarzeń",
     guide_text_cbb5a736940c6071: "Wydawca aktualizuje przy składaniu dokumentów, więc widok uważnie podąża za miastem.",
     guide_text_1816d56c3c707b5d: "Według harmonogramu wydawcy",
