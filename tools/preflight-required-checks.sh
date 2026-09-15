@@ -421,6 +421,9 @@ preflight_site_paths_changed() {
 }
 
 family_site_node() {
+  run_banner "PASSPort action-family population gate" "Population accounting and action-family fidelity" \
+    "node --test test/passport_action_families.test.mjs"
+  run_node_test test/passport_action_families.test.mjs
   run_banner "Unit tests (site + worker)" "Site unit tests + board ontology gates" \
     "node --test test/*.test.mjs"
   # test/live_mcp_canary.test.mjs (CS-10) deliberately crosses public DNS to the
