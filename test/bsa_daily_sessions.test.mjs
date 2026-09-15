@@ -13,21 +13,29 @@ function addDays(day, days) {
 function longDate(day) {
   return new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(`${day}T12:00:00Z`));
 }
-const fixtureDays = [addDays(todayISO(), 1), addDays(todayISO(), 2)];
-const fixture = {
-  ...sourceFixture,
-  publication_date: todayISO(),
-  pages: sourceFixture.pages.map((page) => ({
-    ...page,
-    ...(page.date ? { date: fixtureDays[page.date === "2026-09-15" ? 1 : 0] } : {}),
-    text: String(page.text || "")
-      .replaceAll("2026-09-14", fixtureDays[0])
-      .replaceAll("2026-09-15", fixtureDays[1])
-      .replaceAll("September 14, 2026", longDate(fixtureDays[0]))
-      .replaceAll("September 15, 2026", longDate(fixtureDays[1])),
-  })),
-};
-const sessions = parseBsaAgendaPages(fixture);
+let fixtureDays;
+let fixture;
+let sessions;
+
+test.before(() => {
+  // Build the retained agenda after the test clock preload has installed its
+  // shifted clock; module-level dates would be captured before that boundary.
+  fixtureDays = [addDays(todayISO(), 1), addDays(todayISO(), 2)];
+  fixture = {
+    ...sourceFixture,
+    publication_date: todayISO(),
+    pages: sourceFixture.pages.map((page) => ({
+      ...page,
+      ...(page.date ? { date: fixtureDays[page.date === "2026-09-15" ? 1 : 0] } : {}),
+      text: String(page.text || "")
+        .replaceAll("2026-09-14", fixtureDays[0])
+        .replaceAll("2026-09-15", fixtureDays[1])
+        .replaceAll("September 14, 2026", longDate(fixtureDays[0]))
+        .replaceAll("September 15, 2026", longDate(fixtureDays[1])),
+    })),
+  };
+  sessions = parseBsaAgendaPages(fixture);
+});
 
 test("the dated six-page agenda creates two timed daily sessions with day-local registration", () => {
   assert.deepEqual(sessions.map((row) => row.event_date), fixtureDays.map((day) => `${day}T10:00:00`));
@@ -83,7 +91,14 @@ test("BSA sessions cross the shared read-model boundary as native source rows", 
   });
   assert.equal(model.sources.bsa_calendar.status, "available");
   assert.equal(model.counts.bsa_calendar, 2);
-  assert.deepEqual(model.rows.filter((row) => row.source_system === "bsa_calendar").map((row) => row.event_date), ["2026-09-15T10:00:00", "2026-09-14T10:00:00"]);
-  assert.equal(model.rows.find((row) => row.bsa_session_id === "bsa-2026-09-14").agenda_items.length, 21);
+  const bsaRows = model.rows.filter((row) => row.source_system === "bsa_calendar");
+  assert.deepEqual(bsaRows.map((row) => row.event_date), fixtureDays.slice().reverse().map((day) => `${day}T10:00:00`));
+  assert.deepEqual(bsaRows.map((row) => row.source_keys[0]), fixtureDays.slice().reverse().map((day) => ({
+    source_system: "bsa_calendar",
+    key_type: "bsa_session_id",
+    value: `bsa-${day}`,
+  })));
+  assert.equal(bsaRows.every((row) => row.source_record.receipt?.schema === "cityscroll.document_processing_receipt.v1"), true);
+  assert.equal(bsaRows.find((row) => row.bsa_session_id === `bsa-${fixtureDays[0]}`).agenda_items.length, 21);
   });
 });
