@@ -10,6 +10,13 @@
       "fields": ["id", "title", "organizer", "purpose", "geography", "deadline", "channels", "sources", "observed_at"]
     },
     {
+      "id": "pdc-calendar",
+      "kind": "html",
+      "identifier": "meetings.page",
+      "response_type": "text/html",
+      "fields": ["meeting_date", "source_url", "source_receipt"]
+    },
+    {
       "id": "ibo-fiscal-history",
       "kind": "html",
       "identifier": "fiscalhistory.html",

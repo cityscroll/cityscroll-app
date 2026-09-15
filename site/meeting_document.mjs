@@ -706,6 +706,11 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   const documents = agendaDocuments.length
     ? `<section class="node-section civic-object-section meeting-section meeting-documents" data-meeting-documents="1"><h2>Agenda and materials</h2><ul>${agendaDocuments.map((document) => `<li><a href="${esc(safeHref(document.href))}" rel="noopener noreferrer">${esc(document.label)}</a>${document.date ? ` <time datetime="${esc(document.date)}">(${esc(document.date)})</time>` : ""}</li>`).join("")}</ul></section>`
     : "";
+  const pdcAgenda = record.source_system === "pdc_calendar" && Array.isArray(record.agenda_sections)
+    ? `<section class="node-section civic-object-section meeting-section meeting-agenda-context"><h2>Presentation context</h2><ul>${record.agenda_sections.map((section) => `<li><strong>${esc(section.section_type === "presentation" ? "Presentation" : section.section_type === "consent" ? "Consent listing" : "Committee")}</strong>${Array.isArray(section.items) && section.items.length ? `: ${esc(section.items.slice(0, 8).join("; "))}` : ""}</li>`).join("")}</ul>${record.arrival_advice ? `<p>${esc(record.arrival_advice)}</p>` : ""}</section>`
+    : record.source_system === "pdc_calendar" && !agendaDocuments.length
+      ? `<section class="node-section civic-object-section meeting-section meeting-agenda-status"><h2>Preparation</h2><p>Agenda not yet published.</p></section>`
+      : "";
   const minutes = documentLinks.filter((document) => document.label === "Minutes" && safeHref(document.href));
   const minutesPublished = record.minutes_freshness?.status === "published" || (!record.minutes_freshness && minutes.length);
   const minutesSection = minutesPublished
@@ -822,7 +827,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   ${participationSection}
   ${legislativeConsequenceSection}
   ${matterContinuationSection}
-  ${documents}
+  ${documents}${pdcAgenda}
   ${minutesSection}
   ${renderCrossSourceCoverageLedger(record.cross_source_coverage_ledger || buildCrossSourceCoverageLedger({
     object: record,

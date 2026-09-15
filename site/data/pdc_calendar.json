@@ -1,0 +1,479 @@
+{
+  "schema": "cityscroll.pdc_calendar.v1",
+  "rows": [
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:pdc_calendar:pdc-2026-09-22",
+      "source_keys": [
+        {
+          "source_system": "pdc_calendar",
+          "key_type": "pdc_event_id",
+          "value": "pdc-2026-09-22"
+        }
+      ],
+      "publisher_identifier": "pdc-2026-09-22",
+      "title": "Public Design Commission meeting",
+      "event_date": "2026-09-22",
+      "event_end": null,
+      "meeting_family": "pdc_session_v1",
+      "activity": "observe",
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": null,
+      "board_name": null,
+      "description": null,
+      "search_text": "Public Design Commission meeting",
+      "affected_area": null,
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+      "source_system": "pdc_calendar",
+      "meeting_origin": "official_pdc_schedule",
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+        "observed_at": "2026-09-15T00:00:00.000Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "parser": "pdc_calendar_acquisition.v1"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page"
+      },
+      "request_id": null,
+      "source_record_id": null,
+      "board_id": null
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:pdc_calendar:pdc-2026-10-20",
+      "source_keys": [
+        {
+          "source_system": "pdc_calendar",
+          "key_type": "pdc_event_id",
+          "value": "pdc-2026-10-20"
+        }
+      ],
+      "publisher_identifier": "pdc-2026-10-20",
+      "title": "Public Design Commission meeting",
+      "event_date": "2026-10-20",
+      "event_end": null,
+      "meeting_family": "pdc_session_v1",
+      "activity": "observe",
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": null,
+      "board_name": null,
+      "description": null,
+      "search_text": "Public Design Commission meeting",
+      "affected_area": null,
+      "meeting_documents": [
+        {
+          "role": "agenda",
+          "document_id": "/assets/designcommission/downloads/pdf/agendas/10-20-26-PDC-Public-Agenda.pdf",
+          "document_url": "https://www.nyc.gov/assets/designcommission/downloads/pdf/agendas/10-20-26-PDC-Public-Agenda.pdf",
+          "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+          "meeting_id": "meeting:pdc_calendar:pdc-2026-10-20",
+          "attachment_status": "attached",
+          "adapter": "pdc_calendar_acquisition.v1"
+        }
+      ],
+      "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+      "source_system": "pdc_calendar",
+      "meeting_origin": "official_pdc_schedule",
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+        "observed_at": "2026-09-15T00:00:00.000Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "parser": "pdc_calendar_acquisition.v1"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page"
+      },
+      "request_id": null,
+      "source_record_id": null,
+      "board_id": null
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:pdc_calendar:pdc-2026-11-16",
+      "source_keys": [
+        {
+          "source_system": "pdc_calendar",
+          "key_type": "pdc_event_id",
+          "value": "pdc-2026-11-16"
+        }
+      ],
+      "publisher_identifier": "pdc-2026-11-16",
+      "title": "Public Design Commission meeting",
+      "event_date": "2026-11-16",
+      "event_end": null,
+      "meeting_family": "pdc_session_v1",
+      "activity": "observe",
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": null,
+      "board_name": null,
+      "description": null,
+      "search_text": "Public Design Commission meeting",
+      "affected_area": null,
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+      "source_system": "pdc_calendar",
+      "meeting_origin": "official_pdc_schedule",
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+        "observed_at": "2026-09-15T00:00:00.000Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "parser": "pdc_calendar_acquisition.v1"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page"
+      },
+      "request_id": null,
+      "source_record_id": null,
+      "board_id": null
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:pdc_calendar:pdc-2026-12-14",
+      "source_keys": [
+        {
+          "source_system": "pdc_calendar",
+          "key_type": "pdc_event_id",
+          "value": "pdc-2026-12-14"
+        }
+      ],
+      "publisher_identifier": "pdc-2026-12-14",
+      "title": "Public Design Commission meeting",
+      "event_date": "2026-12-14",
+      "event_end": null,
+      "meeting_family": "pdc_session_v1",
+      "activity": "observe",
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": null,
+      "board_name": null,
+      "description": null,
+      "search_text": "Public Design Commission meeting",
+      "affected_area": null,
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+      "source_system": "pdc_calendar",
+      "meeting_origin": "official_pdc_schedule",
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+        "observed_at": "2026-09-15T00:00:00.000Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "parser": "pdc_calendar_acquisition.v1"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page"
+      },
+      "request_id": null,
+      "source_record_id": null,
+      "board_id": null
+    }
+  ],
+  "documents": [
+    {
+      "role": "agenda",
+      "document_id": "/assets/designcommission/downloads/pdf/agendas/10-20-26-PDC-Public-Agenda.pdf",
+      "document_url": "https://www.nyc.gov/assets/designcommission/downloads/pdf/agendas/10-20-26-PDC-Public-Agenda.pdf",
+      "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+      "meeting_id": "meeting:pdc_calendar:pdc-2026-10-20",
+      "attachment_status": "attached",
+      "adapter": "pdc_calendar_acquisition.v1"
+    }
+  ],
+  "records": [
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:pdc_calendar:pdc-2026-09-22",
+      "source_keys": [
+        {
+          "source_system": "pdc_calendar",
+          "key_type": "pdc_event_id",
+          "value": "pdc-2026-09-22"
+        }
+      ],
+      "publisher_identifier": "pdc-2026-09-22",
+      "title": "Public Design Commission meeting",
+      "event_date": "2026-09-22",
+      "event_end": null,
+      "meeting_family": "pdc_session_v1",
+      "activity": "observe",
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": null,
+      "board_name": null,
+      "description": null,
+      "search_text": "Public Design Commission meeting",
+      "affected_area": null,
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+      "source_system": "pdc_calendar",
+      "meeting_origin": "official_pdc_schedule",
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+        "observed_at": "2026-09-15T00:00:00.000Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "parser": "pdc_calendar_acquisition.v1"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page"
+      },
+      "request_id": null,
+      "source_record_id": null,
+      "board_id": null
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:pdc_calendar:pdc-2026-10-20",
+      "source_keys": [
+        {
+          "source_system": "pdc_calendar",
+          "key_type": "pdc_event_id",
+          "value": "pdc-2026-10-20"
+        }
+      ],
+      "publisher_identifier": "pdc-2026-10-20",
+      "title": "Public Design Commission meeting",
+      "event_date": "2026-10-20",
+      "event_end": null,
+      "meeting_family": "pdc_session_v1",
+      "activity": "observe",
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": null,
+      "board_name": null,
+      "description": null,
+      "search_text": "Public Design Commission meeting",
+      "affected_area": null,
+      "meeting_documents": [
+        {
+          "role": "agenda",
+          "document_id": "/assets/designcommission/downloads/pdf/agendas/10-20-26-PDC-Public-Agenda.pdf",
+          "document_url": "https://www.nyc.gov/assets/designcommission/downloads/pdf/agendas/10-20-26-PDC-Public-Agenda.pdf",
+          "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+          "meeting_id": "meeting:pdc_calendar:pdc-2026-10-20",
+          "attachment_status": "attached",
+          "adapter": "pdc_calendar_acquisition.v1"
+        }
+      ],
+      "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+      "source_system": "pdc_calendar",
+      "meeting_origin": "official_pdc_schedule",
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+        "observed_at": "2026-09-15T00:00:00.000Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "parser": "pdc_calendar_acquisition.v1"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page"
+      },
+      "request_id": null,
+      "source_record_id": null,
+      "board_id": null
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:pdc_calendar:pdc-2026-11-16",
+      "source_keys": [
+        {
+          "source_system": "pdc_calendar",
+          "key_type": "pdc_event_id",
+          "value": "pdc-2026-11-16"
+        }
+      ],
+      "publisher_identifier": "pdc-2026-11-16",
+      "title": "Public Design Commission meeting",
+      "event_date": "2026-11-16",
+      "event_end": null,
+      "meeting_family": "pdc_session_v1",
+      "activity": "observe",
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": null,
+      "board_name": null,
+      "description": null,
+      "search_text": "Public Design Commission meeting",
+      "affected_area": null,
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+      "source_system": "pdc_calendar",
+      "meeting_origin": "official_pdc_schedule",
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+        "observed_at": "2026-09-15T00:00:00.000Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "parser": "pdc_calendar_acquisition.v1"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page"
+      },
+      "request_id": null,
+      "source_record_id": null,
+      "board_id": null
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:pdc_calendar:pdc-2026-12-14",
+      "source_keys": [
+        {
+          "source_system": "pdc_calendar",
+          "key_type": "pdc_event_id",
+          "value": "pdc-2026-12-14"
+        }
+      ],
+      "publisher_identifier": "pdc-2026-12-14",
+      "title": "Public Design Commission meeting",
+      "event_date": "2026-12-14",
+      "event_end": null,
+      "meeting_family": "pdc_session_v1",
+      "activity": "observe",
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": null,
+      "participation": null,
+      "committee": null,
+      "agency": null,
+      "board_name": null,
+      "description": null,
+      "search_text": "Public Design Commission meeting",
+      "affected_area": null,
+      "meeting_documents": [],
+      "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+      "source_system": "pdc_calendar",
+      "meeting_origin": "official_pdc_schedule",
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+        "observed_at": "2026-09-15T00:00:00.000Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "parser": "pdc_calendar_acquisition.v1"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page"
+      },
+      "request_id": null,
+      "source_record_id": null,
+      "board_id": null
+    }
+  ],
+  "generated_at": "2026-09-15T00:00:00.000Z"
+}
