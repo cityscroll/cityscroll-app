@@ -12,7 +12,9 @@
             "document_id": "rfx-terms-1",
             "url": "https://example.nyc.gov/rfx/terms.pdf",
             "locator": "page 7, section 2.1",
-            "excerpt": "The provider must report service levels quarterly."
+            "excerpt": "The provider must report service levels quarterly.",
+            "publication_date": "2026-08-01",
+            "identity_basis": "exact contract identifier CT-TERMS"
           }
         }
       ]
@@ -28,7 +30,9 @@
             "document_id": "award-evaluation-2",
             "url": "https://example.nyc.gov/awards/evaluation.pdf",
             "locator": "page 3, evaluation table",
-            "excerpt": "Quarterly review document published by the agency."
+            "excerpt": "Quarterly review document published by the agency.",
+            "publication_date": "2026-08-02",
+            "identity_basis": "exact contract identifier CT-EVALUATION"
           }
         }
       ]
