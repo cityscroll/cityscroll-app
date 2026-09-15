@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture.watermark-shard.v1",
   "id": "canary:keyword-search-index",
   "owner": "canary:keyword-search-index",
-  "updated_at": "2026-09-15T04:02:17-04:00",
-  "commit": "33c2b122b141ed8dee7af1efcdbdcd761d410f22",
+  "updated_at": "2026-09-15T04:10:22-04:00",
+  "commit": "169b25a8c65a9d00cd9823af1f0ac7311318292c",
   "value": {
     "path": "tools/build_keyword_search_index.mjs",
     "count": 11,
