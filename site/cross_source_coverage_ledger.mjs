@@ -330,11 +330,11 @@ function sourceRow({
 }) {
   const lookupAsOf = text(classification.as_of);
   const vintage = text(classification.vintage) || text(inventory?.live_observation?.measured_at)?.slice(0, 10);
+  // Inventory is a health/census view, not proof that this lookup searched
+  // that population. Only an explicit lookup receipt or bounded lookup
+  // supplies a denominator for a negative result.
   const denominator = Number.isFinite(Number(classification.denominator))
-    ? Number(classification.denominator)
-    : (Number.isFinite(Number(inventory?.live_observation?.row_count)) && classification.state === "checked-no-match"
-      ? Number(inventory.live_observation.row_count)
-      : null);
+    ? Number(classification.denominator) : null;
   const population = text(classification.population)
     || (denominator != null ? text(inventory?.id) && `${sourceName(system)} retained observations` : null);
   const unresolved = ["not-checked", "ambiguous", "unavailable", "stale"].includes(classification.state);

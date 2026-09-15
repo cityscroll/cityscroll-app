@@ -188,6 +188,20 @@ test("missing denominators or vintage never publish a rate", () => {
   assert.doesNotMatch(renderCrossSourceCoverageLedger(ledger), /data-coverage-scope/);
 });
 
+test("inventory row counts do not become lookup denominators", () => {
+  const ledger = buildCrossSourceCoverageLedger({
+    object: { procurement_id: "procurement:contract:CT-NO-DENOM", source_observation_refs: [passport.source_observation_ref] },
+    observations: [passport],
+    sourceCoverage,
+    aboResidual: { bridge: { status: "stopped_below_threshold" } },
+    lookups: { city_record: { state: "checked-no-match", vintage: "2026-08-18" } },
+  });
+  const city = ledger.sources.find((row) => row.source_system === "city_record");
+  assert.equal(city.state, "checked-no-match");
+  assert.equal(city.denominator, null);
+  assert.equal(city.population, null);
+});
+
 test("AP-06 registered-contract coverage stays a separate named scope, not citywide", () => {
   const ledger = buildCrossSourceCoverageLedger({
     object: { procurement_id: "procurement:contract:CT-1", source_observation_refs: [checkbook.source_observation_ref] },
