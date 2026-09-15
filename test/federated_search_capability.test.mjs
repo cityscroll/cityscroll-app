@@ -72,7 +72,7 @@ function provider() {
 test("search.federated@1 declares the closed lenses, coverage states, and bounds", () => {
   assert.deepEqual(FEDERATED_SEARCH_CAPABILITY.input.lenses, [
     "notices", "people", "agencies", "vendors", "committees",
-    "community_boards", "exams", "parcels", "land", "meetings",
+    "community_boards", "exams", "consultations", "parcels", "land", "meetings",
   ]);
   assert.deepEqual(FEDERATED_SEARCH_CAPABILITY.output.coverageStates, FEDERATED_SEARCH_COVERAGE_STATES);
   assert.deepEqual(FEDERATED_SEARCH_CAPABILITY.bounds.input, FEDERATED_SEARCH_LIMITS);

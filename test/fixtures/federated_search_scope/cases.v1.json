@@ -16,6 +16,7 @@
           "committees": "empty",
           "community_boards": "empty",
           "exams": "empty",
+          "consultations": "empty",
           "parcels": "empty",
           "land": "empty",
           "meetings": "empty"
@@ -31,6 +32,7 @@
             "committees",
             "community_boards",
             "exams",
+            "consultations",
             "parcels",
             "land",
             "meetings"
@@ -60,6 +62,7 @@
           "committees": "out_of_scope",
           "community_boards": "out_of_scope",
           "exams": "out_of_scope",
+          "consultations": "out_of_scope",
           "parcels": "out_of_scope",
           "land": "out_of_scope",
           "meetings": "out_of_scope"
