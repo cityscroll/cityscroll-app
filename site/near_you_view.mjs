@@ -38,6 +38,7 @@ import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 import { renderWalkEntry, walkEntryHref, walkEntryPlaceLabel } from "./walk_entry.mjs";
 import { meetingOriginLabel } from "./meeting_origin.mjs";
+import { buildLocalDistrictFollowBundle } from "./local_district_follow_bundle.mjs";
 import {
   landRecordHasFamilyEvidence,
   landRowMatchesFamily,
@@ -342,6 +343,7 @@ function selectedPlacePresentation(scope, communityGeography = {}) {
     return {
       label: formatCommunityDistrict(community),
       boardLabel: board?.name || null,
+      boardRef: board?.properties?.body_id ? `community-board:${board.properties.body_id}` : null,
       boardHref: board?.properties?.body_id ? communityBoardPageHref(board.properties.body_id) : null,
       overlappingCouncilLabels: overlappingCouncilDistricts.map((id) => formatCouncilDistrict(id)),
     };
@@ -507,6 +509,12 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       { key: "district-priorities", title: "District priorities", count: null, records: [], coverage: "District priorities are not published in this digest.", lens: "meetings" },
     ],
   };
+  const localFollowBundle = isOverview && scope.place.community_districts.length
+    ? buildLocalDistrictFollowBundle({
+      scope,
+      board: selectedPlacePresentation(scope, options.communityGeography || {}).boardRef,
+    })
+    : null;
   const resultRecords = resultIds.map((id) => records[id]).filter(Boolean).sort(recordSort).map(linkedRecord);
   const bags = Object.fromEntries(["citywide", "virtual", "unlocated"].map((kind) => {
     const ids = dataState === "ready" && mapped
@@ -536,6 +544,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     placePresentation: selectedPlacePresentation(scope, options.communityGeography || {}),
     isOverview,
     overview,
+    localFollowBundle,
     lensLabel: LENS_LABELS[lens] || lens,
     scopeSummary: scopeSummary(scope, lens, activity?.geography_items?.definitions),
     geographyOptions: Object.values(activity?.geography_items?.definitions || {})
@@ -786,10 +795,23 @@ function renderNearYouOverview(view) {
     </section>`;
   }).join("");
   const councils = (view.placePresentation.overlappingCouncilLabels || []).join(", ");
+  const follow = view.localFollowBundle;
+  const followAction = follow
+    ? `<section class="near-follow-district" data-local-district-follow="${esc(follow.id)}" aria-labelledby="near-follow-district-heading">
+      <p class="near-kicker">Ongoing view</p><h2 id="near-follow-district-heading">${esc(follow.title)}</h2>
+      <p>${esc(follow.description)}</p>
+      ${follow.children.length
+        ? `<ul>${follow.children.map((child) => `<li><strong>${esc(child.label)}</strong> <code>${esc(JSON.stringify(child.filter))}</code></li>`).join("")}</ul>
+          ${follow.unsupported_lenses.length ? `<p class="near-coverage" role="note">Not included because this bundle does not yet support these lenses: ${esc(follow.unsupported_lenses.join(", "))}.</p>` : ""}
+          <a class="near-follow-action" href="/following/#alerts?template=${encodeURIComponent(follow.id)}&amp;cd=${encodeURIComponent(follow.district || "")}&amp;board=${encodeURIComponent(follow.board || "")}">Follow this district</a>`
+        : `<p class="near-coverage" role="note">${esc(follow.unavailable || "This district bundle is unavailable.")}</p>`}
+    </section>`
+    : "";
   return `<section class="near-overview" aria-labelledby="near-overview-heading" data-near-overview="true">
     <p class="near-kicker">District overview</p><h2 id="near-overview-heading">What is happening here</h2>
     <p class="near-overview-place">${esc(view.placePresentation.label)}${view.placePresentation.boardLabel ? ` · ${esc(view.placePresentation.boardLabel)}` : ""}${councils ? ` · overlaps ${esc(councils)}` : ""}</p>
     ${sections}
+    ${followAction}
   </section>`;
 }
 
