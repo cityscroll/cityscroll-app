@@ -3,6 +3,13 @@
   "observed_on": "2026-08-11",
   "sources": [
     {
+      "id": "oath-trial-calendar",
+      "kind": "html",
+      "identifier": "conference-trial-calendar.page",
+      "response_type": "text/html",
+      "fields": ["index", "date", "start", "type", "source_url", "source_receipt"]
+    },
+    {
       "id": "public-consultations",
       "kind": "html",
       "identifier": "",

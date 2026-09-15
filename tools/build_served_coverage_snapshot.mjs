@@ -253,6 +253,7 @@ const DECLARED_DISPOSITIONS = Object.freeze({
   "city-council-committee-membership": ["context_only", "Committee membership evidence on official profiles; the served membership population is counted once from the committee graph."],
   "city-council-district-boundaries": ["context_only", "Resolves council districts for geocoded pins and location filters; a boundary is not a served record unit."],
   "city-council-meetings-open-data": ["not_served", "Registry status is disabled and the contract records no current product output for modern notice detail."],
+  "oath-trial-calendar": ["publicly_represented", "OATH trial sessions are served through the shared meetings calendar, detail, and search surfaces."],
   "citywide-payroll": ["unresolved", "Serves title and pay history in the staffing experience, but no first-class served-population artifact declares this contract as its source, so no served count is established."],
   "civil-service-list-certification": ["context_only", "Certification edges between exams and agency identities; exams are counted once as their own record unit."],
   "civil-service-titles": ["context_only", "Canonical title-code identities backing the alias registry; an identity registry is not a served record unit."],
