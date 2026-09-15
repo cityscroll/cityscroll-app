@@ -56,3 +56,19 @@ test("filters preserve a return scope and omit empty optional sections", () => {
   assert.match(detail.backHref, /category=Community\+budget/);
   assert.doesNotMatch(renderConsultationDetailDocument(detail), /undefined|null/);
 });
+
+test("place and lifecycle filters narrow the materialized collection", () => {
+  const place = buildConsultationCollection({ query: new URLSearchParams("place=Coney+Island") });
+  assert.deepEqual(place.records.map((record) => record.id), ["dot-coney-island-transportation-study"]);
+
+  const dated = buildConsultationCollection({ query: new URLSearchParams("lifecycle=dated") });
+  assert.equal(dated.records.length, 2);
+  assert.ok(dated.records.every((record) => record.deadline));
+
+  const undated = buildConsultationCollection({ query: new URLSearchParams("lifecycle=undated") });
+  assert.equal(undated.records.length, 4);
+  assert.ok(undated.records.every((record) => !record.deadline));
+
+  const closed = buildConsultationCollection({ query: new URLSearchParams("lifecycle=closed") });
+  assert.deepEqual(closed.records.map((record) => record.id), ["cb14-community-budget-fy2028"]);
+});
