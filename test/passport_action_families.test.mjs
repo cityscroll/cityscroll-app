@@ -40,6 +40,8 @@ const firematicAction = contractRow({
 });
 
 const tameerIds = ["4579402", "4980664", "4982079", "4983925", "5224471", "5240965", "5243993", "5247650", "5340426", "5359354", "5371783", "5372858"];
+const tameerAmounts = [26112.93, 26512.93, 27112.93, 27612.93, 28112.93, 28612.93, 29112.93, 29612.93, 30112.93, 30612.93, 31112.93, 31612.93];
+const tameerRegistrations = ["04/14/2025", "04/21/2025", "05/02/2025", "05/16/2025", "06/03/2025", "06/20/2025", "07/08/2025", "07/25/2025", "08/11/2025", "08/29/2025", "09/15/2025", "10/01/2025"];
 const tameer = tameerIds.map((ctr, index) => contractRow({
   ctr,
   epin: `85021B0087001C${String(index + 1).padStart(3, "0")}`,
@@ -48,7 +50,7 @@ const tameer = tameerIds.map((ctr, index) => contractRow({
   vendor: "TAMEER INC",
   type: index === 0 ? "Original" : "Revision",
   method: index === 0 ? "Competitive Sealed Bid" : "Construction Change Order",
-  amount: "$26,112.93", registration: "04/14/2025",
+  amount: `$${tameerAmounts[index].toLocaleString("en-US", { minimumFractionDigits: 2 })}`, registration: tameerRegistrations[index],
 }));
 
 const aha = contractRow({
@@ -103,6 +105,7 @@ test("A2 serves AHA without a City Record lifecycle match", async () => {
   const html = renderProcurementDocument(model.rows[0], model.observations);
   assert.match(html, /AHA MATERIALS FOR TRAINING/);
   assert.match(html, /46,673\.32/);
+  assert.match(html, /<dt>Method<\/dt><dd>Subscription<\/dd>/);
   assert.match(html, /2026-09-07|09\/07\/2026/);
 });
 
@@ -137,4 +140,22 @@ test("A4 carries acquisition vintage through builder and detail-loader inputs of
   assert.equal(model.observations[0].ingested_at, acquiredAt);
   const html = renderProcurementDocument(model.rows[0], model.observations);
   assert.match(html, /2026-09-07T12:00:00Z|2026-09-07/);
+});
+
+test("A4 retains each revision amount and registration date in the served action family", () => {
+  const model = modelFor(tameer);
+  const family = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-TAMEER-1");
+  assert.ok(family);
+  assert.equal(family.passport_action_family.actions.length, tameer.length);
+  const observations = new Map(model.observations.map((row) => [row.snapshot.ctr_id, row]));
+  for (const [index, ctr] of tameerIds.entries()) {
+    const observation = observations.get(ctr);
+    assert.equal(observation.snapshot.current_amount, tameerAmounts[index], `amount retained for ${ctr}`);
+    assert.equal(observation.snapshot.registration_date, tameerRegistrations[index], `registration retained for ${ctr}`);
+    const html = renderProcurementDocument(family, [observation]);
+    const renderedAmount = tameerAmounts[index].toLocaleString("en-US", { minimumFractionDigits: 2 });
+    assert.match(html, new RegExp(`<dd>\\$${renderedAmount.replace(",", "\\,")}<\\/dd>`));
+    const [month, day, year] = tameerRegistrations[index].split("/");
+    assert.match(html, new RegExp(`<dd>${year}-${month}-${day}<\\/dd>`));
+  }
 });
