@@ -199,6 +199,55 @@ export function mapContractRow(cells) {
     end_date: get(15) || null,
     registration_date: get(16) || null,
     industry: get(17) || null,
+    ...passportActionFields({
+      ctr_id: get(0),
+      epin,
+      epin_norm: normId(epin),
+      contract_id: get(2) || null,
+      contract_type: get(8) || null,
+      procurement_method: get(7) || null,
+      title: get(3) || null,
+    }),
+  };
+}
+
+/** Preserve the publisher action identity separately from canonical identity. */
+export function passportActionFields(row = {}) {
+  const epin = String(row.epin_norm || row.epin || "").trim();
+  const fmsIdentity = String(row.contract_id || "").trim();
+  const familyKey = fmsIdentity || epin.replace(/[-_]?[AC]\d{3}$/i, "") || epin;
+  const descriptor = `${row.contract_type || ""} ${row.procurement_method || ""} ${row.title || ""}`.toLowerCase();
+  return {
+    action_key: epin || String(row.ctr_id || "").trim() || null,
+    action_family_key: familyKey || null,
+    action_role: /amend|revision|change\s*order|modification|renewal/.test(descriptor)
+      ? "action"
+      : "base",
+  };
+}
+
+/** Keep acquisition populations distinct; counts are not publisher equivalences. */
+export function reconcilePassportPopulations({
+  rawRows = [], parsedRows = [], excludedRows = [], rejectedRows = [],
+  selectedRows = [], servedRows = [],
+} = {}) {
+  const reasoned = (rows) => rows.every((row) => String(row?.reason || "").trim());
+  if (!reasoned(excludedRows) || !reasoned(rejectedRows)) {
+    throw new Error("every excluded or rejected PASSPort row requires a reason");
+  }
+  return {
+    raw: rawRows.length,
+    parsed: parsedRows.length,
+    excluded: excludedRows.length,
+    rejected: rejectedRows.length,
+    selected: selectedRows.length,
+    served: servedRows.length,
+    reconciliation: {
+      raw_to_parsed: `${parsedRows.length}/${rawRows.length}`,
+      parsed_to_selected: `${selectedRows.length}/${parsedRows.length}`,
+      selected_to_served: `${servedRows.length}/${selectedRows.length}`,
+      note: "stage populations are reported separately; no portal-entry equivalence is inferred",
+    },
   };
 }
 

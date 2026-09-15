@@ -484,6 +484,22 @@ function createObject(component, edges) {
     contract_ids: [...component.contract_ids].sort(),
     epins: [...component.epins].sort(),
   };
+  const passportActions = component.records
+    .filter((record) => sourceSystem(record) === "passport_public_contracts")
+    .map((record) => {
+      const row = snapshot(record);
+      return {
+        ctr_id: row.ctr_id || null,
+        epin: row.epin || row.epin_norm || null,
+        contract_id: row.contract_id || null,
+        action_key: row.action_key || row.epin_norm || row.epin || row.ctr_id || null,
+        action_family_key: row.action_family_key || row.contract_id || row.epin_norm || row.epin || null,
+        action_role: row.action_role || "base",
+        contract_type: row.contract_type || null,
+        source_date: row.registration_date || row.start_date || row.end_date || null,
+      };
+    })
+    .sort((left, right) => String(left.action_key).localeCompare(String(right.action_key)));
   const nativeIdentity = {
     contract_reporter_numbers: [...(component.native_keys.get("contract_reporter_number") || [])].sort(),
     solicitation_ids: [...(component.native_keys.get("solicitation_id") || [])].sort(),
@@ -498,6 +514,12 @@ function createObject(component, edges) {
     source_observation_refs: objectEdges.map((edge) => edge.source_observation_ref).sort(),
     stages: sortedStages(stageRefs),
     identity_keys: identity,
+    ...(passportActions.length ? {
+      passport_action_family: {
+        family_key: passportActions[0].action_family_key,
+        actions: passportActions,
+      },
+    } : {}),
     institution_keys: {
       publisher_institution_ids: [...component.publisher_institution_ids].sort(),
       procuring_institution_ids: [...component.procuring_institution_ids].sort(),

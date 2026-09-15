@@ -1,0 +1,127 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+
+import { renderProcurementDocument } from "../site/procurement_document.mjs";
+import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
+import { procurementSourceRecordsFromMaterializations } from "../tools/build_shared_procurement_read_model.mjs";
+import {
+  mapContractRow,
+  reconcilePassportPopulations,
+} from "../worker/src/lib/passport_parse.mjs";
+
+const ACQUIRED_AT = "2026-09-07T12:00:00Z";
+
+function cells({ ctr, epin, contract, title, vendor, type, method, amount, registration }) {
+  return [
+    ctr, epin, contract, title, "TEST AGENCY", vendor, "TEST PROGRAM", method,
+    type, "Registered", amount, amount, amount, amount, "09/01/2026", "08/31/2027",
+    registration, "Goods", "", "", "", "",
+  ];
+}
+
+function contractRow(values) {
+  return mapContractRow(cells(values));
+}
+
+const firematicBase = contractRow({
+  ctr: "4561064", epin: "85721B0111001A000", contract: "FMS-FIREMATIC-1",
+  title: "Bid 2100089 Nozzles", vendor: "FIREMATIC SUPPLY CO. INC",
+  type: "Original", method: "Competitive Sealed Bid", amount: "$49,689.78", registration: "09/01/2021",
+});
+const firematicAction = contractRow({
+  ctr: "4618449", epin: "85721B0111001A001", contract: "FMS-FIREMATIC-1",
+  title: "Bid 2100089 Nozzles Amendment #1", vendor: "FIREMATIC SUPPLY CO. INC",
+  type: "Amendment", method: "Amendment", amount: "$49,689.78", registration: "11/13/2021",
+});
+
+const tameerIds = ["4579402", "4980664", "4982079", "4983925", "5224471", "5240965", "5243993", "5247650", "5340426", "5359354", "5371783", "5372858"];
+const tameer = tameerIds.map((ctr, index) => contractRow({
+  ctr,
+  epin: `85021B0087001C${String(index + 1).padStart(3, "0")}`,
+  contract: "FMS-TAMEER-1",
+  title: index === 0 ? "LBC10CDHC" : `LBC10CDHC Change Order #${index}`,
+  vendor: "TAMEER INC",
+  type: index === 0 ? "Original" : "Revision",
+  method: index === 0 ? "Competitive Sealed Bid" : "Construction Change Order",
+  amount: "$26,112.93", registration: "04/14/2025",
+}));
+
+const aha = contractRow({
+  ctr: "5778239", epin: "CT105720278802113", contract: "FMS-AHA-1",
+  title: "057270000251- AHA MATERIALS FOR TRAINING, EMS ACADEMY (EMS TRAINING FT TOTTEN)",
+  vendor: "AMERICAN HEART ASSOCIATION INC", type: "Original", method: "Subscription",
+  amount: "$46,673.32", registration: "09/07/2026",
+});
+
+function modelFor(rows) {
+  const records = procurementSourceRecordsFromMaterializations({
+    generated_at: ACQUIRED_AT,
+    rows: { passport_contracts: rows },
+  }, { rows: [] });
+  return buildSharedProcurementReadModel({
+    sourceRecords: records,
+    lifecycleRows: [],
+    generatedAt: ACQUIRED_AT,
+    now: ACQUIRED_AT,
+  });
+}
+
+test("A1 retains complete Firematic and TAMEER action families with source fields", () => {
+  const model = modelFor([firematicBase, firematicAction, ...tameer]);
+  const passport = model.observations.filter((row) => row.source_system === "passport_public_contracts");
+  assert.equal(passport.length, 14);
+  assert.deepEqual(passport.filter((row) => row.snapshot.vendor === "FIREMATIC SUPPLY CO. INC").map((row) => row.snapshot.ctr_id).sort(), ["4561064", "4618449"]);
+  assert.deepEqual(passport.filter((row) => row.snapshot.vendor === "TAMEER INC").map((row) => row.snapshot.ctr_id).sort(), tameerIds.slice().sort());
+  for (const row of passport) {
+    assert.ok(row.snapshot.contract_type);
+    assert.ok(row.snapshot.epin);
+    for (const field of ["award_amount", "current_amount", "encumbered_amount", "paid_amount", "start_date", "end_date", "registration_date"]) {
+      assert.ok(Object.hasOwn(row.snapshot, field), `${field} retained for ${row.snapshot.ctr_id}`);
+    }
+    assert.ok(row.snapshot.action_key);
+    assert.ok(row.snapshot.action_family_key);
+  }
+  const firematicObject = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-FIREMATIC-1");
+  assert.deepEqual(firematicObject.passport_action_family.actions.map((row) => row.ctr_id), ["4561064", "4618449"]);
+  assert.deepEqual(firematicObject.passport_action_family.actions.map((row) => row.action_role), ["base", "action"]);
+});
+
+test("A2 serves AHA without a City Record lifecycle match", () => {
+  const model = modelFor([aha]);
+  assert.equal(model.rows.length, 1);
+  assert.equal(model.rows[0].lifecycle, null);
+  const html = renderProcurementDocument(model.rows[0], model.observations);
+  assert.match(html, /AHA MATERIALS FOR TRAINING/);
+  assert.match(html, /46,673\.32/);
+  assert.match(html, /2026-09-07|09\/07\/2026/);
+});
+
+test("A3 is order-independent and keeps population stages explicit", () => {
+  const left = modelFor([firematicBase, firematicAction, ...tameer, aha]);
+  const right = modelFor([aha, ...tameer.slice().reverse(), firematicAction, firematicBase]);
+  assert.deepEqual(
+    left.rows.map((row) => ({ id: row.procurement_id, family: row.passport_action_family })).sort((a, b) => a.id.localeCompare(b.id)),
+    right.rows.map((row) => ({ id: row.procurement_id, family: row.passport_action_family })).sort((a, b) => a.id.localeCompare(b.id)),
+  );
+  assert.deepEqual(reconcilePassportPopulations({
+    rawRows: Array(4), parsedRows: Array(3),
+    excludedRows: [{ reason: "publisher test row" }],
+    rejectedRows: [{ reason: "missing EPIN" }],
+    selectedRows: Array(2), servedRows: Array(2),
+  }), {
+    raw: 4, parsed: 3, excluded: 1, rejected: 1, selected: 2, served: 2,
+    reconciliation: {
+      raw_to_parsed: "3/4", parsed_to_selected: "2/3", selected_to_served: "2/2",
+      note: "stage populations are reported separately; no portal-entry equivalence is inferred",
+    },
+  });
+  assert.throws(() => reconcilePassportPopulations({ rejectedRows: [{}] }), /requires a reason/);
+});
+
+test("A4 carries acquisition vintage through builder and detail-loader inputs offline", () => {
+  const model = modelFor([aha]);
+  assert.equal(model.generated_at, ACQUIRED_AT);
+  assert.equal(model.observations[0].ingested_at, ACQUIRED_AT);
+  const html = renderProcurementDocument(model.rows[0], model.observations);
+  assert.match(html, /2026-09-07T12:00:00Z|2026-09-07/);
+});

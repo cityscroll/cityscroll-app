@@ -104,6 +104,7 @@ async function ensurePassportSchemaOnce(env) {
         contract_type   TEXT,
         award_amount    REAL,
         current_amount  REAL,
+        encumbered_amount REAL,
         paid_amount     REAL,
         start_date      TEXT,
         end_date        TEXT,
@@ -144,6 +145,13 @@ async function ensurePassportSchemaOnce(env) {
         value TEXT NOT NULL
       )`),
   ]);
+  // Repair older materializations that were created before this field was
+  // explicit. The full parsed row remains in payload as well.
+  try {
+    await env.DB.prepare("ALTER TABLE passport_contracts ADD COLUMN encumbered_amount REAL").run();
+  } catch (error) {
+    if (!/duplicate column|already exists/i.test(String(error?.message || error))) throw error;
+  }
   return { ok: true };
 }
 
@@ -410,9 +418,9 @@ export async function ingestPassportPublic(env) {
       env.DB.prepare(
         `INSERT OR REPLACE INTO passport_contracts
           (epin, epin_norm, ctr_id, contract_id, title, agency, vendor, status,
-           procurement_method, contract_type, award_amount, current_amount, paid_amount,
+           procurement_method, contract_type, award_amount, current_amount, encumbered_amount, paid_amount,
            start_date, end_date, registration_date, payload, ingested_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       ).bind(
         c.epin,
         c.epin_norm,
@@ -426,6 +434,7 @@ export async function ingestPassportPublic(env) {
         c.contract_type,
         c.award_amount,
         c.current_amount,
+        c.encumbered_amount,
         c.paid_amount,
         c.start_date,
         c.end_date,
