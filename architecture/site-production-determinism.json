@@ -358,6 +358,7 @@
     "site/legislative_matter_document.mjs",
     "site/list_entity_pivots.mjs",
     "site/local_constellation.mjs",
+    "site/local_issue_results.mjs",
     "site/location_awareness.js",
     "site/location_derivation.mjs",
     "site/location_evidence_tier.mjs",
