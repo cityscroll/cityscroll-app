@@ -20,6 +20,10 @@ on:
       - "test/fixtures/external_search_proof.json"
   workflow_dispatch:
 
+concurrency:
+  group: external-consumer-proof-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/gh-readonly-queue/')) }}
+
 permissions:
   contents: read
 
