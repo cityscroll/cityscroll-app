@@ -4,6 +4,7 @@ import { projectPropertyRecord } from "./property_action_projection.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "./display_title.mjs";
 import { recordIsCancelled } from "./calendar_occurrence.mjs";
 import { meetingCanonicalHref } from "./meeting_object_contract.mjs";
+import { consultationNowItems } from "./consultation_place_time.mjs";
 
 export const NOW_SURFACE_SCHEMA_VERSION = 1;
 export const NOW_ACTION_HORIZON_DAYS = 30;
@@ -11,7 +12,7 @@ export const NOW_EVENT_HORIZON_DAYS = 30;
 export const NOW_LANE_LIMIT = 16;
 
 const DAY_MS = 86_400_000;
-const DOMAINS = Object.freeze(["money", "staffing", "rules", "property", "meetings", "land"]);
+const DOMAINS = Object.freeze(["money", "staffing", "rules", "property", "meetings", "land", "consultations"]);
 const SOURCE_META = Object.freeze({
   money: { label: "City Record · Procurement", system: "city_record" },
   staffing: { label: "DCAS exam schedules", system: "dcas" },
@@ -19,6 +20,7 @@ const SOURCE_META = Object.freeze({
   property: { label: "City Record · Property Disposition", system: "city_record" },
   meetings: { label: "Official hearings and meetings", system: "city_record" },
   land: { label: "ZAP", system: "zap" },
+  consultations: { label: "Public consultations", system: "consultations" },
 });
 
 function isoDay(value) {
@@ -454,7 +456,8 @@ function sourceCoverage(sources) {
       reason: value.reason || (present ? null : "source_not_loaded"),
     };
   }
-  const unavailable = DOMAINS.filter((domain) => bySource[domain].status === "unavailable");
+  const unavailable = DOMAINS.filter((domain) => bySource[domain].status === "unavailable"
+    && (domain !== "consultations" || Object.hasOwn(sources || {}, domain)));
   return { complete: unavailable.length === 0, unavailable_sources: unavailable, sources: bySource };
 }
 
@@ -503,6 +506,13 @@ export function buildNowSurface(sources = {}, options = {}) {
     ...staffingActions(sources.staffing, config),
     ...rulesActions(sources.rules, config),
     ...propertyActions(sources.property, config),
+    ...consultationNowItems(
+      (sources.consultations?.consultations || sources.consultations?.records || []).map((record) => ({
+        ...record,
+        observed_at: record.observed_at || sources.consultations?.observed_at || null,
+      })),
+      { asOf: `${today}T12:00:00.000Z` },
+    ),
   ], options.scope, options.matchesScope);
   const eventCandidates = scoped([
     ...meetingEvents(sources.meetings, config),

@@ -1160,6 +1160,16 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "public-consultations",
+      "name": "Public consultation invitations",
+      "source_contract_id": "public-consultations",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.nyc.gov/",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "suitability-city-owned-leased-property-ll48",
       "name": "Suitability of City-Owned and Leased Property for Urban Agriculture (LL48)",
       "source_contract_id": "suitability-city-owned-leased-property-ll48",
@@ -3775,8 +3785,8 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-09-09",
-    "source_contracts_fingerprint": "033b4389b58e16bede22f963837a29864dedfb7ac79f98cc90fa0dd4b487199d",
+    "observed_on": "2026-09-15",
+    "source_contracts_fingerprint": "1d348aa15069838ce469e80c0f90cd3a58412a462978924f01701f6b25d1c0fd",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 91,
     "class_changes": 0,

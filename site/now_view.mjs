@@ -68,8 +68,9 @@ function loadNowSources() {
     workerJson("/property-locations", "properties"),
     workerJson("/hearings", "hearings"),
     workerThenLocal("/land-upcoming-hearings", "data/land_upcoming_hearings.json", "hearings"),
-  ]).then(([money, staffing, rules, property, meetings, land]) => ({
-    money, staffing, rules, property, meetings, land,
+    localJson("data/consultations.json", "consultations"),
+  ]).then(([money, staffing, rules, property, meetings, land, consultations]) => ({
+    money, staffing, rules, property, meetings, land, consultations,
   }));
   return nowSourcesPromise;
 }
