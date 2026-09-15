@@ -249,6 +249,7 @@
 /site/browse_scoped_adapters.mjs
 /site/browse_surface_contracts.mjs
 /site/browse_view.mjs
+/site/bsa_calendar.mjs
 /site/buyer_contracting_history.mjs
 /site/buyer_contracting_history_view.mjs
 /site/buyer_history_pursuit_comparison.mjs

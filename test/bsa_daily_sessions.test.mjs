@@ -2,12 +2,35 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { parseBsaAgendaPages, createBsaContainsScheduleRelation, bsaCalendarOccurrences } from "../site/bsa_calendar.mjs";
+import { todayISO } from "./helpers/test_clock.mjs";
 
-const fixture = JSON.parse(readFileSync(new URL("./fixtures/bsa/september-14-15-2026.json", import.meta.url)));
+const sourceFixture = JSON.parse(readFileSync(new URL("./fixtures/bsa/september-14-15-2026.json", import.meta.url)));
+function addDays(day, days) {
+  const date = new Date(`${day}T12:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+function longDate(day) {
+  return new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(`${day}T12:00:00Z`));
+}
+const fixtureDays = [addDays(todayISO(), 1), addDays(todayISO(), 2)];
+const fixture = {
+  ...sourceFixture,
+  publication_date: todayISO(),
+  pages: sourceFixture.pages.map((page) => ({
+    ...page,
+    ...(page.date ? { date: fixtureDays[page.date === "2026-09-15" ? 1 : 0] } : {}),
+    text: String(page.text || "")
+      .replaceAll("2026-09-14", fixtureDays[0])
+      .replaceAll("2026-09-15", fixtureDays[1])
+      .replaceAll("September 14, 2026", longDate(fixtureDays[0]))
+      .replaceAll("September 15, 2026", longDate(fixtureDays[1])),
+  })),
+};
 const sessions = parseBsaAgendaPages(fixture);
 
 test("the dated six-page agenda creates two timed daily sessions with day-local registration", () => {
-  assert.deepEqual(sessions.map((row) => row.event_date), ["2026-09-14T10:00:00", "2026-09-15T10:00:00"]);
+  assert.deepEqual(sessions.map((row) => row.event_date), fixtureDays.map((day) => `${day}T10:00:00`));
   assert.deepEqual(sessions.map((row) => row.agenda_items.length), [21, 4]);
   assert.equal(sessions[0].remote_registration_url.endsWith("day-one"), true);
   assert.equal(sessions[1].remote_registration_url.endsWith("day-two"), true);
@@ -46,7 +69,7 @@ test("the rendered agenda exposes cases and returns through the canonical day ro
   assert.match(html, /Executive review is a public observation phase/);
   assert.match(html, /applicant response and public testimony/);
   assert.match(html, /href="\/browse\/meetings\/"/);
-  assert.match(html, /meeting:bsa_calendar:bsa-2026-09-14/);
+  assert.match(html, new RegExp(`meeting:bsa_calendar:bsa-${fixtureDays[0]}`));
   });
 });
 

@@ -4699,6 +4699,26 @@
       "production_evidence_field": "first_class.rules_semantic_lane"
     },
     {
+      "id": "bsa-calendar",
+      "public_artifact_path": "site/data/bsa_calendar.json",
+      "primary_routes": ["/browse/meetings/", "/now/"],
+      "source_contract_id": "city-record",
+      "acquisition_command": ["node", "tools/build_bsa_calendar.mjs"],
+      "owning_builder": "tools/build_bsa_calendar.mjs",
+      "builder_command": ["node", "tools/build_bsa_calendar.mjs"],
+      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "normal_refresh_cadence_hours": 24,
+      "cadence_justification": "BSA publishes a rolling upcoming agenda and day-specific registration links; refresh daily.",
+      "warning_age_hours": 48,
+      "hard_maximum_age_hours": 168,
+      "vintage_fields": ["generated_at"],
+      "population_fields": ["rows"],
+      "last_known_good_behavior": "Retain the last verified BSA session snapshot within its hard age and disclose degraded freshness.",
+      "resident_stale_behavior": "Do not describe BSA sessions as current after the hard maximum age.",
+      "resident_unavailable_behavior": "Show BSA session coverage as unavailable; never replace a failed agenda refresh with an empty schedule.",
+      "production_evidence_field": "first_class.bsa_calendar"
+    },
+    {
       "id": "shared-meetings",
       "public_artifact_path": "site/data/shared_meeting_read_model.json",
       "primary_routes": ["/browse/meetings/", "/now/"],
