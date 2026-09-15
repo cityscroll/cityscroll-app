@@ -15,6 +15,9 @@ export const MEETING_SOURCE_SYSTEMS = Object.freeze([
   "city_record",
   "community_board",
   "nyc_legistar_events",
+  "pdc_calendar",
+  "bsa_calendar",
+  "oath_trial_calendar",
 ]);
 
 export const MEETING_JOIN_STATUSES = Object.freeze([
@@ -29,6 +32,9 @@ const SOURCE_KEY_TYPES = Object.freeze({
   city_record: "request_id",
   community_board: "publisher_event_id",
   nyc_legistar_events: "event_id",
+  pdc_calendar: "pdc_event_id",
+  bsa_calendar: "bsa_session_id",
+  oath_trial_calendar: "oath_trial_session_id",
 });
 
 function requiredText(value, label) {
@@ -82,6 +88,11 @@ function publisherIdFor(source, row) {
       || row.identity?.event_id
       || row.source_record_id
       || row.record_id;
+  }
+  if (source === "pdc_calendar") return row.pdc_event_id || row.event_id || row.source_record_id || row.record_id;
+  if (source === "bsa_calendar") return row.bsa_session_id || row.session_id || row.source_record_id || row.record_id;
+  if (source === "oath_trial_calendar") {
+    return row.oath_trial_session_id || row.session_id || row.source_record_id || row.record_id;
   }
   return row.source_record_id || row.record_id;
 }
@@ -156,6 +167,45 @@ function normalizeParticipation(value) {
     phones: [...new Set((Array.isArray(value.phones) ? value.phones : []).map(optionalText).filter(Boolean))].slice(0, 4),
     source_url: safeHttps(value.source_url),
   };
+}
+
+const MEETING_ACTIVITIES = Object.freeze(["observe", "attend", "speak"]);
+const SPEAKING_RIGHTS = Object.freeze(["allowed", "not_allowed", "requires_registration", "unknown"]);
+
+function normalizeActivity(value, source) {
+  const activity = optionalText(value)?.toLowerCase();
+  if (activity && MEETING_ACTIVITIES.includes(activity)) return activity;
+  return ["pdc_calendar", "bsa_calendar", "oath_trial_calendar"].includes(source) ? "observe" : null;
+}
+
+function normalizeSpeakingRights(value) {
+  const rights = optionalText(value)?.toLowerCase();
+  return rights && SPEAKING_RIGHTS.includes(rights) ? rights : "unknown";
+}
+
+function normalizeAccessSteps(value) {
+  if (!Array.isArray(value)) return [];
+  return value.map((step) => {
+    if (!step || typeof step !== "object") return null;
+    const destination = optionalText(step.destination || step.url || step.href);
+    const sourceUrl = safeHttps(step.source_url || step.evidence_url || step.url);
+    if (!destination && !sourceUrl) return null;
+    return {
+      kind: optionalText(step.kind || step.type) || "observer_instructions",
+      destination: destination || sourceUrl,
+      required: step.required !== false,
+      effort: optionalText(step.effort) || "open_details",
+      source_url: sourceUrl,
+    };
+  }).filter(Boolean).slice(0, 8);
+}
+
+function normalizeObserverAccess(value) {
+  if (!value || typeof value !== "object") return null;
+  const watchUrl = safeHttps(value.watch_url || value.watchUrl);
+  const remoteJoinUrl = safeHttps(value.remote_join_url || value.remoteJoinUrl || value.join_url);
+  if (!watchUrl && !remoteJoinUrl) return null;
+  return { watch_url: watchUrl, remote_join_url: remoteJoinUrl };
 }
 
 function searchableText(row, fields = {}) {
@@ -233,6 +283,11 @@ export function normalizeMeetingObject(row = {}) {
     event_date: optionalText(row.event_date || row.date),
     event_end: optionalText(row.event_end || row.end_at),
     meeting_family: meetingFamily,
+    activity: normalizeActivity(row.activity, source),
+    attendance_mode: optionalText(row.attendance_mode),
+    speaking_rights: normalizeSpeakingRights(row.speaking_rights),
+    observer_access: normalizeObserverAccess(row.observer_access),
+    access_steps: normalizeAccessSteps(row.access_steps || row.observer_access?.steps),
     venue,
     participation: normalizeParticipation(row.participation),
     committee: normalizeCommittee(row.committee),
@@ -354,6 +409,36 @@ export function normalizeNycLegistarEventsMeeting(row = {}) {
     committee,
     description: row.description || row.agenda?.search_text || row.EventComment,
     meeting_origin: row.meeting_origin || "nyc_legistar_events_observed",
+  });
+}
+
+export function normalizePdcCalendarMeeting(row = {}) {
+  return normalizeMeetingObject({
+    ...row,
+    source_system: "pdc_calendar",
+    publisher_identifier: row.publisher_identifier || row.pdc_event_id || row.event_id || row.source_record_id,
+    source_url: row.source_url || row.record_url,
+    activity: "observe",
+  });
+}
+
+export function normalizeBsaCalendarMeeting(row = {}) {
+  return normalizeMeetingObject({
+    ...row,
+    source_system: "bsa_calendar",
+    publisher_identifier: row.publisher_identifier || row.bsa_session_id || row.session_id || row.source_record_id,
+    source_url: row.source_url || row.record_url,
+    activity: "observe",
+  });
+}
+
+export function normalizeOathTrialCalendarMeeting(row = {}) {
+  return normalizeMeetingObject({
+    ...row,
+    source_system: "oath_trial_calendar",
+    publisher_identifier: row.publisher_identifier || row.oath_trial_session_id || row.session_id || row.source_record_id,
+    source_url: row.source_url || row.record_url,
+    activity: "observe",
   });
 }
 
