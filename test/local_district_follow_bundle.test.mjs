@@ -33,11 +33,17 @@ test("district confirmation enumerates the exact board and supported children", 
 });
 
 test("unsupported lenses are disclosed and omitted from the general district bundle", () => {
-  const bundle = buildLocalDistrictFollowBundle({ scope, board: "community-board:brooklyn-cb-15" });
+  const bundle = buildLocalDistrictFollowBundle({
+    scope,
+    board: "community-board:brooklyn-cb-15",
+    supportedLenses: ["land", "property", "rules", "money", "topic", "vendor-wide"],
+  });
   const disclosure = localDistrictFollowDisclosure(bundle);
   assert.equal(disclosure.frequency, "one weekly digest");
-  assert.ok(disclosure.omitted.includes("people"));
-  assert.ok(bundle.children.every((child) => !["entity", "award", "legal_code"].includes(child.lens)));
+  assert.deepEqual(disclosure.omitted, [
+    "people", "entity", "award", "district", "topic", "legal_code", "mandates", "obligations", "vendor-wide",
+  ]);
+  assert.deepEqual(bundle.children.map(({ lens }) => lens), ["meetings", "land", "property", "rules", "money"]);
 });
 
 test("a district without an exact board fails closed", () => {
@@ -50,10 +56,13 @@ test("payload preserves geography, board, topic, role, and time constraints", ()
   const payload = localDistrictFollowPayload({ scope, board: "community-board:brooklyn-cb-15" }, { email: "reader@example.com" });
   assert.equal(payload.pack_id, "local-district-follow");
   assert.equal(payload.children.length, 5);
-  for (const child of payload.children) {
+  for (const [index, child] of payload.children.entries()) {
     assert.deepEqual(child.filter.geographies, ["geography:community_district:K15"]);
     assert.equal(child.filter.when, "week");
+    assert.equal(child.filter.dateWindow, "week");
     assert.equal(child.filter.place_role, "matter");
+    assert.equal(child.filter.text_query, undefined);
+    assert.equal(child.filter.communityBoard, index === 0 ? "community-board:brooklyn-cb-15" : undefined);
   }
 });
 
