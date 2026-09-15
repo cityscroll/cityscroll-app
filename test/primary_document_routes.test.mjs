@@ -23,6 +23,17 @@ import { EXAMS_SURFACE } from "../site/browse_surface_contracts.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
 import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
 import rulesSemanticLaneArtifact from "../site/data/rules_semantic_lane.json" with { type: "json" };
+import procurementProjectContextMaterialization from "../site/data/procurement_project_context.json" with { type: "json" };
+import { solicitationFixture } from "./fixtures/procurement_project_context_fixtures.mjs";
+
+const museumNotice = {
+  request_id: "20260810048",
+  short_title: "ACEDCA215 Brooklyn Childrens Museum HVAC Upgrade",
+  type_of_notice_description: "Solicitation",
+  agency_name: "Department of Design and Construction",
+  pin: "85026B0110",
+  additional_description_1: "The notice body publishes PIN 85026B01107.",
+};
 
 const read = (path) => readFileSync(new URL(path, import.meta.url), "utf8");
 const procurementParityFixture = JSON.parse(read("./fixtures/procurement-detail-parity/ct107120258801626.json"));
@@ -58,6 +69,60 @@ function fakeKV(seed = {}) {
     },
   };
 }
+
+test("notice handler renderer exposes the retained wider-project scope", () => {
+  const html = renderEdgeNotice(museumNotice, museumNotice.request_id, null, null, {
+    projectContextMaterialization: procurementProjectContextMaterialization,
+  });
+  assert.match(html, /BCM-HVAC Upgrades/);
+  assert.match(html, /replacement of four air handler units/);
+  assert.match(html, /10 heat pumps/);
+  assert.match(html, /Temporary cooling will be needed/);
+  assert.match(html, /electrical work.*plumbing work/);
+  assert.match(html, /href="https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\/20260810048"/);
+});
+
+test("notice handler renderer preserves exact project figures and observation dates", () => {
+  const html = renderEdgeNotice(museumNotice, museumNotice.request_id, null, null, {
+    projectContextMaterialization: procurementProjectContextMaterialization,
+  });
+  assert.match(html, /\$19,905,485\.81/);
+  assert.match(html, /\$2,116,345\.32/);
+  assert.match(html, /June 25, 2029/);
+  assert.match(html, /May 18, 2026/);
+  assert.match(html, /June 23, 2026/);
+});
+
+test("notice handler renderer keeps conflicting identifiers separate without a portal link", () => {
+  const html = renderEdgeNotice(museumNotice, museumNotice.request_id, null, null, {
+    projectContextMaterialization: procurementProjectContextMaterialization,
+  });
+  assert.match(html, /85026B0110/);
+  assert.match(html, /85026B01107/);
+  const context = html.match(/<section class="project-context"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.doesNotMatch(context, /PASSPort|passportpublic/i);
+});
+
+test("production procurement handler composes the project materialization", async () => {
+  const { object, observations } = solicitationFixture("20260810048");
+  const manifest = { rows: [object], observations, sources: {} };
+  const env = { ASSETS: { fetch: async (request) => {
+    const path = new URL(request.url).pathname;
+    if (path === "/data/shared_procurement_read_model.json") return new Response(JSON.stringify(manifest));
+    return new Response("missing", { status: 404 });
+  } } };
+  const response = await edgeWorker.fetch(new Request(
+    `https://cityscroll.org/procurements/${encodeURIComponent(object.procurement_id)}/`,
+  ), env);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /BCM-HVAC Upgrades/);
+  assert.match(html, /\$19,905,485\.81/);
+  assert.match(html, /\$2,116,345\.32/);
+  assert.match(html, /85026B0110/);
+  const context = html.match(/<section class="project-context"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.doesNotMatch(context, /PASSPort|passportpublic/i);
+});
 
 test("primary navigation is four real document links on every promoted shell", () => {
   for (const html of [read("../site/index.html"), read("../site/near-you/index.html"), read("../site/following/index.html")]) {

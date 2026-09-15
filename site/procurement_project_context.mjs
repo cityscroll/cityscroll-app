@@ -67,13 +67,12 @@ export function projectContextReportingPeriod(value) {
   return month ? `${month} ${match[1]}` : null;
 }
 
-/** Whole dollars. Cents on a multi-million capital budget are noise, not precision. */
 export function projectContextAmount(value) {
   const published = String(value ?? "").replace(/[$,]/g, "").trim();
-  if (!published) return null;
-  const amount = Number(published);
-  if (!Number.isFinite(amount)) return null;
-  return `$${Math.round(amount).toLocaleString("en-US")}`;
+  if (!/^\d+(?:\.\d+)?$/.test(published)) return null;
+  const [whole, fraction = ""] = published.split(".");
+  const cents = `${fraction}00`.slice(0, 2);
+  return `$${whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${cents}`;
 }
 
 function projectContextMaterializationAccepted(materialization) {

@@ -164,6 +164,7 @@ site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-
 site/data/procurement_planning_payload.json
 site/data/procurement_planning_payload.schema.json
 site/data/procurement_planning_thread_lookup.json
+site/data/procurement_project_context.json
 site/data/procurement_spine_sources.json
 site/data/property_cross_domain_lookup.json
 site/data/property_disposition_cohort.json

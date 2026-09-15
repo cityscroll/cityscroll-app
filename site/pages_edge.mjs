@@ -13,6 +13,8 @@ import {
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { renderMeetingDocument } from "./meeting_document.mjs";
 import { renderProcurementDocument } from "./procurement_document.mjs";
+import { buildProjectContextView, renderProjectContextHtml } from "./procurement_project_context.mjs";
+import procurementProjectContextMaterialization from "./data/procurement_project_context.json" with { type: "json" };
 import { procurementShardPathForId } from "./procurement_read_model_shards.mjs";
 import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
 import sharedMeetingSnapshot from "./data/shared_meeting_read_model.json" with { type: "json" };
@@ -637,6 +639,10 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
   const title = row?.short_title || (row ? `${kind} ${id}` : `CityScroll public record ${id}`);
   const agency = row?.agency_name || "Agency not listed";
   const source = `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
+  const projectContext = buildProjectContextView(options.projectContextMaterialization, { request_id: id }, {
+    officialNotice: { href: source, label: "Official record" },
+  });
+  const projectContextHTML = renderProjectContextHtml(projectContext, { headingId: "notice-project-context-heading" });
   const browseLink = constellationLink({ href: "/browse/", label: "Browse public records", className: "act primary", escape: esc });
   const followingLink = constellationLink({ href: "/following/", label: "Follow public records", className: "act", escape: esc });
   const sourceLink = officialSourceLink({ href: source, label: "Official record", escape: esc });
@@ -831,6 +837,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       ${boardPivot}
       <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}${agencyReport ? ` ${agencyReport}` : ""}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}${vendorReport ? ` ${vendorReport}` : ""}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${civicTimeHistoryHTML}
+      ${projectContextHTML}
       ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
       ${mandateBacklinksHTML}
@@ -1010,6 +1017,7 @@ async function handleProcurement(request, env, encodedId) {
   if (result) {
     html = renderProcurementDocument(result.object, result.observations, {
       currentHref: request.url,
+      projectContextMaterialization: procurementProjectContextMaterialization,
       sourceStatus: result.sources, lookupReceipt: result.lookupReceipt,
       // determinism-lint: allow clock the request day for the served procurement document's opportunity-month past/current/future states; this handler renders per request, never at build time.
       today: new Date().toISOString().slice(0, 10),
@@ -1100,7 +1108,11 @@ async function handleNotice(request, env, id) {
     .on("#tab-notice", { element(element) { element.setAttribute("class", "tabpane active"); } })
     .on("#noticeview", { element(element) {
       element.setInnerContent(
-        renderEdgeNotice(row, id, meetingOutcome, mandateBacklinksLookup, { currentHref: request.url, civicTime }),
+        renderEdgeNotice(row, id, meetingOutcome, mandateBacklinksLookup, {
+          currentHref: request.url,
+          civicTime,
+          projectContextMaterialization: procurementProjectContextMaterialization,
+        }),
         { html: true },
       );
     } })
