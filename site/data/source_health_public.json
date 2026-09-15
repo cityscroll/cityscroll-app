@@ -2503,9 +2503,7 @@
       "mode": "periodic",
       "health": {
         "status": "UNKNOWN",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
