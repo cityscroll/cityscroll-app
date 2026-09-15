@@ -79,6 +79,7 @@ test("shared document mast and footer offer Guide next to the existing product r
     "/following/",
     "/browse/",
     GUIDE_HOME_HREF,
+    "/use-with-ai/",
   ]);
   assert.match(mast, /<a aria-current="page" href="\/browse\/">Browse<\/a>/);
   assert.match(mast, /<a href="\/guide\/">Guide<\/a>/);
