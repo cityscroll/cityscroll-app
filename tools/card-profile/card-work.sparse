@@ -215,6 +215,7 @@
 /site/agency_source_identity_contract.mjs
 /site/agency_vendor_rollup.mjs
 /site/agenda_project_groups.mjs
+/site/ai_discovery.mjs
 /site/alerts_context_carry.mjs
 /site/alerts_rollup_prefs.mjs
 /site/analytical_payment_projection.mjs
@@ -829,6 +830,7 @@
 /site/universal_search_federator.mjs
 /site/universal_search_mandate_producer.mjs
 /site/universal_search_relevance_ux.mjs
+/site/use-with-ai/
 /site/vendor/
 /site/vendor_footprint.mjs
 /site/vendor_phase_spine.mjs
