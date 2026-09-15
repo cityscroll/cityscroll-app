@@ -18,6 +18,10 @@ test("exact Checkbook analytical evidence is retained without changing identity"
   assert.equal(checkbook.state, "corroborated");
   assert.deepEqual(checkbook.matched_analytical_row_refs, ["checkbook_contracts:row:CT107120258801626"]);
   assert.equal(checkbook.snapshot_vintage, "2026-09-09");
+  assert.equal(checkbook.key_normalization, "uppercase alphanumeric characters");
+  assert.equal(checkbook.denominator, 1);
+  assert.equal(checkbook.usable_key_count, 1);
+  assert.equal(checkbook.source_acquisition_at, "2026-09-09T06:33:01Z");
 });
 
 test("unavailable sources and ordinary NYC ABO objects stay unresolved or inapplicable", () => {
@@ -33,15 +37,31 @@ test("unavailable sources and ordinary NYC ABO objects stay unresolved or inappl
   assert.equal(receipt.sources.find((row) => row.source_system === "nys_abo_awards").lookup_as_of, undefined);
 });
 
-test("multiple exact candidates are ambiguous and retain all references", () => {
+test("duplicate representations corroborate one identity and retain all references", () => {
   const receipt = buildProcurementSourceLookupReceipt({
     object: { procurement_id: "procurement:contract:CT-1", identity_keys: { contract_ids: ["CT-1"] } },
     observations: [obs("checkbook_contracts", "a", { contract_id: "CT-1" }), obs("checkbook_contracts", "b", { contract_id: "CT-1" })],
     generatedAt: "2026-09-14T00:00:00Z",
   });
   const checkbook = receipt.sources.find((row) => row.source_system === "checkbook_contracts");
-  assert.equal(checkbook.state, "ambiguous");
+  assert.equal(checkbook.state, "corroborated");
   assert.deepEqual(checkbook.matched_source_observation_refs, ["checkbook_contracts:a", "checkbook_contracts:b"]);
+  assert.deepEqual(checkbook.matched_identity_keys, ["contract:CT1"]);
+});
+
+test("distinct exact contract identities sharing a PIN remain ambiguous", () => {
+  const receipt = buildProcurementSourceLookupReceipt({
+    object: { procurement_id: "procurement:contract:PIN-COLLISION", identity_keys: { epins: ["PIN-1"] } },
+    observations: [
+      obs("passport_public_contracts", "a", { contract_id: "FMS-1", epin: "PIN-1" }),
+      obs("passport_public_contracts", "b", { contract_id: "FMS-2", epin: "PIN-1" }),
+    ],
+    generatedAt: "2026-09-14T00:00:00Z",
+  });
+  const passport = receipt.sources.find((row) => row.source_system === "passport_public_contracts");
+  assert.equal(passport.state, "ambiguous");
+  assert.deepEqual(passport.matched_identity_keys, ["contract:FMS1", "contract:FMS2"]);
+  assert.deepEqual(passport.matched_source_observation_refs, ["passport_public_contracts:a", "passport_public_contracts:b"]);
 });
 
 test("A9 named assertion: aggregate receipt states reconcile to the applicable object-source population", () => {
@@ -66,7 +86,7 @@ test("A9 named assertion: aggregate receipt states reconcile to the applicable o
     Object.keys(projection.counts).sort(),
     ["ambiguous", "checked-no-match", "corroborated", "not-applicable", "not-checked", "stale", "unavailable"].sort(),
   );
-  assert.equal(projection.duplicate_key_count, 2);
+  assert.equal(projection.duplicate_key_count, 0);
   assert.equal(projection.missing_key_count, 2);
   assert.equal(projection.applicable_object_source_population.object_count, 2);
   assert.equal(

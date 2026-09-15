@@ -84,13 +84,31 @@ function materializationStatus(materializations, system, observations = []) {
     status: observations.some((row) => sourceSystem(row) === system) ? "available" : "unavailable",
     vintage: null,
     asOf: null,
+    acquiredAt: null,
+    population: null,
+    denominator: null,
+    usableKeyCount: null,
   };
   const status = text(typeof value === "string" ? value : value.status)?.toLowerCase();
   const normalized = ["available", "partial", "stale", "unavailable"].includes(status) ? status : "available";
+  const rows = rowsFor(materializations, system);
+  const keys = new Set();
+  for (const row of rows) {
+    const rowKey = rowKeys(row, system);
+    const key = system === "passport_public_rfx"
+      ? rowKey.epin || rowKey.rfx
+      : system === "checkbook_spending" ? rowKey.contract : rowKey.contract || rowKey.epin;
+    if (key) keys.add(key);
+  }
   return {
     status: normalized,
     vintage: text(typeof value === "object" ? (value.snapshot_vintage || value.snapshot_date || value.generated_at) : null),
     asOf: text(typeof value === "object" ? (value.lookup_as_of || value.as_of || value.generated_at) : null),
+    acquiredAt: text(typeof value === "object" ? (value.source_acquisition_at || value.acquired_at || value.retrieved_at || value.generated_at) : null),
+    population: text(typeof value === "object" ? (value.population || value.population_label || value.lookup_population) : null),
+    denominator: typeof value === "object" && Number.isFinite(Number(value.denominator))
+      ? Number(value.denominator) : (rows.length ? rows.length : null),
+    usableKeyCount: keys.size,
   };
 }
 
@@ -176,6 +194,11 @@ function receiptForSource({ system, object, observations, materializations, look
     matched_analytical_row_refs: [],
     basis: null,
     snapshot_vintage: materialized.vintage,
+    key_normalization: "uppercase alphanumeric characters",
+    usable_key_count: materialized.usableKeyCount,
+    population: materialized.population,
+    denominator: materialized.denominator,
+    source_acquisition_at: materialized.acquiredAt,
   };
   if (!applicable) return base;
   if (["unavailable", "stale"].includes(materialized.status)) {
@@ -191,17 +214,31 @@ function receiptForSource({ system, object, observations, materializations, look
   }
   const matches = [...candidates.keys()];
   const analytical = [];
+  const analyticalRows = [];
   const analyticalCandidates = new Map();
   for (const key of (system === "checkbook_spending" ? keys.contract : [...keys.contract, ...keys.epin])) {
     for (const row of (index.analyticalBySystemKey.get(`${system}:${key}`) || [])) analyticalCandidates.set(row, row);
   }
   for (const row of analyticalCandidates.values()) {
     const id = text(row.prime_contract_id || row.contract_id || row.contractId || row.document_id || row.documentId);
-    if (id) analytical.push(`${system}:row:${id}`);
+    if (id) {
+      analytical.push(`${system}:row:${id}`);
+      analyticalRows.push(row);
+    }
   }
   const refs = [...new Set(matches)].sort();
   const analyticalRefs = [...new Set(analytical)].sort();
-  const candidateCount = refs.length + analyticalRefs.length;
+  const identities = new Set();
+  for (const row of [...candidates.values(), ...analyticalRows]) {
+    const rowKey = rowKeys(row, system);
+    const identity = system === "passport_public_rfx"
+      ? (rowKey.rfx ? `rfx:${rowKey.rfx}` : rowKey.epin ? `epin:${rowKey.epin}` : null)
+      : system === "checkbook_spending"
+        ? (rowKey.contract ? `contract:${rowKey.contract}` : null)
+        : (rowKey.contract ? `contract:${rowKey.contract}` : rowKey.epin ? `epin:${rowKey.epin}` : null);
+    if (identity) identities.add(identity);
+  }
+  const candidateCount = identities.size;
   const state = candidateCount > 1 ? "ambiguous" : candidateCount === 1 ? "corroborated" : "checked-no-match";
   const basis = system === "checkbook_contracts"
     ? (keys.contract.length ? "exact_prime_contract_id" : "exact_pin")
@@ -212,6 +249,7 @@ function receiptForSource({ system, object, observations, materializations, look
     state,
     matched_source_observation_refs: refs,
     matched_analytical_row_refs: analyticalRefs,
+    matched_identity_keys: [...identities].sort(),
     basis,
   };
   if (materialized.status === "available" || materialized.status === "partial") {
