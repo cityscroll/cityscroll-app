@@ -215,7 +215,11 @@ async function runSourceContracts(job, context) {
       publisher_clock_basis: observations.get(id)?.publisher_clock_basis ?? null,
       publisher_updated_at: observations.get(id)?.publisher_updated_at ?? null,
       ...(observations.get(id)?.status === "affirmed"
-        ? { pin_status: "affirmed", content_digest: observations.get(id).content_digest }
+        ? {
+          pin_status: "affirmed",
+          content_digest: observations.get(id).content_digest,
+          stable_reference: observations.get(id).stable_reference,
+        }
         : {}),
       clock_kind: "check",
     })),

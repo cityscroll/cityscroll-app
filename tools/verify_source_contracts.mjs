@@ -223,8 +223,13 @@ export async function verifySocrata(contract, options = {}) {
         contentUrl.searchParams.set("$limit", "50000");
         const contentResponse = await labeledFetch(contract.id, "content", contentUrl.toString());
         if (!contentResponse.ok) throw new Error(`${contract.id}: content HTTP ${contentResponse.status}`);
-        const contentRows = await responseJson(contentResponse, contract.id);
-        if (!Array.isArray(contentRows)) throw new Error(`${contract.id}: content response is not tabular rows`);
+        const contentBody = await responseJson(contentResponse, contract.id);
+        const contentRows = Array.isArray(contentBody)
+          ? contentBody
+          : contentBody?.type === "FeatureCollection" && Array.isArray(contentBody.features)
+            ? contentBody.features
+            : null;
+        if (!contentRows) throw new Error(`${contract.id}: content response is not tabular rows`);
         const digest = contentDigest(contentRows, contract.required_fields);
         if (digest === retainedReceipt.content_digest.digest) {
           options.onObservation?.({
@@ -232,6 +237,11 @@ export async function verifySocrata(contract, options = {}) {
             publisher_updated_at: new Date(publisherAt).toISOString(),
             status: "affirmed",
             content_digest: digest,
+            stable_reference: {
+              publisher_updated_at: new Date(publisherAt).toISOString(),
+              retained_vintage_at: new Date(publisherAt).toISOString(),
+              observed_on: isoDay(publisherAt),
+            },
           });
           return `${contract.dataset_id} · republished, content unchanged at ${isoDay(publisherAt)} (${clockField}; retained pin unchanged)`;
         }

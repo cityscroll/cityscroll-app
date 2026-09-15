@@ -509,7 +509,7 @@ test("a stable-reference pin gates on the publisher republishing, not on elapsed
   await assert.rejects(verifySocrata(contract), /publisher republished .*re-acquire the retained snapshot/s);
 });
 
-test("a same-content Socrata republish is affirmed without opening drift, while changed content still drifts", async (t) => {
+test("the live monitor affirms an unchanged GeoJSON republish and still files genuine geometry drift", async (t) => {
   const originalFetch = globalThis.fetch;
   t.after(() => { globalThis.fetch = originalFetch; });
   const retainedRows = [
@@ -546,17 +546,29 @@ test("a same-content Socrata republish is affirmed without opening drift, while 
     rowsUpdatedAt: rowsUpdatedAt / 1000,
     fields: contract.required_fields,
   });
+  let observation;
   globalThis.fetch = async (url) => String(url).includes("/api/views/")
     ? metadata(Date.UTC(2026, 8, 14, 10))
-    : new Response(JSON.stringify(retainedRows), { status: 200, headers: { "Content-Type": "application/json" } });
-  const affirmed = await verifySocrata(contract, { retainedReceipt });
+    : new Response(JSON.stringify({ type: "FeatureCollection", features: retainedRows.map((properties) => ({ type: "Feature", properties })) }), { status: 200, headers: { "Content-Type": "application/geo+json" } });
+  const affirmed = await verifySocrata(contract, { retainedReceipt, onObservation: (value) => { observation = value; } });
   assert.match(affirmed, /republished, content unchanged/);
+  assert.deepEqual(observation, {
+    publisher_clock_basis: "rowsUpdatedAt",
+    publisher_updated_at: "2026-09-14T10:00:00.000Z",
+    status: "affirmed",
+    content_digest: contentDigest(retainedRows, contract.required_fields),
+    stable_reference: {
+      publisher_updated_at: "2026-09-14T10:00:00.000Z",
+      retained_vintage_at: "2026-09-14T10:00:00.000Z",
+      observed_on: "2026-09-14",
+    },
+  });
 
   const changedRows = structuredClone(retainedRows);
   changedRows[1].district = "MN99";
   globalThis.fetch = async (url) => String(url).includes("/api/views/")
     ? metadata(Date.UTC(2026, 8, 14, 10))
-    : new Response(JSON.stringify(changedRows), { status: 200, headers: { "Content-Type": "application/json" } });
+    : new Response(JSON.stringify({ type: "FeatureCollection", features: changedRows.map((properties) => ({ type: "Feature", properties })) }), { status: 200, headers: { "Content-Type": "application/geo+json" } });
   await assert.rejects(verifySocrata(contract, { retainedReceipt }), /publisher republished .*re-acquire the retained snapshot/);
 });
 
@@ -569,8 +581,8 @@ test("a stable-reference pin must name a publisher vintage we actually retain", 
   const geography = readFileSync(new URL("../site/civic_geography_registry.mjs", import.meta.url), "utf8");
   assert.ok(geography.includes("dsny-district-boundaries"));
   const retained = readFileSync(new URL("../tools/build_civic_geography.mjs", import.meta.url), "utf8");
-  assert.match(retained, /source_updated_at: "2026-09-14T10:12:41\.000Z"/);
-  assert.equal(Date.parse(pin.publisher_updated_at), Date.parse("2026-09-14T10:12:41.000Z"));
+  assert.match(retained, /source_updated_at: "2026-09-15T10:18:58\.000Z"/);
+  assert.equal(Date.parse(pin.publisher_updated_at), Date.parse("2026-09-15T10:18:58.000Z"));
 
   const drifted = structuredClone(registry);
   const target = drifted.contracts.find((row) => row.id === "dsny-district-boundaries");
