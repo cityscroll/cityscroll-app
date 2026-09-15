@@ -12,6 +12,7 @@ import {
   mergeUniversalSearchResults,
 } from "../worker/src/search.mjs";
 import { readProcurementBrowsePopulation } from "../tools/lib/procurement_browse_population_io.mjs";
+import { solicitationFixture } from "./fixtures/procurement_project_context_fixtures.mjs";
 
 const cohort = JSON.parse(readFileSync(
   new URL("./fixtures/procurement_search/golden_cohort.json", import.meta.url),
@@ -57,6 +58,25 @@ test("CROL-positive canonical result retains notice evidence additively", () => 
   assert.deepEqual(positive.provenance.notice_evidence.map((entry) => entry.request_id), ["20260623008"]);
   assert.match(positive.provenance.notice_evidence[0].additional_description_1, /retained/);
   assert.equal(positive.provenance.browse_record.request_id, "20260623008");
+});
+
+test("exact project-code search producer reaches the real notice destination", () => {
+  const fixture = solicitationFixture("20260810048");
+  const object = { ...fixture.object, object_type: "procurement" };
+  const { observations } = fixture;
+  const documents = buildProcurementSearchDocuments({
+    schema: "cityscroll.shared_procurement_read_model.v1",
+    rows: [object],
+    observations,
+    sources: {},
+  }).documents;
+  const matches = documents.filter((document) => /ACEDCA215/.test(document.search_text));
+  assert.ok(matches.length >= 1);
+  const notice = matches.find((document) => document.provenance?.browse_record?.request_id === "20260810048");
+  assert.ok(notice, "ACEDCA215 search retains the museum notice");
+  assert.equal(notice.provenance.browse_record.request_id, "20260810048");
+  assert.equal(notice.provenance.notice_evidence[0].href, "/notices/20260810048");
+  assert.match(notice.canonical_href, /^\/procurements\//);
 });
 
 test("one unavailable source changes only that source coverage", () => {

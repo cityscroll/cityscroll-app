@@ -257,8 +257,8 @@ test("A2: the section states the wider project's published scope, including the 
 
 test("A2: project figures are labeled as the project's, never as the advertised package's", () => {
   const section = sectionOf(renderCase(MUSEUM_REQUEST_ID));
-  assert.match(section, /<dt>Project budget<\/dt><dd>\$19,905,486<\/dd>/);
-  assert.match(section, /<dt>Recorded project spending<\/dt><dd>\$2,116,345<\/dd>/);
+  assert.match(section, /<dt>Project budget<\/dt><dd>\$19,905,485\.81<\/dd>/);
+  assert.match(section, /<dt>Recorded project spending<\/dt><dd>\$2,116,345\.32<\/dd>/);
   assert.match(section, /<dt>Project forecast completion<\/dt><dd>June 25, 2029<\/dd>/);
   assert.match(section, /<dt>Project schedule number<\/dt><dd>4369<\/dd>/);
   // The words that would turn a project figure into a contractual one never appear.
@@ -452,7 +452,7 @@ test("A5: the page inlines the one-line summary for in-place inspection, escaped
   assert.doesNotMatch(block[1], /</, "no raw < survives into the inline JSON");
   const payload = JSON.parse(block[1].replace(/\\u003c/g, "<"));
   assert.match(payload.summary, /^Wider project: BCM-HVAC Upgrades/);
-  assert.match(payload.summary, /project budget \$19,905,486/);
+  assert.match(payload.summary, /project budget \$19,905,485\.81/);
   assert.match(payload.summary, /project forecast June 25, 2029/);
   assert.match(payload.summary, /Project figures, not the advertised package\./);
   assert.equal(projectContextInspectSummary(null), null);
@@ -585,7 +585,7 @@ test("A5: formatting helpers refuse to invent a value they were not given", () =
   assert.equal(projectContextDay("2029-06-25T00:00:00.000"), "June 25, 2029");
   assert.equal(projectContextDay("2029-06"), null);
   assert.equal(projectContextDay(null), null);
-  assert.equal(projectContextAmount("19905485.81"), "$19,905,486");
+  assert.equal(projectContextAmount("19905485.81"), "$19,905,485.81");
   assert.equal(projectContextAmount(""), null);
   assert.equal(projectContextAmount("not a number"), null);
 });
