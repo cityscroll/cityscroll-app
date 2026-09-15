@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+concurrency:
+  group: home-path-leak-guard-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/gh-readonly-queue/')) }}
+
 permissions:
   contents: read
 
