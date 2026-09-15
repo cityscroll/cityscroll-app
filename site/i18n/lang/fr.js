@@ -22,6 +22,7 @@
   W.STRINGS["fr"] = W.STRINGS["fr"] || {};
   Object.assign(W.STRINGS["fr"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_d56f9637f2ded084: "Les 62 sources publiques qui sous-tendent ces documents, selon la fréquence à laquelle chacune change",
     guide_text_a79aae29f4b3dde6: "Sur la page d’une réunion, choisissez `Add to calendar` parmi ses actions. Cette commande n’apparaît que lorsque le document comporte une heure. Ouvrez le fichier téléchargé dans votre calendrier et vérifiez le titre, la date et l’heure de l’événement.",
     guide_text_427f9ea76a2de8cd: "Ouvrez [{control_b}]({link_a}) et sélectionnez le titre d’une réunion pour ouvrir sa page.",
     guide_text_0bd019485364f283: "Si le panneau des filtres masque la barre d’outils, fermez **{control_a}** et choisissez **{control_b}**.",

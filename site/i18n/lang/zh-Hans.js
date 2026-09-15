@@ -18,6 +18,7 @@
   W.STRINGS["zh-Hans"] = W.STRINGS["zh-Hans"] || {};
   Object.assign(W.STRINGS["zh-Hans"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_d56f9637f2ded084: "这些记录背后的62个公共来源，按各来源更新频率分类",
     guide_text_a79aae29f4b3dde6: "在会议页面的操作中选择`Add to calendar`。此控件只在记录有具体时刻时出现。在日历应用中打开下载的文件，核对活动标题、日期和时间。",
     guide_text_427f9ea76a2de8cd: "打开[{control_b}]({link_a})，选择一个会议标题以打开该会议页面。",
     guide_text_0bd019485364f283: "如果筛选面板遮住了工具栏，请关闭**{control_a}**，然后选择**{control_b}**。",

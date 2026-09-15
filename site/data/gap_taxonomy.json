@@ -1160,6 +1160,16 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "pdc-calendar",
+      "name": "NYC Public Design Commission meeting schedule and agendas",
+      "source_contract_id": "pdc-calendar",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "public-consultations",
       "name": "Public consultation invitations",
       "source_contract_id": "public-consultations",
@@ -3786,7 +3796,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-09-15",
-    "source_contracts_fingerprint": "1d348aa15069838ce469e80c0f90cd3a58412a462978924f01701f6b25d1c0fd",
+    "source_contracts_fingerprint": "1f8e29fc22f515000553587abbc8e18caace4daaede1bcb0242b3a7e9f6343fa",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 91,
     "class_changes": 0,
