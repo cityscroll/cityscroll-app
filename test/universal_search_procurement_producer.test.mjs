@@ -12,6 +12,7 @@ import {
   mergeUniversalSearchResults,
 } from "../worker/src/search.mjs";
 import { readProcurementBrowsePopulation } from "../tools/lib/procurement_browse_population_io.mjs";
+import { resolveKeywordQuery, searchKeywordDocuments } from "../site/keyword_matcher.mjs";
 import { solicitationFixture } from "./fixtures/procurement_project_context_fixtures.mjs";
 
 const cohort = JSON.parse(readFileSync(
@@ -77,6 +78,40 @@ test("exact project-code search producer reaches the real notice destination", (
   assert.equal(notice.provenance.browse_record.request_id, "20260810048");
   assert.equal(notice.provenance.notice_evidence[0].href, "/notices/20260810048");
   assert.match(notice.canonical_href, /^\/procurements\//);
+});
+
+test("exact project-code search uses the resident matcher and returns the whole result set", () => {
+  const fixture = solicitationFixture("20260810048");
+  const documents = buildProcurementSearchDocuments({
+    schema: "cityscroll.shared_procurement_read_model.v1",
+    rows: [{ ...fixture.object, object_type: "procurement" }],
+    observations: fixture.observations,
+    sources: {},
+  }).documents;
+  const matches = searchKeywordDocuments(documents, resolveKeywordQuery("ACEDCA215"), { limit: 100 });
+  assert.deepEqual(matches.map((document) => document.object_ref), [fixture.object.procurement_id]);
+  assert.equal(matches[0].provenance.notice_evidence[0].request_id, "20260810048");
+  assert.equal(matches[0].provenance.notice_evidence[0].href, "/notices/20260810048");
+});
+
+test("canonical procurement links are emitted only for admitted procurement identities", () => {
+  const fixture = solicitationFixture("20260810048");
+  const admitted = buildProcurementSearchDocuments({
+    schema: "cityscroll.shared_procurement_read_model.v1",
+    rows: [{ ...fixture.object, object_type: "procurement" }],
+    observations: fixture.observations,
+    sources: {},
+  }).documents;
+  assert.equal(admitted.length, 1);
+  assert.match(admitted[0].canonical_href, /^\/procurements\/procurement%3Acity-record%3A20260810048$/);
+
+  const rejected = buildProcurementSearchDocuments({
+    schema: "cityscroll.shared_procurement_read_model.v1",
+    rows: [{ ...fixture.object, object_type: "unresolved" }],
+    observations: fixture.observations,
+    sources: {},
+  }).documents;
+  assert.deepEqual(rejected, []);
 });
 
 test("one unavailable source changes only that source coverage", () => {

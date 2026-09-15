@@ -24,7 +24,14 @@ import { handleStats } from "../worker/src/stats.mjs";
 import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
 import rulesSemanticLaneArtifact from "../site/data/rules_semantic_lane.json" with { type: "json" };
 import procurementProjectContextMaterialization from "../site/data/procurement_project_context.json" with { type: "json" };
-import { solicitationFixture } from "./fixtures/procurement_project_context_fixtures.mjs";
+import {
+  BUNDLE_REQUEST_ID,
+  BLANK_SCOPE_REQUEST_ID,
+  MUSEUM_REQUEST_ID,
+  QUALIFICATION_REQUEST_ID,
+  renderCase,
+  solicitationFixture,
+} from "./fixtures/procurement_project_context_fixtures.mjs";
 
 const museumNotice = {
   request_id: "20260810048",
@@ -101,6 +108,54 @@ test("notice handler renderer keeps conflicting identifiers separate without a p
   assert.match(html, /85026B01107/);
   const context = html.match(/<section class="project-context"[\s\S]*?<\/section>/)?.[0] || "";
   assert.doesNotMatch(context, /PASSPort|passportpublic/i);
+});
+
+test("notice project-context section attributes every scope fact to the wider project", () => {
+  const html = renderEdgeNotice(museumNotice, museumNotice.request_id, null, null, {
+    projectContextMaterialization: procurementProjectContextMaterialization,
+  });
+  const context = html.match(/<section class="project-context"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.ok(context, "the notice renderer must include the extracted project context");
+  assert.match(context, /The advertised package is one part of it/);
+  for (const fact of [
+    "BCM-HVAC Upgrades",
+    "replacement of four air handler units",
+    "10 heat pumps",
+    "electrical work",
+    "plumbing work",
+    "Temporary cooling will be needed",
+  ]) assert.match(context, new RegExp(fact), fact);
+});
+
+test("project context keeps project figures distinct from solicitation and contract fields", () => {
+  const html = renderEdgeNotice(museumNotice, museumNotice.request_id, null, null, {
+    projectContextMaterialization: procurementProjectContextMaterialization,
+  });
+  const context = html.match(/<section class="project-context"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.match(context, /<dt>Project budget<\/dt><dd>\$19,905,485\.81<\/dd>/);
+  assert.match(context, /<dt>Project forecast completion<\/dt><dd>June 25, 2029<\/dd>/);
+  assert.doesNotMatch(context, /bid deadline|contract amount/i);
+  assert.match(context, /<dt>Published project code<\/dt><dd>ACEDCA215<\/dd>/);
+});
+
+test("named project-context fixtures retain official links, no JavaScript handoffs, and only their published scope", () => {
+  for (const requestId of [
+    MUSEUM_REQUEST_ID,
+    BLANK_SCOPE_REQUEST_ID,
+    QUALIFICATION_REQUEST_ID,
+    BUNDLE_REQUEST_ID,
+  ]) {
+    const html = renderCase(requestId);
+    assert.doesNotMatch(html, /javascript:/i, requestId);
+    assert.match(html, /class="project-context-official-link" href="https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\//, requestId);
+  }
+  const blankScope = renderCase(BLANK_SCOPE_REQUEST_ID);
+  assert.doesNotMatch(blankScope, /<p class="project-context-scope">/);
+  const qualification = renderCase(QUALIFICATION_REQUEST_ID);
+  assert.match(qualification, /not a construction bid deadline/);
+  const bundle = renderCase(BUNDLE_REQUEST_ID);
+  assert.match(bundle, /PV820HVAC/);
+  assert.match(bundle, /not covered above/);
 });
 
 test("production procurement handler composes the project materialization", async () => {
