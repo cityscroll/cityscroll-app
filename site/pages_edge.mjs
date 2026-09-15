@@ -44,6 +44,7 @@ import {
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
+import { renderNoticeRouteChrome } from "./notice_document_composition.mjs";
 import {
   buildCanonicalDocumentReportTarget,
   buildCanonicalDocumentRelationshipReportTarget,
@@ -906,7 +907,7 @@ function rewrittenResponse(asset, status, cacheControl) {
   return new Response(asset.body, { status, headers });
 }
 
-async function noticeRow(id) {
+async function noticeRow(id, readModelOrigin = NOTICE_READ_MODEL) {
   // Ordinary document reads use the Worker/D1 projection. Socrata remains an exceptional
   // degradation path for an older id or an unavailable/partial mirror.
   //
@@ -916,7 +917,7 @@ async function noticeRow(id) {
   // an absent status stays `unknown` rather than being read as any of the four
   // measured outcomes.
   try {
-    const readModel = new URL(NOTICE_READ_MODEL);
+    const readModel = new URL(readModelOrigin);
     readModel.searchParams.set("id", id);
     const response = await fetch(readModel, {
       headers: { Accept: "application/json" },
@@ -1044,7 +1045,7 @@ async function handleNotice(request, env, id) {
   // captured here so a failing record read still reaches the unavailable
   // terminal instead of rejecting the resident reads with it.
   let recordSettledAt = null;
-  const recordRead = noticeRow(id).then(
+  const recordRead = noticeRow(id, env?.NOTICE_READ_MODEL || NOTICE_READ_MODEL).then(
     (result) => { recordSettledAt = noticeEdgeInstant(); return { ok: true, result }; },
     () => { recordSettledAt = noticeEdgeInstant(); return { ok: false, result: null }; },
   );
@@ -1098,6 +1099,14 @@ async function handleNotice(request, env, id) {
       : response;
   }
   const transformed = new HTMLRewriter()
+    .on("body", { element(element) {
+      element.setAttribute("data-primary-context", "notice");
+      element.setAttribute("class", "notice-route");
+    } })
+    .on("#notice-route-chrome", { element(element) {
+      element.removeAttribute("hidden");
+      element.setInnerContent(renderNoticeRouteChrome(), { html: true });
+    } })
     .on("title", { element(element) { element.setInnerContent(`${title} · CityScroll`); } })
     .on("head", { element(element) { element.append(renderNoticeModulePreloadHTML(), { html: true }); } })
     .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })

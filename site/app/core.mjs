@@ -350,6 +350,7 @@ function showTab(name, push){
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   const navigationFamily=navigationFamilyForTab(name);
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === navigationFamily));
+  globalThis.applyNoticeRouteState?.(name === "notice");
   syncTabAria();
   focusLensHeading(name);
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState

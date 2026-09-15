@@ -1774,6 +1774,15 @@
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   .skip{position:absolute;inset-inline-start:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-end-end-radius:9px;font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none}
   .skip:focus{inset-inline-start:0}
+  /* Notice documents share the static document mast while retaining the legacy
+     homepage shell nodes required by application bindings. */
+  .notice-route-chrome[hidden]{display:none!important}
+  .notice-route .notice-route-chrome{display:block}
+  .notice-route .masthead{display:block;border:0;background:transparent}
+  .notice-route .masthead .wrap{padding:0;max-width:none}
+  .notice-route .masthead .wrap>:not(#langSwitcher){display:none!important}
+  .notice-route .masthead .lang-switcher{position:fixed;top:12px;inset-inline-end:22px}
+  .notice-route .notice-language-slot{position:absolute;inset-block-start:0;inset-inline-end:0;z-index:3}
   :is(button,.act,.chip,.wandchip,.trychip,a,select,input,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
   .tabbtn:focus-visible{outline:2px solid var(--oxblood);outline-offset:-2px}
   .row:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
@@ -1934,6 +1943,7 @@
     <div class="cr-rule cr-rule--bottom"></div>
   </div>
 </header>
+<div id="notice-route-chrome" class="notice-route-chrome" data-notice-route-chrome="1" hidden></div>
 <main id="main" data-document-rendered="true" tabindex="-1">
 
 <!-- ============ BROWSE ============ -->

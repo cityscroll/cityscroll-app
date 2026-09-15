@@ -5,6 +5,7 @@ const isNeutralHome = rootPath === "/" && !location.hash;
 if (!isNeutralHome) document.body?.setAttribute("data-app-route", "true");
 
 const NOTICE_ROUTE = location.hash.startsWith("#notice/") || location.pathname.startsWith("/notices/");
+if (NOTICE_ROUTE) await import("../notice_document_composition.mjs");
 const NOTICE_CONTEXT_MODULE_PATH = "./notice-context.mjs";
 const APP_IMPORT_PHASES = new Set(["start", "core-end", "notice-context-start", "notice-context-end", "route-modules-start", "route-modules-end", "end"]);
 function appImportTimingMark(phase){
