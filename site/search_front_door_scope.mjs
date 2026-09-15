@@ -43,6 +43,16 @@ export const SEARCH_FRONT_DOOR_SCOPES = Object.freeze({
     narrow_label_key: "preview_scope_all_sources",
     source: FEDERATED_SEARCH_PRESENTATION_SCOPES.contracts.source,
   }),
+  consultations: Object.freeze({
+    id: "consultations",
+    mode: "allowlisted",
+    lenses: Object.freeze([...FEDERATED_SEARCH_PRESENTATION_SCOPES.consultations.lenses]),
+    domains: Object.freeze([...FEDERATED_SEARCH_PRESENTATION_SCOPES.consultations.domains]),
+    label_key: "tab_consultations",
+    narrow_target: "all",
+    narrow_label_key: "preview_scope_all_sources",
+    source: FEDERATED_SEARCH_PRESENTATION_SCOPES.consultations.source,
+  }),
 });
 
 /**

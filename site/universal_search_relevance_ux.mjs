@@ -25,6 +25,7 @@ const TYPE_LABELS = Object.freeze({
   "community-board-person": "Community Board person",
   community_board: "Community board",
   civil_service_exam: "Civil-service exam",
+  consultation: "Public consultation",
   parcel: "Property",
   legal_code: "Administrative Code provision",
   unclassified: "Published record",
@@ -40,6 +41,7 @@ const LENS_LABELS = Object.freeze({
   exams: "Exams",
   parcels: "Properties",
   legal_code: "Legal code",
+  consultations: "Consultations",
 });
 
 const FIELD_REASONS = Object.freeze({

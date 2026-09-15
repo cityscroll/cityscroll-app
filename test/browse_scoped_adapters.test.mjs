@@ -15,7 +15,7 @@ import {
   projectBrowseScopedRows,
 } from "../site/browse_scoped_adapters.mjs";
 
-const SOURCE_IDS = ["people", "property", "land", "rules", "meetings", "exams"];
+const SOURCE_IDS = ["people", "property", "land", "rules", "meetings", "exams", "consultations"];
 
 function documentFor(source, index = 1) {
   const shapes = {
@@ -25,6 +25,7 @@ function documentFor(source, index = 1) {
     rules: ["rulemaking:notice:202600001", "rulemaking", "rules", "/browse/rules/?q=202600001", "rulemaking"],
     meetings: ["meeting:2026-001", "meeting", "meetings", "/meetings/2026-001/", "meeting"],
     exams: ["exam:7016", "civil_service_exam", "staffing", "/exams/7016/", "exam"],
+    consultations: ["consultation:dot-secure-bike-parking", "consultation", "participation", "/consultations/dot-secure-bike-parking/", "consultation"],
   };
   const [objectRef, objectType, domain, canonicalHref, refPrefix] = shapes[source];
   return {
@@ -90,7 +91,7 @@ test("every US-20 source has one registered allowlisted scope and bounded reques
   }
   assert.deepEqual(FEDERATED_SEARCH_LENS_IDS, [
     "notices", "people", "agencies", "vendors", "committees", "community_boards",
-    "exams", "parcels", "land", "meetings",
+    "exams", "consultations", "parcels", "land", "meetings",
   ]);
 });
 

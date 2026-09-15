@@ -2,11 +2,11 @@
   "schema": "cityscroll.architecture.watermark-shard.v1",
   "id": "canary:keyword-search-index",
   "owner": "canary:keyword-search-index",
-  "updated_at": "2026-09-15T04:10:22-04:00",
-  "commit": "169b25a8c65a9d00cd9823af1f0ac7311318292c",
+  "updated_at": "2026-09-15T07:04:29-04:00",
+  "commit": "f41e092c64246acc37a8d27c53b9565b3f4a634a",
   "value": {
     "path": "tools/build_keyword_search_index.mjs",
-    "count": 11,
-    "fingerprint": "b63137d26e4ba20f1c926cd99459c3d12fd2c775ff200d5a2bfec37be24895f3"
+    "count": 12,
+    "fingerprint": "090208cbf9046fed4d0852ef478d066297c33e1167fae7ea8692146021ebe14c"
   }
 }

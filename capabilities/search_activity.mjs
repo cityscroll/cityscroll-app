@@ -45,6 +45,7 @@ export const SEARCH_ACTIVITY_FAMILIES = Object.freeze([
   "rules",
   "meetings",
   "exams",
+  "consultations",
 ]);
 
 /** Which producer a rendered row came from. */
@@ -58,7 +59,7 @@ export const SEARCH_ACTIVITY_ROW_KINDS = Object.freeze(["keyword", "semantic"]);
  * every receipt stored before this scope existed searched every family, so an
  * absent value normalizes to `"all"` rather than an unknown state.
  */
-export const SEARCH_ACTIVITY_FRONT_DOOR_SCOPES = Object.freeze(["all", "contracts"]);
+export const SEARCH_ACTIVITY_FRONT_DOOR_SCOPES = Object.freeze(["all", "contracts", "consultations"]);
 
 /** Place-context keys the canonical Search route already carries. */
 export const SEARCH_ACTIVITY_SCOPE_KEYS = Object.freeze([
@@ -90,6 +91,7 @@ export const SEARCH_ACTIVITY_SAFE_LINK_ROOTS = Object.freeze([
   "/people/",
   "/procurements/",
   "/vendors/",
+  "/consultations/",
 ]);
 
 const SUBMISSION_KEYS = Object.freeze([

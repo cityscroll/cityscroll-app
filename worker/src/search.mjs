@@ -52,6 +52,7 @@ const LANE_ORDER = Object.freeze([
   "rules",
   "meetings",
   "exams",
+  "consultations",
 ]);
 const D1_LANES = Object.freeze({
   contracts: Object.freeze({ domain: "contracts", source: "City Record daily mirror" }),
@@ -654,6 +655,7 @@ function productionFederatedProviders(env) {
     land: landFederatedProvider(env),
     meetings: keywordFamilyProvider("meetings", env),
     exams: keywordFamilyProvider("exams", env),
+    consultations: keywordFamilyProvider("consultations", env),
     legal_code: legalCodeFederatedProvider(env),
   });
 }
@@ -949,6 +951,11 @@ export async function handleSearch(request, env, {
       lenses: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.exams.lenses],
       domains: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.exams.domains],
       source: FEDERATED_SEARCH_PRESENTATION_SCOPES.exams.source,
+    }),
+    consultations: federatedPresentationLane("consultations", federation, {
+      lenses: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.consultations.lenses],
+      domains: [...FEDERATED_SEARCH_PRESENTATION_SCOPES.consultations.domains],
+      source: FEDERATED_SEARCH_PRESENTATION_SCOPES.consultations.source,
     }),
   };
   const results = federation.results.map(federatedPublicCard).slice(0, RESULT_LIMIT);

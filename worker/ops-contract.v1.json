@@ -645,11 +645,13 @@
       "land",
       "rules",
       "meetings",
-      "exams"
+      "exams",
+      "consultations"
     ],
     "front_door_scopes": [
       "all",
-      "contracts"
+      "contracts",
+      "consultations"
     ],
     "retention_days": 30,
     "default_read_limit": 25,
@@ -763,7 +765,8 @@
       "land",
       "rules",
       "meetings",
-      "exams"
+      "exams",
+      "consultations"
     ],
     "family_appearance_semantics": "One execution that rendered at least one row in the family. Never a count of result rows, and never a coverage gap.",
     "identity_measures": [
