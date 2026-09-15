@@ -42,7 +42,7 @@ export const SNAPSHOT_SCHEMA = "cityscroll.served_coverage_snapshot.v1";
 export const CENSUS_SCHEMA = "cityscroll.served_coverage_census.v1";
 
 /** The registry size this census was reviewed against. A change is reported, never absorbed. */
-export const REVIEWED_REGISTRY_SIZE = 66;
+export const REVIEWED_REGISTRY_SIZE = 67;
 
 export { SERVED_UNITS, DECLARED_DISPOSITIONS };
 

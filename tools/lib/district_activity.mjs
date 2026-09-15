@@ -1711,15 +1711,15 @@ export function buildDistrictActivity(opts = {}) {
 
   // Meetings — venue geocode + boundary PIP / CD resolve; virtual → Virtual bag.
   for (const row of opts.meetingsRows || []) {
-    // OATH publishes trial identity and time but no hearing office or other
-    // place signal. Keep those sessions in the meetings calendar, while
-    // excluding them from district activity rather than presenting 145
-    // unlocated sessions as residual geography.
-    if (row?.source_system === "oath_trial_calendar") {
+    // OATH and PDC publish meeting identity and time but no hearing office or
+    // other place signal. Keep those sessions in the meetings calendar, while
+    // excluding them from district activity rather than presenting them as
+    // residual geography.
+    if (["oath_trial_calendar", "pdc_calendar"].includes(row?.source_system)) {
       sources.meetings.counted += 1;
       sources.meetings.excluded += 1;
-      sources.meetings.excluded_by_source.oath_trial_calendar =
-        (sources.meetings.excluded_by_source.oath_trial_calendar || 0) + 1;
+      sources.meetings.excluded_by_source[row.source_system] =
+        (sources.meetings.excluded_by_source[row.source_system] || 0) + 1;
       continue;
     }
     const placements = meetingPlacementsFromRow(row, boundaries, placeOpts);

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.source_health_observations.v1",
   "generated_at": "2026-09-15T10:18:58.000Z",
-  "contract_count": 66,
+  "contract_count": 67,
   "observations": [
     {
       "source_id": "abo-local-authorities",
@@ -6306,7 +6306,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "pdc-calendar",
-        "observed_at": "2026-09-14T14:24:52.594Z",
+        "observed_at": "2026-09-15T10:18:58.000Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -6323,9 +6323,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "pdc-calendar",
-            "observed_at": "2026-09-14T14:24:52.594Z",
+            "observed_at": "2026-09-15T10:18:58.000Z",
             "status": "failed",
-            "run_id": "missing:pdc-calendar:2026-09-14T14-24",
+            "run_id": "missing:pdc-calendar:2026-09-15T10-18",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",

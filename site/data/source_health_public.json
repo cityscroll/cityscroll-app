@@ -2,7 +2,7 @@
   "schema": "cityscroll.public_source_health.v1",
   "generated_at": "2026-09-15T10:18:58.000Z",
   "available": true,
-  "source_count": 62,
+  "source_count": 63,
   "sources": [
     {
       "source_id": "abo-local-authorities",

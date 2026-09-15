@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
   "generated_at": "2026-09-15T10:18:58.000Z",
-  "contract_count": 66,
+  "contract_count": 67,
   "observations": [
     {
       "source_id": "abo-local-authorities",
