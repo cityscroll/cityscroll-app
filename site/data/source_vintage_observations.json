@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-09-14T10:12:41.000Z",
-  "contract_count": 64,
+  "generated_at": "2026-09-14T14:24:52.594Z",
+  "contract_count": 65,
   "observations": [
     {
       "source_id": "abo-local-authorities",
@@ -980,10 +980,10 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-07T13:41:05.021Z",
+        "retrieved_at": "2026-09-14T14:24:52.445Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "doing-business-entities:2026-09-07T13:41:05.021Z"
+        "run_id": "doing-business-entities:2026-09-14T14:24:52.445Z"
       },
       "expected_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
       "expected_lag_tolerance_days": 400,
@@ -1803,6 +1803,37 @@
       },
       "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/rfxData.js)",
       "expected_lag_tolerance_days": 3,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "public-consultations",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Daily verification of retained public consultation invitations",
+      "expected_lag_tolerance_days": 7,
       "current_lag": {
         "value": null,
         "unit": null,
