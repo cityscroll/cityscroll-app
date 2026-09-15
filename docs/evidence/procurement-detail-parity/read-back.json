@@ -35,6 +35,15 @@
     "mobile": {"viewport": [390, 844], "scroll_width": 390, "overflow": false},
     "keyboard": {"visible_native_links": 19, "reachable_links": 19, "negative_tabindex": 0}
   },
+  "accessibility": {
+    "engine": "axe-core 4.10.2",
+    "scope": "canonical procurement detail fixture rendered at desktop and 390 px",
+    "serious_or_critical_findings": {
+      "desktop": [],
+      "mobile": []
+    },
+    "assertion": "The automated accessibility receipt reports no serious or critical findings for either retained viewport."
+  },
   "verification": {
     "command": "node --test test/procurement_detail_readback.test.mjs",
     "status": "passed"

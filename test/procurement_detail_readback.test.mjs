@@ -54,6 +54,14 @@ test("A7: every retained destination is a native keyboard link and the layout re
   }
 });
 
+test("A7: the retained accessibility receipt reports no serious or critical findings", () => {
+  const findings = readback.accessibility.serious_or_critical_findings;
+  assert.deepEqual(Object.keys(findings).sort(), ["desktop", "mobile"]);
+  assert.deepEqual(findings.desktop, []);
+  assert.deepEqual(findings.mobile, []);
+  assert.match(readback.accessibility.engine, /^axe-core \d+\.\d+\.\d+$/);
+});
+
 test("A8: the read-back artifact names its focused verification command", () => {
   assert.equal(readback.verification.command, "node --test test/procurement_detail_readback.test.mjs");
   assert.equal(readback.verification.status, "passed");
