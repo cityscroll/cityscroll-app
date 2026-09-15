@@ -550,8 +550,8 @@
 /site/list_entity_pivots.mjs
 /site/local_constellation.css
 /site/local_constellation.mjs
-/site/local_issue_results.mjs
 /site/local_district_follow_bundle.mjs
+/site/local_issue_results.mjs
 /site/location_awareness.js
 /site/location_derivation.mjs
 /site/location_evidence_tier.mjs
