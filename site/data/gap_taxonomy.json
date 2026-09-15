@@ -1052,6 +1052,16 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "oath-trial-calendar",
+      "name": "NYC OATH conference and trial calendar",
+      "source_contract_id": "oath-trial-calendar",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.nyc.gov/site/oath/trials/conference-trial-calendar.page",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "ocp-current-solicitations",
       "name": "Current Solicitations (OCP / Open Data)",
       "source_contract_id": "ocp-current-solicitations",
@@ -3786,7 +3796,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-09-15",
-    "source_contracts_fingerprint": "1d348aa15069838ce469e80c0f90cd3a58412a462978924f01701f6b25d1c0fd",
+    "source_contracts_fingerprint": "2c08709a178578d302ea6599e53e88b684e109226a10ca6623c6a22c71af0a7c",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 91,
     "class_changes": 0,

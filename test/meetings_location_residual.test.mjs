@@ -75,6 +75,7 @@ test("district activity retains residual accounting while adding ontology-placed
   assert.equal(activity.sources.meetings.corpus, "shared_meeting_read_model");
   assert.equal(activity.sources.meetings.counted, sharedMeetings.rows.length);
   assert.equal(activity.sources.meetings.located, 543);
+  assert.deepEqual(activity.sources.meetings.excluded_by_source, { oath_trial_calendar: 145 });
   assert.equal(activity.sources.meetings.by_method.community_board_ontology, 450);
   assert.equal(sharedMeetings.counts.community_board, 450);
   assert.equal(activity.unlocated.meetings, 27);

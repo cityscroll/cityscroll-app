@@ -3,6 +3,55 @@
   "generated_document": "docs/data-sources.md",
   "contracts": [
     {
+      "id": "oath-trial-calendar",
+      "name": "NYC OATH conference and trial calendar",
+      "owner": "NYC Office of Administrative Trials and Hearings",
+      "status": "live",
+      "scope": "warehouse",
+      "kind": "html",
+      "landing_page": "https://www.nyc.gov/site/oath/trials/conference-trial-calendar.page",
+      "required_fields": ["index", "date", "start", "type", "source_url", "source_receipt"],
+      "publisher_cadence": "Calendar postings two to three weeks in advance",
+      "product_freshness": "The retained calendar admits only explicit Trial rows, preserves raw values and source revisions, and does not infer cancellation, location, end time, or reschedule relations.",
+      "used_for": "Discoverable OATH trial sessions and user-sent observer access requests.",
+      "code_references": [
+        {"path": "site/oath_trial_calendar.mjs", "contains": "parseOathTrialCsv"},
+        {"path": "tools/build_oath_trial_calendar.mjs", "contains": "buildOathTrialCalendar"},
+        {"path": "site/shared_meeting_read_model.mjs", "contains": "oathTrialCalendarIndex"},
+        {"path": "test/oath_trial_observation.test.mjs", "contains": "OATH parser"}
+      ],
+      "delivery_tier": "inline-at-build",
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 7,
+        "clock_basis": "checked_acquired",
+        "acquisition_cadence_days": 1,
+        "serving_max_age_days": 30,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      },
+      "public_artifact_path": "site/data/oath_trial_calendar.json",
+      "primary_routes": ["/browse/meetings/", "/now/", "/meetings/"],
+      "source_contract_id": "oath-trial-calendar",
+      "acquisition_command": ["node", "tools/build_oath_trial_calendar.mjs"],
+      "owning_builder": "tools/build_oath_trial_calendar.mjs",
+      "builder_command": ["node", "tools/build_oath_trial_calendar.mjs"],
+      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "normal_refresh_cadence_hours": 24,
+      "warning_age_hours": 48,
+      "hard_maximum_age_hours": 168,
+      "vintage_fields": ["generated_at", "source_revision", "rows[].source_receipt.observed_at"],
+      "population_fields": ["records", "rows"],
+      "last_known_good_behavior": "Retain the last verified OATH trial rows and their source revision.",
+      "resident_stale_behavior": "Do not describe retained OATH trials as current after the hard maximum age.",
+      "resident_unavailable_behavior": "Show OATH trial coverage as unavailable; never infer that no trials exist.",
+      "production_evidence_field": "first_class.oath_trial_calendar"
+    },
+    {
       "id": "ibo-fiscal-history",
       "name": "NYC Independent Budget Office fiscal history",
       "owner": "New York City Independent Budget Office",
@@ -4161,6 +4210,26 @@
     }
   ],
   "first_class_artifacts": [
+    {
+      "id": "oath-trial-calendar",
+      "public_artifact_path": "site/data/oath_trial_calendar.json",
+      "primary_routes": ["/browse/meetings/", "/now/", "/meetings/"],
+      "source_contract_id": "oath-trial-calendar",
+      "acquisition_command": ["node", "tools/build_oath_trial_calendar.mjs"],
+      "owning_builder": "tools/build_oath_trial_calendar.mjs",
+      "builder_command": ["node", "tools/build_oath_trial_calendar.mjs"],
+      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "normal_refresh_cadence_hours": 24,
+      "cadence_justification": "The publisher posts calendars two to three weeks ahead; daily materialization preserves the latest bounded snapshot.",
+      "warning_age_hours": 48,
+      "hard_maximum_age_hours": 168,
+      "vintage_fields": ["generated_at", "source_revision", "rows[].source_receipt.observed_at"],
+      "population_fields": ["records", "rows"],
+      "last_known_good_behavior": "Retain the last verified OATH trial rows and their source revision.",
+      "resident_stale_behavior": "Do not describe retained OATH trials as current after the hard maximum age.",
+      "resident_unavailable_behavior": "Show OATH trial coverage as unavailable; never infer that no trials exist.",
+      "production_evidence_field": "first_class.oath_trial_calendar"
+    },
     {
       "id": "agency-constellation",
       "public_artifact_path": "site/data/agency_constellation_lookup.json",

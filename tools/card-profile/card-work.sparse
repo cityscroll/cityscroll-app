@@ -628,6 +628,8 @@
 /site/now_calendar_switch.mjs
 /site/now_surface.mjs
 /site/now_view.mjs
+/site/oath_trial_calendar.mjs
+/site/oath_trial_observation.mjs
 /site/official_connections.mjs
 /site/official_influence.mjs
 /site/official_influence_ui.mjs
