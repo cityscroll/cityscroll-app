@@ -26,6 +26,7 @@
   W.STRINGS["pl"] = W.STRINGS["pl"] || {};
   Object.assign(W.STRINGS["pl"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_d56f9637f2ded084: "62 publiczne źródła tych danych — według częstotliwości zmian każdego z nich",
     guide_text_a79aae29f4b3dde6: "Na stronie posiedzenia wybierz `Add to calendar` wśród działań. Element występuje tylko przy podanej godzinie. Otwórz pobrany plik w kalendarzu i sprawdź tytuł, datę i godzinę.",
     guide_text_427f9ea76a2de8cd: "Otwórz [{control_b}]({link_a}) i wybierz tytuł spotkania, aby otworzyć jego stronę.",
     guide_text_0bd019485364f283: "Jeśli panel filtrów zasłania pasek narzędzi, zamknij **{control_a}** i wybierz **{control_b}**.",

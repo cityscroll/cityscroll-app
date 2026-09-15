@@ -114,6 +114,7 @@ const PRODUCT_AREA_BY_SOURCE = Object.freeze({
   "city-council-meetings-open-data": "meetings",
   "non-council-board-minutes": "meetings",
   "nyc-council-legistar": "meetings",
+  "pdc-calendar": "meetings",
   "cfb-campaign-contributions": "people",
   "city-clerk-elobbyist": "people",
   "city-council-committee-membership": "people",

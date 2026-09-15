@@ -2,8 +2,8 @@
   "schema": "cityscroll.served_coverage_census.v1",
   "purpose": "Disposition of every registered source contract against the served product, and the served-population evidence behind each published coverage unit. Not a served artifact: this is the receipt the public snapshot is derived from.",
   "registry": {
-    "reviewed_registry_size": 65,
-    "observed_registry_size": 65,
+    "reviewed_registry_size": 66,
+    "observed_registry_size": 66,
     "changed": false
   },
   "disposition_vocabulary": [
@@ -14,7 +14,7 @@
   ],
   "disposition_counts": {
     "publicly_represented": 18,
-    "context_only": 28,
+    "context_only": 29,
     "not_served": 8,
     "unresolved": 11
   },
@@ -71,7 +71,7 @@
       "vintage_field": "sources.city_record.generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 570,
+      "value": 574,
       "reason": null
     },
     {
@@ -621,7 +621,7 @@
           {
             "unit_id": "public-meetings",
             "route": "/browse/meetings/",
-            "served_records": 570,
+            "served_records": 574,
             "evidence_vintage": "2026-09-09T06:52:08.255Z"
           },
           {
@@ -1215,6 +1215,19 @@
           "source_system": "passport_public_rfx",
           "served_observations": 0,
           "declared_input_rows": 0
+        }
+      }
+    },
+    {
+      "source_id": "pdc-calendar",
+      "name": "NYC Public Design Commission meeting schedule and agendas",
+      "disposition": "context_only",
+      "reason": "Public Design Commission dates are materialized in the shared meetings collection, but that aggregate served unit is counted under its existing source contract rather than as a separate PDC population.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Public Design Commission dated sessions and agenda context."
         }
       }
     },

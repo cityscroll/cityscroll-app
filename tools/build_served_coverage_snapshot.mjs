@@ -42,7 +42,7 @@ export const SNAPSHOT_SCHEMA = "cityscroll.served_coverage_snapshot.v1";
 export const CENSUS_SCHEMA = "cityscroll.served_coverage_census.v1";
 
 /** The registry size this census was reviewed against. A change is reported, never absorbed. */
-export const REVIEWED_REGISTRY_SIZE = 65;
+export const REVIEWED_REGISTRY_SIZE = 66;
 
 export { SERVED_UNITS, DECLARED_DISPOSITIONS };
 
@@ -282,6 +282,7 @@ const DECLARED_DISPOSITIONS = Object.freeze({
   "ocp-current-solicitations": ["context_only", "Solicitation-stage enrichment joined to already served procurement records."],
   "omb-community-board-budget-requests": ["unresolved", "The board budget request register is materialized and published per board, but no served record unit counts its requests yet, so no served count is established."],
   "public-consultations": ["unresolved", "Consultation invitations are served through a dedicated retained materialization, but no selected served-population unit counts them yet, so no served count is established."],
+  "pdc-calendar": ["context_only", "Public Design Commission dates are materialized in the shared meetings collection, but that aggregate served unit is counted under its existing source contract rather than as a separate PDC population."],
   "suitability-city-owned-leased-property-ll48": ["context_only", "Suitability evidence on property parcel biographies; properties are counted once as their own record unit."],
   "ulurp-recommendation-pdfs": ["unresolved", "Serves the land recommendation panel behind a usefulness gate, but no first-class served-population artifact declares this contract as its source."],
   "ulurp-recommendations": ["unresolved", "Serves the land recommendation panel behind a usefulness gate, but no first-class served-population artifact declares this contract as its source."],

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.source_health_observations.v1",
   "generated_at": "2026-09-14T14:24:52.594Z",
-  "contract_count": 65,
+  "contract_count": 66,
   "observations": [
     {
       "source_id": "abo-local-authorities",
@@ -6134,6 +6134,93 @@
             "at": "2026-09-13T13:01:59.965Z",
             "state": "KNOWN",
             "basis": "acquired_at"
+          },
+          "scheduler_heartbeat": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "pdc-calendar",
+      "contract_fingerprint": "e6f52ee7975a551ec3d6673f9bb869a824f66bb7835b25bb9bc72532d94c0308",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [],
+      "freshness_watchdog": {
+        "status": "STALE",
+        "reason_codes": [
+          "monitor-missing"
+        ],
+        "source_contract_id": "pdc-calendar",
+        "observed_at": "2026-09-14T14:24:52.594Z",
+        "scheduler_heartbeat": {
+          "observed_at": null,
+          "status": "monitor-missing",
+          "run_id": null,
+          "age_days": null,
+          "expected_slots": 2
+        },
+        "acquisition": {
+          "observed_at": null,
+          "cadence_days": null,
+          "age_days": null
+        },
+        "receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "pdc-calendar",
+            "observed_at": "2026-09-14T14:24:52.594Z",
+            "status": "failed",
+            "run_id": "missing:pdc-calendar:2026-09-14T14-24",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "event_kind": "scheduler-heartbeat",
+            "state": "monitor-missing"
+          }
+        ]
+      },
+      "operator": {
+        "clocks": {
+          "checked": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
           },
           "scheduler_heartbeat": {
             "at": null,

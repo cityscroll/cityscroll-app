@@ -14,6 +14,7 @@ import {
   normalizeCommunityBoardMeeting,
   normalizeNycLegistarEventsMeeting,
   normalizeBsaCalendarMeeting,
+  normalizePdcCalendarMeeting,
 } from "./meeting_object_contract.mjs";
 import {
   attachMeetingDocuments,
@@ -123,6 +124,7 @@ function normalizeProducer(row, source) {
   if (source === "city_record") return normalizeCityRecordMeeting(row);
   if (source === "nyc_legistar_events") return normalizeNycLegistarEventsMeeting(row);
   if (source === "bsa_calendar") return normalizeBsaCalendarMeeting(row);
+  if (source === "pdc_calendar") return normalizePdcCalendarMeeting(row);
   return normalizeCommunityBoardMeeting(row);
 }
 
@@ -246,6 +248,7 @@ export function buildSharedMeetingReadModel({
   communityBoardIndex = null,
   nycLegistarEventsIndex = undefined,
   bsaCalendarIndex = undefined,
+  pdcCalendarIndex = undefined,
   meetingOutcomes = null,
   generatedAt = null,
   now = generatedAt || new Date().toISOString(),
@@ -265,6 +268,11 @@ export function buildSharedMeetingReadModel({
   const bsaRows = includeBsa
     ? dedupeRows(asRows(bsaCalendarIndex?.rows || bsaCalendarIndex?.sessions)
       .map((row) => normalizeRecord(row, "bsa_calendar", bsaCalendarIndex?.generated_at || generatedAt || now)))
+    : [];
+  const includePdc = pdcCalendarIndex !== undefined;
+  const pdcRows = includePdc
+    ? dedupeRows(asRows(pdcCalendarIndex?.rows || pdcCalendarIndex?.records || pdcCalendarIndex?.sessions)
+      .map((row) => normalizeRecord(row, "pdc_calendar", pdcCalendarIndex?.generated_at || generatedAt || now)))
     : [];
   const joined = includeLegistar
     ? applySameProceedingJoins(cityRows, rawLegistarRows)
@@ -307,7 +315,7 @@ export function buildSharedMeetingReadModel({
     rows: bsaRows,
     index: bsaCalendarIndex,
   }) : null;
-  const catalogRows = [...joinedCityRows, ...boardRows, ...legistarRows, ...bsaRows];
+  const catalogRows = [...joinedCityRows, ...boardRows, ...legistarRows, ...bsaRows, ...pdcRows];
   const suppliedDocuments = [
     ...joinedCityRows.flatMap((row) => row.meeting_documents || []),
     ...(Array.isArray(communityBoardIndex?.meeting_documents)
@@ -315,6 +323,7 @@ export function buildSharedMeetingReadModel({
       : boardRows.flatMap((row) => row.meeting_documents || [])),
     ...legistarRows.flatMap((row) => row.meeting_documents || []),
     ...bsaRows.flatMap((row) => row.meeting_documents || []),
+    ...pdcRows.flatMap((row) => row.meeting_documents || []),
   ];
   const documentJoin = attachMeetingDocuments(catalogRows, suppliedDocuments, { asOf: now });
   const rows = documentJoin.meetings.map((row) => materializeMeetingDetails(row, now)).sort(dateSort);
@@ -324,12 +333,14 @@ export function buildSharedMeetingReadModel({
     community_board: boardStatus.status,
     ...(legistarStatus ? { nyc_legistar_events: legistarStatus.status } : {}),
     ...(bsaStatus ? { bsa_calendar: bsaStatus.status } : {}),
+    ...(includePdc ? { pdc_calendar: "available" } : {}),
   };
   const sources = {
     city_record: cityStatus,
     community_board: boardStatus,
     ...(legistarStatus ? { nyc_legistar_events: legistarStatus } : {}),
     ...(bsaStatus ? { bsa_calendar: bsaStatus } : {}),
+    ...(includePdc ? { pdc_calendar: { source_system: "pdc_calendar", status: "available", available: true, generated_at: pdcCalendarIndex?.generated_at || generatedAt || null, max_age_ms: null, row_count: pdcRows.length, reason: null } } : {}),
   };
   const counts = {
     total: rows.length,
@@ -338,6 +349,7 @@ export function buildSharedMeetingReadModel({
     meeting_documents: documentJoin.documents.length,
     attached_meeting_documents: documentJoin.attached_documents.length,
     ...(includeBsa ? { bsa_calendar: bsaRows.length } : {}),
+    ...(includePdc ? { pdc_calendar: pdcRows.length } : {}),
     ...(includeLegistar ? {
       nyc_legistar_events: legistarRows.length,
       collection: rows.filter((row) => collectionVisibilityOf(row) !== MEETING_COLLECTION_SUPPRESSED).length,

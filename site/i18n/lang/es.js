@@ -18,6 +18,7 @@
   W.STRINGS["es"] = W.STRINGS["es"] || {};
   Object.assign(W.STRINGS["es"], {
     // BEGIN GUIDE TRANSLATIONS
+    guide_text_d56f9637f2ded084: "Las 62 fuentes públicas que respaldan estos registros, según la frecuencia con que cambia cada una",
     guide_text_a79aae29f4b3dde6: "En la página de una reunión, elija `Add to calendar` entre sus acciones. Este control solo aparece cuando el registro incluye una hora. Abra el archivo descargado en su aplicación de calendario y compruebe el título, la fecha y la hora del evento.",
     guide_text_427f9ea76a2de8cd: "Abra [{control_b}]({link_a}) y seleccione el título de una reunión para abrir su página.",
     guide_text_0bd019485364f283: "Si el panel de filtros tapa la barra de herramientas, cierre **{control_a}** y elija **{control_b}**.",
