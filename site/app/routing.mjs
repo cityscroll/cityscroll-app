@@ -49,7 +49,6 @@ import {
   runtimeRumSemanticMilestones,
 } from "../rum_static_record_instrumentation.mjs";
 import { noticeProcurementChain, renderNoticeLandSpine, renderNoticeMeetingOutcomes } from "../notice_lens_sections.mjs";
-import { applyNoticeRouteState } from "../notice_document_composition.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -1720,7 +1719,6 @@ async function showNotice(id, watch){
 }
 
 // Publish live bindings for neighboring modules and legacy inline handlers.
-globalThis.applyNoticeRouteState = applyNoticeRouteState;
 globalThis.DEEPLINK_BOROS = DEEPLINK_BOROS;
 globalThis.DEEPLINK_CATEGORIES = DEEPLINK_CATEGORIES;
 globalThis.DEEPLINK_LENSES = DEEPLINK_LENSES;

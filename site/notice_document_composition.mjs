@@ -29,3 +29,5 @@ export function applyNoticeRouteState(active) {
     document.querySelector(".masthead .wrap")?.append(language);
   }
 }
+
+globalThis.applyNoticeRouteState = applyNoticeRouteState;
