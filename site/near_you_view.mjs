@@ -380,6 +380,8 @@ function recordSort(a, b) {
   return dateB - dateA || String(a.title).localeCompare(String(b.title));
 }
 
+const INITIAL_RECORD_LIMIT = 30;
+
 function viewBoardCoverage(scope, geography) {
   const community = first(scope.place.community_districts);
   if (!community) return "This place is not a Community Board district, so board activity is not applicable here.";
@@ -494,9 +496,17 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   const upcoming = overviewAll.meetings.filter((record) => {
     const date = Date.parse(record.date || "");
     return Number.isFinite(date) && (!Number.isFinite(builtTime) || date >= builtTime);
+  }).sort((a, b) => {
+    const dateA = Date.parse(a.date || "") || Number.POSITIVE_INFINITY;
+    const dateB = Date.parse(b.date || "") || Number.POSITIVE_INFINITY;
+    return dateA - dateB || String(a.title).localeCompare(String(b.title));
   });
   const recent = ["land", "property", "rules"].flatMap((name) => overviewAll[name])
-    .filter((record) => record.date)
+    .filter((record) => {
+      const date = Date.parse(record.date || "");
+      const recentStart = Number.isFinite(builtTime) ? builtTime - (180 * 24 * 60 * 60 * 1000) : Number.NEGATIVE_INFINITY;
+      return Number.isFinite(date) && date <= builtTime && date >= recentStart;
+    })
     .sort(recordSort);
   const projects = overviewAll.land;
   const overview = {
@@ -739,11 +749,16 @@ export function renderNearYouDeferredParts(view) {
       : `No ${bag.label.toLowerCase()} records match these filters.`)}
   </details>`).join("");
   const resultCount = knownCount(view.results.count);
+  const visibleResults = view.results.records.slice(0, INITIAL_RECORD_LIMIT);
+  const moreResults = view.results.records.length > INITIAL_RECORD_LIMIT && resultCount != null
+    ? `<p class="near-results-more"><a href="${esc(view.browseHref)}">Open all ${resultCount} matching records</a></p>`
+    : "";
   const resultsHtml = `<section class="near-results" aria-labelledby="near-results-heading"${resultCount == null ? "" : ` data-results-count="${resultCount}"`} data-near-surface-panel="list">
       <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${resultCount == null ? `Matching ${esc(view.lensLabel)} records` : `${resultCount} ${esc(view.lensLabel)} records for these filters`}</h2></div></div>
-      ${recordList(view.results.records, view.mapState === "unsupported"
+      ${recordList(visibleResults, view.mapState === "unsupported"
         ? `${esc(view.lensLabel)} records are not mapped here.`
         : resultCount == null ? "Matching records are not available right now." : undefined)}
+      ${moreResults}
     </section>`;
   const bagsHtml = `<section class="near-bags" aria-labelledby="near-bags-heading">
       <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
@@ -778,7 +793,7 @@ function renderNearYouDeferredShell(view, part, { includeListPanelMarker = false
 }
 
 function renderNearYouOverview(view) {
-  if (!view.isOverview) return "";
+  if (!view.isOverview || !view.hasPlace) return "";
   const lensScopeHref = (lens) => {
     const scope = normalizeScope({ ...view.scope, facets: { ...view.scope.facets, domains: [lens] } });
     return nearYouUrlFromScope(scope, { base: view.canonicalBase });
@@ -810,6 +825,7 @@ function renderNearYouOverview(view) {
   return `<section class="near-overview" aria-labelledby="near-overview-heading" data-near-overview="true">
     <p class="near-kicker">District overview</p><h2 id="near-overview-heading">What is happening here</h2>
     <p class="near-overview-place">${esc(view.placePresentation.label)}${view.placePresentation.boardLabel ? ` · ${esc(view.placePresentation.boardLabel)}` : ""}${councils ? ` · overlaps ${esc(councils)}` : ""}</p>
+    <p class="near-overview-note">Dates come from the retained public calendars. Recurring calendars may publish dates beyond the current planning horizon.</p>
     ${sections}
     ${followAction}
   </section>`;
