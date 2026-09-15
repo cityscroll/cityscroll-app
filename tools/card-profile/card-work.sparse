@@ -356,6 +356,8 @@
 /site/consultation_acquisition.mjs
 /site/consultation_classification.mjs
 /site/consultation_publisher_adapters.mjs
+/site/consultation_documents.mjs
+/site/consultations/
 /site/contextual_suggestions.mjs
 /site/contextual_ux_feedback_prompt.mjs
 /site/contract_action_location.mjs
