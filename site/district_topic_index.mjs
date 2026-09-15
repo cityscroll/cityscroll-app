@@ -108,7 +108,8 @@ function rowsFor(input, family) {
 export function buildDistrictTopicIndex(input = {}, { district } = {}) {
   const key = clean(district, 120).toLowerCase();
   const entries = DISTRICT_TOPIC_SOURCE_FAMILIES.flatMap((family) => rowsFor(input, family)
-    .filter((row) => districtKeys(row).has(key))
+    .filter((row) => key === "*" || key === "all" || districtKeys(row).has(key))
+    .filter((row) => !["withheld", "unavailable"].includes(clean(row?.coverage_state || row?.state, 40).toLowerCase()))
     .map((row) => normalizeEntry(row, family, key)).filter(Boolean));
   const seen = new Set();
   const unique = entries.filter((entry) => { const id = `${entry.source_family}|${entry.object_id}`; if (seen.has(id)) return false; seen.add(id); return true; });
@@ -125,9 +126,14 @@ export function searchDistrictTopics(index, query) {
 export function coverageReceipt(input = {}, entries = [], district = "") {
   const families = Object.fromEntries(DISTRICT_TOPIC_SOURCE_FAMILIES.map((family) => {
     const supplied = rowsFor(input, family);
-    const indexed = entries.filter((entry) => entry.source_family === family).length;
+    const indexedIds = new Set(entries.filter((entry) => entry.source_family === family).map((entry) => entry.object_id));
+    const indexed = supplied.filter((row) => indexedIds.has(clean(row?.object_id || row?.object_ref || row?.id || row?.canonical_id || row?.candidate_id, 400)))
+      .filter((row) => ["", "indexed"].includes(clean(row?.coverage_state || row?.state, 40).toLowerCase())).length;
     const counts = supplied.reduce((acc, row) => { const state = clean(row?.coverage_state || row?.state, 40) || "indexed"; acc[state] = (acc[state] || 0) + 1; return acc; }, {});
-    return [family, { indexed, withheld: counts.withheld || 0, stale: counts.stale || 0, unavailable: counts.unavailable || 0, unlocated: supplied.filter((row) => !districtKeys(row).has(district)).length }];
+    const unlocated = supplied.filter((row) => ["*", "all"].includes(district)
+      ? districtKeys(row).size === 0
+      : !districtKeys(row).has(district)).length;
+    return [family, { indexed, withheld: counts.withheld || 0, stale: counts.stale || 0, unavailable: counts.unavailable || 0, unlocated }];
   }));
   return Object.freeze({ schema: "cityscroll.district_topic_coverage.v1", district, by_source_family: Object.freeze(families) });
 }
