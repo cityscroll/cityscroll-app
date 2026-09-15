@@ -1461,7 +1461,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-09-07T13:41:05.021Z",
+        "retrieved_at": "2026-09-14T14:24:52.445Z",
         "expected_lag_tolerance_days": 400,
         "current_lag": {
           "value": null,
@@ -2783,7 +2783,7 @@
         },
         "publisher_vintage": null,
         "retrieved_at": null,
-        "expected_lag_tolerance_days": null,
+        "expected_lag_tolerance_days": 7,
         "current_lag": {
           "value": null,
           "unit": null
