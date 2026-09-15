@@ -999,6 +999,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
   const asOf = options.asOf || payload.open_as_of || payload.generated_at || payload.retrieved_at || null;
   const requestedAsOf = isoDay(search.get("as_of"));
   const meetingWhen = facet === "meetings" ? String(search.get("when") || "") : "";
+  const meetingDay = facet === "meetings" ? isoDay(search.get("day")) : null;
   const meetingProcess = facet === "meetings" ? String(search.get("process") || "") : "";
   // The open-contract projection is the single source of "is this notice
   // still open" for the build-rendered document; browse_view never
@@ -1047,6 +1048,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     if (!ambiguousBoardSearch && communityDistrict && !rowMatchesCommunityDistrict(row, communityDistrict)) return false;
     if (!ambiguousBoardSearch && councilDistrict && !rowMatchesCouncilDistrict(row, councilDistrict)) return false;
     if (facet === "contracts" && !matchesClosing(row, search.get("closing"), asOf)) return false;
+    if (facet === "meetings" && meetingDay && isoDay(row.event_date) !== meetingDay) return false;
     if (facet === "meetings" && !meetingDateMatchesWindow(row, meetingWhen, asOf)) return false;
     if (facet === "meetings" && meetingProcess
       && meetingProcessStage(row, { now: isoDay(asOf) }) !== meetingProcess) return false;
