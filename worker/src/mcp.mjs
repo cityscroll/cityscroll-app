@@ -586,7 +586,10 @@ export async function handleMcp(req, env, { federatedProvider = null } = {}) {
   // string with no detail about which credential failed or which profiles exist.
   const { resolution, profile } = await resolveMachineClientProfile(env, req.headers.get("authorization"));
   if (resolution === "unauthorized") return new Response("Unauthorized", { status: 401 });
-  if (req.method !== "POST") return new Response("Method Not Allowed", { status: 405 });
+  if (req.method !== "POST") return new Response(
+    "CityScroll MCP is a tools-only endpoint. Connect an MCP client to POST https://api.cityscroll.org/mcp; a browser GET cannot run tools.",
+    { status: 405, headers: { "content-type": "text/plain; charset=utf-8", allow: "POST" } },
+  );
 
   // Cheap daily ceiling before any work (public endpoint, no Turnstile here). An
   // authenticated profile meters on its own stable id, so one gateway's users are no
@@ -615,7 +618,7 @@ export async function handleMcp(req, env, { federatedProvider = null } = {}) {
         return Response.json(rpc(id, {
           protocolVersion: PROTOCOL_VERSION,
           capabilities: { tools: {} },
-          serverInfo: { name: "crol-list", version: "1.0.0" },
+          serverInfo: { name: "CityScroll", version: "1.0.0" },
           // Public product truth, sent to every caller including anonymous ones: what
           // the endpoint answers from, and the gaps it declares about itself.
           instructions: MCP_SERVER_INSTRUCTIONS,

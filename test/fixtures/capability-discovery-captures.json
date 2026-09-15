@@ -1,0 +1,9 @@
+{
+  "schema": "cityscroll.capability_discovery_capture_manifest.v1",
+  "revision": "grounded at db9cfa27f39935da6f8e0a485a401831632f7358",
+  "captures": [
+    {"route":"/","viewport":"1440x1000","data_vintage":"site build","assertion":"primary search remains visible and Ask with AI is secondary","sha256":"local-headless-capture"},
+    {"route":"/use-with-ai/","viewport":"390x844","data_vintage":"site build","assertion":"endpoint, copy fallback, recovery and task examples remain reachable","sha256":"local-headless-capture"},
+    {"route":"/api.html#mcp","viewport":"1440x1000","data_vintage":"site build","assertion":"stable MCP heading and setup link are reachable","sha256":"local-headless-capture"}
+  ]
+}
