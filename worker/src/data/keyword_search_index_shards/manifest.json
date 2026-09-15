@@ -6,10 +6,10 @@
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "8a1aab8f0fce218da6f1af4ddcb9569bb4f06ca253e25f3b875258105a7373da",
-    "bytes": 75606348,
-    "family_count": 11,
-    "document_count": 22101
+    "sha256": "e7ab9dfff1e1d80a33df3e01262746178268fa55352aaac274c0d0ee7582ad1c",
+    "bytes": 75613285,
+    "family_count": 12,
+    "document_count": 22105
   },
   "build_receipt": {
     "source_artifacts": {
@@ -28,7 +28,8 @@
       "committees": "site/data/committee_graph_lookup.json",
       "community_board_people": "site/data/community_board_people.json",
       "community_board_committees": "site/data/non_council_outcome_sources/community_board_committees.json",
-      "procurements": "site/data/shared_procurement_read_model.json"
+      "procurements": "site/data/shared_procurement_read_model.json",
+      "consultations": "site/consultation_acquisition.mjs and site/consultation_publisher_adapters.mjs"
     },
     "excluded_artifacts": [
       "worker/src/data/ocp_awards_warehouse_lookup.json"
@@ -193,6 +194,19 @@
       "gzip_sha256": "c51f99673d995d3571ead131106d4efa680a68cae93948a315e6660b958dc0b1",
       "brotli_sha256": "4fbf34c776ebd3db25db6fe89e718c612afa34ba0df08dbf941c18121d00ecb2",
       "receipt_sha256": "41839c37fbe8ea1d08ad9d21ca5acb0059f2b975b47aea5756d146885b19fc79"
+    },
+    {
+      "family": "consultations",
+      "path": "consultations.json.br",
+      "gzip_path": "consultations.json.gz",
+      "document_count": 4,
+      "uncompressed_bytes": 6577,
+      "gzip_bytes": 1378,
+      "brotli_bytes": 1270,
+      "sha256": "f6abcdd67855674af4558bc9a7cac749b2e15b6805ecac89ef387fcb8a7338bb",
+      "gzip_sha256": "e23a786e5841f2da91e8b62d020f674776c7f72b456ba081c393f7710cba415a",
+      "brotli_sha256": "dac34eeed243dcb769d9d314faa489c259ba1f19a573b03a72035a745dfebb7e",
+      "receipt_sha256": "d9ad20efe549ee200330c975d0c58f165035862e712a29529d87ab80ab18403a"
     }
   ]
 }
