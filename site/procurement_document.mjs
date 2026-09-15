@@ -51,6 +51,9 @@ import { buildProcurementHandoffCopy, renderProcurementHandoffCopyHtml } from ".
 import { projectProcurementFacts } from "./procurement_fact_projection.mjs";
 import { entityChipHTML, entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { procurementSourceLinkItems } from "./procurement_source_links.mjs";
+import { buildSiteLifecycleContext, renderSiteLifecycleContext } from "./site_lifecycle_context.mjs";
+import siteLifecycleShard from "./data/site_lifecycle/0000.json" with { type: "json" };
+import siteLifecycleReverse from "./data/site_lifecycle/reverse.json" with { type: "json" };
 
 
 function esc(value) {
@@ -62,6 +65,12 @@ function esc(value) {
 function clean(value, max = 500) {
   return String(value ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 }
+
+const DEFAULT_SITE_LIFECYCLE = {
+  schema: "cityscroll.site_lifecycle.v1",
+  parcels: Object.fromEntries((siteLifecycleShard.rows || []).map((row) => [row.parcel_id, row])),
+  members: siteLifecycleReverse.members || {},
+};
 
 function formatAmount(value) {
   const raw = clean(value);
@@ -527,6 +536,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
   projectContextMaterialization = null,
   preferenceMatch = null,
   accessClassification = null,
+  siteLifecycleMaterialization = DEFAULT_SITE_LIFECYCLE,
   lookupReceipt = object?.procurement_source_lookup_receipt || null,
 } = {}) {
   const id = clean(object?.procurement_id, 320);
@@ -556,6 +566,11 @@ export function renderProcurementDocument(object = {}, observations = [], {
   // this page. Serialized as inert JSON the shared preview binder reads: no
   // fetch, no second copy of the relation, and nothing to load at read time.
   const projectContextInspect = projectContext ? projectContextInspectSummary(projectContext) : null;
+  const siteLifecycleContext = buildSiteLifecycleContext(siteLifecycleMaterialization, {
+    subjectId: id,
+    surface: "procurement",
+  });
+  const siteLifecycleContextHtml = renderSiteLifecycleContext(siteLifecycleContext);
   const factRows = [
     ["Agency", facts.agency, "agency"], ["Vendor", facts.vendor, "vendor"], ["Amount", facts.amount], ["Award date", facts.awardDate],
     ["PASSPort contract number", facts.contractNumber], ["Method", facts.method],
@@ -603,6 +618,7 @@ ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contra
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
 ${pursuitSnapshotHtml}
 ${projectContextHtml}
+${siteLifecycleContextHtml}
 ${relatedContextHtml}
 ${projectContextInspect ? `<script type="application/json" data-project-context-inspect="1">${procurementJsonScriptPayload({ summary: projectContextInspect })}</script>` : ""}
 ${procurementActions(object, facts)}

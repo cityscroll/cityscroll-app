@@ -809,6 +809,7 @@ async function landSelect(i, el){
     <span id="land-city-record-source"></span>
   </div>
   <div id="project-connections"></div>
+  <div id="slc"></div>
   <div id="project-connected-calendar"></div>
   <div id="land-outcomes" class="land-outcomes">${landOutcomeFirstPaintHTML(r)}</div>
   <div id="land-ulurp-rec"></div>
@@ -821,6 +822,7 @@ async function landSelect(i, el){
   </div>
   <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
+  import("../site_lifecycle_context.mjs").then(({loadSiteLifecycleContext,mountSiteLifecycleContext})=>loadSiteLifecycleContext().then(data=>{if(selection===landSelectionSeq)mountSiteLifecycleContext($("#slc"),data,["land","project",r.project_id].join(":"));}));
   hydrateLandRecordLinks(r, selection);
   wireLandFilingReportTrigger($("#ldetail"),{t,escape:escUiHtml});
   // Immediate rail from list row (ZAP status + portal); hydrates again when outcomes load.

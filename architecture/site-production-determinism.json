@@ -580,6 +580,7 @@
     "site/semantic_topic_search.mjs",
     "site/shared_meeting_read_model.mjs",
     "site/shared_procurement_read_model.mjs",
+    "site/site_lifecycle_context.mjs",
     "site/site_lifecycle_projection.mjs",
     "site/solicitation_procurement_method.mjs",
     "site/solicitation_response_context.mjs",
