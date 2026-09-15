@@ -639,17 +639,17 @@ function whyHerePath(path) {
 
 function geographyEvidence(evidence) {
   if (!evidence) return "";
-  return `<div class="near-record-why" data-geography-evidence="1"
+  return `<details class="near-record-why" data-geography-evidence="1"
     data-geography-key="${esc(evidence.key)}"
     data-geography-source="${esc(evidence.source_id)}"
     data-boundary-vintage="${esc(evidence.boundary_vintage)}"
     aria-label="Why this geography matched">
-    <strong>Why this place matched</strong>
+    <summary>Why this place matched</summary>
     <span class="near-record-why-step">${esc(placeRoleLabel(evidence.location_role))}: ${esc(evidence.label)}</span>
     <span class="near-record-why-separator" aria-hidden="true">·</span>
     <span class="near-record-why-step">${esc(evidence.basis)}</span>
     <span class="near-record-why-source">Publisher boundary ${esc(evidence.boundary_vintage)}</span>
-  </div>`;
+  </details>`;
 }
 
 function placeRoleBadge(role) {
@@ -663,12 +663,7 @@ function recordCard(record) {
       ? `<a href="${esc(record.source_url)}" rel="noopener noreferrer">${esc(meetingOriginLabel(record.meeting_origin))}</a>`
       : esc(meetingOriginLabel(record.meeting_origin))}</div>`
     : "";
-  const placementMethods = Array.isArray(record.placement_methods) && record.placement_methods.length
-    ? record.placement_methods.map(placementMethodLabel).join(", ")
-    : record.basis_method ? placementMethodLabel(record.basis_method) : null;
-  const placement = placementMethods
-    ? `${record.basis} · ${placementMethods} placement`
-    : record.basis;
+  const placement = record.basis || "Local activity";
   return `<li class="near-record" data-record-id="${esc(record.id)}">
     <a class="near-record-title" href="${esc(record.route)}"
       data-pivot-schema="cityscroll.edge_summary.v1" data-pivot-status="accepted"
@@ -682,7 +677,7 @@ function recordCard(record) {
       <span>${esc(dateLabel(record.date))}</span>
     </div>
     ${meetingSource}
-    <div class="near-record-basis"><strong>${esc(placement)}</strong>${record.confidence ? ` · ${esc(record.confidence)} basis` : ""}</div>${geographyEvidence(record.geography_evidence)}${whyHerePath(record.why_here)}
+    <div class="near-record-basis"><strong>${esc(placement)}</strong></div>${geographyEvidence(record.geography_evidence)}${whyHerePath(record.why_here)}
   </li>`;
 }
 
