@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.product_updates.v1",
   "method": "product_updates_source_v1",
-  "as_of": "2026-09-14T09:46:27-04:00",
-  "observed_commit": "03c5e25f789e64a9559992a07bc2fd54e13d6d5b",
+  "as_of": "2026-09-14T21:07:49-04:00",
+  "observed_commit": "72b0660db71ebc27c6c6039661a5102e8d374d24",
   "source_inputs": [
     {
       "id": "changelog",
@@ -31,16 +31,16 @@
         "schema": "cityscroll.architecture.reconciliation.v1",
         "status": "checked",
         "baseline": "architecture/watermark.d",
-        "observed_commit": "03c5e25f789e64a9559992a07bc2fd54e13d6d5b",
-        "as_of": "2026-09-14T09:46:27-04:00"
+        "observed_commit": "72b0660db71ebc27c6c6039661a5102e8d374d24",
+        "as_of": "2026-09-14T21:07:49-04:00"
       },
       "capability": {
         "reference": "notice.get@1",
         "id": "notice.get",
         "version": "1.0.0"
       },
-      "observed_commit": "03c5e25f789e64a9559992a07bc2fd54e13d6d5b",
-      "as_of": "2026-09-14T09:46:27-04:00",
+      "observed_commit": "72b0660db71ebc27c6c6039661a5102e8d374d24",
+      "as_of": "2026-09-14T21:07:49-04:00",
       "claim": "A rule notice pivots to the law that required it, its agency, and a mandate watch; publication evidence becomes a traversable civic object.",
       "demo": {
         "id": "notice-sanitation-connected-mandate",
@@ -84,16 +84,16 @@
         "schema": "cityscroll.architecture.reconciliation.v1",
         "status": "checked",
         "baseline": "architecture/watermark.d",
-        "observed_commit": "03c5e25f789e64a9559992a07bc2fd54e13d6d5b",
-        "as_of": "2026-09-14T09:46:27-04:00"
+        "observed_commit": "72b0660db71ebc27c6c6039661a5102e8d374d24",
+        "as_of": "2026-09-14T21:07:49-04:00"
       },
       "capability": {
         "reference": "search.federated@1",
         "id": "search.federated",
         "version": "1.1.0"
       },
-      "observed_commit": "03c5e25f789e64a9559992a07bc2fd54e13d6d5b",
-      "as_of": "2026-09-14T09:46:27-04:00",
+      "observed_commit": "72b0660db71ebc27c6c6039661a5102e8d374d24",
+      "as_of": "2026-09-14T21:07:49-04:00",
       "claim": "One concept query returns cited passages across Rules and Meetings while preserving six typed lanes instead of flattening civic objects.",
       "demo": {
         "id": "semantic-search-housing",
@@ -134,5 +134,5 @@
     "search.federated@1::semantic-search-housing"
   ],
   "ineligible_ids": [],
-  "content_hash": "ba92c6bdd2cca3ff6a74e46884c5c52754beadcfdc47cb9db5e5023d138cddfe"
+  "content_hash": "a269e52233cf9b1ed7fe592b405c07a238fcf6e6309072183a23623cc0cf7c72"
 }
