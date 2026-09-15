@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { parseBsaAgendaPages, createBsaContainsScheduleRelation, bsaCalendarOccurrences } from "../site/bsa_calendar.mjs";
 import { todayISO } from "./helpers/test_clock.mjs";
 
@@ -59,16 +59,23 @@ test("item lifecycle and affected geography stay below the session and separate 
   assert.equal(first.section, "adjournments");
   assert.equal(first.lifecycle.state, "adjourned");
   assert.deepEqual(first.affected_area.community_districts, ["K15"]);
+  assert.deepEqual(sessions[0].agenda_items.find((item) => item.case_id === "2026-21-A").affected_area.community_districts, ["R03"]);
+  assert.deepEqual(sessions[0].agenda_items.find((item) => item.case_id === "2026-31-A").affected_area.community_districts, ["R01"]);
   assert.equal(sessions[0].venue.address.includes("22 Reade Street"), true);
   assert.equal(sessions[0].venue.address.includes("1228 Avenue V"), false);
   assert.deepEqual(sessions[0].phases.map((phase) => phase.id).length, 2);
   assert.equal(sessions[0].phases.some((phase) => phase.state === "applicant_response_and_public_testimony"), true);
+  assert.equal(sessions[0].access_steps[0].destination, "https://www.nyc.gov/site/bsa/public-hearings/public-hearing-format.page");
+  assert.equal(sessions[0].observer_access.watch_url, "https://www.youtube.com/@NYCBSA");
   assert.equal(sessions[0].agenda_items.every((item) => item.disposition === null), true);
+  assert.equal(sessions[0].agenda_items.every((item) => item.lifecycle.state !== "open_for_testimony"), true);
 });
 
 test("the rendered agenda exposes cases and returns through the canonical day route", () => {
-  if (!existsSync(new URL("../site/data/legislative_matter_index.json", import.meta.url))) return;
-  return import("../site/meeting_document.mjs").then(({ renderMeetingDocument }) => {
+  return Promise.all([
+    import("../site/meeting_document.mjs"),
+    import("../site/browse_view.mjs"),
+  ]).then(([{ renderMeetingDocument }, { buildBrowseView }]) => {
   const html = renderMeetingDocument(sessions[0], { generated_at: fixture.publication_date, rows: [sessions[0]], sources: { bsa_calendar: { status: "available", row_count: 2 } } });
   assert.match(html, /data-agenda-items="21"/);
   assert.match(html, /2024-58-BZ/);
@@ -76,13 +83,14 @@ test("the rendered agenda exposes cases and returns through the canonical day ro
   assert.match(html, /22 Reade Street/);
   assert.match(html, /Executive review is a public observation phase/);
   assert.match(html, /Applicant response and public testimony/);
-  assert.match(html, /href="\/browse\/meetings\/"/);
+  assert.match(html, new RegExp(`href="/browse/meetings/\\?when=day&day=${fixtureDays[0]}"`));
   assert.match(html, new RegExp(`meeting:bsa_calendar:bsa-${fixtureDays[0]}`));
+  const dayView = buildBrowseView("meetings", { rows: sessions, generated_at: fixture.publication_date }, new URLSearchParams(`when=day&day=${fixtureDays[0]}`), { asOf: fixture.publication_date });
+  assert.deepEqual(dayView.rows.map((row) => row.meeting_id), [sessions[0].meeting_id]);
   });
 });
 
 test("BSA sessions cross the shared read-model boundary as native source rows", () => {
-  if (!existsSync(new URL("../site/data/legislative_matter_index.json", import.meta.url))) return;
   return import("../site/shared_meeting_read_model.mjs").then(({ buildSharedMeetingReadModel }) => {
   const model = buildSharedMeetingReadModel({
     bsaCalendarIndex: { generated_at: fixture.publication_date, rows: sessions },
@@ -101,4 +109,10 @@ test("BSA sessions cross the shared read-model boundary as native source rows", 
   assert.equal(bsaRows.every((row) => row.source_record.receipt?.schema === "cityscroll.document_processing_receipt.v1"), true);
   assert.equal(bsaRows.find((row) => row.source_keys[0].value === `bsa-${fixtureDays[0]}`).agenda_items.length, 21);
   });
+});
+
+test("the retained notice time remains evidence without creating a third occurrence", () => {
+  assert.match(fixture.pages[0].text, /Notice published September 9, 2026 9:00 A\.M\./);
+  assert.equal(bsaCalendarOccurrences(sessions).length, 2);
+  assert.deepEqual(bsaCalendarOccurrences(sessions).map((row) => row.starts_at), fixtureDays.map((day) => `${day}T10:00:00`));
 });
