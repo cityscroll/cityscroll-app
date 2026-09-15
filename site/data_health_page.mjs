@@ -72,6 +72,7 @@ const PRODUCT_AREAS = Object.freeze([
 const PRODUCT_AREA_BY_SOURCE = Object.freeze({
   "ibo-fiscal-history": "agencies",
   "city-record": "notices",
+  "public-consultations": "notices",
   "abo-local-authorities": "contracts",
   "abo-local-development-corporations": "contracts",
   "abo-state-authorities": "contracts",
