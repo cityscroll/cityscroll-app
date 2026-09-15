@@ -28,6 +28,8 @@ export const BUNDLE_REQUEST_ID = "20250917031";
 export const BLANK_SCOPE_REQUEST_ID = "20260810049";
 /** A qualification route, whose published date is not a construction bid deadline. */
 export const QUALIFICATION_REQUEST_ID = "20260625051";
+/** A notice whose project-code-shaped text belongs to another agency. */
+export const CROSS_AGENCY_COLLISION_REQUEST_ID = "20260810050";
 
 function noticeRow(requestId) {
   const relation = MATERIALIZATION.relations.find(
@@ -92,6 +94,41 @@ export function renderCase(requestId, { materialization = MATERIALIZATION, oppor
     today: TODAY,
     projectContextMaterialization: materialization,
     ...opts,
+  });
+}
+
+export function renderCrossAgencyCollisionCase() {
+  const requestId = CROSS_AGENCY_COLLISION_REQUEST_ID;
+  const observationRef = `city_record:${requestId}`;
+  const object = {
+    procurement_id: `procurement:city-record:${requestId}`,
+    source_observation_refs: [observationRef],
+    identity_keys: { epins: ["85026B0112"] },
+    compatibility: {
+      city_record_notice_hrefs: [`https://a856-cityrecord.nyc.gov/RequestDetail/${requestId}`],
+    },
+  };
+  const observations = [{
+    source_observation_ref: observationRef,
+    source_system: "city_record",
+    source_system_id: requestId,
+    ingested_at: "2026-08-15T10:00:00Z",
+    snapshot: {
+      request_id: requestId,
+      short_title: "MASPETH SUPPLY CO LLC project-code collision specimen",
+      type_of_notice_description: "Solicitation",
+      selection_method_description: "Competitive Sealed Bids",
+      agency_name: "Department of Design and Construction",
+      pin: "85026B0112",
+      contract_amount: 12000000,
+      start_date: "2026-08-10T00:00:00.000",
+      due_date: "2026-09-10T14:00:00.000",
+      official_url: `https://a856-cityrecord.nyc.gov/RequestDetail/${requestId}`,
+    },
+  }];
+  return renderProcurementDocument(object, observations, {
+    today: TODAY,
+    projectContextMaterialization: MATERIALIZATION,
   });
 }
 
