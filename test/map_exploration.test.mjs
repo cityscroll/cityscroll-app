@@ -425,6 +425,30 @@ test("buildDistrictActivity resolves property geometry to districts", () => {
   );
 });
 
+test("special community areas retain records while mapping graph membership to registered subjects", () => {
+  const activity = buildDistrictActivity({
+    boundaries,
+    propertyRows: [{
+      request_id: "special-community-area",
+      property_location: {
+        geometry: { latitude: 40.58453, longitude: -73.91237 },
+      },
+    }],
+  });
+  const graph = activity.geography_subjects;
+  assert.equal(graph.audit.reconciled, true);
+  assert.equal(activity.records.property["special-community-area"].id, "special-community-area");
+  assert.equal(activity.by_level.borough.Brooklyn.property, 1);
+  assert.equal(activity.by_level.community_district.K56, undefined);
+  assert.ok(graph.public_edges.some((edge) => (
+    edge.from === "notice:special-community-area" && edge.to === "borough:brooklyn"
+  )));
+  assert.ok(!graph.public_edges.some((edge) => edge.to === "community-district:K56"));
+  assert.ok(activity.records.property["special-community-area"].place.geographies.some((geography) => (
+    geography.type === "community_district" && geography.id === "K56"
+  )));
+});
+
 test("district bag counts and list membership share one stamped corpus", () => {
   const activity = buildDistrictActivity({
     boundaries,

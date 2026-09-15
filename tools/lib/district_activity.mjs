@@ -279,6 +279,17 @@ export const PUBLIC_GEOGRAPHY_PLACEMENT_METHODS = Object.freeze([
 ]);
 const PUBLIC_GEOGRAPHY_METHOD_SET = new Set(PUBLIC_GEOGRAPHY_PLACEMENT_METHODS);
 
+// The subject graph covers the 59 regular community districts. The boundary
+// layer also carries special/joint-interest areas; retain those typed matches
+// in records, but map their activity membership to registered borough/council
+// subjects instead of emitting an unregistered community-district edge.
+function regularCommunityDistrictId(value) {
+  const normalized = normalizeCommunityDistrictId(value);
+  return normalized && geographySubjectRef("community-district", normalized)
+    ? normalized
+    : null;
+}
+
 /** Route a district-activity placement without confusing geometric precision with semantic strength. */
 export function geographyPlacementDecision(slot = {}) {
   const method = String(slot.method || "").trim();
@@ -1472,9 +1483,11 @@ export function buildDistrictActivity(opts = {}) {
   function place(lens, { borough, community, council, method }, itemId = null) {
     sources[lens].counted += 1;
     let placed = false;
+    const normalizedCommunity = normalizeCommunityDistrictId(community);
+    const regularCommunity = regularCommunityDistrictId(community);
     let resolvedCouncil = council ? normalizeCouncilDistrictId(council) : null;
-    if (community) {
-      const cd = normalizeCommunityDistrictId(community);
+    if (regularCommunity) {
+      const cd = regularCommunity;
       if (cd) {
         bump(byCommunity, cd, lens);
         addDistrictItem(lens, "community_district", cd, itemId);
@@ -1491,6 +1504,14 @@ export function buildDistrictActivity(opts = {}) {
             placed = true;
           }
         }
+        placed = true;
+      }
+    }
+    if (!regularCommunity && normalizedCommunity) {
+      const b = borough || boroughFromCommunityId(normalizedCommunity);
+      if (b && b !== "Citywide" && b !== "Virtual") {
+        bump(byBorough, b, lens);
+        addDistrictItem(lens, "borough", b, itemId);
         placed = true;
       }
     }
@@ -1556,17 +1577,22 @@ export function buildDistrictActivity(opts = {}) {
         continue;
       }
       if (slot.community) {
-        const cd = normalizeCommunityDistrictId(slot.community);
-        if (cd) {
-          bump(byCommunity, cd, lens);
-          addDistrictItem(lens, "community_district", cd, itemId, slot);
-          const b = slot.borough || boroughFromCommunityId(cd);
+        const normalizedCommunity = normalizeCommunityDistrictId(slot.community);
+        const cd = regularCommunityDistrictId(slot.community);
+        if (normalizedCommunity) {
+          const b = slot.borough || boroughFromCommunityId(normalizedCommunity);
+          if (cd) {
+            bump(byCommunity, cd, lens);
+            addDistrictItem(lens, "community_district", cd, itemId, slot);
+          }
           if (b && b !== "Citywide" && b !== "Virtual") {
             bump(byBorough, b, lens);
             addDistrictItem(lens, "borough", b, itemId, slot);
           }
           // Supplement councils from definitional CD∩council intersects (multi-membership).
-          if (!slot.council) {
+          // Special/joint-interest areas have no regular CD subject, so their
+          // borough/council memberships above are the complete graph mapping.
+          if (cd && !slot.council) {
             const methodRef = { method: null };
             if (placeCouncilsFromCommunity(lens, cd, itemId, slot, methodRef)) {
               // Keep publisher-CD / source method as the primary row label when present;
