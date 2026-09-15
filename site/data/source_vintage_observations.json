@@ -15,14 +15,14 @@
       },
       "publisher_vintage": null,
       "publisher_vintage_basis": null,
-      "publisher_last_updated_at": "2024-05-06T00:00:00.000Z",
-      "publisher_last_update_basis": "warehouse_source_summary",
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-08-04T11:26:00.000Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Publisher cadence not stated in dataset metadata",
       "expected_lag_tolerance_days": 550,
@@ -46,14 +46,14 @@
       },
       "publisher_vintage": null,
       "publisher_vintage_basis": null,
-      "publisher_last_updated_at": "2024-06-26T00:00:00.000Z",
-      "publisher_last_update_basis": "warehouse_source_summary",
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-08-04T11:26:00.000Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Publisher cadence not stated in dataset metadata",
       "expected_lag_tolerance_days": 550,
@@ -80,11 +80,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-08-04T11:26:00.000Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Publisher cadence not stated in dataset metadata",
       "expected_lag_tolerance_days": 550,
@@ -294,14 +294,14 @@
       },
       "publisher_vintage": null,
       "publisher_vintage_basis": null,
-      "publisher_last_updated_at": "2025-12-19T15:24:13.000Z",
-      "publisher_last_update_basis": "warehouse_source_summary",
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-09-07T21:21:17.547Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/official_cfb_influence_latest.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "CFB disclosure deadlines: January/July outside election years, more frequent near elections; Open Data republication is as needed",
       "expected_lag_tolerance_days": 365,
@@ -328,11 +328,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-09-09T06:33:01.880Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Ongoing registrations and spending updates",
       "expected_lag_tolerance_days": 45,
@@ -390,11 +390,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-08-11T19:25:33.574Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/checkbook_spending_population_latest.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Ongoing spending and payment updates",
       "expected_lag_tolerance_days": 45,
@@ -542,14 +542,14 @@
       },
       "publisher_vintage": null,
       "publisher_vintage_basis": null,
-      "publisher_last_updated_at": "2026-08-04T00:00:00.000Z",
-      "publisher_last_update_basis": "warehouse_source_summary",
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-08-05T10:41:44.000Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/city-record_bulk_latest.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Daily",
       "expected_lag_tolerance_days": 7,
@@ -948,11 +948,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-08-03T04:27:32.000Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/dof-tax-lien-sale-lists_bulk_latest.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Irregular lien-sale cycles; dataset metadata says every six months",
       "expected_lag_tolerance_days": 550,
@@ -979,11 +979,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-09-14T14:24:52.445Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "doing-business-entities:2026-09-14T14:24:52.445Z"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
       "expected_lag_tolerance_days": 400,
@@ -1331,10 +1331,10 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-07T18:12:14.249Z",
+        "retrieved_at": "2026-09-06T07:20:20.822Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/community_board_hearing_context_latest.json"
+        "run_id": "cb-minutes-probes:2026-09-06T07:20:20.822Z"
       },
       "expected_cadence": "Heterogeneous; usually monthly for verified full-board minutes pages",
       "expected_lag_tolerance_days": 45,
@@ -1361,11 +1361,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-08-24T08:25:03.900Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "nyc-administrative-code:2026-08-24T08:25:03.900Z"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Publisher supplement cadence; refreshed at build time",
       "expected_lag_tolerance_days": 60,
@@ -1423,11 +1423,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-09-14T03:54:01.287Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse-priority-source-observer:nyc-council-legistar:2026-09-14T03:54:01.287Z"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Updated as meetings, agenda items, and votes change",
       "expected_lag_tolerance_days": 7,
@@ -1578,11 +1578,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-09-14T03:54:01.554Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse-priority-source-observer:nyc-rules-rss:2026-09-14T03:54:01.554Z"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Updated as rules are proposed, heard, adopted, or made effective",
       "expected_lag_tolerance_days": 45,
@@ -1733,11 +1733,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-09-05T13:23:40.000Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Frequent (Open Data metadata)",
       "expected_lag_tolerance_days": 14,
@@ -1761,14 +1761,14 @@
       },
       "publisher_vintage": null,
       "publisher_vintage_basis": null,
-      "publisher_last_updated_at": "2026-06-30T00:00:00.000Z",
-      "publisher_last_update_basis": "warehouse_source_summary",
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-09-07T11:54:00.629Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "omb-community-board-budget-requests:2026-09-07T11:54:00.629Z"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Two or three budget publications a fiscal year",
       "expected_lag_tolerance_days": 240,
@@ -1792,14 +1792,14 @@
       },
       "publisher_vintage": null,
       "publisher_vintage_basis": null,
-      "publisher_last_updated_at": "2026-09-13T05:37:25.000Z",
-      "publisher_last_update_basis": "passport_http_last_modified",
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-09-13T13:01:59.965Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "passport-d1:2026-09-13T13:01:59.965Z"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/contractData.js)",
       "expected_lag_tolerance_days": 3,
@@ -1823,14 +1823,14 @@
       },
       "publisher_vintage": null,
       "publisher_vintage_basis": null,
-      "publisher_last_updated_at": "2026-09-13T05:37:26.000Z",
-      "publisher_last_update_basis": "passport_http_last_modified",
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-09-13T13:01:59.965Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "passport-d1:2026-09-13T13:01:59.965Z"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/rfxData.js)",
       "expected_lag_tolerance_days": 3,
@@ -2043,11 +2043,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-09-04T11:12:42.000Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/zap-bbl_bulk_latest.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Periodic project updates",
       "expected_lag_tolerance_days": 120,
@@ -2074,11 +2074,11 @@
       "publisher_last_updated_at": null,
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
-        "status": "succeeded",
-        "retrieved_at": "2026-08-03T05:05:03.000Z",
+        "status": "unknown",
+        "retrieved_at": null,
         "receipt_ref": null,
-        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "warehouse/receipts/proof/zap-projects_bulk_latest.json"
+        "receipt_schema": null,
+        "run_id": null
       },
       "expected_cadence": "Periodic project updates",
       "expected_lag_tolerance_days": 120,

@@ -38,8 +38,19 @@
         {"path": "test/oath_trial_observation.test.mjs", "contains": "OATH parser"}
       ],
       "delivery_tier": "inline-at-build",
-      "freshness_contract": {"mode": "periodic", "max_stale_days": 7, "clock_basis": "checked_acquired", "serving_max_age_days": 30, "serve_contract_id": null},
-      "health_policy": {"public_visibility": "public", "backstage_detail": "receipts-and-errors", "relationship_coverage": "separate"},
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 7,
+        "clock_basis": "checked_acquired",
+        "acquisition_cadence_days": 1,
+        "serving_max_age_days": 30,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      },
       "public_artifact_path": "site/data/oath_trial_calendar.json",
       "primary_routes": ["/browse/meetings/", "/now/", "/meetings/"],
       "source_contract_id": "oath-trial-calendar",
