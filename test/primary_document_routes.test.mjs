@@ -414,7 +414,25 @@ test("generated agency pivots round-trip to content-bearing entity routes", asyn
 
 test("Browse landing and every bounded child are exact build outputs with useful no-JS HTML", () => {
   const outputs = primaryDocumentOutputs();
-  assert.equal(outputs.length, 12);
+  const outputPath = (route) => join(process.cwd(), route.replace(/^\//, ""));
+  const expectedPaths = [
+    "/site/now/index.html",
+    "/site/consultations/index.html",
+    ...[
+      "dot-fast-buses-central-brooklyn",
+      "dot-coney-island-transportation-study",
+      "dot-secure-bike-parking",
+      "dot-public-ebike-charging",
+      "cb14-community-budget-fy2028",
+      "bloomingdale-library-and-housing",
+    ].map((id) => `/site/consultations/${id}/index.html`),
+    "/site/search/index.html",
+    "/site/browse/index.html",
+    "/site/browse/exams/index.html",
+    ...Object.keys(BROWSE_CONCEPTS).map((kind) => `/site/browse/${kind}/index.html`),
+    ...Object.keys(BROWSE_FACETS).map((facet) => `/site/browse/${facet}/index.html`),
+  ];
+  assert.deepEqual(outputs.map(([path]) => path), expectedPaths.map(outputPath));
   for (const [path, generated] of outputs) {
     if (existsSync(path)) assert.equal(readFileSync(path, "utf8"), generated, `${path} is stale`);
     assert.match(generated, /<base href="\/">/);

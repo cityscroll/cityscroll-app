@@ -71,6 +71,7 @@ import {
   renderAdminCodeProvisionDocument,
 } from "./admin_code.mjs";
 import { provisionBackfill, provisionHistoricalChanges } from "./code_history_backfill.mjs";
+import { safeConsultationId, buildConsultationCollection, renderConsultationCollectionDocument } from "./consultation_documents.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
@@ -196,6 +197,12 @@ function safeAdminCode(pathname) {
   return match ? match[1] : null;
 }
 
+function safeConsultations(pathname) {
+  if (/^\/consultations\/?$/.test(String(pathname || ""))) return { id: null };
+  const id = safeConsultationId(pathname);
+  return id ? { id } : null;
+}
+
 export function browseFacet(pathname) {
   const match = pathname.match(/^\/browse(?:\/([^/]+))?\/?$/);
   if (!match) return null;
@@ -247,6 +254,7 @@ export function edgeRequestKind(urlValue) {
   if (safeParcel(url.pathname)) return "parcel";
   if (safeCommittee(url.pathname)) return "committee";
   if (safeAdminCode(url.pathname)) return "legal-code";
+  if (safeConsultations(url.pathname)) return "consultation";
   if (browseFacet(url.pathname) || browseConcept(url.pathname) || browseObject(url.pathname)) return "browse";
   if (entityDocument(url.pathname)) return "entity";
   if (isDataHealthPath(url.pathname)) return "data-health";
@@ -1186,6 +1194,19 @@ async function handleBrowse(request, env, facet) {
   }
 }
 
+async function handleConsultation(request, env, route) {
+  const url = new URL(request.url);
+  if (!route.id && [...url.searchParams].length && request.method === "GET") {
+    const html = renderConsultationCollectionDocument(buildConsultationCollection({ query: url.searchParams }));
+    return new Response(html, { status: 200, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=120, s-maxage=300", "X-Content-Type-Options": "nosniff" } });
+  }
+  const path = route.id ? `/consultations/${encodeURIComponent(route.id)}/` : "/consultations/";
+  const asset = await staticAsset(env, request, path);
+  if (asset.ok) return asset;
+  const body = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Consultation not found · CityScroll</title></head><body><main><h1>Consultation not found</h1><p>The consultation is not in the current materialized collection.</p><p><a href="/consultations/">Browse consultations</a></p></main></body></html>`;
+  return new Response(body, { status: 404, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60", "X-Content-Type-Options": "nosniff" } });
+}
+
 async function handleBrowseConcept(request, env, concept) {
   const asset = await staticAsset(env, request, `/browse/${concept}/`);
   return asset;
@@ -1384,6 +1405,8 @@ export default {
     if (committee) return handleCommittee(request, env, committee);
     const adminCode = safeAdminCode(url.pathname);
     if (adminCode) return handleAdminCode(request, env, adminCode);
+    const consultation = safeConsultations(url.pathname);
+    if (consultation) return handleConsultation(request, env, consultation);
     const browse = browseRoute(url.pathname);
     if (browse.kind === "landing") {
       // A record search that was posted back to Browse as traversal metadata is
