@@ -47,6 +47,15 @@ const DEFAULT_CONSULTATIONS = Object.freeze([
 export function buildConsultationSearchDocuments(records = DEFAULT_CONSULTATIONS) {
   const rows = Array.isArray(records) ? records : [];
   if (!rows.length) return unavailableSearchProducerCorpus({ schema: CONSULTATION_SEARCH_PRODUCER_SCHEMA, producer: CONSULTATION_SEARCH_PRODUCER, objectType: CONSULTATION_SEARCH_OBJECT_TYPE, domain: CONSULTATION_SEARCH_DOMAIN, reason: "consultation_materialization_empty" });
-  const outcomes = rows.filter((record) => ["dot-fast-buses-central-brooklyn", "dot-secure-bike-parking", "cb14-community-budget-fy2028", "bloomingdale-library-and-housing"].includes(record?.id)).map((record) => freezeSearchValue(projectConsultationSearchDocument(record)));
+  const seenObjectRefs = new Set();
+  const outcomes = rows
+    .filter((record) => ["dot-fast-buses-central-brooklyn", "dot-secure-bike-parking", "cb14-community-budget-fy2028", "bloomingdale-library-and-housing"].includes(record?.id))
+    .map((record) => freezeSearchValue(projectConsultationSearchDocument(record)))
+    .filter((outcome) => {
+      const objectRef = outcome.document?.object_ref;
+      if (!objectRef || seenObjectRefs.has(objectRef)) return !objectRef;
+      seenObjectRefs.add(objectRef);
+      return true;
+    });
   return searchProducerCorpus({ schema: CONSULTATION_SEARCH_PRODUCER_SCHEMA, producer: CONSULTATION_SEARCH_PRODUCER, objectType: CONSULTATION_SEARCH_OBJECT_TYPE, domain: CONSULTATION_SEARCH_DOMAIN, outcomes, reasons: { matched: "retained_consultation_rounds_indexed", empty: "consultation_materialization_has_no_rounds", partial: "some_consultation_rounds_failed_admission", not_indexed: "no_consultation_round_passed_admission" } });
 }
