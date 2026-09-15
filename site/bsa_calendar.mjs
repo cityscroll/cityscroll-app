@@ -135,6 +135,7 @@ export function buildBsaSession({ session_id, date, source_url, remote_registrat
     source_url,
     agenda_url: source_url,
     venue: { name: "Spector Hall", address: "22 Reade Street, New York, NY 10007", role: "venue" },
+    activity: "observe",
     observer_access: { watch_url: "https://www.youtube.com/@NYCBSA", remote_join_url: remote_registration_url },
     participation: { links: [{ label: "BSA attendance procedures", url: "https://www.nyc.gov/site/bsa/public-hearings/procedures-for-attendance.page" }] },
     access_steps: [{ kind: "observer_instructions", destination: "https://www.nyc.gov/site/bsa/public-hearings/public-hearing-format.page", source_url: "https://www.nyc.gov/site/bsa/public-hearings/public-hearing-format.page" }],
