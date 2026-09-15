@@ -10,27 +10,39 @@ const row = (source_family, id, districts = ["K15"], extra = {}) => ({
 });
 
 function fixture() {
-  return buildDistrictTopicIndex({
-    community_board_meeting: [row("community_board_meeting", "meeting-1", ["K15"], { agenda: "Shelter safety public hearing" })],
-    community_board_decision: [row("community_board_decision", "decision-3206", ["K15"], { decision_text: "Shelter safety decision", action_type: "decision" })],
-    community_board_project: [row("community_board_project", "project-1", ["K15"], { project_description: "Shelter repair project" })],
-    shared_procurement_read_model: [row("shared_procurement_read_model", "contract-3218", ["K15"], { short_title: "Shelter contract", search_text: "Shelter contract" })],
-    community_board_request: [row("community_board_request", "request-1", ["K15"], { request: "Shelter priority" })],
-    community_board_response: [row("community_board_response", "response-1", ["K15"], { response_text: "Shelter response" })],
-    community_board_position: [row("community_board_position", "position-1", ["K15"], { position_text: "Shelter priority" })],
-    document_excerpt: [row("document_excerpt", "doc-1", ["K15"], { accepted_excerpt: "Shelter supporting document" })],
-  }, { district: "K15" });
+  return journeyFixture({ district: "K15", topic: "Shelter", board: "Brooklyn Community Board 15" });
+}
+
+function journeyFixture({ district, topic, board }) {
+  return {
+    index: buildDistrictTopicIndex({
+      community_board_meeting: [row("community_board_meeting", "meeting-1", [district], { agenda: `${topic} safety public hearing` })],
+      community_board_decision: [row("community_board_decision", "decision-3206", [district], { decision_text: `${topic} safety decision`, action_type: "decision" })],
+      community_board_project: [row("community_board_project", "project-1", [district], { project_description: `${topic} repair project` })],
+      shared_procurement_read_model: [row("shared_procurement_read_model", "contract-3218", [district], { short_title: `${topic} contract`, search_text: `${topic} contract` })],
+      community_board_request: [row("community_board_request", "request-1", [district], { request: `${topic} priority` })],
+      community_board_response: [row("community_board_response", "response-1", [district], { response_text: `${topic} response` })],
+      community_board_position: [row("community_board_position", "position-1", [district], { position_text: `${topic} priority` })],
+      document_excerpt: [row("document_excerpt", "doc-1", [district], { accepted_excerpt: `${topic} supporting document` })],
+    }, { district }),
+    board: { label: board },
+  };
 }
 
 test("A1/A2: groups all resident questions and carries separate match, locality, and source evidence", () => {
-  const view = buildLocalIssueResults(fixture(), { query: "shelter", board: { label: "Brooklyn Community Board 15" } });
+  const view = buildLocalIssueResults(fixture(), { query: "shelter" });
   assert.deepEqual(view.groups.map((group) => group.label), LOCAL_ISSUE_RESULT_GROUPS.map((group) => group.label));
   assert.deepEqual(view.groups.map((group) => group.total), [1, 1, 2, 3, 1]);
-  const result = view.groups[0].results[0];
-  assert.match(result.match.passage, /shelter/i);
-  assert.equal(result.locality.district, "K15");
-  assert.equal(result.relationship.board, "Brooklyn Community Board 15");
-  assert.equal(result.evidence.source_reference, "community_board_meeting:meeting-1");
+  const results = view.groups.flatMap((group) => group.results);
+  assert.equal(results.length, 8);
+  for (const result of results) {
+    assert.match(result.match.passage, new RegExp(result.match.matched_term, "i"));
+    assert.equal(result.locality.district, "K15");
+    assert.match(result.locality.reason, /K15/);
+    assert.equal(result.relationship.board, "Brooklyn Community Board 15");
+    assert.ok(result.evidence.source_reference);
+  }
+  assert.equal(results.find((result) => result.object_id === "meeting-1").evidence.source_reference, "community_board_meeting:meeting-1");
 });
 
 test("A3/A6: same words remain distinct typed identities and exact district membership filters results", () => {
@@ -42,20 +54,25 @@ test("A3/A6: same words remain distinct typed identities and exact district memb
   assert.ok(!JSON.stringify(view).includes("wrong-district"));
 });
 
-test("A4/A5: canonical issue drill-down is link-only, participation survives, and pagination is bounded", () => {
-  const view = buildLocalIssueResults(fixture(), {
-    query: "shelter", page_size: 1, page: 1, return_href: "/near-you/?cd=15&q=shelter",
-    tracked_issue: { exists: true, label: "Open canonical issue pack", href: "/following/packs/emmons-shelter/" },
-    participation_links: [{ label: "Attend the hearing", href: "/meetings/meeting-1" }],
-  });
-  const projects = view.groups.find((group) => group.id === "projects_procurements");
-  assert.equal(projects.pagination.page_size, 1);
-  assert.equal(projects.results.length, 1);
-  assert.equal(projects.pagination.has_next, true);
-  assert.equal(view.canonical_issue.href, "/following/packs/emmons-shelter/");
-  assert.deepEqual(view.groups[0].results[0].participation, [{ label: "Attend the hearing", href: "/meetings/meeting-1" }]);
-  const html = renderLocalIssueResults(view);
-  assert.match(html, /Open canonical issue pack/);
-  assert.match(html, /Return to results/);
-  assert.doesNotMatch(html, /timeline|watch|alias/i);
+test("A4/A5: K15 and an unrelated cross-borough journey retain drill-down, participation, return state, and bounded pagination", () => {
+  for (const [fixtureInput, query, returnHref, canonicalHref] of [
+    [fixture(), "shelter", "/near-you/?cd=15&q=shelter", "/following/packs/emmons-shelter/"],
+    [journeyFixture({ district: "M01", topic: "Flood", board: "Manhattan Community Board 1" }), "flood", "/near-you/?cd=01&q=flood", "/following/packs/flood-resilience/"],
+  ]) {
+    const view = buildLocalIssueResults(fixtureInput, {
+      query, page_size: 1, page: 1, return_href: returnHref,
+      tracked_issue: { exists: true, label: "Open canonical issue pack", href: canonicalHref },
+      participation_links: [{ label: "Attend the hearing", href: "/meetings/meeting-1" }],
+    });
+    const projects = view.groups.find((group) => group.id === "projects_procurements");
+    assert.equal(projects.pagination.page_size, 1);
+    assert.equal(projects.results.length, 1);
+    assert.equal(projects.pagination.has_next, true);
+    assert.equal(view.canonical_issue.href, canonicalHref);
+    assert.deepEqual(view.groups[0].results[0].participation, [{ label: "Attend the hearing", href: "/meetings/meeting-1" }]);
+    const html = renderLocalIssueResults(view);
+    assert.match(html, /Open canonical issue pack/);
+    assert.match(html, /Return to results/);
+    assert.doesNotMatch(html, /timeline|watch|alias/i);
+  }
 });
