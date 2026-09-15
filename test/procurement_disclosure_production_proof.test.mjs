@@ -7,6 +7,7 @@ import edgeWorker from "../site/pages_edge.mjs";
 import {
   normalizePerformanceEvidenceItem,
 } from "../site/analytical_performance_evidence.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const manifest = JSON.parse(readFileSync(new URL("../site/data/shared_procurement_read_model.json", import.meta.url)));
 const performance = JSON.parse(readFileSync(new URL("../site/data/analytics_performance_evidence.json", import.meta.url)));
@@ -219,19 +220,21 @@ test("A5: real canonical routes remain keyboard-linkable and server-rendered at 
 });
 
 test("A5: committed manifest records each route, viewport, vintage, assertion, and render hash", async () => {
-  const entries = new Map(renderManifest.entries.map((entry) => [`${entry.route}|${entry.viewport}`, entry]));
-  assert.equal(entries.size, Object.keys(CONTRACTS).length * 2);
-  for (const id of Object.keys(CONTRACTS)) {
-    for (const [viewport, header] of [["desktop", "1440x900"], ["mobile", "390x844"]]) {
-      const html = await servedContract(id, { "X-Test-Viewport": header });
-      const route = `/procurements/procurement%3Acontract%3A${id}/`;
-      const entry = entries.get(`${route}|${viewport}`);
-      assert.ok(entry, `${route} ${viewport} manifest entry`);
-      assert.equal(entry.revision, renderManifest.revision);
-      assert.equal(entry.data_vintage, performance.snapshot_date);
-      assert.ok(entry.assertion);
-      const hash = createHash("sha256").update(html).digest("hex");
-      assert.equal(entry.sha256, hash);
+  await withPinnedClock(renderManifest.capture_clock, async () => {
+    const entries = new Map(renderManifest.entries.map((entry) => [`${entry.route}|${entry.viewport}`, entry]));
+    assert.equal(entries.size, Object.keys(CONTRACTS).length * 2);
+    for (const id of Object.keys(CONTRACTS)) {
+      for (const [viewport, header] of [["desktop", "1440x900"], ["mobile", "390x844"]]) {
+        const html = await servedContract(id, { "X-Test-Viewport": header });
+        const route = `/procurements/procurement%3Acontract%3A${id}/`;
+        const entry = entries.get(`${route}|${viewport}`);
+        assert.ok(entry, `${route} ${viewport} manifest entry`);
+        assert.equal(entry.revision, renderManifest.revision);
+        assert.equal(entry.data_vintage, performance.snapshot_date);
+        assert.ok(entry.assertion);
+        const hash = createHash("sha256").update(html).digest("hex");
+        assert.equal(entry.sha256, hash);
+      }
     }
-  }
+  });
 });
