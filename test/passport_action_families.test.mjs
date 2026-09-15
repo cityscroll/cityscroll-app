@@ -108,8 +108,9 @@ test("A1: rendered action families keep base and revision amounts in separate ro
   const observationsFor = (object) => model.observations.filter((row) => object.source_observation_refs.includes(row.source_observation_ref));
   const firematicFacts = projectProcurementFacts(firematic, observationsFor(firematic)).facts;
   const tameerActions = tameerObject.passport_action_family.actions;
-  const tameerBase = tameerActions.find((row) => row.action_role === "base");
-  const tameerAction = tameerActions.find((row) => row.ctr_id === "5372858");
+  const tameerObservations = observationsFor(tameerObject);
+  const tameerBase = tameerObservations.find((row) => row.snapshot.ctr_id === tameerActions.find((action) => action.action_role === "base").ctr_id)?.snapshot;
+  const tameerAction = tameerObservations.find((row) => row.snapshot.ctr_id === "5372858")?.snapshot;
   const tameerBaseFacts = projectProcurementFacts({}, [{ source_system: "passport_public_contracts", source_observation_ref: "tameer:base", snapshot: tameerBase }]).facts;
   const tameerActionFacts = projectProcurementFacts({}, [{ source_system: "passport_public_contracts", source_observation_ref: "tameer:action", snapshot: tameerAction }]).facts;
   assert.deepEqual({ original: firematicFacts.originalAmount, current: firematicFacts.currentAmount, action: firematicFacts.actionAmount }, {
@@ -128,10 +129,9 @@ test("A1: rendered action families keep base and revision amounts in separate ro
 test("A2: action titles use publisher numbering rather than identifier suffixes", () => {
   const model = modelFor(tameer);
   const tameerObject = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-TAMEER-1");
-  const actions = tameerObject.passport_action_family.actions;
-  assert.match(actions.find((row) => row.epin.endsWith("C011")).title, /Change Order #8/);
-  assert.match(actions.find((row) => row.epin.endsWith("C010")).title, /Change Order #11/);
   const observations = model.observations.filter((row) => tameerObject.source_observation_refs.includes(row.source_observation_ref));
+  assert.match(observations.find((row) => row.snapshot.epin.endsWith("C011")).snapshot.title, /Change Order #8/);
+  assert.match(observations.find((row) => row.snapshot.epin.endsWith("C010")).snapshot.title, /Change Order #11/);
   const search = materializeProcurementSearchDocument(tameerObject, model);
   const browse = search.provenance.browse_record;
   assert.deepEqual({
