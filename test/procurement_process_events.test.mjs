@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { registrationLagDaysBetween } from "../site/analytical_projection.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
 import {
   normalizePassportRfxState,
@@ -50,17 +52,24 @@ test("shared materialization carries PASSPort RFx observations with a receipt", 
   assert.equal(record.source_receipt_ref, "site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json");
 });
 
-test("process events retain publication and registration date bases", () => {
-  const model = buildSharedProcurementReadModel({
+test("A4: BHRAGS date arithmetic and bases survive event and rendered-detail consumers", async () => {
+  const model = await withPinnedClock("2026-09-15T12:00:00.000Z", () => buildSharedProcurementReadModel({
     sourceRecords: [sourceRecord("city_record", "20240905001", {
       request_id: "20240905001", pin: "EPIN-BHRAGS", type_of_notice_description: "Award", start_date: "2024-09-05",
     }), sourceRecord("passport_public_contracts", "contract:EPIN-BHRAGS:1", {
       epin: "EPIN-BHRAGS", ctr_id: "1", contract_id: "CT-BHRAGS", status: "Registered", registration_date: "2024-08-28",
     })],
-  });
+    generatedAt: testClockISOString(),
+    now: testClockISOString(),
+  }));
   const events = model.rows[0].process_events;
+  assert.equal(registrationLagDaysBetween("2024-08-28", "2023-10-11"), 322);
+  assert.equal(registrationLagDaysBetween("2024-09-05", "2024-08-28"), 8);
   assert.equal(events.find((event) => event.state === "award")?.metadata.date_basis, "publication");
   assert.equal(events.find((event) => event.state === "registered")?.metadata.date_basis, "registration");
+  const html = renderProcurementDocument(model.rows[0], model.observations);
+  assert.match(html, /data-date-basis="publication"/);
+  assert.match(html, /data-date-basis="registration"/);
 });
 
 test("Released and Responses Received become explicit process events while legacy solicitation remains", () => {
