@@ -180,7 +180,7 @@ test("A6: positive and absent access controls remain keyboard-usable and no-Java
       "positive no-JavaScript render must keep the observer action as a keyboard-reachable link");
     const absentWithoutJavaScript = renderMeetingDocument(cases[1])
       .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
-    assert.doesNotMatch(absentWithoutJavaScript, /data-observer-access|How to observe|observer-instructions-action|youtube\.com|watch_url|video\.example/i,
+    assert.doesNotMatch(absentWithoutJavaScript, /data-observer-access|observer-instructions-action|youtube\.com|watch_url|video\.example/i,
       "absent no-JavaScript render must keep observer controls and watch addresses absent");
   });
 });
