@@ -6,6 +6,7 @@ import {
   buildCommunityBoardDocumentTopicSlices,
   renderCommunityBoardDocumentTopicSlice,
 } from "../site/community_board_document_topic_slices.mjs";
+import { todayISO, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const topic = {
   issue_id: "bus-priority",
@@ -53,6 +54,19 @@ test("A2/A3: source roles preserve mention, testimony, recommendation, individua
   ]);
   assert.equal(slice.hits.at(-1).action_type, "formal_board_action");
   assert.notEqual(slice.hits.find((hit) => hit.document_role === "chair_statement").action_type, "formal_board_action");
+});
+
+test("A3: formal stance is retained only with vote, resolution, recommendation, or official statement evidence", async () => {
+  await withPinnedClock("2026-09-12T12:00:00Z", () => {
+    const slice = buildCommunityBoardDocumentTopicSlice([
+      { ...base, retrieval_date: todayISO(), document_id: "recommendation", source_role: "committee_recommendation", formal_stance: "support", text: "The bus lane was recommended." },
+      { ...base, retrieval_date: todayISO(), document_id: "vote", source_role: "formal_vote", stance: "opposition", text: "The board voted against the bus lane." },
+      { ...base, retrieval_date: todayISO(), document_id: "chair", source_role: "chair_statement", formal_stance: "opposition", text: "The chair opposed the bus lane." },
+    ], topic);
+    assert.equal(slice.hits.find((hit) => hit.document_id === "recommendation").formal_stance, "support");
+    assert.equal(slice.hits.find((hit) => hit.document_id === "vote").formal_stance, "opposition");
+    assert.equal(slice.hits.find((hit) => hit.document_id === "chair").formal_stance, null);
+  });
 });
 
 test("A4: only retained official board roles enter the slice", () => {

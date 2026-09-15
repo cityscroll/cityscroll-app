@@ -33,6 +33,13 @@ export const OFFICIAL_BOARD_DOCUMENT_SOURCE_ROLES = Object.freeze([
 ]);
 
 const FORMAL_ROLES = new Set(["formal_vote", "resolution", "official_board_statement"]);
+const FORMAL_STANCE_EVIDENCE_ROLES = new Set([
+  "committee_recommendation",
+  "formal_vote",
+  "resolution",
+  "official_board_statement",
+]);
+const FORMAL_STANCES = new Set(["support", "opposition"]);
 const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/;
 const BOARD_ID = /^(bronx|brooklyn|manhattan|queens|staten-island)-cb-(\d{2})$/;
 const clean = (value, max = 600) => String(value ?? "")
@@ -84,6 +91,14 @@ function actionFor(role, row) {
   // wording alone, including a chair's wording, cannot upgrade a passage.
   if (row.formal_evidence === true && row.board_action === true) return "formal_board_action";
   return "mention";
+}
+
+function formalStanceFor(role, row) {
+  const stance = clean(row.formal_stance || row.stance || row.position, 40).toLowerCase();
+  if (!FORMAL_STANCES.has(stance)) return null;
+  const retainedEvidence = FORMAL_STANCE_EVIDENCE_ROLES.has(role)
+    || (row.formal_evidence === true && row.board_action === true);
+  return retainedEvidence ? stance : null;
 }
 
 function excerpt(text, matchedTerm) {
@@ -169,6 +184,7 @@ function projectHit(row, topic, identity, matched) {
     matched_aliases: Object.freeze(matched.map((item) => Object.freeze(item))),
     action_type: actionType,
     action_label: ACTION_LABELS[actionType],
+    formal_stance: formalStanceFor(role, row),
     route,
     source_family: "document_excerpt",
     source_reference: `community-board-document:${identity.board_id}:${documentId}`,
