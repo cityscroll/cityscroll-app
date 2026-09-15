@@ -98,7 +98,7 @@
     </div>
   <div id="langNotice" class="lang-notice" hidden></div>
   <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
+  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a> · <a class="backhome" href="use-with-ai/">Ask with AI</a>
 </header>
 
 <main id="main" tabindex="-1">
@@ -2713,7 +2713,7 @@ about 15 minutes. Human-readable version: <a href="stats.html">stats</a>. Relate
 <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, which checks the id against known notices, redirects to the
 matching permalink, and records a per-day count.</p>
 
-<h2 data-i18n="api_h_mcp">MCP — for AI assistants</h2>
+<h2 id="mcp" data-i18n="api_h_mcp">MCP — for AI assistants</h2>
 <p class="src" data-i18n-html="api_p_mcp_html"><code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — point an MCP client at
 <code>https://api.cityscroll.org/mcp</code>. The generated catalog below is the authoritative tool inventory.
 It distinguishes each tool's <code>name</code>, <code>read</code>, and <code>mutation</code> class.
