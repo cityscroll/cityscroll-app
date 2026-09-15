@@ -2,9 +2,12 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  applyLocalDistrictFollowBundle,
   buildLocalDistrictFollowBundle,
+  deliverLocalDistrictFollow,
   localDistrictFollowDisclosure,
   localDistrictFollowPayload,
+  previewLocalDistrictFollow,
 } from "../site/local_district_follow_bundle.mjs";
 
 const scope = {
@@ -57,4 +60,52 @@ test("bundle payload is stable across repeated construction", () => {
   const first = localDistrictFollowPayload({ scope, board: "community-board:brooklyn-cb-15" });
   const second = localDistrictFollowPayload({ scope, board: "community-board:brooklyn-cb-15" });
   assert.deepEqual(first.children, second.children);
+});
+
+test("one action creates each missing child once and returns labelled digest sections", async () => {
+  const bundle = buildLocalDistrictFollowBundle({ scope, board: "community-board:brooklyn-cb-15" });
+  const calls = [];
+  const created = await applyLocalDistrictFollowBundle(bundle, async (child) => {
+    calls.push(structuredClone(child));
+  });
+  assert.equal(created.status, "created");
+  assert.deepEqual(created.created, bundle.children.map((child) => child.id));
+  assert.deepEqual(calls, bundle.children);
+  assert.deepEqual(created.digest.sections.map(({ label }) => label), [
+    "Community Board meetings", "Land and zoning", "Property", "Rules and notices", "City contracts",
+  ]);
+  const replay = await applyLocalDistrictFollowBundle(bundle, async () => {
+    throw new Error("an existing child must not be attempted again");
+  }, created.created);
+  assert.equal(replay.status, "created");
+  assert.deepEqual(replay.created, []);
+});
+
+test("partial creation failure retries only the missing child with the exact payload", async () => {
+  const bundle = buildLocalDistrictFollowBundle({ scope, board: "community-board:brooklyn-cb-15" });
+  const calls = [];
+  let failMoney = true;
+  const create = async (child) => {
+    calls.push(structuredClone(child));
+    if (child.lens === "money" && failMoney) throw new Error("temporary failure");
+  };
+  const first = await applyLocalDistrictFollowBundle(bundle, create);
+  assert.equal(first.status, "partial");
+  assert.equal(first.created.length, 4);
+  assert.deepEqual(first.remaining.map((child) => child.id), [bundle.children[4].id]);
+  failMoney = false;
+  const second = await applyLocalDistrictFollowBundle(bundle, create, first.created);
+  assert.equal(second.status, "created");
+  assert.deepEqual(second.created, [bundle.children[4].id]);
+  assert.deepEqual(calls, [...bundle.children, bundle.children[4]]);
+});
+
+test("K15 preview and delivery share canonical IDs from one materialized snapshot", () => {
+  const bundle = buildLocalDistrictFollowBundle({ scope, board: "community-board:brooklyn-cb-15" });
+  const snapshot = { snapshot_id: "k15-fixture", children: Object.fromEntries(bundle.children.map((child, index) => [child.id, [{ index }]])) };
+  const preview = previewLocalDistrictFollow(bundle, snapshot);
+  const delivery = deliverLocalDistrictFollow(bundle, snapshot);
+  assert.deepEqual(preview.sections.map(({ watch_id }) => watch_id), delivery.sections.map(({ watch_id }) => watch_id));
+  assert.deepEqual(preview.sections.map(({ items }) => items), delivery.sections.map(({ items }) => items));
+  assert.equal(preview.snapshot_id, delivery.snapshot_id);
 });
