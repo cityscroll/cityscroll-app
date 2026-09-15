@@ -8,6 +8,10 @@ export function testClockISOString() {
   return new globalThis.Date().toISOString();
 }
 
+export function todayISO() {
+  return testClockISOString().slice(0, 10);
+}
+
 const activeScopes = [];
 
 function epochMilliseconds(value) {

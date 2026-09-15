@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { todayISO } from "../test/helpers/test_clock.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const POLICY_PATH = path.join(ROOT, "architecture", "resident-read-policy.json");
@@ -247,7 +248,7 @@ function debtIdentity(item) {
   return [item.path, item.line, item.call_signature, item.origin, item.route || ""].join("\n");
 }
 
-export function evaluateDebt(findings, debt, policy, { today = new Date().toISOString().slice(0, 10) } = {}) {
+export function evaluateDebt(findings, debt, policy, { today = todayISO() } = {}) {
   assert.equal(debt.schema_version, 1, "no-live debt manifest schema_version must be 1");
   assert.ok(Array.isArray(debt.entries), "no-live debt manifest entries must be an array");
   const maxMs = Number(policy.temporary_debt_max_days || 30) * 86400000;
@@ -256,6 +257,7 @@ export function evaluateDebt(findings, debt, policy, { today = new Date().toISOS
   assert.ok(Number.isFinite(generated) && Number.isFinite(expires), "debt manifest dates must be ISO dates");
   assert.ok(expires - generated <= maxMs, `debt manifest may cover at most ${policy.temporary_debt_max_days} days`);
   assert.ok(today <= debt.expires_on, `no-live debt manifest expired on ${debt.expires_on}`);
+  const remainingDays = Math.floor((expires - Date.parse(`${today}T00:00:00Z`)) / 86400000);
   const findingById = new Map(findings.map((item) => [debtIdentity(item), item]));
   const debtById = new Map();
   for (const entry of debt.entries) {
@@ -272,6 +274,7 @@ export function evaluateDebt(findings, debt, policy, { today = new Date().toISOS
     unapproved: findings.filter((item) => !debtById.has(debtIdentity(item))),
     stale_debt: debt.entries.filter((item) => !findingById.has(debtIdentity(item))),
     approved: findings.filter((item) => debtById.has(debtIdentity(item))),
+    remaining_days: remainingDays,
   };
 }
 
@@ -284,7 +287,7 @@ export function runNoLiveExternalReads({ inventory = false } = {}) {
     process.stdout.write(`${JSON.stringify(findings, null, 2)}\n`);
     return findings;
   }
-  const report = evaluateDebt(findings, debt, policy);
+  const report = evaluateDebt(findings, debt, policy, { today: todayISO() });
   if (report.unapproved.length || report.stale_debt.length) {
     const lines = ["resident-read zero-egress gate failed"];
     for (const item of report.unapproved) lines.push(`NEW ${item.path}:${item.line} ${item.origin} ${item.call_signature}`);
@@ -298,5 +301,8 @@ const invoked = process.argv[1] && import.meta.url === pathToFileURL(path.resolv
 if (invoked) {
   const inventory = process.argv.includes("--inventory");
   const result = runNoLiveExternalReads({ inventory });
-  if (!inventory) process.stdout.write(`resident-read zero-egress gate passed (${result.scanned_files} files, ${result.approved.length} temporary debts)\n`);
+  if (!inventory) {
+    if (result.remaining_days < 7) process.stdout.write(`warning: no-live debt manifest expires in ${result.remaining_days} day(s) on ${readJson(DEBT_PATH).expires_on}\n`);
+    process.stdout.write(`resident-read zero-egress gate passed (${result.scanned_files} files, ${result.approved.length} temporary debts)\n`);
+  }
 }
