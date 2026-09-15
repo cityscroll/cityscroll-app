@@ -746,6 +746,16 @@ function federatedPublicCard(document) {
   } : null);
 }
 
+function exactCanonicalProcurementResult(federation, query) {
+  const normalized = String(query || "").trim().toLocaleLowerCase("en-US");
+  if (!normalized) return false;
+  return federation?.results?.some((result) => (
+    result?.object_type === "procurement"
+      && (result.provenance?.identifier_values || [])
+        .some((identifier) => String(identifier).trim().toLocaleLowerCase("en-US") === normalized)
+  )) || false;
+}
+
 function federatedPresentationLane(id, federation, {
   lenses,
   domains,
@@ -958,11 +968,20 @@ export async function handleSearch(request, env, {
       source: FEDERATED_SEARCH_PRESENTATION_SCOPES.consultations.source,
     }),
   };
+  const exactCanonical = exactCanonicalProcurementResult(federation, resolved.raw_query);
   const results = federation.results.map(federatedPublicCard).slice(0, RESULT_LIMIT);
+  // The HTTP result list is the canonical result authority. For an exact
+  // procurement identifier, keep the capability envelope and lane coverage
+  // but omit their repeated card projections so one record cannot be counted
+  // three times by clients that inspect the full response recursively.
+  const responseFederation = exactCanonical ? { ...federation, results: [] } : federation;
+  const responseLanes = exactCanonical
+    ? Object.fromEntries(Object.entries(lanes).map(([id, lane]) => [id, { ...lane, cards: [] }]))
+    : lanes;
   return json({
     schema: RESPONSE_SCHEMA,
     capability_reference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
-    federated: federation,
+    federated: responseFederation,
     query: resolved.raw_query,
     match_mode: resolved.match_mode,
     resolved_term: {
@@ -972,7 +991,7 @@ export async function handleSearch(request, env, {
       expansion_tokens: resolved.expansion_tokens,
       expansion_receipt: resolved.expansion?.receipt || null,
     },
-    lanes: LANE_ORDER.map((id) => lanes[id]),
+    lanes: LANE_ORDER.map((id) => responseLanes[id]),
     results,
     coverage: universalSearchCoverage(lanes, results, [], federation.coverage),
   }, 200, cors, "public, max-age=60, stale-while-revalidate=300");
