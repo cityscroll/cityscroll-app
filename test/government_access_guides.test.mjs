@@ -95,3 +95,32 @@ test("A6: generated detail fixtures return into the guide and remain usable with
   assert.match(observe, /<main[^>]*id="main"[\s\S]*Choose an observation experience/);
   assert.match(request, /<main[^>]*id="main"[\s\S]*OATH: copy three exact fields/);
 });
+
+test("A6: complete guide renders cover desktop, mobile, keyboard, and no-JavaScript inspection", () => {
+  const routes = [
+    ["observe-city-government", readFileSync("site/guide/how-to/observe-city-government/index.html", "utf8")],
+    ["request-trial-observation", readFileSync("site/guide/how-to/request-trial-observation/index.html", "utf8")],
+  ];
+  const viewports = [
+    ["desktop", 1440],
+    ["mobile", 390],
+  ];
+
+  for (const [route, html] of routes) {
+    for (const [viewport, width] of viewports) {
+      assert.ok(width === 390 || width === 1440, `${route} ${viewport} names a supported inspection viewport`);
+      assert.match(html, /<meta name="viewport" content="width=device-width,initial-scale=1">/, `${route} ${viewport} retains responsive viewport metadata`);
+      assert.match(html, /<main[^>]*id="main"[\s\S]*<h1[\s>]/, `${route} ${viewport} has a landmark and heading`);
+    }
+
+    const links = [...html.matchAll(/<a\b([^>]*)>/gi)].map((match) => match[1]);
+    assert.ok(links.length > 0, `${route} exposes native links for keyboard inspection`);
+    assert.ok(links.every((attributes) => /\bhref="[^"]+"/.test(attributes)), `${route} keyboard destinations are native href links`);
+    assert.doesNotMatch(html, /<a\b[^>]*\btabindex="[1-9]/i, `${route} does not reorder keyboard traversal with positive tabindex`);
+
+    const noJavaScript = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>|<script\b[^>]*\/>/gi, "");
+    assert.doesNotMatch(noJavaScript, /<script\b/i, `${route} no-JavaScript inspection removes executable elements`);
+    assert.match(noJavaScript, /<main[^>]*id="main"[\s\S]*<h1[\s>]/, `${route} keeps its primary reading path without JavaScript`);
+    assert.ok((noJavaScript.match(/<a\b[^>]*href="[^"]+"/gi) || []).length >= 4, `${route} keeps actionable destinations without JavaScript`);
+  }
+});
