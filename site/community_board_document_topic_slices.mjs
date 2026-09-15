@@ -33,6 +33,19 @@ export const OFFICIAL_BOARD_DOCUMENT_SOURCE_ROLES = Object.freeze([
 ]);
 
 const FORMAL_ROLES = new Set(["formal_vote", "resolution", "official_board_statement"]);
+const FORMAL_STANCE_EVIDENCE_ROLES = new Set([
+  "committee_recommendation",
+  "formal_vote",
+  "resolution",
+  "official_board_statement",
+]);
+const FORMAL_STANCES = new Set(["support", "opposition"]);
+const STANCE_EVIDENCE_LABELS = Object.freeze({
+  committee_recommendation: "Committee recommendation",
+  formal_vote: "Formal vote",
+  resolution: "Resolution",
+  official_board_statement: "Official board statement",
+});
 const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/;
 const BOARD_ID = /^(bronx|brooklyn|manhattan|queens|staten-island)-cb-(\d{2})$/;
 const clean = (value, max = 600) => String(value ?? "")
@@ -84,6 +97,18 @@ function actionFor(role, row) {
   // wording alone, including a chair's wording, cannot upgrade a passage.
   if (row.formal_evidence === true && row.board_action === true) return "formal_board_action";
   return "mention";
+}
+
+function formalStanceFor(role, row) {
+  const stance = clean(row.formal_stance || row.stance || row.position, 40).toLowerCase();
+  if (!FORMAL_STANCES.has(stance)) return null;
+  const retainedEvidence = FORMAL_STANCE_EVIDENCE_ROLES.has(role)
+    || (row.formal_evidence === true && row.board_action === true);
+  return retainedEvidence ? stance : null;
+}
+
+function stanceEvidenceKindFor(role, row) {
+  return formalStanceFor(role, row) ? STANCE_EVIDENCE_LABELS[role] || "Official board statement" : null;
 }
 
 function excerpt(text, matchedTerm) {
@@ -169,6 +194,8 @@ function projectHit(row, topic, identity, matched) {
     matched_aliases: Object.freeze(matched.map((item) => Object.freeze(item))),
     action_type: actionType,
     action_label: ACTION_LABELS[actionType],
+    stance: formalStanceFor(role, row),
+    stance_evidence_kind: stanceEvidenceKindFor(role, row),
     route,
     source_family: "document_excerpt",
     source_reference: `community-board-document:${identity.board_id}:${documentId}`,
@@ -247,7 +274,12 @@ export const materializeBoardDocumentTopicSlices = materializeCommunityBoardDocu
 
 export function renderCommunityBoardDocumentTopicSlice(slice) {
   if (!slice || slice.schema !== COMMUNITY_BOARD_DOCUMENT_TOPIC_SLICE_SCHEMA) return "";
-  const body = slice.hits.map((hit) => `<article data-action-type="${escapeHtml(hit.action_type)}"><h3><a href="${escapeHtml(hit.route)}">${escapeHtml(hit.action_label)}</a></h3><p>${escapeHtml(hit.board_name)} · <time datetime="${escapeHtml(hit.meeting_date)}">${escapeHtml(hit.meeting_date)}</time></p><p>${escapeHtml(hit.excerpt)}</p><p><a href="${escapeHtml(hit.document_url)}">Open official source document</a></p><details><summary>Source details</summary><p>Retrieved ${escapeHtml(hit.retrieval_date)} · ${escapeHtml(hit.document_role)}${hit.locator ? ` · ${escapeHtml(hit.locator)}` : ""}</p></details></article>`).join("");
+  const body = slice.hits.map((hit) => {
+    const stance = hit.stance
+      ? `<p>Stance: ${escapeHtml(hit.stance)} · Evidence: ${escapeHtml(hit.stance_evidence_kind)}</p>`
+      : "";
+    return `<article data-action-type="${escapeHtml(hit.action_type)}"><h3><a href="${escapeHtml(hit.route)}">${escapeHtml(hit.action_label)}</a></h3><p>${escapeHtml(hit.board_name)} · <time datetime="${escapeHtml(hit.meeting_date)}">${escapeHtml(hit.meeting_date)}</time></p>${stance}<p>${escapeHtml(hit.excerpt)}</p><p><a href="${escapeHtml(hit.document_url)}">Open official source document</a></p><details><summary>Source details</summary><p>Retrieved ${escapeHtml(hit.retrieval_date)} · ${escapeHtml(hit.document_role)}${hit.locator ? ` · ${escapeHtml(hit.locator)}` : ""}</p></details></article>`;
+  }).join("");
   const c = slice.coverage;
   const empty = `<p>No retained official board document matched these aliases. Searched ${escapeHtml(c.official_documents_searched)} official document${c.official_documents_searched === 1 ? "" : "s"} through ${escapeHtml(c.through_date || "an unknown date")}.</p>`;
   return `<section id="board-document-topic-slice" data-schema="${COMMUNITY_BOARD_DOCUMENT_TOPIC_SLICE_SCHEMA}"><h2>${escapeHtml(slice.label || "Official board documents")}</h2>${body || empty}<details><summary>Search coverage</summary><p>${escapeHtml(c.source_scope)}. Source roles searched: ${escapeHtml(c.source_roles.map((role) => role.role).join(", ") || "none")}.</p></details></section>`;
