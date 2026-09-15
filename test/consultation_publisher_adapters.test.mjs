@@ -33,3 +33,37 @@ test("Formstack JSON is decoded without evaluating script and keeps languages di
   assert.equal(seed.organizer_link, BLOOMINGDALE_URLS.reviewed_link);
   assert.equal(seed.organizer_refresh.http_status, 403);
 });
+
+test("A2: a blocked organizer refresh is never treated as a successful acquisition", () => {
+  const seed = CONSULTATION_PILOT_SEEDS.find((item) => item.id === "bloomingdale-library-and-housing");
+  assert.deepEqual(
+    { status: seed.organizer_refresh.status, http_status: seed.organizer_refresh.http_status },
+    { status: "failed", http_status: 403 },
+  );
+});
+
+test("A4: aliases, language channels, and an unavailable deadline remain fixture-visible", () => {
+  const page = parseCb14BudgetPage([
+    `<a href="${CB14_URLS.shortlinks[0]}">English form</a>`,
+    `<a href="${CB14_URLS.shortlinks[1]}">Spanish form</a>`,
+    `<iframe data-src="${CB14_URLS.form}&embedded=true"></iframe>`,
+  ].join(""));
+  const seed = CONSULTATION_PILOT_SEEDS.find((item) => item.id === "bloomingdale-library-and-housing");
+
+  assert.deepEqual(
+    {
+      shortlinks: CB14_URLS.shortlinks.map((url) => page.aliases.includes(url)),
+      canonical_form: parseGoogleFormHtml(`<a href="${CB14_URLS.form}">form</a>`).canonical_url,
+      languages: seed.channels.map((channel) => channel.language),
+      one_consultation: CONSULTATION_PILOT_SEEDS.filter((item) => item.id === "bloomingdale-library-and-housing").length,
+      deadline: seed.deadline,
+    },
+    {
+      shortlinks: [true, true],
+      canonical_form: CB14_URLS.form.split("?")[0],
+      languages: ["en", "es"],
+      one_consultation: 1,
+      deadline: null,
+    },
+  );
+});
