@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { acquireConsultationSources, consultationRefreshDisabled, runConsultationRefresh } from "../site/consultation_acquisition.mjs";
+import { acquireConsultationSources } from "../site/consultation_acquisition.mjs";
+import { consultationRefreshDisabled, runConsultationRefresh } from "../tools/refresh_consultations.mjs";
 
 const response = (status, body = "ok") => ({
   status,
@@ -28,7 +29,7 @@ test("refresh kill switch is explicit and leaves the retained artifact untouched
 test("the source contract and scheduled builder are wired to the consultation materialization", async () => {
   const contract = JSON.parse(await (await import("node:fs/promises")).readFile("site/data/source_contracts.json", "utf8"));
   const row = contract.first_class_artifacts.find((entry) => entry.id === "public-consultations");
-  assert.deepEqual(row.acquisition_command, ["node", "site/consultation_acquisition.mjs"]);
+  assert.deepEqual(row.acquisition_command, ["node", "tools/refresh_consultations.mjs"]);
   assert.equal(row.normal_refresh_cadence_hours, 24);
   assert.ok(row.dependent_materializers.includes("tools/build_primary_documents.mjs"));
   assert.ok(row.dependent_materializers.includes("tools/build_keyword_search_index.mjs"));
