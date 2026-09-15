@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import { buildConsultationCollection, buildConsultationDetail, renderConsultationCollectionDocument, renderConsultationDetailDocument } from "../site/consultation_documents.mjs";
+
+const CAPTURE_MANIFEST = new URL("../docs/evidence/consultation-pages/capture-manifest.json", import.meta.url);
 
 test("scope, inspect, dismiss, detail, back, and continued browsing are real document affordances", () => {
   const query = new URLSearchParams("category=Transit%20service%20and%20corridor%20priorities");
@@ -21,6 +25,50 @@ test("scope, inspect, dismiss, detail, back, and continued browsing are real doc
 test("canonical routes are safe and unknown details remain ordinary links", () => {
   assert.match(renderConsultationCollectionDocument(buildConsultationCollection()), /href="\/consultations\//);
   assert.match(renderConsultationDetailDocument(buildConsultationDetail("cb14-community-budget-fy2028")), /data-return-focus/);
+});
+
+test("selection, expanded row, dismissal, scroll, and return focus are represented by native document state", () => {
+  const query = new URLSearchParams("category=Facility+siting+and+program+design&place=New+York+City");
+  const view = buildConsultationCollection({ query });
+  assert.equal(view.records.length, 1);
+  const [selected] = view.records;
+  const html = renderConsultationCollectionDocument(view);
+  assert.match(html, new RegExp(`data-consultation-id="${selected.id}"`));
+  assert.match(html, new RegExp(`href="#inspect-${selected.id}"`));
+  assert.match(html, new RegExp(`<details id="inspect-${selected.id}">`));
+  assert.match(html, /<summary>Inspect context<\/summary>/);
+  assert.match(html, /href="#inspect-/);
+
+  const detail = renderConsultationDetailDocument(buildConsultationDetail(selected.id, { query: query.toString() }));
+  assert.match(detail, /data-return-focus="consultation-dot-public-ebike-charging"/);
+  assert.match(detail, /category=Facility\+siting\+and\+program\+design/);
+  assert.match(detail, /place=New\+York\+City/);
+  assert.match(detail, /href="\/consultations\/"/);
+});
+
+test("the retained journey manifest covers every required path with content hashes", async () => {
+  const manifest = JSON.parse(await readFile(CAPTURE_MANIFEST, "utf8"));
+  assert.equal(manifest.image_binaries_committed, false);
+  assert.equal(manifest.captures.length, 10);
+  const cases = new Set(manifest.captures.map((capture) => capture.case));
+  for (const expected of ["desktop", "narrow-touch", "keyboard", "no-javascript", "failed-detail-load"]) {
+    assert.ok(cases.has(`consultations-${expected}`), expected);
+  }
+  for (const capture of manifest.captures) {
+    assert.match(capture.route, /^\/consultations\//);
+    assert.ok(capture.viewport.width > 0 && capture.viewport.height > 0, capture.case);
+    assert.equal(capture.revision || manifest.revision, manifest.revision, capture.case);
+    assert.equal(typeof (capture.data_vintage || manifest.data_vintage), "string", capture.case);
+    assert.ok(capture.assertion.length > 20, capture.case);
+    assert.match(capture.render_sha256, /^[a-f0-9]{64}$/, capture.case);
+  }
+  const collection = renderConsultationCollectionDocument(buildConsultationCollection());
+  const detail = renderConsultationDetailDocument(buildConsultationDetail("dot-fast-buses-central-brooklyn"));
+  const expectedHashes = new Set([
+    createHash("sha256").update(collection).digest("hex"),
+    createHash("sha256").update(detail).digest("hex"),
+  ]);
+  assert.ok(manifest.captures.some((capture) => expectedHashes.has(capture.render_sha256)));
 });
 
 test("the static collection remains useful without JavaScript", () => {

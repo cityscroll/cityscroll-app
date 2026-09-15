@@ -1,0 +1,80 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "consultation collection and detail documents",
+  "condition": "Deterministic document renders and route contracts; no image binary is committed.",
+  "image_binaries_committed": false,
+  "revision": "d492c2b47bfd13ee973e1cc342f3da4f11886222",
+  "data_vintage": "materialized consultation fixtures retained by the repository",
+  "captures": [
+    {
+      "case": "consultations-desktop",
+      "route": "/consultations/",
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "assertion": "Desktop collection renders the selected consultation scope with category, place, and lifecycle controls plus separate inspect and detail links.",
+      "render_sha256": "b9c784286300e3879514928f088f7d402cadbeb7028e286ea72268d480bbf34d"
+    },
+    {
+      "case": "consultations-desktop-detail",
+      "route": "/consultations/dot-fast-buses-central-brooklyn/",
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "assertion": "Desktop detail keeps the response destination separate from source details and provides a scoped return link.",
+      "render_sha256": "08dfaf760f264eff033aca652b352f0bde36a74ad54ba478f07ec62569943f9a"
+    },
+    {
+      "case": "consultations-narrow-touch",
+      "route": "/consultations/?place=Coney+Island",
+      "viewport": { "name": "narrow-touch", "width": 390, "height": 844 },
+      "assertion": "Narrow touch scope keeps one place-matched row and native disclosure/detail destinations without horizontal interaction requirements.",
+      "render_sha256": "1e44957a5d8da2fd3db522e4c50b6b4865811ca31c0717f2f45f20ae7d49c818"
+    },
+    {
+      "case": "consultations-narrow-touch-detail",
+      "route": "/consultations/dot-coney-island-transportation-study/?place=Coney+Island",
+      "viewport": { "name": "narrow-touch", "width": 390, "height": 844 },
+      "assertion": "Narrow touch detail retains the place query on Back and exposes a real source destination.",
+      "render_sha256": "360a34ac3717551fb3bd24106abc5588130571598901dcdb75be433404b31d8a"
+    },
+    {
+      "case": "consultations-keyboard",
+      "route": "/consultations/?lifecycle=dated",
+      "viewport": { "name": "keyboard", "width": 1440, "height": 900 },
+      "assertion": "Keyboard path reaches the GET filter, native Inspect context disclosure, canonical detail link, and real response links without a submit action.",
+      "render_sha256": "370a32d9f08f1fe27987278f2a8849fdfc8d97c21f67d09456153810453d32b4"
+    },
+    {
+      "case": "consultations-keyboard-detail",
+      "route": "/consultations/dot-fast-buses-central-brooklyn/?lifecycle=dated",
+      "viewport": { "name": "keyboard", "width": 1440, "height": 900 },
+      "assertion": "Keyboard detail path exposes a focus-target return attribute and preserves the dated scope.",
+      "render_sha256": "7bfc2c9fe85915db35daca19e5952b3fa7a4225ed8bcbf432513bf0ea712b012"
+    },
+    {
+      "case": "consultations-no-javascript",
+      "route": "/consultations/",
+      "viewport": { "name": "no-javascript", "width": 1440, "height": 900 },
+      "assertion": "The static collection contains no script element and remains navigable through ordinary links and GET controls.",
+      "render_sha256": "b9c784286300e3879514928f088f7d402cadbeb7028e286ea72268d480bbf34d"
+    },
+    {
+      "case": "consultations-no-javascript-detail",
+      "route": "/consultations/dot-fast-buses-central-brooklyn/",
+      "viewport": { "name": "no-javascript", "width": 1440, "height": 900 },
+      "assertion": "The static detail contains no script element, has native source disclosure, and cannot post a form to a provider.",
+      "render_sha256": "08dfaf760f264eff033aca652b352f0bde36a74ad54ba478f07ec62569943f9a"
+    },
+    {
+      "case": "consultations-failed-detail-load",
+      "route": "/consultations/missing-fixture/",
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "assertion": "A missing detail resolves to the ordinary not-found route and returns the reader to the collection rather than inventing a consultation.",
+      "render_sha256": "b60baa551aca5d9cd8f101fa215b231bbcbefab2219ed7a34b6fca528f2db2d2"
+    },
+    {
+      "case": "consultations-failed-detail-load-narrow",
+      "route": "/consultations/missing-fixture/",
+      "viewport": { "name": "narrow-touch", "width": 390, "height": 844 },
+      "assertion": "A missing detail stays a bounded not-found response at a narrow touch viewport, with a working collection destination.",
+      "render_sha256": "b60baa551aca5d9cd8f101fa215b231bbcbefab2219ed7a34b6fca528f2db2d2"
+    }
+  ]
+}
