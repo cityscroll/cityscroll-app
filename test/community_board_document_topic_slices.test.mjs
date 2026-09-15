@@ -62,10 +62,20 @@ test("A3: formal stance is retained only with vote, resolution, recommendation, 
       { ...base, retrieval_date: todayISO(), document_id: "recommendation", source_role: "committee_recommendation", formal_stance: "support", text: "The bus lane was recommended." },
       { ...base, retrieval_date: todayISO(), document_id: "vote", source_role: "formal_vote", stance: "opposition", text: "The board voted against the bus lane." },
       { ...base, retrieval_date: todayISO(), document_id: "chair", source_role: "chair_statement", formal_stance: "opposition", text: "The chair opposed the bus lane." },
+      { ...base, retrieval_date: todayISO(), document_id: "testimony", source_role: "testimony", stance: "support", text: "Public testimony supported the bus lane." },
     ], topic);
-    assert.equal(slice.hits.find((hit) => hit.document_id === "recommendation").formal_stance, "support");
-    assert.equal(slice.hits.find((hit) => hit.document_id === "vote").formal_stance, "opposition");
-    assert.equal(slice.hits.find((hit) => hit.document_id === "chair").formal_stance, null);
+    const chair = slice.hits.find((hit) => hit.document_id === "chair");
+    const testimony = slice.hits.find((hit) => hit.document_id === "testimony");
+    const vote = slice.hits.find((hit) => hit.document_id === "vote");
+    assert.equal(chair.stance, null);
+    assert.equal(testimony.stance, null);
+    assert.equal(vote.stance, "opposition");
+    assert.equal(vote.stance_evidence_kind, "Formal vote");
+    const rendered = renderCommunityBoardDocumentTopicSlice(slice);
+    assert.match(rendered, /Stance: opposition · Evidence: Formal vote/);
+    const article = (action) => rendered.match(new RegExp(`<article data-action-type="${action}">([\\s\\S]*?)</article>`))[1];
+    assert.doesNotMatch(article("chair_action"), /Stance:/);
+    assert.doesNotMatch(article("public_testimony"), /Stance:/);
   });
 });
 
