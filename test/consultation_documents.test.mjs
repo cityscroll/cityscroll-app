@@ -7,6 +7,8 @@ test("collection and safe detail documents expose resident-facing consultation f
   assert.equal(view.records.length, 6);
   const html = renderConsultationCollectionDocument(view);
   assert.match(html, /Consultations/);
+  assert.match(html, /href="\/brand\.css"/);
+  assert.match(html, /href="\/civic-documents\.css"/);
   assert.match(html, /Brooklyn CB14 district needs/);
   assert.match(html, /Bloomingdale/);
   assert.match(html, /Inspect context/);
