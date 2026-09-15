@@ -69,6 +69,9 @@ test("NTA and Police Precinct scopes drive the same Near You membership index an
     assert.doesNotMatch(initialHtml, /data-geography-key=/);
     assert.match(resultsHtml, new RegExp(`data-geography-key="${key}"`));
     assert.match(resultsHtml, /data-geography-evidence="1"/);
+    assert.match(resultsHtml, /<details class="near-record-why"[^>]*>[\s\S]*?Why this place matched/);
+    const residentText = resultsHtml.replace(/<details\b[\s\S]*?<\/details>/gi, "").replace(/<[^>]+>/g, " ");
+    assert.doesNotMatch(residentText, /strong basis|location evidence|placement_method|point_in_polygon/i);
     assert.match(resultsHtml, /Why this place matched/);
     assert.match(initialHtml, new RegExp(`<option value="${key}" selected>`));
   }

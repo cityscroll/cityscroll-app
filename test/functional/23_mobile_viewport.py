@@ -268,7 +268,10 @@ def run(base: str) -> None:
                       mapHidden: getComputedStyle(document.querySelector('[data-near-surface-panel="map"]')||document.body).display === 'none',
                     })"""
                 )
-                assert contract["count"] == len(set(contract["ids"])), contract
+                assert len(contract["ids"]) == len(set(contract["ids"])), contract
+                assert len(contract["ids"]) <= contract["count"], contract
+                if len(contract["ids"]) < contract["count"]:
+                    assert page.locator(".near-results-more a").count() == 1, contract
                 assert contract["paths"] == contract["areas"], contract
                 assert contract["enhanced"] == "true", contract
                 assert contract["listFirst"], contract
@@ -344,7 +347,10 @@ def run(base: str) -> None:
               controlsHidden: [...document.querySelectorAll('.js-only')].every(el => el.hidden),
             })"""
         )
-        assert no_js_contract["count"] == len(set(no_js_contract["ids"])), no_js_contract
+        assert len(no_js_contract["ids"]) == len(set(no_js_contract["ids"])), no_js_contract
+        assert len(no_js_contract["ids"]) <= no_js_contract["count"], no_js_contract
+        if len(no_js_contract["ids"]) < no_js_contract["count"]:
+            assert no_js_page.locator(".near-results-more a").count() == 1, no_js_contract
         assert no_js_contract["bags"] == ["citywide", "virtual", "unlocated"], no_js_contract
         assert no_js_contract["controlsHidden"], no_js_contract
 

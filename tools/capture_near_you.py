@@ -38,7 +38,10 @@ def assert_count_contract(page):
           areas: Object.fromEntries([...document.querySelectorAll('[data-map-area]')].map(el => [el.dataset.mapArea, Number(el.dataset.count)])),
         })"""
     )
-    assert contract["count"] == len(set(contract["ids"])), contract
+    assert len(contract["ids"]) == len(set(contract["ids"])), contract
+    assert len(contract["ids"]) <= contract["count"], contract
+    if len(contract["ids"]) < contract["count"]:
+        assert page.locator(".near-results-more a").count() == 1, contract
     assert contract["paths"] == contract["areas"], contract
 
 

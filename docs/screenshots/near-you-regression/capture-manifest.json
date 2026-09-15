@@ -1,0 +1,193 @@
+{
+  "schema": "cityscroll.near_you_regression_capture.v1",
+  "revision": "f9d04fa93bf1c90b0532e562c5e8835e7ac631af",
+  "data_vintage": "served artifact at capture time",
+  "entries": [
+    {
+      "route": "/near-you/",
+      "viewport": [
+        1200,
+        900
+      ],
+      "geometry": {
+        "hero": {
+          "top": 150.1875,
+          "bottom": 500.359375,
+          "width": 557.453125,
+          "height": 350.171875
+        },
+        "place": {
+          "top": 638.359375,
+          "bottom": 902.828125,
+          "width": 776.53125,
+          "height": 264.46875
+        },
+        "overview": null,
+        "switch": {
+          "top": 516.359375,
+          "bottom": 552.359375,
+          "width": 256.53125,
+          "height": 36
+        },
+        "results": {
+          "top": 902.828125,
+          "bottom": 1241.109375,
+          "width": 622.109375,
+          "height": 338.28125
+        },
+        "orders": {
+          "hero": "1",
+          "place-guide": "6",
+          "overview": null,
+          "surface-switch": "3",
+          "results": "6"
+        },
+        "horizontalOverflow": false
+      },
+      "screenshot": "before-1200.png",
+      "sha256": "3afc812053acfc341e65344c81bedbdbf099ce0d0fe60612aeb9fd8f10e46649"
+    },
+    {
+      "route": "/near-you/?v=0&boro=Queens&cd=Q04",
+      "viewport": [
+        390,
+        900
+      ],
+      "geometry": {
+        "hero": {
+          "top": 2227.359375,
+          "bottom": 2772.984375,
+          "width": 390,
+          "height": 545.625
+        },
+        "place": {
+          "top": 2910.984375,
+          "bottom": 3347.921875,
+          "width": 390,
+          "height": 436.9375
+        },
+        "overview": {
+          "top": 192.1875,
+          "bottom": 2227.359375,
+          "width": 827.328125,
+          "height": 2035.171875
+        },
+        "switch": {
+          "top": 2788.984375,
+          "bottom": 2824.984375,
+          "width": 390,
+          "height": 36
+        },
+        "results": {
+          "top": 3347.921875,
+          "bottom": 3569.984375,
+          "width": 390,
+          "height": 222.0625
+        },
+        "orders": {
+          "hero": "1",
+          "place-guide": "6",
+          "overview": "0",
+          "surface-switch": "3",
+          "results": "6"
+        },
+        "horizontalOverflow": true
+      },
+      "screenshot": "before-390.png",
+      "sha256": "a4d81b0c165ac5943e7009f245c916b5f3c060ddd1fb82595c8e271bfa092a52"
+    },
+    {
+      "route": "/near-you/",
+      "viewport": [
+        1200,
+        900
+      ],
+      "geometry": {
+        "hero": {
+          "top": 150.1875,
+          "bottom": 500.359375,
+          "width": 557.453125,
+          "height": 350.171875
+        },
+        "place": {
+          "top": 500.359375,
+          "bottom": 764.828125,
+          "width": 776.53125,
+          "height": 264.46875
+        },
+        "overview": null,
+        "switch": {
+          "top": 780.828125,
+          "bottom": 816.828125,
+          "width": 256.53125,
+          "height": 36
+        },
+        "results": {
+          "top": 902.828125,
+          "bottom": 1241.109375,
+          "width": 622.109375,
+          "height": 338.28125
+        },
+        "orders": {
+          "hero": "1",
+          "place-guide": "2",
+          "overview": null,
+          "surface-switch": "3",
+          "results": "6"
+        },
+        "horizontalOverflow": false
+      },
+      "screenshot": "after-1200.png",
+      "sha256": "05c5aa01a4c2cb032b92227f49ea6dec38f685728480d925b7a2ea30898f5487"
+    },
+    {
+      "route": "/near-you/?v=0&boro=Queens&cd=Q04",
+      "viewport": [
+        390,
+        900
+      ],
+      "geometry": {
+        "hero": {
+          "top": 192.1875,
+          "bottom": 737.8125,
+          "width": 390,
+          "height": 545.625
+        },
+        "place": {
+          "top": 737.8125,
+          "bottom": 1174.75,
+          "width": 390,
+          "height": 436.9375
+        },
+        "overview": {
+          "top": 1234.75,
+          "bottom": 3269.921875,
+          "width": 859.328125,
+          "height": 2035.171875
+        },
+        "switch": {
+          "top": 1190.75,
+          "bottom": 1226.75,
+          "width": 390,
+          "height": 36
+        },
+        "results": {
+          "top": 3347.921875,
+          "bottom": 3569.984375,
+          "width": 390,
+          "height": 222.0625
+        },
+        "orders": {
+          "hero": "1",
+          "place-guide": "2",
+          "overview": "4",
+          "surface-switch": "3",
+          "results": "6"
+        },
+        "horizontalOverflow": true
+      },
+      "screenshot": "after-390.png",
+      "sha256": "021435010f23cd2e2f772e60deef7d042f0e461568ad8d7113c53531a95330a5"
+    }
+  ]
+}

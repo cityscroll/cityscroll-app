@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { buildNearYouViewModel, renderNearYouDocument } from "../site/near_you_view.mjs";
+import { buildNearYouViewModel, renderNearYouDeferredBody, renderNearYouDocument } from "../site/near_you_view.mjs";
 import { nearYouUrlFromScope, routeHashFromScope, scopeFromLensState } from "../site/scope_v0.mjs";
 import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
 import { MILLISECONDS_PER_DAY, withPinnedClock } from "./helpers/test_clock.mjs";
@@ -66,7 +66,22 @@ test("A1: overview previews are bounded even when the fixture exceeds the cap", 
     const view = buildNearYouViewModel(scope, activity, boundaries);
     assert.ok(view.overview.sections.every((section) => section.records.length <= 3));
     assert.equal(view.overview.sections.find((section) => section.key === "upcoming").count, 4);
+    const upcoming = view.overview.sections.find((section) => section.key === "upcoming").records;
+    assert.deepEqual(upcoming.map((item) => item.date), [...upcoming].sort((a, b) => Date.parse(a) - Date.parse(b)).map((item) => item.date));
   });
+});
+
+test("A1b: the initial result surface is bounded while linking to the full list", () => {
+  const expanded = structuredClone(activity);
+  for (let n = 5; n <= 40; n += 1) {
+    const id = `meeting-${n}`;
+    expanded.district_items.by_level.community_district.Q04.meetings.push(id);
+    expanded.records.meetings[id] = record(id, `Upcoming meeting ${n}`, n + 1);
+  }
+  const view = buildNearYouViewModel(scope, expanded, boundaries);
+  const deferred = renderNearYouDeferredBody(view);
+  assert.equal((deferred.match(/data-record-id=/g) || []).length, 30);
+  assert.match(deferred, /Open all 40 matching records/);
 });
 
 test("A2: every section gives a count or consequential coverage, including empty sections", () => {
