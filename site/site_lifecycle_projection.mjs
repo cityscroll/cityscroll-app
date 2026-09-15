@@ -21,7 +21,7 @@ const bbl = (value) => {
 const id = (value) => clean(value, 240) || null;
 const hash = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 
-function member({ subjectId, subjectHref, recordKind, sourceSystem, sourceEventDate, datePrecision = "day", sourceEvents = [], title, evidencePath, footprintScope, relationPath = [] }) {
+function member({ subjectId, subjectHref, recordKind, sourceSystem, sourceEventDate, datePrecision = "day", sourceEvents = [], title, agency, stage, vendor, evidencePath, footprintScope, relationPath = [] }) {
   const subject_id = id(subjectId);
   if (!subject_id || !clean(recordKind, 80) || !clean(sourceSystem, 100)) return null;
   return {
@@ -34,6 +34,9 @@ function member({ subjectId, subjectHref, recordKind, sourceSystem, sourceEventD
     source_event_date_precision: date(sourceEventDate) ? clean(datePrecision, 30) || "unknown" : "unknown",
     source_events: sourceEvents.map((event) => ({ event: clean(event?.event, 60) || "observed", date: date(event?.date), date_precision: date(event?.date) ? clean(event?.date_precision, 30) || "day" : "unknown" })).filter((event) => event.date),
     source_title: clean(title, 500) || subject_id,
+    agency: clean(agency, 160) || null,
+    stage: clean(stage, 160) || null,
+    vendor: clean(vendor, 240) || null,
     evidence_path: clean(evidencePath, 1200) || null,
     footprint_scope: Array.isArray(footprintScope) ? [...new Set(footprintScope.map(bbl).filter(Boolean))].sort() : [],
     relation_path: Array.isArray(relationPath) ? relationPath.map((step) => clean(step, 200)).filter(Boolean) : [],
@@ -87,7 +90,10 @@ function procurementMembers(records, projectLots) {
       const lot = bbl(item.resolved_bbl || item.bbl);
       const kind = clean(raw.record_kind || raw.object_kind || item.record_kind, 80) || "procurement_observation";
       const subjectId = id(raw.subject_id) || `${clean(raw.source_system || "procurement", 80)}:${kind}:${requestId}`;
-      out.push(member({ subjectId, subjectHref: raw.href || item.href || `/procurements/${encodeURIComponent(raw.procurement_id || requestId)}`, recordKind: kind, sourceSystem: raw.source_system || "procurement", sourceEventDate: raw.event_date || raw.award_date || raw.start_date || raw.when, datePrecision: raw.date_precision || "day", title: raw.title || raw.short_title || raw.name || requestId, evidencePath: item.evidence_path || item.source_url || raw.evidence_path || `${raw.source_system || "procurement"}:${requestId}`, footprintScope: [lot], relationPath: raw.relation_path || [] }));
+      const canonical = subjectId.startsWith("procurement:contract:")
+        ? `/procurements/${encodeURIComponent(subjectId)}`
+        : (raw.href || item.href || `/procurements/${encodeURIComponent(raw.procurement_id || requestId)}`);
+      out.push(member({ subjectId, subjectHref: canonical, recordKind: kind, sourceSystem: raw.source_system || "procurement", sourceEventDate: raw.event_date || raw.award_date || raw.start_date || raw.when, datePrecision: raw.date_precision || "day", title: raw.title || raw.short_title || raw.name || requestId, agency: raw.agency || raw.agency_name, stage: raw.stage || raw.primary_stage, vendor: raw.vendor || raw.vendor_name, evidencePath: item.evidence_path || item.source_url || raw.evidence_path || `${raw.source_system || "procurement"}:${requestId}`, footprintScope: [lot], relationPath: raw.relation_path || [] }));
     }
   }
   return out;
