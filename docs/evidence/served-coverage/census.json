@@ -2,9 +2,9 @@
   "schema": "cityscroll.served_coverage_census.v1",
   "purpose": "Disposition of every registered source contract against the served product, and the served-population evidence behind each published coverage unit. Not a served artifact: this is the receipt the public snapshot is derived from.",
   "registry": {
-    "reviewed_registry_size": 65,
+    "reviewed_registry_size": 66,
     "observed_registry_size": 66,
-    "changed": true
+    "changed": false
   },
   "disposition_vocabulary": [
     "publicly_represented",
