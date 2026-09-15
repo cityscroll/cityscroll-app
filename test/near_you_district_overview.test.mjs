@@ -5,6 +5,7 @@ import { buildNearYouViewModel, renderNearYouDocument } from "../site/near_you_v
 import { nearYouUrlFromScope, routeHashFromScope, scopeFromLensState } from "../site/scope_v0.mjs";
 import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
 import { MILLISECONDS_PER_DAY, withPinnedClock } from "./helpers/test_clock.mjs";
+import { mountDocument } from "./helpers/preview_dom.mjs";
 
 const FIXTURE_CLOCK = "2026-09-01T00:00:00.000Z";
 const fixtureDate = (days) => new Date(Date.parse(FIXTURE_CLOCK) + days * MILLISECONDS_PER_DAY).toISOString();
@@ -129,6 +130,29 @@ test("A6: desktop, 390px, keyboard, focus, no-JavaScript, and translated fixture
     assert.ok(width === 390 || width === 1440, `${name} fixture has an unrecognized viewport`);
     assert.match(html, /href="\/community-boards\/queens-cb-04\//, `${name} loses board navigation`);
     assert.match(html, /href="https:\/\/cityscroll\.org\/near-you\?.*lens=land/, `${name} loses lens navigation`);
+    if (name === "keyboard" || name === "focus") {
+      const { doc, container } = mountDocument(html);
+      const overview = container.querySelector("[data-near-overview=\"true\"]");
+      const links = overview.querySelectorAll("a[href]");
+      assert.ok(links.length >= 2, `${name} fixture has keyboard destinations`);
+      const boardLink = links.find((link) => link.getAttribute("href") === "/community-boards/queens-cb-04/");
+      const lensLink = links.find((link) => link.getAttribute("href").includes("lens=land"));
+      assert.ok(boardLink, `${name} fixture exposes a board destination`);
+      assert.ok(lensLink, `${name} fixture exposes a lens destination`);
+      if (name === "keyboard") {
+        boardLink.focus();
+        links[links.indexOf(boardLink) + 1]?.focus();
+        assert.equal(doc.activeElement, links[links.indexOf(boardLink) + 1],
+          "keyboard fixture advances from the board destination with Tab");
+        lensLink.focus();
+        assert.equal(doc.activeElement, lensLink, "keyboard fixture reaches the lens destination with Tab");
+      } else {
+        boardLink.focus();
+        assert.equal(doc.activeElement, boardLink, "focus fixture retains the board destination focus");
+        lensLink.focus();
+        assert.equal(doc.activeElement, lensLink, "focus fixture retains the lens destination focus");
+      }
+    }
     if (name === "no-JavaScript") assert.doesNotMatch(html, /<script\b/i, "no-JavaScript fixture still executes scripts");
     if (name === "translated") assert.match(view.shareHref, /lang=es/);
   }
