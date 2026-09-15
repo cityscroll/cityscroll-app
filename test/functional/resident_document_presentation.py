@@ -22,7 +22,7 @@ NOTICE_ROUTE = f"/notices/{NOTICE_ID}/"
 
 
 def stage_assets() -> pathlib.Path:
-    staging = pathlib.Path(tempfile.mkdtemp(prefix="cityscroll-pages-", dir=os.environ.get("FM_TASK_SCRATCH")))
+    staging = pathlib.Path(tempfile.mkdtemp(prefix="cityscroll-pages-", dir=os.environ.get("CITYSCROLL_FUNCTIONAL_TMPDIR")))
     built_site = ROOT / "_site"
     if not built_site.is_dir():
         raise RuntimeError("verified _site artifact is missing; build it before running notice-shell")
@@ -33,7 +33,7 @@ def stage_assets() -> pathlib.Path:
 
 def start_server():
     staging = stage_assets()
-    state_dir = pathlib.Path(tempfile.mkdtemp(prefix="cityscroll-wrangler-", dir=os.environ.get("FM_TASK_SCRATCH")))
+    state_dir = pathlib.Path(tempfile.mkdtemp(prefix="cityscroll-wrangler-", dir=os.environ.get("CITYSCROLL_FUNCTIONAL_TMPDIR")))
     from tools.local_site_server import _RobustThreadingHTTPServer
 
     class ReadModelHandler(http.server.BaseHTTPRequestHandler):
