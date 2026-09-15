@@ -100,6 +100,14 @@
       "intentional_source_segments": 1
     },
     {
+      "article": "observe-city-government",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "52f454623d67016cdd71948b27df383f83217592dd2b24741f927cb60c9ffce8",
+      "required_segments": 57,
+      "intentional_source_segments": 1
+    },
+    {
       "article": "put-dates-in-your-calendar",
       "locale": "en",
       "status": "complete",
@@ -121,6 +129,14 @@
       "status": "complete",
       "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
       "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "request-trial-observation",
+      "locale": "en",
+      "status": "complete",
+      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "required_segments": 33,
       "intentional_source_segments": 1
     },
     {
@@ -252,6 +268,14 @@
       "intentional_source_segments": 1
     },
     {
+      "article": "observe-city-government",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "52f454623d67016cdd71948b27df383f83217592dd2b24741f927cb60c9ffce8",
+      "required_segments": 57,
+      "intentional_source_segments": 1
+    },
+    {
       "article": "put-dates-in-your-calendar",
       "locale": "es",
       "status": "complete",
@@ -273,6 +297,14 @@
       "status": "complete",
       "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
       "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "request-trial-observation",
+      "locale": "es",
+      "status": "complete",
+      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "required_segments": 33,
       "intentional_source_segments": 1
     },
     {
@@ -404,6 +436,14 @@
       "intentional_source_segments": 1
     },
     {
+      "article": "observe-city-government",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "52f454623d67016cdd71948b27df383f83217592dd2b24741f927cb60c9ffce8",
+      "required_segments": 57,
+      "intentional_source_segments": 1
+    },
+    {
       "article": "put-dates-in-your-calendar",
       "locale": "zh-Hans",
       "status": "complete",
@@ -425,6 +465,14 @@
       "status": "complete",
       "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
       "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "request-trial-observation",
+      "locale": "zh-Hans",
+      "status": "complete",
+      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "required_segments": 33,
       "intentional_source_segments": 1
     },
     {
@@ -556,6 +604,14 @@
       "intentional_source_segments": 1
     },
     {
+      "article": "observe-city-government",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "52f454623d67016cdd71948b27df383f83217592dd2b24741f927cb60c9ffce8",
+      "required_segments": 57,
+      "intentional_source_segments": 1
+    },
+    {
       "article": "put-dates-in-your-calendar",
       "locale": "ru",
       "status": "complete",
@@ -577,6 +633,14 @@
       "status": "complete",
       "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
       "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "request-trial-observation",
+      "locale": "ru",
+      "status": "complete",
+      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "required_segments": 33,
       "intentional_source_segments": 1
     },
     {
@@ -708,6 +772,14 @@
       "intentional_source_segments": 1
     },
     {
+      "article": "observe-city-government",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "52f454623d67016cdd71948b27df383f83217592dd2b24741f927cb60c9ffce8",
+      "required_segments": 57,
+      "intentional_source_segments": 1
+    },
+    {
       "article": "put-dates-in-your-calendar",
       "locale": "bn",
       "status": "complete",
@@ -729,6 +801,14 @@
       "status": "complete",
       "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
       "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "request-trial-observation",
+      "locale": "bn",
+      "status": "complete",
+      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "required_segments": 33,
       "intentional_source_segments": 1
     },
     {
@@ -860,6 +940,14 @@
       "intentional_source_segments": 1
     },
     {
+      "article": "observe-city-government",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "52f454623d67016cdd71948b27df383f83217592dd2b24741f927cb60c9ffce8",
+      "required_segments": 57,
+      "intentional_source_segments": 1
+    },
+    {
       "article": "put-dates-in-your-calendar",
       "locale": "ht",
       "status": "complete",
@@ -881,6 +969,14 @@
       "status": "complete",
       "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
       "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "request-trial-observation",
+      "locale": "ht",
+      "status": "complete",
+      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "required_segments": 33,
       "intentional_source_segments": 1
     },
     {
@@ -1012,6 +1108,14 @@
       "intentional_source_segments": 1
     },
     {
+      "article": "observe-city-government",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "52f454623d67016cdd71948b27df383f83217592dd2b24741f927cb60c9ffce8",
+      "required_segments": 57,
+      "intentional_source_segments": 1
+    },
+    {
       "article": "put-dates-in-your-calendar",
       "locale": "ko",
       "status": "complete",
@@ -1033,6 +1137,14 @@
       "status": "complete",
       "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
       "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "request-trial-observation",
+      "locale": "ko",
+      "status": "complete",
+      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "required_segments": 33,
       "intentional_source_segments": 1
     },
     {
@@ -1164,6 +1276,14 @@
       "intentional_source_segments": 1
     },
     {
+      "article": "observe-city-government",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "52f454623d67016cdd71948b27df383f83217592dd2b24741f927cb60c9ffce8",
+      "required_segments": 57,
+      "intentional_source_segments": 1
+    },
+    {
       "article": "put-dates-in-your-calendar",
       "locale": "fr",
       "status": "complete",
@@ -1185,6 +1305,14 @@
       "status": "complete",
       "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
       "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "request-trial-observation",
+      "locale": "fr",
+      "status": "complete",
+      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "required_segments": 33,
       "intentional_source_segments": 1
     },
     {
@@ -1316,6 +1444,14 @@
       "intentional_source_segments": 1
     },
     {
+      "article": "observe-city-government",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "52f454623d67016cdd71948b27df383f83217592dd2b24741f927cb60c9ffce8",
+      "required_segments": 57,
+      "intentional_source_segments": 1
+    },
+    {
       "article": "put-dates-in-your-calendar",
       "locale": "pl",
       "status": "complete",
@@ -1337,6 +1473,14 @@
       "status": "complete",
       "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
       "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "request-trial-observation",
+      "locale": "pl",
+      "status": "complete",
+      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "required_segments": 33,
       "intentional_source_segments": 1
     },
     {
@@ -1468,6 +1612,14 @@
       "intentional_source_segments": 1
     },
     {
+      "article": "observe-city-government",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "52f454623d67016cdd71948b27df383f83217592dd2b24741f927cb60c9ffce8",
+      "required_segments": 57,
+      "intentional_source_segments": 1
+    },
+    {
       "article": "put-dates-in-your-calendar",
       "locale": "ar",
       "status": "complete",
@@ -1489,6 +1641,14 @@
       "status": "complete",
       "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
       "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "request-trial-observation",
+      "locale": "ar",
+      "status": "complete",
+      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "required_segments": 33,
       "intentional_source_segments": 1
     },
     {
@@ -1620,6 +1780,14 @@
       "intentional_source_segments": 1
     },
     {
+      "article": "observe-city-government",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "52f454623d67016cdd71948b27df383f83217592dd2b24741f927cb60c9ffce8",
+      "required_segments": 57,
+      "intentional_source_segments": 1
+    },
+    {
       "article": "put-dates-in-your-calendar",
       "locale": "ur",
       "status": "complete",
@@ -1641,6 +1809,14 @@
       "status": "complete",
       "source_sha256": "235ea4cc63fc27d03229799b06b71b0a614ba98772eddeb55e0777d05cddfcd0",
       "required_segments": 39,
+      "intentional_source_segments": 1
+    },
+    {
+      "article": "request-trial-observation",
+      "locale": "ur",
+      "status": "complete",
+      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "required_segments": 33,
       "intentional_source_segments": 1
     },
     {

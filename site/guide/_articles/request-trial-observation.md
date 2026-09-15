@@ -6,7 +6,7 @@ page_title: Request Trial Observation · CityScroll
 url: /guide/how-to/request-trial-observation/
 reader_question: How do I ask to observe an administrative or disciplinary trial?
 purpose: Prepare an OATH observation request and find the current CCRB trial grid without confusing either with a testimony or verdict process.
-description: Follow the exact OATH calendar-unit request steps and the current CCRB trial-grid handoff, with clear limits on dates, allegations, and admission.
+description: Follow the exact OATH calendar-unit request steps and the current CCRB trial-grid link, with clear limits on dates, allegations, and admission.
 last_reviewed: 2026-09-15
 return_to_task: Find an observation opportunity | https://cityscroll.org/observe/
 related:
@@ -34,7 +34,7 @@ Example shape: `Subject: Request to observe OATH trial — index [index] — [da
 
 ## CCRB: use the current rolling grid {#ccrb}
 
-The [CCRB public trial page](https://www.nyc.gov/site/ccrb/complaints/complaint-process/apu-trials.page) is the handoff for the current rolling three-week grid. Open it close to the day you plan to attend because dates are subject to change. The grid may show an incident borough, officer, and charges, but the incident borough is not the venue and charges are allegations, not adjudicated findings.
+The [CCRB public trial page](https://www.nyc.gov/site/ccrb/complaints/complaint-process/apu-trials.page) is the official link for the current rolling three-week grid. Open it close to the day you plan to attend because dates are subject to change. The grid may show an incident borough, officer, and charges, but the incident borough is not the venue and charges are allegations, not adjudicated findings.
 
 The page does not provide a stable case identifier or a session start time in every row. Do not copy an inspected date list into a stale CityScroll calendar. Confirm the official page's current instructions before going to 1 Police Plaza.
 

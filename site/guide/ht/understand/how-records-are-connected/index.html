@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ht" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kijan dosye yo konekte · CityScroll</title><meta name="description" content="Yon koneksyon ant de dosye sou CityScroll se yon deklarasyon avèk baz ki endike. Men sa li deklare, kijan pou verifye li ak kote limit li ye.">
+<title>Sous anglè: How records are connected · CityScroll</title><meta name="description" content="Sous anglè: A connection between two records on CityScroll is a claim with a stated basis. Here is what it asserts, how to check it, and where it stops.">
 <link rel="canonical" href="https://cityscroll.org/guide/ht/understand/how-records-are-connected/"><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -13,43 +13,43 @@
     <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
     <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
   </svg><span><bdi lang="en" dir="ltr">CityScroll</bdi></span></a>
-    <nav class="document-nav" aria-label="Prensipal"><a href="/now/?lang=ht">Kounye a</a><a href="/near-you/?lang=ht">Toupre ou</a><a href="/following/?lang=ht">Alèt</a><a href="/browse/?lang=ht">Navige</a><a aria-current="page" href="/guide/ht/">Gid</a></nav>
+    <nav class="document-nav" aria-label="Sous anglè: Primary"><a href="/now/?lang=ht">Kounye a</a><a href="/near-you/?lang=ht">Toupre ou</a><a href="/following/?lang=ht">Alèt</a><a href="/browse/?lang=ht">Sous anglè: Browse</a><a aria-current="page" href="/guide/ht/">Gid</a></nav>
   </div></header>
 <nav class="guide-languages" aria-label="Lang"><a href="/guide/understand/how-records-are-connected/?lang=en" lang="en" hreflang="en" dir="ltr" data-guide-language="en">English</a><a href="/guide/es/understand/how-records-are-connected/" lang="es" hreflang="es" dir="ltr" data-guide-language="es">Español</a><a href="/guide/zh-Hans/understand/how-records-are-connected/" lang="zh-Hans" hreflang="zh-Hans" dir="ltr" data-guide-language="zh-Hans">中文（简体）</a><a href="/guide/ru/understand/how-records-are-connected/" lang="ru" hreflang="ru" dir="ltr" data-guide-language="ru">Русский</a><a href="/guide/bn/understand/how-records-are-connected/" lang="bn" hreflang="bn" dir="ltr" data-guide-language="bn">বাংলা</a><a href="/guide/ht/understand/how-records-are-connected/" lang="ht" hreflang="ht" dir="ltr" data-guide-language="ht" aria-current="true">Kreyòl ayisyen</a><a href="/guide/ko/understand/how-records-are-connected/" lang="ko" hreflang="ko" dir="ltr" data-guide-language="ko">한국어</a><a href="/guide/fr/understand/how-records-are-connected/" lang="fr" hreflang="fr" dir="ltr" data-guide-language="fr">Français</a><a href="/guide/pl/understand/how-records-are-connected/" lang="pl" hreflang="pl" dir="ltr" data-guide-language="pl">Polski</a><a href="/guide/ar/understand/how-records-are-connected/" lang="ar" hreflang="ar" dir="rtl" data-guide-language="ar">العربية</a><a href="/guide/ur/understand/how-records-are-connected/" lang="ur" hreflang="ur" dir="rtl" data-guide-language="ur">اردو</a></nav>
 <main class="node-document guide-document guide-article" id="main">
-  <p class="node-back"><a href="/guide/ht/">Retounen nan gid la</a></p>
+  <p class="node-back"><a href="/guide/ht/">Sous anglè: <bdi lang="en" dir="ltr">Back</bdi> to the guide</a></p>
 <p class="guide-notice" data-guide-translation-state="machine-drafted">Tradiksyon sa a te fèt otomatikman e li poko revize pa yon moun ki pale lang lan natifnatal.</p>
   <header class="node-hero guide-hero">
-    <p class="node-kicker">Konprann · Esplikasyon</p>
-    <h1>Kijan dosye yo konekte</h1>
-    <p class="node-lede">Sa <bdi lang="en" dir="ltr">CityScroll</bdi> vle di lè li konekte de dosye, kijan pou egzamine deklarasyon sa a, ak poukisa kèk relasyon evidan rete san lyen.</p>
-    <p class="node-meta guide-reviewed">Dènye revizyon: 2026-09-06</p>
+    <p class="node-kicker">Sous anglè: Understand · Sous anglè: Explanation</p>
+    <h1>Sous anglè: How records are connected</h1>
+    <p class="node-lede">Sous anglè: What <bdi lang="en" dir="ltr">CityScroll</bdi> means when it links two records, how to inspect that claim, and why some obvious relationships stay unlinked.</p>
+    <p class="node-meta guide-reviewed">Sous anglè: Last reviewed 2026-09-06</p>
   </header>
   <div class="guide-body">
-<h2>Sa yon koneksyon deklare</h2>
-<p><bdi lang="en" dir="ltr">CityScroll</bdi> konekte dosye vil la pibliye separeman: yon avi ak ajans ki bay li, yon ajans ak yon founisè li bay akòdman, yon règ ak devwa ki dèyè li. Chak koneksyon se yon deklarasyon, epi chak deklarasyon gen yon baz ou ka li.</p>
-<p>Deklarasyon an toujou limite. Li di de dosye pibliye sa yo pale sou menm bagay, epi li montre sa ki te pèmèt idantifikasyon an. Li pa janm di yon dosye lakòz lòt la, ni yon moun fè sa ki mal.</p>
-<h2>Kijan yo te fè idantifikasyon an</h2>
-<p>Louvri <strong>Kijan koneksyon sa a te fèt</strong> sou yon dosye konekte pou jwenn baz la olye yon nòt. Etikèt yo distenge twa kalite prèv.</p>
-<div class="guide-table" role="region" tabindex="0" aria-label="Kijan yo te fè idantifikasyon an"><table><thead><tr><th scope="col">Baz</th><th scope="col">Sa li vle di</th><th scope="col">Ki pwa li genyen</th></tr></thead><tbody><tr><td>Matche dapre yon dosye pibliye</td><td>De dosye yo gen menm idantifyan piblikatè a bay: yon idantifyan akizisyon, yon kòd ajans oswa yon nimewo pwojè</td><td>Kalite ki pi solid la. Se pwòp kle vil la ki fè koneksyon an</td></tr><tr><td>Dosye ki matche atravè lyen yo</td><td>Yo fè korespondans dosye yo sou kontni yo, tankou non yon òganizasyon, olye yon idantifyan pataje</td><td>Pi fèb. Yo pa toujou ekri non yo menm jan, epi òganizasyon diferan gen menm non</td></tr><tr><td>Yon moun te aksepte li</td><td>Yon moun revize pè a epi aksepte li</td><td>Li solid selon kalite revizyon an; se poutèt sa li make olye li kache</td></tr></tbody></table></div>
-<p>Menm panèl la nonmen relasyon an menm — « <bdi lang="en" dir="ltr">issued rule</bdi> », pa egzanp — epi li bay lyen sous ofisyèl kote dosye yo soti. Si yon koneksyon enpòtan pou ou, se lyen sa a pou louvri.</p>
-<h2>Koneksyon an gen yon adrès</h2>
-<p>Yon koneksyon ou louvri rete nan adrès paj la. Kopye adrès la pou voye dosye a bay yon moun avèk deklarasyon espesifik sa a deja egzamine, olye ou di li kote pou klike. Se menm abitid ak kenbe adrès yon rechèch: lyen an pote eta a.</p>
-<h2>Poukisa yon relasyon evidan ka manke</h2>
-<p>Yon koneksyon ki egziste klèman nan lavi reyèl ka toujou pa la isit la, epi okenn nan rezon sa yo pa vle di relasyon an pa reyèl.</p>
-<ul><li><strong>Pa gen idantifyan pataje ki pibliye.</strong> De dosye ka dekri menm kontra a san youn gen yon kle lòt la genyen. Lè sa a pa gen anyen egzak pou konekte yo sou li.</li><li><strong>Non an ekri yon lòt jan.</strong> Yon founisè ki gen yon òtograf sou yon avi ak yon lòt sou yon dosye peman ka pa idantifye kòm yon sèl òganizasyon.</li><li><strong>Vil la poko pibliye dosye ki fè koneksyon an.</strong> Gen lyen ki egziste sèlman nan pwòp sistèm yon ajans, oswa yo pibliye yo nan yon fòm ki pa pèmèt konekte yo.</li><li><strong>Korespondans lan pa t ase bon pou montre.</strong> Yon koneksyon yo pa t ka klase rete deyò paj la olye yo montre li avèk rezèv. Yon koneksyon absan pa nye relasyon an egziste.</li></ul>
-<h2>Sa yon koneksyon pa ye</h2>
-<p>Yon koneksyon pa yon konklizyon. De dosye ki gen lyen pa prèv lajan deplase mal, yon responsab fè sa ki mal, oswa yon desizyon fèt poutèt lòt dosye a. Yon moun oswa òganizasyon yo nonmen kòm benefisyè yon akòdman pa vle di founisè sa a ap chèche soukontraktè kounye a; yon founisè ki parèt souvan bò yon ajans se yon kantite, pa yon konklizyon.</p>
+<h2>Sous anglè: What a connection claims</h2>
+<p>Sous anglè: <bdi lang="en" dir="ltr">CityScroll</bdi> connects records the city publishes separately — a notice to the agency that issued it, an agency to a vendor it awarded work to, a rule to the duty behind it. Every one of those connections is a claim, and every claim has a basis you can read.</p>
+<p>Sous anglè: The claim is always narrow. It says these two published records refer to the same thing, and here is what made that identification. It never says one record caused the other, and it never says anyone did anything wrong.</p>
+<h2>Sous anglè: How the identification was made</h2>
+<p>Sous anglè: Open <strong>Kijan koneksyon sa a te fèt</strong> on a connected record and you get the basis rather than a score. The labels distinguish three kinds of evidence.</p>
+<div class="guide-table" role="region" tabindex="0" aria-label="Sous anglè: How the identification was made"><table><thead><tr><th scope="col">Sous anglè: Basis</th><th scope="col">Sous anglè: What it means</th><th scope="col">Sous anglè: How much weight it carries</th></tr></thead><tbody><tr><td>Matche dapre yon dosye pibliye</td><td>Sous anglè: The two records carry the same identifier the publisher issued — a procurement identifier, an agency code, a project number</td><td>Sous anglè: The strongest kind. The city&#39;s own key did the joining</td></tr><tr><td>Dosye ki matche atravè lyen yo</td><td>Sous anglè: The records were matched on their content, such as an organization&#39;s name, rather than on a shared identifier</td><td>Sous anglè: Weaker. Names are written inconsistently, and different organizations share names</td></tr><tr><td>Yon moun te aksepte li</td><td>Sous anglè: Someone reviewed the pair and accepted it</td><td>Sous anglè: As good as the review, which is why it is labelled rather than hidden</td></tr></tbody></table></div>
+<p>Sous anglè: The same panel names the relation itself — &quot;<bdi lang="en" dir="ltr">issued rule</bdi>&quot;, for instance — and links the official source the records came from. If a connection matters to you, that link is the thing to open.</p>
+<h2>Sous anglè: The connection has an address</h2>
+<p>Sous anglè: A connection you have opened stays in the address of the page. Copy the address and you can send someone the record with that specific claim already inspected, rather than telling them where to click. It is the same habit as keeping the address of a search: the link carries the state.</p>
+<h2>Sous anglè: Why an obvious relationship can be missing</h2>
+<p>Sous anglè: A connection that plainly exists in the world can still be absent here, and none of these reasons means the relationship is not real.</p>
+<ul><li>Sous anglè: <strong>No shared identifier was published.</strong> Two records can describe the same contract without either one carrying a key the other has. There is then nothing exact to join on.</li><li>Sous anglè: <strong>The name is written differently.</strong> A vendor filed as one spelling on a notice and another on a payment record may not resolve to one organization.</li><li>Sous anglè: <strong>The city has not published the joining record.</strong> Some links exist only inside an agency&#39;s own systems, or are released in a form that cannot be joined.</li><li>Sous anglè: <strong>The match was not good enough to show.</strong> A connection that could not be classified is left off the page rather than shown wrapped in hedges. An absent connection is not a denial that the relationship exists.</li></ul>
+<h2>Sous anglè: What a connection is not</h2>
+<p>Sous anglè: A connection is not a finding. Two records being linked is not evidence that money moved improperly, that an official acted wrongly, or that a decision was made because of the other record. A named awardee on a contract does not mean that vendor is currently open to subcontractors, and a vendor appearing beside an agency repeatedly is a count, not a conclusion.</p>
   </div>
   <section class="node-section guide-related" aria-labelledby="guide-related">
-    <h2 id="guide-related">Paj ki gen rapò</h2>
-    <ul><li><a href="/guide/ht/understand/what-a-public-record-tells-you/">Sa yon dosye piblik di ou</a></li><li><a href="/guide/ht/understand/dates-and-missing-information/">Sa dat ak espas vid vle di</a></li><li><a href="/guide/ht/reference/sources-and-coverage/">Kote dosye yo soti</a></li></ul>
+    <h2 id="guide-related">Sous anglè: Related pages</h2>
+    <ul><li><a href="/guide/ht/understand/what-a-public-record-tells-you/">Sous anglè: What a public record tells you</a></li><li><a href="/guide/ht/understand/dates-and-missing-information/">Sous anglè: What dates and blanks mean</a></li><li><a href="/guide/ht/reference/sources-and-coverage/">Sous anglè: Where the records come from</a></li></ul>
   </section>
   <section class="node-section guide-sources" aria-labelledby="guide-sources">
-    <h2 id="guide-sources">Sous yo itilize nan atik sa a</h2>
-    <ul><li><a href="https://a856-cityrecord.nyc.gov/"><bdi lang="en" dir="ltr">The City Record</bdi> Online, pibliye pa Vil New York</a></li></ul>
+    <h2 id="guide-sources">Sous anglè: Sources used in this article</h2>
+    <ul><li><a href="https://a856-cityrecord.nyc.gov/">Sous anglè: <bdi lang="en" dir="ltr">The City Record</bdi> Online, published by the City of New York</a></li></ul>
   </section>
-  <p class="guide-return"><a href="/browse/?lang=ht">Navige dosye piblik selon kalite</a></p>
+  <p class="guide-return"><a href="/browse/?lang=ht">Sous anglè: Browse public records by type</a></p>
 </main>
-<footer class="node-footer guide-footer"><bdi lang="en" dir="ltr">CityScroll</bdi> se yon èd lekti ki pa ofisyèl. Verifye chak dosye nan sous ofisyèl li. <a href="/guide/ht/">Gid</a>. <a href="/about.html?lang=ht">Konsènan done yo</a>.</footer>
+<footer class="node-footer guide-footer">Sous anglè: <bdi lang="en" dir="ltr">CityScroll</bdi> is an unofficial reading aid. Check each record at its official source. <a href="/guide/ht/">Gid</a>. <a href="/about.html?lang=ht">Sous anglè: About the data</a>.</footer>
 </body></html>

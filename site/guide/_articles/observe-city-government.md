@@ -21,7 +21,7 @@ sources:
   - New York City Hart Island visitation | https://www.nyc.gov/site/hartisland/hart-island/visitation.page
 ---
 
-## Start with the kind of access you want
+## Step 1 — Choose an observation experience
 
 These are six different experiences, not six versions of the same meeting. Read the preparation note before opening a calendar or registration page. A dated CityScroll detail page is a way back to the matching guide section; it does not change the access rules of the official publisher.
 
@@ -73,7 +73,7 @@ Access: Apply through the official Parks registration program for a selected vis
 
 Prepare: Read the visitation rules and wait for the registration program to publish dates. Do not assume availability, a recurring Tuesday event, or a confirmed place from this guide.
 
-Official next step: [Read Hart Island visitation information](https://www.nyc.gov/site/hartisland/hart-island/visitation.page). The page's registration handoff is the authority for selected dates and capacity.
+Official next step: [Read Hart Island visitation information](https://www.nyc.gov/site/hartisland/hart-island/visitation.page). The page's registration instructions are the authority for selected dates and capacity.
 
 ## Watch a DDC bid opening {#ddc}
 
@@ -85,6 +85,6 @@ Prepare: Read the agency's instructions and distinguish a live opening from prel
 
 Official next step: [Open DDC construction contracts](https://www.nyc.gov/site/ddc/contracts/construction-contracts.page) or [read preliminary bid results](https://www.nyc.gov/site/ddc/contracts/Preliminary-Bid-Results.page).
 
-## Keep the official handoff in view
+## Keep the official page in view
 
 The official agency page controls the current access details. CityScroll can explain the experience and connect a scheduled record back to this guide, but an undated program is not an upcoming event and a calendar row is not proof that a proceeding will happen.
