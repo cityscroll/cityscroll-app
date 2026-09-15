@@ -134,7 +134,7 @@ test("hard source, geography, and date filters apply before candidate ranking", 
   assert.ok(attachmentOnly.candidates.every((candidate) => candidate.source.family === "attachment_text"));
 });
 
-test("GET /search/candidates stays separate from the six-family keyword response", async () => {
+test("GET /search/candidates stays separate from the registered keyword response", async () => {
   const { sqlite, DB } = database();
   try {
     const candidateResponse = await worker.fetch(new Request(
@@ -152,7 +152,7 @@ test("GET /search/candidates stays separate from the six-family keyword response
     const lexical = await lexicalResponse.json();
     assert.equal(lexical.schema, "cityscroll.keyword_search_response.v1");
     assert.equal(lexical.match_mode, "keyword");
-    assert.equal(lexical.lanes.length, 9);
+    assert.equal(lexical.lanes.length, 10);
     assert.ok(Array.isArray(lexical.results));
     assert.equal(Object.hasOwn(lexical, "candidates"), false);
   } finally {

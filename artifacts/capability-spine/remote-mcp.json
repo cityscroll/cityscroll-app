@@ -31,7 +31,7 @@
   "public_tool_inventory": [
     {
       "adapter_id": "mcp.search_federated@1",
-      "adapter_semantic_sha256": "eb16ac7bbd3b1d0547f7b5e2c9d08f2a65bac3192da276b42f1517fb32825f76",
+      "adapter_semantic_sha256": "d05f37a6958a6ee30ba755545d9add993797ea22df79e59a21737966a2539416",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -47,7 +47,7 @@
       },
       "calls": 1,
       "capability_reference": "search.federated@1",
-      "direct_semantic_sha256": "eb16ac7bbd3b1d0547f7b5e2c9d08f2a65bac3192da276b42f1517fb32825f76",
+      "direct_semantic_sha256": "d05f37a6958a6ee30ba755545d9add993797ea22df79e59a21737966a2539416",
       "name": "search_federated",
       "operation_class": "read",
       "parity": "pass",

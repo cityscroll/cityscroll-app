@@ -165,6 +165,7 @@ test("a rats search records exactly the Contract and Meeting rows rendered", () 
     rules: 0,
     meetings: 1,
     exams: 0,
+    consultations: 0,
   });
   assert.deepEqual(normalized.value.results.map((row) => row.title), [
     "Rodent (rats) abatement services",

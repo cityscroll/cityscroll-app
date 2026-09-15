@@ -57,6 +57,11 @@ const SOURCE_FILTER_CONTRACTS = Object.freeze({
     local: Object.freeze(["interest", "eligibility", "window", "format", "salary_band", "fee_level", "no_experience", "agency_certification"]),
     unsupported: Object.freeze(["application_window_derivation"]),
   }),
+  consultations: Object.freeze({
+    keyword: "federated",
+    local: Object.freeze(["category", "place", "lifecycle"]),
+    unsupported: Object.freeze(["respondent_text", "project_outcome"]),
+  }),
 });
 
 function clean(value, max = 500) {

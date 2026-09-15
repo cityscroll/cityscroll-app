@@ -174,6 +174,7 @@ test("GET /search returns ranked validated SearchDocument records from the FTS5 
       "rules",
       "meetings",
       "exams",
+      "consultations",
     ]);
     for (const lane of body.lanes) {
       assert.ok(["matched", "empty", "unknown", "not_covered"].includes(lane.status));
@@ -746,7 +747,7 @@ test("GET /search rejects a missing query and preserves empty result sets", asyn
     assert.equal(empty.status, 200);
     const body = await empty.json();
     assert.deepEqual(body.results, []);
-    assert.equal(body.lanes.length, 9);
+    assert.equal(body.lanes.length, 10);
     assert.ok(body.lanes.every((lane) => lane.status !== "matched"));
   } finally {
     sqlite.close();

@@ -297,6 +297,7 @@ export function renderSearchDocument() {
       ${searchLane("rules", "Rules", { semantic: true, titleKey: "tab_rules" })}
       ${searchLane("meetings", "Meetings", { semantic: true, titleKey: "tab_meetings" })}
       ${searchLane("exams", "Exams", { semantic: true })}
+      ${searchLane("consultations", "Consultations", { semantic: true })}
     </div>
     <div class="topic-search-lanes" data-keyword-lanes aria-label="Search result types" hidden>
       ${searchLane("contracts", "Contracts", { description: "Public contract opportunities and awards.", titleKey: "tab_money" })}
@@ -305,6 +306,7 @@ export function renderSearchDocument() {
       ${searchLane("rules", "Rules", { description: "Published rulemaking records.", titleKey: "tab_rules" })}
       ${searchLane("meetings", "Meetings", { description: "Public meetings and decisions.", titleKey: "tab_meetings" })}
       ${searchLane("exams", "Exams", { description: "Civil-service exams and published schedules." })}
+      ${searchLane("consultations", "Consultations", { description: "Public consultation rounds, organizers, places, and response dates." })}
     </div>
     <section class="topic-search-history" data-search-history hidden></section>
   </div>`;

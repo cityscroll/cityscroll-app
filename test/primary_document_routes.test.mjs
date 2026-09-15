@@ -512,11 +512,11 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(search, /data-search-coverage[^>]*hidden/);
   assert.doesNotMatch(search, /How results match|Keyword fallback|data-search-method-value/);
   assert.match(search, /data-semantic-lanes/);
-  for (const lane of ["Contracts", "People + organizations", "Land", "Rules", "Meetings", "Exams"]) {
+  for (const lane of ["Contracts", "People + organizations", "Land", "Rules", "Meetings", "Exams", "Consultations"]) {
     const escapedLane = lane.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     assert.match(search, new RegExp(`<h3[^>]*>${escapedLane}<\\/h3>`));
   }
-  assert.equal((search.match(/data-semantic-family=/g) || []).length, 6);
+  assert.equal((search.match(/data-semantic-family=/g) || []).length, 7);
   assert.doesNotMatch(search, /data-semantic-family="city_record_notice"/);
   assert.match(search, /data-keyword-lanes[^>]*hidden/);
   for (const lane of [
