@@ -20,6 +20,7 @@ export const FEDERATED_SEARCH_LENS_IDS = Object.freeze([
   "committees",
   "community_boards",
   "exams",
+  "consultations",
   "parcels",
   "land",
   "meetings",
@@ -70,6 +71,12 @@ export const FEDERATED_SEARCH_PRESENTATION_SCOPES = Object.freeze({
     lenses: Object.freeze(["exams"]),
     domains: Object.freeze(["staffing"]),
     source: "Bounded civil-service exam read model",
+  }),
+  consultations: Object.freeze({
+    id: "consultations",
+    lenses: Object.freeze(["consultations"]),
+    domains: Object.freeze(["participation"]),
+    source: "Retained organizer-linked public consultation rounds",
   }),
 });
 

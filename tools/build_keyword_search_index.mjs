@@ -16,6 +16,7 @@ import { buildCommunityBoardPersonSearchDocuments } from "../site/community_boar
 import { buildCommunityBoardCommitteeSearchDocuments } from "../site/board_search_producer.mjs";
 import { buildVendorSearchDocuments } from "../site/vendor_search_producer.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
+import { buildConsultationSearchDocuments } from "../site/consultation_search_producer.mjs";
 import { readSharedProcurementReadModel } from "./lib/procurement_read_model_io.mjs";
 import {
   attachKeywordCoherenceReceipt,
@@ -251,6 +252,11 @@ const output = {
       procurements.generated_at,
       [procurementCorpus],
     ),
+    consultations: family(
+      "Retained organizer-linked public consultation rounds",
+      "2026-09-14T00:00:00.000Z",
+      [buildConsultationSearchDocuments()],
+    ),
   },
   build_receipt: {
     source_artifacts: {
@@ -270,6 +276,7 @@ const output = {
       community_board_people: "site/data/community_board_people.json",
       community_board_committees: "site/data/non_council_outcome_sources/community_board_committees.json",
       procurements: "site/data/shared_procurement_read_model.json",
+      consultations: "site/consultation_acquisition.mjs and site/consultation_publisher_adapters.mjs",
     },
     excluded_artifacts: ["worker/src/data/ocp_awards_warehouse_lookup.json"],
     excluded_vendor_roots: excludedVendorRoots,

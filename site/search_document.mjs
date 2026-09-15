@@ -55,6 +55,7 @@ const LANES = Object.freeze([
   "rules",
   "meetings",
   "exams",
+  "consultations",
 ]);
 // Stable resident labels are also inspected by entity surfaces that hand
 // results into Search; keep the product-domain vocabulary centralized here.
@@ -66,6 +67,7 @@ const DOMAIN_LANES = Object.freeze({
   people: "People and organizations",
   places: "Community boards",
   staffing: "Civil-service exams",
+  participation: "Consultations",
   legal: "Administrative Code",
   property: "Properties",
   zoning: "Land use",

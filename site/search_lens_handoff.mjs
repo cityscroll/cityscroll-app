@@ -46,6 +46,9 @@ const DESTINATIONS = Object.freeze({
   exams: Object.freeze({
     family: "exams", surface: EXAMS_SURFACE.surfaceId, route: EXAMS_SURFACE.canonicalRoute, label: EXAMS_SURFACE.label,
   }),
+  consultations: Object.freeze({
+    family: "consultations", surface: "consultations", route: "/consultations/", label: "Consultations",
+  }),
   legal: Object.freeze({
     family: "legal-code", surface: "legal-code", route: "/administrative-code/", label: "Administrative Code",
   }),
@@ -63,6 +66,7 @@ const OBJECT_DESTINATIONS = Object.freeze({
   land_use_project: DESTINATIONS.zoning,
   parcel: DESTINATIONS.property,
   civil_service_exam: DESTINATIONS.exams,
+  consultation: DESTINATIONS.consultations,
 });
 
 const DOMAIN_DESTINATIONS = Object.freeze({
@@ -74,6 +78,7 @@ const DOMAIN_DESTINATIONS = Object.freeze({
   rules: DESTINATIONS.rules,
   meetings: DESTINATIONS.meetings,
   staffing: DESTINATIONS.exams,
+  participation: DESTINATIONS.consultations,
   legal: DESTINATIONS.legal,
 });
 

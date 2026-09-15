@@ -220,6 +220,7 @@
     "site/consultation_classification.mjs",
     "site/consultation_documents.mjs",
     "site/consultation_publisher_adapters.mjs",
+    "site/consultation_search_producer.mjs",
     "site/contextual_suggestions.mjs",
     "site/contextual_ux_feedback_prompt.mjs",
     "site/contract_action_location.mjs",

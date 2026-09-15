@@ -18,6 +18,7 @@ const LENS_LABELS = Object.freeze({
   exams: "Civil-service exams",
   parcels: "Properties",
   legal_code: "Administrative Code",
+  consultations: "Consultations",
 });
 
 const LENS_I18N_KEYS = Object.freeze(Object.fromEntries(
