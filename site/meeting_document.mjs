@@ -640,6 +640,14 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   const id = String(record.meeting_id || "").trim();
   const title = String(record.title || "Meeting").trim() || "Meeting";
   const canonical = `/meetings/${encodeURIComponent(id)}/`;
+  const guideHref = {
+    pdc_calendar: "/guide/how-to/observe-city-government/#pdc",
+    bsa_calendar: "/guide/how-to/observe-city-government/#bsa",
+    oath_trial_calendar: "/guide/how-to/request-trial-observation/#oath",
+  }[record.source_system] || null;
+  const guideReturn = guideHref
+    ? `<p class="meeting-guide-return"><a href="${guideHref}">How to observe this kind of proceeding</a></p>`
+    : "";
   const source = record.source_url || record.compatibility?.publisher_href || null;
   const edge = communityBoardMeetingEdgeFromRow(record);
   const board = boardId(record);
@@ -785,6 +793,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
 <header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/" aria-label="CityScroll home">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a><a href="/guide/">Guide</a></nav></div></header>
 <main id="main" class="civic-document node-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}" data-capability-reference="meeting.get@1" tabindex="-1">
   <p class="node-back"><a href="/browse/meetings/">Browse meetings and hearings</a></p>
+  ${guideReturn}
   <section class="node-hero civic-object-hero meeting-hero"><p class="node-kicker civic-object-kicker">${esc(sourceLabel)}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(formatMeetingWhen(record.event_date) || record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(formatMeetingWhen(record.event_end) || record.event_end)}</time></p>` : ""}</section>
   ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}
   ${institutionSection}
