@@ -23,6 +23,10 @@ function matchingRecords(value, output = []) {
   return output;
 }
 
+function distinctMatchingObjectRefs(value) {
+  return new Set(matchingRecords(value).map((record) => record.object_ref || record.procurement_id)).size;
+}
+
 async function getJson(url) {
   const response = await fetch(url, { headers: { Accept: "application/json" } });
   assert.equal(response.status, 200, url);
@@ -52,7 +56,8 @@ if (process.env.LIVE_PROCUREMENT_CANARY !== "1") {
 
     for (const query of ["CT107120258801626", "07124E0044001"]) {
       const { payload } = await getJson(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
-      assert.equal(matchingRecords(payload).length, 1, query);
+      assert.equal(payload.results.length, 1, query);
+      assert.equal(distinctMatchingObjectRefs(payload), 1, query);
     }
   });
 }

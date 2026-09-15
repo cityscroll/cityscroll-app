@@ -61,10 +61,16 @@ function matchingRecords(value, output = []) {
   return output;
 }
 
+function distinctMatchingObjectRefs(value) {
+  return new Set(matchingRecords(value).map((record) => record.object_ref || record.procurement_id)).size;
+}
+
 test("served exact procurement identifier searches return one canonical result", async () => {
   for (const identifier of IDENTIFIERS) {
     const payload = await servedSearch(identifier);
-    const matches = matchingRecords(payload);
-    assert.equal(matches.length, 1, identifier);
+    assert.equal(payload.results.length, 1, identifier);
+    assert.equal(payload.federated.results.length, 1, identifier);
+    assert.ok(payload.lanes.some((lane) => lane.cards.some((card) => card.object_ref === PROCUREMENT_ID)), identifier);
+    assert.equal(distinctMatchingObjectRefs(payload), 1, identifier);
   }
 });
