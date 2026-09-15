@@ -1,0 +1,59 @@
+{
+  "object": {
+    "object_type": "procurement",
+    "procurement_id": "procurement:contract:CT107120258802303",
+    "source_observation_refs": [
+      "city_record:20241104015",
+      "passport_public_contracts:contract:07122P0010020:4965933"
+    ],
+    "stages": [
+      { "stage": "award" },
+      { "stage": "registered" }
+    ],
+    "identity_keys": {
+      "contract_ids": ["CT107120258802303"],
+      "epins": ["07122P0010020"]
+    },
+    "identity_edges": [
+      {
+        "status": "accepted",
+        "source_observation_ref": "passport_public_contracts:contract:07122P0010020:4965933"
+      }
+    ],
+    "bbls": ["3073670011"],
+    "compatibility": {
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT107120258802303",
+      "city_record_notice_hrefs": ["/notices/20241104015"]
+    }
+  },
+  "observations": [
+    {
+      "source_observation_ref": "city_record:20241104015",
+      "source_system": "city_record",
+      "snapshot": {
+        "request_id": "20241104015",
+        "short_title": "Shelter Facilities, Homeless FWC at Coyle Family Residence (175 units)",
+        "agency_name": "Homeless Services",
+        "vendor_name": "Westhab Inc.",
+        "start_date": "2024-11-12",
+        "type_of_notice_description": "Award",
+        "contract_amount": 708807513
+      }
+    },
+    {
+      "source_observation_ref": "passport_public_contracts:contract:07122P0010020:4965933",
+      "source_system": "passport_public_contracts",
+      "snapshot": {
+        "epin": "07122P0010020",
+        "contract_id": "CT107120258802303",
+        "purpose": "Shelter Facilities, Homeless FWC at Coyle Family Residence (175 units)",
+        "agency_name": "Homeless Services",
+        "vendor_name": "Westhab Inc.",
+        "start_date": "2024-04-01",
+        "end_date": "2057-06-30",
+        "contract_amount": 708807513,
+        "selection_method_description": "Competitive Sealed Proposal"
+      }
+    }
+  ]
+}

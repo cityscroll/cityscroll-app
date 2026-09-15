@@ -1,12 +1,20 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { buildCouncilMatterSearchDocuments } from "../site/council_matter_search_producer.mjs";
 import { projectLandSearchDocument } from "../site/land_search_producer.mjs";
+import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { exactIdentifierVariants, siteHistoryForParcelIds } from "../site/search_identifier_support.mjs";
 import { keywordTextMatches, resolveKeywordQuery } from "../site/keyword_matcher.mjs";
 import { createSiteLifecycleReader } from "../site/site_lifecycle_projection.mjs";
 import { parseAddressQuery, resolveAddressFromShard } from "../site/precomputed_address_geocoder.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
+
+const PROCUREMENT_FIXTURE = JSON.parse(readFileSync(
+  new URL("./fixtures/site_lifecycle_identifier_search/procurement_coyle.json", import.meta.url),
+  "utf8",
+));
 
 const LAND = projectLandSearchDocument({
   project_id: "2020K0270",
@@ -16,26 +24,44 @@ const LAND = projectLandSearchDocument({
   bbls: ["3073670011", "3073670029"],
 }, { artifact: { schema_version: 1, dataset_id: "hgx4-8ukb", source: "ZAP", materialized_at: "2026-09-09" } }).document;
 
-const procurementIdentifiers = exactIdentifierVariants([
-  "CT107120258802303", "07122P0010020", "20241104015",
-]);
-const PROCUREMENT_SEARCH_TEXT = `Coyle Family Residence ${procurementIdentifiers.join(" ")}`;
+test("native land and procurement documents retain exact identifiers and parcel history", async () => {
+  await withPinnedClock("2026-09-15T12:00:00.000Z", async () => {
+    const procurementModel = {
+      schema: "cityscroll.shared_procurement_read_model.v1",
+      generated_at: testClockISOString(),
+      rows: [PROCUREMENT_FIXTURE.object],
+      observations: PROCUREMENT_FIXTURE.observations,
+      sources: {},
+    };
+    const procurement = buildProcurementSearchDocuments(procurementModel).documents[0];
 
-test("native land and procurement documents retain exact identifiers and parcel history", () => {
   for (const query of [
     "3073670011", "2020K0270", "21DCP123K", "C 210239 ZMK", "N 210240 ZRK",
   ]) assert.equal(keywordTextMatches(LAND.search_text, resolveKeywordQuery(query)), true, query);
+  assert.ok(procurement, "the native procurement producer must emit a document");
   for (const query of ["07122P0010020", "CT107120258802303", "20241104015"]) {
-    assert.equal(keywordTextMatches(PROCUREMENT_SEARCH_TEXT, resolveKeywordQuery(query)), true, query);
+    assert.equal(keywordTextMatches(procurement.search_text, resolveKeywordQuery(query)), true, query);
   }
   assert.equal(LAND.canonical_href, "/browse/zoning/#land/2020K0270");
-  assert.equal("/procurements/procurement%3Acontract%3ACT107120258802303", "/procurements/procurement%3Acontract%3ACT107120258802303");
+  assert.equal(procurement.object_ref, PROCUREMENT_FIXTURE.object.procurement_id);
+  assert.equal(procurement.canonical_href, "/procurements/procurement%3Acontract%3ACT107120258802303");
+  assert.deepEqual(procurement.provenance.site_history, {
+    parcel_ids: ["3073670011"],
+    href: "/parcels/3073670011/",
+    relation: "accepted_exact_parcel_membership",
+  });
+  assert.equal(
+    keywordTextMatches(LAND.search_text, resolveKeywordQuery("07122P0010020")),
+    false,
+    "the procurement PIN must not become a land alias",
+  );
   assert.deepEqual(LAND.provenance.site_history, {
     parcel_ids: ["3073670011", "3073670029"],
     href: "/parcels/3073670011/",
     relation: "accepted_exact_parcel_membership",
   });
   assert.equal(siteHistoryForParcelIds([]), null);
+  });
 });
 
 test("retained Council matter identifiers remain native matter results", () => {
