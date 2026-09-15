@@ -370,6 +370,7 @@
 /site/council_hearing_action_path.mjs
 /site/council_hearing_matter_continuation.mjs
 /site/council_land_matter_links.mjs
+/site/council_matter_search_producer.mjs
 /site/council_matter_watch.mjs
 /site/council_matter_watch_change.mjs
 /site/council_matter_watch_scope.mjs
@@ -781,6 +782,7 @@
 /site/search_front_door_scope.mjs
 /site/search_history_client.mjs
 /site/search_history_state.mjs
+/site/search_identifier_support.mjs
 /site/search_intent.mjs
 /site/search_lens_handoff.mjs
 /site/search_producer_support.mjs

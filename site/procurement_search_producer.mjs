@@ -12,6 +12,7 @@ import {
   admitSearchDocument,
 } from "./search_document_contract.mjs";
 import { procurementProcessStates } from "./procurement_process_state_vocabulary.mjs";
+import { exactIdentifierVariants, siteHistoryForParcelIds } from "./search_identifier_support.mjs";
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { procurementOpportunityWindow } from "./procurement_opportunity_window.mjs";
 import { projectProcurementFacts } from "./procurement_fact_projection.mjs";
@@ -224,12 +225,19 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
   const stages = stagesFor(object);
   const processStates = procurementProcessStates(object.process_events);
   const aliases = aliasesForProcurement(aliasRegistry, object.procurement_id);
+  const identifiers = exactIdentifierVariants([
+    contractId, epin,
+    object.identity_keys?.contract_reporter_numbers?.[0],
+    object.identity_keys?.solicitation_ids?.[0], object.identity_keys?.event_ids?.[0],
+    ...evidence.map((entry) => entry.request_id),
+  ]);
+  const siteHistory = siteHistoryForParcelIds([
+    ...(object.bbls || []), ...(object.parcel_ids || []), ...(object.site_history?.parcel_ids || []),
+  ]);
   const summary = [facts.agency, facts.vendor, facts.amount == null ? null : `$${facts.amount.toLocaleString("en-US")}`]
     .filter(Boolean).join(" · ") || null;
   const searchText = clean([
-    facts.title, summary, contractId, epin,
-    object.identity_keys?.contract_reporter_numbers?.[0],
-    object.identity_keys?.solicitation_ids?.[0], object.identity_keys?.event_ids?.[0],
+    facts.title, summary, ...identifiers,
     facts.method, facts.contractType, facts.program, facts.industry, ...stages,
     ...evidence.map((entry) => entry.additional_description_1),
     ...aliases.map((entry) => entry.alias),
@@ -261,6 +269,8 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
       notice_evidence: evidence,
       browse_record: browseRecord(object, observations, stages, evidence, facts, processStates),
       lifecycle: object.lifecycle,
+      identifier_values: identifiers,
+      ...(siteHistory ? { site_history: siteHistory } : {}),
       alias_object_refs: [...new Set([...(object.identity_keys?.epins || []).map((id) => `procurement:${id}`)])],
       ...(aliases.length ? { search_aliases: aliases } : {}),
     },

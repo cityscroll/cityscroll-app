@@ -79,6 +79,7 @@ const SAFE_ROUTE_ROOTS = Object.freeze([
   "/exams/",
   "/mandates/",
   "/meetings/",
+  "/matters/",
   "/notices/",
   "/officials/",
   "/parcels/",

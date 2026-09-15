@@ -1,6 +1,7 @@
 /** Canonical Land SearchDocuments from the bounded ZAP project warehouse lookup. */
 
 import { landProjectDisplayTitle } from "./display_title.mjs";
+import { exactIdentifierVariants, siteHistoryForParcelIds } from "./search_identifier_support.mjs";
 import { SEARCH_TEXT_MAX_LENGTH } from "./search_document_contract.mjs";
 import {
   admitProjectedSearchDocument,
@@ -25,9 +26,16 @@ export function projectLandSearchDocument(row = {}, { artifact = {} } = {}) {
     return failedSearchProjection("unclassified", "unresolved_zap_project_identity", ["object_ref"]);
   }
   const title = cleanSearchText(landProjectDisplayTitle(row), 500);
+  const identifiers = exactIdentifierVariants([
+    projectId, row.ulurp_numbers, row.ceqr_number,
+    ...(row.bbls || []), ...(row.parcel_ids || []), ...(row.footprint_bbls || []),
+  ]);
+  const siteHistory = siteHistoryForParcelIds([
+    ...(row.bbls || []), ...(row.parcel_ids || []), ...(row.footprint_bbls || []),
+  ]);
   const fields = uniqueSearchText([
     title,
-    projectId,
+    ...identifiers,
     row.project_name,
     row.public_status,
     row.project_status,
@@ -65,6 +73,8 @@ export function projectLandSearchDocument(row = {}, { artifact = {} } = {}) {
       materialized_at: artifact.materialized_at || null,
       source_row_key: projectId,
       search_text_fields: fields,
+      identifier_values: identifiers,
+      ...(siteHistory ? { site_history: siteHistory } : {}),
     },
   }, "publisher_zap_project_id");
 }
