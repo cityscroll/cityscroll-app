@@ -6,10 +6,10 @@
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "408a433039ef03b78801d3eb35471a16d4a187e32c5f2b51202cdc473a589f02",
-    "bytes": 72810200,
+    "sha256": "8a1aab8f0fce218da6f1af4ddcb9569bb4f06ca253e25f3b875258105a7373da",
+    "bytes": 75606348,
     "family_count": 11,
-    "document_count": 22050
+    "document_count": 22101
   },
   "build_receipt": {
     "source_artifacts": {
@@ -21,6 +21,7 @@
       "community_board_decisions": "site/data/community_board_resolution_pilot.json",
       "land": "site/data/zap_projects_warehouse_lookup.json",
       "meetings": "site/data/shared_meeting_read_model.json",
+      "council_land_matter_links": "site/data/council_land_matter_links.json",
       "exams": "site/data/staffing_exams.json",
       "parcels": "site/data/property_cross_domain_lookup.json",
       "property_residents": "site/data/property_resident_snapshot.json",
@@ -120,26 +121,26 @@
       "path": "land.json.br",
       "gzip_path": "land.json.gz",
       "document_count": 238,
-      "uncompressed_bytes": 307119,
-      "gzip_bytes": 20693,
-      "brotli_bytes": 17420,
-      "sha256": "559a3f3793421a6a7c1532cf782be10bd9d71a9fe2e6cbba47a33b53e08c3be7",
-      "gzip_sha256": "23b7fb9953968b8499bb03158abf79f43ae0ae10d543ad2086c98b6968c29066",
-      "brotli_sha256": "efaf70591278706a07dfb93689b004bb7c16f84e93c206cca5932de1842199ab",
-      "receipt_sha256": "daafa9cf01050ea8adf7b08a9ed3a6d8f10b68c5f0264bf87c8464e464b785e9"
+      "uncompressed_bytes": 341459,
+      "gzip_bytes": 26682,
+      "brotli_bytes": 22538,
+      "sha256": "be0f600ffbe4ad6ec1af710c71b38cf651d93b3e8f4cdba53052c78dc4be77e5",
+      "gzip_sha256": "a14f8d51dc93e61e58673d424a81c91e83d320064d8f0eae25ac6da53b123784",
+      "brotli_sha256": "2f69bded939e5e30b14e97ecd08434180217fbd3cfb3de9a9e482cf36d8f40cf",
+      "receipt_sha256": "0c9ea9d27832ae28f6ac7a4eef9b69854590cf6def118f6fefe03f18b45a2e3c"
     },
     {
       "family": "meetings",
       "path": "meetings.json.br",
       "gzip_path": "meetings.json.gz",
-      "document_count": 715,
-      "uncompressed_bytes": 1406492,
-      "gzip_bytes": 98563,
-      "brotli_bytes": 66339,
-      "sha256": "c233c34c3b80a374be933249f7fde4c0e173da1e8dc04e1f621f91d84b397f78",
-      "gzip_sha256": "9201cce5e15a43f73bc894e4de8649291056f803fb3b1a267c1d7b9dbf5202f1",
-      "brotli_sha256": "e73275a22f2fa8351b1a20816533679460eee777e1cc1542c2a6b11114ac43bc",
-      "receipt_sha256": "41dc8ade5ce713b7d61157020877c952f352df81e3796a2f4819cbac65c78c22"
+      "document_count": 766,
+      "uncompressed_bytes": 1469924,
+      "gzip_bytes": 101985,
+      "brotli_bytes": 68893,
+      "sha256": "bc5cb99f494817ac03dc1c11fa1e9aa96572331b9585d2ffee92a35ae86bbe17",
+      "gzip_sha256": "e671dfb66fe88dd3d5aa97c925705eb5436387e252046176640d58cb60b03834",
+      "brotli_sha256": "246877cf82a0ffde1db02119a230dcf7866341d2b64fa45b25f14444147ec17a",
+      "receipt_sha256": "35964ecb33f4600eafde25df4f599eb8bf8d62673bb4f973e80d73b0ffe2c80b"
     },
     {
       "family": "exams",
@@ -185,13 +186,13 @@
       "path": "procurements.json.br",
       "gzip_path": "procurements.json.gz",
       "document_count": 19872,
-      "uncompressed_bytes": 62644535,
-      "gzip_bytes": 3352822,
-      "brotli_bytes": 2482196,
-      "sha256": "69d458894febd65664407cc41c5e9ae4661fc6788d785c17ed869734eca63b9d",
-      "gzip_sha256": "aaa64d24875d2ec59b5e5de6bc8cd31cb677b8c71ff3880768cf92ba25f77aba",
-      "brotli_sha256": "29604735332b84e670739cb3a98b58c09dc98a9040a0c78e9e67c2d359e68c91",
-      "receipt_sha256": "bffe29d0fce0abd37a89302536878392e12f7a1a0f313fccfb436606a7b8e0f4"
+      "uncompressed_bytes": 64979188,
+      "gzip_bytes": 3572172,
+      "brotli_bytes": 2682908,
+      "sha256": "4273ea50699c09bdd14c20a6c7cdba69d31d246cf28cf5e5078ecb0ee4a8d306",
+      "gzip_sha256": "c51f99673d995d3571ead131106d4efa680a68cae93948a315e6660b958dc0b1",
+      "brotli_sha256": "4fbf34c776ebd3db25db6fe89e718c612afa34ba0df08dbf941c18121d00ecb2",
+      "receipt_sha256": "41839c37fbe8ea1d08ad9d21ca5acb0059f2b975b47aea5756d146885b19fc79"
     }
   ]
 }
