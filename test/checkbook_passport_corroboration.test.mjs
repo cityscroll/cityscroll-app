@@ -177,6 +177,25 @@ test("A3: near-identical IDs stay separate while exact-ID conflicts remain attri
   assert.equal(object.checkbook_corroboration.passport_amount, 26112.93);
   assert.equal(new Set(built.objects.map((row) => row.procurement_id)).size, 1);
 
+  const coincident = buildProcurementObjects({
+    sourceRecords: [
+      passportRecord(TAMEER_PASSPORT),
+      sourceRecord("checkbook_contracts", "contract:registered:CT185020218800001:coincident", {
+        id: "CT185020218800001", pin: "85021B0087001C010", current: 26112.93, status: "registered",
+      }),
+    ],
+  });
+  assert.deepEqual(coincident.objects.map((row) => row.procurement_id).sort(), [
+    "procurement:contract:CT185020218800001",
+    "procurement:contract:CT185020228802305",
+  ]);
+  assert.deepEqual(coincident.cross_source_identity_joins, []);
+  assert.ok(coincident.objects.every((object) => object.source_observation_refs.length === 1));
+  assert.equal(coincident.objects.find((object) => object.procurement_id.endsWith("CT185020218800001"))
+    .source_observation_refs[0], "checkbook_contracts:contract:registered:CT185020218800001:coincident");
+  assert.equal(coincident.objects.find((object) => object.procurement_id.endsWith("CT185020228802305"))
+    .source_observation_refs[0], "passport_public_contracts:contract:85021B0087001C011:TAMEER-2305");
+
   const conflicting = buildProcurementObjects({
     sourceRecords: [
       passportRecord(TAMEER_PASSPORT),
