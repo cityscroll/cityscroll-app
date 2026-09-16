@@ -154,3 +154,27 @@ test('ops-health marks emergency authority unavailable without D1',async()=>{
  assert.deepEqual(body.alerts.items,[]);
  assert.deepEqual(body.alerts.emergency_delivery_authority,{status:'unavailable',reason:'db-unavailable'});
 });
+test('new routine findings outrank older emergency history without losing D1 authority',async()=>{
+ const {sqlite,DB}=d1();const ALERT_STATE=kv();const insert=sqlite.prepare(`INSERT INTO ops_emergency_deliveries
+  (signature,payload_json,state,first_attempted_at,last_attempted_at,retry_until,attempt_count,resolved_at,provider_id)
+  VALUES (?,?,\'accepted\',?,?,?,?,?,?)`);
+ for(let index=0;index<50;index+=1){
+  const stamp=new Date(Date.parse('2026-08-01T00:00:00Z')+index*60000).toISOString();
+  const signature=`old-emergency-${String(index).padStart(2,'0')}`;
+  const payload=JSON.stringify({subject:`Emergency ${index}`,text:`Old emergency ${index}`,evidence:{impact:'service-unavailable',action:'Restore the old service',evidence_url:`https://example.com/emergency/${index}`,verified_at:stamp}});
+  insert.run(signature,payload,stamp,stamp,'2026-08-02T00:00:00.000Z',1,stamp,`provider-${index}`);
+ }
+ await ALERT_STATE.put('ops:alert:history:v1',JSON.stringify({schema:'cityscroll.ops-alert-history.v1',observed_at:'2026-09-16T12:10:00.000Z',items:[
+  {schema:'cityscroll.ops-alert-signature.v1',signature:'routine-new',guard:'served-artifact-freshness',stage:'freshness',findings:['new routine finding'],first_seen:'2026-09-16T12:10:00.000Z',last_seen:'2026-09-16T12:10:00.000Z',count:1},
+  {schema:'cityscroll.ops-alert-signature.v1',signature:'old-emergency-49',guard:'production-emergency',stage:'outage',findings:['stale KV evidence'],first_seen:'2026-08-01T00:49:00.000Z',last_seen:'2026-08-01T00:49:00.000Z',count:1,confirmed_emergency:{evidence_url:'https://example.com/wrong'}},
+ ]}));
+ const response=await handleAdminOpsHealth(new Request('https://w/admin/reliability/ops-health',{headers:{authorization:'Bearer secret'}}),{ADMIN_KEY:'secret',ALERT_STATE,DB},{now});
+ const body=await response.json();
+ assert.equal(body.alerts.items.length,50);
+ assert.equal(body.alerts.items[0].signature,'routine-new');
+ const selected=body.alerts.items.find((item)=>item.signature==='old-emergency-49');
+ assert.equal(selected.confirmed_emergency.evidence_url,'https://example.com/emergency/49');
+ assert.equal(selected.emergency_delivery.state,'accepted');
+ assert.equal(body.alerts.items.some((item)=>item.signature==='old-emergency-00'),false);
+ assert.equal(body.alerts.emergency_delivery_authority.truncated,true);
+});

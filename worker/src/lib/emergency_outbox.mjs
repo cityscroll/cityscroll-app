@@ -89,6 +89,19 @@ function alertProjection(delivery, prior = null) {
   };
 }
 
+function observationTime(item) {
+  const values = [item?.last_seen, item?.emergency_delivery?.last_attempt_at, item?.emergency_delivery?.resolved_at]
+    .map((value) => Date.parse(value || ""))
+    .filter(Number.isFinite);
+  return values.length ? Math.max(...values) : Number.NEGATIVE_INFINITY;
+}
+
+function newestFirst(left, right) {
+  const time = observationTime(right) - observationTime(left);
+  if (time) return time;
+  return String(left?.signature || "").localeCompare(String(right?.signature || ""));
+}
+
 export async function projectEmergencyAlertHistory(db, history, { limit = 50 } = {}) {
   const base = history && typeof history === "object" ? history : { schema: "cityscroll.ops-alert-history.v1", items: [] };
   const existing = Array.isArray(base.items) ? base.items : [];
@@ -100,10 +113,14 @@ export async function projectEmergencyAlertHistory(db, history, { limit = 50 } =
     const result = await db.prepare(LIST).bind(cap + 1).all();
     const rows = Array.isArray(result?.results) ? result.results : [];
     const bySignature = new Map(existing.map((item) => [item?.signature, item]));
-    const emergency = rows.slice(0, cap).map((row) => emergencyDeliveryProjection(row)).filter(Boolean);
+    const exactRows = await Promise.all([...bySignature.keys()].filter(Boolean).slice(0, cap).map((signature) => read(db, signature)));
+    const authoritativeRows = new Map();
+    for (const row of [...rows.slice(0, cap), ...exactRows.filter(Boolean)]) authoritativeRows.set(row.signature, row);
+    const emergency = [...authoritativeRows.values()].map((row) => emergencyDeliveryProjection(row)).filter(Boolean);
     const mergedEmergency = emergency.map((delivery) => alertProjection(delivery, bySignature.get(delivery.idempotency_key)));
     const emergencySignatures = new Set(mergedEmergency.map((item) => item.signature));
-    const items = [...mergedEmergency, ...existing.filter((item) => !emergencySignatures.has(item?.signature))].slice(0, limit);
+    const combined = [...mergedEmergency, ...existing.filter((item) => !emergencySignatures.has(item?.signature))].sort(newestFirst);
+    const items = combined.slice(0, cap);
     return {
       ...base,
       items,
@@ -111,7 +128,7 @@ export async function projectEmergencyAlertHistory(db, history, { limit = 50 } =
         status: "available",
         source: "d1",
         authoritative_count: emergency.length,
-        truncated: rows.length > cap,
+        truncated: rows.length > cap || combined.length > cap,
       },
     };
   } catch (error) {
