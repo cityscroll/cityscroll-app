@@ -99,6 +99,8 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 - Run focused tests first. Before opening or handing off a pull request, run `make prepush` (the
   equivalent entry point is `./tools/preflight-required-checks.sh`). Use `make a11y` after
   `make setup-a11y` when the change requires the full browser/accessibility gate.
+- Merge-queue required status checks and the `merge_group` trim policy live in
+  [`docs/ci.md`](docs/ci.md) and [`tools/merge_queue_policy.json`](tools/merge_queue_policy.json).
 - For architecture-affecting work, edit only the change-owned shard under
   [`architecture/evidence.d/`](architecture/evidence.d/), then run
   `node tools/architecture_evidence_shards.mjs --check` and
