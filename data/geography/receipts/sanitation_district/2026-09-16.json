@@ -1,0 +1,56 @@
+{
+  "schema": "cityscroll.geography_ingestion_receipt.v1",
+  "type": "sanitation_district",
+  "acquired_at": "2026-09-16T10:06:14.000Z",
+  "boundary_vintage": "2026-09-16",
+  "source": {
+    "contract_id": "dsny-district-boundaries",
+    "publisher": "NYC Department of Sanitation",
+    "dataset_id": "i6mn-amj2",
+    "url": "https://data.cityofnewyork.us/resource/i6mn-amj2.geojson?$limit=100",
+    "publisher_updated_at": "2026-09-16T10:06:14.000Z",
+    "sha256": "59239a66f41ede86a7bda9c7888e346a3d624a02d7afdbfbfb208b66eaca684e",
+    "bytes": 2047432,
+    "source_feature_count": 59
+  },
+  "content_digest": {
+    "schema": "cityscroll.source_content_digest.v1",
+    "algorithm": "sha256",
+    "required_fields": [
+      "district",
+      "districtcode",
+      "objectid",
+      "multipolygon"
+    ],
+    "digest": "b8f017fc000fe8cc5dbf5a512077e903b344e31407ae9b21e8ee69c336067135"
+  },
+  "normalized_input": {
+    "format": "GeoJSON",
+    "crs": "EPSG:4326",
+    "sha256": "59239a66f41ede86a7bda9c7888e346a3d624a02d7afdbfbfb208b66eaca684e",
+    "bytes": 2047432
+  },
+  "admission": {
+    "accepted_feature_count": 59,
+    "rejected_feature_count": 0,
+    "rejected_features": []
+  },
+  "artifacts": {
+    "full": {
+      "path": "data/geography/layers/sanitation_district/2026-09-16.full.json",
+      "sha256": "5765238c4c8de274702a312c43e63bde55faaf7b6e957af4706e2399966fc709",
+      "geometry_fidelity": "full"
+    },
+    "simplified": {
+      "site_path": "site/data/geography/layers/sanitation_district/2026-09-16.json",
+      "worker_path": "worker/src/data/geography/layers/sanitation_district/2026-09-16.json",
+      "sha256": "5eb3bf870437ec3e7284511c1baa6671c192698fb4b7f99a45655a9153a1ce52",
+      "geometry_fidelity": "simplified"
+    }
+  },
+  "qa": {
+    "point_canaries": "data/geography/qa/first_four_point_canaries.json",
+    "pluto_cross_checks": "data/geography/qa/first_four_pluto_cross_checks.json",
+    "moda_oracle": "data/geography/oracles/moda-v2025.09.29.json"
+  }
+}

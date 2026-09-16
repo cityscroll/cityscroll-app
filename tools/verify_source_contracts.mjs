@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import { readFileSync } from "node:fs";
-import { join } from "node:path";
-import { pathToFileURL } from "node:url";
+import { dirname, join } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { AWARD_SOURCE_REGISTRY } from "../site/external_awards.js";
 import { checkGeneratedSourceFiles } from "./generate_source_docs.mjs";
 import { contentDigest } from "./lib/source_content_digest.mjs";
@@ -19,6 +19,7 @@ import {
   verifyCodeReferences,
 } from "./source_contracts.mjs";
 
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DAY_MS = 86_400_000;
 const LIVE_CONCURRENCY = 4;
 const NETWORK_RETRY = 1;
