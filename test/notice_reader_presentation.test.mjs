@@ -132,17 +132,13 @@ test("edge notice presents each agency/vendor role once and closes optional tool
 });
 
 test("client and money-detail templates keep utilities inside More tools", () => {
-  assert.match(clientSource, /renderNoticeMoreToolsDisclosure/);
-  assert.match(clientSource, /id="ncopy"/);
-  assert.match(clientSource, /id="nqr"|qrButtonHTML\("nqr"/);
-  assert.match(clientSource, /id="nxlsx"/);
-  assert.match(clientSource, /id="nprint"/);
-  assert.match(clientSource, /pinBtn\("notice"/);
-  assert.match(clientSource, /notice_email_btn/);
-  assert.match(moneyHistorySource, /moneyDetailMoreToolsHTML|data-notice-tools-region/);
+  assert.match(clientSource, /renderNoticeClientActionRegions/);
+  assert.match(clientSource, /id="ncopy"|ncopy/);
+  assert.match(moneyHistorySource, /renderEligibleRecordTools/);
   assert.match(moneyHistorySource, /id="dcopy"/);
   assert.match(moneyHistorySource, /id="dxlsx"/);
   assert.match(moneyHistorySource, /id="dprint"/);
+  assert.match(moneyHistorySource, /notice-detail-more-tools|moreToolsHtml/);
 });
 
 test("A9 harness advertises the notice-tools browser case", () => {

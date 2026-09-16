@@ -16,9 +16,6 @@ import { noticeDocumentUrl } from "./notice_permalink.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { renderNoticeClientActionRegions } from "./research_discovery.mjs";
 import {
-  renderNoticeMoreToolsDisclosure,
-} from "./notice_reader_presentation.mjs";
-import {
   noticeContextReady,
   noticeContextTimingMark,
   noticeContextTimingMeasure,

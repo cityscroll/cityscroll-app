@@ -167,10 +167,8 @@ test("composed notice keeps optional utilities inside a closed More tools disclo
   assert.match(edgeSource, /renderNoticeMoreToolsDisclosure/);
   assert.match(edgeSource, /filterNoticeConstellationNeighbors/);
   assert.match(edgeSource, /data-notice-primary-facts/);
-  assert.match(clientSource, /renderNoticeMoreToolsDisclosure/);
-  assert.match(clientSource, /id="ncopy"/);
-  assert.match(clientSource, /id="nxlsx"/);
-  assert.match(clientSource, /id="nprint"/);
+  assert.match(clientSource, /renderNoticeClientActionRegions/);
+  assert.match(clientSource, /data-notice-primary-facts/);
   assert.match(harnessSource, /notice-tools/);
   assert.match(harnessSource, /assert_notice_tools|run_notice_tools/);
 });

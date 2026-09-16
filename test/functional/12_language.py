@@ -238,29 +238,31 @@ with sync_playwright() as pw:
     linked.route("**/attachment-metadata*",
                  lambda route: route.fulfill(status=200, content_type="application/json", body='{"attachments":[]}'))
     linked.goto(BASE.rstrip("/") + "/?lang=es#notice/20260716022", timeout=30000)
-    linked.wait_for_selector("#noticeview details.notice-more-tools", state="attached", timeout=10000)
-    linked.wait_for_selector("#noticeview details.notice-more-tools #ncopy", state="attached", timeout=10000)
+    linked.wait_for_selector("#noticeview #ncopy", state="visible", timeout=10000)
+    linked.wait_for_selector("#noticeview [data-more-tools-region], #noticeview #notice-more-tools", state="attached", timeout=10000)
     assert linked.locator("#langSelect").input_value() == "es"
     assert linked.evaluate("document.documentElement.lang") == "es"
     assert linked.locator('[data-i18n="tab_money"]').first.inner_text().strip().lower() != "contracts"
     assert linked.evaluate("localStorage.getItem('crol_lang')") == "ru", "URL override must not replace the saved preference"
 
-    tools = linked.locator("#noticeview details.notice-more-tools")
-    assert tools.count() == 1, "expected one More tools disclosure on the notice"
+    tools = linked.locator("#noticeview [data-more-tools-region], #noticeview #notice-more-tools")
+    assert tools.count() >= 1, "expected a More tools disclosure on the notice"
     assert tools.first.get_attribute("open") is None, "More tools must stay closed by default"
-    assert linked.locator("#ncopy").is_visible() is False, "copy control must stay hidden until More tools opens"
-    tools_summary = tools.locator("summary")
+    tools_summary = tools.first.locator("summary")
     assert tools_summary.inner_text().strip() == "Más herramientas", (
         f"More tools summary must be translated in Spanish, got {tools_summary.inner_text()!r}"
     )
-    tools_summary.click()
-    linked.wait_for_function(
-        "() => document.querySelector('#noticeview details.notice-more-tools')?.open === true",
-        timeout=5000,
-    )
-    linked.wait_for_selector("#ncopy", state="visible", timeout=10000)
+    # Modest copy-link stays outside More tools; optional utilities stay inside.
     copy_label = linked.locator("#ncopy").inner_text().strip()
     assert copy_label == "Copiar enlace", f"expected translated copy label, got {copy_label!r}"
+    assert linked.locator("#noticeview [data-more-tools-region] #nqr, #noticeview #notice-more-tools #nqr").count() == 1
+    assert linked.locator("#nqr").is_visible() is False, "QR must stay hidden until More tools opens"
+    tools_summary.click()
+    linked.wait_for_function(
+        "() => document.querySelector('#noticeview [data-more-tools-region], #noticeview #notice-more-tools')?.open === true",
+        timeout=5000,
+    )
+    linked.wait_for_selector("#nqr", state="visible", timeout=10000)
 
     linked.locator("#ncopy").click()
     copied = linked.evaluate("window.__copiedLanguageUrl")

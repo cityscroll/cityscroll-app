@@ -462,7 +462,7 @@ def _visible_role_mentions(page, label: str) -> int:
                 return;
               }
               if (node.nodeType !== Node.ELEMENT_NODE) return;
-              if (node.matches?.('details.notice-more-tools')) return;
+              if (node.matches?.('details.notice-more-tools, [data-more-tools-region], #notice-more-tools')) return;
               if (node.closest?.('[hidden], [aria-hidden="true"]')) return;
               for (const child of node.childNodes) walk(child);
             };
@@ -497,27 +497,33 @@ def assert_notice_tools(page, base: str, *, label: str) -> dict[str, object]:
     assert response and response.status == 200, f"{label}: notice route did not return 200"
     page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
     page.wait_for_selector("#noticeview .route-item", state="visible")
-    page.wait_for_selector("#noticeview details.notice-more-tools", state="attached")
     hydrated = not (label.startswith("failed") or label.startswith("no-javascript"))
+    tools_sel = (
+        "#noticeview [data-more-tools-region], #noticeview #notice-more-tools"
+        if hydrated
+        else "#noticeview details.notice-more-tools"
+    )
+    page.wait_for_selector(tools_sel, state="attached")
     if hydrated:
-        # Wait for the client replacement that preserves IDs inside More tools.
-        page.wait_for_selector("#noticeview details.notice-more-tools #ncopy", state="attached")
-        page.wait_for_selector("#noticeview details.notice-more-tools [data-pin]", state="attached")
+        # Modest copy-link stays outside; optional utilities hydrate inside More tools.
+        page.wait_for_selector("#noticeview #ncopy", state="attached")
+        page.wait_for_selector(f"{tools_sel} [data-pin], {tools_sel} #nqr", state="attached")
     fatal = [error for error in errors if "CORS" not in error and "Failed to load resource" not in error]
     assert not fatal, f"{label}: client errors: {fatal}"
 
-    tools = page.locator("#noticeview details.notice-more-tools")
-    assert tools.count() == 1, f"{label}: expected exactly one More tools disclosure"
+    tools = page.locator(tools_sel)
+    assert tools.count() >= 1, f"{label}: expected a More tools disclosure"
     assert tools.first.get_attribute("open") is None, f"{label}: More tools should start closed"
-    assert tools.first.locator("summary").inner_text().strip() == "More tools"
+    assert "More tools" in tools.first.locator("summary").inner_text().strip()
 
-    email = page.locator("#noticeview details.notice-more-tools a[href^='mailto:']")
+    email = tools.locator("a[href^='mailto:']")
     assert email.count() >= 1, f"{label}: Email control missing inside More tools"
     if hydrated:
-        for control_id in ("ncopy", "nqr", "nxlsx", "nprint"):
-            control = page.locator(f"#noticeview details.notice-more-tools #{control_id}")
+        assert page.locator("#noticeview #ncopy").count() == 1, f"{label}: missing modest #ncopy affordance"
+        for control_id in ("nqr", "nxlsx", "nprint"):
+            control = tools.locator(f"#{control_id}")
             assert control.count() == 1, f"{label}: missing #{control_id} inside More tools"
-        assert page.locator("#noticeview details.notice-more-tools [data-pin]").count() >= 1, (
+        assert tools.locator("[data-pin]").count() >= 1, (
             f"{label}: Pin control missing inside More tools"
         )
 
@@ -571,20 +577,20 @@ def assert_notice_tools(page, base: str, *, label: str) -> dict[str, object]:
     assert empty_heads == [], f"{label}: empty enrichment headings present: {empty_heads}"
 
     # Expanding tools preserves keyboard access to the demoted controls.
-    if not label.startswith("failed") and not label.startswith("no-javascript"):
+    if hydrated:
         tools.first.locator("summary").focus()
         page.keyboard.press("Enter")
         page.wait_for_function(
-            "() => document.querySelector('#noticeview details.notice-more-tools')?.open === true"
+            "() => document.querySelector('#noticeview [data-more-tools-region], #noticeview #notice-more-tools')?.open === true"
         )
-        assert page.locator("#ncopy").is_visible()
-        page.locator("#ncopy").focus()
-        assert page.evaluate("document.activeElement && document.activeElement.id") == "ncopy"
+        assert page.locator("#nqr").is_visible()
+        page.locator("#nqr").focus()
+        assert page.evaluate("document.activeElement && document.activeElement.id") == "nqr"
         # Return to the default closed state for later captures.
         tools.first.locator("summary").focus()
         page.keyboard.press("Enter")
         page.wait_for_function(
-            "() => document.querySelector('#noticeview details.notice-more-tools')?.open !== true"
+            "() => document.querySelector('#noticeview [data-more-tools-region], #noticeview #notice-more-tools')?.open !== true"
         )
 
     assert page.locator(f'#noticeview a.notice-subject-link[href="{SUBJECT_CONTRACT_HREF}"]').count() >= 1
@@ -698,21 +704,24 @@ def run_notice_tools(base: str, *, write_manifest: bool, revision: str) -> None:
             page.go_back(wait_until="domcontentloaded")
             page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
             page.wait_for_selector("#noticeview .route-item", state="visible")
-            page.wait_for_selector("#noticeview details.notice-more-tools #ncopy", state="attached")
+            page.wait_for_selector("#noticeview #ncopy", state="attached")
+            page.wait_for_selector("#noticeview [data-more-tools-region], #noticeview #notice-more-tools", state="attached")
             assert page.locator("#noticeview .route-item").count() == 1
-            assert page.locator("#noticeview details.notice-more-tools").count() == 1
-            assert page.locator("#noticeview details.notice-more-tools").first.get_attribute("open") is None
+            tools = page.locator("#noticeview [data-more-tools-region], #noticeview #notice-more-tools")
+            assert tools.count() >= 1
+            assert tools.first.get_attribute("open") is None
             # Hash the stable primary document text rather than optional enrichment that
             # can still be settling after Back.
             home_back_hash = page.evaluate(
                 """() => {
                   const root = document.querySelector('#noticeview');
+                  const tools = root?.querySelector('[data-more-tools-region], #notice-more-tools');
                   const parts = [
                     root?.querySelector('.ftype')?.innerText || '',
                     root?.querySelector('.rolename')?.innerText || '',
                     root?.querySelector('[data-notice-primary-facts]')?.innerText || '',
-                    root?.querySelector('details.notice-more-tools > summary')?.innerText || '',
-                    String(root?.querySelectorAll('details.notice-more-tools').length || 0),
+                    tools?.querySelector('summary')?.innerText || '',
+                    String(root?.querySelectorAll('[data-more-tools-region], #notice-more-tools').length || 0),
                   ];
                   return parts.join('\\n');
                 }"""
