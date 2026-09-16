@@ -1,6 +1,12 @@
 import { renderGuideHelpLink } from "../guide_contextual_links.mjs";
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
+import { resolveAgencyIdentity } from "../agency_identity.mjs";
+import {
+  projectResearchTools,
+  renderRecordActionRegions,
+  renderResearchNavigation,
+} from "../research_discovery.mjs";
 import {
   INVESTIGATION_SIGNAL_TYPE,
   addInvestigationComparativeSignal,
@@ -777,13 +783,28 @@ async function showMatter(pin){
       <div class="ftype" style="margin-bottom:6px">${t("matter_heading_html",{pin:`<code>${safe}</code>`})}</div>
       <h2 class="rolename" lang="en" dir="ltr">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</h2>
       ${bodyHTML}
-      <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" id="ecopy">${t("copy_link_btn")}</button>
-        ${qrButtonHTML("eqr","act")}
-        ${pinBtn("matter", pin, t("meta_matter",{pin:safe}), [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}
-        ${officialSourceLink({ href:REQ_URL(latestNoticeId), label:t("matter_latest_city_record"), className:"matter-city-record-source", escape:escUiHtml })}
-        ${checkbookHref ? `<a class="act" href="${escUiHtml(checkbookHref)}" ${EXT_ATTRS}>${t("matter_open_checkbook")}${extSR()}</a>` : ""}
-      </div>
+      ${(() => {
+        const matterAgencyIdentity = agency ? resolveAgencyIdentity(agency) : null;
+        const matterEvidencePath = matterAgencyIdentity?.matched
+          ? `/agencies/${encodeURIComponent(matterAgencyIdentity.canonical_id)}/`
+          : null;
+        const matterResearch = projectResearchTools({
+          surface: "matter",
+          hasShareHandler: true,
+          hasCollectionHandler: true,
+          evidencePath: matterEvidencePath,
+          asOfSupported: Boolean(matterEvidencePath),
+          asOfPath: matterEvidencePath,
+          comparativeAgency: agency || null,
+          comparativeVendor: vendor ? cleanText(vendor) : null,
+        });
+        return renderRecordActionRegions({
+          primaryHtml: `<button class="act primary" type="button" id="ecopy">${t("copy_link_btn")}</button>${officialSourceLink({ href:REQ_URL(latestNoticeId), label:t("matter_latest_city_record"), className:"matter-city-record-source", escape:escUiHtml })}${checkbookHref ? `<a class="act" href="${escUiHtml(checkbookHref)}" ${EXT_ATTRS}>${t("matter_open_checkbook")}${extSR()}</a>` : ""}`,
+          moreToolsHtml: `${qrButtonHTML("eqr","act")}${pinBtn("matter", pin, t("meta_matter",{pin:safe}), [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}`,
+          researchHtml: renderResearchNavigation(matterResearch),
+          moreToolsId: "matter-more-tools",
+        });
+      })()}
       <div class="note">${t("matter_spine_note")}</div>
     </div></div>`;
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
