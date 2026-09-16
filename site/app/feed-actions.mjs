@@ -31,6 +31,7 @@ import {
 } from "../community_board_search.mjs";
 import { domainRows } from "../resident_snapshot_queries.mjs";
 import { resolveLandPublicStatus } from "../land_detail_coherence.mjs";
+import { mountLandAiContextToolsBeside } from "../land_ai_context_tools.mjs";
 import {
   landParticipationGuideHeadingKey,
   landParticipationStepsMissingKey,
@@ -1317,7 +1318,10 @@ function landActionMatter(projectRow, outcomeRecord, phaseTools){
   };
 }
 function paintLandActionRail(el, projectRow, outcomeRecord, phaseTools){
-  if(!el||!window.CrolActions) return;
+  if(!el) return;
+  // Keep the assistant handoff out of land.mjs so that module retains headroom.
+  mountLandAiContextToolsBeside(el, projectRow, { translate: t });
+  if(!window.CrolActions) return;
   const matter=landActionMatter(projectRow, outcomeRecord, phaseTools);
   const actions=CrolActions.compileActionRail(matter,{today:todayISO()});
   el.innerHTML=actionRailHTML(actions,{externalActionRenderer:externalActionLink});
