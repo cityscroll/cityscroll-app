@@ -51,8 +51,25 @@ jobs:
       - name: Install pinned Worker dependencies
         run: tools/install_worker_dependencies.sh
       - uses: ./.github/actions/setup-playwright
+      # Same pinned poppler-utils contract as .github/actions/build-site: FlateDecode
+      # calendar/rule PDFs need pdftotext; pin by Ubuntu suite so apt drift cannot
+      # silently change extraction.
       - name: Install PDF text extraction for rule evidence
-        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+        run: |
+          set -euo pipefail
+          . /etc/os-release
+          case "${VERSION_CODENAME:-}" in
+            noble) pkg="poppler-utils=24.02.0-1ubuntu9.9" ;;
+            jammy) pkg="poppler-utils=22.02.0-2ubuntu0.13" ;;
+            *)
+              echo "Unsupported runner suite '${VERSION_CODENAME:-unknown}' for pinned poppler-utils (expected noble or jammy)" >&2
+              exit 1
+              ;;
+          esac
+          sudo apt-get update
+          sudo apt-get install -y "$pkg"
+          command -v pdftotext >/dev/null
+          pdftotext -v
 
       - name: Run the declared acquisition and builder for every due dataset
         env:

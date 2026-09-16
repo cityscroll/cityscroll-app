@@ -42,9 +42,27 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: 22
+    # First-class calendar PDFs (BSA and peers) often ship FlateDecode streams.
+    # tools/lib/pdf_calendar_text.mjs needs pdftotext from poppler-utils; the
+    # naive byte extractor cannot read those streams. Pin the Ubuntu package so
+    # the verified Pages build does not drift when apt metadata moves.
     - name: Install PDF text extraction for first-class calendars
       shell: bash
-      run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      run: |
+        set -euo pipefail
+        . /etc/os-release
+        case "${VERSION_CODENAME:-}" in
+          noble) pkg="poppler-utils=24.02.0-1ubuntu9.9" ;;
+          jammy) pkg="poppler-utils=22.02.0-2ubuntu0.13" ;;
+          *)
+            echo "Unsupported runner suite '${VERSION_CODENAME:-unknown}' for pinned poppler-utils (expected noble or jammy)" >&2
+            exit 1
+            ;;
+        esac
+        sudo apt-get update
+        sudo apt-get install -y "$pkg"
+        command -v pdftotext >/dev/null
+        pdftotext -v
     - name: Build provider-neutral public artifact
       id: build
       shell: bash

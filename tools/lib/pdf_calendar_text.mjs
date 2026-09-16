@@ -1,3 +1,12 @@
+/**
+ * Extract layout text from calendar/agenda PDFs.
+ *
+ * Prefer `pdftotext` (poppler-utils). Many publisher PDFs use FlateDecode
+ * content streams that the byte-level fallback cannot read, so CI installs a
+ * pinned poppler-utils package in `.github/actions/build-site` and
+ * `.github/workflows/first-class-refresh.yml`. Do not invent OCR text when both
+ * paths return empty.
+ */
 import { spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
