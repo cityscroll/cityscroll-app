@@ -27,7 +27,11 @@
     "object_ref": "procurement:contract:CT185720228800365",
     "source_observation_ref": "passport_public_contracts:contract:85721B0111001A001:4618449",
     "vendor_name": "FIREMATIC SUPPLY CO. INC",
-    "contract_amount": 49689.78,
+    "contract_amount": 208687.62,
+    "original_contract_amount": 158997.84,
+    "current_contract_amount": 208687.62,
+    "action_amount": 49689.78,
+    "amount_role": "action",
     "canonical_href": "/procurements/procurement%3Acontract%3ACT185720228800365"
   }
 }

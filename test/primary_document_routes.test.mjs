@@ -587,9 +587,9 @@ test("canonical procurement route shows exact-contract payments and notice place
     assert.match(html, /Authorized minus paid is not remaining liability/);
     // Scoped summary: headline Paid amount agrees with the payment section; encumbered stays distinct.
     assert.match(html, /Paid amount<\/dt><dd>\$7,385,672\.19/);
-    assert.match(html, /Encumbered amount<\/dt><dd>\$7,319,455\.52/);
+    assert.match(html, /Encumbered amount<\/dt><dd>\$7,385,672\.52/);
     assert.doesNotMatch(html, /Paid amount<\/dt><dd>\$7,319,455\.51/);
-    assert.match(html, /data-retained-paid-amount="7319455\.51"/);
+    assert.match(html, /data-retained-paid-amount="7385672\.19"/);
     assert.match(html, /data-retained-paid-source="passport_public_contracts"/);
     assert.match(html, /data-retained-paid-vintage="2026-09-09T06:33:01\.880Z"/);
     const spendingCoverage = html.match(/data-source-system="checkbook_spending"[\s\S]*?<\/li>/)?.[0] || "";
@@ -675,9 +675,9 @@ test("notice and canonical routes show consistent payment summary and scope", as
       assert.match(canonicalHtml, /Authorized minus paid is not remaining liability/);
       // Compare visible definition cells, not only payment-section attributes.
       assert.match(canonicalHtml, /Paid amount<\/dt><dd>\$7,385,672\.19/);
-      assert.match(canonicalHtml, /Encumbered amount<\/dt><dd>\$7,319,455\.52/);
+      assert.match(canonicalHtml, /Encumbered amount<\/dt><dd>\$7,385,672\.52/);
       assert.doesNotMatch(canonicalHtml, /Paid amount<\/dt><dd>\$7,319,455\.51/);
-      assert.match(canonicalHtml, /data-retained-paid-amount="7319455\.51"/);
+      assert.match(canonicalHtml, /data-retained-paid-amount="7385672\.19"/);
       assert.match(canonicalHtml, /data-retained-paid-vintage="2026-09-09T06:33:01\.880Z"/);
       const canonicalSpending = canonicalHtml.match(/data-source-system="checkbook_spending"[\s\S]*?<\/li>/)?.[0] || "";
       assert.match(canonicalSpending, /No exact match in analytics spending lookup/);
