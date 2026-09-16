@@ -8,6 +8,10 @@ const LIST = `SELECT signature, payload_json, state, claim_token, claim_expires_
   first_attempted_at, last_attempted_at, retry_until, attempt_count, resolved_at,
   provider_id, error_reason FROM ops_emergency_deliveries
   ORDER BY last_attempted_at DESC, signature ASC LIMIT ?`;
+const SELECT_MANY = (count) => `SELECT signature, payload_json, state, claim_token, claim_expires_at,
+  first_attempted_at, last_attempted_at, retry_until, attempt_count, resolved_at,
+  provider_id, error_reason FROM ops_emergency_deliveries
+  WHERE signature IN (${Array.from({ length: count }, () => "?").join(", ")})`;
 
 function token() {
   if (typeof globalThis.crypto?.randomUUID === "function") return globalThis.crypto.randomUUID();
@@ -113,9 +117,13 @@ export async function projectEmergencyAlertHistory(db, history, { limit = 50 } =
     const result = await db.prepare(LIST).bind(cap + 1).all();
     const rows = Array.isArray(result?.results) ? result.results : [];
     const bySignature = new Map(existing.map((item) => [item?.signature, item]));
-    const exactRows = await Promise.all([...bySignature.keys()].filter(Boolean).slice(0, cap).map((signature) => read(db, signature)));
+    const signatures = [...new Set([...bySignature.keys()].filter(Boolean))].slice(0, Math.min(cap, 50));
+    const exactResult = signatures.length
+      ? await db.prepare(SELECT_MANY(signatures.length)).bind(...signatures).all()
+      : { results: [] };
+    const exactRows = Array.isArray(exactResult?.results) ? exactResult.results : [];
     const authoritativeRows = new Map();
-    for (const row of [...rows.slice(0, cap), ...exactRows.filter(Boolean)]) authoritativeRows.set(row.signature, row);
+    for (const row of [...rows.slice(0, cap), ...exactRows]) authoritativeRows.set(row.signature, row);
     const emergency = [...authoritativeRows.values()].map((row) => emergencyDeliveryProjection(row)).filter(Boolean);
     const mergedEmergency = emergency.map((delivery) => alertProjection(delivery, bySignature.get(delivery.idempotency_key)));
     const emergencySignatures = new Set(mergedEmergency.map((item) => item.signature));

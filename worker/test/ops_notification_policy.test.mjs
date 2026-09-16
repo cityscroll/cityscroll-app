@@ -12,8 +12,8 @@ const input = { guard:'production-emergency', stage:'outage', fingerprint:'incid
 function kv(){const data=new Map();return {get:async k=>data.get(k)||null,put:async(k,v)=>data.set(k,v)};}
 const emergencyMigration=readFileSync(new URL('../migrations/0033_ops_emergency_outbox.sql',import.meta.url),'utf8');
 function d1(){
- const sqlite=new DatabaseSync(':memory:');sqlite.exec(emergencyMigration);
- return {sqlite,DB:{prepare(sql){const statement=sqlite.prepare(sql);return {bind(...params){return {
+ const sqlite=new DatabaseSync(':memory:');sqlite.exec(emergencyMigration);let queryCount=0;
+ return {sqlite,getQueryCount:()=>queryCount,DB:{prepare(sql){queryCount+=1;const statement=sqlite.prepare(sql);return {bind(...params){return {
   run(){const result=statement.run(...params);return {meta:{changes:Number(result.changes||0)}}},
   first(){return statement.get(...params)||null},
   all(){return {results:statement.all(...params)}},
@@ -155,7 +155,7 @@ test('ops-health marks emergency authority unavailable without D1',async()=>{
  assert.deepEqual(body.alerts.emergency_delivery_authority,{status:'unavailable',reason:'db-unavailable'});
 });
 test('new routine findings outrank older emergency history without losing D1 authority',async()=>{
- const {sqlite,DB}=d1();const ALERT_STATE=kv();const insert=sqlite.prepare(`INSERT INTO ops_emergency_deliveries
+ const {sqlite,DB,getQueryCount}=d1();const ALERT_STATE=kv();const insert=sqlite.prepare(`INSERT INTO ops_emergency_deliveries
   (signature,payload_json,state,first_attempted_at,last_attempted_at,retry_until,attempt_count,resolved_at,provider_id)
   VALUES (?,?,\'accepted\',?,?,?,?,?,?)`);
  for(let index=0;index<50;index+=1){
@@ -164,10 +164,9 @@ test('new routine findings outrank older emergency history without losing D1 aut
   const payload=JSON.stringify({subject:`Emergency ${index}`,text:`Old emergency ${index}`,evidence:{impact:'service-unavailable',action:'Restore the old service',evidence_url:`https://example.com/emergency/${index}`,verified_at:stamp}});
   insert.run(signature,payload,stamp,stamp,'2026-08-02T00:00:00.000Z',1,stamp,`provider-${index}`);
  }
- await ALERT_STATE.put('ops:alert:history:v1',JSON.stringify({schema:'cityscroll.ops-alert-history.v1',observed_at:'2026-09-16T12:10:00.000Z',items:[
-  {schema:'cityscroll.ops-alert-signature.v1',signature:'routine-new',guard:'served-artifact-freshness',stage:'freshness',findings:['new routine finding'],first_seen:'2026-09-16T12:10:00.000Z',last_seen:'2026-09-16T12:10:00.000Z',count:1},
-  {schema:'cityscroll.ops-alert-signature.v1',signature:'old-emergency-49',guard:'production-emergency',stage:'outage',findings:['stale KV evidence'],first_seen:'2026-08-01T00:49:00.000Z',last_seen:'2026-08-01T00:49:00.000Z',count:1,confirmed_emergency:{evidence_url:'https://example.com/wrong'}},
- ]}));
+ const items=Array.from({length:49},(_,index)=>{const stamp=new Date(Date.parse('2026-08-01T00:00:00Z')+index*60000).toISOString();return {schema:'cityscroll.ops-alert-signature.v1',signature:`old-emergency-${String(index).padStart(2,'0')}`,guard:'production-emergency',stage:'outage',findings:['stale KV evidence'],first_seen:stamp,last_seen:stamp,count:1,confirmed_emergency:{evidence_url:'https://example.com/wrong'}}});
+ items.unshift({schema:'cityscroll.ops-alert-signature.v1',signature:'routine-new',guard:'served-artifact-freshness',stage:'freshness',findings:['new routine finding'],first_seen:'2026-09-16T12:10:00.000Z',last_seen:'2026-09-16T12:10:00.000Z',count:1});
+ await ALERT_STATE.put('ops:alert:history:v1',JSON.stringify({schema:'cityscroll.ops-alert-history.v1',observed_at:'2026-09-16T12:10:00.000Z',items}));
  const response=await handleAdminOpsHealth(new Request('https://w/admin/reliability/ops-health',{headers:{authorization:'Bearer secret'}}),{ADMIN_KEY:'secret',ALERT_STATE,DB},{now});
  const body=await response.json();
  assert.equal(body.alerts.items.length,50);
@@ -177,4 +176,5 @@ test('new routine findings outrank older emergency history without losing D1 aut
  assert.equal(selected.emergency_delivery.state,'accepted');
  assert.equal(body.alerts.items.some((item)=>item.signature==='old-emergency-00'),false);
  assert.equal(body.alerts.emergency_delivery_authority.truncated,true);
+ assert.equal(getQueryCount(),2);
 });
