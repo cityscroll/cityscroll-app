@@ -21,7 +21,7 @@
   "served_identity": {
     "status": "matched",
     "reasons": [],
-    "observer_revision": "d820fc8a3a354d69321a3368b096f436d01e2fcd",
+    "observer_revision": "dc3848c8685b6135c7b8f07e73841fcbb087d345",
     "pages_deploy_commit": "c2ae5dcff6569e0b405d79d89e3081a73ed08ff2",
     "artifact_source_commit_sha": "c2ae5dcff6569e0b405d79d89e3081a73ed08ff2",
     "artifact_hash": "37d249d4d751c1fea78217d07c9bb1981dfabc84cfba4fcfaf0a68117b4a6fe4",
@@ -55,10 +55,10 @@
     "schema": "cityscroll.production_provenance.v1",
     "evidence_class": "live-production-read",
     "isolated": false,
-    "observed_at": "2026-09-16T18:43:54.333Z",
+    "observed_at": "2026-09-16T18:47:07.632Z",
     "observer": {
       "tool": "tools/capture_procurement_disclosure_production_proof.mjs",
-      "source_revision": "d820fc8a3a354d69321a3368b096f436d01e2fcd"
+      "source_revision": "dc3848c8685b6135c7b8f07e73841fcbb087d345"
     },
     "methods": [
       "GET"
@@ -469,7 +469,7 @@
         "needles": [
           "20240829105"
         ],
-        "sha256": "b0160c7f1470aea7550aec47a893bdcad49dad3a3b0453d1bef467f025b76316"
+        "sha256": "b9cb7f77971399ec3cda9795466b79fe2c3a26914c9e44de9ba842260ab72020"
       },
       "note": null,
       "evidence_type": "dom_assertion"
@@ -489,7 +489,7 @@
           "85026B0110",
           "85026B01107"
         ],
-        "sha256": "4fbc43c35834c2618e7a7b5f3488ec4f9cafcc5b7fdc0362b61a8422a416750a"
+        "sha256": "7e9a4d350f0effafd82d1f416a726d75c92db835002a4260688238da775e824e"
       },
       "note": null,
       "evidence_type": "dom_assertion"
@@ -546,17 +546,22 @@
       "url": "https://cityscroll.org/notices/20260810048/",
       "method": "GET",
       "status": 200,
-      "state": "failed",
-      "assertion": "Browser-rendered viewport failed a required reader assertion",
+      "state": "passed",
+      "assertion": "Museum project scope remains visible after app readiness and notice settlement at desktop",
       "evidence": {
         "viewport": "desktop",
-        "failedAssertions": [
-          "project_context_present",
-          "project_context_visible",
-          "has_BCM_HVAC",
-          "has_budget"
-        ],
-        "render_hash": "984b537b12dd4ad13eb2f8082506611e8273e27cb6b30e01463dcecd9521fe74"
+        "after_app_ready": true,
+        "after_notice_settled": true,
+        "assertions": {
+          "project_context_present": true,
+          "project_context_visible": true,
+          "has_BCM_HVAC": true,
+          "has_ACEDCA215": true,
+          "has_budget": true
+        },
+        "render_hash": "70c417fd381fac1dad87ed692ff297675ee4664246810761c167421e9983bb29",
+        "revision": null,
+        "data_vintage": null
       },
       "note": null,
       "evidence_type": "browser_dom"
@@ -576,7 +581,7 @@
           "has_BCM_HVAC",
           "has_budget"
         ],
-        "render_hash": "bbb16e8b4b2eb5861979e2f1f85ce1d749967ab531c9d6632be33ff644f6d01e"
+        "render_hash": "7b6cc528f922ca3205ab154caed35251472bc53c8f28b89639e31dec1ae602eb"
       },
       "note": null,
       "evidence_type": "browser_dom"
@@ -717,9 +722,9 @@
     }
   ],
   "counts": {
-    "passed": 16,
+    "passed": 17,
     "not-yet-observed": 0,
-    "failed": 6,
+    "failed": 5,
     "total": 22,
     "render_entries": 12
   },
@@ -730,7 +735,6 @@
       "failed:contract-CT185720228800365",
       "failed:contract-CT185020228802305",
       "failed:bhrags-payment-consistency",
-      "failed:browser-museum-desktop",
       "failed:browser-museum-mobile",
       "failed:browser-search-ACEDCA215"
     ],
@@ -755,7 +759,6 @@
       "contract-CT185720228800365",
       "contract-CT185020228802305",
       "bhrags-payment-consistency",
-      "browser-museum-desktop",
       "browser-museum-mobile",
       "browser-search-ACEDCA215"
     ],
@@ -835,21 +838,6 @@
         },
         "evidence_type": "dom_field_role"
       },
-      "browser-museum-desktop": {
-        "state": "failed",
-        "assertion": "Browser-rendered viewport failed a required reader assertion",
-        "evidence": {
-          "viewport": "desktop",
-          "failedAssertions": [
-            "project_context_present",
-            "project_context_visible",
-            "has_BCM_HVAC",
-            "has_budget"
-          ],
-          "render_hash": "984b537b12dd4ad13eb2f8082506611e8273e27cb6b30e01463dcecd9521fe74"
-        },
-        "evidence_type": "browser_dom"
-      },
       "browser-museum-mobile": {
         "state": "failed",
         "assertion": "Browser-rendered viewport failed a required reader assertion",
@@ -861,7 +849,7 @@
             "has_BCM_HVAC",
             "has_budget"
           ],
-          "render_hash": "bbb16e8b4b2eb5861979e2f1f85ce1d749967ab531c9d6632be33ff644f6d01e"
+          "render_hash": "7b6cc528f922ca3205ab154caed35251472bc53c8f28b89639e31dec1ae602eb"
         },
         "evidence_type": "browser_dom"
       },
@@ -948,21 +936,6 @@
       },
       "evidence_type": "dom_field_role"
     },
-    "browser-museum-desktop": {
-      "state": "failed",
-      "assertion": "Browser-rendered viewport failed a required reader assertion",
-      "evidence": {
-        "viewport": "desktop",
-        "failedAssertions": [
-          "project_context_present",
-          "project_context_visible",
-          "has_BCM_HVAC",
-          "has_budget"
-        ],
-        "render_hash": "984b537b12dd4ad13eb2f8082506611e8273e27cb6b30e01463dcecd9521fe74"
-      },
-      "evidence_type": "browser_dom"
-    },
     "browser-museum-mobile": {
       "state": "failed",
       "assertion": "Browser-rendered viewport failed a required reader assertion",
@@ -974,7 +947,7 @@
           "has_BCM_HVAC",
           "has_budget"
         ],
-        "render_hash": "bbb16e8b4b2eb5861979e2f1f85ce1d749967ab531c9d6632be33ff644f6d01e"
+        "render_hash": "7b6cc528f922ca3205ab154caed35251472bc53c8f28b89639e31dec1ae602eb"
       },
       "evidence_type": "browser_dom"
     },
