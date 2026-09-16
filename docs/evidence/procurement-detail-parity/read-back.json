@@ -33,7 +33,7 @@
   "layout": {
     "desktop": {"viewport": [1440, 900], "scroll_width": 1440, "overflow": false},
     "mobile": {"viewport": [390, 844], "scroll_width": 390, "overflow": false},
-    "keyboard": {"visible_native_links": 19, "reachable_links": 19, "negative_tabindex": 0}
+    "keyboard": {"visible_native_links": 20, "reachable_links": 20, "negative_tabindex": 0}
   },
   "accessibility": {
     "engine": {

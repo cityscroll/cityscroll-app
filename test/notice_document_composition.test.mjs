@@ -4,8 +4,24 @@ import test from "node:test";
 
 import edgeWorker from "../site/pages_edge.mjs";
 import { renderNoticeRouteChrome } from "../site/notice_document_composition.mjs";
+import {
+  NOTICE_PRIMARY_COMPONENT_ID,
+  NOTICE_PRIMARY_METRIC_ID,
+  NOTICE_PRIMARY_SURFACE_ID,
+  validateNoticePrimaryReadinessEvidence,
+} from "../site/notice_primary_readiness.mjs";
+import { measureNoticeEdgeTerminals } from "../tools/measure_notice_edge_response.mjs";
+import { todayISO, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const shell = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const ceilings = JSON.parse(readFileSync(
+  new URL("../architecture/notice-edge-response-budget.json", import.meta.url),
+  "utf8",
+));
+const primaryReadiness = JSON.parse(readFileSync(
+  new URL("../docs/evidence/notice-primary-readiness/read-back.json", import.meta.url),
+  "utf8",
+));
 
 class FixtureHTMLRewriter {
   constructor(response) { this.response = response; this.handlers = []; }
@@ -56,36 +72,40 @@ function environment() {
 }
 
 test("notice route composition uses the shared mast and removes homepage promotion from the reading path", async () => {
-  assert.match(renderNoticeRouteChrome(), /render|document-mast|notice-document-mast/);
-  const priorRewriter = globalThis.HTMLRewriter;
-  const priorFetch = globalThis.fetch;
-  globalThis.HTMLRewriter = FixtureHTMLRewriter;
-  globalThis.fetch = async (request) => {
-    const url = new URL(request.url || request);
-    if (url.hostname === "api.cityscroll.org") {
-      return new Response(JSON.stringify({ row: {
-        request_id: "20260915001",
-        short_title: "A readable public notice",
-        type_of_notice_description: "Public Hearings",
-        agency_name: "Example Agency",
-        start_date: "2026-09-15",
-      }, civic_time: null }));
+  await withPinnedClock("2026-09-15T12:00:00.000Z", async () => {
+    const fixtureDay = todayISO();
+    assert.match(renderNoticeRouteChrome(), /render|document-mast|notice-document-mast/);
+    const priorRewriter = globalThis.HTMLRewriter;
+    const priorFetch = globalThis.fetch;
+    globalThis.HTMLRewriter = FixtureHTMLRewriter;
+    globalThis.fetch = async (request) => {
+      const url = new URL(request.url || request);
+      if (url.hostname === "api.cityscroll.org") {
+        return new Response(JSON.stringify({ row: {
+          request_id: "20260915001",
+          short_title: "A readable public notice",
+          type_of_notice_description: "Public Hearings",
+          agency_name: "Example Agency",
+          start_date: fixtureDay,
+        }, civic_time: null }));
+      }
+      throw new Error(`unexpected request ${url}`);
+    };
+    try {
+      const response = await edgeWorker.fetch(new Request("https://cityscroll.org/notices/20260915001/"), environment());
+      const html = await response.text();
+      assert.equal(response.status, 200);
+      assert.match(html, /class="notice-route"/);
+      assert.match(html, /class="document-mast notice-document-mast"/);
+      assert.match(html, /data-edge-rendered="notice"/);
+      assert.match(html, /<h2 class="rolename"[^>]*>A readable public notice<\/h2>/);
+      assert.match(html, /notice-route \.masthead \.wrap>:not\(#langSwitcher\)\{display:none!important\}/);
+      assert.match(html, new RegExp(fixtureDay));
+    } finally {
+      globalThis.fetch = priorFetch;
+      globalThis.HTMLRewriter = priorRewriter;
     }
-    throw new Error(`unexpected request ${url}`);
-  };
-  try {
-    const response = await edgeWorker.fetch(new Request("https://cityscroll.org/notices/20260915001/"), environment());
-    const html = await response.text();
-    assert.equal(response.status, 200);
-    assert.match(html, /class="notice-route"/);
-    assert.match(html, /class="document-mast notice-document-mast"/);
-    assert.match(html, /data-edge-rendered="notice"/);
-    assert.match(html, /<h2 class="rolename"[^>]*>A readable public notice<\/h2>/);
-    assert.match(html, /notice-route \.masthead \.wrap>:not\(#langSwitcher\)\{display:none!important\}/);
-  } finally {
-    globalThis.fetch = priorFetch;
-    globalThis.HTMLRewriter = priorRewriter;
-  }
+  });
 });
 
 test("the client route exposes one main notice heading while keeping the language binding movable", () => {
@@ -93,4 +113,28 @@ test("the client route exposes one main notice heading while keeping the languag
   assert.match(core, /applyNoticeRouteState\?\.\(name === "notice"\)/);
   assert.match(readFileSync(new URL("../site/index.html", import.meta.url), "utf8"), /id="langSwitcher"/);
   assert.match(readFileSync(new URL("../site/index.html", import.meta.url), "utf8"), /id="notice-route-chrome"/);
+});
+
+test("A6: notice response budgets and primary-readiness semantics remain satisfied", async () => {
+  const terminals = await measureNoticeEdgeTerminals();
+  for (const [name, ceiling] of Object.entries(ceilings.terminals)) {
+    const measured = terminals[name];
+    assert.ok(measured, `A6: ${name} terminal is measured`);
+    assert.equal(measured.status, ceiling.status, `A6: ${name} status`);
+    assert.ok(
+      measured.subrequests <= ceiling.maxSubrequests,
+      `A6: ${name} makes ${measured.subrequests} subrequests, ceiling ${ceiling.maxSubrequests}`,
+    );
+    assert.ok(
+      measured.dependentStages <= ceiling.maxDependentStages,
+      `A6: ${name} walks ${measured.dependentStages} dependent stages, ceiling ${ceiling.maxDependentStages}`,
+    );
+  }
+
+  const validated = validateNoticePrimaryReadinessEvidence(primaryReadiness);
+  assert.equal(validated.ok, true, `A6: primary readiness evidence invalid: ${validated.errors?.join("; ")}`);
+  assert.equal(primaryReadiness.identity.metric_id, NOTICE_PRIMARY_METRIC_ID);
+  assert.equal(primaryReadiness.identity.surface_id, NOTICE_PRIMARY_SURFACE_ID);
+  assert.equal(primaryReadiness.identity.component_id, NOTICE_PRIMARY_COMPONENT_ID);
+  assert.equal(primaryReadiness.identity.new_rum_identity, false);
 });

@@ -8,7 +8,6 @@ export const RECOVERY_KIND = "exact-signature-phantom-queue";
 export const MERGE_METHOD = "SQUASH";
 export const REQUIRED_CHECKS = Object.freeze([
   "Unit tests (site + worker)",
-  "Accessibility + language gate (axe on every PR)",
   "Reading-level ratchet gate (readable-or-else)",
 ]);
 

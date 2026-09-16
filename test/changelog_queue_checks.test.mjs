@@ -9,11 +9,15 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
 // Keep in sync with the required_status_checks contexts on main's ruleset
-// (`gh api repos/OWNER/REPO/rulesets/...`) and with update-changelog.yml.
+// (`gh api repos/OWNER/REPO/rulesets/...`), tools/merge_queue_policy.json, and docs/ci.md.
 const REQUIRED_CHECK_NAMES = [
   "Unit tests (site + worker)",
-  "Accessibility + language gate (axe on every PR)",
   "Reading-level ratchet gate (readable-or-else)",
+];
+
+// Still defined in ci.yml and required on pull_request / push to main, but skipped on merge_group.
+const PR_AND_MAIN_ONLY_CHECK_NAMES = [
+  "Accessibility + language gate (axe on every PR)",
 ];
 
 function read(rel) {
@@ -27,14 +31,14 @@ test("ci.yml defines changelog_only so required jobs can fast-path", () => {
   assert.match(ci, /tools\/changelog-path-guard\.sh/);
   assert.match(ci, /tools\/docs-only-path-guard\.sh/);
   assert.match(ci, /unit_full:/);
-  for (const name of REQUIRED_CHECK_NAMES) {
+  for (const name of [...REQUIRED_CHECK_NAMES, ...PR_AND_MAIN_ONLY_CHECK_NAMES]) {
     assert.match(ci, new RegExp(`name:\\s*${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
   }
   // Runtime multi-locale stray-English is not a required CI job.
   assert.doesNotMatch(ci, /name:\s*Stray-English guard \(runtime, fixtures\)/);
   assert.doesNotMatch(ci, /i18n-guard:/);
   assert.doesNotMatch(ci, /test\/functional\/13_stray_english\.py/);
-  // Each required browser job must have a no-op success path for non-frontend / fast-path diffs.
+  // Each browser/reading job must have a no-op success path for non-frontend / fast-path diffs.
   assert.match(ci, /Changelog-only, non-frontend, or unit-failed — report required check success/);
   assert.equal(
     (ci.match(/Changelog-only, non-frontend, or unit-failed — report required check success/g) || []).length,
@@ -61,6 +65,8 @@ test("required jobs stay runnable (not job-level skipped) so the check name alwa
     ci,
     /a11y-pr:[\s\S]*?\n    needs:\s*\[changes,\s*unit,\s*a11y-pr-shard,\s*a11y-rendered-census-primary,\s*a11y-rendered-census-retry,\s*a11y-routes-focus-primary,\s*a11y-routes-focus-retry\]/,
   );
+  // Reading-level remains a merge-queue required check and must always report.
+  assert.match(ci, /reading-level:[\s\S]*?\n    if:\s*always\(\)\s*\n/);
   assert.match(ci, /reading-level:[\s\S]*?\n    needs:\s*\[changes,\s*unit\]/);
   assert.match(
     ci,

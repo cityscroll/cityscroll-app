@@ -60,8 +60,8 @@ while read -r local_ref local_sha remote_ref remote_sha; do
 done
 
 args=()
-# Reading-level is one of the three required contexts, so every pre-push run
-# carries it. PREPUSH_EXTRA_ARGS remains available for additional local flags.
+# Reading-level remains a merge-queue required context (see docs/ci.md), so every
+# pre-push run carries it. PREPUSH_EXTRA_ARGS remains available for additional local flags.
 args+=(--with-reading-level)
 if [[ "$needs_full" == "1" ]]; then
   args+=(--full)

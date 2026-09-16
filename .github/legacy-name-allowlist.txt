@@ -270,7 +270,6 @@ worker/src/lib/feed.mjs	ICAgICAgYFVJRDoke2VzY0ljcyhvY2N1cnJlbmNlLnVpZCl9QGNyb2wt
 worker/src/lib/session.mjs	ICAiaHR0cHM6Ly9jcm9sLWxpc3Qub3JnIiw=	# [B] Product, compatibility-domain, feed-namespace, or historical identifier; preserve this exact line.
 worker/src/lib/session.mjs	ICAiaHR0cHM6Ly93d3cuY3JvbC1saXN0Lm9yZyIs	# [B] Product, compatibility-domain, feed-namespace, or historical identifier; preserve this exact line.
 worker/src/lib/session.mjs	ICAiaHR0cHM6Ly9jcm9sLWxpc3QuamltZGMuY29tIiw=	# [B] GitHub Pages CNAME origin (not a Worker route); keep this exact compatibility origin line.
-worker/src/mcp.mjs	ICAgICAgICAgIHNlcnZlckluZm86IHsgbmFtZTogImNyb2wtbGlzdCIsIHZlcnNpb246ICIxLjAuMCIgfSw=	# [B] Deliberate historical evidence retained for provenance; do not rewrite the recorded observation.
 worker/src/mirror.mjs	Ly8gcmV2ZXJzZS1wcm94eWluZyB0aGUgY29tcGF0aWJpbGl0eSBvcmlnaW4gYXQgY3JvbC1saXN0Lm9yZy4=	# [B] Product, compatibility-domain, feed-namespace, or historical identifier; preserve this exact line.
 worker/src/mirror.mjs	Y29uc3QgT1JJR0lOID0gImh0dHBzOi8vY3JvbC1saXN0Lm9yZyI7	# [B] Product, compatibility-domain, feed-namespace, or historical identifier; preserve this exact line.
 worker/src/mirror.mjs	ICAiY3JvbC1saXN0Lm9yZyIs	# [B] Product, compatibility-domain, feed-namespace, or historical identifier; preserve this exact line.
@@ -305,7 +304,6 @@ worker/test/feed.test.mjs	ICBhc3NlcnQubWF0Y2goaWNzLCAvVUlEOjIwMjYwNjI5MDAxQGNyb2
 worker/test/fixtures/mirror_redirect_regressions.json	ICAgICAgIm9yaWdpbkxvY2F0aW9uIjogImh0dHA6Ly9jcm9sLWxpc3Qub3JnL2luZGV4Lmh0bWwiLA==	count=2	# [B] Product, compatibility-domain, feed-namespace, or historical identifier; preserve this exact line.
 worker/test/inbound_helpers.test.mjs	ICBhc3NlcnQuZXF1YWwoc2hvdWxkSWdub3JlKCJhbGVydHNAY3JvbC1saXN0Lm9yZyIpLCB0cnVlKTs=	# [B] Product, compatibility-domain, feed-namespace, or historical identifier; preserve this exact line.
 worker/test/inbound_helpers.test.mjs	ICBhc3NlcnQuZXF1YWwoc2hvdWxkSWdub3JlKCJzdWJzY3JpYmVAY3JvbC1saXN0Lm9yZyIpLCB0cnVlKTs=	# [B] Product, compatibility-domain, feed-namespace, or historical identifier; preserve this exact line.
-worker/test/mcp.test.mjs	ICBhc3NlcnQuZXF1YWwoaW5pdC5yZXN1bHQuc2VydmVySW5mby5uYW1lLCAiY3JvbC1saXN0Iik7	# [B] Deliberate historical evidence retained for provenance; do not rewrite the recorded observation.
 worker/test/mirror.test.mjs	Ly8gcmV2ZXJzZS1wcm94aWVzIHRoZSBjcm9sLWxpc3Qub3JnIGNvbXBhdGliaWxpdHkgb3JpZ2luIGJ5dGUtZm9yLWJ5dGUsIHdpdGggYSBzdGFtcGVk	# [B] Product, compatibility-domain, feed-namespace, or historical identifier; preserve this exact line.
 worker/test/mirror.test.mjs	dGVzdCgiaGFuZGxlTWlycm9yOiBwcm94aWVzIEdFVCB0byBjcm9sLWxpc3Qub3JnIHdpdGggdGhlIHNhbWUgcGF0aCBhbmQgcXVlcnksIGRyb3BwaW5nIEhvc3QiLCBhc3luYyAoKSA9PiB7	# [B] Product, compatibility-domain, feed-namespace, or historical identifier; preserve this exact line.
 worker/test/mirror.test.mjs	ICAgIGFzc2VydC5lcXVhbChjYXB0dXJlZFVybCwgImh0dHBzOi8vY3JvbC1saXN0Lm9yZy9hYm91dC5odG1sP3g9MSIpOw==	# [B] Product, compatibility-domain, feed-namespace, or historical identifier; preserve this exact line.
