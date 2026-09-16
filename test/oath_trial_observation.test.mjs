@@ -78,6 +78,11 @@ test("captured OATH CSV yields the named trial-session and conference-exclusion 
       result.records.some((row) => row.oath_index === "262021" && row.event_date === "2026-09-15T14:00:00"),
       false,
     );
+    const labeled = result.records.find((row) => /Scheduled For Trial/i.test(row.proceeding_type || ""));
+    assert.ok(labeled);
+    assert.match(labeled.meeting_id, /^meeting:oath_trial_calendar:/);
+    assert.doesNotMatch(labeled.meeting_id, /\s/);
+    assert.match(labeled.meeting_id, /Scheduled-For-Trial/);
   });
 });
 
