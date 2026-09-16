@@ -370,15 +370,32 @@ export function renderFollowDiscoveryForNearYou(view, options = {}) {
   if (!view?.scope || view.isOverview) return "";
   if (followDiscoveryAlreadyPresent(options.existingHtml || "", options.regionId)) return "";
   // Near You already exposes "Watch these filters" as a positive control.
+  // Keep feed-reader addresses off this resident surface: the static Near You
+  // contract forbids absolute API hrefs in the document, and RSS/JSON remain
+  // optional developer-level choices on search/Browse instead.
+  //
+  // Map presentation may carry a viewport box that the standing calendar feed
+  // cannot replay. Drop only that presentation field so borough/district
+  // filters still round-trip exactly; never invent a broader place scope.
+  const scope = view.scope?.place?.viewport
+    ? {
+      ...view.scope,
+      place: {
+        ...view.scope.place,
+        viewport: null,
+      },
+    }
+    : view.scope;
   const projection = projectFollowDiscovery({
     surface: "near_you",
-    scope: view.scope,
+    scope,
     lens: view.lens,
     rows: nearYouCalendarRows(view),
     followHref: view.watchHref || null,
     followLabel: "Watch these filters",
     omitKinds: [
       FOLLOW_DISCOVERY_ACTION_KINDS.email_follow,
+      FOLLOW_DISCOVERY_ACTION_KINDS.feed_reader,
       ...(options.omitKinds || []),
     ],
   });

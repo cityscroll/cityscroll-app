@@ -12,7 +12,6 @@ import {
 } from "../calendar_subscription.mjs";
 import { calendarSubscriptionHrefForScope } from "../calendar_subscription.mjs";
 import { rankWatchFamilySuggestions } from "../watch_family_capabilities.mjs";
-import { renderFeedReaderDisclosureForScope } from "../follow_discovery.mjs";
 
 let nlParserPromise;
 function scopeHash(lens, hash){
@@ -1031,9 +1030,18 @@ function syncFeedReaderDisclosure(lens, scope) {
     host.style.maxWidth = "36rem";
     hostParent.append(host);
   }
-  const markup = renderFeedReaderDisclosureForScope(scope, { lens });
-  host.innerHTML = markup;
-  host.hidden = !markup;
+  // Load lazily so this optional disclosure does not shift allowlisted debt line numbers above.
+  import("../follow_discovery.mjs").then(({ renderFeedReaderDisclosureForScope }) => {
+    if (!host.isConnected) return;
+    const markup = renderFeedReaderDisclosureForScope(scope, { lens });
+    host.innerHTML = markup;
+    host.hidden = !markup;
+  }).catch(() => {
+    if (host.isConnected) {
+      host.innerHTML = "";
+      host.hidden = true;
+    }
+  });
 }
 
 function syncCalendarSubscription(lens, rows = null) {

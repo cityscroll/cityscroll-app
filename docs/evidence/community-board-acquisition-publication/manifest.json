@@ -3,33 +3,42 @@
   "grounded_at": "b489519755cb925d2a0735d10c5210aba6d80249",
   "verification": {
     "command": "node --test test/community_board_acquisition_publication.test.mjs",
-    "result": "4 passed, 0 failed",
+    "result": "5 passed, 0 failed",
     "scope": "deterministic materialization, resident read-back, partial child failure, last-good retention, stale and checked-empty states, rendered Browse fixture read-back"
   },
   "captures": [
     {
       "route": "/browse/meetings/",
-      "viewport": { "width": 1440, "height": 900 },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
       "revision": "3929e7a3a206990ddb2b8c77c69c3cca602ddba4",
       "data_vintage": "2026-09-14T12:00:00.000Z deterministic publication fixture",
       "assertion": "Rendered meetings view contains the admitted board record and its working source handoff.",
-      "render_sha256": "d29fe659810b6ac6efdb4ce1a0db13cadf65276114699fa21419a32234490d12"
+      "render_sha256": "dcaf48c4c995e7861341357baa2943d5830acb42fcc600039ea4b1faf35ec059"
     },
     {
       "route": "/browse/meetings/",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "revision": "3929e7a3a206990ddb2b8c77c69c3cca602ddba4",
       "data_vintage": "2026-09-14T12:00:00.000Z deterministic publication fixture",
       "assertion": "Rendered meetings view retains the last-good board record after the failed refresh.",
-      "render_sha256": "d29fe659810b6ac6efdb4ce1a0db13cadf65276114699fa21419a32234490d12"
+      "render_sha256": "dcaf48c4c995e7861341357baa2943d5830acb42fcc600039ea4b1faf35ec059"
     },
     {
       "route": "/browse/meetings/",
-      "viewport": { "width": 390, "height": 844 },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
       "revision": "3929e7a3a206990ddb2b8c77c69c3cca602ddba4",
       "data_vintage": "2026-09-14T12:00:00.000Z deterministic publication fixture",
       "assertion": "Rendered meetings view contains no meeting record for the checked-empty board fixture.",
-      "render_sha256": "4482427a56c42f144b88374dadc5d94d8d99a224b384b3aa3d0dc7a1ac6e8b05"
+      "render_sha256": "a99d73bb5ad80fa77803e46555dffd520dc6e3d1945355ab05745f6a69a231ad"
     }
   ],
   "image_policy": "No image binaries are committed; this manifest is the textual render evidence."

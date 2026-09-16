@@ -227,8 +227,9 @@ test("Near You keeps Watch these filters as the positive control and adds calend
       }],
     },
   });
-  assert.doesNotMatch(html, /Get email updates|Watch these filters/);
-  assert.match(html, /Subscribe to calendar|Feed reader links/);
+  assert.doesNotMatch(html, /Get email updates|Watch these filters|Feed reader links/);
+  assert.doesNotMatch(html, /href="https:\/\/api\.cityscroll\.org/);
+  assert.match(html, /Subscribe to calendar/);
   assert.equal(renderFollowDiscoveryForNearYou({ scope, lens: "meetings", isOverview: true }), "");
 });
 
