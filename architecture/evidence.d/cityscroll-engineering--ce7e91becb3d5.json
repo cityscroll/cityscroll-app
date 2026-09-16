@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/ce7e91becb3d5",
+  "status": "implemented",
+  "fingerprint": "scoped-payment-summary.v1",
+  "updated_at": "2026-09-16T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "scoped-payment-summary",
+      "path": "site/procurement_payment_place_context.mjs"
+    },
+    {
+      "id": "procurement-opportunity-month",
+      "path": "site/procurement_document.mjs"
+    },
+    {
+      "id": "procurement-fact-projector",
+      "path": "site/procurement_fact_projection.mjs"
+    },
+    {
+      "id": "scoped-payment-summary-tests",
+      "path": "test/procurement_payment_summary.test.mjs"
+    },
+    {
+      "id": "retained-bhrags-payment-observations",
+      "path": "test/fixtures/exact-contract-payment-place/bhrags_retained_observations.json"
+    },
+    {
+      "id": "procurement-fact-projector-test",
+      "path": "test/procurement_fact_projection.test.mjs"
+    },
+    {
+      "id": "browse-landing-built-document-order",
+      "path": "test/primary_document_routes.test.mjs"
+    },
+    {
+      "id": "procurement-disclosure-production-proof-tests",
+      "path": "test/procurement_disclosure_production_proof.test.mjs"
+    }
+  ]
+}

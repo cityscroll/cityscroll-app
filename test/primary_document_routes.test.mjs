@@ -455,6 +455,17 @@ test("canonical procurement route shows exact-contract payments and notice place
     assert.match(html, /data-payment-acquisition-at="2026-09-14T13:10:41\.533Z"/);
     assert.match(html, /data-payment-as-of="2026-08-06"/);
     assert.match(html, /Authorized minus paid is not remaining liability/);
+    // Scoped summary: headline Paid amount agrees with the payment section; encumbered stays distinct.
+    assert.match(html, /Paid amount<\/dt><dd>\$7,385,672\.19/);
+    assert.match(html, /Encumbered amount<\/dt><dd>\$7,319,455\.52/);
+    assert.doesNotMatch(html, /Paid amount<\/dt><dd>\$7,319,455\.51/);
+    assert.match(html, /data-retained-paid-amount="7319455\.51"/);
+    assert.match(html, /data-retained-paid-source="passport_public_contracts"/);
+    assert.match(html, /data-retained-paid-vintage="2026-09-09T06:33:01\.880Z"/);
+    const spendingCoverage = html.match(/data-source-system="checkbook_spending"[\s\S]*?<\/li>/)?.[0] || "";
+    assert.match(spendingCoverage, /data-coverage-state="checked-no-match"/);
+    assert.match(spendingCoverage, /No exact match in analytics spending lookup/);
+    assert.match(spendingCoverage, /Checked 2026-08-26/);
     assert.match(html, /data-procurement-place-facts="1"/);
     assert.match(html, /3218 Emmons Avenue, Brooklyn/);
     assert.match(html, /60 units/);
@@ -532,8 +543,18 @@ test("notice and canonical routes show consistent payment summary and scope", as
       assert.match(canonicalHtml, /\$7,385,672\.19/);
       assert.match(noticeHtml, /Authorized minus paid is not remaining liability/);
       assert.match(canonicalHtml, /Authorized minus paid is not remaining liability/);
+      // Compare visible definition cells, not only payment-section attributes.
+      assert.match(canonicalHtml, /Paid amount<\/dt><dd>\$7,385,672\.19/);
+      assert.match(canonicalHtml, /Encumbered amount<\/dt><dd>\$7,319,455\.52/);
+      assert.doesNotMatch(canonicalHtml, /Paid amount<\/dt><dd>\$7,319,455\.51/);
+      assert.match(canonicalHtml, /data-retained-paid-amount="7319455\.51"/);
+      assert.match(canonicalHtml, /data-retained-paid-vintage="2026-09-09T06:33:01\.880Z"/);
+      const canonicalSpending = canonicalHtml.match(/data-source-system="checkbook_spending"[\s\S]*?<\/li>/)?.[0] || "";
+      assert.match(canonicalSpending, /No exact match in analytics spending lookup/);
+      assert.match(canonicalSpending, /Checked 2026-08-26/);
       // Duplicate accounting lines share one document id and the letter's date.
       for (const html of [noticeHtml, canonicalHtml]) {
+        assert.match(html, /Showing 12 of 31 payments on this contract/);
         assert.match(html, /20270016167-1-DSB-EFT/);
         assert.match(html, /\$66,591\.17/);
         assert.match(html, /\$54,214\.14/);
