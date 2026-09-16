@@ -23,6 +23,12 @@ import { EXAMS_SURFACE } from "../site/browse_surface_contracts.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
 import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
 import { renderProcurementDocument } from "../site/procurement_document.mjs";
+import {
+  composeProjectContextHtml,
+  projectContextHtmlOwnedByNotice,
+  resolveNoticeProjectContextHtml,
+} from "../site/procurement_project_context.mjs";
+import { captureOwnedProjectContextFirstPaint } from "../site/notice_subject_client.mjs";
 import rulesSemanticLaneArtifact from "../site/data/rules_semantic_lane.json" with { type: "json" };
 import procurementProjectContextMaterialization from "../site/data/procurement_project_context.json" with { type: "json" };
 import procurementContractLifecycleMaterialization from "../site/data/procurement_contract_lifecycle.json" with { type: "json" };
@@ -38,6 +44,7 @@ import {
   solicitationFixture,
 } from "./fixtures/procurement_project_context_fixtures.mjs";
 import { withPinnedClock } from "./helpers/test_clock.mjs";
+import { spawnSync } from "node:child_process";
 
 const museumNotice = {
   request_id: "20260810048",
@@ -312,6 +319,127 @@ test("cross-agency collision fixture stays unjoined while retaining its official
   assert.match(html, /MASPETH SUPPLY CO LLC/);
   assert.doesNotMatch(html, /class="project-context"/);
   assert.doesNotMatch(html, /javascript:/i);
+});
+
+test("client rebuild retains owned museum project context and refuses a foreign section", () => {
+  const officialNotice = {
+    href: `https://a856-cityrecord.nyc.gov/RequestDetail/${MUSEUM_REQUEST_ID}`,
+    label: "Official record",
+  };
+  const museum = composeProjectContextHtml(
+    procurementProjectContextMaterialization,
+    { request_id: MUSEUM_REQUEST_ID },
+    { officialNotice, headingId: "notice-project-context-heading" },
+  );
+  assert.ok(projectContextHtmlOwnedByNotice(museum, MUSEUM_REQUEST_ID));
+  assert.equal(projectContextHtmlOwnedByNotice(museum, CROSS_AGENCY_COLLISION_REQUEST_ID), false);
+
+  const retained = resolveNoticeProjectContextHtml({
+    requestId: MUSEUM_REQUEST_ID,
+    firstPaintHtml: museum,
+    materializationFailed: true,
+  });
+  assert.equal(retained, museum);
+  assert.match(retained, /BCM-HVAC Upgrades/);
+  assert.match(retained, /DCLA/);
+  assert.match(retained, /DDC/);
+  assert.match(retained, /\$19,905,485\.81/);
+  assert.match(retained, /\$2,116,345\.32/);
+  assert.match(retained, /June 25, 2029/);
+  assert.match(retained, />4369</);
+  assert.match(retained, /four air handler/);
+  assert.match(retained, /10 heat pumps/);
+  assert.match(retained, /Temporary cooling/);
+  assert.match(retained, /85026B0110/);
+  assert.match(retained, /85026B01107/);
+  assert.doesNotMatch(retained, /executed contract|bid deadline|contract amount/i);
+  assert.match(retained, /The advertised package is one part of it/);
+
+  const foreignCleared = resolveNoticeProjectContextHtml({
+    requestId: CROSS_AGENCY_COLLISION_REQUEST_ID,
+    firstPaintHtml: museum,
+    materialization: procurementProjectContextMaterialization,
+    officialNotice: {
+      href: `https://a856-cityrecord.nyc.gov/RequestDetail/${CROSS_AGENCY_COLLISION_REQUEST_ID}`,
+      label: "Official record",
+    },
+  });
+  assert.equal(foreignCleared, "");
+  assert.doesNotMatch(foreignCleared, /BCM-HVAC|project-context/);
+
+  const composed = resolveNoticeProjectContextHtml({
+    requestId: MUSEUM_REQUEST_ID,
+    firstPaintHtml: "",
+    materialization: procurementProjectContextMaterialization,
+    officialNotice,
+  });
+  assert.match(composed, /data-project-context-notice-id="20260810048"/);
+  assert.match(composed, /BCM-HVAC Upgrades/);
+});
+
+test("edge notice stamps project-context ownership and the client preserves only that stamp", () => {
+  const html = renderEdgeNotice(museumNotice, museumNotice.request_id, null, null, {
+    projectContextMaterialization: procurementProjectContextMaterialization,
+  });
+  assert.match(html, /data-project-context-notice-id="20260810048"/);
+  const section = html.match(/<section class="project-context"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.ok(section);
+  assert.equal(projectContextHtmlOwnedByNotice(section, MUSEUM_REQUEST_ID), true);
+
+  const box = {
+    querySelector(selector) {
+      if (selector.includes("data-edge-rendered") && selector.includes(MUSEUM_REQUEST_ID)) {
+        return {
+          querySelector(inner) {
+            if (inner.includes("data-project-context")) {
+              return { outerHTML: section };
+            }
+            return null;
+          },
+        };
+      }
+      if (selector.includes("data-edge-rendered") && selector.includes(CROSS_AGENCY_COLLISION_REQUEST_ID)) {
+        return {
+          querySelector() {
+            return { outerHTML: section };
+          },
+        };
+      }
+      return null;
+    },
+  };
+  assert.equal(captureOwnedProjectContextFirstPaint(box, MUSEUM_REQUEST_ID), section);
+  assert.equal(captureOwnedProjectContextFirstPaint(box, CROSS_AGENCY_COLLISION_REQUEST_ID), "");
+});
+
+test("notice client keeps an owned project-context slot through showNotice replacement", () => {
+  const source = read("../site/notice_subject_client.mjs");
+  assert.match(source, /captureOwnedProjectContextFirstPaint/);
+  assert.match(source, /mountNoticeProjectContext/);
+  assert.match(source, /id="nproject"/);
+  assert.match(source, /projectContextFirstPaint/);
+  assert.match(source, /resolveNoticeProjectContextHtml|composeProjectContextHtml|procurement_project_context/);
+  assert.match(source, /data\/procurement_project_context\.json/);
+  assert.doesNotMatch(source, /data\.cityofnewyork\.us|passportpublic|a856-cityrecord\.nyc\.gov\/Search/);
+});
+
+test("project-context retention browser harness records the post-ready journey", () => {
+  const harness = read("./functional/project_context_retention_case.py");
+  assert.match(harness, /data-app-ready|wait_for_app_ready|dataset\.appReady/);
+  assert.match(harness, /noticeContextReady|data-notice-context-ready|notice-context/);
+  assert.match(harness, /20260810048/);
+  assert.match(harness, /BCM-HVAC Upgrades/);
+  assert.match(harness, /go_back|goBack/);
+  assert.match(harness, /390/);
+  assert.match(harness, /java_script_enabled=False|javascript_enabled=False|no.javascript/i);
+  assert.match(harness, /notice-project-context-retention/);
+  const selfTest = spawnSync(
+    "python3",
+    ["test/functional/project_context_retention_case.py", "--self-test"],
+    { encoding: "utf8" },
+  );
+  assert.equal(selfTest.status, 0, selfTest.stderr || selfTest.stdout);
+  assert.match(selfTest.stdout, /OK project-context-retention/);
 });
 
 test("primary navigation is four real document links on every promoted shell", () => {

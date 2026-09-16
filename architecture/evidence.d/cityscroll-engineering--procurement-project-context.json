@@ -32,6 +32,18 @@
     {
       "id": "procurement-project-context-fixtures",
       "path": "test/fixtures/procurement_project_context_fixtures.mjs"
+    },
+    {
+      "id": "procurement-project-context-notice-client",
+      "path": "site/notice_subject_client.mjs"
+    },
+    {
+      "id": "procurement-project-context-retention-browser",
+      "path": "test/functional/project_context_retention_case.py"
+    },
+    {
+      "id": "procurement-project-context-retention-evidence",
+      "path": "docs/evidence/notice-project-context-retention/capture-manifest.json"
     }
   ]
 }

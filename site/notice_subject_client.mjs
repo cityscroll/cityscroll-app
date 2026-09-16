@@ -25,6 +25,11 @@ import {
   noticePrimaryTimingMark,
   runtimeRumSemanticMilestones,
 } from "./rum_static_record_instrumentation.mjs";
+import {
+  projectContextHtmlOwnedByNotice,
+  resolveNoticeProjectContextHtml,
+} from "./procurement_project_context.mjs";
+import { cityRecordRequestUrl } from "./city_record_id.mjs";
 
 function noticeLink(id) {
   const currentLanguageURL = globalThis.currentLanguageURL || ((href) => href);
@@ -32,6 +37,74 @@ function noticeLink(id) {
 }
 
 let attachmentLookupPromise=null;
+let projectContextMaterializationPromise=null;
+
+function loadProjectContextMaterialization(){
+  if(!projectContextMaterializationPromise){
+    projectContextMaterializationPromise=import("./data/procurement_project_context.json", {
+      with: { type: "json" },
+    }).then((module)=>module.default).catch(()=>null);
+  }
+  return projectContextMaterializationPromise;
+}
+
+function cssEscapeAttr(value){
+  if(typeof CSS!=="undefined" && typeof CSS.escape==="function") return CSS.escape(String(value));
+  // Notice request ids are digits; keep a conservative fallback for Node tests.
+  return String(value).replace(/[^a-zA-Z0-9_-]/g, (char)=>`\\${char}`);
+}
+
+/**
+ * Capture the edge-rendered wider-project section only when it belongs to the
+ * notice about to render. A previous notice's section is never reused by
+ * accident of still being in the DOM.
+ */
+export function captureOwnedProjectContextFirstPaint(box, noticeId){
+  if(!box||!noticeId) return "";
+  const edgeNotice=box.querySelector(`[data-edge-rendered][data-notice-id="${cssEscapeAttr(noticeId)}"]`);
+  if(!edgeNotice) return "";
+  const section=edgeNotice.querySelector('[data-project-context="1"]');
+  if(!section) return "";
+  const html=section.outerHTML||"";
+  if(!projectContextHtmlOwnedByNotice(html, noticeId)) return "";
+  return html;
+}
+
+async function mountNoticeProjectContext(element, { requestId, firstPaintHtml, officialNotice } = {}){
+  if(!element||!requestId) return;
+  let materialization=null;
+  let materializationFailed=false;
+  const ownedFirstPaint=projectContextHtmlOwnedByNotice(firstPaintHtml, requestId) ? firstPaintHtml : "";
+  if(ownedFirstPaint){
+    element.innerHTML=ownedFirstPaint;
+  }else{
+    element.innerHTML="";
+  }
+  if(!ownedFirstPaint){
+    try{
+      materialization=await loadProjectContextMaterialization();
+      if(!materialization) materializationFailed=true;
+    }catch(_error){
+      materializationFailed=true;
+      materialization=null;
+    }
+  }
+  const html=resolveNoticeProjectContextHtml({
+    requestId,
+    firstPaintHtml: ownedFirstPaint,
+    materialization,
+    officialNotice,
+    materializationFailed,
+    headingId: "notice-project-context-heading",
+  });
+  // Retain already-served owned markup when an optional load fails; otherwise
+  // write the composed result ("" when there is no accepted relation).
+  if(materializationFailed && ownedFirstPaint){
+    element.innerHTML=ownedFirstPaint;
+    return;
+  }
+  element.innerHTML=html;
+}
 function noticeAttachmentFallbacks(notice){
   const raw=notice?.document_links;
   const values=[];
@@ -98,6 +171,8 @@ export async function showNotice(id, watch){
     globalThis.ensureRules?.(),
   ]);
   const meetingFirstPaint=box.querySelector("[data-meeting-outcomes-first-paint]")?.outerHTML||"";
+  // Identity-bound: only the edge body for this notice may contribute project context.
+  const projectContextFirstPaint=captureOwnedProjectContextFirstPaint(box, id);
   if(!edgeNotice) box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("fetching_notice_id",{id:safeId})}</div>`;
   let r = null;
   let attachmentDataPromise = Promise.resolve(null);
@@ -177,6 +252,7 @@ export async function showNotice(id, watch){
       <div id="nplain" data-export-class="plain_summary"></div><div id="ncontext" data-export-class="notice_context"></div>
       <div id="nglance" data-export-class="notice_context"></div>
       ${renderNoticeBitemporalHistory({ notice: r, events: r.civic_time?.events || [], state: r.civic_time?.state || "ok" })}
+      <div id="nproject" data-export-class="project_context">${projectContextFirstPaint}</div>
       <div id="naddr" data-export-class="address_geography"></div><div id="nmwbe" data-export-class="mwbe_context"></div><div id="nrules" data-export-class="rule_lifecycle"></div><div id="nlifecycle" data-export-class="procurement_lifecycle"></div><div id="nregdwell" data-export-class="award_registration_dwell"></div><div id="nsuboutreach" data-export-class="sub_outreach"></div><div id="ndollars" data-export-class="dollars"></div><div id="nsubsidy" data-export-class="subsidy"></div><div id="naboaward" data-export-class="authority_award"></div><div id="ncommercial" data-export-class="commercial"></div><div id="ndisposition" data-export-class="property_disposition"></div><div id="npropertyxd" data-export-class="property_cross_domain"></div><div id="ntaxlien" data-export-class="tax_lien"></div><div id="nfranchise" data-export-class="franchise"></div><div id="nland" data-export-class="land_project"></div><div id="nmeet" data-export-class="meeting_outcomes">${meetingFirstPaint}</div><div id="nexternal" data-export-class="external_award"></div>
       ${renderNoticeClientActionRegions(r, link, {
         resolveAgencyIdentity,
@@ -223,6 +299,16 @@ export async function showNotice(id, watch){
     ? hydrateNoticeAttachments(r,contextElement)
     : undefined);
   fillContext(r, contextElement, [attachmentHydration]);
+  const officialProjectNoticeHref = cityRecordRequestUrl(r.request_id)
+    || `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(r.request_id)}`;
+  // Wider-project context uses the same composer as the edge renderer. An owned
+  // first-paint section is kept through the client rebuild; SPA navigation
+  // composes from the retained materialization without publisher fetches.
+  mountNoticeProjectContext($("#nproject"), {
+    requestId: r.request_id,
+    firstPaintHtml: projectContextFirstPaint,
+    officialNotice: { href: officialProjectNoticeHref, label: "Official record" },
+  }).catch(()=>{});
   // Property action identity remains progressively hydrated, but no longer gates the
   // notice body or Notice-context readiness on a cold route-module import. The
   // Solicitation response-apply block (buildApply), the context glance line
