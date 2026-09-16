@@ -147,7 +147,7 @@ async function mountNoticeSubjectLinks(r){
   // Lazy: keep the subject projection off the Notice cold path and preload chain.
   const { renderNoticeSubjectLinksForRow } = await import("../notice_subject_client.mjs");
   const html=await renderNoticeSubjectLinksForRow(r,{escape:escUiHtml});
-  const existing=document.querySelector("#noticeview .notice-subject-links");
+  const existing=document.querySelector("#noticeview")?.querySelector(".notice-subject-links");
   if(!html){
     existing?.remove();
     return;
