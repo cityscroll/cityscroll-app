@@ -226,14 +226,25 @@ export function projectProcurementFacts(object = {}, observations = []) {
     });
   }
   const fact = (kind) => values[kind] ?? null;
+  // Compatibility single-amount field (typed-money): action first, then current,
+  // original, paid. Action-key sort above keeps the tip revision stable across
+  // clock shifts; do not re-pick by observation date.
+  const amountRole = fact("action_amount") != null ? "action"
+    : fact("current_amount") != null ? "current"
+      : fact("original_amount") != null ? "original"
+        : fact("paid_amount") != null ? "paid"
+          : null;
+  const amount = amountRole === "action" ? fact("action_amount")
+    : amountRole === "current" ? fact("current_amount")
+      : amountRole === "original" ? fact("original_amount")
+        : fact("paid_amount");
   return Object.freeze({
     entries: Object.freeze(entries),
     facts: Object.freeze({
       title: fact("title") || fact("program") || `Contract ${fact("canonical_contract_id") || fact("pin_epin") || object?.procurement_id || "record"}`,
       agency: fact("agency"), vendor: fact("vendor"),
-      // Headline amount stays the base current/original total; action amounts
-      // remain in their own role and must not displace the contract total.
-      amount: fact("current_amount") ?? fact("original_amount") ?? fact("action_amount") ?? fact("paid_amount"),
+      amount,
+      amountRole,
       originalAmount: fact("original_amount"), currentAmount: fact("current_amount"), actionAmount: fact("action_amount"),
       paidAmount: fact("paid_amount"), encumberedAmount: fact("encumbered_amount"),
       baseAmount: fact("current_amount") ?? fact("original_amount"), method: fact("method"),

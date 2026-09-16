@@ -53,11 +53,11 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-09-16T19:41:50.403Z",
+    "generated_at": "2026-09-16T21:09:04.974Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "5638aad0ca31e8613fa6236c521299ac8786a8808e3f3dba553befb72ca25ced",
+        "sha256": "0717d400cdc5ff52d3342ecd799521f29e1bc59b5100c2d6760a78d10c11c8ec",
         "row_count": 19872
       },
       "spine_sources": {

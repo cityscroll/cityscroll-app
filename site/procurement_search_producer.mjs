@@ -192,10 +192,13 @@ function browseRecord(object, observations, stages, evidence, facts, processStat
       ? { solicitation_id: object.identity_keys.solicitation_ids[0] } : {}),
     ...(object.identity_keys?.event_ids?.[0]
       ? { event_id: object.identity_keys.event_ids[0] } : {}),
+    // Browse cohort / size uses the base current total. Search summary below
+    // keeps the typed compatibility amount (action-first) with an explicit role.
     contract_amount: facts.baseAmount ?? facts.amount,
     original_contract_amount: facts.originalAmount,
     current_contract_amount: facts.currentAmount,
     action_amount: facts.actionAmount,
+    amount_role: facts.amountRole,
     paid_amount: facts.paidAmount,
     encumbered_amount: facts.encumberedAmount,
     vendor_name: facts.vendor,
@@ -239,6 +242,9 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
   const siteHistory = siteHistoryForParcelIds([
     ...(object.bbls || []), ...(object.parcel_ids || []), ...(object.site_history?.parcel_ids || []),
   ]);
+  // Vendor/search summaries use the typed compatibility amount (action-first).
+  // amount_role on the browse record names which role was selected so a clock
+  // shift cannot silently retarget the figure.
   const summary = [facts.agency, facts.vendor, facts.amount == null ? null : `$${facts.amount.toLocaleString("en-US")}`]
     .filter(Boolean).join(" · ") || null;
   const searchText = clean([
