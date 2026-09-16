@@ -387,6 +387,7 @@ test("digest watchdog stays quiet for consecutive sends whose lastsent reached t
 
 test("runtime alarms use the existing Resend path and the ops mailbox", async () => {
   const previous = globalThis.fetch;
+  const now = new Date("2026-09-16T12:00:00.000Z");
   let request;
   globalThis.fetch = async (url, options) => {
     request = { url, options };
@@ -395,7 +396,8 @@ test("runtime alarms use the existing Resend path and the ops mailbox", async ()
   try {
     const result = await sendOpsAlert({ RESEND_API_KEY: "test-key", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" }, {
       guard: "production-emergency", signature: "incident-test", subject: "Test emergency", text: "bad condition",
-      emergency: { confirmed: true, impact: "service-unavailable", human_action_required: true, automatic_remedy: "exhausted", action: "Restore the service now", verified_at: new Date().toISOString(), evidence_url: "https://example.com/evidence" },
+      emergency: { confirmed: true, impact: "service-unavailable", human_action_required: true, automatic_remedy: "exhausted", action: "Restore the service now", verified_at: now.toISOString(), evidence_url: "https://example.com/evidence" },
+      now,
     });
     assert.equal(result.accepted, true);
     assert.equal(request.url, "https://api.resend.com/emails");
