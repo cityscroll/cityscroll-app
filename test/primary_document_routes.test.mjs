@@ -51,13 +51,15 @@ const museumNotice = {
 const read = (path) => readFileSync(new URL(path, import.meta.url), "utf8");
 const procurementParityFixture = JSON.parse(read("./fixtures/procurement-detail-parity/ct107120258801626.json"));
 
-function procurementAssetEnv() {
+function procurementAssetEnv(procurementId = procurementParityFixture.object.procurement_id) {
   const manifest = JSON.parse(read("../site/data/shared_procurement_read_model.json"));
-  const shardPath = manifest.procurement_shard_by_id[procurementParityFixture.object.procurement_id];
+  const shardPath = manifest.procurement_shard_by_id[procurementId];
+  if (!shardPath) throw new Error(`no shard for ${procurementId}`);
   const shard = JSON.parse(read(`../site/data/${shardPath}`));
   const requestedPaths = [];
   return {
     requestedPaths,
+    shardPath,
     env: {
       ASSETS: {
         async fetch(request) {
@@ -510,6 +512,10 @@ test("notice and canonical routes show consistent payment summary and scope", as
       const canonicalHtml = await canonicalResponse.text();
 
       assert.equal(publisherAttempts, 0);
+      assert.deepEqual(procurementShell.requestedPaths, [
+        "/data/shared_procurement_read_model.json",
+        `/data/${procurementShell.shardPath}`,
+      ]);
       const noticeSummary = paymentSummaryAttrs(noticeHtml);
       const canonicalSummary = paymentSummaryAttrs(canonicalHtml);
       assert.deepEqual(noticeSummary, {
@@ -526,6 +532,25 @@ test("notice and canonical routes show consistent payment summary and scope", as
       assert.match(canonicalHtml, /\$7,385,672\.19/);
       assert.match(noticeHtml, /Authorized minus paid is not remaining liability/);
       assert.match(canonicalHtml, /Authorized minus paid is not remaining liability/);
+      // Duplicate accounting lines share one document id and the letter's date.
+      for (const html of [noticeHtml, canonicalHtml]) {
+        assert.match(html, /20270016167-1-DSB-EFT/);
+        assert.match(html, /\$66,591\.17/);
+        assert.match(html, /\$54,214\.14/);
+        const dualRows = [...html.matchAll(
+          /<tr><td>2026-07-07<\/td><td><b>\$(?:66,591\.17|54,214\.14)<\/b><\/td><td>[^<]*<code class="lc-pay-doc">20270016167-1-DSB-EFT<\/code><\/td><\/tr>/g,
+        )];
+        assert.equal(dualRows.length, 2, "both dated duplicate lines must appear in the served payment table");
+        assert.match(html, /data-payment-acquisition-at="2026-09-14T13:10:41\.533Z"/);
+        assert.match(html, /data-payment-as-of="2026-08-06"/);
+        assert.notEqual("2026-09-14T13:10:41.533Z".slice(0, 10), "2026-08-06");
+      }
+      // Facility context is notice-attributed on the canonical procurement document.
+      assert.match(canonicalHtml, /data-procurement-place-facts="1"/);
+      const placeSection = canonicalHtml.match(/data-procurement-place-facts="1"[\s\S]*?<\/section>/)?.[0] || "";
+      assert.match(placeSection, /3218 Emmons Avenue, Brooklyn/);
+      assert.match(placeSection, /60 units/);
+      assert.match(placeSection, /Notice 20240829105/);
     } finally {
       globalThis.fetch = originalFetch;
       globalThis.HTMLRewriter = originalRewriter;
@@ -533,7 +558,9 @@ test("notice and canonical routes show consistent payment summary and scope", as
   });
 });
 
-test("unavailable payment and place enrichment keeps the record and official source links", () => {
+test("unavailable payment and place enrichment keeps the record and official source links", async () => {
+  // Same contract with enrichment forced off at the renderer: proves headings stay
+  // absent when the optional materializations are unavailable for this record.
   const object = {
     ...procurementParityFixture.object,
     compatibility: {
@@ -556,19 +583,53 @@ test("unavailable payment and place enrichment keeps the record and official sou
       }],
     },
   };
-  const html = renderProcurementDocument(object, procurementParityFixture.observations, {
+  const rendered = renderProcurementDocument(object, procurementParityFixture.observations, {
     contractLifecycleMaterialization: null,
     placeFactsMaterialization: null,
     projectContextMaterialization: null,
   });
-  assert.match(html, /BHRAGS HOME CARE CORP/);
-  assert.match(html, /CT107120258801626/);
-  assert.match(html, /href="https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\/20240829105"/);
-  assert.doesNotMatch(html, /data-procurement-payment-evidence=/);
-  assert.doesNotMatch(html, /data-procurement-place-facts=/);
-  assert.doesNotMatch(html, /<h2[^>]*>Facility<\/h2>/);
-  assert.doesNotMatch(html, /<h2[^>]*>Contract payments<\/h2>/);
-  assert.doesNotMatch(html, /enrichment failed|unable to load enrichment/i);
+  assert.match(rendered, /BHRAGS HOME CARE CORP/);
+  assert.match(rendered, /CT107120258801626/);
+  assert.match(rendered, /href="https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\/20240829105"/);
+  assert.doesNotMatch(rendered, /data-procurement-payment-evidence=/);
+  assert.doesNotMatch(rendered, /data-procurement-place-facts=/);
+  assert.doesNotMatch(rendered, /<h2[^>]*>Facility<\/h2>/);
+  assert.doesNotMatch(rendered, /<h2[^>]*>Contract payments<\/h2>/);
+  assert.doesNotMatch(rendered, /enrichment failed|unable to load enrichment/i);
+
+  // Handler path: a real served procurement whose materializations do not attach
+  // keeps the record and official notice link without inventing payment or place UI.
+  const unavailableId = "procurement:contract:CT107120248801554";
+  const { env, requestedPaths, shardPath } = procurementAssetEnv(unavailableId);
+  let publisherAttempts = 0;
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (request) => {
+    publisherAttempts += 1;
+    throw new Error(`unexpected publisher request: ${request?.url || request}`);
+  };
+  try {
+    const response = await edgeWorker.fetch(new Request(
+      `https://cityscroll.org/procurements/${encodeURIComponent(unavailableId)}/`,
+    ), env);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.equal(publisherAttempts, 0);
+    assert.deepEqual(requestedPaths, [
+      "/data/shared_procurement_read_model.json",
+      `/data/${shardPath}`,
+    ]);
+    assert.match(html, /CT107120248801554/);
+    assert.match(html, /href="\/notices\/20230823106"/);
+    assert.match(html, /href="https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\/20230823106"/);
+    assert.doesNotMatch(html, /data-procurement-payment-evidence=/);
+    assert.doesNotMatch(html, /data-procurement-place-facts=/);
+    assert.doesNotMatch(html, /<h2[^>]*>Facility<\/h2>/);
+    assert.doesNotMatch(html, /<h2[^>]*>Contract payments<\/h2>/);
+    assert.doesNotMatch(html, /enrichment failed|unable to load enrichment/i);
+    assert.doesNotMatch(html, /javascript:/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("payment and place materializations retain acquisition and payment vintages separately", () => {
