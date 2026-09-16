@@ -96,7 +96,7 @@ test("MTA retained award dates survive a one-day clock shift", async () => {
     const { model } = buildFixture();
     const award = model.rows.find((row) => row.identity_keys.contract_ids.includes("A37703"));
     const html = renderProcurementDocument(award, model.observations);
-    assert.match(html, /<dt>Award date<\/dt><dd>July 20, 2026<\/dd>/);
+    assert.match(html, /<dt>Award date<\/dt><dd>July 20, 2026 <span class="procurement-date-basis" data-date-basis="award_decision">\(basis: award_decision\)<\/span><\/dd>/);
   });
 });
 

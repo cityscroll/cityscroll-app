@@ -144,6 +144,9 @@ function procurementFactValue(facts, kind, value, object) {
     const href = procurementIdentifierSearchHref(label);
     return href ? `<a class="ui-constellation-link procurement-identifier-link" href="${esc(href)}" data-search-key="${esc(label)}">${esc(label)}</a>` : esc(label);
   }
+  if (["notice_publication_date", "registration_date", "award_date"].includes(kind) && entry?.date_basis) {
+    return `${esc(entry.value || label)} <span class="procurement-date-basis" data-date-basis="${esc(entry.date_basis)}">(basis: ${esc(entry.date_basis)})</span>`;
+  }
   return esc(entry?.value || label);
 }
 
@@ -586,11 +589,11 @@ export function renderProcurementDocument(object = {}, observations = [], {
     ["Agency", facts.agency, "agency"], ["Vendor", facts.vendor, "vendor"], ["Amount", facts.amount],
     ["Original contract amount", facts.originalAmount], ["Current contract total", facts.currentAmount],
     ["Action amount", facts.actionAmount], ["Paid amount", facts.paidAmount], ["Encumbered amount", facts.encumberedAmount],
-    ["Award date", facts.awardDate], ["Award-notice publication", facts.noticePublicationDate],
+    ["Award date", facts.awardDate, "award_date"], ["Award-notice publication", facts.noticePublicationDate, "notice_publication_date"],
     ["PASSPort contract number", facts.contractNumber], ["Method", facts.method], ["Contract type", facts.contractType],
     ["Program", facts.program], ["Industry", facts.industry],
     ["Contract start", facts.start_date || facts.startDate], ["Contract end", facts.end_date || facts.endDate],
-    ["Registration date", facts.registrationDate],
+    ["Registration date", facts.registrationDate, "registration_date"],
     ["Contract ID", object?.identity_keys?.contract_ids?.[0] || facts.canonicalContractId, "canonical_contract_id"],
     ["PIN / EPIN", object?.identity_keys?.epins?.[0] || facts.pinEpin, "pin_epin"],
     ["Contract Reporter number", object?.identity_keys?.contract_reporter_numbers?.[0], "contract_reporter_number"],
