@@ -23,5 +23,5 @@ test("shared and standalone public surfaces link to the static introduction", as
 
 test("introduction keeps primary recovery and copy fallback visible", async () => {
   const html = await readFile(new URL("use-with-ai/index.html", root), "utf8");
-  for (const token of ["mcp-endpoint", "data-copy-endpoint", "Claude Code", "get_contract", "CT107120258801626", "2024Q0356", "/api.html#mcp", "no account"]) assert.match(html, new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), token);
+  for (const token of ["mcp-endpoint", "data-copy-endpoint", "Claude Code", "contract lookup", "decision-path tools", "CT107120258801626", "2024Q0356", "/api.html#mcp", "no account"]) assert.match(html, new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), token);
 });
