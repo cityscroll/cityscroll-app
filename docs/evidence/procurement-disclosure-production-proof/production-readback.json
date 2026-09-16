@@ -21,7 +21,7 @@
   "served_identity": {
     "status": "matched",
     "reasons": [],
-    "observer_revision": "dc3848c8685b6135c7b8f07e73841fcbb087d345",
+    "observer_revision": "16dc9c72aec5f8ef7306ec48bed1b391256b7dbb",
     "pages_deploy_commit": "c2ae5dcff6569e0b405d79d89e3081a73ed08ff2",
     "artifact_source_commit_sha": "c2ae5dcff6569e0b405d79d89e3081a73ed08ff2",
     "artifact_hash": "37d249d4d751c1fea78217d07c9bb1981dfabc84cfba4fcfaf0a68117b4a6fe4",
@@ -55,10 +55,10 @@
     "schema": "cityscroll.production_provenance.v1",
     "evidence_class": "live-production-read",
     "isolated": false,
-    "observed_at": "2026-09-16T18:47:07.632Z",
+    "observed_at": "2026-09-16T18:53:21.795Z",
     "observer": {
       "tool": "tools/capture_procurement_disclosure_production_proof.mjs",
-      "source_revision": "dc3848c8685b6135c7b8f07e73841fcbb087d345"
+      "source_revision": "16dc9c72aec5f8ef7306ec48bed1b391256b7dbb"
     },
     "methods": [
       "GET"
@@ -469,7 +469,7 @@
         "needles": [
           "20240829105"
         ],
-        "sha256": "b9cb7f77971399ec3cda9795466b79fe2c3a26914c9e44de9ba842260ab72020"
+        "sha256": "adfedec22c6dcbed9185e8975d75fb7f6a5ba8b8f496cd60052d052c44c31943"
       },
       "note": null,
       "evidence_type": "dom_assertion"
@@ -489,7 +489,7 @@
           "85026B0110",
           "85026B01107"
         ],
-        "sha256": "7e9a4d350f0effafd82d1f416a726d75c92db835002a4260688238da775e824e"
+        "sha256": "448023781540348d58d59917c89b8eb0fdb81c4113303eedeb8a110a8562745f"
       },
       "note": null,
       "evidence_type": "dom_assertion"
@@ -581,7 +581,7 @@
           "has_BCM_HVAC",
           "has_budget"
         ],
-        "render_hash": "7b6cc528f922ca3205ab154caed35251472bc53c8f28b89639e31dec1ae602eb"
+        "render_hash": "984b537b12dd4ad13eb2f8082506611e8273e27cb6b30e01463dcecd9521fe74"
       },
       "note": null,
       "evidence_type": "browser_dom"
@@ -592,10 +592,14 @@
       "method": "GET",
       "status": 200,
       "state": "failed",
-      "assertion": "Browser observation was taken before app readiness or notice settlement",
+      "assertion": "Browser-rendered viewport failed a required reader assertion",
       "evidence": {
-        "after_app_ready": false,
-        "after_notice_settled": false
+        "viewport": "desktop",
+        "failedAssertions": [
+          "result_link_present",
+          "result_link_opens_notice"
+        ],
+        "render_hash": "2e8c53be40c65fa9d775e6f6a4244aed7e88f2b7cf55c23b1442c74cc39a861c"
       },
       "note": null,
       "evidence_type": "browser_dom"
@@ -849,16 +853,20 @@
             "has_BCM_HVAC",
             "has_budget"
           ],
-          "render_hash": "7b6cc528f922ca3205ab154caed35251472bc53c8f28b89639e31dec1ae602eb"
+          "render_hash": "984b537b12dd4ad13eb2f8082506611e8273e27cb6b30e01463dcecd9521fe74"
         },
         "evidence_type": "browser_dom"
       },
       "browser-search-ACEDCA215": {
         "state": "failed",
-        "assertion": "Browser observation was taken before app readiness or notice settlement",
+        "assertion": "Browser-rendered viewport failed a required reader assertion",
         "evidence": {
-          "after_app_ready": false,
-          "after_notice_settled": false
+          "viewport": "desktop",
+          "failedAssertions": [
+            "result_link_present",
+            "result_link_opens_notice"
+          ],
+          "render_hash": "2e8c53be40c65fa9d775e6f6a4244aed7e88f2b7cf55c23b1442c74cc39a861c"
         },
         "evidence_type": "browser_dom"
       }
@@ -947,16 +955,20 @@
           "has_BCM_HVAC",
           "has_budget"
         ],
-        "render_hash": "7b6cc528f922ca3205ab154caed35251472bc53c8f28b89639e31dec1ae602eb"
+        "render_hash": "984b537b12dd4ad13eb2f8082506611e8273e27cb6b30e01463dcecd9521fe74"
       },
       "evidence_type": "browser_dom"
     },
     "browser-search-ACEDCA215": {
       "state": "failed",
-      "assertion": "Browser observation was taken before app readiness or notice settlement",
+      "assertion": "Browser-rendered viewport failed a required reader assertion",
       "evidence": {
-        "after_app_ready": false,
-        "after_notice_settled": false
+        "viewport": "desktop",
+        "failedAssertions": [
+          "result_link_present",
+          "result_link_opens_notice"
+        ],
+        "render_hash": "2e8c53be40c65fa9d775e6f6a4244aed7e88f2b7cf55c23b1442c74cc39a861c"
       },
       "evidence_type": "browser_dom"
     }

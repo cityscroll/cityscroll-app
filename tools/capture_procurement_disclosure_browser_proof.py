@@ -318,6 +318,22 @@ def run_offline(preserve_project_context: bool = True) -> dict:
     }
 
 
+def _project_context_state(page) -> dict:
+    return page.evaluate(
+        """() => {
+          const section = document.querySelector('[data-project-context="1"]');
+          if (!section) return { present: false, visible: false, text: '' };
+          const style = getComputedStyle(section);
+          const rect = section.getBoundingClientRect();
+          return {
+            present: true,
+            visible: style.display !== 'none' && style.visibility !== 'hidden' && rect.height > 0,
+            text: section.innerText || '',
+          };
+        }"""
+    )
+
+
 def run_production(site: str, api: str) -> dict:
     del api  # reserved for future API-backed search shell probes
     observations = []
@@ -330,27 +346,18 @@ def run_production(site: str, api: str) -> dict:
                 # instead of networkidle, which may never settle.
                 page.goto(f"{site.rstrip('/')}/notices/{MUSEUM_ID}/", wait_until="domcontentloaded", timeout=90_000)
                 page.wait_for_function("() => document.body?.dataset?.appReady === 'true'", timeout=90_000)
+                # Client showNotice replaces the edge body after app-ready. Wait for
+                # that asynchronous notice settlement, then sample once more so a
+                # transient first-paint project section is not mistaken for survival.
                 try:
                     page.wait_for_function(
-                        "() => document.body?.dataset?.noticeContextReady === 'true' || document.querySelector('[data-notice-id], #noticeview .panel, [data-project-context=\"1\"]')",
+                        "() => document.querySelector('#noticeview .panel[tabindex], [data-notice-id] .rolename, [data-notice-id] h2')",
                         timeout=90_000,
                     )
                 except Exception:
                     pass
-                page.wait_for_timeout(1500)
-                visible = page.evaluate(
-                    """() => {
-                      const section = document.querySelector('[data-project-context="1"]');
-                      if (!section) return { present: false, visible: false, text: '' };
-                      const style = getComputedStyle(section);
-                      const rect = section.getBoundingClientRect();
-                      return {
-                        present: true,
-                        visible: style.display !== 'none' && style.visibility !== 'hidden' && rect.height > 0,
-                        text: section.innerText || '',
-                      };
-                    }"""
-                )
+                page.wait_for_timeout(1000)
+                visible = _project_context_state(page)
                 text = visible.get("text") or ""
                 content = page.content()
                 assertions = {
@@ -395,9 +402,24 @@ def run_production(site: str, api: str) -> dict:
 
         page = browser.new_page(viewport={"width": 1440, "height": 900})
         try:
+            # The resident search shell does not always stamp data-app-ready.
+            # Treat an interactive search document as readiness for this route.
             page.goto(f"{site.rstrip('/')}/search/?q=ACEDCA215", wait_until="domcontentloaded", timeout=90_000)
-            page.wait_for_function("() => document.body?.dataset?.appReady === 'true'", timeout=90_000)
-            page.wait_for_timeout(1500)
+            page.wait_for_function(
+                """() => document.body?.dataset?.appReady === 'true'
+                  || (document.readyState === 'complete' && !!document.querySelector('main'))""",
+                timeout=90_000,
+            )
+            # Allow async result rendering; poll for the retained notice link.
+            deadline_ms = 15_000
+            elapsed = 0
+            while elapsed < deadline_ms and page.locator("a[href*='20260810048']").count() == 0:
+                page.wait_for_timeout(500)
+                elapsed += 500
+            app_ready_attr = page.evaluate("() => document.body?.dataset?.appReady === 'true'")
+            shell_ready = page.evaluate(
+                "() => document.readyState === 'complete' && !!document.querySelector('main')"
+            )
             link = page.locator("a[href*='20260810048']").first
             usable = link.count() > 0
             href = link.get_attribute("href") if usable else None
@@ -411,7 +433,7 @@ def run_production(site: str, api: str) -> dict:
                 "url": f"{site.rstrip('/')}/search/?q=ACEDCA215",
                 "viewport": "desktop",
                 "http_status": 200,
-                "after_app_ready": True,
+                "after_app_ready": bool(app_ready_attr or shell_ready),
                 "after_notice_settled": True,
                 "assertions": {
                     "result_link_present": usable,
@@ -419,7 +441,11 @@ def run_production(site: str, api: str) -> dict:
                 },
                 "assertion": "Search ACEDCA215 exposes a usable result link that opens the museum notice",
                 "render_hash": sha256_text(page.content()),
-                "evidence": {"href": href},
+                "evidence": {
+                    "href": href,
+                    "app_ready_attr": bool(app_ready_attr),
+                    "search_shell_ready": bool(shell_ready),
+                },
             })
         except Exception as exc:  # noqa: BLE001
             observations.append({
