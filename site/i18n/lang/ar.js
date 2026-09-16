@@ -3041,6 +3041,7 @@
     search_recent_removed_status: "تمت إزالة {query} من عمليات البحث الأخيرة.",
     search_recent_cleared_status: "تم مسح عمليات البحث الأخيرة.",
     pin_btn: "تثبيت",
+    more_tools: "المزيد من الأدوات",
     pinned_open_inv: "✓ مثبّت — فتح التحقيق ({n})",
     total_awarded_lbl: "إجمالي المُرسى،<br>حسب السجل",
     awards_published_lbl: "ترسيات العقود<br>المنشورة",

@@ -3032,6 +3032,7 @@
     search_recent_removed_status: "{query} retire nan rechèch resan yo.",
     search_recent_cleared_status: "Rechèch resan yo efase.",
     pin_btn: "Epingle",
+    more_tools: "Plis zouti",
     pinned_open_inv: "✓ Epingle — louvri envestigasyon ({n})",
     total_awarded_lbl: "total akòde,<br>anrejistre",
     awards_published_lbl: "akòdman kontra<br>pibliye",

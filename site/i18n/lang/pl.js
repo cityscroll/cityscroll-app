@@ -3047,6 +3047,7 @@
     search_recent_removed_status: "Usunięto {query} z ostatnich wyszukiwań.",
     search_recent_cleared_status: "Wyczyszczono ostatnie wyszukiwania.",
     pin_btn: "Przypnij",
+    more_tools: "Więcej narzędzi",
     pinned_open_inv: "✓ Przypięto — otwórz śledztwo ({n})",
     total_awarded_lbl: "łącznie przyznano,<br>według rejestru",
     awards_published_lbl: "opublikowanych<br>przyznań kontraktów",

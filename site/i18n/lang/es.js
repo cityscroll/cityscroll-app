@@ -2254,6 +2254,7 @@
     search_recent_removed_status: "Se quitó {query} de las búsquedas recientes.",
     search_recent_cleared_status: "Se borraron las búsquedas recientes.",
     pin_btn: "Fijar",
+    more_tools: "Más herramientas",
     pinned_open_inv: "✓ Fijado — abrir investigación ({n})",
     total_awarded_lbl: "total adjudicado,<br>registrado",
     awards_published_lbl: "adjudicaciones de contratos<br>publicadas",

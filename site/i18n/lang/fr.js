@@ -3115,6 +3115,7 @@
     search_recent_removed_status: "{query} retiré des recherches récentes.",
     search_recent_cleared_status: "Recherches récentes effacées.",
     pin_btn: "Épingler",
+    more_tools: "Plus d’outils",
     pinned_open_inv: "✓ Épinglé — ouvrir l'enquête ({n})",
     total_awarded_lbl: "total attribué,<br>selon le registre",
     awards_published_lbl: "attributions de contrats<br>publiées",

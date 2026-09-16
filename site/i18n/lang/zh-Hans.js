@@ -3033,6 +3033,7 @@
     search_recent_removed_status: "已从最近的搜索中移除 {query}。",
     search_recent_cleared_status: "已清除最近的搜索。",
     pin_btn: "置顶",
+    more_tools: "更多工具",
     pinned_open_inv: "✓ 已置顶 — 打开调查（{n}）",
     total_awarded_lbl: "已中标（授予合同）总额，<br>有据可查",
     awards_published_lbl: "已发布的合同<br>中标（授予合同）",
