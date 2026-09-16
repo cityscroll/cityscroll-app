@@ -86,6 +86,25 @@ test("captured OATH CSV yields the named trial-session and conference-exclusion 
   });
 });
 
+test("every OATH calendar meeting_id is present in the shared meeting read model", () => {
+  const calendar = JSON.parse(readFileSync(new URL("../site/data/oath_trial_calendar.json", import.meta.url), "utf8"));
+  const shared = JSON.parse(readFileSync(new URL("../site/data/shared_meeting_read_model.json", import.meta.url), "utf8"));
+  const calendarIds = (calendar.records || calendar.rows || [])
+    .map((row) => row?.meeting_id)
+    .filter(Boolean);
+  assert.ok(calendarIds.length > 0, "expected OATH calendar meeting rows");
+  const sharedIds = new Set(
+    (shared.rows || [])
+      .filter((row) => row?.source_system === "oath_trial_calendar")
+      .map((row) => row.meeting_id)
+      .filter(Boolean),
+  );
+  const missing = calendarIds.filter((id) => !sharedIds.has(id));
+  assert.deepEqual(missing, [], "OATH calendar meeting_ids missing from shared meeting read model");
+  assert.ok(calendarIds.every((id) => !/\s/.test(id)), "OATH calendar meeting_ids must be digest-safe");
+  assert.equal(calendarIds.length, sharedIds.size);
+});
+
 test("OATH local time conversion is wall-clock deterministic", async () => {
   await withPinnedClock(`${todayISO()}T00:00:00.000Z`, () => {
     const day = todayISO();
