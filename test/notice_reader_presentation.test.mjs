@@ -136,7 +136,7 @@ test("client and money-detail templates keep utilities inside More tools", () =>
   assert.match(clientSource, /id="nprint"/);
   assert.match(clientSource, /pinBtn\("notice"/);
   assert.match(clientSource, /notice_email_btn/);
-  assert.match(moneyHistorySource, /renderNoticeMoreToolsDisclosure/);
+  assert.match(moneyHistorySource, /moneyDetailMoreToolsHTML|data-notice-tools-region/);
   assert.match(moneyHistorySource, /id="dcopy"/);
   assert.match(moneyHistorySource, /id="dxlsx"/);
   assert.match(moneyHistorySource, /id="dprint"/);

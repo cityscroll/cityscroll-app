@@ -1066,6 +1066,7 @@ function pursuitSnapshotHTML(r){
   }));
 }
 
+
 function renderDetail(r, chain, stats, loadContext = true){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
   const responseContextReady = solicitationResponseContextReady(r);

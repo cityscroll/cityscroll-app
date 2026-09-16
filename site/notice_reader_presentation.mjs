@@ -19,7 +19,9 @@ export const NOTICE_PRIMARY_RELATION_TYPES = Object.freeze([
   "hosted_by_community_board",
 ]);
 
-const clean = (value, max = 320) => String(value ?? "")
+// Unique name: the module-dom inline reconstruction flattens static helpers into
+// one classic script, so a generic `const clean` / cleanNoticeText collides with sibling helpers.
+const noticeReaderClean = (value, max = 320) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ")
   .trim()
@@ -34,11 +36,11 @@ const defaultEscape = (value) => String(value ?? "").replace(/[&<>"']/g, (char) 
 }[char]));
 
 function relationTypeOf(record = {}) {
-  return clean(record.edge_type || record.relation_type || record.relation || record.relation_family, 120);
+  return noticeReaderClean(record.edge_type || record.relation_type || record.relation || record.relation_family, 120);
 }
 
 function targetIdentity(record = {}) {
-  return clean(
+  return noticeReaderClean(
     record.target_id
       || record.related_object_id
       || record.target_ref
@@ -58,7 +60,7 @@ function targetIdentity(record = {}) {
 export function noticeRelationshipKey(record = {}) {
   const relation = relationTypeOf(record);
   const target = targetIdentity(record);
-  const kind = clean(record.target_kind || record.related_object_kind || "", 40).toLowerCase();
+  const kind = noticeReaderClean(record.target_kind || record.related_object_kind || "", 40).toLowerCase();
   if (!relation || !target) return "";
   return `${relation}|${kind}|${target}`;
 }
@@ -163,7 +165,7 @@ export function renderNoticeEnrichmentRegion({
 } = {}) {
   const body = String(bodyHtml || "").trim();
   if (!body) return "";
-  const name = clean(region, 80);
+  const name = noticeReaderClean(region, 80);
   if (!name) return body;
   return `<div ${NOTICE_ENRICHMENT_REGION_ATTR}="${escape(name)}">${body}</div>`;
 }
