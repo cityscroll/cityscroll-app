@@ -2,11 +2,11 @@
   "schema": "cityscroll.architecture.watermark-shard.v1",
   "id": "canary:primary-document-materializer",
   "owner": "canary:primary-document-materializer",
-  "updated_at": "2026-09-14T22:40:11-04:00",
-  "commit": "360c880b5ca915725a4a44fde04da7aa4f7d3d04",
+  "updated_at": "2026-09-15T18:06:07-04:00",
+  "commit": "5e6fb2a840d949b415fd62b1a429eb79d7afcae8",
   "value": {
     "path": "tools/build_primary_documents.mjs",
     "count": 5,
-    "fingerprint": "6841082cbb6407b218df0a469526eba7c471fd8bf156cb0b3fd3192a7e16fcba"
+    "fingerprint": "0483b11a820d23b785a4a56ae619000946711c258e108f9e4daed3e9214a64f1"
   }
 }
