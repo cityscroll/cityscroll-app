@@ -62,6 +62,15 @@ export function observeScopeUrl(scope = {}, { base = "/observe/" } = {}) {
 
 export function buildObserveSurface(readModel = {}, scopeInput = {}) {
   const scope = normalizeObserveScope(scopeInput);
+  // Unsupported filters fail closed: never fall through to the unfiltered collection.
+  if (scope.errors.length) {
+    return Object.freeze({
+      schema: "cityscroll.government_observe.v1",
+      scope,
+      observations: Object.freeze([]),
+      guides: OBSERVE_GUIDES,
+    });
+  }
   const rows = Array.isArray(readModel?.rows) ? readModel.rows : [];
   const observations = rows
     .filter((row) => OBSERVE_SOURCE_SYSTEMS.includes(row?.source_system) && day(row?.event_date || row?.date))
