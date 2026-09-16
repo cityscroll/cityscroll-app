@@ -1,3 +1,4 @@
+import { opsNotificationDecision } from "./lib/ops_notification_policy.mjs";
 // alerts — scheduled daily digest. The Worker's `scheduled` handler (cron in
 // wrangler.toml: "0 13 * * *") calls runAlerts().
 //
@@ -2627,7 +2628,10 @@ function logDryRunEmail(payload) {
   }));
 }
 
-export async function sendOpsAlert(env, { guard, subject, text, observedAt = new Date().toISOString() } = {}) {
+export async function sendOpsAlert(env, { guard, signature, subject, text, emergency, now = new Date(), observedAt = now.toISOString() } = {}) {
+  if (!opsNotificationDecision({ guard, emergency }, now).email) return { accepted: false, reason: "desk-only" };
+  const incidentSignature = typeof signature === "string" ? signature.trim().slice(0, 128) : "";
+  if (!incidentSignature) return { accepted: false, reason: "incident-signature-required" };
   const { recordOutboundOpsSendReceipt } = await import("./reliability_watchdogs.mjs");
   if (!env?.RESEND_API_KEY) {
     const result = { accepted: false, reason: "resend-not-configured" };
@@ -2637,16 +2641,24 @@ export async function sendOpsAlert(env, { guard, subject, text, observedAt = new
   const safeGuard = String(guard || "reliability").slice(0, 80);
   const body = `<p>${String(text || `${safeGuard} failed at ${observedAt}.`)
     .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", " ")}</p>`;
+  const configuredTimeout = Number(env.OPS_EMERGENCY_SEND_TIMEOUT_MS);
+  const providerTimeoutMs = Number.isFinite(configuredTimeout)
+    ? Math.max(1, Math.min(configuredTimeout, 30_000))
+    : 10_000;
   try {
     const accepted = await sendEmail(env, env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>", OPS_ALERT_TO,
-      subject || `CityScroll reliability alert: ${safeGuard}`, body, null, false);
+      subject || `CityScroll reliability alert: ${safeGuard}`, body, null, false, {
+        idempotencyKey: incidentSignature,
+        timeoutMs: providerTimeoutMs,
+      });
     const result = { accepted: true, provider: accepted };
     await recordOutboundOpsSendReceipt(env, result, new Date(observedAt));
     return result;
   } catch (error) {
-    const result = { accepted: false, reason: "resend-rejected", error: String(error?.message || error) };
+    const reason = error?.deliveryStatus === "rejected" ? "resend-rejected" : "delivery-indeterminate";
+    const result = { accepted: false, reason, error: String(error?.message || error) };
     await recordOutboundOpsSendReceipt(env, result, new Date(observedAt));
-    throw error;
+    return result;
   }
 }
 
@@ -2658,13 +2670,37 @@ async function sendEmail(env, from, to, subject, html, listUnsub, oneClick, opti
     authorization: `Bearer ${env.RESEND_API_KEY}`,
   };
   if (options.idempotencyKey) headers["Idempotency-Key"] = options.idempotencyKey;
-  const r = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers,
-    body: JSON.stringify(body),
-  });
-  if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
-  return r.json();
+  const timeoutMs = Number(options.timeoutMs);
+  const controller = Number.isFinite(timeoutMs) && timeoutMs > 0 ? new AbortController() : null;
+  const timeout = controller ? setTimeout(() => controller.abort(new Error("Resend request timed out")), timeoutMs) : null;
+  try {
+    let r;
+    try {
+      r = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers,
+        body: JSON.stringify(body),
+        ...(controller ? { signal: controller.signal } : {}),
+      });
+    } catch (error) {
+      error.deliveryStatus = "indeterminate";
+      throw error;
+    }
+    if (!r.ok) {
+      const detail = await r.text().catch(() => "unreadable response");
+      const error = new Error(`Resend ${r.status}: ${detail}`);
+      error.deliveryStatus = r.status === 408 || r.status === 409 || r.status >= 500 ? "indeterminate" : "rejected";
+      throw error;
+    }
+    try {
+      return await r.json();
+    } catch (error) {
+      error.deliveryStatus = "indeterminate";
+      throw error;
+    }
+  } finally {
+    if (timeout) clearTimeout(timeout);
+  }
 }
 
 // ---- per-watch "already seen" state (Workers KV) -------------------------
