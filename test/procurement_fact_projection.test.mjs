@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { normalizeProcurementDate, projectProcurementFacts } from "../site/procurement_fact_projection.mjs";
+import { resolveScopedPaymentSummary } from "../site/procurement_payment_place_context.mjs";
 
 const fixture = JSON.parse(readFileSync(new URL("./fixtures/procurement-detail-parity/ct107120258801626.json", import.meta.url)));
 
@@ -68,4 +69,64 @@ test("award notice publication remains a publication clock", () => {
   assert.equal(projection.facts.noticePublicationDate, "2024-09-05");
   assert.equal(projection.facts.awardDate, null);
   assert.equal(projection.entries.find((entry) => entry.kind === "notice_publication_date").date_basis, "publication");
+});
+
+test("paid observations keep vintage and prefer newer lower corrections over max value", () => {
+  const projection = projectProcurementFacts({ identity_keys: {} }, [
+    {
+      source_system: "passport_public_contracts",
+      source_observation_ref: "passport:older-higher",
+      ingested_at: "2026-01-01T00:00:00.000Z",
+      snapshot: { paid_amount: 900, encumbered_amount: 910 },
+    },
+    {
+      source_system: "passport_public_contracts",
+      source_observation_ref: "passport:newer-lower",
+      ingested_at: "2026-08-01T00:00:00.000Z",
+      snapshot: { paid_amount: 700, encumbered_amount: 910 },
+    },
+  ]);
+  assert.equal(projection.facts.paidAmount, 700);
+  assert.equal(projection.facts.encumberedAmount, 910);
+  assert.equal(
+    projection.entries.find((entry) => entry.kind === "paid_amount").observation_vintage,
+    "2026-08-01T00:00:00.000Z",
+  );
+
+  const zeroLifecycle = resolveScopedPaymentSummary({
+    paidEntries: projection.entries.filter((entry) => entry.kind === "paid_amount"),
+    paymentEvidence: {
+      total_spent: 0,
+      total_payments: 0,
+      payment_population: "exact contract_id spending rows",
+      acquisition_observed_at: "2026-09-14T13:10:41.533Z",
+      payment_as_of: "2026-08-06",
+      payment_rows: [],
+    },
+  });
+  assert.equal(zeroLifecycle.paidAmount, 0);
+
+  const missing = resolveScopedPaymentSummary({ paidEntries: [], paymentEvidence: null });
+  assert.equal(missing.paidAmount, null);
+
+  const incomparable = resolveScopedPaymentSummary({
+    paidEntries: [
+      {
+        kind: "paid_amount",
+        value: 100,
+        source_system: "passport_public_contracts",
+        source_observation_ref: "passport:a",
+        observation_vintage: "2026-01-01T00:00:00.000Z",
+      },
+      {
+        kind: "paid_amount",
+        value: 999999,
+        source_system: "checkbook_contracts",
+        source_observation_ref: "checkbook:b",
+        observation_vintage: "2026-09-01T00:00:00.000Z",
+      },
+    ],
+    paymentEvidence: null,
+  });
+  assert.equal(incomparable.paidAmount, 100);
 });

@@ -303,6 +303,18 @@ test("A4: real canonical routes credit source handoffs and refuse misleading rev
   assert.match(bhrags, /checkbooknyc\.com|Checkbook NYC/);
   assert.match(bhrags, /\$10,869,881/);
   assert.match(bhrags, /20240829105/);
+  assert.match(bhrags, /Paid amount<\/dt><dd>\$7,385,672\.19/);
+  assert.match(bhrags, /data-payment-total-spent="7385672\.19"/);
+  assert.match(bhrags, /Encumbered amount<\/dt><dd>\$7,319,455\.52/);
+  assert.match(bhrags, /data-retained-paid-amount="7319455\.51"/);
+  assert.match(bhrags, /Showing 12 of 31 payments on this contract/);
+  assert.match(bhrags, /20270016167-1-DSB-EFT/);
+  assert.match(bhrags, /\$66,591\.17/);
+  assert.match(bhrags, /\$54,214\.14/);
+  const bhragsSpending = bhrags.match(/data-source-system="checkbook_spending"[\s\S]*?<\/li>/)?.[0] || "";
+  assert.match(bhragsSpending, /No exact match in analytics spending lookup/);
+  assert.match(bhragsSpending, /Checked 2026-08-26/);
+  assert.doesNotMatch(bhrags, /had no exact payment match in this snapshot/);
   const firematic = await servedContract("CT185720228800365");
   assert.match(firematic, /Amendment/);
   assert.doesNotMatch(firematic, /small base contract|overall contract value/i);

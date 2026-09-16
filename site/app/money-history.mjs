@@ -533,10 +533,13 @@ function glanceFor(r, actionCoverage){
   const vendorCovered = actionCoverage && actionCoverage.vendor
     ? sameParty(r.vendor_name, actionCoverage.vendor)
     : false;
+  const agencyCovered = actionCoverage && actionCoverage.agency
+    ? sameParty(r.agency_name, actionCoverage.agency)
+    : false;
   const dueCovered = actionCoverage && actionCoverage.deadline && r.due_date
     ? String(actionCoverage.deadline).slice(0, 10) === String(r.due_date).slice(0, 10)
     : false;
-  const who = (r.agency_name ? pivotA(agencyHref(r.agency_name), agencyWho(r.agency_name)) : "")
+  const who = (r.agency_name && !agencyCovered ? pivotA(agencyHref(r.agency_name), agencyWho(r.agency_name)) : "")
     + (r.vendor_name && !vendorCovered ? ` ${t("awarded_to")} <b>${pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name))}</b>` : "");
   const amt = money(r.contract_amount);
   const what = [r.type_of_notice_description, r.category_description || tSection(r.section_name)]
@@ -1062,6 +1065,7 @@ function pursuitSnapshotHTML(r){
     buyer_history_href: comparison.href,
   }));
 }
+
 
 function renderDetail(r, chain, stats, loadContext = true){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in

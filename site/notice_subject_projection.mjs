@@ -222,7 +222,10 @@ export function renderNoticeSubjectLinksHtml(subjects = [], { escape = escapeHtm
       : list.length > 1
         ? `${subject.label}: ${subject.id}`
         : subject.label;
-    return `<a class="act primary notice-subject-link" href="${escape(subject.href)}" data-notice-subject-continuation="${escape(continuation)}" data-notice-subject-id="${escape(subject.id)}" aria-label="${escape(accessible)}">${escape(subject.label)}</a>`;
+    const kind = String(subject.kind || subject.target_kind || "").trim();
+    const kindAttr = kind ? ` data-pivot-target-kind="${escape(kind)}"` : "";
+    const idAttr = subject.id ? ` data-pivot-target-id="${escape(subject.id)}"` : "";
+    return `<a class="act primary notice-subject-link" href="${escape(subject.href)}" data-notice-subject-continuation="${escape(continuation)}" data-notice-subject-id="${escape(subject.id)}"${kindAttr}${idAttr} aria-label="${escape(accessible)}">${escape(subject.label)}</a>`;
   }).join("");
   return `<p class="notice-subject-links" data-notice-subject-count="${escape(String(list.length))}">${links}</p>`;
 }

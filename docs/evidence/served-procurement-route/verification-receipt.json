@@ -1,0 +1,60 @@
+{
+  "schema": "cityscroll.served_procurement_route_verification_receipt.v1",
+  "grounded_at": "d820fc8a3a354d69321a3368b096f436d01e2fcd",
+  "recorded_at": "2026-09-16T18:14:08.837Z",
+  "letter": "All focused tests, architecture checks, determinism checks, generated-artifact checks, make prepush, and make a11y pass.",
+  "commands": [
+    {
+      "command": "node --test test/procurement_detail_links.test.mjs test/procurement_fact_projection.test.mjs test/procurement_source_lookup_receipt.test.mjs test/procurement_source_links.test.mjs test/cross_source_coverage_ledger.test.mjs test/procurement_official_source.test.mjs test/opportunity_calendar.test.mjs test/primary_document_routes.test.mjs test/universal_search_procurement_producer.test.mjs test/procurement_detail_search_parity.test.mjs test/live_procurement_detail_canary.test.mjs",
+      "exit_status": 0,
+      "status": "passed"
+    },
+    {
+      "command": "node --test test/procurement_detail_links.test.mjs test/procurement_fact_projection.test.mjs test/procurement_source_lookup_receipt.test.mjs test/procurement_source_links.test.mjs test/cross_source_coverage_ledger.test.mjs test/procurement_official_source.test.mjs test/opportunity_calendar.test.mjs test/primary_document_routes.test.mjs test/universal_search_procurement_producer.test.mjs test/procurement_detail_search_parity.test.mjs test/live_procurement_detail_canary.test.mjs",
+      "exit_status": 0,
+      "status": "passed"
+    },
+    {
+      "command": "node tools/aggregate_inventory_preflight.mjs",
+      "exit_status": 0,
+      "status": "passed"
+    },
+    {
+      "command": "node tools/architecture_evidence_shards.mjs --check",
+      "exit_status": 0,
+      "status": "passed"
+    },
+    {
+      "command": "node tools/reconcile_architecture.mjs --check --no-write",
+      "exit_status": 0,
+      "status": "passed"
+    },
+    {
+      "command": "node tools/determinism_lint.mjs --check",
+      "exit_status": 0,
+      "status": "passed"
+    },
+    {
+      "command": "node tools/capture_served_procurement_route_production_read.mjs --check",
+      "exit_status": 0,
+      "status": "passed"
+    },
+    {
+      "command": "make prepush",
+      "exit_status": 0,
+      "status": "passed"
+    },
+    {
+      "command": "make a11y",
+      "exit_status": 0,
+      "status": "passed"
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "status": "passed"
+  }
+}

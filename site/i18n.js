@@ -2846,6 +2846,7 @@ const STRINGS = {
     search_recent_removed_status: "Removed {query} from recent searches.",
     search_recent_cleared_status: "Recent searches cleared.",
     pin_btn: "Pin",
+    more_tools: "More tools",
     pinned_open_inv: "✓ Pinned — open investigation ({n})",
     total_awarded_lbl: "total awarded,<br>on record",
     awards_published_lbl: "contract awards<br>published",

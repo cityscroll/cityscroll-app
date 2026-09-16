@@ -165,16 +165,27 @@ export async function showNotice(id, watch){
     ? CrolActions.compileActionRail(noticeActionMatter(r), { today: todayISO() })
     : [];
   const initialActionRail = window.CrolActions ? actionRailHTML(initialActionsForGlance) : "";
+  const primaryFactCoverage = {
+    ...(typeof actionRailGuideCoverage === "function"
+      ? actionRailGuideCoverage(initialActionsForGlance)
+      : {}),
+    agency: r.agency_name || null,
+    vendor: r.vendor_name || null,
+  };
+  const typeLine = `${r.type_of_notice_description||t("notice_fallback")}${r.section_name?" · "+tSection(r.section_name):""}`;
+  // Replace once with the shared quiet hierarchy. Named tools/enrichment regions
+  // keep deferred owners from appending a second toolbar or restating primary facts.
   box.innerHTML = `<div style="max-width:880px;margin:0 auto" data-notice-id="${escUiHtml(r.request_id)}">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
-      <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||t("notice_fallback")}${r.section_name?" · "+tSection(r.section_name):""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
+      <div class="ftype" style="margin-bottom:6px">${typeLine}</div>
       <h2 class="rolename" lang="en" dir="ltr">${titleInner}</h2>
       ${digEvidenceHTML(ev)}
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
       <div id="nactions" data-export-class="actions">${initialActionRail}</div>
       ${r.type_of_notice_description==="Solicitation"?'<div id="napply" data-export-class="actions"></div>':""}
       <div id="nplain" data-export-class="plain_summary"></div><div id="ncontext" data-export-class="notice_context"></div>
+      <dl class="glance" data-notice-primary-facts="1"><dt>Agency</dt><dd lang="en" dir="ltr">${r.agency_name ? pivotA(agencyHref(r.agency_name), r.agency_name) : "—"}</dd>${r.vendor_name ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name))}</dd>` : ""}${r.start_date ? `<dt>Published</dt><dd lang="en" dir="ltr">${fdate(r.start_date)}</dd>` : ""}${usablePin(r.pin) ? `<dt>PIN</dt><dd lang="en" dir="ltr">${escUiHtml(r.pin)}</dd>` : ""}</dl>
       <div id="nglance" data-export-class="notice_context"></div>
       ${renderNoticeBitemporalHistory({ notice: r, events: r.civic_time?.events || [], state: r.civic_time?.state || "ok" })}
       <div id="naddr" data-export-class="address_geography"></div><div id="nmwbe" data-export-class="mwbe_context"></div><div id="nrules" data-export-class="rule_lifecycle"></div><div id="nlifecycle" data-export-class="procurement_lifecycle"></div><div id="nregdwell" data-export-class="award_registration_dwell"></div><div id="nsuboutreach" data-export-class="sub_outreach"></div><div id="ndollars" data-export-class="dollars"></div><div id="nsubsidy" data-export-class="subsidy"></div><div id="naboaward" data-export-class="authority_award"></div><div id="ncommercial" data-export-class="commercial"></div><div id="ndisposition" data-export-class="property_disposition"></div><div id="npropertyxd" data-export-class="property_cross_domain"></div><div id="ntaxlien" data-export-class="tax_lien"></div><div id="nfranchise" data-export-class="franchise"></div><div id="nland" data-export-class="land_project"></div><div id="nmeet" data-export-class="meeting_outcomes">${meetingFirstPaint}</div><div id="nexternal" data-export-class="external_award"></div>
@@ -201,10 +212,13 @@ export async function showNotice(id, watch){
   const clientPrimaryAt=noticePrimaryOwnerNow();
   noticePrimaryTimingMark("client-primary-ready");
   noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:"content"},clientPrimaryAt);
-  $("#ncopy").addEventListener("click", ()=>copyText(link, $("#ncopy")));
+  const copyBtn = $("#ncopy");
+  if (copyBtn) copyBtn.addEventListener("click", ()=>copyText(link, copyBtn));
   bindQRShare($("#nqr"), link);
-  $("#nxlsx").addEventListener("click", async ()=>exportNoticeXlsx(r,await noticeProcurementChain(r)));
-  $("#nprint").addEventListener("click", ()=>printCurrentView("notice",link));
+  const xlsxBtn = $("#nxlsx");
+  if (xlsxBtn) xlsxBtn.addEventListener("click", async ()=>exportNoticeXlsx(r,await noticeProcurementChain(r)));
+  const printBtn = $("#nprint");
+  if (printBtn) printBtn.addEventListener("click", ()=>printCurrentView("notice",link));
   const contextElement=$("#ncontext");
   const attachmentHydration=attachmentDataPromise.then(attachmentData=>{
     let resolved=attachmentData;
@@ -240,9 +254,9 @@ export async function showNotice(id, watch){
         const applyMount=$("#napply");
         if(applyMount) applyMount.innerHTML = buildApply(r,false);
       }
-      if(typeof glanceFor==="function" && typeof actionRailGuideCoverage==="function"){
+      if(typeof glanceFor==="function"){
         const glanceMount=$("#nglance");
-        if(glanceMount) glanceMount.innerHTML = glanceFor(r, actionRailGuideCoverage(initialActionsForGlance));
+        if(glanceMount) glanceMount.innerHTML = glanceFor(r, primaryFactCoverage);
       }
       if(typeof priorCycleAwards==="function") priorCycleAwards(r, $("#nprior"));
       if(typeof agencyForecastTeaser==="function") agencyForecastTeaser(r, $("#nforecast"));

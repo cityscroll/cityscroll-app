@@ -62,11 +62,12 @@ import siteLifecycleShard from "./data/site_lifecycle/0000.json" with { type: "j
 import siteLifecycleReverse from "./data/site_lifecycle/reverse.json" with { type: "json" };
 import {
   contractLifecycleForProcurement,
-  filterPaymentCoverageCaveats,
   paymentEvidenceFromLifecycle,
   placeFactsForProcurement,
+  reconcilePaymentCoverageProjection,
   renderProcurementPaymentEvidenceHtml,
   renderProcurementPlaceFactsHtml,
+  resolveScopedPaymentSummary,
 } from "./procurement_payment_place_context.mjs";
 import procurementContractLifecycleMaterialization from "./data/procurement_contract_lifecycle.json" with { type: "json" };
 import procurementPlaceFactsMaterialization from "./data/procurement_place_facts.json" with { type: "json" };
@@ -89,10 +90,12 @@ const DEFAULT_SITE_LIFECYCLE = {
 };
 
 function formatAmount(value) {
+  // Preserve an explicit numeric zero; only withhold null/undefined/empty.
+  if (value == null || value === "") return null;
   const raw = clean(value);
-  if (!raw) return null;
-  const number = Number(raw.replace(/[$,]/g, ""));
-  return Number.isFinite(number) ? `$${number.toLocaleString("en-US")}` : raw;
+  if (!raw && value !== 0 && value !== "0") return null;
+  const number = Number(String(value).replace(/[$,]/g, ""));
+  return Number.isFinite(number) ? `$${number.toLocaleString("en-US")}` : (raw || null);
 }
 
 function factsFor(object, observations) {
@@ -116,6 +119,7 @@ function factsFor(object, observations) {
     baseAmount: formatAmount(projected.baseAmount),
     officialUrl,
     entries: projection.entries,
+    conflicts: projection.conflicts,
   };
 }
 
@@ -595,10 +599,18 @@ export function renderProcurementDocument(object = {}, observations = [], {
     placeFactsMaterialization,
   );
   const facts = factsFor(object, observations);
+  const paidEntries = (facts.entries || []).filter((entry) => entry?.kind === "paid_amount");
+  const paymentSummary = resolveScopedPaymentSummary({
+    paidEntries,
+    paymentEvidence,
+    encumberedAmount: facts.encumberedAmount,
+  });
+  // One scoped paid total drives the headline definition cell. Encumbered stays
+  // on its own retained observation and is never replaced by paid.
+  if (paymentSummary.paidAmount != null) {
+    facts.paidAmount = formatAmount(paymentSummary.paidAmount);
+  }
   if (paymentEvidence) {
-    if (paymentEvidence.total_spent != null && !facts.paidAmount) {
-      facts.paidAmount = formatAmount(paymentEvidence.total_spent);
-    }
     if (paymentEvidence.original_amount != null && !facts.originalAmount) {
       facts.originalAmount = formatAmount(paymentEvidence.original_amount);
     }
@@ -672,18 +684,12 @@ export function renderProcurementDocument(object = {}, observations = [], {
     kind: "procurement",
   });
   const coverageReaderBase = projectCoverageForReaders(coverageLedger);
-  const coverageReader = coverageReaderBase
-    ? {
-      ...coverageReaderBase,
-      claim_caveats: Object.freeze(filterPaymentCoverageCaveats(
-        coverageReaderBase.claim_caveats,
-        paymentEvidence,
-      )),
-    }
-    : null;
+  const coverageReader = reconcilePaymentCoverageProjection(coverageReaderBase, paymentEvidence);
   const claimCaveatsHtml = renderCoverageClaimCaveats(coverageReader);
   const placeFactsHtml = renderProcurementPlaceFactsHtml(placeFacts);
-  const paymentEvidenceHtml = renderProcurementPaymentEvidenceHtml(paymentEvidence);
+  const paymentEvidenceHtml = renderProcurementPaymentEvidenceHtml(paymentEvidence, {
+    alternatePaidObservations: paymentSummary.alternatePaidObservations,
+  });
   const representedOfficialHrefs = new Set((coverageLedger?.sources || [])
     .flatMap((source) => [source.record_href, source.official_href, source.search_href].filter(Boolean)));
   const uniqueSourceItems = sourceItems.filter((item) => !representedOfficialHrefs.has(item.href));

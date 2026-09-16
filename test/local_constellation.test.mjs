@@ -8,6 +8,10 @@ import {
   LOCAL_CONSTELLATION_MAX_NODES,
   renderLocalConstellationHTML,
 } from "../site/local_constellation.mjs";
+import {
+  filterNoticeConstellationNeighbors,
+  representedNoticeRelationships,
+} from "../site/notice_reader_presentation.mjs";
 import { buildCommitteeLocalConstellation } from "../site/committee_memberships.mjs";
 import { buildPlaceLocalConstellation } from "../site/community_board_geography.mjs";
 
@@ -105,6 +109,54 @@ test("missing published place endpoints do not render a relationship or diagnost
   }, "community-district:K15");
   assert.equal(view.nodes.length, 0);
   assert.equal(renderLocalConstellationHTML(view), "");
+});
+
+test("notice local connections omit agency and vendor roles already shown as primary facts", () => {
+  const represented = representedNoticeRelationships({
+    agency: { id: "dhs", name: "Homeless Services" },
+    vendor: { id: "BHRAGS Operating LLC", name: "BHRAGS Operating LLC" },
+  });
+  const neighbors = filterNoticeConstellationNeighbors([
+    {
+      edge_type: "published_by_agency",
+      target_kind: "agency",
+      target_id: "dhs",
+      target_name: "Homeless Services",
+      href: "/agencies/dhs/",
+      state: "matched",
+    },
+    {
+      edge_type: "named_vendor",
+      target_kind: "vendor",
+      target_id: "BHRAGS Operating LLC",
+      target_name: "BHRAGS Operating LLC",
+      href: "/vendors/bhrags-operating-llc/",
+      state: "matched",
+    },
+    {
+      edge_type: "related_record",
+      target_kind: "record",
+      target_id: "20240829199",
+      target_name: "Related hearing",
+      href: "/notices/20240829199",
+      state: "matched",
+    },
+  ], represented);
+  const view = buildLocalConstellation({
+    kind: "record",
+    subject_ref: "notice:20240829105",
+    subject_id: "20240829105",
+    subject_name: "City Sanctuary Facility",
+    neighbors,
+  });
+  assert.equal(view.nodes.length, 1);
+  assert.equal(view.nodes[0].target_id, "20240829199");
+  const html = renderLocalConstellationHTML(view, {
+    heading: "Nearby record connections",
+    id: "notice-local-constellation-heading",
+  });
+  assert.doesNotMatch(html, /Homeless Services|BHRAGS Operating LLC/);
+  assert.match(html, /Related hearing/);
 });
 
 test("official local connections omit duplicate committees and retain only linked meeting records", () => {
