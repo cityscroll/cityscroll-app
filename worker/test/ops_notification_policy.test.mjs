@@ -16,8 +16,8 @@ test('direct sender cannot bypass the emergency policy',async()=>{
  const previous=globalThis.fetch;let calls=0;globalThis.fetch=async()=>{calls++;throw new Error('unexpected send')};
  try{assert.equal((await sendOpsAlert({RESEND_API_KEY:'test'},{guard:'ops-repair-judgment'})).reason,'desk-only');assert.equal(calls,0)}finally{globalThis.fetch=previous}
 });
-test('silent finding can escalate once; failed sends retry and accepted emergencies never daily-roll up',async()=>{
- const env={ALERT_STATE:kv(),RESEND_API_KEY:'test'};const previous=globalThis.fetch;const requests=[];globalThis.fetch=async(_url,options)=>{requests.push(options);return {ok:requests.length>1,status:503,text:async()=>'unavailable',json:async()=>({id:'accepted'})}};
+test('silent finding can escalate once; definitive rejection accepts fresh evidence on retry',async()=>{
+ const env={ALERT_STATE:kv(),RESEND_API_KEY:'test'};const previous=globalThis.fetch;const requests=[];globalThis.fetch=async(_url,options)=>{requests.push(options);return {ok:requests.length>1,status:400,text:async()=>'rejected',json:async()=>({id:'accepted'})}};
  try{
   const silent=await emitOpsAlertOnce(env,{...input,emergency:null});
   assert.equal(silent.reason,'desk-only');
@@ -40,4 +40,37 @@ test('silent finding can escalate once; failed sends retry and accepted emergenc
   assert.equal(requests.length,2);
   assert.deepEqual(requests.map((request)=>request.headers['Idempotency-Key']),[silent.signature,silent.signature]);
 }finally{globalThis.fetch=previous}
+});
+test('malformed success preserves and retries the immutable in-flight message',async()=>{
+ const ALERT_STATE=kv();const env={ALERT_STATE,RESEND_API_KEY:'test'};const previous=globalThis.fetch;const requests=[];
+ globalThis.fetch=async(_url,options)=>{const stored=JSON.parse(await ALERT_STATE.get('ops:alert:signature:incident-malformed'));assert.equal(stored.emergency_delivery.state,'in-flight');requests.push(options);return requests.length===1?{ok:true,json:async()=>{throw new SyntaxError('malformed provider body')}}:{ok:true,json:async()=>({id:'accepted-after-retry'})}};
+ try{
+  const firstEmergency={...emergency,action:'Restore the first verified deployment',evidence_url:'https://example.com/incident/first'};
+  const first=await emitOpsAlertOnce(env,{...input,fingerprint:'incident-malformed',emergency:firstEmergency});
+  assert.equal(first.reason,'delivery-indeterminate');
+  assert.equal(first.record.emergency_delivery.state,'indeterminate');
+  const retryNow=new Date('2026-09-16T12:05:00Z');
+  const freshEmergency={...emergency,action:'Restore a later verified deployment',verified_at:retryNow.toISOString(),evidence_url:'https://example.com/incident/later'};
+  const retried=await emitOpsAlertOnce(env,{...input,fingerprint:'incident-malformed',now:retryNow,emergency:freshEmergency});
+  assert.equal(retried.sent,true);
+  assert.equal(retried.record.emergency_delivery.state,'accepted');
+  assert.deepEqual(retried.record.confirmed_emergency,first.record.confirmed_emergency);
+  assert.deepEqual(requests.map((request)=>request.body),[requests[0].body,requests[0].body]);
+  assert.deepEqual(requests.map((request)=>request.headers['Idempotency-Key']),['incident-malformed','incident-malformed']);
+ }finally{globalThis.fetch=previous}
+});
+test('transport uncertainty stays inspectable and never retries after idempotency expiry',async()=>{
+ const ALERT_STATE=kv();const env={ALERT_STATE,RESEND_API_KEY:'test'};const previous=globalThis.fetch;let calls=0;globalThis.fetch=async()=>{calls+=1;throw new TypeError('connection reset after upload')};
+ try{
+  const first=await emitOpsAlertOnce(env,{...input,fingerprint:'incident-transport'});
+  assert.equal(first.reason,'delivery-indeterminate');
+  assert.equal(first.record.emergency_delivery.state,'indeterminate');
+  const afterExpiry=new Date('2026-09-17T12:00:00.001Z');
+  const currentEmergency={...emergency,verified_at:afterExpiry.toISOString(),evidence_url:'https://example.com/incident/current'};
+  const held=await emitOpsAlertOnce(env,{...input,fingerprint:'incident-transport',now:afterExpiry,emergency:currentEmergency});
+  assert.equal(held.reason,'delivery-indeterminate');
+  assert.equal(held.record.emergency_delivery.state,'indeterminate');
+  assert.deepEqual(held.record.confirmed_emergency,first.record.confirmed_emergency);
+  assert.equal(calls,1);
+ }finally{globalThis.fetch=previous}
 });

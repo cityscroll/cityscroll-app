@@ -2648,9 +2648,10 @@ export async function sendOpsAlert(env, { guard, signature, subject, text, emerg
     await recordOutboundOpsSendReceipt(env, result, new Date(observedAt));
     return result;
   } catch (error) {
-    const result = { accepted: false, reason: "resend-rejected", error: String(error?.message || error) };
+    const reason = error?.deliveryStatus === "rejected" ? "resend-rejected" : "delivery-indeterminate";
+    const result = { accepted: false, reason, error: String(error?.message || error) };
     await recordOutboundOpsSendReceipt(env, result, new Date(observedAt));
-    throw error;
+    return result;
   }
 }
 
@@ -2662,13 +2663,29 @@ async function sendEmail(env, from, to, subject, html, listUnsub, oneClick, opti
     authorization: `Bearer ${env.RESEND_API_KEY}`,
   };
   if (options.idempotencyKey) headers["Idempotency-Key"] = options.idempotencyKey;
-  const r = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers,
-    body: JSON.stringify(body),
-  });
-  if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
-  return r.json();
+  let r;
+  try {
+    r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
+  } catch (error) {
+    error.deliveryStatus = "indeterminate";
+    throw error;
+  }
+  if (!r.ok) {
+    const detail = await r.text().catch(() => "unreadable response");
+    const error = new Error(`Resend ${r.status}: ${detail}`);
+    error.deliveryStatus = r.status === 408 || r.status === 409 || r.status >= 500 ? "indeterminate" : "rejected";
+    throw error;
+  }
+  try {
+    return await r.json();
+  } catch (error) {
+    error.deliveryStatus = "indeterminate";
+    throw error;
+  }
 }
 
 // ---- per-watch "already seen" state (Workers KV) -------------------------
