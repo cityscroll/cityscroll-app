@@ -103,6 +103,25 @@ test('uncertain retry cutoff preserves a safety margin for new and existing rows
   assert.equal(Number(claim.row.attempt_count),owned?2:1,label);
  }
 });
+test('worker death becomes stable indeterminate evidence after the retry cutoff',async()=>{
+ const {sqlite,DB}=d1();const ALERT_STATE=kv();const first='2026-09-16T12:00:00.000Z';const cutoff='2026-09-17T11:45:00.000Z';const signature='incident-worker-death';
+ const originalEvidence={impact:'service-unavailable',action:'Restore the original service',evidence_url:'https://example.com/incident/original',verified_at:first};
+ const payload={subject:'Emergency',text:'Original immutable emergency',evidence:originalEvidence};
+ sqlite.prepare(`INSERT INTO ops_emergency_deliveries
+  (signature,payload_json,state,claim_token,claim_expires_at,first_attempted_at,last_attempted_at,retry_until,attempt_count)
+  VALUES (?,?,\'in-flight\',?,?,?,?,?,?)`).run(signature,JSON.stringify(payload),'abandoned-claim','2026-09-16T12:01:00.000Z',first,first,'2026-09-17T12:00:00.000Z',1);
+ const env={DB,ALERT_STATE,RESEND_API_KEY:'test'};const currentEmergency={...emergency,verified_at:cutoff,evidence_url:'https://example.com/incident/current'};
+ const previous=globalThis.fetch;let calls=0;globalThis.fetch=async()=>{calls+=1;throw new Error('must not send')};
+ try{
+  const firstObservation=await emitOpsAlertOnce(env,{...input,fingerprint:signature,now:new Date(cutoff),emergency:currentEmergency});
+  const repeatedObservation=await emitOpsAlertOnce(env,{...input,fingerprint:signature,now:new Date(cutoff),emergency:currentEmergency});
+  const stored=sqlite.prepare('SELECT * FROM ops_emergency_deliveries WHERE signature = ?').get(signature);
+  assert.equal(calls,0);assert.equal(firstObservation.reason,'delivery-indeterminate');assert.equal(repeatedObservation.reason,'delivery-indeterminate');
+  assert.equal(firstObservation.record.emergency_delivery.state,'indeterminate');assert.equal(repeatedObservation.record.emergency_delivery.state,'indeterminate');
+  assert.deepEqual(repeatedObservation.record.confirmed_emergency,originalEvidence);
+  assert.equal(stored.state,'indeterminate');assert.equal(stored.claim_token,null);assert.equal(stored.claim_expires_at,null);assert.equal(stored.retry_until,cutoff);assert.equal(stored.attempt_count,1);
+ }finally{globalThis.fetch=previous}
+});
 test('emergency provider requests time out as indeterminate',async()=>{
  const previous=globalThis.fetch;let calls=0;
  globalThis.fetch=async(_url,{signal})=>{calls+=1;return new Promise((_resolve,reject)=>signal.addEventListener('abort',()=>reject(signal.reason),{once:true}))};

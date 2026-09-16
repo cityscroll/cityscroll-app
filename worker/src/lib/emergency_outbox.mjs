@@ -185,6 +185,18 @@ export async function claimEmergencyDelivery(db, { signature, payload, now = new
         [safeExistingUntil, signature, existing.retry_until]);
       existing = await read(db, signature);
     }
+    const existingClaimExpiry = Date.parse(existing?.claim_expires_at || "");
+    if (!owned && existing?.state === "in-flight"
+      && Date.parse(existing.retry_until || "") <= now.getTime()
+      && (!Number.isFinite(existingClaimExpiry) || existingClaimExpiry <= now.getTime())) {
+      await run(db, `UPDATE ops_emergency_deliveries
+        SET state = 'indeterminate', claim_token = NULL, claim_expires_at = NULL,
+            resolved_at = NULL, error_reason = 'delivery-indeterminate'
+        WHERE signature = ? AND state = 'in-flight' AND claim_token IS ?
+          AND retry_until <= ? AND (claim_expires_at IS NULL OR claim_expires_at <= ?)`,
+      [signature, existing.claim_token, at, at]);
+      existing = await read(db, signature);
+    }
     if (!owned && existing?.state === "rejected") {
       const existingUntil = Date.parse(existing.retry_until || "");
       const nextUntil = Number.isFinite(existingUntil) && existingUntil > now.getTime() ? existing.retry_until : until;
