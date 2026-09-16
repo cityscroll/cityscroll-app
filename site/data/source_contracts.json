@@ -4822,7 +4822,8 @@
       "last_known_good_behavior": "Retain the last verified BSA session snapshot within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe BSA sessions as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show BSA session coverage as unavailable; never replace a failed agenda refresh with an empty schedule.",
-      "production_evidence_field": "first_class.bsa_calendar"
+      "production_evidence_field": "first_class.bsa_calendar",
+      "production_freshness_gate": "report_only"
     },
     {
       "id": "shared-meetings",

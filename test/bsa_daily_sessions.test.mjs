@@ -116,3 +116,21 @@ test("the retained notice time remains evidence without creating a third occurre
   assert.equal(bsaCalendarOccurrences(sessions).length, 2);
   assert.deepEqual(bsaCalendarOccurrences(sessions).map((row) => row.starts_at), fixtureDays.map((day) => `${day}T10:00:00`));
 });
+
+test("the retained publisher layout keeps hearing headers and ignores footer publication dates", () => {
+  const layout = readFileSync(new URL("./fixtures/bsa/september-14-15-2026-layout.txt", import.meta.url), "utf8");
+  assert.match(layout, /September 14, 2026,\s*10:00 AM/);
+  assert.match(layout, /September 15, 2026,\s*10:00 AM/);
+  assert.match(layout, /September 9, 2026\s+22 READE STREET/);
+  const pages = layout.split("\f").map((text, index) => ({ page: index + 1, text }));
+  const layoutSessions = parseBsaAgendaPages({
+    pages,
+    notice: { agenda_url: "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/september_14_15_2026_public_hearing.pdf" },
+    publication_date: "2026-09-09",
+  });
+  assert.deepEqual(layoutSessions.map((row) => row.event_date), ["2026-09-14T10:00:00", "2026-09-15T10:00:00"]);
+  assert.equal(layoutSessions.some((row) => row.event_date.startsWith("2026-09-09")), false);
+  assert.ok(layoutSessions[0].agenda_items.length >= 10);
+  assert.ok(layoutSessions[1].agenda_items.length >= 1);
+  assert.equal(layoutSessions[0].agenda_items.some((item) => item.case_id === "2024-58-BZ"), true);
+});
