@@ -1,6 +1,8 @@
-import { readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { fileURLToPath } from "node:url";
 import { AWARD_SOURCE_REGISTRY } from "../site/external_awards.js";
 import { checkGeneratedSourceFiles } from "../tools/generate_source_docs.mjs";
 import {
@@ -572,6 +574,66 @@ test("the live monitor affirms an unchanged GeoJSON republish and still files ge
   await assert.rejects(verifySocrata(contract, { retainedReceipt }), /publisher republished .*re-acquire the retained snapshot/);
 });
 
+test("an unchanged republish affirms when the retained digest is loaded from artifact_path", async (t) => {
+  // Reproduces the live monitor path: receipt comes from artifact_path on disk,
+  // not from an injected retainedReceipt option. A missing ROOT made that read
+  // fail open and classify identical geometry republishes as drift.
+  const originalFetch = globalThis.fetch;
+  const receiptRel = "test/fixtures/source_contracts/unchanged_republish_receipt.json";
+  const receiptAbs = join(dirname(fileURLToPath(import.meta.url)), "fixtures/source_contracts/unchanged_republish_receipt.json");
+  const retainedRows = [
+    { district: "MN01", districtcode: "1", objectid: "10", multipolygon: { type: "MultiPolygon", coordinates: [[[1]]] } },
+    { district: "MN02", districtcode: "2", objectid: "20", multipolygon: { type: "MultiPolygon", coordinates: [[[2]]] } },
+  ];
+  const contract = {
+    id: "field-case",
+    domain: "https://data.example.gov",
+    dataset_id: "aaaa-bbbb",
+    required_fields: ["district", "districtcode", "objectid", "multipolygon"],
+    freshness_contract: {
+      mode: "periodic",
+      clock_basis: "publisher_updated",
+      stable_reference: {
+        publisher_updated_at: "2026-09-15T10:18:58Z",
+        retained_vintage_at: "2026-09-15T10:18:58Z",
+        observed_on: "2026-09-15",
+        method: "pin the publisher stamp",
+        evidence: "retained rows",
+        recheck: "re-acquire and compare",
+      },
+      republish_content_check: { mode: "content_digest", artifact_path: receiptRel },
+    },
+  };
+  mkdirSync(dirname(receiptAbs), { recursive: true });
+  writeFileSync(receiptAbs, `${JSON.stringify({
+    content_digest: {
+      schema: "cityscroll.source_content_digest.v1",
+      algorithm: "sha256",
+      digest: contentDigest(retainedRows, contract.required_fields),
+    },
+  }, null, 2)}\n`);
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+    try { unlinkSync(receiptAbs); } catch { /* test cleanup */ }
+  });
+  const metadata = (rowsUpdatedAt) => socrataMetadata({
+    rowsUpdatedAt: rowsUpdatedAt / 1000,
+    fields: contract.required_fields,
+  });
+  let observation;
+  globalThis.fetch = async (url) => String(url).includes("/api/views/")
+    ? metadata(Date.UTC(2026, 8, 16, 10, 6, 14))
+    : new Response(JSON.stringify({
+      type: "FeatureCollection",
+      features: retainedRows.map((properties) => ({ type: "Feature", properties })),
+    }), { status: 200, headers: { "Content-Type": "application/geo+json" } });
+  const affirmed = await verifySocrata(contract, { onObservation: (value) => { observation = value; } });
+  assert.match(affirmed, /republished, content unchanged at 2026-09-16/);
+  assert.equal(observation?.status, "affirmed");
+  assert.equal(observation?.stable_reference?.observed_on, "2026-09-16");
+  assert.equal(observation?.content_digest, contentDigest(retainedRows, contract.required_fields));
+});
+
 test("a stable-reference pin must name a publisher vintage we actually retain", () => {
   const registry = loadSourceContracts();
   const dsny = registry.contracts.find((row) => row.id === "dsny-district-boundaries");
@@ -581,8 +643,8 @@ test("a stable-reference pin must name a publisher vintage we actually retain", 
   const geography = readFileSync(new URL("../site/civic_geography_registry.mjs", import.meta.url), "utf8");
   assert.ok(geography.includes("dsny-district-boundaries"));
   const retained = readFileSync(new URL("../tools/build_civic_geography.mjs", import.meta.url), "utf8");
-  assert.match(retained, /source_updated_at: "2026-09-15T10:18:58\.000Z"/);
-  assert.equal(Date.parse(pin.publisher_updated_at), Date.parse("2026-09-15T10:18:58.000Z"));
+  assert.match(retained, /source_updated_at: "2026-09-16T10:06:14\.000Z"/);
+  assert.equal(Date.parse(pin.publisher_updated_at), Date.parse("2026-09-16T10:06:14.000Z"));
 
   const drifted = structuredClone(registry);
   const target = drifted.contracts.find((row) => row.id === "dsny-district-boundaries");
