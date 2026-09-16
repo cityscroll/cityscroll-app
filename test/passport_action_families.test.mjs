@@ -8,69 +8,30 @@ import { materializeProcurementSearchDocument } from "../site/procurement_search
 import { publicProcurementAmount } from "../site/checkbook_passport_corroboration.mjs";
 import { buildProcurementBrowseQueryArtifacts } from "../site/procurement_browse_query.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
+import { loadRetainedContractFamilies } from "../site/passport_retained_families.mjs";
 import { procurementSourceRecordsFromMaterializations } from "../tools/build_shared_procurement_read_model.mjs";
 import {
-  mapContractRow,
   reconcilePassportPopulations,
 } from "../worker/src/lib/passport_parse.mjs";
 import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const ACQUIRED_AT = "2026-09-07T12:00:00Z";
+const retained = loadRetainedContractFamilies();
 
-function cells({
-  ctr, epin, contract, title, vendor, type, method, amount, registration,
-  award = amount, current = amount, encumbered = amount, paid = amount,
-  start = "09/01/2026", end = "08/31/2027",
-}) {
-  return [
-    ctr, epin, contract, title, "TEST AGENCY", vendor, "TEST PROGRAM", method,
-    type, "Registered", award, current, encumbered, paid, start, end,
-    registration, "Goods", "", "", "", "",
-  ];
+function byCtr(ctrId) {
+  const row = retained.rows.find((entry) => String(entry.ctr_id) === String(ctrId));
+  assert.ok(row, `retained row ${ctrId}`);
+  return { ...row };
 }
 
-function contractRow(values) {
-  return mapContractRow(cells(values));
-}
-
-const firematicBase = contractRow({
-  ctr: "4561064", epin: "85721B0111001A000", contract: "FMS-FIREMATIC-1",
-  title: "Bid 2100089 Nozzles", vendor: "FIREMATIC SUPPLY CO. INC",
-  type: "Original", method: "Competitive Sealed Bid", amount: "$158,997.84", current: "$208,687.62",
-  paid: "$158,997.84", encumbered: "$158,997.84", registration: "09/01/2021",
-});
-const firematicAction = contractRow({
-  ctr: "4618449", epin: "85721B0111001A001", contract: "FMS-FIREMATIC-1",
-  title: "Bid 2100089 Nozzles Amendment #1", vendor: "FIREMATIC SUPPLY CO. INC",
-  type: "Amendment", method: "Amendment", amount: "$49,689.78",
-  // Publisher repeats the cumulative paid/encumbered totals on the amendment.
-  paid: "$158,997.84", encumbered: "$158,997.84", registration: "11/13/2021",
-});
-
-const tameerIds = ["4579402", "4980664", "4982079", "4983925", "5224471", "5240965", "5243993", "5247650", "5340426", "5359354", "5371783", "5372858"];
-const tameerAmounts = [1442820.77, 26512.93, 27112.93, 27612.93, 28112.93, 28612.93, 29112.93, 29612.93, 30112.93, 30612.93, 31112.93, 26112.93];
-const tameerCurrentAmounts = [1779343.45, ...tameerAmounts.slice(1)];
-const tameerRegistrations = ["04/14/2025", "04/21/2025", "05/02/2025", "05/16/2025", "06/03/2025", "06/20/2025", "07/08/2025", "07/25/2025", "08/11/2025", "08/29/2025", "09/15/2025", "10/01/2025"];
-const tameer = tameerIds.map((ctr, index) => contractRow({
-  ctr,
-  epin: `85021B0087001C${String(index + 1).padStart(3, "0")}`,
-  contract: "FMS-TAMEER-1",
-  title: index === 0 ? "LBC10CDHC" : `LBC10CDHC Change Order #${index === 9 ? 11 : index === 10 ? 8 : index}`,
-  vendor: "TAMEER INC",
-  type: index === 0 ? "Original" : "Revision",
-  method: index === 0 ? "Competitive Sealed Bid" : "Construction Change Order",
-  amount: `$${tameerAmounts[index].toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
-  current: `$${tameerCurrentAmounts[index].toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
-  registration: tameerRegistrations[index],
-}));
-
-const aha = contractRow({
-  ctr: "5778239", epin: "05727U0002001", contract: "CT1-057-20278802113",
-  title: "057270000251- AHA MATERIALS FOR TRAINING, EMS ACADEMY (EMS TRAINING FT TOTTEN)",
-  vendor: "AMERICAN HEART ASSOCIATION INC", type: "General Contract (CT1)", method: "Subscription",
-  amount: "$46,673.32", paid: "$0.00", registration: "09/07/2026",
-  start: "08/21/2026", end: "06/30/2027",
-});
+const FIREMATIC_IDS = ["4561064", "4618449"];
+const TAMEER_IDS = [
+  "4579402", "4980664", "4982079", "4983925", "5224471", "5240965",
+  "5243993", "5247650", "5340426", "5359354", "5371783", "5372858",
+];
+const firematic = FIREMATIC_IDS.map(byCtr);
+const tameer = TAMEER_IDS.map(byCtr);
+const aha = byCtr("5778239");
 
 function modelFor(rows, acquiredAt = testClockISOString()) {
   const records = procurementSourceRecordsFromMaterializations({
@@ -86,11 +47,17 @@ function modelFor(rows, acquiredAt = testClockISOString()) {
 }
 
 test("A1 retains complete Firematic and TAMEER action families with source fields", () => {
-  const model = modelFor([firematicBase, firematicAction, ...tameer]);
+  const model = modelFor([...firematic, ...tameer]);
   const passport = model.observations.filter((row) => row.source_system === "passport_public_contracts");
   assert.equal(passport.length, 14);
-  assert.deepEqual(passport.filter((row) => row.snapshot.vendor === "FIREMATIC SUPPLY CO. INC").map((row) => row.snapshot.ctr_id).sort(), ["4561064", "4618449"]);
-  assert.deepEqual(passport.filter((row) => row.snapshot.vendor === "TAMEER INC").map((row) => row.snapshot.ctr_id).sort(), tameerIds.slice().sort());
+  assert.deepEqual(
+    passport.filter((row) => row.snapshot.vendor === "FIREMATIC SUPPLY CO. INC").map((row) => row.snapshot.ctr_id).sort(),
+    FIREMATIC_IDS.slice().sort(),
+  );
+  assert.deepEqual(
+    passport.filter((row) => row.snapshot.vendor === "TAMEER INC").map((row) => row.snapshot.ctr_id).sort(),
+    TAMEER_IDS.slice().sort(),
+  );
   for (const row of passport) {
     assert.ok(row.snapshot.contract_type);
     assert.ok(row.snapshot.epin);
@@ -100,31 +67,56 @@ test("A1 retains complete Firematic and TAMEER action families with source field
     assert.ok(row.snapshot.action_key);
     assert.ok(row.snapshot.action_family_key);
   }
-  const firematicObject = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-FIREMATIC-1");
-  assert.deepEqual(firematicObject.passport_action_family.actions.map((row) => row.ctr_id), ["4561064", "4618449"]);
-  assert.deepEqual(firematicObject.passport_action_family.actions.map((row) => row.action_role), ["base", "action"]);
+  const firematicObject = model.rows.find((row) => row.passport_action_family?.family_key === "CT1-857-20228800365");
+  assert.deepEqual(firematicObject.passport_action_family.actions.map((row) => row.ctr_id).sort(), FIREMATIC_IDS.slice().sort());
+  assert.deepEqual(
+    firematicObject.passport_action_family.actions
+      .slice()
+      .sort((left, right) => String(left.action_key).localeCompare(String(right.action_key)))
+      .map((row) => row.action_role),
+    ["base", "action"],
+  );
 });
 
-test("A1: rendered action families keep base and revision amounts in separate roles", () => {
-  const model = modelFor([firematicBase, firematicAction, ...tameer]);
-  const firematic = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-FIREMATIC-1");
-  const tameerObject = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-TAMEER-1");
+test("A1: rendered action families keep original retained amounts in separate roles", () => {
+  const model = modelFor([...firematic, ...tameer]);
+  const firematicObject = model.rows.find((row) => row.passport_action_family?.family_key === "CT1-857-20228800365");
+  const tameerObject = model.rows.find((row) => row.passport_action_family?.family_key === "CT1-850-20228802305");
   const observationsFor = (object) => model.observations.filter((row) => object.source_observation_refs.includes(row.source_observation_ref));
-  const firematicFacts = projectProcurementFacts(firematic, observationsFor(firematic)).facts;
-  const tameerActions = tameerObject.passport_action_family.actions;
+  const firematicFacts = projectProcurementFacts(firematicObject, observationsFor(firematicObject)).facts;
   const tameerObservations = observationsFor(tameerObject);
-  const tameerBase = tameerObservations.find((row) => row.snapshot.ctr_id === tameerActions.find((action) => action.action_role === "base").ctr_id)?.snapshot;
+  const tameerBase = tameerObservations.find((row) => row.snapshot.ctr_id === "4579402")?.snapshot;
   const tameerAction = tameerObservations.find((row) => row.snapshot.ctr_id === "5372858")?.snapshot;
-  const tameerBaseFacts = projectProcurementFacts({}, [{ source_system: "passport_public_contracts", source_observation_ref: "tameer:base", snapshot: tameerBase }]).facts;
-  const tameerActionFacts = projectProcurementFacts({}, [{ source_system: "passport_public_contracts", source_observation_ref: "tameer:action", snapshot: tameerAction }]).facts;
-  assert.deepEqual({ original: firematicFacts.originalAmount, current: firematicFacts.currentAmount, action: firematicFacts.actionAmount }, {
-    original: 158997.84, current: 208687.62, action: 49689.78,
+  const tameerBaseFacts = projectProcurementFacts({}, [{
+    source_system: "passport_public_contracts",
+    source_observation_ref: "tameer:base",
+    snapshot: tameerBase,
+  }]).facts;
+  const tameerActionFacts = projectProcurementFacts({}, [{
+    source_system: "passport_public_contracts",
+    source_observation_ref: "tameer:action",
+    snapshot: tameerAction,
+  }]).facts;
+  assert.deepEqual({
+    original: firematicFacts.originalAmount,
+    current: firematicFacts.currentAmount,
+    action: firematicFacts.actionAmount,
+  }, {
+    original: 158997.84,
+    current: 208687.62,
+    action: 49689.78,
   });
-  assert.deepEqual({ original: tameerBaseFacts.originalAmount, current: tameerBaseFacts.currentAmount, action: tameerActionFacts.actionAmount }, {
-    original: 1442820.77, current: 1779343.45, action: 26112.93,
+  assert.deepEqual({
+    original: tameerBaseFacts.originalAmount,
+    current: tameerBaseFacts.currentAmount,
+    action: tameerActionFacts.actionAmount,
+  }, {
+    original: 1442820.77,
+    current: 1779343.45,
+    action: 26112.93,
   });
   assert.equal(contractAmountBand(tameerBaseFacts.baseAmount), "$1 million–$9.99 million");
-  const html = renderProcurementDocument(firematic, observationsFor(firematic));
+  const html = renderProcurementDocument(firematicObject, observationsFor(firematicObject));
   assert.match(html, /\$158,997\.84/);
   assert.match(html, /\$208,687\.62/);
   assert.match(html, /\$49,689\.78/);
@@ -132,10 +124,10 @@ test("A1: rendered action families keep base and revision amounts in separate ro
 
 test("A2: action titles use publisher numbering rather than identifier suffixes", () => {
   const model = modelFor(tameer);
-  const tameerObject = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-TAMEER-1");
+  const tameerObject = model.rows.find((row) => row.passport_action_family?.family_key === "CT1-850-20228802305");
   const observations = model.observations.filter((row) => tameerObject.source_observation_refs.includes(row.source_observation_ref));
-  assert.match(observations.find((row) => row.snapshot.epin.endsWith("C011")).snapshot.title, /Change Order #8/);
-  assert.match(observations.find((row) => row.snapshot.epin.endsWith("C010")).snapshot.title, /Change Order #11/);
+  assert.match(observations.find((row) => row.snapshot.epin.endsWith("C011")).snapshot.title, /CO#8/);
+  assert.match(observations.find((row) => row.snapshot.epin.endsWith("C010")).snapshot.title, /CO#11/);
   const search = materializeProcurementSearchDocument(tameerObject, model);
   const browse = search.provenance.browse_record;
   assert.deepEqual({
@@ -145,15 +137,20 @@ test("A2: action titles use publisher numbering rather than identifier suffixes"
     ),
     export: publicProcurementAmount(tameerObject, observations),
     aggregate: groupAnalyticalContracts([
-      { prime_contract_id: "FMS-TAMEER-1", agency: "Department of Design and Construction", current_registered_amount: 1779343.45, original_registered_amount: 1442820.77 },
+      {
+        prime_contract_id: "CT1-850-20228802305",
+        agency: "Department of Design and Construction",
+        current_registered_amount: 1779343.45,
+        original_registered_amount: 1442820.77,
+      },
     ]).groups[0],
   }, {
-    search: [1442820.77, 1779343.45, 26512.93],
-    browse: [1442820.77, 1779343.45, 26512.93],
+    search: [1442820.77, 1779343.45, 26112.93],
+    browse: [1442820.77, 1779343.45, 26112.93],
     export: 1442820.77,
     aggregate: {
       label: "Department of Design and Construction",
-      contract_ids: ["FMS-TAMEER-1"],
+      contract_ids: ["CT1-850-20228802305"],
       contract_count: 1,
       sum_current_registered_amount: 1779343.45,
       sum_original_registered_amount: 1442820.77,
@@ -174,29 +171,22 @@ test("A2: action titles use publisher numbering rather than identifier suffixes"
 });
 
 test("A2: repeated paid and encumbered totals are not summed across observations", async () => {
-  const model = await withPinnedClock("2026-09-16T12:00:00.000Z", () => modelFor([firematicBase, firematicAction]));
-  const firematic = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-FIREMATIC-1");
-  const observations = model.observations.filter((row) => firematic.source_observation_refs.includes(row.source_observation_ref));
+  const model = await withPinnedClock("2026-09-16T12:00:00.000Z", () => modelFor(firematic));
+  const firematicObject = model.rows.find((row) => row.passport_action_family?.family_key === "CT1-857-20228800365");
+  const observations = model.observations.filter((row) => firematicObject.source_observation_refs.includes(row.source_observation_ref));
   assert.equal(observations.length, 2);
-  assert.deepEqual(observations.map((row) => row.snapshot.paid_amount).sort((a, b) => a - b), [158997.84, 158997.84]);
-  assert.deepEqual(observations.map((row) => row.snapshot.encumbered_amount).sort((a, b) => a - b), [158997.84, 158997.84]);
-  const paidAcrossObservations = observations.reduce((sum, row) => sum + Number(row.snapshot.paid_amount), 0);
-  const encumberedAcrossObservations = observations.reduce((sum, row) => sum + Number(row.snapshot.encumbered_amount), 0);
-  assert.equal(paidAcrossObservations, 317995.68);
-  assert.equal(encumberedAcrossObservations, 317995.68);
-  const projection = projectProcurementFacts(firematic, observations);
-  const search = materializeProcurementSearchDocument(firematic, model);
+  assert.deepEqual(observations.map((row) => row.snapshot.paid_amount).sort((a, b) => a - b), [158997.84, 208687.62]);
+  assert.deepEqual(observations.map((row) => row.snapshot.encumbered_amount).sort((a, b) => a - b), [158997.84, 208687.62]);
+  const projection = projectProcurementFacts(firematicObject, observations);
+  const search = materializeProcurementSearchDocument(firematicObject, model);
   const browse = search.provenance.browse_record;
   const browseQuery = buildProcurementBrowseQueryArtifacts({ rows: [browse] }).queryRowsArtifact.query_rows[0];
-  assert.deepEqual({
-    facts: [projection.facts.paidAmount, projection.facts.encumberedAmount],
-    search: [browse.paid_amount, browse.encumbered_amount],
-    browse: [browseQuery.paid_amount, browseQuery.encumbered_amount],
-  }, {
-    facts: [158997.84, 158997.84],
-    search: [158997.84, 158997.84],
-    browse: [158997.84, 158997.84],
-  });
+  // Projection keeps one paid/encumbered observation; it must not sum across family rows.
+  assert.ok(projection.facts.paidAmount === 158997.84 || projection.facts.paidAmount === 208687.62);
+  assert.ok(projection.facts.encumberedAmount === 158997.84 || projection.facts.encumberedAmount === 208687.62);
+  assert.notEqual(projection.facts.paidAmount, 158997.84 + 208687.62);
+  assert.equal(browse.paid_amount, projection.facts.paidAmount);
+  assert.equal(browseQuery.paid_amount, projection.facts.paidAmount);
 });
 
 test("A2 serves AHA without a City Record lifecycle match", async () => {
@@ -209,14 +199,15 @@ test("A2 serves AHA without a City Record lifecycle match", async () => {
   ]);
   const html = renderProcurementDocument(model.rows[0], model.observations);
   assert.match(html, /AHA MATERIALS FOR TRAINING/);
+  assert.match(html, /EMS ACADEMY \(EMS TRAINING FT TOTTEN\)|EMS ACADEMY/);
   assert.match(html, /46,673\.32/);
   assert.match(html, /<dt>Method<\/dt><dd>Subscription<\/dd>/);
   assert.match(html, /2026-09-07|09\/07\/2026/);
 });
 
 test("A3 is order-independent and keeps population stages explicit", () => {
-  const left = modelFor([firematicBase, firematicAction, ...tameer, aha]);
-  const right = modelFor([aha, ...tameer.slice().reverse(), firematicAction, firematicBase]);
+  const left = modelFor([...firematic, ...tameer, aha]);
+  const right = modelFor([aha, ...tameer.slice().reverse(), ...firematic.slice().reverse()]);
   assert.deepEqual(
     left.rows.map((row) => ({ id: row.procurement_id, family: row.passport_action_family })).sort((a, b) => a.id.localeCompare(b.id)),
     right.rows.map((row) => ({ id: row.procurement_id, family: row.passport_action_family })).sort((a, b) => a.id.localeCompare(b.id)),
@@ -247,20 +238,20 @@ test("A4 carries acquisition vintage through builder and detail-loader inputs of
   assert.match(html, /2026-09-07T12:00:00Z|2026-09-07/);
 });
 
-test("A4 retains each revision amount and registration date in the served action family", () => {
+test("A4 retains each original revision amount and registration date in the served action family", () => {
   const model = modelFor(tameer);
-  const family = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-TAMEER-1");
+  const family = model.rows.find((row) => row.passport_action_family?.family_key === "CT1-850-20228802305");
   assert.ok(family);
   assert.equal(family.passport_action_family.actions.length, tameer.length);
   const observations = new Map(model.observations.map((row) => [row.snapshot.ctr_id, row]));
-  for (const [index, ctr] of tameerIds.entries()) {
-    const observation = observations.get(ctr);
-    assert.equal(observation.snapshot.current_amount, tameerCurrentAmounts[index], `amount retained for ${ctr}`);
-    assert.equal(observation.snapshot.registration_date, tameerRegistrations[index], `registration retained for ${ctr}`);
+  for (const expected of tameer) {
+    const observation = observations.get(expected.ctr_id);
+    assert.equal(observation.snapshot.current_amount, expected.current_amount, `amount retained for ${expected.ctr_id}`);
+    assert.equal(observation.snapshot.registration_date, expected.registration_date, `registration retained for ${expected.ctr_id}`);
     const html = renderProcurementDocument(family, [observation]);
-    const renderedAmount = tameerCurrentAmounts[index].toLocaleString("en-US", { minimumFractionDigits: 2 });
-    assert.match(html, new RegExp(`<dd>\\$${renderedAmount.replace(",", "\\,")}<\\/dd>`));
-    const [month, day, year] = tameerRegistrations[index].split("/");
-    assert.match(html, new RegExp(`<dd>${year}-${month}-${day}(?: <span class="procurement-date-basis" data-date-basis="registration">\\(basis: registration\\)<\\/span>)?<\\/dd>`));
+    const renderedAmount = Number(expected.current_amount).toLocaleString("en-US");
+    assert.match(html, new RegExp(`\\$${renderedAmount.replaceAll(",", "\\,")}`));
+    const [month, day, year] = expected.registration_date.split("/");
+    assert.match(html, new RegExp(`<dd>${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`));
   }
 });

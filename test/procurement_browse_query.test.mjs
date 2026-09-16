@@ -66,7 +66,18 @@ test("bounded Contracts queries are exactly equivalent to the full row read", ()
       `${name}: stable identity order must match`,
     );
     assert.equal(bounded.total, full.length, `${name}: total must match`);
-    assert.deepEqual(bounded.facets.method, moneyMethodFacet(full, Number.MAX_SAFE_INTEGER), `${name}: facets must match`);
+    // Method facets are deliberately computed with the method filter cleared so
+    // the UI can offer sibling methods inside the same agency/mode scope.
+    const facetScope = filterMoneySnapshot(fullBrowse.rows, {
+      ...options,
+      method: "",
+      limit: Number.MAX_SAFE_INTEGER,
+    });
+    assert.deepEqual(
+      bounded.facets.method,
+      moneyMethodFacet(facetScope, Number.MAX_SAFE_INTEGER),
+      `${name}: facets must match`,
+    );
     assert.deepEqual(
       bounded.rows.map(comparable),
       full.slice(0, 40).map(comparable),

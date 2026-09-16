@@ -206,7 +206,16 @@ export function projectProcurementFacts(object = {}, observations = []) {
   const values = {};
   const conflicts = {};
   for (const [kind, rawCandidates] of groups) {
-    const candidates = sortedCandidates(rawCandidates);
+    let candidates = sortedCandidates(rawCandidates);
+    // Among revision/amendment amounts, prefer the latest action key so a tip
+    // change order is not displaced by an earlier sibling once the full family
+    // is retained.
+    if (kind === "action_amount" && candidates.length > 1) {
+      candidates = candidates.slice().sort((left, right) => (
+        String(right.action_key || "").localeCompare(String(left.action_key || ""))
+        || String(left.source_observation_ref || "").localeCompare(String(right.source_observation_ref || ""))
+      ));
+    }
     const distinct = [...new Map(candidates.map((entry) => [String(entry.value), entry])).values()];
     if (!candidates.length) continue;
     values[kind] = candidates[0].value;
@@ -217,12 +226,25 @@ export function projectProcurementFacts(object = {}, observations = []) {
     });
   }
   const fact = (kind) => values[kind] ?? null;
+  // Compatibility single-amount field (typed-money): action first, then current,
+  // original, paid. Action-key sort above keeps the tip revision stable across
+  // clock shifts; do not re-pick by observation date.
+  const amountRole = fact("action_amount") != null ? "action"
+    : fact("current_amount") != null ? "current"
+      : fact("original_amount") != null ? "original"
+        : fact("paid_amount") != null ? "paid"
+          : null;
+  const amount = amountRole === "action" ? fact("action_amount")
+    : amountRole === "current" ? fact("current_amount")
+      : amountRole === "original" ? fact("original_amount")
+        : fact("paid_amount");
   return Object.freeze({
     entries: Object.freeze(entries),
     facts: Object.freeze({
       title: fact("title") || fact("program") || `Contract ${fact("canonical_contract_id") || fact("pin_epin") || object?.procurement_id || "record"}`,
       agency: fact("agency"), vendor: fact("vendor"),
-      amount: fact("action_amount") ?? fact("current_amount") ?? fact("original_amount") ?? fact("paid_amount"),
+      amount,
+      amountRole,
       originalAmount: fact("original_amount"), currentAmount: fact("current_amount"), actionAmount: fact("action_amount"),
       paidAmount: fact("paid_amount"), encumberedAmount: fact("encumbered_amount"),
       baseAmount: fact("current_amount") ?? fact("original_amount"), method: fact("method"),

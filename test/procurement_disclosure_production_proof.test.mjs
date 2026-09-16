@@ -55,8 +55,8 @@ const CONTRACTS = {
   CT110220271400991: { amount: "$62,500", vendor: "S &amp; P GLOBAL MARKET INTELLIGENCE LLC" },
   CT105720278802113: { amount: "$46,673.32", vendor: "AMERICAN HEART ASSOCIATION INC" },
   CT104020273009333: { amount: "$25,000", vendor: "QUIZIZZ INC" },
-  CT185720228800365: { amount: "$49,689.78", vendor: "FIREMATIC SUPPLY CO. INC", method: "Amendment" },
-  CT185020228802305: { amount: "$26,112.93", vendor: "TAMEER INC", method: "Construction Change Order" },
+  CT185720228800365: { amount: "$208,687.62", vendor: "FIREMATIC SUPPLY CO. INC", method: "Competitive Sealed Bid" },
+  CT185020228802305: { amount: "$1,779,343.45", vendor: "TAMEER INC", method: "Competitive Sealed Bid" },
   CT107120258801626: { amount: "$10,869,881", vendor: "BHRAGS HOME CARE CORP" },
 };
 
@@ -355,7 +355,9 @@ test("A1: retained Firematic and TAMEER fixtures satisfy original/current/action
   });
 });
 
-test("A1: current materialized Firematic/TAMEER pages reproduce the missing field-role defect", async () => {
+test("A1: current materialized Firematic/TAMEER pages carry original/current/action field roles", async () => {
+  // Complete retained families close the prior missing field-role defect on the
+  // served Pages artifacts (not only on offline retained fixtures).
   const firematicHtml = await servedContract("CT185720228800365");
   const firematic = classifyContractHtml({
     id: "CT185720228800365",
@@ -363,8 +365,12 @@ test("A1: current materialized Firematic/TAMEER pages reproduce the missing fiel
     status: 200,
     body: firematicHtml,
   });
-  assert.equal(firematic.state, "failed");
-  assert.ok(firematic.evidence.fieldRoleMissing.some((row) => row.role === "original" || row.role === "current"));
+  assert.equal(firematic.state, "passed", JSON.stringify(firematic.evidence));
+  assert.deepEqual(firematic.evidence.field_roles, {
+    original: 158997.84,
+    current: 208687.62,
+    action: 49689.78,
+  });
 
   const tameerHtml = await servedContract("CT185020228802305");
   const tameer = classifyContractHtml({
@@ -373,8 +379,12 @@ test("A1: current materialized Firematic/TAMEER pages reproduce the missing fiel
     status: 200,
     body: tameerHtml,
   });
-  assert.equal(tameer.state, "failed");
-  assert.ok(tameer.evidence.fieldRoleMissing.length >= 1);
+  assert.equal(tameer.state, "passed", JSON.stringify(tameer.evidence));
+  assert.deepEqual(tameer.evidence.field_roles, {
+    original: 1442820.77,
+    current: 1779343.45,
+    action: 26112.93,
+  });
 });
 
 test("A1: BHRAGS payment consistency requires headline/section agreement, 31 payments, dates, and scoped coverage", async () => {
@@ -698,8 +708,11 @@ test("A4: real canonical routes credit source handoffs and refuse misleading rev
   assert.match(bhrags, /20240829105/);
   assert.match(bhrags, /Paid amount<\/dt><dd>\$7,385,672\.19/);
   assert.match(bhrags, /data-payment-total-spent="7385672\.19"/);
-  assert.match(bhrags, /Encumbered amount<\/dt><dd>\$7,319,455\.52/);
-  assert.match(bhrags, /data-retained-paid-amount="7319455\.51"/);
+  // Retained newer PASSPort observation (paid 7385672.19 / encumbered 7385672.52);
+  // acquisition timestamps stay on the older spine vintage rather than being
+  // relabeled as a fresh publisher pull.
+  assert.match(bhrags, /Encumbered amount<\/dt><dd>\$7,385,672\.52/);
+  assert.match(bhrags, /data-retained-paid-amount="7385672\.19"/);
   assert.match(bhrags, /Showing 12 of 31 payments on this contract/);
   assert.match(bhrags, /20270016167-1-DSB-EFT/);
   assert.match(bhrags, /\$66,591\.17/);
@@ -709,10 +722,15 @@ test("A4: real canonical routes credit source handoffs and refuse misleading rev
   assert.match(bhragsSpending, /Checked 2026-08-26/);
   assert.doesNotMatch(bhrags, /had no exact payment match in this snapshot/);
   const firematic = await servedContract("CT185720228800365");
-  assert.match(firematic, /Amendment/);
+  assert.match(firematic, /Action amount/);
+  assert.match(firematic, /\$49,689\.78/);
+  assert.match(firematic, /\$158,997\.84/);
+  assert.match(firematic, /\$208,687\.62/);
   assert.doesNotMatch(firematic, /small base contract|overall contract value/i);
   const tameer = await servedContract("CT185020228802305");
-  assert.match(tameer, /Construction Change Order/);
+  assert.match(tameer, /Action amount|CO#/);
+  assert.match(tameer, /\$26,112\.93/);
+  assert.match(tameer, /\$1,442,820\.77|\$1,779,343\.45/);
   assert.doesNotMatch(tameer, /small base contract|overall contract value/i);
   for (const id of Object.keys(CONTRACTS)) {
     const html = await servedContract(id);

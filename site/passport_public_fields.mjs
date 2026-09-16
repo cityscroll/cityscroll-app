@@ -68,10 +68,26 @@ function stripLeadingPinTokens(value) {
   return remainder;
 }
 
+function actionLabelTitle(value) {
+  const original = text(value, 500);
+  if (!original) return null;
+  // Publisher change-order / amendment labels are code-bearing facts (CO#8 on
+  // C011, CO#11 on C010). Keep them after stripping a leading PIN token.
+  if (!/(?:^|[^A-Za-z0-9])(?:CO|CHANGE\s*ORDER|AMENDMENT)\s*#?\s*\d+/i.test(original)) {
+    return null;
+  }
+  const stripped = stripLeadingPinTokens(original);
+  const candidate = stripped || original;
+  if (!candidate || isPlaceholder(candidate) || candidate.length < 4) return null;
+  return candidate;
+}
+
 export function cleanPassportPublicTitle(value, row = {}) {
   const original = text(value, 500);
   if (!original || !/[A-Za-z]/.test(original) || original.length < 4) return null;
   if (isPlaceholder(original) || isIdentityEcho(original, row)) return null;
+  const actionLabel = actionLabelTitle(original);
+  if (actionLabel) return actionLabel;
   const stripped = stripLeadingPinTokens(original);
   const candidate = stripped && hasHumanWord(stripped) ? stripped : original;
   if (!hasHumanWord(candidate)) return null;

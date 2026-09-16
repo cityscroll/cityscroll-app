@@ -1,0 +1,88 @@
+{
+  "schema": "cityscroll.passport_retained_families_merge.v1",
+  "review_date": "2026-09-14",
+  "spine_observed_on": "2026-09-09",
+  "spine_generated_at": "2026-09-09T06:33:01.880Z",
+  "acquisition_timestamps_preserved": true,
+  "stages": {
+    "input_spine": 12782,
+    "retained_supplied": 16,
+    "admitted_missing": 13,
+    "refreshed_existing": 3,
+    "unchanged_existing": 0,
+    "excluded": 0,
+    "selected": 12795
+  },
+  "admitted_ctr_ids": [
+    "4561064",
+    "4579402",
+    "4980664",
+    "4982079",
+    "4983925",
+    "5224471",
+    "5240965",
+    "5243993",
+    "5247650",
+    "5340426",
+    "5359354",
+    "5371783",
+    "5778239"
+  ],
+  "refreshed_ctr_ids": [
+    "4618449",
+    "5050251",
+    "5372858"
+  ],
+  "unchanged_ctr_ids": [],
+  "excluded": [],
+  "replacements": [
+    {
+      "ctr_id": "5372858",
+      "fields": [
+        "title",
+        "contract_type"
+      ],
+      "prior": {
+        "title": null,
+        "contract_type": null
+      },
+      "retained": {
+        "title": "85021B0087-LBC10CDHC-CO#8",
+        "contract_type": "General Contract Revision (CTR)"
+      }
+    },
+    {
+      "ctr_id": "5050251",
+      "fields": [
+        "contract_type",
+        "encumbered_amount",
+        "paid_amount"
+      ],
+      "prior": {
+        "contract_type": null,
+        "encumbered_amount": 7319455.52,
+        "paid_amount": 7319455.51
+      },
+      "retained": {
+        "contract_type": "General Contract (CT1)",
+        "encumbered_amount": 7385672.52,
+        "paid_amount": 7385672.19
+      }
+    },
+    {
+      "ctr_id": "4618449",
+      "fields": [
+        "title",
+        "contract_type"
+      ],
+      "prior": {
+        "title": "Bid 2100089 Nozzles (Brand Specific) Amendment #1",
+        "contract_type": null
+      },
+      "retained": {
+        "title": "85721B0111-Bid 2100089 Nozzles (Brand Specific) Amendment #1",
+        "contract_type": "General Contract Revision (CTR)"
+      }
+    }
+  ]
+}

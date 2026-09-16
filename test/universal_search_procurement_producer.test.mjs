@@ -187,7 +187,12 @@ test("FIREMATIC merges all 21 retained awards with the served PASSPort-only cont
   assert.ok(passport);
   assert.equal(passport.canonical_href, FIREMATIC_FIXTURE.passport_only.canonical_href);
   assert.equal(passport.provenance.browse_record.vendor_name, FIREMATIC_FIXTURE.passport_only.vendor_name);
+  // Browse cohort amount is the base current total; vendor-search summary uses
+  // the explicit action role ($49,689.78) without collapsing the two.
   assert.equal(passport.provenance.browse_record.contract_amount, FIREMATIC_FIXTURE.passport_only.contract_amount);
+  assert.equal(passport.provenance.browse_record.action_amount, FIREMATIC_FIXTURE.passport_only.action_amount);
+  assert.equal(passport.provenance.browse_record.amount_role, FIREMATIC_FIXTURE.passport_only.amount_role);
+  assert.equal(passport.summary, "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE · FIREMATIC SUPPLY CO. INC · $49,689.78");
   const bridged = contractSearchDocumentToMoneyRow(passport);
   assert.equal(bridged.procurement_id, FIREMATIC_FIXTURE.passport_only.object_ref);
   assert.equal(bridged.canonical_href, passport.canonical_href);

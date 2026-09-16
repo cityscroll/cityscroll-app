@@ -236,3 +236,183 @@ test("accepted City Record notice hrefs reverse into the shared subject lookup",
     model.rows[0].compatibility.canonical_href,
   );
 });
+
+test("A1–A4: retained families travel incomplete spine → merge → builder → served object", async () => {
+  const {
+    applyRetainedContractFamiliesToSpine,
+    loadRetainedContractFamilies,
+    mergeRetainedPassportFamilies,
+  } = await import("../site/passport_retained_families.mjs");
+  const { projectProcurementFacts } = await import("../site/procurement_fact_projection.mjs");
+  const { procurementSourceRecordsFromMaterializations } = await import("../tools/build_shared_procurement_read_model.mjs");
+  const { contractAmountBand } = await import("../site/analytical_projection.mjs");
+  const { reconcilePassportPopulations } = await import("../worker/src/lib/passport_parse.mjs");
+
+  const retained = loadRetainedContractFamilies();
+  const byCtr = Object.fromEntries(retained.rows.map((row) => [String(row.ctr_id), row]));
+  const incompleteSpineRows = [
+    { ...byCtr["4618449"] },
+    { ...byCtr["5372858"] },
+    {
+      ...byCtr["5050251"],
+      paid_amount: 7319455.51,
+      encumbered_amount: 7319455.52,
+    },
+  ];
+  const spine = {
+    schema_version: 2,
+    observed_on: "2026-08-02",
+    generated_at: "2026-08-02T12:00:00.000Z",
+    rows: { passport_contracts: incompleteSpineRows },
+    receipts: {},
+  };
+
+  const merge = mergeRetainedPassportFamilies(incompleteSpineRows, retained.rows);
+  assert.deepEqual(merge.stages, {
+    input_spine: 3,
+    retained_supplied: 16,
+    admitted_missing: 13,
+    refreshed_existing: 1,
+    unchanged_existing: 2,
+    excluded: 0,
+    selected: 16,
+  });
+  assert.equal(merge.excluded.length, 0);
+  assert.ok(merge.admitted_ctr_ids.includes("4561064"));
+  assert.ok(merge.admitted_ctr_ids.includes("4579402"));
+  assert.ok(merge.admitted_ctr_ids.includes("5778239"));
+  assert.deepEqual(merge.refreshed_ctr_ids, ["5050251"]);
+  const bhragsReplacement = merge.replacements.find((row) => row.ctr_id === "5050251");
+  assert.equal(bhragsReplacement.prior.paid_amount, 7319455.51);
+  assert.equal(bhragsReplacement.retained.paid_amount, 7385672.19);
+  assert.equal(bhragsReplacement.prior.encumbered_amount, 7319455.52);
+  assert.equal(bhragsReplacement.retained.encumbered_amount, 7385672.52);
+
+  const applied = applyRetainedContractFamiliesToSpine(spine, retained);
+  assert.equal(applied.spine.observed_on, "2026-08-02");
+  assert.equal(applied.spine.generated_at, "2026-08-02T12:00:00.000Z");
+  assert.equal(applied.receipt.acquisition_timestamps_preserved, true);
+
+  const parsedInputIds = merge.rows.map((row) => String(row.ctr_id)).sort();
+  const selectedSpineIds = applied.spine.rows.passport_contracts.map((row) => String(row.ctr_id)).sort();
+  assert.deepEqual(selectedSpineIds, parsedInputIds);
+
+  const sourceRecords = procurementSourceRecordsFromMaterializations(
+    applied.spine,
+    { rows: [] },
+    { fixtures: [] },
+    null,
+    { retainedFamilies: null },
+  );
+  const passportRecords = sourceRecords.filter((row) => row.source_system === "passport_public_contracts");
+  assert.equal(passportRecords.length, 16);
+  const model = buildSharedProcurementReadModel({
+    sourceRecords: passportRecords,
+    lifecycleRows: [],
+    generatedAt: spine.generated_at,
+    now: spine.generated_at,
+  });
+
+  const firematic = model.rows.find((row) => row.procurement_id === "procurement:contract:CT185720228800365");
+  const tameer = model.rows.find((row) => row.procurement_id === "procurement:contract:CT185020228802305");
+  const aha = model.rows.find((row) => row.procurement_id === "procurement:contract:CT105720278802113");
+  const bhrags = model.rows.find((row) => row.procurement_id === "procurement:contract:CT107120258801626"
+    || row.identity_keys?.contract_ids?.includes("CT1-071-20258801626")
+    || row.identity_keys?.contract_ids?.includes("CT107120258801626"));
+
+  assert.ok(firematic);
+  assert.ok(tameer);
+  assert.ok(aha);
+  assert.ok(bhrags);
+
+  const observationsFor = (object) => model.observations.filter((row) => (
+    object.source_observation_refs.includes(row.source_observation_ref)
+  ));
+  const firematicObs = observationsFor(firematic);
+  assert.deepEqual(firematicObs.map((row) => row.snapshot.ctr_id).sort(), ["4561064", "4618449"]);
+  assert.deepEqual(
+    firematic.passport_action_family.actions.map((row) => row.ctr_id).sort(),
+    ["4561064", "4618449"],
+  );
+  const firematicFacts = projectProcurementFacts(firematic, firematicObs).facts;
+  assert.deepEqual({
+    original: firematicFacts.originalAmount,
+    current: firematicFacts.currentAmount,
+    action: firematicFacts.actionAmount,
+  }, {
+    original: 158997.84,
+    current: 208687.62,
+    action: 49689.78,
+  });
+
+  const tameerObs = observationsFor(tameer);
+  const tameerIds = [
+    "4579402", "4980664", "4982079", "4983925", "5224471", "5240965",
+    "5243993", "5247650", "5340426", "5359354", "5371783", "5372858",
+  ];
+  assert.deepEqual(tameerObs.map((row) => row.snapshot.ctr_id).sort(), tameerIds.slice().sort());
+  assert.match(tameerObs.find((row) => row.snapshot.epin.endsWith("C011")).snapshot.title, /CO#8/);
+  assert.match(tameerObs.find((row) => row.snapshot.epin.endsWith("C010")).snapshot.title, /CO#11/);
+  const tameerBaseFacts = projectProcurementFacts({}, [{
+    source_system: "passport_public_contracts",
+    source_observation_ref: "tameer:base",
+    snapshot: tameerObs.find((row) => row.snapshot.ctr_id === "4579402").snapshot,
+  }]).facts;
+  const tameerActionFacts = projectProcurementFacts({}, [{
+    source_system: "passport_public_contracts",
+    source_observation_ref: "tameer:action",
+    snapshot: tameerObs.find((row) => row.snapshot.ctr_id === "5372858").snapshot,
+  }]).facts;
+  assert.deepEqual({
+    original: tameerBaseFacts.originalAmount,
+    current: tameerBaseFacts.currentAmount,
+    action: tameerActionFacts.actionAmount,
+  }, {
+    original: 1442820.77,
+    current: 1779343.45,
+    action: 26112.93,
+  });
+  assert.equal(contractAmountBand(tameerBaseFacts.baseAmount), "$1 million–$9.99 million");
+  assert.notEqual(contractAmountBand(tameerActionFacts.actionAmount), contractAmountBand(tameerBaseFacts.baseAmount));
+
+  const ahaObs = observationsFor(aha);
+  assert.deepEqual(ahaObs.map((row) => row.snapshot.ctr_id), ["5778239"]);
+  assert.equal(ahaObs[0].snapshot.contract_id, "CT1-057-20278802113");
+  assert.match(ahaObs[0].snapshot.title, /AHA MATERIALS FOR TRAINING/);
+  assert.equal(ahaObs[0].snapshot.program, "EMS ACADEMY (EMS TRAINING FT TOTTEN)");
+  assert.equal(ahaObs[0].snapshot.procurement_method, "Subscription");
+  assert.equal(ahaObs[0].snapshot.current_amount, 46673.32);
+
+  const bhragsObs = observationsFor(bhrags).find((row) => row.source_system === "passport_public_contracts");
+  assert.equal(bhragsObs.snapshot.paid_amount, 7385672.19);
+  assert.equal(bhragsObs.snapshot.encumbered_amount, 7385672.52);
+  assert.equal(bhragsObs.ingested_at, "2026-08-02T12:00:00.000Z");
+
+  const servedIds = model.observations
+    .filter((row) => row.source_system === "passport_public_contracts")
+    .map((row) => row.snapshot.ctr_id)
+    .sort();
+  assert.deepEqual(servedIds, selectedSpineIds);
+
+  assert.deepEqual(reconcilePassportPopulations({
+    rawRows: retained.rows,
+    parsedRows: retained.rows,
+    excludedRows: merge.excluded.map((row) => ({ ...row, reason: row.reason })),
+    rejectedRows: [],
+    selectedRows: applied.spine.rows.passport_contracts,
+    servedRows: model.observations.filter((row) => row.source_system === "passport_public_contracts"),
+  }), {
+    raw: 16,
+    parsed: 16,
+    excluded: 0,
+    rejected: 0,
+    selected: 16,
+    served: 16,
+    reconciliation: {
+      raw_to_parsed: "16/16",
+      parsed_to_selected: "16/16",
+      selected_to_served: "16/16",
+      note: "stage populations are reported separately; no portal-entry equivalence is inferred",
+    },
+  });
+});
