@@ -3036,6 +3036,7 @@
     search_recent_removed_status: "সাম্প্রতিক অনুসন্ধান থেকে {query} সরানো হয়েছে।",
     search_recent_cleared_status: "সাম্প্রতিক অনুসন্ধান মুছে ফেলা হয়েছে।",
     pin_btn: "পিন করুন",
+    more_tools: "আরও সরঞ্জাম",
     pinned_open_inv: "✓ পিন করা হয়েছে — অনুসন্ধান খুলুন ({n})",
     total_awarded_lbl: "মোট প্রদত্ত,<br>নথিভুক্ত",
     awards_published_lbl: "প্রকাশিত<br>চুক্তি প্রদান",

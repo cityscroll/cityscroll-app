@@ -3043,6 +3043,7 @@
     search_recent_removed_status: "حالیہ تلاشوں سے {query} ہٹا دیا گیا۔",
     search_recent_cleared_status: "حالیہ تلاشیں صاف کر دی گئیں۔",
     pin_btn: "پن کریں",
+    more_tools: "مزید ٹولز",
     pinned_open_inv: "✓ پن ہو گیا — تحقیقات کھولیں ({n})",
     total_awarded_lbl: "کل ایوارڈ شدہ رقم،<br>ریکارڈ پر",
     awards_published_lbl: "شائع شدہ<br>ٹھیکے کے ایوارڈز",

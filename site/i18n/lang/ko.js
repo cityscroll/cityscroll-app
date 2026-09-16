@@ -3035,6 +3035,7 @@
     search_recent_removed_status: "최근 검색에서 {query}을(를) 삭제했습니다.",
     search_recent_cleared_status: "최근 검색을 지웠습니다.",
     pin_btn: "고정",
+    more_tools: "추가 도구",
     pinned_open_inv: "✓ 고정됨 — 조사 열기 ({n})",
     total_awarded_lbl: "기록된<br>총 낙찰 금액",
     awards_published_lbl: "발행된<br>계약 낙찰",

@@ -3041,6 +3041,7 @@
     search_recent_removed_status: "Запрос «{query}» удалён из недавних.",
     search_recent_cleared_status: "Недавние запросы очищены.",
     pin_btn: "Закрепить",
+    more_tools: "Другие инструменты",
     pinned_open_inv: "✓ Закреплено — открыть расследование ({n})",
     total_awarded_lbl: "общая сумма присуждения контрактов,<br>по имеющимся данным",
     awards_published_lbl: "опубликованных<br>присуждений контрактов",
