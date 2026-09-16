@@ -70,6 +70,22 @@ function contractIdsFromObject(object = {}) {
   return ids;
 }
 
+function objectObservationRefs(object = {}) {
+  return new Set(
+    (Array.isArray(object?.source_observation_refs) ? object.source_observation_refs : [])
+      .map((value) => text(value))
+      .filter(Boolean),
+  );
+}
+
+function observationsForObject(object = {}, observations = []) {
+  const refs = objectObservationRefs(object);
+  if (!refs.size) return [];
+  return (Array.isArray(observations) ? observations : []).filter((observation) => (
+    refs.has(text(observation?.source_observation_ref))
+  ));
+}
+
 function noticeRequestIdsFromObject(object = {}, observations = []) {
   const ids = new Set();
   for (const href of object?.compatibility?.city_record_notice_hrefs || []) {
@@ -78,7 +94,13 @@ function noticeRequestIdsFromObject(object = {}, observations = []) {
       try { ids.add(decodeURIComponent(match[1])); } catch { ids.add(match[1]); }
     }
   }
-  for (const observation of Array.isArray(observations) ? observations : []) {
+  for (const ref of objectObservationRefs(object)) {
+    const match = String(ref).match(/^city_record:(.+)$/);
+    if (match?.[1]) ids.add(match[1]);
+  }
+  // Only observations that belong to this object may contribute notice ids.
+  // Shard payloads carry many contracts' observations in one array.
+  for (const observation of observationsForObject(object, observations)) {
     const system = String(observation?.source_system || "").toLowerCase();
     if (!["city_record", "city_record_procurement", "crol"].includes(system)) continue;
     const snapshot = observation?.snapshot && typeof observation.snapshot === "object"
@@ -86,10 +108,6 @@ function noticeRequestIdsFromObject(object = {}, observations = []) {
       : {};
     const requestId = text(snapshot.request_id || observation.source_system_id);
     if (requestId) ids.add(requestId);
-  }
-  for (const ref of object?.source_observation_refs || []) {
-    const match = String(ref).match(/^city_record:(.+)$/);
-    if (match?.[1]) ids.add(match[1]);
   }
   return ids;
 }
@@ -132,7 +150,8 @@ export function hasExactContractPaymentEvidence(lifecycle) {
 /**
  * Resolve the exact-contract lifecycle for one procurement object.
  * Prefers an already-attached object.lifecycle, then the materialization row
- * keyed by exact contract id or accepted notice request id.
+ * keyed by exact contract id. Notice-id fallback only applies when the notice
+ * is already an accepted relation on this object.
  */
 export function contractLifecycleForProcurement(
   object = {},
@@ -140,7 +159,9 @@ export function contractLifecycleForProcurement(
   materialization = null,
 ) {
   if (object?.lifecycle && typeof object.lifecycle === "object") {
-    return object.lifecycle;
+    const attachedId = lifecycleContractId(object.lifecycle);
+    const contractIds = contractIdsFromObject(object);
+    if (!attachedId || contractIds.has(attachedId)) return object.lifecycle;
   }
   if (!lifecycleMaterializationAccepted(materialization)) return null;
   const contractIds = contractIdsFromObject(object);
@@ -151,9 +172,14 @@ export function contractLifecycleForProcurement(
     return id && contractIds.has(id);
   });
   if (byContract) return byContract;
+  if (!contractIds.size) return null;
   return rows.find((row) => {
     const noticeId = lifecycleNoticeId(row);
-    return noticeId && noticeIds.has(noticeId);
+    const rowContractId = lifecycleContractId(row);
+    return noticeId
+      && noticeIds.has(noticeId)
+      && rowContractId
+      && contractIds.has(rowContractId);
   }) || null;
 }
 
@@ -210,7 +236,7 @@ export function placeFactsForProcurement(
         request_id: requestId,
         source_system: text(row.source_system) || "city_record",
         evidence_role: text(row.evidence_role) || "facility_service_site",
-        attribution_label: text(row.attribution_label) || `City Record notice ${requestId}`,
+        attribution_label: text(row.attribution_label) || `Notice ${requestId}`,
         notice_href: text(row.notice_href) || `/notices/${encodeURIComponent(requestId)}`,
         official_href: text(row.official_href)
           || `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(requestId)}`,
@@ -221,7 +247,7 @@ export function placeFactsForProcurement(
   }
 
   if (!facts.length) {
-    for (const observation of Array.isArray(observations) ? observations : []) {
+    for (const observation of observationsForObject(object, observations)) {
       const system = String(observation?.source_system || "").toLowerCase();
       if (!["city_record", "city_record_procurement", "crol"].includes(system)) continue;
       const snapshot = observation?.snapshot && typeof observation.snapshot === "object"
@@ -242,7 +268,7 @@ export function placeFactsForProcurement(
         request_id: requestId,
         source_system: "city_record",
         evidence_role: "facility_service_site",
-        attribution_label: `City Record notice ${requestId}`,
+        attribution_label: `Notice ${requestId}`,
         notice_href: `/notices/${encodeURIComponent(requestId)}`,
         official_href: `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(requestId)}`,
         source_observation_ref: text(observation.source_observation_ref) || `city_record:${requestId}`,
@@ -304,12 +330,12 @@ export function renderProcurementPlaceFactsHtml(placeFacts = []) {
   if (!rows.length) return "";
   const items = rows.map((fact) => {
     const attribution = fact.notice_href
-      ? `<a href="${esc(fact.notice_href)}">${esc(fact.attribution_label || `City Record notice ${fact.request_id}`)}</a>`
-      : esc(fact.attribution_label || `City Record notice ${fact.request_id}`);
+      ? `<a href="${esc(fact.notice_href)}">${esc(fact.attribution_label || `Notice ${fact.request_id}`)}</a>`
+      : esc(fact.attribution_label || `Notice ${fact.request_id}`);
     const official = fact.official_href
-      ? ` · <a href="${esc(fact.official_href)}" rel="noopener noreferrer">Official notice</a>`
+      ? ` · <a href="${esc(fact.official_href)}" rel="noopener noreferrer">Official source</a>`
       : "";
-    return `<li data-place-request-id="${esc(fact.request_id)}" data-place-role="${esc(fact.evidence_role)}"><strong>${esc(fact.address)}</strong> · ${esc(String(fact.units))} units<span class="procurement-place-attribution"> · Attributed to ${attribution}${official}</span></li>`;
+    return `<li data-place-request-id="${esc(fact.request_id)}" data-place-role="${esc(fact.evidence_role)}"><strong>${esc(fact.address)}</strong> · ${esc(String(fact.units))} units<span class="procurement-place-attribution"> · Source ${attribution}${official}</span></li>`;
   }).join("");
   return `<section class="node-section node-card procurement-place-facts" data-procurement-place-facts="1" aria-labelledby="procurement-place-heading"><h2 id="procurement-place-heading">Facility</h2><ul class="procurement-place-list">${items}</ul></section>`;
 }

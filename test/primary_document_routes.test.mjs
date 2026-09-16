@@ -395,7 +395,10 @@ test("canonical procurement route shows exact-contract payments and notice place
     assert.match(html, /data-procurement-place-facts="1"/);
     assert.match(html, /3218 Emmons Avenue, Brooklyn/);
     assert.match(html, /60 units/);
-    assert.match(html, /City Record notice 20240829105/);
+    assert.match(html, /Notice 20240829105/);
+    const placeSection = html.match(/data-procurement-place-facts="1"[\s\S]*?<\/section>/)?.[0] || "";
+    assert.match(placeSection, /3218 Emmons Avenue, Brooklyn/);
+    assert.doesNotMatch(placeSection, /City Record notice/);
     assert.match(html, /Original contract amount<\/dt><dd>\$10,869,881/);
     assert.match(html, /Current contract total<\/dt><dd>\$10,869,881/);
     assert.match(html, /Contract start<\/dt><dd>2023-10-11/);
