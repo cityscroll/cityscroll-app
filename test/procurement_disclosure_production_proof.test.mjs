@@ -698,8 +698,11 @@ test("A4: real canonical routes credit source handoffs and refuse misleading rev
   assert.match(bhrags, /20240829105/);
   assert.match(bhrags, /Paid amount<\/dt><dd>\$7,385,672\.19/);
   assert.match(bhrags, /data-payment-total-spent="7385672\.19"/);
-  assert.match(bhrags, /Encumbered amount<\/dt><dd>\$7,319,455\.52/);
-  assert.match(bhrags, /data-retained-paid-amount="7319455\.51"/);
+  // Retained newer PASSPort observation (paid 7385672.19 / encumbered 7385672.52);
+  // acquisition timestamps stay on the older spine vintage rather than being
+  // relabeled as a fresh publisher pull.
+  assert.match(bhrags, /Encumbered amount<\/dt><dd>\$7,385,672\.52/);
+  assert.match(bhrags, /data-retained-paid-amount="7385672\.19"/);
   assert.match(bhrags, /Showing 12 of 31 payments on this contract/);
   assert.match(bhrags, /20270016167-1-DSB-EFT/);
   assert.match(bhrags, /\$66,591\.17/);
