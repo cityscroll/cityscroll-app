@@ -400,6 +400,29 @@ export function buildOutputs() {
   return { topology, catalog, apiCapabilityCatalog, renderedApiHtml };
 }
 
+export async function validateDiscoveryProjection({
+  mcpToolNames = MCP_TOOLS.map(({ name }) => name),
+} = {}) {
+  const [{ validateDiscoveryContract, pageFamilySurfaceIds }, performanceManifest] = await Promise.all([
+    import("../site/capability_discovery_contract.mjs"),
+    Promise.resolve(JSON.parse(readFileSync(join(ROOT, "site/data/performance-classification-manifest.v1.json"), "utf8"))),
+  ]);
+  const publishedSurfaceIds = performanceManifest.surfaces.map((surface) => surface.surface_id);
+  const result = validateDiscoveryContract({
+    publishedSurfaceIds,
+    mcpToolNames,
+    chromeSource: readFileSync(join(ROOT, "site/civic_document_chrome.mjs"), "utf8"),
+    analyticsSource: readFileSync(join(ROOT, "site/analytics.js"), "utf8"),
+  });
+  if (!result.ok) {
+    throw new Error(`capability discovery contract failed: ${result.problems.join("; ")}`);
+  }
+  if (pageFamilySurfaceIds().length !== publishedSurfaceIds.length) {
+    throw new Error("capability discovery census size drifted from the published surface registry");
+  }
+  return result;
+}
+
 export function writeOrCheckCapabilityTopology({ check = false } = {}) {
   const outputs = buildOutputs();
   const i18n = readFileSync(I18N_PATH, "utf8");
@@ -431,9 +454,11 @@ if (invokedPath === fileURLToPath(import.meta.url)) {
     if (stdout) process.stdout.write(serialize(buildCapabilityTopology()));
     if (check) {
       writeOrCheckCapabilityTopology({ check: true });
-      if (!stdout) process.stdout.write("capability topology, API catalog, and MCP catalog are current\n");
+      await validateDiscoveryProjection();
+      if (!stdout) process.stdout.write("capability topology, API catalog, MCP catalog, and discovery contract are current\n");
     } else if (!stdout) {
       writeOrCheckCapabilityTopology();
+      await validateDiscoveryProjection();
       process.stdout.write("wrote capability topology, API catalog, and MCP catalog\n");
     }
   } catch (error) {

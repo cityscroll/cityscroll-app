@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c38befac14290",
+  "status": "implemented",
+  "fingerprint": "public-capability-entrance-contract.v1",
+  "updated_at": "2026-09-16T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "capability-discovery-contract",
+      "path": "site/capability_discovery_contract.mjs"
+    },
+    {
+      "id": "capability-discovery-tests",
+      "path": "test/capability_discovery.test.mjs"
+    },
+    {
+      "id": "live-mcp-canary",
+      "path": "tools/verify_live_remote_mcp_canary.mjs"
+    },
+    {
+      "id": "hosted-client-compatibility-evidence",
+      "path": "docs/evidence/assistant-discovery-live-proof/hosted-client-compatibility.json"
+    },
+    {
+      "id": "capability-discovery-functional",
+      "path": "test/functional/capability_discovery.py"
+    }
+  ]
+}

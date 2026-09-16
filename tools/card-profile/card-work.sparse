@@ -263,6 +263,7 @@
 /site/calendar_occurrence.mjs
 /site/calendar_subscription.mjs
 /site/canonical_entity_interpretation.mjs
+/site/capability_discovery_contract.mjs
 /site/cardinality_adaptive_facets.mjs
 /site/changelog-data.json
 /site/changelog.html

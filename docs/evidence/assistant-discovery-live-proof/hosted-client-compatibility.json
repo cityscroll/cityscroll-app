@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.hosted_client_compatibility_evidence.v1",
+  "id": "assistant-discovery-live-proof/hosted-client-compatibility",
+  "updated_at": "2026-09-16T00:00:00.000Z",
+  "grounded_at": "f3bce6ef485e7f7da1d0b818da22e129b1bb0d3b",
+  "public_introduction": "/use-with-ai/",
+  "mcp_endpoint": "https://api.cityscroll.org/mcp",
+  "claims": [
+    {
+      "client": "Claude Code",
+      "installation_path": "manual_cli",
+      "advertised_command": "claude mcp add --transport http cityscroll https://api.cityscroll.org/mcp",
+      "one_click_verified_in_hosted_client": false,
+      "compatibility_status": "manual_instructions_only",
+      "evidence_class": "local_contract",
+      "notes": "Official Claude Code MCP documentation is cited on the introduction page. This repository has not completed a logged-in hosted Claude session that installs the connector and finishes a cited record journey, so one-click or hosted-session success is not claimed."
+    },
+    {
+      "client": "Generic Streamable HTTP MCP client",
+      "installation_path": "manual_remote_http",
+      "one_click_verified_in_hosted_client": false,
+      "compatibility_status": "protocol_verified_unauthenticated",
+      "evidence_class": "external_live_endpoint",
+      "notes": "Unauthenticated initialize, tools/list, contract/land reads, and cited-passage retrieval are exercised by tools/verify_live_remote_mcp_canary.mjs against the deployed public endpoint. That is protocol and routing evidence, not proof that a particular vendor's hosted UI completed the journey."
+    }
+  ],
+  "forbidden_claims": [
+    "fabricated_login_or_session_success",
+    "user_interview_as_shipping_gate",
+    "real_watch_creation_during_checks",
+    "broad_cloudflare_protection_weakening_for_canary"
+  ]
+}
