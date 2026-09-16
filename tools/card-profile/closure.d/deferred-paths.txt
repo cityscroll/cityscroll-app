@@ -153,6 +153,7 @@ site/data/nycha_award_sources/verification_receipts/nycha_awards_2026-08-01.json
 site/data/official_cfb_influence_lookup.json
 site/data/official_committee_memberships_lookup.json
 site/data/official_lobby_influence_lookup.json
+site/data/passport_sources/retained_contract_families.json
 site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json
 site/data/passport_sources/verification_receipts/passport_rfx_documents_2026-07-30.json
 site/data/payroll_title_warehouse_lookup.json
