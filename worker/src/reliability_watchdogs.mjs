@@ -760,6 +760,7 @@ export async function emitOpsAlertOnce(env, input = {}) {
   const prior = await readJson(env?.ALERT_STATE, alertKey);
   const firstSeen = prior?.first_seen || input.first_seen || now.toISOString();
   const lastSeen = input.last_seen || now.toISOString();
+  const notification = opsNotificationDecision(input, now);
   const record = {
     schema: "cityscroll.ops-alert-signature.v1",
     signature,
@@ -777,7 +778,13 @@ export async function emitOpsAlertOnce(env, input = {}) {
     emergency_sent_at: prior?.emergency_sent_at || null,
     rollup_day: prior?.rollup_day || null,
     delivery_finding: prior?.delivery_finding || null,
-    notification: opsNotificationDecision(input, now),
+    notification,
+    confirmed_emergency: prior?.confirmed_emergency || (notification.email ? {
+      impact: notification.impact,
+      action: notification.action,
+      evidence_url: notification.evidence_url,
+      verified_at: notification.verified_at,
+    } : null),
     decision_context: guard === REPAIR_JUDGMENT_GUARD ? String(input.paragraph || "").slice(0, 2500) : null,
   };
   if (EVIDENCE_REQUIRED_GUARDS.includes(guard)) {

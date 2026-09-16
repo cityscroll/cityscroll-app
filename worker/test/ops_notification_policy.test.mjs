@@ -24,7 +24,11 @@ test('silent finding can escalate once; failed sends retry and accepted emergenc
   assert.equal((await emitOpsAlertOnce(env,input)).sent,true);
   assert.equal((await emitOpsAlertOnce(env,input)).sent,false);
   const tomorrow=new Date('2026-09-17T12:00:00Z');
-  assert.equal((await emitOpsAlertOnce(env,{...input,now:tomorrow,emergency:{...emergency,verified_at:tomorrow.toISOString()}})).sent,false);
+  const stale=await emitOpsAlertOnce(env,{...input,now:tomorrow});
+  assert.equal(stale.sent,false);
+  assert.equal(stale.record.notification.reason,'desk-only');
+  assert.deepEqual(stale.record.confirmed_emergency,{impact:emergency.impact,action:emergency.action,evidence_url:emergency.evidence_url,verified_at:emergency.verified_at});
+  assert.equal(stale.record.emergency_sent_at,now.toISOString());
   assert.equal(calls,2);
- }finally{globalThis.fetch=previous}
+}finally{globalThis.fetch=previous}
 });

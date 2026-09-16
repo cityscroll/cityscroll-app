@@ -866,6 +866,7 @@ test("A5 the monitor's own words still retire and reopen exactly as they did", a
   const closed = await recoverRepairItem(env, signature, { now: at("2026-09-01T13:00:00Z") });
   assert.equal(closed.ok, true);
   assert.equal(closed.item.result.outcome, "recovered");
+  assert.deepEqual(closed.item.outcome_history.map((row) => row.outcome), ["recovered"]);
 
   // The condition comes back. A recovered item reopens; an unkeyable one would not.
   const again = await upsertRepairItem(env, {
@@ -877,6 +878,11 @@ test("A5 the monitor's own words still retire and reopen exactly as they did", a
   assert.equal(again.item.state, "queued");
   assert.equal(again.item.repeat_count, 2);
   assert.equal(again.item.first_seen, "2026-09-01T12:00:20.000Z");
+  assert.equal(again.item.result, null);
+  assert.deepEqual(again.item.outcome_history.map((row) => row.outcome), ["recovered"]);
+  const projection = await readRepairQueue(env, { now: at("2026-09-01T14:00:01Z") });
+  assert.deepEqual(projection.items[0].outcome_history, again.item.outcome_history);
+  assert.deepEqual(projection.completed_items, []);
 });
 
 /* --------------------------------------------------------------------------

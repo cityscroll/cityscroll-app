@@ -27,6 +27,7 @@ export const REPAIR_QUEUE_INDEX_KEY = "ops:repair:index:v1";
 export const REPAIR_QUEUE_ITEM_PREFIX = "ops:repair:item:";
 export const REPAIR_QUEUE_LIMIT = 50;
 export const REPAIR_QUEUE_RETIRED_LIMIT = 100;
+export const REPAIR_OUTCOME_HISTORY_LIMIT = 20;
 export const REPAIR_CONTEXT_FINDING_LIMIT = 5;
 export const REPAIR_TEXT_LIMIT = 200;
 export const REPAIR_LINK_LIMIT = 300;
@@ -157,13 +158,19 @@ export function normalizeRepairItem(raw) {
     acquired_at: isoOr(raw.lease.acquired_at, null),
     expires_at: isoOr(raw.lease.expires_at, null),
   } : null;
-  const result = raw.result && typeof raw.result === "object" ? {
-    outcome: REPAIR_RESULT_OUTCOMES.includes(raw.result.outcome) ? raw.result.outcome : "failed",
-    observed_at: isoOr(raw.result.observed_at, null),
-    summary: sanitizeText(raw.result.summary),
-    run_url: sanitizeLink(raw.result.run_url),
-    receipt_url: sanitizeLink(raw.result.receipt_url),
+  const normalizeResult = (value) => value && typeof value === "object" ? {
+    outcome: REPAIR_RESULT_OUTCOMES.includes(value.outcome) ? value.outcome : "failed",
+    observed_at: isoOr(value.observed_at, null),
+    summary: sanitizeText(value.summary),
+    run_url: sanitizeLink(value.run_url),
+    receipt_url: sanitizeLink(value.receipt_url),
   } : null;
+  const result = normalizeResult(raw.result);
+  const storedHistory = Array.isArray(raw.outcome_history)
+    ? raw.outcome_history.map(normalizeResult).filter((value) => value?.observed_at)
+    : [];
+  const outcomeHistory = (storedHistory.length ? storedHistory : (result?.observed_at ? [result] : []))
+    .slice(0, REPAIR_OUTCOME_HISTORY_LIMIT);
   return {
     schema: REPAIR_QUEUE_ITEM_SCHEMA,
     version: REPAIR_QUEUE_VERSION,
@@ -185,6 +192,7 @@ export function normalizeRepairItem(raw) {
     lease: state === "leased" ? lease : null,
     attempts: Number.isFinite(Number(raw.attempts)) && Number(raw.attempts) > 0 ? Math.floor(Number(raw.attempts)) : 0,
     result,
+    outcome_history: outcomeHistory,
     judgment_reason: sanitizeText(raw.judgment_reason) || null,
     first_deferred_at: isoOr(raw.first_deferred_at, null),
     consecutive_deferrals: Number.isFinite(Number(raw.consecutive_deferrals))
@@ -360,6 +368,7 @@ export async function upsertRepairItem(env, input = {}, { now = new Date(), hear
     first_deferred_at: prior?.state === "repaired" ? null : prior?.first_deferred_at,
     consecutive_deferrals: prior?.state === "repaired" ? 0 : prior?.consecutive_deferrals,
     result: reopen ? null : (prior?.result || null),
+    outcome_history: prior?.outcome_history || [],
     judgment_reason: reopen ? null : (prior?.judgment_reason || null),
     created_at: prior?.created_at || firstSeen,
     updated_at: now.toISOString(),
@@ -513,6 +522,7 @@ export async function completeRepairItem(env, report = {}, { now = new Date() } 
     state,
     lease: null,
     result,
+    outcome_history: [result, ...item.outcome_history],
     first_deferred_at: firstDeferredAt,
     consecutive_deferrals: consecutiveDeferrals,
     // A completed upstream check did not spend a failed local repair attempt.
@@ -579,6 +589,13 @@ export async function recoverRepairItem(env, signature, { now = new Date(), reas
       run_url: item.latest_run_url,
       receipt_url: item.latest_receipt_url,
     },
+    outcome_history: [{
+      outcome: "recovered",
+      observed_at: now.toISOString(),
+      summary: sanitizeText(reason) || "the monitor that reported this condition no longer observes it",
+      run_url: item.latest_run_url,
+      receipt_url: item.latest_receipt_url,
+    }, ...item.outcome_history],
     updated_at: now.toISOString(),
   });
   await persistItem(env, next, { retire: true });
