@@ -22,6 +22,14 @@ export const FIRST_CLASS_STATES = Object.freeze([
   "unavailable",
 ]);
 
+/** Per-artifact production gate. `block` fails the deploy check; `report_only` keeps serving last-known-good and records the surface without failing the build. */
+export const PRODUCTION_FRESHNESS_GATES = Object.freeze(["block", "report_only"]);
+
+export function productionFreshnessGate(artifact) {
+  const gate = artifact?.production_freshness_gate;
+  return PRODUCTION_FRESHNESS_GATES.includes(gate) ? gate : "block";
+}
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CONTRACTS_PATH = join(ROOT, "site/data/source_contracts.json");
 const OBSERVATIONS_PATH = join(ROOT, "site/data/source_health_observations.json");
@@ -190,6 +198,10 @@ export function validateFirstClassRefreshContracts(registry, options = {}) {
     ]) {
       if (!String(artifact?.[field] || "").trim()) errors.push(`${label}: missing ${field}`);
     }
+    if (artifact?.production_freshness_gate != null
+      && !PRODUCTION_FRESHNESS_GATES.includes(artifact.production_freshness_gate)) {
+      errors.push(`${label}: production_freshness_gate must be one of ${PRODUCTION_FRESHNESS_GATES.join(", ")}`);
+    }
     if (!Array.isArray(artifact?.primary_routes) || !artifact.primary_routes.length) {
       errors.push(`${label}: primary_routes must be non-empty`);
     } else {
@@ -342,6 +354,7 @@ export function buildFirstClassFreshnessReport(registry, options = {}) {
       complete_for_empty_claim: freshnessState === "fresh_empty",
       owning_builder: artifact.owning_builder,
       production_evidence_field: artifact.production_evidence_field,
+      production_freshness_gate: productionFreshnessGate(artifact),
       source_health_status: sourceHealth,
       disclosure,
     };
@@ -350,13 +363,17 @@ export function buildFirstClassFreshnessReport(registry, options = {}) {
     state,
     surfaces.filter((surface) => surface.freshness_state === state).length,
   ]));
+  const blockingFailures = surfaces.filter((surface) => (
+    surface.production_freshness_gate === "block"
+    && ["stale", "unavailable"].includes(surface.freshness_state)
+  )).length;
   return {
     schema: FIRST_CLASS_REPORT_SCHEMA,
     generated_at: now,
     deployment_identity: options.deploymentIdentity || null,
     registry: "site/data/source_contracts.json#first_class_artifacts",
     surface_count: surfaces.length,
-    status: counts.stale || counts.unavailable ? "blocked" : counts.degraded ? "degraded" : "current",
+    status: blockingFailures ? "blocked" : counts.degraded || counts.stale || counts.unavailable ? "degraded" : "current",
     counts,
     surfaces,
   };
@@ -364,6 +381,7 @@ export function buildFirstClassFreshnessReport(registry, options = {}) {
 
 export function productionFreshnessFindings(report) {
   return (report?.surfaces || [])
+    .filter((surface) => surface.production_freshness_gate !== "report_only")
     .filter((surface) => ["stale", "unavailable"].includes(surface.freshness_state))
     .map((surface) => `${surface.public_artifact_path}: ${surface.freshness_state} first-class artifact (vintage ${surface.source_vintage || "unknown"})`);
 }

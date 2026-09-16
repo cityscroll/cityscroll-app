@@ -38,7 +38,11 @@ async function refresh() {
   const agendaUrl = new URL(agendaMatch[0].replaceAll("&amp;", "&"), UPCOMING_URL).href;
   const pdfResponse = await fetchResponse(agendaUrl, "application/pdf");
   const text = extractPdfCalendarText(new Uint8Array(await pdfResponse.arrayBuffer()));
-  if (!text.trim()) throw new Error("BSA agenda PDF produced no extractable text");
+  if (!text.trim()) {
+    throw new Error(
+      "BSA agenda PDF produced no extractable text (FlateDecode streams need pdftotext/poppler-utils; do not invent OCR text)",
+    );
+  }
   const registrationLinks = uniqueRegistrationLinks(pageHtml);
   const pages = text.split("\f").map((pageText, index) => ({
     page: index + 1,

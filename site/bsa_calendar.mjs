@@ -26,6 +26,35 @@ function dateFromHeading(value) {
   return `${match[3]}-${String(MONTHS[match[1].toLowerCase()]).padStart(2, "0")}-${String(match[2]).padStart(2, "0")}`;
 }
 
+const MONTH_DAY_YEAR = "(January|February|March|April|May|June|July|August|September|October|November|December)\\s+(\\d{1,2})(?:st|nd|rd|th)?\\s*,?\\s*(\\d{4})";
+const WEEKDAY_PREFIX = "(?:Monday|Tuesday|Wednesday|Thursday|Friday)?\\s*,?\\s*";
+const CLOCK_TIME = "\\d{1,2}:\\d{2}\\s*(?:A\\.?M\\.?|P\\.?M\\.?)";
+
+/**
+ * Prefer the hearing-header date (Month Day, Year followed by a clock time).
+ * Skip "Notice published …" evidence times and page-footer publication dates
+ * that lack a session clock (e.g. "September 9, 2026  22 READE STREET").
+ */
+function sessionDateMatch(text) {
+  const cleaned = clean(text);
+  const timed = new RegExp(`${WEEKDAY_PREFIX}${MONTH_DAY_YEAR}(?=\\s*,?\\s*${CLOCK_TIME})`, "gi");
+  for (const match of cleaned.matchAll(timed)) {
+    const prefix = cleaned.slice(Math.max(0, match.index - 48), match.index);
+    if (/Notice\s+published\b/i.test(prefix)) continue;
+    return match;
+  }
+  const bare = new RegExp(`${WEEKDAY_PREFIX}${MONTH_DAY_YEAR}`, "gi");
+  for (const match of cleaned.matchAll(bare)) {
+    const prefix = cleaned.slice(Math.max(0, match.index - 48), match.index);
+    const suffix = cleaned.slice(match.index + match[0].length, match.index + match[0].length + 48);
+    if (/Notice\s+published\b/i.test(prefix)) continue;
+    if (/22\s+READE\s+STREET/i.test(suffix)) continue;
+    if (/^\s*\d+\s*\/\s*\d+\b/.test(suffix)) continue;
+    return match;
+  }
+  return null;
+}
+
 function sectionRole(value) {
   const text = clean(value).toUpperCase();
   if (/ADJOURN/.test(text)) return "adjournments";
@@ -80,12 +109,13 @@ export function parseBsaAgendaPages({ pages = [], notice = {}, publication_date 
   const sections = [];
   let active = null;
   for (const page of pages) {
-    const text = clean(page?.text || page?.html);
-    const matches = [...text.matchAll(/(?:Monday|Tuesday|Wednesday|Thursday|Friday)?\s*,?\s*(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})(?:st|nd|rd|th)?\s*,?\s*(\d{4})/gi)];
-    if (matches.length) {
-      const date = dateFromHeading(matches.at(-1)[0]);
+    const rawText = page?.text || page?.html;
+    const text = clean(rawText);
+    const match = sessionDateMatch(rawText);
+    if (match) {
+      const date = dateFromHeading(match[0]);
       if (date && !sections.some((section) => section.date === date)) {
-        active = { date, text: "", pages: [], source_span: { page: page.page || page.number || null, start: matches.at(-1).index, end: text.length }, source_url: page.source_url || null };
+        active = { date, text: "", pages: [], source_span: { page: page.page || page.number || null, start: match.index, end: text.length }, source_url: page.source_url || null };
         sections.push(active);
       } else {
         active = sections.find((section) => section.date === date) || active;

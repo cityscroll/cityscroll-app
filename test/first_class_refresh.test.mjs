@@ -220,9 +220,56 @@ test("fresh, genuinely empty, degraded LKG, stale, and unavailable remain distin
       "site/data/stale.json",
       "site/data/unavailable.json",
     ]);
+    assert.equal(report.status, "blocked");
     assert.equal(report.deployment_identity, "release-1");
     assert.ok(report.surfaces.every((row) => row.public_artifact_path && row.source_vintage !== undefined && row.owning_builder));
+    assert.ok(report.surfaces.every((row) => row.production_freshness_gate === "block"));
   });
+});
+
+test("report_only production_freshness_gate keeps a stale surface visible without failing the production gate", async () => {
+  const registry = canonical();
+  const bsa = registry.first_class_artifacts.find((row) => row.id === "bsa-calendar");
+  assert.equal(bsa.production_freshness_gate, "report_only");
+
+  await withTempDir("report-only-gate", async (root) => {
+    const write = (path, value) => {
+      const target = join(root, path);
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, JSON.stringify(value));
+    };
+    const blocking = artifact("blocking-stale", "site/data/blocking.json");
+    const reported = {
+      ...artifact("reported-stale", "site/data/reported.json"),
+      production_freshness_gate: "report_only",
+      hard_maximum_age_hours: 24,
+      warning_age_hours: 12,
+    };
+    write(blocking.public_artifact_path, { generated_at: "2026-08-01T00:00:00.000Z", rows: [{}] });
+    write(reported.public_artifact_path, { generated_at: "2026-08-01T00:00:00.000Z", rows: [{}] });
+    const withBlocking = buildFirstClassFreshnessReport(
+      { first_class_artifacts: [blocking, reported] },
+      { root, now: "2026-09-16T00:00:00.000Z" },
+    );
+    assert.equal(withBlocking.surfaces.find((row) => row.id === "reported-stale").freshness_state, "stale");
+    assert.equal(withBlocking.surfaces.find((row) => row.id === "reported-stale").production_freshness_gate, "report_only");
+    assert.equal(withBlocking.status, "blocked");
+    assert.deepEqual(productionFreshnessFindings(withBlocking).map((row) => row.split(":")[0]), [
+      "site/data/blocking.json",
+    ]);
+
+    const reportOnly = buildFirstClassFreshnessReport(
+      { first_class_artifacts: [reported] },
+      { root, now: "2026-09-16T00:00:00.000Z" },
+    );
+    assert.equal(reportOnly.surfaces[0].freshness_state, "stale");
+    assert.equal(reportOnly.status, "degraded");
+    assert.deepEqual(productionFreshnessFindings(reportOnly), []);
+  });
+
+  const invalid = structuredClone(registry);
+  invalid.first_class_artifacts.find((row) => row.id === "bsa-calendar").production_freshness_gate = "ignore";
+  assert.match(validateFirstClassRefreshContracts(invalid, { root: ROOT }).join("\n"), /production_freshness_gate/);
 });
 
 test("rules-semantic-lane freshness is measured from the daily rules snapshot vintage, not the bounded research corpus date", async () => {
