@@ -21,7 +21,7 @@
         "height": 900
       },
       "route": "/following/?lens=meetings&tq_i0=rat",
-      "sha256": "732b6d62068e82223d8cf9c716fb08cafd3477de8108977e2a0a41c65edf3f97"
+      "sha256": "e5053ad5e28b101eaf98cec9443b3aa2fb0c92ba28b2452b0ee08d30ca97a9e9"
     },
     {
       "assertion": "Narrow/touch layout keeps labelled controls, 44px summary target, and keyboard-recoverable failed-load retry.",
@@ -31,7 +31,7 @@
         "height": 844
       },
       "route": "/following/?lens=meetings&tq_i0=rat",
-      "sha256": "732b6d62068e82223d8cf9c716fb08cafd3477de8108977e2a0a41c65edf3f97"
+      "sha256": "e5053ad5e28b101eaf98cec9443b3aa2fb0c92ba28b2452b0ee08d30ca97a9e9"
     }
   ]
 }
