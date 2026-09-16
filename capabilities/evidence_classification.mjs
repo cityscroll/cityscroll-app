@@ -164,6 +164,36 @@ export function scanSourceForHandleMcpImport(sourceText) {
 }
 
 /**
+ * Classify a failed live public fetch without collapsing Cloudflare denial
+ * into a generic network error. Pure and dependency-free so offline test
+ * suites can exercise the full class vocabulary (network error, HTTP 429,
+ * Cloudflare denial recognized from its challenge marker) without importing
+ * the live canary, whose module transitively requires the pinned MCP SDK.
+ */
+export function classifyLiveTransportFailure(error, response = null) {
+  const status = response?.status ?? (typeof error?.status === "number" ? error.status : null);
+  const message = String(error?.message || error || "");
+  const body = typeof response?.bodyText === "string" ? response.bodyText : "";
+  if (status === 429 || /\b429\b|rate.?limit/i.test(message)) {
+    return { class: "http_429", status, message };
+  }
+  if (
+    status === 403
+    || status === 503
+    || /cf-ray|cloudflare|attention required|just a moment|challenge-platform|error code 1[0-9]{3}/i.test(`${message}\n${body}`)
+  ) {
+    return { class: "cloudflare_denial", status, message };
+  }
+  if (error && (error.name === "TypeError" || /fetch failed|ECONN|ENOTFOUND|ETIMEDOUT|network/i.test(message))) {
+    return { class: "network_error", status, message };
+  }
+  if (status && status >= 400) {
+    return { class: "http_error", status, message };
+  }
+  return { class: "unknown_error", status, message };
+}
+
+/**
  * Derives the maximum evidence class a receipt's own mechanical facts can
  * prove, independent of what it self-declares. Returns "unknown" when the
  * receipt does not carry enough structured fact to prove even local_contract

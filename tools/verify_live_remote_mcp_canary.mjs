@@ -24,7 +24,7 @@ import { fileURLToPath } from "node:url";
 import { Client } from "../worker/node_modules/@modelcontextprotocol/sdk/dist/esm/client/index.js";
 import { StreamableHTTPClientTransport } from "../worker/node_modules/@modelcontextprotocol/sdk/dist/esm/client/streamableHttp.js";
 
-import { EVIDENCE_CLASSES, EXECUTION_ENVIRONMENTS } from "../capabilities/evidence_classification.mjs";
+import { EVIDENCE_CLASSES, EXECUTION_ENVIRONMENTS, classifyLiveTransportFailure } from "../capabilities/evidence_classification.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CATALOG_PATH = resolve(ROOT, "site/data/mcp_tool_catalog.json");
@@ -73,30 +73,6 @@ const CITED_READ = {
   tool: "retrieve_cited_passages",
   arguments: { query: "public hearing", limit: 3 },
 };
-
-/** Classify a failed public fetch without collapsing Cloudflare denial into a generic network error. */
-export function classifyLiveTransportFailure(error, response = null) {
-  const status = response?.status ?? (typeof error?.status === "number" ? error.status : null);
-  const message = String(error?.message || error || "");
-  const body = typeof response?.bodyText === "string" ? response.bodyText : "";
-  if (status === 429 || /\b429\b|rate.?limit/i.test(message)) {
-    return { class: "http_429", status, message };
-  }
-  if (
-    status === 403
-    || status === 503
-    || /cf-ray|cloudflare|attention required|just a moment|challenge-platform|error code 1[0-9]{3}/i.test(`${message}\n${body}`)
-  ) {
-    return { class: "cloudflare_denial", status, message };
-  }
-  if (error && (error.name === "TypeError" || /fetch failed|ECONN|ENOTFOUND|ETIMEDOUT|network/i.test(message))) {
-    return { class: "network_error", status, message };
-  }
-  if (status && status >= 400) {
-    return { class: "http_error", status, message };
-  }
-  return { class: "unknown_error", status, message };
-}
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
