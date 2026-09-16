@@ -36,12 +36,15 @@ function contractRow(values) {
 const firematicBase = contractRow({
   ctr: "4561064", epin: "85721B0111001A000", contract: "FMS-FIREMATIC-1",
   title: "Bid 2100089 Nozzles", vendor: "FIREMATIC SUPPLY CO. INC",
-  type: "Original", method: "Competitive Sealed Bid", amount: "$158,997.84", current: "$208,687.62", registration: "09/01/2021",
+  type: "Original", method: "Competitive Sealed Bid", amount: "$158,997.84", current: "$208,687.62",
+  paid: "$158,997.84", encumbered: "$158,997.84", registration: "09/01/2021",
 });
 const firematicAction = contractRow({
   ctr: "4618449", epin: "85721B0111001A001", contract: "FMS-FIREMATIC-1",
   title: "Bid 2100089 Nozzles Amendment #1", vendor: "FIREMATIC SUPPLY CO. INC",
-  type: "Amendment", method: "Amendment", amount: "$49,689.78", registration: "11/13/2021",
+  type: "Amendment", method: "Amendment", amount: "$49,689.78",
+  // Publisher repeats the cumulative paid/encumbered totals on the amendment.
+  paid: "$158,997.84", encumbered: "$158,997.84", registration: "11/13/2021",
 });
 
 const tameerIds = ["4579402", "4980664", "4982079", "4983925", "5224471", "5240965", "5243993", "5247650", "5340426", "5359354", "5371783", "5372858"];
@@ -167,6 +170,32 @@ test("A2: action titles use publisher numbering rather than identifier suffixes"
       p90_lag_days: null,
       excluded_row_count: 1,
     },
+  });
+});
+
+test("A2: repeated paid and encumbered totals are not summed across observations", async () => {
+  const model = await withPinnedClock("2026-09-16T12:00:00.000Z", () => modelFor([firematicBase, firematicAction]));
+  const firematic = model.rows.find((row) => row.passport_action_family?.family_key === "FMS-FIREMATIC-1");
+  const observations = model.observations.filter((row) => firematic.source_observation_refs.includes(row.source_observation_ref));
+  assert.equal(observations.length, 2);
+  assert.deepEqual(observations.map((row) => row.snapshot.paid_amount).sort((a, b) => a - b), [158997.84, 158997.84]);
+  assert.deepEqual(observations.map((row) => row.snapshot.encumbered_amount).sort((a, b) => a - b), [158997.84, 158997.84]);
+  const paidAcrossObservations = observations.reduce((sum, row) => sum + Number(row.snapshot.paid_amount), 0);
+  const encumberedAcrossObservations = observations.reduce((sum, row) => sum + Number(row.snapshot.encumbered_amount), 0);
+  assert.equal(paidAcrossObservations, 317995.68);
+  assert.equal(encumberedAcrossObservations, 317995.68);
+  const projection = projectProcurementFacts(firematic, observations);
+  const search = materializeProcurementSearchDocument(firematic, model);
+  const browse = search.provenance.browse_record;
+  const browseQuery = buildProcurementBrowseQueryArtifacts({ rows: [browse] }).queryRowsArtifact.query_rows[0];
+  assert.deepEqual({
+    facts: [projection.facts.paidAmount, projection.facts.encumberedAmount],
+    search: [browse.paid_amount, browse.encumbered_amount],
+    browse: [browseQuery.paid_amount, browseQuery.encumbered_amount],
+  }, {
+    facts: [158997.84, 158997.84],
+    search: [158997.84, 158997.84],
+    browse: [158997.84, 158997.84],
   });
 });
 
