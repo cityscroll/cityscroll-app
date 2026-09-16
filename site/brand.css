@@ -68,11 +68,13 @@
   --green: var(--color-success);
   --shadow: none; /* flat: hairlines and spacing carry structure, nothing floats */
 
-  /* Type: modern-civic grotesk display + humanist sans text. Both open, one font host. */
+  /* Type: modern-civic grotesk display + humanist sans text/UI. Both open, one font host.
+     Reading and interface share Noto so equivalent body, label, input, and button roles agree.
+     Brand/display stay Space Grotesk; identifiers/code keep a monospace stack at the call site. */
   --font-brand: "Space Grotesk", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-reading: "Noto Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
   --font-label: var(--font-reading);
-  --font-interface: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-interface: var(--font-reading);
   --font-nameplate: var(--font-brand);
   --font-display: var(--font-brand);
   --font-body: var(--font-reading);
@@ -170,6 +172,7 @@
 .browse-static-record[data-meeting-origin]:not([data-meeting-origin=""]) .ui-object-card-primary{align-items:flex-start;justify-content:space-between}
 /* gap separates label text from .ct count; do not rely on a whitespace text node (flex collapses it). */
 .ui-filter-chip.ui-filter-chip{display:inline-flex;align-items:center;justify-content:center;gap:.35em;min-height:44px;padding:6px 11px;border:1px solid var(--color-action,#1b3a8f);border-radius:999px;background:transparent;color:var(--color-action,#1b3a8f);font:700 13px/1.2 var(--font-interface,ui-sans-serif,system-ui,sans-serif);cursor:pointer;text-decoration:none}
+a.route-back-link{font:600 13px/1 var(--font-interface);text-decoration:none}
 .ui-filter-chip[aria-pressed="true"]{background:var(--color-action,#1b3a8f);color:var(--color-surface,#fff)}
 .ui-filter-chip:hover{box-shadow:0 0 0 2px color-mix(in srgb,var(--color-action,#1b3a8f),transparent 78%)}
 .ui-constellation-link:focus-visible,.ui-official-source-link:focus-visible,.ui-filter-chip:focus-visible{outline:2px solid var(--color-focus,var(--color-action,#1b3a8f));outline-offset:3px}

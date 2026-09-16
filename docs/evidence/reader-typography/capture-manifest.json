@@ -1,0 +1,122 @@
+{
+  "captures": [
+    {
+      "assertion": "No-JavaScript home, notice, and contract keep equivalent body/label/input/button reading roles with deliberate brand display.",
+      "case": "typography-no-javascript",
+      "passed": true,
+      "render_sha256": "e1067cc83e803b693760e8deac2cba242385075d7af8687e26349ca5226e71bf",
+      "route": "/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Blocking enhancement scripts preserves the same typography roles across home and both pilot details.",
+      "case": "typography-failed-enhancement",
+      "passed": true,
+      "render_sha256": "e1067cc83e803b693760e8deac2cba242385075d7af8687e26349ca5226e71bf",
+      "route": "/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Hydrated home and both pilot details agree on reading/control roles while brand display and identifiers keep intentional exceptions.",
+      "case": "typography-successful-enhancement",
+      "passed": true,
+      "render_sha256": "e1067cc83e803b693760e8deac2cba242385075d7af8687e26349ca5226e71bf",
+      "route": "/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "With webfonts blocked, reading and control roles stay on intentional sans fallbacks instead of Times.",
+      "case": "typography-font-blocked",
+      "passed": true,
+      "render_sha256": "e1067cc83e803b693760e8deac2cba242385075d7af8687e26349ca5226e71bf",
+      "route": "/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Script-aware language overlays keep non-Latin text legible on the reading role.",
+      "case": "typography-non-latin",
+      "passed": true,
+      "render_sha256": "ad0592bc3909e2eb21b6b1441efed098a4f5b50c587312b859ceed7d3dc95790",
+      "route": "/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "No-JavaScript home, notice, and contract keep equivalent body/label/input/button reading roles with deliberate brand display.",
+      "case": "typography-no-javascript",
+      "passed": true,
+      "render_sha256": "e1067cc83e803b693760e8deac2cba242385075d7af8687e26349ca5226e71bf",
+      "route": "/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Blocking enhancement scripts preserves the same typography roles across home and both pilot details.",
+      "case": "typography-failed-enhancement",
+      "passed": true,
+      "render_sha256": "e1067cc83e803b693760e8deac2cba242385075d7af8687e26349ca5226e71bf",
+      "route": "/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Hydrated home and both pilot details agree on reading/control roles while brand display and identifiers keep intentional exceptions.",
+      "case": "typography-successful-enhancement",
+      "passed": true,
+      "render_sha256": "e1067cc83e803b693760e8deac2cba242385075d7af8687e26349ca5226e71bf",
+      "route": "/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "With webfonts blocked, reading and control roles stay on intentional sans fallbacks instead of Times.",
+      "case": "typography-font-blocked",
+      "passed": true,
+      "render_sha256": "e1067cc83e803b693760e8deac2cba242385075d7af8687e26349ca5226e71bf",
+      "route": "/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Script-aware language overlays keep non-Latin text legible on the reading role.",
+      "case": "typography-non-latin",
+      "passed": true,
+      "render_sha256": "ad0592bc3909e2eb21b6b1441efed098a4f5b50c587312b859ceed7d3dc95790",
+      "route": "/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    }
+  ],
+  "case": "typography",
+  "condition": "Local typography fixtures for home, notice, and contract using shared brand tokens; no image binary is committed.",
+  "data_vintage": "fixture-or-served-materialization",
+  "image_binaries_committed": false,
+  "revision": "ca5b103ac8255fdf9b251419dbcee8429ba1f782",
+  "route": "/",
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "reader typography roles"
+}
