@@ -2496,9 +2496,9 @@
     },
     {
       "source_id": "oath-trial-calendar",
-      "name": "NYC OATH conference and trial calendar",
+      "name": "NYC OATH trial calendar",
       "publisher": "NYC Office of Administrative Trials and Hearings",
-      "official_url": "https://www.nyc.gov/site/oath/trials/conference-trial-calendar.page",
+      "official_url": "https://www.nyc.gov/site/oath/trials/trial-calendar.page",
       "expected_cadence": "Calendar postings two to three weeks in advance",
       "mode": "periodic",
       "health": {

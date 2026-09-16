@@ -5,7 +5,7 @@
     {
       "id": "oath-trial-calendar",
       "kind": "html",
-      "identifier": "conference-trial-calendar.page",
+      "identifier": "trial-calendar.page",
       "response_type": "text/html",
       "fields": ["index", "date", "start", "type", "source_url", "source_receipt"]
     },

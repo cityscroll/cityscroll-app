@@ -1058,7 +1058,7 @@
       "status": "landed",
       "join_keys": [],
       "join_coverage": {},
-      "landing_page": "https://www.nyc.gov/site/oath/trials/conference-trial-calendar.page",
+      "landing_page": "https://www.nyc.gov/site/oath/trials/trial-calendar.page",
       "delivery_tier": "inline-at-build"
     },
     {
@@ -3805,7 +3805,7 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-09-15",
+    "observed_on": "2026-09-16",
     "source_contracts_fingerprint": "ea9bc1e43654c271957537f1611d2f6ef23f2f028d060f61b6dd3e76943dd859",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 91,

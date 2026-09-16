@@ -29,7 +29,7 @@ const CAPTURED_OATH_CSV = readFileSync(
   new URL("../../test/fixtures/oath/daily-calendar-2026-09-15.csv", import.meta.url),
   "utf8",
 );
-const OATH_SOURCE_URL = "https://www.nyc.gov/site/oath/trials/conference-trial-calendar.page";
+const OATH_SOURCE_URL = "https://www.nyc.gov/site/oath/trials/trial-calendar.page";
 
 function oathTrialRowsFromReadModel(model = SHARED_MEETING_READ_MODEL) {
   return (model.rows || []).filter((row) => row?.source_system === "oath_trial_calendar");
