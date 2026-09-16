@@ -3,45 +3,129 @@
   "surface": "notice document shell",
   "condition": "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; no image binary is committed.",
   "image_binaries_committed": false,
-  "revision": "52f33d132",
+  "revision": "3540dcfe4",
   "data_vintage": "materialized notice fixture 2026-08-14",
   "route": "/notices/20260810048/",
   "captures": [
     {
-      "case": "notice-shell-successful-hydration",
-      "viewport": { "name": "desktop", "width": 1440, "height": 1000 },
-      "assertion": "The real edge response and successful client path keep the compact mast, one notice heading, essential facts, language control, and no visible homepage promotion.",
-      "render_sha256": "137c9d804adeb0187d4e05d15e341c921cbd4fea4936aae5f4e2be87c8495576"
+      "case": "notice-shell-no-javascript-source-access",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "Without JavaScript the edge document keeps the compact mast, one notice heading, essential facts, and a visible official source link.",
+      "render_sha256": "929a8ab00f78c859461d44cbe11fd3a4e60789ddf4980923df25b24ffcefffb5"
     },
     {
       "case": "notice-shell-failed-enhancement",
-      "viewport": { "name": "desktop", "width": 1440, "height": 1000 },
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
       "assertion": "Blocking the app entry preserves the readable edge document and its route chrome.",
       "render_sha256": "929a8ab00f78c859461d44cbe11fd3a4e60789ddf4980923df25b24ffcefffb5"
     },
     {
-      "case": "notice-shell-no-javascript-and-back",
-      "viewport": { "name": "desktop", "width": 1440, "height": 1000 },
-      "assertion": "No-JavaScript delivery remains readable, keyboard traversal has no hidden focusable controls, and home then Back returns to the composed notice.",
-      "render_sha256": "137c9d804adeb0187d4e05d15e341c921cbd4fea4936aae5f4e2be87c8495576"
-    },
-    {
       "case": "notice-shell-successful-hydration",
-      "viewport": { "name": "narrow", "width": 390, "height": 844 },
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
       "assertion": "The real edge response and successful client path keep the compact mast, one notice heading, essential facts, language control, and no visible homepage promotion.",
       "render_sha256": "137c9d804adeb0187d4e05d15e341c921cbd4fea4936aae5f4e2be87c8495576"
     },
     {
+      "case": "notice-shell-skip-navigation",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "Skip navigation remains first-focusable on the notice route and moves reading into #main.",
+      "render_sha256": "4e386218a5bb732de3ace418bfbe256f50b68b36cade1e560e874286931a5aae"
+    },
+    {
+      "case": "notice-shell-home-back",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "Home then Back returns to the composed notice with its route chrome intact.",
+      "render_sha256": "137c9d804adeb0187d4e05d15e341c921cbd4fea4936aae5f4e2be87c8495576"
+    },
+    {
+      "case": "notice-shell-legacy-hash-and-notice-to-home",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "Legacy #notice/<id> forwards into the composed notice chrome, and leaving the notice for home restores homepage chrome without the notice-route shell.",
+      "render_sha256": "09d1ed194a974d1fdb30eaf00e9e69ffd0887f1db6cd2d35fb889e1400db1b71"
+    },
+    {
+      "case": "notice-shell-no-javascript-source-access",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "Without JavaScript the edge document keeps the compact mast, one notice heading, essential facts, and a visible official source link.",
+      "render_sha256": "929a8ab00f78c859461d44cbe11fd3a4e60789ddf4980923df25b24ffcefffb5"
+    },
+    {
       "case": "notice-shell-failed-enhancement",
-      "viewport": { "name": "narrow", "width": 390, "height": 844 },
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
       "assertion": "Blocking the app entry preserves the readable edge document and its route chrome.",
       "render_sha256": "929a8ab00f78c859461d44cbe11fd3a4e60789ddf4980923df25b24ffcefffb5"
     },
     {
-      "case": "notice-shell-no-javascript-and-back",
-      "viewport": { "name": "narrow", "width": 390, "height": 844 },
-      "assertion": "No-JavaScript delivery remains readable, keyboard traversal has no hidden focusable controls, and home then Back returns to the composed notice.",
+      "case": "notice-shell-successful-hydration",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "The real edge response and successful client path keep the compact mast, one notice heading, essential facts, language control, and no visible homepage promotion.",
       "render_sha256": "137c9d804adeb0187d4e05d15e341c921cbd4fea4936aae5f4e2be87c8495576"
+    },
+    {
+      "case": "notice-shell-skip-navigation",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "Skip navigation remains first-focusable on the notice route and moves reading into #main.",
+      "render_sha256": "4e386218a5bb732de3ace418bfbe256f50b68b36cade1e560e874286931a5aae"
+    },
+    {
+      "case": "notice-shell-home-back",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "Home then Back returns to the composed notice with its route chrome intact.",
+      "render_sha256": "137c9d804adeb0187d4e05d15e341c921cbd4fea4936aae5f4e2be87c8495576"
+    },
+    {
+      "case": "notice-shell-legacy-hash-and-notice-to-home",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "Legacy #notice/<id> forwards into the composed notice chrome, and leaving the notice for home restores homepage chrome without the notice-route shell.",
+      "render_sha256": "09d1ed194a974d1fdb30eaf00e9e69ffd0887f1db6cd2d35fb889e1400db1b71"
     }
   ]
 }
