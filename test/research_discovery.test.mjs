@@ -172,7 +172,8 @@ test("Guide and API expose direct research task entrances", () => {
 
 test("eligible contract entity and institution surfaces mount the discovery projection", () => {
   const discovery = readFileSync(new URL("../site/research_discovery.mjs", import.meta.url), "utf8");
-  assert.match(routing, /renderNoticeClientActionRegions/);
+  assert.match(routing, /notice_subject_client\.mjs/);
+  assert.match(noticeSubjectClient, /renderNoticeClientActionRegions/);
   assert.match(discovery, /notice-more-tools/);
   for (const [name, source] of [
     ["money-history", moneyHistory],
@@ -190,7 +191,7 @@ test("eligible contract entity and institution surfaces mount the discovery proj
 
 test("saved collection and share control ids remain available inside More tools", () => {
   const discovery = readFileSync(new URL("../site/research_discovery.mjs", import.meta.url), "utf8");
-  assert.match(routing, /renderNoticeClientActionRegions\(/);
+  assert.match(noticeSubjectClient, /renderNoticeClientActionRegions\(/);
   assert.match(discovery, /id="ncopy"/);
   assert.match(discovery, /id="nxlsx"/);
   assert.match(discovery, /id="nprint"/);
