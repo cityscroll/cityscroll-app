@@ -355,7 +355,9 @@ test("A1: retained Firematic and TAMEER fixtures satisfy original/current/action
   });
 });
 
-test("A1: current materialized Firematic/TAMEER pages reproduce the missing field-role defect", async () => {
+test("A1: current materialized Firematic/TAMEER pages carry original/current/action field roles", async () => {
+  // Complete retained families close the prior missing field-role defect on the
+  // served Pages artifacts (not only on offline retained fixtures).
   const firematicHtml = await servedContract("CT185720228800365");
   const firematic = classifyContractHtml({
     id: "CT185720228800365",
@@ -363,8 +365,12 @@ test("A1: current materialized Firematic/TAMEER pages reproduce the missing fiel
     status: 200,
     body: firematicHtml,
   });
-  assert.equal(firematic.state, "failed");
-  assert.ok(firematic.evidence.fieldRoleMissing.some((row) => row.role === "original" || row.role === "current"));
+  assert.equal(firematic.state, "passed", JSON.stringify(firematic.evidence));
+  assert.deepEqual(firematic.evidence.field_roles, {
+    original: 158997.84,
+    current: 208687.62,
+    action: 49689.78,
+  });
 
   const tameerHtml = await servedContract("CT185020228802305");
   const tameer = classifyContractHtml({
@@ -373,8 +379,12 @@ test("A1: current materialized Firematic/TAMEER pages reproduce the missing fiel
     status: 200,
     body: tameerHtml,
   });
-  assert.equal(tameer.state, "failed");
-  assert.ok(tameer.evidence.fieldRoleMissing.length >= 1);
+  assert.equal(tameer.state, "passed", JSON.stringify(tameer.evidence));
+  assert.deepEqual(tameer.evidence.field_roles, {
+    original: 1442820.77,
+    current: 1779343.45,
+    action: 26112.93,
+  });
 });
 
 test("A1: BHRAGS payment consistency requires headline/section agreement, 31 payments, dates, and scoped coverage", async () => {
