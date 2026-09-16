@@ -102,7 +102,7 @@ test("A1: real canonical routes never label metadata or summaries as public cont
 });
 
 test("A1: a positive document label is accepted only with URL, exact identity, and dated passage evidence", () => {
-  const qualifying = normalizePerformanceEvidenceItem({
+  const qualifyingInput = {
     kind: "performance_terms",
     label: "Public performance terms",
     source_passage: {
@@ -114,7 +114,8 @@ test("A1: a positive document label is accepted only with URL, exact identity, a
       publication_date: "2026-08-01",
       identity_basis: "exact contract identifier CT-FIXTURE-001",
     },
-  });
+  };
+  const qualifying = normalizePerformanceEvidenceItem(qualifyingInput);
   assert.deepEqual(qualifying, {
     kind: "performance_terms",
     label: "Public performance terms",
@@ -132,6 +133,22 @@ test("A1: a positive document label is accepted only with URL, exact identity, a
     kind: "performance_terms",
     source_passage: { ...qualifying.source_passage, url: "https://a0333-passportpublic.nyc.gov/login" },
   }), null, "a login destination cannot qualify as document evidence");
+  assert.equal(normalizePerformanceEvidenceItem({
+    ...qualifyingInput,
+    document_role: "metadata",
+  }), null, "source metadata cannot satisfy a positive document label");
+  assert.equal(normalizePerformanceEvidenceItem({
+    ...qualifyingInput,
+    document_role: "project_summary",
+  }), null, "a project summary cannot satisfy a positive document label");
+  assert.equal(normalizePerformanceEvidenceItem({
+    kind: "performance_terms",
+    source_passage: { ...qualifying.source_passage, identity_basis: "" },
+  }), null, "an identity basis is required, not merely surviving when present");
+  assert.equal(normalizePerformanceEvidenceItem({
+    kind: "performance_terms",
+    source_passage: { ...qualifying.source_passage, publication_date: "" },
+  }), null, "a dated passage is required, not merely surviving when present");
 });
 
 test("A2: zero accepted performance rows remain an explicit bounded absence on the served routes", async () => {
@@ -191,6 +208,14 @@ test("A4: real canonical routes credit source handoffs and refuse misleading rev
   const sp = await servedContract("CT110220271400991");
   assert.match(sp, /checkbooknyc\.com\/smart_search\/citywide\?search_term=CT110220271400991/);
   assert.doesNotMatch(sp, /City Record notice/);
+  const cityRecord = sp.match(/data-source-system="city_record"[^>]*data-coverage-state="([^"]+)"[\s\S]*?<\/li>/i);
+  assert.ok(cityRecord, "S&P retains a City Record coverage row");
+  assert.equal(cityRecord[1], "checked-no-match");
+  assert.match(cityRecord[0], /City Record/);
+  assert.match(cityRecord[0], /lookup as of 2026-09-09T06:33:01\.880Z/);
+  assert.match(sp, /10220272001881/, "City Record absence stays bound to the PIN that was checked");
+  assert.match(sp, /No exact match is a snapshot miss, not a conclusion that the publisher never issued the record/i);
+  assert.doesNotMatch(sp, /never (?:published|appeared) in (?:the )?City Record|absent from City Record forever/i);
   const aha = await servedContract("CT105720278802113");
   assert.match(aha, /PASSPort Public contracts/);
   const bhrags = await servedContract("CT107120258801626");
@@ -203,6 +228,13 @@ test("A4: real canonical routes credit source handoffs and refuse misleading rev
   const tameer = await servedContract("CT185020228802305");
   assert.match(tameer, /Construction Change Order/);
   assert.doesNotMatch(tameer, /small base contract|overall contract value/i);
+  for (const id of Object.keys(CONTRACTS)) {
+    const html = await servedContract(id);
+    const canonical = `https://cityscroll.org/procurements/${encodeURIComponent(`procurement:contract:${id}`)}`;
+    const cityscrollUrls = [...html.matchAll(/https:\/\/cityscroll\.org\/[^\s"'<>]*/g)].map((match) => match[0]);
+    assert.ok(cityscrollUrls.every((url) => url === canonical || !/\/procurements\//.test(url)), `${id} invents no other procurement canonical URL`);
+    assert.doesNotMatch(html, /better than (?:Checkbook|PASSPort)|unlike (?:Checkbook|PASSPort)|more (?:complete|detailed) than (?:Checkbook|PASSPort)/i, `${id} makes no unsupported comparison claim`);
+  }
 });
 
 test("A5: real canonical routes remain keyboard-linkable and server-rendered at desktop and mobile request variants", async () => {
