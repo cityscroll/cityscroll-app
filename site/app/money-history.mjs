@@ -213,10 +213,6 @@ import { buildContractReportTarget, renderReportIssueAffordance } from "../repor
 import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "../procurement_pursuit_snapshot.mjs";
 import { buyerHistoryComparisonFromSolicitation } from "../buyer_history_pursuit_comparison.mjs";
 import { pinBase } from "../procurement_pin.mjs";
-import {
-  buildNoticeAiContextHandoff,
-  renderMoreToolsRegion,
-} from "../ai_context_handoff.mjs";
 
 // Every note naming an external source carries a working, scoped link to it
 // — a note that only SAYS the answer lives elsewhere, with no way to go look, isn't an
@@ -1072,13 +1068,6 @@ function renderDetail(r, chain, stats, loadContext = true){
   const initialActionsForGlance = window.CrolActions && actionRailContextReady
     ? CrolActions.compileActionRail(noticeActionMatter(r), { today: todayISO() })
     : [];
-  const noticeHandoff = buildNoticeAiContextHandoff({
-    request_id: r.request_id,
-    canonical_href: `/notices/${encodeURIComponent(r.request_id)}/`,
-  });
-  const moreTools = noticeHandoff.status === "ok"
-    ? renderMoreToolsRegion({ handoff: noticeHandoff })
-    : "";
   let html = `<div class="actions" style="margin:0 0 12px">
     <button class="act" type="button" id="dcopy">${t("copy_link_notice")}</button>
     ${qrButtonHTML("dqr","act")}
@@ -1086,7 +1075,7 @@ function renderDetail(r, chain, stats, loadContext = true){
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
     ${(r.procurement_id || r.canonical_href) ? renderReportIssueAffordance(buildContractReportTarget(r), { escape: escUiHtml }) : ""}
-  </div>${moreTools}`;
+  </div><div data-ai-context-notice-mount="1" data-request-id="${escUiHtml(r.request_id||"")}"></div>`;
   html += solicitationContextHeadingHTML(r);
   html += pursuitSnapshotHTML(r);
   html += `<div id="dcontext" data-export-class="notice_context"></div><div id="dactions" data-export-class="actions"></div>`;
@@ -1119,6 +1108,18 @@ function renderDetail(r, chain, stats, loadContext = true){
   bindQRShare($("#dqr"), detailURL);
   const dx = $("#dxlsx"); if(dx && !pending) dx.addEventListener("click", ()=>exportNoticeXlsx(r, chain));
   const dp = $("#dprint"); if(dp) dp.addEventListener("click", ()=>printCurrentView("notice", detailURL));
+  // Assistant handoff stays off the Notice cold-path closure; mount after paint.
+  const aiMount = $("#detail")?.querySelector?.("[data-ai-context-notice-mount]");
+  if (aiMount && r.request_id) {
+    import("../ai_context_handoff.mjs").then(({ buildNoticeAiContextHandoff, renderMoreToolsRegion }) => {
+      if (!aiMount.isConnected) return;
+      const handoff = buildNoticeAiContextHandoff({
+        request_id: r.request_id,
+        canonical_href: `/notices/${encodeURIComponent(r.request_id)}/`,
+      });
+      aiMount.outerHTML = handoff.status === "ok" ? renderMoreToolsRegion({ handoff }) : "";
+    }).catch(() => { /* optional assistant handoff stays absent on load failure */ });
+  }
   if(pending) return; // context/dollars fetch once, on the hydrated render
   if (loadContext) {
     const contextReady = globalThis.ensureNoticeContext?.() || Promise.resolve();
