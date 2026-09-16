@@ -489,6 +489,7 @@
     "site/procurement_intent_watch_continuity.mjs",
     "site/procurement_object_contract.mjs",
     "site/procurement_opportunity_window.mjs",
+    "site/procurement_payment_place_context.mjs",
     "site/procurement_phase_spine.mjs",
     "site/procurement_pin.mjs",
     "site/procurement_planning_gate.mjs",
