@@ -5,6 +5,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { opsNotificationDecision } from '../src/lib/ops_notification_policy.mjs';
 import { emitOpsAlertOnce } from '../src/reliability_watchdogs.mjs';
 import { sendOpsAlert } from '../src/alerts.mjs';
+import { handleAdminOpsHealth } from '../src/admin.mjs';
 const now = new Date('2026-09-16T12:00:00Z');
 const emergency = { confirmed:true, impact:'service-unavailable', human_action_required:true, automatic_remedy:'exhausted', action:'Restore the production service', verified_at:now.toISOString(), evidence_url:'https://example.com/incident' };
 const input = { guard:'production-emergency', stage:'outage', fingerprint:'incident-123', findings:['Production service is unavailable'], emergency, now };
@@ -15,6 +16,7 @@ function d1(){
  return {sqlite,DB:{prepare(sql){const statement=sqlite.prepare(sql);return {bind(...params){return {
   run(){const result=statement.run(...params);return {meta:{changes:Number(result.changes||0)}}},
   first(){return statement.get(...params)||null},
+  all(){return {results:statement.all(...params)}},
  }}}}}};
 }
 test('severity, age, and repair exhaustion alone cannot turn routine noise into emergency mail',()=>{
@@ -106,4 +108,49 @@ test('concurrent differing emergencies share one immutable D1 payload owner',asy
   assert.equal(authoritative.state,'accepted');
   assert.equal(JSON.parse(authoritative.payload_json).evidence.evidence_url,firstEmergency.evidence_url);
  }finally{release?.();globalThis.fetch=previous}
+});
+test('ops-health overlays accepted D1 evidence after a stale routine KV overwrite',async()=>{
+ const {DB}=d1();const data=new Map();const signature='incident-read-race';let releaseRead;const heldRead=new Promise((resolve)=>{releaseRead=resolve});let routineRead;const readStarted=new Promise((resolve)=>{routineRead=resolve});let first=true;
+ const ALERT_STATE={async get(key){if(first&&key===`ops:alert:signature:${signature}`){first=false;routineRead();await heldRead;return null}return data.get(key)||null},async put(key,value){data.set(key,String(value))}};
+ const env={DB,ALERT_STATE,RESEND_API_KEY:'test',ADMIN_KEY:'secret'};const previous=globalThis.fetch;globalThis.fetch=async()=>({ok:true,json:async()=>({id:'accepted-race'})});
+ try{
+  const routinePromise=emitOpsAlertOnce(env,{...input,fingerprint:signature,emergency:null});
+  await readStarted;
+  const accepted=await emitOpsAlertOnce(env,{...input,fingerprint:signature});
+  assert.equal(accepted.sent,true);
+  releaseRead();
+  await routinePromise;
+  const stale=JSON.parse(await ALERT_STATE.get(`ops:alert:signature:${signature}`));
+  assert.equal(stale.confirmed_emergency,null);
+  const response=await handleAdminOpsHealth(new Request('https://w/admin/reliability/ops-health',{headers:{authorization:'Bearer secret'}}),env,{now});
+  assert.equal(response.status,200);
+  const body=await response.json();
+  const projected=body.alerts.items.find((item)=>item.signature===signature);
+  assert.equal(body.alerts.emergency_delivery_authority.status,'available');
+  assert.equal(projected.emergency_delivery.state,'accepted');
+  assert.equal(projected.confirmed_emergency.evidence_url,emergency.evidence_url);
+  assert.equal(projected.emergency_sent_at,now.toISOString());
+  assert.equal(projected.sent_at,now.toISOString());
+ }finally{releaseRead?.();globalThis.fetch=previous}
+});
+test('ops-health reads accepted D1 evidence when the final KV projection fails',async()=>{
+ const {DB}=d1();const data=new Map();let failProjection=false;const signature='incident-kv-failure';
+ const ALERT_STATE={async get(key){return data.get(key)||null},async put(key,value){if(failProjection&&(key===`ops:alert:signature:${signature}`||key==='ops:alert:history:v1'))throw new Error('kv-write-failed');data.set(key,String(value))}};
+ const env={DB,ALERT_STATE,RESEND_API_KEY:'test',ADMIN_KEY:'secret'};const previous=globalThis.fetch;globalThis.fetch=async()=>{failProjection=true;return {ok:true,json:async()=>({id:'accepted-before-kv-failure'})}};
+ try{
+  await assert.rejects(()=>emitOpsAlertOnce(env,{...input,fingerprint:signature}),/kv-write-failed/);
+  const response=await handleAdminOpsHealth(new Request('https://w/admin/reliability/ops-health',{headers:{authorization:'Bearer secret'}}),env,{now});
+  const body=await response.json();
+  const projected=body.alerts.items.find((item)=>item.signature===signature);
+  assert.equal(body.alerts.emergency_delivery_authority.status,'available');
+  assert.equal(projected.emergency_delivery.state,'accepted');
+  assert.equal(projected.confirmed_emergency.evidence_url,emergency.evidence_url);
+  assert.equal(projected.emergency_sent_at,now.toISOString());
+ }finally{globalThis.fetch=previous}
+});
+test('ops-health marks emergency authority unavailable without D1',async()=>{
+ const response=await handleAdminOpsHealth(new Request('https://w/admin/reliability/ops-health',{headers:{authorization:'Bearer secret'}}),{ADMIN_KEY:'secret',ALERT_STATE:kv()},{now});
+ const body=await response.json();
+ assert.deepEqual(body.alerts.items,[]);
+ assert.deepEqual(body.alerts.emergency_delivery_authority,{status:'unavailable',reason:'db-unavailable'});
 });

@@ -1,4 +1,5 @@
 import { OPS_NOTIFICATION_POLICY } from "./lib/ops_notification_policy.mjs";
+import { projectEmergencyAlertHistory } from "./lib/emergency_outbox.mjs";
 // GET /admin/subs?key=… — operator signup-lifecycle roster from the worker's OWN SUBS
 // binding (recovered / pending-enrollment / enrolled / confirmed / test). This answers
 // "what does the worker actually see" independent of any external CLI/dashboard view.
@@ -370,6 +371,7 @@ export async function handleAdminOpsHealth(req, env, { now = new Date() } = {}) 
     read("ops:freshness:history:v1"),
     readRepairQueue(env, { now }),
   ]);
+  const projectedAlerts = await projectEmergencyAlertHistory(env?.DB, alerts, { limit: 50 });
   return privateJson({
     schema: "cityscroll.ops-health-sanitized.v1",
     notification_policy: OPS_NOTIFICATION_POLICY,
@@ -379,7 +381,7 @@ export async function handleAdminOpsHealth(req, env, { now = new Date() } = {}) 
       mail: { ok: mail.ok, findings: mail.findings.slice(0, 20), history: mail.findings_history.slice(0, 30) },
     },
     freshness: freshness || { status: "unavailable", receipts: [] },
-    alerts: alerts || { schema: "cityscroll.ops-alert-history.v1", items: [] },
+    alerts: projectedAlerts,
     // Queue lifecycle and retries are operator-visible here and nowhere else.
     // This route is admin-authenticated and private, no-store; no public health
     // surface carries a repair item.

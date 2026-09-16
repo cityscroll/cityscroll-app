@@ -4,6 +4,10 @@ const IDEMPOTENCY_MS = 24 * 60 * 60 * 1000;
 const SELECT = `SELECT signature, payload_json, state, claim_token, claim_expires_at,
   first_attempted_at, last_attempted_at, retry_until, attempt_count, resolved_at,
   provider_id, error_reason FROM ops_emergency_deliveries WHERE signature = ?`;
+const LIST = `SELECT signature, payload_json, state, claim_token, claim_expires_at,
+  first_attempted_at, last_attempted_at, retry_until, attempt_count, resolved_at,
+  provider_id, error_reason FROM ops_emergency_deliveries
+  ORDER BY last_attempted_at DESC, signature ASC LIMIT ?`;
 
 function token() {
   if (typeof globalThis.crypto?.randomUUID === "function") return globalThis.crypto.randomUUID();
@@ -60,6 +64,63 @@ export function emergencyDeliveryProjection(row) {
     provider_id: delivery.provider_id,
     error_reason: delivery.error_reason,
   };
+}
+
+function alertProjection(delivery, prior = null) {
+  const acceptedAt = delivery.state === "accepted" ? delivery.resolved_at : null;
+  return {
+    ...(prior || {}),
+    schema: prior?.schema || "cityscroll.ops-alert-signature.v1",
+    signature: delivery.idempotency_key,
+    guard: prior?.guard || "production-emergency",
+    stage: prior?.stage || "unknown",
+    findings: Array.isArray(prior?.findings) ? prior.findings : [],
+    first_seen: prior?.first_seen || delivery.attempted_at,
+    last_seen: prior?.last_seen || delivery.last_attempt_at,
+    count: Number(prior?.count) || delivery.attempt_count,
+    sent_at: acceptedAt || prior?.sent_at || null,
+    emergency_sent_at: acceptedAt || prior?.emergency_sent_at || null,
+    confirmed_emergency: delivery.evidence,
+    emergency_delivery: delivery,
+    delivery_finding: delivery.state === "accepted" ? null : {
+      observed_at: delivery.last_attempt_at,
+      reason: delivery.error_reason || (delivery.state === "in-flight" ? "delivery-in-flight" : `delivery-${delivery.state}`),
+    },
+  };
+}
+
+export async function projectEmergencyAlertHistory(db, history, { limit = 50 } = {}) {
+  const base = history && typeof history === "object" ? history : { schema: "cityscroll.ops-alert-history.v1", items: [] };
+  const existing = Array.isArray(base.items) ? base.items : [];
+  if (!db?.prepare) {
+    return { ...base, items: existing.slice(0, limit), emergency_delivery_authority: { status: "unavailable", reason: "db-unavailable" } };
+  }
+  try {
+    const cap = Math.max(1, limit);
+    const result = await db.prepare(LIST).bind(cap + 1).all();
+    const rows = Array.isArray(result?.results) ? result.results : [];
+    const bySignature = new Map(existing.map((item) => [item?.signature, item]));
+    const emergency = rows.slice(0, cap).map((row) => emergencyDeliveryProjection(row)).filter(Boolean);
+    const mergedEmergency = emergency.map((delivery) => alertProjection(delivery, bySignature.get(delivery.idempotency_key)));
+    const emergencySignatures = new Set(mergedEmergency.map((item) => item.signature));
+    const items = [...mergedEmergency, ...existing.filter((item) => !emergencySignatures.has(item?.signature))].slice(0, limit);
+    return {
+      ...base,
+      items,
+      emergency_delivery_authority: {
+        status: "available",
+        source: "d1",
+        authoritative_count: emergency.length,
+        truncated: rows.length > cap,
+      },
+    };
+  } catch (error) {
+    return {
+      ...base,
+      items: existing.slice(0, limit),
+      emergency_delivery_authority: { status: "unavailable", reason: "db-read-failed" },
+    };
+  }
 }
 
 export async function claimEmergencyDelivery(db, { signature, payload, now = new Date(), attemptedAt = null, retryUntil = null } = {}) {
