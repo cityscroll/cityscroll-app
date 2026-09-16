@@ -4,7 +4,7 @@
   "base": "local-wrangler",
   "condition": "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; no image binary is committed.",
   "image_binaries_committed": false,
-  "revision": "35efcface",
+  "revision": "696d53337",
   "data_vintage": "shared procurement read model; pilot notice 20240829105 with agency and vendor roles",
   "route": "/notices/20240829105/",
   "render_hash_viewport_invariant": true,
