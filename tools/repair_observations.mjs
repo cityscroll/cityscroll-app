@@ -563,6 +563,52 @@ export function buildJoinRepairObservations({
 }
 
 /**
+ * Project failed consultation source observations onto Desk repair evidence.
+ * One failed organizer URL becomes one source-retrieval-failed row so an
+ * authenticated operator can see which channel needs repair without scraping
+ * resident copy.
+ */
+export function buildConsultationRepairObservations({
+  observations = [],
+  contract = {},
+  codeRevision = null,
+  evidenceLocator = "site/data/consultations.json",
+  observedAt = null,
+} = {}) {
+  const codePaths = (contract?.code_references || [])
+    .map((row) => row?.path)
+    .filter(Boolean);
+  if (!codePaths.length && contract?.owning_builder) codePaths.push(contract.owning_builder);
+  const rows = [];
+  (Array.isArray(observations) ? observations : []).forEach((row, position) => {
+    if (!row || row.ok) return;
+    const sourceId = row.source_id || row.observation_id || `consultation-source-${position}`;
+    const scopeId = row.consultation_id || sourceId;
+    rows.push(buildRepairObservation({
+      condition: "source-retrieval-failed",
+      detail_code: row.failure || row.receipt?.reason || "acquisition_failed",
+      source_contract_id: contract?.id || contract?.source_contract_id || "public-consultations",
+      source_id: sourceId,
+      adapter: "consultation_acquisition",
+      origin_url: row.url || null,
+      scope_kind: "canonical_source",
+      scope_id: scopeId,
+      affected_record_count: 1,
+      publisher: contract?.owner || "New York City public agencies and community boards",
+      code_paths: codePaths.length ? codePaths : ["site/consultation_acquisition.mjs"],
+      observed_at: observedAt || row.observed_at,
+      source_vintage: observedAt || row.observed_at,
+      code_revision: codeRevision,
+      evidence_locator: `${evidenceLocator}#/observations/${position}`,
+      receipt_status: row.ok ? "ok" : "failed",
+      fetch_status: row.status != null ? String(row.status) : null,
+      evidence_examples: row.url ? [row.url] : [],
+    }));
+  });
+  return rows.sort(byFingerprint);
+}
+
+/**
  * Project source-health findings onto the existing repair identity. Missing
  * monitoring is not a successful recheck and never appears here as a resolving
  * pass — callers pass monitoringAvailable=false into mergeRepairObservations.

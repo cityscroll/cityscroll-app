@@ -79,13 +79,26 @@ export async function checkConsultationDeployment({
   };
 }
 
+export const REQUIRED_CONSUMER_KINDS = Object.freeze([
+  "canonical_detail",
+  "search",
+  "local",
+  "now",
+]);
+
 export function validateDeploymentReadback(receipt) {
   const errors = [];
   if (receipt?.schema !== SCHEMA) errors.push("schema mismatch");
   if (receipt?.evidence_class !== "live-production-read") errors.push("evidence class must be live-production-read");
-  if (!receipt?.code_revision) errors.push("code revision is required");
-  if (!receipt?.data_vintage) errors.push("data vintage is required");
+  // The six recorded fields named by the delivery letter: source observation,
+  // data vintage, code revision, canonical detail, search, and local/Now.
   if (!receipt?.source_observation?.observation_ids?.length) errors.push("source observation identity is required");
+  if (!receipt?.data_vintage) errors.push("data vintage is required");
+  if (!receipt?.code_revision) errors.push("code revision is required");
+  const kinds = (receipt?.consumers || []).map((row) => row?.kind);
+  for (const kind of REQUIRED_CONSUMER_KINDS) {
+    if (!kinds.includes(kind)) errors.push(`consumer kind missing: ${kind}`);
+  }
   if (!receipt?.comparison?.same_admitted_rounds) errors.push("consumer round identities diverge");
   if (receipt?.bounds?.requests > MAX_REQUESTS || receipt?.bounds?.bytes > MAX_BYTES) errors.push("read-back bounds exceeded");
   return errors;
