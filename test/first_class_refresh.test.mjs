@@ -231,6 +231,8 @@ test("report_only production_freshness_gate keeps a stale surface visible withou
   const registry = canonical();
   const bsa = registry.first_class_artifacts.find((row) => row.id === "bsa-calendar");
   assert.equal(bsa.production_freshness_gate, "report_only");
+  const upcomingCouncil = registry.first_class_artifacts.find((row) => row.id === "upcoming-council-meetings");
+  assert.equal(upcomingCouncil.production_freshness_gate, "report_only");
 
   await withTempDir("report-only-gate", async (root) => {
     const write = (path, value) => {

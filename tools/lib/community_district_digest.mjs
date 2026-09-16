@@ -7,10 +7,12 @@ import {
   communityBoardIdFromCommunityDistrict,
   councilDistrictsIntersectingCommunity,
 } from "../../site/community_board_geography.mjs";
+import { GEOGRAPHY_COMMUNITY_DISTRICT_IDS } from "../../worker/src/lib/subject_registry.mjs";
 
 const MAX_ITEMS_PER_SECTION = 8;
 const CEILING_BYTES = 500_000;
 const DISTRICT_RE = /^[MXKQR](?:0[1-9]|1[0-8])$/;
+const REGULAR_COMMUNITY_DISTRICTS = GEOGRAPHY_COMMUNITY_DISTRICT_IDS.filter((id) => DISTRICT_RE.test(id));
 
 function dateOf(row) { return String(row?.date || row?.event_date || row?.current_milestone_date || "").slice(0, 10); }
 function compact(row, lens) {
@@ -38,13 +40,18 @@ function coverageFor(activity, lens, overrides) {
 
 export function buildCommunityDistrictDigests({ activity, communityBoardGeography = {}, builtAt = activity?.built_at, coverage = {} } = {}) {
   if (activity?.schema !== "cityscroll.district_activity.v1") throw new Error("community digest requires district activity");
-  const districts = Object.keys(activity.district_items?.by_level?.community_district || {})
-    .filter((id) => DISTRICT_RE.test(id)).sort();
-  if (districts.length !== 59) throw new Error(`community digest requires 59 regular districts, got ${districts.length}`);
+  // Emit every regular community district even when district_items omits a
+  // zero-activity key. Missing membership is an empty district, not a missing
+  // district.
+  const itemBag = activity.district_items?.by_level?.community_district || {};
+  const districts = REGULAR_COMMUNITY_DISTRICTS.slice().sort();
+  if (districts.length !== 59) {
+    throw new Error(`community digest requires 59 regular districts, got ${districts.length}`);
+  }
   const corpora = activity.district_items?.corpora || {};
   const byCommunity = {};
   for (const district of districts) {
-    const memberships = activity.district_items.by_level.community_district[district] || {};
+    const memberships = itemBag[district] || {};
     const sections = {};
     for (const { id: sectionId } of COMMUNITY_DISTRICT_DIGEST_SECTIONS) {
       const state = coverageFor(activity, sectionId, coverage[district]);
