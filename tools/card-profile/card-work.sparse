@@ -439,6 +439,7 @@
 /site/data_health_navigation.mjs
 /site/data_health_page.mjs
 /site/dcas_vehicle_auctions.mjs
+/site/deeplink_filter.mjs
 /site/demo/
 /site/derived_feature_rollup.mjs
 /site/digest_item_awareness.mjs
