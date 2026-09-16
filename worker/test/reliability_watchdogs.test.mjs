@@ -13,6 +13,7 @@ import {
   recordSchedulerHeartbeat,
   recordDeskPublicationHeartbeat,
   canonicalOpsFailureSignature,
+  emitMailExceptionAlerts,
   emitOpsAlertOnce,
   schedulerWatchdogSnapshot,
 } from "../src/reliability_watchdogs.mjs";
@@ -433,6 +434,35 @@ test("digest watchdog folds mail findings and skips emailing a dead mail rail", 
     );
     assert.equal(response.status, 503);
     assert.equal(sent, 0);
+  } finally {
+    globalThis.fetch = previous;
+  }
+});
+
+test("routine mail-leg observations record once in Desk without false rejections", async () => {
+  const ALERT_STATE = kv();
+  const env = { ALERT_STATE, RESEND_API_KEY: "rk" };
+  const snapshot = { findings: ["human operations mailbox is unavailable"] };
+  const now = new Date("2026-08-25T14:10:00Z");
+  let sends = 0;
+  const previous = globalThis.fetch;
+  globalThis.fetch = async () => {
+    sends += 1;
+    return { ok: true, json: async () => ({ id: "unexpected" }) };
+  };
+  try {
+    const first = await emitMailExceptionAlerts(env, snapshot, { now });
+    const repeat = await emitMailExceptionAlerts(env, snapshot, { now });
+    const history = JSON.parse(await ALERT_STATE.get("ops:mail:findings:history"));
+
+    assert.equal(sends, 0);
+    assert.equal(first.length, 1);
+    assert.equal(first[0].delivery_status, "desk-only");
+    assert.equal(first[0].reason, "desk-only");
+    assert.deepEqual(repeat, []);
+    assert.equal(history.items.length, 1);
+    assert.equal(history.items[0].delivery_status, "desk-only");
+    assert.equal(history.items.some((item) => item.delivery_status === "rejected"), false);
   } finally {
     globalThis.fetch = previous;
   }

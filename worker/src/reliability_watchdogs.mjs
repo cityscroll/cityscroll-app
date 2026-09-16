@@ -1058,7 +1058,9 @@ export async function emitMailExceptionAlerts(env, snapshot, { now = new Date() 
         persistAttempt: true,
       });
       reason = alert.reason || (alert.sent ? null : "rejected");
-      deliveryStatus = alert.sent ? "sent" : (alert.reason === "already-alerted" ? "deduped" : "rejected");
+      deliveryStatus = alert.sent ? "sent"
+        : alert.reason === "already-alerted" || (alert.reason === "desk-only" && alert.record?.count > 1) ? "deduped"
+          : alert.reason === "desk-only" ? "desk-only" : "rejected";
     }
     if (deliveryStatus === "deduped") continue;
     records.push({
