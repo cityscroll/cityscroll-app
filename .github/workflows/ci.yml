@@ -667,7 +667,8 @@ jobs:
   performance-serial:
     name: Performance serial baseline (pilot)
     needs: [changes, unit, browser-pr-site]
-    if: always()
+    # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
+    if: always() && github.event_name != 'merge_group'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -735,7 +736,8 @@ jobs:
   performance-shard:
     name: Performance raw samples (shard ${{ matrix.shard }})
     needs: [changes, unit, browser-pr-site]
-    if: always()
+    # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
+    if: always() && github.event_name != 'merge_group'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -791,8 +793,9 @@ jobs:
     # This aggregate remains outside merge rules (see tools/merge_queue_policy.json).
     # It reports a conclusion on every path set and calculates p95 only after all 20
     # raw samples are present; shard percentiles are never calculated or averaged.
+    # Skipped on merge_group with its serial/shard inputs so a missing pilot does not fail red.
     needs: [changes, unit, browser-pr-site, performance-serial, performance-shard]
-    if: always()
+    if: always() && github.event_name != 'merge_group'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -863,7 +866,8 @@ jobs:
   a11y-pr:
     name: Accessibility + language gate (axe on every PR)
     needs: [changes, unit, a11y-pr-shard, a11y-rendered-census-primary, a11y-rendered-census-retry, a11y-routes-focus-primary, a11y-routes-focus-retry]
-    if: always()
+    # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
+    if: always() && github.event_name != 'merge_group'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -989,12 +993,14 @@ jobs:
           overwrite: true
           retention-days: 1
 
-  # The matrix is deliberately not required by branch protection. Only a11y-pr above is
-  # required, so queue admission sees one all-green verdict while every shard remains visible.
+  # The matrix is deliberately not required by branch protection. On pull_request and
+  # push to main, a11y-pr above is the single accessibility verdict while every shard
+  # remains visible. On merge_group both the shards and a11y-pr are skipped (see docs/ci.md).
   a11y-pr-shard:
     name: Accessibility + language shard (${{ matrix.shard }})
     needs: [changes, unit, browser-pr-site]
-    if: always()
+    # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
+    if: always() && github.event_name != 'merge_group'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
@@ -1044,7 +1050,8 @@ jobs:
   a11y-rendered-census-primary:
     name: Accessibility + language shard (rendered-census primary)
     needs: [changes, unit, browser-pr-site]
-    if: always()
+    # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
+    if: always() && github.event_name != 'merge_group'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     continue-on-error: true
@@ -1120,7 +1127,7 @@ jobs:
   a11y-rendered-census-retry:
     name: Accessibility + language shard (rendered-census fresh-runner retry)
     needs: [changes, unit, browser-pr-site, a11y-rendered-census-primary]
-    if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success' && needs.a11y-rendered-census-primary.outputs.rendered_census_browser_crashed == 'true'
+    if: always() && github.event_name != 'merge_group' && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success' && needs.a11y-rendered-census-primary.outputs.rendered_census_browser_crashed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -1149,7 +1156,8 @@ jobs:
   a11y-routes-focus-primary:
     name: Accessibility + language shard (routes-focus primary)
     needs: [changes, unit, browser-pr-site]
-    if: always()
+    # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
+    if: always() && github.event_name != 'merge_group'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     # This is an attempt, not the final verdict. The required aggregate below must
@@ -1197,7 +1205,7 @@ jobs:
   a11y-routes-focus-retry:
     name: Accessibility + language shard (routes-focus fresh-runner retry)
     needs: [changes, unit, browser-pr-site, a11y-routes-focus-primary]
-    if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success' && needs.a11y-routes-focus-primary.outputs.routes_focus_primary_passed != 'true'
+    if: always() && github.event_name != 'merge_group' && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success' && needs.a11y-routes-focus-primary.outputs.routes_focus_primary_passed != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
