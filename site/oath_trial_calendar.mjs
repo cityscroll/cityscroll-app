@@ -1,7 +1,7 @@
 import { normalizeOathTrialCalendarMeeting } from "./meeting_object_contract.mjs";
 
 export const OATH_TRIAL_CALENDAR_SCHEMA = "cityscroll.oath_trial_calendar.v1";
-export const OATH_TRIAL_CALENDAR_SOURCE_URL = "https://www.nyc.gov/site/oath/calendar/calendar.page";
+export const OATH_TRIAL_CALENDAR_SOURCE_URL = "https://www.nyc.gov/site/oath/trials/trial-calendar.page";
 export const OATH_TRIAL_CALENDAR_PARSER = "oath_trial_calendar_acquisition.v1";
 export const OATH_OBSERVER_EMAIL = "OATHCalUnit@OATH.nyc.gov";
 
