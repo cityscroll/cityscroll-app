@@ -13,6 +13,7 @@ import {
   CONSULTATION_OPEN_CLAIM_MAX_AGE_HOURS,
   consultationConsumerRecords,
   consultationDeadline,
+  consultationMatchesScope,
   consultationNowItems,
   consultationPlace,
   mergeConsultationActivity,
@@ -84,12 +85,13 @@ test("A1: district activity, digest, Near You scope, and Now place a typed consu
     assert.equal(digest.by_community_district.K14.sections.consultations.items[0].request_id, undefined);
 
     const nearYouScope = { place: { community_districts: ["K14"] }, topic: { keywords: [] } };
-    assert.equal(consultationPlace(cb14).community_districts.includes("K14"), true);
-    assert.equal(
-      Object.values(contribution.records).some((row) => row.place.community_districts.includes("K14")),
-      true,
-    );
-    assert.equal(nearYouScope.place.community_districts[0], "K14");
+    assert.equal(consultationMatchesScope(cb14, nearYouScope), true);
+    assert.equal(consultationMatchesScope({
+      ...cb14,
+      id: "citywide-parking",
+      geography: { kind: "citywide", labels: ["New York City"] },
+    }, nearYouScope), false);
+    assert.deepEqual(contribution.records[cb14.id].place.community_districts, ["K14"]);
 
     const emptyDomains = ["money", "staffing", "rules", "property", "meetings", "land", "consultations"];
     const surface = buildNowSurface({
