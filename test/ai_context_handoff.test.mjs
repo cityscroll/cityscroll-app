@@ -1,15 +1,22 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 
 import {
+  AI_CONTEXT_HANDOFF_DISPOSITIONS,
   AI_CONTEXT_HANDOFF_SCHEMA,
   AI_CONTEXT_MORE_TOOLS_LABEL,
   AI_CONTEXT_PRIVATE_KEYS,
   AI_CONTEXT_SETUP_PATH,
   AI_CONTEXT_UNSUPPORTED_FAMILIES,
+  PAGE_FAMILY_AI_CONTEXT,
   aiContextHandoffHref,
   buildAiContextHandoff,
+  buildAiContextHandoffForSurface,
+  buildBrowseContractsAiContextHandoff,
+  buildBrowseLandProjectsAiContextHandoff,
+  buildBrowseOrganizationsAiContextHandoff,
   buildContractAiContextHandoff,
   buildEntityAiContextHandoff,
   buildLandProjectAiContextHandoff,
@@ -18,6 +25,7 @@ import {
   buildSearchAiContextHandoff,
   buildUnsupportedFamilyAiContextHandoff,
   formatAiContextTask,
+  pageFamilyAiContextSurfaceIds,
   parseAiContextHandoff,
   renderAiContextHandoffLink,
   renderAiContextTaskPanel,
@@ -26,35 +34,111 @@ import {
   stripAiContextPrivateFields,
 } from "../site/ai_context_handoff.mjs";
 import { AI_ENDPOINT } from "../site/ai_discovery.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const CONTRACT_ID = "procurement:contract:CT107120258801626";
 const NOTICE_ID = "20240829105";
 const LAND_ID = "2024Q0356";
 const MEETING_ID = "meeting:city_record:20260810053";
 const ENTITY_ID = "agency:id:857";
+const PINNED_CLOCK = "2026-09-16T12:00:00.000Z";
 
-test("A1 census: exact families and unsupported page families have declared handoffs", () => {
-  const contract = buildContractAiContextHandoff({ procurement_id: CONTRACT_ID });
-  const notice = buildNoticeAiContextHandoff({ request_id: NOTICE_ID });
-  const meeting = buildMeetingAiContextHandoff({ meeting_id: MEETING_ID });
-  const land = buildLandProjectAiContextHandoff({ project_id: LAND_ID });
-  const entity = buildEntityAiContextHandoff({ entity_id: ENTITY_ID });
-  const search = buildSearchAiContextHandoff({ query: "heat pumps", lenses: ["money"] });
-  for (const handoff of [contract, notice, meeting, land, entity, search]) {
-    assert.equal(handoff.schema, AI_CONTEXT_HANDOFF_SCHEMA);
-    assert.equal(handoff.status, "ok");
-    assert.equal(handoff.support, "exact");
-    assert.ok(handoff.tools.length >= 1);
+function publishedSurfaceIds() {
+  const manifest = JSON.parse(readFileSync(new URL("../site/data/performance-classification-manifest.v1.json", import.meta.url), "utf8"));
+  return manifest.surfaces.map((surface) => surface.surface_id);
+}
+
+function exactSurfaceFixture(surfaceId) {
+  switch (surfaceId) {
+    case "notice":
+      return { request_id: NOTICE_ID };
+    case "meeting":
+      return { meeting_id: MEETING_ID };
+    case "procurement":
+      return { procurement_id: CONTRACT_ID };
+    case "agency":
+    case "vendor":
+    case "official":
+    case "committee":
+    case "community-board":
+      return { entity_id: ENTITY_ID };
+    case "search":
+    case "browse":
+      return { query: "heat pumps", lenses: ["money"] };
+    case "browse-meetings":
+      return { query: "community board", lenses: ["meetings"] };
+    case "browse-contracts":
+      return { query: "heat pumps", agency: "Housing" };
+    case "browse-people":
+      return { query: "education" };
+    case "browse-zoning":
+      return { query: LAND_ID };
+    default:
+      return {};
   }
-  for (const family of AI_CONTEXT_UNSUPPORTED_FAMILIES) {
-    const handoff = buildUnsupportedFamilyAiContextHandoff(family, { canonical_href: `/${family}/` });
-    assert.equal(handoff.status, "unsupported_family");
-    assert.equal(handoff.support, "unsupported");
-    assert.equal(handoff.setup_href, AI_CONTEXT_SETUP_PATH);
-    assert.equal(handoff.tools.length, 0);
-  }
+}
+
+test("A1 census: declared page families equal the published surface manifest", async () => {
+  await withPinnedClock(PINNED_CLOCK, async () => {
+    const published = publishedSurfaceIds().slice().sort();
+    const declared = pageFamilyAiContextSurfaceIds().slice().sort();
+    assert.deepEqual(declared, published);
+
+    const seen = new Set();
+    for (const row of PAGE_FAMILY_AI_CONTEXT) {
+      assert.ok(AI_CONTEXT_HANDOFF_DISPOSITIONS.includes(row.handoff), row.surface_id);
+      assert.equal(seen.has(row.surface_id), false, `duplicate census row: ${row.surface_id}`);
+      seen.add(row.surface_id);
+
+      if (row.handoff === "exact") {
+        assert.ok(Array.isArray(row.tools) && row.tools.length >= 1, row.surface_id);
+        const handoff = buildAiContextHandoffForSurface(row.surface_id, exactSurfaceFixture(row.surface_id));
+        assert.equal(handoff.status, "ok", row.surface_id);
+        assert.equal(handoff.support, "exact", row.surface_id);
+        assert.ok(handoff.tools.length >= 1, row.surface_id);
+        assert.equal(handoff.setup_href, AI_CONTEXT_SETUP_PATH, row.surface_id);
+      } else if (row.handoff === "unsupported") {
+        assert.ok(AI_CONTEXT_UNSUPPORTED_FAMILIES.includes(row.family), row.surface_id);
+        const handoff = buildAiContextHandoffForSurface(row.surface_id, { canonical_href: `/${row.surface_id}/` });
+        assert.equal(handoff.status, "unsupported_family", row.surface_id);
+        assert.equal(handoff.support, "unsupported", row.surface_id);
+        assert.equal(handoff.tools.length, 0, row.surface_id);
+        assert.equal(handoff.setup_href, AI_CONTEXT_SETUP_PATH, row.surface_id);
+      } else {
+        assert.equal(row.handoff, "general", row.surface_id);
+        assert.ok(row.reason && row.reason.length > 20, row.surface_id);
+        const handoff = buildAiContextHandoffForSurface(row.surface_id, { canonical_href: `/${row.surface_id}/` });
+        assert.equal(handoff.status, "general_setup", row.surface_id);
+        assert.equal(handoff.support, "general", row.surface_id);
+        assert.equal(handoff.tools.length, 0, row.surface_id);
+        assert.equal(handoff.setup_href, AI_CONTEXT_SETUP_PATH, row.surface_id);
+      }
+    }
+
+    // Spec-named families without a 1:1 published surface still refuse exactly.
+    for (const family of AI_CONTEXT_UNSUPPORTED_FAMILIES) {
+      const handoff = buildUnsupportedFamilyAiContextHandoff(family, { canonical_href: `/${family}/` });
+      assert.equal(handoff.status, "unsupported_family", family);
+      assert.equal(handoff.tools.length, 0, family);
+      assert.equal(handoff.setup_href, AI_CONTEXT_SETUP_PATH, family);
+    }
+
+    // Existing tools that represent browse scopes stay exact rather than general.
+    const contractsBrowse = buildBrowseContractsAiContextHandoff({ query: "heat pumps", agency: "Housing" });
+    assert.equal(contractsBrowse.status, "ok");
+    assert.deepEqual(contractsBrowse.tools, ["browse_contracts"]);
+    assert.equal(contractsBrowse.arguments.query, "heat pumps");
+    assert.equal(contractsBrowse.arguments.agency, "Housing");
+
+    const orgsBrowse = buildBrowseOrganizationsAiContextHandoff({ query: "education" });
+    assert.equal(orgsBrowse.status, "ok");
+    assert.deepEqual(orgsBrowse.tools, ["browse_organizations"]);
+
+    const landBrowse = buildBrowseLandProjectsAiContextHandoff({ query: LAND_ID });
+    assert.equal(landBrowse.status, "ok");
+    assert.deepEqual(landBrowse.tools, ["browse_land_projects"]);
+  });
 });
-
 test("A2 contract, notice, and land recipes preserve exact public ids and routes", () => {
   const contract = buildContractAiContextHandoff({ procurement_id: CONTRACT_ID });
   assert.equal(contract.id, CONTRACT_ID);
