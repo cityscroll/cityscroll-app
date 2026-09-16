@@ -18,6 +18,7 @@ import {
 } from "../site/ai_discovery.mjs";
 import {
   CAPABILITY_TASK_BINDINGS,
+  CAPABILITY_TASK_PLACEMENTS,
   DISCOVERY_ANALYTICS_ALLOWLIST,
   DISCOVERY_CONTRACT_ID,
   DISCOVERY_REQUIREMENTS,
@@ -360,6 +361,15 @@ test("A2: topology-style discovery checks reject unknown bindings and dangling g
   });
   assert.equal(missingOwner.ok, false);
   assert.ok(missingOwner.problems.some((problem) => problem.includes("absent render owner")));
+
+  const unmapped = validateDiscoveryContract({
+    mcpToolNames: mcpToolNames(),
+    taskBindings: CAPABILITY_TASK_BINDINGS.map((row) => (
+      row.name === "Calendar" ? { ...row, placement: "row_toolbar" } : row
+    )),
+  });
+  assert.equal(unmapped.ok, false);
+  assert.ok(unmapped.problems.some((problem) => problem.includes("unsupported task mapping for Calendar: row_toolbar")));
 });
 
 test("A2 negative: remove, duplicate, and drop-scope mutations fail behaviorally", () => {
@@ -376,6 +386,32 @@ test("A2 negative: remove, duplicate, and drop-scope mutations fail behaviorally
   assert.equal(dropped.ok, false);
   assert.ok(dropped.problems.some((problem) => problem.includes("dangling guide topic")));
   assert.ok(dropped.problems.some((problem) => problem.includes("unknown MCP binding")));
+});
+
+test("A2 negative: an unsupported task mapping fails on its own named problem", () => {
+  const healthy = validateDiscoveryContract({ mcpToolNames: mcpToolNames() });
+  assert.equal(healthy.ok, true, healthy.problems.join("\n"));
+
+  const mapped = validateMutatedDiscovery("unsupported_task_mapping");
+  assert.equal(mapped.ok, false);
+  assert.ok(
+    mapped.problems.some((problem) => problem.includes("unsupported task mapping for Calendar: row_toolbar")),
+    mapped.problems.join("\n"),
+  );
+  // Control against passing for the wrong reason: the mutation changes only
+  // the placement field, so the failure must be the mapping rejection itself —
+  // not the binding, guide, and owner problems the other mutations already
+  // cover recycling back in.
+  assert.equal(mapped.problems.some((problem) => problem.includes("unknown MCP binding")), false, mapped.problems.join("\n"));
+  assert.equal(mapped.problems.some((problem) => problem.includes("dangling guide topic")), false, mapped.problems.join("\n"));
+  assert.equal(mapped.problems.some((problem) => problem.includes("absent render owner")), false, mapped.problems.join("\n"));
+  // And the shipped Calendar binding still carries a supported placement, so
+  // the named problem can only come from the mutation path.
+  const calendar = CAPABILITY_TASK_BINDINGS.find((row) => row.name === "Calendar");
+  assert.ok(CAPABILITY_TASK_PLACEMENTS.includes(calendar.placement));
+  for (const binding of CAPABILITY_TASK_BINDINGS) {
+    assert.ok(CAPABILITY_TASK_PLACEMENTS.includes(binding.placement), binding.name);
+  }
 });
 
 test("A6: hosted-client compatibility evidence labels unverified one-click claims", () => {
@@ -466,7 +502,7 @@ test("soft-depend: research discovery, when present, projects eligible tools und
   for (const name of ["Evidence", "As-of", "Comparative analysis", "Saved searches", "Collection/export"]) {
     const binding = CAPABILITY_TASK_BINDINGS.find((row) => row.name === name);
     assert.ok(binding, name);
-    assert.ok(["more_tools", "introduction", "scope_tools"].includes(binding.placement), name);
+    assert.ok(CAPABILITY_TASK_PLACEMENTS.includes(binding.placement), name);
   }
   assert.ok(GUIDE_HELP.connection);
   assert.ok(GUIDE_HELP.asOf);

@@ -18,6 +18,15 @@
 // this file's and the canary's own source text, not just against one run's
 // behavior.
 //
+// The local halves of the canary extensions run in BOTH branches, before the
+// environment switch: the transport-failure classifier (a pure function that
+// lives in capabilities/evidence_classification.mjs so it is importable
+// without the pinned MCP SDK), the no-local-handler boundary scans, and the
+// generated-catalog checks behind the discovery reads. A suite whose content
+// sits only inside the live branch is a hole whose size cannot be read from a
+// passing count; the switch now gates only claims that genuinely require the
+// deployed endpoint.
+//
 // Card: cityscroll-engineering/live-remote-mcp-canary
 // Verify: node --test test/live_mcp_canary.test.mjs
 
@@ -26,7 +35,17 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { test } from "node:test";
 
+import {
+  classifyLiveTransportFailure,
+  scanSourceForHandleMcpImport,
+} from "../capabilities/evidence_classification.mjs";
+import { CONTRACT_AVAILABILITY } from "../capabilities/contracts.mjs";
+import { LAND_PROJECT_AVAILABILITY } from "../capabilities/land_projects.mjs";
+
 const ROOT = resolve(import.meta.dirname, "..");
+const CANARY_SOURCE_PATH = resolve(ROOT, "tools/verify_live_remote_mcp_canary.mjs");
+const canarySource = readFileSync(CANARY_SOURCE_PATH, "utf8");
+const thisFileSource = readFileSync(resolve(import.meta.dirname, "live_mcp_canary.test.mjs"), "utf8");
 
 // Always-on offline guard: discovery reads must use the published MCP wire
 // argument names (snake_case). PR #2073 initially called get_contract /
@@ -34,7 +53,6 @@ const ROOT = resolve(import.meta.dirname, "..");
 // correctly rejected those calls as missing required fields.
 test("A0: discovery-read argument keys match the published MCP input schemas", () => {
   const catalog = JSON.parse(readFileSync(resolve(ROOT, "site/data/mcp_tool_catalog.json"), "utf8"));
-  const canarySource = readFileSync(resolve(ROOT, "tools/verify_live_remote_mcp_canary.mjs"), "utf8");
   const byName = new Map(catalog.tools.map((tool) => [tool.name, tool]));
 
   const contractSchema = byName.get("get_contract")?.input_schema;
@@ -64,15 +82,82 @@ test("A0: discovery-read argument keys match the published MCP input schemas", (
   );
 });
 
+// Local half of the transport classifier: three distinct inputs must produce
+// three distinct classes — network error, HTTP 429, and Cloudflare denial
+// recognized from its challenge marker — which is what recording them
+// separately on the live run requires.
+test("A4: transport failures classify as network, Cloudflare denial, or HTTP 429 (local half)", () => {
+  const cases = [
+    { error: new TypeError("fetch failed"), response: null, expected: "network_error" },
+    { error: new Error("HTTP 429 from MCP ping"), response: { status: 429, bodyText: "" }, expected: "http_429" },
+    { error: new Error("Forbidden"), response: { status: 403, bodyText: "cf-ray challenge-platform" }, expected: "cloudflare_denial" },
+  ];
+  const seenClasses = new Set();
+  for (const { error, response, expected } of cases) {
+    const classified = classifyLiveTransportFailure(error, response);
+    assert.equal(classified.class, expected, JSON.stringify(classified));
+    seenClasses.add(classified.class);
+  }
+  assert.equal(seenClasses.size, 3, "three distinct inputs must produce three distinct classes");
+});
+
+// Local half of the boundary rule, including the separately asserted clause:
+// live claims must not replace fetch with a local handler. The self-check
+// regexes below quote the exact forbidden identifiers, so the boundary
+// patterns run against the canary implementation's source only; both files
+// are checked for a direct handleMcp() import, which is a real,
+// non-self-referential structural check.
+test("A4: live claims cannot replace fetch with a local handler (local half)", () => {
+  assert.equal(scanSourceForHandleMcpImport(canarySource).imports, false, "canary must never import handleMcp()");
+  assert.equal(scanSourceForHandleMcpImport(thisFileSource).imports, false, "test must never import handleMcp()");
+  assert.doesNotMatch(canarySource, /from\s+["'][^"']*worker\/src\//, "must never import a Worker module");
+  assert.doesNotMatch(canarySource, /from\s+["'][^"']*\bcapabilities\/(?!evidence_classification\.mjs)/, "must never import a capability provider module");
+  assert.doesNotMatch(canarySource, /createRemoteMcpFixtureEnv|remote_mcp_fixture\.mjs/, "must never open a fixture environment");
+  assert.doesNotMatch(canarySource, /StreamableHTTPClientTransport\s*\([^)]*\{\s*fetch\s*:/s, "must never override the transport's fetch");
+
+  // No substitution seam exists: runLiveMcpCanary's entire options surface
+  // names endpoint addresses. A fetch, transport, or handler parameter would
+  // be the seam a test could use to swap a local handler in for live claims.
+  const options = canarySource.match(/runLiveMcpCanary\((\{[^)]*\})\s*=\s*\{\}\)/);
+  assert.ok(options, "runLiveMcpCanary must expose an options object");
+  assert.match(options[1], /mcpEndpoint/);
+  assert.match(options[1], /healthEndpoint/);
+  assert.doesNotMatch(
+    options[1],
+    /\b(fetch|transport|handler|requestInit|handleMcp)\b/,
+    "options surface must not offer a transport substitution seam",
+  );
+  // And the live-claim call site invokes the canary with no arguments at all,
+  // so the run uses the unmodified default transport.
+  assert.match(
+    thisFileSource,
+    /const receipt = await runLiveMcpCanary\(\);/,
+    "the live run must call runLiveMcpCanary with no arguments",
+  );
+});
+
+// Local half of the discovery reads: the three tools the live branch calls
+// must stay registered in the generated deployed inventory as unauthenticated
+// public reads, and the availability membership the live branch checks is the
+// capability contracts' own closed vocabulary, not a restated list.
+test("A4: discovery reads target registered public read tools with a closed availability vocabulary (local half)", () => {
+  const catalog = JSON.parse(readFileSync(resolve(ROOT, "site/data/mcp_tool_catalog.json"), "utf8"));
+  const byName = new Map(catalog.tools.map((tool) => [tool.name, tool]));
+  for (const tool of ["get_contract", "get_land_project", "retrieve_cited_passages"]) {
+    const registered = byName.get(tool);
+    assert.ok(registered, `${tool} must stay registered in the generated catalog`);
+    assert.equal(registered.operation_class, "read", `${tool} must stay a read-only tool`);
+    assert.equal(registered.authority_class, "public_read", `${tool} must stay an unauthenticated public read`);
+  }
+  assert.deepEqual([...CONTRACT_AVAILABILITY], ["available", "not_yet_public", "unavailable"]);
+  assert.deepEqual([...LAND_PROJECT_AVAILABILITY], ["available", "not_yet_public", "unavailable"]);
+});
+
 if (process.env.CS10_SKIP_LIVE_CANARY) {
   test("CS-10 live MCP canary skipped: CS10_SKIP_LIVE_CANARY is set (fast, network-independent sweep)", () => {});
 } else {
-  const { EVIDENCE_CLASSES, EXECUTION_ENVIRONMENTS, scanSourceForHandleMcpImport } = await import("../capabilities/evidence_classification.mjs");
+  const { EVIDENCE_CLASSES, EXECUTION_ENVIRONMENTS } = await import("../capabilities/evidence_classification.mjs");
   const { runLiveMcpCanary } = await import("../tools/verify_live_remote_mcp_canary.mjs");
-
-  const CANARY_SOURCE_PATH = resolve(ROOT, "tools/verify_live_remote_mcp_canary.mjs");
-  const canarySource = readFileSync(CANARY_SOURCE_PATH, "utf8");
-  const thisFileSource = readFileSync(resolve(import.meta.dirname, "live_mcp_canary.test.mjs"), "utf8");
 
   // One live network round trip for every assertion below — the card's Implementation
   // section lists initialize, tools/list, ping, one bounded static read, one bounded
@@ -89,18 +174,7 @@ if (process.env.CS10_SKIP_LIVE_CANARY) {
     assert.match(receipt.server_identity.cf_ray || "", /^[0-9a-f]{16}-[A-Z]{3}$/i);
   });
 
-  test("A2: the canary contains no fetch override, handleMcp() import, fixture environment, or local Worker dispatch", () => {
-    // The self-check regexes below quote the exact forbidden identifiers, so
-    // running them against this meta-test file's own source would trivially
-    // self-match; only the canary implementation's source is scanned for the
-    // boundary patterns themselves. Both files are checked for a direct
-    // handleMcp() import, which is a real, non-self-referential structural check.
-    assert.equal(scanSourceForHandleMcpImport(canarySource).imports, false, "must never import handleMcp()");
-    assert.equal(scanSourceForHandleMcpImport(thisFileSource).imports, false, "must never import handleMcp()");
-    assert.doesNotMatch(canarySource, /from\s+["'][^"']*worker\/src\//, "must never import a Worker module");
-    assert.doesNotMatch(canarySource, /from\s+["'][^"']*\bcapabilities\/(?!evidence_classification\.mjs)/, "must never import a capability provider module");
-    assert.doesNotMatch(canarySource, /createRemoteMcpFixtureEnv|remote_mcp_fixture\.mjs/, "must never open a fixture environment");
-    assert.doesNotMatch(canarySource, /StreamableHTTPClientTransport\s*\([^)]*\{\s*fetch\s*:/s, "must never override the transport's fetch");
+  test("A2: the receipt reports an unmodified transport", () => {
     assert.equal(receipt.client.fetch_overridden, false);
     assert.equal(receipt.network_observation.fetch_override, false);
     assert.equal(receipt.network_observation.transport_intercepted, false);
@@ -204,22 +278,15 @@ if (process.env.CS10_SKIP_LIVE_CANARY) {
     assert.equal(contract.is_error, false);
     assert.equal(land.is_error, false);
     assert.equal(cited.is_error, false);
-    assert.ok(["available", "not_yet_public", "unavailable"].includes(contract.availability));
-    assert.ok(["available", "not_yet_public", "unavailable"].includes(land.availability));
+    assert.ok(CONTRACT_AVAILABILITY.includes(contract.availability));
+    assert.ok(LAND_PROJECT_AVAILABILITY.includes(land.availability));
     assert.ok(Array.isArray(cited.cited_links));
     for (const link of cited.cited_links) {
       assert.match(link, /^https?:\/\//i);
     }
   });
 
-  test("A12: transport failures are classified as network, Cloudflare denial, or 429", async () => {
-    const { classifyLiveTransportFailure } = await import("../tools/verify_live_remote_mcp_canary.mjs");
-    assert.equal(classifyLiveTransportFailure(new Error("fetch failed")).class, "network_error");
-    assert.equal(classifyLiveTransportFailure(new Error("HTTP 429"), { status: 429 }).class, "http_429");
-    assert.equal(
-      classifyLiveTransportFailure(new Error("Forbidden"), { status: 403, bodyText: "cf-ray challenge-platform" }).class,
-      "cloudflare_denial",
-    );
+  test("A12: the live run recorded no transport failure", () => {
     assert.equal(receipt.network_observation.transport_failure, null);
   });
 

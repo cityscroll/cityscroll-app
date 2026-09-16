@@ -42,6 +42,18 @@ export const PAGE_FAMILY_DISPOSITIONS = Object.freeze([
 ]);
 
 /**
+ * Closed placement vocabulary for capability task mappings, backing the
+ * `placement` requirement: shared introduction, a scope-level region, or the
+ * More-tools region. A per-row toolbar or arrival modal is unsupported by
+ * construction because it is not in this list.
+ */
+export const CAPABILITY_TASK_PLACEMENTS = Object.freeze([
+  "introduction",
+  "scope_tools",
+  "more_tools",
+]);
+
+/**
  * Census of published page families from the performance-classification
  * surface registry. Each family declares how generic AI introduction reaches
  * it. Contextual task entrances remain owned by sibling projections.
@@ -279,6 +291,9 @@ export function validateDiscoveryContract({
     if (!Object.values(AFFORDANCE_ACTION_ROLES).includes(binding.action_role)) {
       problems.push(`unsupported action role for ${binding.name}`);
     }
+    if (!CAPABILITY_TASK_PLACEMENTS.includes(binding.placement)) {
+      problems.push(`unsupported task mapping for ${binding.name}: ${binding.placement}`);
+    }
     if (binding.guide_topic && !guideHelp?.[binding.guide_topic]) {
       problems.push(`dangling guide topic for ${binding.name}: ${binding.guide_topic}`);
     }
@@ -398,6 +413,16 @@ export function mutateDiscoveryContract(kind) {
       taskBindings: CAPABILITY_TASK_BINDINGS.map((row) => (
         row.name === "Evidence"
           ? { ...row, guide_topic: "missing-guide-topic", mcp_tools: ["not_a_real_mcp_tool"] }
+          : row
+      )),
+      mcpToolNames: ["list_capability_gaps", "retrieve_cited_passages", "analyze_contracts"],
+    };
+  }
+  if (kind === "unsupported_task_mapping") {
+    return {
+      taskBindings: CAPABILITY_TASK_BINDINGS.map((row) => (
+        row.name === "Calendar"
+          ? { ...row, placement: "row_toolbar" }
           : row
       )),
       mcpToolNames: ["list_capability_gaps", "retrieve_cited_passages", "analyze_contracts"],
