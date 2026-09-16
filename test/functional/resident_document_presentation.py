@@ -40,6 +40,8 @@ LOCAL_CONDITION = (
     "no image binary is committed."
 )
 ARTIFACT_MANIFEST_PATH = "/artifact-manifest.json"
+# Production edge refuses the default Python-urllib User-Agent (HTTP 403).
+ARTIFACT_MANIFEST_UA = "cityscroll-resident-document-presentation/1"
 
 
 def stage_assets() -> pathlib.Path:
@@ -167,7 +169,13 @@ def local_checkout_revision() -> str:
     ).strip()
 
 
-def deployed_build_revision(base: str, *, opener=urllib.request.urlopen) -> str:
+def open_artifact_manifest(url: str, timeout: int = 20):
+    """Fetch the served artifact manifest with an allowlisted User-Agent."""
+    request = urllib.request.Request(url, headers={"User-Agent": ARTIFACT_MANIFEST_UA})
+    return urllib.request.urlopen(request, timeout=timeout)
+
+
+def deployed_build_revision(base: str, *, opener=open_artifact_manifest) -> str:
     """Read the served Pages artifact revision, not the local checkout HEAD."""
     origin = normalize_base(base).rstrip("/")
     url = f"{origin}{ARTIFACT_MANIFEST_PATH}"
@@ -182,7 +190,7 @@ def deployed_build_revision(base: str, *, opener=urllib.request.urlopen) -> str:
     return sha[:9]
 
 
-def resolve_manifest_revision(base: str, *, opener=urllib.request.urlopen) -> str:
+def resolve_manifest_revision(base: str, *, opener=open_artifact_manifest) -> str:
     if is_production_base(base):
         return deployed_build_revision(base, opener=opener)
     return local_checkout_revision()
@@ -601,6 +609,27 @@ def run_writer_self_tests() -> None:
     assert deployed_build_revision(production_base, opener=opener) == "abcdef012"
     assert resolve_manifest_revision(production_base, opener=opener) == "abcdef012"
     assert resolve_manifest_revision(local_base) == local_checkout_revision()
+    assert ARTIFACT_MANIFEST_UA.startswith("cityscroll-")
+
+    recorded: dict[str, object] = {}
+
+    def recording_urlopen(request, timeout=20):  # noqa: ARG001
+        recorded["url"] = request.full_url
+        recorded["ua"] = request.get_header("User-agent")
+        payload = {
+            "schema": "cityscroll.served-artifact-manifest.v1",
+            "source_commit_sha": "fedcba9876543210fedcba9876543210fedcba98",
+        }
+        return io.BytesIO(json.dumps(payload).encode())
+
+    original_urlopen = urllib.request.urlopen
+    urllib.request.urlopen = recording_urlopen  # type: ignore[assignment]
+    try:
+        assert deployed_build_revision(production_base) == "fedcba987"
+        assert recorded["url"].endswith(ARTIFACT_MANIFEST_PATH)
+        assert recorded["ua"] == ARTIFACT_MANIFEST_UA
+    finally:
+        urllib.request.urlopen = original_urlopen  # type: ignore[assignment]
 
     matching = [
         {"case": "example", "viewport": {"width": 1440, "height": 1000}, "render_sha256": "a" * 64},
