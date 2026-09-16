@@ -50,6 +50,14 @@
       "path": "worker/src/lib/ops_notification_policy.mjs"
     },
     {
+      "id": "ops-emergency-delivery-store",
+      "path": "worker/src/lib/emergency_outbox.mjs"
+    },
+    {
+      "id": "ops-emergency-delivery-migration",
+      "path": "worker/migrations/0033_ops_emergency_outbox.sql"
+    },
+    {
       "id": "ops-notification-policy-contract",
       "path": "worker/test/ops_notification_policy.test.mjs"
     }

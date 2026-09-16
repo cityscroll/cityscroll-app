@@ -602,7 +602,7 @@ export function repairJudgmentParagraph(judgment) {
 export const REPAIR_JUDGMENT_SUBJECT_LIMIT = 8;
 
 /**
- * The guard and failure class a judgment belongs to — the group one mail covers.
+ * The guard and failure class a judgment belongs to — the Desk record's group.
  *
  * A monitor finding's signature is `monitor:<monitor>:<class>[:<subject>]`, so
  * the class comes from the signature where there is one and from the item's own
@@ -662,15 +662,15 @@ export function repairJudgmentGroupParagraph(group, judgments) {
 }
 
 /**
- * One readable alert per guard and failure class that reached the judgment
+ * One readable Desk record per guard and failure class that reached the judgment
  * boundary in this cycle. It is a distinct signature from the findings it came
  * from, and its own guard is excluded from the queue, so a failed fix can never
  * queue a repair for its own failure notice.
  *
- * The grouping is the mail's alone. Each subject keeps its own repair item, its
+ * The grouping is the Desk record's alone. Each subject keeps its own repair item, its
  * own receipts, and its own recovery, so nothing about what the rail tracks or
- * closes changes — what changes is that one condition across many subjects asks
- * the owner once instead of once per subject, every day it lasts.
+ * closes changes — one condition across many subjects is presented as one
+ * decision instead of one per subject, every day it lasts.
  */
 export async function emitRepairJudgmentAlerts(env, judgments = [], { now = new Date() } = {}) {
   const groups = new Map();
@@ -713,8 +713,8 @@ export async function emitRepairJudgmentAlerts(env, judgments = [], { now = new 
 }
 
 // Guards whose findings are only actionable with run and receipt evidence in
-// hand. A caller cannot opt out: an alert with nothing to dereference is held
-// back and reported as a delivery failure rather than emailed as "null".
+// hand. A caller cannot opt out: a record with nothing to dereference is held
+// back and marked as an evidence failure in Desk.
 export const EVIDENCE_REQUIRED_GUARDS = Object.freeze([
   "scheduler-heartbeat",
   "served-artifact-freshness",
@@ -921,15 +921,14 @@ export async function emitOpsAlertOnce(env, input = {}) {
 /**
  * Pickup on the cycle's existing heartbeat: reconcile anything the queue lost to
  * a failed write, hand out bounded leases, and turn any item that reached the
- * judgment boundary into the one owner alert it is allowed to send. Pickup
- * itself is silent.
+ * judgment boundary into a grouped Desk record. Pickup itself is silent.
  */
 export async function dispatchRepairQueue(env, { now = new Date(), runId = null, limit } = {}) {
   const heartbeat = await readJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY);
   const history = await readJson(env?.ALERT_STATE, OPS_ALERT_HISTORY_KEY);
   const recovered = await reconcileRepairQueue(env, { now, heartbeat, history });
   // A cycle that cannot dispatch does not take leases. Spending attempts on
-  // work nothing will run is how a queue quietly exhausts itself into mail.
+  // work nothing will run would exhaust the queue into false judgment records.
   if (heartbeat?.repair_dispatch !== true) {
     return { recovered: recovered.restored, items: [], judgment_alerts: [], dispatch: false };
   }
@@ -952,14 +951,14 @@ export const MONITOR_RECOVERY_SCOPE_LIMIT = 25;
  * Fold one cycle's monitor observations into the repair queue.
  *
  * This is the step that closes the gap the rail was missing: a degraded monitor
- * run has always produced human-grade mail and a GitHub issue, and now it also
- * produces a queue item a playbook can pick up. Upsert semantics do the
+ * run already produced an operational finding and a GitHub issue, and now it
+ * also produces a queue item a playbook can pick up. Upsert semantics do the
  * deduplication, so a condition on its fifth day advances a repeat counter
  * rather than opening a fifth item.
  *
- * It is deliberately SILENT. Queueing has never been an alert, and these
- * findings already reached their reader through the monitor's own issue; only
- * an item that reaches the judgment boundary sends further mail.
+ * It is deliberately SILENT. Queueing has never been a notification, and these
+ * findings already reached their reader through the monitor's own issue. A
+ * judgment adds decision context to Desk without sending mail.
  */
 export async function applyMonitorFindings(env, { findings = [], recovered = [], now = new Date(), heartbeat = null } = {}) {
   const queued = [];
@@ -1004,8 +1003,9 @@ export async function applyMonitorFindings(env, { findings = [], recovered = [],
 
 /**
  * The cycle reporting what its bounded repair task did. A repaired item retires
- * silently; a retryable failure returns to the queue silently; only a terminal
- * failure, a persistent upstream outage, or an explicit decision request mails the owner.
+ * silently; a retryable failure returns to the queue silently; a terminal
+ * failure, persistent upstream outage, or explicit decision request is recorded
+ * for review in Desk.
  */
 export async function reportRepairResults(env, reports = [], { now = new Date() } = {}) {
   const applied = [];

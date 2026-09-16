@@ -1,8 +1,8 @@
-// repair_queue — the durable handoff between an owner alert and automatic repair.
+// repair_queue — the durable handoff between an operational finding and
+// automatic repair.
 //
-// rel-09 gives every operational failure a canonical signature and human-grade
-// mail; rel-10 routes that mail to the verified owner. Neither leaves anything a
-// machine can pick up, so the owner has to retype an email into a repair task.
+// rel-09 gives every operational failure a canonical signature and Desk record.
+// This module gives the bounded repair cycle a structured item to pick up.
 //
 // This module keeps ONE structured repair item per canonical alert signature in
 // the existing ALERT_STATE namespace. It is not a queue service and not a
@@ -10,10 +10,10 @@
 // heartbeat leases items on that same heartbeat, runs a bounded debug/fix task,
 // and reports the outcome back on its next heartbeat.
 //
-// MAIL POLICY lives with the caller, but the states here are what it keys on:
-// queueing, pickup, retry, deferral, and a successful repair are all silent. Only
-// `needs_judgment` — terminal repair failure, persistent upstream outage, or a decision —
-// produces the one further owner alert.
+// NOTIFICATION POLICY lives with the caller. Queueing, pickup, retry, deferral,
+// judgment, and successful repair do not email the owner; `needs_judgment`
+// carries terminal repair failure, persistent upstream outage, or decision
+// context into the authenticated Desk read model.
 //
 // SANITIZATION: records carry bounded, redacted prose and https links only.
 // Credentials, tokens, raw payloads, unbounded traces, recipient addresses, and
@@ -470,11 +470,10 @@ export async function leaseRepairItems(env, { runId, now = new Date(), limit = R
 /**
  * The cycle reports what its bounded repair task did. A success retires the
  * item silently. A retryable failure returns the item to the queue, still
- * silent, so retry never becomes mail. Upstream deferrals wait for a newer
- * scheduled observation and only escalate on a check after the persistence
- * window. A terminal failure or an explicit
- * request for a decision moves the item to the judgment boundary, which is the
- * only outcome that produces a further owner alert.
+ * silent, so retry never becomes a notification. Upstream deferrals wait for a
+ * newer scheduled observation and only escalate on a check after the persistence
+ * window. A terminal failure or an explicit request for a decision moves the
+ * item to the judgment boundary for Desk review.
  */
 export async function completeRepairItem(env, report = {}, { now = new Date() } = {}) {
   const signature = String(report.signature || "").slice(0, 128);
@@ -708,7 +707,7 @@ export async function readRepairQueue(env, { now = new Date(), limit = 30 } = {}
 }
 
 /**
- * The queued-repair sentence the originating owner alert carries. It names the
+ * The queued-repair sentence the originating operational record carries. It names the
  * queue's actual pickup time, and says plainly when there is no live cycle to
  * name one rather than inventing a tick.
  */
