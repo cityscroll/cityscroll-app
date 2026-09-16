@@ -345,7 +345,7 @@ export function renderMcpCatalogHtml(catalog = buildMcpToolCatalog()) {
 <ul>
 ${items}
 </ul>
-<p>Machine-readable inventory: <a href="data/mcp_tool_catalog.json"><code>JSON catalog</code></a>.</p>
+<p>Machine-readable inventory: <a href="data/mcp_tool_catalog.json"><code>JSON catalog</code></a> · <a href="/use-with-ai/">Set up an assistant (Ask with AI)</a>.</p>
 </div>
 ${MCP_CATALOG_MARKER_END}`;
 }
@@ -415,6 +415,9 @@ function validateDocumentationReferences(apiHtml, i18n, architecture) {
   }
   if (!apiHtml.includes("data/mcp_tool_catalog.json")) {
     throw new Error("site/api.html must link the generated MCP catalog");
+  }
+  if (!apiHtml.includes('href="/use-with-ai/"') || !apiHtml.includes("Set up an assistant (Ask with AI)")) {
+    throw new Error("site/api.html MCP catalog must link Set up an assistant (Ask with AI)");
   }
   if (!apiHtml.includes("data/api_capability_catalog.json")) {
     throw new Error("site/api.html must link the generated API capability catalog");

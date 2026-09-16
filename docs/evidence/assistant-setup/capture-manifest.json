@@ -4,7 +4,7 @@
   "condition": "Chromium viewport witnesses over tracked HTML; no image binary is committed.",
   "image_binaries_committed": false,
   "capture_mode": "headless-playwright-loopback-static-render",
-  "revision": "b7236079a2a436bbe0be063083ec14e2ca6e57dc5e091cce44f08c37d64dbd09",
+  "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
   "revision_format": "sha256 of path:source-digest lines for setup sources",
   "data_vintage": "tracked site HTML at content revision",
   "capture_clock": "2026-09-16T12:00:00.000Z",
@@ -23,7 +23,7 @@
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "b7236079a2a436bbe0be063083ec14e2ca6e57dc5e091cce44f08c37d64dbd09",
+      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "primary search remains visible before Ask with AI at this viewport",
       "sha256": "e88a7c3632781d8581af50e30c53ced89f4d8f5de7248f13e744c959d821a81f",
@@ -52,7 +52,7 @@
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "b7236079a2a436bbe0be063083ec14e2ca6e57dc5e091cce44f08c37d64dbd09",
+      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "primary search remains visible before Ask with AI at this viewport",
       "sha256": "25b28685231c9e418d07b7d2bef8a21ed3032490003eee46f10eb2345e1edcf5",
@@ -81,12 +81,12 @@
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "b7236079a2a436bbe0be063083ec14e2ca6e57dc5e091cce44f08c37d64dbd09",
+      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
-      "sha256": "8dfe6ccd8e71cf04a10b64019da2c7a146eb49e4d85779f0042a3939cc0a1c4b",
+      "sha256": "5c2a8fbc231af1985289f56983901e83d7971e0abac6843049d61929052e9fd6",
       "source_path": "site/use-with-ai/index.html",
-      "source_sha256": "b171f79391049c13f5c034fea0beeccbb7513c5e8f1cc9f2e61983337d550f5a",
+      "source_sha256": "4cdbd68e3088e378d58f998f65310afdfe67d149765bc8ec6ce645ea634a2706",
       "observed": {
         "inner_width": 1440,
         "inner_height": 1000,
@@ -99,31 +99,31 @@
         "anchors": {
           "connect": {
             "present": true,
-            "top": 480,
+            "top": 446,
             "width": 674,
             "in_layout": true
           },
           "claude": {
             "present": true,
-            "top": 480,
+            "top": 479,
             "width": 674,
             "in_layout": true
           },
           "other": {
             "present": true,
-            "top": 479,
+            "top": 480,
             "width": 674,
             "in_layout": true
           },
           "try": {
             "present": true,
-            "top": 479,
+            "top": 480,
             "width": 716,
             "in_layout": true
           },
           "next": {
             "present": true,
-            "top": 734,
+            "top": 735,
             "width": 716,
             "in_layout": true
           }
@@ -147,12 +147,12 @@
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "b7236079a2a436bbe0be063083ec14e2ca6e57dc5e091cce44f08c37d64dbd09",
+      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
-      "sha256": "4067c0947b714972938b99e58f1c65e976cf66bce5d2a310c47cf9cfe2f79cad",
+      "sha256": "9f9c55c0d380b6b01b32c0432eee9b980be73737fcf23a4741f458fed3942ebe",
       "source_path": "site/use-with-ai/index.html",
-      "source_sha256": "b171f79391049c13f5c034fea0beeccbb7513c5e8f1cc9f2e61983337d550f5a",
+      "source_sha256": "4cdbd68e3088e378d58f998f65310afdfe67d149765bc8ec6ce645ea634a2706",
       "observed": {
         "inner_width": 390,
         "inner_height": 844,
@@ -165,19 +165,19 @@
         "anchors": {
           "connect": {
             "present": true,
-            "top": 402,
+            "top": 401,
             "width": 304,
             "in_layout": true
           },
           "claude": {
             "present": true,
-            "top": 401,
+            "top": 402,
             "width": 304,
             "in_layout": true
           },
           "other": {
             "present": true,
-            "top": 402,
+            "top": 381,
             "width": 304,
             "in_layout": true
           },
@@ -213,12 +213,12 @@
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "b7236079a2a436bbe0be063083ec14e2ca6e57dc5e091cce44f08c37d64dbd09",
+      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "stable MCP heading and setup link remain reachable at this viewport",
-      "sha256": "bb91c578854ca0e82b0156471d8123a8057c9d468e392e40747337a1303b3c81",
+      "sha256": "a9d6ce61a6c03067dc59c0cb339f75c221e8cbe193e2ec698d188099a94364f7",
       "source_path": "site/api.html",
-      "source_sha256": "8d46264129bfb83252b50666988112cd6c41907f556e3f450165f230015cd992",
+      "source_sha256": "9f284d8eaf7b8a36e34bba68eae3f48a2064272d4e312f188938f787e0f9dbf7",
       "observed": {
         "inner_width": 1440,
         "inner_height": 1000,
@@ -238,7 +238,7 @@
         },
         "endpoint_client_width": null,
         "translated": {
-          "replaced": 1,
+          "replaced": 2,
           "translated_label_visible": true,
           "translated_horizontal_overflow": false
         }
@@ -249,12 +249,12 @@
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "b7236079a2a436bbe0be063083ec14e2ca6e57dc5e091cce44f08c37d64dbd09",
+      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "stable MCP heading and setup link remain reachable at this viewport",
-      "sha256": "60cef4f0a95fdd22ec80f013e8894b8c1b177763893771df9c82ea5efbab1f3a",
+      "sha256": "1b16767d5f2db5fbdce57778bc5889a874b01f6ed0ab4aec820e8652a193f27c",
       "source_path": "site/api.html",
-      "source_sha256": "8d46264129bfb83252b50666988112cd6c41907f556e3f450165f230015cd992",
+      "source_sha256": "9f284d8eaf7b8a36e34bba68eae3f48a2064272d4e312f188938f787e0f9dbf7",
       "observed": {
         "inner_width": 390,
         "inner_height": 844,
@@ -274,7 +274,7 @@
         },
         "endpoint_client_width": null,
         "translated": {
-          "replaced": 1,
+          "replaced": 2,
           "translated_label_visible": true,
           "translated_horizontal_overflow": false
         }
