@@ -6,9 +6,8 @@ Covers:
 - Assistant introduction and shared Ask-with-AI entry at desktop and phone
   viewports, with keyboard, translated query, no-JS, and failed-enhancement
   paths.
-
-Research and contextual-handoff selectors are asserted when those sibling
-surfaces are present and skipped when absent.
+- Contextual assistant handoffs for exact records and scoped searches, with
+  clipboard fallback, hostile URL stripping, and both desktop/phone viewports.
 
 Environment:
   CROL_BASE  Base URL (default http://localhost:8000/). Production runs set
@@ -17,12 +16,17 @@ Environment:
 
 from __future__ import annotations
 
+import argparse
+import hashlib
+import json
 import os
+import pathlib
 import re
 import sys
 
 from playwright.sync_api import sync_playwright
 
+ROOT = pathlib.Path(__file__).resolve().parents[2]
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
 if not BASE.endswith("/"):
     BASE += "/"
@@ -34,6 +38,13 @@ _ARGS = (
     if os.environ.get("CROL_DNS_IP")
     else []
 )
+CONTRACT_ID = "procurement:contract:CT107120258801626"
+NOTICE_ID = "20240829105"
+LAND_ID = "2024Q0356"
+VIEWPORTS = (
+    ("desktop", DESKTOP),
+    ("phone", PHONE),
+)
 
 results: list[tuple[str, str]] = []
 
@@ -41,6 +52,10 @@ results: list[tuple[str, str]] = []
 def step(tag: str, name: str, detail: str = "") -> None:
     results.append((tag, name))
     print(f"{tag} {name}" + (f" -> {detail}" if detail else ""), flush=True)
+
+
+def content_hash(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def open_page(browser, viewport, java_script_enabled=True):
@@ -193,9 +208,146 @@ def maybe_sibling_surface(page, route: str, selector: str, name: str, required_t
     step("OK" if text_ok else "FAIL", name, f"count={count} text_ok={text_ok}")
 
 
-with sync_playwright() as pw:
-    browser = pw.chromium.launch(args=_ARGS)
+def run_ai_context(page, viewport_name: str, failures: list[str]) -> list[dict]:
+    captures: list[dict] = []
 
+    contract_url = (
+        f"{BASE}use-with-ai/"
+        f"?kind=contract&id={CONTRACT_ID}&procurement_id={CONTRACT_ID}"
+        f"&route=/procurements/{CONTRACT_ID}&tool=get_contract&support=exact"
+        f"&token=watch-secret&email=person@example.com&return=https://evil.example/x"
+    )
+    page.goto(contract_url, wait_until="domcontentloaded", timeout=45000)
+    page.wait_for_selector("[data-ai-context-panel]", timeout=15000)
+    panel = page.locator("[data-ai-context-panel]")
+    text = panel.inner_text()
+    if CONTRACT_ID not in text:
+        failures.append(f"{viewport_name}: contract panel missing exact id")
+    if "get_contract" not in text:
+        failures.append(f"{viewport_name}: contract panel missing tool")
+    if "watch-secret" in text:
+        failures.append(f"{viewport_name}: private token leaked into panel")
+    if "person@example.com" in text:
+        failures.append(f"{viewport_name}: email leaked into panel")
+    if "evil.example" in text:
+        failures.append(f"{viewport_name}: hostile return URL leaked into panel")
+    step(
+        "OK" if CONTRACT_ID in text and "get_contract" in text and "watch-secret" not in text else "FAIL",
+        f"{viewport_name} contextual contract handoff",
+    )
+
+    page.evaluate(
+        """() => {
+          Object.defineProperty(navigator, 'clipboard', {
+            configurable: true,
+            value: { writeText: async () => { throw new Error('denied'); } },
+          });
+        }"""
+    )
+    page.click("[data-copy-ai-context-task]")
+    selected = page.evaluate(
+        """() => {
+          const el = document.querySelector('#ai-context-task-text');
+          if (!el) return false;
+          return document.activeElement === el && el.selectionStart === 0 && el.selectionEnd === el.value.length;
+        }"""
+    )
+    if not selected:
+        failures.append(f"{viewport_name}: clipboard failure did not select task text")
+    step("OK" if selected else "FAIL", f"{viewport_name} contextual clipboard fallback")
+    captures.append({
+        "route": "/use-with-ai/?kind=contract",
+        "viewport": viewport_name,
+        "assertion": "exact contract task panel with private fields stripped and clipboard fallback",
+        "sha256": content_hash(panel.inner_html()),
+    })
+
+    notice_url = (
+        f"{BASE}use-with-ai/"
+        f"?kind=notice&id={NOTICE_ID}&request_id={NOTICE_ID}"
+        f"&route=/notices/{NOTICE_ID}/&tool=get_notice&support=exact"
+    )
+    page.goto(notice_url, wait_until="domcontentloaded", timeout=45000)
+    page.wait_for_selector("[data-ai-context-panel]", timeout=15000)
+    notice_text = page.locator("[data-ai-context-panel]").inner_text()
+    if NOTICE_ID not in notice_text or "get_notice" not in notice_text:
+        failures.append(f"{viewport_name}: notice panel missing RequestID or tool")
+    step(
+        "OK" if NOTICE_ID in notice_text and "get_notice" in notice_text else "FAIL",
+        f"{viewport_name} contextual notice handoff",
+    )
+    captures.append({
+        "route": f"/use-with-ai/?kind=notice&id={NOTICE_ID}",
+        "viewport": viewport_name,
+        "assertion": "notice RequestID preserved in contextual task",
+        "sha256": content_hash(page.locator("[data-ai-context-panel]").inner_html()),
+    })
+
+    land_url = (
+        f"{BASE}use-with-ai/"
+        f"?kind=land_project&id={LAND_ID}&project_id={LAND_ID}"
+        f"&route=/browse/zoning/%23land/{LAND_ID}&tool=get_land_project&support=exact"
+    )
+    page.goto(land_url, wait_until="domcontentloaded", timeout=45000)
+    page.wait_for_selector("[data-ai-context-panel]", timeout=15000)
+    land_text = page.locator("[data-ai-context-panel]").inner_text()
+    land_ok = LAND_ID in land_text and "get_land_project" in land_text and "get_land_decision_path" in land_text
+    if not land_ok:
+        failures.append(f"{viewport_name}: land panel missing project id or decision-path tools")
+    step("OK" if land_ok else "FAIL", f"{viewport_name} contextual land handoff")
+    captures.append({
+        "route": f"/use-with-ai/?kind=land_project&id={LAND_ID}",
+        "viewport": viewport_name,
+        "assertion": "land project get and decision-path tools preserved",
+        "sha256": content_hash(page.locator("[data-ai-context-panel]").inner_html()),
+    })
+
+    unsupported_url = (
+        f"{BASE}use-with-ai/"
+        f"?kind=search_scope&id=heat%20pumps&query=heat%20pumps&support=unsupported"
+        f"&status=unsupported_filters&unsupported=boro,when&boro=Brooklyn&when=week"
+    )
+    page.goto(unsupported_url, wait_until="domcontentloaded", timeout=45000)
+    page.wait_for_selector("[data-ai-context-panel]", timeout=15000)
+    unsupported_text = page.locator("[data-ai-context-panel]").inner_text()
+    unsupported_ok = (
+        ("boro" in unsupported_text.lower() or "unsupported" in unsupported_text.lower())
+        and page.locator("#mcp-endpoint").count() == 1
+    )
+    if not unsupported_ok:
+        failures.append(f"{viewport_name}: unsupported filters not disclosed or setup missing")
+    step("OK" if unsupported_ok else "FAIL", f"{viewport_name} contextual unsupported filters")
+    captures.append({
+        "route": "/use-with-ai/?kind=search_scope&status=unsupported_filters",
+        "viewport": viewport_name,
+        "assertion": "unsupported filters disclosed while general setup remains reachable",
+        "sha256": content_hash(page.locator("[data-ai-context-panel]").inner_html()),
+    })
+
+    page.focus("#ai-context-task-text")
+    focused = page.evaluate("() => document.activeElement && document.activeElement.id === 'ai-context-task-text'")
+    if not focused:
+        failures.append(f"{viewport_name}: task textarea not keyboard-focusable")
+    step("OK" if focused else "FAIL", f"{viewport_name} contextual task keyboard focus")
+    return captures
+
+
+def write_ai_context_manifest(captures: list[dict]) -> None:
+    manifest_path = ROOT / "docs" / "evidence" / "assistant-context" / "ai-context-capture-manifest.json"
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    revision = os.environ.get("GIT_COMMIT") or os.environ.get("GITHUB_SHA") or "local"
+    manifest = {
+        "schema": "cityscroll.assistant_context_capture_manifest.v1",
+        "case": "ai-context",
+        "revision": f"grounded at {revision}",
+        "data_vintage": "site build",
+        "captures": captures,
+    }
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    step("WRITE", "capture-manifest", str(manifest_path.relative_to(ROOT)))
+
+
+def run_default_journeys(browser) -> None:
     assert_follow_calendar_journeys(browser)
 
     desktop_ctx, desktop = open_page(browser, DESKTOP)
@@ -211,7 +363,7 @@ with sync_playwright() as pw:
     maybe_sibling_surface(
         desktop,
         "browse/meetings/?agency=City%20Planning",
-        "[data-more-tools-region], [data-research-tools], #research-task-entrances",
+        "[data-more-tools-region], [data-research-tools], #research-task-entrances, details.more-tools",
         "research tools region",
         required_text="More tools",
     )
@@ -230,9 +382,44 @@ with sync_playwright() as pw:
 
     assert_no_js(browser, "desktop")
 
-    browser.close()
 
-failed = [name for tag, name in results if tag == "FAIL"]
-skipped = [name for tag, name in results if tag == "SKIP"]
-print(f"summary pass={sum(1 for tag, _ in results if tag == 'OK')} fail={len(failed)} skip={len(skipped)}", flush=True)
-sys.exit(1 if failed else 0)
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--case",
+        choices=["all", "follow-calendar", "ai-context"],
+        default="all",
+        help="Discovery journey set to exercise (default: all).",
+    )
+    args = parser.parse_args()
+    failures: list[str] = []
+
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch(args=_ARGS)
+        if args.case in ("all", "follow-calendar"):
+            run_default_journeys(browser)
+        if args.case in ("all", "ai-context"):
+            captures: list[dict] = []
+            for viewport_name, size in VIEWPORTS:
+                context = browser.new_context(viewport=size)
+                page = context.new_page()
+                step("RUN", "ai-context", viewport_name)
+                captures.extend(run_ai_context(page, viewport_name, failures))
+                context.close()
+            write_ai_context_manifest(captures)
+        browser.close()
+
+    for item in failures:
+        step("FAIL", item)
+
+    failed = [name for tag, name in results if tag == "FAIL"]
+    skipped = [name for tag, name in results if tag == "SKIP"]
+    print(
+        f"summary pass={sum(1 for tag, _ in results if tag == 'OK')} fail={len(failed)} skip={len(skipped)}",
+        flush=True,
+    )
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

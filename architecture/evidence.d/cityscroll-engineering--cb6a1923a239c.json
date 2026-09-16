@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/cb6a1923a239c",
+  "status": "implemented",
+  "fingerprint": "assistant-context-handoff.v1",
+  "updated_at": "2026-09-16T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "ai-context-handoff-module",
+      "path": "site/ai_context_handoff.mjs"
+    },
+    {
+      "id": "ai-setup-page",
+      "path": "site/use-with-ai/index.html"
+    },
+    {
+      "id": "ai-context-handoff-tests",
+      "path": "test/ai_context_handoff.test.mjs"
+    },
+    {
+      "id": "land-ai-context-tools",
+      "path": "site/land_ai_context_tools.mjs"
+    },
+    {
+      "id": "ai-context-capture-manifest",
+      "path": "docs/evidence/assistant-context/ai-context-capture-manifest.json"
+    }
+  ]
+}

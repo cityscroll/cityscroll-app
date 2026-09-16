@@ -21,6 +21,7 @@ a{color:var(--oxblood)}li{margin:.45em 0}
 <header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/" aria-label="CityScroll home"><span>CityScroll</span></a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a><a href="/guide/">Guide</a><a aria-current="page" href="/use-with-ai/">Ask with AI</a></nav></div></header>
 <main id="main" tabindex="-1"><p class="node-kicker">A public connection</p><h1>Ask an assistant about CityScroll</h1>
 <p class="lede">CityScroll publishes linked New York City records. An MCP-compatible assistant can search those records, open exact public records, inspect cited passages, and compare supported contract measures. It does not create watches, send email, or access a private account.</p>
+<div data-ai-context-mount></div>
 <section class="card" aria-labelledby="connect"><h2 id="connect">Connect</h2><p>Give your MCP client this address. It is a public, tools-only server; no key is required and no account is needed.</p>
 <label for="mcp-endpoint">MCP server address</label><input id="mcp-endpoint" class="endpoint" type="text" value="https://api.cityscroll.org/mcp" readonly aria-describedby="mcp-endpoint-help"><button type="button" data-copy-endpoint>Copy address</button><p id="mcp-endpoint-help" class="note">The endpoint accepts MCP requests with POST. Opening it in a browser cannot run tools and returns recovery guidance.</p></section>
 <section class="card" aria-labelledby="claude"><h2 id="claude">Claude Code</h2><p>In Claude Code, add the remote HTTP server from a terminal:</p><pre><code>claude mcp add --transport http cityscroll https://api.cityscroll.org/mcp</code></pre><p>Then start a new conversation and ask what CityScroll tools are available. See <a href="https://docs.anthropic.com/en/docs/claude-code/mcp" target="_blank" rel="noopener noreferrer">Anthropic's Claude Code MCP guide</a> for current client options.</p></section>
@@ -28,7 +29,28 @@ a{color:var(--oxblood)}li{margin:.45em 0}
 <section aria-labelledby="try"><h2 id="try">Try a question</h2><ol><li>“Search CityScroll for notices about heat pumps, then show the source and date for each result.”</li><li>“Open contract CT107120258801626 and summarize the public record with its source.”</li><li>“Look up land-use project 2024Q0356 and explain its next recorded decision step.”</li></ol><p class="note">These examples use CityScroll’s public search, contract lookup, land-use project lookup, and decision-path tools. See the <a href="/api.html#mcp">MCP tool reference</a> for the available public capabilities. Results remain bounded by the records CityScroll has published.</p></section>
 <section aria-labelledby="next"><h2 id="next">If the connection fails</h2><p>Return to <a href="/">CityScroll home</a> to continue reading without an assistant, or review the <a href="/api.html#mcp">machine interface details</a>. A browser response from the endpoint is not a sign-in page and does not change your account or subscriptions.</p></section>
 </main><footer class="foot">CityScroll is an unofficial reading aid. <a href="/guide/">Guide</a> · <a href="/about.html">About the data</a> · <a href="/api.html">API and feeds</a></footer>
-</div><script type="module">
-import { installEndpointCopyControl } from "/ai_discovery.mjs";
+</div>
+<script type="module">
+import { installEndpointCopyControl, copyEndpointAddress } from "/ai_discovery.mjs";
+import {
+  parseAiContextHandoff,
+  renderAiContextTaskPanel,
+} from "/ai_context_handoff.mjs";
+
 installEndpointCopyControl(document);
+
+const mount = document.querySelector("[data-ai-context-mount]");
+if (mount && location.search) {
+  const handoff = parseAiContextHandoff(location.search);
+  if (handoff && handoff.status !== "missing_identity") {
+    mount.innerHTML = renderAiContextTaskPanel(handoff);
+    const taskButton = document.querySelector("[data-copy-ai-context-task]");
+    if (taskButton) {
+      taskButton.addEventListener("click", () => {
+        const input = document.querySelector("#ai-context-task-text");
+        void copyEndpointAddress(input);
+      });
+    }
+  }
+}
 </script></body></html>

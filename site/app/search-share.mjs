@@ -139,10 +139,61 @@ function searchWalkHref(lens, hash){
   url.searchParams.set("walk_lens", lens || "");
   return `${url.pathname}${url.search}`;
 }
+function federatedLensForUi(lens){
+  if(lens==="land") return "land";
+  if(lens==="people") return "people";
+  if(lens==="meetings") return "meetings";
+  if(lens==="property") return "parcels";
+  if(lens==="rules") return null; // no exact federated lens for rules
+  return null;
+}
+function scopedAiContextMountHTML(lens, hash){
+  if(!hash) return "";
+  return `<span data-ai-context-scope-mount="1" data-ai-context-lens="${nlqEscape(lens||"")}" data-ai-context-hash="${nlqEscape(hash)}"></span>`;
+}
+function mountScopedAiContextAction(root, lens, hash){
+  const host=root?.querySelector?.("[data-ai-context-scope-mount]");
+  if(!host || !hash) return;
+  import("../ai_context_handoff.mjs").then(({ buildSearchAiContextHandoff, renderScopedAiContextAction })=>{
+    if(!host.isConnected) return;
+    const scope=CrolScope.scopeFromRouteHash(hash,{language:window.LANG||"en"});
+    const query=scope?.topic?.query || (scope?.topic?.keywords||[])[0] || "";
+    const agency=(scope?.facets?.agencies||[])[0] || "";
+    const values=scope?.facets?.values || {};
+    const federatedLens=federatedLensForUi(lens);
+    const handoff=lens==="rules"
+      ? buildSearchAiContextHandoff({
+        mode: "federated",
+        query,
+        // Force an explicit unsupported axis so rules never pretend exact parity.
+        rules_family: true,
+        canonical_href: `/search/${hash}`,
+      })
+      : buildSearchAiContextHandoff({
+        mode: lens==="money" ? "notices" : "federated",
+        query,
+        agency,
+        min_amount: values.minAmount,
+        max_amount: values.maxAmount,
+        lenses: federatedLens ? [federatedLens] : undefined,
+        boro: (scope?.place?.boroughs||[])[0],
+        when: scope?.time_window?.preset,
+        months: scope?.time_window?.rolling_months,
+        canonical_href: `/search/${hash}`,
+      });
+    // Always offer one scoped control beside the result-set tools. Unsupported
+    // filters stay explicit inside the handoff rather than omitting the action.
+    if(!query && handoff.status==="missing_identity"){
+      host.replaceChildren();
+      return;
+    }
+    host.outerHTML=renderScopedAiContextAction(handoff, { translate: t });
+  }).catch(()=>{ /* optional assistant handoff stays absent on load failure */ });
+}
 function searchActionsHTML(lens, hash){
   if(!hash) return "";
   const moneyIds=lens==="money";
-  return `<div class="nlqactions"><a class="act walk-entry-link" data-search-walk href="${nlqEscape(searchWalkHref(lens, hash))}">Start a walk</a><a class="act" data-search-share ${moneyIds?'id="nlqshare" ':''}href="${nlqEscape(currentLanguageURL(canonicalSearchURL(location, hash)))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" data-search-copy ${moneyIds?'id="nlqcopy" ':''}data-i18n="copy_search_link">${t("copy_search_link")}</button>${qrButtonHTML(moneyIds?"nlqqr":"")}<button type="button" class="mini" data-search-save ${moneyIds?'id="nlqsave" ':''}data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
+  return `<div class="nlqactions"><a class="act walk-entry-link" data-search-walk href="${nlqEscape(searchWalkHref(lens, hash))}">Start a walk</a><a class="act" data-search-share ${moneyIds?'id="nlqshare" ':''}href="${nlqEscape(currentLanguageURL(canonicalSearchURL(location, hash)))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" data-search-copy ${moneyIds?'id="nlqcopy" ':''}data-i18n="copy_search_link">${t("copy_search_link")}</button>${qrButtonHTML(moneyIds?"nlqqr":"")}<button type="button" class="mini" data-search-save ${moneyIds?'id="nlqsave" ':''}data-i18n="save_search_btn">${t("save_search_btn")}</button>${scopedAiContextMountHTML(lens, hash)}</div>`;
 }
 function bindSearchActions(root, label, hash){
   hash=scopeHash(presetLens(hash)||globalThis.activeViewTab?.(),hash);
@@ -153,6 +204,7 @@ function bindSearchActions(root, label, hash){
   const copy=root.querySelector("[data-search-copy]");
   if(copy) copy.addEventListener("click",()=>copyText(url, copy));
   bindQRShare(root.querySelector("[data-qr-share]"), url);
+  mountScopedAiContextAction(root, presetLens(hash)||label, hash);
   const save=root.querySelector("[data-search-save]");
   if(save) save.addEventListener("click",()=>{
     nlqPresetSet(savePreset(nlqPresetStore(), label, hash));

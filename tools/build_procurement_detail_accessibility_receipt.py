@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Build the retained procurement detail accessibility receipt from a live axe run."""
+"""Build the retained procurement detail accessibility and layout receipt.
+
+Refreshes both the axe viewport scans and the layout/keyboard destination
+counts in docs/evidence/procurement-detail-parity/read-back.json from one
+headless render of the committed fixture. Link counts are measured from the
+same native <a href> markup the read-back test asserts — never hand-edited.
+"""
 from __future__ import annotations
 
 import argparse
@@ -19,6 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RECEIPT = ROOT / "docs/evidence/procurement-detail-parity/read-back.json"
 AXE = ROOT / "test/functional/assets/axe.min.js"
 VIEWPORTS = {"desktop": (1440, 900), "mobile": (390, 844)}
+ANCHOR_RE = re.compile(r"<a\b([^>]*)>", re.IGNORECASE)
 
 
 class SiteHandler(SimpleHTTPRequestHandler):
@@ -44,6 +51,31 @@ def render_fixture() -> str:
         cwd=ROOT, capture_output=True, text=True, check=True,
     )
     return result.stdout
+
+
+def keyboard_layout(markup: str) -> dict:
+    """Count native keyboard destinations the same way the read-back test does."""
+    attrs = ANCHOR_RE.findall(markup)
+    if any(not re.search(r"\bhref=", item) for item in attrs):
+        raise SystemExit("layout receipt refused: an <a> is missing href")
+    negative = len(re.findall(r'tabindex=["\']-1["\']', markup, flags=re.IGNORECASE))
+    return {
+        "visible_native_links": len(attrs),
+        "reachable_links": len(attrs),
+        "negative_tabindex": negative,
+    }
+
+
+def layout_probe(page) -> dict:
+    return page.evaluate(
+        """() => {
+          const doc = document.documentElement;
+          return {
+            scroll_width: doc.scrollWidth,
+            overflow: doc.scrollWidth > window.innerWidth + 1,
+          };
+        }"""
+    )
 
 
 def scan(page, markup: str) -> dict:
@@ -84,6 +116,7 @@ def scan(page, markup: str) -> dict:
         "serious_or_critical": serious_or_critical,
         "markup_sha256": hashlib.sha256(markup.encode("utf-8")).hexdigest(),
         "scanned_at": page.evaluate("() => new Date().toISOString()"),
+        "layout": layout_probe(page),
     }
 
 
@@ -101,8 +134,6 @@ def main() -> int:
             env={**os.environ, "CITYSCROLL_TEST_TIME_PIN": os.environ.get("CITYSCROLL_TEST_TIME_PIN", "")},
         ).stdout
     html = render_fixture()
-    native_links = len(re.findall(r"<a\b[^>]*>", html, flags=re.IGNORECASE))
-    negative_tabindex = len(re.findall(r'tabindex=["\']-1["\']', html, flags=re.IGNORECASE))
     server = FastThreadingHTTPServer(("127.0.0.1", 0), SiteHandler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     route = f"http://127.0.0.1:{server.server_address[1]}/_capture/procurement-detail"
@@ -110,7 +141,6 @@ def main() -> int:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         scans = {}
-        layout_viewports = {}
         for name, (width, height) in VIEWPORTS.items():
             context = browser.new_context(viewport={"width": width, "height": height})
             page = context.new_page()
@@ -132,12 +162,6 @@ def main() -> int:
             ))
             page.goto(route, wait_until="domcontentloaded", timeout=30000)
             served_markup = page.content()
-            scroll_width = page.evaluate("() => document.documentElement.scrollWidth")
-            layout_viewports[name] = {
-                "viewport": [width, height],
-                "scroll_width": scroll_width,
-                "overflow": bool(scroll_width > width),
-            }
             page.add_script_tag(path=str(AXE))
             scans[name] = scan(page, served_markup)
             context.close()
@@ -150,24 +174,31 @@ def main() -> int:
         "viewports": scans,
         "assertion": "The automated accessibility receipt reports no serious or critical findings for either retained viewport.",
     }
+    keyboard = keyboard_layout(html)
+    layout = {
+        "desktop": {
+            "viewport": list(VIEWPORTS["desktop"]),
+            "scroll_width": scans["desktop"]["layout"]["scroll_width"],
+            "overflow": scans["desktop"]["layout"]["overflow"],
+        },
+        "mobile": {
+            "viewport": list(VIEWPORTS["mobile"]),
+            "scroll_width": scans["mobile"]["layout"]["scroll_width"],
+            "overflow": scans["mobile"]["layout"]["overflow"],
+        },
+        "keyboard": keyboard,
+    }
     for viewport_scan in scans.values():
         viewport_scan.pop("engine", None)
-    layout = {
-        "desktop": layout_viewports["desktop"],
-        "mobile": layout_viewports["mobile"],
-        "keyboard": {
-            "visible_native_links": native_links,
-            "reachable_links": native_links,
-            "negative_tabindex": negative_tabindex,
-        },
-    }
+        viewport_scan.pop("layout", None)
     current = json.loads(RECEIPT.read_text(encoding="utf-8"))
     current["layout"] = layout
     current["accessibility"] = accessibility
     RECEIPT.write_text(json.dumps(current, indent=2) + "\n", encoding="utf-8")
     print(
         f"wrote {RECEIPT.relative_to(ROOT)} "
-        f"(native_links={native_links}, negative_tabindex={negative_tabindex})"
+        f"(visible_native_links={keyboard['visible_native_links']}, "
+        f"negative_tabindex={keyboard['negative_tabindex']})"
     )
     return 0
 
