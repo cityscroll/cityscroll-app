@@ -79,6 +79,69 @@ const UNSUPPORTED_EXACT_FAMILIES = Object.freeze([
   "rules", "property", "exams", "consultations", "districts", "institutions",
 ]);
 
+/**
+ * Closed dispositions for how a published page family exposes contextual
+ * assistant handoff. `exact` means an existing MCP tool represents the task.
+ * `unsupported` keeps the refusal named and routes to general setup.
+ * `general` covers pages that are not exact research scopes.
+ */
+export const AI_CONTEXT_HANDOFF_DISPOSITIONS = Object.freeze([
+  "exact",
+  "unsupported",
+  "general",
+]);
+
+/**
+ * Census of every published page family from the performance-classification
+ * surface registry. Compared as an equal set against that manifest so a newly
+ * published family without a row fails, and a censused unpublished family fails.
+ */
+export const PAGE_FAMILY_AI_CONTEXT = Object.freeze([
+  Object.freeze({ surface_id: "about", handoff: "general", family: null, reason: "About is orientation prose; general setup remains reachable from shared Ask with AI." }),
+  Object.freeze({ surface_id: "agency", handoff: "exact", family: "entities", kind: "entity", tools: Object.freeze(["get_entity_dossier", "get_person_or_organization"]) }),
+  Object.freeze({ surface_id: "api-guide", handoff: "general", family: null, reason: "API guide already introduces the public endpoint; no second scoped research promise." }),
+  Object.freeze({ surface_id: "assertion", handoff: "general", family: null, reason: "Assertion pages have no exact public MCP get tool." }),
+  Object.freeze({ surface_id: "browse", handoff: "exact", family: "search", kind: "search_scope", tools: Object.freeze(["search_federated"]) }),
+  Object.freeze({ surface_id: "browse-contracts", handoff: "exact", family: "contracts", kind: "browse_contracts", tools: Object.freeze(["browse_contracts"]) }),
+  Object.freeze({ surface_id: "browse-exams", handoff: "unsupported", family: "exams" }),
+  Object.freeze({ surface_id: "browse-meetings", handoff: "exact", family: "search", kind: "search_scope", tools: Object.freeze(["search_federated"]) }),
+  Object.freeze({ surface_id: "browse-people", handoff: "exact", family: "entities", kind: "browse_organizations", tools: Object.freeze(["browse_organizations"]) }),
+  Object.freeze({ surface_id: "browse-places", handoff: "general", family: null, reason: "Place browse has no exact public MCP browse tool distinct from parcel or Land." }),
+  Object.freeze({ surface_id: "browse-property", handoff: "unsupported", family: "property" }),
+  Object.freeze({ surface_id: "browse-rules", handoff: "unsupported", family: "rules" }),
+  Object.freeze({ surface_id: "browse-staffing", handoff: "general", family: null, reason: "Staffing browse has no exact public MCP tool binding." }),
+  Object.freeze({ surface_id: "browse-zoning", handoff: "exact", family: "land", kind: "browse_land_projects", tools: Object.freeze(["browse_land_projects"]) }),
+  Object.freeze({ surface_id: "changelog", handoff: "general", family: null, reason: "Release notes are not a research scope." }),
+  Object.freeze({ surface_id: "committee", handoff: "exact", family: "entities", kind: "entity", tools: Object.freeze(["get_entity_dossier", "get_person_or_organization"]) }),
+  Object.freeze({ surface_id: "community-board", handoff: "exact", family: "entities", kind: "entity", tools: Object.freeze(["get_entity_dossier", "get_person_or_organization"]) }),
+  Object.freeze({ surface_id: "data-guide", handoff: "general", family: null, reason: "Dataset aggregates page; generic setup remains reachable without a scoped promise." }),
+  Object.freeze({ surface_id: "data-health", handoff: "general", family: null, reason: "Data-health dashboards are not exact record research scopes." }),
+  Object.freeze({ surface_id: "district-digest", handoff: "unsupported", family: "districts" }),
+  Object.freeze({ surface_id: "exam", handoff: "unsupported", family: "exams" }),
+  Object.freeze({ surface_id: "following", handoff: "general", family: null, reason: "Following is stateful reader state, not an exact public MCP get." }),
+  Object.freeze({ surface_id: "following-pack", handoff: "general", family: null, reason: "Following packs are delivery artifacts, not exact MCP research scopes." }),
+  Object.freeze({ surface_id: "guide", handoff: "general", family: null, reason: "Guide prose links to setup without inventing an exact tool task." }),
+  Object.freeze({ surface_id: "guide-article", handoff: "general", family: null, reason: "Guide articles are explanatory prose without exact MCP identity." }),
+  Object.freeze({ surface_id: "home", handoff: "general", family: null, reason: "Homepage keeps citizen search primary; shared Ask with AI covers general setup." }),
+  Object.freeze({ surface_id: "mandate", handoff: "general", family: null, reason: "Mandate pages have no exact public MCP get tool." }),
+  Object.freeze({ surface_id: "meeting", handoff: "exact", family: "meetings", kind: "meeting", tools: Object.freeze(["get_meeting"]) }),
+  Object.freeze({ surface_id: "near-you", handoff: "general", family: null, reason: "Near You is place navigation, not an exact MCP record handoff." }),
+  Object.freeze({ surface_id: "notice", handoff: "exact", family: "notices", kind: "notice", tools: Object.freeze(["get_notice"]) }),
+  Object.freeze({ surface_id: "now", handoff: "general", family: null, reason: "Now is a timed reading surface without one exact MCP identity." }),
+  Object.freeze({ surface_id: "official", handoff: "exact", family: "entities", kind: "entity", tools: Object.freeze(["get_entity_dossier", "get_person_or_organization"]) }),
+  Object.freeze({ surface_id: "parcel", handoff: "unsupported", family: "property" }),
+  Object.freeze({ surface_id: "procurement", handoff: "exact", family: "contracts", kind: "contract", tools: Object.freeze(["get_contract"]) }),
+  Object.freeze({ surface_id: "public-stats", handoff: "general", family: null, reason: "Public stats are aggregates without an exact record tool." }),
+  Object.freeze({ surface_id: "rulemaking", handoff: "unsupported", family: "rules" }),
+  Object.freeze({ surface_id: "search", handoff: "exact", family: "search", kind: "search_scope", tools: Object.freeze(["search_federated", "search_notices"]) }),
+  Object.freeze({ surface_id: "standards", handoff: "general", family: null, reason: "Standards documentation has no supported exact MCP task context." }),
+  Object.freeze({ surface_id: "vendor", handoff: "exact", family: "entities", kind: "entity", tools: Object.freeze(["get_entity_dossier", "get_person_or_organization"]) }),
+]);
+
+export function pageFamilyAiContextSurfaceIds(rows = PAGE_FAMILY_AI_CONTEXT) {
+  return (rows || []).map((row) => row.surface_id);
+}
+
 function cleanText(value, max = MAX_ID) {
   if (value == null) return null;
   const text = String(value).replace(/\s+/g, " ").trim();
@@ -243,7 +306,10 @@ export function buildSearchAiContextHandoff(input = {}) {
 
   const unsupported = [];
   for (const key of Object.keys(requested)) {
-    if (["mode", "tool", "q", "minAmount", "maxAmount", "openOnly", "excludeRolling", "lens", "canonical_href", "hash"].includes(key)) continue;
+    if ([
+      "mode", "tool", "q", "minAmount", "maxAmount", "openOnly", "excludeRolling", "lens",
+      "canonical_href", "hash", "kind", "family", "id", "support", "status",
+    ].includes(key)) continue;
     if (mode === "notices" && !NOTICE_SEARCH_KEYS.has(key) && key !== "lenses") unsupported.push(key);
     if (mode !== "notices" && !FEDERATED_SEARCH_KEYS.has(key) && !["agency", "section", "min_amount", "max_amount", "open_only", "exclude_rolling"].includes(key)) {
       unsupported.push(key);
@@ -350,6 +416,179 @@ export function buildUnsupportedFamilyAiContextHandoff(family, input = {}) {
   });
 }
 
+function generalSetupHandoff(surfaceId, input = {}) {
+  const publicInput = stripPrivateFields(input);
+  const name = cleanText(surfaceId, 40) || "this page";
+  return emptyHandoff("general_setup", {
+    family: name,
+    kind: name,
+    canonical_href: cleanPublicRoute(publicInput.canonical_href),
+    task: `Use the general CityScroll MCP setup from this page. No exact assistant task is published for ${name}.`,
+  });
+}
+
+/**
+ * Scoped browse handoffs for existing browse_* MCP tools. Unsupported exact
+ * filters stay listed rather than silently omitted.
+ */
+export function buildBrowseContractsAiContextHandoff(input = {}) {
+  const publicInput = stripPrivateFields(input);
+  const query = cleanText(publicInput.query || publicInput.q, MAX_QUERY);
+  const agency = cleanText(publicInput.agency, MAX_AGENCY);
+  const vendor = cleanText(publicInput.vendor, MAX_AGENCY);
+  const unsupported = [];
+  for (const key of Object.keys(publicInput)) {
+    if (["query", "q", "agency", "vendor", "canonical_href", "kind", "family", "mode", "tool"].includes(key)) continue;
+    if (publicInput[key] != null && publicInput[key] !== "") unsupported.push(key);
+  }
+  if (unsupported.length) {
+    return emptyHandoff("unsupported_filters", {
+      family: "contracts",
+      kind: "browse_contracts",
+      canonical_href: cleanPublicRoute(publicInput.canonical_href) || "/browse/contracts/",
+      unsupported_filters: unsupported,
+      task: `Exact assistant support is unavailable for filter(s): ${unsupported.join(", ")}. Connect the public CityScroll MCP endpoint from setup, then rebuild only the supported browse_contracts filters rather than broadening this scoped browse.${query ? ` Current query text: “${query}”.` : ""}`,
+    });
+  }
+  const args = Object.freeze({
+    ...(query ? { query } : {}),
+    ...(agency ? { agency } : {}),
+    ...(vendor ? { vendor } : {}),
+  });
+  return Object.freeze({
+    schema: AI_CONTEXT_HANDOFF_SCHEMA,
+    status: "ok",
+    support: "exact",
+    family: "contracts",
+    kind: "browse_contracts",
+    id: query || agency || vendor || "browse_contracts",
+    canonical_href: cleanPublicRoute(publicInput.canonical_href) || "/browse/contracts/",
+    tools: Object.freeze(["browse_contracts"]),
+    arguments: args,
+    unsupported_filters: Object.freeze([]),
+    supported_filters: args,
+    task: `Browse CityScroll contracts with browse_contracts using ${JSON.stringify(args)}, then show the source and date for each result.`,
+    endpoint: AI_ENDPOINT,
+    setup_href: AI_CONTEXT_SETUP_PATH,
+  });
+}
+
+export function buildBrowseOrganizationsAiContextHandoff(input = {}) {
+  const publicInput = stripPrivateFields(input);
+  const query = cleanText(publicInput.query || publicInput.q, MAX_QUERY);
+  const kind = cleanText(publicInput.org_kind || publicInput.organization_kind, 80);
+  const unsupported = [];
+  for (const key of Object.keys(publicInput)) {
+    if (["query", "q", "org_kind", "organization_kind", "canonical_href", "kind", "family", "mode", "tool", "limit"].includes(key)) continue;
+    if (publicInput[key] != null && publicInput[key] !== "") unsupported.push(key);
+  }
+  if (unsupported.length) {
+    return emptyHandoff("unsupported_filters", {
+      family: "entities",
+      kind: "browse_organizations",
+      canonical_href: cleanPublicRoute(publicInput.canonical_href) || "/browse/people/",
+      unsupported_filters: unsupported,
+      task: `Exact assistant support is unavailable for filter(s): ${unsupported.join(", ")}. Connect the public CityScroll MCP endpoint from setup, then rebuild only the supported browse_organizations filters rather than broadening this scoped browse.${query ? ` Current query text: “${query}”.` : ""}`,
+    });
+  }
+  const args = Object.freeze({
+    ...(query ? { query } : {}),
+    ...(kind ? { kind } : {}),
+  });
+  return Object.freeze({
+    schema: AI_CONTEXT_HANDOFF_SCHEMA,
+    status: "ok",
+    support: "exact",
+    family: "entities",
+    kind: "browse_organizations",
+    id: query || kind || "browse_organizations",
+    canonical_href: cleanPublicRoute(publicInput.canonical_href) || "/browse/people/",
+    tools: Object.freeze(["browse_organizations"]),
+    arguments: args,
+    unsupported_filters: Object.freeze([]),
+    supported_filters: args,
+    task: `Browse CityScroll organizations with browse_organizations using ${JSON.stringify(args)}, then show the source for each result.`,
+    endpoint: AI_ENDPOINT,
+    setup_href: AI_CONTEXT_SETUP_PATH,
+  });
+}
+
+export function buildBrowseLandProjectsAiContextHandoff(input = {}) {
+  const publicInput = stripPrivateFields(input);
+  const query = cleanText(publicInput.query || publicInput.q, MAX_QUERY);
+  const status = cleanText(publicInput.status || publicInput.project_status, 240);
+  const procedure = cleanText(publicInput.procedure, 40);
+  const unsupported = [];
+  for (const key of Object.keys(publicInput)) {
+    if (["query", "q", "status", "project_status", "procedure", "canonical_href", "kind", "family", "mode", "tool", "limit"].includes(key)) continue;
+    if (publicInput[key] != null && publicInput[key] !== "") unsupported.push(key);
+  }
+  if (unsupported.length) {
+    return emptyHandoff("unsupported_filters", {
+      family: "land",
+      kind: "browse_land_projects",
+      canonical_href: cleanPublicRoute(publicInput.canonical_href) || "/browse/zoning/",
+      unsupported_filters: unsupported,
+      task: `Exact assistant support is unavailable for filter(s): ${unsupported.join(", ")}. Connect the public CityScroll MCP endpoint from setup, then rebuild only the supported browse_land_projects filters rather than broadening this scoped browse.${query ? ` Current query text: “${query}”.` : ""}`,
+    });
+  }
+  const args = Object.freeze({
+    ...(query ? { query } : {}),
+    ...(status ? { status } : {}),
+    ...(procedure ? { procedure } : {}),
+  });
+  return Object.freeze({
+    schema: AI_CONTEXT_HANDOFF_SCHEMA,
+    status: "ok",
+    support: "exact",
+    family: "land",
+    kind: "browse_land_projects",
+    id: query || status || procedure || "browse_land_projects",
+    canonical_href: cleanPublicRoute(publicInput.canonical_href) || "/browse/zoning/",
+    tools: Object.freeze(["browse_land_projects"]),
+    arguments: args,
+    unsupported_filters: Object.freeze([]),
+    supported_filters: args,
+    task: `Browse CityScroll land-use projects with browse_land_projects using ${JSON.stringify(args)}, then explain each project's recorded status with its source.`,
+    endpoint: AI_ENDPOINT,
+    setup_href: AI_CONTEXT_SETUP_PATH,
+  });
+}
+
+/**
+ * Resolve the declared census row for a published surface and build its
+ * handoff. Exact rows use existing tools; unsupported and general rows refuse
+ * a scoped promise while keeping setup reachable.
+ */
+export function buildAiContextHandoffForSurface(surfaceId, input = {}) {
+  const id = cleanText(surfaceId, 80);
+  const row = PAGE_FAMILY_AI_CONTEXT.find((entry) => entry.surface_id === id);
+  if (!row) {
+    return emptyHandoff("unsupported_family", { family: id || "unknown", kind: id || "unknown" });
+  }
+  const publicInput = stripPrivateFields({ ...input, kind: row.kind || row.family || row.surface_id });
+  if (row.handoff === "unsupported") {
+    return buildUnsupportedFamilyAiContextHandoff(row.family || row.surface_id, publicInput);
+  }
+  if (row.handoff === "general") {
+    return generalSetupHandoff(row.surface_id, publicInput);
+  }
+  if (row.kind === "contract") return buildContractAiContextHandoff(publicInput);
+  if (row.kind === "notice") return buildNoticeAiContextHandoff(publicInput);
+  if (row.kind === "meeting") return buildMeetingAiContextHandoff(publicInput);
+  if (row.kind === "entity") return buildEntityAiContextHandoff(publicInput);
+  if (row.kind === "search_scope") {
+    return buildSearchAiContextHandoff({
+      ...publicInput,
+      ...(row.surface_id === "browse-meetings" && !publicInput.lenses ? { lenses: ["meetings"] } : {}),
+    });
+  }
+  if (row.kind === "browse_contracts") return buildBrowseContractsAiContextHandoff(publicInput);
+  if (row.kind === "browse_organizations") return buildBrowseOrganizationsAiContextHandoff(publicInput);
+  if (row.kind === "browse_land_projects") return buildBrowseLandProjectsAiContextHandoff(publicInput);
+  return emptyHandoff("unsupported_family", { family: row.family || row.surface_id, kind: row.kind || row.surface_id });
+}
+
 export function buildAiContextHandoff(input = {}) {
   const publicInput = stripPrivateFields(input);
   const kind = cleanText(publicInput.kind || publicInput.family, 40);
@@ -359,6 +598,9 @@ export function buildAiContextHandoff(input = {}) {
   if (kind === "meeting" || kind === "meetings") return buildMeetingAiContextHandoff(publicInput);
   if (kind === "land_project" || kind === "land" || kind === "zoning") return buildLandProjectAiContextHandoff(publicInput);
   if (kind === "entity" || kind === "entities" || kind === "person_or_organization") return buildEntityAiContextHandoff(publicInput);
+  if (kind === "browse_contracts") return buildBrowseContractsAiContextHandoff(publicInput);
+  if (kind === "browse_organizations") return buildBrowseOrganizationsAiContextHandoff(publicInput);
+  if (kind === "browse_land_projects") return buildBrowseLandProjectsAiContextHandoff(publicInput);
   if (kind === "search" || kind === "search_scope" || kind === "browse") return buildSearchAiContextHandoff(publicInput);
   if (UNSUPPORTED_EXACT_FAMILIES.includes(kind)) return buildUnsupportedFamilyAiContextHandoff(kind, publicInput);
   return emptyHandoff("unsupported_family", { family: kind, kind });
@@ -377,6 +619,8 @@ export function aiContextHandoffHref(handoff, { base = AI_CONTEXT_SETUP_PATH } =
     for (const [key, value] of Object.entries(handoff.arguments)) {
       if (value == null || value === "") continue;
       if (key === "scope" && Array.isArray(value)) params.set("lenses", value.join(","));
+      else if (key === "status" && handoff.kind === "browse_land_projects") params.set("project_status", String(value));
+      else if (key === "kind" && handoff.kind === "browse_organizations") params.set("org_kind", String(value));
       else if (typeof value === "boolean") params.set(key, value ? "1" : "0");
       else params.set(key, String(value));
     }
@@ -406,7 +650,11 @@ export function parseAiContextHandoff(input) {
     canonical_href: params.get("route"),
     query: params.get("query") || params.get("q"),
     agency: params.get("agency"),
+    vendor: params.get("vendor"),
     section: params.get("section"),
+    status: params.get("project_status"),
+    procedure: params.get("procedure"),
+    org_kind: params.get("org_kind"),
     min_amount: params.get("min_amount"),
     max_amount: params.get("max_amount"),
     open_only: params.get("open_only") === "1",
@@ -422,13 +670,18 @@ export function parseAiContextHandoff(input) {
   };
   if (params.get("status") === "unsupported_filters" || params.get("unsupported")) {
     const unsupported = String(params.get("unsupported") || "").split(",").map((part) => part.trim()).filter(Boolean);
-    return buildSearchAiContextHandoff({
+    const withUnsupported = {
       ...payload,
-      mode: payload.mode || "federated",
-      // Reintroduce unsupported axes so the builder keeps them explicit.
       ...(unsupported.includes("boro") ? { boro: params.get("boro") || "Brooklyn" } : {}),
       ...(unsupported.includes("when") ? { when: params.get("when") || "week" } : {}),
       ...(unsupported.length ? Object.fromEntries(unsupported.map((key) => [key, params.get(key) || true])) : {}),
+    };
+    if (kind === "browse_contracts") return buildBrowseContractsAiContextHandoff(withUnsupported);
+    if (kind === "browse_organizations") return buildBrowseOrganizationsAiContextHandoff(withUnsupported);
+    if (kind === "browse_land_projects") return buildBrowseLandProjectsAiContextHandoff(withUnsupported);
+    return buildSearchAiContextHandoff({
+      ...withUnsupported,
+      mode: payload.mode || "federated",
     });
   }
   return buildAiContextHandoff(payload);
@@ -506,3 +759,5 @@ export {
   UNSUPPORTED_EXACT_FAMILIES as AI_CONTEXT_UNSUPPORTED_FAMILIES,
   stripPrivateFields as stripAiContextPrivateFields,
 };
+
+export const AI_CONTEXT_PAGE_FAMILY_CENSUS = PAGE_FAMILY_AI_CONTEXT;
