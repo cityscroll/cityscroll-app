@@ -44,18 +44,49 @@ const DEFAULT_CONSULTATIONS = Object.freeze([
   ...CONSULTATION_PILOT_SEEDS.filter((record) => ["cb14-community-budget-fy2028", "bloomingdale-library-and-housing"].includes(record.id)),
 ]);
 
+const INDEXED_CONSULTATION_IDS = new Set([
+  "dot-fast-buses-central-brooklyn",
+  "dot-secure-bike-parking",
+  "cb14-community-budget-fy2028",
+  "bloomingdale-library-and-housing",
+]);
+
+function mergeFirstWinsConsultationOutcome(kept, incoming) {
+  if (!kept?.document || !incoming?.document) return kept;
+  const mergedRefs = uniqueSearchText([
+    ...(kept.document.source_observation_refs || []),
+    ...(incoming.document.source_observation_refs || []),
+  ], 240);
+  return freezeSearchValue({
+    ...kept,
+    document: {
+      ...kept.document,
+      source_observation_refs: mergedRefs,
+    },
+  });
+}
+
 export function buildConsultationSearchDocuments(records = DEFAULT_CONSULTATIONS) {
   const rows = Array.isArray(records) ? records : [];
   if (!rows.length) return unavailableSearchProducerCorpus({ schema: CONSULTATION_SEARCH_PRODUCER_SCHEMA, producer: CONSULTATION_SEARCH_PRODUCER, objectType: CONSULTATION_SEARCH_OBJECT_TYPE, domain: CONSULTATION_SEARCH_DOMAIN, reason: "consultation_materialization_empty" });
-  const seenObjectRefs = new Set();
-  const outcomes = rows
-    .filter((record) => ["dot-fast-buses-central-brooklyn", "dot-secure-bike-parking", "cb14-community-budget-fy2028", "bloomingdale-library-and-housing"].includes(record?.id))
-    .map((record) => freezeSearchValue(projectConsultationSearchDocument(record)))
-    .filter((outcome) => {
-      const objectRef = outcome.document?.object_ref;
-      if (!objectRef || seenObjectRefs.has(objectRef)) return !objectRef;
-      seenObjectRefs.add(objectRef);
-      return true;
-    });
+  // First outcome for an identity wins its public fields; later duplicate rows
+  // contribute only their source/channel references onto that retained document.
+  const keptIndexByRef = new Map();
+  const outcomes = [];
+  for (const record of rows.filter((row) => INDEXED_CONSULTATION_IDS.has(row?.id))) {
+    const outcome = freezeSearchValue(projectConsultationSearchDocument(record));
+    const objectRef = outcome.document?.object_ref;
+    if (!objectRef) {
+      outcomes.push(outcome);
+      continue;
+    }
+    if (!keptIndexByRef.has(objectRef)) {
+      keptIndexByRef.set(objectRef, outcomes.length);
+      outcomes.push(outcome);
+      continue;
+    }
+    const index = keptIndexByRef.get(objectRef);
+    outcomes[index] = mergeFirstWinsConsultationOutcome(outcomes[index], outcome);
+  }
   return searchProducerCorpus({ schema: CONSULTATION_SEARCH_PRODUCER_SCHEMA, producer: CONSULTATION_SEARCH_PRODUCER, objectType: CONSULTATION_SEARCH_OBJECT_TYPE, domain: CONSULTATION_SEARCH_DOMAIN, outcomes, reasons: { matched: "retained_consultation_rounds_indexed", empty: "consultation_materialization_has_no_rounds", partial: "some_consultation_rounds_failed_admission", not_indexed: "no_consultation_round_passed_admission" } });
 }
