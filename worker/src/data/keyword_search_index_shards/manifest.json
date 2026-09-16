@@ -6,8 +6,8 @@
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "867c67ebb021dd837f6eedd49c032cbd5ce9677f66ad2a3a73da232622b89a9f",
-    "bytes": 79939888,
+    "sha256": "d9e8256f6579c9745d8bb88659aa09f70aa2d8e06194fc34e4f1d04587e4697e",
+    "bytes": 79939308,
     "family_count": 12,
     "document_count": 22109
   },
@@ -135,13 +135,13 @@
       "path": "meetings.json.br",
       "gzip_path": "meetings.json.gz",
       "document_count": 770,
-      "uncompressed_bytes": 1474523,
-      "gzip_bytes": 102304,
-      "brotli_bytes": 68983,
-      "sha256": "089d5508ffe7489c564bfbe3755bd6c9ec62127a7be323f9dadd15c75be612ea",
-      "gzip_sha256": "e42f239498f2f18232185f30b7aa5c4cc6e896880b7a10cd51b37ebd356d1ae2",
-      "brotli_sha256": "2739c69f0543b8693f9af1cd0243018cb21bb46635f3f2cfc6446f7a9ab31954",
-      "receipt_sha256": "97d35ce594566e9001b0d510f198cfc0c31e9620d2781d75e771724b107fa2b1"
+      "uncompressed_bytes": 1473943,
+      "gzip_bytes": 102224,
+      "brotli_bytes": 69099,
+      "sha256": "0a03fa0ddb39311747d30aa7a97fa115d7adce85383c6ca544c1ee22dac89e2a",
+      "gzip_sha256": "0b5d12fe1405db0656d7787b3ac3e8322a975a58c4533dc62f3a70798176bafd",
+      "brotli_sha256": "4712ab9537764382690a72c51e39524475adb0d472702658523ab0416a58f1a4",
+      "receipt_sha256": "002ae02f2a239487e34df671d1266d6328a49f1e5cd6a023a025e4274bff2bfd"
     },
     {
       "family": "exams",

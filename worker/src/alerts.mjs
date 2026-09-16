@@ -3188,6 +3188,34 @@ export function rollupDigestHtml({
           <span style="color:#555;font-size:13px">${meta}</span><br>
           <span style="font-size:13px"><a href="${esc(link)}">View matter history</a></span></li>`;
       }
+      if (itemKind === "meetings" && r.meeting_id) {
+        const meetingLink = `${digestPermalinkUrl("meetings", r.meeting_id)}/`;
+        const institution = r.board_name || r.agency || r.agency_name || "";
+        const committee = r.committee?.name || "";
+        const venue = r.venue?.address || r.venue?.name || "";
+        const materials = (r.meeting_documents || [])
+          .filter((document) => document.attachment_status === "attached")
+          .map((document) => document.title || document.role)
+          .filter(Boolean);
+        const meta = [institution, committee, r.event_date ? `event ${String(r.event_date).slice(0, 10)}` : "", venue]
+          .filter(Boolean).map(esc).join(" · ");
+        const records = materials.length ? `<br><span style="color:#555;font-size:13px">${esc(materials.join(" · "))}</span>` : "";
+        const sourceActions = Array.isArray(r.official_source_actions) && r.official_source_actions.length
+          ? r.official_source_actions
+          : (r.source_url ? [{
+            label: r.source_system === "nyc_legistar_events" || r.source_system === "legistar"
+              ? "NYC Council Legistar"
+              : "Official source",
+            href: r.source_url,
+          }] : []);
+        const sourceLinks = sourceActions
+          .filter((action) => action?.href)
+          .map((action) => ` &nbsp; <a href="${esc(action.href)}">${esc(action.label || "Official source")}</a>`)
+          .join("");
+        return `<li data-digest-item="1"${itemClass} style="margin:0 0 12px"><b><a href="${meetingLink}">${esc(r.title || "Meeting")}</a></b><br>
+          <span style="color:#555;font-size:13px">${meta}</span>${records}<br>
+          <span style="font-size:13px"><a href="${meetingLink}">↗ View meeting details</a>${sourceLinks}</span></li>`;
+      }
       if (itemKind === "exam") {
         const link = `https://cityscroll.org/exams/${encodeURIComponent(r.exam_number)}/`;
         const dates = r.application_start && r.application_end ? `${String(r.application_start).slice(0, 10)}–${String(r.application_end).slice(0, 10)}` : "";
