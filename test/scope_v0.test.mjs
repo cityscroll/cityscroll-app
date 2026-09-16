@@ -513,11 +513,13 @@ test("an unsupported domain never claims the place-role constraint was applied",
     assert.equal(placeRoleSupportedForDomain(domain), false, domain);
   }
 
-  // The standing calendar feed replays a watch verbatim or not at all (fail-closed): a
-  // place-role filter it cannot honor must omit the affordance rather than silently
-  // publish a feed that quietly drops the constraint.
+  // Meetings calendar feeds replay place_role with the rest of the watch rather
+  // than omitting the affordance. A filter the compiler cannot honor still
+  // fails closed; place_role is now among the replayable meetings fields.
   const scope = scopeFromLensState("meetings", { boro: "Brooklyn", place_role: "venue" });
-  assert.equal(calendarFeedUrlForScope(scope), null);
+  const withPlace = calendarFeedUrlForScope(scope);
+  assert.ok(withPlace);
+  assert.match(withPlace, /place_role/);
   assert.notEqual(calendarFeedUrlForScope(scopeFromLensState("meetings", { boro: "Brooklyn" })), null);
 });
 

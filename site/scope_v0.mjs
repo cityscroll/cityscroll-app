@@ -380,6 +380,7 @@ const CALENDAR_REPLAYABLE_FILTER_FIELDS = Object.freeze({
     "locationScope",
     "communityBoard",
     "geographies",
+    "place_role",
     "activity",
     "body",
     "access",

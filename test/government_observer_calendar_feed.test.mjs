@@ -111,33 +111,29 @@ test("A1 subscription emits exact observe scope and feed replay keeps collection
     const scope = normalizeObserveScope({
       body: "bsa_calendar",
       access: "remote",
+      placeRole: "venue",
     });
     const watch = observeSubscriptionWatchFromScope(scope);
-    assert.equal(watch.ok, true);
+    assert.equal(watch.ok, true, "A1 place scope is emitted rather than refused");
     assert.equal(watch.watch.lens, "meetings");
     assert.deepEqual(watch.watch.filter, {
       activity: "observe",
       body: "bsa_calendar",
       access: "remote",
-    });
+      place_role: "venue",
+    }, "A1 subscription emits body, access, and place scope together");
 
     const feedUrl = observeCalendarFeedUrl(scope);
-    assert.ok(feedUrl);
+    assert.ok(feedUrl, "A1 place scope yields a feed address");
     const url = new URL(feedUrl);
     assert.equal(url.searchParams.get("lens"), "meetings");
     assert.deepEqual(JSON.parse(url.searchParams.get("filter")), watch.watch.filter);
     assert.equal(calendarFeedUrlForScope(watch.watch), feedUrl);
 
-    // place_role remains a discovery facet the standing feed must decline.
-    assert.equal(observeCalendarFeedUrl({ body: "bsa_calendar", placeRole: "venue" }), null);
-    assert.equal(
-      observeSubscriptionWatchFromScope({ body: "bsa_calendar", placeRole: "venue" }).ok,
-      false,
-    );
-
     const rows = collectionRows();
     const surface = buildObserveSurface({ rows }, scope);
     const selected = filterObserveRowsForFeed(rows, scope);
+    assert.ok(selected.length > 0, "A1 venue place scope selects BSA sessions with venues");
     assert.deepEqual(
       selected.map((row) => row.meeting_id).sort(),
       surface.observations.map((row) => row.id).sort(),
@@ -147,19 +143,21 @@ test("A1 subscription emits exact observe scope and feed replay keeps collection
     assert.equal(sanitized.activity, "observe");
     assert.equal(sanitized.body, "bsa_calendar");
     assert.equal(sanitized.access, "remote");
-    assert.equal(sanitized.place_role, undefined);
+    assert.equal(sanitized.place_role, "venue", "A1 worker sanitize retains place_role");
     const replayed = rows
       .filter((row) => day(row.event_date) && day(row.event_date) > asOf)
       .filter((row) => meetingRowMatchesObserveFilter(row, sanitized));
     assert.deepEqual(
       replayed.map((row) => row.meeting_id).sort(),
       selected.map((row) => row.meeting_id).sort(),
+      "A1 three-path replay keeps identities under place scope",
     );
 
     const details = observeCalendarSubscriptionDetails(scope, { rows: selected });
     assert.ok(details?.feedUrl);
     assert.match(details.webcalUrl, /^webcal:/);
     assert.match(details.scopeLabel, /Board of Standards and Appeals|bsa_calendar|Observe/);
+    assert.match(details.scopeLabel, /venue/i, "A1 scope label names the emitted place role");
   });
 });
 
@@ -251,8 +249,8 @@ test("A3 evidenced correction retains UID and advances sequence; explicit cancel
     assert.match(feed.ics, /STATUS:CANCELLED/, "A3 feed export carries cancelled status");
     assert.match(feed.ics, /SEQUENCE:2/, "A3 feed export carries advanced sequence");
 
-    // Detail rendering (calendar event preview) must state the same cancellation
-    // the feed exports — not a re-read of the fixture object just constructed.
+    // Detail rendering must state the same cancellation the feed exports —
+    // not a re-read of the fixture object just constructed.
     const detailFacts = calendarEventPreviewFacts(detailEntryFromOccurrence(cancelledOccurrence));
     const detailHtml = renderCalendarEventPreviewBody(detailFacts);
     assert.equal(detailFacts?.lifecycle, "cancelled", "A3 detail facts carry cancelled lifecycle");

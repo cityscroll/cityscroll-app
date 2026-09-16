@@ -93,10 +93,6 @@ export function observeSubscriptionWatchFromScope(scopeInput = {}) {
       }
     }
   }
-  // Standing meetings feeds decline place_role rather than emit a broader URL.
-  // Discovery may still inspect place roles; calendar replay only carries filters
-  // the feed compiler can honor (activity, body, access, geography keys).
-  if (scope.placeRole) unsupported.push("place_role");
   const uniqueUnsupported = [...new Set(unsupported)].sort();
   if (uniqueUnsupported.length) {
     return Object.freeze({
@@ -111,6 +107,7 @@ export function observeSubscriptionWatchFromScope(scopeInput = {}) {
   const filter = { activity: "observe" };
   if (scope.body) filter.body = scope.body;
   if (scope.access) filter.access = scope.access;
+  if (scope.placeRole) filter.place_role = scope.placeRole;
   const watch = Object.freeze({ lens: "meetings", filter: Object.freeze(filter) });
   const replayUnsupported = calendarFeedUnsupportedFilterFields(watch);
   if (replayUnsupported.length) {
@@ -316,6 +313,19 @@ export function meetingRowMatchesObserveFilter(row, filter = {}) {
   }
   if (filter.body && row?.source_system !== filter.body) return false;
   if (filter.access && observerAccessMethod(row) !== filter.access) return false;
+  if (filter.place_role) {
+    if (filter.place_role === "venue") {
+      if (!(row?.venue?.name || row?.venue?.address)) return false;
+    } else if (filter.place_role === "affected_area") {
+      if (!(row?.affected_area?.community_districts?.length || row?.affected_area?.boroughs?.length)) {
+        return false;
+      }
+    } else if (filter.place_role === "matter") {
+      if (!(row?.agenda_items?.length || row?.description || row?.oath_index)) return false;
+    } else {
+      return false;
+    }
+  }
   return true;
 }
 
