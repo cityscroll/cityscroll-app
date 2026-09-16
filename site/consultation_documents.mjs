@@ -1,4 +1,5 @@
 import { materializeConsultations } from "./consultation_acquisition.mjs";
+import { consultationMatchesScope } from "./consultation_place_time.mjs";
 
 export const CONSULTATION_DOCUMENT_SCHEMA = "cityscroll.consultation_document.v1";
 export const CONSULTATIONS_ROUTE = "/consultations/";
@@ -55,13 +56,17 @@ function consultationLabel(kind, value, locale = "en") {
 const PILOT_EXTENSIONS = Object.freeze([
   {
     id: "cb14-community-budget-fy2028", title: "Brooklyn CB14 district needs, FY2028", category: "Community budget", organizer: "Brooklyn Community Board 14",
-    purpose: "Share district needs and budget recommendations for the next fiscal year.", place: "Community Board 14", deadline: { value: "2026-09-04", precision: "day", historical: true },
+    purpose: "Share district needs and budget recommendations for the next fiscal year.", place: "Community Board 14",
+    geography: { kind: "community_board", labels: ["CB14"], evidence: "board_identity", method: "community_board_ontology" },
+    deadline: { value: "2026-09-04", precision: "day", historical: true },
     channels: [{ kind: "google_form", label: "View the published form", url: "https://docs.google.com/forms/d/e/1FAIpQLSde52JfdijqUs_dGI678yM1jvL0aJqLw_7TRoYhEubt9mgyrQ/viewform?usp=send_form" }, { kind: "offline_pdf", label: "View the paper form", url: "https://cb14brooklyn.com/wp-content/uploads/2026/06/FY28-Budget-Recommendation-Form-with-QR.pdf" }],
     sources: [{ role: "organizer invitation", url: "https://cb14brooklyn.com/city-budget/community-budget-recommendations/" }],
   },
   {
     id: "bloomingdale-library-and-housing", title: "Bloomingdale Library and Housing", category: "Library redevelopment", organizer: "NYCEDC",
-    purpose: "Share feedback about the Bloomingdale library and housing project.", place: "Bloomingdale", deadline: null,
+    purpose: "Share feedback about the Bloomingdale library and housing project.", place: "Bloomingdale",
+    geography: { labels: ["Bloomingdale"], evidence: "accepted_address_geocoding", community_districts: ["M10"], method: "civic_address_pip" },
+    deadline: null,
     channels: [{ kind: "survey", language: "en", label: "View the English survey", url: "https://nycedc.formstack.com/forms/bloomingdale_library_and_housing_survey" }, { kind: "survey", language: "es", label: "View the Spanish survey", url: "https://nycedc.formstack.com/forms/bloomingdale_library_and_housing_survey_sp" }],
     sources: [{ role: "organizer project page", url: "https://edc.nyc/project/bloomingdale-library" }],
   },
@@ -70,6 +75,23 @@ const PILOT_EXTENSIONS = Object.freeze([
 function sourceMaterialization() {
   const base = materializeConsultations();
   return { ...base, consultations: [...base.consultations, ...PILOT_EXTENSIONS] };
+}
+
+/** Canonical consultation rows shared by static documents, edge handlers, and activity merge. */
+export function consultationMaterializationRecords(materialization = sourceMaterialization()) {
+  return [...(materialization?.consultations || [])];
+}
+
+function placeQueryScope(place) {
+  const cleaned = clean(place);
+  if (!cleaned) return null;
+  if (/^(?:M|X|K|Q|R)\d{2}$/i.test(cleaned)) {
+    return { place: { community_districts: [cleaned.toUpperCase()] }, topic: { keywords: [] } };
+  }
+  if (/(?:^|\b)cb\s*14(?:\b|$)/i.test(cleaned) || /community board\s*14/i.test(cleaned)) {
+    return { place: { community_districts: ["K14"] }, topic: { keywords: [] } };
+  }
+  return { place: {}, topic: { keywords: [cleaned] } };
 }
 
 export function safeConsultationId(pathname) {
@@ -111,19 +133,25 @@ function normalizeRecord(record) {
 }
 
 export function buildConsultationCollection({ materialization = sourceMaterialization(), query = new URLSearchParams() } = {}) {
-  const records = (materialization.consultations || []).map(normalizeRecord);
+  const rawRecords = consultationMaterializationRecords(materialization);
   const category = clean(query.get?.("category"));
   const place = clean(query.get?.("place"));
   const lifecycle = clean(query.get?.("lifecycle"));
-  const filtered = records.filter((record) => {
+  const placeScope = placeQueryScope(place);
+  const filtered = rawRecords.filter((raw) => {
+    const record = normalizeRecord(raw);
     if (category && record.category !== category) return false;
-    if (place && !(record.geography || "").toLowerCase().includes(place.toLowerCase())) return false;
+    if (place) {
+      const labelHit = (record.geography || "").toLowerCase().includes(place.toLowerCase());
+      const membershipHit = placeScope ? consultationMatchesScope(raw, placeScope) : false;
+      if (!labelHit && !membershipHit) return false;
+    }
     if (lifecycle === "closed" && record.lifecycleLabel !== "Deadline passed") return false;
     if (lifecycle === "undated" && record.deadline) return false;
     if (lifecycle === "dated" && !record.deadline) return false;
     return true;
-  });
-  return { schema: CONSULTATION_DOCUMENT_SCHEMA, records: filtered, total: records.length, query: String(query.toString?.() || "") };
+  }).map(normalizeRecord);
+  return { schema: CONSULTATION_DOCUMENT_SCHEMA, records: filtered, total: rawRecords.length, query: String(query.toString?.() || "") };
 }
 
 export function buildConsultationDetail(id, { materialization = sourceMaterialization(), query = "" } = {}) {

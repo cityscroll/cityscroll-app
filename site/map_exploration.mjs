@@ -21,6 +21,7 @@ export const MAP_LENSES = Object.freeze([
   "rules",
   "meetings",
   "money",
+  "consultations",
 ]);
 
 export const MAP_LEVELS = Object.freeze([

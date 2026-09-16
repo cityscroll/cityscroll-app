@@ -46,10 +46,10 @@ test("district overview gives bounded resident sections and readable place label
   });
   assert.equal(view.isOverview, true);
   assert.deepEqual(view.overview.sections.map((section) => section.title), [
-    "Upcoming", "Recent changes", "Board activity", "Projects", "District priorities",
+    "Upcoming", "Recent changes", "Board activity", "Projects", "District priorities", "Consultations",
   ]);
   const html = renderNearYouDocument(view);
-  for (const heading of ["Upcoming", "Recent changes", "Board activity", "Projects", "District priorities"]) {
+  for (const heading of ["Upcoming", "Recent changes", "Board activity", "Projects", "District priorities", "Consultations"]) {
     assert.match(html, new RegExp(`>${heading}`));
   }
   assert.match(html, /Queens Community District 4/);

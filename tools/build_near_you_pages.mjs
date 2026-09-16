@@ -16,6 +16,8 @@ import {
   scopeFromLensState,
 } from "../site/scope_v0.mjs";
 import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
+import { consultationMaterializationRecords } from "../site/consultation_documents.mjs";
+import { mergeConsultationActivity } from "../site/consultation_place_time.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -29,8 +31,10 @@ function commonScopes() {
   const entries = [scopeFromLensState(null, {})];
   for (const lens of LENSES) {
     const base = scopeFromLensState(lens, {});
-    // The unqualified root is the additive overview. Keep explicit lens
-    // routes as their own documents when they carry a place.
+    // Citywide lens documents (except the meetings overview root) live under
+    // /near-you/lens/<lens>/ so the shared commonNearYouPath contract stays exact.
+    if (lens !== "meetings") entries.push(base);
+    // Keep explicit lens routes as their own documents when they carry a place.
     for (const borough of BOROUGHS) {
       const placed = scopeWithPlace(base, { borough });
       placed.place.viewport = {
@@ -51,7 +55,10 @@ function outputPath(publicPath) {
 }
 
 function buildDocuments() {
-  const activity = json(join(SITE, "data/district_activity.json"));
+  const activity = mergeConsultationActivity(
+    json(join(SITE, "data/district_activity.json")),
+    consultationMaterializationRecords(),
+  );
   const boundaries = json(join(SITE, "data/district_boundaries.json"));
   const communityGeography = json(join(SITE, "data/community_board_geography_lookup.json"));
   return commonScopes().map((scope) => {
