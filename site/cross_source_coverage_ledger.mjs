@@ -471,5 +471,208 @@ export function renderCrossSourceCoverageLedger(ledger) {
   return `<section class="node-section node-card cross-source-coverage-ledger" data-cross-source-coverage-ledger="1" aria-labelledby="cross-source-coverage-heading"><h2 id="cross-source-coverage-heading">Source coverage</h2><p class="cross-source-coverage-lead">Declared publisher lookup state for this record. No exact match is a snapshot miss, not a conclusion that the publisher never issued the record.</p><ul class="cross-source-coverage-sources">${items}</ul>${rateHtml(ledger.measured_coverage)}</section>`;
 }
 
+export const COVERAGE_READER_PROJECTION_SCHEMA = "cityscroll.coverage_reader_projection.v1";
+
+/** States that change how a reader should treat a nearby money or completeness claim. */
+const CLAIM_CONSEQUENTIAL_STATES = Object.freeze(new Set([
+  "checked-no-match",
+  "unavailable",
+  "stale",
+  "not-checked",
+  "ambiguous",
+]));
+
+const PAYMENT_CLAIM_SOURCES = Object.freeze(new Set([
+  "checkbook_spending",
+]));
+
+const AMOUNT_CLAIM_SOURCES = Object.freeze(new Set([
+  "checkbook_contracts",
+  "checkbook_nycha_contracts",
+]));
+
+const READER_STATE_SUMMARY = Object.freeze({
+  corroborated: "recorded",
+  "checked-no-match": "no exact match",
+  unavailable: "unavailable",
+  stale: "stale",
+  "not-checked": "not checked",
+  ambiguous: "ambiguous",
+});
+
+function dayStamp(value) {
+  return text(value)?.match(/\d{4}-\d{2}-\d{2}/)?.[0] || null;
+}
+
+function observationContext(source) {
+  const asOf = dayStamp(source.lookup_as_of);
+  const vintage = dayStamp(source.vintage);
+  if (asOf && vintage && asOf !== vintage) {
+    return `Checked ${asOf}; source as of ${vintage}`;
+  }
+  if (asOf) return `Checked ${asOf}`;
+  if (vintage) return `Source as of ${vintage}`;
+  return null;
+}
+
+function claimCaveatFor(source) {
+  if (!CLAIM_CONSEQUENTIAL_STATES.has(source.state)) return null;
+  if (PAYMENT_CLAIM_SOURCES.has(source.source_system)) {
+    if (source.state === "unavailable") {
+      return Object.freeze({
+        claim: "paid_amount",
+        source_system: source.source_system,
+        state: source.state,
+        text: `${source.source_name} could not be retrieved for this contract, so a paid total is not shown as complete.`,
+      });
+    }
+    if (source.state === "checked-no-match") {
+      return Object.freeze({
+        claim: "paid_amount",
+        source_system: source.source_system,
+        state: source.state,
+        text: `${source.source_name} had no exact payment match in this snapshot. That is a miss in the lookup, not a paid total of zero.`,
+      });
+    }
+    if (source.state === "stale") {
+      return Object.freeze({
+        claim: "paid_amount",
+        source_system: source.source_system,
+        state: source.state,
+        text: `${source.source_name} is stale for this contract, so any paid total may be incomplete.`,
+      });
+    }
+    if (source.state === "not-checked") {
+      return Object.freeze({
+        claim: "paid_amount",
+        source_system: source.source_system,
+        state: source.state,
+        text: `${source.source_name} has not been checked for this contract, so a paid total is not treated as complete.`,
+      });
+    }
+  }
+  if (AMOUNT_CLAIM_SOURCES.has(source.source_system) && source.state === "unavailable") {
+    return Object.freeze({
+      claim: "amount",
+      source_system: source.source_system,
+      state: source.state,
+      text: `${source.source_name} could not be retrieved, so contract amounts from that source stay incomplete.`,
+    });
+  }
+  return null;
+}
+
+/**
+ * Project the coverage ledger for residents: consequential states and links stay;
+ * lookup basis, denominators, importer rates, and repair metadata stay out.
+ */
+export function projectCoverageForReaders(ledger) {
+  if (!ledger || !Array.isArray(ledger.sources) || !ledger.sources.length) return null;
+  const sources = ledger.sources
+    .filter((source) => source.state !== "not-applicable")
+    .map((source) => Object.freeze({
+      source_system: source.source_system,
+      source_name: source.source_name,
+      state: source.state,
+      state_label: source.state_label || STATE_LABELS[source.state] || source.state,
+      unresolved: Boolean(source.unresolved),
+      consequential: CLAIM_CONSEQUENTIAL_STATES.has(source.state),
+      observation_context: observationContext(source),
+      record_href: source.record_href || null,
+      official_href: source.official_href || null,
+      official_label: source.official_label || null,
+      search_href: source.search_href || null,
+      search_label: source.search_label || null,
+    }));
+  if (!sources.length) return null;
+  const recorded = sources.filter((source) => source.state === "corroborated").length;
+  const consequential = sources.filter((source) => source.consequential);
+  const claimCaveats = sources.map(claimCaveatFor).filter(Boolean);
+  const headlineParts = [
+    recorded ? `${recorded} recorded` : null,
+    consequential.length ? `${consequential.length} with limitations` : null,
+  ].filter(Boolean);
+  return Object.freeze({
+    schema: COVERAGE_READER_PROJECTION_SCHEMA,
+    object_kind: ledger.object_kind || null,
+    object_ref: ledger.object_ref || null,
+    summary: Object.freeze({
+      recorded_count: recorded,
+      consequential_count: consequential.length,
+      source_count: sources.length,
+      headline: headlineParts.join(" · ") || `${sources.length} sources`,
+    }),
+    sources: Object.freeze(sources),
+    claim_caveats: Object.freeze(claimCaveats),
+  });
+}
+
+function readerSourceAction(source) {
+  if (source.official_href) {
+    return officialSourceLink({
+      href: source.official_href,
+      label: source.official_label || "Open official record",
+      className: "coverage-reader-action",
+      escape: esc,
+    });
+  }
+  if (source.search_href) {
+    return officialSourceLink({
+      href: source.search_href,
+      label: source.search_label || "Search official source",
+      className: "coverage-reader-action",
+      escape: esc,
+    });
+  }
+  return "";
+}
+
+function readerSourceName(source) {
+  if (source.record_href) {
+    return officialSourceLink({
+      href: source.record_href,
+      label: source.source_name,
+      className: "coverage-reader-name",
+      escape: esc,
+    });
+  }
+  return `<span class="coverage-reader-name">${esc(source.source_name)}</span>`;
+}
+
+/**
+ * Compact resident Sources block: closed by default, inspectable without diagnostics.
+ */
+export function renderCoverageReaderProjection(projection) {
+  if (!projection || !Array.isArray(projection.sources) || !projection.sources.length) return "";
+  const items = projection.sources.map((source) => {
+    const context = source.observation_context
+      ? `<span class="coverage-reader-context">${esc(source.observation_context)}</span>`
+      : "";
+    const action = readerSourceAction(source);
+    return `<li class="coverage-reader-source" data-source-system="${esc(source.source_system)}" data-coverage-state="${esc(source.state)}" data-unresolved="${source.unresolved ? "1" : "0"}" data-consequential="${source.consequential ? "1" : "0"}">${readerSourceName(source)}<span class="coverage-reader-state">${esc(source.state_label)}</span>${action}${context}</li>`;
+  }).join("");
+  const lead = projection.summary?.consequential_count
+    ? "Publisher records that support this contract, including limitations that affect nearby claims."
+    : "Publisher records that support this contract.";
+  return `<section class="node-section node-card coverage-reader-sources" data-coverage-reader-projection="1" data-coverage-schema="${esc(projection.schema)}" aria-labelledby="coverage-reader-heading">
+<h2 id="coverage-reader-heading">Sources</h2>
+<p class="coverage-reader-summary" data-coverage-summary="1">${esc(projection.summary.headline)}</p>
+<p class="coverage-reader-lead">${esc(lead)}</p>
+<details class="coverage-reader-disclosure" data-coverage-disclosure="1">
+<summary>Inspect source details</summary>
+<ul class="coverage-reader-list">${items}</ul>
+</details>
+</section>`;
+}
+
+/** Claim-adjacent caveats for payment/amount limitations that must not hide in Sources. */
+export function renderCoverageClaimCaveats(projection) {
+  if (!projection || !Array.isArray(projection.claim_caveats) || !projection.claim_caveats.length) return "";
+  return projection.claim_caveats.map((caveat) => (
+    `<p class="procurement-claim-caveat" data-claim-caveat="${esc(caveat.claim)}" data-source-system="${esc(caveat.source_system)}" data-coverage-state="${esc(caveat.state)}">${esc(caveat.text)}</p>`
+  )).join("");
+}
+
 export const CROSS_SOURCE_COVERAGE_STATE_LABELS = STATE_LABELS;
 export const NYC_PROCUREMENT_COVERAGE_SOURCES = NYC_PROCUREMENT_SOURCES;
+export const COVERAGE_READER_STATE_SUMMARY = READER_STATE_SUMMARY;

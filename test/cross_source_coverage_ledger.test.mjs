@@ -81,13 +81,17 @@ test("positive procurement object names every declared source and keeps corrobor
   const html = renderProcurementDocument(object, model.observations, {
     sourceStatus: model.sources,
   });
-  assert.match(html, /data-cross-source-coverage-ledger="1"/);
-  assert.match(html, /13 of 19 identity-bearing importer streams/);
+  assert.match(html, /data-coverage-reader-projection="1"/);
   assert.match(html, /PASSPort Public contracts/);
   assert.match(html, /Recorded in this source/);
   assert.doesNotMatch(html, /does not exist/);
-  assert.match(html, /Importer coverage:/);
+  assert.doesNotMatch(html, /Importer coverage:/);
+  assert.doesNotMatch(html, /13 of 19 identity-bearing importer streams/);
   assert.doesNotMatch(html, /How this timeline works|methodology/i);
+  const factsAt = html.indexOf(">Contract facts<");
+  const observedAt = Math.max(html.indexOf(">Observed events<"), html.indexOf(">Observed stages<"));
+  const sourcesAt = html.indexOf("data-coverage-reader-projection=\"1\"");
+  assert.ok(factsAt > 0 && observedAt > factsAt && sourcesAt > observedAt);
 });
 
 test("checked-no-match stays a snapshot miss and carries vintage plus denominator", () => {

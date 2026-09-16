@@ -281,10 +281,13 @@ test("A4: real canonical routes credit source handoffs and refuse misleading rev
   assert.ok(cityRecord, "S&P retains a City Record coverage row");
   assert.equal(cityRecord[1], "checked-no-match");
   assert.match(cityRecord[0], /City Record/);
-  assert.match(cityRecord[0], /lookup as of 2026-09-09T06:33:01\.880Z/);
+  assert.match(cityRecord[0], /Checked 2026-09-09/);
+  assert.match(cityRecord[0], /data-coverage-state="checked-no-match"/);
+  assert.doesNotMatch(cityRecord[0], /lookup as of|exact_pin|Importer coverage:/);
   assert.match(sp, /10220272001881/, "City Record absence stays bound to the PIN that was checked");
-  assert.match(sp, /No exact match is a snapshot miss, not a conclusion that the publisher never issued the record/i);
+  assert.match(sp, /data-coverage-reader-projection="1"/);
   assert.doesNotMatch(sp, /never (?:published|appeared) in (?:the )?City Record|absent from City Record forever/i);
+  assert.doesNotMatch(sp, /Importer coverage:/);
   const aha = await servedContract("CT105720278802113");
   assert.match(aha, /PASSPort Public contracts/);
   const bhrags = await servedContract("CT107120258801626");
