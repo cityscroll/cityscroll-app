@@ -15,6 +15,12 @@ import { renderMeetingDocument } from "./meeting_document.mjs";
 import { renderProcurementDocument } from "./procurement_document.mjs";
 import { buildProjectContextView, renderProjectContextHtml } from "./procurement_project_context.mjs";
 import procurementProjectContextMaterialization from "./data/procurement_project_context.json" with { type: "json" };
+import procurementContractLifecycleMaterialization from "./data/procurement_contract_lifecycle.json" with { type: "json" };
+import {
+  contractLifecycleForNotice,
+  paymentEvidenceFromLifecycle,
+  renderProcurementPaymentEvidenceHtml,
+} from "./procurement_payment_place_context.mjs";
 import { procurementShardPathForId } from "./procurement_read_model_shards.mjs";
 import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
 import sharedMeetingSnapshot from "./data/shared_meeting_read_model.json" with { type: "json" };
@@ -648,6 +654,13 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     officialNotice: { href: source, label: "Official record" },
   });
   const projectContextHTML = renderProjectContextHtml(projectContext, { headingId: "notice-project-context-heading" });
+  const noticeLifecycle = contractLifecycleForNotice(
+    id,
+    options.contractLifecycleMaterialization ?? null,
+  );
+  const paymentEvidenceHTML = renderProcurementPaymentEvidenceHtml(
+    paymentEvidenceFromLifecycle(noticeLifecycle),
+  );
   const browseLink = constellationLink({ href: "/browse/", label: "Browse public records", className: "act primary", escape: esc });
   const followingLink = constellationLink({ href: "/following/", label: "Follow public records", className: "act", escape: esc });
   const sourceLink = officialSourceLink({ href: source, label: "Official record", escape: esc });
@@ -862,6 +875,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}${agencyReport ? ` ${agencyReport}` : ""}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}${vendorReport ? ` ${vendorReport}` : ""}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${civicTimeHistoryHTML}
       ${projectContextHTML}
+      ${paymentEvidenceHTML}
       ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
       ${mandateBacklinksHTML}
@@ -1144,6 +1158,7 @@ async function handleNotice(request, env, id) {
           currentHref: request.url,
           civicTime,
           projectContextMaterialization: procurementProjectContextMaterialization,
+          contractLifecycleMaterialization: procurementContractLifecycleMaterialization,
         }),
         { html: true },
       );

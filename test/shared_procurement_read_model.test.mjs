@@ -7,9 +7,11 @@ import {
   procurementReadModelSourceStatus,
 } from "../site/shared_procurement_read_model.mjs";
 import {
+  contractLifecycleForNotice,
   hasExactContractPaymentEvidence,
   paymentEvidenceFromLifecycle,
 } from "../site/procurement_payment_place_context.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const emmonsLifecycle = JSON.parse(
   readFileSync(new URL("./fixtures/exact-contract-payment-place/emmons_lifecycle.json", import.meta.url), "utf8"),
@@ -138,67 +140,83 @@ test("CROL-negative source rows remain canonical without a City Record lifecycle
   assert.deepEqual(model.rows[0].compatibility.city_record_notice_hrefs, []);
 });
 
-test("exact-contract lifecycle payments and notice place facts attach without collapsing lines", () => {
-  const emmonsRecords = [
-    sourceRecord("passport_public_contracts", "contract:07124E0044001:5050251", {
-      ctr_id: "5050251",
-      epin: "07124E0044001",
-      contract_id: "CT107120258801626",
-      status: "Registered",
-      award_amount: 10869881,
-      start_date: "10/11/2023",
-      end_date: "06/30/2026",
-    }),
-    sourceRecord("checkbook_contracts", "contract:registered:CT107120258801626:BHRAGS:prime-vendor:2024-08-28", {
-      id: "CT107120258801626",
-      pin: "07124E0044001",
-      status: "registered",
-      original_amount: 10869881,
-      current_amount: 10869881,
-      spent: 7385672.19,
-      start_date: "2023-10-11",
-      end_date: "2026-06-30",
-    }),
-    sourceRecord("city_record", "20240829105", {
-      request_id: "20240829105",
-      pin: "07124E0044001",
-      short_title: "City Sanctuary Facility for Families with Children, Comfort Inn Sheepsheads Bay",
-      vendor_name: "BHRAGS HOME CARE CORP",
-      contract_amount: "10869881",
-      type_of_notice_description: "Award",
-      additional_description_1: "<p>Located at 3218 Emmons Avenue, Brooklyn, NY 11235; 60 units.</p>",
-    }),
-  ];
-  const model = buildSharedProcurementReadModel({
-    sourceRecords: emmonsRecords,
-    lifecycleRows: [emmonsLifecycle],
-    placeFactsMaterialization,
-    generatedAt: "2026-09-14T13:10:41.533Z",
+test("exact-contract lifecycle payments and notice place facts attach without collapsing lines", async () => {
+  await withPinnedClock("2026-09-14T13:10:41.533Z", async () => {
+    const emmonsRecords = [
+      sourceRecord("passport_public_contracts", "contract:07124E0044001:5050251", {
+        ctr_id: "5050251",
+        epin: "07124E0044001",
+        contract_id: "CT107120258801626",
+        status: "Registered",
+        award_amount: 10869881,
+        start_date: "10/11/2023",
+        end_date: "06/30/2026",
+      }),
+      sourceRecord("checkbook_contracts", "contract:registered:CT107120258801626:BHRAGS:prime-vendor:2024-08-28", {
+        id: "CT107120258801626",
+        pin: "07124E0044001",
+        status: "registered",
+        original_amount: 10869881,
+        current_amount: 10869881,
+        spent: 7385672.19,
+        start_date: "2023-10-11",
+        end_date: "2026-06-30",
+      }),
+      sourceRecord("city_record", "20240829105", {
+        request_id: "20240829105",
+        pin: "07124E0044001",
+        short_title: "City Sanctuary Facility for Families with Children, Comfort Inn Sheepsheads Bay",
+        vendor_name: "BHRAGS HOME CARE CORP",
+        contract_amount: "10869881",
+        type_of_notice_description: "Award",
+        additional_description_1: "<p>Located at 3218 Emmons Avenue, Brooklyn, NY 11235; 60 units.</p>",
+      }),
+    ];
+    const model = buildSharedProcurementReadModel({
+      sourceRecords: emmonsRecords,
+      lifecycleRows: [emmonsLifecycle],
+      placeFactsMaterialization,
+      generatedAt: "2026-09-14T13:10:41.533Z",
+    });
+    assert.equal(model.rows.length, 1);
+    const [object] = model.rows;
+    assert.equal(object.procurement_id, "procurement:contract:CT107120258801626");
+    assert.ok(object.lifecycle);
+    assert.equal(object.lifecycle.checkbook_acquisition.observed_at, "2026-09-14T13:10:41.533Z");
+    assert.equal(object.lifecycle.checkbook_acquisition.payment_as_of, "2026-08-06");
+    assert.ok(hasExactContractPaymentEvidence(object.lifecycle));
+    const evidence = paymentEvidenceFromLifecycle(object.lifecycle);
+    assert.equal(evidence.total_payments, 31);
+    assert.equal(evidence.total_spent, 7385672.19);
+    assert.equal(evidence.latest_payment_date, "2026-08-06");
+    assert.equal(evidence.latest_payment_amount, 66216.68);
+    assert.equal(evidence.payment_rows.length, 12);
+    assert.equal(evidence.payment_rows_capped, true);
+    const dual = evidence.payment_rows.filter((row) => row.document_id === "20270016167-1-DSB-EFT");
+    assert.equal(dual.length, 2);
+    assert.deepEqual(dual.map((row) => row.amount).sort((a, b) => a - b), [54214.14, 66591.17]);
+    assert.deepEqual(dual.map((row) => row.date), ["2026-07-07", "2026-07-07"]);
+    const displayedSum = evidence.payment_rows.reduce((sum, row) => sum + Number(row.amount || 0), 0);
+    assert.notEqual(displayedSum, evidence.total_spent);
+    assert.ok(Array.isArray(object.place_facts));
+    assert.equal(object.place_facts.length, 1);
+    assert.equal(object.place_facts[0].address, "3218 Emmons Avenue, Brooklyn");
+    assert.equal(object.place_facts[0].units, 60);
+    assert.equal(object.place_facts[0].request_id, "20240829105");
+    const noticeLifecycle = contractLifecycleForNotice("20240829105", {
+      schema: "cityscroll.procurement_contract_lifecycle_materialization.v1",
+      version: 1,
+      generated_at: "2026-09-14T13:10:41.533Z",
+      policy: {
+        exact_contract_payment_population: true,
+        analytics_spending_miss_is_not_lifecycle_absence: true,
+        payment_rows_are_display_subset: true,
+      },
+      rows: [emmonsLifecycle],
+    });
+    assert.equal(noticeLifecycle?.id, "20240829105");
+    assert.ok(hasExactContractPaymentEvidence(noticeLifecycle));
   });
-  assert.equal(model.rows.length, 1);
-  const [object] = model.rows;
-  assert.equal(object.procurement_id, "procurement:contract:CT107120258801626");
-  assert.ok(object.lifecycle);
-  assert.equal(object.lifecycle.checkbook_acquisition.observed_at, "2026-09-14T13:10:41.533Z");
-  assert.equal(object.lifecycle.checkbook_acquisition.payment_as_of, "2026-08-06");
-  assert.ok(hasExactContractPaymentEvidence(object.lifecycle));
-  const evidence = paymentEvidenceFromLifecycle(object.lifecycle);
-  assert.equal(evidence.total_payments, 31);
-  assert.equal(evidence.total_spent, 7385672.19);
-  assert.equal(evidence.latest_payment_date, "2026-08-06");
-  assert.equal(evidence.latest_payment_amount, 66216.68);
-  assert.equal(evidence.payment_rows.length, 12);
-  assert.equal(evidence.payment_rows_capped, true);
-  const dual = evidence.payment_rows.filter((row) => row.document_id === "20270016167-1-DSB-EFT");
-  assert.equal(dual.length, 2);
-  assert.deepEqual(dual.map((row) => row.amount).sort((a, b) => a - b), [54214.14, 66591.17]);
-  const displayedSum = evidence.payment_rows.reduce((sum, row) => sum + Number(row.amount || 0), 0);
-  assert.notEqual(displayedSum, evidence.total_spent);
-  assert.ok(Array.isArray(object.place_facts));
-  assert.equal(object.place_facts.length, 1);
-  assert.equal(object.place_facts[0].address, "3218 Emmons Avenue, Brooklyn");
-  assert.equal(object.place_facts[0].units, 60);
-  assert.equal(object.place_facts[0].request_id, "20240829105");
 });
 
 test("accepted City Record notice hrefs reverse into the shared subject lookup", async () => {
