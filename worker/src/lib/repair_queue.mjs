@@ -669,7 +669,16 @@ export async function readRepairQueue(env, { now = new Date(), limit = 30 } = {}
     if (read.item) items.push(read.item);
     else if (read.malformed) malformed += 1;
   }
+  const completed = [];
+  for (const signature of index.retired.slice(0, limit)) {
+    const read = await readRepairItem(env, signature).catch(() => ({ item: null }));
+    if (read.item) completed.push(read.item);
+  }
   return {
+    completed_items: completed,
+    total_active: index.signatures.length,
+    total_completed: index.retired.length,
+    truncated: index.signatures.length > limit || index.retired.length > limit,
     schema: "cityscroll.ops-repair-queue.v1",
     observed_at: now.toISOString(),
     repair_scope: REPAIR_SCOPE,

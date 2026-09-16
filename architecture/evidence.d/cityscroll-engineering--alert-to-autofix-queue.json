@@ -3,7 +3,7 @@
   "id": "cityscroll-engineering/alert-to-autofix-queue",
   "status": "implemented",
   "fingerprint": "alert-to-autofix-queue.v2",
-  "updated_at": "2026-09-07T00:00:00.000Z",
+  "updated_at": "2026-09-16T00:00:00.000Z",
   "projections": [
     {
       "id": "owner-alert-repair-queue",
@@ -44,6 +44,14 @@
     {
       "id": "monitor-to-queue-contract",
       "path": "worker/test/repair_monitor_findings.test.mjs"
+    },
+    {
+      "id": "ops-notification-policy",
+      "path": "worker/src/lib/ops_notification_policy.mjs"
+    },
+    {
+      "id": "ops-notification-policy-contract",
+      "path": "worker/test/ops_notification_policy.test.mjs"
     }
   ]
 }

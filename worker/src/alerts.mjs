@@ -1,3 +1,4 @@
+import { opsNotificationDecision } from "./lib/ops_notification_policy.mjs";
 // alerts — scheduled daily digest. The Worker's `scheduled` handler (cron in
 // wrangler.toml: "0 13 * * *") calls runAlerts().
 //
@@ -2627,7 +2628,8 @@ function logDryRunEmail(payload) {
   }));
 }
 
-export async function sendOpsAlert(env, { guard, subject, text, observedAt = new Date().toISOString() } = {}) {
+export async function sendOpsAlert(env, { guard, subject, text, emergency, now = new Date(), observedAt = now.toISOString() } = {}) {
+  if (!opsNotificationDecision({ guard, emergency }, now).email) return { accepted: false, reason: "desk-only" };
   const { recordOutboundOpsSendReceipt } = await import("./reliability_watchdogs.mjs");
   if (!env?.RESEND_API_KEY) {
     const result = { accepted: false, reason: "resend-not-configured" };

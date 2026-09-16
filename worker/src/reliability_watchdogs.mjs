@@ -1,3 +1,4 @@
+import { opsNotificationDecision } from "./lib/ops_notification_policy.mjs";
 import { digestDayLogKey, sentWatchKeysFromDayLog } from "./lib/digest_ops.mjs";
 import {
   REPAIR_QUEUE_EXCLUDED_GUARDS,
@@ -751,7 +752,7 @@ async function updateAlertHistory(kv, record) {
 }
 
 export async function emitOpsAlertOnce(env, input = {}) {
-  const now = input.now instanceof Date ? input.now : new Date(input.last_seen || Date.now());
+  const now = input.now instanceof Date ? input.now : new Date();
   const guard = String(input.guard || "reliability").slice(0, 80);
   const findings = (Array.isArray(input.findings) ? input.findings : [input.text]).map(normalizedFinding).filter(Boolean).slice(0, 20);
   const signature = await canonicalOpsFailureSignature({ ...input, guard, findings });
@@ -773,8 +774,11 @@ export async function emitOpsAlertOnce(env, input = {}) {
     latest_run_url: input.workflow_run_url || prior?.latest_run_url || null,
     latest_receipt_url: input.receipt_url || prior?.latest_receipt_url || null,
     sent_at: prior?.sent_at || null,
+    emergency_sent_at: prior?.emergency_sent_at || null,
     rollup_day: prior?.rollup_day || null,
     delivery_finding: prior?.delivery_finding || null,
+    notification: opsNotificationDecision(input, now),
+    decision_context: guard === REPAIR_JUDGMENT_GUARD ? String(input.paragraph || "").slice(0, 2500) : null,
   };
   if (EVIDENCE_REQUIRED_GUARDS.includes(guard)) {
     const missing = opsAlertEvidenceFindings({ ...input, last_seen: lastSeen });
@@ -812,26 +816,24 @@ export async function emitOpsAlertOnce(env, input = {}) {
     finding: queue.ok ? null : { observed_at: lastSeen, reason: queue.reason, detail: queue.detail || null },
   };
 
-  const today = day(now);
-  const rollup = !!prior && prior.rollup_day !== today && day(prior.last_seen) !== today;
-  const shouldSend = !prior || rollup;
+  // No daily reminder mail. An emergency can escalate an existing silent
+  // incident; a rejected send can retry until the provider accepts it.
+  const shouldSend = record.notification.email && !prior?.emergency_sent_at;
   if (!shouldSend) {
     await putJson(env?.ALERT_STATE, alertKey, record);
     await updateAlertHistory(env?.ALERT_STATE, record);
-    return { sent: false, reason: "already-alerted", signature, record, queue };
+    return { sent: false, reason: record.notification.email ? "already-alerted" : "desk-only", signature, record, queue };
   }
   const { sendOpsAlert } = await import("./alerts.mjs");
   let result;
   try {
     result = await sendOpsAlert(env, {
       guard,
-      subject: input.subject || `CityScroll reliability alert: ${guard}`,
-      // Only the repair-judgment guard composes its own paragraph, because its
-      // "since when" dates would be normalized out of a finding — rel-09's
-      // normalization exists to make signatures stable, not to be read. Every
-      // other guard, including anything arriving over the admin relay, gets the
-      // standard evidence-bearing paragraph.
-      text: (guard === REPAIR_JUDGMENT_GUARD && input.paragraph) || alertParagraph(record, { rollup, queue }),
+      subject: `CityScroll emergency: ${record.notification.impact}`,
+      emergency: input.emergency,
+      now,
+      // Emergencies carry the recorded evidence plus a concrete human action.
+      text: `${alertParagraph(record, { rollup: false, queue })} Action needed now: ${record.notification.action}. Evidence: ${record.notification.evidence_url}.`,
       observedAt: record.last_seen,
     });
   } catch (error) {
@@ -839,7 +841,7 @@ export async function emitOpsAlertOnce(env, input = {}) {
   }
   if (result.accepted) {
     record.sent_at = record.last_seen;
-    if (rollup) record.rollup_day = today;
+    record.emergency_sent_at = record.last_seen;
   } else {
     record.delivery_finding = { observed_at: record.last_seen, reason: result.reason || "rejected" };
   }

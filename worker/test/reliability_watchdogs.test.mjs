@@ -252,7 +252,7 @@ test("the heartbeat distinguishes the two delivery identities and records the to
   }
 });
 
-test("ops failures have lossless stable signatures and restart-stable daily rollups", async () => {
+test("ops failures have lossless stable signatures and remain silent across daily repeats", async () => {
   const ALERT_STATE = kv();
   const sent = [];
   const previous = globalThis.fetch;
@@ -275,17 +275,16 @@ test("ops failures have lossless stable signatures and restart-stable daily roll
     const signature = await canonicalOpsFailureSignature(base);
     assert.equal(signature, await canonicalOpsFailureSignature({ ...base, findings: [...base.findings].reverse() }));
     assert.notEqual(signature, await canonicalOpsFailureSignature({ ...base, stage: "generation_output" }));
-    assert.equal((await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, { ...base, now: new Date(base.last_seen) })).sent, true);
+    assert.equal((await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, { ...base, now: new Date(base.last_seen) })).sent, false);
     assert.equal((await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, { ...base, last_seen: "2026-08-31T12:05:00Z", now: new Date("2026-08-31T12:05:00Z") })).sent, false);
-    assert.equal(sent.length, 1);
-    assert.equal((await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, { ...base, last_seen: "2026-09-01T12:05:00Z", now: new Date("2026-09-01T12:05:00Z") })).sent, true);
+    assert.equal(sent.length, 0);
+    assert.equal((await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, { ...base, last_seen: "2026-09-01T12:05:00Z", now: new Date("2026-09-01T12:05:00Z") })).sent, false);
     assert.equal((await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, { ...base, last_seen: "2026-09-01T12:06:00Z", now: new Date("2026-09-01T12:06:00Z") })).sent, false);
-    assert.equal(sent.length, 2);
-    assert.match(sent[0].html, /broke: artifact hash mismatch/);
-    assert.match(sent[0].html, /actions\/runs\/123/);
-    assert.equal((sent[0].html.match(/<p>/g) || []).length, 1);
-    assert.doesNotMatch(sent[0].html, /<h1>/);
-    assert.doesNotMatch(sent[0].html, /\{\s*&quot;guard&quot;/);
+    assert.equal(sent.length, 0);
+    const history = JSON.parse(await ALERT_STATE.get("ops:alert:history:v1"));
+    assert.equal(history.items[0].count, 4);
+    assert.equal(history.items[0].notification.reason, "desk-only");
+    assert.equal(history.items[0].queue.queued, true);
   } finally { globalThis.fetch = previous; }
 });
 
@@ -394,7 +393,8 @@ test("runtime alarms use the existing Resend path and the ops mailbox", async ()
   };
   try {
     const result = await sendOpsAlert({ RESEND_API_KEY: "test-key", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" }, {
-      guard: "test-guard", subject: "Test reliability alarm", text: "bad condition",
+      guard: "production-emergency", subject: "Test emergency", text: "bad condition",
+      emergency: { confirmed: true, impact: "service-unavailable", human_action_required: true, automatic_remedy: "exhausted", action: "Restore the service now", verified_at: new Date().toISOString(), evidence_url: "https://example.com/evidence" },
     });
     assert.equal(result.accepted, true);
     assert.equal(request.url, "https://api.resend.com/emails");

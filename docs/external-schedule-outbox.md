@@ -352,3 +352,26 @@ tools/install_external_schedule_launchd.sh
 The installer reports which launcher the trigger points at and warns if the rail is disabled. As with every other input it writes, naming a command is not evidence that a repair works: the first cycle's summary and the receipts are.
 
 The remaining daily data-freshness jobs (`attachment-metadata`, `surface-load-live`, and `multi-flywheel`) remain listed as follow-ups in the job manifest.
+
+### Notification policy
+
+Operational findings are recorded and offered to the repair queue independently
+of email. First observations, changed revisions, daily repeats, and terminal
+repair decisions stay in the authenticated operational read model. A decision
+includes its human-readable context; it does not by itself warrant email.
+The read model includes bounded active and retired repair histories, their totals,
+and an explicit truncation flag. A retired `unkeyable` result is not verified recovery.
+
+Email is reserved for the authenticated `production-emergency` guard. Its
+`emergency` object must declare a confirmed `service-unavailable`,
+`active-data-loss`, or `active-security-incident` impact; `human_action_required:
+true`; `automatic_remedy: exhausted` or `unavailable`; a concrete `action`; a
+query-free HTTPS `evidence_url`; and a `verified_at` within the last fifteen
+minutes. Ordinary monitors cannot promote themselves by setting severity.
+An accepted emergency is emailed once per incident signature, with no daily
+rollup; rejected sends may retry. A new incident must have a distinct signature.
+The final sender enforces the same policy, so direct calls cannot bypass it.
+
+This notification policy does not widen the repair dispatcher's capabilities.
+Scripted playbooks still verify their own recovery; repository changes and
+unrecognized conditions remain explicit decisions rather than fabricated repairs.

@@ -1,3 +1,4 @@
+import { OPS_NOTIFICATION_POLICY } from "./lib/ops_notification_policy.mjs";
 // GET /admin/subs?key=… — operator signup-lifecycle roster from the worker's OWN SUBS
 // binding (recovered / pending-enrollment / enrolled / confirmed / test). This answers
 // "what does the worker actually see" independent of any external CLI/dashboard view.
@@ -371,9 +372,10 @@ export async function handleAdminOpsHealth(req, env, { now = new Date() } = {}) 
   ]);
   return privateJson({
     schema: "cityscroll.ops-health-sanitized.v1",
+    notification_policy: OPS_NOTIFICATION_POLICY,
     generated_at: now.toISOString(),
     watchdog: {
-      scheduler: { ok: scheduler.ok, findings: scheduler.findings.slice(0, 20), heartbeat: scheduler.heartbeat },
+      scheduler: { ok: scheduler.ok, scheduler_ok: scheduler.scheduler_ok, publication_ok: scheduler.publication_ok, findings: scheduler.findings.slice(0, 20), heartbeat: scheduler.heartbeat },
       mail: { ok: mail.ok, findings: mail.findings.slice(0, 20), history: mail.findings_history.slice(0, 30) },
     },
     freshness: freshness || { status: "unavailable", receipts: [] },

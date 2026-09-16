@@ -107,16 +107,15 @@ test("the 13-alert null specimen alarms with concrete workflow, run, revision an
     const response = await kit.get(new Date("2026-09-01T10:28:00Z"));
     assert.equal(response.status, 503);
     assert.deepEqual((await response.json()).scheduler_findings, ["scheduler heartbeat missing"]);
-    assert.equal(kit.sent.length, 2);
-    const paragraph = kit.sent.find((item) => /scheduler-heartbeat broke/.test(item.html)).html;
-    assert.match(paragraph, /scheduler-heartbeat broke: scheduler heartbeat missing/);
-    assert.match(paragraph, /Workflow: Reliability watchdogs\./);
-    assert.match(paragraph, /Source revision: dd4b708b6fe39bf8b2ea635ef3d4f493c4751ace\./);
-    assert.match(paragraph, /Workflow run: https:\/\/github\.com\/cityscroll\/cityscroll-app\/actions\/runs\/33575789190\./);
-    assert.match(paragraph, /Raw receipt: https:\/\/api\.cityscroll\.org\/admin\/reliability\/scheduler\./);
-    assert.doesNotMatch(paragraph, /null/);
-    // rel-09's human-grade shape is preserved: one paragraph, no dumped JSON.
-    assert.equal((paragraph.match(/<p>/g) || []).length, 1);
+    assert.equal(kit.sent.length, 0);
+    const history = JSON.parse(kit.backing.map.get("ops:alert:history:v1"));
+    const record = history.items.find(row => row.guard === "scheduler-heartbeat");
+    assert.match(record.findings.join("; "), /scheduler heartbeat missing/);
+    assert.equal(record.workflow, "Reliability watchdogs");
+    assert.equal(record.source_revision, CYCLE.source_revision);
+    assert.match(record.latest_run_url, /actions\/runs\/33575789190/);
+    assert.equal(record.latest_receipt_url, SCHEDULER);
+    assert.equal(record.notification.reason, "desk-only");
   } finally { kit.restore(); }
 });
 
@@ -244,9 +243,9 @@ test("the heartbeat survives a restart and a deliberate pause re-alerts within o
     const paused = await kit.get(new Date("2026-09-02T02:30:00Z"));
     assert.equal(paused.status, 503);
     assert.match((await paused.json()).scheduler_findings.join("; "), /heartbeat expired/);
-    assert.equal(kit.sent.length, 1);
-    assert.match(kit.sent[0].html, /actions\/runs\/33575789190/);
-    assert.doesNotMatch(kit.sent[0].html, /null/);
+    assert.equal(kit.sent.length, 0);
+    const history = JSON.parse(kit.backing.map.get("ops:alert:history:v1"));
+    assert.match(history.items.find(row => row.guard === "scheduler-heartbeat").latest_run_url, /actions\/runs\/33575789190/);
 
     // Recovery: the next real cycle writes, and the endpoint clears on its own.
     const recovery = { ...CYCLE, run_id: "2026-09-02T02-31:runner-7:5190" };
@@ -254,7 +253,7 @@ test("the heartbeat survives a restart and a deliberate pause re-alerts within o
     const cleared = await kit.get(new Date("2026-09-02T02:35:00Z"));
     assert.equal(cleared.status, 200);
     assert.equal((await cleared.json()).heartbeat.run_id, recovery.run_id);
-    assert.equal(kit.sent.length, 1);
+    assert.equal(kit.sent.length, 0);
   } finally { kit.restore(); }
 });
 
