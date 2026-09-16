@@ -23,6 +23,7 @@ import {
   readUsageAnalytics,
   reconcileUsageWithDurableStores,
 } from "./lib/analytics.mjs";
+import { readMcpUsageAnalytics } from "./lib/mcp_usage.mjs";
 import { ANALYTICS_COLLECTOR_SURFACES } from "../../site/analytics_surface_taxonomy.mjs";
 import { foldSearchUsage, readSearchUsageObservations, unavailableSearchUsage } from "./lib/search_usage.mjs";
 import {
@@ -340,6 +341,7 @@ export async function handlePrivateStats(req, env, options = {}) {
     digestLastRun,
     catchUpSentToday, catchUpAllTime, catchUpLastRun, laggingSubs,
     searchUsageLineage, rejectedEvents7d, rejectedEvents30d,
+    mcpUsage,
   ] = await Promise.all([
       countSubscriptionMetrics(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
@@ -381,6 +383,7 @@ export async function handlePrivateStats(req, env, options = {}) {
       readSearchUsageLineage(env, now),
       sumStat(env.ALERT_STATE, REJECTED_EVENT_METRIC, WINDOW_DAYS, now),
       sumStat(env.ALERT_STATE, REJECTED_EVENT_METRIC, 30, now),
+      readMcpUsageAnalytics(env, { fetchImpl: options.fetchImpl, now }),
     ]);
 
   // Store continuity: same ALERT_STATE / NL_METER namespaces used before and after the
@@ -468,6 +471,9 @@ export async function handlePrivateStats(req, env, options = {}) {
       rejected_events_last30d: rejectedEvents30d,
       analytics_retention_days: ANALYTICS_RETENTION_DAYS,
     },
+    // Machine-protocol use on POST /mcp. Production totals exclude developer/canary/probe
+    // observation classes. This slice never folds into browser usage or public /stats.
+    mcp_usage: mcpUsage,
   };
 
   const res = new Response(JSON.stringify(body, null, 2), {

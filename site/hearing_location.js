@@ -317,24 +317,109 @@ function normalizeHearingRow(row) {
       meeting_join: row.meeting_join || null,
     };
   }
+  if (row && (row.source_system === "oath_trial_calendar"
+    || String(row.meeting_id || "").indexOf("meeting:oath_trial_calendar:") === 0)) {
+    var oathPublisherId = String(row.publisher_identifier || row.oath_trial_session_id
+      || row.source_record_id || row.record_id
+      || String(row.meeting_id || "").slice("meeting:oath_trial_calendar:".length) || "").trim();
+    var oathMeetingId = String(row.meeting_id || (oathPublisherId
+      ? "meeting:oath_trial_calendar:" + oathPublisherId : "")).trim() || null;
+    var oathSource = row.source_url || row.record_url
+      || "https://www.nyc.gov/site/oath/calendar/calendar.page";
+    var oathTitle = hearingPlainText(row.title || row.short_title)
+      || (row.oath_index ? "OATH trial " + String(row.oath_index) : "OATH trial");
+    return {
+      object_type: "meeting", schema: "cityscroll.meeting_object.v1", meeting_id: oathMeetingId,
+      source_keys: oathPublisherId
+        ? [{ source_system: "oath_trial_calendar", key_type: "oath_trial_session_id", value: oathPublisherId }]
+        : [],
+      publisher_identifier: oathPublisherId || null, request_id: null,
+      source_system: "oath_trial_calendar",
+      source_record_id: row.source_record_id || oathPublisherId || null,
+      source_section: row.section_name || "OATH Trial Calendar",
+      agency: row.agency || row.agency_name || null,
+      notice_type: row.type_of_notice_description || row.proceeding_type || "Scheduled For Trial",
+      title: oathTitle, event_date: row.event_date || null,
+      event_end: row.event_end || null,
+      published_at: row.start_date || null, decides: oathTitle,
+      affects: [], affected_area: row.affected_area || { scope: "unlocated" }, venue: row.venue || null,
+      participation: row.participation || { links: [], remote_join_url: null, emails: [], phones: [], source_url: oathSource },
+      source_url: oathSource, description: hearingPlainText(row.description || row.search_text || ""),
+      meeting_documents: row.meeting_documents || [],
+      minutes_freshness: row.minutes_freshness || null, search_text: row.search_text || null,
+      institution_refs: row.institution_refs || { agency_ref: null, board_ref: null },
+      compatibility: { legacy_notice_href: null, legacy_fragment_href: null, publisher_href: oathSource },
+      meeting_origin: row.meeting_origin || "official_oath_trial_calendar",
+      source_receipt: row.source_receipt || null, join_status: row.join_status || "not_applicable",
+      meeting_join: row.meeting_join || null,
+      oath_index: row.oath_index || null,
+      source_index: row.source_index || null,
+      proceeding_type: row.proceeding_type || null,
+      start_time: row.start_time || null,
+      activity: row.activity || "observe",
+    };
+  }
+  if (row && (row.source_system === "pdc_calendar"
+    || String(row.meeting_id || "").indexOf("meeting:pdc_calendar:") === 0)) {
+    var pdcPublisherId = String(row.publisher_identifier || row.pdc_event_id || row.event_id
+      || row.source_record_id || row.record_id
+      || String(row.meeting_id || "").slice("meeting:pdc_calendar:".length) || "").trim();
+    var pdcMeetingId = String(row.meeting_id || (pdcPublisherId
+      ? "meeting:pdc_calendar:" + pdcPublisherId : "")).trim() || null;
+    var pdcSource = row.source_url || row.record_url
+      || "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page";
+    var pdcTitle = hearingPlainText(row.title || row.short_title) || "Public Design Commission meeting";
+    return {
+      object_type: "meeting", schema: "cityscroll.meeting_object.v1", meeting_id: pdcMeetingId,
+      source_keys: pdcPublisherId
+        ? [{ source_system: "pdc_calendar", key_type: "pdc_event_id", value: pdcPublisherId }]
+        : [],
+      publisher_identifier: pdcPublisherId || null, request_id: null,
+      source_system: "pdc_calendar",
+      source_record_id: row.source_record_id || pdcPublisherId || null,
+      source_section: row.section_name || "Public Design Commission Meetings",
+      agency: row.agency || row.agency_name || null,
+      notice_type: row.type_of_notice_description || "Commission meeting",
+      title: pdcTitle, event_date: row.event_date || null,
+      event_end: row.event_end || null,
+      published_at: row.start_date || null, decides: pdcTitle,
+      affects: [], affected_area: row.affected_area || { scope: "unlocated" }, venue: row.venue || null,
+      participation: row.participation || { links: [], remote_join_url: null, emails: [], phones: [], source_url: pdcSource },
+      source_url: pdcSource, description: hearingPlainText(row.description || row.search_text || ""),
+      meeting_documents: row.meeting_documents || [],
+      minutes_freshness: row.minutes_freshness || null, search_text: row.search_text || null,
+      institution_refs: row.institution_refs || { agency_ref: null, board_ref: null },
+      compatibility: { legacy_notice_href: null, legacy_fragment_href: null, publisher_href: pdcSource },
+      meeting_origin: row.meeting_origin || "official_pdc_schedule",
+      source_receipt: row.source_receipt || null, join_status: row.join_status || "not_applicable",
+      meeting_join: row.meeting_join || null,
+      activity: row.activity || "observe",
+      quorum_notice: row.quorum_notice || null,
+      agenda_sections: row.agenda_sections || null,
+    };
+  }
   var body = hearingPlainText([
     row.additional_description_1, row.additional_description_2, row.additional_description_3,
     row.other_info_1, row.other_info_2, row.other_info_3, row.printout_1, row.printout_2, row.printout_3,
   ].filter(Boolean).join(" "));
-  var source = "https://a856-cityrecord.nyc.gov/RequestDetail/" + encodeURIComponent(row.request_id || "");
+  var cityRecordId = String(row.request_id || "").trim();
+  // Never publish a City Record RequestDetail URL without a request id.
+  var source = cityRecordId
+    ? "https://a856-cityrecord.nyc.gov/RequestDetail/" + encodeURIComponent(cityRecordId)
+    : (row.source_url || null);
   var audience = HEARING_AUDIENCES.find(function (entry) { return entry[0].test((row.short_title || "") + " " + body); });
   var venue = row.venue || hearingVenue(row);
   var participation = hearingParticipationFromBody(body, source);
-  var cityRecordId = String(row.request_id || "");
   return {
     object_type: "meeting", schema: "cityscroll.meeting_object.v1",
     source_system: "city_record",
     meeting_id: cityRecordId ? "meeting:city_record:" + cityRecordId : null,
     source_keys: cityRecordId ? [{ source_system: "city_record", key_type: "request_id", value: cityRecordId }] : [],
     publisher_identifier: cityRecordId || null,
-    request_id: cityRecordId, source_section: row.section_name || null,
+    request_id: cityRecordId || null, source_section: row.section_name || null,
     agency: row.agency_name || null, notice_type: row.type_of_notice_description || null,
-    title: hearingPlainText(row.short_title) || "Hearing " + String(row.request_id || "").trim(), event_date: row.event_date || null,
+    title: hearingPlainText(row.short_title) || (cityRecordId ? "Hearing " + cityRecordId : "Hearing"),
+    event_date: row.event_date || null,
     published_at: row.start_date || null, decides: hearingDecision(row, body),
     affects: audience ? [audience[1]] : [], affected_area: row.affected_area || hearingAffectedArea(row),
     venue: venue,

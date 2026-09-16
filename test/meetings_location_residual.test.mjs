@@ -73,22 +73,22 @@ test("district activity retains residual accounting while adding ontology-placed
   assert.equal(meetings.row_count, 119);
   assert.equal(meetings.location_residual.fixed_rows, 24);
   assert.equal(activity.sources.meetings.corpus, "shared_meeting_read_model");
-  assert.equal(sharedMeetings.rows.length, 719);
+  assert.equal(sharedMeetings.rows.length, 783);
   // Calendar-only sessions without a published location stay out of the
   // location-residual activity baseline while remaining in source accounting.
-  assert.equal(activity.sources.meetings.counted, 719);
-  assert.equal(activity.sources.meetings.located, 543);
+  assert.equal(activity.sources.meetings.counted, 783);
+  assert.equal(activity.sources.meetings.located, 545);
   assert.deepEqual(activity.sources.meetings.excluded_by_source, {
     oath_trial_calendar: 145,
     pdc_calendar: 4,
   });
   assert.equal(activity.sources.meetings.by_method.community_board_ontology, 450);
   assert.equal(sharedMeetings.counts.community_board, 450);
-  assert.equal(activity.unlocated.meetings, 27);
+  assert.equal(activity.unlocated.meetings, 89);
   assert.equal(activity.virtual.meetings, 1);
   assert.deepEqual(activity.unlocated_reasons.meetings, {
-    no_place_signal: 7,
-    body_place_omitted: 9,
+    no_place_signal: 64,
+    body_place_omitted: 14,
     multi_event_directory: 6,
     external_board_page_needed: 5,
   });

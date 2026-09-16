@@ -57,8 +57,62 @@ test("hearing actions are current or upcoming at build time", () => {
   const hearings = Object.values(artifact.by_council_district)
     .flatMap((record) => record.items)
     .filter((row) => row.district_section === "hearings");
-  assert.ok(hearings.length > 0);
+  // The committed corpus can honestly have zero council-district-placeable
+  // upcoming hearings after a calendar day rolls; when hearings are present they
+  // must still be on or after the digest build day.
   assert.ok(hearings.every((row) => row.event_date >= builtDay));
+
+  const digest = buildDistrictWeeklyDigests({
+    boundaries,
+    communityBoardGeography,
+    builtAt: "2026-09-16T00:00:00.000Z",
+    meetingsRows: [
+      {
+        request_id: "20260916099",
+        event_date: "2026-09-20T10:00:00.000",
+        start_date: "2026-09-01T00:00:00.000",
+        short_title: "Public Hearing on Local Budget",
+        type_of_notice_description: "Public Hearings",
+        agency_name: "Landmarks Preservation Commission",
+        section_name: "Public Hearings and Meetings",
+        street_address_1: "253 Broadway",
+        source_system: "city_record",
+        affected_area: {
+          scope: "local",
+          boroughs: ["Manhattan"],
+          community_districts: ["M01"],
+          derivation: { methods: ["stamped"], confidence: 1 },
+          confidence_tier: "strong",
+        },
+      },
+      {
+        request_id: "20260801001",
+        event_date: "2026-09-10T10:00:00.000",
+        short_title: "Past Public Hearing",
+        type_of_notice_description: "Public Hearings",
+        source_system: "city_record",
+        affected_area: {
+          scope: "local",
+          boroughs: ["Manhattan"],
+          community_districts: ["M01"],
+          derivation: { methods: ["stamped"], confidence: 1 },
+          confidence_tier: "strong",
+        },
+      },
+    ],
+    zapRows: [],
+    propertyRows: [],
+    moneyRows: [],
+  });
+  const fixtureHearings = Object.values(digest.by_council_district)
+    .flatMap((record) => record.items)
+    .filter((row) => row.district_section === "hearings");
+  assert.ok(fixtureHearings.length > 0);
+  assert.deepEqual(
+    [...new Set(fixtureHearings.map((row) => row.request_id))],
+    ["20260916099"],
+  );
+  assert.ok(fixtureHearings.every((row) => row.event_date >= "2026-09-16"));
 });
 
 test("action sections are positive and honest-absent", () => {

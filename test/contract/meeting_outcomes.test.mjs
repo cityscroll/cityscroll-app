@@ -97,6 +97,8 @@ test("meeting origin vocabulary defaults City Record rows without promoting boar
     "official_minutes_joined",
     "community_board_source_observed",
     "nyc_legistar_events_observed",
+    "official_oath_trial_calendar",
+    "official_pdc_schedule",
     "unknown",
   ]);
   assert.equal(normalizeMeetingOrigin({ agency_name: "Community Boards" }), "unknown");

@@ -315,6 +315,54 @@ jobs:
           CITYSCROLL_PROCUREMENT_BASE_URL: ${{ steps.origin.outputs.base_host }}
           CITYSCROLL_PROCUREMENT_API_BASE_URL: https://api.cityscroll.org
         run: node --test test/live_procurement_detail_canary.test.mjs
+      - name: Post-deploy procurement disclosure reader-proof collection
+        if: needs.deploy.outputs.is_preview != 'true'
+        env:
+          LIVE_PROCUREMENT_DISCLOSURE_CANARY: "1"
+          CITYSCROLL_DISCLOSURE_BROWSER: "1"
+          CITYSCROLL_PROCUREMENT_BASE_URL: ${{ steps.origin.outputs.base_host }}
+          CITYSCROLL_PROCUREMENT_API_BASE_URL: https://api.cityscroll.org
+          CITYSCROLL_PAGES_DEPLOY_COMMIT: ${{ github.sha }}
+          CITYSCROLL_PAGES_DEPLOY_COMPLETED_AT: ${{ github.event.head_commit.timestamp || '' }}
+          CITYSCROLL_PAGES_DEPLOY_URL: ${{ steps.origin.outputs.base_host }}
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts
+          node tools/capture_procurement_disclosure_production_proof.mjs --production
+          cp docs/evidence/procurement-disclosure-production-proof/production-readback.json \
+            .artifacts/procurement-disclosure-production-readback.json
+          node --test test/live_procurement_disclosure_canary.test.mjs
+          # Dated named-record failures block promotional readiness for these
+          # examples; they do not fail unrelated deploys after a publisher window rolls.
+          node --input-type=module - <<'NODE'
+          import { readFileSync, writeFileSync } from "node:fs";
+          import { assertProductionReadback } from "./tools/capture_procurement_disclosure_production_proof.mjs";
+          const envelope = JSON.parse(readFileSync(
+            ".artifacts/procurement-disclosure-production-readback.json",
+            "utf8",
+          ));
+          assertProductionReadback(envelope, { requireReady: false });
+          const reasons = envelope.failure_reasons || envelope.production_readiness?.failure_reasons || {};
+          const summary = {
+            ready: envelope.production_readiness.ready,
+            identity: envelope.served_identity.status,
+            failed: envelope.counts.failed,
+            reason_codes: envelope.production_readiness.reason_codes,
+            failure_reason_ids: Object.keys(reasons),
+            failure_reasons: reasons,
+          };
+          writeFileSync(
+            ".artifacts/procurement-disclosure-readiness.json",
+            `${JSON.stringify(summary, null, 2)}\n`,
+          );
+          console.log(JSON.stringify(summary));
+          // Collection always retains machine-readable reasons. Promotional
+          // readiness is a separate result; use --require-ready locally when a
+          // gate must refuse an incomplete example set.
+          if (!envelope.production_readiness.ready) {
+            console.log("procurement disclosure examples are not production-ready yet");
+          }
+          NODE
       - name: Route inventory parity vs live site (production only)
         if: needs.deploy.outputs.is_preview != 'true'
         run: >-
@@ -380,6 +428,8 @@ jobs:
             .artifacts/release-surface-receipt.json
             .artifacts/live-probe.json
             .artifacts/first-class-live-smoke.json
+            .artifacts/procurement-disclosure-production-readback.json
+            .artifacts/procurement-disclosure-readiness.json
           if-no-files-found: warn
       - name: Post-deploy project-connections API smoke
         run: node tools/project_connections_smoke.mjs --timeout-ms 720000 --interval-ms 20000

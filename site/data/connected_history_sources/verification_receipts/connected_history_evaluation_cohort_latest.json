@@ -1,0 +1,24 @@
+{
+  "schema": "cityscroll.connected_history_evaluation_cohort_receipt.v1",
+  "version": 1,
+  "seed": "connected-history-evaluation-2026-09-16",
+  "selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
+  "denominators": {
+    "registry_boards": 59,
+    "population_subjects": 274,
+    "eligible_held_out_subjects": 233,
+    "selected_held_out_subjects": 98,
+    "demo_excluded_subjects": 15,
+    "unavailable_source_subjects": 5,
+    "unresolved_or_failed_board_subjects": 26,
+    "boards_with_no_eligible_subjects": 5,
+    "boards_missing_parcel_proceeding": 5,
+    "boards_missing_corridor_component": 59
+  },
+  "sample_size": 98,
+  "judgment_counts": {
+    "insufficient_evidence": 98
+  },
+  "baseline_phase": "pre_tuning",
+  "artifact": "site/data/connected_history_evaluation_cohort.json"
+}

@@ -1,0 +1,96 @@
+{
+  "browser_test_command": "python3 test/functional/project_context_retention_case.py --write-manifest",
+  "captures": [
+    {
+      "assertion": "Without JavaScript the edge document keeps the wider-project section, museum identity facts, and the official notice link.",
+      "case": "project-context-retention-no-javascript",
+      "notice_id": "20260810048",
+      "publisher_fetches": 0,
+      "render_sha256": "81db8d2c4c9036b90d1523a16792561eeba5174629307bb2aa456e9528669fd6",
+      "route": "/notices/20260810048/",
+      "section_visible": true,
+      "viewport": {
+        "height": 1000,
+        "name": "desktop",
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "When optional client modules fail, the already-served project context and official links for the same notice remain visible.",
+      "case": "project-context-retention-failed-optional-load",
+      "notice_id": "20260810048",
+      "publisher_fetches": 0,
+      "render_sha256": "81db8d2c4c9036b90d1523a16792561eeba5174629307bb2aa456e9528669fd6",
+      "route": "/notices/20260810048/",
+      "section_visible": true,
+      "viewport": {
+        "height": 1000,
+        "name": "desktop",
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "After app readiness and notice-context completion the museum project context remains visible; navigating to an unrelated notice shows no project panel; Back restores the museum section with the same identity.",
+      "case": "project-context-retention-ready-navigate-back",
+      "notice_id": "20260810048",
+      "publisher_fetches": 0,
+      "render_sha256": "81db8d2c4c9036b90d1523a16792561eeba5174629307bb2aa456e9528669fd6",
+      "route": "/notices/20260810048/ -> /notices/20240829105/ -> Back",
+      "section_visible": true,
+      "viewport": {
+        "height": 1000,
+        "name": "desktop",
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Without JavaScript the edge document keeps the wider-project section, museum identity facts, and the official notice link.",
+      "case": "project-context-retention-no-javascript",
+      "notice_id": "20260810048",
+      "publisher_fetches": 0,
+      "render_sha256": "81db8d2c4c9036b90d1523a16792561eeba5174629307bb2aa456e9528669fd6",
+      "route": "/notices/20260810048/",
+      "section_visible": true,
+      "viewport": {
+        "height": 844,
+        "name": "narrow",
+        "width": 390
+      }
+    },
+    {
+      "assertion": "When optional client modules fail, the already-served project context and official links for the same notice remain visible.",
+      "case": "project-context-retention-failed-optional-load",
+      "notice_id": "20260810048",
+      "publisher_fetches": 0,
+      "render_sha256": "81db8d2c4c9036b90d1523a16792561eeba5174629307bb2aa456e9528669fd6",
+      "route": "/notices/20260810048/",
+      "section_visible": true,
+      "viewport": {
+        "height": 844,
+        "name": "narrow",
+        "width": 390
+      }
+    },
+    {
+      "assertion": "After app readiness and notice-context completion the museum project context remains visible; navigating to an unrelated notice shows no project panel; Back restores the museum section with the same identity.",
+      "case": "project-context-retention-ready-navigate-back",
+      "notice_id": "20260810048",
+      "publisher_fetches": 0,
+      "render_sha256": "81db8d2c4c9036b90d1523a16792561eeba5174629307bb2aa456e9528669fd6",
+      "route": "/notices/20260810048/ -> /notices/20240829105/ -> Back",
+      "section_visible": true,
+      "viewport": {
+        "height": 844,
+        "name": "narrow",
+        "width": 390
+      }
+    }
+  ],
+  "condition": "Local Wrangler Worker with HTMLRewriter over the tracked site tree; no image binary is committed.",
+  "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period",
+  "image_binaries_committed": false,
+  "revision": "d820fc8a3",
+  "route": "/notices/20260810048/",
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "notice project context retention"
+}

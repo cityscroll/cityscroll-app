@@ -284,17 +284,66 @@ function projectContextOfficialActionHtml(view) {
 /**
  * Render the section beside the pursuit facts. Returns "" for a null section so a
  * caller can splice this in unconditionally without producing an empty panel.
+ *
+ * The notice id is stamped on the section so a later client replacement can keep
+ * only the section that belongs to the notice currently being shown.
  */
 export function renderProjectContextHtml(view, { headingId = "project-context-heading" } = {}) {
   if (!view) return "";
   const capital = view.source_scope?.capital || null;
   const projects = view.projects.map((project) => projectContextProjectHtml(project, capital)).filter(Boolean).join("");
   if (!projects) return "";
-  return `<section class="project-context" aria-labelledby="${projectContextEsc(headingId)}" data-project-context="1">
+  const noticeId = projectContextText(view.request_id);
+  const noticeAttr = noticeId
+    ? ` data-project-context-notice-id="${projectContextEsc(noticeId)}"`
+    : "";
+  return `<section class="project-context" aria-labelledby="${projectContextEsc(headingId)}" data-project-context="1"${noticeAttr}>
     <h2 id="${projectContextEsc(headingId)}">The wider project</h2>
     <p class="project-context-lede">The city publishes this project record against the project code printed in the notice. It describes the whole project. The advertised package is one part of it, and the official notice is the only place its requirements are stated.</p>
     ${projects}
     ${projectContextBoundaryNotesHtml(view)}
     ${projectContextOfficialActionHtml(view)}
   </section>`;
+}
+
+/**
+ * Shared server/client composition: build the view and render it, or "" when the
+ * notice has no accepted relation. Callers never invent an empty panel.
+ */
+export function composeProjectContextHtml(materialization, notice = {}, options = {}) {
+  return renderProjectContextHtml(buildProjectContextView(materialization, notice, options), options);
+}
+
+/** True when markup is a project-context section stamped for this notice id. */
+export function projectContextHtmlOwnedByNotice(sectionHtml, noticeId) {
+  const id = projectContextText(noticeId);
+  if (!id || !sectionHtml) return false;
+  if (!/\bdata-project-context="1"/i.test(sectionHtml)) return false;
+  const owned = String(sectionHtml).match(/\bdata-project-context-notice-id="([^"]*)"/i);
+  return Boolean(owned && projectContextText(owned[1]) === id);
+}
+
+/**
+ * Resolve the HTML for the notice's project-context slot after a client rebuild.
+ * An owned first-paint section wins; otherwise the shared composer runs. A failed
+ * optional materialization load keeps the owned first paint and otherwise yields
+ * "" so no empty panel appears.
+ */
+export function resolveNoticeProjectContextHtml({
+  requestId,
+  firstPaintHtml = "",
+  materialization = null,
+  officialNotice = null,
+  materializationFailed = false,
+  headingId = "notice-project-context-heading",
+} = {}) {
+  const id = projectContextText(requestId);
+  const firstPaint = String(firstPaintHtml || "").trim();
+  if (firstPaint && projectContextHtmlOwnedByNotice(firstPaint, id)) return firstPaint;
+  if (materializationFailed) return "";
+  if (!id) return "";
+  return composeProjectContextHtml(materialization, { request_id: id }, {
+    officialNotice,
+    headingId,
+  });
 }

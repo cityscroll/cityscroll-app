@@ -38,6 +38,7 @@ const ADDITIVE_SINCE_RUM07 = Object.freeze([
   "measurement_basis",
   "search_usage_lineage",
   "measurement_diagnostics",
+  "mcp_usage",
 ]);
 
 /**

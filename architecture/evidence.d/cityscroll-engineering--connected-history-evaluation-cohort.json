@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/connected-history-evaluation-cohort",
+  "status": "implemented",
+  "fingerprint": "connected-history-evaluation-cohort.v1",
+  "updated_at": "2026-09-16T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "connected-history-evaluation-cohort-lib",
+      "path": "tools/lib/connected_history_cohort.mjs"
+    },
+    {
+      "id": "connected-history-evaluation-cohort-builder",
+      "path": "tools/build_connected_history_cohort.mjs"
+    },
+    {
+      "id": "connected-history-evaluation-cohort-artifact",
+      "path": "site/data/connected_history_evaluation_cohort.json"
+    },
+    {
+      "id": "connected-history-evaluation-cohort-receipt",
+      "path": "site/data/connected_history_sources/verification_receipts/connected_history_evaluation_cohort_latest.json"
+    },
+    {
+      "id": "connected-history-evaluation-cohort-tests",
+      "path": "test/connected_history_cohort.test.mjs"
+    }
+  ]
+}
