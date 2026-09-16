@@ -2126,6 +2126,10 @@
     export_xlsx: "Excel(.xlsx) 내보내기",
     print_save_pdf: "인쇄 / PDF로 저장",
     share_export_btn: "공유 / 내보내기",
+    more_tools_label: "추가 도구",
+    research_tool_evidence: "연결 근거 확인",
+    research_tool_asOf: "특정 날짜 기준 기록 보기",
+    research_tool_comparative: "관련 계약 비교",
 
     print_header: "CityScroll · {link} · {date} 기준",
     csv_address: "주소",

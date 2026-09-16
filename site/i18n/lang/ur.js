@@ -2128,6 +2128,10 @@
     export_xlsx: "Excel (.xlsx) ایکسپورٹ کریں",
     print_save_pdf: "پرنٹ / PDF کے طور پر محفوظ کریں",
     share_export_btn: "اشتراک / ایکسپورٹ",
+    more_tools_label: "مزید ٹولز",
+    research_tool_evidence: "رابطے کے ثبوت چیک کریں",
+    research_tool_asOf: "کسی تاریخ کے مطابق ریکارڈ دیکھیں",
+    research_tool_comparative: "متعلقہ معاہدوں کا موازنہ کریں",
 
     print_header: "CityScroll · {link} · {date} تک",
     csv_address: "پتہ",

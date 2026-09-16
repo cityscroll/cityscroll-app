@@ -13,6 +13,8 @@ import { renderNoticeBitemporalHistory } from "./civic_time_ledger.mjs";
 import { noticeProcurementChain, renderNoticeLandSpine, renderNoticeMeetingOutcomes } from "./notice_lens_sections.mjs";
 import { officialSourceLink } from "./affordance_grammar.mjs";
 import { noticeDocumentUrl } from "./notice_permalink.mjs";
+import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { renderNoticeClientActionRegions } from "./research_discovery.mjs";
 import {
   noticeContextReady,
   noticeContextTimingMark,
@@ -143,6 +145,14 @@ export async function showNotice(id, watch){
   // Header "Want email updates?" and Watch CTAs read this for notice-scoped #alerts entry.
   globalThis.lastNoticeContext = { row: r };
   if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
+  // Action-row helpers are published by their owning app modules. Ensure they are
+  // present before composing More tools so a cold notice boot cannot throw.
+  if (typeof globalThis.qrButtonHTML !== "function") {
+    await import("./app/search-share.mjs");
+  }
+  if (typeof globalThis.pinBtn !== "function") {
+    await import("./app/workspace.mjs");
+  }
   const link = noticeLink(r.request_id);
   const scope = cleanText(r.additional_description_1);
   const title = noticeDisplayTitle(r);
@@ -168,15 +178,19 @@ export async function showNotice(id, watch){
       <div id="nglance" data-export-class="notice_context"></div>
       ${renderNoticeBitemporalHistory({ notice: r, events: r.civic_time?.events || [], state: r.civic_time?.state || "ok" })}
       <div id="naddr" data-export-class="address_geography"></div><div id="nmwbe" data-export-class="mwbe_context"></div><div id="nrules" data-export-class="rule_lifecycle"></div><div id="nlifecycle" data-export-class="procurement_lifecycle"></div><div id="nregdwell" data-export-class="award_registration_dwell"></div><div id="nsuboutreach" data-export-class="sub_outreach"></div><div id="ndollars" data-export-class="dollars"></div><div id="nsubsidy" data-export-class="subsidy"></div><div id="naboaward" data-export-class="authority_award"></div><div id="ncommercial" data-export-class="commercial"></div><div id="ndisposition" data-export-class="property_disposition"></div><div id="npropertyxd" data-export-class="property_cross_domain"></div><div id="ntaxlien" data-export-class="tax_lien"></div><div id="nfranchise" data-export-class="franchise"></div><div id="nland" data-export-class="land_project"></div><div id="nmeet" data-export-class="meeting_outcomes">${meetingFirstPaint}</div><div id="nexternal" data-export-class="external_award"></div>
-      <div class="actions" style="margin-top:14px">
-        <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
-        ${qrButtonHTML("nqr","act")}
-        <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CityScroll — NYC’s public record, linked.")}">${t("notice_email_btn")}</a>
-        <button class="act export-control" type="button" id="nxlsx">${t("export_xlsx")}</button>
-        <button class="act export-control" type="button" id="nprint">${t("print_save_pdf")}</button>
-        ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
-        ${officialSourceLink({ href: REQ_URL(r.request_id), label: t("view_in_city_record"), className: "notice-source-link", escape: taskEsc })}
-      </div>
+      ${renderNoticeClientActionRegions(r, link, {
+        resolveAgencyIdentity,
+        officialSourceLink,
+        // App helpers are published on globalThis by their owning modules; read
+        // them explicitly so this ESM module does not throw on free bindings.
+        qrButtonHTML: globalThis.qrButtonHTML,
+        pinBtn: globalThis.pinBtn,
+        REQ_URL: globalThis.REQ_URL,
+        cleanText: globalThis.cleanText,
+        fdate: globalThis.fdate,
+        escape: globalThis.taskEsc,
+        translate: globalThis.t,
+      })}
       ${scope?`<details class="fulltext" data-export-class="official_notice_text"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" lang="en" dir="ltr" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
       <div class="xlate" id="nxlate" data-export-class="unofficial_translation"></div>
       <div id="nprior" data-export-class="paper_trail"></div>

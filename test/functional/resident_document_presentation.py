@@ -620,9 +620,45 @@ def run_writer_self_tests() -> None:
     print("OK notice-shell capture-manifest writer self-test", flush=True)
 
 
+def assert_research_tools(page, base: str, *, label: str) -> dict[str, object]:
+    """Hydrated notice exposes More tools and scoped research entrances."""
+    page.set_default_timeout(20000)
+    response = page.goto(f"{base}{NOTICE_ROUTE.lstrip('/')}", wait_until="domcontentloaded")
+    assert response and response.status == 200, f"{label}: notice route did not return 200"
+    page.wait_for_selector("#noticeview .route-item", state="visible")
+    page.wait_for_selector("[data-more-tools-region], [data-research-navigation]", state="attached")
+    more = page.locator("[data-more-tools-region]")
+    if more.count():
+        assert more.count() == 1, f"{label}: expected one More tools region"
+        assert more.get_attribute("open") in (None, ""), f"{label}: More tools must start closed"
+        summary = more.locator("summary")
+        assert summary.count() == 1
+        summary.focus()
+        page.keyboard.press("Enter")
+        assert more.evaluate("el => el.open") is True, f"{label}: keyboard must open More tools"
+        for control_id in ("ncopy", "nqr", "nxlsx", "nprint"):
+            assert page.locator(f"#{control_id}").count() == 1, f"{label}: missing #{control_id}"
+        assert page.locator("[data-pin]").count() >= 1, f"{label}: pin control missing"
+    research = page.locator("[data-research-navigation] [data-research-tool]")
+    assert research.count() >= 1, f"{label}: expected at least one research entrance"
+    hrefs = research.evaluate_all("nodes => nodes.map(node => node.getAttribute('href') || '')")
+    assert all(href.startswith("/") for href in hrefs), f"{label}: research hrefs must stay on-site"
+    content = page.locator("#main").inner_text()
+    return {
+        "route": NOTICE_ROUTE,
+        "viewport": page.viewport_size,
+        "render_sha256": hashlib.sha256(content.encode()).hexdigest(),
+        "assertion": "research-tools",
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--case", choices=["notice-shell", "notice-subject", "contract-evidence"], required=True)
+    parser.add_argument(
+        "--case",
+        choices=["notice-shell", "notice-subject", "contract-evidence", "research-tools"],
+        required=True,
+    )
     parser.add_argument("--write-manifest", action="store_true")
     parser.add_argument("--self-test", action="store_true", help="Run capture-manifest writer unit checks")
     args = parser.parse_args()
@@ -653,6 +689,27 @@ def main() -> None:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
             for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):
+                if args.case == "research-tools":
+                    context = browser.new_context(viewport=viewport)
+                    page = context.new_page()
+                    result = assert_research_tools(page, base, label="research-tools hydration")
+                    captures.append({
+                        "case": "research-tools-hydration",
+                        "route": NOTICE_ROUTE,
+                        "viewport": viewport,
+                        "assertion": (
+                            "Hydrated notice keeps More tools closed by default, preserves share and "
+                            "export control ids, and offers scoped on-site research entrances."
+                        ),
+                        "render_sha256": result["render_sha256"],
+                    })
+                    print(
+                        f"OK research-tools {viewport['width']}x{viewport['height']}: {result['render_sha256']}",
+                        flush=True,
+                    )
+                    context.close()
+                    continue
+
                 no_js = browser.new_context(viewport=viewport, java_script_enabled=False)
                 captures.append(assert_a4_source_access_without_javascript(no_js.new_page(), base))
                 no_js.close()

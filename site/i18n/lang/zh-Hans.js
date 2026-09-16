@@ -2126,6 +2126,10 @@
     export_xlsx: "导出 Excel (.xlsx)",
     print_save_pdf: "打印 / 另存为 PDF",
     share_export_btn: "分享 / 导出",
+    more_tools_label: "更多工具",
+    research_tool_evidence: "查看关联证据",
+    research_tool_asOf: "按某日查看记录",
+    research_tool_comparative: "比较相关合同",
 
     print_header: "CityScroll · {link} · 截至 {date}",
     csv_address: "地址",

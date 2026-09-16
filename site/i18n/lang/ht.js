@@ -2125,6 +2125,10 @@
     export_xlsx: "Ekspòte Excel (.xlsx)",
     print_save_pdf: "Enprime / Sove kòm PDF",
     share_export_btn: "Pataje / ekspòte",
+    more_tools_label: "Plis zouti",
+    research_tool_evidence: "Tcheke prèv koneksyon an",
+    research_tool_asOf: "Gade dosye yo nan yon dat",
+    research_tool_comparative: "Konpare kontra ki gen rapò",
 
     print_header: "CityScroll · {link} · Apati {date}",
     csv_address: "Adrès",
