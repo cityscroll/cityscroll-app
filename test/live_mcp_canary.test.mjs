@@ -28,6 +28,42 @@ import { test } from "node:test";
 
 const ROOT = resolve(import.meta.dirname, "..");
 
+// Always-on offline guard: discovery reads must use the published MCP wire
+// argument names (snake_case). PR #2073 initially called get_contract /
+// get_land_project with capability-layer camelCase keys; the live tools
+// correctly rejected those calls as missing required fields.
+test("A0: discovery-read argument keys match the published MCP input schemas", () => {
+  const catalog = JSON.parse(readFileSync(resolve(ROOT, "site/data/mcp_tool_catalog.json"), "utf8"));
+  const canarySource = readFileSync(resolve(ROOT, "tools/verify_live_remote_mcp_canary.mjs"), "utf8");
+  const byName = new Map(catalog.tools.map((tool) => [tool.name, tool]));
+
+  const contractSchema = byName.get("get_contract")?.input_schema;
+  const landSchema = byName.get("get_land_project")?.input_schema;
+  assert.ok(contractSchema?.properties?.procurement_id, "catalog must declare get_contract.procurement_id");
+  assert.ok(landSchema?.properties?.project_id, "catalog must declare get_land_project.project_id");
+  assert.equal(Object.hasOwn(contractSchema.properties, "procurementId"), false);
+  assert.equal(Object.hasOwn(landSchema.properties, "projectId"), false);
+
+  assert.match(
+    canarySource,
+    /tool:\s*["']get_contract["'][\s\S]*?arguments:\s*\{\s*procurement_id:/,
+    "canary get_contract must send procurement_id (MCP wire name), not procurementId",
+  );
+  assert.match(
+    canarySource,
+    /tool:\s*["']get_land_project["'][\s\S]*?arguments:\s*\{\s*project_id:/,
+    "canary get_land_project must send project_id (MCP wire name), not projectId",
+  );
+  assert.doesNotMatch(
+    canarySource,
+    /tool:\s*["']get_contract["'][\s\S]*?arguments:\s*\{\s*procurementId:/,
+  );
+  assert.doesNotMatch(
+    canarySource,
+    /tool:\s*["']get_land_project["'][\s\S]*?arguments:\s*\{\s*projectId:/,
+  );
+});
+
 if (process.env.CS10_SKIP_LIVE_CANARY) {
   test("CS-10 live MCP canary skipped: CS10_SKIP_LIVE_CANARY is set (fast, network-independent sweep)", () => {});
 } else {

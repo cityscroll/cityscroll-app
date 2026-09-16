@@ -154,6 +154,46 @@ export function validateRuntimeTopology() {
   return true;
 }
 
+/** Capability examples use camelCase; MCP input_schema uses snake_case wire names. */
+export function camelToSnakeCaseKey(key) {
+  return String(key).replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+}
+
+/**
+ * Project a capability-layer example input onto the published MCP wire schema.
+ * Keeps only keys that exist on the tool input_schema (including flattened
+ * `filters` fields). Callers must send these wire names, not capability names.
+ */
+export function projectCapabilityExampleInputToMcpWire(input, inputSchema) {
+  const properties = inputSchema?.properties && typeof inputSchema.properties === "object"
+    ? inputSchema.properties
+    : {};
+  const out = {};
+  const consider = (key, value) => {
+    if (value === undefined) return;
+    const wireKey = Object.hasOwn(properties, key) ? key : camelToSnakeCaseKey(key);
+    if (Object.hasOwn(properties, wireKey)) out[wireKey] = value;
+  };
+  for (const [key, value] of Object.entries(input || {})) {
+    if (key === "filters" && value && typeof value === "object" && !Array.isArray(value)) {
+      for (const [filterKey, filterValue] of Object.entries(value)) {
+        consider(filterKey, filterValue);
+      }
+      continue;
+    }
+    consider(key, value);
+  }
+  return out;
+}
+
+export function projectCapabilityExamplesToMcpWire(examples, inputSchema) {
+  if (!Array.isArray(examples)) return null;
+  return examples.map((example) => ({
+    ...example,
+    input: projectCapabilityExampleInputToMcpWire(example?.input, inputSchema),
+  }));
+}
+
 export function buildMcpToolCatalog() {
   validateRuntimeTopology();
   const bindings = bindingByName();
@@ -165,6 +205,7 @@ export function buildMcpToolCatalog() {
     registered_capability_references: CAPABILITY_REGISTRY.map(({ reference }) => reference),
     tools: MCP_TOOLS.map((tool) => {
       const binding = bindings.get(tool.name);
+      const capabilityExamples = capabilities.get(binding.capabilityReference)?.examples || null;
       return {
         name: tool.name,
         operation_class: binding.operationClass,
@@ -183,7 +224,7 @@ export function buildMcpToolCatalog() {
         input_schema: tool.inputSchema || null,
         output_schema: tool.outputSchema || null,
         bounds: capabilities.get(binding.capabilityReference)?.bounds || binding.bounds || null,
-        examples: capabilities.get(binding.capabilityReference)?.examples || null,
+        examples: projectCapabilityExamplesToMcpWire(capabilityExamples, tool.inputSchema),
         annotations: tool.annotations || null,
         store_access: binding.storeAccess || null,
       };
