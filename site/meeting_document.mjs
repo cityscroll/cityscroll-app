@@ -28,6 +28,10 @@ import {
   buildCanonicalDocumentRelationshipReportTarget,
   renderReportIssueAffordance,
 } from "./report_issue.mjs";
+import {
+  buildMeetingAiContextHandoff,
+  renderMoreToolsRegion,
+} from "./ai_context_handoff.mjs";
 
 export const MEETING_DOCUMENT_SCHEMA = "cityscroll.meeting_document.v1";
 export const MEETING_DOCUMENT_ROLES = Object.freeze([
@@ -793,6 +797,13 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
     !legacy && source ? `<a class="node-action civic-object-action" href="${esc(source)}" rel="noopener noreferrer">Official source</a>` : "",
     documentReport,
   ].filter(Boolean).join("");
+  const meetingHandoff = buildMeetingAiContextHandoff({
+    meeting_id: id,
+    canonical_href: canonical,
+  });
+  const moreTools = meetingHandoff.status === "ok"
+    ? renderMoreToolsRegion({ handoff: meetingHandoff })
+    : "";
   const sourceLabel = record.source_system === "community_board"
     ? "Community board meeting"
     : record.source_system === "nyc_legistar_events"
@@ -823,6 +834,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   ${guideReturn}
   <section class="node-hero civic-object-hero meeting-hero"><p class="node-kicker civic-object-kicker">${esc(sourceLabel)}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(formatMeetingWhen(record.event_date) || record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(formatMeetingWhen(record.event_end) || record.event_end)}</time></p>` : ""}</section>
   ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}
+  ${moreTools}
   ${institutionSection}
   ${locationSection}
   ${descriptionSection}

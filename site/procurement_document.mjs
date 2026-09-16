@@ -10,6 +10,10 @@ import {
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import {
+  buildContractAiContextHandoff,
+  renderMoreToolsRegion,
+} from "./ai_context_handoff.mjs";
+import {
   buildContractReportTarget,
   buildContractVendorRelationshipReportTarget,
   reportIssueAction,
@@ -208,7 +212,17 @@ function procurementActions(object, facts) {
   const reportTarget = buildContractVendorRelationshipReportTarget(object, facts)
     || buildContractReportTarget(object, facts);
   items.push(reportIssueAction(reportTarget));
-  return items.length ? renderNodeActions(items, { ariaLabel: "Document actions", extraClass: "civic-object-actions" }) : "";
+  const primary = items.length
+    ? renderNodeActions(items, { ariaLabel: "Document actions", extraClass: "civic-object-actions" })
+    : "";
+  const handoff = buildContractAiContextHandoff({
+    procurement_id: object?.procurement_id,
+    canonical_href: procurementCanonicalHref(object),
+  });
+  const moreTools = handoff.status === "ok"
+    ? renderMoreToolsRegion({ handoff })
+    : "";
+  return `${primary}${moreTools}`;
 }
 
 function stageList(object) {

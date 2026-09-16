@@ -55,6 +55,10 @@ import {
   buildLandRegulatoryEffectReportTarget,
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
+import {
+  buildLandProjectAiContextHandoff,
+  renderMoreToolsRegion,
+} from "../ai_context_handoff.mjs";
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
 import { attachAuth, authHTML, landAuthoritySummaryFor, loadAuth } from "../land_authority_summary_view.mjs";
@@ -800,6 +804,10 @@ async function landSelect(i, el){
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   // Action rail first (what can I do now); utility controls stay secondary.
+  const landHandoff=buildLandProjectAiContextHandoff({ project_id: r.project_id });
+  const landMoreTools=landHandoff.status==="ok"
+    ? renderMoreToolsRegion({ handoff: landHandoff, translate: t })
+    : "";
   html+=`<div id="land-actions" class="next-action-rail-host"></div>
   <div class="actions" style="margin-top:12px">
     ${landPermalinkActionHTML(r)}
@@ -808,6 +816,7 @@ async function landSelect(i, el){
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
     <span id="land-city-record-source"></span>
   </div>
+  ${landMoreTools}
   <div id="project-connections"></div>
   <div id="slc"></div>
   <div id="project-connected-calendar"></div>
