@@ -1,0 +1,79 @@
+{
+  "schema": "cityscroll.assistant_setup_capture_manifest.v1",
+  "surface": "public assistant discovery and MCP setup",
+  "condition": "Deterministic tracked HTML renders; no image binary is committed.",
+  "image_binaries_committed": false,
+  "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
+  "data_vintage": "tracked site HTML at grounded revision",
+  "capture_clock": "2026-09-16T12:00:00.000Z",
+  "capture_policy": "Textual render hashes only; no image binaries are committed.",
+  "runner": "node --test test/capability_discovery.test.mjs test/mcp_connection_introduction.test.mjs",
+  "captures": [
+    {
+      "route": "/",
+      "viewport": "1440x1000",
+      "viewport_width": 1440,
+      "viewport_height": 1000,
+      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
+      "data_vintage": "tracked site HTML at grounded revision",
+      "assertion": "primary search remains visible and Ask with AI is secondary",
+      "sha256": "e32e099d7c177d414fd563205e4061d229e37f801cbc029e53e7e805a561d93c",
+      "source_path": "site/index.html"
+    },
+    {
+      "route": "/",
+      "viewport": "390x844",
+      "viewport_width": 390,
+      "viewport_height": 844,
+      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
+      "data_vintage": "tracked site HTML at grounded revision",
+      "assertion": "primary search remains visible and Ask with AI is secondary",
+      "sha256": "e32e099d7c177d414fd563205e4061d229e37f801cbc029e53e7e805a561d93c",
+      "source_path": "site/index.html"
+    },
+    {
+      "route": "/use-with-ai/",
+      "viewport": "1440x1000",
+      "viewport_width": 1440,
+      "viewport_height": 1000,
+      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
+      "data_vintage": "tracked site HTML at grounded revision",
+      "assertion": "endpoint, copy fallback, recovery and task examples remain reachable",
+      "sha256": "732026641559155903e4fb812eed912dcac053a82745219e61cfab57fa199a15",
+      "source_path": "site/use-with-ai/index.html"
+    },
+    {
+      "route": "/use-with-ai/",
+      "viewport": "390x844",
+      "viewport_width": 390,
+      "viewport_height": 844,
+      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
+      "data_vintage": "tracked site HTML at grounded revision",
+      "assertion": "endpoint, copy fallback, recovery and task examples remain reachable",
+      "sha256": "732026641559155903e4fb812eed912dcac053a82745219e61cfab57fa199a15",
+      "source_path": "site/use-with-ai/index.html"
+    },
+    {
+      "route": "/api.html#mcp",
+      "viewport": "1440x1000",
+      "viewport_width": 1440,
+      "viewport_height": 1000,
+      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
+      "data_vintage": "tracked site HTML at grounded revision",
+      "assertion": "stable MCP heading and setup link are reachable",
+      "sha256": "930f3cc5e932d001f979db12a33a1933175644977e983a28fa6fc5f55db49d13",
+      "source_path": "site/api.html"
+    },
+    {
+      "route": "/api.html#mcp",
+      "viewport": "390x844",
+      "viewport_width": 390,
+      "viewport_height": 844,
+      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
+      "data_vintage": "tracked site HTML at grounded revision",
+      "assertion": "stable MCP heading and setup link are reachable",
+      "sha256": "930f3cc5e932d001f979db12a33a1933175644977e983a28fa6fc5f55db49d13",
+      "source_path": "site/api.html"
+    }
+  ]
+}
