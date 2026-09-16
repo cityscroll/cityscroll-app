@@ -647,6 +647,8 @@ site/notice_object_links.mjs
 site/notice_permalink.mjs
 site/now_surface.mjs
 site/now_view.mjs
+site/oath_trial_calendar.mjs
+site/observer_calendar_occurrences.mjs
 site/official_connections.mjs
 site/official_influence.mjs
 site/official_influence_ui.mjs
@@ -1119,6 +1121,7 @@ test/fixtures/land_prediction_features/unknown.json
 test/fixtures/land_prediction_shadow/gold.v1.json
 test/fixtures/land_use_action_type/2024M0158.json
 test/fixtures/legistar/upcoming_contracts_22691.json
+test/fixtures/oath/daily-calendar-2026-09-15.csv
 test/fixtures/procurement_search/golden_cohort.json
 test/fixtures/repository_governance/positive/test-example.mjs
 test/fixtures/rules_stage/20260728026.json

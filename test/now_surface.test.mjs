@@ -21,9 +21,11 @@ test("build-rendered Now includes an eligible Council event from the shared meet
   const nowOutput = primaryDocumentOutputs().find(([path]) => path.endsWith("/now/index.html"));
   assert.ok(nowOutput, "expected the primary document builder to emit Now");
   const html = nowOutput[1];
-  assert.match(html, /Committee on Contracts/);
-  assert.match(html, /2026-09-23/);
-  assert.match(html, /href="\/meetings\/meeting%3Anyc_legistar_events%3A22691"/);
+  // Population property: at least one live Legistar Council calendar meeting
+  // appears on Now. Do not pin a named EventId — the publisher window rolls.
+  assert.match(html, /href="\/meetings\/meeting%3Anyc_legistar_events%3A\d+"/);
+  assert.match(html, /NYC Council calendar/);
+  assert.match(html, /Committee on |City Council/);
 });
 
 function fixtureSources() {

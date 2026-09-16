@@ -102,7 +102,7 @@ test("reviewed watermark shards have deterministic ids, owners, and paths", () =
   const rendered = `${JSON.stringify(committed, null, 2)}\n`;
   // The digest is the reviewed handoff: advancing any shard has to be stated
   // here as well, so a baseline cannot move without someone naming it.
-  assert.equal(createHash("sha256").update(rendered).digest("hex"), "e065a521cac96121e06aeca1d1e5350eabe74ae600d8be5d3affaaaf6af228a6");
+  assert.equal(createHash("sha256").update(rendered).digest("hex"), "5676736e6da0e0b56901751143985ec52f01891c4bfac1319fb999c183552fe5");
 });
 
 test("same-key candidates fail instead of resolving by order", () => {

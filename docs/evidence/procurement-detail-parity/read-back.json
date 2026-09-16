@@ -24,16 +24,36 @@
         "matched_value": "CT107120258801626"
       }
     ],
-    "search_rank": ["procurement:contract:CT107120258801626"],
+    "search_rank": [
+      "procurement:contract:CT107120258801626"
+    ],
     "watch_urls": {
       "contract": "/following?lens=money&filter=%7B%22procurement_id%22%3A%22procurement%3Acontract%3ACT107120258801626%22%2C%22noticeType%22%3A%22award%22%7D&freq=daily",
       "vendor": "/following?lens=entity&filter=%7B%22kind%22%3A%22vendor%22%2C%22name%22%3A%22BHRAGS+HOME+CARE+CORP%22%7D&freq=daily"
     }
   },
   "layout": {
-    "desktop": {"viewport": [1440, 900], "scroll_width": 1440, "overflow": false},
-    "mobile": {"viewport": [390, 844], "scroll_width": 390, "overflow": false},
-    "keyboard": {"visible_native_links": 20, "reachable_links": 20, "negative_tabindex": 0}
+    "desktop": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "scroll_width": 1440,
+      "overflow": false
+    },
+    "mobile": {
+      "viewport": [
+        390,
+        844
+      ],
+      "scroll_width": 390,
+      "overflow": false
+    },
+    "keyboard": {
+      "visible_native_links": 24,
+      "reachable_links": 24,
+      "negative_tabindex": 0
+    }
   },
   "accessibility": {
     "engine": {
@@ -138,12 +158,22 @@
           "valid-lang",
           "video-caption"
         ],
-        "nodes_examined": 118,
-        "violations": [],
+        "nodes_examined": 213,
+        "violations": [
+          {
+            "id": "heading-order",
+            "impact": "moderate",
+            "nodes": [
+              [
+                "h4"
+              ]
+            ]
+          }
+        ],
         "passes": [
           {
             "id": "aria-allowed-attr",
-            "nodes": 5
+            "nodes": 7
           },
           {
             "id": "aria-allowed-role",
@@ -151,7 +181,7 @@
           },
           {
             "id": "aria-conditional-attr",
-            "nodes": 5
+            "nodes": 7
           },
           {
             "id": "aria-hidden-body",
@@ -163,15 +193,19 @@
           },
           {
             "id": "aria-prohibited-attr",
-            "nodes": 5
+            "nodes": 7
           },
           {
             "id": "aria-valid-attr-value",
-            "nodes": 5
+            "nodes": 7
           },
           {
             "id": "aria-valid-attr",
-            "nodes": 5
+            "nodes": 7
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 2
           },
           {
             "id": "bypass",
@@ -179,15 +213,15 @@
           },
           {
             "id": "color-contrast",
-            "nodes": 69
+            "nodes": 129
           },
           {
             "id": "definition-list",
-            "nodes": 1
+            "nodes": 2
           },
           {
             "id": "dlitem",
-            "nodes": 26
+            "nodes": 38
           },
           {
             "id": "document-title",
@@ -195,15 +229,19 @@
           },
           {
             "id": "duplicate-id-aria",
-            "nodes": 7
+            "nodes": 9
           },
           {
             "id": "empty-heading",
+            "nodes": 6
+          },
+          {
+            "id": "empty-table-header",
             "nodes": 3
           },
           {
             "id": "heading-order",
-            "nodes": 3
+            "nodes": 5
           },
           {
             "id": "html-has-lang",
@@ -243,11 +281,11 @@
           },
           {
             "id": "landmark-unique",
-            "nodes": 6
+            "nodes": 8
           },
           {
             "id": "link-in-text-block",
-            "nodes": 2
+            "nodes": 4
           },
           {
             "id": "link-name",
@@ -259,7 +297,7 @@
           },
           {
             "id": "listitem",
-            "nodes": 6
+            "nodes": 1
           },
           {
             "id": "meta-viewport-large",
@@ -270,16 +308,40 @@
             "nodes": 1
           },
           {
+            "id": "nested-interactive",
+            "nodes": 3
+          },
+          {
             "id": "page-has-heading-one",
             "nodes": 1
           },
           {
             "id": "region",
-            "nodes": 100
+            "nodes": 195
+          },
+          {
+            "id": "scope-attr-valid",
+            "nodes": 3
+          },
+          {
+            "id": "summary-name",
+            "nodes": 3
+          },
+          {
+            "id": "table-duplicate-name",
+            "nodes": 1
+          },
+          {
+            "id": "td-headers-attr",
+            "nodes": 1
+          },
+          {
+            "id": "th-has-data-cells",
+            "nodes": 1
           }
         ],
         "serious_or_critical": [],
-        "markup_sha256": "536e41213f22bf9e31c82a4a70cf857bffc2f8a2484d06a0230a0a3b5ab26559",
+        "markup_sha256": "e73548bd10c8a001b97c0cbbd47315c91790a7f7d9fa03483322485af8966049",
         "scanned_at": "2026-09-09T06:33:01.880Z"
       },
       "mobile": {
@@ -378,12 +440,22 @@
           "valid-lang",
           "video-caption"
         ],
-        "nodes_examined": 118,
-        "violations": [],
+        "nodes_examined": 213,
+        "violations": [
+          {
+            "id": "heading-order",
+            "impact": "moderate",
+            "nodes": [
+              [
+                "h4"
+              ]
+            ]
+          }
+        ],
         "passes": [
           {
             "id": "aria-allowed-attr",
-            "nodes": 5
+            "nodes": 7
           },
           {
             "id": "aria-allowed-role",
@@ -391,7 +463,7 @@
           },
           {
             "id": "aria-conditional-attr",
-            "nodes": 5
+            "nodes": 7
           },
           {
             "id": "aria-hidden-body",
@@ -403,15 +475,19 @@
           },
           {
             "id": "aria-prohibited-attr",
-            "nodes": 5
+            "nodes": 7
           },
           {
             "id": "aria-valid-attr-value",
-            "nodes": 5
+            "nodes": 7
           },
           {
             "id": "aria-valid-attr",
-            "nodes": 5
+            "nodes": 7
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 2
           },
           {
             "id": "bypass",
@@ -419,15 +495,15 @@
           },
           {
             "id": "color-contrast",
-            "nodes": 69
+            "nodes": 129
           },
           {
             "id": "definition-list",
-            "nodes": 1
+            "nodes": 2
           },
           {
             "id": "dlitem",
-            "nodes": 26
+            "nodes": 38
           },
           {
             "id": "document-title",
@@ -435,15 +511,19 @@
           },
           {
             "id": "duplicate-id-aria",
-            "nodes": 7
+            "nodes": 9
           },
           {
             "id": "empty-heading",
+            "nodes": 6
+          },
+          {
+            "id": "empty-table-header",
             "nodes": 3
           },
           {
             "id": "heading-order",
-            "nodes": 3
+            "nodes": 5
           },
           {
             "id": "html-has-lang",
@@ -483,11 +563,11 @@
           },
           {
             "id": "landmark-unique",
-            "nodes": 6
+            "nodes": 8
           },
           {
             "id": "link-in-text-block",
-            "nodes": 2
+            "nodes": 4
           },
           {
             "id": "link-name",
@@ -499,7 +579,7 @@
           },
           {
             "id": "listitem",
-            "nodes": 6
+            "nodes": 1
           },
           {
             "id": "meta-viewport-large",
@@ -510,16 +590,40 @@
             "nodes": 1
           },
           {
+            "id": "nested-interactive",
+            "nodes": 3
+          },
+          {
             "id": "page-has-heading-one",
             "nodes": 1
           },
           {
             "id": "region",
-            "nodes": 100
+            "nodes": 195
+          },
+          {
+            "id": "scope-attr-valid",
+            "nodes": 3
+          },
+          {
+            "id": "summary-name",
+            "nodes": 3
+          },
+          {
+            "id": "table-duplicate-name",
+            "nodes": 1
+          },
+          {
+            "id": "td-headers-attr",
+            "nodes": 1
+          },
+          {
+            "id": "th-has-data-cells",
+            "nodes": 1
           }
         ],
         "serious_or_critical": [],
-        "markup_sha256": "536e41213f22bf9e31c82a4a70cf857bffc2f8a2484d06a0230a0a3b5ab26559",
+        "markup_sha256": "e73548bd10c8a001b97c0cbbd47315c91790a7f7d9fa03483322485af8966049",
         "scanned_at": "2026-09-09T06:33:01.880Z"
       }
     },

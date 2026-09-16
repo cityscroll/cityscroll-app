@@ -1,4 +1,6 @@
+import { opsNotificationDecision } from "./lib/ops_notification_policy.mjs";
 import { digestDayLogKey, sentWatchKeysFromDayLog } from "./lib/digest_ops.mjs";
+import { claimEmergencyDelivery, completeEmergencyDelivery, emergencyDeliveryProjection } from "./lib/emergency_outbox.mjs";
 import {
   REPAIR_QUEUE_EXCLUDED_GUARDS,
   completeRepairItem,
@@ -600,7 +602,7 @@ export function repairJudgmentParagraph(judgment) {
 export const REPAIR_JUDGMENT_SUBJECT_LIMIT = 8;
 
 /**
- * The guard and failure class a judgment belongs to — the group one mail covers.
+ * The guard and failure class a judgment belongs to — the Desk record's group.
  *
  * A monitor finding's signature is `monitor:<monitor>:<class>[:<subject>]`, so
  * the class comes from the signature where there is one and from the item's own
@@ -660,15 +662,15 @@ export function repairJudgmentGroupParagraph(group, judgments) {
 }
 
 /**
- * One readable alert per guard and failure class that reached the judgment
+ * One readable Desk record per guard and failure class that reached the judgment
  * boundary in this cycle. It is a distinct signature from the findings it came
  * from, and its own guard is excluded from the queue, so a failed fix can never
  * queue a repair for its own failure notice.
  *
- * The grouping is the mail's alone. Each subject keeps its own repair item, its
+ * The grouping is the Desk record's alone. Each subject keeps its own repair item, its
  * own receipts, and its own recovery, so nothing about what the rail tracks or
- * closes changes — what changes is that one condition across many subjects asks
- * the owner once instead of once per subject, every day it lasts.
+ * closes changes — one condition across many subjects is presented as one
+ * decision instead of one per subject, every day it lasts.
  */
 export async function emitRepairJudgmentAlerts(env, judgments = [], { now = new Date() } = {}) {
   const groups = new Map();
@@ -711,8 +713,8 @@ export async function emitRepairJudgmentAlerts(env, judgments = [], { now = new 
 }
 
 // Guards whose findings are only actionable with run and receipt evidence in
-// hand. A caller cannot opt out: an alert with nothing to dereference is held
-// back and reported as a delivery failure rather than emailed as "null".
+// hand. A caller cannot opt out: a record with nothing to dereference is held
+// back and marked as an evidence failure in Desk.
 export const EVIDENCE_REQUIRED_GUARDS = Object.freeze([
   "scheduler-heartbeat",
   "served-artifact-freshness",
@@ -751,7 +753,7 @@ async function updateAlertHistory(kv, record) {
 }
 
 export async function emitOpsAlertOnce(env, input = {}) {
-  const now = input.now instanceof Date ? input.now : new Date(input.last_seen || Date.now());
+  const now = input.now instanceof Date ? input.now : new Date();
   const guard = String(input.guard || "reliability").slice(0, 80);
   const findings = (Array.isArray(input.findings) ? input.findings : [input.text]).map(normalizedFinding).filter(Boolean).slice(0, 20);
   const signature = await canonicalOpsFailureSignature({ ...input, guard, findings });
@@ -759,6 +761,16 @@ export async function emitOpsAlertOnce(env, input = {}) {
   const prior = await readJson(env?.ALERT_STATE, alertKey);
   const firstSeen = prior?.first_seen || input.first_seen || now.toISOString();
   const lastSeen = input.last_seen || now.toISOString();
+  const notification = opsNotificationDecision(input, now);
+  const eligibleEmergency = notification.email ? {
+    impact: notification.impact,
+    action: notification.action,
+    evidence_url: notification.evidence_url,
+    verified_at: notification.verified_at,
+  } : null;
+  const priorDelivery = prior?.emergency_delivery || null;
+  const priorUncertain = priorDelivery?.state === "in-flight" || priorDelivery?.state === "indeterminate";
+  const freezeEmergency = Boolean(prior?.emergency_sent_at) || priorUncertain;
   const record = {
     schema: "cityscroll.ops-alert-signature.v1",
     signature,
@@ -773,8 +785,15 @@ export async function emitOpsAlertOnce(env, input = {}) {
     latest_run_url: input.workflow_run_url || prior?.latest_run_url || null,
     latest_receipt_url: input.receipt_url || prior?.latest_receipt_url || null,
     sent_at: prior?.sent_at || null,
+    emergency_sent_at: prior?.emergency_sent_at || null,
     rollup_day: prior?.rollup_day || null,
     delivery_finding: prior?.delivery_finding || null,
+    notification,
+    confirmed_emergency: freezeEmergency && prior?.confirmed_emergency
+      ? prior.confirmed_emergency
+      : eligibleEmergency || prior?.confirmed_emergency || null,
+    emergency_delivery: priorDelivery,
+    decision_context: guard === REPAIR_JUDGMENT_GUARD ? String(input.paragraph || "").slice(0, 2500) : null,
   };
   if (EVIDENCE_REQUIRED_GUARDS.includes(guard)) {
     const missing = opsAlertEvidenceFindings({ ...input, last_seen: lastSeen });
@@ -785,9 +804,9 @@ export async function emitOpsAlertOnce(env, input = {}) {
       return { sent: false, reason: "evidence-required", evidence_findings: missing, signature, record };
     }
   }
-  // rel-12: the repair item is written before the mail is composed, because the
-  // alert has to name the pickup time the queue actually holds. A repeat lands
-  // here too, so the counter advances even when the mail stays suppressed.
+  // rel-12: the repair item is written before the operational record is composed,
+  // because the record has to name the pickup time the queue actually holds. A
+  // repeat lands here too, so the counter advances without sending routine mail.
   const heartbeat = await readJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY);
   const queue = await upsertRepairItem(env, {
     signature,
@@ -812,54 +831,104 @@ export async function emitOpsAlertOnce(env, input = {}) {
     finding: queue.ok ? null : { observed_at: lastSeen, reason: queue.reason, detail: queue.detail || null },
   };
 
-  const today = day(now);
-  const rollup = !!prior && prior.rollup_day !== today && day(prior.last_seen) !== today;
-  const shouldSend = !prior || rollup;
+  // No daily reminder mail. An emergency can escalate an existing silent
+  // incident; a rejected send can retry until the provider accepts it.
+  const shouldSend = record.notification.email && !prior?.emergency_sent_at;
   if (!shouldSend) {
+    if (!priorUncertain) {
+      await putJson(env?.ALERT_STATE, alertKey, record);
+      await updateAlertHistory(env?.ALERT_STATE, record);
+    }
+    const reason = record.notification.email && priorUncertain ? "delivery-indeterminate"
+      : record.notification.email ? "already-alerted" : "desk-only";
+    return { sent: false, reason, signature, record, queue };
+  }
+  const subject = `CityScroll emergency: ${record.notification.impact}`;
+  const text = `${alertParagraph(record, { rollup: false, queue })} Action needed now: ${record.notification.action}. Evidence: ${record.notification.evidence_url}.`;
+  const candidatePayload = priorUncertain ? {
+    subject: priorDelivery.subject,
+    text: priorDelivery.text,
+    evidence: priorDelivery.evidence,
+  } : { subject, text, evidence: eligibleEmergency };
+  const claim = await claimEmergencyDelivery(env?.DB, {
+    signature,
+    payload: candidatePayload,
+    now,
+    attemptedAt: priorUncertain ? priorDelivery.attempted_at : null,
+    retryUntil: priorUncertain ? priorDelivery.retry_until : null,
+  });
+  if (!claim.ok) {
+    record.delivery_finding = { observed_at: record.last_seen, reason: claim.reason };
     await putJson(env?.ALERT_STATE, alertKey, record);
     await updateAlertHistory(env?.ALERT_STATE, record);
-    return { sent: false, reason: "already-alerted", signature, record, queue };
+    return { sent: false, reason: claim.reason, signature, record, queue };
   }
+  const delivery = emergencyDeliveryProjection(claim.row);
+  record.confirmed_emergency = delivery.evidence;
+  record.emergency_delivery = delivery;
+  if (!claim.owned) {
+    if (delivery.state === "accepted") {
+      record.sent_at = delivery.resolved_at;
+      record.emergency_sent_at = delivery.resolved_at;
+      record.delivery_finding = null;
+      await putJson(env?.ALERT_STATE, alertKey, record);
+      await updateAlertHistory(env?.ALERT_STATE, record);
+    }
+    const reason = delivery.state === "accepted" ? "already-alerted"
+      : delivery.state === "indeterminate" ? "delivery-indeterminate" : "delivery-in-flight";
+    return { sent: false, reason, signature, record, queue };
+  }
+  await putJson(env?.ALERT_STATE, alertKey, record);
+  await updateAlertHistory(env?.ALERT_STATE, record);
   const { sendOpsAlert } = await import("./alerts.mjs");
   let result;
   try {
     result = await sendOpsAlert(env, {
       guard,
-      subject: input.subject || `CityScroll reliability alert: ${guard}`,
-      // Only the repair-judgment guard composes its own paragraph, because its
-      // "since when" dates would be normalized out of a finding — rel-09's
-      // normalization exists to make signatures stable, not to be read. Every
-      // other guard, including anything arriving over the admin relay, gets the
-      // standard evidence-bearing paragraph.
-      text: (guard === REPAIR_JUDGMENT_GUARD && input.paragraph) || alertParagraph(record, { rollup, queue }),
+      signature,
+      subject: delivery.subject,
+      emergency: input.emergency,
+      now,
+      text: delivery.text,
       observedAt: record.last_seen,
     });
   } catch (error) {
-    result = { accepted: false, reason: "resend-rejected", error: String(error?.message || error) };
+    result = { accepted: false, reason: "delivery-indeterminate", error: String(error?.message || error) };
   }
-  if (result.accepted) {
-    record.sent_at = record.last_seen;
-    if (rollup) record.rollup_day = today;
+  const completed = await completeEmergencyDelivery(env.DB, {
+    signature,
+    claimToken: claim.claimToken,
+    state: result.accepted ? "accepted" : result.reason === "delivery-indeterminate" ? "indeterminate" : "rejected",
+    now,
+    providerId: typeof result.provider?.id === "string" ? result.provider.id.slice(0, 128) : null,
+    errorReason: result.accepted ? null : result.reason || "rejected",
+  });
+  const authoritative = emergencyDeliveryProjection(completed.row);
+  record.confirmed_emergency = authoritative.evidence;
+  record.emergency_delivery = authoritative;
+  if (authoritative.state === "accepted") {
+    record.sent_at = authoritative.resolved_at;
+    record.emergency_sent_at = authoritative.resolved_at;
+    record.delivery_finding = null;
   } else {
-    record.delivery_finding = { observed_at: record.last_seen, reason: result.reason || "rejected" };
+    record.delivery_finding = { observed_at: record.last_seen, reason: authoritative.error_reason || result.reason || "rejected" };
   }
   await putJson(env?.ALERT_STATE, alertKey, record);
   await updateAlertHistory(env?.ALERT_STATE, record);
-  return { sent: !!result.accepted, result, reason: result.accepted ? null : (result.reason || "rejected"), signature, record, queue };
+  return { sent: authoritative.state === "accepted", result, reason: authoritative.state === "accepted" ? null : (authoritative.error_reason || result.reason || "rejected"), signature, record, queue };
 }
 
 /**
  * Pickup on the cycle's existing heartbeat: reconcile anything the queue lost to
  * a failed write, hand out bounded leases, and turn any item that reached the
- * judgment boundary into the one owner alert it is allowed to send. Pickup
- * itself is silent.
+ * judgment boundary into a grouped Desk record. Pickup itself is silent.
  */
 export async function dispatchRepairQueue(env, { now = new Date(), runId = null, limit } = {}) {
   const heartbeat = await readJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY);
   const history = await readJson(env?.ALERT_STATE, OPS_ALERT_HISTORY_KEY);
   const recovered = await reconcileRepairQueue(env, { now, heartbeat, history });
   // A cycle that cannot dispatch does not take leases. Spending attempts on
-  // work nothing will run is how a queue quietly exhausts itself into mail.
+  // work nothing will run would exhaust the queue into false judgment records.
   if (heartbeat?.repair_dispatch !== true) {
     return { recovered: recovered.restored, items: [], judgment_alerts: [], dispatch: false };
   }
@@ -882,14 +951,14 @@ export const MONITOR_RECOVERY_SCOPE_LIMIT = 25;
  * Fold one cycle's monitor observations into the repair queue.
  *
  * This is the step that closes the gap the rail was missing: a degraded monitor
- * run has always produced human-grade mail and a GitHub issue, and now it also
- * produces a queue item a playbook can pick up. Upsert semantics do the
+ * run already produced an operational finding and a GitHub issue, and now it
+ * also produces a queue item a playbook can pick up. Upsert semantics do the
  * deduplication, so a condition on its fifth day advances a repeat counter
  * rather than opening a fifth item.
  *
- * It is deliberately SILENT. Queueing has never been an alert, and these
- * findings already reached their reader through the monitor's own issue; only
- * an item that reaches the judgment boundary sends further mail.
+ * It is deliberately SILENT. Queueing has never been a notification, and these
+ * findings already reached their reader through the monitor's own issue. A
+ * judgment adds decision context to Desk without sending mail.
  */
 export async function applyMonitorFindings(env, { findings = [], recovered = [], now = new Date(), heartbeat = null } = {}) {
   const queued = [];
@@ -934,8 +1003,9 @@ export async function applyMonitorFindings(env, { findings = [], recovered = [],
 
 /**
  * The cycle reporting what its bounded repair task did. A repaired item retires
- * silently; a retryable failure returns to the queue silently; only a terminal
- * failure, a persistent upstream outage, or an explicit decision request mails the owner.
+ * silently; a retryable failure returns to the queue silently; a terminal
+ * failure, persistent upstream outage, or explicit decision request is recorded
+ * for review in Desk.
  */
 export async function reportRepairResults(env, reports = [], { now = new Date() } = {}) {
   const applied = [];
@@ -988,7 +1058,9 @@ export async function emitMailExceptionAlerts(env, snapshot, { now = new Date() 
         persistAttempt: true,
       });
       reason = alert.reason || (alert.sent ? null : "rejected");
-      deliveryStatus = alert.sent ? "sent" : (alert.reason === "already-alerted" ? "deduped" : "rejected");
+      deliveryStatus = alert.sent ? "sent"
+        : alert.reason === "already-alerted" || (alert.reason === "desk-only" && alert.record?.count > 1) ? "deduped"
+          : alert.reason === "desk-only" ? "desk-only" : "rejected";
     }
     if (deliveryStatus === "deduped") continue;
     records.push({

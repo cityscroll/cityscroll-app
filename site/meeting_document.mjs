@@ -28,6 +28,10 @@ import {
   buildCanonicalDocumentRelationshipReportTarget,
   renderReportIssueAffordance,
 } from "./report_issue.mjs";
+import {
+  buildMeetingAiContextHandoff,
+  renderMoreToolsRegion,
+} from "./ai_context_handoff.mjs";
 
 export const MEETING_DOCUMENT_SCHEMA = "cityscroll.meeting_document.v1";
 export const MEETING_DOCUMENT_ROLES = Object.freeze([
@@ -793,6 +797,13 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
     !legacy && source ? `<a class="node-action civic-object-action" href="${esc(source)}" rel="noopener noreferrer">Official source</a>` : "",
     documentReport,
   ].filter(Boolean).join("");
+  const meetingHandoff = buildMeetingAiContextHandoff({
+    meeting_id: id,
+    canonical_href: canonical,
+  });
+  const moreTools = meetingHandoff.status === "ok"
+    ? renderMoreToolsRegion({ handoff: meetingHandoff })
+    : "";
   const sourceLabel = record.source_system === "community_board"
     ? "Community board meeting"
     : record.source_system === "nyc_legistar_events"
@@ -821,8 +832,9 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
 <main id="main" class="civic-document node-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}" data-capability-reference="meeting.get@1" tabindex="-1">
   <p class="node-back"><a href="${record.source_system === "bsa_calendar" && record.event_date ? `/browse/meetings/?when=day&day=${esc(String(record.event_date).slice(0, 10))}` : "/browse/meetings/"}">Browse meetings and hearings</a></p>
   ${guideReturn}
-  <section class="node-hero civic-object-hero meeting-hero"><p class="node-kicker civic-object-kicker">${esc(sourceLabel)}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(formatMeetingWhen(record.event_date) || record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(formatMeetingWhen(record.event_end) || record.event_end)}</time></p>` : ""}</section>
+  <section class="node-hero civic-object-hero meeting-hero" ${record.status === "cancelled" || record.lifecycle === "cancelled" ? `data-meeting-status="cancelled"` : ""}><p class="node-kicker civic-object-kicker">${esc(sourceLabel)}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(formatMeetingWhen(record.event_date) || record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(formatMeetingWhen(record.event_end) || record.event_end)}</time></p>` : ""}${record.status === "cancelled" || record.lifecycle === "cancelled" ? `<p class="meeting-status-notice" role="status">This event is cancelled.${record.cancellation_notice ? ` ${esc(String(record.cancellation_notice))}` : ""}</p>` : ""}</section>
   ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}
+  ${moreTools}
   ${institutionSection}
   ${locationSection}
   ${descriptionSection}

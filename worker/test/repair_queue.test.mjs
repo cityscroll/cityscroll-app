@@ -102,7 +102,7 @@ test("A1 an owner alert queues one structured repair item and names the actual p
       last_seen: "2026-09-01T12:00:30Z",
       now: at("2026-09-01T12:00:30Z"),
     });
-    assert.equal(alert.sent, true);
+    assert.equal(alert.sent, false);
     const item = alert.queue.item;
     assert.equal(item.schema, REPAIR_QUEUE_ITEM_SCHEMA);
     assert.equal(item.signature, alert.signature);
@@ -123,10 +123,9 @@ test("A1 an owner alert queues one structured repair item and names the actual p
     // so the next pickup is one interval later, not a number the alert invented.
     const expected = new Date(Date.parse("2026-09-01T12:00:00Z") + REPAIR_PICKUP_INTERVAL_MS).toISOString();
     assert.equal(item.next_pickup_at, expected);
-    assert.equal(sent(mail).includes(expected), true);
-    assert.match(alertBodies(mail.sent), /Queued for automatic repair, next pickup at/);
-    assert.equal(mail.sent.length, 1);
-    assert.equal(mail.sent[0].to, OPS_ALERT_TO);
+    assert.equal(alert.record.queue.next_pickup_at, expected);
+    assert.equal(mail.sent.length, 0);
+    assert.equal(alert.record.notification.reason, "desk-only");
   } finally { mail.restore(); }
 });
 
@@ -164,7 +163,7 @@ test("A2 a repeated signature upserts one item and a different signature gets it
     // The repeat is suppressed from mail (rel-09) but still advances the queue.
     assert.equal(repeat.sent, false);
     assert.equal(again.sent, false);
-    assert.equal(mail.sent.length, 1);
+    assert.equal(mail.sent.length, 0);
 
     const stored = (await readRepairItem({ ALERT_STATE }, first.signature)).item;
     assert.equal(stored.repeat_count, 3);
@@ -231,15 +230,15 @@ test("A1 a queue write failure stays a durable finding and recovers idempotently
     });
     signature = alert.signature;
     // The alert still reaches the owner, and says plainly that it was not queued.
-    assert.equal(alert.sent, true);
+    assert.equal(alert.sent, false);
     assert.equal(alert.queue.ok, false);
     assert.equal(alert.queue.reason, "queue-write-failed");
     assert.equal(alert.record.queue.queued, false);
     assert.equal(alert.record.queue.finding.reason, "queue-write-failed");
-    assert.match(sent(mail), /was not queued for automatic repair/);
+    assert.equal(alert.record.queue.finding.reason, "queue-write-failed");
     assert.doesNotMatch(sent(mail), /Queued for automatic repair, next pickup/);
     // Exactly one mail: a dead queue never alarms recursively through the same rail.
-    assert.equal(mail.sent.length, 1);
+    assert.equal(mail.sent.length, 0);
     assert.equal((await readRepairItem({ ALERT_STATE }, signature)).item, null);
   } finally { mail.restore(); }
 
@@ -269,7 +268,7 @@ test("A3 pickup, lease expiry, and a successful repair never mail the owner", as
       ...FINDING, first_seen: "2026-09-01T12:00:20Z", last_seen: "2026-09-01T12:00:20Z", now: at("2026-09-01T12:00:20Z"),
     });
     const mailAfterAlert = mail.sent.length;
-    assert.equal(mailAfterAlert, 1);
+    assert.equal(mailAfterAlert, 0);
 
     const pickup = await dispatchRepairQueue({ ALERT_STATE }, { now: at("2026-09-01T12:01:00Z"), runId: CYCLE.run_id });
     assert.equal(pickup.items.length, 1);
@@ -315,7 +314,7 @@ test("A3 pickup, lease expiry, and a successful repair never mail the owner", as
   } finally { mail.restore(); }
 });
 
-test("A3 a retryable failure stays silent and only the judgment boundary mails once", async () => {
+test("A3 a retryable failure stays silent and the judgment boundary records a Desk decision", async () => {
   const ALERT_STATE = kv();
   await liveCycle(ALERT_STATE);
   const mail = captureSends();
@@ -323,7 +322,7 @@ test("A3 a retryable failure stays silent and only the judgment boundary mails o
     const alert = await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, {
       ...FINDING, first_seen: "2026-09-01T12:00:20Z", last_seen: "2026-09-01T12:00:20Z", now: at("2026-09-01T12:00:20Z"),
     });
-    assert.equal(mail.sent.length, 1);
+    assert.equal(mail.sent.length, 0);
 
     let minute = 1;
     let lastLease = null;
@@ -341,10 +340,8 @@ test("A3 a retryable failure stays silent and only the judgment boundary mails o
       minute += 1;
     }
     // Two retries stayed silent; only the exhausted attempt mailed.
-    assert.equal(mail.sent.length, 2);
-    const judgment = mail.sent[1];
-    assert.equal(judgment.to, OPS_ALERT_TO);
-    assert.match(judgment.subject, /needs a decision/);
+    assert.equal(mail.sent.length, 0);
+    const judgment = { html: await decisionContext(ALERT_STATE) };
     assert.match(judgment.html, /Automatic repair needs your decision/);
     assert.match(judgment.html, /artifact hash mismatch/);
     assert.match(judgment.html, /Failing since 2026-09-01T12:00:20/);
@@ -360,11 +357,11 @@ test("A3 a retryable failure stays silent and only the judgment boundary mails o
     // An item at the judgment boundary is not leased again, and does not mail again.
     const parked = await dispatchRepairQueue({ ALERT_STATE }, { now: at("2026-09-01T12:30:00Z"), runId: CYCLE.run_id });
     assert.deepEqual(parked.items, []);
-    assert.equal(mail.sent.length, 2);
+    assert.equal(mail.sent.length, 0);
   } finally { mail.restore(); }
 });
 
-test("A3 a repair that asks for a decision mails once without spending its retries", async () => {
+test("A3 a repair that asks for a decision records a decision without spending its retries", async () => {
   const ALERT_STATE = kv();
   await liveCycle(ALERT_STATE);
   const mail = captureSends();
@@ -383,9 +380,9 @@ test("A3 a repair that asks for a decision mails once without spending its retri
     }], { now: at("2026-09-01T12:02:00Z") });
     assert.equal(outcome.applied[0].state, "needs_judgment");
     assert.equal(outcome.judgment_alerts.length, 1);
-    assert.equal(mail.sent.length, 2);
-    assert.match(mail.sent[1].html, /the only fix rotates a deployment credential/);
-    assert.match(mail.sent[1].html, /actions\/runs\/902/);
+    assert.equal(mail.sent.length, 0);
+    assert.match(await decisionContext(ALERT_STATE), /the only fix rotates a deployment credential/);
+    assert.match(await decisionContext(ALERT_STATE), /actions\/runs\/902/);
     const stored = (await readRepairItem({ ALERT_STATE }, alert.signature)).item;
     assert.equal(stored.attempts, 1);
   } finally { mail.restore(); }
@@ -445,7 +442,7 @@ test("A3 the heartbeat is the whole dispatch boundary and pickup is silent on it
     assert.equal(reported.repair_queue.reported[0].state, "repaired");
     assert.deepEqual(reported.repair_queue.items, []);
     // The alert was the only mail across the whole loop.
-    assert.equal(mail.sent.length, 1);
+    assert.equal(mail.sent.length, 0);
   } finally { mail.restore(); }
 });
 
@@ -461,14 +458,14 @@ test("A3 a cycle with no dispatcher takes no lease and the alert says why", asyn
     });
     assert.equal(alert.queue.item.next_pickup_at, null);
     assert.equal(alert.queue.item.pickup_blocked_reason, "the repair cycle has no dispatcher configured");
-    assert.match(sent(mail), /no pickup time can be named because the repair cycle has no dispatcher configured/);
+    assert.equal(alert.record.notification.reason, "desk-only");
     const dispatch = await dispatchRepairQueue({ ALERT_STATE }, { now: at("2026-09-01T12:01:00Z"), runId: CYCLE.run_id });
     assert.equal(dispatch.dispatch, false);
     assert.deepEqual(dispatch.items, []);
     // No attempt was spent on work nothing could run.
     const stored = (await readRepairItem({ ALERT_STATE }, alert.signature)).item;
     assert.equal(stored.attempts, 0);
-    assert.equal(mail.sent.length, 1);
+    assert.equal(mail.sent.length, 0);
   } finally { mail.restore(); }
 });
 
@@ -597,7 +594,7 @@ test("A4 the repair-judgment guard never queues a repair for its own failure not
       last_seen: "2026-09-01T12:00:20Z",
       now: at("2026-09-01T12:00:20Z"),
     });
-    assert.equal(alert.sent, true);
+    assert.equal(alert.sent, false);
     assert.equal(alert.queue.skipped, true);
     assert.equal(alert.record.queue, null);
     assert.doesNotMatch(sent(mail), /Queued for automatic repair/);
@@ -620,8 +617,8 @@ test("A4 a rejected owner alert still leaves the finding queued for repair", asy
       ...FINDING, first_seen: "2026-09-01T12:00:20Z", last_seen: "2026-09-01T12:00:20Z", now: at("2026-09-01T12:00:20Z"),
     });
     assert.equal(alert.sent, false);
-    assert.equal(attempts, 1);
-    assert.equal(alert.record.delivery_finding.reason, "resend-rejected");
+    assert.equal(attempts, 0);
+    assert.equal(alert.record.notification.reason, "desk-only");
     const stored = (await readRepairItem({ ALERT_STATE }, alert.signature)).item;
     assert.equal(stored.state, "queued");
     assert.equal(stored.repeat_count, 1);
@@ -708,8 +705,9 @@ test("A4 the admin relay cannot substitute its own alert prose for the evidence 
       now: at("2026-09-01T12:00:20Z"),
     });
     assert.doesNotMatch(sent(mail), /Everything is fine/);
-    assert.match(sent(mail), /artifact hash mismatch/);
-    assert.match(sent(mail), /Queued for automatic repair, next pickup at/);
+    const history = JSON.parse(await ALERT_STATE.get("ops:alert:history:v1"));
+    assert.match(history.items[0].findings.join("; "), /artifact hash mismatch/);
+    assert.equal(history.items[0].decision_context, null);
   } finally { mail.restore(); }
 });
 
@@ -728,7 +726,7 @@ test("A2 a parked item is not retried by a repeat on the same day, and reopens t
       outcome: "judgment",
       judgment_reason: "the fix would rewrite deployment history",
     }], { now: at("2026-09-01T12:02:00Z") });
-    assert.equal(mail.sent.length, 2);
+    assert.equal(mail.sent.length, 0);
 
     // The same failure keeps firing all afternoon. The parked item accumulates
     // evidence but is not handed back to automatic repair.
@@ -743,7 +741,7 @@ test("A2 a parked item is not retried by a repeat on the same day, and reopens t
     assert.equal(held.state, "needs_judgment");
     assert.equal(held.repeat_count, 4);
     assert.equal(held.first_seen, "2026-09-01T12:00:20.000Z");
-    assert.equal(mail.sent.length, 2);
+    assert.equal(mail.sent.length, 0);
 
     // Still failing the next day: one more bounded attempt, not a spin.
     await liveCycle(ALERT_STATE, "2026-09-02T09:00:00Z");
@@ -772,7 +770,7 @@ test("A5 an identity the rail cannot key on retires on its first offer instead o
     const alert = await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, {
       ...FINDING, first_seen: "2026-09-01T12:00:20Z", last_seen: "2026-09-01T12:00:20Z", now: at("2026-09-01T12:00:20Z"),
     });
-    assert.equal(mail.sent.length, 1);
+    assert.equal(mail.sent.length, 0);
     const pickup = await dispatchRepairQueue({ ALERT_STATE }, { now: at("2026-09-01T12:01:00Z"), runId: CYCLE.run_id });
     assert.equal(pickup.items.length, 1);
 
@@ -786,11 +784,13 @@ test("A5 an identity the rail cannot key on retires on its first offer instead o
     assert.equal(reported.applied[0].state, "repaired");
     // Retiring an unreadable record is not a decision anybody has to be told about.
     assert.deepEqual(reported.judgment_alerts, []);
-    assert.equal(mail.sent.length, 1);
+    assert.equal(mail.sent.length, 0);
 
     const retired = (await readRepairItem({ ALERT_STATE }, alert.signature)).item;
     assert.equal(retired.state, "repaired");
     assert.equal(retired.result.outcome, "unkeyable");
+    const projection = await readRepairQueue({ ALERT_STATE });
+    assert.equal(projection.completed_items.find(row => row.signature === alert.signature).result.outcome, "unkeyable");
     assert.equal(retired.judgment_reason, null);
 
     const queue = await readRepairQueue({ ALERT_STATE }, { now: at("2026-09-01T12:02:01Z") });
@@ -837,9 +837,7 @@ test("A5 a signature retired as unkeyable is never queued again, on the same day
     }
     // The first alert, before the dispatcher had read the signature, promised a
     // pickup. Nothing mailed after the retirement promises one again.
-    assert.match(alertBodies(mail.sent.slice(0, 1)), /Queued for automatic repair/);
-    assert.doesNotMatch(alertBodies(mail.sent.slice(1)), /Queued for automatic repair/);
-    assert.ok(mail.sent.length > 1);
+    assert.equal(mail.sent.length, 0);
 
     const stored = (await readRepairItem({ ALERT_STATE }, alert.signature)).item;
     assert.equal(stored.state, "repaired");
@@ -868,6 +866,7 @@ test("A5 the monitor's own words still retire and reopen exactly as they did", a
   const closed = await recoverRepairItem(env, signature, { now: at("2026-09-01T13:00:00Z") });
   assert.equal(closed.ok, true);
   assert.equal(closed.item.result.outcome, "recovered");
+  assert.deepEqual(closed.item.outcome_history.map((row) => row.outcome), ["recovered"]);
 
   // The condition comes back. A recovered item reopens; an unkeyable one would not.
   const again = await upsertRepairItem(env, {
@@ -879,6 +878,11 @@ test("A5 the monitor's own words still retire and reopen exactly as they did", a
   assert.equal(again.item.state, "queued");
   assert.equal(again.item.repeat_count, 2);
   assert.equal(again.item.first_seen, "2026-09-01T12:00:20.000Z");
+  assert.equal(again.item.result, null);
+  assert.deepEqual(again.item.outcome_history.map((row) => row.outcome), ["recovered"]);
+  const projection = await readRepairQueue(env, { now: at("2026-09-01T14:00:01Z") });
+  assert.deepEqual(projection.items[0].outcome_history, again.item.outcome_history);
+  assert.deepEqual(projection.completed_items, []);
 });
 
 /* --------------------------------------------------------------------------
@@ -914,7 +918,7 @@ function judgment(monitor, failureClass, subject, overrides = {}) {
   };
 }
 
-test("A6 one guard and failure class across many subjects sends exactly one mail", async () => {
+test("A6 one guard and failure class across many subjects records one Desk decision without mail", async () => {
   // Seven near-identical emails inside three minutes is what one condition
   // across seven sources used to look like, and it repeated every day the
   // condition lasted. The subjects still each keep their own repair item.
@@ -928,9 +932,9 @@ test("A6 one guard and failure class across many subjects sends exactly one mail
       { now: at("2026-09-08T10:30:00Z") },
     );
     assert.equal(emitted.length, 1);
-    assert.equal(mail.sent.length, 1);
+    assert.equal(mail.sent.length, 0);
     assert.equal(emitted[0].signatures.length, 7);
-    const body = mail.sent[0].html;
+    const body = await decisionContext(ALERT_STATE);
     assert.match(body, /Automatic repair needs your decision for source-freshness-watchdog \(freshness-stale\)/);
     assert.match(body, /7 subject\(s\)/);
     for (const id of FRESHNESS_SOURCES) assert.ok(body.includes(id), `${id} is not named in the grouped mail`);
@@ -942,11 +946,11 @@ test("A6 one guard and failure class across many subjects sends exactly one mail
       FRESHNESS_SOURCES.map((id) => judgment("source-freshness-watchdog", "freshness-stale", id)),
       { now: at("2026-09-08T10:40:00Z") },
     );
-    assert.equal(mail.sent.length, 1);
+    assert.equal(mail.sent.length, 0);
   } finally { mail.restore(); }
 });
 
-test("A6 two failure classes are two decisions and two mails", async () => {
+test("A6 two failure classes are two Desk decisions without mail", async () => {
   const ALERT_STATE = kv();
   await liveCycle(ALERT_STATE);
   const mail = captureSends();
@@ -961,7 +965,7 @@ test("A6 two failure classes are two decisions and two mails", async () => {
       { now: at("2026-09-08T10:30:00Z") },
     );
     assert.equal(emitted.length, 2);
-    assert.equal(mail.sent.length, 2);
+    assert.equal(mail.sent.length, 0);
     assert.deepEqual(emitted.map((row) => row.failure_class).sort(), ["freshness-stale", "source-contract-outage"]);
   } finally { mail.restore(); }
 });
@@ -977,8 +981,8 @@ test("A6 a grouped judgment names a long list by its first entries and a count",
       subjects.map((id) => judgment("source-freshness-watchdog", "freshness-stale", id)),
       { now: at("2026-09-08T10:30:00Z") },
     );
-    assert.equal(mail.sent.length, 1);
-    assert.match(mail.sent[0].html, /and 4 more/);
+    assert.equal(mail.sent.length, 0);
+    assert.match(await decisionContext(ALERT_STATE), /and 4 more/);
   } finally { mail.restore(); }
 });
 
@@ -1025,7 +1029,7 @@ test("A6 a subject the watchdog reads current again closes without a person, and
       const parked = (await readRepairItem(env, `monitor:source-freshness-watchdog:freshness-stale:${id}`)).item;
       assert.equal(parked.state, "needs_judgment", `${id} did not reach the judgment boundary`);
     }
-    assert.equal(mail.sent.length, 1, "seven parked subjects are one decision, not seven mails");
+    assert.equal(mail.sent.length, 0);
 
     // The next cycle: the watchdog reads current for every one of them.
     const recovered = await applyMonitorFindings(env, {
@@ -1041,7 +1045,7 @@ test("A6 a subject the watchdog reads current again closes without a person, and
     }
     // Nothing reaches the judgment boundary, so the day after sends nothing.
     await emitRepairJudgmentAlerts(env, [], { now: at("2026-09-09T10:31:00Z") });
-    assert.equal(mail.sent.length, 1);
+    assert.equal(mail.sent.length, 0);
   } finally { mail.restore(); }
 });
 
@@ -1065,7 +1069,7 @@ async function deferUpstream(env, stamp) {
   return { report, result: await reportRepairResults(env, [report], { now: at(stamp) }) };
 }
 
-test("upstream deferrals stay silent inside 24 hours and mail once on a persistent recheck", async () => {
+test("upstream deferrals stay silent inside 24 hours and record a Desk decision on a persistent recheck", async () => {
   const { REPAIR_UPSTREAM_PERSISTENCE_MS } = await import("../src/lib/repair_queue.mjs");
   assert.equal(REPAIR_UPSTREAM_PERSISTENCE_MS, 24 * 60 * 60 * 1000);
   const env = { ALERT_STATE: kv(), RESEND_API_KEY: "rk" };
@@ -1096,15 +1100,15 @@ test("upstream deferrals stay silent inside 24 hours and mail once on a persiste
     const { result, report } = await deferUpstream(env, "2026-09-02T12:02:00.000Z");
     assert.equal(result.applied[0].state, "needs_judgment");
     assert.equal(result.judgment_alerts.length, 1);
-    assert.equal(mail.sent.length, 1);
-    assert.match(mail.sent[0].html, /upstream.*24 hours/i);
+    assert.equal(mail.sent.length, 0);
+    assert.match(await decisionContext(env.ALERT_STATE), /upstream.*24 hours/i);
     const persisted = (await readRepairItem(env, UPSTREAM_SIGNATURE)).item;
     assert.equal(persisted.result.outcome, "judgment");
     assert.equal(persisted.consecutive_deferrals, 4);
     await reportRepairResults(env, [report], { now: at("2026-09-02T13:00:00Z") });
     await observeUpstream(env, "2026-09-02T13:00:00Z");
     assert.deepEqual((await dispatchRepairQueue(env, { now: at("2026-09-02T13:00:00Z"), runId: CYCLE.run_id })).items, []);
-    assert.equal(mail.sent.length, 1);
+    assert.equal(mail.sent.length, 0);
   } finally { mail.restore(); }
 });
 
@@ -1160,3 +1164,8 @@ test("elapsed time without a newer scheduled observation does not escalate upstr
     assert.equal(mail.sent.length, 0);
   } finally { mail.restore(); }
 });
+
+async function decisionContext(store) {
+  const history = JSON.parse(await store.get("ops:alert:history:v1"));
+  return history.items.filter(row => row.guard === "ops-repair-judgment").map(row => row.decision_context).join(" ");
+}

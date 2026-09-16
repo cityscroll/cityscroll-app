@@ -9,6 +9,12 @@ const clean = (value, max = 2_000) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ").trim().slice(0, max);
 
+/** Session-id token: no whitespace or controls (digest /meetings/ redirect contract). */
+const idToken = (value, max = 2_000) => clean(value, max)
+  .replace(/\s+/g, "-")
+  .replace(/-+/g, "-")
+  .replace(/^-|-$/g, "");
+
 function csvRows(csv) {
   const rows = [];
   let row = [], cell = "", quoted = false;
@@ -81,7 +87,9 @@ function sourceFields(row) {
 }
 
 export function oathTrialSessionId({ index, date, start, type }) {
-  return [clean(index, 120), clean(date, 40), clean(start, 40), clean(type, 80)].join(":");
+  return [idToken(index, 120), idToken(date, 40), idToken(start, 40), idToken(type, 80)]
+    .filter(Boolean)
+    .join(":");
 }
 
 export function observerRequestForTrial(record = {}) {
@@ -149,5 +157,7 @@ export function parseOathTrialCsv(csv, { sourceUrl = OATH_TRIAL_CALENDAR_SOURCE_
     },
   };
 }
+
+export { oathTrialCalendarOccurrences } from "./observer_calendar_occurrences.mjs";
 
 export { localDateTime };

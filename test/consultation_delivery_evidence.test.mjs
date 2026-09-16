@@ -33,7 +33,14 @@ test("A3 deployment checker is bounded and records the six named delivery fields
     });
     assert.equal(receipt.status, "pass");
     assert.equal(seen.length, 4);
-    assert.deepEqual(receipt.consumers.map((row) => row.kind), [...REQUIRED_CONSUMER_KINDS]);
+    // Written-out kinds (not the producer constant) so a missing "local"
+    // emission fails even if REQUIRED_CONSUMER_KINDS is edited in lockstep.
+    assert.deepEqual(receipt.consumers.map((row) => row.kind), [
+      "canonical_detail",
+      "search",
+      "local",
+      "now",
+    ]);
     assert.equal(receipt.source_observation.observation_ids.length, 4);
 
     // Named assertions for each of the six recorded fields.
@@ -42,11 +49,8 @@ test("A3 deployment checker is bounded and records the six named delivery fields
     assert.equal(receipt.code_revision, REVISION, "code revision");
     assert.ok(receipt.consumers.some((row) => row.kind === "canonical_detail"), "canonical detail");
     assert.ok(receipt.consumers.some((row) => row.kind === "search"), "search");
-    assert.ok(
-      receipt.consumers.some((row) => row.kind === "local")
-        && receipt.consumers.some((row) => row.kind === "now"),
-      "applicable local/Now",
-    );
+    assert.ok(receipt.consumers.some((row) => row.kind === "local"), "local");
+    assert.ok(receipt.consumers.some((row) => row.kind === "now"), "now");
     assert.deepEqual(validateDeploymentReadback(receipt), []);
   });
 });
@@ -80,6 +84,10 @@ test("A3 validator rejects a receipt that omits any of the six named fields", ()
     ...base,
     consumers: base.consumers.filter((row) => row.kind !== "search"),
   }).some((error) => error.includes("search")));
+  assert.ok(validateDeploymentReadback({
+    ...base,
+    consumers: base.consumers.filter((row) => row.kind !== "local"),
+  }).some((error) => error.includes("local")));
   assert.ok(validateDeploymentReadback({
     ...base,
     consumers: base.consumers.filter((row) => row.kind !== "now"),

@@ -1,0 +1,22 @@
+{
+  "schema": "cityscroll.procurement_place_facts_materialization.v1",
+  "version": 1,
+  "generated_at": "2026-09-14T13:10:41.533Z",
+  "policy": {
+    "join_only_through_accepted_notice_contract_relation": true,
+    "absent_optional_enrichment_renders_nothing": true
+  },
+  "rows": [
+    {
+      "request_id": "20240829105",
+      "address": "3218 Emmons Avenue, Brooklyn",
+      "units": 60,
+      "source_system": "city_record",
+      "evidence_role": "facility_service_site",
+      "attribution_label": "Notice 20240829105",
+      "notice_href": "/notices/20240829105",
+      "official_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20240829105",
+      "source_observation_ref": "city_record:20240829105"
+    }
+  ]
+}

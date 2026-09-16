@@ -10,6 +10,10 @@ import {
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import {
+  buildContractAiContextHandoff,
+  renderMoreToolsRegion,
+} from "./ai_context_handoff.mjs";
+import {
   buildContractReportTarget,
   buildContractVendorRelationshipReportTarget,
   reportIssueAction,
@@ -56,6 +60,16 @@ import { procurementSourceLinkItems } from "./procurement_source_links.mjs";
 import { buildSiteLifecycleContext, renderSiteLifecycleContext } from "./site_lifecycle_context.mjs";
 import siteLifecycleShard from "./data/site_lifecycle/0000.json" with { type: "json" };
 import siteLifecycleReverse from "./data/site_lifecycle/reverse.json" with { type: "json" };
+import {
+  contractLifecycleForProcurement,
+  filterPaymentCoverageCaveats,
+  paymentEvidenceFromLifecycle,
+  placeFactsForProcurement,
+  renderProcurementPaymentEvidenceHtml,
+  renderProcurementPlaceFactsHtml,
+} from "./procurement_payment_place_context.mjs";
+import procurementContractLifecycleMaterialization from "./data/procurement_contract_lifecycle.json" with { type: "json" };
+import procurementPlaceFactsMaterialization from "./data/procurement_place_facts.json" with { type: "json" };
 
 
 function esc(value) {
@@ -198,7 +212,17 @@ function procurementActions(object, facts) {
   const reportTarget = buildContractVendorRelationshipReportTarget(object, facts)
     || buildContractReportTarget(object, facts);
   items.push(reportIssueAction(reportTarget));
-  return items.length ? renderNodeActions(items, { ariaLabel: "Document actions", extraClass: "civic-object-actions" }) : "";
+  const primary = items.length
+    ? renderNodeActions(items, { ariaLabel: "Document actions", extraClass: "civic-object-actions" })
+    : "";
+  const handoff = buildContractAiContextHandoff({
+    procurement_id: object?.procurement_id,
+    canonical_href: procurementCanonicalHref(object),
+  });
+  const moreTools = handoff.status === "ok"
+    ? renderMoreToolsRegion({ handoff })
+    : "";
+  return `${primary}${moreTools}`;
 }
 
 function stageList(object) {
@@ -554,10 +578,42 @@ export function renderProcurementDocument(object = {}, observations = [], {
   accessClassification = null,
   siteLifecycleMaterialization = DEFAULT_SITE_LIFECYCLE,
   lookupReceipt = object?.procurement_source_lookup_receipt || null,
+  contractLifecycleMaterialization = procurementContractLifecycleMaterialization,
+  placeFactsMaterialization = procurementPlaceFactsMaterialization,
 } = {}) {
   const id = clean(object?.procurement_id, 320);
   if (!id.startsWith("procurement:")) return null;
+  const lifecycle = contractLifecycleForProcurement(
+    object,
+    observations,
+    contractLifecycleMaterialization,
+  );
+  const paymentEvidence = paymentEvidenceFromLifecycle(lifecycle);
+  const placeFacts = placeFactsForProcurement(
+    object,
+    observations,
+    placeFactsMaterialization,
+  );
   const facts = factsFor(object, observations);
+  if (paymentEvidence) {
+    if (paymentEvidence.total_spent != null && !facts.paidAmount) {
+      facts.paidAmount = formatAmount(paymentEvidence.total_spent);
+    }
+    if (paymentEvidence.original_amount != null && !facts.originalAmount) {
+      facts.originalAmount = formatAmount(paymentEvidence.original_amount);
+    }
+    if (paymentEvidence.current_amount != null && !facts.currentAmount) {
+      facts.currentAmount = formatAmount(paymentEvidence.current_amount);
+    }
+    if (paymentEvidence.start_date && !facts.start_date && !facts.startDate) {
+      facts.start_date = paymentEvidence.start_date;
+      facts.startDate = paymentEvidence.start_date;
+    }
+    if (paymentEvidence.end_date && !facts.end_date && !facts.endDate) {
+      facts.end_date = paymentEvidence.end_date;
+      facts.endDate = paymentEvidence.end_date;
+    }
+  }
   const occurrences = procurementOpportunityOccurrences(object, observations).occurrences;
   // One compact opportunity month (conference / questions / proposal dates)
   // ahead of the observed-event detail. Sparse bundles and an unsupplied day
@@ -615,8 +671,19 @@ export function renderProcurementDocument(object = {}, observations = [], {
     registeredContractCoverage,
     kind: "procurement",
   });
-  const coverageReader = projectCoverageForReaders(coverageLedger);
+  const coverageReaderBase = projectCoverageForReaders(coverageLedger);
+  const coverageReader = coverageReaderBase
+    ? {
+      ...coverageReaderBase,
+      claim_caveats: Object.freeze(filterPaymentCoverageCaveats(
+        coverageReaderBase.claim_caveats,
+        paymentEvidence,
+      )),
+    }
+    : null;
   const claimCaveatsHtml = renderCoverageClaimCaveats(coverageReader);
+  const placeFactsHtml = renderProcurementPlaceFactsHtml(placeFacts);
+  const paymentEvidenceHtml = renderProcurementPaymentEvidenceHtml(paymentEvidence);
   const representedOfficialHrefs = new Set((coverageLedger?.sources || [])
     .flatMap((source) => [source.record_href, source.official_href, source.search_href].filter(Boolean)));
   const uniqueSourceItems = sourceItems.filter((item) => !representedOfficialHrefs.has(item.href));
@@ -648,7 +715,9 @@ ${relatedContextHtml}
 ${projectContextInspect ? `<script type="application/json" data-project-context-inspect="1">${procurementJsonScriptPayload({ summary: projectContextInspect })}</script>` : ""}
 ${procurementActions(object, facts)}
 ${renderCrossSourceEvidenceReceipt(object?.cross_source_evidence_receipt)}
+${placeFactsHtml}
 ${renderNodeSection({ heading: "Contract facts", body: factsBody })}
+${paymentEvidenceHtml}
 ${renderProcurementInstitutionRoles(object, observations)}
 ${renderProcurementObjectCoverageHtml(object, observations)}
 ${renderNodeSection({

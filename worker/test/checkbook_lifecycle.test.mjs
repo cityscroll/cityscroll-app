@@ -1345,3 +1345,41 @@ test("projectPaymentRows: newest-first, capped, preserves source-null", () => {
   assert.equal(projectPaymentRows(null).length, 0);
   assert.ok(PAYMENT_ROWS_DETAIL_CAP >= 1);
 });
+
+test("projectPaymentRows: keeps distinct accounting lines that share a document id", () => {
+  const rows = projectPaymentRows([
+    {
+      id: "20270016167-1-DSB-EFT",
+      vendor: "BHRAGS HOME CARE CORP",
+      amount: 66591.17,
+      date: "2026-07-07",
+      year: "2027",
+      contractId: "CT107120258801626",
+    },
+    {
+      id: "20270016167-1-DSB-EFT",
+      vendor: "BHRAGS HOME CARE CORP",
+      amount: 54214.14,
+      date: "2026-07-07",
+      year: "2027",
+      contractId: "CT107120258801626",
+    },
+    {
+      id: "20270067127-1-DSB-EFT",
+      vendor: "BHRAGS HOME CARE CORP",
+      amount: 66216.68,
+      date: "2026-08-06",
+      year: "2027",
+      contractId: "CT107120258801626",
+    },
+  ], { limit: PAYMENT_ROWS_DETAIL_CAP });
+  assert.equal(rows.length, 3);
+  const sameDocument = rows.filter((row) => row.document_id === "20270016167-1-DSB-EFT");
+  assert.equal(sameDocument.length, 2);
+  assert.deepEqual(
+    sameDocument.map((row) => row.amount).sort((a, b) => a - b),
+    [54214.14, 66591.17],
+  );
+  assert.equal(rows[0].document_id, "20270067127-1-DSB-EFT");
+  assert.equal(rows[0].amount, 66216.68);
+});

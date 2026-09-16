@@ -1317,7 +1317,12 @@ function landActionMatter(projectRow, outcomeRecord, phaseTools){
   };
 }
 function paintLandActionRail(el, projectRow, outcomeRecord, phaseTools){
-  if(!el||!window.CrolActions) return;
+  if(!el) return;
+  // Keep the assistant handoff out of land.mjs and off the Notice cold path.
+  import("../land_ai_context_tools.mjs")
+    .then((mod) => mod.mountLandAiContextToolsBeside(el, projectRow, { translate: t }))
+    .catch(() => { /* optional assistant handoff stays absent on load failure */ });
+  if(!window.CrolActions) return;
   const matter=landActionMatter(projectRow, outcomeRecord, phaseTools);
   const actions=CrolActions.compileActionRail(matter,{today:todayISO()});
   el.innerHTML=actionRailHTML(actions,{externalActionRenderer:externalActionLink});

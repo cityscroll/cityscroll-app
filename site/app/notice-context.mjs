@@ -141,6 +141,21 @@ function contextReady(el,resultState){
   noticeContextTimingMark("first-ready");
   noticeContextReady(runtimeRumSemanticMilestones(),{resultState});
 }
+async function mountNoticeSubjectLinks(r){
+  const heading=document.querySelector("#noticeview h2.rolename");
+  if(!heading||!document.contains(heading))return;
+  // Lazy: keep the subject projection off the Notice cold path and preload chain.
+  const { renderNoticeSubjectLinksForRow } = await import("../notice_subject_client.mjs");
+  const html=await renderNoticeSubjectLinksForRow(r,{escape:escUiHtml});
+  const existing=document.querySelector("#noticeview")?.querySelector(".notice-subject-links");
+  if(!html){
+    existing?.remove();
+    return;
+  }
+  if(existing)existing.outerHTML=html;
+  else heading.insertAdjacentHTML("afterend",html);
+}
+
 async function fillContext(r,el,settledWith=[]){
   if(!el)return;
   // Primary owner: the context host, plus any attachment chip already on the
@@ -176,7 +191,12 @@ async function fillContext(r,el,settledWith=[]){
   };
   const settled=NOTICE_CONTEXT_OPTIONAL_BRANCHES.map(branch=>timedContextBranch(branch,optionalWork[branch]).catch(()=>{}));
   const additionalSettled=Array.isArray(settledWith)?settledWith:[settledWith];
-  Promise.allSettled([...settled,...additionalSettled]).then(()=>{
+  // Guarded like other deferred owners so source-extracted progressive harnesses
+  // that re-run fillContext without this helper do not throw.
+  const subjectsSettled=(typeof mountNoticeSubjectLinks==="function"
+    ? mountNoticeSubjectLinks(r)
+    : Promise.resolve()).catch(()=>{});
+  Promise.allSettled([...settled,...additionalSettled,subjectsSettled]).then(()=>{
     if(document.contains(el)){
       el.dataset.noticeContextSettled="true";
       noticeContextTimingMark("settled");

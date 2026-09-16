@@ -16,6 +16,7 @@ import {
 } from "./lib/district_activity.mjs";
 import { buildDistrictWeeklyDigests } from "./lib/district_weekly_digest.mjs";
 import { buildCommunityDistrictDigests } from "./lib/community_district_digest.mjs";
+import { GEOGRAPHY_COMMUNITY_DISTRICT_IDS } from "../worker/src/lib/subject_registry.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE_OUT = join(ROOT, "site/data/district_activity.json");
@@ -290,6 +291,19 @@ function check(doc) {
   if (cdKeys.length < 50) throw new Error("expected regular community districts");
   const councilKeys = Object.keys(doc.by_level.council_district);
   if (councilKeys.length < 51) throw new Error("expected 51 council districts");
+  // Zero-activity districts must still appear in district_items. Digests and
+  // Near You treat a missing key as a missing district, not an empty one.
+  const itemCdKeys = Object.keys(itemIndex.by_level?.community_district || {})
+    .filter((id) => GEOGRAPHY_COMMUNITY_DISTRICT_IDS.includes(id))
+    .sort();
+  const expectedCdKeys = [...GEOGRAPHY_COMMUNITY_DISTRICT_IDS].sort();
+  if (itemCdKeys.length !== expectedCdKeys.length
+    || itemCdKeys.some((id, index) => id !== expectedCdKeys[index])) {
+    const missing = expectedCdKeys.filter((id) => !itemCdKeys.includes(id));
+    throw new Error(
+      `district_items must include all ${expectedCdKeys.length} regular community districts; missing ${missing.join(",") || "(none)"}`,
+    );
+  }
   // At least land + property should have some located rows.
   if ((doc.sources?.land?.located || 0) < 1) {
     throw new Error("expected some located land activity");

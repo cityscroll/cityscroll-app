@@ -29,6 +29,10 @@ import {
   renderNodeFooter,
 } from "./civic_document_chrome.mjs";
 import {
+  buildEntityAiContextHandoff,
+  renderMoreToolsRegion,
+} from "./ai_context_handoff.mjs";
+import {
   asOfFilterCanNarrow,
   asOfHref,
   buildLedgerSummary,
@@ -227,6 +231,19 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     exportClass: "object_utilities",
     extraClass: "civic-object-actions agency-secondary-actions",
   });
+  // Contextual assistant handoff uses the exact agency entity id, never the display name.
+  const agencyEntityId = (() => {
+    const raw = String(view.canonical_id || view.id || "").trim();
+    if (!raw) return null;
+    return raw.includes(":") ? raw : `agency:id:${raw}`;
+  })();
+  const agencyAiHandoff = buildEntityAiContextHandoff({
+    entity_id: agencyEntityId,
+    canonical_href: view.path,
+  });
+  const agencyAiTools = agencyAiHandoff.status === "ok"
+    ? renderMoreToolsRegion({ handoff: agencyAiHandoff })
+    : "";
   const { sections, surfaceEdgeSummary } = agencyDeferredSectionView(
     view,
     displayView,
@@ -356,6 +373,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     ${renderAgencyConstellationStaticSections(sectionView)}
     <div data-civic-object-deferred data-civic-object-deferred-state="loading" role="status">Loading public relationships…</div>
     ${secondaryActions}
+    ${agencyAiTools}
   </main>
   ${renderNodeFooter({ extraClass: "civic-object-footer" })}
   <script defer src="${esc((assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`) + "export_workflows.js")}"></script>

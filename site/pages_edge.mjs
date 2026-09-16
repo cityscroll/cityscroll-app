@@ -15,6 +15,12 @@ import { renderMeetingDocument } from "./meeting_document.mjs";
 import { renderProcurementDocument } from "./procurement_document.mjs";
 import { buildProjectContextView, renderProjectContextHtml } from "./procurement_project_context.mjs";
 import procurementProjectContextMaterialization from "./data/procurement_project_context.json" with { type: "json" };
+import procurementContractLifecycleMaterialization from "./data/procurement_contract_lifecycle.json" with { type: "json" };
+import {
+  contractLifecycleForNotice,
+  paymentEvidenceFromLifecycle,
+  renderProcurementPaymentEvidenceHtml,
+} from "./procurement_payment_place_context.mjs";
 import { procurementShardPathForId } from "./procurement_read_model_shards.mjs";
 import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
 import sharedMeetingSnapshot from "./data/shared_meeting_read_model.json" with { type: "json" };
@@ -22,7 +28,11 @@ import rulesSemanticLaneArtifact from "./data/rules_semantic_lane.json" with { t
 import { NOTICE_MODULE_PRELOADS } from "./notice_module_preload.mjs";
 import { noticeEdgeCacheOutcome, noticeEdgeInstant, noticeEdgeTimingHeader } from "./notice_edge_response.mjs";
 import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
-import { projectNoticeObjectTarget } from "./notice_object_links.mjs";
+import {
+  projectNoticeSubjectLinks,
+  renderNoticeSubjectLinksHtml,
+} from "./notice_subject_projection.mjs";
+import noticeProcurementSubjectsLookup from "./data/notice_procurement_subjects_lookup.json" with { type: "json" };
 import {
   findMandateById,
   noticeEvidenceForMandate,
@@ -644,16 +654,50 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     officialNotice: { href: source, label: "Official record" },
   });
   const projectContextHTML = renderProjectContextHtml(projectContext, { headingId: "notice-project-context-heading" });
+  const noticeLifecycle = contractLifecycleForNotice(
+    id,
+    options.contractLifecycleMaterialization ?? null,
+  );
+  const paymentEvidenceHTML = renderProcurementPaymentEvidenceHtml(
+    paymentEvidenceFromLifecycle(noticeLifecycle),
+  );
   const browseLink = constellationLink({ href: "/browse/", label: "Browse public records", className: "act primary", escape: esc });
   const followingLink = constellationLink({ href: "/following/", label: "Follow public records", className: "act", escape: esc });
   const sourceLink = officialSourceLink({ href: source, label: "Official record", escape: esc });
   const identity = resolveAgencyIdentity(agency);
   const vendor = String(row?.vendor_name || "").trim();
-  const objectProjection = projectNoticeObjectTarget({ ...row, request_id: id });
+  const objectProjection = projectNoticeSubjectLinks({ ...row, request_id: id }, {
+    subjectsLookup: options.subjectsLookup || noticeProcurementSubjectsLookup,
+  });
+  const subjectLinks = Array.isArray(objectProjection.subjects) ? objectProjection.subjects : [];
   const projectedTarget = objectProjection.state === "matched"
     && objectProjection.target?.kind !== "notice"
     ? objectProjection.target
     : null;
+  const subjectNeighbors = subjectLinks.length
+    ? subjectLinks.map((subject) => ({
+      edge_type: "related_record",
+      relation_label: subject.continuation === "search"
+        ? `identified ${subject.kind} search`
+        : `identified ${subject.kind} object`,
+      target_kind: subject.kind,
+      target_id: subject.id,
+      target_name: subject.label,
+      href: subject.href,
+      state: "matched",
+      provenance: null,
+    }))
+    : projectedTarget ? [{
+      edge_type: "related_record",
+      relation_label: `identified ${projectedTarget.kind} object`,
+      target_kind: projectedTarget.kind,
+      target_id: projectedTarget.id,
+      target_name: projectedTarget.label,
+      href: projectedTarget.href,
+      state: "matched",
+      provenance: null,
+    }] : [];
+  const noticeSubjectLinksHTML = renderNoticeSubjectLinksHtml(subjectLinks, { escape: esc });
   const noticeLocalConstellation = buildLocalConstellation({
     kind: "record",
     subject_ref: `notice:${id}`,
@@ -662,16 +706,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     source: null,
     provenance: null,
     neighbors: row ? [
-      projectedTarget ? {
-        edge_type: "related_record",
-        relation_label: `identified ${projectedTarget.kind} object`,
-        target_kind: projectedTarget.kind,
-        target_id: projectedTarget.id,
-        target_name: projectedTarget.label,
-        href: projectedTarget.href,
-        state: "matched",
-        provenance: null,
-      } : null,
+      ...subjectNeighbors,
       identity.matched ? {
         edge_type: "published_by_agency",
         relation_label: "published by agency",
@@ -834,11 +869,13 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     <article class="panel route-item" tabindex="-1">
       <p class="ftype">${esc(kind)}${row.section_name && row.section_name !== kind ? ` · ${esc(row.section_name)}` : ""} · ${agencyLink}</p>
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
+      ${noticeSubjectLinksHTML}
       ${projectPivot}
       ${boardPivot}
       <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}${agencyReport ? ` ${agencyReport}` : ""}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}${vendorReport ? ` ${vendorReport}` : ""}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${civicTimeHistoryHTML}
       ${projectContextHTML}
+      ${paymentEvidenceHTML}
       ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
       ${mandateBacklinksHTML}
@@ -1121,6 +1158,7 @@ async function handleNotice(request, env, id) {
           currentHref: request.url,
           civicTime,
           projectContextMaterialization: procurementProjectContextMaterialization,
+          contractLifecycleMaterialization: procurementContractLifecycleMaterialization,
         }),
         { html: true },
       );

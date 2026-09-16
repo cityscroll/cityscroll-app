@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/notice-accepted-subject-links",
+  "status": "implemented",
+  "fingerprint": "notice-accepted-subject-links.v1",
+  "updated_at": "2026-09-15T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "notice-subject-projection",
+      "path": "site/notice_subject_projection.mjs"
+    },
+    {
+      "id": "notice-procurement-subjects-lookup",
+      "path": "site/data/notice_procurement_subjects_lookup.json"
+    },
+    {
+      "id": "shared-procurement-read-model-shards",
+      "path": "site/procurement_read_model_shards.mjs"
+    },
+    {
+      "id": "shared-procurement-builder",
+      "path": "tools/build_shared_procurement_read_model.mjs"
+    },
+    {
+      "id": "notice-subject-projection-tests",
+      "path": "test/notice_subject_projection.test.mjs"
+    },
+    {
+      "id": "notice-subject-capture-manifest",
+      "path": "docs/evidence/notice-subject/capture-manifest.json"
+    }
+  ]
+}

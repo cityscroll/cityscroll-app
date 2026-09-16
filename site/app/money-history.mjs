@@ -1075,7 +1075,7 @@ function renderDetail(r, chain, stats, loadContext = true){
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
     ${(r.procurement_id || r.canonical_href) ? renderReportIssueAffordance(buildContractReportTarget(r), { escape: escUiHtml }) : ""}
-  </div>`;
+  </div><div data-ai-context-notice-mount="1" data-request-id="${escUiHtml(r.request_id||"")}"></div>`;
   html += solicitationContextHeadingHTML(r);
   html += pursuitSnapshotHTML(r);
   html += `<div id="dcontext" data-export-class="notice_context"></div><div id="dactions" data-export-class="actions"></div>`;
@@ -1108,6 +1108,18 @@ function renderDetail(r, chain, stats, loadContext = true){
   bindQRShare($("#dqr"), detailURL);
   const dx = $("#dxlsx"); if(dx && !pending) dx.addEventListener("click", ()=>exportNoticeXlsx(r, chain));
   const dp = $("#dprint"); if(dp) dp.addEventListener("click", ()=>printCurrentView("notice", detailURL));
+  // Assistant handoff stays off the Notice cold-path closure; mount after paint.
+  const aiMount = $("#detail")?.querySelector?.("[data-ai-context-notice-mount]");
+  if (aiMount && r.request_id) {
+    import("../ai_context_handoff.mjs").then(({ buildNoticeAiContextHandoff, renderMoreToolsRegion }) => {
+      if (!aiMount.isConnected) return;
+      const handoff = buildNoticeAiContextHandoff({
+        request_id: r.request_id,
+        canonical_href: `/notices/${encodeURIComponent(r.request_id)}/`,
+      });
+      aiMount.outerHTML = handoff.status === "ok" ? renderMoreToolsRegion({ handoff }) : "";
+    }).catch(() => { /* optional assistant handoff stays absent on load failure */ });
+  }
   if(pending) return; // context/dollars fetch once, on the hydrated render
   if (loadContext) {
     const contextReady = globalThis.ensureNoticeContext?.() || Promise.resolve();

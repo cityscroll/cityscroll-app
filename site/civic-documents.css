@@ -621,6 +621,45 @@ select {
   filter: brightness(.97);
 }
 
+.more-tools {
+  margin-block: var(--space-3) var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.more-tools > summary {
+  cursor: pointer;
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  list-style: none;
+}
+
+.more-tools > summary::-webkit-details-marker {
+  display: none;
+}
+
+.more-tools > summary:focus-visible {
+  outline: 2px solid var(--color-focus, var(--color-action));
+  outline-offset: 3px;
+}
+
+.more-tools-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-end: 0;
+}
+
+.ai-context-scope-action {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: var(--space-2);
+}
+
 .node-section,
 .exam-section,
 .civic-object-section {

@@ -25,6 +25,7 @@ export const CROSS_SOURCE_COVERAGE_STATES = Object.freeze([
   "ambiguous",
   "unavailable",
   "stale",
+  "partial",
   "not-applicable",
 ]);
 
@@ -35,6 +36,7 @@ const STATE_LABELS = Object.freeze({
   ambiguous: "Identity is ambiguous",
   unavailable: "Source unavailable",
   stale: "Source snapshot is stale",
+  partial: "Partial coverage in this source",
   "not-applicable": "Not applicable to this record",
 });
 
@@ -337,7 +339,7 @@ function sourceRow({
     ? Number(classification.denominator) : null;
   const population = text(classification.population)
     || (denominator != null ? text(inventory?.id) && `${sourceName(system)} retained observations` : null);
-  const unresolved = ["not-checked", "ambiguous", "unavailable", "stale"].includes(classification.state);
+  const unresolved = ["not-checked", "ambiguous", "unavailable", "stale", "partial"].includes(classification.state);
   return Object.freeze({
     source_system: system,
     source_name: sourceName(system),
@@ -480,6 +482,7 @@ const CLAIM_CONSEQUENTIAL_STATES = Object.freeze(new Set([
   "stale",
   "not-checked",
   "ambiguous",
+  "partial",
 ]));
 
 const PAYMENT_CLAIM_SOURCES = Object.freeze(new Set([
@@ -498,6 +501,7 @@ const READER_STATE_SUMMARY = Object.freeze({
   stale: "stale",
   "not-checked": "not checked",
   ambiguous: "ambiguous",
+  partial: "partial",
 });
 
 function dayStamp(value) {
@@ -548,6 +552,14 @@ function claimCaveatFor(source) {
         source_system: source.source_system,
         state: source.state,
         text: `${source.source_name} has not been checked for this contract, so a paid total is not treated as complete.`,
+      });
+    }
+    if (source.state === "partial") {
+      return Object.freeze({
+        claim: "paid_amount",
+        source_system: source.source_system,
+        state: source.state,
+        text: `${source.source_name} has only partial coverage for this contract, so a paid total is not treated as complete.`,
       });
     }
   }

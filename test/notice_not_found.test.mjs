@@ -20,7 +20,7 @@ test("City Record links require a valid request id", () => {
 });
 
 test("notice-not-found action uses the validated URL helper", () => {
-  const source = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
+  const source = readFileSync(new URL("../site/notice_subject_client.mjs", import.meta.url), "utf8");
   const block = source.slice(source.indexOf("if(!r){"), source.indexOf("// Header", source.indexOf("if(!r){")));
   assert.match(block, /cityRecordRequestUrl\(id\)/);
   assert.doesNotMatch(block, /REQ_URL\(id\)/);

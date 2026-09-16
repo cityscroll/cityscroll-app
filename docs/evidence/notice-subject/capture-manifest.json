@@ -1,0 +1,91 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "notice subject contract link",
+  "condition": "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; no image binary is committed.",
+  "image_binaries_committed": false,
+  "revision": "d6199c64c",
+  "data_vintage": "shared procurement read model; pilot notice 20240829105 -> procurement:contract:CT107120258801626",
+  "route": "/notices/20240829105/",
+  "captures": [
+    {
+      "case": "notice-subject-no-javascript",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "No-JavaScript delivery keeps View contract and the official source on the composed notice document.",
+      "render_sha256": "6040294408d9d99919850a3e4b00dd5af15bec73c33de301237a385a18569ff5"
+    },
+    {
+      "case": "notice-subject-failed-enhancement",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "Blocking the app entry preserves the readable edge document, View contract link, and official source.",
+      "render_sha256": "6040294408d9d99919850a3e4b00dd5af15bec73c33de301237a385a18569ff5"
+    },
+    {
+      "case": "notice-subject-successful-hydration",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "The edge response and successful client path keep compact chrome, expose a canonical View contract link to CT107120258801626, and retain the official City Record source.",
+      "render_sha256": "d1a9ad8895d4c86142a9d759b230b0a0aa15c3a8c0e021ad51bda55941cef1e8"
+    },
+    {
+      "case": "notice-subject-home-back",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "Home then Back returns to the composed notice with the subject link intact.",
+      "render_sha256": "d1a9ad8895d4c86142a9d759b230b0a0aa15c3a8c0e021ad51bda55941cef1e8"
+    },
+    {
+      "case": "notice-subject-no-javascript",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "No-JavaScript delivery keeps View contract and the official source on the composed notice document.",
+      "render_sha256": "6040294408d9d99919850a3e4b00dd5af15bec73c33de301237a385a18569ff5"
+    },
+    {
+      "case": "notice-subject-failed-enhancement",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "Blocking the app entry preserves the readable edge document, View contract link, and official source.",
+      "render_sha256": "6040294408d9d99919850a3e4b00dd5af15bec73c33de301237a385a18569ff5"
+    },
+    {
+      "case": "notice-subject-successful-hydration",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "The edge response and successful client path keep compact chrome, expose a canonical View contract link to CT107120258801626, and retain the official City Record source.",
+      "render_sha256": "d1a9ad8895d4c86142a9d759b230b0a0aa15c3a8c0e021ad51bda55941cef1e8"
+    },
+    {
+      "case": "notice-subject-home-back",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "Home then Back returns to the composed notice with the subject link intact.",
+      "render_sha256": "d1a9ad8895d4c86142a9d759b230b0a0aa15c3a8c0e021ad51bda55941cef1e8"
+    }
+  ]
+}

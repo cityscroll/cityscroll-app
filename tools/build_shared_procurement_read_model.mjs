@@ -36,12 +36,14 @@ import {
   shardNamesOnDisk as shardNamesUnder,
   verifyFromCheckReceipt,
 } from "./lib/generated_artifact_check_receipt.mjs";
+import { checkNoticeProcurementSubjectsLookup } from "../site/notice_subject_projection.mjs";
 
 const SPINE = new URL("../site/data/procurement_spine_sources.json", import.meta.url);
 const MTA_FIXTURES = new URL("../warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json", import.meta.url);
 const AWARDS = new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url);
 const MODEL_OUT = new URL("../site/data/shared_procurement_read_model.json", import.meta.url);
 const MODEL_SHARD_DIR = new URL("../site/data/shared_procurement_read_model/", import.meta.url);
+const NOTICE_SUBJECTS_OUT = new URL("../site/data/notice_procurement_subjects_lookup.json", import.meta.url);
 const BROWSE_OUT = new URL("../site/data/procurement_browse_rows.json", import.meta.url);
 const BROWSE_QUERY_OUT = new URL("../site/data/procurement_browse_query.json", import.meta.url);
 const BROWSE_QUERY_ROWS_OUT = new URL("../site/data/procurement_browse_query_rows.json", import.meta.url);
@@ -344,6 +346,7 @@ function shardedModelGroup(model) {
     expectedNames: new Set(artifacts.manifest.shards.map((descriptor) => descriptor.path.split("/").at(-1))),
     outputs: [
       [MODEL_OUT, serialized(artifacts.manifest)],
+      [NOTICE_SUBJECTS_OUT, serialized(artifacts.noticeSubjects)],
       ...artifacts.manifest.shards.map((descriptor, index) => [
         shardPath(descriptor),
         serialized(artifacts.shards[index]),
@@ -465,6 +468,28 @@ function checkGroups(groups) {
   return current;
 }
 
+function checkNoticeSubjectsProjection(model) {
+  let lookup;
+  try {
+    lookup = JSON.parse(readFileSync(NOTICE_SUBJECTS_OUT, "utf8"));
+  } catch {
+    console.error("stale procurement artifact: notice procurement subjects lookup is missing");
+    return false;
+  }
+  const artifacts = buildSharedProcurementReadModelShardArtifacts(model);
+  const result = checkNoticeProcurementSubjectsLookup(lookup, {
+    expectedSourceModelFingerprint: model?.coherence_receipt?.source_model_fingerprint || null,
+    expectedGeneratedAt: model?.generated_at || null,
+    rebuildFromRows: model?.rows || [],
+    manifestDescriptor: artifacts.manifest.notice_procurement_subjects,
+  });
+  if (result.ok) return true;
+  for (const item of result.findings) {
+    console.error(`stale notice procurement subjects projection: ${item.code}: ${item.message}`);
+  }
+  return false;
+}
+
 function repoRelative(url) {
   return relative(fileURLToPath(ROOT), fileURLToPath(url)).replaceAll("\\", "/");
 }
@@ -568,6 +593,7 @@ function buildAndEmit() {
   ];
   if (process.argv.includes("--check")) {
     if (!checkGroups(groups)) process.exitCode = 1;
+    if (!checkNoticeSubjectsProjection(model)) process.exitCode = 1;
     if (!process.exitCode) console.log(`procurement artifacts current (${model.rows.length} objects)`);
     return;
   }
@@ -576,12 +602,35 @@ function buildAndEmit() {
   console.log(`wrote procurement artifacts (${model.rows.length} objects, ${browse.rows.length} Browse rows, ${digest.row_count} CROL-negative digest rows)`);
 }
 
+function checkCommittedNoticeSubjectsAgainstModelFingerprint() {
+  let lookup;
+  let model;
+  try {
+    lookup = JSON.parse(readFileSync(NOTICE_SUBJECTS_OUT, "utf8"));
+    model = JSON.parse(readFileSync(MODEL_OUT, "utf8"));
+  } catch {
+    console.error("stale procurement artifact: notice subjects lookup or shared model is unreadable");
+    return false;
+  }
+  const result = checkNoticeProcurementSubjectsLookup(lookup, {
+    expectedSourceModelFingerprint: model?.coherence_receipt?.source_model_fingerprint || null,
+    expectedGeneratedAt: model?.generated_at || null,
+    manifestDescriptor: model?.notice_procurement_subjects,
+  });
+  if (result.ok) return true;
+  for (const item of result.findings) {
+    console.error(`stale notice procurement subjects projection: ${item.code}: ${item.message}`);
+  }
+  return false;
+}
+
 function main() {
   if (process.argv.includes("--check")) {
     const verified = checkFromReceipt();
     if (verified) {
       if (!verified.current) process.exitCode = 1;
-      else console.log(`procurement artifacts current (${verified.rowCount} objects)`);
+      if (!checkCommittedNoticeSubjectsAgainstModelFingerprint()) process.exitCode = 1;
+      if (!process.exitCode) console.log(`procurement artifacts current (${verified.rowCount} objects)`);
       return;
     }
   }

@@ -216,6 +216,7 @@
 /site/agency_source_identity_contract.mjs
 /site/agency_vendor_rollup.mjs
 /site/agenda_project_groups.mjs
+/site/ai_context_handoff.mjs
 /site/ai_discovery.mjs
 /site/alerts_context_carry.mjs
 /site/alerts_rollup_prefs.mjs
@@ -263,6 +264,7 @@
 /site/calendar_occurrence.mjs
 /site/calendar_subscription.mjs
 /site/canonical_entity_interpretation.mjs
+/site/capability_discovery_contract.mjs
 /site/cardinality_adaptive_facets.mjs
 /site/changelog-data.json
 /site/changelog.html
@@ -440,6 +442,7 @@
 /site/data_health_navigation.mjs
 /site/data_health_page.mjs
 /site/dcas_vehicle_auctions.mjs
+/site/deeplink_filter.mjs
 /site/demo/
 /site/derived_feature_rollup.mjs
 /site/digest_item_awareness.mjs
@@ -480,6 +483,7 @@
 /site/geography_relations.mjs
 /site/government_observation_refresh.mjs
 /site/government_observe.mjs
+/site/government_observer_calendar_feed.mjs
 /site/graph_edge_provenance.mjs
 /site/guide.css
 /site/guide/
@@ -509,6 +513,7 @@
 /site/land_action_procedure_resolution.mjs
 /site/land_actor_outcome.mjs
 /site/land_affected_review_body.mjs
+/site/land_ai_context_tools.mjs
 /site/land_authority_summary.mjs
 /site/land_authority_summary_view.mjs
 /site/land_decision_path.mjs
@@ -630,6 +635,8 @@
 /site/notice_object_links.mjs
 /site/notice_permalink.mjs
 /site/notice_primary_readiness.mjs
+/site/notice_subject_client.mjs
+/site/notice_subject_projection.mjs
 /site/now-reading-level-ratchet.json
 /site/now_calendar.mjs
 /site/now_calendar_switch.mjs
@@ -637,6 +644,7 @@
 /site/now_view.mjs
 /site/oath_trial_calendar.mjs
 /site/oath_trial_observation.mjs
+/site/observer_calendar_occurrences.mjs
 /site/official_connections.mjs
 /site/official_influence.mjs
 /site/official_influence_ui.mjs
@@ -686,6 +694,7 @@
 /site/procurement_intent_watch_continuity.mjs
 /site/procurement_object_contract.mjs
 /site/procurement_opportunity_window.mjs
+/site/procurement_payment_place_context.mjs
 /site/procurement_phase_spine.mjs
 /site/procurement_pin.mjs
 /site/procurement_planning_gate.mjs

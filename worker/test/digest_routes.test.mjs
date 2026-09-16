@@ -23,6 +23,7 @@ const EXPECTED_CONTRACT = {
 const MEETING_IDS = [
   "meeting:community_board:calendar@example.google.com::2026-09-08",
   "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+  "meeting:oath_trial_calendar:260090:2026-09-01:09:30:00:Scheduled-For-Trial",
 ];
 
 test("every digest redirect kind round-trips to its contracted live permalink", () => {

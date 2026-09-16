@@ -1,14 +1,20 @@
 import { noticeDocumentUrl } from "../notice_permalink.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
+import {
+  DEEPLINK_BOROS,
+  DEEPLINK_CATEGORIES,
+  DEEPLINK_LENSES,
+  DEEPLINK_PROCESS_STATES,
+  deeplinkClampField,
+  sanitizeDeepLinkFilter,
+} from "../deeplink_filter.mjs";
 import { landProjectPath } from "../land_project_route.mjs";
 import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { agencyNameFromEntityFacet } from "../agency_scope_route.mjs";
 import { entityRouteRef } from "../entity_pivot.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
 import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.mjs";
-import { renderNoticeBitemporalHistory } from "../civic_time_ledger.mjs";
 import { retainSearchHandoffForQuery } from "../search_lens_handoff.mjs";
-import { normalizeCommunityBoardRef } from "../community_board_watch.mjs";
 import { landFilterStateFromRouteParams } from "../land_filter_parity.mjs";
 import {
   LAND_VIEW_FALLBACK_REASONS,
@@ -41,14 +47,12 @@ import {
 import {
   noticeContextReady,
   noticeContextTimingMark,
-  noticeContextTimingMeasure,
-  noticePrimaryOutcomeFromEdge,
-  noticePrimaryOwnerNow,
-  noticePrimaryReady,
-  noticePrimaryTimingMark,
   runtimeRumSemanticMilestones,
 } from "../rum_static_record_instrumentation.mjs";
-import { noticeProcurementChain, renderNoticeLandSpine, renderNoticeMeetingOutcomes } from "../notice_lens_sections.mjs";
+
+function showNotice(id, watch) {
+  return import("../notice_subject_client.mjs").then((module) => module.showNotice(id, watch));
+}
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -508,173 +512,6 @@ function pushHash(){ // tab changes create a history entry (back returns to the 
 // state, nothing identifying beyond the notice id itself (the URL is exactly as shareable as a
 // plain "#notice/<id>" link already was).
 //
-// DEEPLINK_LENSES/deeplinkClampField/sanitizeDeepLinkFilter are a hand-synced client port of
-// worker/src/lib/filter.mjs's LENSES/clampField/sanitize -- same dual-implementation convention
-// as external_awards.js/lib/external_award.mjs (see AGENTS.md). test/deeplink_watch.test.mjs
-// cross-checks the two stay in sync. Reusing sanitize()'s clamp-to-schema behavior is what makes
-// an unexpected extra key or an out-of-range value fail soft (silently dropped, not an error)
-// rather than break rendering.
-const DEEPLINK_LENSES = {
-  // Keep field-for-field parity with worker/src/lib/filter.mjs LENSES (deeplink_watch.test).
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "place_role", "procurement_id", "processState"],
-  people:   ["keywords", "lookupType", "view", "interest", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
-  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
-  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
-  rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version"],
-  district: ["councilDistrict"],
-  entity:   ["name", "kind", "tab", "entity_refs_all"],
-  mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
-  obligations: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
-  legal_code: ["provision_id"],
-  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
-  award:    ["requestId", "agency"],
-};
-const DEEPLINK_CATEGORIES = ["Goods", "Goods and Services", "Services (other than human services)",
-  "Human Services/Client Services", "Construction/Construction Services", "Construction Related Services"];
-const DEEPLINK_BOROS = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
-const DEEPLINK_PROCESS_STATES = ["planned", "open", "responses_closed", "evaluation", "selection_made",
-  "intent_to_negotiate", "intent_to_award", "award", "contract_in_progress", "pending_registration",
-  "registered", "payment", "closed", "vendor_list"];
-// Hand-synced with site/scope_v0.mjs's PLACE_ROLES (venue/matter/affected_area) — the one
-// canonical place-role predicate; see that module for what each value means.
-const DEEPLINK_PLACE_ROLES = ["venue", "matter", "affected_area"];
-function deeplinkClampField(name, v){
-  switch(name){
-    case "keywords": return Array.isArray(v) ? v.map(k=>String(k).toLowerCase().trim()).filter(Boolean).slice(0,4) : [];
-    case "geographies": {
-      const publicKey=/^geography:(?:borough:[1-5]|community_district:(?:M|X|K|Q|R)\d{2}|council_district:(?:[1-9]|[1-4]\d|5[01])|nta2020:(?:BK|BX|MN|QN|SI)\d{4}|police_precinct:(?:[1-9]|[1-9]\d|1[01]\d|12[0-3]))$/;
-      return Array.isArray(v) ? [...new Set(v.map(item=>String(item||"").trim()).filter(item=>item.length<=100&&publicKey.test(item)))].sort().slice(0,8) : [];
-    }
-    case "agency": return typeof v==="string" && v.trim() ? v.trim() : null;
-    case "communityBoard": return normalizeCommunityBoardRef(v);
-    case "agency_id": { const s=typeof v==="string"?v.trim().toLowerCase():""; return /^[a-z0-9][a-z0-9-]{1,80}$/.test(s)?s:null; }
-    case "matter_ref": {
-      const s = typeof v === "string" ? v.trim().toLowerCase() : "";
-      const match = s.match(/^(legistar):([a-z0-9-]+):matter:(\d+)$/) || (/^\d+$/.test(s) ? ["", "legistar", "nyc", s] : null);
-      return match && match[2] === "nyc" ? `legistar:nyc:matter:${match[3]}` : null;
-    }
-    case "matter_scope_version": {
-      const n = typeof v === "number" ? v : (typeof v === "string" && v.trim() ? Number(v) : NaN);
-      return Number.isInteger(n) && n === 1 ? 1 : null;
-    }
-    case "provision_id": {
-      const s = typeof v === "string" ? v.trim() : "";
-      const citation = s
-        .replace(/[§]/g, " ")
-        .replace(/^(?:nyc-administrative-code|nyc-admin-code):/i, "")
-        .trim()
-        .match(/^(\d+[a-z]?-[0-9a-z.]+)$/i);
-      return citation ? `nyc-administrative-code:${citation[1].toLowerCase()}` : null;
-    }
-    case "mandate_id": {
-      // Exact statutory duty id — bare id or legacy mandate:/obligation: subject ref.
-      // Keep field-for-field parity with worker/src/lib/filter.mjs + site/mandate_subject_ref.mjs.
-      let s = typeof v === "string" ? v.trim() : "";
-      const legacy = s.match(/^(?:mandate|obligation):([^:\s]+)$/i);
-      if (legacy) s = legacy[1];
-      if (!s || /\s/.test(s) || s.includes(":")) return null;
-      return /^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$/.test(s) ? s : null;
-    }
-    case "deliverable_type": { const s=typeof v==="string"?v.trim().toLowerCase():""; return ["report","rulemaking","program","data publication","other"].includes(s)?s:null; }
-    case "windowDays": {
-      const n=typeof v==="number"?v:(typeof v==="string"&&v.trim()?Number(v):NaN);
-      if(!Number.isFinite(n)) return null;
-      const days=Math.round(n);
-      return days>=1&&days<=365?days:null;
-    }
-    case "minAmount": return typeof v==="number" && v>=1000 ? Math.round(v) : null;
-    case "maxAmount": return typeof v==="number" && v>=1000 ? Math.round(v) : null;
-    case "category": return DEEPLINK_CATEGORIES.includes(v) ? v : null;
-    case "months": return typeof v==="number" && v>0 && v<=60 ? Math.round(v) : null;
-    case "noticeType": return v==="award" ? "award" : v==="solicitation" ? "solicitation" : null;
-    case "excludeSpecial": return !!v;
-    case "boro": { const s = typeof v==="string" ? v.trim().toLowerCase() : ""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s) || null; }
-    case "status": return v==="all" ? "all" : v==="active" ? "active" : null;
-    case "procedure": return ["review","ulurp","elurp","non_ulurp"].includes(v) ? v : null;
-    case "family": {
-      const s=typeof v==="string"?v.trim().toLowerCase().replace(/-/g,"_"):"";
-      return [
-        "acquisition","disposition","certification","renewal","major_concession","legal_document",
-        "rezoning","special_permit","authorization","site_selection","mapping","demapping",
-        "urban_renewal","landmark","follow_up","office_space","bid","franchise_consent",
-        "housing_plan","pops","landfill",
-      ].includes(s) ? s : null;
-    }
-    case "regulatoryEffect": {
-      const raw=typeof v==="string"?v.trim().toLowerCase().replace(/[\s-]+/g,"_"):"";
-      const s=({up_zone:"upzone",down_zone:"downzone"})[raw]||raw;
-      return ["upzone","downzone","mixed","no_density_change"].includes(s)?s:null;
-    }
-    case "futureAction": return ["any","none","any_future","hearing","non_hearing"].includes(v)?v:null;
-    case "attendance": return ["in_person","livestream","hybrid"].includes(v)?v:null;
-    case "when": return ["all","upcoming","week","month","past"].includes(v) ? v : null;
-    case "borough": { const s=typeof v==="string"?v.trim().toLowerCase():""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s)||null; }
-    case "neighborhood": return typeof v==="string"&&v.trim()?v.replace(/\s+/g," ").trim().slice(0,80):null;
-    case "locationScope": return v==="citywide-unlocated"||v==="citywide"||v==="virtual"||v==="unlocated"?v:null;
-    case "dateWindow": return ["week","month","upcoming"].includes(v)?v:null;
-    case "lookupType": return v==="person" ? "person" : v==="role" ? "role" : null;
-    case "view": return v==="guide" ? "guide" : null;
-    case "interestArea": return ["public-safety","health-care","engineering-construction","technology-science","community-social-services","administration-finance","trades-operations"].includes(v)?v:null;
-    case "interestLabel": return typeof v==="string"&&v.trim()?v.replace(/\s+/g," ").trim().slice(0,80):null;
-    case "examNumber": return typeof v==="string" && /^\d{4}$/.test(v.trim()) ? v.trim() : null;
-    case "name": return typeof v==="string" && v.trim() ? v.replace(/\s+/g," ").trim().slice(0,120) : null;
-    case "kind": return v==="agency" ? "agency" : v==="vendor" ? "vendor" : null;
-    case "watchType": return v==="rezone" ? "rezone" : null;
-    case "place": return typeof v==="string" && v.trim() ? v.trim() : null;
-    case "requestId": return typeof v==="string" && /^[A-Za-z0-9_-]{4,40}$/.test(v.trim()) ? v.trim() : null;
-    case "request_ids": return Array.isArray(v) ? [...new Set(v.map(item=>String(item||"").trim()).filter(item=>/^[A-Za-z0-9][A-Za-z0-9_-]{0,80}$/.test(item)))].sort().slice(0,24) : [];
-    case "procurement_id": { const s=typeof v==="string"?v.trim():""; return /^procurement:[a-z0-9-]+:[A-Za-z0-9._:-]{3,120}$/.test(s)?s:null; }
-    case "entity_refs_all": return Array.isArray(v) ? [...new Set(v.map(item=>String(item||"").trim()).filter(item=>/^(?:agency:[^:\s]+:[^:\s]+|vendor:stem:[^:\s]+|entity:official:[^:\s]+|project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}|notice:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|pin:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|exam:\d{4}|bbl:\d{10})$/.test(item)))].slice(0,20) : [];
-    case "connection_relation": return typeof v==="string" && ["published_by_agency","applicant_agency","hosts_meeting","named_vendor","sited_on_parcel","votes_on","references_contract","registered_as","shares_authority_key","about_notice","parcel_links_project","named_owner","same_rulemaking"].includes(v) ? v : null;
-    case "place_role": return DEEPLINK_PLACE_ROLES.includes(v) ? v : null;
-    case "processState": {
-      // Hand-synced with worker/src/lib/filter.mjs + KNOWN_PROCUREMENT_PROCESS_STATES.
-      const s=typeof v==="string"?v.trim().toLowerCase():"";
-      return DEEPLINK_PROCESS_STATES.includes(s)?s:null;
-    }
-    case "closingWeek": return !!v;
-    case "route": return v==="agency" || v==="vendor" ? v : null;
-    case "tab": return v==="forecast" || v==="overview" ? v : null;
-    case "communityDistrict": { const s=typeof v==="string"?v.trim().toUpperCase():""; return /^(?:M|X|K|Q|R)\d{2}$/.test(s)?s:null; }
-    case "councilDistrict": { const s=(typeof v==="string"||typeof v==="number")?String(v).trim():""; return /^(?:[1-9]|[1-4]\d|5[01])$/.test(s)?s:null; }
-    case "nearMe": return !!v;
-    case "process": {
-      const allowed=["proposal","public_process","adoption","effective","unstaged","hearing","auction_or_rfp","award_or_conveyance","scheduled","agenda","held","outcomes"];
-      return allowed.includes(v)?v:null;
-    }
-    case "stage": { const s=typeof v==="string"?v.trim():""; return s&&s!=="all"?s.slice(0,40):null; }
-    case "asset": { const s=typeof v==="string"?v.trim():""; return s&&s!=="all"?s.slice(0,40):null; }
-    case "saleMethod": {
-      const s=typeof v==="string"?v.trim().toLowerCase().replace(/-/g,"_"):"";
-      return ["online_auction","public_auction","sealed_bid","rfp","lease_auction"].includes(s)?s:null;
-    }
-    case "priceBand": {
-      const s=typeof v==="string"?v.trim().toLowerCase().replace(/-/g,"_"):"";
-      return ["priced","under_10k","10k_100k","100k_plus"].includes(s)?s:null;
-    }
-    case "sort": {
-      const s=typeof v==="string"?v.trim().toLowerCase().replace(/-/g,"_"):"";
-      return ["closing_soon","newest","price_desc","price_asc"].includes(s)?s:null;
-    }
-    default: return null;
-  }
-}
-function sanitizeDeepLinkFilter(lens, input){
-  const fields = DEEPLINK_LENSES[lens] || DEEPLINK_LENSES.money;
-  const f = input || {};
-  const out = {};
-  for(const name of fields) out[name] = deeplinkClampField(name, f[name]);
-  if(!out.geographies?.length) delete out.geographies;
-  if(!out.place_role) delete out.place_role;
-  if(!out.procurement_id) delete out.procurement_id;
-  if(!out.processState) delete out.processState;
-  if(!out.provision_id) delete out.provision_id;
-  if(!out.matter_ref) delete out.matter_ref;
-  if(!out.matter_scope_version) delete out.matter_scope_version;
-  if(f.text_query?.version===1) out.text_query=f.text_query;
-  return out;
-}
 // raw is already percent-decoded (URLSearchParams.get()). null on anything malformed, truncated
 // (JSON.parse throws), or naming an unrecognized lens -- the caller then renders the plain
 // notice view, same as if no watch had been carried at all.
@@ -1474,250 +1311,6 @@ function setNoticeCompactCta(){
 }
 
 const NOTICE_SELECT = SELECT + ",event_date,street_address_1,section_name,additional_description_2,additional_description_3,other_info_2,other_info_3,printout_1,printout_2,printout_3,building_name,city,state,zip_code";
-let attachmentLookupPromise=null;
-function noticeAttachmentFallbacks(notice){
-  const raw=notice?.document_links;
-  const values=[];
-  const visit=value=>{
-    if(!value)return;
-    if(Array.isArray(value)){value.forEach(visit);return;}
-    if(typeof value==="object"){visit(value.url||value.href||value.link);return;}
-    const text=String(value).trim();
-    if(!text)return;
-    try{const parsed=JSON.parse(text);if(parsed!==text){visit(parsed);return;}}catch(e){}
-    text.replace(/&amp;/gi,"&").split(/\s*[,|]\s*(?=https?:\/\/)/).forEach(item=>values.push(item));
-  };
-  visit(raw);
-  const seen=new Set();
-  return values.map(value=>{
-    try{
-      const url=new URL(value);
-      const documentId=url.searchParams.get("documentId")||url.searchParams.get("DocumentID")||url.searchParams.get("documentid");
-      if(url.protocol!=="https:"||url.hostname!=="a856-cityrecord.nyc.gov"||!/^\/Search\/GetFile$/i.test(url.pathname)||!documentId||seen.has(documentId))return null;
-      seen.add(documentId);
-      return {request_id:String(notice?.request_id||""),document_id:documentId,title:null,url:url.href,content_type:null,bytes:null,source:"dataset"};
-    }catch(e){return null;}
-  }).filter(Boolean);
-}
-async function noticeAttachmentMetadata(id, notice=null){
-  try{
-    const response=await workerFetch("/attachment-metadata?id="+encodeURIComponent(id),null,4000);
-    if(response.ok){
-      const data=await response.json();
-      if(Array.isArray(data.attachments) && data.attachments.length) return data;
-    }
-  }catch(e){}
-  if(!attachmentLookupPromise){
-    attachmentLookupPromise=fetch("data/attachment_metadata_lookup.json")
-      .then(response=>response.ok?response.json():null).catch(()=>null);
-  }
-  const lookup=await attachmentLookupPromise;
-  const attachments=lookup && Array.isArray(lookup.notices?.[String(id)])?lookup.notices[String(id)]:[];
-  if(attachments.length) return {request_id:String(id),n_attachments:attachments.length,attachments};
-  const fallback=noticeAttachmentFallbacks(notice);
-  if(fallback.length) return {request_id:String(id),n_attachments:fallback.length,attachments:fallback};
-  return {request_id:String(id),n_attachments:attachments.length,attachments};
-}
-async function showNotice(id, watch){
-  noticeContextTimingMark("route-start");
-  showTab("notice");
-  const box = $("#noticeview");
-  const safeId = String(id).replace(/[<>&]/g,"");
-  const edgeNotice=box.querySelector(`[data-edge-rendered][data-notice-id="${CSS.escape(String(id))}"]`);
-  const edgePrimaryState=noticePrimaryOutcomeFromEdge(edgeNotice?.dataset.edgeRendered);
-  if(edgePrimaryState){
-    // Read the owner clock at the boundary itself so content_ready_ms stays the
-    // owner's timing even when the production reporter installs later.
-    const edgePrimaryAt=noticePrimaryOwnerNow();
-    noticePrimaryTimingMark("edge-primary-ready");
-    noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:edgePrimaryState},edgePrimaryAt);
-  }
-  // The edge-rendered body is the primary interaction boundary. Optional route
-  // modules and the client read/enrichment path may start after that boundary,
-  // but must not delay its semantic readiness measurement.
-  noticePrimaryTimingMark("deferred-owners-start");
-  const optionalRouteModules = Promise.allSettled([
-    globalThis.ensureMoneyHistory?.(),
-    globalThis.ensureRules?.(),
-  ]);
-  const meetingFirstPaint=box.querySelector("[data-meeting-outcomes-first-paint]")?.outerHTML||"";
-  if(!edgeNotice) box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("fetching_notice_id",{id:safeId})}</div>`;
-  let r = null;
-  let attachmentDataPromise = Promise.resolve(null);
-  try{
-    noticeContextTimingMark("notice-read-start");
-    const noticeRowsPromise = import("../notice-read.mjs").then(m=>m.read(id));
-    const rows = await noticeRowsPromise;
-    r = rows[0];
-    noticeContextTimingMark("notice-read-end");
-    // Attachment metadata is optional context. Start it after the primary row is
-    // available, but do not await it before the first useful body or context state.
-    noticeContextTimingMark("attachment-start");
-    attachmentDataPromise = noticeAttachmentMetadata(id,r)
-      .then(data=>{
-        noticeContextTimingMark("attachment-end");
-        noticeContextTimingMeasure("attachment");
-        return data;
-      })
-      .catch(()=>{
-        noticeContextTimingMark("attachment-end");
-        noticeContextTimingMeasure("attachment");
-        return null;
-      });
-  }catch(e){}
-  if(!r){
-    lastNoticeContext = null;
-    if(edgeNotice){
-      noticeContextReady(runtimeRumSemanticMilestones(),{resultState:"unavailable"});
-      applyActiveHistoryRouteScroll();
-      if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
-      return;
-    }
-    const cityRecordUrl = cityRecordRequestUrl(id);
-    const cityRecordAction = cityRecordUrl
-      ? ` · ${officialSourceLink({ href: cityRecordUrl, label: t("try_city_record"), escape: taskEsc })}`
-      : "";
-    box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br>${routeBackHTML("#money")}${cityRecordAction}</div>`;
-    noticePrimaryTimingMark("client-unavailable-terminal");
-    noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:"unavailable"},noticePrimaryOwnerNow());
-    noticeContextReady(runtimeRumSemanticMilestones(),{resultState:"unavailable"});
-    applyActiveHistoryRouteScroll();
-    if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
-    return;
-  }
-  // Header "Want email updates?" and Watch CTAs read this for notice-scoped #alerts entry.
-  lastNoticeContext = { row: r };
-  if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
-  const link = noticeLink(r.request_id);
-  const scope = cleanText(r.additional_description_1);
-  const title = noticeDisplayTitle(r);
-  const ev = watch ? matchEvidence(title, matchText(r), watch.filter.keywords||[], null, matchAttachmentText(r)) : null;
-  const titleInner = (ev && ev.field==="title")
-    ? `${title.slice(0,ev.index)}<mark>${title.slice(ev.index, ev.index+ev.term.length)}</mark>${title.slice(ev.index+ev.term.length)}`
-    : title;
-  const watchChips = watch ? watchChipsFor(watch.lens, watch.filter) : [];
-  const initialActionsForGlance = window.CrolActions
-    ? CrolActions.compileActionRail(noticeActionMatter(r), { today: todayISO() })
-    : [];
-  const initialActionRail = window.CrolActions ? actionRailHTML(initialActionsForGlance) : "";
-  box.innerHTML = `<div style="max-width:880px;margin:0 auto" data-notice-id="${escUiHtml(r.request_id)}">
-    <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
-    <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
-      <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||t("notice_fallback")}${r.section_name?" · "+tSection(r.section_name):""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
-      <h2 class="rolename" lang="en" dir="ltr">${titleInner}</h2>
-      ${digEvidenceHTML(ev)}
-      ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
-      <div id="nactions" data-export-class="actions">${initialActionRail}</div>
-      ${r.type_of_notice_description==="Solicitation"?'<div id="napply" data-export-class="actions"></div>':""}
-      <div id="nplain" data-export-class="plain_summary"></div><div id="ncontext" data-export-class="notice_context"></div>
-      <div id="nglance" data-export-class="notice_context"></div>
-      ${renderNoticeBitemporalHistory({ notice: r, events: r.civic_time?.events || [], state: r.civic_time?.state || "ok" })}
-      <div id="naddr" data-export-class="address_geography"></div><div id="nmwbe" data-export-class="mwbe_context"></div><div id="nrules" data-export-class="rule_lifecycle"></div><div id="nlifecycle" data-export-class="procurement_lifecycle"></div><div id="nregdwell" data-export-class="award_registration_dwell"></div><div id="nsuboutreach" data-export-class="sub_outreach"></div><div id="ndollars" data-export-class="dollars"></div><div id="nsubsidy" data-export-class="subsidy"></div><div id="naboaward" data-export-class="authority_award"></div><div id="ncommercial" data-export-class="commercial"></div><div id="ndisposition" data-export-class="property_disposition"></div><div id="npropertyxd" data-export-class="property_cross_domain"></div><div id="ntaxlien" data-export-class="tax_lien"></div><div id="nfranchise" data-export-class="franchise"></div><div id="nland" data-export-class="land_project"></div><div id="nmeet" data-export-class="meeting_outcomes">${meetingFirstPaint}</div><div id="nexternal" data-export-class="external_award"></div>
-      <div class="actions" style="margin-top:14px">
-        <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
-        ${qrButtonHTML("nqr","act")}
-        <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CityScroll — NYC’s public record, linked.")}">${t("notice_email_btn")}</a>
-        <button class="act export-control" type="button" id="nxlsx">${t("export_xlsx")}</button>
-        <button class="act export-control" type="button" id="nprint">${t("print_save_pdf")}</button>
-        ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
-        ${officialSourceLink({ href: REQ_URL(r.request_id), label: t("view_in_city_record"), className: "notice-source-link", escape: taskEsc })}
-      </div>
-      ${scope?`<details class="fulltext" data-export-class="official_notice_text"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" lang="en" dir="ltr" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
-      <div class="xlate" id="nxlate" data-export-class="unofficial_translation"></div>
-      <div id="nprior" data-export-class="paper_trail"></div>
-      <div id="nforecast" data-export-class="agency_forecast"></div>
-      <div id="nchain" data-export-class="paper_trail"></div>
-      <div class="note" style="margin-top:14px">${t("permalink_note_html",{link, id:r.request_id})}</div>
-  </div></div>`;
-  const clientPrimaryAt=noticePrimaryOwnerNow();
-  noticePrimaryTimingMark("client-primary-ready");
-  noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:"content"},clientPrimaryAt);
-  $("#ncopy").addEventListener("click", ()=>copyText(link, $("#ncopy")));
-  bindQRShare($("#nqr"), link);
-  $("#nxlsx").addEventListener("click", async ()=>exportNoticeXlsx(r,await noticeProcurementChain(r)));
-  $("#nprint").addEventListener("click", ()=>printCurrentView("notice",link));
-  const contextElement=$("#ncontext");
-  const attachmentHydration=attachmentDataPromise.then(attachmentData=>{
-    let resolved=attachmentData;
-    if(!resolved?.attachments?.length){
-      const fallback=noticeAttachmentFallbacks(r);
-      if(fallback.length)resolved={...(resolved||{}),request_id:String(r.request_id),n_attachments:fallback.length,attachments:fallback};
-    }
-    if(resolved&&Array.isArray(resolved.attachments)&&resolved.attachments.length){
-      r.attachments=resolved.attachments;
-      r.n_documents=Math.max(Number(r.n_documents||0),resolved.attachments.length);
-      // T3: precomputed related edges from /attachment-metadata when present.
-      if(resolved.related_by_attachment)r.related_by_attachment=resolved.related_by_attachment;
-    }
-    return resolved;
-  }).then(()=>typeof hydrateNoticeAttachments==="function"
-    ? hydrateNoticeAttachments(r,contextElement)
-    : undefined);
-  fillContext(r, contextElement, [attachmentHydration]);
-  // Property action identity remains progressively hydrated, but no longer gates the
-  // notice body or Notice-context readiness on a cold route-module import. The
-  // Solicitation response-apply block (buildApply), the context glance line
-  // (glanceFor/actionRailGuideCoverage), the prior-cycle award chain
-  // (priorCycleAwards), and the agency forecast teaser (agencyForecastTeaser)
-  // are the same kind of cold-import dependency on money-history.mjs: on a
-  // fresh landing directly on a notice URL, ensureMoneyHistory() has not
-  // necessarily resolved by the time the body above is painted, so these are
-  // hydrated here once ready rather than called eagerly inline.
-  optionalRouteModules
-    .then(()=>{
-      noticeContextTimingMark("route-modules-end");
-      noticePrimaryTimingMark("deferred-owners-end");
-      if(typeof buildApply==="function"){
-        const applyMount=$("#napply");
-        if(applyMount) applyMount.innerHTML = buildApply(r,false);
-      }
-      if(typeof glanceFor==="function" && typeof actionRailGuideCoverage==="function"){
-        const glanceMount=$("#nglance");
-        if(glanceMount) glanceMount.innerHTML = glanceFor(r, actionRailGuideCoverage(initialActionsForGlance));
-      }
-      if(typeof priorCycleAwards==="function") priorCycleAwards(r, $("#nprior"));
-      if(typeof agencyForecastTeaser==="function") agencyForecastTeaser(r, $("#nforecast"));
-      return typeof hydratePropertyActionMatter==="function" ? hydratePropertyActionMatter(r) : r;
-    })
-    .then(()=>{
-      if(isPropertyDispositionEligible(r)&&$("#nactions"))mountNoticeActionRail($("#nactions"),r);
-    })
-    .catch(()=>{});
-  mountNoticeActionRail($("#nactions"),r);
-  if(typeof loadSolicitationMwbe === "function") loadSolicitationMwbe(r, $("#nmwbe"));
-  loadRuleLifecycle(r, $("#nrules"));
-  loadLifecycle(r, $("#nlifecycle"), $("#ndollars"), $("#nactions"), $("#nsuboutreach"));
-  if(typeof loadAwardRegistrationDwell === "function"){
-    loadAwardRegistrationDwell(r, $("#nregdwell"));
-  }
-  loadSubsidyLifecycle(r, $("#nsubsidy"));
-  import("./authority-award.mjs").then(()=>loadAboAuthorityAward(r,$("#naboaward"))).then((released)=>{
-    if(!released) externalAwardForNotice(r, $("#nexternal"));
-  }).catch(()=>externalAwardForNotice(r, $("#nexternal")));
-  Promise.allSettled([
-    typeof loadPropertyPlainSummary === "function"
-      ? loadPropertyPlainSummary(r, $("#nplain"))
-      : Promise.resolve(),
-    typeof loadPropertyCommercialDetail === "function"
-      ? loadPropertyCommercialDetail(r, $("#ncommercial"))
-      : Promise.resolve(),
-    loadPropertyDispositionSpine(r, $("#ndisposition")),
-    fillAddressLinks(r, $("#naddr")),
-    loadPropertyCrossDomain(r, $("#npropertyxd")),
-  ]).then(()=>{
-    // Re-mount action rail once BBL / disposition stage / commercial bid steps are stamped.
-    if(isPropertyDispositionEligible(r) && $("#nactions")) mountNoticeActionRail($("#nactions"), r);
-    loadTaxLienForNotice(r,$("#ntaxlien"));
-  });
-  loadFranchiseConcessionSpine(r, $("#nfranchise"));
-  renderNoticeLandSpine(r, $("#nland"));
-  renderNoticeMeetingOutcomes(r, $("#nmeet"), workerFetch);
-  mountUnofficialTranslation($("#nxlate"), r);
-  if(usablePin(r.pin)){ noticeProcurementChain(r).then(chain=>{ if(chain.length>1) paintPaperTrail($("#nchain"), r, chain); }).catch(()=>{}); }
-  focusItemRouteTarget(box.querySelector(".route-item"));
-  applyActiveHistoryRouteScroll();
-}
-
 // Publish live bindings for neighboring modules and legacy inline handlers.
 globalThis.DEEPLINK_BOROS = DEEPLINK_BOROS;
 globalThis.DEEPLINK_CATEGORIES = DEEPLINK_CATEGORIES;

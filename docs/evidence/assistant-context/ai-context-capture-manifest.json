@@ -1,0 +1,64 @@
+{
+  "schema": "cityscroll.assistant_context_capture_manifest.v1",
+  "case": "ai-context",
+  "revision": "grounded at f3bce6ef485e7f7da1d0b818da22e129b1bb0d3b",
+  "data_vintage": "site build",
+  "captures": [
+    {
+      "route": "/use-with-ai/?kind=contract",
+      "viewport": "1440x1000",
+      "data_vintage": "site build",
+      "assertion": "exact contract task panel with private fields stripped and clipboard fallback",
+      "sha256": "ac2be1847742e9d82eb90db80967d43e87b43abb54d7b4e019f264000ef2d702"
+    },
+    {
+      "route": "/use-with-ai/?kind=notice&id=20240829105",
+      "viewport": "1440x1000",
+      "data_vintage": "site build",
+      "assertion": "notice RequestID preserved in contextual task",
+      "sha256": "2b101e7a05d22b1ab70ffb444cd27a18e25e4432704dd6707ad5892b88eef6de"
+    },
+    {
+      "route": "/use-with-ai/?kind=land_project&id=2024Q0356",
+      "viewport": "1440x1000",
+      "data_vintage": "site build",
+      "assertion": "land project get and decision-path tools preserved",
+      "sha256": "8ebcb8c9c5c7496a148b121e662a33642a54551f7a3eca42035bc67486be0d1c"
+    },
+    {
+      "route": "/use-with-ai/?kind=search_scope&status=unsupported_filters",
+      "viewport": "1440x1000",
+      "data_vintage": "site build",
+      "assertion": "unsupported filters disclosed while general setup remains reachable",
+      "sha256": "9d7a775269ceea5955ec47532981bda8681c375c9b0da5b583c145b12b421486"
+    },
+    {
+      "route": "/use-with-ai/?kind=contract",
+      "viewport": "390x844",
+      "data_vintage": "site build",
+      "assertion": "exact contract task panel with private fields stripped and clipboard fallback",
+      "sha256": "ac2be1847742e9d82eb90db80967d43e87b43abb54d7b4e019f264000ef2d702"
+    },
+    {
+      "route": "/use-with-ai/?kind=notice&id=20240829105",
+      "viewport": "390x844",
+      "data_vintage": "site build",
+      "assertion": "notice RequestID preserved in contextual task",
+      "sha256": "2b101e7a05d22b1ab70ffb444cd27a18e25e4432704dd6707ad5892b88eef6de"
+    },
+    {
+      "route": "/use-with-ai/?kind=land_project&id=2024Q0356",
+      "viewport": "390x844",
+      "data_vintage": "site build",
+      "assertion": "land project get and decision-path tools preserved",
+      "sha256": "8ebcb8c9c5c7496a148b121e662a33642a54551f7a3eca42035bc67486be0d1c"
+    },
+    {
+      "route": "/use-with-ai/?kind=search_scope&status=unsupported_filters",
+      "viewport": "390x844",
+      "data_vintage": "site build",
+      "assertion": "unsupported filters disclosed while general setup remains reachable",
+      "sha256": "9d7a775269ceea5955ec47532981bda8681c375c9b0da5b583c145b12b421486"
+    }
+  ]
+}

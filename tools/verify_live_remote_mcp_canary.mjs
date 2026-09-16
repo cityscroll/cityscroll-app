@@ -57,6 +57,45 @@ const DATABASE_READ = {
   tool: "search_notices",
   arguments: { section: "Public Hearings and Meetings", limit: 1 },
 };
+// Discovery-contract live reads: exact public identifiers already named on the
+// assistant introduction page. Availability may be available / not_yet_public /
+// unavailable; only a malformed envelope or transport failure fails the probe.
+const CONTRACT_READ = {
+  tool: "get_contract",
+  arguments: { procurementId: "procurement:contract:CT107120258801626" },
+};
+const LAND_READ = {
+  tool: "get_land_project",
+  arguments: { projectId: "2024Q0356" },
+};
+const CITED_READ = {
+  tool: "retrieve_cited_passages",
+  arguments: { query: "public hearing", limit: 3 },
+};
+
+/** Classify a failed public fetch without collapsing Cloudflare denial into a generic network error. */
+export function classifyLiveTransportFailure(error, response = null) {
+  const status = response?.status ?? (typeof error?.status === "number" ? error.status : null);
+  const message = String(error?.message || error || "");
+  const body = typeof response?.bodyText === "string" ? response.bodyText : "";
+  if (status === 429 || /\b429\b|rate.?limit/i.test(message)) {
+    return { class: "http_429", status, message };
+  }
+  if (
+    status === 403
+    || status === 503
+    || /cf-ray|cloudflare|attention required|just a moment|challenge-platform|error code 1[0-9]{3}/i.test(`${message}\n${body}`)
+  ) {
+    return { class: "cloudflare_denial", status, message };
+  }
+  if (error && (error.name === "TypeError" || /fetch failed|ECONN|ENOTFOUND|ETIMEDOUT|network/i.test(message))) {
+    return { class: "network_error", status, message };
+  }
+  if (status && status >= 400) {
+    return { class: "http_error", status, message };
+  }
+  return { class: "unknown_error", status, message };
+}
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -176,9 +215,33 @@ export async function runLiveMcpCanary({
   const observedAt = new Date().toISOString();
   const catalog = loadGeneratedDeployedInventory();
   const clientPackage = readJson(CLIENT_PACKAGE_PATH);
+  let transportFailure = null;
 
-  const health = await probeHealth(healthEndpoint);
-  const rawPing = await probeRawPing(mcpEndpoint);
+  let health;
+  let rawPing;
+  try {
+    health = await probeHealth(healthEndpoint);
+  } catch (error) {
+    transportFailure = classifyLiveTransportFailure(error);
+    throw error;
+  }
+  try {
+    rawPing = await probeRawPing(mcpEndpoint);
+  } catch (error) {
+    transportFailure = classifyLiveTransportFailure(error);
+    throw error;
+  }
+  if (rawPing.response_status === 429) {
+    transportFailure = classifyLiveTransportFailure(new Error("HTTP 429 from MCP ping"), {
+      status: 429,
+      bodyText: "",
+    });
+  } else if (rawPing.response_status === 403 || rawPing.response_status === 503) {
+    transportFailure = classifyLiveTransportFailure(new Error(`HTTP ${rawPing.response_status} from MCP ping`), {
+      status: rawPing.response_status,
+      bodyText: "",
+    });
+  }
 
   // No fetch override: the transport's default (real) fetch is used untouched.
   const transport = new StreamableHTTPClientTransport(new URL(mcpEndpoint));
@@ -204,12 +267,28 @@ export async function runLiveMcpCanary({
       return { ok: true, result };
     } catch (error) {
       calls.push({ label, duration_ms: Date.now() - startedAt });
-      return { ok: false, error: { message: String(error?.message || error), code: typeof error?.code === "number" ? error.code : null } };
+      const classified = classifyLiveTransportFailure(error);
+      if (classified.class === "network_error" || classified.class === "cloudflare_denial" || classified.class === "http_429") {
+        transportFailure = transportFailure || classified;
+      }
+      return {
+        ok: false,
+        error: {
+          message: String(error?.message || error),
+          code: typeof error?.code === "number" ? error.code : null,
+          transport_failure_class: classified.class,
+        },
+      };
     }
   };
 
   try {
-    await timedCall("initialize", () => client.connect(transport));
+    try {
+      await timedCall("initialize", () => client.connect(transport));
+    } catch (error) {
+      transportFailure = transportFailure || classifyLiveTransportFailure(error);
+      throw error;
+    }
     const serverVersion = client.getServerVersion();
     const negotiatedProtocolVersion = transport.protocolVersion;
 
@@ -224,6 +303,15 @@ export async function runLiveMcpCanary({
     const databaseCall = await safeTimedCall(`tools/call:${DATABASE_READ.tool}`, () => (
       client.callTool({ name: DATABASE_READ.tool, arguments: DATABASE_READ.arguments })
     ));
+    const contractCall = await safeTimedCall(`tools/call:${CONTRACT_READ.tool}`, () => (
+      client.callTool({ name: CONTRACT_READ.tool, arguments: CONTRACT_READ.arguments })
+    ));
+    const landCall = await safeTimedCall(`tools/call:${LAND_READ.tool}`, () => (
+      client.callTool({ name: LAND_READ.tool, arguments: LAND_READ.arguments })
+    ));
+    const citedCall = await safeTimedCall(`tools/call:${CITED_READ.tool}`, () => (
+      client.callTool({ name: CITED_READ.tool, arguments: CITED_READ.arguments })
+    ));
     const invalidCall = await safeTimedCall("tools/call:invalid", () => (
       client.callTool({ name: INVALID_TOOL_NAME, arguments: {} })
     ));
@@ -231,14 +319,23 @@ export async function runLiveMcpCanary({
     const catalogByName = new Map(catalog.tools.map((tool) => [tool.name, tool]));
     const staticEnvelope = staticCall.ok ? staticCall.result.structuredContent : null;
     const databaseEnvelope = databaseCall.ok ? databaseCall.result.structuredContent : null;
+    const contractEnvelope = contractCall.ok ? contractCall.result.structuredContent : null;
+    const landEnvelope = landCall.ok ? landCall.result.structuredContent : null;
+    const citedEnvelope = citedCall.ok ? citedCall.result.structuredContent : null;
     const invalidText = invalidCall.ok ? (invalidCall.result.content || []).map((block) => block.text || "").join(" ") : invalidCall.error.message;
+
+    const citedLinks = Array.isArray(citedEnvelope?.citations)
+      ? citedEnvelope.citations
+        .map((citation) => citation?.source?.url || citation?.source_url || null)
+        .filter((url) => typeof url === "string" && /^https?:\/\//i.test(url))
+      : [];
 
     const receipt = {
       schema: "cityscroll.live_remote_mcp_canary_receipt.v1",
       card: "cs-10-live-remote-mcp-canary",
       evidence_class: "external_live_endpoint",
       execution_environment: "external-network-observed",
-      evidence_notes: "Crosses public DNS to the deployed production MCP endpoint via the pinned MCP SDK client with its unmodified default transport. The deployed commit is read from the Worker's own GET /health payload (this repository's existing route-parity mechanism, docs/release/cloudflare-native-builds.md) and cross-checked against this checkout's git history; it is not independently attested via a Cloudflare control-plane API call in this run.",
+      evidence_notes: "Crosses public DNS to the deployed production MCP endpoint via the pinned MCP SDK client with its unmodified default transport. The deployed commit is read from the Worker's own GET /health payload (this repository's existing route-parity mechanism, docs/release/cloudflare-native-builds.md) and cross-checked against this checkout's git history; it is not independently attested via a Cloudflare control-plane API call in this run. Discovery reads exercise unauthenticated contract, land-project, and cited-passage tools and record network / Cloudflare / 429 failures as distinct classes.",
       observed_at: observedAt,
       endpoint: { mcp: mcpEndpoint, health: healthEndpoint },
       client: {
@@ -253,6 +350,7 @@ export async function runLiveMcpCanary({
         response_status: rawPing.response_status,
         fetch_override: false,
         transport_intercepted: false,
+        transport_failure: transportFailure,
       },
       protocol: {
         transport: "Streamable HTTP",
@@ -302,6 +400,39 @@ export async function runLiveMcpCanary({
           rpc_error: databaseCall.ok ? null : databaseCall.error,
         },
       ],
+      discovery_reads: [
+        {
+          role: "contract_read",
+          tool: CONTRACT_READ.tool,
+          requested_id: CONTRACT_READ.arguments.procurementId,
+          capability_reference: catalogByName.get(CONTRACT_READ.tool)?.capability_reference ?? null,
+          availability: contractEnvelope?.availability ?? null,
+          envelope_well_formed: contractCall.ok && envelopeIsWellFormed(contractEnvelope, ["capability_reference", "availability", "contract", "error"]),
+          is_error: contractCall.ok ? Boolean(contractCall.result.isError) : true,
+          rpc_error: contractCall.ok ? null : contractCall.error,
+        },
+        {
+          role: "land_read",
+          tool: LAND_READ.tool,
+          requested_id: LAND_READ.arguments.projectId,
+          capability_reference: catalogByName.get(LAND_READ.tool)?.capability_reference ?? null,
+          availability: landEnvelope?.availability ?? null,
+          envelope_well_formed: landCall.ok && envelopeIsWellFormed(landEnvelope, ["capability_reference", "availability", "project", "error"]),
+          is_error: landCall.ok ? Boolean(landCall.result.isError) : true,
+          rpc_error: landCall.ok ? null : landCall.error,
+          deep_link: landEnvelope?.project?.deep_link || landEnvelope?.deep_link || null,
+        },
+        {
+          role: "cited_read",
+          tool: CITED_READ.tool,
+          capability_reference: catalogByName.get(CITED_READ.tool)?.capability_reference ?? null,
+          envelope_well_formed: citedCall.ok && envelopeIsWellFormed(citedEnvelope, ["schema", "contract_version", "citations"]),
+          is_error: citedCall.ok ? Boolean(citedCall.result.isError) : true,
+          rpc_error: citedCall.ok ? null : citedCall.error,
+          cited_link_count: citedLinks.length,
+          cited_links: citedLinks.slice(0, 5),
+        },
+      ],
       invalid_call: {
         requested_tool: INVALID_TOOL_NAME,
         // A clean failure means the deployed Worker itself handled the unknown
@@ -317,13 +448,18 @@ export async function runLiveMcpCanary({
       status: null, // filled below, once every gate is known
     };
 
+    const discoveryReadsOk = receipt.discovery_reads.every((read) => (
+      read.envelope_well_formed && !read.is_error
+    ));
     receipt.status = (
       receipt.protocol.negotiated_version != null
       && receipt.tool_inventory_drift.matches
       && receipt.reads.every((read) => read.envelope_well_formed && !read.is_error)
+      && discoveryReadsOk
       && receipt.invalid_call.is_error
       && !receipt.invalid_call.failed_via_rpc_exception
       && !receipt.invalid_call.response_looks_like_a_leak
+      && !transportFailure
     ) ? "pass" : "fail";
 
     return receipt;

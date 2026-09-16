@@ -22,8 +22,11 @@ import { buildExamsDocument } from "../site/exams_surface.mjs";
 import { EXAMS_SURFACE } from "../site/browse_surface_contracts.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
 import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
+import { renderProcurementDocument } from "../site/procurement_document.mjs";
 import rulesSemanticLaneArtifact from "../site/data/rules_semantic_lane.json" with { type: "json" };
 import procurementProjectContextMaterialization from "../site/data/procurement_project_context.json" with { type: "json" };
+import procurementContractLifecycleMaterialization from "../site/data/procurement_contract_lifecycle.json" with { type: "json" };
+import procurementPlaceFactsMaterialization from "../site/data/procurement_place_facts.json" with { type: "json" };
 import {
   BUNDLE_REQUEST_ID,
   BLANK_SCOPE_REQUEST_ID,
@@ -34,6 +37,7 @@ import {
   renderCrossAgencyCollisionCase,
   solicitationFixture,
 } from "./fixtures/procurement_project_context_fixtures.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const museumNotice = {
   request_id: "20260810048",
@@ -65,6 +69,66 @@ function procurementAssetEnv() {
         },
       },
     },
+  };
+}
+
+function noticeRowForId(id) {
+  const manifest = JSON.parse(read("../site/data/shared_procurement_read_model.json"));
+  for (const shardName of new Set(Object.values(manifest.procurement_shard_by_id))) {
+    const shard = JSON.parse(read(`../site/data/${shardName}`));
+    const observation = (shard.observations || []).find((row) => (
+      row.source_system === "city_record" && row.source_system_id === id
+    ));
+    if (observation?.snapshot) return observation.snapshot;
+  }
+  throw new Error(`no materialized notice row for ${id}`);
+}
+
+function noticeAssetEnv() {
+  const requestedPaths = [];
+  return {
+    requestedPaths,
+    env: {
+      ASSETS: {
+        async fetch(request) {
+          const path = new URL(request.url).pathname;
+          requestedPaths.push(path);
+          if (path === "/" || path === "") {
+            return new Response(
+              "<!doctype html><html><head><title>CityScroll</title></head><body><main id=\"noticeview\"></main></body></html>",
+              { status: 200, headers: { "Content-Type": "text/html" } },
+            );
+          }
+          if (path === "/data/meeting_outcomes_snapshot.json") {
+            return new Response(JSON.stringify({ by_notice: {} }), {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+          if (path === "/data/notice_mandate_backlinks_lookup.json") {
+            return new Response(JSON.stringify({}), {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+          return new Response("missing asset", { status: 404 });
+        },
+      },
+    },
+  };
+}
+
+function paymentSummaryAttrs(html) {
+  const pick = (name) => {
+    const match = html.match(new RegExp(`data-${name}="([^"]*)"`));
+    return match ? match[1] : null;
+  };
+  return {
+    total_count: pick("payment-total-count"),
+    total_spent: pick("payment-total-spent"),
+    latest_date: pick("latest-payment-date"),
+    latest_amount: pick("latest-payment-amount"),
+    capped: pick("payment-rows-capped"),
   };
 }
 
@@ -354,6 +418,171 @@ test("served procurement route reads one bounded shard and preserves the complet
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("canonical procurement route shows exact-contract payments and notice place facts from materializations", async () => {
+  const { env, requestedPaths } = procurementAssetEnv();
+  let publisherAttempts = 0;
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (request) => {
+    publisherAttempts += 1;
+    throw new Error(`unexpected publisher request: ${request?.url || request}`);
+  };
+  try {
+    const id = procurementParityFixture.object.procurement_id;
+    const response = await edgeWorker.fetch(new Request(
+      `https://cityscroll.org/procurements/${encodeURIComponent(id)}/`,
+    ), env);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.equal(publisherAttempts, 0);
+    assert.deepEqual(requestedPaths, [
+      "/data/shared_procurement_read_model.json",
+      "/data/shared_procurement_read_model/shard-004.json",
+    ]);
+    assert.match(html, /data-procurement-payment-evidence="1"/);
+    assert.match(html, /data-payment-total-count="31"/);
+    assert.match(html, /data-payment-total-spent="7385672\.19"/);
+    assert.match(html, /data-latest-payment-date="2026-08-06"/);
+    assert.match(html, /data-latest-payment-amount="66216\.68"/);
+    assert.match(html, /data-payment-rows-capped="true"/);
+    assert.match(html, /Showing 12 of 31 payments on this contract/);
+    assert.match(html, /20270016167-1-DSB-EFT/);
+    assert.match(html, /\$66,591\.17/);
+    assert.match(html, /\$54,214\.14/);
+    assert.match(html, /data-payment-acquisition-at="2026-09-14T13:10:41\.533Z"/);
+    assert.match(html, /data-payment-as-of="2026-08-06"/);
+    assert.match(html, /Authorized minus paid is not remaining liability/);
+    assert.match(html, /data-procurement-place-facts="1"/);
+    assert.match(html, /3218 Emmons Avenue, Brooklyn/);
+    assert.match(html, /60 units/);
+    assert.match(html, /Notice 20240829105/);
+    const placeSection = html.match(/data-procurement-place-facts="1"[\s\S]*?<\/section>/)?.[0] || "";
+    assert.match(placeSection, /3218 Emmons Avenue, Brooklyn/);
+    assert.doesNotMatch(placeSection, /City Record notice/);
+    assert.match(html, /Original contract amount<\/dt><dd>\$10,869,881/);
+    assert.match(html, /Current contract total<\/dt><dd>\$10,869,881/);
+    assert.match(html, /Contract start<\/dt><dd>2023-10-11/);
+    assert.match(html, /Contract end<\/dt><dd>2026-06-30/);
+    assert.match(html, /href="https:\/\/www\.checkbooknyc\.com\/smart_search\/citywide\?search_term=CT107120258801626"/);
+    assert.doesNotMatch(html, /had no exact payment match in this snapshot/);
+    assert.doesNotMatch(html, /javascript:/i);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("notice and canonical routes show consistent payment summary and scope", async () => {
+  await withPinnedClock("2026-09-16T12:00:00.000Z", async () => {
+    const noticeId = "20240829105";
+    const procurementId = procurementParityFixture.object.procurement_id;
+    const noticeShell = noticeAssetEnv();
+    const procurementShell = procurementAssetEnv();
+    const originalFetch = globalThis.fetch;
+    const originalRewriter = globalThis.HTMLRewriter;
+    let publisherAttempts = 0;
+    globalThis.HTMLRewriter = TestHTMLRewriter;
+    globalThis.fetch = async (request) => {
+      const url = new URL(request.url || request);
+      if (url.hostname === "api.cityscroll.org" && url.pathname === "/notice") {
+        assert.equal(url.searchParams.get("id"), noticeId);
+        return new Response(JSON.stringify({ row: noticeRowForId(noticeId), civic_time: null }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      publisherAttempts += 1;
+      throw new Error(`unexpected publisher request: ${url}`);
+    };
+    try {
+      const noticeResponse = await edgeWorker.fetch(
+        new Request(`https://cityscroll.org/notices/${noticeId}/`),
+        noticeShell.env,
+      );
+      assert.equal(noticeResponse.status, 200);
+      const noticeHtml = await noticeResponse.text();
+
+      const canonicalResponse = await edgeWorker.fetch(
+        new Request(`https://cityscroll.org/procurements/${encodeURIComponent(procurementId)}/`),
+        procurementShell.env,
+      );
+      assert.equal(canonicalResponse.status, 200);
+      const canonicalHtml = await canonicalResponse.text();
+
+      assert.equal(publisherAttempts, 0);
+      const noticeSummary = paymentSummaryAttrs(noticeHtml);
+      const canonicalSummary = paymentSummaryAttrs(canonicalHtml);
+      assert.deepEqual(noticeSummary, {
+        total_count: "31",
+        total_spent: "7385672.19",
+        latest_date: "2026-08-06",
+        latest_amount: "66216.68",
+        capped: "true",
+      });
+      assert.deepEqual(canonicalSummary, noticeSummary);
+      assert.match(noticeHtml, /Showing 12 of 31 payments on this contract/);
+      assert.match(canonicalHtml, /Showing 12 of 31 payments on this contract/);
+      assert.match(noticeHtml, /\$7,385,672\.19/);
+      assert.match(canonicalHtml, /\$7,385,672\.19/);
+      assert.match(noticeHtml, /Authorized minus paid is not remaining liability/);
+      assert.match(canonicalHtml, /Authorized minus paid is not remaining liability/);
+    } finally {
+      globalThis.fetch = originalFetch;
+      globalThis.HTMLRewriter = originalRewriter;
+    }
+  });
+});
+
+test("unavailable payment and place enrichment keeps the record and official source links", () => {
+  const object = {
+    ...procurementParityFixture.object,
+    compatibility: {
+      city_record_notice_hrefs: ["/notices/20240829105"],
+    },
+    procurement_source_lookup_receipt: {
+      schema: "cityscroll.procurement_source_lookup_receipt.v1",
+      version: 1,
+      procurement_id: procurementParityFixture.object.procurement_id,
+      sources: [{
+        source_system: "checkbook_spending",
+        applicability: "applicable",
+        state: "checked-no-match",
+        queried_keys: ["CT107120258801626"],
+        matched_source_observation_refs: [],
+        matched_analytical_row_refs: [],
+        basis: "exact_prime_contract_document_relationship",
+        snapshot_vintage: "2026",
+        lookup_as_of: "2026-08-26T00:00:00.000Z",
+      }],
+    },
+  };
+  const html = renderProcurementDocument(object, procurementParityFixture.observations, {
+    contractLifecycleMaterialization: null,
+    placeFactsMaterialization: null,
+    projectContextMaterialization: null,
+  });
+  assert.match(html, /BHRAGS HOME CARE CORP/);
+  assert.match(html, /CT107120258801626/);
+  assert.match(html, /href="https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\/20240829105"/);
+  assert.doesNotMatch(html, /data-procurement-payment-evidence=/);
+  assert.doesNotMatch(html, /data-procurement-place-facts=/);
+  assert.doesNotMatch(html, /<h2[^>]*>Facility<\/h2>/);
+  assert.doesNotMatch(html, /<h2[^>]*>Contract payments<\/h2>/);
+  assert.doesNotMatch(html, /enrichment failed|unable to load enrichment/i);
+});
+
+test("payment and place materializations retain acquisition and payment vintages separately", () => {
+  assert.equal(procurementContractLifecycleMaterialization.schema, "cityscroll.procurement_contract_lifecycle_materialization.v1");
+  assert.equal(procurementPlaceFactsMaterialization.schema, "cityscroll.procurement_place_facts_materialization.v1");
+  const [lifecycle] = procurementContractLifecycleMaterialization.rows;
+  assert.equal(lifecycle.checkbook_acquisition.observed_at, "2026-09-14T13:10:41.533Z");
+  assert.equal(lifecycle.checkbook_acquisition.payment_as_of, "2026-08-06");
+  assert.notEqual(
+    lifecycle.checkbook_acquisition.observed_at.slice(0, 10),
+    lifecycle.checkbook_acquisition.payment_as_of,
+  );
+  assert.equal(procurementPlaceFactsMaterialization.rows[0].request_id, "20240829105");
+  assert.equal(procurementPlaceFactsMaterialization.rows[0].units, 60);
 });
 
 test("canonical meeting routes resolve exact read-model rows and reject unknown ids", async () => {

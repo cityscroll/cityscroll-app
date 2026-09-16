@@ -38,7 +38,26 @@ test("A1: materializes one deterministic slice for every regular community distr
   const digest = buildCommunityDistrictDigests({ activity: fixtureActivity(), builtAt: "2026-09-14T00:00:00.000Z" });
   assert.equal(digest.schema, COMMUNITY_DISTRICT_DIGEST_SCHEMA);
   assert.equal(Object.keys(digest.by_community_district).length, 59);
+  assert.deepEqual(Object.keys(digest.by_community_district).sort(), districts.slice().sort());
   assert.ok(digest.performance.measured_bytes < digest.performance.ceiling_bytes);
+});
+
+test("emits all 59 regular districts when district_items omits zero-activity keys", () => {
+  const activity = fixtureActivity();
+  const bag = activity.district_items.by_level.community_district;
+  const dropped = ["K09", "Q03", "Q11"];
+  for (const id of dropped) delete bag[id];
+  assert.equal(Object.keys(bag).length, 56);
+  const digest = buildCommunityDistrictDigests({ activity, builtAt: "2026-09-14T00:00:00.000Z" });
+  assert.deepEqual(Object.keys(digest.by_community_district).sort(), districts.slice().sort());
+  for (const id of dropped) {
+    const row = digest.by_community_district[id];
+    assert.equal(row.community_district, id);
+    for (const section of Object.values(row.sections)) {
+      assert.equal(section.count, 0);
+      assert.deepEqual(section.items, []);
+    }
+  }
 });
 
 test("A2: every slice carries all six bounded section projections", () => {

@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
-"""Build the retained procurement detail accessibility receipt from a live axe run."""
+"""Build the retained procurement detail accessibility and layout receipt.
+
+Refreshes both the axe viewport scans and the layout/keyboard destination
+counts in docs/evidence/procurement-detail-parity/read-back.json from one
+headless render of the committed fixture. Link counts are measured from the
+same native <a href> markup the read-back test asserts — never hand-edited.
+"""
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -18,6 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RECEIPT = ROOT / "docs/evidence/procurement-detail-parity/read-back.json"
 AXE = ROOT / "test/functional/assets/axe.min.js"
 VIEWPORTS = {"desktop": (1440, 900), "mobile": (390, 844)}
+ANCHOR_RE = re.compile(r"<a\b([^>]*)>", re.IGNORECASE)
 
 
 class SiteHandler(SimpleHTTPRequestHandler):
@@ -43,6 +51,31 @@ def render_fixture() -> str:
         cwd=ROOT, capture_output=True, text=True, check=True,
     )
     return result.stdout
+
+
+def keyboard_layout(markup: str) -> dict:
+    """Count native keyboard destinations the same way the read-back test does."""
+    attrs = ANCHOR_RE.findall(markup)
+    if any(not re.search(r"\bhref=", item) for item in attrs):
+        raise SystemExit("layout receipt refused: an <a> is missing href")
+    negative = len(re.findall(r'tabindex=["\']-1["\']', markup, flags=re.IGNORECASE))
+    return {
+        "visible_native_links": len(attrs),
+        "reachable_links": len(attrs),
+        "negative_tabindex": negative,
+    }
+
+
+def layout_probe(page) -> dict:
+    return page.evaluate(
+        """() => {
+          const doc = document.documentElement;
+          return {
+            scroll_width: doc.scrollWidth,
+            overflow: doc.scrollWidth > window.innerWidth + 1,
+          };
+        }"""
+    )
 
 
 def scan(page, markup: str) -> dict:
@@ -83,6 +116,7 @@ def scan(page, markup: str) -> dict:
         "serious_or_critical": serious_or_critical,
         "markup_sha256": hashlib.sha256(markup.encode("utf-8")).hexdigest(),
         "scanned_at": page.evaluate("() => new Date().toISOString()"),
+        "layout": layout_probe(page),
     }
 
 
@@ -140,17 +174,32 @@ def main() -> int:
         "viewports": scans,
         "assertion": "The automated accessibility receipt reports no serious or critical findings for either retained viewport.",
     }
+    keyboard = keyboard_layout(html)
+    layout = {
+        "desktop": {
+            "viewport": list(VIEWPORTS["desktop"]),
+            "scroll_width": scans["desktop"]["layout"]["scroll_width"],
+            "overflow": scans["desktop"]["layout"]["overflow"],
+        },
+        "mobile": {
+            "viewport": list(VIEWPORTS["mobile"]),
+            "scroll_width": scans["mobile"]["layout"]["scroll_width"],
+            "overflow": scans["mobile"]["layout"]["overflow"],
+        },
+        "keyboard": keyboard,
+    }
     for viewport_scan in scans.values():
         viewport_scan.pop("engine", None)
-    current = RECEIPT.read_text(encoding="utf-8")
-    start = current.index('  "accessibility": ')
-    end = current.index('\n  "verification":', start)
-    pretty = json.dumps(accessibility, indent=2).splitlines()
-    replacement = '  "accessibility": ' + pretty[0]
-    replacement += "\n" + "\n".join(f"  {line}" for line in pretty[1:])
-    replacement += ","
-    RECEIPT.write_text(current[:start] + replacement + current[end:], encoding="utf-8")
-    print(f"wrote {RECEIPT.relative_to(ROOT)}")
+        viewport_scan.pop("layout", None)
+    current = json.loads(RECEIPT.read_text(encoding="utf-8"))
+    current["layout"] = layout
+    current["accessibility"] = accessibility
+    RECEIPT.write_text(json.dumps(current, indent=2) + "\n", encoding="utf-8")
+    print(
+        f"wrote {RECEIPT.relative_to(ROOT)} "
+        f"(visible_native_links={keyboard['visible_native_links']}, "
+        f"negative_tabindex={keyboard['negative_tabindex']})"
+    )
     return 0
 
 

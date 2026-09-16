@@ -64,6 +64,9 @@ const LABEL = Object.freeze({
   group_label: "Keep following this selection",
   unsupported_feed: "This exact filter combination cannot be turned into a standing feed without dropping constraints, so no broader feed is offered.",
   unsupported_calendar: "This selection has no dated events a calendar can hold, or its filters cannot be replayed exactly.",
+  handoff_failed: "That handoff did not finish. Your original selection is unchanged.",
+  handoff_recovery_copy: "Copy feed address",
+  handoff_recovery_open: "Open feed address",
 });
 
 function esc(value) {
@@ -267,10 +270,34 @@ function renderFeedDisclosure(action, notes, { escape = esc } = {}) {
  * Render one contextual control group. Returns "" when nothing applicable exists
  * so callers never mount an empty panel.
  */
+function recoveryHrefFromProjection(projection) {
+  const calendar = (projection?.actions || []).find(
+    (action) => action.kind === FOLLOW_DISCOVERY_ACTION_KINDS.calendar_subscription,
+  );
+  if (calendar?.feedUrl) return calendar.feedUrl;
+  const feeds = (projection?.actions || []).find(
+    (action) => action.kind === FOLLOW_DISCOVERY_ACTION_KINDS.feed_reader,
+  );
+  return feeds?.feeds?.atom || feeds?.feeds?.json || null;
+}
+
+function renderHandoffFailure(projection, { escape = esc, recoveryHref = null } = {}) {
+  const recovery = recoveryHref || recoveryHrefFromProjection(projection);
+  const recoveryHtml = recovery
+    ? `<p class="follow-discovery-recovery">
+      <button type="button" data-follow-discovery-recovery="copy" data-copy-href="${escape(recovery)}">${escape(LABEL.handoff_recovery_copy)}</button>
+      <a data-follow-discovery-recovery="navigate" href="${escape(recovery)}">${escape(LABEL.handoff_recovery_open)}</a>
+    </p>`
+    : `<p class="follow-discovery-recovery" data-follow-discovery-recovery="context">Try again from this page. Nothing was enrolled.</p>`;
+  return `<p role="status" data-follow-discovery-failed="1">${escape(LABEL.handoff_failed)}</p>${recoveryHtml}`;
+}
+
 export function renderFollowDiscoveryGroup(projection, {
   escape = esc,
   includeGuide = true,
   regionId = "follow-discovery",
+  handoffStatus = null,
+  recoveryHref = null,
 } = {}) {
   if (!projection || !Array.isArray(projection.actions) || projection.actions.length === 0) {
     // Still allow an unsupported-feed note alone only when a primary action exists.
@@ -300,14 +327,50 @@ export function renderFollowDiscoveryGroup(projection, {
     ${primary.some((a) => a.kind === FOLLOW_DISCOVERY_ACTION_KINDS.single_event_download) ? `<li data-semantics="single_event_download"><strong>Download this event</strong> saves one dated occurrence as a file. It is not a standing subscription.</li>` : ""}
     ${primary.some((a) => a.kind === FOLLOW_DISCOVERY_ACTION_KINDS.saved_search) ? `<li data-semantics="local_saved_search"><strong>Save search on this device</strong> keeps filters in this browser only.</li>` : ""}
   </ul>`;
+  const failedHtml = handoffStatus === "failed"
+    ? renderHandoffFailure(projection, { escape, recoveryHref })
+    : "";
 
+  const failureBlock = failedHtml ? `\n    ${failedHtml}` : "";
   return `<section class="follow-discovery" data-follow-discovery="1" data-follow-discovery-surface="${escape(projection.surface || "")}" data-follow-discovery-region="${escape(regionId)}" aria-label="${escape(LABEL.group_label)}">
     <p class="follow-discovery-kicker">${escape(LABEL.group_label)}</p>
     <div class="follow-discovery-actions">${primaryHtml}</div>
     ${semantics}
     ${guideHtml}
-    ${feedsHtml}
+    ${feedsHtml}${failureBlock}
   </section>`;
+}
+
+/**
+ * Observe open / inspect / copy against a discovery projection.
+ * These discovery actions never write an enrollment; the returned count is the proof.
+ */
+export function observeFollowDiscoveryInspection(projection, {
+  enrollmentLog = null,
+  action = "open",
+  regionId = "follow-discovery",
+} = {}) {
+  const log = Array.isArray(enrollmentLog) ? enrollmentLog : [];
+  const before = log.length;
+  const html = renderFollowDiscoveryGroup(projection, { regionId });
+  const copied = [];
+  if (html && (action === "open" || action === "inspect" || action === "copy")) {
+    for (const match of html.matchAll(/\b(?:href|data-calendar-subscription-feed|data-calendar-subscription-webcal)="([^"]+)"/g)) {
+      const value = String(match[1] || "").replaceAll("&amp;", "&").trim();
+      if (/^(?:webcal|https):/i.test(value)) copied.push(value);
+    }
+  }
+  // Opening, inspecting, or copying never pushes an enrollment record.
+  const after = log.length;
+  return Object.freeze({
+    before,
+    after,
+    created: after - before,
+    action,
+    opened: Boolean(html),
+    copied_urls: Object.freeze(copied),
+    enrolls_via_form: /action="[^"]*\/(?:subscribe|prefs)"/.test(html),
+  });
 }
 
 /** True when markup already contains the discovery region (duplicate prevention). */
@@ -386,8 +449,9 @@ export function renderFollowDiscoveryForNearYou(view, options = {}) {
       },
     }
     : view.scope;
+  const surface = options.surface || view.surface || "near_you";
   const projection = projectFollowDiscovery({
-    surface: "near_you",
+    surface,
     scope,
     lens: view.lens,
     rows: nearYouCalendarRows(view),
@@ -401,7 +465,7 @@ export function renderFollowDiscoveryForNearYou(view, options = {}) {
   });
   return renderFollowDiscoveryGroup(projection, {
     includeGuide: true,
-    regionId: options.regionId || "near-you-follow-discovery",
+    regionId: options.regionId || (surface === "district" ? "district-follow-discovery" : "near-you-follow-discovery"),
   });
 }
 
@@ -464,4 +528,6 @@ export function renderFeedReaderDisclosureForScope(scope, {
 export {
   LABEL as FOLLOW_DISCOVERY_LABELS,
   calendarNativeSubscriptionUrl,
+  hasDefensibleDatedOccurrences,
+  renderFeedDisclosure,
 };
