@@ -8,6 +8,8 @@ Covers:
   paths.
 - Contextual assistant handoffs for exact records and scoped searches, with
   clipboard fallback, hostile URL stripping, and both desktop/phone viewports.
+- Research utility discovery on an eligible notice (More tools / research
+  navigation) plus API research task entrances.
 
 Environment:
   CROL_BASE  Base URL (default http://localhost:8000/). Production runs set
@@ -208,6 +210,55 @@ def maybe_sibling_surface(page, route: str, selector: str, name: str, required_t
     step("OK" if text_ok else "FAIL", name, f"count={count} text_ok={text_ok}")
 
 
+
+NOTICE_ROUTE = "notices/20260810048/"
+
+
+def assert_research_tools_journey(page, label: str) -> None:
+    """Notice More tools region plus API research task entrances."""
+    page.set_default_timeout(20000)
+    page.goto(BASE + NOTICE_ROUTE, timeout=30000)
+    page.wait_for_selector("#noticeview .route-item, [data-edge-rendered='notice']", timeout=20000)
+    page.wait_for_selector("[data-more-tools-region], [data-research-navigation]", timeout=20000)
+    more = page.locator("[data-more-tools-region]")
+    research = page.locator("[data-research-navigation] [data-research-tool]")
+    if more.count():
+        step(
+            "OK" if more.count() == 1 and more.get_attribute("open") in (None, "") else "FAIL",
+            f"{label} notice More tools starts closed",
+            f"count={more.count()} open={more.get_attribute('open')}",
+        )
+        summary = more.locator("summary")
+        if summary.count() == 1:
+            summary.focus()
+            page.keyboard.press("Enter")
+            opened = more.evaluate("el => el.open")
+            step("OK" if opened else "FAIL", f"{label} notice More tools keyboard open")
+        for control_id in ("ncopy", "nqr", "nxlsx", "nprint"):
+            step(
+                "OK" if page.locator(f"#{control_id}").count() == 1 else "FAIL",
+                f"{label} notice control #{control_id}",
+            )
+    else:
+        step(
+            "OK" if research.count() >= 1 else "FAIL",
+            f"{label} notice research navigation without More tools shell",
+            f"research={research.count()}",
+        )
+    if research.count():
+        hrefs = research.evaluate_all("nodes => nodes.map(node => node.getAttribute('href') || '')")
+        onsite = all(href.startswith("/") for href in hrefs)
+        step("OK" if onsite else "FAIL", f"{label} notice research entrances stay on-site", str(len(hrefs)))
+
+    page.goto(BASE + "api.html#research-task-entrances", timeout=30000)
+    page.wait_for_selector("#research-task-entrances, body", timeout=20000)
+    api_html = page.content()
+    step(
+        "OK" if 'id="research-task-entrances"' in api_html and "data-research-task=" in api_html else "FAIL",
+        f"{label} API research task entrances",
+    )
+
+
 def run_ai_context(page, viewport_name: str, failures: list[str]) -> list[dict]:
     captures: list[dict] = []
 
@@ -360,13 +411,7 @@ def run_default_journeys(browser) -> None:
     assert_failed_enhancement(browser, "desktop")
 
     desktop_ctx, desktop = open_page(browser, DESKTOP)
-    maybe_sibling_surface(
-        desktop,
-        "browse/meetings/?agency=City%20Planning",
-        "[data-more-tools-region], [data-research-tools], #research-task-entrances, details.more-tools",
-        "research tools region",
-        required_text="More tools",
-    )
+    assert_research_tools_journey(desktop, "desktop")
     maybe_sibling_surface(
         desktop,
         "browse/meetings/?agency=City%20Planning",
@@ -378,6 +423,7 @@ def run_default_journeys(browser) -> None:
     phone_ctx, phone = open_page(browser, PHONE)
     assert_introduction_journey(phone, "phone")
     assert_home_ask_link(phone, "phone")
+    assert_research_tools_journey(phone, "phone")
     phone_ctx.close()
 
     assert_no_js(browser, "desktop")

@@ -238,9 +238,11 @@ export function projectResearchTools(context = {}) {
   ];
   for (const [id, present] of handlerFamilies) {
     if (present === true) {
-      available.push({ ...RESEARCH_CAPABILITY_FAMILIES[id], href: null, eligible: true });
+      // Handler-backed utilities have no href; expose a stable action token so
+      // discovery contracts can tell presence from fabricated destinations.
+      available.push({ ...RESEARCH_CAPABILITY_FAMILIES[id], href: null, action: id, eligible: true });
     } else if (present === false && context[`require${id[0].toUpperCase()}${id.slice(1)}`] === true) {
-      available.push({ ...RESEARCH_CAPABILITY_FAMILIES[id], href: null, eligible: false });
+      available.push({ ...RESEARCH_CAPABILITY_FAMILIES[id], href: null, action: null, eligible: false });
     }
   }
 
@@ -257,10 +259,13 @@ export function projectResearchTools(context = {}) {
 /**
  * Native, initially closed More tools disclosure. Callers supply already-built
  * control HTML so existing IDs and handlers stay intact. Empty content omits
- * the region entirely — no empty panel.
+ * the region entirely — no empty panel. A tools projection may also be passed
+ * for discovery-contract checks; href tools become links, action tools become
+ * marked controls without inventing destinations.
  */
 export function renderMoreToolsRegion({
   content = "",
+  tools = null,
   label = MORE_TOOLS_LABEL,
   labelKey = MORE_TOOLS_LABEL_KEY,
   open = false,
@@ -268,7 +273,19 @@ export function renderMoreToolsRegion({
   id = null,
   translate: translateFn = globalThis.window?.t,
 } = {}) {
-  const body = String(content ?? "").trim();
+  let body = String(content ?? "").trim();
+  if (!body && Array.isArray(tools) && tools.length) {
+    body = tools.filter((tool) => tool?.eligible !== false).map((tool) => {
+      const text = translate(`research_tool_${tool.id}`, tool.label, translateFn);
+      if (tool.href) {
+        return `<a class="act research-tool-link" data-research-tool="${esc(tool.id)}" href="${esc(tool.href)}">${esc(text)}</a>`;
+      }
+      if (tool.action) {
+        return `<span class="act research-tool-action" data-research-tool="${esc(tool.id)}" data-research-action="${esc(tool.action)}">${esc(text)}</span>`;
+      }
+      return "";
+    }).filter(Boolean).join("");
+  }
   if (!body) return "";
   const text = translate(labelKey, label, translateFn);
   const classes = ["utility-overflow", "more-tools", extraClass].filter(Boolean).join(" ");

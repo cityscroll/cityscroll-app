@@ -36,6 +36,10 @@ const apiHtml = readFileSync(new URL("../site/api.html", import.meta.url), "utf8
 const guideHome = readFileSync(new URL("../site/guide/index.html", import.meta.url), "utf8");
 const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 const functional = readFileSync(new URL("../test/functional/resident_document_presentation.py", import.meta.url), "utf8");
+const capabilityDiscoveryFunctional = readFileSync(
+  new URL("../test/functional/capability_discovery.py", import.meta.url),
+  "utf8",
+);
 
 test("research capability families cover the census research utilities", () => {
   assert.deepEqual(researchFamilyIds(), [
@@ -204,4 +208,8 @@ test("saved collection and share control ids remain available inside More tools"
 test("research-tools browser case is registered for composed notice verification", () => {
   assert.match(functional, /research-tools/);
   assert.match(functional, /data-more-tools-region|more-tools/);
+  // Shared capability-discovery functional evidence entry owns the live journey.
+  assert.match(capabilityDiscoveryFunctional, /assert_research_tools_journey/);
+  assert.match(capabilityDiscoveryFunctional, /data-more-tools-region/);
+  assert.match(capabilityDiscoveryFunctional, /research-task-entrances/);
 });
