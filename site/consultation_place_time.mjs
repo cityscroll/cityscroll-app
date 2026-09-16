@@ -214,10 +214,31 @@ export function consultationConsumerRecords(records = []) {
   return out;
 }
 
+const BOROUGH_BY_DISTRICT_PREFIX = Object.freeze({
+  M: "Manhattan",
+  X: "Bronx",
+  K: "Brooklyn",
+  Q: "Queens",
+  R: "Staten Island",
+});
+
+function boroughForCommunityDistrict(district) {
+  return BOROUGH_BY_DISTRICT_PREFIX[String(district || "")[0]] || null;
+}
+
+function ensureLensList(list = []) {
+  return unique([...(list || []), CONSULTATION_ACTIVITY_LENS]);
+}
+
+function setCountBag(bag = {}, ids = []) {
+  return { ...(bag || {}), [CONSULTATION_ACTIVITY_LENS]: unique(ids).length };
+}
+
 /** Merge typed consultation records into a district-activity document copy. */
 export function mergeConsultationActivity(activity = {}, records = []) {
   const contribution = consultationConsumerRecords(records);
   const next = structuredClone(activity || {});
+  next.lenses = ensureLensList(next.lenses);
   next.records = { ...(next.records || {}), [CONSULTATION_ACTIVITY_LENS]: { ...(next.records?.[CONSULTATION_ACTIVITY_LENS] || {}), ...contribution.records } };
   next.sources = {
     ...(next.sources || {}),
@@ -226,13 +247,39 @@ export function mergeConsultationActivity(activity = {}, records = []) {
       ...(next.sources?.[CONSULTATION_ACTIVITY_LENS] || {}),
     },
   };
-  next.district_items = next.district_items || { by_level: { community_district: {} } };
+  next.district_items = next.district_items || { by_level: { community_district: {}, borough: {}, council_district: {} } };
+  next.district_items.lenses = ensureLensList(next.district_items.lenses);
   next.district_items.by_level = next.district_items.by_level || {};
   next.district_items.by_level.community_district = next.district_items.by_level.community_district || {};
+  next.district_items.by_level.borough = next.district_items.by_level.borough || {};
+  next.district_items.by_level.council_district = next.district_items.by_level.council_district || {};
+  next.by_level = next.by_level || { borough: {}, community_district: {}, council_district: {} };
+  next.by_level.borough = next.by_level.borough || {};
+  next.by_level.community_district = next.by_level.community_district || {};
+  next.by_level.council_district = next.by_level.council_district || {};
+
+  const boroughIds = Object.create(null);
   for (const [district, ids] of Object.entries(contribution.by_community_district)) {
     const bucket = next.district_items.by_level.community_district[district] || {};
     bucket[CONSULTATION_ACTIVITY_LENS] = unique([...(bucket[CONSULTATION_ACTIVITY_LENS] || []), ...ids]).sort();
     next.district_items.by_level.community_district[district] = bucket;
+    next.by_level.community_district[district] = setCountBag(
+      next.by_level.community_district[district],
+      bucket[CONSULTATION_ACTIVITY_LENS],
+    );
+    const borough = boroughForCommunityDistrict(district);
+    if (borough) {
+      boroughIds[borough] = unique([...(boroughIds[borough] || []), ...ids]);
+    }
+  }
+  for (const [borough, ids] of Object.entries(boroughIds)) {
+    const bucket = next.district_items.by_level.borough[borough] || {};
+    bucket[CONSULTATION_ACTIVITY_LENS] = unique([...(bucket[CONSULTATION_ACTIVITY_LENS] || []), ...ids]).sort();
+    next.district_items.by_level.borough[borough] = bucket;
+    next.by_level.borough[borough] = setCountBag(
+      next.by_level.borough[borough],
+      bucket[CONSULTATION_ACTIVITY_LENS],
+    );
   }
   next.district_items.citywide = {
     ...(next.district_items.citywide || {}),
@@ -248,6 +295,9 @@ export function mergeConsultationActivity(activity = {}, records = []) {
       ...contribution.unlocated,
     ]).sort(),
   };
+  next.citywide = setCountBag(next.citywide, next.district_items.citywide[CONSULTATION_ACTIVITY_LENS]);
+  next.unlocated = setCountBag(next.unlocated, next.district_items.unlocated[CONSULTATION_ACTIVITY_LENS]);
+  next.virtual = setCountBag(next.virtual, next.district_items.virtual?.[CONSULTATION_ACTIVITY_LENS] || []);
   if (next.district_items.corpora) {
     next.district_items.corpora[CONSULTATION_ACTIVITY_LENS] = {
       stamp_value: records[0]?.observed_at || next.built_at || null,

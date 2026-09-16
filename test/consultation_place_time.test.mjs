@@ -18,6 +18,20 @@ import {
   consultationPlace,
   mergeConsultationActivity,
 } from "../site/consultation_place_time.mjs";
+import {
+  buildConsultationCollection,
+  consultationMaterializationRecords,
+  renderConsultationCollectionDocument,
+} from "../site/consultation_documents.mjs";
+import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
+import { MAP_LENSES } from "../site/map_exploration.mjs";
+import {
+  NEAR_YOU_COMMON_LENSES,
+  commonNearYouPath,
+  scopeFromLensState,
+} from "../site/scope_v0.mjs";
+import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
+import { buildNearYouViewModel, renderNearYouDeferredParts } from "../site/near_you_view.mjs";
 import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const AS_OF = "2026-08-15T12:00:00.000Z";
@@ -58,7 +72,7 @@ test("place projection preserves exact board identity, accepted address evidence
   assert.equal(consultationPlace({ ...base, geography: { kind: "citywide", labels: ["New York City"] } }).scope, "citywide");
 });
 
-test("A1: district activity, digest, Near You scope, and Now place a typed consultation", async () => {
+test("A1: district activity, digest, Near You, map, Now, and static/client place a typed consultation", async () => {
   await withPinnedClock(AS_OF, () => {
     const cb14 = {
       id: "cb14-community-budget-fy2028",
@@ -66,7 +80,7 @@ test("A1: district activity, digest, Near You scope, and Now place a typed consu
       organizer: "Brooklyn Community Board 14",
       observed_at: observed,
       deadline: { value: "2026-08-20", precision: "day" },
-      geography: { kind: "community_board", labels: ["CB14"], evidence: "board_identity" },
+      geography: { kind: "community_board", labels: ["CB14"], evidence: "board_identity", method: "community_board_ontology" },
     };
     const contribution = consultationConsumerRecords([cb14]);
     assert.equal(contribution.records[cb14.id].consultation_id, cb14.id);
@@ -75,6 +89,8 @@ test("A1: district activity, digest, Near You scope, and Now place a typed consu
     const activity = mergeConsultationActivity(emptyActivity(), [cb14]);
     assert.equal(activity.records.consultations[cb14.id].consultation_id, cb14.id);
     assert.deepEqual(activity.district_items.by_level.community_district.K14.consultations, [cb14.id]);
+    assert.deepEqual(activity.district_items.by_level.borough.Brooklyn.consultations, [cb14.id]);
+    assert.ok(activity.lenses.includes("consultations"));
 
     const digest = buildCommunityDistrictDigests({ activity, builtAt: AS_OF });
     assert.deepEqual(
@@ -93,12 +109,59 @@ test("A1: district activity, digest, Near You scope, and Now place a typed consu
     }, nearYouScope), false);
     assert.deepEqual(contribution.records[cb14.id].place.community_districts, ["K14"]);
 
+    assert.deepEqual(
+      [...NEAR_YOU_COMMON_LENSES],
+      ["meetings", "land", "property", "rules", "money", "consultations"],
+    );
+    assert.deepEqual(
+      [...MAP_LENSES],
+      ["all", "land", "property", "rules", "meetings", "money", "consultations"],
+    );
+    assert.equal(commonNearYouPath(scopeFromLensState("consultations", {})), "/near-you/lens/consultations/");
+    const lensScope = scopeWithPlace(scopeFromLensState("consultations", {}), {
+      communityDistrict: "K14",
+      borough: "Brooklyn",
+    });
+    const nearYouView = buildNearYouViewModel(lensScope, activity, {
+      schema: "cityscroll.district_boundaries.v1",
+      boundary_vintage: "2026-05-26",
+      community_districts: [],
+      council_districts: [],
+    });
+    assert.equal(nearYouView.lens, "consultations");
+    assert.equal(nearYouView.mapped, true);
+    assert.ok(nearYouView.results.records.some((row) => row.id === cb14.id && row.consultation_id === cb14.id));
+    assert.equal(nearYouView.results.records.find((row) => row.id === cb14.id).request_id, undefined);
+    assert.match(renderNearYouDeferredParts(nearYouView).resultsHtml, /Brooklyn CB14 district needs, FY2028/);
+
     const emptyDomains = ["money", "staffing", "rules", "property", "meetings", "land", "consultations"];
     const surface = buildNowSurface({
       ...Object.fromEntries(emptyDomains.map((domain) => [domain, { status: "available" }])),
       consultations: { status: "available", observed_at: observed, consultations: [cb14] },
     }, { today: "2026-08-15" });
     assert.ok(surface.act_by.dated.some((item) => item.id === `consultation:${cb14.id}` && item.domain === "consultations"));
+
+    const staticCollection = buildConsultationCollection({
+      materialization: { consultations: [cb14] },
+      query: new URLSearchParams("place=K14"),
+    });
+    const staticHtml = renderConsultationCollectionDocument(staticCollection);
+    assert.equal(staticCollection.records.length, 1);
+    assert.equal(staticCollection.records[0].id, cb14.id);
+    assert.match(staticHtml, /data-consultation-id="cb14-community-budget-fy2028"/);
+
+    const clientCollection = buildConsultationCollection({
+      materialization: { consultations: consultationMaterializationRecords({ consultations: [cb14] }) },
+      query: new URLSearchParams("place=CB14"),
+    });
+    assert.deepEqual(clientCollection.records.map((row) => row.id), [cb14.id]);
+    assert.equal(clientCollection.records[0].id, staticCollection.records[0].id);
+
+    const primaryCollection = primaryDocumentOutputs()
+      .find(([path]) => path.endsWith("/consultations/index.html"))?.[1];
+    assert.ok(primaryCollection, "static primary documents emit the consultations collection");
+    assert.match(primaryCollection, /data-consultation-id="cb14-community-budget-fy2028"/);
+    assert.match(primaryCollection, /data-consultation-id="bloomingdale-library-and-housing"/);
   });
 });
 

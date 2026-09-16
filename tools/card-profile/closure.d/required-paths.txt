@@ -436,6 +436,8 @@ site/comparative_award_rank.mjs
 site/comparative_receipt.mjs
 site/comparative_signal_admission.mjs
 site/composed_object_documents.mjs
+site/consultation_documents.mjs
+site/consultation_place_time.mjs
 site/consultation_search_producer.mjs
 site/contextual_suggestions.mjs
 site/contract_action_location.mjs

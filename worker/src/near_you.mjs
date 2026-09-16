@@ -6,7 +6,14 @@ import {
   renderNearYouDeferredParts,
   renderNearYouDocument,
 } from "../../site/near_you_view.mjs";
+import { consultationMaterializationRecords } from "../../site/consultation_documents.mjs";
+import { mergeConsultationActivity } from "../../site/consultation_place_time.mjs";
 import { loadNearYouActivity, RouteReadModelUnavailable } from "./lib/route_read_model_kv.mjs";
+
+function activityWithConsultations(activity) {
+  if (!activity) return activity;
+  return mergeConsultationActivity(activity, consultationMaterializationRecords());
+}
 
 const SITE_BASE = "https://cityscroll.org";
 const CANONICAL_BASE = `${SITE_BASE}/near-you`;
@@ -85,7 +92,7 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
       headers: { ...responseHeaders(), "Cache-Control": "no-store" },
     });
   }
-  const view = buildNearYouViewModel(scope, routeReadModel.activity, boundaries, {
+  const view = buildNearYouViewModel(scope, activityWithConsultations(routeReadModel.activity), boundaries, {
     canonicalBase: CANONICAL_BASE,
     siteBase: SITE_BASE,
     communityGeography: routeReadModel.communityGeography?.public_edges?.length

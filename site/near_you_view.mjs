@@ -56,6 +56,7 @@ const LENS_LABELS = Object.freeze({
   meetings: "Meetings",
   money: "Contracts",
   people: "Staffing",
+  consultations: "Consultations",
 });
 const BAG_LABELS = Object.freeze({
   citywide: "Citywide",
@@ -491,7 +492,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       };
     });
   };
-  const overviewAll = Object.fromEntries(["meetings", "land", "property", "rules", "money"].map((name) => [name, overviewRecords(name)]));
+  const overviewAll = Object.fromEntries(["meetings", "land", "property", "rules", "money", "consultations"].map((name) => [name, overviewRecords(name)]));
   const builtTime = Date.parse(activityRoot?.built_at || "");
   const upcoming = overviewAll.meetings.filter((record) => {
     const date = Date.parse(record.date || "");
@@ -517,6 +518,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       { key: "board-activity", title: "Board activity", count: null, records: [], coverage: viewBoardCoverage(scope, options.communityGeography || {}), lens: "meetings" },
       { key: "projects", title: "Projects", count: dataState === "ready" ? projects.length : null, records: projects.slice(0, 3), coverage: projects.length ? null : "No district projects are published in this digest.", lens: "land" },
       { key: "district-priorities", title: "District priorities", count: null, records: [], coverage: "District priorities are not published in this digest.", lens: "meetings" },
+      { key: "consultations", title: "Consultations", count: dataState === "ready" ? overviewAll.consultations.length : null, records: overviewAll.consultations.slice(0, 3), coverage: overviewAll.consultations.length ? null : "No consultations are recorded for this district in the retained sources.", lens: "consultations" },
     ],
   };
   const localFollowBundle = isOverview && scope.place.community_districts.length
@@ -695,7 +697,7 @@ function hiddenScopeFields(scope, omit = new Set()) {
 }
 
 function lensOptions(current) {
-  return ["meetings", "land", "property", "rules", "money", "people"]
+  return ["meetings", "land", "property", "rules", "money", "people", "consultations"]
     .map((lens) => `<option value="${lens}"${lens === current ? " selected" : ""}>${esc(LENS_LABELS[lens])}</option>`)
     .join("");
 }
