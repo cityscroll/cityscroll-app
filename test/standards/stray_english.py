@@ -223,6 +223,12 @@ def main():
         findings += scan_js(src[start + 8:end] if start != -1 and end != -1 else "")
     for module in sorted((SITE_ROOT / "app").glob("*.mjs")):
         findings += scan_js(module.read_text(encoding="utf-8"))
+    # Shared client filter port imported by routing.mjs (extracted from the app
+    # module graph so routing stays under the short-context size bar). Keep it
+    # in this scan so DEEPLINK_CATEGORIES cannot leave the allowlist register.
+    deeplink_filter = SITE_ROOT / "deeplink_filter.mjs"
+    if deeplink_filter.exists():
+        findings += scan_js(deeplink_filter.read_text(encoding="utf-8"))
     # i18n.js: only the code AFTER the dictionaries (builders/helpers) is linted —
     # the STRINGS/SECTION_I18N tables *are* the i18n layer.
     i18n_src = (SITE_ROOT / "i18n.js").read_text(encoding="utf-8")
