@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import http.server
+import json
 import os
 import pathlib
 import re
@@ -19,6 +20,9 @@ ROOT = pathlib.Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT))
 NOTICE_ID = "20260810048"
 NOTICE_ROUTE = f"/notices/{NOTICE_ID}/"
+NOTICE_SOURCE = f"https://a856-cityrecord.nyc.gov/RequestDetail/{NOTICE_ID}"
+LEGACY_HASH_ROUTE = f"#notice/{NOTICE_ID}"
+MANIFEST_PATH = ROOT / "docs" / "evidence" / "notice-shell" / "capture-manifest.json"
 
 
 def stage_assets() -> pathlib.Path:
@@ -86,6 +90,11 @@ def start_server():
     return process, staging, state_dir, base, upstream
 
 
+def render_hash(page) -> str:
+    content = page.locator("#main").inner_text()
+    return hashlib.sha256(content.encode()).hexdigest()
+
+
 def assert_composed(page, base: str, *, label: str) -> dict[str, object]:
     page.set_default_timeout(20000)
     errors: list[str] = []
@@ -107,23 +116,149 @@ def assert_composed(page, base: str, *, label: str) -> dict[str, object]:
     assert hidden_focus.count() == 0, f"{label}: hidden focusable control remains"
     page.keyboard.press("Tab")
     assert page.evaluate("document.activeElement && getComputedStyle(document.activeElement).display !== 'none'")
-    content = page.locator("#main").inner_text()
-    return {"route": NOTICE_ROUTE, "viewport": page.viewport_size, "render_sha256": hashlib.sha256(content.encode()).hexdigest()}
+    return {"route": NOTICE_ROUTE, "viewport": page.viewport_size, "render_sha256": render_hash(page)}
 
 
-def assert_no_javascript(page, base: str) -> None:
+def assert_a4_source_access_without_javascript(page, base: str) -> dict[str, object]:
+    """A4: main content and source access work without JavaScript."""
     response = page.goto(f"{base}{NOTICE_ROUTE.lstrip('/')}", wait_until="domcontentloaded")
-    assert response and response.status == 200, f"edge response status={response.status if response else 'none'} body={page.locator('body').inner_text()[:300]}"
+    assert response and response.status == 200, (
+        f"A4 edge response status={response.status if response else 'none'} "
+        f"body={page.locator('body').inner_text()[:300]}"
+    )
     assert page.locator("#notice-route-chrome .document-mast").count() == 1
     assert page.locator("#noticeview .rolename").count() == 1
     assert page.locator("#noticeview .glance dt").count() >= 1
     assert page.locator(".home-topic-entry:visible").count() == 0
+    source = page.locator(f'#noticeview a.ui-official-source-link[href="{NOTICE_SOURCE}"]')
+    assert source.count() >= 1, "A4: official source link is absent without JavaScript"
+    assert source.first.get_attribute("href") == NOTICE_SOURCE
+    assert source.first.is_visible(), "A4: official source link is not visible without JavaScript"
+    return {
+        "case": "notice-shell-no-javascript-source-access",
+        "route": NOTICE_ROUTE,
+        "viewport": page.viewport_size,
+        "assertion": (
+            "Without JavaScript the edge document keeps the compact mast, one notice heading, "
+            "essential facts, and a visible official source link."
+        ),
+        "render_sha256": render_hash(page),
+    }
+
+
+def assert_a5_skip_navigation(page, base: str) -> dict[str, object]:
+    """A5: skip navigation still works on the composed notice route."""
+    response = page.goto(f"{base}{NOTICE_ROUTE.lstrip('/')}", wait_until="domcontentloaded")
+    assert response and response.status == 200, "A5: notice route did not return 200"
+    page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
+    skip = page.locator("a.skip")
+    assert skip.count() == 1, "A5: expected exactly one skip link"
+    assert skip.first.get_attribute("href") == "#main"
+    page.keyboard.press("Tab")
+    focused = page.evaluate(
+        """() => {
+            const el = document.activeElement;
+            return {
+              tag: el && el.tagName,
+              cls: el && (typeof el.className === 'string' ? el.className : ''),
+              href: el && el.getAttribute && el.getAttribute('href'),
+            };
+        }"""
+    )
+    assert focused and "skip" in (focused.get("cls") or ""), f"A5: first focusable is not skip link: {focused}"
+    page.keyboard.press("Enter")
+    page.wait_for_function("() => location.hash === '#main' || document.activeElement === document.getElementById('main')")
+    assert page.locator("#main").count() == 1
+    return {
+        "case": "notice-shell-skip-navigation",
+        "route": NOTICE_ROUTE,
+        "viewport": page.viewport_size,
+        "assertion": (
+            "Skip navigation remains first-focusable on the notice route and moves reading "
+            "into #main."
+        ),
+        "render_sha256": render_hash(page),
+    }
+
+
+def assert_a3_legacy_hash_and_notice_to_home(page, base: str) -> dict[str, object]:
+    """A3: legacy hash navigation and notice → home produce the correct chrome."""
+    page.set_default_timeout(20000)
+    errors: list[str] = []
+    page.on("pageerror", lambda error: errors.append(str(error)))
+    # Start from the root hash ingress so the compatibility shim can replace once.
+    response = page.goto(f"{base.rstrip('/')}/{LEGACY_HASH_ROUTE}", wait_until="domcontentloaded")
+    assert response is None or response.status == 200, (
+        f"A3: legacy hash entry status={response.status if response else 'none'}"
+    )
+    page.wait_for_url(re.compile(rf".*{re.escape(NOTICE_ROUTE.rstrip('/'))}/?$"))
+    page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
+    page.wait_for_selector("#noticeview .route-item, #noticeview .rolename", state="visible")
+    assert page.locator("body.notice-route").count() == 1
+    assert page.locator("#noticeview .rolename").count() == 1
+    assert page.locator(".notice-route .document-mast").count() == 1
+    assert page.locator(".notice-route .home-topic-entry:visible").count() == 0
+    fatal = [error for error in errors if "CORS" not in error and "Failed to load resource" not in error]
+    assert not fatal, f"A3 legacy hash: client errors: {fatal}"
+
+    page.locator("#notice-route-chrome a.document-brand.home").click()
+    page.wait_for_load_state("domcontentloaded")
+    page.wait_for_function("() => !document.body.classList.contains('notice-route')")
+    page.wait_for_selector(".home-topic-entry", state="visible")
+    assert "notice-route" not in (page.locator("body").get_attribute("class") or "")
+    assert page.locator("#notice-route-chrome:visible").count() == 0
+    assert page.locator(".home-topic-entry:visible").count() >= 1
+    return {
+        "case": "notice-shell-legacy-hash-and-notice-to-home",
+        "route": f"/{LEGACY_HASH_ROUTE} -> {NOTICE_ROUTE} -> /",
+        "viewport": page.viewport_size,
+        "assertion": (
+            "Legacy #notice/<id> forwards into the composed notice chrome, and leaving the "
+            "notice for home restores homepage chrome without the notice-route shell."
+        ),
+        "render_sha256": render_hash(page),
+    }
+
+
+def viewport_name(viewport: dict[str, int]) -> str:
+    return "desktop" if viewport["width"] >= 1000 else "narrow"
+
+
+def write_manifest(captures: list[dict[str, object]], *, revision: str) -> None:
+    payload = {
+        "schema": "cityscroll.render_capture_manifest.v1",
+        "surface": "notice document shell",
+        "condition": (
+            "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; "
+            "no image binary is committed."
+        ),
+        "image_binaries_committed": False,
+        "revision": revision,
+        "data_vintage": "materialized notice fixture 2026-08-14",
+        "route": NOTICE_ROUTE,
+        "captures": [
+            {
+                "case": capture["case"],
+                "viewport": {
+                    "name": viewport_name(capture["viewport"]),
+                    "width": capture["viewport"]["width"],
+                    "height": capture["viewport"]["height"],
+                },
+                "assertion": capture["assertion"],
+                "render_sha256": capture["render_sha256"],
+            }
+            for capture in captures
+        ],
+    }
+    MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
+    MANIFEST_PATH.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--case", choices=["notice-shell"], required=True)
-    parser.parse_args()
+    parser.add_argument("--write-manifest", action="store_true")
+    args = parser.parse_args()
     from playwright.sync_api import sync_playwright
 
     process = staging = state_dir = upstream = None
@@ -131,34 +266,83 @@ def main() -> None:
     if not base:
         process, staging, state_dir, base, upstream = start_server()
     base = base.rstrip("/") + "/"
+    revision = subprocess.check_output(["git", "rev-parse", "--short=9", "HEAD"], cwd=ROOT, text=True).strip()
+    captures: list[dict[str, object]] = []
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
             for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):
                 no_js = browser.new_context(viewport=viewport, java_script_enabled=False)
-                assert_no_javascript(no_js.new_page(), base)
+                captures.append(assert_a4_source_access_without_javascript(no_js.new_page(), base))
                 no_js.close()
 
                 failed = browser.new_context(viewport=viewport)
                 failed_page = failed.new_page()
                 failed_page.route("**/app/main.mjs", lambda route: route.abort())
                 failed_result = assert_composed(failed_page, base, label="failed enhancement")
+                captures.append({
+                    "case": "notice-shell-failed-enhancement",
+                    "route": NOTICE_ROUTE,
+                    "viewport": viewport,
+                    "assertion": "Blocking the app entry preserves the readable edge document and its route chrome.",
+                    "render_sha256": failed_result["render_sha256"],
+                })
                 failed.close()
 
                 context = browser.new_context(viewport=viewport)
                 page = context.new_page()
                 result = assert_composed(page, base, label="successful hydration")
+                captures.append({
+                    "case": "notice-shell-successful-hydration",
+                    "route": NOTICE_ROUTE,
+                    "viewport": viewport,
+                    "assertion": (
+                        "The real edge response and successful client path keep the compact mast, "
+                        "one notice heading, essential facts, language control, and no visible homepage promotion."
+                    ),
+                    "render_sha256": result["render_sha256"],
+                })
+                captures.append(assert_a5_skip_navigation(page, base))
+
+                # Preserve the previously retained home → Back rehearsal on the hydrated path.
+                page.goto(f"{base}{NOTICE_ROUTE.lstrip('/')}", wait_until="domcontentloaded")
+                page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
                 page.goto(base, wait_until="domcontentloaded")
                 page.go_back(wait_until="domcontentloaded")
                 page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
                 assert page.locator("#noticeview .route-item").count() == 1
-                print(f"OK notice-shell {viewport['width']}x{viewport['height']}: {result['render_sha256']} failed={failed_result['render_sha256']}", flush=True)
+                captures.append({
+                    "case": "notice-shell-home-back",
+                    "route": NOTICE_ROUTE,
+                    "viewport": viewport,
+                    "assertion": (
+                        "Home then Back returns to the composed notice with its route chrome intact."
+                    ),
+                    "render_sha256": render_hash(page),
+                })
                 context.close()
+
+                navigation = browser.new_context(viewport=viewport)
+                captures.append(assert_a3_legacy_hash_and_notice_to_home(navigation.new_page(), base))
+                navigation.close()
+
+                print(
+                    f"OK notice-shell {viewport['width']}x{viewport['height']}: "
+                    f"{result['render_sha256']} failed={failed_result['render_sha256']}",
+                    flush=True,
+                )
             browser.close()
+        if args.write_manifest:
+            write_manifest(captures, revision=revision)
+            print(f"wrote {MANIFEST_PATH.relative_to(ROOT)}", flush=True)
     finally:
         if process:
             process.terminate()
-            process.wait(timeout=10)
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait(timeout=5)
         if upstream:
             upstream.shutdown()
             upstream.server_close()
