@@ -393,7 +393,7 @@ test("runtime alarms use the existing Resend path and the ops mailbox", async ()
   };
   try {
     const result = await sendOpsAlert({ RESEND_API_KEY: "test-key", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" }, {
-      guard: "production-emergency", subject: "Test emergency", text: "bad condition",
+      guard: "production-emergency", signature: "incident-test", subject: "Test emergency", text: "bad condition",
       emergency: { confirmed: true, impact: "service-unavailable", human_action_required: true, automatic_remedy: "exhausted", action: "Restore the service now", verified_at: new Date().toISOString(), evidence_url: "https://example.com/evidence" },
     });
     assert.equal(result.accepted, true);
@@ -402,6 +402,7 @@ test("runtime alarms use the existing Resend path and the ops mailbox", async ()
     assert.equal(payload.to, OPS_ALERT_TO);
     assert.equal(payload.to, "james@cityscroll.org");
     assert.notEqual(payload.to, "team@cityscroll.org");
+    assert.equal(request.options.headers["Idempotency-Key"], "incident-test");
   } finally {
     globalThis.fetch = previous;
   }

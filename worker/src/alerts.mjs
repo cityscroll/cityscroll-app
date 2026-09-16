@@ -2628,8 +2628,10 @@ function logDryRunEmail(payload) {
   }));
 }
 
-export async function sendOpsAlert(env, { guard, subject, text, emergency, now = new Date(), observedAt = now.toISOString() } = {}) {
+export async function sendOpsAlert(env, { guard, signature, subject, text, emergency, now = new Date(), observedAt = now.toISOString() } = {}) {
   if (!opsNotificationDecision({ guard, emergency }, now).email) return { accepted: false, reason: "desk-only" };
+  const incidentSignature = typeof signature === "string" ? signature.trim().slice(0, 128) : "";
+  if (!incidentSignature) return { accepted: false, reason: "incident-signature-required" };
   const { recordOutboundOpsSendReceipt } = await import("./reliability_watchdogs.mjs");
   if (!env?.RESEND_API_KEY) {
     const result = { accepted: false, reason: "resend-not-configured" };
@@ -2641,7 +2643,7 @@ export async function sendOpsAlert(env, { guard, subject, text, emergency, now =
     .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", " ")}</p>`;
   try {
     const accepted = await sendEmail(env, env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>", OPS_ALERT_TO,
-      subject || `CityScroll reliability alert: ${safeGuard}`, body, null, false);
+      subject || `CityScroll reliability alert: ${safeGuard}`, body, null, false, { idempotencyKey: incidentSignature });
     const result = { accepted: true, provider: accepted };
     await recordOutboundOpsSendReceipt(env, result, new Date(observedAt));
     return result;

@@ -761,6 +761,12 @@ export async function emitOpsAlertOnce(env, input = {}) {
   const firstSeen = prior?.first_seen || input.first_seen || now.toISOString();
   const lastSeen = input.last_seen || now.toISOString();
   const notification = opsNotificationDecision(input, now);
+  const eligibleEmergency = notification.email ? {
+    impact: notification.impact,
+    action: notification.action,
+    evidence_url: notification.evidence_url,
+    verified_at: notification.verified_at,
+  } : null;
   const record = {
     schema: "cityscroll.ops-alert-signature.v1",
     signature,
@@ -779,12 +785,9 @@ export async function emitOpsAlertOnce(env, input = {}) {
     rollup_day: prior?.rollup_day || null,
     delivery_finding: prior?.delivery_finding || null,
     notification,
-    confirmed_emergency: prior?.confirmed_emergency || (notification.email ? {
-      impact: notification.impact,
-      action: notification.action,
-      evidence_url: notification.evidence_url,
-      verified_at: notification.verified_at,
-    } : null),
+    confirmed_emergency: prior?.emergency_sent_at && prior?.confirmed_emergency
+      ? prior.confirmed_emergency
+      : eligibleEmergency || prior?.confirmed_emergency || null,
     decision_context: guard === REPAIR_JUDGMENT_GUARD ? String(input.paragraph || "").slice(0, 2500) : null,
   };
   if (EVIDENCE_REQUIRED_GUARDS.includes(guard)) {
@@ -836,6 +839,7 @@ export async function emitOpsAlertOnce(env, input = {}) {
   try {
     result = await sendOpsAlert(env, {
       guard,
+      signature,
       subject: `CityScroll emergency: ${record.notification.impact}`,
       emergency: input.emergency,
       now,
