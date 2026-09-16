@@ -1,7 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { normalizePdcCalendarMeeting, normalizeBsaCalendarMeeting, normalizeOathTrialCalendarMeeting } from "../site/meeting_object_contract.mjs";
-import { buildObserveSurface, normalizeObserveScope, observeScopeUrl, renderObserveDocument } from "../site/government_observe.mjs";
+import {
+  buildObserveSurface,
+  normalizeObserveScope,
+  observeScopeUrl,
+  OBSERVE_SPEAK_BOUNDARY,
+  renderObserveDocument,
+} from "../site/government_observe.mjs";
 import { todayISO, withPinnedClock } from "./helpers/test_clock.mjs";
 
 function addDays(day, days) {
@@ -66,6 +72,70 @@ test("A4: unsupported scope fails explicitly without showing the broader observa
     assert.doesNotMatch(html, /data-source-system=/);
     assert.doesNotMatch(html, /PDC public review|BSA executive review|OATH scheduled trial/);
     assert.match(html, /No scheduled observations match these supported filters/);
+  });
+});
+
+test("A4: an open proceeding is not advertised as permission to speak", async () => {
+  await withPinnedClock("2026-09-15T12:00:00.000Z", () => {
+    const day0 = todayISO();
+    const day1 = addDays(day0, 1);
+    const rows = [
+      normalizePdcCalendarMeeting({
+        pdc_event_id: "pdc-open",
+        title: "PDC open public review",
+        event_date: day0,
+        venue: { name: "City Hall" },
+        source_url: "https://example.test/pdc-open",
+        description: "Review a public design proposal.",
+        // Open + known speaking path still must not become a speak invitation on this list.
+        speaking_rights: "allowed",
+        access_steps: [{ kind: "observer_instructions", destination: "https://example.test/pdc-open" }],
+      }),
+      normalizeBsaCalendarMeeting({
+        bsa_session_id: "bsa-open",
+        title: "BSA open executive review",
+        event_date: day1,
+        venue: { name: "Municipal Building" },
+        source_url: "https://example.test/bsa-open",
+        speaking_rights: "requires_registration",
+        observer_access: { watch_url: "https://example.test/watch-open" },
+      }),
+      normalizeOathTrialCalendarMeeting({
+        oath_trial_session_id: "oath-open",
+        title: "OATH open scheduled trial",
+        event_date: day1,
+        source_url: "https://example.test/oath-open",
+        access_steps: [{ kind: "observer_instructions", destination: "https://example.test/oath-open" }],
+      }),
+    ];
+
+    const surface = buildObserveSurface({ rows });
+    // Denominator: the collection has open proceedings to advertise wrongly if it chose to.
+    assert.equal(surface.observations.length, 3);
+    assert.deepEqual(
+      surface.observations.map((row) => row.source_system),
+      ["pdc_calendar", "bsa_calendar", "oath_trial_calendar"],
+    );
+
+    const bySource = Object.fromEntries(surface.observations.map((row) => [row.source_system, row]));
+    // Intermediate state: speaking rights are carried from source, not invented from openness.
+    assert.equal(bySource.pdc_calendar.speaking_rights, "allowed");
+    assert.equal(bySource.bsa_calendar.speaking_rights, "requires_registration");
+    assert.equal(bySource.oath_trial_calendar.speaking_rights, "unknown");
+
+    const html = renderObserveDocument(surface);
+    assert.match(html, /class="observe-speak-boundary"/);
+    assert.match(html, new RegExp(OBSERVE_SPEAK_BOUNDARY.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    // Two independent negatives: no speak-invitation copy, and no speak/testify affordance.
+    assert.doesNotMatch(
+      html,
+      /register to (?:testify|speak)|sign up to testify|you (?:may|can) speak|Request to speak|Submit testimony/i,
+    );
+    assert.doesNotMatch(html, /data-action-kind="(?:testify|speak)"|href="[^"]*testify/i);
+    // The three open titles remain present as observations, so the boundary is about framing, not hiding.
+    assert.match(html, /PDC open public review/);
+    assert.match(html, /BSA open executive review/);
+    assert.match(html, /OATH open scheduled trial/);
   });
 });
 
