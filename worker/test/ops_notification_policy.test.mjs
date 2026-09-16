@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
 import { opsNotificationDecision } from '../src/lib/ops_notification_policy.mjs';
+import { claimEmergencyDelivery } from '../src/lib/emergency_outbox.mjs';
 import { emitOpsAlertOnce } from '../src/reliability_watchdogs.mjs';
 import { sendOpsAlert } from '../src/alerts.mjs';
 import { handleAdminOpsHealth } from '../src/admin.mjs';
@@ -84,6 +85,30 @@ test('transport uncertainty stays inspectable and never retries after idempotenc
   assert.equal(held.record.emergency_delivery.state,'indeterminate');
   assert.deepEqual(held.record.confirmed_emergency,first.record.confirmed_emergency);
   assert.equal(calls,1);
+}finally{globalThis.fetch=previous}
+});
+test('uncertain retry cutoff preserves a safety margin for new and existing rows',async()=>{
+ const first='2026-09-16T12:00:00.000Z';const providerExpiry='2026-09-17T12:00:00.000Z';const cutoff='2026-09-17T11:45:00.000Z';
+ const payload={subject:'Emergency',text:'Restore service',evidence:{impact:'service-unavailable',action:'Restore service',evidence_url:'https://example.com/incident',verified_at:first}};
+ const created=d1();const fresh=await claimEmergencyDelivery(created.DB,{signature:'new-window',payload,now:new Date(first)});
+ assert.equal(fresh.owned,true);assert.equal(fresh.row.retry_until,cutoff);
+ const migrated=d1();const expiredMigration=await claimEmergencyDelivery(migrated.DB,{signature:'migrated-at-cutoff',payload,now:new Date(cutoff),attemptedAt:first,retryUntil:providerExpiry});
+ assert.equal(expiredMigration.owned,false);assert.equal(expiredMigration.row.state,'indeterminate');assert.equal(expiredMigration.row.retry_until,cutoff);
+ for(const [label,stamp,owned] of [['before','2026-09-17T11:44:59.999Z',true],['at',cutoff,false],['after','2026-09-17T11:45:00.001Z',false]]){
+  const current=d1();current.sqlite.prepare(`INSERT INTO ops_emergency_deliveries
+   (signature,payload_json,state,first_attempted_at,last_attempted_at,retry_until,attempt_count,error_reason)
+   VALUES (?,?,\'indeterminate\',?,?,?,?,?)`).run(`existing-${label}`,JSON.stringify(payload),first,first,providerExpiry,1,'delivery-indeterminate');
+  const claim=await claimEmergencyDelivery(current.DB,{signature:`existing-${label}`,payload,now:new Date(stamp)});
+  assert.equal(claim.owned,owned,label);assert.equal(claim.row.retry_until,cutoff,label);
+  assert.equal(Number(claim.row.attempt_count),owned?2:1,label);
+ }
+});
+test('emergency provider requests time out as indeterminate',async()=>{
+ const previous=globalThis.fetch;let calls=0;
+ globalThis.fetch=async(_url,{signal})=>{calls+=1;return new Promise((_resolve,reject)=>signal.addEventListener('abort',()=>reject(signal.reason),{once:true}))};
+ try{
+  const result=await sendOpsAlert({RESEND_API_KEY:'test',ALERT_STATE:kv(),OPS_EMERGENCY_SEND_TIMEOUT_MS:5},{...input,signature:'incident-timeout'});
+  assert.equal(calls,1);assert.equal(result.accepted,false);assert.equal(result.reason,'delivery-indeterminate');assert.match(result.error,/timed out/i);
  }finally{globalThis.fetch=previous}
 });
 test('concurrent differing emergencies share one immutable D1 payload owner',async()=>{

@@ -375,6 +375,10 @@ rollup; rejected sends may retry. A new incident must have a distinct signature.
 The final sender enforces the same policy, so direct calls cannot bypass it.
 Before provider submission, D1 owns the incident signature's immutable message,
 delivery state, and confirmed evidence; provider idempotency is secondary protection.
+Uncertain sends retry only until fifteen minutes before the provider's 24-hour
+idempotency window ends, including rows created before that margin was enforced.
+Emergency provider requests default to a 10-second timeout and are capped at 30
+seconds; a timeout remains indeterminate evidence and never becomes acceptance.
 The authenticated Desk projection overlays that authority by signature onto the
 most recent 50 distinct findings, ordered by the newest valid observation or
 delivery timestamp. Older emergency evidence remains durable in D1, and a failed

@@ -1,5 +1,7 @@
 const CLAIM_TTL_MS = 60 * 1000;
 const IDEMPOTENCY_MS = 24 * 60 * 60 * 1000;
+const IDEMPOTENCY_SAFETY_MARGIN_MS = 15 * 60 * 1000;
+const RETRY_WINDOW_MS = IDEMPOTENCY_MS - IDEMPOTENCY_SAFETY_MARGIN_MS;
 
 const SELECT = `SELECT signature, payload_json, state, claim_token, claim_expires_at,
   first_attempted_at, last_attempted_at, retry_until, attempt_count, resolved_at,
@@ -20,6 +22,14 @@ function token() {
 
 function changes(result) {
   return Number(result?.meta?.changes ?? result?.changes ?? 0);
+}
+
+function boundedRetryUntil(firstAttemptedAt, requestedRetryUntil = null) {
+  const first = Date.parse(firstAttemptedAt || "");
+  if (!Number.isFinite(first)) return null;
+  const safeEnd = first + RETRY_WINDOW_MS;
+  const requested = Date.parse(requestedRetryUntil || "");
+  return new Date(Number.isFinite(requested) ? Math.min(requested, safeEnd) : safeEnd).toISOString();
 }
 
 async function run(db, sql, params) {
@@ -152,22 +162,32 @@ export async function claimEmergencyDelivery(db, { signature, payload, now = new
   if (!db?.prepare) return { ok: false, reason: "emergency-outbox-unavailable", owned: false, row: null };
   const claimToken = token();
   const at = now.toISOString();
-  const firstAt = attemptedAt || at;
-  const until = retryUntil || new Date(now.getTime() + IDEMPOTENCY_MS).toISOString();
+  const attemptedEpoch = Date.parse(attemptedAt || "");
+  const firstAt = Number.isFinite(attemptedEpoch) ? new Date(attemptedEpoch).toISOString() : at;
+  const until = boundedRetryUntil(firstAt, retryUntil);
   const expires = new Date(now.getTime() + CLAIM_TTL_MS).toISOString();
   const payloadJson = JSON.stringify(payload);
+  const initialState = Date.parse(until || "") > now.getTime() ? "in-flight" : "indeterminate";
+  const initialClaimToken = initialState === "in-flight" ? claimToken : null;
+  const initialClaimExpiry = initialState === "in-flight" ? expires : null;
   try {
     let result = await run(db, `INSERT INTO ops_emergency_deliveries
       (signature, payload_json, state, claim_token, claim_expires_at, first_attempted_at,
        last_attempted_at, retry_until, attempt_count)
-      VALUES (?, ?, 'in-flight', ?, ?, ?, ?, ?, 1)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
       ON CONFLICT(signature) DO NOTHING`,
-    [signature, payloadJson, claimToken, expires, firstAt, at, until]);
-    let owned = changes(result) > 0;
+    [signature, payloadJson, initialState, initialClaimToken, initialClaimExpiry, firstAt, at, until]);
+    let owned = changes(result) > 0 && initialState === "in-flight";
     let existing = owned ? null : await read(db, signature);
+    const safeExistingUntil = boundedRetryUntil(existing?.first_attempted_at, existing?.retry_until);
+    if (!owned && safeExistingUntil && safeExistingUntil !== existing.retry_until) {
+      await run(db, `UPDATE ops_emergency_deliveries SET retry_until = ? WHERE signature = ? AND retry_until = ?`,
+        [safeExistingUntil, signature, existing.retry_until]);
+      existing = await read(db, signature);
+    }
     if (!owned && existing?.state === "rejected") {
       const existingUntil = Date.parse(existing.retry_until || "");
-      const nextUntil = Number.isFinite(existingUntil) && existingUntil >= now.getTime() ? existing.retry_until : until;
+      const nextUntil = Number.isFinite(existingUntil) && existingUntil > now.getTime() ? existing.retry_until : until;
       const nextFirst = nextUntil === existing.retry_until ? existing.first_attempted_at : at;
       result = await run(db, `UPDATE ops_emergency_deliveries
         SET payload_json = ?, state = 'in-flight', claim_token = ?, claim_expires_at = ?,
@@ -177,12 +197,12 @@ export async function claimEmergencyDelivery(db, { signature, payload, now = new
       [payloadJson, claimToken, expires, nextFirst, at, nextUntil, signature]);
       owned = changes(result) > 0;
     } else if (!owned && existing && ["in-flight", "indeterminate"].includes(existing.state)
-      && Date.parse(existing.retry_until || "") >= now.getTime()
+      && Date.parse(existing.retry_until || "") > now.getTime()
       && (existing.state === "indeterminate" || Date.parse(existing.claim_expires_at || "") <= now.getTime())) {
       result = await run(db, `UPDATE ops_emergency_deliveries
         SET state = 'in-flight', claim_token = ?, claim_expires_at = ?, last_attempted_at = ?,
             attempt_count = attempt_count + 1, resolved_at = NULL, error_reason = NULL
-        WHERE signature = ? AND state = ? AND payload_json = ? AND retry_until >= ?
+        WHERE signature = ? AND state = ? AND payload_json = ? AND retry_until > ?
           AND (state = 'indeterminate' OR claim_expires_at <= ?)`,
       [claimToken, expires, at, signature, existing.state, existing.payload_json, at, at]);
       owned = changes(result) > 0;

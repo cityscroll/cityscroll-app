@@ -2641,9 +2641,16 @@ export async function sendOpsAlert(env, { guard, signature, subject, text, emerg
   const safeGuard = String(guard || "reliability").slice(0, 80);
   const body = `<p>${String(text || `${safeGuard} failed at ${observedAt}.`)
     .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", " ")}</p>`;
+  const configuredTimeout = Number(env.OPS_EMERGENCY_SEND_TIMEOUT_MS);
+  const providerTimeoutMs = Number.isFinite(configuredTimeout)
+    ? Math.max(1, Math.min(configuredTimeout, 30_000))
+    : 10_000;
   try {
     const accepted = await sendEmail(env, env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>", OPS_ALERT_TO,
-      subject || `CityScroll reliability alert: ${safeGuard}`, body, null, false, { idempotencyKey: incidentSignature });
+      subject || `CityScroll reliability alert: ${safeGuard}`, body, null, false, {
+        idempotencyKey: incidentSignature,
+        timeoutMs: providerTimeoutMs,
+      });
     const result = { accepted: true, provider: accepted };
     await recordOutboundOpsSendReceipt(env, result, new Date(observedAt));
     return result;
@@ -2663,28 +2670,36 @@ async function sendEmail(env, from, to, subject, html, listUnsub, oneClick, opti
     authorization: `Bearer ${env.RESEND_API_KEY}`,
   };
   if (options.idempotencyKey) headers["Idempotency-Key"] = options.idempotencyKey;
-  let r;
+  const timeoutMs = Number(options.timeoutMs);
+  const controller = Number.isFinite(timeoutMs) && timeoutMs > 0 ? new AbortController() : null;
+  const timeout = controller ? setTimeout(() => controller.abort(new Error("Resend request timed out")), timeoutMs) : null;
   try {
-    r = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers,
-      body: JSON.stringify(body),
-    });
-  } catch (error) {
-    error.deliveryStatus = "indeterminate";
-    throw error;
-  }
-  if (!r.ok) {
-    const detail = await r.text().catch(() => "unreadable response");
-    const error = new Error(`Resend ${r.status}: ${detail}`);
-    error.deliveryStatus = r.status === 408 || r.status === 409 || r.status >= 500 ? "indeterminate" : "rejected";
-    throw error;
-  }
-  try {
-    return await r.json();
-  } catch (error) {
-    error.deliveryStatus = "indeterminate";
-    throw error;
+    let r;
+    try {
+      r = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers,
+        body: JSON.stringify(body),
+        ...(controller ? { signal: controller.signal } : {}),
+      });
+    } catch (error) {
+      error.deliveryStatus = "indeterminate";
+      throw error;
+    }
+    if (!r.ok) {
+      const detail = await r.text().catch(() => "unreadable response");
+      const error = new Error(`Resend ${r.status}: ${detail}`);
+      error.deliveryStatus = r.status === 408 || r.status === 409 || r.status >= 500 ? "indeterminate" : "rejected";
+      throw error;
+    }
+    try {
+      return await r.json();
+    } catch (error) {
+      error.deliveryStatus = "indeterminate";
+      throw error;
+    }
+  } finally {
+    if (timeout) clearTimeout(timeout);
   }
 }
 
