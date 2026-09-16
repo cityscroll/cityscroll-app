@@ -508,10 +508,10 @@ function observationContext(source) {
   const asOf = dayStamp(source.lookup_as_of);
   const vintage = dayStamp(source.vintage);
   if (asOf && vintage && asOf !== vintage) {
-    return `Checked ${asOf}; source snapshot ${vintage}`;
+    return `Checked ${asOf}; source as of ${vintage}`;
   }
   if (asOf) return `Checked ${asOf}`;
-  if (vintage) return `Source snapshot ${vintage}`;
+  if (vintage) return `Source as of ${vintage}`;
   return null;
 }
 
