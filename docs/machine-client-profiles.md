@@ -127,3 +127,7 @@ prompt text, resident query strings, entity names, addresses, or credentials, an
 are dropped rather than passed through — a caller cannot widen a record by handing it more.
 `error_class` is a small closed enumeration, so an exception message can never arrive as free
 text. Telemetry failures are swallowed: measurement must never break the call being measured.
+
+Deployed MCP usage collection is separate from that optional six-field sink. The Worker writes
+versioned, content-free protocol observations to the existing `USAGE_ANALYTICS` binding and folds
+them into authenticated private statistics. See [`docs/mcp-usage-observation.md`](mcp-usage-observation.md).

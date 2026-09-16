@@ -107,6 +107,7 @@ capabilities/land_decision_path.mjs
 capabilities/land_projects.mjs
 capabilities/machine_client_profile.mjs
 capabilities/mcp_tool_declarations.mjs
+capabilities/mcp_usage_observation.mjs
 capabilities/meetings.mjs
 capabilities/notice_get.mjs
 capabilities/notice_search.mjs
@@ -2168,6 +2169,7 @@ worker/src/lib/matter_observation_journal.mjs
 worker/src/lib/matter_observation_operator_view.mjs
 worker/src/lib/matter_phase_spine.mjs
 worker/src/lib/matter_publication.mjs
+worker/src/lib/mcp_usage.mjs
 worker/src/lib/meeting_outcomes.mjs
 worker/src/lib/meter.mjs
 worker/src/lib/money_events.mjs
