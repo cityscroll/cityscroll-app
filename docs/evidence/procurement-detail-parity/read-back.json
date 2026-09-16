@@ -50,8 +50,8 @@
       "overflow": false
     },
     "keyboard": {
-      "visible_native_links": 23,
-      "reachable_links": 23,
+      "visible_native_links": 24,
+      "reachable_links": 24,
       "negative_tabindex": 0
     }
   },
@@ -158,7 +158,7 @@
           "valid-lang",
           "video-caption"
         ],
-        "nodes_examined": 211,
+        "nodes_examined": 213,
         "violations": [
           {
             "id": "heading-order",
@@ -213,7 +213,7 @@
           },
           {
             "id": "color-contrast",
-            "nodes": 128
+            "nodes": 129
           },
           {
             "id": "definition-list",
@@ -309,7 +309,7 @@
           },
           {
             "id": "nested-interactive",
-            "nodes": 2
+            "nodes": 3
           },
           {
             "id": "page-has-heading-one",
@@ -317,7 +317,7 @@
           },
           {
             "id": "region",
-            "nodes": 193
+            "nodes": 195
           },
           {
             "id": "scope-attr-valid",
@@ -325,7 +325,7 @@
           },
           {
             "id": "summary-name",
-            "nodes": 2
+            "nodes": 3
           },
           {
             "id": "table-duplicate-name",
@@ -341,7 +341,7 @@
           }
         ],
         "serious_or_critical": [],
-        "markup_sha256": "0f90ffebdbf6e5771a3d187518fda99530a649335ebea18274b020bd018aea15",
+        "markup_sha256": "e73548bd10c8a001b97c0cbbd47315c91790a7f7d9fa03483322485af8966049",
         "scanned_at": "2026-09-09T06:33:01.880Z"
       },
       "mobile": {
@@ -440,7 +440,7 @@
           "valid-lang",
           "video-caption"
         ],
-        "nodes_examined": 211,
+        "nodes_examined": 213,
         "violations": [
           {
             "id": "heading-order",
@@ -495,7 +495,7 @@
           },
           {
             "id": "color-contrast",
-            "nodes": 128
+            "nodes": 129
           },
           {
             "id": "definition-list",
@@ -591,7 +591,7 @@
           },
           {
             "id": "nested-interactive",
-            "nodes": 2
+            "nodes": 3
           },
           {
             "id": "page-has-heading-one",
@@ -599,7 +599,7 @@
           },
           {
             "id": "region",
-            "nodes": 193
+            "nodes": 195
           },
           {
             "id": "scope-attr-valid",
@@ -607,7 +607,7 @@
           },
           {
             "id": "summary-name",
-            "nodes": 2
+            "nodes": 3
           },
           {
             "id": "table-duplicate-name",
@@ -623,7 +623,7 @@
           }
         ],
         "serious_or_critical": [],
-        "markup_sha256": "0f90ffebdbf6e5771a3d187518fda99530a649335ebea18274b020bd018aea15",
+        "markup_sha256": "e73548bd10c8a001b97c0cbbd47315c91790a7f7d9fa03483322485af8966049",
         "scanned_at": "2026-09-09T06:33:01.880Z"
       }
     },
