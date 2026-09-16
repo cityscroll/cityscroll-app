@@ -1,0 +1,432 @@
+{
+  "id": "20240829105",
+  "pin": "07124E0044001",
+  "pin_strategy": "exact-contract-id",
+  "timeline": [
+    {
+      "stage": "award",
+      "status": "matched",
+      "source": "city-record",
+      "date": "2024-09-05T00:00:00.000",
+      "source_timestamp": "2024-09-05T00:00:00.000",
+      "date_basis": "publication",
+      "detail": {
+        "request_id": "20240829105",
+        "agency": "Homeless Services",
+        "title": "City Sanctuary Facility for Families with Children, Comfort Inn Sheepsheads Bay",
+        "pin": "07124E0044001",
+        "vendor": "BHRAGS HOME CARE CORP",
+        "amount": 10869881
+      }
+    },
+    {
+      "stage": "pending",
+      "status": "passed",
+      "source": "checkbook-contracts",
+      "date": null,
+      "source_timestamp": null,
+      "date_basis": "received",
+      "detail": null
+    },
+    {
+      "stage": "registered",
+      "status": "matched",
+      "source": "checkbook-contracts",
+      "date": "2024-08-28",
+      "source_timestamp": "2024-08-28",
+      "date_basis": "registration",
+      "detail": {
+        "contract_id": "CT107120258801626",
+        "vendor": "BHRAGS HOME CARE CORP",
+        "registration_date": "2024-08-28",
+        "original_amount": 10869881,
+        "current_amount": 10869881,
+        "spent_to_date": 7385672.19,
+        "start_date": "2023-10-11",
+        "end_date": "2026-06-30",
+        "duration": null,
+        "mwbe": "Non-M/WBE",
+        "contract_includes_sub_vendors": "Yes"
+      }
+    },
+    {
+      "stage": "payment",
+      "status": "matched",
+      "source": "checkbook-spending",
+      "date": "2026-08-06",
+      "source_timestamp": "2026-08-06",
+      "date_basis": "payment",
+      "detail": {
+        "total_payments": 31,
+        "total_spent": 7385672.19,
+        "latest_payment_date": "2026-08-06",
+        "latest_payment_amount": 66216.68,
+        "fiscal_year": "2027",
+        "payment_state": "paid",
+        "payment_rows": [
+          {
+            "document_id": "20270067127-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 66216.68,
+            "date": "2026-08-06",
+            "fiscal_year": "2027",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20270067127-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20270067127-1-DSB-EFT"
+          },
+          {
+            "document_id": "20270016167-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 66591.17,
+            "date": "2026-07-07",
+            "fiscal_year": "2027",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20270016167-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20270016167-1-DSB-EFT"
+          },
+          {
+            "document_id": "20270016167-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 54214.14,
+            "date": "2026-07-07",
+            "fiscal_year": "2027",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20270016167-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20270016167-1-DSB-EFT"
+          },
+          {
+            "document_id": "20260531334-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 4393.06,
+            "date": "2026-05-13",
+            "fiscal_year": "2026",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20260531334-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260531334-1-DSB-EFT"
+          },
+          {
+            "document_id": "20260472458-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 4275.48,
+            "date": "2026-04-13",
+            "fiscal_year": "2026",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20260472458-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260472458-1-DSB-EFT"
+          },
+          {
+            "document_id": "20260448679-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 0.01,
+            "date": "2026-03-27",
+            "fiscal_year": "2026",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20260448679-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260448679-1-DSB-EFT"
+          },
+          {
+            "document_id": "20260355994-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 254678.86,
+            "date": "2026-02-04",
+            "fiscal_year": "2026",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20260355994-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260355994-1-DSB-EFT"
+          },
+          {
+            "document_id": "20260331816-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 274885.77,
+            "date": "2026-01-22",
+            "fiscal_year": "2026",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20260331816-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260331816-1-DSB-EFT"
+          },
+          {
+            "document_id": "20260322121-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 194308.4,
+            "date": "2026-01-16",
+            "fiscal_year": "2026",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20260322121-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260322121-1-DSB-EFT"
+          },
+          {
+            "document_id": "20260293424-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 65816.03,
+            "date": "2026-01-02",
+            "fiscal_year": "2026",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20260293424-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260293424-1-DSB-EFT"
+          },
+          {
+            "document_id": "20260259802-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 252638.13,
+            "date": "2025-12-11",
+            "fiscal_year": "2026",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20260259802-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260259802-1-DSB-EFT"
+          },
+          {
+            "document_id": "20260223804-1-DSB-EFT",
+            "payee": "BHRAGS HOME CARE CORP",
+            "amount": 275813.92,
+            "date": "2025-11-20",
+            "fiscal_year": "2026",
+            "contract_id": "CT107120258801626",
+            "source_observation_ref": "checkbook_spending:20260223804-1-DSB-EFT",
+            "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260223804-1-DSB-EFT"
+          }
+        ],
+        "payment_rows_shown": 12,
+        "payment_rows_capped": true
+      }
+    }
+  ],
+  "amendments": [],
+  "ok": true,
+  "solicitation_enrichment": {
+    "status": "unmatched",
+    "basis": null,
+    "documents_status": "unmatched",
+    "source": "ocp-current-solicitations"
+  },
+  "subject_refs": {
+    "notice": "notice:20240829105",
+    "contract": "contract:CT107120258801626",
+    "pin": "pin:07124E0044001",
+    "vendor": "vendor:name:bhrags%20home%20care%20corp"
+  },
+  "subject_links": [
+    {
+      "type": "shares_authority_key",
+      "from": "contract:CT107120258801626",
+      "to": "pin:07124E0044001",
+      "method": "subject_registry_lifecycle_v1",
+      "method_version": "1.0.0",
+      "evidence": {
+        "basis": "pin_field",
+        "authority_key_id": "nyc_procurement_pin:071:07124E0044001:nyc_procurement",
+        "pin": "07124E0044001"
+      }
+    },
+    {
+      "type": "named_vendor",
+      "from": "notice:20240829105",
+      "to": "vendor:name:bhrags%20home%20care%20corp",
+      "method": "subject_registry_lifecycle_v1",
+      "method_version": "1.0.0",
+      "evidence": {
+        "basis": "notice_vendor_name",
+        "vendor": "BHRAGS HOME CARE CORP"
+      }
+    },
+    {
+      "type": "registered_as",
+      "from": "notice:20240829105",
+      "to": "contract:CT107120258801626",
+      "method": "subject_registry_lifecycle_v1",
+      "method_version": "1.0.0",
+      "evidence": {
+        "basis": "lifecycle_registered_join",
+        "source": "checkbook-contracts",
+        "pin": "07124E0044001",
+        "contract_id": "CT107120258801626",
+        "request_id": "20240829105"
+      }
+    },
+    {
+      "type": "shares_authority_key",
+      "from": "notice:20240829105",
+      "to": "pin:07124E0044001",
+      "method": "subject_registry_lifecycle_v1",
+      "method_version": "1.0.0",
+      "evidence": {
+        "basis": "pin_field",
+        "authority_key_id": "nyc_procurement_pin:071:07124E0044001:nyc_procurement",
+        "pin": "07124E0044001"
+      }
+    }
+  ],
+  "solicitation_recovery": {
+    "status": "unmatched",
+    "source": null,
+    "sources_checked": [
+      "city-record",
+      "ocp-current-solicitations",
+      "passport-public-rfx"
+    ],
+    "class": "not_yet_ingested",
+    "gap_kind": "solicitation_not_in_city_record"
+  },
+  "coherence": {
+    "version": "lifecycle_coherence_v2",
+    "coherent": false,
+    "findings": [
+      {
+        "kind": "orphaned_award",
+        "stages": [
+          "award"
+        ],
+        "summary": "Matched award has no solicitation stage \u2014 solicitation not recovered from City Record, PASSPort RFx, or OCP Current Solicitations",
+        "detail": {
+          "class": "not_yet_ingested",
+          "gap_kind": "solicitation_not_in_city_record",
+          "sources_named": [
+            "city-record",
+            "ocp-current-solicitations",
+            "passport-public-rfx"
+          ],
+          "award_date": "2024-09-05T00:00:00.000",
+          "award_request_id": "20240829105",
+          "note": "Solicitation not recovered from City Record, PASSPort RFx, or OCP Current Solicitations \u2014 do not invent a notice"
+        }
+      }
+    ],
+    "issue_kinds": [
+      "orphaned_award"
+    ],
+    "issue_count": 1
+  },
+  "award_prime_goal": {
+    "schema": "cityscroll.award_prime_goal.v1",
+    "method": "award_prime_goal_v1",
+    "method_version": "1.0.0",
+    "request_id": "20240829105",
+    "notice_type": "Award",
+    "eligible": true,
+    "prime": {
+      "display_name": "BHRAGS HOME CARE CORP",
+      "stem": "BHRAGS HOME CARE",
+      "subject_ref": "vendor:name:bhrags%20home%20care%20corp",
+      "sources": [
+        "city-record",
+        "checkbook-contracts"
+      ],
+      "mwbe_category": "Non-M/WBE",
+      "mwbe_category_source": "checkbook-contracts"
+    },
+    "agency": {
+      "display_name": "Homeless Services",
+      "canonical_id": "homeless-services",
+      "canonical_name": "Homeless Services",
+      "subject_ref": "agency:homeless-services",
+      "source": "city-record"
+    },
+    "dollars": {
+      "amount": 10869881,
+      "source": "city-record",
+      "basis": "contract_amount"
+    },
+    "industry_chips": [],
+    "subcontract_goal": {
+      "status": "not_published",
+      "class": "not_published",
+      "goals": null,
+      "goal_percent": null,
+      "remaining_percent": null,
+      "contract_includes_sub_vendors": "Yes",
+      "would_appear_in": "agency or Comptroller subcontract-utilization / M/WBE goal reports if released as a joinable public feed keyed by PIN or contract id",
+      "evidence": "NYC Comptroller reporting repeatedly flags missing joinable subcontractor participation and goal data; Checkbook Contracts publishes prime_vendor_mwbe_category and contract_includes_sub_vendors, not goal percent remaining",
+      "public_pointer": "https://comptroller.nyc.gov/reports/nyc-contracts/"
+    },
+    "possible_subcontract_window": {
+      "status": "open_candidate",
+      "basis": "award_or_registration_with_prime",
+      "has_prime": true,
+      "has_dollars": true,
+      "goal_data": "honest_absent"
+    },
+    "pin": "07124E0044001",
+    "contract_id": "CT107120258801626"
+  },
+  "ocp_award": {
+    "status": "unmatched",
+    "rows": []
+  },
+  "civic_events": [
+    {
+      "schema_version": 1,
+      "event_id": "cte:553e90c2cd59db6fd7a2b54b",
+      "subject_ref": "notice:20240829105",
+      "event_kind": "procurement.notice_published",
+      "valid_at": null,
+      "valid_from": null,
+      "valid_to": null,
+      "published_at": "2024-09-05",
+      "observed_at": null,
+      "processed_at": "2026-09-14T13:10:41.533Z",
+      "source_record_ref": "city-record:20240829105",
+      "source_revision": "cr:20240829105:award:start_date:2024-09-05",
+      "status": "occurred",
+      "confidence": null,
+      "supersedes_event_id": null,
+      "source_field": "start_date",
+      "payload_hash": "2ebda5dc6a922eabcf1c0b89d2076e8f84777062020340c62b438563ddd7f8cb",
+      "materializer_name": "civic_time_fixture_v1",
+      "materializer_version": "1.0.0",
+      "run_id": "contract-lifecycle:20240829105:exact"
+    },
+    {
+      "schema_version": 1,
+      "event_id": "cte:7638494283bd909865dec0eb",
+      "subject_ref": "contract:CT107120258801626",
+      "event_kind": "procurement.award_registered",
+      "valid_at": "2024-08-28",
+      "valid_from": null,
+      "valid_to": null,
+      "published_at": null,
+      "observed_at": null,
+      "processed_at": "2026-09-14T13:10:41.533Z",
+      "source_record_ref": "checkbook-contracts:CT107120258801626",
+      "source_revision": "cb:CT107120258801626:reg:2024-08-28",
+      "status": "occurred",
+      "confidence": "high",
+      "supersedes_event_id": null,
+      "source_field": "registration_date",
+      "payload_hash": "e2921fc80be483bc5575ebba899901514c61b686157588614213327f81865a0b",
+      "materializer_name": "civic_time_fixture_v1",
+      "materializer_version": "1.0.0",
+      "run_id": "contract-lifecycle:20240829105:exact"
+    },
+    {
+      "schema_version": 1,
+      "event_id": "cte:2b3fdc18da0ce22d424d7a0c",
+      "subject_ref": "contract:CT107120258801626",
+      "event_kind": "procurement.payment",
+      "valid_at": "2026-08-06",
+      "valid_from": null,
+      "valid_to": null,
+      "published_at": null,
+      "observed_at": null,
+      "processed_at": "2026-09-14T13:10:41.533Z",
+      "source_record_ref": "checkbook-spending:CT107120258801626",
+      "source_revision": "pay:CT107120258801626:paid:2026-08-06:7385672.19",
+      "status": "paid",
+      "confidence": "high",
+      "supersedes_event_id": null,
+      "source_field": "issue_date",
+      "payload_hash": "55b9acea0aeaf134dca5d1d48d48fcb9dd600e7b9a9008c01e53d4e58dc25f3e",
+      "materializer_name": "civic_time_fixture_v1",
+      "materializer_version": "1.0.0",
+      "run_id": "contract-lifecycle:20240829105:exact"
+    }
+  ],
+  "checkbook_acquisition": {
+    "state": "matched",
+    "contract_id": "CT107120258801626",
+    "requested_contract_id": "CT107120258801626",
+    "pin": "07124E0044001",
+    "observed_at": "2026-09-14T13:10:41.533Z",
+    "payment_population": "exact contract_id spending rows",
+    "payment_as_of": "2026-08-06"
+  },
+  "assembly_version": 5
+}

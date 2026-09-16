@@ -1,0 +1,223 @@
+{
+  "schema": "cityscroll.procurement_contract_lifecycle_materialization.v1",
+  "version": 1,
+  "generated_at": "2026-09-14T13:10:41.533Z",
+  "policy": {
+    "exact_contract_payment_population": true,
+    "analytics_spending_miss_is_not_lifecycle_absence": true,
+    "payment_rows_are_display_subset": true
+  },
+  "rows": [
+    {
+      "id": "20240829105",
+      "pin": "07124E0044001",
+      "pin_strategy": "exact-contract-id",
+      "ok": true,
+      "timeline": [
+        {
+          "stage": "award",
+          "status": "matched",
+          "source": "city-record",
+          "date": "2024-09-05T00:00:00.000",
+          "source_timestamp": "2024-09-05T00:00:00.000",
+          "date_basis": "publication",
+          "detail": {
+            "request_id": "20240829105",
+            "agency": "Homeless Services",
+            "title": "City Sanctuary Facility for Families with Children, Comfort Inn Sheepsheads Bay",
+            "pin": "07124E0044001",
+            "vendor": "BHRAGS HOME CARE CORP",
+            "amount": 10869881
+          }
+        },
+        {
+          "stage": "pending",
+          "status": "passed",
+          "source": "checkbook-contracts",
+          "date": null,
+          "source_timestamp": null,
+          "date_basis": "received",
+          "detail": null
+        },
+        {
+          "stage": "registered",
+          "status": "matched",
+          "source": "checkbook-contracts",
+          "date": "2024-08-28",
+          "source_timestamp": "2024-08-28",
+          "date_basis": "registration",
+          "detail": {
+            "contract_id": "CT107120258801626",
+            "vendor": "BHRAGS HOME CARE CORP",
+            "registration_date": "2024-08-28",
+            "original_amount": 10869881,
+            "current_amount": 10869881,
+            "spent_to_date": 7385672.19,
+            "start_date": "2023-10-11",
+            "end_date": "2026-06-30",
+            "duration": null,
+            "mwbe": "Non-M/WBE",
+            "contract_includes_sub_vendors": "Yes"
+          }
+        },
+        {
+          "stage": "payment",
+          "status": "matched",
+          "source": "checkbook-spending",
+          "date": "2026-08-06",
+          "source_timestamp": "2026-08-06",
+          "date_basis": "payment",
+          "detail": {
+            "total_payments": 31,
+            "total_spent": 7385672.19,
+            "latest_payment_date": "2026-08-06",
+            "latest_payment_amount": 66216.68,
+            "fiscal_year": "2027",
+            "payment_state": "paid",
+            "payment_rows": [
+              {
+                "document_id": "20270067127-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 66216.68,
+                "date": "2026-08-06",
+                "fiscal_year": "2027",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20270067127-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20270067127-1-DSB-EFT"
+              },
+              {
+                "document_id": "20270016167-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 66591.17,
+                "date": "2026-07-07",
+                "fiscal_year": "2027",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20270016167-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20270016167-1-DSB-EFT"
+              },
+              {
+                "document_id": "20270016167-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 54214.14,
+                "date": "2026-07-07",
+                "fiscal_year": "2027",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20270016167-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20270016167-1-DSB-EFT"
+              },
+              {
+                "document_id": "20260531334-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 4393.06,
+                "date": "2026-05-13",
+                "fiscal_year": "2026",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20260531334-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260531334-1-DSB-EFT"
+              },
+              {
+                "document_id": "20260472458-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 4275.48,
+                "date": "2026-04-13",
+                "fiscal_year": "2026",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20260472458-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260472458-1-DSB-EFT"
+              },
+              {
+                "document_id": "20260448679-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 0.01,
+                "date": "2026-03-27",
+                "fiscal_year": "2026",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20260448679-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260448679-1-DSB-EFT"
+              },
+              {
+                "document_id": "20260355994-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 254678.86,
+                "date": "2026-02-04",
+                "fiscal_year": "2026",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20260355994-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260355994-1-DSB-EFT"
+              },
+              {
+                "document_id": "20260331816-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 274885.77,
+                "date": "2026-01-22",
+                "fiscal_year": "2026",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20260331816-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260331816-1-DSB-EFT"
+              },
+              {
+                "document_id": "20260322121-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 194308.4,
+                "date": "2026-01-16",
+                "fiscal_year": "2026",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20260322121-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260322121-1-DSB-EFT"
+              },
+              {
+                "document_id": "20260293424-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 65816.03,
+                "date": "2026-01-02",
+                "fiscal_year": "2026",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20260293424-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260293424-1-DSB-EFT"
+              },
+              {
+                "document_id": "20260259802-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 252638.13,
+                "date": "2025-12-11",
+                "fiscal_year": "2026",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20260259802-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260259802-1-DSB-EFT"
+              },
+              {
+                "document_id": "20260223804-1-DSB-EFT",
+                "payee": "BHRAGS HOME CARE CORP",
+                "amount": 275813.92,
+                "date": "2025-11-20",
+                "fiscal_year": "2026",
+                "contract_id": "CT107120258801626",
+                "source_observation_ref": "checkbook_spending:20260223804-1-DSB-EFT",
+                "drill_through_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=20260223804-1-DSB-EFT"
+              }
+            ],
+            "payment_rows_shown": 12,
+            "payment_rows_capped": true
+          }
+        }
+      ],
+      "amendments": [],
+      "subject_refs": {
+        "notice": "notice:20240829105",
+        "contract": "contract:CT107120258801626",
+        "pin": "pin:07124E0044001",
+        "vendor": "vendor:name:bhrags%20home%20care%20corp"
+      },
+      "checkbook_acquisition": {
+        "state": "matched",
+        "contract_id": "CT107120258801626",
+        "requested_contract_id": "CT107120258801626",
+        "pin": "07124E0044001",
+        "observed_at": "2026-09-14T13:10:41.533Z",
+        "payment_population": "exact contract_id spending rows",
+        "payment_as_of": "2026-08-06"
+      },
+      "assembly_version": 5
+    }
+  ]
+}

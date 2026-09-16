@@ -18,6 +18,7 @@ import {
 } from "./cross_source_evidence_receipt.mjs";
 import { procurementObservationIndex, procurementProcessEvents } from "./procurement_process_events.mjs";
 import { buildProcurementSourceLookupProjection } from "./procurement_source_lookup_receipt.mjs";
+import { placeFactsForProcurement } from "./procurement_payment_place_context.mjs";
 
 export const SHARED_PROCUREMENT_READ_MODEL_SCHEMA = "cityscroll.shared_procurement_read_model.v1";
 export const SHARED_PROCUREMENT_READ_MODEL_VERSION = 1;
@@ -87,6 +88,7 @@ export function buildSharedProcurementReadModel({
   includeUnknownCheckbookCorroboration = false,
   lookupMaterializations = {},
   lookupAsOf = generatedAt,
+  placeFactsMaterialization = null,
 } = {}) {
   const records = Array.isArray(sourceRecords) ? sourceRecords.filter(Boolean) : [];
   const built = buildProcurementObjects({
@@ -134,6 +136,17 @@ export function buildSharedProcurementReadModel({
     if (receipt) object.cross_source_evidence_receipt = receipt;
     const lookupReceipt = lookupByObject.get(object.procurement_id);
     if (hasLookupMaterializations && lookupReceipt) object.procurement_source_lookup_receipt = lookupReceipt;
+    if (placeFactsMaterialization) {
+      const objectObservations = observations.filter((entry) => (
+        object.source_observation_refs || []
+      ).includes(entry.source_observation_ref));
+      const placeFacts = placeFactsForProcurement(
+        object,
+        objectObservations,
+        placeFactsMaterialization,
+      );
+      if (placeFacts.length) object.place_facts = placeFacts;
+    }
   }
   return {
     schema: SHARED_PROCUREMENT_READ_MODEL_SCHEMA,

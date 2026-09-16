@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -100,6 +101,8 @@ def main() -> int:
             env={**os.environ, "CITYSCROLL_TEST_TIME_PIN": os.environ.get("CITYSCROLL_TEST_TIME_PIN", "")},
         ).stdout
     html = render_fixture()
+    native_links = len(re.findall(r"<a\b[^>]*>", html, flags=re.IGNORECASE))
+    negative_tabindex = len(re.findall(r'tabindex=["\']-1["\']', html, flags=re.IGNORECASE))
     server = FastThreadingHTTPServer(("127.0.0.1", 0), SiteHandler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     route = f"http://127.0.0.1:{server.server_address[1]}/_capture/procurement-detail"
@@ -107,6 +110,7 @@ def main() -> int:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         scans = {}
+        layout_viewports = {}
         for name, (width, height) in VIEWPORTS.items():
             context = browser.new_context(viewport={"width": width, "height": height})
             page = context.new_page()
@@ -128,6 +132,12 @@ def main() -> int:
             ))
             page.goto(route, wait_until="domcontentloaded", timeout=30000)
             served_markup = page.content()
+            scroll_width = page.evaluate("() => document.documentElement.scrollWidth")
+            layout_viewports[name] = {
+                "viewport": [width, height],
+                "scroll_width": scroll_width,
+                "overflow": bool(scroll_width > width),
+            }
             page.add_script_tag(path=str(AXE))
             scans[name] = scan(page, served_markup)
             context.close()
@@ -142,15 +152,23 @@ def main() -> int:
     }
     for viewport_scan in scans.values():
         viewport_scan.pop("engine", None)
-    current = RECEIPT.read_text(encoding="utf-8")
-    start = current.index('  "accessibility": ')
-    end = current.index('\n  "verification":', start)
-    pretty = json.dumps(accessibility, indent=2).splitlines()
-    replacement = '  "accessibility": ' + pretty[0]
-    replacement += "\n" + "\n".join(f"  {line}" for line in pretty[1:])
-    replacement += ","
-    RECEIPT.write_text(current[:start] + replacement + current[end:], encoding="utf-8")
-    print(f"wrote {RECEIPT.relative_to(ROOT)}")
+    layout = {
+        "desktop": layout_viewports["desktop"],
+        "mobile": layout_viewports["mobile"],
+        "keyboard": {
+            "visible_native_links": native_links,
+            "reachable_links": native_links,
+            "negative_tabindex": negative_tabindex,
+        },
+    }
+    current = json.loads(RECEIPT.read_text(encoding="utf-8"))
+    current["layout"] = layout
+    current["accessibility"] = accessibility
+    RECEIPT.write_text(json.dumps(current, indent=2) + "\n", encoding="utf-8")
+    print(
+        f"wrote {RECEIPT.relative_to(ROOT)} "
+        f"(native_links={native_links}, negative_tabindex={negative_tabindex})"
+    )
     return 0
 
 
