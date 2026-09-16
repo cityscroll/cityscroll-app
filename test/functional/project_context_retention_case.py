@@ -27,7 +27,9 @@ import threading
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
-from ci_waits import wait_for_app_ready, wait_for_function, wait_for_locator  # noqa: E402
+
+# ci_waits imports Playwright. Keep that import lazy so --self-test (and the unit
+# lane that invokes it) can run where Playwright is not installed.
 
 MUSEUM_ID = "20260810048"
 UNRELATED_ID = "20240829105"
@@ -205,6 +207,8 @@ def section_text(page) -> str:
 
 
 def assert_museum_section(page, *, label: str) -> str:
+    from ci_waits import wait_for_locator  # noqa: PLC0415
+
     section = page.locator('#noticeview [data-project-context="1"]')
     wait_for_locator(section.first, state="visible", label=f"{label}: project context")
     assert section.count() == 1, f"{label}: expected one project-context section"
@@ -229,6 +233,8 @@ def render_hash(page) -> str:
 
 
 def wait_for_notice_ready(page, *, label: str) -> None:
+    from ci_waits import wait_for_app_ready, wait_for_function  # noqa: PLC0415
+
     wait_for_app_ready(page)
     wait_for_function(
         page,
@@ -316,6 +322,8 @@ def assert_retention_journey(page, base: str, *, viewport: dict) -> dict[str, ob
 
     page.goto(f"{base}{UNRELATED_ROUTE.lstrip('/')}", wait_until="domcontentloaded")
     wait_for_notice_ready(page, label="unrelated")
+    from ci_waits import wait_for_function  # noqa: PLC0415
+
     wait_for_function(
         page,
         f"""() => {{
