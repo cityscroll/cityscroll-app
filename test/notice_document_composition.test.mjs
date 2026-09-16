@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 import edgeWorker from "../site/pages_edge.mjs";
@@ -12,6 +13,15 @@ import {
 } from "../site/notice_primary_readiness.mjs";
 import { measureNoticeEdgeTerminals } from "../tools/measure_notice_edge_response.mjs";
 import { todayISO, withPinnedClock } from "./helpers/test_clock.mjs";
+
+const harnessSource = readFileSync(
+  new URL("./functional/resident_document_presentation.py", import.meta.url),
+  "utf8",
+);
+const captureManifest = JSON.parse(readFileSync(
+  new URL("../docs/evidence/notice-shell/capture-manifest.json", import.meta.url),
+  "utf8",
+));
 
 const shell = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const ceilings = JSON.parse(readFileSync(
@@ -137,4 +147,61 @@ test("A6: notice response budgets and primary-readiness semantics remain satisfi
   assert.equal(primaryReadiness.identity.surface_id, NOTICE_PRIMARY_SURFACE_ID);
   assert.equal(primaryReadiness.identity.component_id, NOTICE_PRIMARY_COMPONENT_ID);
   assert.equal(primaryReadiness.identity.new_rum_identity, false);
+});
+
+test("A5: skip navigation requires focus on the main region", () => {
+  assert.match(
+    harnessSource,
+    /location\.hash === '#main' && document\.activeElement === document\.getElementById\('main'\)/,
+  );
+  assert.match(harnessSource, /document\.activeElement === document\.getElementById\('main'\)/);
+  assert.doesNotMatch(
+    harnessSource,
+    /location\.hash === '#main' \|\| document\.activeElement === document\.getElementById\('main'\)/,
+  );
+});
+
+test("A9 writer: capture-manifest condition and revision derive from the served base", () => {
+  assert.match(harnessSource, /def manifest_condition\(/);
+  assert.match(harnessSource, /def resolve_manifest_revision\(/);
+  assert.match(harnessSource, /artifact-manifest\.json/);
+  assert.match(harnessSource, /Production base/);
+  assert.match(harnessSource, /"condition": manifest_condition\(base\)/);
+  assert.doesNotMatch(
+    harnessSource,
+    /"condition": \(\s*"Local Wrangler Worker with HTMLRewriter/,
+  );
+  const result = spawnSync(
+    "python3",
+    ["test/functional/resident_document_presentation.py", "--case", "notice-shell", "--self-test"],
+    { encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /OK notice-shell capture-manifest writer self-test/);
+});
+
+test("A9 writer: retained capture manifest records honest local condition and viewport hash invariance", async () => {
+  await withPinnedClock("2026-09-16T12:00:00.000Z", async () => {
+    assert.equal(todayISO(), "2026-09-16");
+    assert.equal(captureManifest.render_hash_viewport_invariant, true);
+    assert.match(String(captureManifest.condition || ""), /Local Wrangler Worker/);
+    assert.doesNotMatch(String(captureManifest.condition || ""), /^Production base/);
+    assert.match(String(captureManifest.revision || ""), /^[0-9a-f]{9}$/);
+    assert.equal(captureManifest.image_binaries_committed, false);
+
+    const byCase = new Map();
+    for (const capture of captureManifest.captures || []) {
+      const widths = byCase.get(capture.case) || {};
+      widths[capture.viewport?.name] = capture.render_sha256;
+      byCase.set(capture.case, widths);
+    }
+    assert.ok(byCase.size >= 1, "A9 writer: retained manifest has captures");
+    for (const [caseName, widths] of byCase) {
+      assert.equal(
+        widths.desktop,
+        widths.narrow,
+        `A9 writer: ${caseName} render hash must match across viewports`,
+      );
+    }
+  });
 });

@@ -1,11 +1,13 @@
 {
   "schema": "cityscroll.render_capture_manifest.v1",
   "surface": "notice document shell",
+  "base": "local-wrangler",
   "condition": "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; no image binary is committed.",
   "image_binaries_committed": false,
-  "revision": "41213008d",
+  "revision": "fc9358dc7",
   "data_vintage": "materialized notice fixture 2026-08-14",
   "route": "/notices/20260810048/",
+  "render_hash_viewport_invariant": true,
   "captures": [
     {
       "case": "notice-shell-no-javascript-source-access",
@@ -44,7 +46,7 @@
         "width": 1440,
         "height": 1000
       },
-      "assertion": "Skip navigation remains first-focusable on the notice route and moves reading into #main.",
+      "assertion": "Skip navigation remains first-focusable on the notice route and moves focus into #main.",
       "render_sha256": "4e386218a5bb732de3ace418bfbe256f50b68b36cade1e560e874286931a5aae"
     },
     {
@@ -104,7 +106,7 @@
         "width": 390,
         "height": 844
       },
-      "assertion": "Skip navigation remains first-focusable on the notice route and moves reading into #main.",
+      "assertion": "Skip navigation remains first-focusable on the notice route and moves focus into #main.",
       "render_sha256": "4e386218a5bb732de3ace418bfbe256f50b68b36cade1e560e874286931a5aae"
     },
     {
