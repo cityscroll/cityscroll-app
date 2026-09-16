@@ -464,6 +464,12 @@
       "description": "First-party aggregate events; production traffic_class only."
     },
     {
+      "path": "mcp_usage.*",
+      "source": "USAGE_ANALYTICS MCP taxonomy + authenticated /admin/stats fold",
+      "exclude_developer_traffic": true,
+      "description": "Machine-protocol observations on POST /mcp; production observation_class only in product totals; developer/canary/probe kept as separate classes."
+    },
+    {
       "path": "search_executions.windows.*.completed",
       "source": "ALERT_STATE search:exec: accepted execution receipts",
       "exclude_developer_traffic": true,

@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c5f5e333886f2",
+  "status": "implemented",
+  "fingerprint": "mcp-usage-observation.v1",
+  "updated_at": "2026-09-16T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "mcp-usage-observation-schema",
+      "path": "capabilities/mcp_usage_observation.mjs"
+    },
+    {
+      "id": "mcp-usage-collector",
+      "path": "worker/src/lib/mcp_usage.mjs"
+    },
+    {
+      "id": "mcp-usage-offline-tests",
+      "path": "worker/test/mcp_usage.test.mjs"
+    },
+    {
+      "id": "mcp-usage-operator-documentation",
+      "path": "docs/mcp-usage-observation.md"
+    },
+    {
+      "id": "mcp-usage-post-deploy-canary",
+      "path": "tools/verify_mcp_usage_stats_canary.mjs"
+    },
+    {
+      "id": "mcp-usage-evidence-directory",
+      "path": "docs/evidence/mcp-usage-observation/README.md"
+    }
+  ]
+}

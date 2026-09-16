@@ -116,6 +116,17 @@ import {
   profileAllowsTool,
   resolveMachineClientProfile,
 } from "../../capabilities/machine_client_profile.mjs";
+import {
+  fingerprintToolCatalog,
+  mcpUsageObservation,
+  outcomeFromToolResult,
+  toolCallObservationFromTelemetry,
+} from "../../capabilities/mcp_usage_observation.mjs";
+import {
+  deploymentIdentityFromEnv,
+  resolveMcpObservationClass,
+  scheduleMcpUsageObservation,
+} from "./lib/mcp_usage.mjs";
 import { workerCitedPassages, formatCitedPassagesText } from "./cited_retrieval.mjs";
 import { workerD1EntityDossier } from "./entity_dossier.mjs";
 import { workerD1EntityRelationships } from "./public_relationship_graph.mjs";
@@ -577,19 +588,57 @@ function emitMachineClientTelemetry(env, record) {
   }
 }
 
+/**
+ * Record one MCP usage observation. Failures are swallowed: measurement never changes
+ * the MCP result and never leaves a floating rejected promise on the request path.
+ */
+function recordMcpObservation(env, partial) {
+  try {
+    return scheduleMcpUsageObservation(env, mcpUsageObservation(partial));
+  } catch {
+    return { ok: false, status: "write_failed", reason: "record_threw" };
+  }
+}
+
 function rpc(id, result, error) {
   return error ? { jsonrpc: "2.0", id, error } : { jsonrpc: "2.0", id, result };
 }
 
 export async function handleMcp(req, env, { federatedProvider = null } = {}) {
+  const startedAt = Date.now();
+  const observationClass = await resolveMcpObservationClass(req, env);
+  const deploymentIdentity = deploymentIdentityFromEnv(env);
+  const baseObservation = {
+    observation_class: observationClass,
+    deployment_identity: deploymentIdentity,
+  };
+
   // Resolve the machine-client identity before any work. The 401 body stays a bare
   // string with no detail about which credential failed or which profiles exist.
   const { resolution, profile } = await resolveMachineClientProfile(env, req.headers.get("authorization"));
-  if (resolution === "unauthorized") return new Response("Unauthorized", { status: 401 });
-  if (req.method !== "POST") return new Response(
-    "CityScroll MCP is a tools-only endpoint. Connect an MCP client to POST https://api.cityscroll.org/mcp; a browser GET cannot run tools.",
-    { status: 405, headers: { "content-type": "text/plain; charset=utf-8", allow: "POST" } },
-  );
+  if (resolution === "unauthorized") {
+    recordMcpObservation(env, {
+      ...baseObservation,
+      method: "unauthorized",
+      outcome: "unauthorized",
+      error_class: "unauthorized",
+      duration_ms: Date.now() - startedAt,
+    });
+    return new Response("Unauthorized", { status: 401 });
+  }
+  if (req.method !== "POST") {
+    recordMcpObservation(env, {
+      ...baseObservation,
+      method: "method_not_allowed",
+      outcome: "method_not_allowed",
+      profile_id: profile?.id ?? null,
+      duration_ms: Date.now() - startedAt,
+    });
+    return new Response(
+      "CityScroll MCP is a tools-only endpoint. Connect an MCP client to POST https://api.cityscroll.org/mcp; a browser GET cannot run tools.",
+      { status: 405, headers: { "content-type": "text/plain; charset=utf-8", allow: "POST" } },
+    );
+  }
 
   // Cheap daily ceiling before any work (public endpoint, no Turnstile here). An
   // authenticated profile meters on its own stable id, so one gateway's users are no
@@ -598,6 +647,14 @@ export async function handleMcp(req, env, { federatedProvider = null } = {}) {
   const { meter, actor, limit } = machineClientMeterIdentity(profile, ip);
   const cap = limit ?? (Number(env.MCP_MAX_PER_IP_DAY) || 300);
   if (await overActorLimit(env.SUBS, meter, actor, cap)) {
+    recordMcpObservation(env, {
+      ...baseObservation,
+      method: "quota_refusal",
+      outcome: "quota_exhausted",
+      error_class: "quota_exhausted",
+      profile_id: profile?.id ?? null,
+      duration_ms: Date.now() - startedAt,
+    });
     return Response.json(rpc(null, undefined, { code: -32000, message: "Daily request limit reached." }), { status: 429 });
   }
 
@@ -605,16 +662,45 @@ export async function handleMcp(req, env, { federatedProvider = null } = {}) {
   try {
     msg = await req.json();
   } catch {
+    recordMcpObservation(env, {
+      ...baseObservation,
+      method: "parse_error",
+      outcome: "malformed_json",
+      error_class: "invalid_input",
+      profile_id: profile?.id ?? null,
+      duration_ms: Date.now() - startedAt,
+    });
     return Response.json(rpc(null, undefined, { code: -32700, message: "Parse error" }), { status: 400 });
   }
   const { id, method, params } = msg || {};
 
   // Notifications (no id) — acknowledge, no body.
-  if (id === undefined || id === null) return new Response(null, { status: 202 });
+  if (id === undefined || id === null) {
+    recordMcpObservation(env, {
+      ...baseObservation,
+      method: "notification",
+      outcome: "notification_ack",
+      profile_id: profile?.id ?? null,
+      duration_ms: Date.now() - startedAt,
+    });
+    return new Response(null, { status: 202 });
+  }
 
+  let activeTool = null;
   try {
     switch (method) {
-      case "initialize":
+      case "initialize": {
+        const clientInfo = params && typeof params === "object" ? params.clientInfo : null;
+        recordMcpObservation(env, {
+          ...baseObservation,
+          method: "initialize",
+          outcome: "success",
+          profile_id: profile?.id ?? null,
+          client_family: clientInfo?.name,
+          client_version: clientInfo?.version,
+          protocol_version: params?.protocolVersion || PROTOCOL_VERSION,
+          duration_ms: Date.now() - startedAt,
+        });
         return Response.json(rpc(id, {
           protocolVersion: PROTOCOL_VERSION,
           capabilities: { tools: {} },
@@ -623,13 +709,39 @@ export async function handleMcp(req, env, { federatedProvider = null } = {}) {
           // the endpoint answers from, and the gaps it declares about itself.
           instructions: MCP_SERVER_INSTRUCTIONS,
         }));
+      }
       case "ping":
+        recordMcpObservation(env, {
+          ...baseObservation,
+          method: "ping",
+          outcome: "success",
+          profile_id: profile?.id ?? null,
+          duration_ms: Date.now() - startedAt,
+        });
         return Response.json(rpc(id, {}));
-      case "tools/list":
+      case "tools/list": {
         // Discovery is authority: a profile must not SEE a tool it may not call.
-        return Response.json(rpc(id, { tools: filterToolsForProfile(MCP_TOOLS, profile) }));
+        const tools = filterToolsForProfile(MCP_TOOLS, profile);
+        let catalogFingerprint = "unknown";
+        try {
+          catalogFingerprint = await fingerprintToolCatalog(tools);
+        } catch {
+          catalogFingerprint = "unknown";
+        }
+        recordMcpObservation(env, {
+          ...baseObservation,
+          method: "tools/list",
+          outcome: "success",
+          profile_id: profile?.id ?? null,
+          catalog_fingerprint: catalogFingerprint,
+          catalog_tool_count: tools.length,
+          duration_ms: Date.now() - startedAt,
+        });
+        return Response.json(rpc(id, { tools }));
+      }
       case "tools/call": {
         const name = String(params?.name || "");
+        activeTool = name;
         const args = (params?.arguments) || {};
         const capabilityReference = TOOL_CAPABILITY_REFERENCES.get(name) || null;
         // Enforced independently of the listing — knowing a tool's name is not a grant.
@@ -637,32 +749,79 @@ export async function handleMcp(req, env, { federatedProvider = null } = {}) {
         // "not granted" message would be a discovery oracle for the withheld inventory,
         // which is exactly the authority leak the filtered listing exists to close.
         if (!profileAllowsTool(profile, name)) {
-          emitMachineClientTelemetry(env, machineClientTelemetry({
+          // Registered-but-ungranted tools stay not_granted; never-registered names are
+          // unknown_tool. The caller-facing body stays identical either way.
+          const errorClass = TOOL_CAPABILITY_REFERENCES.has(name) || MCP_TOOL_BINDINGS.some((b) => b.name === name)
+            ? "not_granted"
+            : "unknown_tool";
+          const telemetry = machineClientTelemetry({
             profileId: profile?.id ?? null,
             capabilityReference,
-            errorClass: "not_granted",
-          }));
+            errorClass: errorClass === "unknown_tool" ? "unknown_tool" : "not_granted",
+          });
+          emitMachineClientTelemetry(env, telemetry);
+          recordMcpObservation(env, {
+            ...baseObservation,
+            method: "tools/call",
+            tool: name,
+            outcome: errorClass === "unknown_tool" ? "unknown_tool" : "not_granted",
+            error_class: errorClass === "unknown_tool" ? "unknown_tool" : "not_granted",
+            profile_id: profile?.id ?? null,
+            capability_reference: capabilityReference,
+            duration_ms: Date.now() - startedAt,
+          });
           return Response.json(rpc(id, toolError(`Unknown tool: ${name}`)));
         }
-        const startedAt = Date.now();
+        const toolStartedAt = Date.now();
         const rawResult = await callTool(env, req, name, args, { federatedProvider });
         const result = MCP_TOOL_BINDINGS.some((binding) => binding.name === name && (binding.authorityClass === "public_read" || binding.name === "list_capability_gaps"))
           ? boundResearchToolResult(rawResult, { tool: name, arguments: args }) : rawResult;
         const facts = toolCallTelemetryFacts(result);
-        emitMachineClientTelemetry(env, machineClientTelemetry({
+        const durationMs = Date.now() - toolStartedAt;
+        const telemetry = machineClientTelemetry({
           profileId: profile?.id ?? null,
           capabilityReference,
           availability: facts.availability,
-          durationMs: Date.now() - startedAt,
+          durationMs,
           count: facts.count,
           errorClass: facts.errorClass,
+        });
+        emitMachineClientTelemetry(env, telemetry);
+        const outcome = outcomeFromToolResult(result);
+        scheduleMcpUsageObservation(env, toolCallObservationFromTelemetry(telemetry, {
+          tool: name,
+          observation_class: observationClass,
+          deployment_identity: deploymentIdentity,
+          emptySuccess: outcome === "empty_success",
         }));
         return Response.json(rpc(id, result));
       }
       default:
+        recordMcpObservation(env, {
+          ...baseObservation,
+          method: "unsupported_method",
+          outcome: "unsupported_method",
+          profile_id: profile?.id ?? null,
+          duration_ms: Date.now() - startedAt,
+        });
         return Response.json(rpc(id, undefined, { code: -32601, message: `Method not found: ${method}` }));
     }
   } catch (e) {
+    // Exception text never enters the observation — only the closed thrown_error class.
+    const thrownMethod = activeTool != null
+      ? "tools/call"
+      : (method === "initialize" || method === "ping" || method === "tools/list" || method === "tools/call"
+        ? method
+        : "unsupported_method");
+    recordMcpObservation(env, {
+      ...baseObservation,
+      method: thrownMethod,
+      tool: activeTool || undefined,
+      outcome: "thrown_error",
+      error_class: "internal",
+      profile_id: profile?.id ?? null,
+      duration_ms: Date.now() - startedAt,
+    });
     return Response.json(rpc(id, undefined, { code: -32603, message: String(e?.message || e) }));
   }
 }
