@@ -269,9 +269,13 @@ export function buildProcurementArtifacts(spine, awards, options = {}) {
       ? JSON.parse(readFileSync(MTA_FIXTURES, "utf8"))
       : { fixtures: [] }
   );
-  const retainedFamilies = options.retainedFamilies === undefined
-    ? loadRetainedContractFamilies()
-    : options.retainedFamilies;
+  // Apply retained families only for real spine populations. Empty fixture
+  // spines used by coherence/unit tests must stay empty (selected_row_count 0).
+  const retainedFamilies = Object.hasOwn(options, "retainedFamilies")
+    ? options.retainedFamilies
+    : (Array.isArray(spine?.rows?.passport_contracts) && spine.rows.passport_contracts.length > 0
+      ? loadRetainedContractFamilies()
+      : null);
   const materializationSpine = retainedFamilies
     ? applyRetainedContractFamiliesToSpine(spine, retainedFamilies).spine
     : spine;

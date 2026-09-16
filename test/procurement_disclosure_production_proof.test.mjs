@@ -55,8 +55,8 @@ const CONTRACTS = {
   CT110220271400991: { amount: "$62,500", vendor: "S &amp; P GLOBAL MARKET INTELLIGENCE LLC" },
   CT105720278802113: { amount: "$46,673.32", vendor: "AMERICAN HEART ASSOCIATION INC" },
   CT104020273009333: { amount: "$25,000", vendor: "QUIZIZZ INC" },
-  CT185720228800365: { amount: "$49,689.78", vendor: "FIREMATIC SUPPLY CO. INC", method: "Amendment" },
-  CT185020228802305: { amount: "$26,112.93", vendor: "TAMEER INC", method: "Construction Change Order" },
+  CT185720228800365: { amount: "$208,687.62", vendor: "FIREMATIC SUPPLY CO. INC", method: "Competitive Sealed Bid" },
+  CT185020228802305: { amount: "$1,779,343.45", vendor: "TAMEER INC", method: "Competitive Sealed Bid" },
   CT107120258801626: { amount: "$10,869,881", vendor: "BHRAGS HOME CARE CORP" },
 };
 
@@ -709,10 +709,15 @@ test("A4: real canonical routes credit source handoffs and refuse misleading rev
   assert.match(bhragsSpending, /Checked 2026-08-26/);
   assert.doesNotMatch(bhrags, /had no exact payment match in this snapshot/);
   const firematic = await servedContract("CT185720228800365");
-  assert.match(firematic, /Amendment/);
+  assert.match(firematic, /Action amount/);
+  assert.match(firematic, /\$49,689\.78/);
+  assert.match(firematic, /\$158,997\.84/);
+  assert.match(firematic, /\$208,687\.62/);
   assert.doesNotMatch(firematic, /small base contract|overall contract value/i);
   const tameer = await servedContract("CT185020228802305");
-  assert.match(tameer, /Construction Change Order/);
+  assert.match(tameer, /Action amount|CO#/);
+  assert.match(tameer, /\$26,112\.93/);
+  assert.match(tameer, /\$1,442,820\.77|\$1,779,343\.45/);
   assert.doesNotMatch(tameer, /small base contract|overall contract value/i);
   for (const id of Object.keys(CONTRACTS)) {
     const html = await servedContract(id);

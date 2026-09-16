@@ -524,9 +524,10 @@ test("served procurement route reads one bounded shard and preserves the complet
     ), env);
     assert.equal(response.status, 200);
     const html = await response.text();
+    const specimenShard = `/data/${JSON.parse(readFileSync(new URL("../site/data/shared_procurement_read_model.json", import.meta.url))).procurement_shard_by_id[id]}`;
     assert.deepEqual(requestedPaths, [
       "/data/shared_procurement_read_model.json",
-      "/data/shared_procurement_read_model/shard-004.json",
+      specimenShard,
     ]);
     for (const href of [
       "/agencies/homeless-services/",
@@ -566,9 +567,10 @@ test("canonical procurement route shows exact-contract payments and notice place
     assert.equal(response.status, 200);
     const html = await response.text();
     assert.equal(publisherAttempts, 0);
+    const specimenShard = `/data/${JSON.parse(readFileSync(new URL("../site/data/shared_procurement_read_model.json", import.meta.url))).procurement_shard_by_id[id]}`;
     assert.deepEqual(requestedPaths, [
       "/data/shared_procurement_read_model.json",
-      "/data/shared_procurement_read_model/shard-004.json",
+      specimenShard,
     ]);
     assert.match(html, /data-procurement-payment-evidence="1"/);
     assert.match(html, /data-payment-total-count="31"/);

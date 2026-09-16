@@ -349,8 +349,8 @@
       "source_system": "passport_public_contracts",
       "source_contract_id": "passport-public-contracts",
       "registered": true,
-      "served_observations": 12770,
-      "declared_input_rows": 12782,
+      "served_observations": 12771,
+      "declared_input_rows": 12795,
       "specimen": {
         "source_observation_ref": "passport_public_contracts:contract:85719G8260KXLR001:4543333",
         "procurement_id": "procurement:contract:20211201861",
@@ -1223,8 +1223,8 @@
       "evidence": {
         "procurement": {
           "source_system": "passport_public_contracts",
-          "served_observations": 12770,
-          "declared_input_rows": 12782,
+          "served_observations": 12771,
+          "declared_input_rows": 12795,
           "specimen": {
             "source_observation_ref": "passport_public_contracts:contract:85719G8260KXLR001:4543333",
             "procurement_id": "procurement:contract:20211201861",

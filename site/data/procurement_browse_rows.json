@@ -114,12 +114,12 @@
   "shards": [
     {
       "path": "procurement_browse_rows_population/shard-000.json",
-      "bytes": 18697818,
+      "bytes": 18696876,
       "row_count": 12578
     },
     {
       "path": "procurement_browse_rows_population/shard-001.json",
-      "bytes": 11145810,
+      "bytes": 11145549,
       "row_count": 7294
     }
   ]

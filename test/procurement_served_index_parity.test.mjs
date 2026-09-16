@@ -95,11 +95,12 @@ test("reported canonical identities resolve to one source-backed object", async 
   const reported = {
     "procurement:contract:CT185720228800365": {
       vendor: "FIREMATIC SUPPLY CO. INC",
-      amount: 49689.78,
+      // Complete family: browse uses the base current total, not the tip action alone.
+      amount: 208687.62,
     },
     "procurement:contract:CT185020228802305": {
       vendor: "TAMEER INC",
-      amount: 26112.93,
+      amount: 1779343.45,
     },
   };
 

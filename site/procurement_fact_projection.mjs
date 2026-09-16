@@ -206,7 +206,16 @@ export function projectProcurementFacts(object = {}, observations = []) {
   const values = {};
   const conflicts = {};
   for (const [kind, rawCandidates] of groups) {
-    const candidates = sortedCandidates(rawCandidates);
+    let candidates = sortedCandidates(rawCandidates);
+    // Among revision/amendment amounts, prefer the latest action key so a tip
+    // change order is not displaced by an earlier sibling once the full family
+    // is retained.
+    if (kind === "action_amount" && candidates.length > 1) {
+      candidates = candidates.slice().sort((left, right) => (
+        String(right.action_key || "").localeCompare(String(left.action_key || ""))
+        || String(left.source_observation_ref || "").localeCompare(String(right.source_observation_ref || ""))
+      ));
+    }
     const distinct = [...new Map(candidates.map((entry) => [String(entry.value), entry])).values()];
     if (!candidates.length) continue;
     values[kind] = candidates[0].value;
@@ -222,7 +231,9 @@ export function projectProcurementFacts(object = {}, observations = []) {
     facts: Object.freeze({
       title: fact("title") || fact("program") || `Contract ${fact("canonical_contract_id") || fact("pin_epin") || object?.procurement_id || "record"}`,
       agency: fact("agency"), vendor: fact("vendor"),
-      amount: fact("action_amount") ?? fact("current_amount") ?? fact("original_amount") ?? fact("paid_amount"),
+      // Headline amount stays the base current/original total; action amounts
+      // remain in their own role and must not displace the contract total.
+      amount: fact("current_amount") ?? fact("original_amount") ?? fact("action_amount") ?? fact("paid_amount"),
       originalAmount: fact("original_amount"), currentAmount: fact("current_amount"), actionAmount: fact("action_amount"),
       paidAmount: fact("paid_amount"), encumberedAmount: fact("encumbered_amount"),
       baseAmount: fact("current_amount") ?? fact("original_amount"), method: fact("method"),

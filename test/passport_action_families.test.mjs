@@ -145,8 +145,8 @@ test("A2: action titles use publisher numbering rather than identifier suffixes"
       },
     ]).groups[0],
   }, {
-    search: [1442820.77, 1779343.45, 36028.25],
-    browse: [1442820.77, 1779343.45, 36028.25],
+    search: [1442820.77, 1779343.45, 26112.93],
+    browse: [1442820.77, 1779343.45, 26112.93],
     export: 1442820.77,
     aggregate: {
       label: "Department of Design and Construction",
