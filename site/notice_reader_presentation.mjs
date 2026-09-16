@@ -6,7 +6,7 @@
  * cannot restore a second toolbar or restate an already-represented role.
  */
 
-export const NOTICE_MORE_TOOLS_SUMMARY = "More tools";
+export const NOTICE_MORE_TOOLS_SUMMARY_KEY = "more_tools";
 export const NOTICE_TOOLS_REGION_ATTR = "data-notice-tools-region";
 export const NOTICE_PRIMARY_FACTS_ATTR = "data-notice-primary-facts";
 export const NOTICE_ENRICHMENT_REGION_ATTR = "data-notice-enrichment-region";
@@ -141,15 +141,16 @@ export function filterNoticeConstellationNeighbors(neighbors = [], represented =
  */
 export function renderNoticeMoreToolsDisclosure({
   bodyHtml = "",
-  summary = NOTICE_MORE_TOOLS_SUMMARY,
+  summary = "",
   open = false,
   escape = defaultEscape,
 } = {}) {
   const body = String(bodyHtml || "").trim();
-  if (!body) return "";
+  const label = String(summary || "").trim();
+  if (!body || !label) return "";
   const openAttr = open ? " open" : "";
   return `<details class="notice-more-tools" ${NOTICE_TOOLS_REGION_ATTR}="1"${openAttr}>
-    <summary data-i18n="more_tools">${escape(summary)}</summary>
+    <summary data-i18n="${NOTICE_MORE_TOOLS_SUMMARY_KEY}">${escape(label)}</summary>
     <div class="notice-more-tools-body actions">${body}</div>
   </details>`;
 }
@@ -171,9 +172,8 @@ export function renderNoticeEnrichmentRegion({
 }
 
 export function noticeMoreToolsSummaryLabel(translate) {
-  if (typeof translate === "function") {
-    const label = translate("more_tools");
-    if (label && label !== "more_tools") return label;
+  if (typeof translate !== "function") {
+    throw new TypeError("noticeMoreToolsSummaryLabel requires t() or an equivalent translator");
   }
-  return NOTICE_MORE_TOOLS_SUMMARY;
+  return translate(NOTICE_MORE_TOOLS_SUMMARY_KEY);
 }

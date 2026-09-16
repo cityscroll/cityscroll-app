@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
-  NOTICE_MORE_TOOLS_SUMMARY,
+  NOTICE_MORE_TOOLS_SUMMARY_KEY,
   NOTICE_TOOLS_REGION_ATTR,
   filterNoticeConstellationNeighbors,
   noticeRelationshipKey,
@@ -81,16 +81,19 @@ test("local connections omit agency and vendor already shown in primary facts", 
 });
 
 test("More tools disclosure stays closed and preserves caller markup", () => {
+  const summary = noticeMoreToolsSummaryLabel((key) => key === NOTICE_MORE_TOOLS_SUMMARY_KEY ? "More tools" : key);
   const html = renderNoticeMoreToolsDisclosure({
+    summary,
     bodyHtml: '<button type="button" id="ncopy">Copy</button><button type="button" id="nprint">Print</button>',
   });
   assert.match(html, new RegExp(`${NOTICE_TOOLS_REGION_ATTR}="1"`));
-  assert.match(html, new RegExp(`<summary data-i18n="more_tools">${NOTICE_MORE_TOOLS_SUMMARY}</summary>`));
+  assert.match(html, new RegExp(`<summary data-i18n="${NOTICE_MORE_TOOLS_SUMMARY_KEY}">More tools</summary>`));
   assert.doesNotMatch(html, /\sopen[=>\s]/);
   assert.match(html, /id="ncopy"/);
   assert.match(html, /id="nprint"/);
   assert.equal(renderNoticeMoreToolsDisclosure({ bodyHtml: "   " }), "");
-  assert.equal(noticeMoreToolsSummaryLabel((key) => key === "more_tools" ? "More tools" : key), "More tools");
+  assert.equal(renderNoticeMoreToolsDisclosure({ bodyHtml: "<button>x</button>" }), "");
+  assert.equal(summary, "More tools");
 });
 
 test("empty enrichment regions omit headings and placeholders", () => {

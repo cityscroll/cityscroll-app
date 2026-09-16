@@ -905,8 +905,9 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     : "";
   const noticeCanonicalHref = `https://cityscroll.org/notices/${encodeURIComponent(id)}`;
   const edgeEmailHref = `mailto:?subject=${encodeURIComponent(`City Record notice: ${title}`)}&body=${encodeURIComponent(`${noticeCanonicalHref}\n\nVia CityScroll — NYC’s public record, linked.`)}`;
+  // Edge first paint is English; data-i18n lets the client retarget after hydrate.
   const edgeMoreTools = renderNoticeMoreToolsDisclosure({
-    summary: noticeMoreToolsSummaryLabel(),
+    summary: noticeMoreToolsSummaryLabel((key) => (key === "more_tools" ? "More tools" : key)),
     bodyHtml: `<a class="act" href="${esc(edgeEmailHref)}">Email</a>`,
     escape: esc,
   });
