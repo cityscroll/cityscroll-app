@@ -435,6 +435,7 @@ export function renderNoticeClientActionRegions(notice, link, {
       [notice.type_of_notice_description, notice.agency_name, fdate?.(notice.start_date)].filter(Boolean).join(" · "),
     )
     : "";
+  if (typeof qrButtonHTML !== "function") throw new TypeError("qrButtonHTML is required");
   const emailHref = `mailto:?subject=${encodeURIComponent(`City Record notice: ${title}`)}&body=${encodeURIComponent(`${link}\n\nVia CityScroll — NYC’s public record, linked.`)}`;
   return renderEligibleRecordTools({
     surface: "notice",
@@ -442,7 +443,7 @@ export function renderNoticeClientActionRegions(notice, link, {
     comparativeAgency: notice?.agency_name || null,
     handlers: { share: true, collection: true, export: true, print: true },
     primaryHtml: `<button class="act primary" type="button" id="ncopy">${esc(t("copy_link"))}</button>${source}`,
-    moreToolsHtml: `${qrButtonHTML?.("nqr", "act") || ""}<a class="act" href="${esc(emailHref)}">${esc(t("notice_email_btn"))}</a><button class="act export-control" type="button" id="nxlsx">${esc(t("export_xlsx"))}</button><button class="act export-control" type="button" id="nprint">${esc(t("print_save_pdf"))}</button>${pin}`,
+    moreToolsHtml: `${qrButtonHTML("nqr","act")}<a class="act" href="${esc(emailHref)}">${esc(t("notice_email_btn"))}</a><button class="act export-control" type="button" id="nxlsx">${esc(t("export_xlsx"))}</button><button class="act export-control" type="button" id="nprint">${esc(t("print_save_pdf"))}</button>${pin}`,
     moreToolsId: "notice-more-tools",
     translate: t,
   });
