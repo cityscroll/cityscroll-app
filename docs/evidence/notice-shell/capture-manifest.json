@@ -4,7 +4,7 @@
   "base": "local-wrangler",
   "condition": "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; no image binary is committed.",
   "image_binaries_committed": false,
-  "revision": "e4fb5a753",
+  "revision": "fc9358dc7",
   "data_vintage": "materialized notice fixture 2026-08-14",
   "route": "/notices/20260810048/",
   "render_hash_viewport_invariant": true,
