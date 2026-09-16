@@ -49,6 +49,7 @@ import {
 } from "./procurement_coverage_labels.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "./report_issue.mjs";
 import { renderCalendarSubscriptionAffordance } from "./calendar_subscription.mjs";
+import { renderFollowDiscoveryForBrowseView } from "./follow_discovery.mjs";
 import { zoningHearingRowsForScope } from "./zoning_hearing_calendar.mjs";
 import { OPEN_CONTRACTS_FRESHNESS_STATES, openContractSnapshotProjection } from "./resident_snapshot_queries.mjs";
 
@@ -1348,6 +1349,9 @@ export function renderBrowseView(view) {
     : "";
   const scopeChip = renderScopeChip(view.scope, view.config, view.scopeSearch);
   const calendarSubscription = renderCalendarSubscriptionAffordance(view, { escape: esc });
+  const followDiscovery = renderFollowDiscoveryForBrowseView(view, {
+    calendarAlreadyRendered: Boolean(calendarSubscription),
+  });
   const contextualSuggestions = renderContextualSuggestions(view.contextualSuggestions);
   const edgeRail = renderEdgeSummaryRail(buildBrowseEdgeSummary(view), {
     heading: "Related records",
@@ -1542,7 +1546,7 @@ export function renderBrowseView(view) {
       })[key] || key,
     })
     : "";
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${contractsDiscoveryHtml(view)}${contractsFreshnessNoticeHtml(view)}${procurementCoverage}${asOfMismatch}${scopeChip}${calendarSubscription}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${semanticLane}${cards}</div>`;
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${contractsDiscoveryHtml(view)}${contractsFreshnessNoticeHtml(view)}${procurementCoverage}${asOfMismatch}${scopeChip}${calendarSubscription}${followDiscovery}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${semanticLane}${cards}</div>`;
 }
 
 export function browseAssetPath(facet) {

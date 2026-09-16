@@ -39,6 +39,7 @@ import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 import { renderWalkEntry, walkEntryHref, walkEntryPlaceLabel } from "./walk_entry.mjs";
 import { meetingOriginLabel } from "./meeting_origin.mjs";
 import { buildLocalDistrictFollowBundle } from "./local_district_follow_bundle.mjs";
+import { renderFollowDiscoveryForNearYou } from "./follow_discovery.mjs";
 import {
   landRecordHasFamilyEvidence,
   landRowMatchesFamily,
@@ -948,6 +949,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
         <a href="${esc(view.watchHref)}">Watch these filters</a>
         <a href="${esc(view.shareHref)}">Share this map</a>
       </nav>
+      ${renderFollowDiscoveryForNearYou(view)}
     </section>
       ${renderNearYouOverview(view)}
       <details class="near-explore"><summary>Explore related records</summary>${walkEntry}</details>

@@ -11,6 +11,7 @@ import {
   nowCalendarViewHref,
   resolveNowCalendarPresentation,
 } from "./now_calendar_switch.mjs";
+import { renderFollowDiscoveryForNow } from "./follow_discovery.mjs";
 
 let nowSourcesPromise = null;
 export const NOW_SOURCE_TIMEOUT_MS = 12_000;
@@ -261,9 +262,14 @@ export function renderNowSurface(surface, options = {}) {
   const body = presentation.view === CALENDAR_VIEW_CALENDAR
     ? nowCalendarBodyHTML(calendarView)
     : nowCardsBodyHTML(surface, undatedHTML);
+  const followDiscovery = renderFollowDiscoveryForNow(surface, {
+    scope: options.scope || surface.scope || null,
+    lens: options.lens || null,
+  });
   box.innerHTML = `<div class="now-surface">
     <p class="now-back"><a href="/browse/">${t("back_browse")}</a></p>
     <header class="now-head"><p class="now-kicker">${t("now_kicker")}</p><h2>${t("now_title")}</h2><p>${t("now_deck")}</p><p class="now-bounded-note">${t("now_bounded_note")}</p></header>
+    ${followDiscovery}
     ${coverage}
     <div class="now-calview-row">
       <div class="now-calview-switch" id="now-calview-switch" role="group" aria-label="${nowEsc(t("now_calview_switch_label"))}">${switchHTML}</div>

@@ -12,6 +12,7 @@ import {
 } from "../calendar_subscription.mjs";
 import { calendarSubscriptionHrefForScope } from "../calendar_subscription.mjs";
 import { rankWatchFamilySuggestions } from "../watch_family_capabilities.mjs";
+import { renderFeedReaderDisclosureForScope } from "../follow_discovery.mjs";
 
 let nlParserPromise;
 function scopeHash(lens, hash){
@@ -1012,6 +1013,29 @@ function calendarRowsForLens(lens) {
   return [];
 }
 
+function syncFeedReaderDisclosure(lens, scope) {
+  document.querySelectorAll("[data-follow-discovery-feeds-host]").forEach((host) => {
+    host.hidden = host.dataset.followDiscoveryFeedsLens !== lens;
+    if (host.dataset.followDiscoveryFeedsLens !== lens) host.innerHTML = "";
+  });
+  const hostParent = document.querySelector(`.watchbtn[data-lens="${lens}"]`)?.closest(".controls")
+    || document.querySelector(`[data-calendar-subscribe-lens="${lens}"]`)?.closest(".controls");
+  if (!hostParent || !scope) return;
+  let host = hostParent.querySelector(`[data-follow-discovery-feeds-host][data-follow-discovery-feeds-lens="${lens}"]`);
+  if (!host) {
+    host = document.createElement("div");
+    host.dataset.followDiscoveryFeedsHost = "1";
+    host.dataset.followDiscoveryFeedsLens = lens;
+    host.style.display = "block";
+    host.style.marginTop = "6px";
+    host.style.maxWidth = "36rem";
+    hostParent.append(host);
+  }
+  const markup = renderFeedReaderDisclosureForScope(scope, { lens });
+  host.innerHTML = markup;
+  host.hidden = !markup;
+}
+
 function syncCalendarSubscription(lens, rows = null) {
   const controls = [...document.querySelectorAll("[data-calendar-subscribe-lens]")];
   controls.forEach((control) => {
@@ -1020,12 +1044,14 @@ function syncCalendarSubscription(lens, rows = null) {
     if (!active) control.removeAttribute("href");
   });
   const control = controls.find((candidate) => candidate.dataset.calendarSubscribeLens === lens);
-  if (!control || !globalThis.CrolScope) return null;
+  if (!globalThis.CrolScope) return null;
   const serialized = typeof globalThis.serializeState === "function" ? globalThis.serializeState() : null;
   const hash = location.hash.startsWith(`#${lens}`)
     ? location.hash
     : (serialized && serialized.startsWith(`#${lens}`) ? serialized : `#${lens}`);
   const scope = CrolScope.scopeFromRouteHash(hash, { language: window.LANG || "en" });
+  syncFeedReaderDisclosure(lens, scope);
+  if (!control) return null;
   const details = calendarSubscriptionDetailsForScope(scope, {
     lens,
     rows: rows || calendarRowsForLens(lens),
@@ -1108,6 +1134,7 @@ document.addEventListener("click", (event) => {
 function renderSearchComponents(lens, options){
   renderSearchLensHandoff(lens);
   syncCalendarSubscription(lens);
+  // Money and other lenses still get feed-reader disclosure from the sync above.
   if(!["people","land","property","rules","meetings"].includes(lens)) return;
   const serialized=location.hash.startsWith("#"+lens+"?")?serializeState():documentSearchHash(lens);
   const hash=(options&&options.hash)||serialized;
