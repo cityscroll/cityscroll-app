@@ -658,7 +658,13 @@ test("FIREMATIC vendor search retains the served PASSPort-only contract after fa
     ));
     assert.ok(passport);
     assert.equal(passport.canonical_href, "/procurements/procurement%3Acontract%3ACT185720228800365");
+    // Typed-money compatibility amount is action-first; vendor-search keeps that
+    // role explicit so a family merge cannot retarget the figure by clock.
     assert.equal(passport.summary, "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE · FIREMATIC SUPPLY CO. INC · $49,689.78");
+    assert.equal(passport.provenance?.browse_record?.amount_role, "action");
+    assert.equal(passport.provenance?.browse_record?.action_amount, 49689.78);
+    assert.equal(passport.provenance?.browse_record?.current_contract_amount, 208687.62);
+    assert.equal(passport.provenance?.browse_record?.original_contract_amount, 158997.84);
     assert.equal(body.results.filter((result) => result.provenance?.producer === "contract_award_search_document.v1").length, 21);
     assert.deepEqual(contracts.coverage.pre_merge_candidate_counts, {
       city_record: 0,
@@ -681,6 +687,34 @@ test("FIREMATIC vendor search retains the served PASSPort-only contract after fa
     }]);
   } finally {
     sqlite.close();
+  }
+});
+
+test("FIREMATIC vendor-search action amount stays pinned under shifted clocks", async () => {
+  const { withPinnedClock, MILLISECONDS_PER_DAY } = await import("../../test/helpers/test_clock.mjs");
+  const { materializeProcurementSearchDocument } = await import("../../site/procurement_search_producer.mjs");
+  const { readSharedProcurementReadModel } = await import("../../tools/lib/procurement_read_model_io.mjs");
+  const readModel = readSharedProcurementReadModel(
+    new URL("../../site/data/shared_procurement_read_model.json", import.meta.url),
+  );
+  const object = readModel.rows.find((row) => row.procurement_id === "procurement:contract:CT185720228800365");
+  assert.ok(object);
+  const baseMs = Date.parse("2026-09-16T12:00:00.000Z");
+  for (const days of [1, 45]) {
+    const pinned = new Date(baseMs + days * MILLISECONDS_PER_DAY).toISOString();
+    await withPinnedClock(pinned, () => {
+      const document = materializeProcurementSearchDocument(object, readModel);
+      assert.ok(document, `+${days}d document`);
+      assert.equal(
+        document.summary,
+        "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE · FIREMATIC SUPPLY CO. INC · $49,689.78",
+        `+${days}d summary stays on the action amount`,
+      );
+      assert.equal(document.provenance.browse_record.amount_role, "action", `+${days}d amount_role`);
+      assert.equal(document.provenance.browse_record.action_amount, 49689.78, `+${days}d action`);
+      assert.equal(document.provenance.browse_record.current_contract_amount, 208687.62, `+${days}d current`);
+      assert.equal(document.provenance.browse_record.original_contract_amount, 158997.84, `+${days}d original`);
+    });
   }
 });
 

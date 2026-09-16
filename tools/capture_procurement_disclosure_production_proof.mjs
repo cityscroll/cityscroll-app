@@ -79,9 +79,9 @@ export const CONTRACTS = Object.freeze({
     field_roles: null,
   },
   CT185720228800365: {
-    amount: "$49,689.78",
+    amount: "$208,687.62",
     vendor: "FIREMATIC SUPPLY CO. INC",
-    method: "Amendment",
+    method: "Competitive Sealed Bid",
     label: "Firematic",
     field_roles: Object.freeze({
       original: 158997.84,
@@ -95,9 +95,9 @@ export const CONTRACTS = Object.freeze({
     }),
   },
   CT185020228802305: {
-    amount: "$26,112.93",
+    amount: "$1,779,343.45",
     vendor: "TAMEER INC",
-    method: "Construction Change Order",
+    method: "Competitive Sealed Bid",
     label: "TAMEER",
     field_roles: Object.freeze({
       original: 1442820.77,

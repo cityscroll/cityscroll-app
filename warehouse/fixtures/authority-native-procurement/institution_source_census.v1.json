@@ -53,21 +53,21 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-09-16T10:44:14.762Z",
+    "generated_at": "2026-09-16T21:09:04.974Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "e8cf85699c516df1cc22e419e2ef2a51442b9eef33f4a67c5412eb988aea149d",
+        "sha256": "0717d400cdc5ff52d3342ecd799521f29e1bc59b5100c2d6760a78d10c11c8ec",
         "row_count": 19872
       },
       "spine_sources": {
         "path": "site/data/procurement_spine_sources.json",
-        "sha256": "91fdd022bcc19954da01890f056df495591fea1d2fe193fdbbd5ca0d4dfff7c8",
-        "passport_contract_rows": 12782
+        "sha256": "6cd5568567a6e8461c3138eea93269b611ea24feac9ae83c31916ed7cb2764f4",
+        "passport_contract_rows": 12795
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "a3eb0110d562bccc15287d5c5b1d24cc064d84a91ae062c1b5b2decf89824565",
+        "sha256": "d5566572a032d352de10b4f77de6ebfaa5ef98b5739f4d44308bd9328bba9dc1",
         "object_count": 19872
       }
     },

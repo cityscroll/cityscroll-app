@@ -6,8 +6,8 @@
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "d03de6896de056c02409bc8236d1ca1b70814b3786ba069af434b6b2c1643e0a",
-    "bytes": 80169387,
+    "sha256": "ae69a5faae0f25e5e8fd78af4d80eb8a21b09103a939912fd4b0e71da7ec9b0c",
+    "bytes": 81818569,
     "family_count": 12,
     "document_count": 22173
   },
@@ -43,11 +43,11 @@
   },
   "coherence_receipt": {
     "schema": "cityscroll.procurement_index_coherence.v1",
-    "source_model_fingerprint": "fdc8b441f98904f537a954f4787d3c8ef46eb8b72ff024a9f51e5de9caf4bb6b",
+    "source_model_fingerprint": "b6edc9b271fb4383dc13304a0ed4f39a92eebd1017788b8da69760a9d33fe2ae",
     "generated_at": "2026-09-09T06:33:01.880Z",
-    "selected_row_count": 34838,
+    "selected_row_count": 34851,
     "artifact_hashes": {
-      "shared_procurement_read_model": "0aa46207edb03e5119b06b012d2b2d45a3b05c40bcf6ad20a9076a35bd23fb36",
+      "shared_procurement_read_model": "cc238b684da31bb1e33ca4ce521d5b459fa186738263ab8840a88e534eccac0f",
       "keyword_search_procurements": "13dcc007596f67d7273e38bb9ae66782dcc96a7573bd809196579b1861cbd502"
     }
   },
@@ -187,13 +187,13 @@
       "path": "procurements.json.br",
       "gzip_path": "procurements.json.gz",
       "document_count": 19872,
-      "uncompressed_bytes": 68903256,
-      "gzip_bytes": 3924147,
-      "brotli_bytes": 2967371,
-      "sha256": "d211d7d147741d044fd94bed2f10c4784a7c84bb06ee16c993d20b2621c6f311",
-      "gzip_sha256": "a8d3155aac5c3b6465c887a38cef8d00013ab863470c6449b629cb9e693c973e",
-      "brotli_sha256": "e622b1f874088bc7b939ed80fa04055340db13a774afe0d453230c29e31effa9",
-      "receipt_sha256": "de7cd049659f336207324ea447cd0309c8e0928705a26893153482316890b539"
+      "uncompressed_bytes": 70453998,
+      "gzip_bytes": 4051664,
+      "brotli_bytes": 3053295,
+      "sha256": "cf6460b6bbb47644d921e9ffddba9f31081647b458f0a0efbaf9f5943381fe87",
+      "gzip_sha256": "0acbc6e258d01f0f9387b262176deb815186027a0056e4b2e5272c26206ec817",
+      "brotli_sha256": "ce97f9865d4957f097d78ec252f36aeb33174376e305c4d298aed0eda1a38fe4",
+      "receipt_sha256": "fcaf0cbd0f468b01ed3d4d27f3a360b69f99bec3575fe77be418386347405011"
     },
     {
       "family": "consultations",
