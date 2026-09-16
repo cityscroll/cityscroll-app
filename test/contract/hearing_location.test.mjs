@@ -176,3 +176,61 @@ test("Council calendar rows keep their meeting_id route and never emit a City Re
   assert.doesNotMatch(JSON.stringify(browser), /RequestDetail/);
   assert.doesNotMatch(JSON.stringify(browser), /undefined/);
 });
+
+test("OATH trial rows keep their meeting_id and publisher calendar URL", () => {
+  const browser = normalizeHearingRow({
+    meeting_id: "meeting:oath_trial_calendar:261372:2026-09-16:09:30:00:Scheduled For Trial",
+    source_system: "oath_trial_calendar",
+    publisher_identifier: "261372:2026-09-16:09:30:00:Scheduled For Trial",
+    oath_index: "261372",
+    title: "OATH trial 261372",
+    event_date: "2026-09-16T09:30:00",
+    meeting_origin: "official_oath_trial_calendar",
+    source_url: "https://www.nyc.gov/site/oath/calendar/calendar.page",
+  });
+  assert.equal(
+    browser.meeting_id,
+    "meeting:oath_trial_calendar:261372:2026-09-16:09:30:00:Scheduled For Trial",
+  );
+  assert.equal(browser.request_id, null);
+  assert.equal(browser.source_system, "oath_trial_calendar");
+  assert.equal(browser.meeting_origin, "official_oath_trial_calendar");
+  assert.equal(browser.source_url, "https://www.nyc.gov/site/oath/calendar/calendar.page");
+  assert.equal(browser.compatibility.publisher_href, browser.source_url);
+  assert.equal(browser.compatibility.legacy_notice_href, null);
+  assert.doesNotMatch(JSON.stringify(browser), /RequestDetail/);
+});
+
+test("PDC schedule rows keep their meeting_id and publisher schedule URL", () => {
+  const browser = normalizeHearingRow({
+    meeting_id: "meeting:pdc_calendar:pdc-2026-09-22",
+    source_system: "pdc_calendar",
+    publisher_identifier: "pdc-2026-09-22",
+    title: "Public Design Commission meeting",
+    event_date: "2026-09-22",
+    meeting_origin: "official_pdc_schedule",
+    source_url: "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+  });
+  assert.equal(browser.meeting_id, "meeting:pdc_calendar:pdc-2026-09-22");
+  assert.equal(browser.request_id, null);
+  assert.equal(browser.source_system, "pdc_calendar");
+  assert.equal(browser.meeting_origin, "official_pdc_schedule");
+  assert.equal(
+    browser.source_url,
+    "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+  );
+  assert.doesNotMatch(JSON.stringify(browser), /RequestDetail/);
+});
+
+test("City Record fallback never emits a RequestDetail URL without a request id", () => {
+  const browser = normalizeHearingRow({
+    short_title: "Incomplete notice",
+    section_name: "Public Hearings and Meetings",
+    event_date: "2026-09-16T09:30:00",
+  });
+  assert.equal(browser.request_id, null);
+  assert.equal(browser.meeting_id, null);
+  assert.equal(browser.source_url, null);
+  assert.doesNotMatch(JSON.stringify(browser), /RequestDetail\/["']/);
+  assert.doesNotMatch(JSON.stringify(browser), /RequestDetail\/?$/);
+});

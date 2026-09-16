@@ -7,6 +7,8 @@
     "official_minutes_joined",
     "community_board_source_observed",
     "nyc_legistar_events_observed",
+    "official_oath_trial_calendar",
+    "official_pdc_schedule",
     "unknown"
   ],
   "domain": "meetings",
