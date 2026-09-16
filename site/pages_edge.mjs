@@ -886,6 +886,8 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       ${noticeLocalConstellationHTML}
       ${renderMeetingOutcomesFirstPaint(meetingOutcome, id)}
       ${(() => {
+        // Edge keeps connect-notice "View contract" handoff as the contract entrance.
+        // Do not emit comparative award-browse hrefs here; client More tools owns that.
         const evidencePath = identity.matched
           ? `/agencies/${encodeURIComponent(identity.canonical_id)}/`
           : null;
@@ -894,7 +896,6 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
           evidencePath,
           asOfSupported: Boolean(evidencePath),
           asOfPath: evidencePath,
-          comparativeAgency: agency || null,
         });
         const researchHtml = renderResearchNavigation(research);
         return `<div class="actions record-action-regions" data-record-action-regions="1">${browseLink}${followingLink}${documentReport}${relatedObjectReport}${researchHtml}</div>`;
