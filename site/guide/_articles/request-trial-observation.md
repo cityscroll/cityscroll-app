@@ -22,7 +22,7 @@ sources:
 
 OATH and CCRB use different access paths. OATH asks an observer to contact its calendar unit about a selected trial. CCRB publishes a rolling trial grid. Neither path is a request to testify, and neither source turns an allegation into a finding.
 
-## OATH: copy three exact fields {#oath}
+## OATH — copy three exact fields {#oath}
 
 1. Open the [official OATH trial calendar](https://www.nyc.gov/site/oath/trials/conference-and-trial-calendar.page) and choose a current row marked **Scheduled For Trial**.
 2. Copy the row's **index**, **date**, and **time**. The index identifies a calendar listing; it is not, by itself, a complete session identifier.
@@ -32,7 +32,7 @@ The request is a question to the calendar unit, not a confirmation that the tria
 
 Example shape: `Subject: Request to observe OATH trial — index [index] — [date], [time]`. In the body, say that you would like to observe the trial listed under that index and ask the calendar unit to confirm whether it is proceeding and provide access instructions.
 
-## CCRB: use the current rolling grid {#ccrb}
+## CCRB — use the current rolling grid {#ccrb}
 
 The [CCRB public trial page](https://www.nyc.gov/site/ccrb/complaints/complaint-process/apu-trials.page) is the official link for the current rolling three-week grid. Open it close to the day you plan to attend because dates are subject to change. The grid may show an incident borough, officer, and charges, but the incident borough is not the venue and charges are allegations, not adjudicated findings.
 

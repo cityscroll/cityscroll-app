@@ -1,0 +1,681 @@
+{
+  "schema": "cityscroll.procurement_detail_parity_fixture_readback.v1",
+  "fixture": "test/fixtures/procurement-detail-parity/ct107120258801626.json",
+  "clock": "fixture vintage from capture-manifest.json",
+  "capture_mode": "headless Chromium with repository CSS; image files omitted",
+  "assertions": {
+    "A5": "Rendering the canonical object with core observations but optional lookup enrichment absent keeps the canonical heading, identifiers, and contract facts while emitting no lookup apology.",
+    "A6": "The canonical procurement id, observation references, accepted identity edge, exact-search result order, and contract/vendor follow URLs equal the retained fixture baseline.",
+    "A7": "Headless viewport probes measure document boxes with no horizontal overflow at desktop and 390 px; the two viewport measurements differ; keyboard Tab reaches every named destination in the capture manifest; axe reports no serious or critical findings.",
+    "A8": "The retained verification receipt records each focused, architecture, determinism, generated-artifact, prepush, and accessibility command with its exit status."
+  },
+  "baseline": {
+    "procurement_id": "procurement:contract:CT107120258801626",
+    "canonical_id": "procurement:contract:CT107120258801626",
+    "source_observation_refs": [
+      "city_record:20240829105",
+      "passport_public_contracts:contract:07124E0044001:5050251"
+    ],
+    "accepted_identity_edges": [
+      {
+        "status": "accepted",
+        "source_observation_ref": "passport_public_contracts:contract:07124E0044001:5050251",
+        "basis": "exact_contract_id",
+        "matched_value": "CT107120258801626"
+      }
+    ],
+    "search_rank": [
+      "procurement:contract:CT107120258801626"
+    ],
+    "watch_urls": {
+      "contract": "/following?lens=money&filter=%7B%22procurement_id%22%3A%22procurement%3Acontract%3ACT107120258801626%22%2C%22noticeType%22%3A%22award%22%7D&freq=daily",
+      "vendor": "/following?lens=entity&filter=%7B%22kind%22%3A%22vendor%22%2C%22name%22%3A%22BHRAGS+HOME+CARE+CORP%22%7D&freq=daily"
+    }
+  },
+  "layout": {
+    "desktop": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "scroll_width": 1440,
+      "client_width": 1440,
+      "inner_width": 1440,
+      "content_height": 3323,
+      "overflow": false
+    },
+    "mobile": {
+      "viewport": [
+        390,
+        844
+      ],
+      "scroll_width": 390,
+      "client_width": 390,
+      "inner_width": 390,
+      "content_height": 4077,
+      "overflow": false
+    },
+    "keyboard": {
+      "visible_native_links": 24,
+      "negative_tabindex": 0,
+      "reachable_links": 24,
+      "named_destinations": {
+        "expected_destinations": [
+          "/agencies/homeless-services/",
+          "/vendors/BHRAGS%20HOME%20CARE/",
+          "/search/?q=CT107120258801626",
+          "/search/?q=07124E0044001",
+          "/notices/20240829105",
+          "https://a0333-passportpublic.nyc.gov/contracts.html",
+          "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT107120258801626"
+        ],
+        "reached_in_tab_order": [
+          "/notices/20240829105",
+          "/agencies/homeless-services/",
+          "/vendors/BHRAGS%20HOME%20CARE/",
+          "/search/?q=CT107120258801626",
+          "/search/?q=07124E0044001",
+          "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT107120258801626",
+          "https://a0333-passportpublic.nyc.gov/contracts.html"
+        ],
+        "missing_destinations": [],
+        "tabs_pressed": 24,
+        "disclosures_opened": [
+          "Payment source details",
+          "Inspect source details"
+        ],
+        "all_named_destinations_reached": true
+      }
+    },
+    "viewports_differ": true,
+    "measurement": "headless Chromium documentElement.scrollWidth/clientWidth/content_height at each viewport"
+  },
+  "accessibility": {
+    "engine": {
+      "name": "axe-core",
+      "version": "4.10.2"
+    },
+    "scope": "served canonical procurement detail fixture at desktop and mobile viewports",
+    "viewports": {
+      "desktop": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "rules_run": [
+          "accesskeys",
+          "area-alt",
+          "aria-allowed-attr",
+          "aria-allowed-role",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-conditional-attr",
+          "aria-deprecated-role",
+          "aria-dialog-name",
+          "aria-hidden-body",
+          "aria-hidden-focus",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-prohibited-attr",
+          "aria-required-attr",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-roles",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "aria-valid-attr",
+          "aria-valid-attr-value",
+          "autocomplete-valid",
+          "avoid-inline-spacing",
+          "blink",
+          "button-name",
+          "bypass",
+          "color-contrast",
+          "definition-list",
+          "dlitem",
+          "document-title",
+          "duplicate-id-aria",
+          "empty-heading",
+          "empty-table-header",
+          "form-field-multiple-labels",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title",
+          "frame-title-unique",
+          "heading-order",
+          "html-has-lang",
+          "html-lang-valid",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "label",
+          "label-title-only",
+          "landmark-banner-is-top-level",
+          "landmark-complementary-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-one-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "list",
+          "listitem",
+          "marquee",
+          "meta-refresh",
+          "meta-viewport",
+          "meta-viewport-large",
+          "nested-interactive",
+          "no-autoplay-audio",
+          "object-alt",
+          "page-has-heading-one",
+          "presentation-role-conflict",
+          "region",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "tabindex",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption"
+        ],
+        "nodes_examined": 254,
+        "violations": [
+          {
+            "id": "heading-order",
+            "impact": "moderate",
+            "nodes": [
+              [
+                "h4"
+              ]
+            ]
+          }
+        ],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 7
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 3
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 7
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 6
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 7
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 7
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 7
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 2
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 157
+          },
+          {
+            "id": "definition-list",
+            "nodes": 3
+          },
+          {
+            "id": "dlitem",
+            "nodes": 46
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 9
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 6
+          },
+          {
+            "id": "empty-table-header",
+            "nodes": 3
+          },
+          {
+            "id": "heading-order",
+            "nodes": 5
+          },
+          {
+            "id": "html-has-lang",
+            "nodes": 1
+          },
+          {
+            "id": "html-lang-valid",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-banner-is-top-level",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-contentinfo-is-top-level",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-main-is-top-level",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-no-duplicate-banner",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-no-duplicate-contentinfo",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-no-duplicate-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-unique",
+            "nodes": 8
+          },
+          {
+            "id": "link-in-text-block",
+            "nodes": 4
+          },
+          {
+            "id": "link-name",
+            "nodes": 23
+          },
+          {
+            "id": "list",
+            "nodes": 2
+          },
+          {
+            "id": "listitem",
+            "nodes": 7
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 3
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 236
+          },
+          {
+            "id": "scope-attr-valid",
+            "nodes": 3
+          },
+          {
+            "id": "summary-name",
+            "nodes": 3
+          },
+          {
+            "id": "table-duplicate-name",
+            "nodes": 1
+          },
+          {
+            "id": "td-headers-attr",
+            "nodes": 1
+          },
+          {
+            "id": "th-has-data-cells",
+            "nodes": 1
+          }
+        ],
+        "serious_or_critical": [],
+        "markup_sha256": "e73548bd10c8a001b97c0cbbd47315c91790a7f7d9fa03483322485af8966049",
+        "scanned_at": "2026-09-09T06:33:01.880Z"
+      },
+      "mobile": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "rules_run": [
+          "accesskeys",
+          "area-alt",
+          "aria-allowed-attr",
+          "aria-allowed-role",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-conditional-attr",
+          "aria-deprecated-role",
+          "aria-dialog-name",
+          "aria-hidden-body",
+          "aria-hidden-focus",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-prohibited-attr",
+          "aria-required-attr",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-roles",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "aria-valid-attr",
+          "aria-valid-attr-value",
+          "autocomplete-valid",
+          "avoid-inline-spacing",
+          "blink",
+          "button-name",
+          "bypass",
+          "color-contrast",
+          "definition-list",
+          "dlitem",
+          "document-title",
+          "duplicate-id-aria",
+          "empty-heading",
+          "empty-table-header",
+          "form-field-multiple-labels",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title",
+          "frame-title-unique",
+          "heading-order",
+          "html-has-lang",
+          "html-lang-valid",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "label",
+          "label-title-only",
+          "landmark-banner-is-top-level",
+          "landmark-complementary-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-one-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "list",
+          "listitem",
+          "marquee",
+          "meta-refresh",
+          "meta-viewport",
+          "meta-viewport-large",
+          "nested-interactive",
+          "no-autoplay-audio",
+          "object-alt",
+          "page-has-heading-one",
+          "presentation-role-conflict",
+          "region",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "tabindex",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption"
+        ],
+        "nodes_examined": 213,
+        "violations": [
+          {
+            "id": "heading-order",
+            "impact": "moderate",
+            "nodes": [
+              [
+                "h4"
+              ]
+            ]
+          }
+        ],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 7
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 3
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 7
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 6
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 7
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 7
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 7
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 2
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 129
+          },
+          {
+            "id": "definition-list",
+            "nodes": 2
+          },
+          {
+            "id": "dlitem",
+            "nodes": 38
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 9
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 6
+          },
+          {
+            "id": "empty-table-header",
+            "nodes": 3
+          },
+          {
+            "id": "heading-order",
+            "nodes": 5
+          },
+          {
+            "id": "html-has-lang",
+            "nodes": 1
+          },
+          {
+            "id": "html-lang-valid",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-banner-is-top-level",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-contentinfo-is-top-level",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-main-is-top-level",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-no-duplicate-banner",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-no-duplicate-contentinfo",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-no-duplicate-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-unique",
+            "nodes": 8
+          },
+          {
+            "id": "link-in-text-block",
+            "nodes": 4
+          },
+          {
+            "id": "link-name",
+            "nodes": 19
+          },
+          {
+            "id": "list",
+            "nodes": 1
+          },
+          {
+            "id": "listitem",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 3
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 195
+          },
+          {
+            "id": "scope-attr-valid",
+            "nodes": 3
+          },
+          {
+            "id": "summary-name",
+            "nodes": 3
+          },
+          {
+            "id": "table-duplicate-name",
+            "nodes": 1
+          },
+          {
+            "id": "td-headers-attr",
+            "nodes": 1
+          },
+          {
+            "id": "th-has-data-cells",
+            "nodes": 1
+          }
+        ],
+        "serious_or_critical": [],
+        "markup_sha256": "e73548bd10c8a001b97c0cbbd47315c91790a7f7d9fa03483322485af8966049",
+        "scanned_at": "2026-09-09T06:33:01.880Z"
+      }
+    },
+    "assertion": "The automated accessibility receipt reports no serious or critical findings for either retained viewport."
+  },
+  "verification": {
+    "command": "node tools/build_served_procurement_route_verification_receipt.mjs",
+    "receipt": "docs/evidence/served-procurement-route/verification-receipt.json",
+    "status": "passed",
+    "grounded_at": "d820fc8a3a354d69321a3368b096f436d01e2fcd",
+    "recorded_at": "2026-09-16T18:14:08.837Z",
+    "summary": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "status": "passed"
+    }
+  }
+}
