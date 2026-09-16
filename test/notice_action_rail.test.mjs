@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const html = SITE_SOURCE;
+const noticeRouteSource = readFileSync(new URL("../site/notice_subject_client.mjs", import.meta.url), "utf8");
 
 test("notice detail loads and mounts the shared action registry", () => {
   assert.match(html, /<script src="action_registry\.js"><\/script>/);
@@ -18,7 +19,7 @@ test("notice detail loads and mounts the shared action registry", () => {
 });
 
 test("notice detail keeps utility controls separate from the single action rail", () => {
-  const showNotice = html.slice(html.indexOf("async function showNotice"), html.indexOf("/* ===================== INIT"));
+  const showNotice = noticeRouteSource.slice(noticeRouteSource.indexOf("async function showNotice"));
   assert.doesNotMatch(showNotice, /id="nics"/);
   assert.doesNotMatch(showNotice, /noticeParticipation/);
   // How-to-respond leads (after the action rail) without a second set of primary CTAs.

@@ -633,6 +633,8 @@
 /site/notice_object_links.mjs
 /site/notice_permalink.mjs
 /site/notice_primary_readiness.mjs
+/site/notice_subject_client.mjs
+/site/notice_subject_projection.mjs
 /site/now-reading-level-ratchet.json
 /site/now_calendar.mjs
 /site/now_calendar_switch.mjs

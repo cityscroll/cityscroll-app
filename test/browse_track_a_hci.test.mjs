@@ -11,6 +11,7 @@ import { groupSameExcept } from "../site/same_consolidation.mjs";
 import { renderNearYouBody } from "../site/near_you_view.mjs";
 
 const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
+const noticeRoute = readFileSync(new URL("../site/notice_subject_client.mjs", import.meta.url), "utf8");
 const land = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
 const property = readFileSync(new URL("../site/app/property.mjs", import.meta.url), "utf8");
 const money = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
@@ -20,9 +21,9 @@ const map = readFileSync(new URL("../site/app/map.mjs", import.meta.url), "utf8"
 const exams = readFileSync(new URL("../site/app/exams.mjs", import.meta.url), "utf8");
 
 test("notice detail mounts the action rail before summary/context chrome", () => {
-  const start = routing.indexOf("box.innerHTML = `<div style=\"max-width:880px");
+  const start = noticeRoute.indexOf("box.innerHTML = `<div style=\"max-width:880px");
   assert.ok(start > 0);
-  const block = routing.slice(start, start + 1800);
+  const block = noticeRoute.slice(start, start + 1800);
   const actions = block.indexOf('id="nactions"');
   const plain = block.indexOf('id="nplain"');
   const context = block.indexOf('id="ncontext"');

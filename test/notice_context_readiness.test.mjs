@@ -22,7 +22,7 @@ import { build as buildEvidence } from "../tools/build_notice_context_readiness_
 import manifest from "../site/data/performance-classification-manifest.v1.json" with { type: "json" };
 
 const contextSource = readFileSync(new URL("../site/app/notice-context.mjs", import.meta.url), "utf8");
-const routingSource = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
+const routingSource = readFileSync(new URL("../site/notice_subject_client.mjs", import.meta.url), "utf8");
 const committed = JSON.parse(readFileSync(
   new URL("../docs/evidence/notice-context-readiness/read-back.json", import.meta.url),
   "utf8",
