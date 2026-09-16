@@ -475,6 +475,9 @@ jobs:
       - name: Resident-read zero-egress architecture gate
         if: matrix.family == 'site-node'
         run: node tools/no_live_external_reads.mjs --check
+      - name: Pages Function Node built-in import gate
+        if: matrix.family == 'site-node'
+        run: node tools/check_pages_bundle_node_builtins.mjs
       - name: Citywide address snapshot integrity
         if: matrix.family == 'site-node'
         run: node tools/build_geocoder_address_index.mjs --check
