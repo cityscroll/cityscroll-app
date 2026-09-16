@@ -8,9 +8,9 @@
       "mode": "no-javascript",
       "passed": true,
       "positions": {
-        "events": 2045,
-        "facts": 333,
-        "sources": 2150
+        "events": 2036,
+        "facts": 326,
+        "sources": 2141
       },
       "render_sha256": "9c51203da2cbe45cc8efc834495b1d1b098bdbfbf6c0a66d04bc37a5fc90ab56",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
