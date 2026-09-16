@@ -56,10 +56,6 @@ import {
   runtimeRumSemanticMilestones,
 } from "../rum_static_record_instrumentation.mjs";
 import { noticeProcurementChain, renderNoticeLandSpine, renderNoticeMeetingOutcomes } from "../notice_lens_sections.mjs";
-import {
-  projectNoticeSubjectLinks,
-  renderNoticeSubjectLinksHtml,
-} from "../notice_subject_projection.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -1444,22 +1440,11 @@ async function showNotice(id, watch){
     ? CrolActions.compileActionRail(noticeActionMatter(r), { today: todayISO() })
     : [];
   const initialActionRail = window.CrolActions ? actionRailHTML(initialActionsForGlance) : "";
-  let subjectsLookup = null;
-  try {
-    subjectsLookup = (await import("../data/notice_procurement_subjects_lookup.json", { with: { type: "json" } })).default;
-  } catch (_error) {
-    subjectsLookup = null;
-  }
-  const subjectProjection = projectNoticeSubjectLinks(r, { subjectsLookup });
-  const noticeSubjectLinksHTML = renderNoticeSubjectLinksHtml(subjectProjection.subjects || [], {
-    escape: escUiHtml,
-  });
   box.innerHTML = `<div style="max-width:880px;margin:0 auto" data-notice-id="${escUiHtml(r.request_id)}">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||t("notice_fallback")}${r.section_name?" · "+tSection(r.section_name):""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
       <h2 class="rolename" lang="en" dir="ltr">${titleInner}</h2>
-      ${noticeSubjectLinksHTML}
       ${digEvidenceHTML(ev)}
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
       <div id="nactions" data-export-class="actions">${initialActionRail}</div>
