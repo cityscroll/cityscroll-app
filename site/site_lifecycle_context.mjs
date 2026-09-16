@@ -6,6 +6,7 @@
  */
 
 export const SITE_LIFECYCLE_CONTEXT_SCHEMA = "cityscroll.site_lifecycle_context.v1";
+export const SITE_LIFECYCLE_LOAD_FAILED_SCHEMA = "cityscroll.detail_context_unavailable.v1";
 
 const text = (value, max = 600) => String(value ?? "").replace(/\s+/g, " ").trim().slice(0, max);
 const esc = (value) => text(value).replace(/[<>&"']/g, (char) => ({
@@ -35,6 +36,35 @@ function sourceHref(member) {
   if (system === "ocp_recent_contract_awards") return "https://data.cityofnewyork.us/d/qyyg-4tf5";
   if (system === "city_record_online") return "https://a856-cityrecord.nyc.gov/";
   return null;
+}
+
+/** Official source for the native subject when site-history loading fails. */
+export function nativeSourceHrefForSubject(subjectId) {
+  const id = text(subjectId, 320);
+  if (id.startsWith("land:project:")) {
+    const projectId = id.slice("land:project:".length);
+    return projectId ? `https://zap.planning.nyc.gov/projects/${encodeURIComponent(projectId)}` : null;
+  }
+  if (id.startsWith("procurement:contract:")) {
+    return `/procurements/${encodeURIComponent(id)}`;
+  }
+  return null;
+}
+
+/** Explicit failure marker: distinct from absent optional context (null). */
+export function siteLifecycleLoadFailure({ subjectId = null, reason = "load_failed", sourceHref = null } = {}) {
+  const subject = text(subjectId, 320) || null;
+  return {
+    schema: SITE_LIFECYCLE_LOAD_FAILED_SCHEMA,
+    status: "unavailable",
+    reason: text(reason, 120) || "load_failed",
+    subject_id: subject,
+    source_href: text(sourceHref, 1200) || nativeSourceHrefForSubject(subject),
+  };
+}
+
+function isLoadFailure(value) {
+  return value?.schema === SITE_LIFECYCLE_LOAD_FAILED_SCHEMA;
 }
 
 /** Return the stable members on the first exact parcel used by a subject. */
@@ -69,19 +99,47 @@ export function buildSiteLifecycleContext(lifecycle, { subjectId, surface = "pro
   };
 }
 
+function readJsonResponse(response, label) {
+  if (!response?.ok) {
+    throw new Error(`${label}_http_${response?.status ?? "unavailable"}`);
+  }
+  return response.json().then((body) => {
+    if (body == null) throw new Error(`${label}_empty`);
+    return body;
+  });
+}
+
+/**
+ * Load the materialized site-history shards.
+ * Resolves to the lifecycle document on success, or a load-failure marker.
+ * Never collapses a failed fetch into an empty successful document.
+ */
 export function loadSiteLifecycleContext() {
   return Promise.all([
-    fetch("data/site_lifecycle/0000.json", { cache: "force-cache", credentials: "omit" }).then((response) => response.ok ? response.json() : null),
-    fetch("data/site_lifecycle/reverse.json", { cache: "force-cache", credentials: "omit" }).then((response) => response.ok ? response.json() : null),
+    fetch("data/site_lifecycle/0000.json", { cache: "force-cache", credentials: "omit" })
+      .then((response) => readJsonResponse(response, "site_lifecycle_shard")),
+    fetch("data/site_lifecycle/reverse.json", { cache: "force-cache", credentials: "omit" })
+      .then((response) => readJsonResponse(response, "site_lifecycle_reverse")),
   ]).then(([shard, reverse]) => ({
     schema: "cityscroll.site_lifecycle.v1",
     parcels: Object.fromEntries((shard?.rows || []).map((row) => [row.parcel_id, row])),
     members: reverse?.members || {},
-  })).catch(() => null);
+  })).catch((error) => siteLifecycleLoadFailure({
+    reason: text(error?.message, 120) || "load_failed",
+  }));
 }
 
 export function mountSiteLifecycleContext(host, data, subjectId) {
-  if (host) host.innerHTML = renderSiteLifecycleContext(buildSiteLifecycleContext(data, { subjectId, surface: "land" }));
+  if (!host) return;
+  if (isLoadFailure(data)) {
+    host.innerHTML = renderSiteLifecycleContext(siteLifecycleLoadFailure({
+      subjectId: data.subject_id || subjectId,
+      reason: data.reason,
+      sourceHref: data.source_href,
+    }));
+    return;
+  }
+  host.innerHTML = renderSiteLifecycleContext(buildSiteLifecycleContext(data, { subjectId, surface: "land" }));
 }
 
 function memberDate(member) {
@@ -97,8 +155,19 @@ function memberLink(member) {
   return href ? `<a href="${esc(href)}">${esc(memberTitle(member))}</a>` : esc(memberTitle(member));
 }
 
-/** Render nothing for absent optional context; never render an empty success panel. */
+/** Recovery UI for a failed site-history load — never claims the place has no records. */
+export function renderSiteLifecycleLoadFailure(failure) {
+  if (!isLoadFailure(failure)) return "";
+  const sourceHref = text(failure.source_href, 1200) || nativeSourceHrefForSubject(failure.subject_id);
+  const source = sourceHref
+    ? `<p><a href="${esc(sourceHref)}">Open the official source</a></p>`
+    : "";
+  return `<section class="node-section node-card site-lifecycle-context site-lifecycle-context-unavailable" data-site-lifecycle-context="1" data-site-lifecycle-state="unavailable" aria-labelledby="site-lifecycle-heading"><h2 id="site-lifecycle-heading">Other government activity at this site</h2><p>Related records for this place could not be loaded just now. That is a failure to read them, not a finding that none exist.</p><p><a href="">Reload this page to retry</a></p>${source}</section>`;
+}
+
+/** Render nothing for absent optional context; render recovery for a failed load. */
 export function renderSiteLifecycleContext(context) {
+  if (isLoadFailure(context)) return renderSiteLifecycleLoadFailure(context);
   if (!context?.members?.length || !context.parcel_id) return "";
   const land = context.surface === "land";
   const heading = land ? "Other government activity at this site" : "Land-use history at this site";
