@@ -1,4 +1,5 @@
 import { normalizeOathTrialCalendarMeeting } from "./meeting_object_contract.mjs";
+import { createCalendarOccurrence } from "./calendar_occurrence.mjs";
 
 export const OATH_TRIAL_CALENDAR_SCHEMA = "cityscroll.oath_trial_calendar.v1";
 export const OATH_TRIAL_CALENDAR_SOURCE_URL = "https://www.nyc.gov/site/oath/calendar/calendar.page";
@@ -148,6 +149,49 @@ export function parseOathTrialCsv(csv, { sourceUrl = OATH_TRIAL_CALENDAR_SOURCE_
       exact_duplicate_count: exactDuplicateCount,
     },
   };
+}
+
+/**
+ * Project OATH trial sessions with New York local starts and no invented end.
+ * Publisher widget timezone/end defects are corrected here rather than passed through.
+ */
+export function oathTrialCalendarOccurrences(records = []) {
+  return (Array.isArray(records) ? records : []).flatMap((record) => {
+    if (!record?.meeting_id || !record?.event_date) return [];
+    const when = String(record.event_date);
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(when)) return [];
+    const cancelled = record.status === "cancelled" || record.lifecycle === "cancelled"
+      || /\b(?:cancelled|canceled)\b/i.test(String(record.cancellation_notice || record.title || ""));
+    const caveats = [
+      "End time is not published.",
+      "Location and remote access may require confirmation from the OATH calendar unit.",
+      record.source_url || null,
+    ].filter(Boolean);
+    return [createCalendarOccurrence({
+      uid: record.meeting_id,
+      object_ref: record.meeting_id,
+      kind: "event",
+      title: record.title || `OATH trial ${record.oath_index || ""}`.trim(),
+      starts_at: when,
+      ends_at: null,
+      timezone: "America/New_York",
+      status: cancelled ? "cancelled" : "scheduled",
+      lifecycle: cancelled
+        ? "cancelled"
+        : (record.lifecycle || "scheduled"),
+      sequence: record.sequence ?? record.sequence_number ?? null,
+      last_modified: record.last_modified || record.modified_at || null,
+      location: record.venue?.address || record.venue?.name || null,
+      description: caveats.join(" "),
+      canonical_url: `https://cityscroll.org/meetings/${encodeURIComponent(record.meeting_id)}/`,
+      source: {
+        system: "oath_trial_calendar",
+        record_id: record.oath_trial_session_id || record.publisher_identifier || record.source_record_id || null,
+        url: record.source_url || null,
+      },
+      observed_at: record.source_receipt?.observed_at || record.observed_at || null,
+    })];
+  });
 }
 
 export { localDateTime };

@@ -370,6 +370,7 @@ site/browse_concept_view.mjs
 site/browse_list_contract.mjs
 site/browse_surface_contracts.mjs
 site/browse_view.mjs
+site/bsa_calendar.mjs
 site/calendar_occurrence.mjs
 site/calendar_subscription.mjs
 site/canonical_entity_interpretation.mjs
@@ -647,6 +648,7 @@ site/notice_object_links.mjs
 site/notice_permalink.mjs
 site/now_surface.mjs
 site/now_view.mjs
+site/oath_trial_calendar.mjs
 site/official_connections.mjs
 site/official_influence.mjs
 site/official_influence_ui.mjs
@@ -659,6 +661,7 @@ site/parcel_search_producer.mjs
 site/passport_public_fields.mjs
 site/payment_rows_ui.mjs
 site/payroll_title_mart.mjs
+site/pdc_calendar.mjs
 site/people_organizations.mjs
 site/people_organizations_read_model.mjs
 site/people_organizations_surface.mjs

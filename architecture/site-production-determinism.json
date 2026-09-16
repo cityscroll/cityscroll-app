@@ -280,6 +280,7 @@
     "site/geography_relations.mjs",
     "site/government_observation_refresh.mjs",
     "site/government_observe.mjs",
+    "site/government_observer_calendar_feed.mjs",
     "site/graph_edge_provenance.mjs",
     "site/guide_article_source.mjs",
     "site/guide_contextual_links.mjs",
