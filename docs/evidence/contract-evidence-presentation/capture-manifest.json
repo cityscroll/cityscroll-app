@@ -6,11 +6,11 @@
       "mode": "no-javascript",
       "passed": true,
       "positions": {
-        "events": 647,
+        "events": 692,
         "facts": 220,
-        "sources": 772
+        "sources": 817
       },
-      "render_sha256": "d039c5cc6ae95abe71d6081b701aaa8b8fefd3c4c7adc9aa189e21466292eed1",
+      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
@@ -29,11 +29,11 @@
       "mode": "failed-enhancement",
       "passed": true,
       "positions": {
-        "events": 647,
+        "events": 692,
         "facts": 220,
-        "sources": 772
+        "sources": 817
       },
-      "render_sha256": "d039c5cc6ae95abe71d6081b701aaa8b8fefd3c4c7adc9aa189e21466292eed1",
+      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
@@ -52,11 +52,11 @@
       "mode": "successful-enhancement",
       "passed": true,
       "positions": {
-        "events": 647,
+        "events": 692,
         "facts": 220,
-        "sources": 772
+        "sources": 817
       },
-      "render_sha256": "d039c5cc6ae95abe71d6081b701aaa8b8fefd3c4c7adc9aa189e21466292eed1",
+      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
@@ -75,11 +75,11 @@
       "mode": "no-javascript",
       "passed": true,
       "positions": {
-        "events": 647,
+        "events": 692,
         "facts": 220,
-        "sources": 772
+        "sources": 817
       },
-      "render_sha256": "d039c5cc6ae95abe71d6081b701aaa8b8fefd3c4c7adc9aa189e21466292eed1",
+      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
@@ -98,11 +98,11 @@
       "mode": "failed-enhancement",
       "passed": true,
       "positions": {
-        "events": 647,
+        "events": 692,
         "facts": 220,
-        "sources": 772
+        "sources": 817
       },
-      "render_sha256": "d039c5cc6ae95abe71d6081b701aaa8b8fefd3c4c7adc9aa189e21466292eed1",
+      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
@@ -121,11 +121,11 @@
       "mode": "successful-enhancement",
       "passed": true,
       "positions": {
-        "events": 647,
+        "events": 692,
         "facts": 220,
-        "sources": 772
+        "sources": 817
       },
-      "render_sha256": "d039c5cc6ae95abe71d6081b701aaa8b8fefd3c4c7adc9aa189e21466292eed1",
+      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
@@ -141,6 +141,6 @@
       }
     }
   ],
-  "revision": "35ccd7724883ea083a1dc4d084f8ed67238f4fb6",
+  "revision": "82fc50f2f916e6d50f5e009e761d831602075b2d",
   "schema": "cityscroll.capture_manifest.v1"
 }
