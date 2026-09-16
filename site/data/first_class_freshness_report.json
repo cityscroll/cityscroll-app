@@ -1,15 +1,15 @@
 {
   "schema": "cityscroll.first_class_freshness_report.v1",
-  "generated_at": "2026-09-16T01:21:45.167Z",
-  "deployment_identity": "local-build",
+  "generated_at": "2026-09-09T11:59:41.430Z",
+  "deployment_identity": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
   "registry": "site/data/source_contracts.json#first_class_artifacts",
-  "surface_count": 38,
-  "status": "blocked",
+  "surface_count": 33,
+  "status": "degraded",
   "counts": {
-    "fresh": 12,
+    "fresh": 8,
     "fresh_empty": 0,
-    "degraded": 19,
-    "stale": 7,
+    "degraded": 25,
+    "stale": 0,
     "unavailable": 0
   },
   "surfaces": [
@@ -22,7 +22,7 @@
       ],
       "source_contract_id": "nyc-agencies",
       "source_vintage": "2026-09-09T11:58:19.933Z",
-      "age_hours": 157.39,
+      "age_hours": 0.02,
       "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 86,
@@ -40,15 +40,15 @@
       ],
       "source_contract_id": "nyc-administrative-code",
       "source_vintage": "2026-08-07T00:00:00.000Z",
-      "age_hours": 961.36,
-      "freshness_state": "fresh",
+      "age_hours": 803.99,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 6683,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_agency_obligations.mjs",
       "production_evidence_field": "first_class.agency_obligations",
       "source_health_status": "Healthy",
-      "disclosure": null
+      "disclosure": "Retain the last verified obligations projection within its hard age and disclose degraded freshness."
     },
     {
       "id": "contracts-payments",
@@ -58,15 +58,15 @@
       ],
       "source_contract_id": "checkbook-spending",
       "source_vintage": "2026-08-26T00:00:00.000Z",
-      "age_hours": 505.36,
-      "freshness_state": "fresh",
+      "age_hours": 347.99,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 28490,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_analytical_payments.mjs",
       "production_evidence_field": "first_class.contracts_payments",
       "source_health_status": "Healthy",
-      "disclosure": null
+      "disclosure": "Retain the last reconciled payment population within its hard age and label the panel degraded."
     },
     {
       "id": "contracts-performance-evidence",
@@ -76,7 +76,7 @@
       ],
       "source_contract_id": "checkbook-contracts",
       "source_vintage": "2026-09-09T00:00:00.000Z",
-      "age_hours": 169.36,
+      "age_hours": 11.99,
       "freshness_state": "fresh",
       "population_state": "populated",
       "population_count": 26846,
@@ -94,7 +94,7 @@
       ],
       "source_contract_id": "checkbook-contracts",
       "source_vintage": "2026-09-09T00:00:00.000Z",
-      "age_hours": 169.36,
+      "age_hours": 11.99,
       "freshness_state": "fresh",
       "population_state": "populated",
       "population_count": 26846,
@@ -105,25 +105,6 @@
       "disclosure": null
     },
     {
-      "id": "bsa-calendar",
-      "public_artifact_path": "site/data/bsa_calendar.json",
-      "primary_routes": [
-        "/browse/meetings/",
-        "/now/"
-      ],
-      "source_contract_id": "city-record",
-      "source_vintage": "2026-09-09T00:00:00.000Z",
-      "age_hours": 169.36,
-      "freshness_state": "stale",
-      "population_state": "populated",
-      "population_count": 2,
-      "complete_for_empty_claim": false,
-      "owning_builder": "tools/build_bsa_calendar.mjs",
-      "production_evidence_field": "first_class.bsa_calendar",
-      "source_health_status": "Delayed",
-      "disclosure": "Do not describe BSA sessions as current after the hard maximum age."
-    },
-    {
       "id": "committee-graph",
       "public_artifact_path": "site/data/committee_graph_lookup.json",
       "primary_routes": [
@@ -132,14 +113,14 @@
       ],
       "source_contract_id": "nyc-council-legistar",
       "source_vintage": "2026-09-09T06:30:42.000Z",
-      "age_hours": 162.85,
+      "age_hours": 5.48,
       "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 1143,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_committee_graph.mjs",
       "production_evidence_field": "first_class.committee_graph",
-      "source_health_status": "Healthy",
+      "source_health_status": "Source-unavailable",
       "disclosure": "Retain the last reviewed committee graph within its hard age and disclose the held or degraded join state."
     },
     {
@@ -150,7 +131,7 @@
       ],
       "source_contract_id": "omb-community-board-budget-requests",
       "source_vintage": "2026-09-07T11:54:00.629Z",
-      "age_hours": 205.46,
+      "age_hours": 48.09,
       "freshness_state": "fresh",
       "population_state": "populated",
       "population_count": 3809,
@@ -168,7 +149,7 @@
       ],
       "source_contract_id": "community-district-boundaries",
       "source_vintage": "2026-05-26T00:00:00.000Z",
-      "age_hours": 2713.36,
+      "age_hours": 2555.99,
       "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 59,
@@ -187,16 +168,16 @@
         "/now/"
       ],
       "source_contract_id": "non-council-board-minutes",
-      "source_vintage": "2026-09-13T21:44:56.142Z",
-      "age_hours": 51.61,
-      "freshness_state": "degraded",
+      "source_vintage": "2026-09-07T13:14:16.382Z",
+      "age_hours": 46.76,
+      "freshness_state": "fresh",
       "population_state": "populated",
-      "population_count": 450,
+      "population_count": 411,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_community_board_meeting_index.mjs",
       "production_evidence_field": "first_class.community_board_meetings",
       "source_health_status": "Healthy",
-      "disclosure": "Retain the last verified board meeting index within its hard age and disclose source-level degradation."
+      "disclosure": null
     },
     {
       "id": "community-board-people",
@@ -207,7 +188,7 @@
       ],
       "source_contract_id": "non-council-board-minutes",
       "source_vintage": "2026-08-25T00:00:00.000Z",
-      "age_hours": 529.36,
+      "age_hours": 371.99,
       "freshness_state": "fresh",
       "population_state": "populated",
       "population_count": 1,
@@ -218,25 +199,6 @@
       "disclosure": null
     },
     {
-      "id": "public-consultations",
-      "public_artifact_path": "site/data/consultations.json",
-      "primary_routes": [
-        "/consultations/",
-        "/now/"
-      ],
-      "source_contract_id": "public-consultations",
-      "source_vintage": "2026-09-14T00:00:00.000Z",
-      "age_hours": 49.36,
-      "freshness_state": "degraded",
-      "population_state": "populated",
-      "population_count": 4,
-      "complete_for_empty_claim": false,
-      "owning_builder": "site/consultation_acquisition.mjs",
-      "production_evidence_field": "first_class.public_consultations",
-      "source_health_status": "Source-unavailable",
-      "disclosure": "Retain the last verified consultation materialization and its source links when a refresh fails."
-    },
-    {
       "id": "land-default",
       "public_artifact_path": "site/data/land_default_ulurp.json",
       "primary_routes": [
@@ -245,15 +207,15 @@
       ],
       "source_contract_id": "zap-projects",
       "source_vintage": "2026-09-09T06:46:42.537Z",
-      "age_hours": 162.58,
-      "freshness_state": "degraded",
+      "age_hours": 5.22,
+      "freshness_state": "fresh",
       "population_state": "populated",
       "population_count": 40,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_batch_precompute_snapshots.mjs",
       "production_evidence_field": "first_class.land_default",
       "source_health_status": "Healthy",
-      "disclosure": "Retain the last verified project snapshot within its hard age and disclose degraded freshness."
+      "disclosure": null
     },
     {
       "id": "land-upcoming-hearings",
@@ -264,7 +226,7 @@
       ],
       "source_contract_id": "zap-api-outcomes",
       "source_vintage": "2026-09-09T06:52:06.323Z",
-      "age_hours": 162.49,
+      "age_hours": 5.13,
       "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 164,
@@ -283,15 +245,15 @@
       ],
       "source_contract_id": "city-record",
       "source_vintage": "2026-09-09T00:00:00.000Z",
-      "age_hours": 169.36,
-      "freshness_state": "stale",
+      "age_hours": 11.99,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 38,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_meeting_notice_materialization.mjs",
       "production_evidence_field": "first_class.meeting_notices",
       "source_health_status": "Delayed",
-      "disclosure": "Do not describe meeting notices as current after the hard maximum age."
+      "disclosure": "Retain the last verified meeting notices within the short fallback window and disclose degradation."
     },
     {
       "id": "meeting-outcomes",
@@ -302,15 +264,15 @@
       ],
       "source_contract_id": "nyc-council-legistar",
       "source_vintage": "2026-09-04T13:09:00.447Z",
-      "age_hours": 276.21,
-      "freshness_state": "stale",
+      "age_hours": 118.84,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 325,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_meeting_outcomes_snapshot.mjs",
       "production_evidence_field": "first_class.meeting_outcomes",
-      "source_health_status": "Healthy",
-      "disclosure": "Do not describe decisions or outcomes as current after the hard maximum age."
+      "source_health_status": "Source-unavailable",
+      "disclosure": "Retain the last verified outcome snapshot within its hard age and disclose degraded freshness."
     },
     {
       "id": "meetings-domain",
@@ -321,7 +283,7 @@
       ],
       "source_contract_id": "city-record",
       "source_vintage": "2026-09-09T11:58:02.083Z",
-      "age_hours": 157.4,
+      "age_hours": 0.03,
       "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 119,
@@ -341,15 +303,15 @@
       ],
       "source_contract_id": "city-record",
       "source_vintage": "2026-09-09T00:00:00.000Z",
-      "age_hours": 169.36,
-      "freshness_state": "stale",
+      "age_hours": 11.99,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 40,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_batch_precompute_snapshots.mjs",
       "production_evidence_field": "first_class.contracts_open",
       "source_health_status": "Delayed",
-      "disclosure": "Do not describe the snapshot as the current open-contract population after the hard maximum age."
+      "disclosure": "Retain future-dated rows only within the hard age and disclose that the complete open population is degraded."
     },
     {
       "id": "contracts-agency-filter",
@@ -359,15 +321,15 @@
       ],
       "source_contract_id": "city-record",
       "source_vintage": "2026-09-09T06:52:16.670Z",
-      "age_hours": 162.49,
-      "freshness_state": "stale",
+      "age_hours": 5.12,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 105,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_batch_precompute_snapshots.mjs",
       "production_evidence_field": "first_class.contracts_agency_filter",
       "source_health_status": "Delayed",
-      "disclosure": "Do not describe the agency filter as current after the hard maximum age."
+      "disclosure": "Retain the last verified procurement-agency filter within its hard age and disclose degraded freshness."
     },
     {
       "id": "contracts-resident-snapshot",
@@ -377,15 +339,15 @@
       ],
       "source_contract_id": "ocp-recent-contract-awards",
       "source_vintage": "2026-09-05T13:44:00.909Z",
-      "age_hours": 251.63,
-      "freshness_state": "fresh",
+      "age_hours": 94.26,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 378,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_money_resident_snapshot.mjs",
       "production_evidence_field": "first_class.contracts_resident_snapshot",
       "source_health_status": "Healthy",
-      "disclosure": null
+      "disclosure": "Retain the last verified resident contract snapshot within its hard age and disclose degraded freshness."
     },
     {
       "id": "community-board-committees",
@@ -396,7 +358,7 @@
       ],
       "source_contract_id": "non-council-board-minutes",
       "source_vintage": "2026-08-25T00:00:00.000Z",
-      "age_hours": 529.36,
+      "age_hours": 371.99,
       "freshness_state": "fresh",
       "population_state": "populated",
       "population_count": 2,
@@ -407,26 +369,6 @@
       "disclosure": null
     },
     {
-      "id": "oath-trial-calendar",
-      "public_artifact_path": "site/data/oath_trial_calendar.json",
-      "primary_routes": [
-        "/browse/meetings/",
-        "/now/",
-        "/meetings/"
-      ],
-      "source_contract_id": "oath-trial-calendar",
-      "source_vintage": "2026-09-15T12:00:00.000Z",
-      "age_hours": 13.36,
-      "freshness_state": "degraded",
-      "population_state": "populated",
-      "population_count": 145,
-      "complete_for_empty_claim": false,
-      "owning_builder": "tools/build_oath_trial_calendar.mjs",
-      "production_evidence_field": "first_class.oath_trial_calendar",
-      "source_health_status": "Source-unavailable",
-      "disclosure": "Retain the last verified OATH trial rows and their source revision."
-    },
-    {
       "id": "ocp-awards",
       "public_artifact_path": "site/data/ocp_awards_warehouse_lookup.json",
       "primary_routes": [
@@ -435,15 +377,15 @@
       ],
       "source_contract_id": "ocp-recent-contract-awards",
       "source_vintage": "2026-09-05T00:00:00.000Z",
-      "age_hours": 265.36,
-      "freshness_state": "fresh",
+      "age_hours": 107.99,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 53600,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_ocp_warehouse_lookup.mjs",
       "production_evidence_field": "first_class.ocp_awards",
       "source_health_status": "Healthy",
-      "disclosure": null
+      "disclosure": "Retain the last verified awards population within its source contract age and disclose degraded freshness."
     },
     {
       "id": "official-cfb-influence",
@@ -454,34 +396,15 @@
       ],
       "source_contract_id": "cfb-campaign-contributions",
       "source_vintage": "2026-09-07T21:21:17.547Z",
-      "age_hours": 196.01,
-      "freshness_state": "fresh",
+      "age_hours": 38.64,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 1398,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/acquire_official_cfb_influence.mjs",
       "production_evidence_field": "first_class.official_cfb_influence",
-      "source_health_status": "Healthy",
-      "disclosure": null
-    },
-    {
-      "id": "pdc-calendar",
-      "public_artifact_path": "site/data/pdc_calendar.json",
-      "primary_routes": [
-        "/browse/meetings/",
-        "/now/"
-      ],
-      "source_contract_id": "pdc-calendar",
-      "source_vintage": "2026-09-15T00:00:00.000Z",
-      "age_hours": 25.36,
-      "freshness_state": "degraded",
-      "population_state": "populated",
-      "population_count": 4,
-      "complete_for_empty_claim": false,
-      "owning_builder": "tools/build_pdc_calendar.mjs",
-      "production_evidence_field": "first_class.pdc_calendar",
-      "source_health_status": "Source-unavailable",
-      "disclosure": "Retain the last valid PDC schedule and disclose unavailable agenda acquisition."
+      "source_health_status": "Delayed",
+      "disclosure": "Keep serving the retained contribution edges and disclose that the publisher has not been reconfirmed recently."
     },
     {
       "id": "people-organizations",
@@ -492,7 +415,7 @@
       ],
       "source_contract_id": "nyc-council-members",
       "source_vintage": "2026-09-09T06:52:23.394Z",
-      "age_hours": 162.49,
+      "age_hours": 5.12,
       "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 1369,
@@ -511,7 +434,7 @@
       ],
       "source_contract_id": "nyc-council-members",
       "source_vintage": "2026-09-09T06:52:23.394Z",
-      "age_hours": 162.49,
+      "age_hours": 5.12,
       "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 215,
@@ -529,15 +452,15 @@
       ],
       "source_contract_id": "ocp-recent-contract-awards",
       "source_vintage": "2026-09-09T06:33:01.880Z",
-      "age_hours": 162.81,
-      "freshness_state": "fresh",
+      "age_hours": 5.44,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 19872,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_shared_procurement_read_model.mjs",
       "production_evidence_field": "first_class.contracts_procurement_query",
       "source_health_status": "Healthy",
-      "disclosure": null
+      "disclosure": "Retain the last verified procurement query manifest within its hard age and disclose degraded freshness."
     },
     {
       "id": "contracts-procurement-rows",
@@ -547,15 +470,15 @@
       ],
       "source_contract_id": "ocp-recent-contract-awards",
       "source_vintage": "2026-09-09T06:33:01.880Z",
-      "age_hours": 162.81,
-      "freshness_state": "fresh",
+      "age_hours": 5.44,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 19872,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_shared_procurement_read_model.mjs",
       "production_evidence_field": "first_class.contracts_procurement_rows",
       "source_health_status": "Healthy",
-      "disclosure": null
+      "disclosure": "Retain the last verified procurement rows within their hard age and disclose degraded freshness."
     },
     {
       "id": "property-domain",
@@ -567,15 +490,15 @@
       ],
       "source_contract_id": "city-record",
       "source_vintage": "2026-09-07T13:15:12.622Z",
-      "age_hours": 204.11,
-      "freshness_state": "stale",
+      "age_hours": 46.74,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 133,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_property_cross_domain.mjs",
       "production_evidence_field": "first_class.property_domain",
       "source_health_status": "Delayed",
-      "disclosure": "Do not characterize property observations as current after the hard maximum age."
+      "disclosure": "Retain the last verified property observations within their hard age and disclose degraded freshness."
     },
     {
       "id": "property-resident",
@@ -586,7 +509,7 @@
       ],
       "source_contract_id": "city-record",
       "source_vintage": "2026-09-09T11:57:52.095Z",
-      "age_hours": 157.4,
+      "age_hours": 0.03,
       "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 133,
@@ -606,7 +529,7 @@
       ],
       "source_contract_id": "city-record",
       "source_vintage": "2026-09-09T11:58:02.083Z",
-      "age_hours": 157.4,
+      "age_hours": 0.03,
       "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 100,
@@ -624,7 +547,7 @@
       ],
       "source_contract_id": "city-record",
       "source_vintage": "2026-09-09T11:58:02.083Z",
-      "age_hours": 157.4,
+      "age_hours": 0.03,
       "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 2,
@@ -643,10 +566,10 @@
       ],
       "source_contract_id": "city-record",
       "source_vintage": "2026-09-09T06:52:08.255Z",
-      "age_hours": 162.49,
+      "age_hours": 5.13,
       "freshness_state": "degraded",
       "population_state": "populated",
-      "population_count": 719,
+      "population_count": 530,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_primary_documents.mjs",
       "production_evidence_field": "first_class.shared_meetings",
@@ -662,7 +585,7 @@
       ],
       "source_contract_id": "city-record",
       "source_vintage": "2026-09-09T06:52:26.634Z",
-      "age_hours": 162.49,
+      "age_hours": 5.12,
       "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 80,
@@ -682,35 +605,15 @@
       ],
       "source_contract_id": "annual-examination-schedule",
       "source_vintage": "2026-09-09T00:00:00.000Z",
-      "age_hours": 169.36,
-      "freshness_state": "stale",
+      "age_hours": 11.99,
+      "freshness_state": "degraded",
       "population_state": "populated",
       "population_count": 226,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_staffing_exams.mjs",
       "production_evidence_field": "first_class.staffing_exams",
       "source_health_status": "Source-unavailable",
-      "disclosure": "Do not describe application windows or eligible lists as current after the hard maximum age."
-    },
-    {
-      "id": "upcoming-council-meetings",
-      "public_artifact_path": "site/data/upcoming_council_meetings.json",
-      "primary_routes": [
-        "/browse/meetings/",
-        "/now/",
-        "/search/"
-      ],
-      "source_contract_id": "nyc-council-legistar",
-      "source_vintage": "2026-09-09T12:00:00.000Z",
-      "age_hours": 157.36,
-      "freshness_state": "degraded",
-      "population_state": "populated",
-      "population_count": 1,
-      "complete_for_empty_claim": false,
-      "owning_builder": "tools/build_upcoming_council_meetings_snapshot.mjs",
-      "production_evidence_field": "first_class.upcoming_council_meetings",
-      "source_health_status": "Healthy",
-      "disclosure": "Retain the last verified upcoming Council calendar snapshot within its hard age and disclose degraded freshness."
+      "disclosure": "Retain the last verified exam schedule within its hard age and disclose degraded freshness."
     },
     {
       "id": "zap-projects",
@@ -721,15 +624,15 @@
       ],
       "source_contract_id": "zap-projects",
       "source_vintage": "2026-09-09T06:54:36.054Z",
-      "age_hours": 162.45,
-      "freshness_state": "degraded",
+      "age_hours": 5.08,
+      "freshness_state": "fresh",
       "population_state": "populated",
       "population_count": 238,
       "complete_for_empty_claim": false,
       "owning_builder": "tools/build_zap_warehouse_lookup.mjs",
       "production_evidence_field": "first_class.zap_projects",
       "source_health_status": "Healthy",
-      "disclosure": "Retain the last verified ZAP project lookup within its hard age and disclose degraded freshness."
+      "disclosure": null
     }
   ]
 }
