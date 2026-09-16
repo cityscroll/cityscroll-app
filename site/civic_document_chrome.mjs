@@ -30,6 +30,7 @@ function classNames(...parts) {
 }
 
 import { officialSourceLink } from "./affordance_grammar.mjs";
+import { renderAskWithAiLink } from "./ai_discovery.mjs";
 import { appendPlaceContextToHref, placeContextFromScope } from "./place_context.mjs";
 import { resolveTraversalBackHref, traversalFromHref } from "./traversal_path.mjs";
 
@@ -75,7 +76,7 @@ export function renderCivicDocumentMast({ current, siteBase = "", surfaceClass =
     // look like a filter it does not apply.
     const href = route === "guide" ? raw : appendPlaceContextToHref(raw, context);
     return `<a${current === route ? ' aria-current="page"' : ""} href="${esc(href)}">${esc(translate(label))}</a>`;
-  }).join("");
+  }).join("") + renderAskWithAiLink({ translate });
   const classes = classNames("document-mast", surfaceClass);
   return `<header class="${esc(classes)}"><div class="document-mast-inner">
     <a class="document-brand brand-lockup home" href="${esc(home)}" aria-label="${esc(translate("CityScroll home"))}">${brandMark()}<span>CityScroll</span></a>

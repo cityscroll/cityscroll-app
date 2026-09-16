@@ -50,7 +50,7 @@ const ROW = {
 test("initialize + tools/list expose retrieval and action tools", async () => {
   const env = { SUBS: new MockKV(), NL_METER: new MockKV() };
   const init = await (await handleMcp(post({ jsonrpc: "2.0", id: 1, method: "initialize" }), env)).json();
-  assert.equal(init.result.serverInfo.name, "crol-list");
+  assert.equal(init.result.serverInfo.name, "CityScroll");
   const list = await (await handleMcp(post({ jsonrpc: "2.0", id: 2, method: "tools/list" }), env)).json();
   assert.deepEqual(list.result.tools.map((t) => t.name), [
     "search_federated",

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Use CityScroll with an assistant · CityScroll</title>
+<meta name="description" content="Connect an MCP-compatible assistant to CityScroll's public New York City records.">
+<link rel="canonical" href="https://cityscroll.org/use-with-ai/">
+<link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/civic-documents.css">
+<style>
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body)}
+.wrap{max-width:760px;margin:auto;padding:0 22px 72px}.document-mast{margin-bottom:28px}
+h1,h2{font-family:var(--font-nameplate)}h1{font-size:clamp(2rem,7vw,3.3rem);line-height:1;margin:.4em 0}.lede{max-width:62ch;color:var(--ink-soft)}
+.card{border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:18px 20px;margin:20px 0;box-shadow:var(--shadow)}
+.endpoint{width:100%;box-sizing:border-box;font:14px ui-monospace,Menlo,monospace;padding:11px;border:1px solid var(--rule-strong);border-radius:8px;background:#fff;color:var(--ink)}
+button{font:700 14px var(--ui);padding:10px 14px;border:1px solid var(--ink);border-radius:8px;background:var(--ink);color:#fff;margin-top:9px;cursor:pointer}.note{font:13px/1.5 var(--ui);color:var(--muted)}
+pre{overflow:auto;background:#12181f;color:#f6f7f9;padding:14px;border-radius:8px;font:13px/1.55 ui-monospace,Menlo,monospace}.foot{border-top:1px solid var(--rule);padding-top:16px;font:13px var(--ui);color:var(--muted)}
+a{color:var(--oxblood)}li{margin:.45em 0}
+</style>
+</head>
+<body><div class="wrap">
+<header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/" aria-label="CityScroll home"><span>CityScroll</span></a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a><a href="/guide/">Guide</a><a aria-current="page" href="/use-with-ai/">Ask with AI</a></nav></div></header>
+<main id="main" tabindex="-1"><p class="node-kicker">A public connection</p><h1>Ask an assistant about CityScroll</h1>
+<p class="lede">CityScroll publishes linked New York City records. An MCP-compatible assistant can search those records, open exact public records, inspect cited passages, and compare supported contract measures. It does not create watches, send email, or access a private account.</p>
+<section class="card" aria-labelledby="connect"><h2 id="connect">Connect</h2><p>Give your MCP client this address. It is a public, tools-only server; no key is required and no account is needed.</p>
+<label for="mcp-endpoint">MCP server address</label><input id="mcp-endpoint" class="endpoint" type="text" value="https://api.cityscroll.org/mcp" readonly aria-describedby="mcp-endpoint-help"><button type="button" data-copy-endpoint>Copy address</button><p id="mcp-endpoint-help" class="note">The endpoint accepts MCP requests with POST. Opening it in a browser cannot run tools and returns recovery guidance.</p></section>
+<section class="card" aria-labelledby="claude"><h2 id="claude">Claude Code</h2><p>In Claude Code, add the remote HTTP server from a terminal:</p><pre><code>claude mcp add --transport http cityscroll https://api.cityscroll.org/mcp</code></pre><p>Then start a new conversation and ask what CityScroll tools are available. See <a href="https://docs.anthropic.com/en/docs/claude-code/mcp" target="_blank" rel="noopener noreferrer">Anthropic's Claude Code MCP guide</a> for current client options.</p></section>
+<section class="card" aria-labelledby="other"><h2 id="other">Other compatible clients</h2><p>Choose “Add remote MCP server” (or the equivalent HTTP connector), use the address above, and leave authentication blank. If the client asks for a transport, choose Streamable HTTP. A client that supports only local stdio or SSE cannot connect to this endpoint.</p><p>Protocol background: <a href="https://docs.anthropic.com/en/docs/mcp" target="_blank" rel="noopener noreferrer">Anthropic's MCP documentation</a>.</p></section>
+<section aria-labelledby="try"><h2 id="try">Try a question</h2><ol><li>“Search CityScroll for notices about heat pumps, then show the source and date for each result.”</li><li>“Open contract CT107120258801626 and summarize the public record with its source.”</li><li>“Look up land-use project 2024Q0356 and explain its next recorded decision step.”</li></ol><p class="note">These examples use CityScroll’s public search, contract lookup, land-use project lookup, and decision-path tools. See the <a href="/api.html#mcp">MCP tool reference</a> for the available public capabilities. Results remain bounded by the records CityScroll has published.</p></section>
+<section aria-labelledby="next"><h2 id="next">If the connection fails</h2><p>Return to <a href="/">CityScroll home</a> to continue reading without an assistant, or review the <a href="/api.html#mcp">machine interface details</a>. A browser response from the endpoint is not a sign-in page and does not change your account or subscriptions.</p></section>
+</main><footer class="foot">CityScroll is an unofficial reading aid. <a href="/guide/">Guide</a> · <a href="/about.html">About the data</a> · <a href="/api.html">API and feeds</a></footer>
+</div><script>document.querySelector('[data-copy-endpoint]').addEventListener('click',async()=>{const input=document.querySelector('#mcp-endpoint');try{await navigator.clipboard.writeText(input.value)}catch{input.focus();input.select()}});</script></body></html>
