@@ -248,7 +248,7 @@ test('home Guide links carry the selected language through the existing runtime 
       }));
     },
     getElementById() { return null; },
-    documentElement: { dataset: {}, style: { setProperty() {} } },
+    documentElement: { dataset: {}, style: { setProperty() {}, removeProperty() {} } },
   };
   const context = { window: {}, document, URL, location: { href: 'https://cityscroll.org/?lang=es&token=example' } };
   runInNewContext(i18n, context);
@@ -275,7 +275,7 @@ test('investigation links retain language despite the document root base URL', (
     baseURI: 'https://cityscroll.org/',
     querySelectorAll(selector) { return selector === 'a[href*="#investigation"]' ? links : []; },
     getElementById() { return null; },
-    documentElement: { dataset: {}, style: { setProperty() {} } },
+    documentElement: { dataset: {}, style: { setProperty() {}, removeProperty() {} } },
   };
   const context = { window: {}, document, URL, location: { href: 'https://cityscroll.org/vendors/example/?lang=es&token=example' } };
   runInNewContext(i18n, context);

@@ -4684,7 +4684,7 @@ function applyStrings() {
   // Never write the CSS-wide `inherit` keyword into the stack list — that computed to Times.
   if (meta && meta.fontStack) {
     document.documentElement.style.setProperty("--lang-font-stack", meta.fontStack);
-  } else {
+  } else if (typeof document.documentElement.style.removeProperty === "function") {
     document.documentElement.style.removeProperty("--lang-font-stack");
   }
   document.documentElement.style.setProperty("--lang-line-height-scale", (meta && meta.lineHeightScale) || 1);
