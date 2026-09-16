@@ -77,6 +77,9 @@ export function parsePdcAgendaText(text, { meetingDate = null, documentUrl = nul
     if (current && current.items.length < 100 && !/^page \d+$/i.test(line)) current.items.push(line);
   }
   const arrival = lines.find((line) => /arriv|45 minutes|estimated time/i.test(line)) || null;
+  const quorumNotice = lines.find((line) => /no quorum|without quorum|lack of quorum/i.test(line))
+    ? { status: "no_quorum", votes: [] }
+    : null;
   const clock = lines.join(" ").match(/\b(\d{1,2}):(\d{2})\s*(AM|PM)\b/i);
   let startTime = null;
   if (clock) {
@@ -85,13 +88,13 @@ export function parsePdcAgendaText(text, { meetingDate = null, documentUrl = nul
     if (suffix === "PM" && hour < 12) hour += 12;
     if (hour < 24) startTime = `${String(hour).padStart(2, "0")}:${clock[2]}:00`;
   }
-  return { meeting_date: meetingDate, start_time: startTime, sections, arrival_advice: arrival, document_url: documentUrl, source_receipt: receipt || (observedAt ? { schema: "cityscroll.meeting_source_receipt.v1", observed_at: observedAt, status: "ok", fetch_status: "snapshot", parser: PDC_CALENDAR_PARSER } : null) };
+  return { meeting_date: meetingDate, start_time: startTime, sections, arrival_advice: arrival, quorum_notice: quorumNotice, document_url: documentUrl, source_receipt: receipt || (observedAt ? { schema: "cityscroll.meeting_source_receipt.v1", observed_at: observedAt, status: "ok", fetch_status: "snapshot", parser: PDC_CALENDAR_PARSER } : null) };
 }
 
 export function enrichPdcMeetingWithAgenda(record, agenda) {
   if (!record?.meeting_id || !agenda) return record;
   const sections = Array.isArray(agenda.sections) ? agenda.sections : [];
-  return { ...record, event_date: record.event_date?.slice(0, 10) === agenda.meeting_date ? (agenda.start_time ? `${agenda.meeting_date}T${agenda.start_time}` : record.event_date) : record.event_date, agenda_sections: sections, arrival_advice: agenda.arrival_advice || null, meeting_documents: [...(record.meeting_documents || []), ...(agenda.document_url ? [{ role: "agenda", document_id: agenda.document_url, document_url: agenda.document_url, meeting_id: record.meeting_id, attachment_status: "attached", adapter: PDC_CALENDAR_PARSER, source_receipt: agenda.source_receipt }] : [])] };
+  return { ...record, event_date: record.event_date?.slice(0, 10) === agenda.meeting_date ? (agenda.start_time ? `${agenda.meeting_date}T${agenda.start_time}` : record.event_date) : record.event_date, agenda_sections: sections, arrival_advice: agenda.arrival_advice || null, ...(agenda.quorum_notice ? { quorum_notice: agenda.quorum_notice } : {}), meeting_documents: [...(record.meeting_documents || []), ...(agenda.document_url ? [{ role: "agenda", document_id: agenda.document_url, document_url: agenda.document_url, meeting_id: record.meeting_id, attachment_status: "attached", adapter: PDC_CALENDAR_PARSER, source_receipt: agenda.source_receipt }] : [])] };
 }
 
 export { extractPdfCalendarText };
