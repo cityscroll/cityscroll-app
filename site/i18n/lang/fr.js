@@ -2133,6 +2133,10 @@
     export_xlsx:      "Exporter vers Excel (.xlsx)",
     print_save_pdf:   "Imprimer / Enregistrer en PDF",
     share_export_btn: "Partager / exporter",
+    more_tools_label: "Plus d’outils",
+    research_tool_evidence: "Vérifier les preuves du lien",
+    research_tool_asOf: "Voir les dossiers à une date",
+    research_tool_comparative: "Comparer les contrats liés",
 
     print_header:     "CityScroll · {link} · Au {date}",
     csv_address: "Adresse",

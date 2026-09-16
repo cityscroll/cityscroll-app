@@ -2126,6 +2126,10 @@
     export_xlsx: "Excel (.xlsx) রপ্তানি করুন",
     print_save_pdf: "প্রিন্ট / PDF হিসেবে সংরক্ষণ করুন",
     share_export_btn: "শেয়ার / রপ্তানি",
+    more_tools_label: "আরও সরঞ্জাম",
+    research_tool_evidence: "সংযোগের প্রমাণ যাচাই করুন",
+    research_tool_asOf: "একটি দিন অনুযায়ী রেকর্ড দেখুন",
+    research_tool_comparative: "সম্পর্কিত চুক্তি তুলনা করুন",
 
     print_header: "CityScroll · {link} · {date} তারিখ অনুযায়ী",
     csv_address: "ঠিকানা",

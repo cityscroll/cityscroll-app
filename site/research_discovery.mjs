@@ -353,6 +353,101 @@ export function renderRecordActionRegions({
     `</div>`;
 }
 
+/**
+ * Compact notice/matter/entity mount helper. Callers keep control HTML and IDs;
+ * this only projects eligible research links and composes the More tools region.
+ */
+export function renderEligibleRecordTools({
+  surface = "record",
+  primaryHtml = "",
+  moreToolsHtml = "",
+  moreToolsId = null,
+  evidencePath = null,
+  comparativeAgency = null,
+  comparativeVendor = null,
+  asOfSupported = null,
+  handlers = {},
+  translate: translateFn = globalThis.window?.t,
+} = {}) {
+  const path = clean(evidencePath);
+  const research = projectResearchTools({
+    surface,
+    hasShareHandler: handlers.share === true,
+    hasSaveSearchHandler: handlers.saveSearch === true,
+    hasCollectionHandler: handlers.collection === true,
+    hasExportHandler: handlers.export === true,
+    hasPrintHandler: handlers.print === true,
+    evidencePath: path,
+    asOfSupported: asOfSupported == null ? Boolean(path) : asOfSupported === true,
+    asOfPath: path,
+    comparativeAgency,
+    comparativeVendor,
+  });
+  return renderRecordActionRegions({
+    primaryHtml,
+    moreToolsHtml,
+    researchHtml: renderResearchNavigation(research, { translate: translateFn }),
+    moreToolsId,
+    translate: translateFn,
+  });
+}
+
+/** Agency constellation path when identity is already resolved as matched. */
+export function agencyEvidencePath(identity) {
+  return identity?.matched && identity.canonical_id
+    ? `/agencies/${encodeURIComponent(identity.canonical_id)}/`
+    : null;
+}
+
+/**
+ * Client notice action region. Uses the live page helpers already published on
+ * globalThis so routing.mjs can stay under the short-context working bar.
+ */
+export function renderNoticeClientActionRegions(notice, link, {
+  resolveAgencyIdentity,
+  officialSourceLink,
+  qrButtonHTML,
+  pinBtn,
+  REQ_URL,
+  cleanText,
+  fdate,
+  escape,
+  translate = globalThis.window?.t,
+} = {}) {
+  const t = typeof translate === "function" ? translate : ((key) => key);
+  const title = cleanText?.(notice?.short_title) || notice?.request_id;
+  const identity = notice?.agency_name && resolveAgencyIdentity
+    ? resolveAgencyIdentity(notice.agency_name)
+    : null;
+  const source = officialSourceLink
+    ? officialSourceLink({
+      href: REQ_URL(notice.request_id),
+      label: t("view_in_city_record"),
+      className: "notice-source-link",
+      escape,
+    })
+    : "";
+  const pin = pinBtn
+    ? pinBtn(
+      "notice",
+      notice.request_id,
+      title,
+      [notice.type_of_notice_description, notice.agency_name, fdate?.(notice.start_date)].filter(Boolean).join(" · "),
+    )
+    : "";
+  const emailHref = `mailto:?subject=${encodeURIComponent(`City Record notice: ${title}`)}&body=${encodeURIComponent(`${link}\n\nVia CityScroll — NYC’s public record, linked.`)}`;
+  return renderEligibleRecordTools({
+    surface: "notice",
+    evidencePath: agencyEvidencePath(identity),
+    comparativeAgency: notice?.agency_name || null,
+    handlers: { share: true, collection: true, export: true, print: true },
+    primaryHtml: `<button class="act primary" type="button" id="ncopy">${esc(t("copy_link"))}</button>${source}`,
+    moreToolsHtml: `${qrButtonHTML?.("nqr", "act") || ""}<a class="act" href="${esc(emailHref)}">${esc(t("notice_email_btn"))}</a><button class="act export-control" type="button" id="nxlsx">${esc(t("export_xlsx"))}</button><button class="act export-control" type="button" id="nprint">${esc(t("print_save_pdf"))}</button>${pin}`,
+    moreToolsId: "notice-more-tools",
+    translate: t,
+  });
+}
+
 export function researchFamilyIds() {
   return FAMILY_ORDER.slice();
 }

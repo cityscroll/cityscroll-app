@@ -2140,6 +2140,10 @@
     export_xlsx: "Eksportuj do Excela (.xlsx)",
     print_save_pdf: "Drukuj / Zapisz jako PDF",
     share_export_btn: "Udostępnij / eksportuj",
+    more_tools_label: "Więcej narzędzi",
+    research_tool_evidence: "Sprawdź dowody powiązania",
+    research_tool_asOf: "Zobacz rekordy na dzień",
+    research_tool_comparative: "Porównaj powiązane umowy",
 
     print_header: "CityScroll · {link} · Stan na {date}",
     csv_address: "Adres",
