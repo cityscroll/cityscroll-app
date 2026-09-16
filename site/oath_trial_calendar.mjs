@@ -150,4 +150,6 @@ export function parseOathTrialCsv(csv, { sourceUrl = OATH_TRIAL_CALENDAR_SOURCE_
   };
 }
 
+export { oathTrialCalendarOccurrences } from "./observer_calendar_occurrences.mjs";
+
 export { localDateTime };

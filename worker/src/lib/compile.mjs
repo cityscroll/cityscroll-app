@@ -110,8 +110,22 @@ function meetingRowInWindow(row, todayISO, end) {
   return true;
 }
 
+function observerAccessMethod(row) {
+  if (row?.observer_access?.watch_url || row?.observer_access?.remote_join_url || row?.remote_join_url) {
+    return "remote";
+  }
+  if (row?.venue?.name || row?.venue?.address) return "in_person";
+  return "unknown";
+}
+
 function meetingRowMatchesWatch(row, filter, keywords) {
   if (filter?.agency && String(row.agency || row.agency_name || "") !== String(filter.agency)) return false;
+  if (filter?.activity === "observe") {
+    const observerSystems = new Set(["pdc_calendar", "bsa_calendar", "oath_trial_calendar"]);
+    if (row?.activity !== "observe" && !observerSystems.has(row?.source_system)) return false;
+  }
+  if (filter?.body && String(row?.source_system || "") !== String(filter.body)) return false;
+  if (filter?.access && observerAccessMethod(row) !== filter.access) return false;
   if (keywords.length && !keywords.every((keyword) => String(row.search_text || "").toLowerCase().includes(keyword))) {
     return false;
   }

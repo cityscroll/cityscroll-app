@@ -45,6 +45,7 @@ export const SHARED_SOURCE_MODULES = [
   "procurement_pin.mjs",
   "land_phase_label.mjs",
   "meeting_outcome_read.mjs",
+  "deeplink_filter.mjs",
 ];
 
 export function readSiteSource() {

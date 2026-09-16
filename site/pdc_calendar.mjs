@@ -1,5 +1,4 @@
 import { normalizePdcCalendarMeeting } from "./meeting_object_contract.mjs";
-import { extractPdfCalendarText } from "../tools/lib/pdf_calendar_text.mjs";
 
 export const PDC_CALENDAR_SCHEMA = "cityscroll.pdc_calendar.v1";
 export const PDC_CALENDAR_SOURCE_URL = "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page";
@@ -97,4 +96,4 @@ export function enrichPdcMeetingWithAgenda(record, agenda) {
   return { ...record, event_date: record.event_date?.slice(0, 10) === agenda.meeting_date ? (agenda.start_time ? `${agenda.meeting_date}T${agenda.start_time}` : record.event_date) : record.event_date, agenda_sections: sections, arrival_advice: agenda.arrival_advice || null, ...(agenda.quorum_notice ? { quorum_notice: agenda.quorum_notice } : {}), meeting_documents: [...(record.meeting_documents || []), ...(agenda.document_url ? [{ role: "agenda", document_id: agenda.document_url, document_url: agenda.document_url, meeting_id: record.meeting_id, attachment_status: "attached", adapter: PDC_CALENDAR_PARSER, source_receipt: agenda.source_receipt }] : [])] };
 }
 
-export { extractPdfCalendarText };
+export { pdcCalendarOccurrences } from "./observer_calendar_occurrences.mjs";

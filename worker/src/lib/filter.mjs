@@ -56,7 +56,7 @@ export const LENSES = {
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
   rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version", "activity", "body", "access"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab", "entity_refs_all"],
   // World-state agency mandates (statutory duties / approaching deadlines). Not a City
@@ -220,6 +220,14 @@ function clampField(name, v) {
       return typeof v === "string" && CONNECTION_RELATIONS.has(v) ? v : null;
     case "place_role":
       return PLACE_ROLES.includes(v) ? v : null;
+    case "activity":
+      return v === "observe" ? "observe" : null;
+    case "body": {
+      const s = typeof v === "string" ? v.trim() : "";
+      return ["pdc_calendar", "bsa_calendar", "oath_trial_calendar"].includes(s) ? s : null;
+    }
+    case "access":
+      return ["remote", "in_person", "unknown"].includes(v) ? v : null;
     case "name":
       return typeof v === "string" && v.trim() ? v.replace(/\s+/g, " ").trim().slice(0, 120) : null;
     case "kind":
@@ -325,6 +333,9 @@ export function sanitize(lens, input) {
   // subscription identities, and /nl response envelopes remain byte-compatible.
   if (!out.geographies?.length) delete out.geographies;
   if (!out.place_role) delete out.place_role;
+  if (!out.activity) delete out.activity;
+  if (!out.body) delete out.body;
+  if (!out.access) delete out.access;
   if (!out.request_ids?.length) delete out.request_ids;
   if (!out.procurement_id) delete out.procurement_id;
   if (!out.processState) delete out.processState;

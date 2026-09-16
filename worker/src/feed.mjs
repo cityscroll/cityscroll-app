@@ -21,6 +21,7 @@ import {
 } from "./lib/feed.mjs";
 import { calendarOccurrencesForRows } from "../../site/calendar_occurrence.mjs";
 import { zoningHearingCalendarOccurrence } from "../../site/zoning_hearing_calendar.mjs";
+import { observerCalendarOccurrencesForRows } from "../../site/observer_calendar_occurrences.mjs";
 
 const FEED_LENSES = new Set(["money", "people", "land", "property", "rules", "meetings", "entity"]);
 const TYPES = {
@@ -111,6 +112,8 @@ export async function handleFeed(request, env, ctx) {
           ? `community-district:${sub.filter.communityDistrict}`
           : "land:hearings",
     })).filter(Boolean)
+    : (sub.filter?.activity === "observe" || sub.filter?.body)
+    ? observerCalendarOccurrencesForRows(rows)
     : calendarOccurrencesForRows(rows, {
       kind: q.kind,
       legacy_uid: true,
