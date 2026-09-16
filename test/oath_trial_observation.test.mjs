@@ -5,8 +5,10 @@ import { readFileSync } from "node:fs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { buildMeetingSearchDocuments } from "../site/meeting_search_producer.mjs";
 import { parseOathTrialCsv, observerRequestForTrial, observerRequestMailto, localDateTime } from "../site/oath_trial_calendar.mjs";
+import { installOathObserverRequestControls } from "../site/oath_trial_observation.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
 import { meetingPlacementsFromRow } from "../tools/lib/district_activity.mjs";
+import { click, mountDocument } from "./helpers/preview_dom.mjs";
 import { testClockISOString, todayISO, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const sourceUrl = "https://www.nyc.gov/site/oath/trials/conference-trial-calendar.page";
@@ -132,6 +134,150 @@ test("observer request is editable, escaped, and mailto remains user-sent", asyn
     assert.match(request, /Index: <x>&/);
     assert.match(href, /^mailto:OATHCalUnit@OATH\.nyc\.gov/);
     assert.match(renderMeetingDocument(record), /&lt;x&gt;&amp;/);
+  });
+});
+
+test("A2: mailto composer carries index, date, and start and asks for confirmation and access instructions", async () => {
+  await withPinnedClock(`${todayISO()}T00:00:00.000Z`, () => {
+    const day = addDays(todayISO(), 1);
+    const record = {
+      source_system: "oath_trial_calendar",
+      meeting_id: "meeting:oath_trial_calendar:a2",
+      oath_index: "12345",
+      event_date: `${day}T10:00:00`,
+      start_time: "10:00:00",
+      source_url: sourceUrl,
+    };
+    const request = observerRequestForTrial(record);
+    const href = observerRequestMailto(record);
+    const mailto = new URL(href);
+    const body = mailto.searchParams.get("body") || "";
+    assert.deepEqual(
+      {
+        request_asks_confirmation_and_access_instructions:
+          /Please confirm whether observation is possible and provide the access instructions\./.test(request),
+        mailto_recipient: mailto.pathname,
+        mailto_body_includes_index: /Index: 12345/.test(body),
+        mailto_body_includes_date: body.includes(`Date: ${day}`),
+        mailto_body_includes_local_start: /Local start time: 10:00:00/.test(body),
+      },
+      {
+        request_asks_confirmation_and_access_instructions: true,
+        mailto_recipient: "OATHCalUnit@OATH.nyc.gov",
+        mailto_body_includes_index: true,
+        mailto_body_includes_date: true,
+        mailto_body_includes_local_start: true,
+      },
+    );
+  });
+});
+
+test("A5: request stays editable with accessible copy acknowledgement and copy fallback", async () => {
+  await withPinnedClock(`${todayISO()}T00:00:00.000Z`, async () => {
+    const day = addDays(todayISO(), 1);
+    const record = {
+      source_system: "oath_trial_calendar",
+      meeting_id: "meeting:oath_trial_calendar:a5",
+      oath_index: "12345",
+      event_date: `${day}T10:00:00`,
+      start_time: "10:00:00",
+      source_url: sourceUrl,
+    };
+    const html = renderMeetingDocument(record);
+    const section = html.match(/<section[^>]*data-oath-observer-request[\s\S]*?<\/section>/)?.[0];
+    assert.ok(section, "rendered trial document must include the observer-request section");
+    const { container } = mountDocument(section);
+    const area = container.querySelector("[data-oath-request-text]");
+    const statusEl = container.querySelector("[data-oath-copy-status]");
+    const button = container.querySelector("[data-oath-copy-request]");
+    area.value = area.textContent;
+    area.selectCount = 0;
+    area.select = function selectRequestText() {
+      this.selectCount += 1;
+    };
+    installOathObserverRequestControls(container);
+
+    const navigatorRef = globalThis.navigator;
+    let copied = null;
+    Object.defineProperty(navigatorRef, "clipboard", {
+      configurable: true,
+      get() {
+        return {
+          writeText: async (text) => {
+            copied = text;
+          },
+        };
+      },
+    });
+    await click(button);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const success = {
+      editable_label: container.querySelector("label")?.textContent || null,
+      editable_textarea: area?.tagName || null,
+      copy_status_role: statusEl?.getAttribute("role") || null,
+      copy_status_aria_live: statusEl?.getAttribute("aria-live") || null,
+      copy_success_message: statusEl?.textContent || null,
+      copy_success_revealed: statusEl?.hidden === false,
+      copied_request_text: copied === area.value,
+    };
+
+    Object.defineProperty(navigatorRef, "clipboard", {
+      configurable: true,
+      get() {
+        return undefined;
+      },
+    });
+    await click(button);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.deepEqual(
+      {
+        ...success,
+        fallback_message: statusEl?.textContent || null,
+        fallback_focuses_request: area.focusCount >= 1,
+        fallback_selects_request: area.selectCount >= 1,
+        never_labels_registered_or_confirmed_attendance: !/registered|confirmed attendance/i.test(html),
+      },
+      {
+        editable_label: "Editable request",
+        editable_textarea: "textarea",
+        copy_status_role: "status",
+        copy_status_aria_live: "polite",
+        copy_success_message: "Observer request copied.",
+        copy_success_revealed: true,
+        copied_request_text: true,
+        fallback_message: "Copy was unavailable. Select and copy the request text below.",
+        fallback_focuses_request: true,
+        fallback_selects_request: true,
+        never_labels_registered_or_confirmed_attendance: true,
+      },
+    );
+  });
+});
+
+test("A6: schema-change retention keeps unexpected publisher columns on the record", async () => {
+  await withPinnedClock(`${todayISO()}T00:00:00.000Z`, () => {
+    const day = todayISO();
+    const csv = [
+      "Index,Date,Start,Type,Location,Courtroom_Code",
+      `99,${toSlashDate(day)},9:00 AM,Trial,,CR-7`,
+    ].join("\n");
+    const record = parseOathTrialCsv(csv, {
+      sourceUrl,
+      sourceRevision: "schema-rev-1",
+      observedAt: testClockISOString(),
+    }).records[0];
+    assert.deepEqual(
+      {
+        retained_unexpected_column: record.source_raw_values.courtroom_code,
+        retained_known_index: record.source_raw_values.index,
+        retained_source_revision: record.source_revision,
+      },
+      {
+        retained_unexpected_column: "CR-7",
+        retained_known_index: "99",
+        retained_source_revision: "schema-rev-1",
+      },
+    );
   });
 });
 
