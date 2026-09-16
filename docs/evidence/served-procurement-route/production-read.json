@@ -1,0 +1,151 @@
+{
+  "schema": "cityscroll.served_procurement_route_production_read.v1",
+  "observed_at": "2026-09-16T18:14:03.231Z",
+  "grounded_at": "f5a4c5568a1868572a4eea4ef513a361dc373897",
+  "live_origin": "https://cityscroll.org",
+  "api_origin": "https://api.cityscroll.org",
+  "served_build_vintage": {
+    "worker_commit": "b2884a8311742326b798ba1705c73cf72389bb6e",
+    "worker_environment": "production",
+    "worker_health_status": "cityscroll-worker ok",
+    "note": "Worker /health reports the commit currently serving api.cityscroll.org. Pages HTML is read from cityscroll.org in the same capture."
+  },
+  "contract": {
+    "canary_half": "LIVE_PROCUREMENT_CANARY=1 node --test test/live_procurement_detail_canary.test.mjs asserts results.length === 1 and distinct object refs === 1 for each exact identifier.",
+    "parity_fixture_half": "test/procurement_detail_search_parity.test.mjs asserts the same two halves against the served Worker search envelope, including present federated results and lane cards."
+  },
+  "reads": [
+    {
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626",
+      "kind": "html_route",
+      "status": 200,
+      "served_build_vintage": {
+        "worker_commit": "b2884a8311742326b798ba1705c73cf72389bb6e",
+        "worker_environment": "production"
+      },
+      "assertion": "The live procurement route returns HTTP 200 with every named destination as an anchor, the specimen's contract dates and entity names, and no optional-lookup apology, state-authority row, or opportunity chrome.",
+      "body_sha256": "38717aece89b647c985881be841d74063c61d2730c76a747021d63d7672a6d66",
+      "assertions": [
+        {
+          "name": "http_status_200",
+          "expected": 200,
+          "actual": 200,
+          "result": "pass"
+        },
+        {
+          "name": "destination_anchor",
+          "href": "/agencies/homeless-services/",
+          "result": "pass"
+        },
+        {
+          "name": "destination_anchor",
+          "href": "/vendors/BHRAGS%20HOME%20CARE/",
+          "result": "pass"
+        },
+        {
+          "name": "destination_anchor",
+          "href": "/search/?q=CT107120258801626",
+          "result": "pass"
+        },
+        {
+          "name": "destination_anchor",
+          "href": "/search/?q=07124E0044001",
+          "result": "pass"
+        },
+        {
+          "name": "destination_anchor",
+          "href": "/notices/20240829105",
+          "result": "pass"
+        },
+        {
+          "name": "destination_anchor",
+          "href": "https://a0333-passportpublic.nyc.gov/contracts.html",
+          "result": "pass"
+        },
+        {
+          "name": "destination_anchor",
+          "href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT107120258801626",
+          "result": "pass"
+        },
+        {
+          "name": "semantic_copy",
+          "copy": "2023-10-11",
+          "result": "pass"
+        },
+        {
+          "name": "semantic_copy",
+          "copy": "2026-06-30",
+          "result": "pass"
+        },
+        {
+          "name": "semantic_copy",
+          "copy": "2024-08-28",
+          "result": "pass"
+        },
+        {
+          "name": "semantic_copy",
+          "copy": "2024-09-05",
+          "result": "pass"
+        },
+        {
+          "name": "semantic_copy",
+          "copy": "Homeless Services",
+          "result": "pass"
+        },
+        {
+          "name": "semantic_copy",
+          "copy": "BHRAGS HOME CARE CORP",
+          "result": "pass"
+        },
+        {
+          "name": "no_misleading_absence_chrome",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "url": "https://api.cityscroll.org/search?q=CT107120258801626",
+      "kind": "exact_identifier_search",
+      "status": 200,
+      "served_build_vintage": {
+        "worker_commit": "b2884a8311742326b798ba1705c73cf72389bb6e",
+        "worker_environment": "production"
+      },
+      "assertion": "Top-level results contain exactly one card for the canonical specimen, and the number of distinct object references across the complete envelope is one.",
+      "results_length": 1,
+      "distinct_object_refs": 1,
+      "federated_results_length": 1,
+      "recursive_projection_match_count": 3,
+      "result_object_refs": [
+        "procurement:contract:CT107120258801626"
+      ],
+      "response_sha256": "fd04ce2f06e43b1702a3414205c2a7d2ddb66031ed891aa43d92088626bba3a4",
+      "result": "pass"
+    },
+    {
+      "url": "https://api.cityscroll.org/search?q=07124E0044001",
+      "kind": "exact_identifier_search",
+      "status": 200,
+      "served_build_vintage": {
+        "worker_commit": "b2884a8311742326b798ba1705c73cf72389bb6e",
+        "worker_environment": "production"
+      },
+      "assertion": "Top-level results contain exactly one card for the canonical specimen, and the number of distinct object references across the complete envelope is one.",
+      "results_length": 1,
+      "distinct_object_refs": 1,
+      "federated_results_length": 1,
+      "recursive_projection_match_count": 3,
+      "result_object_refs": [
+        "procurement:contract:CT107120258801626"
+      ],
+      "response_sha256": "99fdaeebf2cda4e231c33786fd9c13c3aca7a60ed940470c0fd6c97122d09896",
+      "result": "pass"
+    }
+  ],
+  "summary": {
+    "result": "pass",
+    "searches_returning_specimen_once": 2,
+    "searches_measured": 2
+  }
+}

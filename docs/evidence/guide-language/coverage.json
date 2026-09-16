@@ -135,7 +135,7 @@
       "article": "request-trial-observation",
       "locale": "en",
       "status": "complete",
-      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "source_sha256": "35698d5b6495e1d00e190d1cb96c83e84b2820c3417b43b83e14a578a5704d9a",
       "required_segments": 34,
       "intentional_source_segments": 1
     },
@@ -303,7 +303,7 @@
       "article": "request-trial-observation",
       "locale": "es",
       "status": "complete",
-      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "source_sha256": "35698d5b6495e1d00e190d1cb96c83e84b2820c3417b43b83e14a578a5704d9a",
       "required_segments": 34,
       "intentional_source_segments": 1
     },
@@ -471,7 +471,7 @@
       "article": "request-trial-observation",
       "locale": "zh-Hans",
       "status": "complete",
-      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "source_sha256": "35698d5b6495e1d00e190d1cb96c83e84b2820c3417b43b83e14a578a5704d9a",
       "required_segments": 34,
       "intentional_source_segments": 1
     },
@@ -639,7 +639,7 @@
       "article": "request-trial-observation",
       "locale": "ru",
       "status": "complete",
-      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "source_sha256": "35698d5b6495e1d00e190d1cb96c83e84b2820c3417b43b83e14a578a5704d9a",
       "required_segments": 34,
       "intentional_source_segments": 1
     },
@@ -807,7 +807,7 @@
       "article": "request-trial-observation",
       "locale": "bn",
       "status": "complete",
-      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "source_sha256": "35698d5b6495e1d00e190d1cb96c83e84b2820c3417b43b83e14a578a5704d9a",
       "required_segments": 34,
       "intentional_source_segments": 1
     },
@@ -975,7 +975,7 @@
       "article": "request-trial-observation",
       "locale": "ht",
       "status": "complete",
-      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "source_sha256": "35698d5b6495e1d00e190d1cb96c83e84b2820c3417b43b83e14a578a5704d9a",
       "required_segments": 34,
       "intentional_source_segments": 1
     },
@@ -1143,7 +1143,7 @@
       "article": "request-trial-observation",
       "locale": "ko",
       "status": "complete",
-      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "source_sha256": "35698d5b6495e1d00e190d1cb96c83e84b2820c3417b43b83e14a578a5704d9a",
       "required_segments": 34,
       "intentional_source_segments": 1
     },
@@ -1311,7 +1311,7 @@
       "article": "request-trial-observation",
       "locale": "fr",
       "status": "complete",
-      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "source_sha256": "35698d5b6495e1d00e190d1cb96c83e84b2820c3417b43b83e14a578a5704d9a",
       "required_segments": 34,
       "intentional_source_segments": 1
     },
@@ -1479,7 +1479,7 @@
       "article": "request-trial-observation",
       "locale": "pl",
       "status": "complete",
-      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "source_sha256": "35698d5b6495e1d00e190d1cb96c83e84b2820c3417b43b83e14a578a5704d9a",
       "required_segments": 34,
       "intentional_source_segments": 1
     },
@@ -1647,7 +1647,7 @@
       "article": "request-trial-observation",
       "locale": "ar",
       "status": "complete",
-      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "source_sha256": "35698d5b6495e1d00e190d1cb96c83e84b2820c3417b43b83e14a578a5704d9a",
       "required_segments": 34,
       "intentional_source_segments": 1
     },
@@ -1815,7 +1815,7 @@
       "article": "request-trial-observation",
       "locale": "ur",
       "status": "complete",
-      "source_sha256": "f431413f6ef53d2e5d2797f2c9cc1c213774f607664bf780900426dc56906ee9",
+      "source_sha256": "35698d5b6495e1d00e190d1cb96c83e84b2820c3417b43b83e14a578a5704d9a",
       "required_segments": 34,
       "intentional_source_segments": 1
     },

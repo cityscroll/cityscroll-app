@@ -1,0 +1,93 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "notice optional tools disclosure",
+  "base": "local-wrangler",
+  "condition": "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; no image binary is committed.",
+  "image_binaries_committed": false,
+  "revision": "cee12f0f4",
+  "data_vintage": "shared procurement read model; pilot notice 20240829105 with agency and vendor roles",
+  "route": "/notices/20240829105/",
+  "render_hash_viewport_invariant": true,
+  "captures": [
+    {
+      "case": "notice-tools-no-javascript",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "No-JavaScript delivery keeps one agency/vendor role each, a closed More tools disclosure, notice text access, and the official source.",
+      "render_sha256": "c3cb6ecc73a640489edc591eb1d8f386b57a59aa3331d72e7c2779d9693f0cf3"
+    },
+    {
+      "case": "notice-tools-failed-enhancement",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "Blocking the app entry preserves the readable edge document, one role each for agency and vendor, and a closed More tools disclosure.",
+      "render_sha256": "c3cb6ecc73a640489edc591eb1d8f386b57a59aa3331d72e7c2779d9693f0cf3"
+    },
+    {
+      "case": "notice-tools-successful-hydration",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "Successful hydration keeps utilities inside one initially closed More tools disclosure, preserves Copy/QR/Email/Excel/Print/Pin, and does not restate agency or vendor roles.",
+      "render_sha256": "8b9039cb88fa8d8b8cf3746a7e2177b2768c9767303e59e616ae35da518599b2"
+    },
+    {
+      "case": "notice-tools-home-back",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "Home then Back returns to the composed notice with More tools still closed and without duplicate toolbars.",
+      "render_sha256": "5be3acae867ff3da0b81ff1e2b10470743d9366d26d1661102d82dd122e1ee0f"
+    },
+    {
+      "case": "notice-tools-no-javascript",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "No-JavaScript delivery keeps one agency/vendor role each, a closed More tools disclosure, notice text access, and the official source.",
+      "render_sha256": "c3cb6ecc73a640489edc591eb1d8f386b57a59aa3331d72e7c2779d9693f0cf3"
+    },
+    {
+      "case": "notice-tools-failed-enhancement",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "Blocking the app entry preserves the readable edge document, one role each for agency and vendor, and a closed More tools disclosure.",
+      "render_sha256": "c3cb6ecc73a640489edc591eb1d8f386b57a59aa3331d72e7c2779d9693f0cf3"
+    },
+    {
+      "case": "notice-tools-successful-hydration",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "Successful hydration keeps utilities inside one initially closed More tools disclosure, preserves Copy/QR/Email/Excel/Print/Pin, and does not restate agency or vendor roles.",
+      "render_sha256": "8b9039cb88fa8d8b8cf3746a7e2177b2768c9767303e59e616ae35da518599b2"
+    },
+    {
+      "case": "notice-tools-home-back",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "Home then Back returns to the composed notice with More tools still closed and without duplicate toolbars.",
+      "render_sha256": "5be3acae867ff3da0b81ff1e2b10470743d9366d26d1661102d82dd122e1ee0f"
+    }
+  ]
+}

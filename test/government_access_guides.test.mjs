@@ -93,7 +93,7 @@ test("A6: generated detail fixtures return into the guide and remain usable with
   assert.match(request, /href="\/guide\/how-to\/observe-city-government\//);
   assert.match(observe, /href="https:\/\/cityscroll\.org\/observe\/"/);
   assert.match(observe, /<main[^>]*id="main"[\s\S]*Choose an observation experience/);
-  assert.match(request, /<main[^>]*id="main"[\s\S]*OATH: copy three exact fields/);
+  assert.match(request, /<main[^>]*id="main"[\s\S]*OATH — copy three exact fields/);
 });
 
 test("A6: complete guide renders cover desktop, mobile, keyboard, and no-JavaScript inspection", () => {

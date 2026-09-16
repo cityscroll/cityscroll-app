@@ -380,17 +380,21 @@ test("A1: current materialized Firematic/TAMEER pages reproduce the missing fiel
 test("A1: BHRAGS payment consistency requires headline/section agreement, 31 payments, dates, and scoped coverage", async () => {
   const html = await servedContract("CT107120258801626");
   const observed = classifyBhragsPaymentConsistency({ status: 200, body: html });
-  // Current materialization still carries the conflicting PASSPort headline beside the lifecycle payment section.
-  assert.equal(observed.state, "failed");
-  assert.ok(observed.evidence.failures.includes("headline_payment_section_mismatch")
-    || observed.evidence.failures.includes("paid_total_not_retained_lifecycle"));
+  // After the scoped payment-summary repair, headline and payment section agree on the lifecycle total.
+  assert.equal(observed.state, "passed", JSON.stringify(observed.evidence));
+  assert.equal(observed.evidence.headline_paid, 7385672.19);
+  assert.equal(observed.evidence.payment_section_spent, 7385672.19);
+  assert.equal(observed.evidence.payment_count, 31);
+  assert.ok(moneyNeedles(7385672.19).some((needle) => html.includes(needle)));
 
-  const repaired = html
-    .replace(/<dt>Paid amount<\/dt><dd>\$7,319,455\.51<\/dd>/, "<dt>Paid amount</dt><dd>$7,385,672.19</dd>");
-  const ok = classifyBhragsPaymentConsistency({ status: 200, body: repaired });
-  // May still fail scoped coverage; if headline matches and count/latest present, mismatch is gone.
-  assert.ok(!ok.evidence?.failures?.includes("headline_payment_section_mismatch"));
-  assert.ok(moneyNeedles(7385672.19).some((needle) => repaired.includes(needle)));
+  // Mutation: an old PASSPort headline beside the correct payment section still fails.
+  const broken = html.replace(
+    /<dt>Paid amount<\/dt><dd>\$7,385,672\.19<\/dd>/,
+    "<dt>Paid amount</dt><dd>$7,319,455.51</dd>",
+  );
+  const bad = classifyBhragsPaymentConsistency({ status: 200, body: broken });
+  assert.equal(bad.state, "failed");
+  assert.ok(bad.evidence.failures.includes("headline_payment_section_mismatch"));
 });
 
 test("A2: zero accepted performance rows remain an explicit bounded absence on the served routes", async () => {
@@ -669,6 +673,54 @@ test("A4: served identity binds observer revision, artifact commit, and source v
     observedAt: "2026-09-16T18:00:00Z",
   });
   assert.equal(unrelated.status, "mismatched");
+});
+
+test("A4: real canonical routes credit source handoffs and refuse misleading revision/base claims", async () => {
+  const sp = await servedContract("CT110220271400991");
+  assert.match(sp, /checkbooknyc\.com\/smart_search\/citywide\?search_term=CT110220271400991/);
+  assert.doesNotMatch(sp, /City Record notice/);
+  const cityRecord = sp.match(/data-source-system="city_record"[^>]*data-coverage-state="([^"]+)"[\s\S]*?<\/li>/i);
+  assert.ok(cityRecord, "S&P retains a City Record coverage row");
+  assert.equal(cityRecord[1], "checked-no-match");
+  assert.match(cityRecord[0], /City Record/);
+  assert.match(cityRecord[0], /Checked 2026-09-09/);
+  assert.match(cityRecord[0], /data-coverage-state="checked-no-match"/);
+  assert.doesNotMatch(cityRecord[0], /lookup as of|exact_pin|Importer coverage:/);
+  assert.match(sp, /10220272001881/, "City Record absence stays bound to the PIN that was checked");
+  assert.match(sp, /data-coverage-reader-projection="1"/);
+  assert.doesNotMatch(sp, /never (?:published|appeared) in (?:the )?City Record|absent from City Record forever/i);
+  assert.doesNotMatch(sp, /Importer coverage:/);
+  const aha = await servedContract("CT105720278802113");
+  assert.match(aha, /PASSPort Public contracts/);
+  const bhrags = await servedContract("CT107120258801626");
+  assert.match(bhrags, /checkbooknyc\.com|Checkbook NYC/);
+  assert.match(bhrags, /\$10,869,881/);
+  assert.match(bhrags, /20240829105/);
+  assert.match(bhrags, /Paid amount<\/dt><dd>\$7,385,672\.19/);
+  assert.match(bhrags, /data-payment-total-spent="7385672\.19"/);
+  assert.match(bhrags, /Encumbered amount<\/dt><dd>\$7,319,455\.52/);
+  assert.match(bhrags, /data-retained-paid-amount="7319455\.51"/);
+  assert.match(bhrags, /Showing 12 of 31 payments on this contract/);
+  assert.match(bhrags, /20270016167-1-DSB-EFT/);
+  assert.match(bhrags, /\$66,591\.17/);
+  assert.match(bhrags, /\$54,214\.14/);
+  const bhragsSpending = bhrags.match(/data-source-system="checkbook_spending"[\s\S]*?<\/li>/)?.[0] || "";
+  assert.match(bhragsSpending, /No exact match in analytics spending lookup/);
+  assert.match(bhragsSpending, /Checked 2026-08-26/);
+  assert.doesNotMatch(bhrags, /had no exact payment match in this snapshot/);
+  const firematic = await servedContract("CT185720228800365");
+  assert.match(firematic, /Amendment/);
+  assert.doesNotMatch(firematic, /small base contract|overall contract value/i);
+  const tameer = await servedContract("CT185020228802305");
+  assert.match(tameer, /Construction Change Order/);
+  assert.doesNotMatch(tameer, /small base contract|overall contract value/i);
+  for (const id of Object.keys(CONTRACTS)) {
+    const html = await servedContract(id);
+    const canonical = `https://cityscroll.org/procurements/${encodeURIComponent(`procurement:contract:${id}`)}`;
+    const cityscrollUrls = [...html.matchAll(/https:\/\/cityscroll\.org\/[^\s"'<>]*/g)].map((match) => match[0]);
+    assert.ok(cityscrollUrls.every((url) => url === canonical || !/\/procurements\//.test(url)), `${id} invents no other procurement canonical URL`);
+    assert.doesNotMatch(html, /better than (?:Checkbook|PASSPort)|unlike (?:Checkbook|PASSPort)|more (?:complete|detailed) than (?:Checkbook|PASSPort)/i, `${id} makes no unsupported comparison claim`);
+  }
 });
 
 test("A4: later attributable source observation may update amounts without silently rewriting the pin", () => {

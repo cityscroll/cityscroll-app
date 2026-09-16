@@ -58,15 +58,29 @@ function sourceSystem(entry) {
   return text(entry?.source_system, 100)?.toLowerCase() || null;
 }
 
+function observationVintage(entry) {
+  return text(
+    entry?.observation_vintage
+    || entry?.source_vintage
+    || entry?.ingested_at
+    || entry?.observed_at
+    || entry?.acquired_at
+    || null,
+  );
+}
+
 function candidate(kind, value, entry, sourceField, normalize = (v) => text(v), metadata = {}) {
   const normalized = normalize(value);
+  // Keep explicit numeric zero; only drop null/undefined/empty-string.
   if (normalized == null || normalized === "") return null;
+  const vintage = observationVintage(entry);
   return {
     kind,
     value: normalized,
     source_system: sourceSystem(entry),
     source_observation_ref: sourceRef(entry),
     source_field: sourceField,
+    ...(vintage ? { observation_vintage: vintage } : {}),
     ...metadata,
   };
 }
@@ -76,12 +90,22 @@ function sourceOrder(entry) {
 }
 
 function sortedCandidates(candidates) {
-  return candidates.filter(Boolean).sort((left, right) => (
-    (SOURCE_PRIORITY.get(left.source_system) ?? 99) - (SOURCE_PRIORITY.get(right.source_system) ?? 99)
-    || String(left.source_observation_ref || "").localeCompare(String(right.source_observation_ref || ""))
-    || left.source_field.localeCompare(right.source_field)
-    || String(left.value).localeCompare(String(right.value))
-  ));
+  // Source priority first. For the same source system, a strictly newer
+  // observation vintage wins when both sides are dated. Never sort by value
+  // magnitude (no max-value selection) and never invent missing dates.
+  return candidates.filter(Boolean).sort((left, right) => {
+    const bySource = (SOURCE_PRIORITY.get(left.source_system) ?? 99)
+      - (SOURCE_PRIORITY.get(right.source_system) ?? 99);
+    if (bySource !== 0) return bySource;
+    const leftVintage = left.observation_vintage || "";
+    const rightVintage = right.observation_vintage || "";
+    if (leftVintage && rightVintage && leftVintage !== rightVintage) {
+      return rightVintage.localeCompare(leftVintage);
+    }
+    return String(left.source_observation_ref || "").localeCompare(String(right.source_observation_ref || ""))
+      || left.source_field.localeCompare(right.source_field)
+      || String(left.value).localeCompare(String(right.value));
+  });
 }
 
 function addCandidate(groups, entry) {

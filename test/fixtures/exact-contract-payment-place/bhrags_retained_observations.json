@@ -1,0 +1,240 @@
+{
+  "schema": "cityscroll.retained_bhrags_payment_observations.v1",
+  "note": "Pinned slice of shared_procurement_read_model shard-004 for CT107120258801626 payment reconciliation tests. Do not invent replacement amounts.",
+  "object": {
+    "object_type": "procurement",
+    "schema": "cityscroll.procurement_object.v1",
+    "procurement_id": "procurement:contract:CT107120258801626",
+    "canonical_id": "procurement:contract:CT107120258801626",
+    "source_observation_refs": [
+      "city_record:20240829105",
+      "passport_public_contracts:contract:07124E0044001:5050251"
+    ],
+    "stages": [
+      {
+        "stage": "award",
+        "source_observation_refs": [
+          "city_record:20240829105"
+        ]
+      },
+      {
+        "stage": "registered",
+        "source_observation_refs": [
+          "passport_public_contracts:contract:07124E0044001:5050251"
+        ]
+      }
+    ],
+    "identity_keys": {
+      "contract_ids": [
+        "CT107120258801626"
+      ],
+      "epins": [
+        "07124E0044001"
+      ]
+    },
+    "institution_keys": {
+      "publisher_institution_ids": [],
+      "procuring_institution_ids": [],
+      "source_agency_labels": []
+    },
+    "identity_edges": [
+      {
+        "schema": "cityscroll.procurement_identity_edge.v1",
+        "status": "accepted",
+        "source_observation_ref": "passport_public_contracts:contract:07124E0044001:5050251",
+        "procurement_id": "procurement:contract:CT107120258801626",
+        "basis": "exact_contract_id",
+        "matched_value": "CT107120258801626"
+      }
+    ],
+    "lifecycle": null,
+    "compatibility": {
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT107120258801626",
+      "city_record_notice_hrefs": [
+        "/notices/20240829105"
+      ]
+    },
+    "process_events": [
+      {
+        "schema": "cityscroll.procurement_process_event.v1",
+        "version": 1,
+        "procurement_id": "procurement:contract:CT107120258801626",
+        "event_id": "procurement:contract:CT107120258801626:passport_public_contracts:contract:07124E0044001:5050251:registered",
+        "state": "registered",
+        "publisher_state": "Registered",
+        "state_basis": "explicit",
+        "effective_at": "2024-08-28",
+        "source_system": "passport_public_contracts",
+        "source_observation_ref": "passport_public_contracts:contract:07124E0044001:5050251",
+        "source_receipt_ref": "materialized:contract:07124E0044001:5050251",
+        "metadata": {
+          "publisher_field": "status",
+          "publisher_identifier": "CT1-071-20258801626",
+          "evidence_href": "https://a0333-passportpublic.nyc.gov/contracts.html",
+          "evidence_label": "PASSPort Public contracts",
+          "source_receipt_ref": "materialized:contract:07124E0044001:5050251"
+        }
+      },
+      {
+        "schema": "cityscroll.procurement_process_event.v1",
+        "version": 1,
+        "procurement_id": "procurement:contract:CT107120258801626",
+        "event_id": "procurement:contract:CT107120258801626:city_record:20240829105:award",
+        "state": "award",
+        "publisher_state": "Award",
+        "state_basis": "explicit",
+        "effective_at": "2024-09-05",
+        "source_system": "city_record",
+        "source_observation_ref": "city_record:20240829105",
+        "source_receipt_ref": "materialized:20240829105",
+        "metadata": {
+          "publisher_field": "type_of_notice_description",
+          "publisher_identifier": "20240829105",
+          "evidence_href": "/notices/20240829105",
+          "evidence_label": "City Record notice",
+          "source_receipt_ref": "materialized:20240829105"
+        }
+      }
+    ],
+    "procurement_source_lookup_receipt": {
+      "schema": "cityscroll.procurement_source_lookup_receipt.v1",
+      "version": 1,
+      "procurement_id": "procurement:contract:CT107120258801626",
+      "generated_at": "2026-09-09T06:33:01.880Z",
+      "sources": [
+        {
+          "source_system": "city_record",
+          "applicability": "applicable",
+          "state": "corroborated",
+          "queried_keys": [
+            "07124E0044001",
+            "CT107120258801626"
+          ],
+          "matched_source_observation_refs": [
+            "city_record:20240829105"
+          ],
+          "matched_analytical_row_refs": [],
+          "basis": "exact_retained_observation_key",
+          "snapshot_vintage": null,
+          "lookup_as_of": "2026-09-09T06:33:01.880Z"
+        },
+        {
+          "source_system": "passport_public_contracts",
+          "applicability": "applicable",
+          "state": "corroborated",
+          "queried_keys": [
+            "07124E0044001",
+            "CT107120258801626"
+          ],
+          "matched_source_observation_refs": [
+            "passport_public_contracts:contract:07124E0044001:5050251"
+          ],
+          "matched_analytical_row_refs": [],
+          "basis": "exact_retained_observation_key",
+          "snapshot_vintage": null,
+          "lookup_as_of": "2026-09-09T06:33:01.880Z"
+        },
+        {
+          "source_system": "passport_public_rfx",
+          "applicability": "applicable",
+          "state": "unavailable",
+          "queried_keys": [
+            "07124E0044001"
+          ],
+          "matched_source_observation_refs": [],
+          "matched_analytical_row_refs": [],
+          "basis": "materialization_unavailable",
+          "snapshot_vintage": null
+        },
+        {
+          "source_system": "checkbook_contracts",
+          "applicability": "applicable",
+          "state": "corroborated",
+          "queried_keys": [
+            "07124E0044001",
+            "CT107120258801626"
+          ],
+          "matched_source_observation_refs": [],
+          "matched_analytical_row_refs": [
+            "checkbook_contracts:row:CT107120258801626"
+          ],
+          "basis": "exact_prime_contract_id",
+          "snapshot_vintage": "2026-09-09",
+          "lookup_as_of": "2026-09-09T06:33:01.880Z"
+        },
+        {
+          "source_system": "checkbook_spending",
+          "applicability": "applicable",
+          "state": "checked-no-match",
+          "queried_keys": [
+            "CT107120258801626"
+          ],
+          "matched_source_observation_refs": [],
+          "matched_analytical_row_refs": [],
+          "basis": "exact_prime_contract_document_relationship",
+          "snapshot_vintage": "2026",
+          "lookup_as_of": "2026-08-26T00:00:00.000Z"
+        },
+        {
+          "source_system": "nys_abo_awards",
+          "applicability": "not-applicable",
+          "state": "not-applicable",
+          "queried_keys": [
+            "07124E0044001",
+            "CT107120258801626"
+          ],
+          "matched_source_observation_refs": [],
+          "matched_analytical_row_refs": [],
+          "basis": null,
+          "snapshot_vintage": null
+        }
+      ]
+    }
+  },
+  "observations": [
+    {
+      "source_observation_ref": "city_record:20240829105",
+      "source_system": "city_record",
+      "source_system_id": "20240829105",
+      "source_receipt_ref": "materialized:20240829105",
+      "ingested_at": "2026-09-05T13:44:00.909Z",
+      "snapshot": {
+        "request_id": "20240829105",
+        "start_date": "2024-09-05",
+        "agency_name": "Homeless Services",
+        "type_of_notice_description": "Award",
+        "short_title": "City Sanctuary Facility for Families with Children, Comfort Inn Sheepsheads Bay",
+        "pin": "07124E0044001",
+        "contract_amount": "10869881",
+        "vendor_name": "BHRAGS HOME CARE CORP"
+      }
+    },
+    {
+      "source_observation_ref": "passport_public_contracts:contract:07124E0044001:5050251",
+      "source_system": "passport_public_contracts",
+      "source_system_id": "contract:07124E0044001:5050251",
+      "source_receipt_ref": "materialized:contract:07124E0044001:5050251",
+      "ingested_at": "2026-09-09T06:33:01.880Z",
+      "snapshot": {
+        "ctr_id": "5050251",
+        "epin": "07124E0044001",
+        "epin_norm": "07124E0044001",
+        "contract_id": "CT1-071-20258801626",
+        "agency": "DEPARTMENT OF HOMELESS SERVICES",
+        "vendor": "BHRAGS HOME CARE CORP",
+        "status": "Registered",
+        "award_amount": 10869881,
+        "current_amount": 10869881,
+        "encumbered_amount": 7319455.52,
+        "paid_amount": 7319455.51,
+        "start_date": "10/11/2023",
+        "end_date": "06/30/2026",
+        "registration_date": "08/28/2024",
+        "title": "Bhrags Services at FWC Emmons K 2023",
+        "procurement_method": "Emergency",
+        "program": "Special Population Support Services",
+        "industry": "Human/Client Service"
+      }
+    }
+  ]
+}

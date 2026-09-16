@@ -14,11 +14,78 @@ import subprocess
 import sys
 import tempfile
 import threading
+import urllib.error
+import urllib.parse
+import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 CONTRACT_ID = "procurement:contract:CT107120258801626"
 CONTRACT_ROUTE = f"/procurements/{CONTRACT_ID.replace(':', '%3A')}"
+PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
+ARTIFACT_MANIFEST_PATH = "/artifact-manifest.json"
+
+
+def normalize_base(base: str) -> str:
+    return base.rstrip("/") + "/"
+
+
+def is_production_base(base: str) -> bool:
+    host = (urllib.parse.urlparse(normalize_base(base)).hostname or "").lower()
+    return host in PRODUCTION_HOSTS
+
+
+def local_checkout_revision() -> str:
+    return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+
+
+def production_opener(url, timeout=20):
+    """Fetch production JSON with a browser UA; bare urllib is rejected with 403."""
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (compatible; CityScrollCapture/1.0)",
+            "Accept": "application/json",
+        },
+    )
+    return urllib.request.urlopen(request, timeout=timeout)
+
+
+def deployed_build_revision(base: str, *, opener=production_opener) -> str:
+    """Read the served Pages artifact revision, not the local checkout HEAD."""
+    origin = normalize_base(base).rstrip("/")
+    url = f"{origin}{ARTIFACT_MANIFEST_PATH}"
+    try:
+        with opener(url, timeout=20) as response:
+            payload = json.load(response)
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError) as error:
+        raise RuntimeError(f"deployed build revision unavailable at {url}: {error}") from error
+    sha = payload.get("source_commit_sha") if isinstance(payload, dict) else None
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+        raise RuntimeError(f"deployed artifact-manifest at {url} lacks a 40-hex source_commit_sha")
+    return sha
+
+
+def resolve_capture_revision(base: str | None, *, opener=production_opener) -> str:
+    if base and is_production_base(base):
+        return deployed_build_revision(base, opener=opener)
+    return local_checkout_revision()
+
+
+def resolve_data_vintage(base: str | None, *, opener=production_opener) -> str:
+    if base and is_production_base(base):
+        origin = normalize_base(base).rstrip("/")
+        url = f"{origin}{ARTIFACT_MANIFEST_PATH}"
+        try:
+            with opener(url, timeout=20) as response:
+                payload = json.load(response)
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError) as error:
+            raise RuntimeError(f"deployed data vintage unavailable at {url}: {error}") from error
+        generated_at = payload.get("generated_at") if isinstance(payload, dict) else None
+        if isinstance(generated_at, str) and generated_at.strip():
+            return generated_at.strip()
+        raise RuntimeError(f"deployed artifact-manifest at {url} lacks generated_at")
+    return "fixture-or-served-materialization"
 
 
 def stage_contract_fixture() -> pathlib.Path:
@@ -143,20 +210,62 @@ def assert_contract_evidence(page, base: str, *, label: str, java_script_enabled
     }
 
 
-def write_capture_manifest(entries: list[dict]) -> pathlib.Path:
+def write_capture_manifest(
+    entries: list[dict],
+    *,
+    base: str | None = None,
+    opener=production_opener,
+) -> pathlib.Path:
     evidence_dir = ROOT / "docs" / "evidence" / "contract-evidence-presentation"
     evidence_dir.mkdir(parents=True, exist_ok=True)
-    revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    revision = resolve_capture_revision(base, opener=opener)
+    data_vintage = resolve_data_vintage(base, opener=opener)
     payload = {
         "schema": "cityscroll.capture_manifest.v1",
         "case": "contract-evidence",
         "revision": revision,
-        "data_vintage": "fixture-or-served-materialization",
+        "data_vintage": data_vintage,
         "entries": entries,
     }
+    if base and is_production_base(base):
+        payload["base"] = normalize_base(base)
+        payload["condition"] = (
+            f"Production base {normalize_base(base)} after deployment; "
+            "no image binary is committed."
+        )
     path = evidence_dir / "capture-manifest.json"
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return path
+
+
+def run_writer_self_tests() -> None:
+    """Fixture-closable checks for production revision and vintage resolution."""
+    import io
+
+    local_base = "http://127.0.0.1:8765/"
+    production_base = "https://cityscroll.org/"
+    assert is_production_base(production_base)
+    assert not is_production_base(local_base)
+
+    def opener(url, timeout=20):  # noqa: ARG001
+        assert url.endswith(ARTIFACT_MANIFEST_PATH)
+        payload = {
+            "schema": "cityscroll.served-artifact-manifest.v1",
+            "source_commit_sha": "abcdef0123456789abcdef0123456789abcdef01",
+            "generated_at": "2026-09-16T12:04:00.000Z",
+        }
+        return io.BytesIO(json.dumps(payload).encode())
+
+    assert deployed_build_revision(production_base, opener=opener) == (
+        "abcdef0123456789abcdef0123456789abcdef01"
+    )
+    assert resolve_capture_revision(production_base, opener=opener) == (
+        "abcdef0123456789abcdef0123456789abcdef01"
+    )
+    assert resolve_capture_revision(local_base) == local_checkout_revision()
+    assert resolve_data_vintage(production_base, opener=opener) == "2026-09-16T12:04:00.000Z"
+    assert resolve_data_vintage(local_base) == "fixture-or-served-materialization"
+    print("OK contract-evidence capture-manifest writer self-test", flush=True)
 
 
 def run_contract_evidence_case(base: str | None = None) -> None:
@@ -195,7 +304,7 @@ def run_contract_evidence_case(base: str | None = None) -> None:
                     flush=True,
                 )
                 context.close()
-            manifest = write_capture_manifest(entries)
+            manifest = write_capture_manifest(entries, base=base)
             print(f"wrote {manifest}", flush=True)
             browser.close()
     finally:
@@ -207,4 +316,7 @@ def run_contract_evidence_case(base: str | None = None) -> None:
 
 
 if __name__ == "__main__":
-    run_contract_evidence_case()
+    if "--self-test" in sys.argv:
+        run_writer_self_tests()
+    else:
+        run_contract_evidence_case()

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Browser proof for composed resident documents (notice shell, notice subject, contract evidence)."""
+"""Browser proof for composed resident documents (notice shell, subject, tools, contract evidence)."""
 
 from __future__ import annotations
 
@@ -34,12 +34,20 @@ SUBJECT_NOTICE_ROUTE = f"/notices/{SUBJECT_NOTICE_ID}/"
 SUBJECT_CONTRACT_HREF = "/procurements/procurement%3Acontract%3ACT107120258801626"
 SUBJECT_SOURCE = f"https://a856-cityrecord.nyc.gov/RequestDetail/{SUBJECT_NOTICE_ID}"
 SUBJECT_MANIFEST_PATH = ROOT / "docs" / "evidence" / "notice-subject" / "capture-manifest.json"
+TOOLS_NOTICE_ID = SUBJECT_NOTICE_ID
+TOOLS_NOTICE_ROUTE = SUBJECT_NOTICE_ROUTE
+TOOLS_SOURCE = SUBJECT_SOURCE
+TOOLS_AGENCY = "Homeless Services"
+TOOLS_VENDOR = "BHRAGS Operating LLC"
+TOOLS_MANIFEST_PATH = ROOT / "docs" / "evidence" / "notice-tools" / "capture-manifest.json"
 PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
 LOCAL_CONDITION = (
     "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; "
     "no image binary is committed."
 )
 ARTIFACT_MANIFEST_PATH = "/artifact-manifest.json"
+# Production edge refuses the default Python-urllib User-Agent (HTTP 403).
+ARTIFACT_MANIFEST_UA = "cityscroll-resident-document-presentation/1"
 
 
 def stage_assets() -> pathlib.Path:
@@ -53,16 +61,20 @@ def stage_assets() -> pathlib.Path:
 
 
 def notice_payload(case: str = "notice-shell") -> bytes:
-    if case == "notice-subject":
+    if case in {"notice-subject", "notice-tools"}:
         body = {
             "ok": True,
             "row": {
                 "request_id": SUBJECT_NOTICE_ID,
                 "short_title": "City Sanctuary Facility for Families with Children",
                 "type_of_notice_description": "Award",
-                "agency_name": "Homeless Services",
+                "agency_name": TOOLS_AGENCY,
                 "start_date": "2024-08-29",
-                "vendor_name": "BHRAGS Operating LLC",
+                "vendor_name": TOOLS_VENDOR,
+                "additional_description_1": (
+                    "Award for City Sanctuary Facility for Families with Children "
+                    "shelter operations."
+                ),
             },
             "civic_time": None,
         }
@@ -103,14 +115,16 @@ def start_server(case: str = "notice-shell"):
     upstream = _RobustThreadingHTTPServer(("127.0.0.1", 0), ReadModelHandler)
     threading.Thread(target=upstream.serve_forever, daemon=True).start()
     config = state_dir / "wrangler.toml"
+    read_model = f"http://127.0.0.1:{upstream.server_port}/notice"
     config.write_text(
         f'name = "cityscroll-notice-local"\nmain = "{ROOT / "site" / "_worker.js"}"\ncompatibility_date = "2026-07-27"\n'
+        f'[vars]\nNOTICE_READ_MODEL = "{read_model}"\n'
         f'[assets]\nbinding = "ASSETS"\ndirectory = "{staging}"\n', encoding="utf-8"
     )
     process = subprocess.Popen(
         ["npx", "--yes", "wrangler@4.126.0", "dev",
          "--config", str(config), "--ip", "127.0.0.1", "--port", "0",
-         "--compatibility-date", "2026-07-27", "--var", f"NOTICE_READ_MODEL=http://127.0.0.1:{upstream.server_port}/notice",
+         "--compatibility-date", "2026-07-27",
          "--persist-to", str(state_dir),
          "--show-interactive-dev-session", "false"],
         cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
@@ -167,7 +181,13 @@ def local_checkout_revision() -> str:
     ).strip()
 
 
-def deployed_build_revision(base: str, *, opener=urllib.request.urlopen) -> str:
+def open_artifact_manifest(url: str, timeout: int = 20):
+    """Fetch the served artifact manifest with an allowlisted User-Agent."""
+    request = urllib.request.Request(url, headers={"User-Agent": ARTIFACT_MANIFEST_UA})
+    return urllib.request.urlopen(request, timeout=timeout)
+
+
+def deployed_build_revision(base: str, *, opener=open_artifact_manifest) -> str:
     """Read the served Pages artifact revision, not the local checkout HEAD."""
     origin = normalize_base(base).rstrip("/")
     url = f"{origin}{ARTIFACT_MANIFEST_PATH}"
@@ -182,7 +202,7 @@ def deployed_build_revision(base: str, *, opener=urllib.request.urlopen) -> str:
     return sha[:9]
 
 
-def resolve_manifest_revision(base: str, *, opener=urllib.request.urlopen) -> str:
+def resolve_manifest_revision(base: str, *, opener=open_artifact_manifest) -> str:
     if is_production_base(base):
         return deployed_build_revision(base, opener=opener)
     return local_checkout_revision()
@@ -433,6 +453,310 @@ def assert_subject_no_javascript(page, base: str) -> dict[str, object]:
 
 
 
+def _visible_role_mentions(page, label: str) -> int:
+    """Count visible primary-fact mentions of an agency/vendor role label."""
+    return page.evaluate(
+        """({ label }) => {
+            const roots = Array.from(document.querySelectorAll(
+              '#noticeview [data-notice-primary-facts], #noticeview .ftype'
+            ));
+            if (!roots.length) return 0;
+            const skip = new Set(['SCRIPT', 'STYLE', 'TEMPLATE']);
+            const nodes = [];
+            const walk = (node) => {
+              if (!node || skip.has(node.nodeName)) return;
+              if (node.nodeType === Node.TEXT_NODE) {
+                if ((node.textContent || '').includes(label)) nodes.push(node);
+                return;
+              }
+              if (node.nodeType !== Node.ELEMENT_NODE) return;
+              if (node.matches?.('details.notice-more-tools, [data-more-tools-region], #notice-more-tools')) return;
+              if (node.closest?.('[hidden], [aria-hidden="true"]')) return;
+              for (const child of node.childNodes) walk(child);
+            };
+            roots.forEach(walk);
+            return nodes.filter((textNode) => {
+              const el = textNode.parentElement;
+              if (!el) return false;
+              const style = getComputedStyle(el);
+              if (style.display === 'none' || style.visibility === 'hidden') return false;
+              if (el.closest('.ui-report-issue, [data-report-issue], button')) return false;
+              return true;
+            }).length;
+        }""",
+        {"label": label},
+    )
+
+
+def assert_notice_tools(page, base: str, *, label: str) -> dict[str, object]:
+    page.set_default_timeout(20000)
+    errors: list[str] = []
+    page.on("pageerror", lambda error: errors.append(str(error)))
+    page.on(
+        "requestfailed",
+        lambda request: errors.append(f"request {request.url}: {request.failure}")
+        if "app/main.mjs" not in request.url
+        and "api.cityscroll.org" not in request.url
+        and "cloudflareinsights.com" not in request.url
+        and "workers.dev" not in request.url
+        else None,
+    )
+    response = page.goto(f"{base}{TOOLS_NOTICE_ROUTE.lstrip('/')}", wait_until="domcontentloaded")
+    assert response and response.status == 200, f"{label}: notice route did not return 200"
+    page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
+    page.wait_for_selector("#noticeview .route-item", state="visible")
+    hydrated = not (label.startswith("failed") or label.startswith("no-javascript"))
+    tools_sel = (
+        "#noticeview [data-more-tools-region], #noticeview #notice-more-tools"
+        if hydrated
+        else "#noticeview details.notice-more-tools"
+    )
+    page.wait_for_selector(tools_sel, state="attached")
+    if hydrated:
+        # Modest copy-link stays outside; optional utilities hydrate inside More tools.
+        page.wait_for_selector("#noticeview #ncopy", state="attached")
+        page.wait_for_selector(f"{tools_sel} [data-pin], {tools_sel} #nqr", state="attached")
+    fatal = [error for error in errors if "CORS" not in error and "Failed to load resource" not in error]
+    assert not fatal, f"{label}: client errors: {fatal}"
+
+    tools = page.locator(tools_sel)
+    assert tools.count() >= 1, f"{label}: expected a More tools disclosure"
+    assert tools.first.get_attribute("open") is None, f"{label}: More tools should start closed"
+    assert "More tools" in tools.first.locator("summary").inner_text().strip()
+
+    email = tools.locator("a[href^='mailto:']")
+    assert email.count() >= 1, f"{label}: Email control missing inside More tools"
+    if hydrated:
+        assert page.locator("#noticeview #ncopy").count() == 1, f"{label}: missing modest #ncopy affordance"
+        for control_id in ("nqr", "nxlsx", "nprint"):
+            control = tools.locator(f"#{control_id}")
+            assert control.count() == 1, f"{label}: missing #{control_id} inside More tools"
+        assert tools.locator("[data-pin]").count() >= 1, (
+            f"{label}: Pin control missing inside More tools"
+        )
+
+    source = page.locator(f'#noticeview a.ui-official-source-link[href="{TOOLS_SOURCE}"]')
+    assert source.count() >= 1, f"{label}: official source link missing"
+    assert page.locator("#noticeview .rolename").count() == 1
+    assert "Award" in page.locator("#noticeview .ftype").first.inner_text()
+    ftype_text = page.locator("#noticeview .ftype").first.inner_text()
+    primary = page.locator("#noticeview [data-notice-primary-facts]").first
+    assert primary.count() == 1, f"{label}: primary facts region missing"
+    def primary_fact_label(kind: str) -> str:
+        return page.evaluate(
+            """({ kind }) => {
+              const root = document.querySelector('#noticeview [data-notice-primary-facts]');
+              if (!root) return '';
+              const dts = Array.from(root.querySelectorAll('dt'));
+              const dt = dts.find((node) => new RegExp(kind, 'i').test(node.textContent || ''));
+              const dd = dt?.nextElementSibling;
+              if (!dd) return '';
+              const link = dd.querySelector('a');
+              const raw = (link?.textContent || dd.childNodes[0]?.textContent || dd.textContent || '');
+              return raw.replace(/◆/g, '').replace(/published by agency|named vendor/ig, '').trim();
+            }""",
+            {"kind": kind},
+        )
+
+    agency_label = primary_fact_label("agency")
+    vendor_label = primary_fact_label("vendor")
+    assert agency_label, f"{label}: agency missing from primary facts"
+    assert vendor_label, f"{label}: vendor missing from primary facts"
+    assert agency_label not in ftype_text, f"{label}: agency still repeated in the type line"
+    agency_mentions = _visible_role_mentions(page, agency_label)
+    vendor_mentions = _visible_role_mentions(page, vendor_label)
+    assert agency_mentions == 1, f"{label}: agency role appears {agency_mentions} times ({agency_label!r})"
+    assert vendor_mentions == 1, f"{label}: vendor role appears {vendor_mentions} times ({vendor_label!r})"
+    assert page.locator("#notice-local-constellation-heading").count() == 0
+
+    # Empty optional enrichment must not leave an empty heading shell.
+    empty_heads = page.evaluate(
+        """() => Array.from(document.querySelectorAll('#noticeview h2, #noticeview h3, #noticeview .chain-h'))
+            .filter((el) => {
+              const text = (el.textContent || '').trim();
+              if (!text) return true;
+              const section = el.closest('section, div, details');
+              if (!section) return false;
+              const body = section.cloneNode(true);
+              body.querySelector(el.tagName)?.remove();
+              return !(body.textContent || '').trim();
+            }).map((el) => el.textContent || el.id || el.className)"""
+    )
+    assert empty_heads == [], f"{label}: empty enrichment headings present: {empty_heads}"
+
+    # Expanding tools preserves keyboard access to the demoted controls.
+    if hydrated:
+        tools.first.locator("summary").focus()
+        page.keyboard.press("Enter")
+        page.wait_for_function(
+            "() => document.querySelector('#noticeview [data-more-tools-region], #noticeview #notice-more-tools')?.open === true"
+        )
+        assert page.locator("#nqr").is_visible()
+        page.locator("#nqr").focus()
+        assert page.evaluate("document.activeElement && document.activeElement.id") == "nqr"
+        # Return to the default closed state for later captures.
+        tools.first.locator("summary").focus()
+        page.keyboard.press("Enter")
+        page.wait_for_function(
+            "() => document.querySelector('#noticeview [data-more-tools-region], #noticeview #notice-more-tools')?.open !== true"
+        )
+
+    assert page.locator(f'#noticeview a.notice-subject-link[href="{SUBJECT_CONTRACT_HREF}"]').count() >= 1
+    return {"route": TOOLS_NOTICE_ROUTE, "viewport": page.viewport_size, "render_sha256": render_hash(page)}
+
+
+def assert_notice_tools_no_javascript(page, base: str) -> dict[str, object]:
+    response = page.goto(f"{base}{TOOLS_NOTICE_ROUTE.lstrip('/')}", wait_until="domcontentloaded")
+    assert response and response.status == 200, (
+        f"edge response status={response.status if response else 'none'} "
+        f"body={page.locator('body').inner_text()[:300]}"
+    )
+    assert page.locator("#notice-route-chrome .document-mast").count() == 1
+    assert page.locator("#noticeview .rolename").count() == 1
+    tools = page.locator("#noticeview details.notice-more-tools")
+    assert tools.count() == 1
+    assert tools.first.get_attribute("open") is None
+    assert page.locator("#noticeview details.notice-more-tools a[href^='mailto:']").count() >= 1
+    source = page.locator(f'#noticeview a.ui-official-source-link[href="{TOOLS_SOURCE}"]')
+    assert source.count() >= 1
+    assert TOOLS_AGENCY not in page.locator("#noticeview .ftype").first.inner_text()
+    assert page.locator("#noticeview [data-notice-primary-facts]").count() == 1
+    assert _visible_role_mentions(page, TOOLS_AGENCY) == 1
+    assert _visible_role_mentions(page, TOOLS_VENDOR) == 1
+    return {
+        "case": "notice-tools-no-javascript",
+        "route": TOOLS_NOTICE_ROUTE,
+        "viewport": page.viewport_size,
+        "assertion": (
+            "No-JavaScript delivery keeps one agency/vendor role each, a closed More tools "
+            "disclosure, notice text access, and the official source."
+        ),
+        "render_sha256": render_hash(page),
+    }
+
+
+def write_tools_manifest(captures: list[dict[str, object]], *, base: str, revision: str) -> None:
+    assert_viewport_render_hash_invariance(captures)
+    payload = {
+        "schema": "cityscroll.render_capture_manifest.v1",
+        "surface": "notice optional tools disclosure",
+        "base": manifest_base_label(base),
+        "condition": manifest_condition(base),
+        "image_binaries_committed": False,
+        "revision": revision,
+        "data_vintage": (
+            "shared procurement read model; pilot notice 20240829105 with agency and vendor roles"
+        ),
+        "route": TOOLS_NOTICE_ROUTE,
+        "render_hash_viewport_invariant": True,
+        "captures": [
+            {
+                "case": capture["case"],
+                "viewport": {
+                    "name": viewport_name(capture["viewport"]),
+                    "width": capture["viewport"]["width"],
+                    "height": capture["viewport"]["height"],
+                },
+                "assertion": capture["assertion"],
+                "render_sha256": capture["render_sha256"],
+            }
+            for capture in captures
+        ],
+    }
+    TOOLS_MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
+    TOOLS_MANIFEST_PATH.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def run_notice_tools(base: str, *, write_manifest: bool, revision: str) -> None:
+    from playwright.sync_api import sync_playwright
+
+    captures: list[dict[str, object]] = []
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):
+            no_js = browser.new_context(viewport=viewport, java_script_enabled=False)
+            captures.append(assert_notice_tools_no_javascript(no_js.new_page(), base))
+            no_js.close()
+
+            failed = browser.new_context(viewport=viewport)
+            failed_page = failed.new_page()
+            failed_page.route("**/app/main.mjs", lambda route: route.abort())
+            failed_result = assert_notice_tools(failed_page, base, label="failed enhancement")
+            captures.append({
+                "case": "notice-tools-failed-enhancement",
+                "route": TOOLS_NOTICE_ROUTE,
+                "viewport": viewport,
+                "assertion": (
+                    "Blocking the app entry preserves the readable edge document, one role each "
+                    "for agency and vendor, and a closed More tools disclosure."
+                ),
+                "render_sha256": failed_result["render_sha256"],
+            })
+            failed.close()
+
+            context = browser.new_context(viewport=viewport)
+            page = context.new_page()
+            result = assert_notice_tools(page, base, label="successful hydration")
+            captures.append({
+                "case": "notice-tools-successful-hydration",
+                "route": TOOLS_NOTICE_ROUTE,
+                "viewport": viewport,
+                "assertion": (
+                    "Successful hydration keeps utilities inside one initially closed More tools "
+                    "disclosure, preserves Copy/QR/Email/Excel/Print/Pin, and does not restate "
+                    "agency or vendor roles."
+                ),
+                "render_sha256": result["render_sha256"],
+            })
+            page.goto(base, wait_until="domcontentloaded")
+            page.go_back(wait_until="domcontentloaded")
+            page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
+            page.wait_for_selector("#noticeview .route-item", state="visible")
+            page.wait_for_selector("#noticeview #ncopy", state="attached")
+            page.wait_for_selector("#noticeview [data-more-tools-region], #noticeview #notice-more-tools", state="attached")
+            assert page.locator("#noticeview .route-item").count() == 1
+            tools = page.locator("#noticeview [data-more-tools-region], #noticeview #notice-more-tools")
+            assert tools.count() >= 1
+            assert tools.first.get_attribute("open") is None
+            # Hash the stable primary document text rather than optional enrichment that
+            # can still be settling after Back.
+            home_back_hash = page.evaluate(
+                """() => {
+                  const root = document.querySelector('#noticeview');
+                  const tools = root?.querySelector('[data-more-tools-region], #notice-more-tools');
+                  const parts = [
+                    root?.querySelector('.ftype')?.innerText || '',
+                    root?.querySelector('.rolename')?.innerText || '',
+                    root?.querySelector('[data-notice-primary-facts]')?.innerText || '',
+                    tools?.querySelector('summary')?.innerText || '',
+                    String(root?.querySelectorAll('[data-more-tools-region], #notice-more-tools').length || 0),
+                  ];
+                  return parts.join('\\n');
+                }"""
+            )
+            captures.append({
+                "case": "notice-tools-home-back",
+                "route": TOOLS_NOTICE_ROUTE,
+                "viewport": viewport,
+                "assertion": (
+                    "Home then Back returns to the composed notice with More tools still closed "
+                    "and without duplicate toolbars."
+                ),
+                "render_sha256": hashlib.sha256(home_back_hash.encode()).hexdigest(),
+            })
+            print(
+                f"OK notice-tools {viewport['width']}x{viewport['height']}: "
+                f"{result['render_sha256']} failed={failed_result['render_sha256']}",
+                flush=True,
+            )
+            context.close()
+        browser.close()
+    assert_viewport_render_hash_invariance(captures)
+    if write_manifest:
+        write_tools_manifest(captures, base=base, revision=revision)
+        print(f"wrote {TOOLS_MANIFEST_PATH.relative_to(ROOT)}", flush=True)
+
+
 def write_subject_manifest(captures: list[dict[str, object]], *, base: str, revision: str) -> None:
     assert_viewport_render_hash_invariance(captures)
     payload = {
@@ -601,6 +925,27 @@ def run_writer_self_tests() -> None:
     assert deployed_build_revision(production_base, opener=opener) == "abcdef012"
     assert resolve_manifest_revision(production_base, opener=opener) == "abcdef012"
     assert resolve_manifest_revision(local_base) == local_checkout_revision()
+    assert ARTIFACT_MANIFEST_UA.startswith("cityscroll-")
+
+    recorded: dict[str, object] = {}
+
+    def recording_urlopen(request, timeout=20):  # noqa: ARG001
+        recorded["url"] = request.full_url
+        recorded["ua"] = request.get_header("User-agent")
+        payload = {
+            "schema": "cityscroll.served-artifact-manifest.v1",
+            "source_commit_sha": "fedcba9876543210fedcba9876543210fedcba98",
+        }
+        return io.BytesIO(json.dumps(payload).encode())
+
+    original_urlopen = urllib.request.urlopen
+    urllib.request.urlopen = recording_urlopen  # type: ignore[assignment]
+    try:
+        assert deployed_build_revision(production_base) == "fedcba987"
+        assert recorded["url"].endswith(ARTIFACT_MANIFEST_PATH)
+        assert recorded["ua"] == ARTIFACT_MANIFEST_UA
+    finally:
+        urllib.request.urlopen = original_urlopen  # type: ignore[assignment]
 
     matching = [
         {"case": "example", "viewport": {"width": 1440, "height": 1000}, "render_sha256": "a" * 64},
@@ -618,6 +963,7 @@ def run_writer_self_tests() -> None:
     else:
         raise AssertionError("expected mismatched viewport hashes to fail")
     print("OK notice-shell capture-manifest writer self-test", flush=True)
+    print("OK notice-tools capture-manifest writer self-test", flush=True)
 
 
 def assert_research_tools(page, base: str, *, label: str) -> dict[str, object]:
@@ -656,7 +1002,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--case",
-        choices=["notice-shell", "notice-subject", "contract-evidence", "research-tools"],
+        choices=["notice-shell", "notice-subject", "notice-tools", "contract-evidence", "research-tools"],
         required=True,
     )
     parser.add_argument("--write-manifest", action="store_true")
@@ -681,6 +1027,9 @@ def main() -> None:
     try:
         if args.case == "notice-subject":
             run_notice_subject(base, write_manifest=args.write_manifest, revision=revision)
+            return
+        if args.case == "notice-tools":
+            run_notice_tools(base, write_manifest=args.write_manifest, revision=revision)
             return
 
         from playwright.sync_api import sync_playwright

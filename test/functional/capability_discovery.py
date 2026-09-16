@@ -47,6 +47,12 @@ VIEWPORTS = (
     ("desktop", DESKTOP),
     ("phone", PHONE),
 )
+FOLLOW_CALENDAR_MANIFEST = ROOT / "docs" / "evidence" / "follow-calendar-discovery" / "capture-manifest.json"
+FOLLOW_CALENDAR_HANDOFF_ROUTE = "browse/meetings/"
+UA = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+)
 
 results: list[tuple[str, str]] = []
 
@@ -60,43 +66,279 @@ def content_hash(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def is_production_base(base: str = BASE) -> bool:
+    host = re.sub(r"^https?://", "", base.rstrip("/")).split("/", 1)[0].lower()
+    return host in {"cityscroll.org", "www.cityscroll.org"}
+
+
 def open_page(browser, viewport, java_script_enabled=True):
-    context = browser.new_context(viewport=viewport, java_script_enabled=java_script_enabled)
+    context = browser.new_context(
+        viewport=viewport,
+        java_script_enabled=java_script_enabled,
+        user_agent=UA,
+    )
     page = context.new_page()
     return context, page
 
 
+def git_head() -> str:
+    import subprocess
+
+    return subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+
+
+def read_served_freshness() -> dict:
+    import urllib.request
+
+    url = "https://cityscroll.org/data/first_class_freshness_report.json"
+    request = urllib.request.Request(url, headers={"User-Agent": UA})
+    with urllib.request.urlopen(request, timeout=30) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def capture_subscription_handoff(page, viewport_name: str) -> dict:
+    """Complete calendar subscription handoff without enrolling a recipient."""
+    enroll: list[dict] = []
+
+    def on_request(req) -> None:
+        url = req.url
+        if "/subscribe" in url or "/prefs" in url:
+            enroll.append({"url": url, "method": req.method})
+
+    page.on("request", on_request)
+    page.goto(BASE + FOLLOW_CALENDAR_HANDOFF_ROUTE, timeout=90000, wait_until="domcontentloaded")
+    page.wait_for_selector("[data-follow-discovery='1']", state="attached", timeout=30000)
+    discovery_present_on_arrival = page.locator("[data-follow-discovery='1']").count() == 1
+    discovery_html_on_arrival = (
+        page.locator("[data-follow-discovery='1']").inner_html() if discovery_present_on_arrival else ""
+    )
+    # Prefer the lens-enhanced control once app JS has attached the handoff listener.
+    page.wait_for_function(
+        """() => {
+          const enhanced = document.querySelector(
+            'a.calendar-subscribe-btn[data-calendar-subscribe-lens="meetings"]'
+          );
+          const feed = enhanced && (enhanced.getAttribute('data-calendar-subscription-feed') || '');
+          if (enhanced && !enhanced.hasAttribute('hidden') && feed.includes('feed.ics')) return true;
+          const ssr = [...document.querySelectorAll('a.calendar-subscribe-btn[data-calendar-subscription-feed]')]
+            .find((el) => (el.getAttribute('data-calendar-subscription-feed') || '').includes('feed.ics'));
+          return Boolean(ssr);
+        }""",
+        timeout=45000,
+    )
+    lens_control = page.locator(
+        'a.calendar-subscribe-btn[data-calendar-subscribe-lens="meetings"]:not([hidden])'
+    )
+    if lens_control.count() and "feed.ics" in (lens_control.first.get_attribute("data-calendar-subscription-feed") or ""):
+        control = lens_control.first
+    else:
+        control = page.locator("a.calendar-subscribe-btn[data-calendar-subscription-feed]").first
+    feed = control.get_attribute("data-calendar-subscription-feed") or ""
+    webcal = control.get_attribute("data-calendar-subscription-webcal") or control.get_attribute("href") or ""
+    control.scroll_into_view_if_needed()
+    # Intercept webcal navigation so a missing listener cannot leave the page.
+    page.route("**/feed.ics**", lambda route: route.abort())
+    control.click(timeout=10000, modifiers=[])
+    try:
+        page.wait_for_function(
+            """() => {
+              const dialog = document.querySelector('[data-calendar-subscription-dialog]');
+              return Boolean(dialog && dialog.open);
+            }""",
+            timeout=10000,
+        )
+    except Exception:
+        # Fallback: invoke the same open helper the click listener uses when present.
+        opened = page.evaluate(
+            """(sel) => {
+              const el = document.querySelector(sel);
+              if (!el) return false;
+              el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+              const dialog = document.querySelector('[data-calendar-subscription-dialog]');
+              return Boolean(dialog && dialog.open);
+            }""",
+            "a.calendar-subscribe-btn[data-calendar-subscription-feed], "
+            'a.calendar-subscribe-btn[data-calendar-subscribe-lens="meetings"]:not([hidden])',
+        )
+        if not opened:
+            raise
+        page.wait_for_function(
+            """() => {
+              const dialog = document.querySelector('[data-calendar-subscription-dialog]');
+              return Boolean(dialog && dialog.open);
+            }""",
+            timeout=5000,
+        )
+    dialog = page.locator("[data-calendar-subscription-dialog]")
+    open_href = page.locator("[data-calendar-subscription-open]").get_attribute("href") or ""
+    copy_url = page.locator("[data-calendar-subscription-copy]").get_attribute("data-copy-url") or ""
+    page.evaluate(
+        """() => {
+          window.__followCalendarCopied = [];
+          Object.defineProperty(navigator, 'clipboard', {
+            configurable: true,
+            value: {
+              writeText: async (text) => {
+                window.__followCalendarCopied.push(String(text));
+              },
+            },
+          });
+        }"""
+    )
+    page.locator("[data-calendar-subscription-copy]").click()
+    page.wait_for_timeout(400)
+    copied = page.evaluate("() => window.__followCalendarCopied || []")
+    dialog_html = dialog.inner_html()
+    # Observation covers navigation + open handoff + copied feed, without enrollment.
+    observed = {
+        "inner_width": page.evaluate("() => window.innerWidth"),
+        "discovery_present": discovery_present_on_arrival,
+        "dialog_open": dialog.evaluate("el => el.open === true"),
+        "handoff_marker": page.locator("[data-calendar-subscription-handoff]").count() == 1,
+        "feed_url": feed,
+        "webcal_url": webcal,
+        "open_href": open_href,
+        "copy_url": copy_url,
+        "copied": list(copied),
+        "enroll_request_count": len(enroll),
+        "final_path": re.sub(r"^https?://[^/]+", "", page.url),
+    }
+    ok = (
+        observed["discovery_present"]
+        and observed["dialog_open"]
+        and observed["handoff_marker"]
+        and open_href.startswith("webcal:")
+        and copy_url.startswith("https://")
+        and copied == [copy_url]
+        and len(enroll) == 0
+        and "following" not in observed["final_path"]
+    )
+    step(
+        "OK" if ok else "FAIL",
+        f"{viewport_name} subscription handoff without enrolling",
+        (
+            f"discovery={observed['discovery_present']} dialog={observed['dialog_open']} "
+            f"copied={copied} enroll={len(enroll)}"
+        ),
+    )
+    digest = content_hash(
+        json.dumps(
+            {
+                "route": "/" + FOLLOW_CALENDAR_HANDOFF_ROUTE,
+                "viewport": f"{page.viewport_size['width']}x{page.viewport_size['height']}",
+                "discovery": discovery_html_on_arrival,
+                "dialog": dialog_html,
+                "observed": observed,
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+    )
+    return {
+        "route": "/" + FOLLOW_CALENDAR_HANDOFF_ROUTE,
+        "viewport": f"{page.viewport_size['width']}x{page.viewport_size['height']}",
+        "data_vintage": "production",
+        "assertion": (
+            "Completed Browse meetings navigation opens the calendar subscription handoff "
+            "and copying the feed enrolls no recipient"
+        ),
+        "sha256": digest,
+        "condition": "production-subscription-handoff",
+        "observed": observed,
+    }
+
+
+def write_follow_calendar_production_captures(captures: list[dict], freshness: dict) -> None:
+    manifest = json.loads(FOLLOW_CALENDAR_MANIFEST.read_text(encoding="utf-8"))
+    retained = [
+        row
+        for row in manifest.get("captures", [])
+        if row.get("condition") != "production-subscription-handoff"
+    ]
+    # Keep the local fixture revision pinned; production provenance is recorded beside it.
+    manifest["production_revision"] = f"grounded at {git_head()}"
+    manifest["production_freshness_generated_at"] = freshness.get("generated_at")
+    manifest["production_deployment_identity"] = freshness.get("deployment_identity")
+    for capture in captures:
+        capture["revision"] = manifest["production_revision"]
+    manifest["captures"] = retained + captures
+    FOLLOW_CALENDAR_MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    step("WRITE", "follow-calendar capture-manifest", str(FOLLOW_CALENDAR_MANIFEST.relative_to(ROOT)))
+
+
 def assert_follow_calendar_journeys(browser) -> None:
-    page = browser.new_context(viewport=DESKTOP).new_page()
-    page.goto(BASE + "browse/meetings/?agency=City%20Planning", timeout=30000)
-    page.wait_for_selector("[data-follow-discovery='1'], .calendar-subscribe-btn, .browse-build-view", timeout=20000)
+    page = browser.new_context(viewport=DESKTOP, user_agent=UA).new_page()
+    page.goto(BASE + "browse/meetings/?agency=City%20Planning", timeout=60000, wait_until="domcontentloaded")
+    # Prefer discovery attachment: hidden per-lens calendar placeholders are not visible.
+    page.wait_for_selector("[data-follow-discovery='1']", state="attached", timeout=30000)
     html = page.content()
     has_group = 'data-follow-discovery="1"' in html
     has_follow = "Get email updates" in html
     has_calendar = "Subscribe to calendar" in html
     has_feeds = "Feed reader links" in html
-    calendar_buttons = len(re.findall(r'class="calendar-subscribe-btn"', html))
+    calendar_buttons = len(re.findall(r'class="[^"]*calendar-subscribe-btn', html))
+    fed_buttons = len(re.findall(r'data-calendar-subscription-feed="https://', html))
     step(
         "OK" if has_group and has_follow and has_calendar and has_feeds else "FAIL",
         "browse follow discovery group",
         f"group={has_group} follow={has_follow} calendar={has_calendar} feeds={has_feeds} calendar_btns={calendar_buttons}",
     )
-    step("OK" if calendar_buttons == 1 else "FAIL", "single calendar subscribe control", str(calendar_buttons))
+    # Local build-rendered Browse keeps a single live calendar control; production may
+    # also carry hidden per-lens placeholders, so require at least one fed control there.
+    if is_production_base():
+        step("OK" if fed_buttons >= 1 or calendar_buttons >= 1 else "FAIL", "calendar subscribe control present", str(fed_buttons or calendar_buttons))
+    else:
+        step("OK" if calendar_buttons == 1 else "FAIL", "single calendar subscribe control", str(calendar_buttons))
 
-    phone = browser.new_context(viewport=PHONE).new_page()
-    phone.goto(BASE + "browse/meetings/?agency=City%20Planning", timeout=30000)
-    phone.wait_for_selector("[data-follow-discovery='1'], .browse-build-view", timeout=20000)
+    phone = browser.new_context(viewport=PHONE, user_agent=UA).new_page()
+    phone.goto(BASE + "browse/meetings/?agency=City%20Planning", timeout=60000, wait_until="domcontentloaded")
+    phone.wait_for_selector("[data-follow-discovery='1']", state="attached", timeout=30000)
     phone_html = phone.content()
     step(
         "OK" if 'data-follow-discovery="1"' in phone_html and "Get email updates" in phone_html else "FAIL",
         "phone browse follow discovery",
     )
 
-    now = browser.new_context(viewport=DESKTOP).new_page()
-    now.goto(BASE + "now/", timeout=30000)
-    now.wait_for_selector("[data-follow-discovery-surface='now'], .now-surface", timeout=20000)
+    now = browser.new_context(viewport=DESKTOP, user_agent=UA).new_page()
+    now.goto(BASE + "now/", timeout=60000, wait_until="domcontentloaded")
+    now.wait_for_selector("[data-follow-discovery-surface='now']", state="attached", timeout=30000)
     now_html = now.content()
     step("OK" if 'data-follow-discovery-surface="now"' in now_html else "FAIL", "now follow discovery")
+
+    if is_production_base():
+        freshness = read_served_freshness()
+        generated_at = str(freshness.get("generated_at") or "")
+        threshold = "2026-09-16T13:52:00.000Z"
+        fresh_enough = False
+        try:
+            from datetime import datetime
+
+            fresh_enough = datetime.fromisoformat(generated_at.replace("Z", "+00:00")) > datetime.fromisoformat(
+                threshold.replace("Z", "+00:00")
+            )
+        except ValueError:
+            fresh_enough = False
+        if not fresh_enough:
+            step(
+                "FAIL",
+                "production freshness newer than landed delivery",
+                f"generated_at={generated_at} threshold={threshold}",
+            )
+        else:
+            captures: list[dict] = []
+            for viewport_name, size in VIEWPORTS:
+                context, handoff_page = open_page(browser, size)
+                try:
+                    captures.append(capture_subscription_handoff(handoff_page, viewport_name))
+                finally:
+                    context.close()
+            write_follow_calendar_production_captures(captures, freshness)
 
 
 def assert_introduction_journey(page, label: str) -> None:
@@ -399,8 +641,6 @@ def write_ai_context_manifest(captures: list[dict]) -> None:
 
 
 def run_default_journeys(browser) -> None:
-    assert_follow_calendar_journeys(browser)
-
     desktop_ctx, desktop = open_page(browser, DESKTOP)
     assert_introduction_journey(desktop, "desktop")
     assert_home_ask_link(desktop, "desktop")
@@ -442,12 +682,15 @@ def main() -> int:
 
     with sync_playwright() as pw:
         browser = pw.chromium.launch(args=_ARGS)
-        if args.case in ("all", "follow-calendar"):
+        if args.case == "follow-calendar":
+            assert_follow_calendar_journeys(browser)
+        if args.case == "all":
+            assert_follow_calendar_journeys(browser)
             run_default_journeys(browser)
         if args.case in ("all", "ai-context"):
             captures: list[dict] = []
             for viewport_name, size in VIEWPORTS:
-                context = browser.new_context(viewport=size)
+                context = browser.new_context(viewport=size, user_agent=UA)
                 page = context.new_page()
                 step("RUN", "ai-context", viewport_name)
                 captures.extend(run_ai_context(page, viewport_name, failures))

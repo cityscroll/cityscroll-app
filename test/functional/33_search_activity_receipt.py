@@ -19,7 +19,7 @@ SEARCH_LENSES = [
     "notices", "people", "agencies", "vendors", "committees",
     "community_boards", "exams", "parcels", "land", "meetings",
 ]
-FAMILIES = ["contracts", "people-organizations", "land", "rules", "meetings", "exams"]
+FAMILIES = ["contracts", "people-organizations", "land", "rules", "meetings", "exams", "consultations"]
 INTAKE = "**/search-activity"
 
 
@@ -171,7 +171,7 @@ def candidate_response(query):
             "observed_on": "2026-08-04",
         },
         "hard_scope": {"state": "unscoped", "filters": {}},
-        "coverage": {"state": "partial", "boundary": "Bounded functional fixture corpus."},
+        "coverage": {"state": "complete", "boundary": "Bounded functional fixture corpus."},
         "candidates": [],
     }
 

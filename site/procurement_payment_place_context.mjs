@@ -355,22 +355,40 @@ export function renderProcurementPlaceFactsHtml(placeFacts = []) {
   return `<section class="node-section node-card procurement-place-facts" data-procurement-place-facts="1" aria-labelledby="procurement-place-heading"><h2 id="procurement-place-heading">Facility</h2><ul class="procurement-place-list">${items}</ul></section>`;
 }
 
-export function renderProcurementPaymentEvidenceHtml(evidence) {
+function alternatePaidObservationRows(alternatePaidObservations = []) {
+  return (Array.isArray(alternatePaidObservations) ? alternatePaidObservations : [])
+    .filter((entry) => entry && finiteAmount(entry.value) != null)
+    .map((entry) => {
+      const amount = money(entry.value);
+      const source = text(entry.source_system) || "retained source";
+      const vintage = text(entry.observation_vintage);
+      const vintageBit = vintage ? ` · source vintage ${esc(vintage)}` : "";
+      return `<div><dt>Retained ${esc(source)} paid amount</dt><dd data-retained-paid-amount="${esc(String(entry.value))}" data-retained-paid-source="${esc(source)}"${vintage ? ` data-retained-paid-vintage="${esc(vintage)}"` : ""}${entry.source_observation_ref ? ` data-retained-paid-ref="${esc(entry.source_observation_ref)}"` : ""}>${esc(amount)}${vintageBit}</dd></div>`;
+    })
+    .join("");
+}
+
+export function renderProcurementPaymentEvidenceHtml(evidence, {
+  alternatePaidObservations = [],
+} = {}) {
   if (!evidence) return "";
-  const spent = money(evidence.total_spent);
+  // Explicit finite check so an honest zero still renders; do not use truthiness.
+  const spentNumber = finiteAmount(evidence.total_spent);
+  const spent = spentNumber == null ? null : money(spentNumber);
   const latestAmount = money(evidence.latest_payment_amount);
   const latestDate = formatDay(evidence.latest_payment_date);
   const summaryBits = [
     Number.isFinite(evidence.total_payments)
       ? `<div><dt>Payments on this contract</dt><dd data-payment-total-count="${esc(String(evidence.total_payments))}">${esc(String(evidence.total_payments))}</dd></div>`
       : "",
-    spent
-      ? `<div><dt>Amount paid</dt><dd data-payment-total-spent="${esc(String(evidence.total_spent))}">${esc(spent)}</dd></div>`
+    spent != null
+      ? `<div><dt>Amount paid</dt><dd data-payment-total-spent="${esc(String(spentNumber))}">${esc(spent)}</dd></div>`
       : "",
     latestDate && latestAmount
       ? `<div><dt>Latest payment</dt><dd data-latest-payment-date="${esc(latestDate)}" data-latest-payment-amount="${esc(String(evidence.latest_payment_amount))}">${esc(latestDate)} for ${esc(latestAmount)}</dd></div>`
       : "",
   ].filter(Boolean).join("");
+  const retainedRows = alternatePaidObservationRows(alternatePaidObservations);
   const sourceDetails = [
     evidence.payment_population
       ? `<div><dt>Payment population</dt><dd>${esc(evidence.payment_population)}</dd></div>`
@@ -384,6 +402,7 @@ export function renderProcurementPaymentEvidenceHtml(evidence) {
     evidence.checkbook_search_href
       ? `<div><dt>Payment source</dt><dd><a href="${esc(evidence.checkbook_search_href)}" rel="noopener noreferrer">Open Checkbook for this contract</a></dd></div>`
       : "",
+    retainedRows,
   ].filter(Boolean).join("");
   const rowsHtml = lifecyclePaymentRowsHTML({
     payment_rows: evidence.payment_rows,
@@ -408,4 +427,172 @@ export function filterPaymentCoverageCaveats(claimCaveats = [], evidence = null)
     && caveat?.state === "checked-no-match"
     && String(caveat?.source_system || "").includes("checkbook_spending")
   ));
+}
+
+function finiteAmount(value) {
+  if (value == null || value === "") return null;
+  const number = typeof value === "number" ? value : Number(String(value).replace(/[$,]/g, ""));
+  return Number.isFinite(number) ? number : null;
+}
+
+function observationVintage(entry = {}) {
+  return text(
+    entry.observation_vintage
+    || entry.source_vintage
+    || entry.ingested_at
+    || entry.observed_at
+    || entry.acquired_at
+    || null,
+  );
+}
+
+function paidScopeKey(entry = {}) {
+  return text(entry.source_system) || "unknown";
+}
+
+/**
+ * Among retained paid observations in one comparable scope, prefer the newer
+ * dated observation. Absent or incomparable dates keep source-priority order
+ * already present in `entries` — never max-value selection or invented dates.
+ */
+function chooseRetainedPaid(entries = []) {
+  const paid = (Array.isArray(entries) ? entries : [])
+    .filter((entry) => entry && entry.kind === "paid_amount" && finiteAmount(entry.value) != null);
+  if (!paid.length) return null;
+
+  const byScope = new Map();
+  for (const entry of paid) {
+    const key = paidScopeKey(entry);
+    if (!byScope.has(key)) byScope.set(key, []);
+    byScope.get(key).push(entry);
+  }
+
+  // Prefer the first scope in entry order (source-priority sorted upstream).
+  // Within a scope, a strictly newer vintage wins when both sides are dated.
+  const firstScope = paidScopeKey(paid[0]);
+  const scoped = byScope.get(firstScope) || [paid[0]];
+  let chosen = scoped[0];
+  for (const candidate of scoped.slice(1)) {
+    const left = observationVintage(chosen);
+    const right = observationVintage(candidate);
+    if (left && right && right > left) chosen = candidate;
+  }
+  return chosen;
+}
+
+/**
+ * Resolve one scoped cumulative paid summary shared by the headline fact cell
+ * and the payment section. Exact-contract lifecycle evidence wins when present
+ * (including an explicit zero). Retained publisher paid observations stay as
+ * attributable alternates with their original vintages. Encumbered is never
+ * replaced by paid.
+ */
+export function resolveScopedPaymentSummary({
+  paidEntries = [],
+  paymentEvidence = null,
+  encumberedAmount = null,
+} = {}) {
+  const retained = (Array.isArray(paidEntries) ? paidEntries : [])
+    .filter((entry) => entry && entry.kind === "paid_amount" && finiteAmount(entry.value) != null)
+    .map((entry) => Object.freeze({
+      value: finiteAmount(entry.value),
+      source_system: text(entry.source_system),
+      source_observation_ref: text(entry.source_observation_ref),
+      source_field: text(entry.source_field),
+      observation_vintage: observationVintage(entry),
+    }));
+
+  const lifecycleSpent = paymentEvidence ? finiteAmount(paymentEvidence.total_spent) : null;
+  const hasLifecyclePaid = paymentEvidence != null && lifecycleSpent != null;
+
+  let paidAmount = null;
+  let primary = null;
+  if (hasLifecyclePaid) {
+    paidAmount = lifecycleSpent;
+    primary = Object.freeze({
+      scope: "exact_contract_lifecycle",
+      value: lifecycleSpent,
+      population: text(paymentEvidence.payment_population) || "exact contract_id spending rows",
+      acquisition_observed_at: text(paymentEvidence.acquisition_observed_at),
+      payment_as_of: text(paymentEvidence.payment_as_of),
+      total_payments: Number.isFinite(Number(paymentEvidence.total_payments))
+        ? Number(paymentEvidence.total_payments)
+        : null,
+    });
+  } else {
+    const chosen = chooseRetainedPaid(paidEntries);
+    if (chosen) {
+      paidAmount = finiteAmount(chosen.value);
+      primary = Object.freeze({
+        scope: "retained_source_observation",
+        value: paidAmount,
+        source_system: text(chosen.source_system),
+        source_observation_ref: text(chosen.source_observation_ref),
+        source_field: text(chosen.source_field),
+        observation_vintage: observationVintage(chosen),
+      });
+    }
+  }
+
+  const alternatePaidObservations = Object.freeze(
+    retained.filter((entry) => {
+      if (paidAmount == null) return true;
+      if (hasLifecyclePaid) return true;
+      if (entry.value !== paidAmount) return true;
+      if (primary?.source_observation_ref && entry.source_observation_ref !== primary.source_observation_ref) {
+        return true;
+      }
+      return false;
+    }),
+  );
+
+  return Object.freeze({
+    paidAmount,
+    encumberedAmount: finiteAmount(encumberedAmount),
+    primary,
+    alternatePaidObservations,
+    paymentEvidence: paymentEvidence || null,
+  });
+}
+
+/**
+ * When exact-contract lifecycle payments are shown, keep an analytics spending
+ * lookup miss as a miss — never rewrite it as a match — but scope and date the
+ * source row so it cannot be read as "no payments on this contract".
+ */
+export function reconcilePaymentCoverageProjection(coverageReader = null, paymentEvidence = null) {
+  if (!coverageReader) return null;
+  const claimCaveats = Object.freeze(filterPaymentCoverageCaveats(
+    coverageReader.claim_caveats,
+    paymentEvidence,
+  ));
+  const hasLifecyclePayments = Boolean(
+    paymentEvidence
+    && (
+      (Number.isFinite(Number(paymentEvidence.total_payments)) && Number(paymentEvidence.total_payments) > 0)
+      || finiteAmount(paymentEvidence.total_spent) != null
+      || (Array.isArray(paymentEvidence.payment_rows) && paymentEvidence.payment_rows.length > 0)
+    ),
+  );
+  const sources = Object.freeze((Array.isArray(coverageReader.sources) ? coverageReader.sources : []).map((source) => {
+    if (!hasLifecyclePayments) return source;
+    if (source?.source_system !== "checkbook_spending") return source;
+    if (source?.state !== "checked-no-match") return source;
+    const dated = text(source.observation_context);
+    const scopedLabel = "No exact match in analytics spending lookup";
+    const scopedContext = dated
+      ? `${dated} · separate analytics population, not exact-contract payments`
+      : "Separate analytics population, not exact-contract payments";
+    return Object.freeze({
+      ...source,
+      state_label: scopedLabel,
+      observation_context: scopedContext,
+      payment_population_scope: "analytics_spending_lookup",
+    });
+  }));
+  return Object.freeze({
+    ...coverageReader,
+    sources,
+    claim_caveats: claimCaveats,
+  });
 }

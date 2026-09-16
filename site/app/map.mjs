@@ -131,7 +131,8 @@ async function hydrateNearYouDeferredData() {
       statusNode.textContent = message;
       const recovery = document.createElement("a");
       recovery.className = "near-deferred-recovery";
-      recovery.href = root.dataset.nearRecoveryHref || location.href;
+      // Retry the URL that failed, not the static document's default recovery href.
+      recovery.href = location.href || root.dataset.nearRecoveryHref || "/near-you/";
       recovery.dataset.nearRecovery = "retry";
       recovery.textContent = globalThis.t("buyer_history_retry");
       host.replaceChildren(statusNode, recovery);

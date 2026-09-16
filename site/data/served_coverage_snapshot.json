@@ -199,7 +199,7 @@
           "counting_rule_key": "coverage_rule_declared",
           "route": "/browse/meetings/",
           "source_id": "oath-trial-calendar",
-          "source_name": "NYC OATH conference and trial calendar",
+          "source_name": "NYC OATH trial calendar",
           "state": "measured",
           "value": 145,
           "evidence_vintage": "2026-09-15T12:00:00.000Z",
