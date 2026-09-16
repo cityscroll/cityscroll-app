@@ -85,7 +85,7 @@ test("More tools disclosure stays closed and preserves caller markup", () => {
     bodyHtml: '<button type="button" id="ncopy">Copy</button><button type="button" id="nprint">Print</button>',
   });
   assert.match(html, new RegExp(`${NOTICE_TOOLS_REGION_ATTR}="1"`));
-  assert.match(html, new RegExp(`<summary>${NOTICE_MORE_TOOLS_SUMMARY}</summary>`));
+  assert.match(html, new RegExp(`<summary data-i18n="more_tools">${NOTICE_MORE_TOOLS_SUMMARY}</summary>`));
   assert.doesNotMatch(html, /\sopen[=>\s]/);
   assert.match(html, /id="ncopy"/);
   assert.match(html, /id="nprint"/);
@@ -115,7 +115,7 @@ test("edge notice presents each agency/vendor role once and closes optional tool
 
   assert.match(html, /data-notice-primary-facts="1"/);
   assert.match(html, /data-notice-tools-region="1"/);
-  assert.match(html, /<summary>More tools<\/summary>/);
+  assert.match(html, /<summary data-i18n="more_tools">More tools<\/summary>/);
   assert.doesNotMatch(html, /data-notice-tools-region="1"[^>]*\sopen/);
 
   assert.doesNotMatch(html, /class="ftype"[^>]*>[^<]*Homeless Services/);

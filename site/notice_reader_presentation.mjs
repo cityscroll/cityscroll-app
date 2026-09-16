@@ -147,7 +147,7 @@ export function renderNoticeMoreToolsDisclosure({
   if (!body) return "";
   const openAttr = open ? " open" : "";
   return `<details class="notice-more-tools" ${NOTICE_TOOLS_REGION_ATTR}="1"${openAttr}>
-    <summary>${escape(summary)}</summary>
+    <summary data-i18n="more_tools">${escape(summary)}</summary>
     <div class="notice-more-tools-body actions">${body}</div>
   </details>`;
 }
