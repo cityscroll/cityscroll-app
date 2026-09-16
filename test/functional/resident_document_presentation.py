@@ -15,6 +15,9 @@ import subprocess
 import sys
 import tempfile
 import threading
+import urllib.error
+import urllib.parse
+import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -25,6 +28,12 @@ NOTICE_ROUTE = f"/notices/{NOTICE_ID}/"
 NOTICE_SOURCE = f"https://a856-cityrecord.nyc.gov/RequestDetail/{NOTICE_ID}"
 LEGACY_HASH_ROUTE = f"#notice/{NOTICE_ID}"
 MANIFEST_PATH = ROOT / "docs" / "evidence" / "notice-shell" / "capture-manifest.json"
+PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
+LOCAL_CONDITION = (
+    "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; "
+    "no image binary is committed."
+)
+ARTIFACT_MANIFEST_PATH = "/artifact-manifest.json"
 
 
 def stage_assets() -> pathlib.Path:
@@ -95,6 +104,72 @@ def start_server():
 def render_hash(page) -> str:
     content = page.locator("#main").inner_text()
     return hashlib.sha256(content.encode()).hexdigest()
+
+
+def normalize_base(base: str) -> str:
+    return base.rstrip("/") + "/"
+
+
+def is_production_base(base: str) -> bool:
+    host = (urllib.parse.urlparse(normalize_base(base)).hostname or "").lower()
+    return host in PRODUCTION_HOSTS
+
+
+def manifest_condition(base: str) -> str:
+    """Condition distinguishes a local rehearsal from a production read-back."""
+    if is_production_base(base):
+        return (
+            f"Production base {normalize_base(base)} after deployment; "
+            "no image binary is committed."
+        )
+    return LOCAL_CONDITION
+
+
+def local_checkout_revision() -> str:
+    return subprocess.check_output(
+        ["git", "rev-parse", "--short=9", "HEAD"],
+        cwd=ROOT,
+        text=True,
+    ).strip()
+
+
+def deployed_build_revision(base: str, *, opener=urllib.request.urlopen) -> str:
+    """Read the served Pages artifact revision, not the local checkout HEAD."""
+    origin = normalize_base(base).rstrip("/")
+    url = f"{origin}{ARTIFACT_MANIFEST_PATH}"
+    try:
+        with opener(url, timeout=20) as response:
+            payload = json.load(response)
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError) as error:
+        raise RuntimeError(f"deployed build revision unavailable at {url}: {error}") from error
+    sha = payload.get("source_commit_sha") if isinstance(payload, dict) else None
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+        raise RuntimeError(f"deployed artifact-manifest at {url} lacks a 40-hex source_commit_sha")
+    return sha[:9]
+
+
+def resolve_manifest_revision(base: str, *, opener=urllib.request.urlopen) -> str:
+    if is_production_base(base):
+        return deployed_build_revision(base, opener=opener)
+    return local_checkout_revision()
+
+
+def assert_viewport_render_hash_invariance(captures: list[dict[str, object]]) -> None:
+    """Render hashes are over #main text; equal hashes across widths are expected and asserted."""
+    by_case: dict[str, dict[str, str]] = {}
+    for capture in captures:
+        case = str(capture["case"])
+        name = viewport_name(capture["viewport"])  # type: ignore[arg-type]
+        digest = str(capture["render_sha256"])
+        by_case.setdefault(case, {})[name] = digest
+    for case, widths in sorted(by_case.items()):
+        assert "desktop" in widths and "narrow" in widths, (
+            f"A9 writer: case {case} must be captured at desktop and narrow"
+        )
+        assert widths["desktop"] == widths["narrow"], (
+            f"A9 writer: case {case} render hash must be invariant across viewports "
+            f"(desktop={widths['desktop']} narrow={widths['narrow']})"
+        )
 
 
 def assert_composed(page, base: str, *, label: str) -> dict[str, object]:
@@ -169,14 +244,18 @@ def assert_a5_skip_navigation(page, base: str) -> dict[str, object]:
     )
     assert focused and "skip" in (focused.get("cls") or ""), f"A5: first focusable is not skip link: {focused}"
     page.keyboard.press("Enter")
-    page.wait_for_function("() => location.hash === '#main' || document.activeElement === document.getElementById('main')")
+    # Require both the fragment navigation and the focus move that skip links exist for.
+    page.wait_for_function(
+        "() => location.hash === '#main' && document.activeElement === document.getElementById('main')"
+    )
+    assert page.evaluate("document.activeElement === document.getElementById('main')")
     assert page.locator("#main").count() == 1
     return {
         "case": "notice-shell-skip-navigation",
         "route": NOTICE_ROUTE,
         "viewport": page.viewport_size,
         "assertion": (
-            "Skip navigation remains first-focusable on the notice route and moves reading "
+            "Skip navigation remains first-focusable on the notice route and moves focus "
             "into #main."
         ),
         "render_sha256": render_hash(page),
@@ -226,18 +305,25 @@ def viewport_name(viewport: dict[str, int]) -> str:
     return "desktop" if viewport["width"] >= 1000 else "narrow"
 
 
-def write_manifest(captures: list[dict[str, object]], *, revision: str) -> None:
+def manifest_base_label(base: str) -> str:
+    """Record the served origin without retaining an ephemeral local port."""
+    if is_production_base(base):
+        return normalize_base(base)
+    return "local-wrangler"
+
+
+def write_manifest(captures: list[dict[str, object]], *, base: str, revision: str) -> None:
+    assert_viewport_render_hash_invariance(captures)
     payload = {
         "schema": "cityscroll.render_capture_manifest.v1",
         "surface": "notice document shell",
-        "condition": (
-            "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; "
-            "no image binary is committed."
-        ),
+        "base": manifest_base_label(base),
+        "condition": manifest_condition(base),
         "image_binaries_committed": False,
         "revision": revision,
         "data_vintage": "materialized notice fixture 2026-08-14",
         "route": NOTICE_ROUTE,
+        "render_hash_viewport_invariant": True,
         "captures": [
             {
                 "case": capture["case"],
@@ -256,11 +342,60 @@ def write_manifest(captures: list[dict[str, object]], *, revision: str) -> None:
     MANIFEST_PATH.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
+def run_writer_self_tests() -> None:
+    """Fixture-closable checks for the capture-manifest writer (no browser)."""
+    import io
+
+    local_base = "http://127.0.0.1:8787/"
+    production_base = "https://cityscroll.org/"
+    assert is_production_base(production_base)
+    assert not is_production_base(local_base)
+    assert manifest_condition(local_base) == LOCAL_CONDITION
+    assert "Production base https://cityscroll.org/" in manifest_condition(production_base)
+    assert "Local Wrangler" not in manifest_condition(production_base)
+    assert manifest_base_label(local_base) == "local-wrangler"
+    assert manifest_base_label(production_base) == "https://cityscroll.org/"
+
+    def opener(url, timeout=20):  # noqa: ARG001
+        assert url.endswith(ARTIFACT_MANIFEST_PATH)
+        payload = {
+            "schema": "cityscroll.served-artifact-manifest.v1",
+            "source_commit_sha": "abcdef0123456789abcdef0123456789abcdef01",
+        }
+        return io.BytesIO(json.dumps(payload).encode())
+
+    assert deployed_build_revision(production_base, opener=opener) == "abcdef012"
+    assert resolve_manifest_revision(production_base, opener=opener) == "abcdef012"
+    assert resolve_manifest_revision(local_base) == local_checkout_revision()
+
+    matching = [
+        {"case": "example", "viewport": {"width": 1440, "height": 1000}, "render_sha256": "a" * 64},
+        {"case": "example", "viewport": {"width": 390, "height": 844}, "render_sha256": "a" * 64},
+    ]
+    assert_viewport_render_hash_invariance(matching)
+    mismatched = [
+        {"case": "example", "viewport": {"width": 1440, "height": 1000}, "render_sha256": "a" * 64},
+        {"case": "example", "viewport": {"width": 390, "height": 844}, "render_sha256": "b" * 64},
+    ]
+    try:
+        assert_viewport_render_hash_invariance(mismatched)
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError("expected mismatched viewport hashes to fail")
+    print("OK notice-shell capture-manifest writer self-test", flush=True)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--case", choices=["notice-shell", "contract-evidence"], required=True)
     parser.add_argument("--write-manifest", action="store_true")
+    parser.add_argument("--self-test", action="store_true", help="Run capture-manifest writer unit checks")
     args = parser.parse_args()
+
+    if args.self_test:
+        run_writer_self_tests()
+        return
 
     if args.case == "contract-evidence":
         from contract_evidence_case import run_contract_evidence_case
@@ -273,8 +408,8 @@ def main() -> None:
     base = os.environ.get("CROL_BASE")
     if not base:
         process, staging, state_dir, base, upstream = start_server()
-    base = base.rstrip("/") + "/"
-    revision = subprocess.check_output(["git", "rev-parse", "--short=9", "HEAD"], cwd=ROOT, text=True).strip()
+    base = normalize_base(base)
+    revision = resolve_manifest_revision(base)
     captures: list[dict[str, object]] = []
     try:
         with sync_playwright() as playwright:
@@ -340,8 +475,9 @@ def main() -> None:
                     flush=True,
                 )
             browser.close()
+        assert_viewport_render_hash_invariance(captures)
         if args.write_manifest:
-            write_manifest(captures, revision=revision)
+            write_manifest(captures, base=base, revision=revision)
             print(f"wrote {MANIFEST_PATH.relative_to(ROOT)}", flush=True)
     finally:
         if process:
