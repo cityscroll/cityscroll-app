@@ -1,0 +1,66 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "civic identifier search to native record and site history",
+  "condition": "Deterministic producer and document renders for the retained Coyle identifiers; no image binary is committed.",
+  "image_binaries_committed": false,
+  "revision": "8d74ef82967c4fec7bb4d4714676b9f91653789c",
+  "data_vintage": "retained Coyle procurement fixture and pinned test clock 2026-09-15",
+  "captures": [
+    {
+      "case": "identifier-search-desktop-keyboard",
+      "route": "/search/?q=07122P0010020",
+      "viewport": { "name": "desktop-keyboard", "width": 1440, "height": 900 },
+      "assertion": "Desktop keyboard path keeps the submitted PIN in the GET search form and exposes the native procurement destination as a real href.",
+      "render_sha256": "cb68fc54825bb7adcb4ef809b5464cd65979be9d8792929d275f7df7e5469988"
+    },
+    {
+      "case": "identifier-search-narrow-keyboard",
+      "route": "/search/?q=07122P0010020",
+      "viewport": { "name": "narrow-keyboard", "width": 390, "height": 844 },
+      "assertion": "Narrow keyboard path keeps the submitted PIN in the GET search form and exposes the native procurement destination as a real href.",
+      "render_sha256": "cb68fc54825bb7adcb4ef809b5464cd65979be9d8792929d275f7df7e5469988"
+    },
+    {
+      "case": "identifier-search-desktop-detail",
+      "route": "/procurements/procurement%3Acontract%3ACT107120258802303",
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "assertion": "Desktop native procurement detail publishes site-history links to parcel 3073670011 without requiring a pointer.",
+      "render_sha256": "5520609ee832e23d4b0ea9b505b770eabf60934b048eb9a5f8b09fd23b3a63a2"
+    },
+    {
+      "case": "identifier-search-narrow-detail",
+      "route": "/procurements/procurement%3Acontract%3ACT107120258802303",
+      "viewport": { "name": "narrow", "width": 390, "height": 844 },
+      "assertion": "Narrow native procurement detail publishes site-history links to parcel 3073670011 without requiring a pointer.",
+      "render_sha256": "5520609ee832e23d4b0ea9b505b770eabf60934b048eb9a5f8b09fd23b3a63a2"
+    },
+    {
+      "case": "identifier-search-no-javascript-destinations",
+      "route": "/procurements/procurement%3Acontract%3ACT107120258802303",
+      "viewport": { "name": "no-javascript", "width": 1440, "height": 900 },
+      "assertion": "With scripting unavailable the native detail still carries real href destinations for parcel history and official sources.",
+      "render_sha256": "5520609ee832e23d4b0ea9b505b770eabf60934b048eb9a5f8b09fd23b3a63a2"
+    },
+    {
+      "case": "identifier-search-site-history",
+      "route": "/parcels/3073670011/",
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "assertion": "The site-history destination named by the produced document is the exact parcel path for 3073670011.",
+      "render_sha256": "042aefa4400c7c989f7006634dc1b566e7af31c22f172160f406fb5db6290353"
+    },
+    {
+      "case": "identifier-search-failed-index",
+      "route": "/search/?q=07122P0010020",
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "assertion": "A failed search-index load keeps the submitted query and supplies retry recovery without fabricating an empty successful result.",
+      "render_sha256": "f86e0d47d9aebdd9e0aa9d345e042e9bb88dd6cf1a2d31978204b085db1505c5"
+    },
+    {
+      "case": "identifier-search-failed-detail",
+      "route": "/procurements/missing-fixture/",
+      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
+      "assertion": "A missing native detail stays a failure with recovery, never an empty successful result.",
+      "render_sha256": "b90adfd32a908c519ff1e6dc21ce40383ec92f7b7e939a707f8db5189caae546"
+    }
+  ]
+}
