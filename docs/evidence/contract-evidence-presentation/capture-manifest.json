@@ -1,24 +1,25 @@
 {
+  "base": "https://cityscroll.org/",
   "case": "contract-evidence",
-  "data_vintage": "fixture-or-served-materialization",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "data_vintage": "2026-09-16T17:57:49.750Z",
   "entries": [
     {
       "mode": "no-javascript",
       "passed": true,
       "positions": {
-        "events": 692,
-        "facts": 220,
-        "sources": 817
+        "events": 2036,
+        "facts": 326,
+        "sources": 2141
       },
-      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
+      "render_sha256": "9c51203da2cbe45cc8efc834495b1d1b098bdbfbf6c0a66d04bc37a5fc90ab56",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
         "corroborated",
-        "not-checked",
-        "checked-no-match",
         "unavailable",
-        "not-checked"
+        "corroborated",
+        "checked-no-match"
       ],
       "viewport": {
         "height": 1000,
@@ -29,19 +30,18 @@
       "mode": "failed-enhancement",
       "passed": true,
       "positions": {
-        "events": 692,
-        "facts": 220,
-        "sources": 817
+        "events": 2045,
+        "facts": 333,
+        "sources": 2150
       },
-      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
+      "render_sha256": "9c51203da2cbe45cc8efc834495b1d1b098bdbfbf6c0a66d04bc37a5fc90ab56",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
         "corroborated",
-        "not-checked",
-        "checked-no-match",
         "unavailable",
-        "not-checked"
+        "corroborated",
+        "checked-no-match"
       ],
       "viewport": {
         "height": 1000,
@@ -52,19 +52,18 @@
       "mode": "successful-enhancement",
       "passed": true,
       "positions": {
-        "events": 692,
-        "facts": 220,
-        "sources": 817
+        "events": 2045,
+        "facts": 333,
+        "sources": 2150
       },
-      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
+      "render_sha256": "9c51203da2cbe45cc8efc834495b1d1b098bdbfbf6c0a66d04bc37a5fc90ab56",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
         "corroborated",
-        "not-checked",
-        "checked-no-match",
         "unavailable",
-        "not-checked"
+        "corroborated",
+        "checked-no-match"
       ],
       "viewport": {
         "height": 1000,
@@ -75,19 +74,18 @@
       "mode": "no-javascript",
       "passed": true,
       "positions": {
-        "events": 692,
-        "facts": 220,
-        "sources": 817
+        "events": 2036,
+        "facts": 326,
+        "sources": 2141
       },
-      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
+      "render_sha256": "9c51203da2cbe45cc8efc834495b1d1b098bdbfbf6c0a66d04bc37a5fc90ab56",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
         "corroborated",
-        "not-checked",
-        "checked-no-match",
         "unavailable",
-        "not-checked"
+        "corroborated",
+        "checked-no-match"
       ],
       "viewport": {
         "height": 844,
@@ -98,19 +96,18 @@
       "mode": "failed-enhancement",
       "passed": true,
       "positions": {
-        "events": 692,
-        "facts": 220,
-        "sources": 817
+        "events": 2045,
+        "facts": 333,
+        "sources": 2150
       },
-      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
+      "render_sha256": "9c51203da2cbe45cc8efc834495b1d1b098bdbfbf6c0a66d04bc37a5fc90ab56",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
         "corroborated",
-        "not-checked",
-        "checked-no-match",
         "unavailable",
-        "not-checked"
+        "corroborated",
+        "checked-no-match"
       ],
       "viewport": {
         "height": 844,
@@ -121,19 +118,18 @@
       "mode": "successful-enhancement",
       "passed": true,
       "positions": {
-        "events": 692,
-        "facts": 220,
-        "sources": 817
+        "events": 2045,
+        "facts": 333,
+        "sources": 2150
       },
-      "render_sha256": "abf2168568862f97579a8dd15a51fd15eb23c53b78ef377df7ace64604e86592",
+      "render_sha256": "9c51203da2cbe45cc8efc834495b1d1b098bdbfbf6c0a66d04bc37a5fc90ab56",
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "states": [
         "corroborated",
         "corroborated",
-        "not-checked",
-        "checked-no-match",
         "unavailable",
-        "not-checked"
+        "corroborated",
+        "checked-no-match"
       ],
       "viewport": {
         "height": 844,
@@ -141,6 +137,6 @@
       }
     }
   ],
-  "revision": "44c7bfae597892f2e798980f1f4285d5e43f4cc8",
+  "revision": "c2ae5dcff6569e0b405d79d89e3081a73ed08ff2",
   "schema": "cityscroll.capture_manifest.v1"
 }
