@@ -1,0 +1,18 @@
+{
+  "schema": "cityscroll.browser_journey_manifest.v1",
+  "surface": "consultation browser journey",
+  "condition": "Served site exercised with Playwright; no image binary is committed.",
+  "image_binaries_committed": false,
+  "revision": "6314268e1",
+  "data_vintage": "materialized consultation fixtures retained by the repository",
+  "captures": [
+    {"case": "consultations-desktop-journey", "route": "/consultations/", "viewport": {"name": "desktop", "width": 1200, "height": 900}, "assertion": "Healthy served collection supports scope selection, inspection, dismissal, detail navigation, and Back.", "render_sha256": "9a0899126e556b1cff44f3c2e4630865654b1674da6c2dac49c76d3c6dd6ac17"},
+    {"case": "consultations-desktop-no-javascript", "route": "/consultations/", "viewport": {"name": "desktop", "width": 1200, "height": 900}, "assertion": "No-JavaScript collection remains inspectable and navigable through native links and disclosures.", "render_sha256": "9a0899126e556b1cff44f3c2e4630865654b1674da6c2dac49c76d3c6dd6ac17"},
+    {"case": "consultations-desktop-failed-enhancement", "route": "/consultations/", "viewport": {"name": "desktop", "width": 1200, "height": 900}, "assertion": "Blocking enhancement resources leaves the served consultation journey usable with native document behavior.", "render_sha256": "9a0899126e556b1cff44f3c2e4630865654b1674da6c2dac49c76d3c6dd6ac17"},
+    {"case": "consultations-desktop-failed-detail", "route": "/consultations/missing-fixture/", "viewport": {"name": "desktop", "width": 1200, "height": 900}, "assertion": "A missing consultation detail is bounded as a failed route response.", "render_sha256": "9df0e2610464d60602d9be8fad19d2de05bfbe7e903605d22ac9d4075ebc22d6"},
+    {"case": "consultations-narrow-touch-journey", "route": "/consultations/", "viewport": {"name": "narrow-touch", "width": 390, "height": 844}, "assertion": "Healthy served collection supports scope selection, inspection, dismissal, detail navigation, and Back.", "render_sha256": "9a0899126e556b1cff44f3c2e4630865654b1674da6c2dac49c76d3c6dd6ac17"},
+    {"case": "consultations-narrow-touch-no-javascript", "route": "/consultations/", "viewport": {"name": "narrow-touch", "width": 390, "height": 844}, "assertion": "No-JavaScript collection remains inspectable and navigable through native links and disclosures.", "render_sha256": "9a0899126e556b1cff44f3c2e4630865654b1674da6c2dac49c76d3c6dd6ac17"},
+    {"case": "consultations-narrow-touch-failed-enhancement", "route": "/consultations/", "viewport": {"name": "narrow-touch", "width": 390, "height": 844}, "assertion": "Blocking enhancement resources leaves the served consultation journey usable with native document behavior.", "render_sha256": "9a0899126e556b1cff44f3c2e4630865654b1674da6c2dac49c76d3c6dd6ac17"},
+    {"case": "consultations-narrow-touch-failed-detail", "route": "/consultations/missing-fixture/", "viewport": {"name": "narrow-touch", "width": 390, "height": 844}, "assertion": "A missing consultation detail is bounded as a failed route response.", "render_sha256": "9df0e2610464d60602d9be8fad19d2de05bfbe7e903605d22ac9d4075ebc22d6"}
+  ]
+}

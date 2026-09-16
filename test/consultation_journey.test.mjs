@@ -6,7 +6,7 @@ import { buildConsultationCollection, buildConsultationDetail, renderConsultatio
 
 const CAPTURE_MANIFEST = new URL("../docs/evidence/consultation-pages/capture-manifest.json", import.meta.url);
 
-test("scope, inspect, dismiss, detail, back, and continued browsing are real document affordances", () => {
+test("scope, inspect, detail, back, and continued browsing are real document affordances", () => {
   const query = new URLSearchParams("category=Transit%20service%20and%20corridor%20priorities");
   const view = buildConsultationCollection({ query });
   const html = renderConsultationCollectionDocument(view);
@@ -27,7 +27,7 @@ test("canonical routes are safe and unknown details remain ordinary links", () =
   assert.match(renderConsultationDetailDocument(buildConsultationDetail("cb14-community-budget-fy2028")), /data-return-focus/);
 });
 
-test("selection, expanded row, dismissal, scroll, and return focus are represented by native document state", () => {
+test("selection, expanded row, scroll, and return focus are represented by native document state", () => {
   const query = new URLSearchParams("category=Facility+siting+and+program+design&place=New+York+City");
   const view = buildConsultationCollection({ query });
   assert.equal(view.records.length, 1);
@@ -46,6 +46,24 @@ test("selection, expanded row, dismissal, scroll, and return focus are represent
   assert.match(detail, /href="\/consultations\/"/);
 });
 
+test("dismissal leaves the native Inspect context disclosure closed by default", () => {
+  const html = renderConsultationCollectionDocument(buildConsultationCollection());
+  const disclosures = [...html.matchAll(/<details\b[^>]*>/g)].map(([tag]) => tag);
+  assert.equal(disclosures.length, 6);
+  assert.ok(disclosures.every((tag) => !/\bopen(?:\s|=|>)/i.test(tag)));
+  assert.match(html, /<summary>Inspect context<\/summary>/);
+});
+
+function renderCaptureRoute(route) {
+  const url = new URL(route, "https://cityscroll.org");
+  const id = url.pathname.match(/^\/consultations\/([^/]+)\/$/)?.[1];
+  if (!id) return renderConsultationCollectionDocument(buildConsultationCollection({ query: url.searchParams }));
+  const detail = buildConsultationDetail(decodeURIComponent(id), { query: url.searchParams.toString() });
+  return detail
+    ? renderConsultationDetailDocument(detail)
+    : "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Consultation not found · CityScroll</title></head><body><main><h1>Consultation not found</h1><p>The consultation is not in the current materialized collection.</p><p><a href=\"/consultations/\">Browse consultations</a></p></main></body></html>";
+}
+
 test("the retained journey manifest covers every required path with content hashes", async () => {
   const manifest = JSON.parse(await readFile(CAPTURE_MANIFEST, "utf8"));
   assert.equal(manifest.image_binaries_committed, false);
@@ -62,13 +80,11 @@ test("the retained journey manifest covers every required path with content hash
     assert.ok(capture.assertion.length > 20, capture.case);
     assert.match(capture.render_sha256, /^[a-f0-9]{64}$/, capture.case);
   }
-  const collection = renderConsultationCollectionDocument(buildConsultationCollection());
-  const detail = renderConsultationDetailDocument(buildConsultationDetail("dot-fast-buses-central-brooklyn"));
-  const expectedHashes = new Set([
-    createHash("sha256").update(collection).digest("hex"),
-    createHash("sha256").update(detail).digest("hex"),
-  ]);
-  assert.ok(manifest.captures.some((capture) => expectedHashes.has(capture.render_sha256)));
+  for (const capture of manifest.captures) {
+    const rendered = renderCaptureRoute(capture.route);
+    const hash = createHash("sha256").update(rendered).digest("hex");
+    assert.equal(capture.render_sha256, hash, capture.case);
+  }
 });
 
 test("the static collection remains useful without JavaScript", () => {
