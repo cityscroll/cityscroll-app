@@ -7,11 +7,14 @@ checks that depend on the merge base, so a queue entry finishes in roughly
 15–20 minutes instead of 45+. Every `pull_request` run and every post-merge
 `push` to `main` keeps the full check set.
 
-Browser accessibility shards, the accessibility aggregator, performance
-serial/raw-sample jobs (and their budgets aggregate), and the Playwright
-functional layer are skipped at the job level on `merge_group`
-(`if: always() && github.event_name != 'merge_group'`). Their check names are
-absent for queue builds rather than reported as skipped-failures.
+Only the slow browser-driven classes are trimmed on `merge_group`: accessibility
+shards and their aggregator, performance serial baseline and raw-sample shards,
+and the Playwright functional layer. The performance budgets aggregate is also
+skipped on `merge_group` because it has no inputs once those pilots are absent
+and would otherwise fail red. Reading-level stays on `merge_group` and remains
+ruleset-required: it is cheap and guards copy that other merges can change.
+Trimmed jobs use `if: always() && github.event_name != 'merge_group'` so their
+check names are absent for queue builds rather than reported as skipped-failures.
 
 ### Ruleset required-status-check lists
 
