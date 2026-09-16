@@ -77,15 +77,22 @@ export function siteLifecycleMembersForSubject(lifecycle, subjectId) {
   return { parcelId: parcelIds[0], parcelIds, members: Array.isArray(parcel?.members) ? parcel.members : [] };
 }
 
+/** Reciprocal land surface shows contracts/awards only — not hearing sections. */
+function isReciprocalLandMember(member) {
+  const id = text(member?.subject_id, 320);
+  return id.startsWith("procurement:contract:") || id.startsWith("procurement:award:");
+}
+
 /** Build the reciprocal, kind-filtered view used by both native detail surfaces. */
 export function buildSiteLifecycleContext(lifecycle, { subjectId, surface = "procurement" } = {}) {
   if (!lifecycle || lifecycle.schema !== "cityscroll.site_lifecycle.v1" || !text(subjectId)) return null;
   const located = siteLifecycleMembersForSubject(lifecycle, subjectId);
   if (!located.members.length) return null;
-  const wanted = surface === "land" ? ["procurement"] : ["land_project", "land_application"];
   const members = located.members.filter((member) => {
     if (text(member.subject_id) === text(subjectId)) return false;
-    return wanted.some((kind) => text(member.record_kind).startsWith(kind));
+    if (surface === "land") return isReciprocalLandMember(member);
+    const kind = text(member.record_kind);
+    return kind.startsWith("land_project") || kind.startsWith("land_application");
   });
   if (!members.length) return null;
   return {
