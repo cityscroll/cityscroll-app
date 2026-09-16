@@ -578,7 +578,10 @@ test("follow-calendar browser case fixture records routes and content hashes", a
       "follow-discovery-group": ["email updates", "calendar subscription"],
     };
 
-    for (const capture of manifest.captures) {
+    const localCaptures = manifest.captures.filter(
+      (capture) => capture.condition !== "production-subscription-handoff",
+    );
+    for (const capture of localCaptures) {
       assert.match(capture.sha256, /^[a-f0-9]{64}$/, capture.route);
       assert.notEqual(capture.sha256, "local-headless-capture", capture.route);
       assert.ok(capture.assertion.length > 20, capture.route);
@@ -597,7 +600,7 @@ test("follow-calendar browser case fixture records routes and content hashes", a
     const browse = renderBrowseView(buildBrowseView("meetings", {
       rows: datedMeetingRows(),
     }, new URLSearchParams("agency=City%20Planning")));
-    const browseCapture = manifest.captures.find((capture) => capture.route.startsWith("/browse/meetings/"));
+    const browseCapture = localCaptures.find((capture) => capture.route.startsWith("/browse/meetings/"));
     assert.ok(browseCapture);
     assert.equal(browseCapture.sha256, digest(browse));
 
@@ -609,7 +612,7 @@ test("follow-calendar browser case fixture records routes and content hashes", a
       meetings: { generated_at: "2026-09-15", rows: datedMeetingRows() },
       people: { generated_at: "2026-09-15", rows: [] },
     }, "2026-09-15");
-    for (const capture of manifest.captures.filter((row) => row.route === "/now/")) {
+    for (const capture of localCaptures.filter((row) => row.route === "/now/")) {
       assert.equal(capture.sha256, digest(nowHtml), capture.viewport);
     }
 
@@ -617,7 +620,7 @@ test("follow-calendar browser case fixture records routes and content hashes", a
       meetingsScope("#meetings?agency=Buildings&q=scaffold"),
       { lens: "meetings" },
     );
-    const searchCapture = manifest.captures.find((capture) => capture.route.startsWith("/#meetings"));
+    const searchCapture = localCaptures.find((capture) => capture.route.startsWith("/#meetings"));
     assert.ok(searchCapture);
     assert.equal(searchCapture.sha256, digest(searchHtml));
 
@@ -629,8 +632,41 @@ test("follow-calendar browser case fixture records routes and content hashes", a
       eventDownloadHref: "/meeting.ics?id=meeting%3Acity_record%3A123",
       includeSavedSearch: true,
     }));
-    const groupCapture = manifest.captures.find((capture) => capture.route === "follow-discovery-group");
+    const groupCapture = localCaptures.find((capture) => capture.route === "follow-discovery-group");
     assert.ok(groupCapture);
     assert.equal(groupCapture.sha256, digest(groupHtml));
   });
+});
+
+test("A5 production capture records completed subscription handoff without enrolling", () => {
+  const manifestPath = new URL("../docs/evidence/follow-calendar-discovery/capture-manifest.json", import.meta.url);
+  const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+  const handoffs = manifest.captures.filter(
+    (capture) => capture.condition === "production-subscription-handoff",
+  );
+  assert.equal(handoffs.length, 2);
+  const viewports = new Set(handoffs.map((capture) => capture.viewport));
+  assert.deepEqual([...viewports].sort(), ["1440x1000", "390x844"]);
+  assert.ok(manifest.production_freshness_generated_at);
+  assert.ok(manifest.production_revision);
+  assert.match(String(manifest.production_revision), /^grounded at [0-9a-f]{40}$/);
+  assert.ok(
+    Date.parse(manifest.production_freshness_generated_at) > Date.parse("2026-09-16T13:52:00.000Z"),
+    "production freshness must be newer than the landed delivery",
+  );
+  for (const capture of handoffs) {
+    assert.equal(capture.route, "/browse/meetings/");
+    assert.equal(capture.data_vintage, "production");
+    assert.equal(capture.revision, manifest.production_revision);
+    assert.match(capture.sha256, /^[a-f0-9]{64}$/);
+    assert.notEqual(capture.sha256, "local-headless-capture");
+    assert.match(capture.assertion, /subscription handoff/i);
+    assert.match(capture.assertion, /enrolls no recipient/i);
+    assert.equal(capture.observed?.enroll_request_count, 0);
+    assert.equal(capture.observed?.dialog_open, true);
+    assert.equal(capture.observed?.discovery_present, true);
+    assert.equal(capture.observed?.handoff_marker, true);
+    assert.match(String(capture.observed?.open_href || ""), /^webcal:/i);
+    assert.deepEqual(capture.observed?.copied, [capture.observed?.copy_url]);
+  }
 });

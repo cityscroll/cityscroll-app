@@ -44,6 +44,57 @@
       "data_vintage": "site build",
       "assertion": "Discovery group distinguishes email updates from updating calendar subscription and optional feeds",
       "sha256": "244ce385552af633c382f0c2e6da22d32fcdd3192da1eaa2b14d938340c5280f"
+    },
+    {
+      "route": "/browse/meetings/",
+      "viewport": "1440x1000",
+      "data_vintage": "production",
+      "assertion": "Completed Browse meetings navigation opens the calendar subscription handoff and copying the feed enrolls no recipient",
+      "sha256": "714014c46f031f104fd2759d42bcdc79b9da67b61c995206b9523777fc057bf1",
+      "condition": "production-subscription-handoff",
+      "observed": {
+        "inner_width": 1440,
+        "discovery_present": true,
+        "dialog_open": true,
+        "handoff_marker": true,
+        "feed_url": "https://api.cityscroll.org/feed.ics?lens=meetings&filter=%7B%7D",
+        "webcal_url": "webcal://api.cityscroll.org/feed.ics?lens=meetings&filter=%7B%7D",
+        "open_href": "webcal://api.cityscroll.org/feed.ics?lens=meetings&filter=%7B%7D",
+        "copy_url": "https://api.cityscroll.org/feed.ics?lens=meetings&filter=%7B%7D",
+        "copied": [
+          "https://api.cityscroll.org/feed.ics?lens=meetings&filter=%7B%7D"
+        ],
+        "enroll_request_count": 0,
+        "final_path": "/browse/meetings/"
+      },
+      "revision": "grounded at d820fc8a3a354d69321a3368b096f436d01e2fcd"
+    },
+    {
+      "route": "/browse/meetings/",
+      "viewport": "390x844",
+      "data_vintage": "production",
+      "assertion": "Completed Browse meetings navigation opens the calendar subscription handoff and copying the feed enrolls no recipient",
+      "sha256": "bafdf502dee39130f7854f00b1bf948cdd028d993989e8905516a899c9642957",
+      "condition": "production-subscription-handoff",
+      "observed": {
+        "inner_width": 390,
+        "discovery_present": true,
+        "dialog_open": true,
+        "handoff_marker": true,
+        "feed_url": "https://api.cityscroll.org/feed.ics?lens=meetings&filter=%7B%7D",
+        "webcal_url": "webcal://api.cityscroll.org/feed.ics?lens=meetings&filter=%7B%7D",
+        "open_href": "webcal://api.cityscroll.org/feed.ics?lens=meetings&filter=%7B%7D",
+        "copy_url": "https://api.cityscroll.org/feed.ics?lens=meetings&filter=%7B%7D",
+        "copied": [
+          "https://api.cityscroll.org/feed.ics?lens=meetings&filter=%7B%7D"
+        ],
+        "enroll_request_count": 0,
+        "final_path": "/browse/meetings/"
+      },
+      "revision": "grounded at d820fc8a3a354d69321a3368b096f436d01e2fcd"
     }
-  ]
+  ],
+  "production_revision": "grounded at d820fc8a3a354d69321a3368b096f436d01e2fcd",
+  "production_freshness_generated_at": "2026-09-16T17:57:28.901Z",
+  "production_deployment_identity": "c2ae5dcff6569e0b405d79d89e3081a73ed08ff2"
 }
