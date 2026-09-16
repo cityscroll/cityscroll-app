@@ -100,8 +100,14 @@ export function parseOathTrialCsv(csv, { sourceUrl = OATH_TRIAL_CALENDAR_SOURCE_
   const rows = csvRows(csv);
   const records = [];
   const seen = new Set();
+  let excludedConferenceCount = 0;
+  let exactDuplicateCount = 0;
   for (const row of rows) {
-    if (!trialRow(row)) continue;
+    if (!trialRow(row)) {
+      const type = pick(row, ["type", "proceeding_type", "event_type", "hearing_type", "about"]);
+      if (type && /conference/i.test(type)) excludedConferenceCount += 1;
+      continue;
+    }
     const fields = sourceFields(row);
     const index = fields.index;
     const dateValue = pick(row, ["date", "trial_date", "event_date", "hearing_date"]);
@@ -110,7 +116,10 @@ export function parseOathTrialCsv(csv, { sourceUrl = OATH_TRIAL_CALENDAR_SOURCE_
     const eventDate = localDateTime(dateValue, timeValue);
     if (!index || !eventDate) continue;
     const sessionId = oathTrialSessionId({ index, date: eventDate.slice(0, 10), start: eventDate.slice(11) || "", type });
-    if (seen.has(sessionId)) continue;
+    if (seen.has(sessionId)) {
+      exactDuplicateCount += 1;
+      continue;
+    }
     seen.add(sessionId);
     const sourceReceipt = receipt || {
       schema: "cityscroll.meeting_source_receipt.v1", source_url: sourceUrl, observed_at: observedAt,
@@ -125,7 +134,20 @@ export function parseOathTrialCsv(csv, { sourceUrl = OATH_TRIAL_CALENDAR_SOURCE_
       venue: null, event_end: null,
     }));
   }
-  return { schema: OATH_TRIAL_CALENDAR_SCHEMA, rows: records, records, documents: [], source_revision: sourceRevision, generated_at: observedAt || null };
+  return {
+    schema: OATH_TRIAL_CALENDAR_SCHEMA,
+    rows: records,
+    records,
+    documents: [],
+    source_revision: sourceRevision,
+    generated_at: observedAt || null,
+    population: {
+      input_row_count: rows.length,
+      trial_session_count: records.length,
+      excluded_conference_count: excludedConferenceCount,
+      exact_duplicate_count: exactDuplicateCount,
+    },
+  };
 }
 
 export { localDateTime };
