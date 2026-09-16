@@ -5,16 +5,16 @@ A failure on one does not prove a failure on the other.
 
 | Leg | Path | How it is checked |
 |---|---|---|
-| Outbound operations mailbox | Worker Resend send to `team@cityscroll.org` | Rejected sends remain failures; outbound delivery behavior is unchanged. |
+| Outbound operations mailbox | Worker Resend send for a validated `production-emergency` incident | Routine findings and repair judgments stay silent in Desk. Only validated production emergencies are email eligible; rejected or indeterminate emergency sends remain visible. |
 | Inbound Worker consumer | Legacy Email Routing → Worker `email()` handler | Retired 2026-09-08; residual deliveries record receipts and a countable `inbound-email-retired` log event, without parsing, enrollment, or replies. |
 | Inbound Gmail forward | `alerts@crol-list.org` and the domain catch-all | Dashboard-gated; this repo cannot observe the destination inbox |
 
 Subscribe-by-email and its inbound canary were retired on 2026-09-08.
-Existing watches, the Following page, digests, and other outbound mail are unchanged.
+Existing watches, the Following page, digests, and other subscriber or product mail are unchanged.
 `GET /admin/reliability/mail` reports the inbound leg as `retired`; old canary
 receipts, missing matches, and elapsed probe deadlines cannot fail health or page.
 The former canary POST action is no longer supported (HTTP 405), and scheduled
-checks only read health. Rejected operations sends still produce HTTP 503 and
+checks only read health. Rejected emergency operations sends still produce HTTP 503 and
 remain visible through the scheduled reliability check without retrying a dead mail leg.
 
 The legacy subscribe routing rule is external to this repository; no routing-rule
@@ -85,7 +85,7 @@ Other rails, if they had failed:
 |---|---|---|---|
 | Worker consumer inbound | KV receipt (destination/time/retired disposition) | Gone | None. Existing watches remain in SUBS; inbound messages cannot create watches |
 | Subscriber digest | D1 outbox + KV watermarks | Resend retrieve when `provider_message_id` and API key exist; otherwise reconstruct from `payload_json` | Owed D1 rows drain on the next digest. That is a rebuild, not an RFC822 replay |
-| Operations mailbox send | KV receipt after deploy | Resend retrieve if a provider id was stored | `POST /admin/ops-alert` can send a new alarm; it cannot resurrect a never-generated one |
+| Operations mailbox send | KV receipt after deploy | Resend retrieve if a provider id was stored | `POST /admin/ops-alert` records routine alarms in Desk and can email only a validated `production-emergency`; it cannot resurrect a never-generated message |
 
 The live probe in this environment: GitHub Actions logs are reachable; Wrangler/Resend/admin-key
 secrets are not present, so D1/KV/Resend pulls stay `credential_missing` until those
@@ -95,6 +95,6 @@ secrets are supplied. Fixture `--recovery` does not call providers.
 
 - Inbound Worker deliveries write `ops:mail:inbound:latest` with destination,
   observation time, and `disposition: retired`. Message bodies and senders are not stored.
-- Operations-mailbox sends write `ops:mail:outbound:latest` with Resend acceptance.
+- Eligible emergency operations-mailbox sends write `ops:mail:outbound:latest` with Resend acceptance; routine findings and repair judgments do not send.
 - Historical canary receipts are ignored; no new probe or token-match receipts are written.
 - Exception findings append a bounded history at `ops:mail:findings:history`.

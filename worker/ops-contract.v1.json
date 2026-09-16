@@ -965,7 +965,7 @@
         "POST"
       ],
       "auth": "ADMIN_KEY",
-      "description": "Private relay for operational alarms; sends only to the operations mailbox through Resend and deduplicates by guard fingerprint. Scheduler and served-artifact guards must supply workflow, source revision, a validated run link and a validated raw-receipt link, otherwise the relay refuses with 400."
+      "description": "Private relay for operational alarms into Desk and the bounded repair queue. Routine findings and repair judgments do not send email; only a validated production-emergency incident is email eligible, with D1 ownership and provider idempotency keyed by its canonical signature. Scheduler and served-artifact guards must supply workflow, source revision, a validated run link and a validated raw-receipt link, otherwise the relay refuses with 400."
     },
     {
       "path": "/admin/reliability/digest",
@@ -973,7 +973,7 @@
         "GET"
       ],
       "auth": "ADMIN_KEY",
-      "description": "Digest dead-man check including consecutive-delivery watermark staleness and mail-leg receipts; returns 503 and GitHub-red when unhealthy. Operations email is skipped when the mail rail itself is the finding."
+      "description": "Digest dead-man check including consecutive-delivery watermark staleness and mail-leg receipts; returns 503 and GitHub-red when unhealthy. Findings are recorded in Desk and offered to the bounded repair queue without routine operations email."
     },
     {
       "path": "/admin/reliability/scheduler",
@@ -982,7 +982,7 @@
         "GET"
       ],
       "auth": "ADMIN_KEY",
-      "description": "POST records one external scheduler heartbeat and accepts it only with concrete workflow, run identity, source revision and cycle result; an unattributable heartbeat is rejected with 400 and never stored. POST with cycle=desk-publication records the Desk evidence-publication heartbeat on the same route and store without replacing the scheduler heartbeat. GET reports scheduler liveness, Desk publication liveness, and mail-leg receipts as separate legs and returns 503 when unhealthy; alerts carry the observing workflow, run link, source revision and this route as the raw receipt, and are held rather than sent when that evidence is absent."
+      "description": "POST records one external scheduler heartbeat and accepts it only with concrete workflow, run identity, source revision and cycle result; an unattributable heartbeat is rejected with 400 and never stored. POST with cycle=desk-publication records the Desk evidence-publication heartbeat on the same route and store without replacing the scheduler heartbeat. GET reports scheduler liveness, Desk publication liveness, and mail-leg receipts as separate legs and returns 503 when unhealthy; findings carry the observing workflow, run link, source revision and this route as the raw receipt, remain Desk-only, and are held as evidence failures when that evidence is absent."
     },
     {
       "path": "/admin/reliability/mail",
@@ -990,7 +990,7 @@
         "GET"
       ],
       "auth": "ADMIN_KEY",
-      "description": "Mail-leg receipt health. Inbound subscriptions and their canary retired on 2026-09-08; residual mail is receipt-only and old canary state cannot fail health. GET returns 503 for rejected operations sends without retrying the dead mail rail. Outbound delivery is unchanged. The Gmail forward leg remains unprobed."
+      "description": "Mail-leg receipt health. Inbound subscriptions and their canary retired on 2026-09-08; residual mail is receipt-only and old canary state cannot fail health. GET returns 503 for rejected emergency operations sends without retrying the dead mail rail. Routine reliability findings are Desk-only, while subscriber and product outbound delivery is unchanged. The Gmail forward leg remains unprobed."
     },
     {
       "path": "/admin/digest-send-test",
