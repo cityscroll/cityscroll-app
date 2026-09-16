@@ -18,8 +18,8 @@
       "path": "test/ai_context_handoff.test.mjs"
     },
     {
-      "id": "ai-context-browser-case",
-      "path": "test/functional/capability_discovery.py"
+      "id": "land-ai-context-tools",
+      "path": "site/land_ai_context_tools.mjs"
     },
     {
       "id": "ai-context-capture-manifest",
