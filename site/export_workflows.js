@@ -214,6 +214,9 @@
     agency_forecast:{sheets:["Lifecycle","Rendered context"]},
     official_notice_text:{sheets:["Rendered context"]},
     unofficial_translation:{excluded:"Unofficial translations are intentionally omitted; the official English record remains in the export."},
+    // Wider-project capital facts stay on the notice for reading. The notice workbook
+    // keeps official notice and lifecycle sheets without duplicating that materialization.
+    project_context:{excluded:"Wider-project capital context is retained on the notice for reading and is intentionally omitted from the notice workbook export."},
     exam_identity:{sheets:["Exam"]},
     exam_actions:{sheets:["Exam"]},
     exam_facts:{sheets:["Exam"]},
