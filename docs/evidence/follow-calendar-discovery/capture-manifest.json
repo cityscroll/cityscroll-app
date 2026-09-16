@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.follow_calendar_discovery_capture_manifest.v1",
-  "revision": "grounded at 2ac1086eb3191960f0d3cc4a950b9a38b501e813",
+  "revision": "grounded at 008423660a08901f7914cf15759ad20c4fc0a281",
   "data_vintage": "site build",
   "captures": [
     {
@@ -14,7 +14,7 @@
       "route": "/browse/meetings/?agency=City%20Planning",
       "viewport": "390x844",
       "data_vintage": "site build",
-      "assertion": "Phone Browse keeps the same follow discovery group without duplicating calendar subscription",
+      "assertion": "Phone Browse keeps the same Subscribe to calendar control with Get email updates and no duplicate calendar subscription",
       "sha256": "5d64fae0133103be83517b1defe4da720e598fc5b0f1aaa773121c39d4bac079"
     },
     {
@@ -28,7 +28,7 @@
       "route": "/now/",
       "viewport": "390x844",
       "data_vintage": "site build",
-      "assertion": "Phone Now keeps the follow discovery group beside the primary deadlines reading",
+      "assertion": "Phone Now keeps Keep following this selection beside the primary deadlines reading without a subscription on open",
       "sha256": "0ae7373b4dc211e641255cda6bbd9fb18444a149b4e18064c6f00d34e79e721f"
     },
     {
@@ -43,7 +43,7 @@
       "viewport": "1440x1000",
       "data_vintage": "site build",
       "assertion": "Discovery group distinguishes email updates from updating calendar subscription and optional feeds",
-      "sha256": "a4229fc2a0698d269873f76156cedc399c84fa455f516d7abc740a55442948d2"
+      "sha256": "244ce385552af633c382f0c2e6da22d32fcdd3192da1eaa2b14d938340c5280f"
     }
   ]
 }
