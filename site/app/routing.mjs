@@ -521,7 +521,7 @@ const DEEPLINK_LENSES = {
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
   rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version", "activity", "body", "access"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab", "entity_refs_all"],
   mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
@@ -628,6 +628,12 @@ function deeplinkClampField(name, v){
     case "entity_refs_all": return Array.isArray(v) ? [...new Set(v.map(item=>String(item||"").trim()).filter(item=>/^(?:agency:[^:\s]+:[^:\s]+|vendor:stem:[^:\s]+|entity:official:[^:\s]+|project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}|notice:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|pin:[A-Za-z0-9][A-Za-z0-9_-]{3,39}|exam:\d{4}|bbl:\d{10})$/.test(item)))].slice(0,20) : [];
     case "connection_relation": return typeof v==="string" && ["published_by_agency","applicant_agency","hosts_meeting","named_vendor","sited_on_parcel","votes_on","references_contract","registered_as","shares_authority_key","about_notice","parcel_links_project","named_owner","same_rulemaking"].includes(v) ? v : null;
     case "place_role": return DEEPLINK_PLACE_ROLES.includes(v) ? v : null;
+    case "activity": return v === "observe" ? "observe" : null;
+    case "body": {
+      const s = typeof v === "string" ? v.trim() : "";
+      return ["pdc_calendar", "bsa_calendar", "oath_trial_calendar"].includes(s) ? s : null;
+    }
+    case "access": return ["remote", "in_person", "unknown"].includes(v) ? v : null;
     case "processState": {
       // Hand-synced with worker/src/lib/filter.mjs + KNOWN_PROCUREMENT_PROCESS_STATES.
       const s=typeof v==="string"?v.trim().toLowerCase():"";
@@ -667,6 +673,9 @@ function sanitizeDeepLinkFilter(lens, input){
   for(const name of fields) out[name] = deeplinkClampField(name, f[name]);
   if(!out.geographies?.length) delete out.geographies;
   if(!out.place_role) delete out.place_role;
+  if(!out.activity) delete out.activity;
+  if(!out.body) delete out.body;
+  if(!out.access) delete out.access;
   if(!out.procurement_id) delete out.procurement_id;
   if(!out.processState) delete out.processState;
   if(!out.provision_id) delete out.provision_id;

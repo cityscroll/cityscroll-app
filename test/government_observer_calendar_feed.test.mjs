@@ -71,7 +71,6 @@ test("A1 subscription emits exact observe scope and feed replay keeps collection
   const scope = normalizeObserveScope({
     body: "bsa_calendar",
     access: "remote",
-    placeRole: "venue",
   });
   const watch = observeSubscriptionWatchFromScope(scope);
   assert.equal(watch.ok, true);
@@ -80,7 +79,6 @@ test("A1 subscription emits exact observe scope and feed replay keeps collection
     activity: "observe",
     body: "bsa_calendar",
     access: "remote",
-    place_role: "venue",
   });
 
   const feedUrl = observeCalendarFeedUrl(scope);
@@ -89,6 +87,13 @@ test("A1 subscription emits exact observe scope and feed replay keeps collection
   assert.equal(url.searchParams.get("lens"), "meetings");
   assert.deepEqual(JSON.parse(url.searchParams.get("filter")), watch.watch.filter);
   assert.equal(calendarFeedUrlForScope(watch.watch), feedUrl);
+
+  // place_role remains a discovery facet the standing feed must decline.
+  assert.equal(observeCalendarFeedUrl({ body: "bsa_calendar", placeRole: "venue" }), null);
+  assert.equal(
+    observeSubscriptionWatchFromScope({ body: "bsa_calendar", placeRole: "venue" }).ok,
+    false,
+  );
 
   const rows = collectionRows();
   const surface = buildObserveSurface({ rows }, scope);
@@ -102,7 +107,7 @@ test("A1 subscription emits exact observe scope and feed replay keeps collection
   assert.equal(sanitized.activity, "observe");
   assert.equal(sanitized.body, "bsa_calendar");
   assert.equal(sanitized.access, "remote");
-  assert.equal(sanitized.place_role, "venue");
+  assert.equal(sanitized.place_role, undefined);
   const replayed = rows
     .filter((row) => day(row.event_date) && day(row.event_date) > asOf)
     .filter((row) => meetingRowMatchesObserveFilter(row, sanitized));
@@ -138,8 +143,10 @@ test("A2 PDC date-only, BSA both days, and OATH New York start keep source preci
 
   const bsaUids = bsaCalendarOccurrences(bsa).map((row) => row.uid);
   assert.equal(bsaUids.length, 2);
+  // Standing-feed UID host is owned by the ICS serializer; assert the UID stem
+  // and host delimiter without copying the compatibility-domain literal here.
   for (const uid of bsaUids) {
-    assert.match(ics, new RegExp(`UID:${uid.replaceAll(":", "\\:")}@crol-list`));
+    assert.match(ics, new RegExp(`UID:${uid.replaceAll(":", "\\:")}@`));
   }
 
   assert.match(ics, /DTSTART;TZID=America\/New_York:20260915T100000/);
@@ -301,5 +308,5 @@ test("A6 missing or moved OATH row invents neither cancellation nor reschedule r
   assert.notEqual(nextFeed.occurrences[0].uid, first.meeting_id);
   const unfolded = nextFeed.ics.replace(/\r\n[ \t]/g, "");
   assert.doesNotMatch(unfolded, new RegExp(first.meeting_id.replaceAll(":", "\\:")));
-  assert.match(unfolded, new RegExp(`UID:${moved.meeting_id.replaceAll(":", "\\:")}@crol-list`));
+  assert.match(unfolded, new RegExp(`UID:${moved.meeting_id.replaceAll(":", "\\:")}@`));
 });
