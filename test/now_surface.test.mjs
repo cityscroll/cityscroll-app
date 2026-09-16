@@ -229,7 +229,7 @@ test("Now source loading settles for data-present and data-absent inputs", async
 
 test("an empty but available Now snapshot resolves to empty lanes", () => {
   const emptySources = Object.fromEntries([
-    "money", "staffing", "rules", "property", "meetings", "land",
+    "money", "staffing", "rules", "property", "meetings", "land", "consultations",
   ].map((domain) => [domain, { status: "available" }]));
   const surface = buildNowSurface(emptySources, { today: TODAY });
   assert.equal(surface.counts.total, 0);
@@ -248,7 +248,7 @@ test("Now renderer replaces the loading state for populated and empty surfaces",
   globalThis.t = (key, values = {}) => key === "results_count" ? `${values.n} results` : key;
 
   const emptySources = Object.fromEntries([
-    "money", "staffing", "rules", "property", "meetings", "land",
+    "money", "staffing", "rules", "property", "meetings", "land", "consultations",
   ].map((domain) => [domain, { status: "available" }]));
   renderNowSurface(buildNowSurface(emptySources, { today: TODAY }));
   assert.doesNotMatch(box.innerHTML, /Loading current deadlines and events/);

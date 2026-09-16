@@ -17,6 +17,7 @@ function compact(row, lens) {
   if (!row?.id) return null;
   const result = { id: row.id, title: row.title || null, route: row.route || null, date: dateOf(row) || null };
   if (lens === "land") result.project_id = row.id;
+  else if (lens === "consultations") result.consultation_id = row.consultation_id || row.id;
   else result.request_id = row.id;
   return result;
 }
@@ -45,14 +46,14 @@ export function buildCommunityDistrictDigests({ activity, communityBoardGeograph
   for (const district of districts) {
     const memberships = activity.district_items.by_level.community_district[district] || {};
     const sections = {};
-    for (const { id } of COMMUNITY_DISTRICT_DIGEST_SECTIONS) {
-      const state = coverageFor(activity, id, coverage[district]);
-      const ids = memberships[id] || [];
-      const records = activity.records?.[id] || {};
-      const items = ["supported", "known_zero"].includes(state.state) ? ids.map((id) => compact(records[id], id)).filter(Boolean)
+    for (const { id: sectionId } of COMMUNITY_DISTRICT_DIGEST_SECTIONS) {
+      const state = coverageFor(activity, sectionId, coverage[district]);
+      const ids = memberships[sectionId] || [];
+      const records = activity.records?.[sectionId] || {};
+      const items = ["supported", "known_zero"].includes(state.state) ? ids.map((itemId) => compact(records[itemId], sectionId)).filter(Boolean)
         .sort((a, b) => (b.date || "").localeCompare(a.date || "") || a.id.localeCompare(b.id))
         .slice(0, MAX_ITEMS_PER_SECTION) : [];
-      sections[id] = { count: state.state === "supported" ? ids.length : state.state === "known_zero" ? 0 : null, items, coverage: state };
+      sections[sectionId] = { count: state.state === "supported" ? ids.length : state.state === "known_zero" ? 0 : null, items, coverage: state };
     }
     const boardId = communityBoardIdFromCommunityDistrict(district, communityBoardGeography);
     const boardNode = (communityBoardGeography.nodes || []).find((node) => node.id === `community-board:${boardId}`) || null;
