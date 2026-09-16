@@ -11,6 +11,8 @@ export const MEETING_ORIGINS = Object.freeze([
   "official_minutes_joined",
   "community_board_source_observed",
   "nyc_legistar_events_observed",
+  "official_oath_trial_calendar",
+  "official_pdc_schedule",
   "unknown",
 ]);
 
@@ -20,6 +22,8 @@ export const MEETING_ORIGIN_LABELS = Object.freeze({
   official_minutes_joined: "Official minutes joined",
   community_board_source_observed: "Community board source observed",
   nyc_legistar_events_observed: "NYC Council Legistar event",
+  official_oath_trial_calendar: "OATH trial calendar",
+  official_pdc_schedule: "Public Design Commission schedule",
   unknown: "Meeting source unknown",
 });
 
@@ -37,12 +41,11 @@ export function isMeetingOrigin(value) {
 export function normalizeMeetingOrigin(row = {}) {
   const explicit = String(row.meeting_origin || row.origin || "").trim();
   if (isMeetingOrigin(explicit)) return explicit;
-  if (String(row.source_system || row.source?.system || "").trim().toLowerCase() === "city_record") {
-    return "city_record_notice";
-  }
-  if (String(row.source_system || row.source?.system || "").trim().toLowerCase() === "nyc_legistar_events") {
-    return "nyc_legistar_events_observed";
-  }
+  const system = String(row.source_system || row.source?.system || "").trim().toLowerCase();
+  if (system === "city_record") return "city_record_notice";
+  if (system === "nyc_legistar_events") return "nyc_legistar_events_observed";
+  if (system === "oath_trial_calendar") return "official_oath_trial_calendar";
+  if (system === "pdc_calendar") return "official_pdc_schedule";
   return "unknown";
 }
 
