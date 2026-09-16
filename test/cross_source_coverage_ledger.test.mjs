@@ -324,6 +324,48 @@ test("meeting documents expose both declared sources, including stale and unavai
   assert.match(html, /Community board calendar/);
 });
 
+test("A7: meeting surfaces retain consequential coverage caveats beside the shared ledger", () => {
+  const unavailableModel = buildSharedMeetingReadModel({
+    cityRecordRows: [{
+      request_id: "20260814099",
+      agency_name: "Buildings",
+      short_title: "Public hearing on elevator safety",
+      event_date: "2026-08-21T10:00:00.000",
+      source_system: "city_record",
+    }],
+    communityBoardIndex: null,
+    generatedAt: "2026-08-14T12:00:00Z",
+    now: "2026-08-14T12:00:00Z",
+  });
+  const cityRow = unavailableModel.rows.find((row) => row.source_system === "city_record");
+  assert.ok(cityRow);
+  const ledger = buildCrossSourceCoverageLedger({
+    object: cityRow,
+    observations: [cityRow],
+    sourceStatus: {
+      city_record: { status: "available", generated_at: "2026-08-14T12:00:00Z" },
+      community_board: { status: "unavailable", reason: "snapshot_missing" },
+    },
+    sourceCoverage: null,
+    kind: "meeting",
+  });
+  assert.equal(stateBySource(ledger).community_board, "unavailable");
+  assert.equal(ledger.sources.find((row) => row.source_system === "community_board").unresolved, true);
+
+  const html = renderMeetingDocument(cityRow, {
+    ...unavailableModel,
+    sources: {
+      ...unavailableModel.sources,
+      community_board: { status: "unavailable", reason: "snapshot_missing" },
+    },
+  });
+  assert.match(html, /data-cross-source-coverage-ledger="1"/);
+  assert.match(html, /data-source-system="community_board"[^>]*data-coverage-state="unavailable"/);
+  assert.match(html, /data-unresolved="1"/);
+  assert.match(html, /Source unavailable/);
+  assert.doesNotMatch(html, /data-coverage-reader-projection="1"/);
+});
+
 test("NYCHA-native objects keep the ledger on Checkbook NYCHA and off City Record", () => {
   const nycha = observation("checkbook_nycha_contracts", "contract:BA2335819:Agreement", {
     contract_id: "BA2335819",
