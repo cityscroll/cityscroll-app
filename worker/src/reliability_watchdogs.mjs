@@ -804,9 +804,9 @@ export async function emitOpsAlertOnce(env, input = {}) {
       return { sent: false, reason: "evidence-required", evidence_findings: missing, signature, record };
     }
   }
-  // rel-12: the repair item is written before the mail is composed, because the
-  // alert has to name the pickup time the queue actually holds. A repeat lands
-  // here too, so the counter advances even when the mail stays suppressed.
+  // rel-12: the repair item is written before the operational record is composed,
+  // because the record has to name the pickup time the queue actually holds. A
+  // repeat lands here too, so the counter advances without sending routine mail.
   const heartbeat = await readJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY);
   const queue = await upsertRepairItem(env, {
     signature,

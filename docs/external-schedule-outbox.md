@@ -177,7 +177,7 @@ consecutive refusals, the existing issue outbox opens one **Scheduler
 configuration: checkout refresh refused** issue. Continued refusals reuse that
 intent; a successful refresh resets the count and closes the issue. The cycle
 continues on its current revision throughout. Refresh refusal does not create a
-repair-queue finding or an owner-mail alert. Keep scheduler state and logs outside
+repair-queue finding or an operational alert. Keep scheduler state and logs outside
 tracked files (the default state directory is ignored) so they do not make the
 checkout dirty.
 
