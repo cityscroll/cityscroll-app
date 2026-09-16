@@ -606,6 +606,7 @@ test("Browse landing and every bounded child are exact build outputs with useful
   const outputPath = (route) => join(process.cwd(), route.replace(/^\//, ""));
   const expectedPaths = [
     "/site/now/index.html",
+    "/site/observe/index.html",
     "/site/consultations/index.html",
     ...[
       "dot-fast-buses-central-brooklyn",
