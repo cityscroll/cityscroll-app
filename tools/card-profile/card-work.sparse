@@ -379,6 +379,7 @@
 /site/council_matter_watch.mjs
 /site/council_matter_watch_change.mjs
 /site/council_matter_watch_scope.mjs
+/site/coverage_reader_projection.css
 /site/crol_notice_publication_policy.mjs
 /site/cross_source_coverage_ledger.mjs
 /site/cross_source_evidence_receipt.mjs

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Browser proof for the composed notice document delivered by the edge route."""
+"""Browser proof for composed resident documents (notice shell, contract evidence)."""
 
 from __future__ import annotations
 
@@ -16,8 +16,10 @@ import sys
 import tempfile
 import threading
 
-ROOT = pathlib.Path(__file__).parents[2]
+ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
+
+# Imported lazily inside main for optional cases.
 NOTICE_ID = "20260810048"
 NOTICE_ROUTE = f"/notices/{NOTICE_ID}/"
 NOTICE_SOURCE = f"https://a856-cityrecord.nyc.gov/RequestDetail/{NOTICE_ID}"
@@ -256,9 +258,15 @@ def write_manifest(captures: list[dict[str, object]], *, revision: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--case", choices=["notice-shell"], required=True)
+    parser.add_argument("--case", choices=["notice-shell", "contract-evidence"], required=True)
     parser.add_argument("--write-manifest", action="store_true")
     args = parser.parse_args()
+
+    if args.case == "contract-evidence":
+        from contract_evidence_case import run_contract_evidence_case
+        run_contract_evidence_case(os.environ.get("CROL_BASE"))
+        return
+
     from playwright.sync_api import sync_playwright
 
     process = staging = state_dir = upstream = None

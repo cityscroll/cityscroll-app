@@ -1,0 +1,83 @@
+.coverage-reader-sources {
+  max-width: 42rem;
+}
+
+.coverage-reader-summary,
+.coverage-reader-lead,
+.coverage-reader-context {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.coverage-reader-summary {
+  margin: 0 0 var(--space-2);
+  font-weight: 650;
+  color: var(--color-text);
+}
+
+.coverage-reader-lead {
+  margin: 0 0 var(--space-3);
+}
+
+.coverage-reader-disclosure > summary {
+  cursor: pointer;
+  width: max-content;
+  max-width: 100%;
+  font-weight: 650;
+}
+
+.coverage-reader-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.coverage-reader-source {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.15rem var(--space-3);
+  align-items: baseline;
+  padding: var(--space-2) 0;
+  border-block-end: 1px solid var(--color-border);
+  font-size: 0.88rem;
+}
+
+.coverage-reader-source:last-child {
+  border-block-end: 0;
+  padding-block-end: 0;
+}
+
+.coverage-reader-name {
+  font-weight: 650;
+}
+
+.coverage-reader-state {
+  justify-self: end;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.coverage-reader-context,
+.coverage-reader-action {
+  grid-column: 1 / -1;
+}
+
+.procurement-claim-caveat {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 390px) {
+  .coverage-reader-source {
+    grid-template-columns: 1fr;
+  }
+
+  .coverage-reader-state {
+    justify-self: start;
+  }
+}

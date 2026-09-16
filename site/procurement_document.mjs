@@ -21,7 +21,9 @@ import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs
 import { renderCrossSourceEvidenceReceipt } from "./cross_source_evidence_receipt.mjs";
 import {
   buildCrossSourceCoverageLedger,
-  renderCrossSourceCoverageLedger,
+  projectCoverageForReaders,
+  renderCoverageClaimCaveats,
+  renderCoverageReaderProjection,
 } from "./cross_source_coverage_ledger.mjs";
 import { renderProcurementProcessEvents } from "./procurement_process_events.mjs";
 import { resolveNycEdcDevelopmentRoles } from "./civic_institution_development_roles.mjs";
@@ -613,6 +615,8 @@ export function renderProcurementDocument(object = {}, observations = [], {
     registeredContractCoverage,
     kind: "procurement",
   });
+  const coverageReader = projectCoverageForReaders(coverageLedger);
+  const claimCaveatsHtml = renderCoverageClaimCaveats(coverageReader);
   const representedOfficialHrefs = new Set((coverageLedger?.sources || [])
     .flatMap((source) => [source.record_href, source.official_href, source.search_href].filter(Boolean)));
   const uniqueSourceItems = sourceItems.filter((item) => !representedOfficialHrefs.has(item.href));
@@ -626,10 +630,14 @@ export function renderProcurementDocument(object = {}, observations = [], {
       ? buildProcurementHandoffCopy(accessClassification, { record: { last_observed_at: lastObservedAtFor(object, observations) } })
       : null,
   );
+  const factsBody = [
+    factRows ? `<dl class="node-facts">${factRows}</dl>` : "",
+    claimCaveatsHtml,
+  ].filter(Boolean).join("");
   const canonical = procurementCanonicalHref(object);
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}${opportunityMonth ? renderCalendarEventPreviewScript("/") : ""}${pursuitSnapshotHtml ? '<link rel="stylesheet" href="/procurement_pursuit_snapshot.css" data-route-style="procurement_pursuit_snapshot.css">' : ""}${relatedContextHtml ? '<link rel="stylesheet" href="/procurement_related_context.css" data-route-style="procurement_related_context.css">' : ""}${projectContextHtml ? '<link rel="stylesheet" href="/procurement_project_context.css" data-route-style="procurement_project_context.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
+<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}${opportunityMonth ? renderCalendarEventPreviewScript("/") : ""}${pursuitSnapshotHtml ? '<link rel="stylesheet" href="/procurement_pursuit_snapshot.css" data-route-style="procurement_pursuit_snapshot.css">' : ""}${relatedContextHtml ? '<link rel="stylesheet" href="/procurement_related_context.css" data-route-style="procurement_related_context.css">' : ""}${projectContextHtml ? '<link rel="stylesheet" href="/procurement_project_context.css" data-route-style="procurement_project_context.css">' : ""}${coverageReader ? '<link rel="stylesheet" href="/coverage_reader_projection.css" data-route-style="coverage_reader_projection.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
 <body>${renderCivicDocumentMast({ current: "browse" })}<main class="node-document" data-civic-object-kind="procurement" data-procurement-id="${esc(id)}">
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
@@ -640,9 +648,8 @@ ${relatedContextHtml}
 ${projectContextInspect ? `<script type="application/json" data-project-context-inspect="1">${procurementJsonScriptPayload({ summary: projectContextInspect })}</script>` : ""}
 ${procurementActions(object, facts)}
 ${renderCrossSourceEvidenceReceipt(object?.cross_source_evidence_receipt)}
-${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}
+${renderNodeSection({ heading: "Contract facts", body: factsBody })}
 ${renderProcurementInstitutionRoles(object, observations)}
-${renderCrossSourceCoverageLedger(coverageLedger)}
 ${renderProcurementObjectCoverageHtml(object, observations)}
 ${renderNodeSection({
   heading: "Opportunity window",
@@ -668,6 +675,7 @@ ${renderNodeSection({
   heading: "Observed stages",
   body: Array.isArray(object?.process_events) && object.process_events.length ? "" : stageList(object),
 })}
+${renderCoverageReaderProjection(coverageReader)}
 ${renderNodeProvenance({ heading: uniqueSourceItems.length ? "Official records" : "", sourceItems: uniqueSourceItems })}
 ${renderNodeSection({
   heading: "What these official records do not carry",
