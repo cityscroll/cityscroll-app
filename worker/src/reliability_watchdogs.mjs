@@ -1,5 +1,6 @@
 import { opsNotificationDecision } from "./lib/ops_notification_policy.mjs";
 import { digestDayLogKey, sentWatchKeysFromDayLog } from "./lib/digest_ops.mjs";
+import { claimEmergencyDelivery, completeEmergencyDelivery, emergencyDeliveryProjection } from "./lib/emergency_outbox.mjs";
 import {
   REPAIR_QUEUE_EXCLUDED_GUARDS,
   completeRepairItem,
@@ -40,7 +41,6 @@ export const MAIL_FINDINGS_HISTORY_KEY = "ops:mail:findings:history";
 export const MAIL_FINDINGS_HISTORY_LIMIT = 30;
 export const OPS_ALERT_HISTORY_KEY = "ops:alert:history:v1";
 export const OPS_ALERT_HISTORY_LIMIT = 50;
-const OPS_EMERGENCY_IDEMPOTENCY_MS = 24 * 60 * 60 * 1000;
 
 const day = (value) => new Date(value).toISOString().slice(0, 10);
 const key = (prefix, value) => `${prefix}${day(value)}`;
@@ -833,36 +833,51 @@ export async function emitOpsAlertOnce(env, input = {}) {
 
   // No daily reminder mail. An emergency can escalate an existing silent
   // incident; a rejected send can retry until the provider accepts it.
-  const retryUntil = Date.parse(priorDelivery?.retry_until || "");
-  const retryUncertain = priorUncertain && Number.isFinite(retryUntil) && now.getTime() <= retryUntil;
-  const shouldSend = record.notification.email && !prior?.emergency_sent_at && (!priorUncertain || retryUncertain);
+  const shouldSend = record.notification.email && !prior?.emergency_sent_at;
   if (!shouldSend) {
-    await putJson(env?.ALERT_STATE, alertKey, record);
-    await updateAlertHistory(env?.ALERT_STATE, record);
+    if (!priorUncertain) {
+      await putJson(env?.ALERT_STATE, alertKey, record);
+      await updateAlertHistory(env?.ALERT_STATE, record);
+    }
     const reason = record.notification.email && priorUncertain ? "delivery-indeterminate"
       : record.notification.email ? "already-alerted" : "desk-only";
     return { sent: false, reason, signature, record, queue };
   }
   const subject = `CityScroll emergency: ${record.notification.impact}`;
   const text = `${alertParagraph(record, { rollup: false, queue })} Action needed now: ${record.notification.action}. Evidence: ${record.notification.evidence_url}.`;
-  const delivery = retryUncertain ? {
-    ...priorDelivery,
-    state: "in-flight",
-    last_attempt_at: now.toISOString(),
-    attempt_count: Math.min((Number(priorDelivery.attempt_count) || 1) + 1, 99),
-  } : {
-    state: "in-flight",
-    idempotency_key: signature,
-    attempted_at: now.toISOString(),
-    last_attempt_at: now.toISOString(),
-    retry_until: new Date(now.getTime() + OPS_EMERGENCY_IDEMPOTENCY_MS).toISOString(),
-    attempt_count: 1,
-    subject,
-    text,
-    evidence: eligibleEmergency,
-  };
+  const candidatePayload = priorUncertain ? {
+    subject: priorDelivery.subject,
+    text: priorDelivery.text,
+    evidence: priorDelivery.evidence,
+  } : { subject, text, evidence: eligibleEmergency };
+  const claim = await claimEmergencyDelivery(env?.DB, {
+    signature,
+    payload: candidatePayload,
+    now,
+    attemptedAt: priorUncertain ? priorDelivery.attempted_at : null,
+    retryUntil: priorUncertain ? priorDelivery.retry_until : null,
+  });
+  if (!claim.ok) {
+    record.delivery_finding = { observed_at: record.last_seen, reason: claim.reason };
+    await putJson(env?.ALERT_STATE, alertKey, record);
+    await updateAlertHistory(env?.ALERT_STATE, record);
+    return { sent: false, reason: claim.reason, signature, record, queue };
+  }
+  const delivery = emergencyDeliveryProjection(claim.row);
   record.confirmed_emergency = delivery.evidence;
   record.emergency_delivery = delivery;
+  if (!claim.owned) {
+    if (delivery.state === "accepted") {
+      record.sent_at = delivery.resolved_at;
+      record.emergency_sent_at = delivery.resolved_at;
+      record.delivery_finding = null;
+      await putJson(env?.ALERT_STATE, alertKey, record);
+      await updateAlertHistory(env?.ALERT_STATE, record);
+    }
+    const reason = delivery.state === "accepted" ? "already-alerted"
+      : delivery.state === "indeterminate" ? "delivery-indeterminate" : "delivery-in-flight";
+    return { sent: false, reason, signature, record, queue };
+  }
   await putJson(env?.ALERT_STATE, alertKey, record);
   await updateAlertHistory(env?.ALERT_STATE, record);
   const { sendOpsAlert } = await import("./alerts.mjs");
@@ -880,27 +895,27 @@ export async function emitOpsAlertOnce(env, input = {}) {
   } catch (error) {
     result = { accepted: false, reason: "delivery-indeterminate", error: String(error?.message || error) };
   }
-  if (result.accepted) {
-    record.sent_at = record.last_seen;
-    record.emergency_sent_at = record.last_seen;
+  const completed = await completeEmergencyDelivery(env.DB, {
+    signature,
+    claimToken: claim.claimToken,
+    state: result.accepted ? "accepted" : result.reason === "delivery-indeterminate" ? "indeterminate" : "rejected",
+    now,
+    providerId: typeof result.provider?.id === "string" ? result.provider.id.slice(0, 128) : null,
+    errorReason: result.accepted ? null : result.reason || "rejected",
+  });
+  const authoritative = emergencyDeliveryProjection(completed.row);
+  record.confirmed_emergency = authoritative.evidence;
+  record.emergency_delivery = authoritative;
+  if (authoritative.state === "accepted") {
+    record.sent_at = authoritative.resolved_at;
+    record.emergency_sent_at = authoritative.resolved_at;
     record.delivery_finding = null;
-    record.emergency_delivery = {
-      ...delivery,
-      state: "accepted",
-      resolved_at: now.toISOString(),
-      provider_id: typeof result.provider?.id === "string" ? result.provider.id.slice(0, 128) : null,
-    };
   } else {
-    record.delivery_finding = { observed_at: record.last_seen, reason: result.reason || "rejected" };
-    record.emergency_delivery = {
-      ...delivery,
-      state: result.reason === "delivery-indeterminate" ? "indeterminate" : "rejected",
-      resolved_at: result.reason === "delivery-indeterminate" ? null : now.toISOString(),
-    };
+    record.delivery_finding = { observed_at: record.last_seen, reason: authoritative.error_reason || result.reason || "rejected" };
   }
   await putJson(env?.ALERT_STATE, alertKey, record);
   await updateAlertHistory(env?.ALERT_STATE, record);
-  return { sent: !!result.accepted, result, reason: result.accepted ? null : (result.reason || "rejected"), signature, record, queue };
+  return { sent: authoritative.state === "accepted", result, reason: authoritative.state === "accepted" ? null : (authoritative.error_reason || result.reason || "rejected"), signature, record, queue };
 }
 
 /**

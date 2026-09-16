@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { DatabaseSync } from 'node:sqlite';
 import { opsNotificationDecision } from '../src/lib/ops_notification_policy.mjs';
 import { emitOpsAlertOnce } from '../src/reliability_watchdogs.mjs';
 import { sendOpsAlert } from '../src/alerts.mjs';
@@ -7,6 +9,14 @@ const now = new Date('2026-09-16T12:00:00Z');
 const emergency = { confirmed:true, impact:'service-unavailable', human_action_required:true, automatic_remedy:'exhausted', action:'Restore the production service', verified_at:now.toISOString(), evidence_url:'https://example.com/incident' };
 const input = { guard:'production-emergency', stage:'outage', fingerprint:'incident-123', findings:['Production service is unavailable'], emergency, now };
 function kv(){const data=new Map();return {get:async k=>data.get(k)||null,put:async(k,v)=>data.set(k,v)};}
+const emergencyMigration=readFileSync(new URL('../migrations/0033_ops_emergency_outbox.sql',import.meta.url),'utf8');
+function d1(){
+ const sqlite=new DatabaseSync(':memory:');sqlite.exec(emergencyMigration);
+ return {sqlite,DB:{prepare(sql){const statement=sqlite.prepare(sql);return {bind(...params){return {
+  run(){const result=statement.run(...params);return {meta:{changes:Number(result.changes||0)}}},
+  first(){return statement.get(...params)||null},
+ }}}}}};
+}
 test('severity, age, and repair exhaustion alone cannot turn routine noise into emergency mail',()=>{
  for(const guard of ['served-artifact-freshness','ops-repair-judgment','digest-dead-mans-switch']) assert.equal(opsNotificationDecision({...input,guard,severity:'critical'},now).email,false);
  for(const patch of [{confirmed:false},{human_action_required:false},{automatic_remedy:'pending'},{action:''},{impact:'stale-data'},{verified_at:'2026-09-15T12:00:00Z'},{verified_at:'2026-09-16T12:01:00Z'},{evidence_url:'javascript:alert(1)'},{evidence_url:'https://example.com/?token=secret'}]) assert.equal(opsNotificationDecision({...input,emergency:{...emergency,...patch}},now).email,false);
@@ -17,7 +27,7 @@ test('direct sender cannot bypass the emergency policy',async()=>{
  try{assert.equal((await sendOpsAlert({RESEND_API_KEY:'test'},{guard:'ops-repair-judgment'})).reason,'desk-only');assert.equal(calls,0)}finally{globalThis.fetch=previous}
 });
 test('silent finding can escalate once; definitive rejection accepts fresh evidence on retry',async()=>{
- const env={ALERT_STATE:kv(),RESEND_API_KEY:'test'};const previous=globalThis.fetch;const requests=[];globalThis.fetch=async(_url,options)=>{requests.push(options);return {ok:requests.length>1,status:400,text:async()=>'rejected',json:async()=>({id:'accepted'})}};
+ const {DB}=d1();const env={DB,ALERT_STATE:kv(),RESEND_API_KEY:'test'};const previous=globalThis.fetch;const requests=[];globalThis.fetch=async(_url,options)=>{requests.push(options);return {ok:requests.length>1,status:400,text:async()=>'rejected',json:async()=>({id:'accepted'})}};
  try{
   const silent=await emitOpsAlertOnce(env,{...input,emergency:null});
   assert.equal(silent.reason,'desk-only');
@@ -42,7 +52,7 @@ test('silent finding can escalate once; definitive rejection accepts fresh evide
 }finally{globalThis.fetch=previous}
 });
 test('malformed success preserves and retries the immutable in-flight message',async()=>{
- const ALERT_STATE=kv();const env={ALERT_STATE,RESEND_API_KEY:'test'};const previous=globalThis.fetch;const requests=[];
+ const {DB}=d1();const ALERT_STATE=kv();const env={DB,ALERT_STATE,RESEND_API_KEY:'test'};const previous=globalThis.fetch;const requests=[];
  globalThis.fetch=async(_url,options)=>{const stored=JSON.parse(await ALERT_STATE.get('ops:alert:signature:incident-malformed'));assert.equal(stored.emergency_delivery.state,'in-flight');requests.push(options);return requests.length===1?{ok:true,json:async()=>{throw new SyntaxError('malformed provider body')}}:{ok:true,json:async()=>({id:'accepted-after-retry'})}};
  try{
   const firstEmergency={...emergency,action:'Restore the first verified deployment',evidence_url:'https://example.com/incident/first'};
@@ -60,7 +70,7 @@ test('malformed success preserves and retries the immutable in-flight message',a
  }finally{globalThis.fetch=previous}
 });
 test('transport uncertainty stays inspectable and never retries after idempotency expiry',async()=>{
- const ALERT_STATE=kv();const env={ALERT_STATE,RESEND_API_KEY:'test'};const previous=globalThis.fetch;let calls=0;globalThis.fetch=async()=>{calls+=1;throw new TypeError('connection reset after upload')};
+ const {DB}=d1();const ALERT_STATE=kv();const env={DB,ALERT_STATE,RESEND_API_KEY:'test'};const previous=globalThis.fetch;let calls=0;globalThis.fetch=async()=>{calls+=1;throw new TypeError('connection reset after upload')};
  try{
   const first=await emitOpsAlertOnce(env,{...input,fingerprint:'incident-transport'});
   assert.equal(first.reason,'delivery-indeterminate');
@@ -73,4 +83,27 @@ test('transport uncertainty stays inspectable and never retries after idempotenc
   assert.deepEqual(held.record.confirmed_emergency,first.record.confirmed_emergency);
   assert.equal(calls,1);
  }finally{globalThis.fetch=previous}
+});
+test('concurrent differing emergencies share one immutable D1 payload owner',async()=>{
+ const {sqlite,DB}=d1();const ALERT_STATE=kv();const env={DB,ALERT_STATE,RESEND_API_KEY:'test'};const previous=globalThis.fetch;const requests=[];let release;const held=new Promise((resolve)=>{release=resolve});let submitted;const started=new Promise((resolve)=>{submitted=resolve});
+ globalThis.fetch=async(_url,options)=>{requests.push(options);submitted();await held;return {ok:true,json:async()=>({id:'accepted-owner'})}};
+ try{
+  const firstEmergency={...emergency,action:'Restore deployment owned by first caller',evidence_url:'https://example.com/incident/owner'};
+  const secondEmergency={...emergency,action:'Restore deployment proposed by second caller',evidence_url:'https://example.com/incident/loser'};
+  const ownerPromise=emitOpsAlertOnce(env,{...input,fingerprint:'incident-concurrent',emergency:firstEmergency});
+  await started;
+  const loser=await emitOpsAlertOnce(env,{...input,fingerprint:'incident-concurrent',emergency:secondEmergency});
+  assert.equal(loser.sent,false);
+  assert.equal(loser.reason,'delivery-in-flight');
+  assert.equal(requests.length,1);
+  release();
+  const owner=await ownerPromise;
+  assert.equal(owner.sent,true);
+  const stored=JSON.parse(await ALERT_STATE.get('ops:alert:signature:incident-concurrent'));
+  assert.equal(stored.emergency_delivery.state,'accepted');
+  assert.equal(stored.confirmed_emergency.evidence_url,firstEmergency.evidence_url);
+  const authoritative=sqlite.prepare("SELECT state, payload_json FROM ops_emergency_deliveries WHERE signature = ?").get('incident-concurrent');
+  assert.equal(authoritative.state,'accepted');
+  assert.equal(JSON.parse(authoritative.payload_json).evidence.evidence_url,firstEmergency.evidence_url);
+ }finally{release?.();globalThis.fetch=previous}
 });
