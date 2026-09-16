@@ -226,3 +226,161 @@ export function renderNoticeSubjectLinksHtml(subjects = [], { escape = escapeHtm
   }).join("");
   return `<p class="notice-subject-links" data-notice-subject-count="${escape(String(list.length))}">${links}</p>`;
 }
+
+function finding(code, message, extra = {}) {
+  return { code, message, ...extra };
+}
+
+function countedSubjects(lookup) {
+  const byNotice = lookup?.by_notice && typeof lookup.by_notice === "object"
+    ? lookup.by_notice
+    : {};
+  const noticeIds = Object.keys(byNotice);
+  let subjectLinkCount = 0;
+  for (const noticeId of noticeIds) {
+    const rows = byNotice[noticeId];
+    if (!Array.isArray(rows)) {
+      return {
+        noticeCount: noticeIds.length,
+        subjectLinkCount: null,
+        invalidNoticeId: noticeId,
+      };
+    }
+    subjectLinkCount += rows.length;
+  }
+  return { noticeCount: noticeIds.length, subjectLinkCount, invalidNoticeId: null };
+}
+
+/**
+ * Build/check detection for a stale or incoherent reverse-index projection.
+ * Feeds a mismatched source fingerprint or broken counts and requires the
+ * checker to refuse the artifact.
+ */
+export function checkNoticeProcurementSubjectsLookup(lookup, {
+  expectedSourceModelFingerprint = undefined,
+  expectedGeneratedAt = undefined,
+  rebuildFromRows = undefined,
+  manifestDescriptor = undefined,
+} = {}) {
+  const findings = [];
+  if (!lookup || typeof lookup !== "object") {
+    return {
+      ok: false,
+      findings: [finding("missing_lookup", "notice procurement subjects lookup is missing")],
+    };
+  }
+  if (lookup.schema !== NOTICE_PROCUREMENT_SUBJECTS_SCHEMA) {
+    findings.push(finding(
+      "schema_mismatch",
+      `lookup schema must be ${NOTICE_PROCUREMENT_SUBJECTS_SCHEMA}`,
+      { actual: lookup.schema || null },
+    ));
+  }
+  if (lookup.method !== NOTICE_PROCUREMENT_SUBJECTS_METHOD) {
+    findings.push(finding(
+      "method_mismatch",
+      `lookup method must be ${NOTICE_PROCUREMENT_SUBJECTS_METHOD}`,
+      { actual: lookup.method || null },
+    ));
+  }
+
+  const counted = countedSubjects(lookup);
+  if (counted.invalidNoticeId) {
+    findings.push(finding(
+      "incoherent_subjects",
+      `by_notice[${counted.invalidNoticeId}] must be an array of subject links`,
+    ));
+  } else {
+    if (lookup.counts?.notices !== counted.noticeCount) {
+      findings.push(finding(
+        "notice_count_mismatch",
+        "lookup counts.notices must match the number of by_notice keys",
+        { expected: counted.noticeCount, actual: lookup.counts?.notices ?? null },
+      ));
+    }
+    if (lookup.counts?.subject_links !== counted.subjectLinkCount) {
+      findings.push(finding(
+        "subject_link_count_mismatch",
+        "lookup counts.subject_links must match the total subject rows",
+        { expected: counted.subjectLinkCount, actual: lookup.counts?.subject_links ?? null },
+      ));
+    }
+  }
+
+  if (expectedSourceModelFingerprint !== undefined
+    && lookup.source_model_fingerprint !== expectedSourceModelFingerprint) {
+    findings.push(finding(
+      "source_fingerprint_mismatch",
+      "lookup source_model_fingerprint does not match the shared read-model fingerprint",
+      {
+        expected: expectedSourceModelFingerprint,
+        actual: lookup.source_model_fingerprint || null,
+      },
+    ));
+  }
+
+  if (expectedGeneratedAt !== undefined && lookup.generated_at !== expectedGeneratedAt) {
+    findings.push(finding(
+      "generated_at_mismatch",
+      "lookup generated_at does not match the shared read-model vintage",
+      { expected: expectedGeneratedAt, actual: lookup.generated_at || null },
+    ));
+  }
+
+  if (manifestDescriptor && typeof manifestDescriptor === "object") {
+    if (manifestDescriptor.schema !== NOTICE_PROCUREMENT_SUBJECTS_SCHEMA) {
+      findings.push(finding(
+        "manifest_schema_mismatch",
+        `manifest notice_procurement_subjects.schema must be ${NOTICE_PROCUREMENT_SUBJECTS_SCHEMA}`,
+        { actual: manifestDescriptor.schema || null },
+      ));
+    }
+    if (manifestDescriptor.source_model_fingerprint !== lookup.source_model_fingerprint) {
+      findings.push(finding(
+        "manifest_fingerprint_mismatch",
+        "manifest descriptor fingerprint must match the lookup fingerprint",
+        {
+          expected: lookup.source_model_fingerprint || null,
+          actual: manifestDescriptor.source_model_fingerprint || null,
+        },
+      ));
+    }
+    if (manifestDescriptor.notice_count !== lookup.counts?.notices) {
+      findings.push(finding(
+        "manifest_notice_count_mismatch",
+        "manifest notice_count must match lookup counts.notices",
+        {
+          expected: lookup.counts?.notices ?? null,
+          actual: manifestDescriptor.notice_count ?? null,
+        },
+      ));
+    }
+    if (manifestDescriptor.subject_link_count !== lookup.counts?.subject_links) {
+      findings.push(finding(
+        "manifest_subject_link_count_mismatch",
+        "manifest subject_link_count must match lookup counts.subject_links",
+        {
+          expected: lookup.counts?.subject_links ?? null,
+          actual: manifestDescriptor.subject_link_count ?? null,
+        },
+      ));
+    }
+  }
+
+  if (rebuildFromRows !== undefined) {
+    const expected = buildNoticeProcurementSubjectsLookup(rebuildFromRows, {
+      generatedAt: expectedGeneratedAt !== undefined ? expectedGeneratedAt : lookup.generated_at,
+      sourceModelFingerprint: expectedSourceModelFingerprint !== undefined
+        ? expectedSourceModelFingerprint
+        : lookup.source_model_fingerprint,
+    });
+    if (JSON.stringify(expected.by_notice) !== JSON.stringify(lookup.by_notice || {})) {
+      findings.push(finding(
+        "projection_rebuild_mismatch",
+        "lookup by_notice does not match a rebuild from the shared read-model rows",
+      ));
+    }
+  }
+
+  return { ok: findings.length === 0, findings };
+}

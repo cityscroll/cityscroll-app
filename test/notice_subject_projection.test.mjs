@@ -1,13 +1,17 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 import {
+  NOTICE_PROCUREMENT_SUBJECTS_LOOKUP_PATH,
   NOTICE_PROCUREMENT_SUBJECTS_METHOD,
   NOTICE_PROCUREMENT_SUBJECTS_SCHEMA,
   NOTICE_SUBJECT_CANONICAL_CONTINUATION,
   NOTICE_SUBJECT_SEARCH_CONTINUATION,
   NOTICE_SUBJECT_VIEW_CONTRACT_LABEL,
   buildNoticeProcurementSubjectsLookup,
+  checkNoticeProcurementSubjectsLookup,
   noticeProcurementSubjectsForId,
   projectNoticeSubjectLinks,
   renderNoticeSubjectLinksHtml,
@@ -15,6 +19,20 @@ import {
 import { buildSharedProcurementReadModelShardArtifacts } from "../site/procurement_read_model_shards.mjs";
 import { projectNoticeObjectTarget } from "../site/notice_object_links.mjs";
 import { renderEdgeNotice } from "../site/pages_edge.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
+
+const PAGES_EDGE_SOURCE = readFileSync(
+  new URL("../site/pages_edge.mjs", import.meta.url),
+  "utf8",
+);
+const NOTICE_SUBJECT_CLIENT_SOURCE = readFileSync(
+  new URL("../site/notice_subject_client.mjs", import.meta.url),
+  "utf8",
+);
+const NOTICE_SUBJECT_PROJECTION_SOURCE = readFileSync(
+  fileURLToPath(new URL("../site/notice_subject_projection.mjs", import.meta.url)),
+  "utf8",
+);
 
 const PILOT_PROCUREMENT_ID = "procurement:contract:CT107120258801626";
 const PILOT_NOTICE_ID = "20240829105";
@@ -194,4 +212,118 @@ test("shard publication attaches the reverse-index descriptor without inventing 
   assert.equal(artifacts.manifest.notice_procurement_subjects.subject_link_count, 1);
   assert.equal(artifacts.noticeSubjects.by_notice[PILOT_NOTICE_ID][0].procurement_id, PILOT_PROCUREMENT_ID);
   assert.equal(artifacts.noticeSubjects.by_notice["missing"], undefined);
+});
+
+test("A6: notice-subject reader path uses the bounded lookup and never scans shards or publishers", () => {
+  assert.match(
+    PAGES_EDGE_SOURCE,
+    /import noticeProcurementSubjectsLookup from "\.\/data\/notice_procurement_subjects_lookup\.json"/,
+  );
+  assert.match(
+    PAGES_EDGE_SOURCE,
+    /subjectsLookup:\s*options\.subjectsLookup\s*\|\|\s*noticeProcurementSubjectsLookup/,
+  );
+  assert.match(
+    NOTICE_SUBJECT_CLIENT_SOURCE,
+    /import\("\.\/data\/notice_procurement_subjects_lookup\.json"/,
+  );
+  assert.equal(NOTICE_PROCUREMENT_SUBJECTS_LOOKUP_PATH, "data/notice_procurement_subjects_lookup.json");
+
+  // The projection module is the whole subject-resolution path: keyed lookup only,
+  // no publisher host and no procurement-shard walk at request time.
+  assert.doesNotMatch(NOTICE_SUBJECT_PROJECTION_SOURCE, /\bfetch\s*\(/);
+  assert.doesNotMatch(NOTICE_SUBJECT_PROJECTION_SOURCE, /a856-cityrecord\.nyc\.gov/);
+  assert.doesNotMatch(NOTICE_SUBJECT_PROJECTION_SOURCE, /data\.cityofnewyork\.us/);
+  assert.doesNotMatch(NOTICE_SUBJECT_PROJECTION_SOURCE, /passport\.cityofnewyork\.us/);
+  assert.doesNotMatch(NOTICE_SUBJECT_PROJECTION_SOURCE, /shared_procurement_read_model\//);
+  assert.doesNotMatch(NOTICE_SUBJECT_PROJECTION_SOURCE, /procurementShardPathForId/);
+  assert.doesNotMatch(NOTICE_SUBJECT_CLIENT_SOURCE, /shared_procurement_read_model\//);
+  assert.doesNotMatch(NOTICE_SUBJECT_CLIENT_SOURCE, /procurementShardPathForId/);
+  assert.match(NOTICE_SUBJECT_PROJECTION_SOURCE, /lookup\.by_notice\?\.\[id\]/);
+
+  const lookup = buildNoticeProcurementSubjectsLookup([PILOT_ROW]);
+  assert.deepEqual(noticeProcurementSubjectsForId(lookup, PILOT_NOTICE_ID), [{
+    procurement_id: PILOT_PROCUREMENT_ID,
+    href: PILOT_HREF,
+    relation_basis: NOTICE_PROCUREMENT_SUBJECTS_METHOD,
+  }]);
+  assert.deepEqual(noticeProcurementSubjectsForId(lookup, "missing-notice"), []);
+});
+
+test("A7: subject links stay ordinary anchors and the notice route keeps canonical metadata", () => {
+  const lookup = buildNoticeProcurementSubjectsLookup([PILOT_ROW]);
+  const projection = projectNoticeSubjectLinks(
+    { request_id: PILOT_NOTICE_ID },
+    { subjectsLookup: lookup },
+  );
+  const html = renderNoticeSubjectLinksHtml(projection.subjects);
+  assert.match(html, /<a class="act primary notice-subject-link" href="\/procurements\/procurement%3Acontract%3ACT107120258801626"/);
+  assert.doesNotMatch(html, /\starget=/i);
+  assert.doesNotMatch(html, /\sonclick=/i);
+  assert.doesNotMatch(html, /javascript:/i);
+  assert.doesNotMatch(NOTICE_SUBJECT_CLIENT_SOURCE, /notice-subject-link[\s\S]{0,120}addEventListener\(\s*["']click["']/);
+  assert.doesNotMatch(NOTICE_SUBJECT_CLIENT_SOURCE, /preventDefault\(\)[\s\S]{0,160}notice-subject-link/);
+
+  assert.match(
+    PAGES_EDGE_SOURCE,
+    /const canonical = `https:\/\/cityscroll\.org\/notices\/\$\{encodeURIComponent\(id\)\}`;/,
+  );
+  assert.match(
+    PAGES_EDGE_SOURCE,
+    /\.on\('link\[rel="canonical"\]',\s*\{\s*element\(element\)\s*\{\s*element\.setAttribute\("href",\s*canonical\)/,
+  );
+  assert.match(
+    PAGES_EDGE_SOURCE,
+    /\.on\('meta\[property="og:url"\]',\s*\{\s*element\(element\)\s*\{\s*element\.setAttribute\("content",\s*canonical\)/,
+  );
+});
+
+test("A8: build/check mode detects a stale fingerprint and an incoherent projection", async () => {
+  await withPinnedClock("2026-09-16T12:00:00.000Z", () => {
+    const generatedAt = testClockISOString();
+    const coherent = buildNoticeProcurementSubjectsLookup([PILOT_ROW], {
+      generatedAt,
+      sourceModelFingerprint: "fixture-fingerprint",
+    });
+    const artifacts = buildSharedProcurementReadModelShardArtifacts({
+      schema: "cityscroll.shared_procurement_read_model.v1",
+      version: 1,
+      generated_at: generatedAt,
+      coherence_receipt: { source_model_fingerprint: "fixture-fingerprint" },
+      observations: [],
+      rows: [PILOT_ROW],
+    });
+    assert.equal(
+      checkNoticeProcurementSubjectsLookup(coherent, {
+        expectedSourceModelFingerprint: "fixture-fingerprint",
+        expectedGeneratedAt: generatedAt,
+        rebuildFromRows: [PILOT_ROW],
+        manifestDescriptor: artifacts.manifest.notice_procurement_subjects,
+      }).ok,
+      true,
+    );
+
+    const staleFingerprint = {
+      ...coherent,
+      source_model_fingerprint: "stale-fingerprint",
+    };
+    const staleResult = checkNoticeProcurementSubjectsLookup(staleFingerprint, {
+      expectedSourceModelFingerprint: "fixture-fingerprint",
+      expectedGeneratedAt: generatedAt,
+      rebuildFromRows: [PILOT_ROW],
+    });
+    assert.equal(staleResult.ok, false);
+    assert.ok(staleResult.findings.some((item) => item.code === "source_fingerprint_mismatch"));
+
+    const incoherentCounts = {
+      ...coherent,
+      counts: { notices: 0, subject_links: 99 },
+    };
+    const incoherentResult = checkNoticeProcurementSubjectsLookup(incoherentCounts, {
+      expectedSourceModelFingerprint: "fixture-fingerprint",
+    });
+    assert.equal(incoherentResult.ok, false);
+    assert.ok(incoherentResult.findings.some((item) => item.code === "notice_count_mismatch"));
+    assert.ok(incoherentResult.findings.some((item) => item.code === "subject_link_count_mismatch"));
+  });
 });

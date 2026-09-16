@@ -335,6 +335,46 @@ def assert_a3_legacy_hash_and_notice_to_home(page, base: str) -> dict[str, objec
     }
 
 
+def assert_subject_canonical_metadata(page, *, label: str) -> None:
+    expected = f"https://cityscroll.org{SUBJECT_NOTICE_ROUTE.rstrip('/')}/"
+    # Some served documents omit the trailing slash in the rewritten canonical.
+    expected_alt = f"https://cityscroll.org/notices/{SUBJECT_NOTICE_ID}"
+    canonical = page.locator('link[rel="canonical"]').first.get_attribute("href")
+    og_url = page.locator('meta[property="og:url"]').first.get_attribute("content")
+    assert canonical in {expected, expected_alt, expected.rstrip("/")}, (
+        f"{label}: canonical metadata href={canonical!r}"
+    )
+    assert og_url in {expected, expected_alt, expected.rstrip("/")}, (
+        f"{label}: og:url content={og_url!r}"
+    )
+
+
+def assert_subject_modified_click(page, *, label: str) -> dict[str, object]:
+    start = page.url
+    contracts = page.locator(f'#noticeview a.notice-subject-link[href="{SUBJECT_CONTRACT_HREF}"]')
+    assert contracts.count() >= 1, f"{label}: View contract link missing before modified click"
+    contract = contracts.first
+    assert contract.get_attribute("target") in (None, ""), (
+        f"{label}: subject link must leave modified-click to the browser"
+    )
+    with page.context.expect_page() as popup_info:
+        contract.click(modifiers=["ControlOrMeta"])
+    separate = popup_info.value
+    still_here = page.url == start
+    separate.close()
+    assert still_here, f"{label}: modified click navigated the original notice away"
+    return {
+        "case": "notice-subject-modified-click",
+        "route": SUBJECT_NOTICE_ROUTE,
+        "viewport": page.viewport_size,
+        "assertion": (
+            "A modified click on View contract opens a separate browsing context and leaves "
+            "the notice document in place."
+        ),
+        "render_sha256": render_hash(page),
+    }
+
+
 def assert_subject(page, base: str, *, label: str) -> dict[str, object]:
     page.set_default_timeout(20000)
     errors: list[str] = []
@@ -357,6 +397,7 @@ def assert_subject(page, base: str, *, label: str) -> dict[str, object]:
     assert contract.first.get_attribute("data-notice-subject-continuation") == "canonical"
     source = page.locator(f'#noticeview a.ui-official-source-link[href="{SUBJECT_SOURCE}"]')
     assert source.count() >= 1, f"{label}: official source link missing"
+    assert_subject_canonical_metadata(page, label=label)
     assert page.locator(".notice-route .home-topic-entry:visible").count() == 0
     hidden_focus = page.locator("#notice-route-chrome [hidden] :is(a,button,input,select,textarea,summary):not([disabled])")
     assert hidden_focus.count() == 0, f"{label}: hidden focusable control remains"
@@ -378,6 +419,7 @@ def assert_subject_no_javascript(page, base: str) -> dict[str, object]:
     assert contract.first.inner_text().strip() == "View contract"
     source = page.locator(f'#noticeview a.ui-official-source-link[href="{SUBJECT_SOURCE}"]')
     assert source.count() >= 1, "no-JS official source link missing"
+    assert_subject_canonical_metadata(page, label="no-javascript")
     return {
         "case": "notice-subject-no-javascript",
         "route": SUBJECT_NOTICE_ROUTE,
@@ -460,11 +502,12 @@ def run_notice_subject(base: str, *, write_manifest: bool, revision: str) -> Non
                 "viewport": viewport,
                 "assertion": (
                     "The edge response and successful client path keep compact chrome, expose a "
-                    "canonical View contract link to CT107120258801626, and retain the official "
-                    "City Record source."
+                    "canonical View contract link to CT107120258801626, retain the official "
+                    "City Record source, and publish notice canonical metadata."
                 ),
                 "render_sha256": result["render_sha256"],
             })
+            captures.append(assert_subject_modified_click(page, label="modified click"))
             page.goto(base, wait_until="domcontentloaded")
             page.go_back(wait_until="domcontentloaded")
             page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
