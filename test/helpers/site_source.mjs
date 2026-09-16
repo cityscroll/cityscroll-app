@@ -46,6 +46,9 @@ export const SHARED_SOURCE_MODULES = [
   "land_phase_label.mjs",
   "meeting_outcome_read.mjs",
   "deeplink_filter.mjs",
+  // Notice document route moved out of app/routing.mjs for the module-size bar;
+  // source-inspecting tests still need the showNotice implementation in SITE_SOURCE.
+  "notice_subject_client.mjs",
 ];
 
 export function readSiteSource() {

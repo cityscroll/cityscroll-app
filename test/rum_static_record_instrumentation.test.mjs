@@ -181,10 +181,10 @@ test("notice field classification and semantic records contain no route or recor
 
 test("production owners call the semantic seam used by the production reporter", () => {
   const home = readFileSync(new URL("../site/home_entry.mjs", import.meta.url), "utf8");
-  const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
+  const noticeRoute = readFileSync(new URL("../site/notice_subject_client.mjs", import.meta.url), "utf8");
   const context = readFileSync(new URL("../site/app/notice-context.mjs", import.meta.url), "utf8");
   assert.match(home, /homeEntryReady/);
-  assert.match(routing, /noticePrimaryReady/);
+  assert.match(noticeRoute, /noticePrimaryReady/);
   assert.match(context, /noticeContextReady/);
   assert.equal(manifest.collector.production_enabled, true);
 });
@@ -227,18 +227,17 @@ test("Notice branch measures reuse the same diagnostic prefix and stay off RUM d
 });
 
 test("Notice primary readiness is ordered before optional route modules and client enrichment", () => {
-  const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
+  const routing = readFileSync(new URL("../site/notice_subject_client.mjs", import.meta.url), "utf8");
   const showNotice = routing.slice(routing.indexOf("async function showNotice"));
   const primary = showNotice.indexOf("if(edgePrimaryState){");
   const modules = showNotice.indexOf("globalThis.ensureMoneyHistory");
-  const read = showNotice.indexOf('import("../notice-read.mjs")');
+  const read = showNotice.indexOf('import("./notice-read.mjs")');
   assert.ok(primary >= 0);
   // The edge boundary still reports through the semantic seam, now carrying the
   // owner's own clock so a late collector install cannot inflate the metric.
   const edgeBoundary = showNotice.slice(primary, modules);
   assert.match(edgeBoundary, /noticePrimaryReady\(runtimeRumSemanticMilestones\(\),\{resultState:edgePrimaryState\},edgePrimaryAt\)/);
-  assert.ok(modules > primary, "optional route modules start after edge primary readiness");
-  assert.ok(read > primary, "client notice enrichment starts after edge primary readiness");
+  assert.ok(modules > primary, "optional route modules start after edge primary readiness");  assert.ok(read > primary, "client notice enrichment starts after edge primary readiness");
   assert.match(showNotice, /const optionalRouteModules = Promise\.allSettled/);
   assert.equal(showNotice.includes("await optionalRouteModules"), false, "route modules cannot gate Notice context");
   assert.ok(showNotice.indexOf("fillContext(r, contextElement") < showNotice.indexOf("optionalRouteModules\n    .then"));

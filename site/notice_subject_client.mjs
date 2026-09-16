@@ -101,7 +101,7 @@ export async function showNotice(id, watch){
   let attachmentDataPromise = Promise.resolve(null);
   try{
     noticeContextTimingMark("notice-read-start");
-    const noticeRowsPromise = import("../notice-read.mjs").then(m=>m.read(id));
+    const noticeRowsPromise = import("./notice-read.mjs").then(m=>m.read(id));
     const rows = await noticeRowsPromise;
     r = rows[0];
     noticeContextTimingMark("notice-read-end");
@@ -246,7 +246,7 @@ export async function showNotice(id, watch){
     loadAwardRegistrationDwell(r, $("#nregdwell"));
   }
   loadSubsidyLifecycle(r, $("#nsubsidy"));
-  import("./authority-award.mjs").then(()=>loadAboAuthorityAward(r,$("#naboaward"))).then((released)=>{
+  import("./app/authority-award.mjs").then(()=>loadAboAuthorityAward(r,$("#naboaward"))).then((released)=>{
     if(!released) externalAwardForNotice(r, $("#nexternal"));
   }).catch(()=>externalAwardForNotice(r, $("#nexternal")));
   Promise.allSettled([

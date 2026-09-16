@@ -321,10 +321,10 @@ test("summary markup leads with plain text, exposes receipts, and leaves fallbac
 
 test("notice detail mounts the summary before context, actions, and original text", async () => {
   const [routing, property] = await Promise.all([
-    readFile(new URL("../site/app/routing.mjs", import.meta.url), "utf8"),
+    readFile(new URL("../site/notice_subject_client.mjs", import.meta.url), "utf8"),
     readFile(new URL("../site/app/property.mjs", import.meta.url), "utf8"),
   ]);
-  const showNotice = routing.slice(routing.indexOf("async function showNotice"), routing.indexOf("// Publish live bindings", routing.indexOf("async function showNotice")));
+  const showNotice = routing.slice(routing.indexOf("async function showNotice"));
   assert.match(showNotice, /id="nplain"/);
   assert.match(showNotice, /loadPropertyPlainSummary\(r, \$\("#nplain"\)\)/);
   assert.ok(showNotice.indexOf('id="nplain"') < showNotice.indexOf('id="ncontext"'));

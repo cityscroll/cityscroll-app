@@ -27,7 +27,7 @@ import {
 } from "../site/rum_static_record_instrumentation.mjs";
 import { build as buildEvidence } from "../tools/build_notice_primary_readiness_evidence.mjs";
 
-const routingSource = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
+const routingSource = readFileSync(new URL("../site/notice_subject_client.mjs", import.meta.url), "utf8");
 const committed = JSON.parse(readFileSync(
   new URL("../docs/evidence/notice-primary-readiness/read-back.json", import.meta.url),
   "utf8",
@@ -172,7 +172,7 @@ test("the route binds the boundary to the seam and starts deferred owners after 
   const showNotice = routingSource.slice(routingSource.indexOf("async function showNotice"));
   const primary = showNotice.indexOf("noticePrimaryReady(runtimeRumSemanticMilestones()");
   const modules = showNotice.indexOf("globalThis.ensureMoneyHistory");
-  const read = showNotice.indexOf('import("../notice-read.mjs")');
+  const read = showNotice.indexOf('import("./notice-read.mjs")');
   assert.ok(primary >= 0);
   assert.ok(modules > primary, "optional route modules start after the primary boundary");
   assert.ok(read > primary, "the client notice read starts after the primary boundary");
