@@ -7,12 +7,21 @@ import edgeWorker from "../site/pages_edge.mjs";
 import {
   normalizePerformanceEvidenceItem,
 } from "../site/analytical_performance_evidence.mjs";
+import { renderProcurementDocument } from "../site/procurement_document.mjs";
+import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
+import { resolveKeywordQuery, searchKeywordDocuments } from "../site/keyword_matcher.mjs";
+import {
+  EMMONS_CHECKBOOK_ANCHOR,
+  handleContractLifecycle,
+} from "../worker/src/checkbook_lifecycle.mjs";
+import { solicitationFixture } from "./fixtures/procurement_project_context_fixtures.mjs";
 import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const manifest = JSON.parse(readFileSync(new URL("../site/data/shared_procurement_read_model.json", import.meta.url)));
 const performance = JSON.parse(readFileSync(new URL("../site/data/analytics_performance_evidence.json", import.meta.url)));
 const projectContext = JSON.parse(readFileSync(new URL("../site/data/procurement_project_context.json", import.meta.url)));
 const renderManifest = JSON.parse(readFileSync(new URL("../docs/evidence/procurement-disclosure-production-proof/manifest.json", import.meta.url)));
+const bhragsDetail = JSON.parse(readFileSync(new URL("./fixtures/procurement-detail-parity/ct107120258801626.json", import.meta.url)));
 
 const CONTRACTS = {
   "CT110220271400991": { amount: "$62,500", vendor: "S &amp; P GLOBAL MARKET INTELLIGENCE LLC" },
@@ -102,7 +111,7 @@ test("A1: real canonical routes never label metadata or summaries as public cont
 });
 
 test("A1: a positive document label is accepted only with URL, exact identity, and dated passage evidence", () => {
-  const qualifying = normalizePerformanceEvidenceItem({
+  const qualifyingInput = {
     kind: "performance_terms",
     label: "Public performance terms",
     source_passage: {
@@ -114,7 +123,8 @@ test("A1: a positive document label is accepted only with URL, exact identity, a
       publication_date: "2026-08-01",
       identity_basis: "exact contract identifier CT-FIXTURE-001",
     },
-  });
+  };
+  const qualifying = normalizePerformanceEvidenceItem(qualifyingInput);
   assert.deepEqual(qualifying, {
     kind: "performance_terms",
     label: "Public performance terms",
@@ -132,6 +142,22 @@ test("A1: a positive document label is accepted only with URL, exact identity, a
     kind: "performance_terms",
     source_passage: { ...qualifying.source_passage, url: "https://a0333-passportpublic.nyc.gov/login" },
   }), null, "a login destination cannot qualify as document evidence");
+  assert.equal(normalizePerformanceEvidenceItem({
+    ...qualifyingInput,
+    document_role: "metadata",
+  }), null, "source metadata cannot satisfy a positive document label");
+  assert.equal(normalizePerformanceEvidenceItem({
+    ...qualifyingInput,
+    document_role: "project_summary",
+  }), null, "a project summary cannot satisfy a positive document label");
+  assert.equal(normalizePerformanceEvidenceItem({
+    kind: "performance_terms",
+    source_passage: { ...qualifying.source_passage, identity_basis: "" },
+  }), null, "an identity basis is required, not merely surviving when present");
+  assert.equal(normalizePerformanceEvidenceItem({
+    kind: "performance_terms",
+    source_passage: { ...qualifying.source_passage, publication_date: "" },
+  }), null, "a dated passage is required, not merely surviving when present");
 });
 
 test("A2: zero accepted performance rows remain an explicit bounded absence on the served routes", async () => {
@@ -187,10 +213,78 @@ test("A3: real canonical routes preserve the named facts and museum notice route
   }
 });
 
+test("A3: shelter contract-lifecycle route and museum project-code search resolve locally", async () => {
+  const priorFetch = globalThis.fetch;
+  let publisherAttempts = 0;
+  globalThis.fetch = async () => {
+    publisherAttempts += 1;
+    throw new Error("publisher egress blocked");
+  };
+  try {
+    const lifecycle = {
+      ok: true,
+      assembly_version: 5,
+      request_id: EMMONS_CHECKBOOK_ANCHOR.request_id,
+      contract_id: EMMONS_CHECKBOOK_ANCHOR.contract_id,
+      pin: EMMONS_CHECKBOOK_ANCHOR.pin,
+      timeline: [{ stage: "registered", status: "matched" }],
+      payment_as_of: "2026-08-06",
+      payment_total: 7385672.19,
+      payment_count: 31,
+      ocp_award: { status: "matched" },
+      civic_events: [],
+      award_prime_goal: { status: "unavailable" },
+    };
+    const db = {
+      prepare() {
+        return {
+          bind() { return this; },
+          async first() { return { lifecycle: JSON.stringify(lifecycle) }; },
+        };
+      },
+    };
+    const response = await handleContractLifecycle(
+      new Request(`https://api.cityscroll.org/contract-lifecycle?id=${EMMONS_CHECKBOOK_ANCHOR.request_id}`),
+      { DB: db },
+    );
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    assert.equal(body.id, "20240829105");
+    assert.equal(body.ok, true);
+    assert.equal(body.contract_id, "CT107120258801626");
+    assert.equal(body.pin, "07124E0044001");
+    assert.equal(body.payment_total, 7385672.19);
+    assert.equal(publisherAttempts, 0, "lifecycle read stays on the cached snapshot");
+  } finally {
+    globalThis.fetch = priorFetch;
+  }
+
+  const fixture = solicitationFixture("20260810048");
+  const documents = buildProcurementSearchDocuments({
+    schema: "cityscroll.shared_procurement_read_model.v1",
+    rows: [{ ...fixture.object, object_type: "procurement" }],
+    observations: fixture.observations,
+    sources: {},
+  }).documents;
+  const matches = searchKeywordDocuments(documents, resolveKeywordQuery("ACEDCA215"), { limit: 100 });
+  assert.equal(matches.length, 1);
+  assert.equal(matches[0].object_ref, fixture.object.procurement_id);
+  assert.equal(matches[0].provenance.notice_evidence[0].request_id, "20260810048");
+  assert.equal(matches[0].provenance.notice_evidence[0].href, "/notices/20260810048");
+});
+
 test("A4: real canonical routes credit source handoffs and refuse misleading revision/base claims", async () => {
   const sp = await servedContract("CT110220271400991");
   assert.match(sp, /checkbooknyc\.com\/smart_search\/citywide\?search_term=CT110220271400991/);
   assert.doesNotMatch(sp, /City Record notice/);
+  const cityRecord = sp.match(/data-source-system="city_record"[^>]*data-coverage-state="([^"]+)"[\s\S]*?<\/li>/i);
+  assert.ok(cityRecord, "S&P retains a City Record coverage row");
+  assert.equal(cityRecord[1], "checked-no-match");
+  assert.match(cityRecord[0], /City Record/);
+  assert.match(cityRecord[0], /lookup as of 2026-09-09T06:33:01\.880Z/);
+  assert.match(sp, /10220272001881/, "City Record absence stays bound to the PIN that was checked");
+  assert.match(sp, /No exact match is a snapshot miss, not a conclusion that the publisher never issued the record/i);
+  assert.doesNotMatch(sp, /never (?:published|appeared) in (?:the )?City Record|absent from City Record forever/i);
   const aha = await servedContract("CT105720278802113");
   assert.match(aha, /PASSPort Public contracts/);
   const bhrags = await servedContract("CT107120258801626");
@@ -203,6 +297,13 @@ test("A4: real canonical routes credit source handoffs and refuse misleading rev
   const tameer = await servedContract("CT185020228802305");
   assert.match(tameer, /Construction Change Order/);
   assert.doesNotMatch(tameer, /small base contract|overall contract value/i);
+  for (const id of Object.keys(CONTRACTS)) {
+    const html = await servedContract(id);
+    const canonical = `https://cityscroll.org/procurements/${encodeURIComponent(`procurement:contract:${id}`)}`;
+    const cityscrollUrls = [...html.matchAll(/https:\/\/cityscroll\.org\/[^\s"'<>]*/g)].map((match) => match[0]);
+    assert.ok(cityscrollUrls.every((url) => url === canonical || !/\/procurements\//.test(url)), `${id} invents no other procurement canonical URL`);
+    assert.doesNotMatch(html, /better than (?:Checkbook|PASSPort)|unlike (?:Checkbook|PASSPort)|more (?:complete|detailed) than (?:Checkbook|PASSPort)/i, `${id} makes no unsupported comparison claim`);
+  }
 });
 
 test("A5: real canonical routes remain keyboard-linkable and server-rendered at desktop and mobile request variants", async () => {
@@ -217,6 +318,19 @@ test("A5: real canonical routes remain keyboard-linkable and server-rendered at 
     }
     assert.equal(desktop, mobile, `${id} has deterministic server-rendered markup across viewport variants`);
   }
+});
+
+test("A5: optional enrichment failure retains the record, facts, and a working source link", async () => {
+  await withPinnedClock("2026-09-09T06:33:01.880Z", () => {
+    const html = renderProcurementDocument(bhragsDetail.object, bhragsDetail.observations, { lookups: {} });
+    assert.match(html, /CT107120258801626/);
+    assert.match(html, /BHRAGS HOME CARE CORP/);
+    assert.match(html, /\$10,869,881|10869881/);
+    assert.match(html, /href="https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\/20240829105"/, "working official source link survives enrichment failure");
+    assert.match(html, /data-source-system="checkbook_contracts"[^>]*data-coverage-state="not-checked"/);
+    assert.doesNotMatch(html, /<h2(?:\s[^>]*)?>\s*<\/h2>/i);
+    assert.doesNotMatch(html, /enrichment failed|unable to load enrichment/i);
+  });
 });
 
 test("A5: committed manifest records each route, viewport, vintage, assertion, and render hash", async () => {

@@ -42,6 +42,14 @@ const FORBIDDEN_OUTPUT_KEYS = new Set([
   "outcome", "outcomes", "result", "results", "performance_score", "score",
   "vendor_blame", "blame", "success", "failure", "evaluation_result",
 ]);
+/** Source metadata and project/scope summaries cannot satisfy positive document labels. */
+const DISQUALIFIED_DOCUMENT_ROLES = new Set([
+  "metadata",
+  "source_metadata",
+  "project_summary",
+  "project_description",
+  "scope_summary",
+]);
 
 function clean(value, max = 500) {
   const text = String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim();
@@ -50,6 +58,10 @@ function clean(value, max = 500) {
 
 function exactContractId(value) {
   return clean(value, 160);
+}
+
+function documentRole(value) {
+  return clean(value, 80)?.toLowerCase().replace(/[\s-]+/g, "_") || null;
 }
 
 function sourcePassage(value) {
@@ -61,6 +73,8 @@ function sourcePassage(value) {
   const excerpt = clean(value.excerpt, 600);
   const publicationDate = clean(value.publication_date || value.passage_date, 10);
   const identityBasis = clean(value.identity_basis, 300);
+  const role = documentRole(value.document_role || value.role);
+  if (role && DISQUALIFIED_DOCUMENT_ROLES.has(role)) return null;
   if (!sourceId || !SOURCE_IDS.has(sourceId) || !documentId || !url || !locator || !excerpt
     || !publicationDate || !/^\d{4}-\d{2}-\d{2}$/.test(publicationDate) || !identityBasis) return null;
   try {
@@ -85,6 +99,8 @@ export function normalizePerformanceEvidenceItem(item) {
   if (!item || typeof item !== "object" || Array.isArray(item)) return null;
   const kind = clean(item.kind, 60);
   if (![PERFORMANCE_EVIDENCE_KINDS.TERMS, PERFORMANCE_EVIDENCE_KINDS.EVALUATION].includes(kind)) return null;
+  const role = documentRole(item.document_role || item.role);
+  if (role && DISQUALIFIED_DOCUMENT_ROLES.has(role)) return null;
   const passage = sourcePassage(item.source_passage || item.passage);
   if (!passage) return null;
   return {
