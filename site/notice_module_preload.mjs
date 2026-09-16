@@ -141,12 +141,9 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/deeplink_filter.mjs",
   "/land_project_route.mjs",
   "/agency_scope_route.mjs",
-  "/civic_time_ledger.mjs",
   "/land_filter_parity.mjs",
   "/land_view_switch.mjs",
-  "/notice_lens_sections.mjs",
   "/community_board_watch.mjs",
-  "/derived_feature_rollup.mjs",
   "/app/boot.mjs",
   "/home_entry.mjs",
 ]);
