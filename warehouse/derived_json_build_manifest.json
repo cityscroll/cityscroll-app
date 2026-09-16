@@ -56,6 +56,7 @@
       "output_paths": [
         "site/data/shared_procurement_read_model.json",
         "site/data/shared_procurement_read_model",
+        "site/data/notice_procurement_subjects_lookup.json",
         "site/data/procurement_browse_rows.json",
         "site/data/procurement_browse_rows_population",
         "site/data/procurement_browse_rows",
