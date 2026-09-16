@@ -1,79 +1,284 @@
 {
-  "schema": "cityscroll.assistant_setup_capture_manifest.v1",
+  "schema": "cityscroll.assistant_setup_capture_manifest.v2",
   "surface": "public assistant discovery and MCP setup",
-  "condition": "Deterministic tracked HTML renders; no image binary is committed.",
+  "condition": "Chromium viewport witnesses over tracked HTML; no image binary is committed.",
   "image_binaries_committed": false,
-  "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
-  "data_vintage": "tracked site HTML at grounded revision",
+  "capture_mode": "headless-playwright-loopback-static-render",
+  "revision": "65283875b3470b3f3aca87bcb43833ef970064d997294038d6bc681d9e5fd982",
+  "revision_format": "sha256 of path:source-digest lines for setup sources",
+  "data_vintage": "tracked site HTML at content revision",
   "capture_clock": "2026-09-16T12:00:00.000Z",
-  "capture_policy": "Textual render hashes only; no image binaries are committed.",
-  "runner": "node --test test/capability_discovery.test.mjs test/mcp_connection_introduction.test.mjs",
+  "capture_policy": "Textual viewport witnesses only; no image binaries are committed.",
+  "runner": "python3 tools/capture_assistant_setup_evidence.py",
+  "unit_gate": "node --test test/capability_discovery.test.mjs test/mcp_connection_introduction.test.mjs",
+  "source_paths": [
+    "site/index.html",
+    "site/use-with-ai/index.html",
+    "site/api.html",
+    "site/ai_discovery.mjs"
+  ],
   "captures": [
     {
       "route": "/",
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
-      "data_vintage": "tracked site HTML at grounded revision",
-      "assertion": "primary search remains visible and Ask with AI is secondary",
-      "sha256": "e32e099d7c177d414fd563205e4061d229e37f801cbc029e53e7e805a561d93c",
-      "source_path": "site/index.html"
+      "revision": "65283875b3470b3f3aca87bcb43833ef970064d997294038d6bc681d9e5fd982",
+      "data_vintage": "tracked site HTML at content revision",
+      "assertion": "primary search remains visible before Ask with AI at this viewport",
+      "sha256": "c247d6bc91365bfdbc30a5ee40810ccf43c8258442f48707937d953c923b193c",
+      "source_path": "site/index.html",
+      "source_sha256": "e32e099d7c177d414fd563205e4061d229e37f801cbc029e53e7e805a561d93c",
+      "observed": {
+        "inner_width": 1440,
+        "inner_height": 1000,
+        "horizontal_overflow": false,
+        "primary_search_before_ask": true,
+        "ask_link_present": true,
+        "ask_link_href": "use-with-ai/",
+        "endpoint_present": false,
+        "copy_control_present": false,
+        "anchors": {},
+        "endpoint_client_width": null,
+        "translated": {
+          "replaced": 1,
+          "translated_label_visible": true,
+          "translated_horizontal_overflow": false
+        }
+      }
     },
     {
       "route": "/",
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
-      "data_vintage": "tracked site HTML at grounded revision",
-      "assertion": "primary search remains visible and Ask with AI is secondary",
-      "sha256": "e32e099d7c177d414fd563205e4061d229e37f801cbc029e53e7e805a561d93c",
-      "source_path": "site/index.html"
+      "revision": "65283875b3470b3f3aca87bcb43833ef970064d997294038d6bc681d9e5fd982",
+      "data_vintage": "tracked site HTML at content revision",
+      "assertion": "primary search remains visible before Ask with AI at this viewport",
+      "sha256": "bb6a370dbfe06809b95e28ff973e097e7002548c13ee7591ddb0191a97b24289",
+      "source_path": "site/index.html",
+      "source_sha256": "e32e099d7c177d414fd563205e4061d229e37f801cbc029e53e7e805a561d93c",
+      "observed": {
+        "inner_width": 390,
+        "inner_height": 844,
+        "horizontal_overflow": false,
+        "primary_search_before_ask": true,
+        "ask_link_present": true,
+        "ask_link_href": "use-with-ai/",
+        "endpoint_present": false,
+        "copy_control_present": false,
+        "anchors": {},
+        "endpoint_client_width": null,
+        "translated": {
+          "replaced": 1,
+          "translated_label_visible": true,
+          "translated_horizontal_overflow": false
+        }
+      }
     },
     {
       "route": "/use-with-ai/",
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
-      "data_vintage": "tracked site HTML at grounded revision",
-      "assertion": "endpoint, copy fallback, recovery and task examples remain reachable",
-      "sha256": "732026641559155903e4fb812eed912dcac053a82745219e61cfab57fa199a15",
-      "source_path": "site/use-with-ai/index.html"
+      "revision": "65283875b3470b3f3aca87bcb43833ef970064d997294038d6bc681d9e5fd982",
+      "data_vintage": "tracked site HTML at content revision",
+      "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
+      "sha256": "fe36f34dce22a0f9e498a71bea72d252847914f7ce8bf3cf738177a1ffe2f49a",
+      "source_path": "site/use-with-ai/index.html",
+      "source_sha256": "bab51f0c419203162976c44acf950ffa46d28f20bef5f2aa8b887da396403a44",
+      "observed": {
+        "inner_width": 1440,
+        "inner_height": 1000,
+        "horizontal_overflow": false,
+        "primary_search_before_ask": null,
+        "ask_link_present": true,
+        "ask_link_href": "/use-with-ai/",
+        "endpoint_present": true,
+        "copy_control_present": true,
+        "anchors": {
+          "connect": {
+            "present": true,
+            "top": 480,
+            "width": 674,
+            "in_layout": true
+          },
+          "claude": {
+            "present": true,
+            "top": 480,
+            "width": 674,
+            "in_layout": true
+          },
+          "other": {
+            "present": true,
+            "top": 479,
+            "width": 674,
+            "in_layout": true
+          },
+          "try": {
+            "present": true,
+            "top": 479,
+            "width": 716,
+            "in_layout": true
+          },
+          "next": {
+            "present": true,
+            "top": 734,
+            "width": 716,
+            "in_layout": true
+          }
+        },
+        "endpoint_client_width": 674,
+        "translated": {
+          "replaced": 1,
+          "translated_label_visible": true,
+          "translated_horizontal_overflow": false
+        },
+        "copy_clipboard_write": "https://api.cityscroll.org/mcp",
+        "copy_fallback": {
+          "focus_count": 1,
+          "select_count": 1,
+          "active_is_endpoint": true
+        }
+      }
     },
     {
       "route": "/use-with-ai/",
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
-      "data_vintage": "tracked site HTML at grounded revision",
-      "assertion": "endpoint, copy fallback, recovery and task examples remain reachable",
-      "sha256": "732026641559155903e4fb812eed912dcac053a82745219e61cfab57fa199a15",
-      "source_path": "site/use-with-ai/index.html"
+      "revision": "65283875b3470b3f3aca87bcb43833ef970064d997294038d6bc681d9e5fd982",
+      "data_vintage": "tracked site HTML at content revision",
+      "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
+      "sha256": "ad317e888a27a135252e241ae40bb1f3b484c72c28b3019a4e4bbc4b1fa918db",
+      "source_path": "site/use-with-ai/index.html",
+      "source_sha256": "bab51f0c419203162976c44acf950ffa46d28f20bef5f2aa8b887da396403a44",
+      "observed": {
+        "inner_width": 390,
+        "inner_height": 844,
+        "horizontal_overflow": false,
+        "primary_search_before_ask": null,
+        "ask_link_present": true,
+        "ask_link_href": "/use-with-ai/",
+        "endpoint_present": true,
+        "copy_control_present": true,
+        "anchors": {
+          "connect": {
+            "present": true,
+            "top": 402,
+            "width": 304,
+            "in_layout": true
+          },
+          "claude": {
+            "present": true,
+            "top": 401,
+            "width": 304,
+            "in_layout": true
+          },
+          "other": {
+            "present": true,
+            "top": 402,
+            "width": 304,
+            "in_layout": true
+          },
+          "try": {
+            "present": true,
+            "top": 402,
+            "width": 346,
+            "in_layout": true
+          },
+          "next": {
+            "present": true,
+            "top": 481,
+            "width": 346,
+            "in_layout": true
+          }
+        },
+        "endpoint_client_width": 304,
+        "translated": {
+          "replaced": 1,
+          "translated_label_visible": true,
+          "translated_horizontal_overflow": false
+        },
+        "copy_clipboard_write": "https://api.cityscroll.org/mcp",
+        "copy_fallback": {
+          "focus_count": 1,
+          "select_count": 1,
+          "active_is_endpoint": true
+        }
+      }
     },
     {
       "route": "/api.html#mcp",
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
-      "data_vintage": "tracked site HTML at grounded revision",
-      "assertion": "stable MCP heading and setup link are reachable",
-      "sha256": "930f3cc5e932d001f979db12a33a1933175644977e983a28fa6fc5f55db49d13",
-      "source_path": "site/api.html"
+      "revision": "65283875b3470b3f3aca87bcb43833ef970064d997294038d6bc681d9e5fd982",
+      "data_vintage": "tracked site HTML at content revision",
+      "assertion": "stable MCP heading and setup link remain reachable at this viewport",
+      "sha256": "e9848f0ec3c58ea03499fd6f8f25f75acd57db327b70494b926e0fee850c4bfe",
+      "source_path": "site/api.html",
+      "source_sha256": "930f3cc5e932d001f979db12a33a1933175644977e983a28fa6fc5f55db49d13",
+      "observed": {
+        "inner_width": 1440,
+        "inner_height": 1000,
+        "horizontal_overflow": false,
+        "primary_search_before_ask": null,
+        "ask_link_present": true,
+        "ask_link_href": "use-with-ai/",
+        "endpoint_present": false,
+        "copy_control_present": false,
+        "anchors": {
+          "mcp": {
+            "present": true,
+            "top": 479,
+            "width": 716,
+            "in_layout": true
+          }
+        },
+        "endpoint_client_width": null,
+        "translated": {
+          "replaced": 1,
+          "translated_label_visible": true,
+          "translated_horizontal_overflow": false
+        }
+      }
     },
     {
       "route": "/api.html#mcp",
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "7f0383b4086dd9f6779ab7042def72a25aeac20e",
-      "data_vintage": "tracked site HTML at grounded revision",
-      "assertion": "stable MCP heading and setup link are reachable",
-      "sha256": "930f3cc5e932d001f979db12a33a1933175644977e983a28fa6fc5f55db49d13",
-      "source_path": "site/api.html"
+      "revision": "65283875b3470b3f3aca87bcb43833ef970064d997294038d6bc681d9e5fd982",
+      "data_vintage": "tracked site HTML at content revision",
+      "assertion": "stable MCP heading and setup link remain reachable at this viewport",
+      "sha256": "e12ce840898ada55e61ce4c27da1d425e7333c2bd9cc7c3d71dd8b828a033df7",
+      "source_path": "site/api.html",
+      "source_sha256": "930f3cc5e932d001f979db12a33a1933175644977e983a28fa6fc5f55db49d13",
+      "observed": {
+        "inner_width": 390,
+        "inner_height": 844,
+        "horizontal_overflow": false,
+        "primary_search_before_ask": null,
+        "ask_link_present": true,
+        "ask_link_href": "use-with-ai/",
+        "endpoint_present": false,
+        "copy_control_present": false,
+        "anchors": {
+          "mcp": {
+            "present": true,
+            "top": 400,
+            "width": 346,
+            "in_layout": true
+          }
+        },
+        "endpoint_client_width": null,
+        "translated": {
+          "replaced": 1,
+          "translated_label_visible": true,
+          "translated_horizontal_overflow": false
+        }
+      }
     }
   ]
 }

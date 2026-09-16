@@ -35,4 +35,54 @@ export function renderEndpointControl({ endpoint = AI_ENDPOINT } = {}) {
   return `<label for="mcp-endpoint">MCP server address</label><input id="mcp-endpoint" class="endpoint" type="text" value="${esc(endpoint)}" readonly aria-describedby="mcp-endpoint-help"><button type="button" data-copy-endpoint>Copy address</button><p id="mcp-endpoint-help" class="note">This public endpoint accepts tools-only MCP requests with POST. Opening it in a browser shows connection recovery guidance.</p>`;
 }
 
+/** Routes retained by the assistant-setup capture harness, in census order. */
+export const ASSISTANT_SETUP_CAPTURE_ROUTES = Object.freeze([
+  { route: "/", source_path: "site/index.html" },
+  { route: "/use-with-ai/", source_path: "site/use-with-ai/index.html" },
+  { route: "/api.html#mcp", source_path: "site/api.html" },
+]);
+
+export const ASSISTANT_SETUP_VIEWPORTS = Object.freeze([
+  { viewport: "1440x1000", width: 1440, height: 1000 },
+  { viewport: "390x844", width: 390, height: 844 },
+]);
+
+function endpointValue(input) {
+  if (!input) return "";
+  if (typeof input.value === "string") return input.value;
+  return String(input.getAttribute?.("value") ?? "");
+}
+
+/**
+ * Copy the public MCP endpoint, falling back to focus+select when the clipboard
+ * API is missing or rejects the write.
+ */
+export async function copyEndpointAddress(input, { writeText } = {}) {
+  const text = endpointValue(input);
+  const writer = writeText
+    || globalThis.navigator?.clipboard?.writeText?.bind(globalThis.navigator.clipboard);
+  try {
+    if (typeof writer !== "function") throw new Error("clipboard unavailable");
+    await writer(text);
+    return "copied";
+  } catch {
+    if (typeof input?.focus === "function") input.focus();
+    if (typeof input?.select === "function") input.select();
+    return "fallback";
+  }
+}
+
+export function installEndpointCopyControl(root, options = {}) {
+  const button = root?.querySelector?.("[data-copy-endpoint]");
+  if (!button) return null;
+  const onClick = async () => {
+    const input = root.querySelector("#mcp-endpoint");
+    return copyEndpointAddress(input, options);
+  };
+  button.addEventListener("click", () => {
+    void onClick();
+  });
+  return onClick;
+}
+
 export { esc as escapeAiDiscoveryHtml };
