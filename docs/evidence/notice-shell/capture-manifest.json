@@ -3,7 +3,7 @@
   "surface": "notice document shell",
   "condition": "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; no image binary is committed.",
   "image_binaries_committed": false,
-  "revision": "3540dcfe4",
+  "revision": "41213008d",
   "data_vintage": "materialized notice fixture 2026-08-14",
   "route": "/notices/20260810048/",
   "captures": [
