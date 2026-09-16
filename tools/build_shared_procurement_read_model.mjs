@@ -9,6 +9,10 @@ import {
   describeCrolAwardPublication,
 } from "../site/crol_notice_publication_policy.mjs";
 import { attachPassportPublicFields } from "../site/passport_public_fields.mjs";
+import {
+  applyRetainedContractFamiliesToSpine,
+  loadRetainedContractFamilies,
+} from "../site/passport_retained_families.mjs";
 import { passportActionFields } from "../worker/src/lib/passport_parse.mjs";
 import { buildProcurementDigestSnapshot } from "../site/procurement_digest_compile.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
@@ -39,6 +43,7 @@ import {
 import { checkNoticeProcurementSubjectsLookup } from "../site/notice_subject_projection.mjs";
 
 const SPINE = new URL("../site/data/procurement_spine_sources.json", import.meta.url);
+const RETAINED_FAMILIES = new URL("../site/data/passport_sources/retained_contract_families.json", import.meta.url);
 const MTA_FIXTURES = new URL("../warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json", import.meta.url);
 const AWARDS = new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url);
 const MODEL_OUT = new URL("../site/data/shared_procurement_read_model.json", import.meta.url);
@@ -60,7 +65,7 @@ const ROOT = new URL("../", import.meta.url);
 // immediately following --check can verify them without a second full build.
 const CHECK_RECEIPT = new URL("../.artifacts/procurement-read-model-check.json", import.meta.url);
 const GENERATOR = "tools/build_shared_procurement_read_model.mjs";
-const INPUTS = [SPINE, AWARDS, MTA_FIXTURES, MTA_SOURCES, ANALYTICS_REGISTERED, ANALYTICS_PAYMENTS];
+const INPUTS = [SPINE, RETAINED_FAMILIES, AWARDS, MTA_FIXTURES, MTA_SOURCES, ANALYTICS_REGISTERED, ANALYTICS_PAYMENTS];
 
 function analyticalMaterialization(manifest, baseUrl) {
   const rows = [];
@@ -204,7 +209,7 @@ function cityRecord(row, generatedAt) {
   return record("city_record", String(row.request_id), row, generatedAt);
 }
 
-export function procurementSourceRecordsFromMaterializations(spine, awards, nativeFixtures = null, mta = null) {
+export function procurementSourceRecordsFromMaterializations(spine, awards, nativeFixtures = null, mta = null, options = {}) {
   const generatedAt = spine?.generated_at || spine?.observed_on || null;
   const checkbookRows = Array.isArray(spine?.rows?.checkbook_contracts)
     ? spine.rows.checkbook_contracts.filter((row) => (
@@ -217,9 +222,13 @@ export function procurementSourceRecordsFromMaterializations(spine, awards, nati
   // contracts search lane. Keep every row with its stable contract identity in
   // the served model; the rolling CROL predicate is only the publication rule
   // for notice-shaped rows, not a coverage filter for canonical contracts.
-  const passportRows = Array.isArray(spine?.rows?.passport_contracts)
-    ? spine.rows.passport_contracts
-    : [];
+  // Retained families fill award-corroboration gaps (bases, siblings, AHA) and
+  // newer dated observations without inventing amounts. Callers that already
+  // merged (or that supply a fixture spine) pass retainedFamilies: null/omit.
+  const retained = options.retainedFamilies || null;
+  const passportRows = retained
+    ? applyRetainedContractFamiliesToSpine(spine, retained).spine.rows.passport_contracts
+    : (Array.isArray(spine?.rows?.passport_contracts) ? spine.rows.passport_contracts : []);
   const passportRfxRows = Array.isArray(spine?.rows?.passport_rfx)
     ? spine.rows.passport_rfx
     : [];
@@ -260,17 +269,26 @@ export function buildProcurementArtifacts(spine, awards, options = {}) {
       ? JSON.parse(readFileSync(MTA_FIXTURES, "utf8"))
       : { fixtures: [] }
   );
+  const retainedFamilies = options.retainedFamilies === undefined
+    ? loadRetainedContractFamilies()
+    : options.retainedFamilies;
+  const materializationSpine = retainedFamilies
+    ? applyRetainedContractFamiliesToSpine(spine, retainedFamilies).spine
+    : spine;
   const sourceRecords = procurementSourceRecordsFromMaterializations(
-    spine,
+    materializationSpine,
     awards,
     nativeFixtures,
     options.mtaSources,
+    { retainedFamilies: null },
   );
   const publication = describeCrolAwardPublication({
     now: spine?.generated_at || null,
     selected: sourceRecords.length,
     census: {
-      passport_contracts: Array.isArray(spine?.rows?.passport_contracts) ? spine.rows.passport_contracts.length : 0,
+      passport_contracts: Array.isArray(materializationSpine?.rows?.passport_contracts)
+        ? materializationSpine.rows.passport_contracts.length
+        : 0,
       checkbook_contracts: Array.isArray(spine?.rows?.checkbook_contracts) ? spine.rows.checkbook_contracts.length : 0,
       checkbook_nycha_contracts: Array.isArray(spine?.rows?.checkbook_nycha_contracts) ? spine.rows.checkbook_nycha_contracts.length : 0,
     },

@@ -43,7 +43,7 @@ test("quality gate keeps real titles and drops identity or PIN-only garbage", ()
     cleanPassportPublicTitle("85721B0111-Bid 2100089 Nozzles (Brand Specific) Amendment #1", identity),
     "Bid 2100089 Nozzles (Brand Specific) Amendment #1",
   );
-  assert.equal(cleanPassportPublicTitle("85021B0087-LBC10CDHC-CO#8", identity), null);
+  assert.equal(cleanPassportPublicTitle("85021B0087-LBC10CDHC-CO#8", identity), "LBC10CDHC-CO#8");
   assert.equal(cleanPassportPublicTitle("CT1-850-20248800001", identity), null);
   assert.equal(cleanPassportPublicTitle("N/A", identity), null);
   assert.equal(cleanPassportPublicTitle("61415", identity), null);
@@ -53,7 +53,7 @@ test("quality gate keeps real titles and drops identity or PIN-only garbage", ()
 test("honest absence stays absent and does not invent scope or location", () => {
   const fields = passportPublicFieldsFromRow({
     ...identity,
-    title: "85021B0087-LBC10CDHC-CO#8",
+    title: "85021B0087001",
     procurement_method: "",
     program: null,
   });
@@ -63,6 +63,18 @@ test("honest absence stays absent and does not invent scope or location", () => 
   assert.equal(Object.hasOwn(fields, "scope"), false);
   assert.equal(Object.hasOwn(fields, "deliverables"), false);
   assert.equal(Object.hasOwn(fields, "place_of_performance"), false);
+});
+
+test("code-bearing change-order titles keep publisher CO numbering", () => {
+  const fields = passportPublicFieldsFromRow({
+    ...identity,
+    title: "85021B0087-LBC10CDHC-CO#8",
+    procurement_method: "Construction Change Order",
+    program: "PUBLIC BUILDINGS",
+  });
+  assert.equal(fields.title, "LBC10CDHC-CO#8");
+  assert.equal(fields.procurement_method, "Construction Change Order");
+  assert.equal(fields.program, "PUBLIC BUILDINGS");
 });
 
 test("densify matches exact ctr_id and attaches only clean publisher fields", () => {

@@ -462,6 +462,7 @@
     "site/parcel_search_producer.mjs",
     "site/participation_action_verbs.mjs",
     "site/passport_public_fields.mjs",
+    "site/passport_retained_families.mjs",
     "site/payment_rows_ui.mjs",
     "site/payroll_title_mart.mjs",
     "site/pdc_calendar.mjs",

@@ -60,6 +60,30 @@ test("amount roles keep base totals, actions, and payments separate", () => {
   assert.equal(projection.entries.find((entry) => entry.kind === "action_amount").action_key, "5372858");
 });
 
+test("A1 retained Firematic family projects original, current, and action amounts", async () => {
+  const { loadRetainedContractFamilies } = await import("../site/passport_retained_families.mjs");
+  const { passportActionFields } = await import("../worker/src/lib/passport_parse.mjs");
+  const retained = loadRetainedContractFamilies();
+  const rows = ["4561064", "4618449"].map((ctrId) => {
+    const row = retained.rows.find((entry) => String(entry.ctr_id) === ctrId);
+    return {
+      source_system: "passport_public_contracts",
+      source_observation_ref: `passport_public_contracts:contract:${row.epin}:${row.ctr_id}`,
+      snapshot: { ...row, ...passportActionFields(row) },
+    };
+  });
+  const projection = projectProcurementFacts({ identity_keys: { contract_ids: ["CT185720228800365"] } }, rows);
+  assert.deepEqual({
+    original: projection.facts.originalAmount,
+    current: projection.facts.currentAmount,
+    action: projection.facts.actionAmount,
+  }, {
+    original: 158997.84,
+    current: 208687.62,
+    action: 49689.78,
+  });
+});
+
 test("award notice publication remains a publication clock", () => {
   const projection = projectProcurementFacts({ identity_keys: {} }, [{
     source_system: "city_record", source_observation_ref: "city_record:bhrags", snapshot: {
