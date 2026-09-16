@@ -8,28 +8,28 @@
       "viewport": "1440x1000",
       "data_vintage": "site build",
       "assertion": "Browse keeps one Subscribe to calendar control and adds Get email updates plus feed-reader disclosure for the exact agency scope",
-      "sha256": "f181c636c4a6fefaa0f614fbe37dcc6cfc4e9e559c84b6755032f3d98cfd8056"
+      "sha256": "5d64fae0133103be83517b1defe4da720e598fc5b0f1aaa773121c39d4bac079"
     },
     {
       "route": "/browse/meetings/?agency=City%20Planning",
       "viewport": "390x844",
       "data_vintage": "site build",
       "assertion": "Phone Browse keeps the same Subscribe to calendar control with Get email updates and no duplicate calendar subscription",
-      "sha256": "f181c636c4a6fefaa0f614fbe37dcc6cfc4e9e559c84b6755032f3d98cfd8056"
+      "sha256": "5d64fae0133103be83517b1defe4da720e598fc5b0f1aaa773121c39d4bac079"
     },
     {
       "route": "/now/",
       "viewport": "1440x1000",
       "data_vintage": "site build",
       "assertion": "Build-rendered Now mounts Keep following this selection without creating a subscription on open",
-      "sha256": "9cee12710b266ff05a2c7362d1cc7b4b00866bc6405a130e88f98c2c546e4d54"
+      "sha256": "0ae7373b4dc211e641255cda6bbd9fb18444a149b4e18064c6f00d34e79e721f"
     },
     {
       "route": "/now/",
       "viewport": "390x844",
       "data_vintage": "site build",
       "assertion": "Phone Now keeps Keep following this selection beside the primary deadlines reading without a subscription on open",
-      "sha256": "9cee12710b266ff05a2c7362d1cc7b4b00866bc6405a130e88f98c2c546e4d54"
+      "sha256": "0ae7373b4dc211e641255cda6bbd9fb18444a149b4e18064c6f00d34e79e721f"
     },
     {
       "route": "/#meetings?agency=Buildings&q=scaffold",
@@ -43,7 +43,7 @@
       "viewport": "1440x1000",
       "data_vintage": "site build",
       "assertion": "Discovery group distinguishes email updates from updating calendar subscription and optional feeds",
-      "sha256": "61cd482688e13571a55362ca578566c36d81bd24385a925743791e4b7ac9b404"
+      "sha256": "244ce385552af633c382f0c2e6da22d32fcdd3192da1eaa2b14d938340c5280f"
     }
   ]
 }

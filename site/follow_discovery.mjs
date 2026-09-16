@@ -331,13 +331,13 @@ export function renderFollowDiscoveryGroup(projection, {
     ? renderHandoffFailure(projection, { escape, recoveryHref })
     : "";
 
+  const failureBlock = failedHtml ? `\n    ${failedHtml}` : "";
   return `<section class="follow-discovery" data-follow-discovery="1" data-follow-discovery-surface="${escape(projection.surface || "")}" data-follow-discovery-region="${escape(regionId)}" aria-label="${escape(LABEL.group_label)}">
     <p class="follow-discovery-kicker">${escape(LABEL.group_label)}</p>
     <div class="follow-discovery-actions">${primaryHtml}</div>
     ${semantics}
     ${guideHtml}
-    ${feedsHtml}
-    ${failedHtml}
+    ${feedsHtml}${failureBlock}
   </section>`;
 }
 
