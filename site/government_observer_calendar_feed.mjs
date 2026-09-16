@@ -8,9 +8,11 @@ import {
   OBSERVE_SOURCE_SYSTEMS,
   normalizeObserveScope,
 } from "./government_observe.mjs";
-import { pdcCalendarOccurrences } from "./pdc_calendar.mjs";
-import { bsaCalendarOccurrences } from "./bsa_calendar.mjs";
-import { oathTrialCalendarOccurrences } from "./oath_trial_calendar.mjs";
+import {
+  pdcCalendarOccurrences,
+  bsaCalendarOccurrences,
+  oathTrialCalendarOccurrences,
+} from "./observer_calendar_occurrences.mjs";
 import { deduplicateCalendarOccurrences } from "./calendar_occurrence.mjs";
 import {
   calendarFeedUrlForScope,

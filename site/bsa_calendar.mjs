@@ -6,7 +6,6 @@
  * relation back to the notice.
  */
 
-import { createCalendarOccurrence } from "./calendar_occurrence.mjs";
 import { normalizeBsaCalendarMeeting } from "./meeting_object_contract.mjs";
 
 export const BSA_CALENDAR_SCHEMA = "cityscroll.bsa_calendar.v1";
@@ -178,16 +177,4 @@ export function buildBsaSession({ session_id, date, source_url, remote_registrat
   return { ...row, schema: BSA_CALENDAR_SCHEMA, sequence, source_span, publication_date, agenda_items: items, phases, notice_id: notice.request_id || null, source_url, remote_registration_url };
 }
 
-export function bsaCalendarOccurrences(sessions = []) {
-  return sessions.map((session) => createCalendarOccurrence({
-    uid: session.meeting_id,
-    object_ref: session.meeting_id,
-    kind: "event",
-    title: session.title,
-    starts_at: session.event_date,
-    timezone: "America/New_York",
-    canonical_url: `https://cityscroll.org/meetings/${encodeURIComponent(session.meeting_id)}/`,
-    source: { system: "bsa_calendar", record_id: session.bsa_session_id, url: session.source_url },
-    provenance: { basis: "explicit_dated_agenda_section", source_span: session.source_span },
-  }));
-}
+export { bsaCalendarOccurrences } from "./observer_calendar_occurrences.mjs";

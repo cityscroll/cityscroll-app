@@ -1,6 +1,4 @@
 import { normalizePdcCalendarMeeting } from "./meeting_object_contract.mjs";
-import { createCalendarOccurrence } from "./calendar_occurrence.mjs";
-import { extractPdfCalendarText } from "../tools/lib/pdf_calendar_text.mjs";
 
 export const PDC_CALENDAR_SCHEMA = "cityscroll.pdc_calendar.v1";
 export const PDC_CALENDAR_SOURCE_URL = "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page";
@@ -98,46 +96,4 @@ export function enrichPdcMeetingWithAgenda(record, agenda) {
   return { ...record, event_date: record.event_date?.slice(0, 10) === agenda.meeting_date ? (agenda.start_time ? `${agenda.meeting_date}T${agenda.start_time}` : record.event_date) : record.event_date, agenda_sections: sections, arrival_advice: agenda.arrival_advice || null, ...(agenda.quorum_notice ? { quorum_notice: agenda.quorum_notice } : {}), meeting_documents: [...(record.meeting_documents || []), ...(agenda.document_url ? [{ role: "agenda", document_id: agenda.document_url, document_url: agenda.document_url, meeting_id: record.meeting_id, attachment_status: "attached", adapter: PDC_CALENDAR_PARSER, source_receipt: agenda.source_receipt }] : [])] };
 }
 
-/**
- * Project PDC sessions onto the shared occurrence contract.
- * Date-only schedule rows stay DATE-valued with explicit unpublished-time wording;
- * agenda-backed clock times become America/New_York starts without inventing an end.
- */
-export function pdcCalendarOccurrences(records = []) {
-  return (Array.isArray(records) ? records : []).flatMap((record) => {
-    if (!record?.meeting_id || !record?.event_date) return [];
-    const when = String(record.event_date);
-    const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(when);
-    const cancelled = record.status === "cancelled" || record.lifecycle === "cancelled";
-    const descriptionParts = [
-      dateOnly ? "Time not yet published" : null,
-      dateOnly ? "All-day marking means only the meeting day is known so far." : null,
-      record.arrival_advice || null,
-      record.source_url || null,
-    ].filter(Boolean);
-    return [createCalendarOccurrence({
-      uid: record.meeting_id,
-      object_ref: record.meeting_id,
-      kind: "event",
-      title: record.title || "Public Design Commission meeting",
-      ...(dateOnly ? { date: when } : { starts_at: when }),
-      ends_at: record.event_end || null,
-      timezone: dateOnly ? null : (record.timezone || "America/New_York"),
-      status: cancelled ? "cancelled" : "scheduled",
-      lifecycle: cancelled ? "cancelled" : (record.lifecycle || "scheduled"),
-      sequence: record.sequence ?? record.sequence_number ?? null,
-      last_modified: record.last_modified || record.modified_at || null,
-      location: record.venue?.address || record.venue?.name || null,
-      description: descriptionParts.join(" "),
-      canonical_url: `https://cityscroll.org/meetings/${encodeURIComponent(record.meeting_id)}/`,
-      source: {
-        system: "pdc_calendar",
-        record_id: record.pdc_event_id || record.publisher_identifier || record.source_record_id || null,
-        url: record.source_url || null,
-      },
-      observed_at: record.source_receipt?.observed_at || record.observed_at || null,
-    })];
-  });
-}
-
-export { extractPdfCalendarText };
+export { pdcCalendarOccurrences } from "./observer_calendar_occurrences.mjs";

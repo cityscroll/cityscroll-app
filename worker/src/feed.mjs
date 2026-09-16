@@ -21,9 +21,7 @@ import {
 } from "./lib/feed.mjs";
 import { calendarOccurrencesForRows } from "../../site/calendar_occurrence.mjs";
 import { zoningHearingCalendarOccurrence } from "../../site/zoning_hearing_calendar.mjs";
-import { pdcCalendarOccurrences } from "../../site/pdc_calendar.mjs";
-import { bsaCalendarOccurrences } from "../../site/bsa_calendar.mjs";
-import { oathTrialCalendarOccurrences } from "../../site/oath_trial_calendar.mjs";
+import { observerCalendarOccurrencesForRows } from "../../site/observer_calendar_occurrences.mjs";
 
 const FEED_LENSES = new Set(["money", "people", "land", "property", "rules", "meetings", "entity"]);
 const TYPES = {
@@ -115,12 +113,7 @@ export async function handleFeed(request, env, ctx) {
           : "land:hearings",
     })).filter(Boolean)
     : (sub.filter?.activity === "observe" || sub.filter?.body)
-    ? rows.flatMap((row) => {
-      if (row?.source_system === "pdc_calendar") return pdcCalendarOccurrences([row]);
-      if (row?.source_system === "bsa_calendar") return bsaCalendarOccurrences([row]);
-      if (row?.source_system === "oath_trial_calendar") return oathTrialCalendarOccurrences([row]);
-      return [];
-    })
+    ? observerCalendarOccurrencesForRows(rows)
     : calendarOccurrencesForRows(rows, {
       kind: q.kind,
       legacy_uid: true,
