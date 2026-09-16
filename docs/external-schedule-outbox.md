@@ -10,7 +10,7 @@ The `stats-daily-snapshot-monitor` distinguishes two publication states. With no
 and no verified instant, `publisher-not-yet-delivered` means the daily search-use summary
 has not been published yet: the producing work is the search-usage summary on the Stats page.
 This state has no promised day, missing-days list, or retention-loss count, and creates no
-repair item or judgment email. Its issue uses the same identity as a missed snapshot; replay
+repair item or judgment entry. Its issue uses the same identity as a missed snapshot; replay
 updates the existing title and body to correct an earlier loss diagnosis, without opening a
 duplicate. The ordinary recovery path closes it once publication satisfies the daily promise.
 
@@ -242,8 +242,8 @@ The loop runs entirely on the heartbeat this cycle already publishes.
 2. **The queue deduplicates by signature.** A signature is `monitor:<monitor id>:<failure class>[:<subject>]`. A condition on its fifth day advances a repeat counter on the item that already exists; it never opens a fifth item, and it never re-files a second issue.
 3. **The cycle leases up to three items** on the same heartbeat, spending one attempt each, and runs the dispatcher once per item with a ten-minute bound.
 4. **The dispatcher selects a committed playbook from the signature alone**, runs it, and verifies by re-running the monitor's own check for that one subject. Nothing a queue record carries is ever executed: the item reaches the dispatcher on stdin, and the registry — not the item — decides what runs.
-5. **A repair requiring an owner decision is reported as judgment**, which is the one outcome that mails the owner. Upstream outages are `deferred` until a fresh check confirms they persisted for 24 hours. Queueing, pickup, retry, deferral and recovery are silent.
-6. **A record this rail cannot read is retired rather than parked.** A judgment is a question for a person, and it is asked again each day the condition lasts. A signature that is not in the form above is not a question: no playbook could match it, no retry would change that, and no day passing would make it readable. Those retire as `unkeyable` the first time the dispatcher sees them, silently, and the same signature is not queued a second time. The finding itself still reaches its reader through the alert and the issue it always did — what stops is a queue row that could only ever report the same thing.
+5. **A repair requiring an owner decision is reported as judgment** in the authenticated Desk read model. Upstream outages are `deferred` until a fresh check confirms they persisted for 24 hours. Queueing, pickup, retry, deferral, judgment and recovery do not email the owner.
+6. **A record this rail cannot read is retired rather than parked.** A judgment is a question for a person, and the queue may reconsider it at most once per UTC day while the condition lasts. A signature that is not in the form above is not a question: no playbook could match it, no retry would change that, and no day passing would make it readable. Those retire as `unkeyable` the first time the dispatcher sees them, silently, and the same signature is not queued a second time. The finding itself still reaches its reader through the alert and the issue it always did — what stops is a queue row that could only ever report the same thing.
 
 The slot ledger already accounts for every scheduled slot that passed, so the repair rail does not go looking for missed ones. Of the three ways a slot goes unsettled, only one is repairable: a slot that was attempted and threw recorded nothing and the ledger has already advanced past it, so no later cycle will retry it. A slot recorded as superseded or outside the catch-up window was skipped on purpose — these are monitors, a later observation subsumes an earlier one, and the newest outstanding slot ran in the same cycle — so queueing those would re-report the same present state and re-open the same issue, which is what the ledger exists to prevent. A missed-slot item therefore also carries no recovery scope: the ledger stops reporting the slot immediately, so a scope would close the item before anything could re-run it. It is closed by its own dispatch instead, which reports the slot repaired as soon as it has a recorded result.
 
@@ -254,9 +254,9 @@ The slot ledger already accounts for every scheduled slot that passed, so the re
 | Exit | Queue outcome | Meaning |
 | --- | --- | --- |
 | `0` | `repaired` | A scripted remedy ran and the monitor's own check now passes. The item retires silently. |
-| `2` | `judgment` | Nothing deterministic can close it. The item parks at the judgment boundary and mails the owner once, with the summary saying what change or grant would close it. It reopens for one further attempt tomorrow if the condition is still there. |
+| `2` | `judgment` | Nothing deterministic can close it. The item parks at the judgment boundary, with the Desk summary saying what change or grant would close it. It reopens for one further attempt tomorrow if the condition is still there. |
 | `3` | `unkeyable` | The signature is not in the form above, so no playbook could ever match it. The item retires silently, and that signature is not queued again. |
-| `4` | `deferred` | The upstream is still unavailable. The item waits for a newer scheduled observation, with no owner mail inside the 24-hour persistence window. |
+| `4` | `deferred` | The upstream is still unavailable. The item waits for a newer scheduled observation without owner email. |
 | anything else | `failed` | A remedy ran and did not work. The queue retries, up to three attempts, then parks it as judgment. |
 
 The last line the command writes to stdout is the sentence the cycle reports back, bounded to 400 characters and redacted on the way through.
@@ -309,9 +309,9 @@ state and persistence fields.
 
 `REPAIR_UPSTREAM_PERSISTENCE_MS` in `worker/src/lib/repair_queue.mjs` is **24 hours**.
 Only a further deferred check at or after that elapsed window converts the queue result to
-`judgment` and sends the existing grouped owner email. Crossing UTC midnight, reaching two
-checks, or merely aging a stored finding does not escalate it. Once escalated, the existing
-once-per-day judgment rule applies. A healthy check or the monitor's recovery scope closes the
+`judgment` and records the decision in Desk without owner email. Crossing UTC midnight, reaching two
+checks, or merely aging a stored finding does not escalate it. Once classified, the existing
+once-per-day judgment retry rule applies silently. A healthy check or the monitor's recovery scope closes the
 item silently and clears the deferral history, so a later outage starts a new window.
 The scheduler issue remains the quiet record and closes through the existing close-recovered path.
 
@@ -330,11 +330,11 @@ A failure class with no deterministic local remedy is not given a playbook that 
 
 ### What judgment means for the operator
 
-`unkeyable` is the one outcome that is about the record rather than the condition, and it is why the signature form is a contract rather than a convention. Findings reach this queue from more than one producer, and a producer that keys on something else — free prose, a digest, a count that changes each time it is observed — writes rows the dispatcher can lease and can never act on. Parking those as judgment mails an owner a question with no answer, once a day, for as long as the record exists; retiring them says the true thing once and stops.
+`unkeyable` is the one outcome that is about the record rather than the condition, and it is why the signature form is a contract rather than a convention. Findings reach this queue from more than one producer, and a producer that keys on something else — free prose, a digest, a count that changes each time it is observed — writes rows the dispatcher can lease and can never act on. Parking those as judgment would leave an unanswerable decision in Desk and reconsider it once a day for as long as the record exists; retiring them says the true thing once and stops.
 
-A judgment is one mail per guard and failure class, naming what failed, since when, how many attempts were made, what the attempt reported, and the run and receipt to look at. Where one condition parked several subjects, that mail lists them — sorted, and counted rather than enumerated past the first few — because the decision in front of the owner is the same one for all of them. The grouping belongs to the mail alone: each subject keeps its own queue item, its own attempt counter, and its own receipts, and each closes on its own when the monitor stops reporting it. The queue then parks the item and stops retrying it for the rest of the day, so a condition firing every few minutes cannot spin the loop against work somebody has been asked to decide. If it is still happening tomorrow it gets one further bounded attempt, on the same rhythm the alert loop already uses to re-surface a finding that has not gone away.
+A judgment stays attached to its repair item in the private Desk read model, naming what failed, since when, how many attempts were made, what the attempt reported, and the run and receipt to inspect. Each subject keeps its own queue item, attempt counter, outcome history, and receipts, and each closes on its own when the monitor stops reporting it. The queue parks the item and stops retrying it for the rest of the day, so a condition firing every few minutes cannot spin the loop. If it is still happening tomorrow it gets one further bounded attempt, on the same rhythm the alert loop already uses to re-surface a finding that has not gone away. None of these judgment transitions sends owner email.
 
-Every attempt also leaves a local receipt at `$CROL_EXTERNAL_SCHEDULE_STATE_DIR/repair/receipts/<signature>.json` — the last ten attempts for that signature, newest first, each with its outcome and its verification result — so an operator can see what was tried without the mail. The cycle's own summary reports how many findings it observed, how many it queued, how many it closed, and what its repairs did:
+Every attempt also leaves a local receipt at `$CROL_EXTERNAL_SCHEDULE_STATE_DIR/repair/receipts/<signature>.json` — the last ten attempts for that signature, newest first, each with its outcome and its verification result — so an operator can inspect what was tried without relying on the Desk projection. The cycle's own summary reports how many findings it observed, how many it queued, how many it closed, and what its repairs did:
 
 ```bash
 jq '{repair_observed, repair_queued, repair_closed, repair_leased, repair_reported}' \
@@ -371,6 +371,12 @@ minutes. Ordinary monitors cannot promote themselves by setting severity.
 An accepted emergency is emailed once per incident signature, with no daily
 rollup; rejected sends may retry. A new incident must have a distinct signature.
 The final sender enforces the same policy, so direct calls cannot bypass it.
+Before provider submission, D1 owns the incident signature's immutable message,
+delivery state, and confirmed evidence; provider idempotency is secondary protection.
+The authenticated Desk projection overlays that authority by signature onto the
+most recent 50 distinct findings, ordered by the newest valid observation or
+delivery timestamp. Older emergency evidence remains durable in D1, and a failed
+authority read is reported as unavailable rather than treating stale KV state as clear.
 
 This notification policy does not widen the repair dispatcher's capabilities.
 Scripted playbooks still verify their own recovery; repository changes and
