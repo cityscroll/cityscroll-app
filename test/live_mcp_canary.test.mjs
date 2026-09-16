@@ -151,11 +151,47 @@ if (process.env.CS10_SKIP_LIVE_CANARY) {
     assert.ok(EXECUTION_ENVIRONMENTS.includes(receipt.execution_environment));
   });
 
+  test("A11: discovery reads exercise unauthenticated contract, land, and cited tools with cited links", () => {
+    assert.equal(receipt.discovery_reads.length, 3);
+    const contract = receipt.discovery_reads.find((read) => read.role === "contract_read");
+    const land = receipt.discovery_reads.find((read) => read.role === "land_read");
+    const cited = receipt.discovery_reads.find((read) => read.role === "cited_read");
+    assert.ok(contract);
+    assert.ok(land);
+    assert.ok(cited);
+    assert.equal(contract.tool, "get_contract");
+    assert.equal(land.tool, "get_land_project");
+    assert.equal(cited.tool, "retrieve_cited_passages");
+    assert.equal(contract.envelope_well_formed, true, JSON.stringify(contract));
+    assert.equal(land.envelope_well_formed, true, JSON.stringify(land));
+    assert.equal(cited.envelope_well_formed, true, JSON.stringify(cited));
+    assert.equal(contract.is_error, false);
+    assert.equal(land.is_error, false);
+    assert.equal(cited.is_error, false);
+    assert.ok(["available", "not_yet_public", "unavailable"].includes(contract.availability));
+    assert.ok(["available", "not_yet_public", "unavailable"].includes(land.availability));
+    assert.ok(Array.isArray(cited.cited_links));
+    for (const link of cited.cited_links) {
+      assert.match(link, /^https?:\/\//i);
+    }
+  });
+
+  test("A12: transport failures are classified as network, Cloudflare denial, or 429", async () => {
+    const { classifyLiveTransportFailure } = await import("../tools/verify_live_remote_mcp_canary.mjs");
+    assert.equal(classifyLiveTransportFailure(new Error("fetch failed")).class, "network_error");
+    assert.equal(classifyLiveTransportFailure(new Error("HTTP 429"), { status: 429 }).class, "http_429");
+    assert.equal(
+      classifyLiveTransportFailure(new Error("Forbidden"), { status: 403, bodyText: "cf-ray challenge-platform" }).class,
+      "cloudflare_denial",
+    );
+    assert.equal(receipt.network_observation.transport_failure, null);
+  });
+
   test("negative rule: the canary never exercises watch creation or preview", () => {
     for (const source of [canarySource, thisFileSource]) {
       assert.doesNotMatch(source, /callTool\(\{\s*name:\s*["'](?:create_watch|preview_watch)["']/s);
     }
-    for (const read of receipt.reads) {
+    for (const read of [...receipt.reads, ...receipt.discovery_reads]) {
       assert.notEqual(read.tool, "create_watch");
       assert.notEqual(read.tool, "preview_watch");
     }
