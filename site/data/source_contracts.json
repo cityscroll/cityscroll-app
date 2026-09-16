@@ -4536,8 +4536,7 @@
       "last_known_good_behavior": "Retain the last verified upcoming Council calendar snapshot within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe Council calendar hearings as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show Council calendar coverage as unavailable; never report that no Council hearings exist because acquisition failed.",
-      "production_evidence_field": "first_class.upcoming_council_meetings",
-      "production_freshness_gate": "report_only"
+      "production_evidence_field": "first_class.upcoming_council_meetings"
     },
     {
       "id": "meeting-outcomes",

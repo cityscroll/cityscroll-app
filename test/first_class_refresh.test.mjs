@@ -232,23 +232,7 @@ test("report_only production_freshness_gate keeps a stale surface visible withou
   const bsa = registry.first_class_artifacts.find((row) => row.id === "bsa-calendar");
   assert.equal(bsa.production_freshness_gate, "report_only");
   const upcomingCouncil = registry.first_class_artifacts.find((row) => row.id === "upcoming-council-meetings");
-  assert.equal(upcomingCouncil.production_freshness_gate, "report_only");
-
-  // The site snapshot builder pins generated_at at 2026-09-09; past the hard
-  // maximum age a production freshness pass must keep that surface visible
-  // without putting it in the blocking findings list.
-  const pinnedCouncilReport = buildFirstClassFreshnessReport(registry, {
-    root: ROOT,
-    now: "2026-09-17T12:00:00.000Z",
-  });
-  const pinnedCouncilSurface = pinnedCouncilReport.surfaces.find((row) => row.id === "upcoming-council-meetings");
-  assert.equal(pinnedCouncilSurface.freshness_state, "stale");
-  assert.equal(pinnedCouncilSurface.production_freshness_gate, "report_only");
-  assert.equal(pinnedCouncilSurface.source_vintage, "2026-09-09T12:00:00.000Z");
-  assert.ok(
-    !productionFreshnessFindings(pinnedCouncilReport).some((row) =>
-      row.startsWith("site/data/upcoming_council_meetings.json:")),
-  );
+  assert.notEqual(upcomingCouncil.production_freshness_gate, "report_only");
 
   await withTempDir("report-only-gate", async (root) => {
     const write = (path, value) => {
