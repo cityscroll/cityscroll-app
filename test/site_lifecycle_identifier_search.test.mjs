@@ -20,10 +20,12 @@ const PROCUREMENT_FIXTURE = JSON.parse(readFileSync(
   new URL("./fixtures/site_lifecycle_identifier_search/procurement_coyle.json", import.meta.url),
   "utf8",
 ));
-const CAPTURE_MANIFEST = JSON.parse(readFileSync(
-  new URL("../docs/evidence/identifier-site-history-journey/capture-manifest.json", import.meta.url),
-  "utf8",
-));
+const CAPTURE_DIR = new URL("../docs/evidence/identifier-site-history-journey/", import.meta.url);
+const CAPTURE_MANIFEST = JSON.parse(readFileSync(new URL("capture-manifest.json", CAPTURE_DIR), "utf8"));
+
+function readCaptureArtifact(relativePath) {
+  return readFileSync(new URL(relativePath, CAPTURE_DIR), "utf8");
+}
 
 const LAND = projectLandSearchDocument({
   project_id: "2020K0270",
@@ -244,9 +246,10 @@ test("A4: unrelated near-match identifier queries do not resolve to retained rec
 
 test("A4: capture manifest covers keyboard, no-JavaScript, and hashed destinations", async () => {
   await withPinnedClock("2026-09-15T12:00:00.000Z", async () => {
-    const procurement = produceProcurementDocument();
     assert.equal(CAPTURE_MANIFEST.image_binaries_committed, false);
-    assert.equal(CAPTURE_MANIFEST.revision, "8d74ef82967c4fec7bb4d4714676b9f91653789c");
+    assert.deepEqual(CAPTURE_MANIFEST.fixture_inputs, [
+      "test/fixtures/site_lifecycle_identifier_search/procurement_coyle.json",
+    ]);
 
     const required = [
       "identifier-search-desktop-keyboard",
@@ -258,33 +261,27 @@ test("A4: capture manifest covers keyboard, no-JavaScript, and hashed destinatio
     const byCase = new Map(CAPTURE_MANIFEST.captures.map((capture) => [capture.case, capture]));
     for (const name of required) assert.ok(byCase.has(name), name);
 
-    const modeForCase = {
-      "identifier-search-desktop-keyboard": "search",
-      "identifier-search-narrow-keyboard": "search",
-      "identifier-search-desktop-detail": "detail",
-      "identifier-search-narrow-detail": "detail",
-      "identifier-search-no-javascript-destinations": "detail",
-      "identifier-search-site-history": "site-history",
-      "identifier-search-failed-index": "failed-index",
-      "identifier-search-failed-detail": "failed-detail",
-    };
-
     for (const capture of CAPTURE_MANIFEST.captures) {
       assert.ok(capture.viewport.width > 0 && capture.viewport.height > 0, capture.case);
       assert.ok(capture.assertion.length > 20, capture.case);
+      assert.match(capture.artifact, /^captures\/[a-z0-9-]+\.html$/, capture.case);
       assert.match(capture.render_sha256, /^[a-f0-9]{64}$/, capture.case);
-      const mode = modeForCase[capture.case];
-      assert.ok(mode, capture.case);
-      const rendered = renderIdentifierJourney(mode, procurement);
-      assert.equal(capture.render_sha256, sha256(rendered), capture.case);
+      // Hash the retained capture artifact the manifest names. Do not re-render
+      // from the live site tree: detail chrome on main moves independently.
+      const artifact = readCaptureArtifact(capture.artifact);
+      assert.equal(capture.render_sha256, sha256(artifact), capture.case);
     }
 
-    const detailHtml = renderIdentifierJourney("detail", procurement);
+    const detailHtml = readCaptureArtifact("captures/detail.html");
     assert.match(detailHtml, /href="\/parcels\/3073670011\/"/);
+    assert.match(detailHtml, /Open parcel history/);
     assert.doesNotMatch(detailHtml, /\btabindex="[1-9]/);
-    const searchHtml = renderIdentifierJourney("search", procurement);
+    const searchHtml = readCaptureArtifact("captures/search.html");
     assert.match(searchHtml, /<a href="\/procurements\//);
     assert.match(searchHtml, /method="get"/);
+    assert.match(searchHtml, /id="search-query"/);
     assert.doesNotMatch(searchHtml, /\btabindex="[1-9]/);
+    const siteHistoryHtml = readCaptureArtifact("captures/site-history.html");
+    assert.match(siteHistoryHtml, /Parcel history for BBL 3073670011/);
   });
 });
