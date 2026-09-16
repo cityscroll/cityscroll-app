@@ -214,7 +214,7 @@ test("Manhattan CB2 ways-to-participate keeps board-local verbs, closed applicat
     const byKind = Object.fromEntries(paths.map((path) => [path.kind, path]));
     assert.equal(byKind.attend_meeting.verb, "Attend the next board meeting");
     assert.equal(byKind.attend_meeting.href, meeting.href);
-    assert.equal(byKind.add_to_calendar.verb, "Add to calendar");
+    assert.equal(byKind.add_to_calendar.verb, "Subscribe to calendar");
     assert.match(byKind.follow_board.href, /lens=meetings/);
     assert.match(byKind.follow_board.href, /manhattan-cb-02/);
     assert.equal(byKind.contact_board.href, "https://cbmanhattan.cityofnewyork.us/cb2/");
@@ -229,7 +229,7 @@ test("Manhattan CB2 ways-to-participate keeps board-local verbs, closed applicat
     const html = renderCommunityBoardParticipationSection(paths);
     assert.match(html, /Ways to participate/);
     assert.match(html, /Attend the next board meeting/);
-    assert.match(html, /Add to calendar/);
+    assert.match(html, /Subscribe to calendar/);
     assert.match(html, /Follow Manhattan Community Board 2/);
     assert.match(html, /Contact this board/);
     assert.match(html, /Public committee membership/);

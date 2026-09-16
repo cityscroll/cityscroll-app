@@ -640,11 +640,11 @@ export function communityBoardParticipationPaths({
   if (calendarHref) {
     paths.push(pathRecord({
       kind: "add_to_calendar",
-      verb: "Add to calendar",
+      verb: "Subscribe to calendar",
       href: calendarHref,
       cta: true,
       destination_kind: "calendar",
-      reason: "Standing calendar for this board’s published meetings.",
+      reason: "Updating calendar subscription for this board’s published meetings.",
       evidence: evidenceFrom(nextMeeting || calendarRows[0] || acceptedMeetings(meetings)[0]),
     }));
   }

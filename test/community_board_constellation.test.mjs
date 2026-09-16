@@ -454,7 +454,7 @@ test("Manhattan CB2 board document composes source-backed ways to participate wi
   assert.match(html, /data-community-board-participation="1"/);
   assert.match(html, /Ways to participate/);
   assert.match(html, /Attend the next board meeting/);
-  assert.match(html, /Add to calendar/);
+  assert.match(html, /Subscribe to calendar/);
   assert.match(html, /Follow Manhattan Community Board 2/);
   assert.match(html, /Contact this board/);
   assert.match(html, /Public committee membership/);
