@@ -115,7 +115,7 @@
   "condition": "Local typography fixtures for home, notice, and contract using shared brand tokens; no image binary is committed.",
   "data_vintage": "fixture-or-served-materialization",
   "image_binaries_committed": false,
-  "revision": "ca5b103ac8255fdf9b251419dbcee8429ba1f782",
+  "revision": "5b74244222da0332f1899d845a67dc11b756cada",
   "route": "/",
   "schema": "cityscroll.render_capture_manifest.v1",
   "surface": "reader typography roles"
