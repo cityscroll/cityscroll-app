@@ -53,7 +53,7 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-09-16T05:06:35.095Z",
+    "generated_at": "2026-09-16T07:26:42.494Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
