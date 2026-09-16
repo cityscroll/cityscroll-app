@@ -14,6 +14,14 @@ import {
   EMMONS_CHECKBOOK_ANCHOR,
   handleContractLifecycle,
 } from "../worker/src/checkbook_lifecycle.mjs";
+import {
+  CONTRACTS as DISCLOSURE_CONTRACTS,
+  FIXTURE_SCHEMA,
+  PRODUCTION_SCHEMA,
+  TOOL as DISCLOSURE_CAPTURE_TOOL,
+  assertFixtureManifest,
+  assertProductionReadback,
+} from "../tools/capture_procurement_disclosure_production_proof.mjs";
 import { solicitationFixture } from "./fixtures/procurement_project_context_fixtures.mjs";
 import { withPinnedClock } from "./helpers/test_clock.mjs";
 
@@ -21,6 +29,7 @@ const manifest = JSON.parse(readFileSync(new URL("../site/data/shared_procuremen
 const performance = JSON.parse(readFileSync(new URL("../site/data/analytics_performance_evidence.json", import.meta.url)));
 const projectContext = JSON.parse(readFileSync(new URL("../site/data/procurement_project_context.json", import.meta.url)));
 const renderManifest = JSON.parse(readFileSync(new URL("../docs/evidence/procurement-disclosure-production-proof/manifest.json", import.meta.url)));
+const productionReadback = JSON.parse(readFileSync(new URL("../docs/evidence/procurement-disclosure-production-proof/production-readback.json", import.meta.url)));
 const bhragsDetail = JSON.parse(readFileSync(new URL("./fixtures/procurement-detail-parity/ct107120258801626.json", import.meta.url)));
 
 const CONTRACTS = {
@@ -337,6 +346,8 @@ test("A5: optional enrichment failure retains the record, facts, and a working s
 });
 
 test("A5: committed manifest records each route, viewport, vintage, assertion, and render hash", async () => {
+  assertFixtureManifest(renderManifest);
+  assert.equal(renderManifest.schema, FIXTURE_SCHEMA);
   await withPinnedClock(renderManifest.capture_clock, async () => {
     const entries = new Map(renderManifest.entries.map((entry) => [`${entry.route}|${entry.viewport}`, entry]));
     assert.equal(entries.size, Object.keys(CONTRACTS).length * 2);
@@ -354,4 +365,44 @@ test("A5: committed manifest records each route, viewport, vintage, assertion, a
       }
     }
   });
+});
+
+test("A3/A5: committed production read-back retains live URLs, served build vintage, assertions, and results", () => {
+  assertProductionReadback(productionReadback);
+  assert.equal(productionReadback.schema, PRODUCTION_SCHEMA);
+  assert.equal(productionReadback.public_alias, "c755c57ebdc96");
+  assert.equal(productionReadback.provenance.observer.tool, DISCLOSURE_CAPTURE_TOOL);
+  assert.equal(productionReadback.served_build.live_base, "https://cityscroll.org");
+  assert.equal(productionReadback.served_build.api_base, "https://api.cityscroll.org");
+  assert.ok(productionReadback.served_build.shared_procurement_read_model_generated_at);
+  assert.ok(productionReadback.served_build.performance_evidence_snapshot_date);
+  assert.ok(productionReadback.served_build.pages_deploy_commit);
+  assert.equal(productionReadback.counts.failed, 0);
+  assert.equal(productionReadback.counts["not-yet-observed"], 0);
+  assert.ok(productionReadback.counts.passed >= 18);
+  assert.equal(productionReadback.render_entries.length, Object.keys(DISCLOSURE_CONTRACTS).length * 2);
+
+  const byId = new Map(productionReadback.paths.map((row) => [row.id, row]));
+  for (const id of Object.keys(DISCLOSURE_CONTRACTS)) {
+    const contract = byId.get(`contract-${id}`);
+    const viewport = byId.get(`viewport-${id}`);
+    assert.equal(contract?.state, "passed", id);
+    assert.equal(viewport?.state, "passed", id);
+    assert.match(contract.url, new RegExp(id));
+    assert.equal(contract.method, "GET");
+  }
+  assert.equal(byId.get("sp-city-record-bound")?.state, "passed");
+  assert.equal(byId.get("notice-20240829105")?.state, "passed");
+  assert.equal(byId.get("notice-20260810048")?.state, "passed");
+  assert.equal(byId.get("contract-lifecycle-20240829105")?.state, "passed");
+  assert.equal(byId.get("search-ACEDCA215")?.state, "passed");
+  assert.equal(byId.get("enrichment-failure-live-boundary")?.state, "passed");
+
+  for (const entry of productionReadback.render_entries) {
+    assert.ok(entry.live_url.startsWith("https://cityscroll.org/procurements/"));
+    assert.ok(["desktop", "mobile"].includes(entry.viewport));
+    assert.match(entry.sha256, /^[a-f0-9]{64}$/);
+    assert.ok(entry.assertion);
+    assert.equal(entry.http_status, 200);
+  }
 });

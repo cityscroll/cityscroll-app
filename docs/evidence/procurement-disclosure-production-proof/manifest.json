@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.render_evidence_manifest.v1",
-  "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+  "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
   "data_vintage": "2026-09-09",
   "capture_clock": "2026-09-15T00:00:00Z",
   "capture_policy": "Textual render hashes only; no image binaries are committed.",
@@ -8,7 +8,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
       "viewport": "desktop",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "4f263876ee9aad60f877ca5ad23b64afb05c2326b7e6ccbb62b5c95262486e97"
@@ -16,7 +16,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
       "viewport": "mobile",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "4f263876ee9aad60f877ca5ad23b64afb05c2326b7e6ccbb62b5c95262486e97"
@@ -24,7 +24,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
       "viewport": "desktop",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "c13d1a793abd59ebb30835d35da13c9554f66a52df313675dfb08e0b4cf886d5"
@@ -32,7 +32,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
       "viewport": "mobile",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "c13d1a793abd59ebb30835d35da13c9554f66a52df313675dfb08e0b4cf886d5"
@@ -40,7 +40,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
       "viewport": "desktop",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "fde0707dfde8cc88d735ea92966544829a8d89fda069e6f461215491b5343b09"
@@ -48,7 +48,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
       "viewport": "mobile",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "fde0707dfde8cc88d735ea92966544829a8d89fda069e6f461215491b5343b09"
@@ -56,7 +56,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT185720228800365/",
       "viewport": "desktop",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "e437a0fbe07a5813620d9966f6f3627b23e07bf3619fa3f14ad7a67a0e3821ff"
@@ -64,7 +64,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT185720228800365/",
       "viewport": "mobile",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "e437a0fbe07a5813620d9966f6f3627b23e07bf3619fa3f14ad7a67a0e3821ff"
@@ -72,7 +72,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT185020228802305/",
       "viewport": "desktop",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "54dd430eb926bd082c3083f87d308ef4c19910c4ee938f20a0c6716f5bf62f42"
@@ -80,7 +80,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT185020228802305/",
       "viewport": "mobile",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "54dd430eb926bd082c3083f87d308ef4c19910c4ee938f20a0c6716f5bf62f42"
@@ -88,7 +88,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
       "viewport": "desktop",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "b382a6b88825a96fa9640c9dd759907a81ce15a9aadb954e4305cc5f383ae7b7"
@@ -96,7 +96,7 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
       "viewport": "mobile",
-      "revision": "70f7f8402d6c1f8555fe8aa7fffd1adf399fdf3a",
+      "revision": "12dc1b9c380320f440bfb60e2c8b166743974966",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
       "sha256": "b382a6b88825a96fa9640c9dd759907a81ce15a9aadb954e4305cc5f383ae7b7"

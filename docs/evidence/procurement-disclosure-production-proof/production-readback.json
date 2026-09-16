@@ -1,0 +1,431 @@
+{
+  "schema": "cityscroll.procurement_disclosure_production_readback.v1",
+  "title": "Procurement disclosure production read-back",
+  "public_alias": "c755c57ebdc96",
+  "capture_policy": "Textual assertions and render hashes only; no image binaries are committed. Read-only public GETs.",
+  "served_build": {
+    "live_base": "https://cityscroll.org",
+    "api_base": "https://api.cityscroll.org",
+    "pages_deploy_commit": "22eccd23ad39cbefab7efba259c69a3c8dc762ba",
+    "pages_deploy_completed_at": "2026-09-16T11:21:44Z",
+    "pages_deploy_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/35084190419",
+    "shared_procurement_read_model_generated_at": "2026-09-16T10:43:06.069Z",
+    "shared_procurement_read_model_http_status": 200,
+    "performance_evidence_snapshot_date": "2026-09-16",
+    "performance_evidence_generated_at": "2026-09-16T10:43:06.069Z",
+    "performance_evidence_http_status": 200
+  },
+  "provenance": {
+    "schema": "cityscroll.production_provenance.v1",
+    "evidence_class": "live-production-read",
+    "isolated": false,
+    "observed_at": "2026-09-16T11:31:15.311Z",
+    "observer": {
+      "tool": "tools/capture_procurement_disclosure_production_proof.mjs",
+      "source_revision": "12dc1b9c380320f440bfb60e2c8b166743974966"
+    },
+    "methods": [
+      "GET"
+    ],
+    "bases": [
+      "https://cityscroll.org",
+      "https://api.cityscroll.org"
+    ]
+  },
+  "paths": [
+    {
+      "id": "contract-CT110220271400991",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT110220271400991/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "S&P live page preserves named facts and disclosure refusals",
+      "evidence": {
+        "contract_id": "CT110220271400991",
+        "amount": "$62,500",
+        "vendor": "S &amp; P GLOBAL MARKET INTELLIGENCE LLC",
+        "method": null,
+        "sha256": "f5c4c6051b5a87f18df60dd2b5dbbc95ffeeb32b2c2452215684636af784e16d"
+      },
+      "note": null
+    },
+    {
+      "id": "viewport-CT110220271400991",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT110220271400991/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "CT110220271400991 production markup is identical across desktop and 390px request variants",
+      "evidence": {
+        "sha256": "f5c4c6051b5a87f18df60dd2b5dbbc95ffeeb32b2c2452215684636af784e16d",
+        "property": "deterministic server-rendered markup across viewport variants"
+      },
+      "note": null
+    },
+    {
+      "id": "contract-CT105720278802113",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT105720278802113/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "AHA live page preserves named facts and disclosure refusals",
+      "evidence": {
+        "contract_id": "CT105720278802113",
+        "amount": "$46,673.32",
+        "vendor": "AMERICAN HEART ASSOCIATION INC",
+        "method": null,
+        "sha256": "e2b0d07d265b6def1b4e0bfe36ed29c70fad4c385b171e17c2a0b80376edc4d9"
+      },
+      "note": null
+    },
+    {
+      "id": "viewport-CT105720278802113",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT105720278802113/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "CT105720278802113 production markup is identical across desktop and 390px request variants",
+      "evidence": {
+        "sha256": "e2b0d07d265b6def1b4e0bfe36ed29c70fad4c385b171e17c2a0b80376edc4d9",
+        "property": "deterministic server-rendered markup across viewport variants"
+      },
+      "note": null
+    },
+    {
+      "id": "contract-CT104020273009333",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT104020273009333/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "QUIZIZZ live page preserves named facts and disclosure refusals",
+      "evidence": {
+        "contract_id": "CT104020273009333",
+        "amount": "$25,000",
+        "vendor": "QUIZIZZ INC",
+        "method": null,
+        "sha256": "bc6368f5c73cb2f1193802f42329c43df5bc14d8374e14bb182004a8535cc192"
+      },
+      "note": null
+    },
+    {
+      "id": "viewport-CT104020273009333",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT104020273009333/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "CT104020273009333 production markup is identical across desktop and 390px request variants",
+      "evidence": {
+        "sha256": "bc6368f5c73cb2f1193802f42329c43df5bc14d8374e14bb182004a8535cc192",
+        "property": "deterministic server-rendered markup across viewport variants"
+      },
+      "note": null
+    },
+    {
+      "id": "contract-CT185720228800365",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185720228800365/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "Firematic live page preserves named facts and disclosure refusals",
+      "evidence": {
+        "contract_id": "CT185720228800365",
+        "amount": "$49,689.78",
+        "vendor": "FIREMATIC SUPPLY CO. INC",
+        "method": "Amendment",
+        "sha256": "a27f6cab8e171e5f6722ecf6f8d30a23d731d0d602d32ae3f2eac0b6fccd39e2"
+      },
+      "note": null
+    },
+    {
+      "id": "viewport-CT185720228800365",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185720228800365/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "CT185720228800365 production markup is identical across desktop and 390px request variants",
+      "evidence": {
+        "sha256": "a27f6cab8e171e5f6722ecf6f8d30a23d731d0d602d32ae3f2eac0b6fccd39e2",
+        "property": "deterministic server-rendered markup across viewport variants"
+      },
+      "note": null
+    },
+    {
+      "id": "contract-CT185020228802305",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185020228802305/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "TAMEER live page preserves named facts and disclosure refusals",
+      "evidence": {
+        "contract_id": "CT185020228802305",
+        "amount": "$26,112.93",
+        "vendor": "TAMEER INC",
+        "method": "Construction Change Order",
+        "sha256": "432bcf0b0e5cc8b27469c0569bdeda8052d52ed77cf97ece2dd5ed91f27c66f1"
+      },
+      "note": null
+    },
+    {
+      "id": "viewport-CT185020228802305",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185020228802305/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "CT185020228802305 production markup is identical across desktop and 390px request variants",
+      "evidence": {
+        "sha256": "432bcf0b0e5cc8b27469c0569bdeda8052d52ed77cf97ece2dd5ed91f27c66f1",
+        "property": "deterministic server-rendered markup across viewport variants"
+      },
+      "note": null
+    },
+    {
+      "id": "contract-CT107120258801626",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "BHRAGS live page preserves named facts and disclosure refusals",
+      "evidence": {
+        "contract_id": "CT107120258801626",
+        "amount": "$10,869,881",
+        "vendor": "BHRAGS HOME CARE CORP",
+        "method": null,
+        "sha256": "1dec706da00fc89738a37ff5fe9af29e388bd05f3e54645a7cf3f0d25461594d"
+      },
+      "note": null
+    },
+    {
+      "id": "viewport-CT107120258801626",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "CT107120258801626 production markup is identical across desktop and 390px request variants",
+      "evidence": {
+        "sha256": "1dec706da00fc89738a37ff5fe9af29e388bd05f3e54645a7cf3f0d25461594d",
+        "property": "deterministic server-rendered markup across viewport variants"
+      },
+      "note": null
+    },
+    {
+      "id": "sp-city-record-bound",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT110220271400991/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "S&P City Record absence stays checked-no-match, names City Record, carries a lookup date, and keeps the checked PIN on the page without overreach",
+      "evidence": {
+        "coverage_state": "checked-no-match",
+        "checked_pin": "10220272001881",
+        "coverage_context": "Checked 2026-09-16; source as of 2026-08-02"
+      },
+      "note": null
+    },
+    {
+      "id": "notice-20240829105",
+      "url": "https://cityscroll.org/notices/20240829105/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "Notice 20240829105 preserves the retained identifiers and project or shelter context",
+      "evidence": {
+        "needles": [
+          "20240829105"
+        ],
+        "sha256": "3b595fb6372d572aa352adfdeabc98197fd75a06e5999746cfce4fbad2ac3593"
+      },
+      "note": null
+    },
+    {
+      "id": "notice-20260810048",
+      "url": "https://cityscroll.org/notices/20260810048/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "Notice 20260810048 preserves the retained identifiers and project or shelter context",
+      "evidence": {
+        "needles": [
+          "20260810048",
+          "BCM-HVAC Upgrades",
+          "ACEDCA215",
+          "85026B0110",
+          "85026B01107"
+        ],
+        "sha256": "49b6730ddb5d5b2967f6976f10acae16ba69b66f1f4abe99637b8d73c32c096b"
+      },
+      "note": null
+    },
+    {
+      "id": "contract-lifecycle-20240829105",
+      "url": "https://api.cityscroll.org/contract-lifecycle?id=20240829105",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "Shelter contract-lifecycle route retains notice id, PIN, contract id, 31 payments, and $7,385,672.19 paid",
+      "evidence": {
+        "assembly_version": 5,
+        "contract_id": "CT107120258801626",
+        "payment_as_of": "2026-08-06",
+        "total_spent": 7385672.19,
+        "total_payments": 31
+      },
+      "note": null
+    },
+    {
+      "id": "search-ACEDCA215",
+      "url": "https://api.cityscroll.org/search?q=ACEDCA215",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "Museum project-code search returns exactly one notice for ACEDCA215",
+      "evidence": {
+        "result_count": 1,
+        "object_ref": "notice:20260810048",
+        "canonical_href": "/notices/20260810048",
+        "title": "ACEDCA215 Brooklyn Children s Museum HVAC Upgrade"
+      },
+      "note": "Resident /search/?q=ACEDCA215 is a client shell; this production read uses the public search API that feeds it."
+    },
+    {
+      "id": "enrichment-failure-live-boundary",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "method": "GET",
+      "status": 200,
+      "state": "passed",
+      "assertion": "Live production cannot empty optional lookups; the fixture suite proves enrichment failure retains the record, and live pages carry no enrichment-apology copy",
+      "evidence": {
+        "live_apology_copy": false,
+        "fixture_clause": "test/procurement_disclosure_production_proof.test.mjs A5 enrichment failure"
+      },
+      "note": null
+    }
+  ],
+  "render_entries": [
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT110220271400991/",
+      "viewport": "desktop",
+      "data_vintage": "2026-09-16",
+      "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "f5c4c6051b5a87f18df60dd2b5dbbc95ffeeb32b2c2452215684636af784e16d",
+      "http_status": 200
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT110220271400991/",
+      "viewport": "mobile",
+      "data_vintage": "2026-09-16",
+      "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "f5c4c6051b5a87f18df60dd2b5dbbc95ffeeb32b2c2452215684636af784e16d",
+      "http_status": 200
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT105720278802113/",
+      "viewport": "desktop",
+      "data_vintage": "2026-09-16",
+      "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "e2b0d07d265b6def1b4e0bfe36ed29c70fad4c385b171e17c2a0b80376edc4d9",
+      "http_status": 200
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT105720278802113/",
+      "viewport": "mobile",
+      "data_vintage": "2026-09-16",
+      "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "e2b0d07d265b6def1b4e0bfe36ed29c70fad4c385b171e17c2a0b80376edc4d9",
+      "http_status": 200
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT104020273009333/",
+      "viewport": "desktop",
+      "data_vintage": "2026-09-16",
+      "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "bc6368f5c73cb2f1193802f42329c43df5bc14d8374e14bb182004a8535cc192",
+      "http_status": 200
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT104020273009333/",
+      "viewport": "mobile",
+      "data_vintage": "2026-09-16",
+      "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "bc6368f5c73cb2f1193802f42329c43df5bc14d8374e14bb182004a8535cc192",
+      "http_status": 200
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT185720228800365/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185720228800365/",
+      "viewport": "desktop",
+      "data_vintage": "2026-09-16",
+      "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "a27f6cab8e171e5f6722ecf6f8d30a23d731d0d602d32ae3f2eac0b6fccd39e2",
+      "http_status": 200
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT185720228800365/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185720228800365/",
+      "viewport": "mobile",
+      "data_vintage": "2026-09-16",
+      "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "a27f6cab8e171e5f6722ecf6f8d30a23d731d0d602d32ae3f2eac0b6fccd39e2",
+      "http_status": 200
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT185020228802305/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185020228802305/",
+      "viewport": "desktop",
+      "data_vintage": "2026-09-16",
+      "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "432bcf0b0e5cc8b27469c0569bdeda8052d52ed77cf97ece2dd5ed91f27c66f1",
+      "http_status": 200
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT185020228802305/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185020228802305/",
+      "viewport": "mobile",
+      "data_vintage": "2026-09-16",
+      "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "432bcf0b0e5cc8b27469c0569bdeda8052d52ed77cf97ece2dd5ed91f27c66f1",
+      "http_status": 200
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "viewport": "desktop",
+      "data_vintage": "2026-09-16",
+      "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "1dec706da00fc89738a37ff5fe9af29e388bd05f3e54645a7cf3f0d25461594d",
+      "http_status": 200
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "viewport": "mobile",
+      "data_vintage": "2026-09-16",
+      "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
+      "sha256": "1dec706da00fc89738a37ff5fe9af29e388bd05f3e54645a7cf3f0d25461594d",
+      "http_status": 200
+    }
+  ],
+  "findings": [
+    {
+      "id": "aha-passport-coverage-state",
+      "severity": "observation",
+      "statement": "The live AHA page still names the PASSPort Public contracts handoff, and its coverage row remains checked-no-match. This read records that retained lookup state; it does not claim a newly joined PASSPort match on the deployed page.",
+      "evidence": {
+        "coverage_state": "checked-no-match"
+      }
+    }
+  ],
+  "counts": {
+    "passed": 18,
+    "not-yet-observed": 0,
+    "failed": 0,
+    "total": 18,
+    "render_entries": 12
+  },
+  "rolling_release_gate": "Release gates assert population properties over the materialized set. This dated deployment read-back is evidence for the named routes, not a permanent named-record gate."
+}
