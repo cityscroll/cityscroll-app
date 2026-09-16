@@ -7,6 +7,7 @@ export const COMMUNITY_DISTRICT_DIGEST_SECTIONS = Object.freeze([
   Object.freeze({ id: "property", label: "Property" }),
   Object.freeze({ id: "rules", label: "Rules" }),
   Object.freeze({ id: "money", label: "Money" }),
+  Object.freeze({ id: "consultations", label: "Public consultations" }),
 ]);
 export const COMMUNITY_DISTRICT_COVERAGE_STATES = Object.freeze([
   "supported", "known_zero", "unsupported", "unavailable", "stale", "failed",

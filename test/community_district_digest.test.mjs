@@ -15,7 +15,7 @@ const districts = [
   ...Array.from({ length: 14 }, (_, i) => `Q${String(i + 1).padStart(2, "0")}`),
   "R01", "R02", "R03",
 ];
-const lenses = ["meetings", "land", "property", "rules", "money"];
+const lenses = ["meetings", "land", "property", "rules", "money", "consultations"];
 
 function fixtureActivity() {
   const records = Object.fromEntries(lenses.map((lens) => [lens, {}]));
@@ -41,7 +41,7 @@ test("A1: materializes one deterministic slice for every regular community distr
   assert.ok(digest.performance.measured_bytes < digest.performance.ceiling_bytes);
 });
 
-test("A2: every slice carries all five bounded section projections", () => {
+test("A2: every slice carries all six bounded section projections", () => {
   const digest = buildCommunityDistrictDigests({ activity: fixtureActivity(), builtAt: "2026-09-14T00:00:00.000Z" });
   for (const row of Object.values(digest.by_community_district)) {
     assert.deepEqual(Object.keys(row.sections).sort(), COMMUNITY_DISTRICT_DIGEST_SECTIONS.map(({ id }) => id).sort());
@@ -114,7 +114,9 @@ test("A6: K15 retains both land identifiers, meeting references, board mapping, 
   assert.equal(row.community_board, "brooklyn-cb-15");
   assert.ok(digest.performance.measured_bytes <= digest.performance.ceiling_bytes);
   assert.match(digest.note, /no request-time corpus reads/);
-  assert.deepEqual(Object.keys(row.sections.land.items[0]).sort(), ["date", "id", "request_id", "route", "title"].sort());
+  assert.deepEqual(Object.keys(row.sections.land.items[0]).sort(), ["date", "id", "project_id", "route", "title"].sort());
+  assert.deepEqual(Object.keys(row.sections.consultations.items[0]).sort(), ["consultation_id", "date", "id", "route", "title"].sort());
+  assert.deepEqual(Object.keys(row.sections.meetings.items[0]).sort(), ["date", "id", "request_id", "route", "title"].sort());
 });
 
 test("retains a textual capture manifest for the materialized route payload", () => {

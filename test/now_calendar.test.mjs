@@ -179,7 +179,7 @@ test("the dense fixture meets the commissioned density rule and renders a month"
 
 test("a sparse Now surface returns an explicit non-render result, never an empty calendar", () => {
   const emptySources = Object.fromEntries(
-    ["money", "staffing", "rules", "property", "meetings", "land"].map((domain) => [domain, { status: "available" }]),
+    ["money", "staffing", "rules", "property", "meetings", "land", "consultations"].map((domain) => [domain, { status: "available" }]),
   );
   const surface = buildSurface(emptySources);
   const view = buildNowCalendarView(surface, { today: TODAY });
