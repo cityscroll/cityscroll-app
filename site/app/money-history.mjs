@@ -213,6 +213,8 @@ import { buildContractReportTarget, renderReportIssueAffordance } from "../repor
 import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "../procurement_pursuit_snapshot.mjs";
 import { buyerHistoryComparisonFromSolicitation } from "../buyer_history_pursuit_comparison.mjs";
 import { pinBase } from "../procurement_pin.mjs";
+import { resolveAgencyIdentity } from "../agency_identity.mjs";
+import { agencyEvidencePath, renderEligibleRecordTools } from "../research_discovery.mjs";
 
 // Every note naming an external source carries a working, scoped link to it
 // — a note that only SAYS the answer lives elsewhere, with no way to go look, isn't an
@@ -1068,14 +1070,17 @@ function renderDetail(r, chain, stats, loadContext = true){
   const initialActionsForGlance = window.CrolActions && actionRailContextReady
     ? CrolActions.compileActionRail(noticeActionMatter(r), { today: todayISO() })
     : [];
-  let html = `<div class="actions" style="margin:0 0 12px">
-    <button class="act" type="button" id="dcopy">${t("copy_link_notice")}</button>
-    ${qrButtonHTML("dqr","act")}
-    <button class="act export-control" type="button" id="dxlsx"${pending?' disabled aria-busy="true"':""}>${t("export_xlsx")}</button>
-    <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
-    ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
-    ${(r.procurement_id || r.canonical_href) ? renderReportIssueAffordance(buildContractReportTarget(r), { escape: escUiHtml }) : ""}
-  </div><div data-ai-context-notice-mount="1" data-request-id="${escUiHtml(r.request_id||"")}"></div>`;
+  const detailAgencyIdentity = r.agency_name ? resolveAgencyIdentity(r.agency_name) : null;
+  let html = renderEligibleRecordTools({
+    surface: "notice",
+    evidencePath: agencyEvidencePath(detailAgencyIdentity),
+    comparativeAgency: r.agency_name || null,
+    handlers: { share: true, collection: true, export: true, print: true },
+    primaryHtml: `<button class="act" type="button" id="dcopy">${t("copy_link_notice")}</button>${(r.procurement_id || r.canonical_href) ? renderReportIssueAffordance(buildContractReportTarget(r), { escape: escUiHtml }) : ""}`,
+    moreToolsHtml: `${qrButtonHTML("dqr","act")}<button class="act export-control" type="button" id="dxlsx"${pending?' disabled aria-busy="true"':""}>${t("export_xlsx")}</button><button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}`,
+    moreToolsId: "notice-detail-more-tools",
+  });
+  html += `<div data-ai-context-notice-mount="1" data-request-id="${escUiHtml(r.request_id||"")}"></div>`;
   html += solicitationContextHeadingHTML(r);
   html += pursuitSnapshotHTML(r);
   html += `<div id="dcontext" data-export-class="notice_context"></div><div id="dactions" data-export-class="actions"></div>`;

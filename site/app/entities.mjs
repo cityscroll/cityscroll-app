@@ -1,6 +1,7 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { constellationLink, filterChip, installFilterChipNavigation, staticFact } from "../affordance_grammar.mjs";
 import { focusOfficialProfileSection } from "../official_profile_navigation.mjs";
+import { renderEligibleRecordTools } from "../research_discovery.mjs";
 
 const agencyHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("agency",cleanText(name)),label:cleanText(name)},{tab}) : "/agencies/"+encodeURIComponent(cleanText(name))+"/"+(tab?"?tab="+tab:"");
 const vendorHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("vendor",cleanText(name)),label:cleanText(name)},{tab}) : "/vendors/"+encodeURIComponent(cleanText(name))+"/"+(tab?"?tab="+tab:"");
@@ -588,16 +589,19 @@ async function showAgency(name, initialTab){
 
       ${hasForecasts ? `<div id="forecast-content" style="display:none">${forecastPaneHTML(forecasts)}</div>` : ""}
 
-    <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">${t("agency_follow_btn")}</button>
-        <button class="act" type="button" id="ecopy">${t("copy_link")}</button>
-        ${qrButtonHTML("eqr","act")}
-        ${pinBtn("agency", nm, agencyWho(nm), t("meta_agency_profile"))}
-        <button class="act" type="button" data-aw="rules">${t("agency_watch_rules_btn")}</button>
-        <button class="act" type="button" data-aw="meetings">${t("agency_watch_meetings_btn")}</button>
-        ${constellationLink({ href: `/agencies/${encodeURIComponent(identity.canonical_id)}/`, label: "Agency records", className: "view", escape: escUiHtml })}
-        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}">RSS</a>`:""}
-      </div>
+    ${(() => {
+        const agencyRecordsHref = `/agencies/${encodeURIComponent(identity.canonical_id)}/`;
+        return renderEligibleRecordTools({
+          surface: "agency",
+          evidencePath: agencyRecordsHref,
+          asOfSupported: true,
+          comparativeAgency: nm,
+          handlers: { share: true, collection: true },
+          primaryHtml: `<button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">${t("agency_follow_btn")}</button>${constellationLink({ href: agencyRecordsHref, label: "Agency records", className: "view", escape: escUiHtml })}`,
+          moreToolsHtml: `<button class="act" type="button" id="ecopy">${t("copy_link")}</button>${qrButtonHTML("eqr","act")}${pinBtn("agency", nm, agencyWho(nm), t("meta_agency_profile"))}<button class="act" type="button" data-aw="rules">${t("agency_watch_rules_btn")}</button><button class="act" type="button" data-aw="meetings">${t("agency_watch_meetings_btn")}</button>${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}">RSS</a>`:""}`,
+          moreToolsId: "agency-more-tools",
+        });
+      })()}
     </div></div>`;
 
   installFilterChipNavigation(box);
@@ -1108,13 +1112,14 @@ function vendorProfileHTML(profile, details, hydrating){
       ${hasForecasts ? `<div id="forecast-content" style="display:none">${forecastPaneHTML(forecasts)}</div>` : ""}
 
       ${profile.asOf?`<div class="rmeta" style="margin-top:12px">${t("external_awards_updated",{date:fdate(profile.asOf)})}</div>`:""}
-      <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" data-follow="vendor" data-name="${display.replace(/"/g,"&quot;")}">${t("vendor_follow_btn")}</button>
-        <button class="act" type="button" id="ecopy">${t("copy_link")}</button>
-        ${qrButtonHTML("eqr","act")}
-        ${pinBtn("vendor", display, display, t("meta_vendor_profile"))}
-        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(display)}">RSS</a>`:""}
-      </div>
+      ${renderEligibleRecordTools({
+        surface: "vendor",
+        comparativeVendor: display,
+        handlers: { share: true, collection: true },
+        primaryHtml: `<button class="act primary" type="button" data-follow="vendor" data-name="${display.replace(/"/g,"&quot;")}">${t("vendor_follow_btn")}</button>`,
+        moreToolsHtml: `<button class="act" type="button" id="ecopy">${t("copy_link")}</button>${qrButtonHTML("eqr","act")}${pinBtn("vendor", display, display, t("meta_vendor_profile"))}${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(display)}">RSS</a>`:""}`,
+        moreToolsId: "vendor-more-tools",
+      })}
     </div></div>`;
 }
 

@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { parseOathTrialCsv } from "../site/oath_trial_calendar.mjs";
+import {
+  OATH_TRIAL_CALENDAR_SOURCE_URL,
+  parseOathTrialCsv,
+} from "../site/oath_trial_calendar.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 export function buildOathTrialCalendar({ csv, sourceUrl, observedAt, sourceRevision, receipt } = {}) {
@@ -14,7 +17,7 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
   if (!input) throw new Error("usage: build_oath_trial_calendar.mjs <captured-csv> [output]");
   const result = buildOathTrialCalendar({
     csv: readFileSync(input, "utf8"),
-    sourceUrl: "https://www.nyc.gov/site/oath/calendar/calendar.page",
+    sourceUrl: OATH_TRIAL_CALENDAR_SOURCE_URL,
     observedAt: process.env.OATH_OBSERVED_AT || new Date().toISOString(),
     sourceRevision: process.env.OATH_SOURCE_REVISION || null,
   });

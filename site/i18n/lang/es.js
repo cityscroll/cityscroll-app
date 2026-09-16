@@ -1347,6 +1347,10 @@
     export_xlsx: "Exportar Excel",
     print_save_pdf: "Imprimir",
     share_export_btn: "Compartir / exportar",
+    more_tools_label: "Más herramientas",
+    research_tool_evidence: "Comprobar la evidencia de la conexión",
+    research_tool_asOf: "Ver registros a una fecha",
+    research_tool_comparative: "Comparar contratos relacionados",
 
     print_header: "CityScroll · {link} · Al {date}",
     csv_address: "Dirección",

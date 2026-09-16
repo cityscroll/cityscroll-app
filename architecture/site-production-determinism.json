@@ -553,6 +553,7 @@
     "site/report_target.mjs",
     "site/report_verdict_public.mjs",
     "site/reports_domain_observations.mjs",
+    "site/research_discovery.mjs",
     "site/research_package.mjs",
     "site/resident_snapshot_queries.mjs",
     "site/route_migration.mjs",

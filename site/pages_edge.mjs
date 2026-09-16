@@ -69,6 +69,10 @@ import { buildLegislativeMatterDocument, renderLegislativeMatterDocument } from 
 import { resolvePublishedMatterLookup } from "./matter_publication_generation.mjs";
 import { renderNoticeBitemporalHistory } from "./civic_time_ledger.mjs";
 import {
+  projectResearchTools,
+  renderResearchNavigation,
+} from "./research_discovery.mjs";
+import {
   buildPublicAssertionGraph,
   hydratePublicAssertionInspector,
   renderAssertionInspectorDocument,
@@ -881,7 +885,21 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       ${mandateBacklinksHTML}
       ${noticeLocalConstellationHTML}
       ${renderMeetingOutcomesFirstPaint(meetingOutcome, id)}
-      <div class="actions">${browseLink}${followingLink}${documentReport}${relatedObjectReport}</div>
+      ${(() => {
+        // Edge keeps connect-notice "View contract" handoff as the contract entrance.
+        // Do not emit comparative award-browse hrefs here; client More tools owns that.
+        const evidencePath = identity.matched
+          ? `/agencies/${encodeURIComponent(identity.canonical_id)}/`
+          : null;
+        const research = projectResearchTools({
+          surface: "notice",
+          evidencePath,
+          asOfSupported: Boolean(evidencePath),
+          asOfPath: evidencePath,
+        });
+        const researchHtml = renderResearchNavigation(research);
+        return `<div class="actions record-action-regions" data-record-action-regions="1">${browseLink}${followingLink}${documentReport}${relatedObjectReport}${researchHtml}</div>`;
+      })()}
       <p>${sourceLink}</p>
     </article>
   </div>`;

@@ -436,12 +436,6 @@
       "examples": [
         {
           "input": {
-            "termGroups": [
-              [
-                "construction",
-                "scaffolding"
-              ]
-            ],
             "limit": 10
           },
           "output": {
@@ -451,8 +445,7 @@
         },
         {
           "input": {
-            "termGroups": [],
-            "openOnly": true,
+            "open_only": true,
             "limit": 1
           },
           "output": {
@@ -584,7 +577,7 @@
       "examples": [
         {
           "input": {
-            "requestId": "20260807001"
+            "request_id": "20260807001"
           },
           "output": {
             "availability": "available",
@@ -594,7 +587,7 @@
         },
         {
           "input": {
-            "requestId": "20260807999"
+            "request_id": "20260807999"
           },
           "output": {
             "availability": "not_yet_public",
@@ -705,7 +698,7 @@
       "examples": [
         {
           "input": {
-            "entityId": "vendor:stem:ACME CONSTRUCTION"
+            "entity_id": "vendor:stem:ACME CONSTRUCTION"
           },
           "output": {
             "availability": "available",
@@ -714,7 +707,7 @@
         },
         {
           "input": {
-            "entityId": "vendor:unknown"
+            "entity_id": "vendor:unknown"
           },
           "output": {
             "availability": "not_yet_public",
@@ -890,9 +883,9 @@
       "examples": [
         {
           "input": {
-            "entityId": "vendor:stem:ACME CONSTRUCTION",
+            "entity_id": "vendor:stem:ACME CONSTRUCTION",
             "depth": 2,
-            "fanOut": 12
+            "fan_out": 12
           },
           "output": {
             "availability": "available",
@@ -902,7 +895,7 @@
         },
         {
           "input": {
-            "entityId": "vendor:unknown"
+            "entity_id": "vendor:unknown"
           },
           "output": {
             "availability": "not_yet_public",
@@ -1422,9 +1415,7 @@
         {
           "input": {
             "query": "energy conservation",
-            "filters": {
-              "source_family": "city_record_notice"
-            },
+            "source_family": "city_record_notice",
             "limit": 5
           },
           "output": {
@@ -1548,7 +1539,7 @@
       "examples": [
         {
           "input": {
-            "procurementId": "procurement:contract:20211201861"
+            "procurement_id": "procurement:contract:20211201861"
           },
           "output": {
             "availability": "available",
@@ -1558,7 +1549,7 @@
         },
         {
           "input": {
-            "procurementId": "procurement:contract:not-published"
+            "procurement_id": "procurement:contract:not-published"
           },
           "output": {
             "availability": "not_yet_public",
@@ -1793,7 +1784,7 @@
         },
         {
           "input": {
-            "sourceSystem": "passport_public_contracts",
+            "source_system": "passport_public_contracts",
             "limit": 25
           },
           "output": {
@@ -2142,9 +2133,9 @@
       "examples": [
         {
           "input": {
-            "groupBy": "agency",
+            "group_by": "agency",
             "measure": "current",
-            "fiscalYear": 2027,
+            "fiscal_year": 2027,
             "limit": 10
           },
           "output": {
@@ -2155,7 +2146,7 @@
         },
         {
           "input": {
-            "groupBy": "vendor",
+            "group_by": "vendor",
             "measure": "count",
             "agency": "Department of Education"
           },
@@ -2269,7 +2260,7 @@
       "examples": [
         {
           "input": {
-            "entityId": "official:example"
+            "entity_id": "official:example"
           },
           "output": {
             "availability": "available",
@@ -2278,7 +2269,7 @@
         },
         {
           "input": {
-            "entityId": "agency:id:not-published"
+            "entity_id": "agency:id:not-published"
           },
           "output": {
             "availability": "not_yet_public",
@@ -2676,7 +2667,7 @@
       "examples": [
         {
           "input": {
-            "meetingId": "meeting:city_record:20260810053"
+            "meeting_id": "meeting:city_record:20260810053"
           },
           "output": {
             "availability": "available",
@@ -2686,7 +2677,7 @@
         },
         {
           "input": {
-            "meetingId": "meeting:community_board:unpublished"
+            "meeting_id": "meeting:community_board:unpublished"
           },
           "output": {
             "availability": "not_yet_public",
@@ -2797,7 +2788,7 @@
       "examples": [
         {
           "input": {
-            "projectId": "2024Q0356"
+            "project_id": "2024Q0356"
           },
           "output": {
             "availability": "available",
@@ -2807,7 +2798,7 @@
         },
         {
           "input": {
-            "projectId": "not-a-real-project"
+            "project_id": "not-a-real-project"
           },
           "output": {
             "availability": "not_yet_public",
@@ -3184,7 +3175,7 @@
       "examples": [
         {
           "input": {
-            "projectId": "2024Q0356"
+            "project_id": "2024Q0356"
           },
           "output": {
             "availability": "available",
@@ -3194,7 +3185,7 @@
         },
         {
           "input": {
-            "projectId": "not-a-real-project"
+            "project_id": "not-a-real-project"
           },
           "output": {
             "availability": "not_yet_public",

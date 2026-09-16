@@ -94,6 +94,7 @@ import {
   buildApiCapabilityCatalog,
   buildMcpToolCatalog,
   checkGeneratedFile,
+  projectCapabilityExampleInputToMcpWire,
   validateApiDocumentation,
   renderMcpCatalogHtml,
   renderApiCapabilityCatalogHtml,
@@ -410,6 +411,28 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "list_capability_gaps",
   ]);
   assert.equal(catalog.tools[0].input_schema.type, "object");
+  // MCP catalog examples must use published wire names (snake_case input_schema
+  // keys), not capability-layer camelCase. The live canary and any MCP client
+  // copy from this catalog; capability catalogs keep camelCase separately.
+  for (const tool of catalog.tools) {
+    const properties = tool.input_schema?.properties || {};
+    for (const example of tool.examples || []) {
+      for (const key of Object.keys(example.input || {})) {
+        assert.equal(
+          Object.hasOwn(properties, key),
+          true,
+          `${tool.name} example input key ${key} is not an MCP wire property`,
+        );
+      }
+    }
+  }
+  const contract = catalog.tools.find((tool) => tool.name === "get_contract");
+  assert.deepEqual(
+    projectCapabilityExampleInputToMcpWire({ procurementId: "procurement:contract:x" }, contract.input_schema),
+    { procurement_id: "procurement:contract:x" },
+  );
+  assert.ok(contract.examples.every((example) => Object.hasOwn(example.input, "procurement_id")));
+  assert.equal(Object.hasOwn(contract.examples[0].input, "procurementId"), false);
   const renderedApi = renderApiCapabilityCatalogHtml(buildApiCapabilityCatalog());
   const embeddedCatalog = renderedApi.match(/<script type="application\/json" id="api-capability-catalog">([\s\S]*)<\/script>/);
   assert.ok(embeddedCatalog, "generated API page must embed its machine-readable catalog");

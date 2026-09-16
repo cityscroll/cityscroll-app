@@ -1749,9 +1749,16 @@ export function buildDistrictActivity(opts = {}) {
     boundaries,
   );
 
-  // Ensure every borough / regular CD / council id has a counts bag (zeros OK).
+  // Ensure every borough / regular CD / council id has a counts bag and an
+  // item-membership bag (zeros / empty lists OK). Count bags already seeded
+  // empty districts; district_items must too — a zero-activity district is a
+  // valid state, and digests / Near You slices must not treat omission as
+  // absence of the district itself.
   for (const b of ["Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"]) {
     if (!byBorough[b]) byBorough[b] = emptyLensCounts();
+    if (!districtItemSets.by_level.borough[b]) {
+      districtItemSets.by_level.borough[b] = emptyItemLensSets();
+    }
   }
   // First-class non-polygon bags when any lens used them.
   if (Object.values(citywideBag).some((n) => n > 0) && !byBorough.Citywide) {
@@ -1760,17 +1767,35 @@ export function buildDistrictActivity(opts = {}) {
   if (Object.values(virtualBag).some((n) => n > 0) && !byBorough.Virtual) {
     byBorough.Virtual = emptyLensCounts();
   }
+  for (const id of GEOGRAPHY_COMMUNITY_DISTRICT_IDS) {
+    if (!byCommunity[id]) byCommunity[id] = emptyLensCounts();
+    if (!districtItemSets.by_level.community_district[id]) {
+      districtItemSets.by_level.community_district[id] = emptyItemLensSets();
+    }
+  }
   for (const d of boundaries.community_districts || []) {
     const id = d?.id;
     if (!id) continue;
     const num = Number(String(id).slice(1));
     if (Number.isFinite(num) && num > 18) continue;
     if (!byCommunity[id]) byCommunity[id] = emptyLensCounts();
+    if (!districtItemSets.by_level.community_district[id]) {
+      districtItemSets.by_level.community_district[id] = emptyItemLensSets();
+    }
+  }
+  for (const id of GEOGRAPHY_COUNCIL_DISTRICT_IDS) {
+    if (!byCouncil[id]) byCouncil[id] = emptyLensCounts();
+    if (!districtItemSets.by_level.council_district[id]) {
+      districtItemSets.by_level.council_district[id] = emptyItemLensSets();
+    }
   }
   for (const d of boundaries.council_districts || []) {
     const id = d?.id != null ? String(d.id) : null;
     if (!id) continue;
     if (!byCouncil[id]) byCouncil[id] = emptyLensCounts();
+    if (!districtItemSets.by_level.council_district[id]) {
+      districtItemSets.by_level.council_district[id] = emptyItemLensSets();
+    }
   }
 
   const sortedIds = (set) => [...set].sort();

@@ -2132,6 +2132,10 @@
     export_xlsx: "Экспорт в Excel (.xlsx)",
     print_save_pdf: "Печать / Сохранить как PDF",
     share_export_btn: "Поделиться / экспорт",
+    more_tools_label: "Ещё инструменты",
+    research_tool_evidence: "Проверить доказательства связи",
+    research_tool_asOf: "Смотреть записи на дату",
+    research_tool_comparative: "Сравнить связанные контракты",
 
     print_header: "CityScroll · {link} · По состоянию на {date}",
     csv_address: "Адрес",

@@ -171,8 +171,11 @@ test("Copy link and QR receive the same canonical URL value", () => {
 });
 
 test("QR stays composed with Excel and print controls in notice action rows", () => {
+  // Detail rows still compose in money-history. Notice-route markup now lives in
+  // research_discovery.mjs (More tools region), keeping the same control order.
+  const noticeDiscoverySource = readFileSync(join(ROOT, "site", "research_discovery.mjs"), "utf8");
   assert.match(indexSource, /id="dcopy"[\s\S]{0,200}qrButtonHTML\("dqr","act"\)[\s\S]{0,200}id="dxlsx"[\s\S]{0,200}id="dprint"/);
-  assert.match(indexSource, /id="ncopy"[\s\S]{0,200}qrButtonHTML\("nqr","act"\)[\s\S]{0,500}id="nxlsx"[\s\S]{0,200}id="nprint"/);
+  assert.match(noticeDiscoverySource, /id="ncopy"[\s\S]{0,500}qrButtonHTML\("nqr","act"\)[\s\S]{0,500}id="nxlsx"[\s\S]{0,200}id="nprint"/);
   assert.match(indexSource, /bindQRShare\(\$\("#dqr"\), detailURL\);[\s\S]{0,200}exportNoticeXlsx\(r, chain\)[\s\S]{0,200}printCurrentView\("notice", detailURL\)/);
   assert.match(indexSource, /bindQRShare\(\$\("#nqr"\), link\);[\s\S]{0,200}exportNoticeXlsx\(r,await noticeProcurementChain\(r\)\)[\s\S]{0,200}printCurrentView\("notice",link\)/);
 });

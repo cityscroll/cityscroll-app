@@ -4,16 +4,35 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { buildMeetingSearchDocuments } from "../site/meeting_search_producer.mjs";
-import { parseOathTrialCsv, observerRequestForTrial, observerRequestMailto, localDateTime } from "../site/oath_trial_calendar.mjs";
+import {
+  OATH_TRIAL_CALENDAR_SOURCE_URL,
+  parseOathTrialCsv,
+  observerRequestForTrial,
+  observerRequestMailto,
+  localDateTime,
+} from "../site/oath_trial_calendar.mjs";
 import { installOathObserverRequestControls } from "../site/oath_trial_observation.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
 import { meetingPlacementsFromRow } from "../tools/lib/district_activity.mjs";
 import { click, mountDocument } from "./helpers/preview_dom.mjs";
 import { testClockISOString, todayISO, withPinnedClock } from "./helpers/test_clock.mjs";
 
-const sourceUrl = "https://www.nyc.gov/site/oath/trials/conference-trial-calendar.page";
+const sourceUrl = "https://www.nyc.gov/site/oath/trials/trial-calendar.page";
 const CAPTURED_CSV_PATH = new URL("./fixtures/oath/daily-calendar-2026-09-15.csv", import.meta.url);
 const CAPTURED_SOURCE_REVISION = "7995493cfbba9e085252496ebb8cb930fc4bbe52172dcc16ac18a21088af4691";
+const TRACKED_OATH_CALENDAR = new URL("../site/data/oath_trial_calendar.json", import.meta.url);
+
+test("OATH publisher href pins to the live trial calendar page", () => {
+  assert.equal(OATH_TRIAL_CALENDAR_SOURCE_URL, sourceUrl);
+  assert.equal(sourceUrl, "https://www.nyc.gov/site/oath/trials/trial-calendar.page");
+  const artifact = JSON.parse(readFileSync(TRACKED_OATH_CALENDAR, "utf8"));
+  assert.ok((artifact.records || []).length > 0, "tracked OATH calendar must retain trial sessions");
+  for (const row of artifact.records) {
+    assert.equal(row.source_url, sourceUrl);
+    assert.equal(row.compatibility?.publisher_href, sourceUrl);
+    assert.equal(row.source_receipt?.source_url, sourceUrl);
+  }
+});
 
 function addDays(day, days) {
   const date = new Date(`${day}T12:00:00Z`);

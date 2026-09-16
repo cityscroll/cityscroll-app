@@ -2128,6 +2128,10 @@
     export_xlsx: "تصدير Excel ‏(.xlsx)",
     print_save_pdf: "طباعة / حفظ بصيغة PDF",
     share_export_btn: "مشاركة / تصدير",
+    more_tools_label: "المزيد من الأدوات",
+    research_tool_evidence: "تحقق من أدلة الصلة",
+    research_tool_asOf: "عرض السجلات حتى يوم معيّن",
+    research_tool_comparative: "قارن العقود ذات الصلة",
 
     print_header: "CityScroll · {link} · اعتبارًا من {date}",
     csv_address: "العنوان",
