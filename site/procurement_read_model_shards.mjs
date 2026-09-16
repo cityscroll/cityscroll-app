@@ -4,8 +4,16 @@
  * The manifest keeps the shared read-model contract and maps each canonical
  * procurement id to one bounded shard. Rows and their source observations are
  * co-located so the Pages edge can render one document without loading the
- * whole corpus.
+ * whole corpus. Accepted notice→procurement subjects are published beside the
+ * shards as a compact reverse lookup rather than scanned from every shard at
+ * request time.
  */
+
+import {
+  NOTICE_PROCUREMENT_SUBJECTS_LOOKUP_PATH,
+  NOTICE_PROCUREMENT_SUBJECTS_SCHEMA,
+  buildNoticeProcurementSubjectsLookup,
+} from "./notice_subject_projection.mjs";
 
 export const SHARED_PROCUREMENT_READ_MODEL_SHARD_SCHEMA = "cityscroll.shared_procurement_read_model_shard.v1";
 export const DEFAULT_PROCUREMENT_SHARD_MAX_BYTES = 18 * 1024 * 1024;
@@ -128,17 +136,28 @@ export function buildSharedProcurementReadModelShardArtifacts(
     shard.rows.map((row) => [row.procurement_id, descriptors[index].path])
   )));
   const { rows: _rows, observations: _observations, ...manifestBody } = model || {};
+  const noticeSubjects = buildNoticeProcurementSubjectsLookup(rows, {
+    generatedAt: model?.generated_at || null,
+    sourceModelFingerprint: model?.coherence_receipt?.source_model_fingerprint || null,
+  });
   const manifest = {
     ...manifestBody,
     representation: "sharded",
     shard_schema: SHARED_PROCUREMENT_READ_MODEL_SHARD_SCHEMA,
     shards: descriptors,
     procurement_shard_by_id: procurementShardById,
+    notice_procurement_subjects: {
+      schema: NOTICE_PROCUREMENT_SUBJECTS_SCHEMA,
+      path: NOTICE_PROCUREMENT_SUBJECTS_LOOKUP_PATH,
+      notice_count: noticeSubjects.counts.notices,
+      subject_link_count: noticeSubjects.counts.subject_links,
+      source_model_fingerprint: noticeSubjects.source_model_fingerprint,
+    },
     observation_order: observations
       .map((observation) => observation?.source_observation_ref)
       .filter(Boolean),
   };
-  return { manifest, shards: shardPayloads };
+  return { manifest, shards: shardPayloads, noticeSubjects };
 }
 
 /** Reassemble the original shared read-model shape from a manifest and shards. */
@@ -165,6 +184,7 @@ export function combineSharedProcurementReadModel(manifest, shards = []) {
     counts,
     publication,
     coherence_receipt,
+    notice_procurement_subjects,
   } = manifest || {};
   // Keep the original model's observations-before-counts-before-rows key order
   // so deterministic fingerprints remain stable across the representation-only
@@ -183,6 +203,7 @@ export function combineSharedProcurementReadModel(manifest, shards = []) {
     rows,
     publication,
     coherence_receipt,
+    notice_procurement_subjects,
   };
 }
 

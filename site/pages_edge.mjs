@@ -22,7 +22,11 @@ import rulesSemanticLaneArtifact from "./data/rules_semantic_lane.json" with { t
 import { NOTICE_MODULE_PRELOADS } from "./notice_module_preload.mjs";
 import { noticeEdgeCacheOutcome, noticeEdgeInstant, noticeEdgeTimingHeader } from "./notice_edge_response.mjs";
 import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
-import { projectNoticeObjectTarget } from "./notice_object_links.mjs";
+import {
+  projectNoticeSubjectLinks,
+  renderNoticeSubjectLinksHtml,
+} from "./notice_subject_projection.mjs";
+import noticeProcurementSubjectsLookup from "./data/notice_procurement_subjects_lookup.json" with { type: "json" };
 import {
   findMandateById,
   noticeEvidenceForMandate,
@@ -649,11 +653,38 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
   const sourceLink = officialSourceLink({ href: source, label: "Official record", escape: esc });
   const identity = resolveAgencyIdentity(agency);
   const vendor = String(row?.vendor_name || "").trim();
-  const objectProjection = projectNoticeObjectTarget({ ...row, request_id: id });
+  const objectProjection = projectNoticeSubjectLinks({ ...row, request_id: id }, {
+    subjectsLookup: options.subjectsLookup || noticeProcurementSubjectsLookup,
+  });
+  const subjectLinks = Array.isArray(objectProjection.subjects) ? objectProjection.subjects : [];
   const projectedTarget = objectProjection.state === "matched"
     && objectProjection.target?.kind !== "notice"
     ? objectProjection.target
     : null;
+  const subjectNeighbors = subjectLinks.length
+    ? subjectLinks.map((subject) => ({
+      edge_type: "related_record",
+      relation_label: subject.continuation === "search"
+        ? `identified ${subject.kind} search`
+        : `identified ${subject.kind} object`,
+      target_kind: subject.kind,
+      target_id: subject.id,
+      target_name: subject.label,
+      href: subject.href,
+      state: "matched",
+      provenance: null,
+    }))
+    : projectedTarget ? [{
+      edge_type: "related_record",
+      relation_label: `identified ${projectedTarget.kind} object`,
+      target_kind: projectedTarget.kind,
+      target_id: projectedTarget.id,
+      target_name: projectedTarget.label,
+      href: projectedTarget.href,
+      state: "matched",
+      provenance: null,
+    }] : [];
+  const noticeSubjectLinksHTML = renderNoticeSubjectLinksHtml(subjectLinks, { escape: esc });
   const noticeLocalConstellation = buildLocalConstellation({
     kind: "record",
     subject_ref: `notice:${id}`,
@@ -662,16 +693,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     source: null,
     provenance: null,
     neighbors: row ? [
-      projectedTarget ? {
-        edge_type: "related_record",
-        relation_label: `identified ${projectedTarget.kind} object`,
-        target_kind: projectedTarget.kind,
-        target_id: projectedTarget.id,
-        target_name: projectedTarget.label,
-        href: projectedTarget.href,
-        state: "matched",
-        provenance: null,
-      } : null,
+      ...subjectNeighbors,
       identity.matched ? {
         edge_type: "published_by_agency",
         relation_label: "published by agency",
@@ -834,6 +856,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     <article class="panel route-item" tabindex="-1">
       <p class="ftype">${esc(kind)}${row.section_name && row.section_name !== kind ? ` · ${esc(row.section_name)}` : ""} · ${agencyLink}</p>
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
+      ${noticeSubjectLinksHTML}
       ${projectPivot}
       ${boardPivot}
       <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}${agencyReport ? ` ${agencyReport}` : ""}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}${vendorReport ? ` ${vendorReport}` : ""}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>

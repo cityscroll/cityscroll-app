@@ -42,6 +42,7 @@ const MTA_FIXTURES = new URL("../warehouse/fixtures/authority-native-procurement
 const AWARDS = new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url);
 const MODEL_OUT = new URL("../site/data/shared_procurement_read_model.json", import.meta.url);
 const MODEL_SHARD_DIR = new URL("../site/data/shared_procurement_read_model/", import.meta.url);
+const NOTICE_SUBJECTS_OUT = new URL("../site/data/notice_procurement_subjects_lookup.json", import.meta.url);
 const BROWSE_OUT = new URL("../site/data/procurement_browse_rows.json", import.meta.url);
 const BROWSE_QUERY_OUT = new URL("../site/data/procurement_browse_query.json", import.meta.url);
 const BROWSE_QUERY_ROWS_OUT = new URL("../site/data/procurement_browse_query_rows.json", import.meta.url);
@@ -344,6 +345,7 @@ function shardedModelGroup(model) {
     expectedNames: new Set(artifacts.manifest.shards.map((descriptor) => descriptor.path.split("/").at(-1))),
     outputs: [
       [MODEL_OUT, serialized(artifacts.manifest)],
+      [NOTICE_SUBJECTS_OUT, serialized(artifacts.noticeSubjects)],
       ...artifacts.manifest.shards.map((descriptor, index) => [
         shardPath(descriptor),
         serialized(artifacts.shards[index]),

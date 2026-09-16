@@ -200,3 +200,21 @@ test("exact-contract lifecycle payments and notice place facts attach without co
   assert.equal(object.place_facts[0].units, 60);
   assert.equal(object.place_facts[0].request_id, "20240829105");
 });
+
+test("accepted City Record notice hrefs reverse into the shared subject lookup", async () => {
+  const { buildNoticeProcurementSubjectsLookup } = await import("../site/notice_subject_projection.mjs");
+  const model = buildSharedProcurementReadModel({
+    sourceRecords: records,
+    lifecycleRows: [lifecycle],
+    generatedAt: "2026-08-18T20:00:00Z",
+  });
+  assert.ok(model.rows[0].compatibility.city_record_notice_hrefs.includes("/notices/20260623008"));
+  const lookup = buildNoticeProcurementSubjectsLookup(model.rows, {
+    generatedAt: model.generated_at,
+  });
+  assert.equal(lookup.by_notice["20260623008"]?.[0]?.procurement_id, model.rows[0].procurement_id);
+  assert.equal(
+    lookup.by_notice["20260623008"]?.[0]?.href,
+    model.rows[0].compatibility.canonical_href,
+  );
+});

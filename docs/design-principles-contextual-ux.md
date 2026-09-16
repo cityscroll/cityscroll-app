@@ -17,6 +17,22 @@ Applied to notice routes in [`site/notice_document_composition.mjs`](../site/not
 state both expose the compact mast, while the existing language control is
 retained and moved into the route chrome during hydration.
 
+## Project accepted subjects, do not invent them
+
+When a notice already has an accepted relationship to a canonical civic object,
+the document should offer that subject as an explicit continuation. Build the
+link from the existing materialization — reverse the accepted compatibility
+relation offline — and look it up on the reader path. Do not invent a canonical
+identity from a title match, a search URL, or a request-time shard scan.
+Search continuations remain labeled as searches. Multiple accepted subjects stay
+visible as distinct choices; a missing lookup leaves the notice readable without
+fabricating a relationship.
+
+Applied in [`site/notice_subject_projection.mjs`](../site/notice_subject_projection.mjs):
+the shared procurement builder emits a bounded notice→procurement lookup from
+`compatibility.city_record_notice_hrefs`, and both the edge notice document and
+the client notice template consume it for “View contract” links.
+
 Trace the task from the initial question through finding, inspecting, acting, and returning. A change that shortens one step — for example, a jump control that moves focus straight to a relevant result group — must account for every other step already in the sequence: it must not issue a new search, change the query, alter the ranking or result set, change any coverage or record-identity state, or rewrite a destination handoff link. The step gets shorter; nothing else in the sequence moves.
 
 Applied first in [`site/search_family_nav.mjs`](../site/search_family_nav.mjs): the result-family jump list above Search's first result group reads each family's already-rendered heading, status, and state and only moves keyboard focus there. It never fetches, never mutates the query, and it labels an empty, loading, unavailable, or error family with that family's own true state rather than inventing a count.

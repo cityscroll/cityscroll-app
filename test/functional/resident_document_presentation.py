@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Browser proof for composed resident documents (notice shell, contract evidence)."""
+"""Browser proof for composed resident documents (notice shell, notice subject, contract evidence)."""
 
 from __future__ import annotations
 
@@ -28,6 +28,12 @@ NOTICE_ROUTE = f"/notices/{NOTICE_ID}/"
 NOTICE_SOURCE = f"https://a856-cityrecord.nyc.gov/RequestDetail/{NOTICE_ID}"
 LEGACY_HASH_ROUTE = f"#notice/{NOTICE_ID}"
 MANIFEST_PATH = ROOT / "docs" / "evidence" / "notice-shell" / "capture-manifest.json"
+
+SUBJECT_NOTICE_ID = "20240829105"
+SUBJECT_NOTICE_ROUTE = f"/notices/{SUBJECT_NOTICE_ID}/"
+SUBJECT_CONTRACT_HREF = "/procurements/procurement%3Acontract%3ACT107120258801626"
+SUBJECT_SOURCE = f"https://a856-cityrecord.nyc.gov/RequestDetail/{SUBJECT_NOTICE_ID}"
+SUBJECT_MANIFEST_PATH = ROOT / "docs" / "evidence" / "notice-subject" / "capture-manifest.json"
 PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
 LOCAL_CONDITION = (
     "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; "
@@ -46,23 +52,51 @@ def stage_assets() -> pathlib.Path:
     return staging
 
 
-def start_server():
+def notice_payload(case: str = "notice-shell") -> bytes:
+    if case == "notice-subject":
+        body = {
+            "ok": True,
+            "row": {
+                "request_id": SUBJECT_NOTICE_ID,
+                "short_title": "City Sanctuary Facility for Families with Children",
+                "type_of_notice_description": "Award",
+                "agency_name": "Homeless Services",
+                "start_date": "2024-08-29",
+                "vendor_name": "BHRAGS Operating LLC",
+            },
+            "civic_time": None,
+        }
+    else:
+        body = {
+            "ok": True,
+            "row": {
+                "request_id": NOTICE_ID,
+                "short_title": "ACEDCA215 Brooklyn Childrens Museum HVAC Upgrade",
+                "type_of_notice_description": "Solicitation",
+                "agency_name": "Design and Construction",
+                "start_date": "2026-08-14",
+                "pin": "85026B0110",
+            },
+            "civic_time": None,
+        }
+    return json.dumps(body).encode()
+
+
+def start_server(case: str = "notice-shell"):
     staging = stage_assets()
     state_dir = pathlib.Path(tempfile.mkdtemp(prefix="cityscroll-wrangler-", dir=os.environ.get("CITYSCROLL_FUNCTIONAL_TMPDIR")))
     from tools.local_site_server import _RobustThreadingHTTPServer
 
+    payload = notice_payload(case)
+
     class ReadModelHandler(http.server.BaseHTTPRequestHandler):
         def do_GET(self):
-            body = ('{"ok":true,"row":{"request_id":"20260810048",'
-                    '"short_title":"ACEDCA215 Brooklyn Childrens Museum HVAC Upgrade",'
-                    '"type_of_notice_description":"Solicitation",'
-                    '"agency_name":"Design and Construction",'
-                    '"start_date":"2026-08-14","pin":"85026B0110"},"civic_time":null}').encode()
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
-            self.send_header("Content-Length", str(len(body)))
+            self.send_header("Content-Length", str(len(payload)))
             self.end_headers()
-            self.wfile.write(body)
+            self.wfile.write(payload)
+
         def log_message(self, _format, *_args):
             return
 
@@ -301,6 +335,163 @@ def assert_a3_legacy_hash_and_notice_to_home(page, base: str) -> dict[str, objec
     }
 
 
+def assert_subject(page, base: str, *, label: str) -> dict[str, object]:
+    page.set_default_timeout(20000)
+    errors: list[str] = []
+    page.on("pageerror", lambda error: errors.append(str(error)))
+    page.on("requestfailed", lambda request: errors.append(f"request {request.url}: {request.failure}")
+            if "app/main.mjs" not in request.url else None)
+    response = page.goto(f"{base}{SUBJECT_NOTICE_ROUTE.lstrip('/')}", wait_until="domcontentloaded")
+    assert response and response.status == 200, f"{label}: notice route did not return 200"
+    page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
+    page.wait_for_selector("#noticeview .route-item", state="visible")
+    page.wait_for_selector(
+        f'#noticeview a.notice-subject-link[href="{SUBJECT_CONTRACT_HREF}"]',
+        state="visible",
+    )
+    assert not errors, f"{label}: client errors: {errors}"
+    assert page.locator("#noticeview .rolename").count() == 1
+    contract = page.locator(f'#noticeview a.notice-subject-link[href="{SUBJECT_CONTRACT_HREF}"]')
+    assert contract.count() >= 1, f"{label}: View contract link missing"
+    assert contract.first.inner_text().strip() == "View contract"
+    assert contract.first.get_attribute("data-notice-subject-continuation") == "canonical"
+    source = page.locator(f'#noticeview a.ui-official-source-link[href="{SUBJECT_SOURCE}"]')
+    assert source.count() >= 1, f"{label}: official source link missing"
+    assert page.locator(".notice-route .home-topic-entry:visible").count() == 0
+    hidden_focus = page.locator("#notice-route-chrome [hidden] :is(a,button,input,select,textarea,summary):not([disabled])")
+    assert hidden_focus.count() == 0, f"{label}: hidden focusable control remains"
+    page.keyboard.press("Tab")
+    assert page.evaluate("document.activeElement && getComputedStyle(document.activeElement).display !== 'none'")
+    return {"route": SUBJECT_NOTICE_ROUTE, "viewport": page.viewport_size, "render_sha256": render_hash(page)}
+
+
+def assert_subject_no_javascript(page, base: str) -> dict[str, object]:
+    response = page.goto(f"{base}{SUBJECT_NOTICE_ROUTE.lstrip('/')}", wait_until="domcontentloaded")
+    assert response and response.status == 200, (
+        f"edge response status={response.status if response else 'none'} "
+        f"body={page.locator('body').inner_text()[:300]}"
+    )
+    assert page.locator("#notice-route-chrome .document-mast").count() == 1
+    assert page.locator("#noticeview .rolename").count() == 1
+    contract = page.locator(f'#noticeview a.notice-subject-link[href="{SUBJECT_CONTRACT_HREF}"]')
+    assert contract.count() >= 1, "no-JS View contract link missing"
+    assert contract.first.inner_text().strip() == "View contract"
+    source = page.locator(f'#noticeview a.ui-official-source-link[href="{SUBJECT_SOURCE}"]')
+    assert source.count() >= 1, "no-JS official source link missing"
+    return {
+        "case": "notice-subject-no-javascript",
+        "route": SUBJECT_NOTICE_ROUTE,
+        "viewport": page.viewport_size,
+        "assertion": (
+            "No-JavaScript delivery keeps View contract and the official source on the "
+            "composed notice document."
+        ),
+        "render_sha256": render_hash(page),
+    }
+
+
+
+def write_subject_manifest(captures: list[dict[str, object]], *, base: str, revision: str) -> None:
+    assert_viewport_render_hash_invariance(captures)
+    payload = {
+        "schema": "cityscroll.render_capture_manifest.v1",
+        "surface": "notice subject contract link",
+        "base": manifest_base_label(base),
+        "condition": manifest_condition(base),
+        "image_binaries_committed": False,
+        "revision": revision,
+        "data_vintage": (
+            "shared procurement read model; pilot notice 20240829105 -> "
+            "procurement:contract:CT107120258801626"
+        ),
+        "route": SUBJECT_NOTICE_ROUTE,
+        "render_hash_viewport_invariant": True,
+        "captures": [
+            {
+                "case": capture["case"],
+                "viewport": {
+                    "name": viewport_name(capture["viewport"]),
+                    "width": capture["viewport"]["width"],
+                    "height": capture["viewport"]["height"],
+                },
+                "assertion": capture["assertion"],
+                "render_sha256": capture["render_sha256"],
+            }
+            for capture in captures
+        ],
+    }
+    SUBJECT_MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SUBJECT_MANIFEST_PATH.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def run_notice_subject(base: str, *, write_manifest: bool, revision: str) -> None:
+    from playwright.sync_api import sync_playwright
+
+    captures: list[dict[str, object]] = []
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):
+            no_js = browser.new_context(viewport=viewport, java_script_enabled=False)
+            captures.append(assert_subject_no_javascript(no_js.new_page(), base))
+            no_js.close()
+
+            failed = browser.new_context(viewport=viewport)
+            failed_page = failed.new_page()
+            failed_page.route("**/app/main.mjs", lambda route: route.abort())
+            failed_result = assert_subject(failed_page, base, label="failed enhancement")
+            captures.append({
+                "case": "notice-subject-failed-enhancement",
+                "route": SUBJECT_NOTICE_ROUTE,
+                "viewport": viewport,
+                "assertion": (
+                    "Blocking the app entry preserves the readable edge document, View contract "
+                    "link, and official source."
+                ),
+                "render_sha256": failed_result["render_sha256"],
+            })
+            failed.close()
+
+            context = browser.new_context(viewport=viewport)
+            page = context.new_page()
+            result = assert_subject(page, base, label="successful hydration")
+            captures.append({
+                "case": "notice-subject-successful-hydration",
+                "route": SUBJECT_NOTICE_ROUTE,
+                "viewport": viewport,
+                "assertion": (
+                    "The edge response and successful client path keep compact chrome, expose a "
+                    "canonical View contract link to CT107120258801626, and retain the official "
+                    "City Record source."
+                ),
+                "render_sha256": result["render_sha256"],
+            })
+            page.goto(base, wait_until="domcontentloaded")
+            page.go_back(wait_until="domcontentloaded")
+            page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
+            assert page.locator("#noticeview .route-item").count() == 1
+            assert page.locator(f'#noticeview a.notice-subject-link[href="{SUBJECT_CONTRACT_HREF}"]').count() >= 1
+            captures.append({
+                "case": "notice-subject-home-back",
+                "route": SUBJECT_NOTICE_ROUTE,
+                "viewport": viewport,
+                "assertion": (
+                    "Home then Back returns to the composed notice with the subject link intact."
+                ),
+                "render_sha256": render_hash(page),
+            })
+            print(
+                f"OK notice-subject {viewport['width']}x{viewport['height']}: "
+                f"{result['render_sha256']} failed={failed_result['render_sha256']}",
+                flush=True,
+            )
+            context.close()
+        browser.close()
+    assert_viewport_render_hash_invariance(captures)
+    if write_manifest:
+        write_subject_manifest(captures, base=base, revision=revision)
+        print(f"wrote {SUBJECT_MANIFEST_PATH.relative_to(ROOT)}", flush=True)
+
+
 def viewport_name(viewport: dict[str, int]) -> str:
     return "desktop" if viewport["width"] >= 1000 else "narrow"
 
@@ -388,7 +579,7 @@ def run_writer_self_tests() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--case", choices=["notice-shell", "contract-evidence"], required=True)
+    parser.add_argument("--case", choices=["notice-shell", "notice-subject", "contract-evidence"], required=True)
     parser.add_argument("--write-manifest", action="store_true")
     parser.add_argument("--self-test", action="store_true", help="Run capture-manifest writer unit checks")
     args = parser.parse_args()
@@ -402,16 +593,20 @@ def main() -> None:
         run_contract_evidence_case(os.environ.get("CROL_BASE"))
         return
 
-    from playwright.sync_api import sync_playwright
-
     process = staging = state_dir = upstream = None
     base = os.environ.get("CROL_BASE")
     if not base:
-        process, staging, state_dir, base, upstream = start_server()
+        process, staging, state_dir, base, upstream = start_server(args.case)
     base = normalize_base(base)
     revision = resolve_manifest_revision(base)
-    captures: list[dict[str, object]] = []
     try:
+        if args.case == "notice-subject":
+            run_notice_subject(base, write_manifest=args.write_manifest, revision=revision)
+            return
+
+        from playwright.sync_api import sync_playwright
+
+        captures: list[dict[str, object]] = []
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
             for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):
@@ -447,7 +642,6 @@ def main() -> None:
                 })
                 captures.append(assert_a5_skip_navigation(page, base))
 
-                # Preserve the previously retained home → Back rehearsal on the hydrated path.
                 page.goto(f"{base}{NOTICE_ROUTE.lstrip('/')}", wait_until="domcontentloaded")
                 page.wait_for_selector("#notice-route-chrome .document-mast", state="visible")
                 page.goto(base, wait_until="domcontentloaded")
@@ -494,6 +688,7 @@ def main() -> None:
             shutil.rmtree(staging, ignore_errors=True)
         if state_dir:
             shutil.rmtree(state_dir, ignore_errors=True)
+
 
 
 if __name__ == "__main__":

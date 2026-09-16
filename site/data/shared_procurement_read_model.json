@@ -247408,5 +247408,12 @@
     "mta_bid_results:mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
     "mta_current_opportunities:mta-current:S48020:0000541781",
     "nys_contract_reporter:contract-reporter:2138505"
-  ]
+  ],
+  "notice_procurement_subjects": {
+    "schema": "cityscroll.notice_procurement_subjects.v1",
+    "path": "data/notice_procurement_subjects_lookup.json",
+    "notice_count": 12947,
+    "subject_link_count": 12947,
+    "source_model_fingerprint": "fdc8b441f98904f537a954f4787d3c8ef46eb8b72ff024a9f51e5de9caf4bb6b"
+  }
 }
