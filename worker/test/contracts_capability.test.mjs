@@ -134,6 +134,15 @@ test("HTTP and MCP adapters delegate to the same capability semantics", async ()
     name: "get_contract", arguments: { procurement_id: firstId },
   } }), { ...env, SUBS: new MockKV() });
   assert.deepEqual((await mcpGet.json()).result.structuredContent, direct);
+  // Capability-layer camelCase is not an MCP wire alias: the published
+  // input_schema requires procurement_id. Callers (including the live canary)
+  // must use the snake_case wire name or the tool returns a bounded error.
+  const mcpCamel = await handleMcp(post({ jsonrpc: "2.0", id: 3, method: "tools/call", params: {
+    name: "get_contract", arguments: { procurementId: firstId },
+  } }), { ...env, SUBS: new MockKV() });
+  const camelResult = (await mcpCamel.json()).result;
+  assert.equal(camelResult.isError, true);
+  assert.match((camelResult.content || []).map((block) => block.text || "").join(" "), /procurement_id is required/i);
   const mcpBrowse = await handleMcp(post({ jsonrpc: "2.0", id: 2, method: "tools/call", params: {
     name: "browse_contracts", arguments: { vendor: "HNTB", limit: 1 },
   } }), { ...env, SUBS: new MockKV() });

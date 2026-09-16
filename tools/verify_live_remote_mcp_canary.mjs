@@ -62,11 +62,12 @@ const DATABASE_READ = {
 // unavailable; only a malformed envelope or transport failure fails the probe.
 const CONTRACT_READ = {
   tool: "get_contract",
-  arguments: { procurementId: "procurement:contract:CT107120258801626" },
+  // MCP wire names are snake_case (see site/data/mcp_tool_catalog.json input_schema).
+  arguments: { procurement_id: "procurement:contract:CT107120258801626" },
 };
 const LAND_READ = {
   tool: "get_land_project",
-  arguments: { projectId: "2024Q0356" },
+  arguments: { project_id: "2024Q0356" },
 };
 const CITED_READ = {
   tool: "retrieve_cited_passages",
@@ -404,7 +405,7 @@ export async function runLiveMcpCanary({
         {
           role: "contract_read",
           tool: CONTRACT_READ.tool,
-          requested_id: CONTRACT_READ.arguments.procurementId,
+          requested_id: CONTRACT_READ.arguments.procurement_id,
           capability_reference: catalogByName.get(CONTRACT_READ.tool)?.capability_reference ?? null,
           availability: contractEnvelope?.availability ?? null,
           envelope_well_formed: contractCall.ok && envelopeIsWellFormed(contractEnvelope, ["capability_reference", "availability", "contract", "error"]),
@@ -414,7 +415,7 @@ export async function runLiveMcpCanary({
         {
           role: "land_read",
           tool: LAND_READ.tool,
-          requested_id: LAND_READ.arguments.projectId,
+          requested_id: LAND_READ.arguments.project_id,
           capability_reference: catalogByName.get(LAND_READ.tool)?.capability_reference ?? null,
           availability: landEnvelope?.availability ?? null,
           envelope_well_formed: landCall.ok && envelopeIsWellFormed(landEnvelope, ["capability_reference", "availability", "project", "error"]),
