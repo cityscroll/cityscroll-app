@@ -487,6 +487,7 @@
 /site/franchise_phase_spine.mjs
 /site/geography_relations.mjs
 /site/government_observation_refresh.mjs
+/site/government_observe.mjs
 /site/graph_edge_provenance.mjs
 /site/guide.css
 /site/guide/
