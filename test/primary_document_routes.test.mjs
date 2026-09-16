@@ -37,6 +37,7 @@ import {
   renderCrossAgencyCollisionCase,
   solicitationFixture,
 } from "./fixtures/procurement_project_context_fixtures.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const museumNotice = {
   request_id: "20260810048",
@@ -68,6 +69,66 @@ function procurementAssetEnv() {
         },
       },
     },
+  };
+}
+
+function noticeRowForId(id) {
+  const manifest = JSON.parse(read("../site/data/shared_procurement_read_model.json"));
+  for (const shardName of new Set(Object.values(manifest.procurement_shard_by_id))) {
+    const shard = JSON.parse(read(`../site/data/${shardName}`));
+    const observation = (shard.observations || []).find((row) => (
+      row.source_system === "city_record" && row.source_system_id === id
+    ));
+    if (observation?.snapshot) return observation.snapshot;
+  }
+  throw new Error(`no materialized notice row for ${id}`);
+}
+
+function noticeAssetEnv() {
+  const requestedPaths = [];
+  return {
+    requestedPaths,
+    env: {
+      ASSETS: {
+        async fetch(request) {
+          const path = new URL(request.url).pathname;
+          requestedPaths.push(path);
+          if (path === "/" || path === "") {
+            return new Response(
+              "<!doctype html><html><head><title>CityScroll</title></head><body><main id=\"noticeview\"></main></body></html>",
+              { status: 200, headers: { "Content-Type": "text/html" } },
+            );
+          }
+          if (path === "/data/meeting_outcomes_snapshot.json") {
+            return new Response(JSON.stringify({ by_notice: {} }), {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+          if (path === "/data/notice_mandate_backlinks_lookup.json") {
+            return new Response(JSON.stringify({}), {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+          return new Response("missing asset", { status: 404 });
+        },
+      },
+    },
+  };
+}
+
+function paymentSummaryAttrs(html) {
+  const pick = (name) => {
+    const match = html.match(new RegExp(`data-${name}="([^"]*)"`));
+    return match ? match[1] : null;
+  };
+  return {
+    total_count: pick("payment-total-count"),
+    total_spent: pick("payment-total-spent"),
+    latest_date: pick("latest-payment-date"),
+    latest_amount: pick("latest-payment-amount"),
+    capped: pick("payment-rows-capped"),
   };
 }
 
@@ -409,6 +470,67 @@ test("canonical procurement route shows exact-contract payments and notice place
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("notice and canonical routes show consistent payment summary and scope", async () => {
+  await withPinnedClock("2026-09-16T12:00:00.000Z", async () => {
+    const noticeId = "20240829105";
+    const procurementId = procurementParityFixture.object.procurement_id;
+    const noticeShell = noticeAssetEnv();
+    const procurementShell = procurementAssetEnv();
+    const originalFetch = globalThis.fetch;
+    const originalRewriter = globalThis.HTMLRewriter;
+    let publisherAttempts = 0;
+    globalThis.HTMLRewriter = TestHTMLRewriter;
+    globalThis.fetch = async (request) => {
+      const url = new URL(request.url || request);
+      if (url.hostname === "api.cityscroll.org" && url.pathname === "/notice") {
+        assert.equal(url.searchParams.get("id"), noticeId);
+        return new Response(JSON.stringify({ row: noticeRowForId(noticeId), civic_time: null }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      publisherAttempts += 1;
+      throw new Error(`unexpected publisher request: ${url}`);
+    };
+    try {
+      const noticeResponse = await edgeWorker.fetch(
+        new Request(`https://cityscroll.org/notices/${noticeId}/`),
+        noticeShell.env,
+      );
+      assert.equal(noticeResponse.status, 200);
+      const noticeHtml = await noticeResponse.text();
+
+      const canonicalResponse = await edgeWorker.fetch(
+        new Request(`https://cityscroll.org/procurements/${encodeURIComponent(procurementId)}/`),
+        procurementShell.env,
+      );
+      assert.equal(canonicalResponse.status, 200);
+      const canonicalHtml = await canonicalResponse.text();
+
+      assert.equal(publisherAttempts, 0);
+      const noticeSummary = paymentSummaryAttrs(noticeHtml);
+      const canonicalSummary = paymentSummaryAttrs(canonicalHtml);
+      assert.deepEqual(noticeSummary, {
+        total_count: "31",
+        total_spent: "7385672.19",
+        latest_date: "2026-08-06",
+        latest_amount: "66216.68",
+        capped: "true",
+      });
+      assert.deepEqual(canonicalSummary, noticeSummary);
+      assert.match(noticeHtml, /Showing 12 of 31 payments on this contract/);
+      assert.match(canonicalHtml, /Showing 12 of 31 payments on this contract/);
+      assert.match(noticeHtml, /\$7,385,672\.19/);
+      assert.match(canonicalHtml, /\$7,385,672\.19/);
+      assert.match(noticeHtml, /Authorized minus paid is not remaining liability/);
+      assert.match(canonicalHtml, /Authorized minus paid is not remaining liability/);
+    } finally {
+      globalThis.fetch = originalFetch;
+      globalThis.HTMLRewriter = originalRewriter;
+    }
+  });
 });
 
 test("unavailable payment and place enrichment keeps the record and official source links", () => {

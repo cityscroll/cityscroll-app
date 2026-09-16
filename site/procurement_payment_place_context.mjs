@@ -148,6 +148,21 @@ export function hasExactContractPaymentEvidence(lifecycle) {
 }
 
 /**
+ * Resolve the exact-contract lifecycle for one City Record notice id.
+ * Used by the notice route so its payment summary shares the same
+ * materialization the canonical procurement route reads.
+ */
+export function contractLifecycleForNotice(
+  requestId,
+  materialization = null,
+) {
+  const id = text(requestId);
+  if (!id || !lifecycleMaterializationAccepted(materialization)) return null;
+  const rows = materialization.rows.filter((row) => row && typeof row === "object");
+  return rows.find((row) => lifecycleNoticeId(row) === id) || null;
+}
+
+/**
  * Resolve the exact-contract lifecycle for one procurement object.
  * Prefers an already-attached object.lifecycle, then the materialization row
  * keyed by exact contract id. Notice-id fallback only applies when the notice
