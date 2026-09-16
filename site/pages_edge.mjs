@@ -49,6 +49,13 @@ import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { renderEntityPivotLink } from "./edge_summary.mjs";
 import { buildLocalConstellation, renderLocalConstellationHTML } from "./local_constellation.mjs";
 import {
+  filterNoticeConstellationNeighbors,
+  noticeMoreToolsSummaryLabel,
+  renderNoticeEnrichmentRegion,
+  renderNoticeMoreToolsDisclosure,
+  representedNoticeRelationships,
+} from "./notice_reader_presentation.mjs";
+import {
   communityBoardMeetingEdgeAccepted,
   communityBoardMeetingEdgeFromRow,
 } from "./community_board_institution_edges.mjs";
@@ -702,6 +709,39 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       provenance: null,
     }] : [];
   const noticeSubjectLinksHTML = renderNoticeSubjectLinksHtml(subjectLinks, { escape: esc });
+  const projectIdForNeighbors = String(row?.project_id || row?.project || row?.ulurp_number || "").trim();
+  const projectNeighbor = /^[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(projectIdForNeighbors)
+    ? {
+      edge_type: "related_land_use_project",
+      relation_label: "related land-use project",
+      target_kind: "project",
+      target_id: projectIdForNeighbors,
+      target_name: row.project_name || projectIdForNeighbors,
+      href: `#land/${encodeURIComponent(projectIdForNeighbors)}`,
+      state: "matched",
+      provenance: null,
+    }
+    : null;
+  const boardEdgeForNeighbors = row ? communityBoardMeetingEdgeFromRow(row) : null;
+  const boardIdForNeighbors = boardEdgeForNeighbors?.from?.replace(/^community-board:/, "")
+    || row?.institution_refs?.board_ref?.replace(/^community-board:/, "")
+    || row?.board_id;
+  const represented = representedNoticeRelationships({
+    agency: identity.matched
+      ? { id: identity.canonical_id, name: agency }
+      : (row ? { id: agency, name: agency } : null),
+    vendor: vendor ? { id: vendor, name: vendor } : null,
+    project: projectNeighbor
+      ? { id: projectNeighbor.target_id, name: projectNeighbor.target_name }
+      : null,
+    communityBoard: boardEdgeForNeighbors && communityBoardMeetingEdgeAccepted(boardEdgeForNeighbors) && boardIdForNeighbors
+      ? {
+        id: boardIdForNeighbors,
+        name: row.board_name || boardEdgeForNeighbors.board_name || boardIdForNeighbors,
+      }
+      : null,
+    subjects: subjectLinks,
+  });
   const noticeLocalConstellation = buildLocalConstellation({
     kind: "record",
     subject_ref: `notice:${id}`,
@@ -709,7 +749,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
     subject_name: title,
     source: null,
     provenance: null,
-    neighbors: row ? [
+    neighbors: row ? filterNoticeConstellationNeighbors([
       ...subjectNeighbors,
       identity.matched ? {
         edge_type: "published_by_agency",
@@ -731,21 +771,16 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
         state: "matched",
         provenance: null,
       } : null,
-      /^[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(String(row.project_id || row.project || row.ulurp_number || "").trim()) ? {
-        edge_type: "related_land_use_project",
-        relation_label: "related land-use project",
-        target_kind: "project",
-        target_id: String(row.project_id || row.project || row.ulurp_number).trim(),
-        target_name: row.project_name || String(row.project_id || row.project || row.ulurp_number).trim(),
-        href: `#land/${encodeURIComponent(String(row.project_id || row.project || row.ulurp_number).trim())}`,
-        state: "matched",
-        provenance: null,
-      } : null,
-    ].filter(Boolean) : [],
+      projectNeighbor,
+    ].filter(Boolean), represented) : [],
   });
-  const noticeLocalConstellationHTML = renderLocalConstellationHTML(noticeLocalConstellation, {
-    heading: "Nearby record connections",
-    id: "notice-local-constellation-heading",
+  const noticeLocalConstellationHTML = renderNoticeEnrichmentRegion({
+    region: "local-constellation",
+    bodyHtml: renderLocalConstellationHTML(noticeLocalConstellation, {
+      heading: "Nearby record connections",
+      id: "notice-local-constellation-heading",
+    }),
+    escape: esc,
   });
   if (!row) {
     return `<div class="panel route-item" tabindex="-1" data-edge-rendered="notice-unavailable" data-notice-id="${esc(id)}">
@@ -868,23 +903,31 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       related_object_label: projectedTarget.label,
     }))
     : "";
+  const noticeCanonicalHref = `https://cityscroll.org/notices/${encodeURIComponent(id)}`;
+  const edgeEmailHref = `mailto:?subject=${encodeURIComponent(`City Record notice: ${title}`)}&body=${encodeURIComponent(`${noticeCanonicalHref}\n\nVia CityScroll — NYC’s public record, linked.`)}`;
+  const edgeMoreTools = renderNoticeMoreToolsDisclosure({
+    summary: noticeMoreToolsSummaryLabel(),
+    bodyHtml: `<a class="act" href="${esc(edgeEmailHref)}">Email</a>`,
+    escape: esc,
+  });
+  const typeLine = `${esc(kind)}${row.section_name && row.section_name !== kind ? ` · ${esc(row.section_name)}` : ""}`;
   return `<div style="max-width:880px;margin:0 auto" data-edge-rendered="notice" data-notice-id="${esc(id)}">
     ${renderNodeBack({ href: "/browse/", label: "Back to Browse", currentHref: options.currentHref, extraClass: "edge-notice-back" })}
     <article class="panel route-item" tabindex="-1">
-      <p class="ftype">${esc(kind)}${row.section_name && row.section_name !== kind ? ` · ${esc(row.section_name)}` : ""} · ${agencyLink}</p>
+      <p class="ftype">${typeLine}</p>
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
       ${noticeSubjectLinksHTML}
       ${projectPivot}
       ${boardPivot}
-      <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}${agencyReport ? ` ${agencyReport}` : ""}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}${vendorReport ? ` ${vendorReport}` : ""}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
+      <dl class="glance" data-notice-primary-facts="1"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}${agencyReport ? ` ${agencyReport}` : ""}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}${vendorReport ? ` ${vendorReport}` : ""}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${civicTimeHistoryHTML}
-      ${projectContextHTML}
-      ${paymentEvidenceHTML}
+      ${renderNoticeEnrichmentRegion({ region: "project-context", bodyHtml: projectContextHTML, escape: esc })}
+      ${renderNoticeEnrichmentRegion({ region: "payment-evidence", bodyHtml: paymentEvidenceHTML, escape: esc })}
       ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
-      ${mandateBacklinksHTML}
+      ${renderNoticeEnrichmentRegion({ region: "mandate-backlinks", bodyHtml: mandateBacklinksHTML, escape: esc })}
       ${noticeLocalConstellationHTML}
-      ${renderMeetingOutcomesFirstPaint(meetingOutcome, id)}
+      ${renderNoticeEnrichmentRegion({ region: "meeting-outcomes", bodyHtml: renderMeetingOutcomesFirstPaint(meetingOutcome, id), escape: esc })}
       ${(() => {
         // Edge keeps connect-notice "View contract" handoff as the contract entrance.
         // Do not emit comparative award-browse hrefs here; client More tools owns that.
@@ -898,8 +941,9 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
           asOfPath: evidencePath,
         });
         const researchHtml = renderResearchNavigation(research);
-        return `<div class="actions record-action-regions" data-record-action-regions="1">${browseLink}${followingLink}${documentReport}${relatedObjectReport}${researchHtml}</div>`;
+        return `<div class="actions record-action-regions" data-record-action-regions="1" data-notice-primary-actions="1">${browseLink}${followingLink}${documentReport}${relatedObjectReport}${researchHtml}</div>`;
       })()}
+      ${edgeMoreTools}
       <p>${sourceLink}</p>
     </article>
   </div>`;

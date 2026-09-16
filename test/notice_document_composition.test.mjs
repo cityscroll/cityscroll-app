@@ -161,6 +161,20 @@ test("A5: skip navigation requires focus on the main region", () => {
   );
 });
 
+test("composed notice keeps optional utilities inside a closed More tools disclosure", () => {
+  const edgeSource = readFileSync(new URL("../site/pages_edge.mjs", import.meta.url), "utf8");
+  const clientSource = readFileSync(new URL("../site/notice_subject_client.mjs", import.meta.url), "utf8");
+  assert.match(edgeSource, /renderNoticeMoreToolsDisclosure/);
+  assert.match(edgeSource, /filterNoticeConstellationNeighbors/);
+  assert.match(edgeSource, /data-notice-primary-facts/);
+  assert.match(clientSource, /renderNoticeMoreToolsDisclosure/);
+  assert.match(clientSource, /id="ncopy"/);
+  assert.match(clientSource, /id="nxlsx"/);
+  assert.match(clientSource, /id="nprint"/);
+  assert.match(harnessSource, /notice-tools/);
+  assert.match(harnessSource, /assert_notice_tools|run_notice_tools/);
+});
+
 test("A9 writer: capture-manifest condition and revision derive from the served base", () => {
   assert.match(harnessSource, /def manifest_condition\(/);
   assert.match(harnessSource, /def resolve_manifest_revision\(/);
@@ -178,6 +192,13 @@ test("A9 writer: capture-manifest condition and revision derive from the served 
   );
   assert.equal(result.status, 0, result.stderr || result.stdout);
   assert.match(result.stdout, /OK notice-shell capture-manifest writer self-test/);
+  const toolsSelfTest = spawnSync(
+    "python3",
+    ["test/functional/resident_document_presentation.py", "--case", "notice-tools", "--self-test"],
+    { encoding: "utf8" },
+  );
+  assert.equal(toolsSelfTest.status, 0, toolsSelfTest.stderr || toolsSelfTest.stdout);
+  assert.match(toolsSelfTest.stdout, /OK notice-tools capture-manifest writer self-test/);
 });
 
 test("A9 writer: retained capture manifest records honest local condition and viewport hash invariance", async () => {
