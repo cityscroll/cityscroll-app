@@ -107,11 +107,24 @@ test("served Near You route renders the explanation from the selected membership
 
   const manhattanHtml = await deferredHtml("lens=meetings&boro=Manhattan&placeRole=venue");
   assert.match(manhattanHtml, /data-place-role="venue"/);
-  assert.match(manhattanHtml, /Meeting venue:\s*Manhattan/);
-  assert.doesNotMatch(manhattanHtml, /Affected area:\s*Brooklyn Community District 15/);
+  // Explanation lives in the inspection payload after staged Near You cards.
+  assert.match(
+    manhattanHtml,
+    /&quot;place_role_label&quot;:&quot;Meeting venue&quot;,&quot;label&quot;:&quot;Manhattan&quot;/,
+  );
+  assert.doesNotMatch(
+    manhattanHtml,
+    /&quot;place_role_label&quot;:&quot;Affected area&quot;,&quot;label&quot;:&quot;Brooklyn Community District 15&quot;/,
+  );
 
   const k15Html = await deferredHtml("lens=meetings&boro=Brooklyn&cd=K15&placeRole=affected_area");
   assert.match(k15Html, /data-place-role="affected_area"/);
-  assert.match(k15Html, /Affected area:\s*Brooklyn Community District 15/);
-  assert.doesNotMatch(k15Html, /Meeting venue:\s*Manhattan/);
+  assert.match(
+    k15Html,
+    /&quot;place_role_label&quot;:&quot;Affected area&quot;,&quot;label&quot;:&quot;Brooklyn Community District 15&quot;/,
+  );
+  assert.doesNotMatch(
+    k15Html,
+    /&quot;place_role_label&quot;:&quot;Meeting venue&quot;,&quot;label&quot;:&quot;Manhattan&quot;/,
+  );
 });
