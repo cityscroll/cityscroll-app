@@ -14,11 +14,18 @@ import {
 } from "../site/notice_reader_presentation.mjs";
 import { buildCommitteeLocalConstellation } from "../site/committee_memberships.mjs";
 import { buildPlaceLocalConstellation } from "../site/community_board_geography.mjs";
+import { renderEdgeNotice } from "../site/pages_edge.mjs";
+import procurementProjectContextMaterialization from "../site/data/procurement_project_context.json" with { type: "json" };
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const kinds = ["official", "committee", "vendor", "agency", "community-board", "place", "record"];
 const geography = JSON.parse(readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url)));
 const boundaries = JSON.parse(readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url)));
 const constellationStyles = readFileSync(new URL("../site/local_constellation.css", import.meta.url), "utf8");
+const mandateBacklinksLookup = JSON.parse(readFileSync(
+  new URL("../site/data/notice_mandate_backlinks_lookup.json", import.meta.url),
+  "utf8",
+));
 
 test("local constellation registry covers the Browse object kinds", () => {
   for (const kind of kinds) {
@@ -157,6 +164,60 @@ test("notice local connections omit agency and vendor roles already shown as pri
   });
   assert.doesNotMatch(html, /Homeless Services|BHRAGS Operating LLC/);
   assert.match(html, /Related hearing/);
+});
+
+test("A8: existing project-context and mandate examples remain positive controls", async () => {
+  await withPinnedClock("2026-09-16T12:00:00.000Z", async () => {
+    const museumHtml = renderEdgeNotice({
+      request_id: "20260810048",
+      short_title: "ACEDCA215 Brooklyn Childrens Museum HVAC Upgrade",
+      type_of_notice_description: "Solicitation",
+      agency_name: "Department of Design and Construction",
+      vendor_name: "Museum HVAC Vendor",
+      pin: "85026B0110",
+      additional_description_1: "The notice body publishes PIN 85026B01107.",
+      start_date: "2026-08-10",
+    }, "20260810048", null, null, {
+      projectContextMaterialization: procurementProjectContextMaterialization,
+    });
+
+    assert.match(museumHtml, /data-notice-tools-region="1"/);
+    assert.doesNotMatch(museumHtml, /data-notice-tools-region="1"[^>]*\sopen/);
+    assert.match(museumHtml, /data-notice-enrichment-region="project-context"/);
+    assert.match(museumHtml, /data-project-context="1"/);
+    assert.match(museumHtml, /data-project-context-notice-id="20260810048"/);
+    assert.match(museumHtml, /ACEDCA215/);
+    assert.match(museumHtml, /The wider project/);
+    assert.doesNotMatch(museumHtml, /notice-local-constellation-heading/);
+
+    const mandateRows = mandateBacklinksLookup.by_notice?.["20210820102"];
+    assert.ok(Array.isArray(mandateRows) && mandateRows.length >= 1, "retained mandate example must exist");
+    const mandateId = mandateRows[0].mandate_id;
+    assert.ok(mandateId, "retained mandate example must carry a bare mandate id");
+
+    const mandateHtml = renderEdgeNotice({
+      request_id: "20210820102",
+      short_title: "Shelter renewal",
+      agency_name: "Homeless Services",
+      vendor_name: "Shelter Operations Vendor",
+      type_of_notice_description: "Award",
+      section_name: "Procurement",
+      start_date: "2021-08-20",
+    }, "20210820102", null, {
+      schema: mandateBacklinksLookup.schema,
+      method: mandateBacklinksLookup.method,
+      by_notice: { "20210820102": mandateRows },
+    });
+
+    assert.match(mandateHtml, /data-notice-tools-region="1"/);
+    assert.doesNotMatch(mandateHtml, /data-notice-tools-region="1"[^>]*\sopen/);
+    assert.match(mandateHtml, /data-notice-enrichment-region="mandate-backlinks"/);
+    assert.match(mandateHtml, /data-connected-mandate="1"/);
+    assert.match(mandateHtml, /Connected mandate/);
+    assert.match(mandateHtml, new RegExp(`data-mandate-id="${mandateId}"`));
+    assert.match(mandateHtml, new RegExp(`href="/mandates/${mandateId}"`));
+    assert.doesNotMatch(mandateHtml, /notice-local-constellation-heading/);
+  });
 });
 
 test("official local connections omit duplicate committees and retain only linked meeting records", () => {
