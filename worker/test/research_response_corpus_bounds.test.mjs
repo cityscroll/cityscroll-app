@@ -9,7 +9,8 @@
 
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 
 import {
@@ -27,7 +28,9 @@ import {
   workerContractsAnalysis,
 } from "../src/contracts.mjs";
 
-const ROOT = process.cwd();
+// Resolve from this file so Unit family (worker) and Time-travel (worker),
+// which run with cwd=worker/, still find repo-root evidence and projection data.
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const EVIDENCE_PATH = join("docs", "evidence", "research-response-bounds", "bounded-identifier-arrays.json");
 const PROJECTION_PATH = join("site", "data", "analytics_registered_contracts.json");
 const FIXTURE_CLOCK = "2026-09-17T18:00:00.000Z";
