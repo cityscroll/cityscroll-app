@@ -164,7 +164,7 @@ test("task pane is additive — civic-object tabs stay in place", () => {
   for (const group of ["money", "people", "land", "rules", "meetings"]) {
     assert.match(html, new RegExp(`data-tab="${group}"`));
   }
-  assert.match(html, /Civic objects/);
+  assert.match(html, /Browse by type/);
   assert.doesNotMatch(html, /class="tabbtn"[^>]+data-tab="alerts"/);
   assert.match(html, /href="\/following\/"/);
 });

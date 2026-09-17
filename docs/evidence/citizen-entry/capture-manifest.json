@@ -1,0 +1,122 @@
+{
+  "captures": [
+    {
+      "assertion": "No-JavaScript homepage leads with one citizen search task, ordinary browse labels, and no competing specialist signup.",
+      "case": "citizen-entry-no-javascript",
+      "passed": true,
+      "render_sha256": "2380ac87658f4baf5c012cdc978396b1c81b691351758de5c7e81072af6b92c8",
+      "route": "/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Blocking enhancement scripts preserves the citizen-first homepage hierarchy.",
+      "case": "citizen-entry-failed-enhancement",
+      "passed": true,
+      "render_sha256": "2380ac87658f4baf5c012cdc978396b1c81b691351758de5c7e81072af6b92c8",
+      "route": "/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Hydrated homepage keeps one primary search task, ordinary browse labels, and keyboard access to search.",
+      "case": "citizen-entry-successful-enhancement",
+      "passed": true,
+      "render_sha256": "2380ac87658f4baf5c012cdc978396b1c81b691351758de5c7e81072af6b92c8",
+      "route": "/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Language switching keeps a clear primary search emphasis without revealing the specialist signup on home.",
+      "case": "citizen-entry-translated",
+      "passed": true,
+      "render_sha256": "2380ac87658f4baf5c012cdc978396b1c81b691351758de5c7e81072af6b92c8",
+      "route": "/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Contracts context still exposes the weekly specialist signup with a working subscribe form and Following handoff.",
+      "case": "citizen-entry-contracts-signup",
+      "passed": true,
+      "render_sha256": "a81d13d5826a06819599fa751b95f981fa1cd412c9915f9bf49343cde8cd1cd3",
+      "route": "/browse/contracts/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "No-JavaScript homepage leads with one citizen search task, ordinary browse labels, and no competing specialist signup.",
+      "case": "citizen-entry-no-javascript",
+      "passed": true,
+      "render_sha256": "2380ac87658f4baf5c012cdc978396b1c81b691351758de5c7e81072af6b92c8",
+      "route": "/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Blocking enhancement scripts preserves the citizen-first homepage hierarchy.",
+      "case": "citizen-entry-failed-enhancement",
+      "passed": true,
+      "render_sha256": "2380ac87658f4baf5c012cdc978396b1c81b691351758de5c7e81072af6b92c8",
+      "route": "/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Hydrated homepage keeps one primary search task, ordinary browse labels, and keyboard access to search.",
+      "case": "citizen-entry-successful-enhancement",
+      "passed": true,
+      "render_sha256": "2380ac87658f4baf5c012cdc978396b1c81b691351758de5c7e81072af6b92c8",
+      "route": "/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Language switching keeps a clear primary search emphasis without revealing the specialist signup on home.",
+      "case": "citizen-entry-translated",
+      "passed": true,
+      "render_sha256": "2380ac87658f4baf5c012cdc978396b1c81b691351758de5c7e81072af6b92c8",
+      "route": "/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Contracts context still exposes the weekly specialist signup with a working subscribe form and Following handoff.",
+      "case": "citizen-entry-contracts-signup",
+      "passed": true,
+      "render_sha256": "a81d13d5826a06819599fa751b95f981fa1cd412c9915f9bf49343cde8cd1cd3",
+      "route": "/browse/contracts/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    }
+  ],
+  "case": "citizen-entry",
+  "condition": "Local citizen-entry shell fixtures for homepage hierarchy and Contracts signup; no image binary is committed.",
+  "data_vintage": "fixture-or-served-materialization",
+  "image_binaries_committed": false,
+  "revision": "6563e208b582bb5da08f4d44e675ec5a3ce26b58",
+  "route": "/",
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "citizen entry homepage"
+}

@@ -19,7 +19,7 @@ test("exact list search is primary and topic preview is a disclosed secondary mo
   );
   assert.match(
     SITE_SOURCE,
-    /Search NYC records by topic/,
+    /Search public records by topic/,
     "adjacent context should explain that the secondary mode searches by topic",
   );
   assert.match(

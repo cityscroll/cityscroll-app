@@ -98,16 +98,15 @@
   .home-topic-form input{flex:1 1 300px;min-width:0;min-height:46px;padding:9px 12px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);font:16px/1.3 var(--font-body)}
   .home-topic-form button{min-height:46px;padding:9px 16px;border:1px solid var(--oxblood);border-radius:7px;background:var(--oxblood);color:#fff;font:700 14px/1.2 var(--font-interface);cursor:pointer}
   .home-topic-note{margin-top:8px!important;color:var(--muted)!important;font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif!important}
-  [data-primary-context="home"] .home-cta{margin-top:0}
-  [data-primary-context="home"]:not([data-app-route="true"]) #tab-money{display:block;padding:0}
-  [data-primary-context="home"]:not([data-app-route="true"]) #tab-money .wrap > *{display:none}
-  [data-primary-context="home"]:not([data-app-route="true"]) #tab-money .wrap > .nlbox,
-  [data-primary-context="home"]:not([data-app-route="true"]) #tab-money .wrap > .ask-context{display:block}
-  [data-primary-context="home"]:not([data-app-route="true"]) #tab-money .wrap > .nlbox{max-width:680px;margin:0 auto}
+  /* Keep the specialist contracts email CTA out of the home first paint; it lives
+     inside the Contracts intro and only appears when that domain is open. */
+  [data-primary-context="home"]:not([data-app-route="true"]) #tab-money{display:none}
   [data-primary-context="search"] .home-topic-entry,
   [data-primary-context="search"] .home-cta{display:none}
   [data-primary-context="search"] .ask-cityscroll,
   [data-primary-context="search"] .ask-context{display:none}
+  .money-domain-intro .home-cta{max-width:none;margin:12px 0 0;padding:12px 14px 10px;text-align:left}
+  .money-domain-intro .home-cta-form{justify-content:flex-start}
   .home-topic-support{max-width:680px;margin:0 auto;padding:10px 0 32px;color:var(--muted);font:14px/1.5 ui-sans-serif,system-ui,sans-serif;text-align:center}
   @media(max-width:680px){
     .home-cta{margin-inline:0;padding:12px}
@@ -1913,31 +1912,16 @@
         </svg>
         <h1 class="cr-title">CityScroll</h1>
       </a>
-      <p class="cr-tagline" data-i18n="site_tagline">Subscribe to NYC contracts, rezonings, and hearings that interest you.</p>
+      <p class="cr-tagline" data-i18n="site_tagline">Explore local decisions, public spending, and published chances to take part.</p>
     </div>
     <section class="home-topic-entry" data-home-topic-entry aria-labelledby="home-topic-heading">
-      <p class="home-topic-kicker"><span class="tag method" data-i18n="search_label">Search</span></p>
-      <h2 id="home-topic-heading" data-i18n="topic_search_heading">What are you looking for?</h2>
-      <p data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by civic object.</p>
+      <h2 id="home-topic-heading" data-i18n="topic_search_heading">What's happening in your city?</h2>
+      <p data-i18n="topic_search_intro">Search public records by topic, place, or agency. Results stay grouped by record type.</p>
       <form class="home-topic-form" method="get" action="/search/">
-        <label for="home-topic-query" data-i18n="topic_search_heading">What are you looking for?</label>
+        <label for="home-topic-query" class="sr-only" data-i18n="topic_search_query_label">Search public records</label>
         <div class="home-topic-form-row"><input id="home-topic-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder"><button type="submit" data-i18n="search_label">Search</button></div>
       </form>
     </section>
-    <div class="home-cta" id="homeCta">
-      <p class="home-cta-prompt" id="homeCtaPrompt" data-i18n="home_cta_prompt">New NYC contracts and RFPs by email every Monday.</p>
-      <form class="home-cta-form" id="homeCtaForm" method="post" action="https://api.cityscroll.org/subscribe">
-        <input type="hidden" name="no_topic" value="true">
-        <input type="hidden" name="source" value="top-of-site">
-        <input type="hidden" name="lang" value="en" id="homeCtaLang">
-        <label for="homeCtaEmail" class="sr-only" data-i18n="email_label">Email address</label>
-        <input type="email" id="homeCtaEmail" name="email" required autocomplete="email" inputmode="email" data-clarity-mask="true" placeholder="example@example.com" data-i18n-placeholder="email_placeholder" aria-describedby="homeCtaMsg">
-        <button type="submit" id="homeCtaSubmit" data-i18n="home_cta_submit">Get weekly updates</button>
-      </form>
-      <p class="home-cta-msg" id="homeCtaMsg" role="status" aria-live="polite"></p>
-      <p class="home-cta-action"><a href="/following/?onboarding=1" id="homeCtaTopics" data-i18n="home_cta_topics">Choose what to follow</a></p>
-      <p class="home-cta-session"><a id="homeCtaManage" href="/following/#your-following" data-i18n="home_cta_open_watches" hidden>Open your watches</a></p>
-    </div>
     <div class="cr-rule cr-rule--mid"></div>
     <nav class="now-entry-row" aria-label="Primary">
       <a class="now-entry" href="/now/"><strong data-i18n="now_title">Now</strong><span data-i18n="now_entry_link">See deadlines and upcoming events</span></a>
@@ -1947,8 +1931,8 @@
       <a class="now-entry" href="/guide/"><strong data-i18n="nav_guide">Guide</strong><span data-i18n="guide_entry_desc">Learn how to read city records</span></a>
     </nav>
     <div class="browse-child-nav" id="browse-child-nav">
-      <p class="browse-facet-label">Civic objects</p>
-      <nav class="tabs browse-child-tabs" aria-label="Civic objects">
+      <p class="browse-facet-label" data-i18n="browse_facet_label">Browse by type</p>
+      <nav class="tabs browse-child-tabs" aria-label="Browse by type" data-i18n-aria="browse_facet_label">
         <a class="tabbtn" href="/browse/contracts/" data-tab="money">Contracts</a>
         <a class="tabbtn" href="/browse/people/" data-tab="people">People + organizations</a>
         <a class="tabbtn" href="/browse/zoning/" data-tab="land" data-route-facets="land property">Land</a>
@@ -1991,6 +1975,20 @@
       <h2 class="lens-intro-heading lens-entry-heading" tabindex="-1" data-i18n="tab_money">Contracts</h2>
       <p class="lens-intro-deck" id="money-intro-deck" data-i18n="money_intro_open">Solicitations still accepting responses. Registered contracts, including small purchases and PASSPort-only registrations, are in Recent Awards.</p>
       <p class="lens-intro-signpost" id="money-awards-signpost"><a href="/browse/contracts/?mode=award" data-i18n="money_intro_awards_cta">See registered contracts in Recent Awards</a></p>
+      <div class="home-cta" id="homeCta" data-cta-context="contracts">
+        <p class="home-cta-prompt" id="homeCtaPrompt" data-i18n="home_cta_prompt">New NYC contracts and RFPs by email every Monday.</p>
+        <form class="home-cta-form" id="homeCtaForm" method="post" action="https://api.cityscroll.org/subscribe">
+          <input type="hidden" name="no_topic" value="true">
+          <input type="hidden" name="source" value="contracts-intro">
+          <input type="hidden" name="lang" value="en" id="homeCtaLang">
+          <label for="homeCtaEmail" class="sr-only" data-i18n="email_label">Email address</label>
+          <input type="email" id="homeCtaEmail" name="email" required autocomplete="email" inputmode="email" data-clarity-mask="true" placeholder="" data-i18n-placeholder="contracts_cta_email_placeholder" aria-describedby="homeCtaMsg">
+          <button type="submit" id="homeCtaSubmit" data-i18n="home_cta_submit">Get weekly updates</button>
+        </form>
+        <p class="home-cta-msg" id="homeCtaMsg" role="status" aria-live="polite"></p>
+        <p class="home-cta-action"><a href="/following/?onboarding=1" id="homeCtaTopics" data-i18n="home_cta_topics">Choose what to follow</a></p>
+        <p class="home-cta-session"><a id="homeCtaManage" href="/following/#your-following" data-i18n="home_cta_open_watches" hidden>Open your watches</a></p>
+      </div>
       <details class="lens-method money-method">
         <summary class="lens-method-summary" data-i18n="property_how_it_works">How this list works</summary>
         <p class="money-how-modes" data-i18n="money_how_modes">Open RFPs lists solicitations still accepting responses. Recent Awards lists awarded and registered contracts, including small purchases and PASSPort-only registrations.</p>
@@ -2096,7 +2094,7 @@
     <details class="nlbox ask-cityscroll" data-ask-lens="money"><summary data-i18n="preview_panel_heading">Preview</summary><div class="nlbody">
       <div class="nlrow"><input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money"><button id="nlgo" data-i18n="preview_panel_heading">Preview</button></div>
       <div id="nltry" class="nltry"></div><div id="nltrans"></div><div id="landing-share-actions"></div><div id="nlpresets" data-search-presets></div>
-    </div></details><p class="ask-context" data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by civic object.</p>
+    </div></details><p class="ask-context" data-i18n="topic_search_intro">Search public records by topic, place, or agency. Results stay grouped by record type.</p>
     <div class="lens-search-state" id="moneyactivefilters"></div>
     <div class="lens-resultbar">
       <span class="lens-count" id="rescount" aria-live="polite"></span>

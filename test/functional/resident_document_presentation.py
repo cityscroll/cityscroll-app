@@ -1009,6 +1009,7 @@ def main() -> None:
             "contract-evidence",
             "research-tools",
             "typography",
+            "citizen-entry",
         ],
         required=True,
     )
@@ -1020,6 +1021,9 @@ def main() -> None:
         if args.case == "typography":
             from typography_case import run_writer_self_tests as run_typography_writer_self_tests
             run_typography_writer_self_tests()
+        elif args.case == "citizen-entry":
+            from citizen_entry_case import run_writer_self_tests as run_citizen_entry_writer_self_tests
+            run_citizen_entry_writer_self_tests()
         else:
             run_writer_self_tests()
         return
@@ -1032,6 +1036,11 @@ def main() -> None:
     if args.case == "typography":
         from typography_case import run_typography_case
         run_typography_case(os.environ.get("CROL_BASE"), write_manifest=args.write_manifest)
+        return
+
+    if args.case == "citizen-entry":
+        from citizen_entry_case import run_citizen_entry_case
+        run_citizen_entry_case(os.environ.get("CROL_BASE"), write_manifest=args.write_manifest)
         return
 
     process = staging = state_dir = upstream = None

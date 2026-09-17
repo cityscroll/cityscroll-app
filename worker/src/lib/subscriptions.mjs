@@ -8,8 +8,18 @@
 
 export const CHANNELS = ["email", "sms"];
 export const FREQS = ["daily", "weekly"];
+// Canonical stored source for the weekly Contracts default. Kept stable so the
+// per-address topicless key does not fork when the public form moves.
 export const TOPICLESS_SOURCE = "top-of-site";
+// Posted sources the public form may send. The Contracts-intro surface is the
+// current disclosed caller; the legacy top-of-site token remains accepted so
+// older clients and confirm links keep working.
+export const TOPICLESS_SOURCES = Object.freeze([TOPICLESS_SOURCE, "contracts-intro"]);
 export const TOPICLESS_STATES = Object.freeze(["confirmed"]);
+
+export function isAllowedTopiclessSource(source) {
+  return TOPICLESS_SOURCES.includes(String(source || ""));
+}
 export const DEPRECATED_OPT_IN_RECOVERY_SOURCE = "recovered-from-deprecated-double-opt-in";
 // Supported language codes for subscriptions (clamp unknown → "en").
 // Extend as new languages ship in i18n.js; email templates must have matching entries.

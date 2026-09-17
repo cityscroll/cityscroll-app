@@ -69,14 +69,15 @@ function submitForm(environment, fields, sent) {
   }, sent);
 }
 
-test("the homepage form posts the exact allowlisted intent the worker accepts", () => {
+test("the Contracts-intro form posts the exact allowlisted intent the worker accepts", () => {
   const homepage = readFileSync(new URL("../../site/index.html", import.meta.url), "utf8");
   assert.match(homepage, /id="homeCtaTopics"[^>]*href="\/following\/\?onboarding=1"|href="\/following\/\?onboarding=1"[^>]*id="homeCtaTopics"/);
   assert.match(homepage, /id="homeCtaForm"[^>]*method="post"[^>]*action="https:\/\/api\.cityscroll\.org\/subscribe"/);
   assert.match(homepage, /id="homeCtaEmail"[^>]*name="email"/);
   assert.match(homepage, /id="homeCtaSubmit"/);
   assert.match(homepage, /name="no_topic" value="true"/);
-  assert.match(homepage, /name="source" value="top-of-site"/);
+  assert.match(homepage, /name="source" value="contracts-intro"/);
+  assert.match(homepage, /data-cta-context="contracts"/);
 });
 
 test("topicless submit without the disclosed homepage source is rejected without creating a watch", async () => {
@@ -104,13 +105,13 @@ test("topicless submit with no source at all is rejected without creating a watc
   assert.equal(sent.length, 0);
 });
 
-test("the exact disclosed homepage-default intent creates one weekly Contracts watch", async () => {
+test("the exact disclosed Contracts-default intent creates one weekly Contracts watch", async () => {
   const environment = configured();
   const sent = [];
   const response = await submit(environment, {
     email: "Reader@Example.com",
     no_topic: true,
-    source: "top-of-site",
+    source: "contracts-intro",
     lang: "en",
   }, sent);
   assert.equal(response.status, 200);
@@ -141,7 +142,7 @@ test("the no-JavaScript form post confirms the weekly Contracts subscription in 
   const sent = [];
   const response = await submitForm(environment, {
     no_topic: "true",
-    source: "top-of-site",
+    source: "contracts-intro",
     lang: "en",
     email: "Reader@Example.com",
   }, sent);
@@ -196,7 +197,7 @@ test("a no-JavaScript reader whose welcome email fails is told the subscription 
         Origin: "https://cityscroll.org",
         "CF-Connecting-IP": "198.51.100.10",
       },
-      body: new URLSearchParams({ no_topic: "true", source: "top-of-site", email: "reader@example.com" }).toString(),
+      body: new URLSearchParams({ no_topic: "true", source: "contracts-intro", email: "reader@example.com" }).toString(),
     }), environment);
   } finally {
     globalThis.fetch = realFetch;
@@ -212,17 +213,24 @@ test("a no-JavaScript reader whose welcome email fails is told the subscription 
   );
 });
 
-test("repeated homepage-default submission for the same address reuses the stable key with no duplicate", async () => {
+test("repeated Contracts-default submission for the same address reuses the stable key with no duplicate", async () => {
   const environment = configured();
-  const first = await submit(environment, { email: "reader@example.com", no_topic: true, source: "top-of-site" }, []);
+  const first = await submit(environment, { email: "reader@example.com", no_topic: true, source: "contracts-intro" }, []);
   const firstBody = await first.json();
   assert.equal(firstBody.created, true);
 
-  const second = await submit(environment, { email: "Reader@Example.com", no_topic: true, source: "top-of-site" }, []);
+  const second = await submit(environment, { email: "Reader@Example.com", no_topic: true, source: "contracts-intro" }, []);
   const secondBody = await second.json();
   assert.equal(second.status, 200);
   assert.equal(secondBody.created, false);
   assert.equal(secondBody.watch.watch_id, firstBody.watch.watch_id);
+
+  // Legacy top-of-site callers share the same stored key after source normalization.
+  const legacy = await submit(environment, { email: "reader@example.com", no_topic: true, source: "top-of-site" }, []);
+  const legacyBody = await legacy.json();
+  assert.equal(legacy.status, 200);
+  assert.equal(legacyBody.created, false);
+  assert.equal(legacyBody.watch.watch_id, firstBody.watch.watch_id);
 
   const subKeys = [...environment.SUBS.store.keys()].filter((key) => key.startsWith("sub:"));
   assert.equal(subKeys.length, 1, "the normalized address maps to exactly one stored default watch");

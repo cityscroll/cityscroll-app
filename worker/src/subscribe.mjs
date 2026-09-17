@@ -1,9 +1,10 @@
 // POST /subscribe — the public single-opt-in signup endpoint. The browser submits an
 // already-compiled lens filter (re-sanitized here, never trusted), and the worker stores the
 // subscription before sending a transactional welcome with manage + one-click unsubscribe.
-// A topicless request carrying the disclosed homepage-default intent (no_topic + source
-// "top-of-site") gets the same weekly NYC-contracts default; any other missing-topic request
-// is rejected until the reader previews a scope on Following.
+// A topicless request carrying a disclosed Contracts-default intent (no_topic + an
+// allowlisted source such as "contracts-intro" or the legacy "top-of-site") gets the same
+// weekly NYC-contracts default; any other missing-topic request is rejected until the
+// reader previews a scope on Following.
 //
 // FAIL CLOSED: returns 503 until TOKEN_SECRET + RESEND_API_KEY + SUBS are configured.
 // Rate limits are the primary bot friction on this no-CAPTCHA path and run before any write/send.
@@ -15,6 +16,7 @@ import {
 } from "./lib/council_matter_watch_activation.mjs";
 import {
   TOPICLESS_SOURCE,
+  isAllowedTopiclessSource,
   isValidEmail,
   buildSubscription,
   buildTopiclessIntent,
@@ -68,9 +70,12 @@ export async function handleSubscribe(req, env) {
   const requestedLens = String(body.lens || "");
   const lens = SUBSCRIBABLE.has(requestedLens) ? resolveLens(requestedLens) : null;
   if (!isValidEmail(email)) return reply(req, { ok: false, reason: "bad-email" }, 400, cors);
-  // Only the exact disclosed homepage-default intent may skip a chosen lens. Any other
-  // missing-topic request (a different or absent source) stays rejected.
-  if (topicless && body.source !== TOPICLESS_SOURCE) return reply(req, { ok: false, reason: "bad-intent" }, 400, cors);
+  // Only a disclosed Contracts-default intent may skip a chosen lens. Any other
+  // missing-topic request (a different or absent source) stays rejected. Accepted
+  // callers are normalized to TOPICLESS_SOURCE for storage and key stability.
+  if (topicless && !isAllowedTopiclessSource(body.source)) {
+    return reply(req, { ok: false, reason: "bad-intent" }, 400, cors);
+  }
   if (!topicless && !lens) return reply(req, { ok: false, reason: "bad-lens" }, 400, cors);
   if ((body.channel || "email") !== "email") return reply(req, { ok: false, reason: "channel-unsupported" }, 400, cors);
 

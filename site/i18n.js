@@ -1545,9 +1545,11 @@ const STRINGS = {
     following_freq_weekly:"Weekly digest",
     preview_digest_btn: "Preview today's digest",
     subscribe_btn:      "Subscribe",
-    // Homepage primary conversion (under masthead tagline) — short words for the reading-level ratchet
+    // Contracts-domain weekly default — kept off the homepage first paint.
     home_cta_prompt:    "New NYC contracts and RFPs by email every Monday.",
-    // The Search page (site/search/index.html) carries the same card without an email field, so it keeps the open-ended ask.
+    // Empty static fallback: keeps Contracts intro markup free of a literal address shape.
+    contracts_cta_email_placeholder: "",
+    // The Search page (site/search/index.html) carries a Following handoff without an email field.
     browse_cta_prompt:  "Want email updates on this?",
     home_cta_active_now: "You're already getting these — we'll keep emailing you every Monday.",
     home_cta_open_watches: "Open your watches",
@@ -1631,9 +1633,11 @@ const STRINGS = {
     mode_upcoming:       "Upcoming",
     mode_all_recent:     "All (recent)",
     search_label:        "Search",
-    topic_search_heading: "What are you looking for?",
-    topic_search_intro: "Search NYC records by topic. Results stay grouped by civic object.",
+    topic_search_heading: "What's happening in your city?",
+    topic_search_intro: "Search public records by topic, place, or agency. Results stay grouped by record type.",
+    topic_search_query_label: "Search public records",
     topic_search_placeholder: "Try a topic, place, or agency",
+    browse_facet_label: "Browse by type",
     topic_search_match_count_one: "1 match",
     topic_search_match_count_other: "{n} matches",
     topic_search_coverage_lens_notices: "Published notices",
@@ -1650,7 +1654,7 @@ const STRINGS = {
     procurement_coverage_targeted_small_purchase: "Targeted small-purchase — no public solicitation required",
     procurement_coverage_mwbe_award_not_yet_found: "M/WBE award notice not yet found",
     procurement_coverage_counts: "{observed} observed, publisher reports {publisher}",
-    topic_search_results_aria: "Search results by civic object",
+    topic_search_results_aria: "Search results by record type",
     topic_search_family_notices: "City Record notices",
     topic_search_family_attachments: "Source attachments",
     topic_search_family_minutes: "Community board minutes",
@@ -2725,7 +2729,7 @@ const STRINGS = {
     footer_data_health: "Data health",
 
     // Front-page masthead
-    site_tagline: "Subscribe to NYC contracts, rezonings, and hearings that interest you.",
+    site_tagline: "Explore local decisions, public spending, and published chances to take part.",
     nav_guide: "Guide",
     guide_entry_desc: "Learn how to read city records",
 

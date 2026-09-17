@@ -29,11 +29,15 @@ test("edition strip and scenario grid are gone", () => {
   assert.doesNotMatch(index, /data-i18n="scenario_heading"/);
 });
 
-test("page order is masthead CTA then Browse domain shortcuts", () => {
-  const cta = index.indexOf('id="homeCta"');
+test("page order keeps Browse shortcuts ahead of the Contracts-domain signup", () => {
+  const search = index.indexOf("data-home-topic-entry");
   const tabs = index.indexOf('class="browse-child-nav"');
   const money = index.indexOf('id="tab-money"');
-  assert.ok(cta > 0 && tabs > cta && money > tabs, `order cta=${cta} tabs=${tabs} money=${money}`);
+  const cta = index.indexOf('id="homeCta"');
+  assert.ok(
+    search > 0 && tabs > search && money > tabs && cta > money,
+    `order search=${search} tabs=${tabs} money=${money} cta=${cta}`,
+  );
 });
 
 test("language control is a top-right labelled select with all shipping locales", () => {
@@ -48,15 +52,16 @@ test("language control is a top-right labelled select with all shipping locales"
   assert.match(index, /inset-inline-end/);
 });
 
-test("homepage CTA discloses the exact weekly default before asking for an email", () => {
+test("Contracts intro CTA discloses the exact weekly default before asking for an email", () => {
   assert.match(index, /id="homeCta"/);
+  assert.match(index, /data-cta-context="contracts"/);
   assert.match(index, /data-i18n="home_cta_prompt"/);
   const prompt = index.indexOf('data-i18n="home_cta_prompt"');
   const form = index.indexOf('id="homeCtaForm"');
   assert.ok(prompt > 0 && form > prompt, "the disclosed promise precedes the email field");
   assert.match(index, /id="homeCtaForm"[^>]*method="post"[^>]*action="https:\/\/api\.cityscroll\.org\/subscribe"/);
   assert.match(index, /name="no_topic" value="true"/);
-  assert.match(index, /name="source" value="top-of-site"/);
+  assert.match(index, /name="source" value="contracts-intro"/);
   assert.match(index, /id="homeCtaEmail"[^>]*name="email"[^>]*required/);
   assert.match(index, /id="homeCtaSubmit"[^>]*data-i18n="home_cta_submit"/);
   // Secondary link stays a plain Following handoff — the default form never overwrites it.

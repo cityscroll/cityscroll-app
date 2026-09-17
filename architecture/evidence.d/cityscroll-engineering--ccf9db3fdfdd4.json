@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/ccf9db3fdfdd4",
+  "status": "implemented",
+  "fingerprint": "citizen-entry-presentation.v1",
+  "updated_at": "2026-09-16T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "homepage-following-cta",
+      "path": "site/index.html"
+    },
+    {
+      "id": "citizen-entry-i18n",
+      "path": "site/i18n.js"
+    },
+    {
+      "id": "citizen-entry-search-document",
+      "path": "site/primary_document_view.mjs"
+    },
+    {
+      "id": "following-home-default-subscribe",
+      "path": "site/home_default_watch.mjs"
+    },
+    {
+      "id": "citizen-entry-presentation-tests",
+      "path": "test/resident_entry_presentation.test.mjs"
+    },
+    {
+      "id": "citizen-entry-browser-case",
+      "path": "test/functional/citizen_entry_case.py"
+    },
+    {
+      "id": "citizen-entry-capture-manifest",
+      "path": "docs/evidence/citizen-entry/capture-manifest.json"
+    }
+  ]
+}

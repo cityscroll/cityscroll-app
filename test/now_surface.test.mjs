@@ -443,7 +443,7 @@ test("meeting records that are not hearings carry the Meeting event kind", () =>
   assert.equal(surface.happening_soon.items.find((item) => item.id === "meetings:meeting:city_record:meeting-next")?.kind, "meeting");
 });
 
-test("Now is promoted as a document route while civic objects remain Browse groups", () => {
+test("Now is promoted as a document route while browse-by-type groups remain", () => {
   const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
   const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
   const main = readFileSync(new URL("../site/app/main.mjs", import.meta.url), "utf8");
@@ -459,7 +459,7 @@ test("Now is promoted as a document route while civic objects remain Browse grou
   for (const group of ["money", "people", "land", "rules", "meetings"]) {
     assert.match(html, new RegExp(`data-tab="${group}"`));
   }
-  assert.match(html, /Civic objects/);
+  assert.match(html, /Browse by type/);
   assert.doesNotMatch(html, /class="tabbtn"[^>]+data-tab="alerts"/);
   assert.match(html, /href="\/following\/"/);
   assert.doesNotMatch(html, /data-tab="map"/);
