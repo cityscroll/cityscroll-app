@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -141,6 +141,42 @@ test("publisher URL identifiers are distinct from exposed schema labels", () => 
     const exposed = run(["--fixture", fixture, "--allowlist", allowlist, "--json"]);
     assert.equal(exposed.status, 1);
     assert.deepEqual(JSON.parse(exposed.stdout).unreviewed_findings.map(row => row.term), ["raw_field_name"]);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("browse inspection catalog projection validates beside the surface catalog", () => {
+  const result = spawnSync(
+    "python3",
+    [SCRIPT, "--check-browse-inspection", "--json"],
+    { encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, `${result.stderr}\n${result.stdout}`);
+  const report = JSON.parse(result.stdout);
+  assert.equal(report.ok, true);
+  assert.ok(report.surface_count >= 17);
+  assert.equal(report.compact_calendar_host_count, 8);
+});
+
+test("browse inspection catalog rejects an undeclared classification", () => {
+  const dir = mkdtempSync(join(tmpdir(), "browse-inspection-"));
+  try {
+    const catalog = join(dir, "catalog.json");
+    const base = JSON.parse(readFileSync(join("test", "standards", "browse_inspection_catalog.json"), "utf8"));
+    base.surfaces = base.surfaces.map((row) => (
+      row.surface_id === "agency-directory"
+        ? { ...row, classification: "exceptional", semantic_reason: "", positive_fixture: "" }
+        : row
+    ));
+    writeFileSync(catalog, JSON.stringify(base));
+    const result = spawnSync(
+      "python3",
+      [SCRIPT, "--check-browse-inspection", "--browse-inspection-catalog", catalog, "--json"],
+      { encoding: "utf8" },
+    );
+    assert.notEqual(result.status, 0, "mutated catalog must fail");
+    assert.match(result.stderr, /unsupported classification|directory navigation lacks semantic reason/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

@@ -2,6 +2,18 @@
 
 Status: design-guidance draft; specific interface applications remain hypotheses until evaluated with real tasks. This document collects principles carried forward from contextual-inquiry and lean-validation practice, applied to CityScroll surfaces one card at a time. See also [`docs/design-principles-lens.md`](design-principles-lens.md) for the lens filter template.
 
+## Browse inspection continuity
+
+Collection browsing — calendars, lists, search results, spatial results, and
+board positions — has an accepted architecture default:
+[`docs/adr/browse-inspection-continuity.md`](adr/browse-inspection-continuity.md).
+The maintained inventory and shrinking legacy baseline live in
+[`site/browse_inspection_contract.mjs`](../site/browse_inspection_contract.mjs).
+Inspect in place through the enhanced primary control; keep full-record
+navigation and consequential actions explicit; restore scope and focus on
+dismiss and Back; classify ordinary directory navigation with a semantic reason
+rather than a silent exception.
+
 ## Preserve the full sequence
 
 ## Compose the document before promoting the product

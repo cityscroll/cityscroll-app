@@ -248,6 +248,7 @@
 /site/brand.css
 /site/browse.css
 /site/browse_concept_view.mjs
+/site/browse_inspection_contract.mjs
 /site/browse_list_contract.mjs
 /site/browse_return_context.mjs
 /site/browse_scoped_adapters.mjs

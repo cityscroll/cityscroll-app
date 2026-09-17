@@ -1,0 +1,83 @@
+{
+  "schema": "cityscroll.browse_inspection_acceptance.v1",
+  "contract_id": "cityscroll.browse_inspection_contract.v1",
+  "record": "cityscroll-engineering/cc855a45ec2e1",
+  "route": "contract:browse-inspection",
+  "revision": "4ed8f2a562bab83c18a37d7278733ed50d592af4",
+  "fixture_vintage": "2026-09-16",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-16T22:10:00Z",
+  "viewport": [
+    1440,
+    900
+  ],
+  "measurement_policy": "Assertions record deterministic contract-enforcement fixtures. No participant evaluation was run and no usability gain is claimed. Image binaries are not part of this proof.",
+  "image_policy": "No image binaries are committed for this acceptance record.",
+  "journey": {
+    "id": "browse-inspection-contract-enforcement",
+    "sequence": [
+      "declare_surface",
+      "classify_intent",
+      "reject_undeclared",
+      "reject_baseline_growth",
+      "accept_directory_navigation",
+      "record_assertions"
+    ],
+    "rendered_reference": {
+      "route": "component-harness:browse-return-context",
+      "harness": "test/harness/browse_return_harness.html",
+      "assertion": "set scope or view, inspect, dismiss, open the explicit full record, return with Back, and continue from the restored collection state",
+      "variants": [
+        "desktop",
+        "narrow_touch",
+        "keyboard",
+        "no_javascript",
+        "failed_detail"
+      ]
+    }
+  },
+  "rendered_reference": {
+    "route": "component-harness:browse-return-context",
+    "harness": "test/harness/browse_return_harness.html",
+    "assertion": "set scope or view, inspect, dismiss, open the explicit full record, return with Back, and continue from the restored collection state",
+    "variants": [
+      "desktop",
+      "narrow_touch",
+      "keyboard",
+      "no_javascript",
+      "failed_detail"
+    ],
+    "evidence_manifest": "docs/evidence/browse-return-context/manifest.json",
+    "note": "The shared inspect-dismiss-open-Back-continue sequence is already exercised by the browse-return harness; this card records the contract-enforcement fixtures that make that sequence mandatory for future browsing surfaces."
+  },
+  "assertions": [
+    {
+      "id": "reject-undeclared-surface",
+      "result": "rejected",
+      "assertion": "An undeclared browsing surface fails validateBrowseInspectionContract",
+      "fixture": "undeclared_surface"
+    },
+    {
+      "id": "reject-baseline-growth",
+      "result": "rejected",
+      "assertion": "Adding a legacy baseline entry fails validateBrowseInspectionContract",
+      "fixture": "baseline_growth"
+    },
+    {
+      "id": "accept-directory-navigation",
+      "result": "accepted",
+      "assertion": "Agency directory declares directory_navigation with a semantic reason and positive fixture",
+      "fixture": "agency-directory-navigation",
+      "surface_id": "agency-directory"
+    },
+    {
+      "id": "inventory-covers-audited-families-and-calendar-hosts",
+      "result": "accepted",
+      "assertion": "Eight audited families and eight compact-calendar hosts are classified in the maintained inventory",
+      "surface_count": 17,
+      "baseline_count": 7,
+      "compact_calendar_host_count": 8
+    }
+  ],
+  "assertions_sha256": "c66ffc2a40734f9da7792ec66a4d258f32e74b3c5923f81dafdb286449584d43"
+}
