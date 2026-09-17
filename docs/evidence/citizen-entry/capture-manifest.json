@@ -1,4 +1,5 @@
 {
+  "base": "https://cityscroll.org/",
   "captures": [
     {
       "assertion": "No-JavaScript homepage leads with one citizen search task, ordinary browse labels, and no competing specialist signup.",
@@ -49,7 +50,7 @@
       "assertion": "Contracts context still exposes the weekly specialist signup with a working subscribe form and Following handoff.",
       "case": "citizen-entry-contracts-signup",
       "passed": true,
-      "render_sha256": "a81d13d5826a06819599fa751b95f981fa1cd412c9915f9bf49343cde8cd1cd3",
+      "render_sha256": "f22973772dc7f62e439635ccbf0703b9a039b7d694c63ede759076957a02cdb7",
       "route": "/browse/contracts/",
       "viewport": {
         "height": 1000,
@@ -105,7 +106,7 @@
       "assertion": "Contracts context still exposes the weekly specialist signup with a working subscribe form and Following handoff.",
       "case": "citizen-entry-contracts-signup",
       "passed": true,
-      "render_sha256": "a81d13d5826a06819599fa751b95f981fa1cd412c9915f9bf49343cde8cd1cd3",
+      "render_sha256": "f22973772dc7f62e439635ccbf0703b9a039b7d694c63ede759076957a02cdb7",
       "route": "/browse/contracts/",
       "viewport": {
         "height": 844,
@@ -114,10 +115,10 @@
     }
   ],
   "case": "citizen-entry",
-  "condition": "Local citizen-entry shell fixtures for homepage hierarchy and Contracts signup; no image binary is committed.",
-  "data_vintage": "fixture-or-served-materialization",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "data_vintage": "2026-09-17T22:29:15.154Z",
   "image_binaries_committed": false,
-  "revision": "65faa0e32d815b295cdb63527a172d0179f8f7a3",
+  "revision": "9d247ea0f3eb15c88e44f0dc1759d5fb1621882d",
   "route": "/",
   "schema": "cityscroll.render_capture_manifest.v1",
   "surface": "citizen entry homepage"
