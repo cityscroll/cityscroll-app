@@ -171,15 +171,15 @@ export const BROWSE_INSPECTION_SURFACES = Object.freeze([
     family: "search",
     kind: "collection",
     primary_intent: "inspect",
-    classification: "legacy",
+    classification: "conforming",
     domain_adapter: "site/search_document.mjs",
     render_owner: "site/universal_search_relevance_ux.mjs",
     canonical_destination_policy: "explicit_full_record_link",
-    detail_host: "inline_detail",
-    detail_host_module: "site/search_document.mjs",
+    detail_host: "modal_preview",
+    detail_host_module: "site/search_result_inspection.mjs",
     restoration_adapter: "site/browse_return_context.mjs",
-    journey_owner: "test/browse_inspection_contract.test.mjs",
-    baseline_id: "search-title-continues-collection",
+    journey_owner: "test/search_result_inspection.test.mjs",
+    baseline_id: null,
     route: "/search/?q=shelter",
   }),
   freezeSurface({
@@ -407,14 +407,6 @@ export const BROWSE_INSPECTION_LEGACY_BASELINE = Object.freeze([
     marker: "positionMarkup",
     reason:
       "Board land positions keep rich inspection behind a secondary control while the project title navigates away.",
-    fingerprint: null,
-  }),
-  Object.freeze({
-    id: "search-title-continues-collection",
-    path: "site/search_document.mjs",
-    marker: "buildSearchLensHandoffHref",
-    reason:
-      "Search result titles can hand a reader into another collection instead of inspecting the exact result identity.",
     fingerprint: null,
   }),
   Object.freeze({

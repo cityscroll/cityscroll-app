@@ -111,7 +111,8 @@ test("unknown source state omits the no-value status chip", () => {
   }));
 
   assert.match(html, /data-lifecycle-state="unknown"/);
-  assert.doesNotMatch(html, /topic-search-result-status|Status not available/);
+  assert.doesNotMatch(html, /topic-search-result-status/);
+  assert.doesNotMatch(html, /Status not available/);
 });
 
 test("highlighting escapes query and source text before adding fixed mark elements", () => {
@@ -163,9 +164,14 @@ test("ranked rows without a literal span say evidence is unavailable", () => {
   assert.doesNotMatch(html, /<mark>/);
 });
 
-test("the compact card keeps one keyboard route plus visible type, reason, and status", () => {
+test("the compact card keeps grounded title and full-record routes plus visible type, reason, and status", () => {
   const html = renderUniversalSearchResultHtml(agencyResult());
-  assert.equal((html.match(/<a /g) || []).length, 1);
+  // Static progressive-enhancement markup: title link for no-JS, plus a
+  // separately named full-record link revealed only after inspection binds.
+  assert.equal((html.match(/<a /g) || []).length, 2);
+  assert.match(html, /topic-search-result-title-link/);
+  assert.match(html, /topic-search-result-full-record/);
+  assert.match(html, /topic-search-result-inspect/);
   assert.match(html, /topic-search-result-meta/);
   assert.match(html, /topic-search-result-evidence/);
   assert.match(html, /topic-search-result-status/);

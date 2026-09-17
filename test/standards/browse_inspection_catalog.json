@@ -143,15 +143,15 @@
       "family": "search",
       "kind": "collection",
       "primary_intent": "inspect",
-      "classification": "legacy",
+      "classification": "conforming",
       "domain_adapter": "site/search_document.mjs",
       "render_owner": "site/universal_search_relevance_ux.mjs",
       "canonical_destination_policy": "explicit_full_record_link",
-      "detail_host": "inline_detail",
-      "detail_host_module": "site/search_document.mjs",
+      "detail_host": "modal_preview",
+      "detail_host_module": "site/search_result_inspection.mjs",
       "restoration_adapter": "site/browse_return_context.mjs",
-      "journey_owner": "test/browse_inspection_contract.test.mjs",
-      "baseline_id": "search-title-continues-collection",
+      "journey_owner": "test/search_result_inspection.test.mjs",
+      "baseline_id": null,
       "route": "/search/?q=shelter",
       "principles": [
         "overview",
@@ -488,13 +488,6 @@
       "marker": "positionMarkup",
       "reason": "Board land positions keep rich inspection behind a secondary control while the project title navigates away.",
       "fingerprint": "3ff3b34445753d954ce0895f94d41613a2e1803bee7395b7b4e85e8473ef2130"
-    },
-    {
-      "id": "search-title-continues-collection",
-      "path": "site/search_document.mjs",
-      "marker": "buildSearchLensHandoffHref",
-      "reason": "Search result titles can hand a reader into another collection instead of inspecting the exact result identity.",
-      "fingerprint": "b15a739b0623483804b35338d02559291beb28268d9895e4a737f524a942fb31"
     },
     {
       "id": "near-you-title-navigates",

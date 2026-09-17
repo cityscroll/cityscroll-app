@@ -15,6 +15,7 @@ import {
   searchDestinationForResult,
   searchFamilyForResult,
 } from "./search_lens_handoff.mjs";
+import { bindSearchResultInspection } from "./search_result_inspection.mjs";
 import { buildSearchRenderPlan } from "./search_render_plan.mjs";
 import {
   SEARCH_FRONT_DOOR_SCOPES,
@@ -250,22 +251,37 @@ export function searchResultLane(record) {
   return searchFamilyForResult(record);
 }
 
-function renderResult(record, payload) {
+/**
+ * Project one search result card: canonical title/full-record destinations stay
+ * grounded, while Continue-in-* remains a separately named collection handoff.
+ * Money results no longer rewrite the primary title into the collection route.
+ */
+function parseHtmlElement(html, doc = document) {
+  const template = doc.createElement("template");
+  if (template && "content" in template) {
+    template.innerHTML = html;
+    return template.content.firstElementChild || template.content.children?.[0] || null;
+  }
+  const wrap = doc.createElement("div");
+  wrap.innerHTML = html;
+  return wrap.firstElementChild || wrap.children?.[0] || null;
+}
+
+export function renderSearchResultCard(record, payload, doc = document) {
   const html = renderUniversalSearchResultHtml(record);
   if (!html) return null;
-  const template = document.createElement("template");
-  template.innerHTML = html;
-  const card = template.content.firstElementChild;
+  const card = parseHtmlElement(html, doc);
+  if (!card) return null;
   const destination = searchDestinationForResult(record);
-  const href = buildSearchLensHandoffHref(record, payload, location.search);
+  const href = buildSearchLensHandoffHref(
+    record,
+    payload,
+    typeof location !== "undefined" ? location.search : "",
+  );
   if (destination && href) {
-    if (destination.surface === "money") {
-      const primary = card.querySelector("h4 a[href]");
-      if (primary) primary.href = href;
-    }
-    const action = document.createElement("p");
+    const action = doc.createElement("p");
     action.className = "topic-search-result-handoff";
-    const link = document.createElement("a");
+    const link = doc.createElement("a");
     link.href = href;
     link.dataset.searchHandoff = destination.surface;
     link.textContent = typeof globalThis.t === "function"
@@ -275,6 +291,10 @@ function renderResult(record, payload) {
     card.append(action);
   }
   return card;
+}
+
+function renderResult(record, payload) {
+  return renderSearchResultCard(record, payload);
 }
 
 function appendFamilyReceipt(body, family) {
@@ -620,6 +640,7 @@ function paintResults(root, plan) {
   else if (plan.mode === "semantic") renderSemanticResults(root, plan);
   else if (plan.mode === "legacy") renderLegacyResults(root, plan);
   else renderUnavailableState(root);
+  bindSearchResultInspection(root);
   renderFamilyNav(root);
 }
 

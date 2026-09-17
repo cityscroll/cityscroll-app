@@ -6,6 +6,12 @@
  */
 
 import { isSafeSearchCanonicalRoute } from "./search_document_contract.mjs";
+import {
+  SEARCH_RESULT_TITLE_LINK_CLASS,
+  renderSearchResultFullRecordLink,
+  renderSearchResultInspectButton,
+  searchResultInspectionFacts,
+} from "./search_result_inspection.mjs";
 
 export const UNIVERSAL_SEARCH_RELEVANCE_VIEW_SCHEMA =
   "cityscroll.universal_search_relevance_view.v1";
@@ -308,6 +314,7 @@ function highlightEvidenceHtml(evidence) {
 export function renderUniversalSearchResultHtml(record = {}) {
   const view = buildUniversalSearchResultView(record);
   if (!view) return "";
+  const facts = searchResultInspectionFacts(record, view);
   const titleHtml = !view.evidence.offset_backed && ["title", "display_name", "name"].includes(view.evidence.field)
     ? highlightLiteralHtml(view.title, view.evidence.term)
     : escapeHtml(view.title);
@@ -317,10 +324,18 @@ export function renderUniversalSearchResultHtml(record = {}) {
   const statusHtml = view.lifecycle.state === "unknown"
     ? ""
     : `<span class="topic-search-result-status is-${escapeHtml(view.lifecycle.group)}">${escapeHtml(view.lifecycle.label)}</span>`;
-  return `<article class="topic-search-result is-${escapeHtml(view.lifecycle.group)}" data-search-result data-search-entity-type="${escapeHtml(view.entity_type)}" data-search-lens="${escapeHtml(view.lens)}" data-lifecycle-state="${escapeHtml(view.lifecycle.state)}">
-    <h4><a href="${escapeHtml(view.href)}">${titleHtml}</a></h4>
+  const inspectButton = facts
+    ? renderSearchResultInspectButton(facts, { innerHTML: titleHtml, escape: escapeHtml })
+    : "";
+  const fullRecord = facts
+    ? renderSearchResultFullRecordLink(facts, { escape: escapeHtml })
+    : "";
+  const uidAttr = facts ? ` data-search-result-uid="${escapeHtml(facts.uid)}"` : "";
+  return `<article class="topic-search-result is-${escapeHtml(view.lifecycle.group)}" data-search-result data-search-entity-type="${escapeHtml(view.entity_type)}" data-search-lens="${escapeHtml(view.lens)}" data-lifecycle-state="${escapeHtml(view.lifecycle.state)}"${uidAttr}>
+    <h4><a class="${SEARCH_RESULT_TITLE_LINK_CLASS}" href="${escapeHtml(view.href)}">${titleHtml}</a>${inspectButton}</h4>
     <p class="topic-search-result-meta"><span class="topic-search-result-type">${escapeHtml(view.entity_type_label)}</span><span class="topic-search-result-lens">${escapeHtml(view.lens_label)}</span>${statusHtml}</p>
     <p class="topic-search-result-evidence" data-match-field="${escapeHtml(view.evidence.field)}"><span class="topic-search-result-reason">${escapeHtml(view.evidence.reason)}</span><span>${highlightEvidenceHtml(view.evidence)}</span></p>
     ${summaryHtml}
+    ${fullRecord ? `<p class="topic-search-result-record-actions">${fullRecord}</p>` : ""}
   </article>`;
 }
