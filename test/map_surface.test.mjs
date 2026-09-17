@@ -74,7 +74,11 @@ test("map drill-throughs carry the shared scope into server-owned area documents
     assert.doesNotMatch(index, new RegExp(`data-near-you-link[^>]+data-lens="${lens}"|data-lens="${lens}"[^>]+data-near-you-link`));
   }
   assert.match(island, /fetch\(href, \{ headers: \{ Accept: "text\/html" \} \}\)/);
-  assert.match(island, /current\.replaceWith\(document\.importNode\(replacement, true\)\)/);
+  assert.match(island, /adoptNearYouDocumentScope/);
+  assert.match(
+    readFileSync(new URL("../site/near_you_scope_adoption.mjs", import.meta.url), "utf8"),
+    /current\.replaceWith\(clone\(replacement\)\)/,
+  );
   assert.doesNotMatch(island, /root\.(?:innerHTML|replaceChildren)/);
   const pure = readFileSync(new URL("../site/map_exploration.mjs", import.meta.url), "utf8");
   assert.match(pure, /export function mapDrillListHash/);

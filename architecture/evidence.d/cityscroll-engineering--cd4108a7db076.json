@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/cd4108a7db076",
+  "status": "implemented",
+  "fingerprint": "land-selection-readable-authority.v1",
+  "updated_at": "2026-09-17T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-map-runtime",
+      "path": "site/app/map_runtime.mjs"
+    },
+    {
+      "id": "land-authority-resident-labels",
+      "path": "site/land_authority_labels.mjs"
+    },
+    {
+      "id": "land-authority-panel-view",
+      "path": "site/land_authority_summary_view.mjs"
+    },
+    {
+      "id": "land-map-authority-handoff-adapter",
+      "path": "site/land_map_authority_handoff.mjs"
+    },
+    {
+      "id": "land-map-selection-state",
+      "path": "site/land_map_selection.mjs"
+    },
+    {
+      "id": "browse-inspection-contract-module",
+      "path": "site/browse_inspection_contract.mjs"
+    },
+    {
+      "id": "browse-inspection-catalog-projection",
+      "path": "test/standards/browse_inspection_catalog.json"
+    },
+    {
+      "id": "land-selection-readable-authority-tests",
+      "path": "test/land_selection_readable_authority.test.mjs"
+    },
+    {
+      "id": "land-selection-readable-authority-acceptance",
+      "path": "docs/evidence/land-selection-readable-authority/acceptance-manifest.json"
+    }
+  ]
+}

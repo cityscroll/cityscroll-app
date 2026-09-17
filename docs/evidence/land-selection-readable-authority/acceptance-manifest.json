@@ -1,0 +1,83 @@
+{
+  "schema": "cityscroll.land_selection_readable_authority_acceptance.v1",
+  "record": "cityscroll-engineering/cd4108a7db076",
+  "route": "/browse/zoning/?view=map",
+  "revision": "a0c80dbfb99b6e0d6d394e5ac44793fd149836e8",
+  "fixture_vintage": "2026-09-09T06:46:42.537Z",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-17T06:26:00.000Z",
+  "viewport": [
+    1440,
+    900
+  ],
+  "viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "specimen": {
+    "project_id": "2024K0286",
+    "project_name": "200 Kent Avenue Rezoning",
+    "procedure_id": "ulurp_197c",
+    "stage_id": "ulurp_197c.city_planning_commission_review"
+  },
+  "measurement_policy": "Assertions record deterministic selection-panel fixtures for procedure and stage wording residents can read. No participant evaluation was run and no usability gain is claimed. Image binaries are not part of this proof.",
+  "image_policy": "No image binaries are committed for this acceptance record.",
+  "journey": {
+    "id": "land-map-selection-readable-authority",
+    "sequence": [
+      "set_scope_view_map",
+      "inspect_200_kent",
+      "dismiss_clear_selection",
+      "open_full_record",
+      "back_to_map",
+      "continue"
+    ],
+    "variants": [
+      "desktop",
+      "narrow_touch",
+      "keyboard",
+      "no_javascript",
+      "failed_detail"
+    ]
+  },
+  "assertions": [
+    {
+      "id": "readable-procedure-stage",
+      "result": "pass",
+      "detail": "Resident text uses procedure-profile and stage label owners; raw ulurp_197c ids are absent from visible copy."
+    },
+    {
+      "id": "diagnostic-ids-retained",
+      "result": "pass",
+      "detail": "data-land-map-authority-procedure/stage keep raw identifiers for diagnostics."
+    },
+    {
+      "id": "nonmodal-selection-panel",
+      "result": "pass",
+      "detail": "Selection remains a selection_panel browsing-contract host without dialog/modal semantics."
+    },
+    {
+      "id": "explicit-actions-and-clear",
+      "result": "pass",
+      "detail": "Open project record, Show in list, and Clear selection remain present with existing focus contracts."
+    },
+    {
+      "id": "unknown-and-mixed-fixtures",
+      "result": "pass",
+      "detail": "Unknown and mixed procedure fixtures stay source-honest and never invent next actions or approvals."
+    }
+  ],
+  "rendered_reference": {
+    "route": "/browse/zoning/?view=map",
+    "harness": "test/land_selection_readable_authority.test.mjs",
+    "assertion": "set map view, inspect 200 Kent, clear selection, open the explicit full record, return with Back, and continue; cover narrow/touch, keyboard, no-JavaScript, and failed-detail variants",
+    "html_sha256": "e6b954de46fbd5afe7abf4de0606f5a117d6469fb3fc1c9ec4d63abf287a9a9d",
+    "text_sha256": "fc60a74e48a8f9a5361407f3aa3e0d2473d9222afb23ee9c3e5c635cc430fcf5"
+  }
+}

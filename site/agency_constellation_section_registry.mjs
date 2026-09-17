@@ -17,10 +17,12 @@ import { staffingSection } from "./agency_constellation_sections/staffing.mjs";
 import { vendorsSection } from "./agency_constellation_sections/vendors.mjs";
 import { identitySection } from "./agency_constellation_sections/identity.mjs";
 import { institutionNavigationSection } from "./agency_constellation_sections/institution_navigation.mjs";
+import { leadershipSection } from "./agency_constellation_sections/leadership.mjs";
 import { recordCapacitySection } from "./agency_constellation_sections/record_capacity.mjs";
 
 const registeredSections = [
   asOfSection,
+  leadershipSection,
   institutionNavigationSection,
   identitySection,
   recordCapacitySection,

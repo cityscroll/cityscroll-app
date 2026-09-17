@@ -3,13 +3,16 @@ import { test } from "node:test";
 
 import { readFileSync } from "node:fs";
 import {
+  COMMUNITY_BOARD_ACQUISITION_USER_AGENT,
   COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS,
+  evaluateBoardSourceAcquisitionInvariants,
   extractPdfTextFromBytes,
   fetchCommunityBoardSource,
   googleCalendarIdsFromHtml,
   googleCalendarPublicIcsUrl,
   airtableShareIdsFromHtml,
   airtableSharedViewRequestFromEmbed,
+  looksLikeChallengeHtml,
   parseNycOfficialCalendarSource,
   parseAirtableSource,
   parseGoogleCalendarSource,
@@ -19,6 +22,10 @@ import {
   pdfCalendarLinksFromHtml,
   sourceRecordStatus,
 } from "../site/community_board_source_adapters.mjs";
+import {
+  assertBoardSourceAcquisitionInvariants,
+  BOARD_MEETING_ACQUISITION_PRESENCE_POPULATION_BOARDS,
+} from "../tools/build_community_board_meeting_index.mjs";
 import { meetingSourceFieldNames } from "../site/meeting_source_completeness.mjs";
 
 const committeeRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/community_board_committees.json", import.meta.url)));
@@ -724,4 +731,99 @@ test("PDF calendar fetch follows official calendar PDFs and keeps PDF links as d
   assert.equal(result.records[0].date, "2026-09-09");
   assert.equal(result.records[0].start_at, "2026-09-09T18:30:00-04:00");
   assert.equal(result.receipt.status, "ok");
+});
+
+// --- cef222171a737 acquisition invariants ---
+
+test("challenge HTML detection rejects access walls without matching ordinary prose", () => {
+  assert.equal(looksLikeChallengeHtml('<p>identify challenges, share resources with seniors</p>', 'text/html'), false);
+  assert.equal(looksLikeChallengeHtml('<h1>Access Denied</h1><p>Forbidden</p>', 'text/html'), true);
+  assert.equal(looksLikeChallengeHtml('<div>Just a moment...</div><p>cloudflare ray id: abc</p>', 'text/html'), true);
+  assert.equal(looksLikeChallengeHtml('{"ok":true}', 'application/json'), false);
+});
+
+test("presence and population invariants stay separate for silent-empty sources", () => {
+  const presenceOnly = evaluateBoardSourceAcquisitionInvariants({
+    receipt: { status: "ok", fetch_status: "200", reason: null },
+    records: [],
+    role: "upcoming_meetings",
+  });
+  assert.equal(presenceOnly.presence.ok, true);
+  assert.equal(presenceOnly.population.ok, false);
+  assert.equal(presenceOnly.ok, false);
+
+  const refused = evaluateBoardSourceAcquisitionInvariants({
+    receipt: { status: "unknown", fetch_status: "403", reason: "http_error" },
+    records: [{ record_kind: "event", record_id: "e1", date: "2026-09-16" }],
+    role: "upcoming_meetings",
+  });
+  assert.equal(refused.presence.ok, false);
+  assert.equal(refused.population.ok, true);
+  assert.equal(refused.ok, false);
+
+  const healthy = evaluateBoardSourceAcquisitionInvariants({
+    receipt: { status: "ok", fetch_status: "200", reason: null },
+    records: [{ record_kind: "event", record_id: "e1", date: "2026-09-16" }],
+    role: "upcoming_meetings",
+  });
+  assert.equal(healthy.ok, true);
+});
+
+test("transport sends an identifying User-Agent and no longer rejects challenge prose", async () => {
+  const calls = [];
+  const html = `
+    <script type="application/ld+json">[{"@type":"Event","name":"Aging Committee identifies challenges","url":"https://cb10.example/event/1","startDate":"2026-09-17T18:00:00-04:00"}]</script>
+  `;
+  const result = await fetchCommunityBoardSource({
+    adapter: "html_pdf_v1",
+    role: "upcoming_meetings",
+    board_id: "manhattan-cb-10",
+    url: "https://cb10.example/events/",
+    format: "explicit board calendar",
+  }, {
+    observedAt: "2026-09-17T12:00:00Z",
+    fetchImpl: async (url, init = {}) => {
+      calls.push({ url, headers: init.headers || {} });
+      const bytes = new TextEncoder().encode(html);
+      return {
+        ok: true,
+        status: 200,
+        headers: { get: () => "text/html; charset=UTF-8" },
+        arrayBuffer: async () => bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength),
+      };
+    },
+  });
+  assert.equal(calls[0].headers["User-Agent"], COMMUNITY_BOARD_ACQUISITION_USER_AGENT);
+  assert.equal(result.receipt.status, "ok");
+  assert.equal(result.receipt.reason, null);
+  assert.equal(result.records.length, 1);
+  assert.match(result.records[0].title, /challenges/i);
+});
+
+test("named board acquisition receipts must pass both presence and population", () => {
+  const receipts = BOARD_MEETING_ACQUISITION_PRESENCE_POPULATION_BOARDS.map((boardId) => ({
+    board_id: boardId,
+    role: "upcoming_meetings",
+    materialized_record_count: 1,
+    acquisition_invariants: evaluateBoardSourceAcquisitionInvariants({
+      receipt: { status: "ok", fetch_status: "200", reason: null },
+      records: [{ record_kind: "event", record_id: `${boardId}-1`, date: "2026-09-16" }],
+      role: "upcoming_meetings",
+    }),
+  }));
+  assert.deepEqual(assertBoardSourceAcquisitionInvariants(receipts), {
+    ok: true,
+    checked: BOARD_MEETING_ACQUISITION_PRESENCE_POPULATION_BOARDS.length,
+  });
+
+  receipts[0].acquisition_invariants = evaluateBoardSourceAcquisitionInvariants({
+    receipt: { status: "ok", fetch_status: "200", reason: null },
+    records: [],
+    role: "upcoming_meetings",
+  });
+  receipts[0].materialized_record_count = 0;
+  assert.throws(
+    () => assertBoardSourceAcquisitionInvariants(receipts),
+    /population=false/,
+  );
 });

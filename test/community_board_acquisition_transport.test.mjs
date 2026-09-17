@@ -43,7 +43,9 @@ test("403, 429, timeout, redirect exhaustion, challenge HTML, and 304 retain exp
     ["403", () => response(403, "denied"), "http_403"],
     ["429", () => response(429, "busy"), "http_429"],
     ["redirect exhaustion", () => response(302, "", "text/html", { location: "https://board.example/next" }), "redirect_limit_exceeded"],
-    ["challenge HTML", () => response(200, "<html>captcha challenge</html>"), "challenge_html"],
+    // Bare "challenge"/"challenges" in ordinary page copy must not trip this;
+    // require Cloudflare/captcha wall markers instead.
+    ["challenge HTML", () => response(200, "<html><title>Just a moment...</title><div id=\"cf-challenge-running\"></div><p>cloudflare ray id: 00aabb</p></html>"), "challenge_html"],
     ["304 without cache", () => response(304, ""), "not_modified_without_verified_cache"],
   ];
   for (const [name, fetchImpl, reason] of cases) await t.test(name, async () => {

@@ -3,7 +3,7 @@
   "contract_id": "cityscroll.browse_inspection_contract.v1",
   "record": "cityscroll-engineering/cc855a45ec2e1",
   "route": "contract:browse-inspection",
-  "revision": "4ed8f2a562bab83c18a37d7278733ed50d592af4",
+  "revision": "ecd674bf17f99165551b9af67775dc7820f016c0",
   "fixture_vintage": "2026-09-16",
   "timezone": "America/New_York",
   "captured_at": "2026-09-16T22:10:00Z",

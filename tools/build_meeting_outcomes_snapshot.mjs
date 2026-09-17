@@ -8,6 +8,7 @@ import {
   MEETING_OUTCOMES_SNAPSHOT_SCHEMA,
   buildMeetingOutcomesSnapshot,
 } from "../site/meeting_outcomes_static.mjs";
+import { unboundRollCalls } from "../ops/first-class-refresh/guard-publication.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "site/data/meeting_outcomes_snapshot.json");
@@ -38,6 +39,12 @@ function validate(snapshot) {
   assert.equal(snapshot?.record_count, Object.keys(snapshot?.by_notice || {}).length);
   assert.ok(snapshot.record_count > 0, "meeting outcomes snapshot must not be empty");
   assert.equal(snapshot.record_count, snapshot.present_count + snapshot.absent_count);
+  const unbound = unboundRollCalls(snapshot);
+  assert.equal(
+    unbound.length,
+    0,
+    `retained roll calls must carry exact event and agenda-item references; unbound=${unbound.length}`,
+  );
 }
 
 async function main() {

@@ -49,6 +49,37 @@ function countOf(value) {
  * resident as "was there and declined to take a position" — a claim about a
  * member's participation that the source does not make.
  */
+/**
+ * A named roll call is retained only when it carries exact event and agenda-item
+ * references. Unbound person rows are dropped so a vote is never presented as
+ * traceable to an agenda item it cannot name.
+ */
+export function retainBoundRollCall(votes, { eventId = null, agendaItemId = null } = {}) {
+  if (!votes || typeof votes !== "object") return votes;
+  const personCount = Number(votes.person_count) || (Array.isArray(votes.by_person) ? votes.by_person.length : 0);
+  if (!(personCount > 0)) return votes;
+  const bound = Boolean(
+    votes.event_id
+      && votes.event_item_id
+      && eventId
+      && agendaItemId
+      && String(votes.event_id) === String(eventId)
+      && String(votes.event_item_id) === String(agendaItemId),
+  );
+  if (bound) return votes;
+  const hasTally = [votes.result, votes.yes, votes.no, votes.abstain, votes.absent]
+    .some((value) => value != null && value !== "");
+  if (!hasTally) return null;
+  return {
+    ...votes,
+    by_person: [],
+    person_count: 0,
+    vote_identity: votes.vote_identity === "roll_call" ? "tally_only" : (votes.vote_identity || "tally_only"),
+    event_id: null,
+    event_item_id: null,
+  };
+}
+
 export function compactVotes(votes, { maxPeople = 12 } = {}) {
   const row = Array.isArray(votes) ? votes.at(-1) : (votes && typeof votes === "object" ? votes : null);
   if (!row) return null;
@@ -139,12 +170,16 @@ export function compactMeetingOutcomeRecord(record) {
       // has its own roll call, or none. They are kept apart here so a vote taken
       // on one action is never shown against the other.
       const agendaItemId = clean(matter.agenda_item_id || item?.agenda_item_id);
-      const itemVotes = compactVotes(matter.votes);
+      const eventId = clean(event.event_id) || null;
+      const itemVotes = retainBoundRollCall(compactVotes(matter.votes), {
+        eventId,
+        agendaItemId,
+      });
       if (agendaItemId && !prior.item_actions.some((row) => row.agenda_item_id === agendaItemId)) {
         prior.item_actions.push({
           agenda_item_id: agendaItemId,
           action: outcome || null,
-          vote_state: itemVotes ? "roll_call_recorded" : "no_roll_call_recorded",
+          vote_state: itemVotes?.person_count > 0 ? "roll_call_recorded" : (itemVotes ? "tally_recorded" : "no_roll_call_recorded"),
           votes: itemVotes,
         });
       }
