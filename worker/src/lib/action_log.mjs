@@ -37,7 +37,7 @@ const LENSES = new Set([
   "mandates", "obligations",
 ]);
 const SOURCES = new Set([
-  "confirm", "following", "top-of-site", "inbound_email", "mcp", "legacy-confirm",
+  "confirm", "following", "top-of-site", "contracts-intro", "inbound_email", "mcp", "legacy-confirm",
   "pins", "prefs", "unsubscribe", "review_desk",
 ]);
 const FREQUENCIES = new Set(["daily", "weekly"]);
