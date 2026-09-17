@@ -126,7 +126,7 @@ def check_lang(pw, lang):
 
     # 3. Bidi isolation of an English data island (enTitle()-wrapped notice title on the
     #    explicit Contracts lens; the neutral home deliberately has no record rows).
-    rtitle = page.locator(".rtitle span[lang='en']").first
+    rtitle = page.locator(".rtitle span[lang='en']:visible").first
     if rtitle.count():
         bidi = rtitle.evaluate("el => [getComputedStyle(el).unicodeBidi, getComputedStyle(el).direction]")
         if bidi[0] != "isolate" or bidi[1] != "ltr":
@@ -135,7 +135,7 @@ def check_lang(pw, lang):
                 "expected ['isolate', 'ltr'] -- English notice titles will bidi-reorder "
                 "inside RTL chrome (WCAG 1.3.2)")
     else:
-        failures.append(f"{lang}: no .rtitle English-data span found to check bidi isolation on")
+        failures.append(f"{lang}: no visible .rtitle English-data span found to check bidi isolation on")
 
     # No horizontal overflow at mobile + desktop widths -- the classic symptom of a missed
     # physical property (an element still anchored off one edge overflows the other under RTL).
