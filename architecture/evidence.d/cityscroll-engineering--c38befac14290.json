@@ -22,6 +22,10 @@
       "path": "docs/evidence/assistant-discovery-live-proof/hosted-client-compatibility.json"
     },
     {
+      "id": "discovery-live-conditions-capture-manifest",
+      "path": "docs/evidence/assistant-discovery-live-proof/capture-manifest.json"
+    },
+    {
       "id": "capability-discovery-functional",
       "path": "test/functional/capability_discovery.py"
     }

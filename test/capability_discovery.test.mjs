@@ -434,6 +434,36 @@ test("A6: hosted-client compatibility evidence labels unverified one-click claim
   }
 });
 
+test("A5: live-proof capture manifest retains named soft-depend skips and condition cases", () => {
+  const manifest = JSON.parse(read("docs/evidence/assistant-discovery-live-proof/capture-manifest.json"));
+  assert.equal(manifest.schema, "cityscroll.render_capture_manifest.v1");
+  assert.equal(manifest.surface, "assistant discovery live proof");
+  assert.equal(manifest.image_binaries_committed, false);
+  assert.match(String(manifest.revision || ""), /^[0-9a-f]{40}$/);
+  assert.ok(String(manifest.base || "").includes("cityscroll.org"));
+  assert.match(String(manifest.condition || ""), /translated/i);
+  assert.match(String(manifest.condition || ""), /no-JavaScript|no-javascript/i);
+  assert.match(String(manifest.condition || ""), /failed-enhancement/i);
+  const cases = new Set((manifest.captures || []).map((row) => row.case));
+  for (const required of [
+    "discovery-translated",
+    "discovery-no-javascript",
+    "discovery-failed-enhancement",
+  ]) {
+    assert.ok(cases.has(required), required);
+  }
+  assert.ok(Array.isArray(manifest.skips));
+  assert.ok(manifest.skips.length >= 1);
+  const named = manifest.skips.find((row) => row.name === "contextual AI handoff control");
+  assert.ok(named, "expected named soft-depend skip for contextual AI handoff control");
+  assert.match(String(named.reason || ""), /soft-depend/i);
+  for (const capture of manifest.captures) {
+    assert.equal(capture.passed, true, capture.case);
+    assert.match(String(capture.render_sha256 || ""), /^[0-9a-f]{64}$/);
+    assert.ok(capture.viewport && capture.viewport.width && capture.viewport.height, capture.case);
+  }
+});
+
 test("A3: discovery reuses affordance roles and keeps analytics bounded", () => {
   for (const binding of CAPABILITY_TASK_BINDINGS) {
     assert.ok(Object.values(AFFORDANCE_ACTION_ROLES).includes(binding.action_role), binding.name);

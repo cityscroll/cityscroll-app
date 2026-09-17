@@ -1,0 +1,113 @@
+{
+  "base": "https://cityscroll.org/",
+  "captures": [
+    {
+      "assertion": "Translated introduction keeps the public MCP endpoint and home recovery link.",
+      "case": "discovery-translated",
+      "passed": true,
+      "render_sha256": "5ac21e03aec8b33b3cdefb6b9a2ffb249f77f29a199e6466872d7bfbddca45c0",
+      "route": "/use-with-ai/?lang=es",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Failed clipboard enhancement still selects the recoverable MCP endpoint value.",
+      "case": "discovery-failed-enhancement",
+      "passed": true,
+      "render_sha256": "5ac21e03aec8b33b3cdefb6b9a2ffb249f77f29a199e6466872d7bfbddca45c0",
+      "route": "/use-with-ai/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "No-JavaScript introduction still shows the MCP endpoint and cited examples.",
+      "case": "discovery-no-javascript",
+      "passed": true,
+      "render_sha256": "5ac21e03aec8b33b3cdefb6b9a2ffb249f77f29a199e6466872d7bfbddca45c0",
+      "route": "/use-with-ai/",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "No-JavaScript about page still links to the assistant introduction.",
+      "case": "discovery-no-javascript-about",
+      "passed": true,
+      "render_sha256": "3de95eb3300f890005b87ac4541992773043907a39a993fddac3ce4f4b324fc1",
+      "route": "/about.html",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Translated introduction keeps the public MCP endpoint and home recovery link.",
+      "case": "discovery-translated",
+      "passed": true,
+      "render_sha256": "5ac21e03aec8b33b3cdefb6b9a2ffb249f77f29a199e6466872d7bfbddca45c0",
+      "route": "/use-with-ai/?lang=es",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Failed clipboard enhancement still selects the recoverable MCP endpoint value.",
+      "case": "discovery-failed-enhancement",
+      "passed": true,
+      "render_sha256": "5ac21e03aec8b33b3cdefb6b9a2ffb249f77f29a199e6466872d7bfbddca45c0",
+      "route": "/use-with-ai/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "No-JavaScript introduction still shows the MCP endpoint and cited examples.",
+      "case": "discovery-no-javascript",
+      "passed": true,
+      "render_sha256": "5ac21e03aec8b33b3cdefb6b9a2ffb249f77f29a199e6466872d7bfbddca45c0",
+      "route": "/use-with-ai/",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "No-JavaScript about page still links to the assistant introduction.",
+      "case": "discovery-no-javascript-about",
+      "passed": true,
+      "render_sha256": "acf931b42e8e6a38c9fa3fea709c84bdd35286155f93db4d686155b7b537ffe9",
+      "route": "/about.html",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    }
+  ],
+  "case": "discovery-live-conditions",
+  "condition": "Production base https://cityscroll.org/ after deployment; retained translated, no-JavaScript, and failed-enhancement discovery conditions with named soft-depend skips; no image binary is committed.",
+  "data_vintage": "2026-09-17T08:18:06.436Z",
+  "image_binaries_committed": false,
+  "revision": "41dedbe19e64d5bfc5c261a519e827e1f06bc4bf",
+  "route": "/use-with-ai/",
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "skips": [
+    {
+      "name": "contextual AI handoff control",
+      "reason": "sibling surface not on this tree; soft-depend",
+      "route": "/browse/meetings/?agency=City%20Planning",
+      "selector": "[data-ai-context-handoff], a[href*='use-with-ai'][data-ai-context]",
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      }
+    }
+  ],
+  "surface": "assistant discovery live proof"
+}

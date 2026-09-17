@@ -48,6 +48,7 @@ VIEWPORTS = (
     ("phone", PHONE),
 )
 FOLLOW_CALENDAR_MANIFEST = ROOT / "docs" / "evidence" / "follow-calendar-discovery" / "capture-manifest.json"
+LIVE_PROOF_MANIFEST = ROOT / "docs" / "evidence" / "assistant-discovery-live-proof" / "capture-manifest.json"
 FOLLOW_CALENDAR_HANDOFF_ROUTE = "browse/meetings/"
 UA = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -55,11 +56,32 @@ UA = (
 )
 
 results: list[tuple[str, str]] = []
+live_proof_captures: list[dict] = []
+live_proof_skips: list[dict] = []
 
 
 def step(tag: str, name: str, detail: str = "") -> None:
     results.append((tag, name))
     print(f"{tag} {name}" + (f" -> {detail}" if detail else ""), flush=True)
+
+
+def main_render_hash(page) -> str:
+    html = page.evaluate(
+        """() => {
+          const main = document.querySelector('main#main, main, [role=main]');
+          return (main || document.body || document.documentElement).innerHTML || '';
+        }"""
+    )
+    return content_hash(str(html))
+
+
+def viewport_payload(page=None, size: dict | None = None) -> dict:
+    if size is not None:
+        return {"width": int(size["width"]), "height": int(size["height"])}
+    current = page.viewport_size if page is not None else None
+    if not current:
+        return {"width": 0, "height": 0}
+    return {"width": int(current["width"]), "height": int(current["height"])}
 
 
 def content_hash(text: str) -> str:
@@ -112,12 +134,12 @@ def read_served_artifact_manifest() -> dict:
 
 
 def deployed_build_revision() -> str:
-    """Serve Pages artifact revision (short), not the local checkout HEAD."""
+    """Served Pages artifact revision (full 40-hex), not the local checkout HEAD."""
     payload = read_served_artifact_manifest()
     sha = payload.get("source_commit_sha") if isinstance(payload, dict) else None
     if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
         raise RuntimeError("deployed artifact-manifest lacks a 40-hex source_commit_sha")
-    return sha[:9]
+    return sha
 
 
 def ai_context_task_text(page) -> str:
@@ -422,30 +444,62 @@ def assert_keyboard_copy_fallback(page, label: str) -> None:
     )
 
 
-def assert_translated_layout(page, label: str) -> None:
-    page.goto(BASE + "use-with-ai/?lang=es", timeout=30000)
+def assert_translated_layout(page, label: str) -> dict:
+    route = "/use-with-ai/?lang=es"
+    page.goto(BASE + route.lstrip("/"), timeout=30000)
     page.wait_for_selector("#mcp-endpoint, main#main", timeout=20000)
     html = page.content()
     ok = "api.cityscroll.org/mcp" in html and ('href="/"' in html or "CityScroll home" in html or "href='/'" in html)
     step("OK" if ok else "FAIL", f"{label} translated introduction keeps endpoint and home recovery")
+    return {
+        "case": "discovery-translated",
+        "route": route,
+        "viewport": viewport_payload(page),
+        "assertion": "Translated introduction keeps the public MCP endpoint and home recovery link.",
+        "render_sha256": main_render_hash(page),
+        "passed": bool(ok),
+    }
 
 
-def assert_no_js(browser, label: str) -> None:
-    context, page = open_page(browser, DESKTOP, java_script_enabled=False)
+def assert_no_js(browser, label: str, size: dict) -> list[dict]:
+    context, page = open_page(browser, size, java_script_enabled=False)
+    captures: list[dict] = []
     try:
         page.goto(BASE + "use-with-ai/", timeout=30000)
         html = page.content()
         ok = "api.cityscroll.org/mcp" in html and "CT107120258801626" in html and "data-copy-endpoint" in html
         step("OK" if ok else "FAIL", f"{label} no-JS introduction still shows endpoint and examples")
+        captures.append(
+            {
+                "case": "discovery-no-javascript",
+                "route": "/use-with-ai/",
+                "viewport": viewport_payload(size=size),
+                "assertion": "No-JavaScript introduction still shows the MCP endpoint and cited examples.",
+                "render_sha256": main_render_hash(page),
+                "passed": bool(ok),
+            }
+        )
         page.goto(BASE + "about.html", timeout=30000)
         about = page.content()
-        step("OK" if "use-with-ai" in about else "FAIL", f"{label} no-JS about still links to introduction")
+        about_ok = "use-with-ai" in about
+        step("OK" if about_ok else "FAIL", f"{label} no-JS about still links to introduction")
+        captures.append(
+            {
+                "case": "discovery-no-javascript-about",
+                "route": "/about.html",
+                "viewport": viewport_payload(size=size),
+                "assertion": "No-JavaScript about page still links to the assistant introduction.",
+                "render_sha256": main_render_hash(page),
+                "passed": bool(about_ok),
+            }
+        )
     finally:
         context.close()
+    return captures
 
 
-def assert_failed_enhancement(browser, label: str) -> None:
-    context = browser.new_context(viewport=DESKTOP)
+def assert_failed_enhancement(browser, label: str, size: dict) -> dict:
+    context = browser.new_context(viewport=size, user_agent=UA)
     context.add_init_script(
         "Object.defineProperty(navigator, 'clipboard', { configurable: true, value: {"
         " writeText: () => Promise.reject(new Error('denied')) } });"
@@ -462,11 +516,20 @@ def assert_failed_enhancement(browser, label: str) -> None:
               return Boolean(input) && input.selectionStart === 0 && input.selectionEnd === input.value.length;
             }"""
         )
+        ok = value.endswith("/mcp") and selected
         step(
-            "OK" if value.endswith("/mcp") and selected else "FAIL",
+            "OK" if ok else "FAIL",
             f"{label} failed enhancement keeps endpoint recoverable",
             f"value={value} selected={selected}",
         )
+        return {
+            "case": "discovery-failed-enhancement",
+            "route": "/use-with-ai/",
+            "viewport": viewport_payload(size=size),
+            "assertion": "Failed clipboard enhancement still selects the recoverable MCP endpoint value.",
+            "render_sha256": main_render_hash(page),
+            "passed": bool(ok),
+        }
     finally:
         context.close()
 
@@ -477,7 +540,17 @@ def maybe_sibling_surface(page, route: str, selector: str, name: str, required_t
     page.wait_for_selector("body", timeout=20000)
     count = page.locator(selector).count()
     if count == 0:
-        step("SKIP", name, "sibling surface not on this tree; soft-depend")
+        reason = "sibling surface not on this tree; soft-depend"
+        step("SKIP", name, reason)
+        live_proof_skips.append(
+            {
+                "name": name,
+                "reason": reason,
+                "route": "/" + route.lstrip("/"),
+                "viewport": viewport_payload(page),
+                "selector": selector,
+            }
+        )
         return
     html = page.content()
     text_ok = required_text is None or required_text in html
@@ -709,7 +782,7 @@ def write_ai_context_manifest(captures: list[dict]) -> None:
         )
         base_label = BASE
     else:
-        revision = os.environ.get("GIT_COMMIT") or os.environ.get("GITHUB_SHA") or git_head()[:9]
+        revision = os.environ.get("GIT_COMMIT") or os.environ.get("GITHUB_SHA") or git_head()
         data_vintage = "site build"
         condition = (
             "Local assistant-context journeys; no image binary is committed."
@@ -730,33 +803,82 @@ def write_ai_context_manifest(captures: list[dict]) -> None:
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     step("WRITE", "capture-manifest", str(manifest_path.relative_to(ROOT)))
 
+
+def write_live_proof_manifest(captures: list[dict], skips: list[dict]) -> None:
+    """Retain translated / no-JS / failed-enhancement captures plus named soft-depend skips."""
+    LIVE_PROOF_MANIFEST.parent.mkdir(parents=True, exist_ok=True)
+    if is_production_base():
+        artifact = read_served_artifact_manifest()
+        revision = deployed_build_revision()
+        data_vintage = str(artifact.get("generated_at") or "").strip() or "production"
+        condition = (
+            f"Production base {BASE} after deployment; retained translated, "
+            "no-JavaScript, and failed-enhancement discovery conditions with named soft-depend skips; "
+            "no image binary is committed."
+        )
+        base_label = BASE
+    else:
+        revision = os.environ.get("GIT_COMMIT") or os.environ.get("GITHUB_SHA") or git_head()
+        data_vintage = "site build"
+        condition = (
+            "Local discovery condition captures with named soft-depend skips; "
+            "no image binary is committed."
+        )
+        base_label = BASE if BASE.startswith("http") else "local"
+    manifest = {
+        "schema": "cityscroll.render_capture_manifest.v1",
+        "surface": "assistant discovery live proof",
+        "case": "discovery-live-conditions",
+        "base": base_label,
+        "condition": condition,
+        "image_binaries_committed": False,
+        "revision": revision,
+        "data_vintage": data_vintage,
+        "route": "/use-with-ai/",
+        "captures": captures,
+        "skips": skips,
+    }
+    LIVE_PROOF_MANIFEST.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    step("WRITE", "live-proof capture-manifest", str(LIVE_PROOF_MANIFEST.relative_to(ROOT)))
+
+
 def run_default_journeys(browser) -> None:
-    desktop_ctx, desktop = open_page(browser, DESKTOP)
-    assert_introduction_journey(desktop, "desktop")
-    assert_home_ask_link(desktop, "desktop")
-    assert_keyboard_copy_fallback(desktop, "desktop")
-    assert_translated_layout(desktop, "desktop")
-    desktop_ctx.close()
+    live_proof_captures.clear()
+    live_proof_skips.clear()
 
-    assert_failed_enhancement(browser, "desktop")
+    for viewport_name, size in VIEWPORTS:
+        context, page = open_page(browser, size)
+        try:
+            assert_introduction_journey(page, viewport_name)
+            assert_home_ask_link(page, viewport_name)
+            if viewport_name == "desktop":
+                assert_keyboard_copy_fallback(page, viewport_name)
+            live_proof_captures.append(assert_translated_layout(page, viewport_name))
+        finally:
+            context.close()
+
+        live_proof_captures.append(assert_failed_enhancement(browser, viewport_name, size))
+        live_proof_captures.extend(assert_no_js(browser, viewport_name, size))
 
     desktop_ctx, desktop = open_page(browser, DESKTOP)
-    assert_research_tools_journey(desktop, "desktop")
-    maybe_sibling_surface(
-        desktop,
-        "browse/meetings/?agency=City%20Planning",
-        "[data-ai-context-handoff], a[href*='use-with-ai'][data-ai-context]",
-        "contextual AI handoff control",
-    )
-    desktop_ctx.close()
+    try:
+        assert_research_tools_journey(desktop, "desktop")
+        maybe_sibling_surface(
+            desktop,
+            "browse/meetings/?agency=City%20Planning",
+            "[data-ai-context-handoff], a[href*='use-with-ai'][data-ai-context]",
+            "contextual AI handoff control",
+        )
+    finally:
+        desktop_ctx.close()
 
     phone_ctx, phone = open_page(browser, PHONE)
-    assert_introduction_journey(phone, "phone")
-    assert_home_ask_link(phone, "phone")
-    assert_research_tools_journey(phone, "phone")
-    phone_ctx.close()
+    try:
+        assert_research_tools_journey(phone, "phone")
+    finally:
+        phone_ctx.close()
 
-    assert_no_js(browser, "desktop")
+    write_live_proof_manifest(list(live_proof_captures), list(live_proof_skips))
 
 
 def main() -> int:
