@@ -226,8 +226,9 @@ export const BROWSE_INSPECTION_SURFACES = Object.freeze([
     detail_host: "selection_panel",
     detail_host_module: "site/land_map_selection.mjs",
     restoration_adapter: "site/browse_return_context.mjs",
-    journey_owner: "test/browse_inspection_contract.test.mjs",
+    journey_owner: "test/land_selection_readable_authority.test.mjs",
     baseline_id: null,
+    positive_fixture: "land-map-selection-panel",
     route: "/browse/zoning/?view=map",
   }),
   freezeSurface({

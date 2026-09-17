@@ -34,6 +34,10 @@ import {
   landMapFailureKindOf,
 } from "../land_map_performance_budget.mjs";
 import { landMapAuthorityHandoff } from "../land_map_authority_handoff.mjs";
+import {
+  landAuthorityProcedureLabel,
+  landAuthorityStageLabel,
+} from "../land_authority_summary_view.mjs";
 import { landProjectPath } from "../land_project_route.mjs";
 import {
   landMapSelectionFocusIntent,
@@ -739,9 +743,13 @@ export function landMapSelectionHTML(model, {t: copy = mapCopy, escape = escapeM
   const nextActionHTML = nextAction.status === "published"
     ? escape(nextAction.date ? copy("land_map_authority_next_action_published", { date: nextAction.date }) : (nextAction.label || copy("land_map_authority_next_action_published", { date: "" })))
     : escape(copy("land_map_authority_next_action_not_published"));
+  // Resident text goes through the same authority label owners the detail panel
+  // uses. Raw procedure/stage ids stay on data attributes for diagnostics only.
+  const procedureText = landAuthorityProcedureLabel(authority.procedure_id, copy);
+  const stageText = landAuthorityStageLabel(authority.stage, copy);
   const authorityFields = !showSupplied ? ""
-    : `<span data-land-map-authority-procedure="${escape(authority.procedure_id || "")}">${escape(authority.procedure_id || copy("land_authority_unknown"))}</span>`
-      + ` · <span data-land-map-authority-stage="${escape(authority.stage?.stage_id || "")}">${escape(authority.stage?.stage_id || copy("land_authority_unknown"))}</span>`
+    : `<span data-land-map-authority-procedure="${escape(authority.procedure_id || "")}">${escape(procedureText)}</span>`
+      + ` · <span data-land-map-authority-stage="${escape(authority.stage?.stage_id || "")}">${escape(stageText)}</span>`
       + (roleLabel ? ` · <span data-land-map-authority-role="${escape(authority.normative.current_role)}" data-land-map-authority-kind="role">${escape(roleLabel)}</span>` : "")
       + `<div data-land-map-authority-next-action="${escape(nextAction.status)}" data-land-map-authority-next-action-date="${escape(nextAction.date || "")}" data-land-map-authority-kind="next_action">${nextActionHTML}</div>`;
   const authorityHandoff = `<div class="land-map-authority-handoff" data-land-map-authority="1" data-land-map-authority-state="${escape(authority.state)}" data-land-map-authority-procedure-state="${escape(authority.procedure_state)}" data-land-map-authority-project="${escape(selectedId)}" data-land-map-authority-projection="${escape(authority.projection_version)}" data-land-map-authority-source-receipt="${escape(authority.source_receipt || "")}" data-land-map-authority-source-vintage="${escape(authority.source_vintage || "")}" data-land-map-location-state="mapped">`

@@ -17,6 +17,7 @@ import {
   nextDecisionEligibility,
 } from "./land_next_decision_watch.mjs";
 import { landAuthorityPlainRoleHTML } from "./land_hearing_authority_copy.mjs";
+import { resolveLandProcedureProfile } from "./land_procedure_profiles.mjs";
 
 export const LAND_AUTHORITY_SUMMARY_URL = "data/land_authority_summary.json";
 export const LAND_AUTHORITY_PANEL_HEADING = "Where this stands";
@@ -165,7 +166,7 @@ function phaseLabel(phaseId, translate) {
  * reviewed at the same time under § 197-e) is never collapsed into a single
  * label implying a first-then-second order.
  */
-function stageLabel(stage, translate) {
+export function landAuthorityStageLabel(stage, translate) {
   if (stage?.group_id && Array.isArray(stage.spine_phase_ids) && stage.spine_phase_ids.length) {
     return translate("land_authority_expected_next_parallel", {
       members: stage.spine_phase_ids.map((phaseId) => phaseLabel(phaseId, translate)).join(` ${translate("land_authority_and")} `),
@@ -175,6 +176,19 @@ function stageLabel(stage, translate) {
     return translate("land_authority_unknown");
   }
   return phaseLabel(stage.spine_phase_id, translate);
+}
+
+/**
+ * Resident procedure wording from the reviewed procedure-profile registry.
+ * Raw procedure ids stay in data attributes; this never invents a label for an
+ * unresolved or unknown procedure.
+ */
+export function landAuthorityProcedureLabel(procedureId, translate) {
+  const id = clean(procedureId);
+  if (!id) return translate("land_authority_unknown");
+  const resolved = resolveLandProcedureProfile({ procedure_id: id });
+  const label = clean(resolved?.profile?.label);
+  return label || translate("land_authority_unknown");
 }
 
 function publishedOpportunityCopy(published, translate) {
@@ -357,7 +371,7 @@ export function landAuthoritySummaryHTML(summary, { t, escape, payload = null } 
     : roleHere;
   const effect = summary.effect || unknown;
   const expected = (summary.expected_next_stage?.stage_id || summary.expected_next_stage?.group_id)
-    ? stageLabel(summary.expected_next_stage, translate)
+    ? landAuthorityStageLabel(summary.expected_next_stage, translate)
     : (summary.status === "unknown" ? unknown : translate("land_authority_no_expected"));
   const published = publishedLabel(summary.published_next_opportunity, translate, esc);
   const observed = summary.observed || {};
@@ -390,7 +404,7 @@ export function landAuthoritySummaryHTML(summary, { t, escape, payload = null } 
   const why = whyCopy(summary, translate);
   const whyKindValue = whyKind(summary);
   const whyProvenance = whyProvenanceKind(summary);
-  const stage = stageLabel(summary.current_stage, translate);
+  const stage = landAuthorityStageLabel(summary.current_stage, translate);
   const stand = summary.status === "unknown"
     ? translate("land_authority_stand_unknown")
     : translate("land_authority_stand", {
