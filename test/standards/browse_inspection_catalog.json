@@ -193,15 +193,15 @@
       "family": "near_you",
       "kind": "scope",
       "primary_intent": "inspect",
-      "classification": "legacy",
-      "domain_adapter": "site/app/map.mjs",
+      "classification": "conforming",
+      "domain_adapter": "site/near_you_scope_adoption.mjs",
       "render_owner": "site/app/map.mjs",
       "canonical_destination_policy": "preserve_selected_place",
       "detail_host": "inline_detail",
       "detail_host_module": "site/app/map.mjs",
       "restoration_adapter": "site/browse_return_context.mjs",
-      "journey_owner": "test/browse_inspection_contract.test.mjs",
-      "baseline_id": "near-you-scope-mixed-view",
+      "journey_owner": "test/near_you_scope_adoption.test.mjs",
+      "baseline_id": null,
       "route": "/near-you?level=community_district&lens=people&boro=Brooklyn&cd=K15",
       "principles": [
         "overview",
@@ -501,13 +501,6 @@
       "marker": "recordCard",
       "reason": "Near You record cards still lead with linked titles and geographic evidence before staged inspection.",
       "fingerprint": "3b73d66bc64227935d55cd38b2b35f4c2d3ec3414c3176596f67069148858bfe"
-    },
-    {
-      "id": "near-you-scope-mixed-view",
-      "path": "site/app/map.mjs",
-      "marker": "hydrateNearYouDeferredData",
-      "reason": "Near You deferred adoption can retain a prior topic's result region after a successful scope change.",
-      "fingerprint": "e300bb24abb479ca2edd949f92746e28a7eb8d1f02443653b924ad01e3ee69ab"
     }
   ],
   "journey": {

@@ -9,6 +9,12 @@ import {
 } from "../map_exploration.mjs";
 import { resolveDistricts } from "../council_district_lookup.mjs";
 import { nearYouUrlFromMapHash } from "../near_you_scope_runtime.mjs";
+import {
+  adoptNearYouDocumentScope,
+  applyNearYouDeferredPayload,
+  beginNearYouDeferredGeneration,
+  isNearYouDeferredGenerationCurrent,
+} from "../near_you_scope_adoption.mjs";
 import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
 import {
   nearYouFrameReady,
@@ -82,7 +88,13 @@ async function fetchNearYouDocument(href) {
   return { href: response.url || href, incoming, next };
 }
 
-async function hydrateNearYouDeferredData() {
+function parseDeferredHtml(html) {
+  const template = document.createElement("template");
+  template.innerHTML = String(html || "").trim();
+  return template.content.firstElementChild;
+}
+
+async function hydrateCurrentNearYouDeferred() {
   if (!root) return;
   const state = root.dataset.nearDeferredState;
   if (state === "loading" || state === "ready") return;
@@ -93,26 +105,22 @@ async function hydrateNearYouDeferredData() {
     reportNearYouReadiness();
     return;
   }
+  const generation = beginNearYouDeferredGeneration(root);
   root.dataset.nearDeferredState = "loading";
   const focusedDeferredPart = hosts.find((host) => host.contains(document.activeElement))?.dataset.nearDeferred;
   try {
     const response = await fetch(new URL(href, document.baseURI), {
       headers: { Accept: "application/json" },
     });
+    if (!isNearYouDeferredGenerationCurrent(root, generation)) return;
     if (!response.ok) throw new Error(`near-you-deferred-response-${response.status}`);
     const payload = await response.json();
-    if (
-      payload?.schema !== "cityscroll.near_you_deferred.v1"
-      || typeof payload.results_html !== "string"
-      || typeof payload.bags_html !== "string"
-    ) {
-      throw new Error("near-you-deferred-payload-invalid");
-    }
-    for (const host of hosts) {
-      const html = host.dataset.nearDeferred === "bags" ? payload.bags_html : payload.results_html;
-      host.outerHTML = html;
-    }
-    root.dataset.nearDeferredState = "ready";
+    if (!isNearYouDeferredGenerationCurrent(root, generation)) return;
+    const applied = applyNearYouDeferredPayload(root, payload, {
+      generation,
+      parseHtml: parseDeferredHtml,
+    });
+    if (!applied.applied) return;
     wireMapAndList();
     wireSurfaceSwitch();
     if (focusedDeferredPart) {
@@ -121,7 +129,9 @@ async function hydrateNearYouDeferredData() {
     }
     reportNearYouReadiness();
   } catch {
-    for (const host of hosts) {
+    if (!isNearYouDeferredGenerationCurrent(root, generation)) return;
+    const liveHosts = [...root.querySelectorAll("[data-near-deferred]")];
+    for (const host of liveHosts) {
       const message = host.dataset.nearDeferred === "bags"
         ? copy("messageBagsUnavailable")
         : copy("messageDeferredUnavailable");
@@ -148,40 +158,15 @@ async function hydrateNearYouDeferredData() {
 async function adoptDocument(href, { replaceHistory = false } = {}) {
   const prepared = await fetchNearYouDocument(href);
   const { incoming, next } = prepared;
-  root.dataset.nearDeferredState = "pending";
   // Resolve optional synchronization dependencies before committing any page state.
+  // Keep the last coherent view until the incoming document is ready to adopt.
   const placeContext = await import("./place-context.mjs");
   const currentMast = document.querySelector(".document-mast");
   const incomingMast = next.querySelector(".document-mast");
   if (currentMast && incomingMast) currentMast.replaceWith(document.importNode(incomingMast, true));
-  for (const selector of [
-    ".near-hero",
-    ".near-place-guide",
-    ".near-form",
-    ".near-coverage",
-    ".near-surface-switch",
-    ".near-map-section",
-  ]) {
-    const current = root.querySelector(selector);
-    const replacement = incoming.querySelector(selector);
-    if (current && replacement) current.replaceWith(document.importNode(replacement, true));
-    else if (current && !replacement) current.remove();
-    else if (!current && replacement) root.append(document.importNode(replacement, true));
-  }
-  const currentDeferred = [...root.querySelectorAll("[data-near-deferred]")];
-  const incomingDeferred = [...incoming.querySelectorAll("[data-near-deferred]")];
-  for (const current of currentDeferred) {
-    const replacement = incomingDeferred.find((node) => node.dataset.nearDeferred === current.dataset.nearDeferred);
-    if (replacement) current.replaceWith(document.importNode(replacement, true));
-    else current.remove();
-  }
-  for (const replacement of incomingDeferred) {
-    if (!root.querySelector(`[data-near-deferred="${CSS.escape(replacement.dataset.nearDeferred || "")}"]`)) {
-      root.append(document.importNode(replacement, true));
-    }
-  }
-  root.dataset.lens = incoming.dataset.lens || root.dataset.lens;
-  root.dataset.level = incoming.dataset.level || root.dataset.level;
+  adoptNearYouDocumentScope(root, incoming, {
+    importNode: (node) => document.importNode(node, true),
+  });
   const title = next.querySelector("title")?.textContent;
   if (title) document.title = title;
   const updateHistory = replaceHistory ? history.replaceState : history.pushState;
@@ -190,7 +175,6 @@ async function adoptDocument(href, { replaceHistory = false } = {}) {
   wireIsland();
   root.querySelector("#near-results-heading")?.focus?.({ preventScroll: true });
 }
-
 async function adoptMapHashRoute() {
   const hash = location.hash;
   const href = nearYouUrlFromMapHash(hash, { base: `${location.origin}/near-you/` });
@@ -427,7 +411,7 @@ function wireIsland() {
   wireGeolocation();
   wireForms();
   wireSurfaceSwitch();
-  void hydrateNearYouDeferredData();
+  void hydrateCurrentNearYouDeferred();
 }
 
 if (root) {

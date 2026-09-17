@@ -423,6 +423,7 @@
     "site/money-freshness.mjs",
     "site/mwbe_goal_surface.mjs",
     "site/near_you_explanation_path.mjs",
+    "site/near_you_scope_adoption.mjs",
     "site/near_you_scope_runtime.mjs",
     "site/near_you_scope.mjs",
     "site/near_you_view.mjs",

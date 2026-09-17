@@ -82,6 +82,33 @@ def assert_failed_update_recovers(page: Page, width: int, height: int, keyboard:
     page.locator('[data-near-you-root][data-near-deferred-state="ready"]').wait_for()
 
 
+def assert_topic_change_replaces_resolved_results(page: Page, width: int, height: int) -> None:
+    """K15 Staffing→Meetings must not leave a Staffing results region beside Meetings chrome."""
+    staffing = "/near-you/?v=0&level=community_district&lens=people&boro=Brooklyn&cd=K15"
+    page.set_viewport_size({"width": width, "height": height})
+    page.goto(f"{BASE}{staffing}", wait_until="networkidle")
+    page.locator('[data-near-you-root][data-near-deferred-state="ready"]').wait_for(timeout=30000)
+    assert page.locator(".near-results").count() == 1
+    assert "Staffing" in (page.locator("#near-results-heading").text_content() or "")
+
+    page.locator("details.near-advanced").first.click()
+    page.locator("select[name='lens']").select_option("meetings")
+    page.locator("form.near-form button[type='submit']").click()
+    page.locator("[data-near-you-root][data-lens='meetings']").wait_for(timeout=30000)
+    page.locator('[data-near-you-root][data-near-deferred-state="ready"]').wait_for(timeout=30000)
+
+    assert "lens=meetings" in page.url
+    assert page.locator("input[name='cd']").input_value() == "K15"
+    assert page.locator(".near-results").count() == 1
+    heading = page.locator("#near-results-heading").text_content() or ""
+    assert "Meetings" in heading
+    assert "Staffing" not in heading
+    topic = page.locator("[data-scope-axis='topic']").text_content() or ""
+    assert "Meetings" in topic
+    assert "Staffing" not in topic
+    assert page.locator(".near-results:has-text('Staffing')").count() == 0
+
+
 def main() -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -90,6 +117,8 @@ def main() -> None:
         assert_switches(page, 390, 844)
         assert_failed_update_recovers(page, 1440, 900, keyboard=False)
         assert_failed_update_recovers(page, 390, 844, keyboard=True)
+        assert_topic_change_replaces_resolved_results(page, 1440, 900)
+        assert_topic_change_replaces_resolved_results(page, 390, 844)
 
         no_script = browser.new_context(
             viewport={"width": 1440, "height": 1000},

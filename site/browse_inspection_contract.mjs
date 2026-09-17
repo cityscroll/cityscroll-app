@@ -203,15 +203,15 @@ export const BROWSE_INSPECTION_SURFACES = Object.freeze([
     family: "near_you",
     kind: "scope",
     primary_intent: "inspect",
-    classification: "legacy",
-    domain_adapter: "site/app/map.mjs",
+    classification: "conforming",
+    domain_adapter: "site/near_you_scope_adoption.mjs",
     render_owner: "site/app/map.mjs",
     canonical_destination_policy: "preserve_selected_place",
     detail_host: "inline_detail",
     detail_host_module: "site/app/map.mjs",
     restoration_adapter: "site/browse_return_context.mjs",
-    journey_owner: "test/browse_inspection_contract.test.mjs",
-    baseline_id: "near-you-scope-mixed-view",
+    journey_owner: "test/near_you_scope_adoption.test.mjs",
+    baseline_id: null,
     route: "/near-you?level=community_district&lens=people&boro=Brooklyn&cd=K15",
   }),
   freezeSurface({
@@ -422,14 +422,6 @@ export const BROWSE_INSPECTION_LEGACY_BASELINE = Object.freeze([
     marker: "recordCard",
     reason:
       "Near You record cards still lead with linked titles and geographic evidence before staged inspection.",
-    fingerprint: null,
-  }),
-  Object.freeze({
-    id: "near-you-scope-mixed-view",
-    path: "site/app/map.mjs",
-    marker: "hydrateNearYouDeferredData",
-    reason:
-      "Near You deferred adoption can retain a prior topic's result region after a successful scope change.",
     fingerprint: null,
   }),
 ].map((entry) => Object.freeze({

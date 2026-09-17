@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c5eb4c8366e5d",
+  "status": "implemented",
+  "fingerprint": "near-you-scope-adoption.v1",
+  "updated_at": "2026-09-17T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "near-you-scope-adoption-module",
+      "path": "site/near_you_scope_adoption.mjs"
+    },
+    {
+      "id": "near-you-map-island",
+      "path": "site/app/map.mjs"
+    },
+    {
+      "id": "near-you-scope-adoption-tests",
+      "path": "test/near_you_scope_adoption.test.mjs"
+    },
+    {
+      "id": "near-you-scope-adoption-acceptance-manifest",
+      "path": "docs/evidence/near-you-scope-adoption/acceptance-manifest.json"
+    },
+    {
+      "id": "browse-inspection-contract-module",
+      "path": "site/browse_inspection_contract.mjs"
+    }
+  ]
+}

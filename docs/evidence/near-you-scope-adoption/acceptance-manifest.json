@@ -1,0 +1,68 @@
+{
+  "schema": "cityscroll.near_you_scope_adoption_acceptance.v1",
+  "record": "cityscroll-engineering/c5eb4c8366e5d",
+  "route": "/near-you/?v=0&level=community_district&lens=people&boro=Brooklyn&cd=K15",
+  "revision": "ecd674bf17f99165551b9af67775dc7820f016c0",
+  "grounded_at": "ecd674bf17f99165551b9af67775dc7820f016c0",
+  "fixture_vintage": "2026-09-17",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-17T00:00:00Z",
+  "viewport": [
+    1440,
+    900
+  ],
+  "measurement_policy": "Assertions record deterministic DOM fixtures for scope adoption. No participant evaluation was run and no usability gain is claimed. Image binaries are not part of this proof.",
+  "image_policy": "No image binaries are committed for this acceptance record.",
+  "journey": {
+    "id": "near-you-scope-topic-change",
+    "sequence": [
+      "set_scope_k15_staffing",
+      "resolve_deferred_results",
+      "change_topic",
+      "adopt_meetings_scope",
+      "ignore_stale_generation",
+      "continue"
+    ],
+    "rendered_reference": {
+      "route": "/near-you/?v=0&level=community_district&lens=people&boro=Brooklyn&cd=K15",
+      "harness": "test/near_you_scope_adoption.test.mjs",
+      "assertion": "After K15 changes from Staffing to Meetings, every visible region identifies Meetings, exactly one current result set remains, and the selected district is preserved",
+      "variants": [
+        "desktop",
+        "narrow_touch",
+        "keyboard",
+        "no_javascript",
+        "failed_detail"
+      ]
+    }
+  },
+  "assertions": [
+    {
+      "id": "shell-marker-mixed-view",
+      "result": "rejected",
+      "assertion": "Shell-marker-only adoption leaves a Staffing results region beside Meetings chrome for Brooklyn K15",
+      "fixture": "staffing_resolved_to_meetings_pending",
+      "route": "/near-you/?v=0&level=community_district&lens=people&boro=Brooklyn&cd=K15"
+    },
+    {
+      "id": "atomic-meetings-adoption",
+      "result": "accepted",
+      "assertion": "Atomic adoption replaces resolved regions once, adopts deferred metadata, preserves K15, and yields one Meetings result set",
+      "fixture": "staffing_resolved_to_meetings_pending",
+      "route": "/near-you/?v=0&level=community_district&lens=meetings&boro=Brooklyn&cd=K15"
+    },
+    {
+      "id": "stale-generation-ignored",
+      "result": "accepted",
+      "assertion": "Reverse-order and obsolete deferred payloads never relabel the current Meetings scope as Staffing",
+      "fixture": "stale_staffing_payload"
+    },
+    {
+      "id": "failed-deferred-not-empty-success",
+      "result": "accepted",
+      "assertion": "A malformed deferred payload stays pending/error rather than an empty successful result",
+      "fixture": "malformed_deferred_payload"
+    }
+  ],
+  "assertions_sha256": "78830cbb77788064ee7ba887ce0d07dc5fb32ffd8a9c8451fb531ef9ef8f8f0b"
+}
