@@ -324,6 +324,7 @@
     "site/land_actor_outcome.mjs",
     "site/land_affected_review_body.mjs",
     "site/land_ai_context_tools.mjs",
+    "site/land_authority_labels.mjs",
     "site/land_authority_summary_view.mjs",
     "site/land_authority_summary.mjs",
     "site/land_decision_path.mjs",
