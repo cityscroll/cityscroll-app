@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/ce3552130e622",
+  "status": "implemented",
+  "fingerprint": "agency-directory-navigated-search.v1",
+  "updated_at": "2026-09-16T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "agency-directory-runtime",
+      "path": "site/agency_directory_runtime.mjs"
+    },
+    {
+      "id": "agency-directory-runtime-tests",
+      "path": "test/agency_directory_runtime.test.mjs"
+    },
+    {
+      "id": "agency-directory-navigated-arrival-observation",
+      "path": "docs/evidence/public-body-directory/navigated-arrival-observation.json"
+    }
+  ]
+}

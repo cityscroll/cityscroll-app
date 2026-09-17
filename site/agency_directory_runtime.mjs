@@ -11,6 +11,10 @@
  * restored session all replay the same query and group. The row a reader
  * opened is remembered for this page only, so returning puts focus back where
  * they left instead of at the top of the document.
+ *
+ * `mountAgencyDirectory` is the binder a fresh document load runs, and the same
+ * entry a regression can remount after an in-product arrival. Arrival path must
+ * not change whether typing narrows the list.
  */
 
 import {
@@ -20,14 +24,41 @@ import {
   agencyDirectorySummary,
 } from "./agency_directory_contract.mjs";
 
-const directory = document.querySelector("[data-agency-directory]");
-const form = directory?.querySelector("[data-directory-form]");
-const input = directory?.querySelector("[data-directory-query]");
-const summary = directory?.querySelector("[data-directory-summary]");
-const empty = directory?.querySelector("[data-directory-empty]");
-const clear = directory?.querySelector("[data-directory-clear]");
+function defaultCssEscape(value) {
+  if (globalThis.CSS?.escape) return globalThis.CSS.escape(value);
+  return String(value ?? "").replace(/[^a-zA-Z0-9_-]/g, (char) => `\\${char}`);
+}
 
-if (directory && form && input && summary && empty) {
+/**
+ * Bind the directory enhancement onto one document root.
+ *
+ * Returns null when the root has no directory markup. Options exist so a
+ * focused test can supply location, history, storage and timers without a
+ * browser, including the navigated-arrival case that a fresh load alone cannot
+ * watch.
+ */
+export function mountAgencyDirectory(root = document, options = {}) {
+  const doc = root?.querySelector ? root : null;
+  if (!doc) return null;
+
+  const locationRef = options.location || globalThis.location;
+  const historyRef = options.history || globalThis.history;
+  const sessionStorageRef = options.sessionStorage || globalThis.sessionStorage;
+  const cssEscape = options.cssEscape || defaultCssEscape;
+  const setTimeoutFn = options.setTimeout || ((fn, ms) => globalThis.setTimeout(fn, ms));
+  const clearTimeoutFn = options.clearTimeout || ((id) => globalThis.clearTimeout(id));
+  const addWindowListener = options.addWindowListener
+    || ((type, handler) => globalThis.addEventListener(type, handler));
+
+  const directory = doc.querySelector("[data-agency-directory]");
+  const form = directory?.querySelector("[data-directory-form]");
+  const input = directory?.querySelector("[data-directory-query]");
+  const summary = directory?.querySelector("[data-directory-summary]");
+  const empty = directory?.querySelector("[data-directory-empty]");
+  const clear = directory?.querySelector("[data-directory-clear]");
+
+  if (!directory || !form || !input || !summary || !empty) return null;
+
   const groupLinks = [...directory.querySelectorAll("[data-directory-group]")];
   const sections = [...directory.querySelectorAll("[data-directory-section]")];
   const rows = [...directory.querySelectorAll("[data-directory-row]")].map((element) => ({
@@ -43,7 +74,7 @@ if (directory && form && input && summary && empty) {
     (link.textContent || "").replace(/\s+\d+\s*$/, "").trim(),
   ]));
   const total = rows.length;
-  const focusKey = `cityscroll:agency-directory:focus:${location.pathname}`;
+  const focusKey = `cityscroll:agency-directory:focus:${locationRef.pathname || "/agencies/"}`;
 
   function foldQuery(value) {
     return String(value ?? "")
@@ -76,7 +107,7 @@ if (directory && form && input && summary && empty) {
       const visible = rows.filter((row) => row.element.closest("[data-directory-section]") === section
         && !row.element.hidden).length;
       section.hidden = visible === 0;
-      const count = section.querySelector(`[data-directory-section-count="${CSS.escape(id)}"]`);
+      const count = section.querySelector(`[data-directory-section-count="${cssEscape(id)}"]`);
       if (count) count.textContent = String(visible);
     }
     for (const link of groupLinks) {
@@ -96,15 +127,22 @@ if (directory && form && input && summary && empty) {
   }
 
   function stateFromUrl() {
-    return agencyDirectoryParams(location.search, groupIds);
+    return agencyDirectoryParams(locationRef.search, groupIds);
   }
 
   function writeUrl(state, { replace = true } = {}) {
-    const url = new URL(location.href);
+    const url = new URL(locationRef.href);
     url.search = agencyDirectoryShareSearch(state, groupIds).toString();
     const next = `${url.pathname}${url.search}`;
     const method = replace ? "replaceState" : "pushState";
-    history[method](history.state, "", next);
+    historyRef[method](historyRef.state, "", next);
+    // Injectable test locations are plain objects. A real Location is updated by
+    // history itself; assigning location.search would navigate away.
+    if (options.location && typeof options.location === "object") {
+      options.location.search = url.search;
+      options.location.pathname = url.pathname;
+      options.location.href = `${url.origin}${url.pathname}${url.search}`;
+    }
   }
 
   let state = stateFromUrl();
@@ -122,8 +160,8 @@ if (directory && form && input && summary && empty) {
 
   let typing = 0;
   input.addEventListener("input", () => {
-    globalThis.clearTimeout(typing);
-    typing = globalThis.setTimeout(() => {
+    clearTimeoutFn(typing);
+    typing = setTimeoutFn(() => {
       state = { ...state, query: input.value.trim() };
       writeUrl(state);
       apply(state);
@@ -159,7 +197,7 @@ if (directory && form && input && summary && empty) {
     const row = anchor?.closest("[data-directory-row]");
     if (!row) return;
     try {
-      sessionStorage.setItem(focusKey, row.getAttribute("data-canonical-id") || "");
+      sessionStorageRef.setItem(focusKey, row.getAttribute("data-canonical-id") || "");
     } catch {
       // A browser that refuses session storage still navigates; only the
       // focus restoration below is lost, and never the destination.
@@ -169,29 +207,46 @@ if (directory && form && input && summary && empty) {
   function restoreFocus() {
     let canonicalId = "";
     try {
-      canonicalId = sessionStorage.getItem(focusKey) || "";
-      sessionStorage.removeItem(focusKey);
+      canonicalId = sessionStorageRef.getItem(focusKey) || "";
+      sessionStorageRef.removeItem(focusKey);
     } catch {
       canonicalId = "";
     }
     if (!canonicalId) return;
-    const row = directory.querySelector(`[data-canonical-id="${CSS.escape(canonicalId)}"]`);
+    const row = directory.querySelector(`[data-canonical-id="${cssEscape(canonicalId)}"]`);
     const anchor = row && !row.hidden ? row.querySelector("a.agency-index-link") : null;
     if (!anchor) return;
     anchor.focus({ preventScroll: true });
   }
 
+  function syncFromUrl({ announce = false } = {}) {
+    state = stateFromUrl();
+    input.value = state.query;
+    apply(state, { announce });
+    return state;
+  }
+
   // Back can arrive as a restored page or as a history entry on the live one.
   // Both re-read the URL, so the reader returns to the state they left.
-  globalThis.addEventListener("pageshow", () => {
-    state = stateFromUrl();
-    input.value = state.query;
-    apply(state, { announce: false });
+  addWindowListener("pageshow", () => {
+    syncFromUrl({ announce: false });
     restoreFocus();
   });
-  globalThis.addEventListener("popstate", () => {
-    state = stateFromUrl();
-    input.value = state.query;
-    apply(state, { announce: false });
+  addWindowListener("popstate", () => {
+    syncFromUrl({ announce: false });
   });
+
+  return {
+    apply,
+    syncFromUrl,
+    getState: () => ({ ...state }),
+    visibleCount: () => rows.filter((row) => !row.element.hidden).length,
+    total,
+    config: AGENCY_DIRECTORY_CONFIG,
+  };
+}
+
+// A real document load mounts once. Tests call mountAgencyDirectory themselves.
+if (typeof document !== "undefined") {
+  mountAgencyDirectory(document);
 }

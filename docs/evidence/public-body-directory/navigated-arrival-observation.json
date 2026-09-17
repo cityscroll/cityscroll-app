@@ -1,0 +1,66 @@
+{
+  "schema": "cityscroll.public_body_directory_navigated_arrival_observation.v1",
+  "revision": "4ed8f2a562bab83c18a37d7278733ed50d592af4",
+  "grounded_at": "4ed8f2a562bab83c18a37d7278733ed50d592af4",
+  "subject": "Agencies directory search after in-product arrival",
+  "query": "Parks",
+  "journeys": [
+    {
+      "id": "direct-load",
+      "steps": ["Open /agencies/", "Type Parks into agency-directory-query"],
+      "visible_before": 161,
+      "visible_after": 1,
+      "summary": "Showing 1 of 161 public bodies matching “Parks”.",
+      "parks_link_visible": true,
+      "narrowed": true
+    },
+    {
+      "id": "home-browse-then-directory",
+      "steps": [
+        "Open /",
+        "Open /browse/",
+        "Open /agencies/ (directory after Browse dwell; Browse page had no direct /agencies/ href in this build)",
+        "Type Parks into agency-directory-query"
+      ],
+      "visible_before": 161,
+      "visible_after": 1,
+      "summary": "Showing 1 of 161 public bodies matching “Parks”.",
+      "parks_link_visible": true,
+      "narrowed": true
+    },
+    {
+      "id": "profile-chrome-to-directory",
+      "steps": [
+        "Open /browse/",
+        "Open /agencies/parks-and-recreation/",
+        "Follow in-page href=/agencies/",
+        "Type Parks into agency-directory-query"
+      ],
+      "visible_before": 161,
+      "visible_after": 1,
+      "summary": "Showing 1 of 161 public bodies matching “Parks”.",
+      "parks_link_visible": true,
+      "narrowed": true
+    },
+    {
+      "id": "directory-profile-back-clear-search",
+      "steps": [
+        "Open /agencies/",
+        "Type Parks",
+        "Open Parks and Recreation",
+        "Browser Back",
+        "Clear",
+        "Type Parks again"
+      ],
+      "visible_after_back": 1,
+      "visible_after_research": 1,
+      "summary": "Showing 1 of 161 public bodies matching “Parks”.",
+      "parks_link_visible": true,
+      "narrowed": true
+    }
+  ],
+  "finding": "On the grounded revision, typing Parks narrowed 161 visible bodies to 1 under direct load and under each in-product arrival path checked. The earlier combined-navigation unfiltered report was not reproduced.",
+  "assertion": "Directory search narrows the visible list after direct load and after in-product navigation.",
+  "assertion_holds": true,
+  "regression": "test/agency_directory_runtime.test.mjs watches the navigated-arrival case in CI."
+}
