@@ -26,6 +26,7 @@
  */
 
 import { buildCompactMonthView } from "./compact_calendar.mjs";
+import { nowInspectionOccurrenceFields } from "./now_inspection_projection.mjs";
 
 export const NOW_CALENDAR_SCHEMA = "cityscroll.now_calendar_view.v1";
 
@@ -113,6 +114,9 @@ function toCalendarOccurrence(uid, item, lifecycle, kind) {
     canonical_url: canonicalUrl,
     source: occurrenceSource(item),
     provenance: occurrenceProvenance(item),
+    // Agency / overview summary from the shared Now inspection projection so
+    // the calendar preview can show decision context without a second fetch.
+    ...nowInspectionOccurrenceFields(item),
   };
 }
 

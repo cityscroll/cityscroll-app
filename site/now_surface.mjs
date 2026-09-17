@@ -112,12 +112,13 @@ function moneyActions(payload, options) {
     if (deadline && !withinHorizon(options.today, deadline, options.actionHorizonDays)) continue;
     const route = officialNoticeRoute(row.request_id);
     if (!route) continue;
+    const noticeType = row.type_of_notice_description || "Solicitation";
     const matter = {
       kind: "solicitation",
       request_id: row.request_id,
       title: row.short_title,
       agency_name: row.agency_name,
-      type_of_notice_description: "Solicitation",
+      type_of_notice_description: noticeType,
       lifecycle_stage: "open",
       deadline,
       rolling_deadline: rolling,
@@ -132,6 +133,13 @@ function moneyActions(payload, options) {
       kind: "bid",
       title: row.short_title || "Untitled solicitation",
       agency: row.agency_name || null,
+      // Overview fields for the shared Now inspection projection (cards + calendar).
+      request_id: row.request_id || null,
+      pin: row.pin || null,
+      notice_type: noticeType,
+      category: row.category_description || null,
+      selection_method: row.selection_method_description || null,
+      summary: row.summary || null,
       domain: "money",
       source: source("money"),
       route,
@@ -173,6 +181,11 @@ function staffingActions(payload, options) {
       kind: "apply",
       title: exam.title || `Exam ${exam.exam_number}`,
       agency: "Department of Citywide Administrative Services",
+      exam_number: exam.exam_number || null,
+      notice_type: "Exam application",
+      category: exam.exam_type || exam.category || null,
+      selection_method: null,
+      summary: exam.summary || null,
       domain: "staffing",
       source: source("staffing"),
       route,

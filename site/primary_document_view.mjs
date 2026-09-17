@@ -10,6 +10,12 @@ import { migrateLegacyUrl } from "./route_migration.mjs";
 import { BROWSE_CONCEPTS, buildBrowseConceptLanding, renderBrowseConceptLanding } from "./browse_concept_view.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
 import { renderFollowDiscoveryForNow } from "./follow_discovery.mjs";
+import {
+  projectNowInspection,
+  renderNowCardTitleClusterHTML,
+  renderNowInspectionDetailHTML,
+  renderNowInspectionOverviewHTML,
+} from "./now_inspection_projection.mjs";
 
 function esc(value) {
   return String(value == null ? "" : value)
@@ -122,14 +128,21 @@ function staticAction(matter) {
 
 function nowCard(item) {
   const href = routeHref(item.route);
+  const projection = projectNowInspection({ ...item, route: href });
   const action = item.action?.destination && item.action.destination !== item.route
     ? `<a class="act primary" href="${esc(item.action.destination)}" rel="noopener noreferrer">Take action</a>`
-    : `<a class="act primary" href="${esc(href)}">Open details</a>`;
+    : `<a class="act primary ${item.action?.destination === item.route || !item.action?.destination ? "now-card-full-record" : ""}" href="${esc(href)}">Open details</a>`;
+  const overview = renderNowInspectionOverviewHTML(projection || { ...item, route: href }, { esc });
+  const detail = renderNowInspectionDetailHTML(projection || { ...item, route: href }, {
+    esc,
+    fullRecordLabel: "Open full record",
+  });
   return `<article class="now-card" data-now-item="${esc(item.id)}" data-now-lane="${esc(item.lane)}">
     <div class="now-card-tags"><span class="tag ${item.lane === "act_by" ? "urgency" : "open"}">${esc(item.kind.replaceAll("_", " "))}</span><span class="tag asset">${esc(item.source.label)}</span></div>
     ${item.time?.value ? `<p class="now-card-when"><time datetime="${esc(item.time.value)}"><b>${esc(item.time.day || item.time.value)}</b></time></p>` : ""}
-    <h3><a href="${esc(href)}" lang="en" dir="ltr">${esc(item.title)}</a></h3>
-    ${item.agency ? `<p class="now-card-agency" lang="en" dir="ltr">${esc(item.agency)}</p>` : ""}
+    ${renderNowCardTitleClusterHTML(projection || { ...item, route: href }, { esc })}
+    ${overview}
+    ${detail}
     <div class="actions">${action}</div>
   </article>`;
 }

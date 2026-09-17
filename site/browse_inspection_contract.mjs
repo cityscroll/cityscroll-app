@@ -123,15 +123,15 @@ export const BROWSE_INSPECTION_SURFACES = Object.freeze([
     family: "now",
     kind: "collection",
     primary_intent: "inspect",
-    classification: "legacy",
-    domain_adapter: "site/now_view.mjs",
-    render_owner: "site/primary_document_view.mjs",
+    classification: "conforming",
+    domain_adapter: "site/now_inspection_projection.mjs",
+    render_owner: "site/now_view.mjs",
     canonical_destination_policy: "explicit_full_record_link",
     detail_host: "inline_detail",
-    detail_host_module: "site/now_view.mjs",
+    detail_host_module: "site/now_inspection_projection.mjs",
     restoration_adapter: "site/browse_return_context.mjs",
-    journey_owner: "test/browse_inspection_contract.test.mjs",
-    baseline_id: "now-card-title-navigates",
+    journey_owner: "test/now_inspection_projection.test.mjs",
+    baseline_id: null,
     route: "/now/",
   }),
   freezeSurface({
@@ -385,14 +385,6 @@ export const BROWSE_INSPECTION_SURFACES = Object.freeze([
  * no longer appears in the named source. New entries are rejected.
  */
 export const BROWSE_INSPECTION_LEGACY_BASELINE = Object.freeze([
-  Object.freeze({
-    id: "now-card-title-navigates",
-    path: "site/now_view.mjs",
-    marker: "nowCardHTML",
-    reason:
-      "Now card projections still expose the title as a direct navigational link rather than a primary inspect control.",
-    fingerprint: null,
-  }),
   Object.freeze({
     id: "contracts-row-click-diverges",
     path: "site/app/money-list.mjs",

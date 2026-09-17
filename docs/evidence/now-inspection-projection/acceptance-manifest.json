@@ -1,0 +1,92 @@
+{
+  "schema": "cityscroll.now_inspection_projection_acceptance.v1",
+  "record": "cityscroll-engineering/c5be5f81ff33d",
+  "route": "/now/",
+  "revision": "8cf1df2f2b5b3bf0a50cd5974d6cf24893d6bd5e",
+  "fixture_vintage": "2026-08-20",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-17T12:00:00Z",
+  "viewport": [
+    1440,
+    900
+  ],
+  "measurement_policy": "Assertions record deterministic Now inspection fixtures over frozen procurement notices. No participant evaluation was run and no usability gain is claimed. Image binaries are not part of this proof.",
+  "image_policy": "No image binaries are committed for this acceptance record.",
+  "journey": {
+    "id": "now-inspection-projection",
+    "sequence": [
+      "set_scope_or_view",
+      "inspect",
+      "dismiss",
+      "open_full_record",
+      "return_with_back",
+      "continue"
+    ],
+    "variants": [
+      "desktop",
+      "narrow_touch",
+      "keyboard",
+      "no_javascript",
+      "failed_detail",
+      "missing_summary"
+    ],
+    "rendered_reference": {
+      "route": "/now/",
+      "harness": "test/now_inspection_projection.test.mjs",
+      "assertion": "set scope or view, inspect informative Now detail, dismiss, open the explicit full record, return with Back, and continue from the restored collection state"
+    }
+  },
+  "frozen_examples": {
+    "copilot": "20260811024",
+    "sulfuric_acid": "20260811028",
+    "risk_management": "20260729003"
+  },
+  "assertions": [
+    {
+      "id": "copilot-decision-context",
+      "result": "accepted",
+      "assertion": "Frozen Copilot notice 20260811024 exposes agency, summary, and identity beyond title/date",
+      "fixture": "20260811024"
+    },
+    {
+      "id": "static-enhanced-equivalence",
+      "result": "accepted",
+      "assertion": "Static overview markup matches the enhanced projection facts for the same item",
+      "fixture": "20260811024"
+    },
+    {
+      "id": "primary-inspect-after-enhancement",
+      "result": "accepted",
+      "assertion": "Enhanced Now cards use a title-sized inspect control with an explicit full-record link",
+      "fixture": "now-card-inspect"
+    },
+    {
+      "id": "calendar-agency-and-detail",
+      "result": "accepted",
+      "assertion": "Now calendar preview shows agency and loads shared summary detail through loadDetail",
+      "fixture": "20260811024"
+    },
+    {
+      "id": "sulfuric-and-risk-fixtures",
+      "result": "accepted",
+      "assertion": "Sulfuric-acid 20260811028 and Risk Management 20260729003 remain frozen positive fixtures",
+      "fixtures": [
+        "20260811028",
+        "20260729003"
+      ]
+    },
+    {
+      "id": "missing-summary-honest",
+      "result": "accepted",
+      "assertion": "Missing optional summary creates no empty Summary section; date-only inputs stay date-only",
+      "fixture": "missing-summary"
+    },
+    {
+      "id": "failed-detail-keeps-record-link",
+      "result": "accepted",
+      "assertion": "Failed optional detail keeps coherent agency facts and the working full-record link",
+      "fixture": "failed-detail"
+    }
+  ],
+  "assertions_sha256": "99321f4b0d829587072da08a9562bbc2309e740867efc21d676d36419e7a1440"
+}

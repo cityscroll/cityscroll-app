@@ -1,6 +1,6 @@
 import { buildNowSurface } from "./now_surface.mjs";
 import { nowItemMatchesScope } from "./scope_now_adapter.mjs";
-import { buildNowCalendarView } from "./now_calendar.mjs";
+import { buildNowCalendarView, stableNowCalendarUid } from "./now_calendar.mjs";
 import { bindCompactMonthCalendar, renderCompactMonth } from "./compact_calendar.mjs";
 import { AFFORDANCE_ACTION_ROLES, affordanceHandoffPresentation } from "./affordance_grammar.mjs";
 import {
@@ -12,6 +12,14 @@ import {
   resolveNowCalendarPresentation,
 } from "./now_calendar_switch.mjs";
 import { renderFollowDiscoveryForNow } from "./follow_discovery.mjs";
+import {
+  bindNowCardInspection,
+  createNowCalendarDetailLoader,
+  projectNowInspection,
+  renderNowCardTitleClusterHTML,
+  renderNowInspectionDetailHTML,
+  renderNowInspectionOverviewHTML,
+} from "./now_inspection_projection.mjs";
 
 let nowSourcesPromise = null;
 export const NOW_SOURCE_TIMEOUT_MS = 12_000;
@@ -188,11 +196,17 @@ function nowActionHTML(item) {
   return `<a class="act primary" href="${nowEsc(item.route)}">${nowEsc(label)}</a>`;
 }
 
-function nowCardHTML(item) {
+function renderNowCardHTML(item) {
+  const projection = projectNowInspection(item);
   const when = item.time?.value ? fdt(item.time.value) : t("now_open_without_date_title");
   const dateLabel = nowDateLabel(item);
   const provenance = nowDateProvenance(item);
   const provenanceTitle = provenance ? ` title="${nowEsc(provenance)}"` : "";
+  const overview = renderNowInspectionOverviewHTML(projection || item, { esc: nowEsc });
+  const detail = renderNowInspectionDetailHTML(projection || item, {
+    esc: nowEsc,
+    fullRecordLabel: t("now_open_details"),
+  });
   return `<article class="now-card" data-now-item="${nowEsc(item.id)}" data-now-lane="${nowEsc(item.lane)}">
     <div class="now-card-tags">
       <span class="tag ${item.lane === "act_by" ? "urgency" : "open"}">${nowEsc(nowKindLabel(item))}</span>
@@ -200,8 +214,9 @@ function nowCardHTML(item) {
       <span class="now-source-badge">${t("now_source", { source: nowEsc(item.source.label) })}</span>
     </div>
     <p class="now-card-when"${provenanceTitle}><b>${nowEsc(when)}</b>${dateLabel ? `<span>${nowEsc(dateLabel)}</span>` : ""}</p>
-    <h3><a href="${nowEsc(item.route)}" lang="en" dir="ltr">${nowEsc(item.title)}</a></h3>
-    ${item.agency ? `<p class="now-card-agency" lang="en" dir="ltr">${nowEsc(item.agency)}</p>` : ""}
+    ${renderNowCardTitleClusterHTML(projection || item, { esc: nowEsc })}
+    ${overview}
+    ${detail}
     <div class="actions">${nowActionHTML(item)}</div>
   </article>`;
 }
@@ -213,7 +228,7 @@ function nowLaneHTML(id, titleKey, deckKey, items, emptyKey, extra = "") {
       <span class="now-count">${t("results_count", { n: items.length })}</span>
     </header>
     <div class="now-list" data-now-list="${id}" data-now-count="${items.length}">
-      ${items.length ? items.map(nowCardHTML).join("") : `<div class="empty">${t(emptyKey)}</div>`}
+      ${items.length ? items.map(renderNowCardHTML).join("") : `<div class="empty">${t(emptyKey)}</div>`}
     </div>${extra}
   </section>`;
 }
@@ -255,7 +270,7 @@ export function renderNowSurface(surface, options = {}) {
     ? `<section class="now-undated" aria-labelledby="now-undated-title">
         <h4 id="now-undated-title">${t("now_open_without_date_title")}</h4>
         <p>${t("now_open_without_date_note")}</p>
-        <div class="now-list" data-now-list="open-without-date" data-now-count="${undated.length}">${undated.map(nowCardHTML).join("")}</div>
+        <div class="now-list" data-now-list="open-without-date" data-now-count="${undated.length}">${undated.map(renderNowCardHTML).join("")}</div>
       </section>` : "";
   const switchHTML = nowCalendarSwitchHTML({ view: presentation.view, currentHash, t, escape: nowEsc });
   const fallbackNote = nowCalendarFallbackNote({ ...presentation, t });
@@ -282,7 +297,17 @@ export function renderNowSurface(surface, options = {}) {
   });
   // PX-01: idempotent and delegated, so switching between Cards and Calendar
   // repaints `#nowview` as often as the reader likes without a second listener.
-  bindCompactMonthCalendar(box);
+  // Now calendar previews load shared overview detail through the existing
+  // loadDetail contract; cards bind their own inline primary-inspect host.
+  // The binder captures loadDetail once, so keep a mutable surface handle that
+  // each render refreshes before any later inspect uses it.
+  box.__nowInspectionSurface = surface;
+  const loadDetail = (facts) => createNowCalendarDetailLoader(
+    box.__nowInspectionSurface,
+    { stableUid: stableNowCalendarUid },
+  )(facts);
+  bindCompactMonthCalendar(box, { loadDetail });
+  bindNowCardInspection(box);
   announce(t("results_count", { n: surface.counts.total }));
 }
 

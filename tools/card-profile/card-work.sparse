@@ -647,6 +647,7 @@
 /site/now-reading-level-ratchet.json
 /site/now_calendar.mjs
 /site/now_calendar_switch.mjs
+/site/now_inspection_projection.mjs
 /site/now_surface.mjs
 /site/now_view.mjs
 /site/oath_trial_calendar.mjs

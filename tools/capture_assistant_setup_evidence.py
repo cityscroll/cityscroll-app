@@ -17,6 +17,7 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 import time
@@ -89,8 +90,9 @@ def witness_digest(witness: dict) -> str:
     return sha256_text(canonical_json(witness))
 
 
-def start_server() -> tuple[subprocess.Popen, str]:
-    ready = Path(tempfile.mkdtemp(prefix="assistant-setup-capture-")) / "ready.txt"
+def start_server() -> tuple[subprocess.Popen, str, Path]:
+    ready_dir = Path(tempfile.mkdtemp(prefix="assistant-setup-capture-"))
+    ready = ready_dir / "ready.txt"
     server = subprocess.Popen(
         [
             "python3",
@@ -106,9 +108,10 @@ def start_server() -> tuple[subprocess.Popen, str]:
     )
     for _ in range(200):
         if ready.exists() and ready.read_text(encoding="utf-8").strip():
-            return server, ready.read_text(encoding="utf-8").strip()
+            return server, ready.read_text(encoding="utf-8").strip(), ready_dir
         time.sleep(0.05)
     server.terminate()
+    shutil.rmtree(ready_dir, ignore_errors=True)
     raise RuntimeError("local site server did not become ready")
 
 
@@ -416,8 +419,9 @@ def main() -> int:
 
     os.environ.setdefault("CITYSCROLL_TEST_TIME_PIN", CAPTURE_CLOCK)
     server = None
+    ready_dir = None
     try:
-        server, base = start_server()
+        server, base, ready_dir = start_server()
         captures = build_captures(base)
         failing = [capture for capture in captures if capture["failures"]]
         if failing and not args.verify_only:
@@ -439,6 +443,8 @@ def main() -> int:
                 server.wait(timeout=10)
             except subprocess.TimeoutExpired:
                 server.kill()
+        if ready_dir is not None:
+            shutil.rmtree(ready_dir, ignore_errors=True)
 
 
 if __name__ == "__main__":
