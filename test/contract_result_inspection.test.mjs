@@ -22,8 +22,10 @@
 //   node --test test/contract_result_inspection.test.mjs
 
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
 import { createRequire } from "node:module";
@@ -49,6 +51,7 @@ import {
   renderContractResultTitleClusterHTML,
 } from "../site/contract_result_inspection.mjs";
 import { solicitationResponseContextReady } from "../site/solicitation_response_context.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 import { click, keydown, mountDocument } from "./helpers/preview_dom.mjs";
 
 const require = createRequire(import.meta.url);
@@ -56,10 +59,12 @@ const CrolActions = require("../site/action_registry.js");
 
 const ROOT = process.cwd();
 const EVIDENCE_PATH = join("docs", "evidence", "contract-result-inspection", "acceptance-manifest.json");
+const RETURN_WITH_BACK_PROBE = join("test", "functional", "contract_result_inspection_return_with_back.py");
 const MONEY_LIST_SOURCE = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
 const BRAND_CSS = readFileSync(new URL("../site/brand.css", import.meta.url), "utf8");
 const OPEN_SNAPSHOT = JSON.parse(readFileSync(new URL("./fixtures/money_action_field_cases.json", import.meta.url), "utf8"));
 const AWARD_SNAPSHOT = JSON.parse(readFileSync(new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
+const FIXTURE_CLOCK = "2026-09-17T16:00:00.000Z";
 
 const OPEN_SOLICITATION = Object.freeze(
   OPEN_SNAPSHOT.rows.find((row) => row.request_id === "20260624023"),
@@ -188,6 +193,89 @@ function inspectButton(list, uid) {
 function fullRecordLink(list, uid) {
   return [...list.querySelectorAll(`.${CONTRACT_RESULT_FULL_RECORD_CLASS}`)]
     .find((node) => node.getAttribute("data-browse-return-uid") === uid);
+}
+
+function pythonPlaywrightChromiumAvailable() {
+  const probe = spawnSync(
+    "python3",
+    [
+      "-c",
+      "from playwright.sync_api import sync_playwright\n"
+      + "with sync_playwright() as p:\n"
+      + "    browser = p.chromium.launch(headless=True)\n"
+      + "    browser.close()\n",
+    ],
+    { encoding: "utf8", timeout: 60_000, env: process.env },
+  );
+  return probe.status === 0;
+}
+
+function rewriteFullRecordHrefs(html, destination) {
+  return String(html).replace(
+    new RegExp(`(class="${CONTRACT_RESULT_FULL_RECORD_CLASS}"[^>]*href=")([^"]*)(")`, "g"),
+    `$1${destination}$3`,
+  );
+}
+
+function returnWithBackFixtureDocuments() {
+  const noticeHtml = rewriteFullRecordHrefs(
+    renderContractResultInteractionsHTML(OPEN_SOLICITATION, {
+      today: "2026-08-04",
+      primaryAction: (row, day) => moneyListPrimaryAction(row, day),
+      translate,
+      copyLabel: "Copy link",
+      actionHeading: "What can I do now?",
+      newTabLabel: "(opens in new tab)",
+    }),
+    "record.html",
+  );
+  const nativeHtml = rewriteFullRecordHrefs(
+    renderContractResultInteractionsHTML(SOURCE_NATIVE, {
+      today: "2026-08-04",
+      translate,
+      copyLabel: "Copy link",
+      actionHeading: "What can I do now?",
+      newTabLabel: "(opens in new tab)",
+    }),
+    "record.html",
+  );
+  const collection = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contracts collection fixture</title>
+<style>
+  .${CONTRACT_RESULT_INSPECT_CLASS}, .${CONTRACT_RESULT_FULL_RECORD_CLASS} { display: none; }
+  [${CONTRACT_RESULT_READY_ATTRIBUTE}] .${CONTRACT_RESULT_TITLE_LINK_CLASS} { display: none; }
+  [${CONTRACT_RESULT_READY_ATTRIBUTE}] .${CONTRACT_RESULT_INSPECT_CLASS} { display: block; }
+  [${CONTRACT_RESULT_READY_ATTRIBUTE}] .${CONTRACT_RESULT_FULL_RECORD_CLASS} { display: inline-block; }
+</style>
+</head>
+<body>
+<main data-contracts-filter="shelter" ${CONTRACT_RESULT_READY_ATTRIBUTE}>
+  <div id="list">
+    <article class="money-row-card"><div class="row" data-i="0" tabindex="0" role="group">${noticeHtml}</div></article>
+    <article class="money-row-card"><div class="row" data-i="1" tabindex="0" role="group">${nativeHtml}</div></article>
+  </div>
+  <div id="detail"></div>
+</main>
+</body>
+</html>`;
+  const record = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Contract record fixture</title>
+</head>
+<body>
+<main>
+  <h1>Contract record fixture</h1>
+  <p>Grounded full-record destination for the return-with-Back probe.</p>
+</main>
+</body>
+</html>`;
+  return { collection, record };
 }
 
 const priorActions = globalThis.CrolActions;
@@ -463,6 +551,44 @@ test("A4: Copy and Respond stay distinct from inspect and full-record meanings",
   assert.match(html, new RegExp(CONTRACT_RESULT_FULL_RECORD_CLASS));
 });
 
+test("A4: explicit record navigation followed by Back restores the collection", async (t) => {
+  if (!pythonPlaywrightChromiumAvailable()) {
+    t.skip("Python playwright Chromium is not launchable in this lane");
+    return;
+  }
+  assert.equal(existsSync(join(ROOT, RETURN_WITH_BACK_PROBE)), true);
+  await withPinnedClock(FIXTURE_CLOCK, () => {
+    const scratchRoot = process.env.FM_TASK_SCRATCH || tmpdir();
+    const dir = mkdtempSync(join(scratchRoot, "contract-result-return-with-back-"));
+    const { collection, record } = returnWithBackFixtureDocuments();
+    const collectionPath = join(dir, "collection.html");
+    writeFileSync(collectionPath, collection);
+    writeFileSync(join(dir, "record.html"), record);
+    const result = spawnSync("python3", [join(ROOT, RETURN_WITH_BACK_PROBE), collectionPath], {
+      cwd: ROOT,
+      encoding: "utf8",
+      timeout: 120_000,
+      env: process.env,
+    });
+    assert.equal(result.status, 0, result.stderr || result.stdout);
+    const payload = JSON.parse(result.stdout);
+    assert.equal(payload.schema, "cityscroll.contract_result_inspection_return_with_back.v1");
+    assert.deepEqual(payload.viewport, { width: 1440, height: 900 });
+    assert.equal(payload.before.card_count, 2);
+    assert.equal(payload.before.filter, "shelter");
+    assert.equal(payload.before.full_record_href, "record.html");
+    assert.equal(payload.after_open.reached_record_document, true);
+    assert.equal(payload.after_open.navigated_away, true);
+    assert.equal(payload.observed.navigated_to_full_record, true);
+    assert.equal(payload.observed.returned_with_back, true);
+    assert.equal(payload.observed.card_count_after_back, 2);
+    assert.equal(payload.observed.filter_after_back, "shelter");
+    assert.equal(payload.after_back.full_record_present, true);
+    assert.equal(payload.after_back.full_record_href, "record.html");
+    assert.equal(payload.observed.collection_path_before, payload.observed.collection_path_after_back);
+  });
+});
+
 test("A4: acceptance manifest records the journey with revision, route, viewport, and fixture vintage", () => {
   assert.equal(existsSync(EVIDENCE_PATH), true);
   const manifest = JSON.parse(readFileSync(EVIDENCE_PATH, "utf8"));
@@ -486,6 +612,11 @@ test("A4: acceptance manifest records the journey with revision, route, viewport
   assert.ok(manifest.assertions.some((row) => row.id === "reject-trusted-click-navigation" && row.result === "rejected"));
   assert.ok(manifest.assertions.some((row) => row.id === "primary-inspect-notice-and-source-native" && row.result === "accepted"));
   assert.ok(manifest.assertions.some((row) => row.id === "failed-detail-keeps-summary-and-record-link" && row.result === "accepted"));
+  assert.ok(
+    manifest.assertions.some(
+      (row) => row.id === "explicit-record-navigation-return-with-back" && row.result === "accepted",
+    ),
+  );
   for (const banned of ["needs_james", "card_standard", "richness_profile", "autodispatch", "realization_gate"]) {
     assert.equal(JSON.stringify(manifest).includes(banned), false, banned);
   }

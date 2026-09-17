@@ -2,7 +2,7 @@
   "schema": "cityscroll.contract_result_inspection_acceptance.v1",
   "record": "cityscroll-engineering/c175322a83f02",
   "route": "/browse/contracts/",
-  "revision": "9a0b834810a6b2b5bb306eee767fa53a0352ef88",
+  "revision": "9610d5faf2e95fa6df89e88b1d5efd95120204f2",
   "fixture_vintage": "20260624023",
   "timezone": "America/New_York",
   "captured_at": "2026-09-17T16:00:00Z",
@@ -88,7 +88,13 @@
       "result": "accepted",
       "assertion": "contracts-money-list is conforming and contracts-row-click-diverges is absent from the shrink-only baseline",
       "fixture": "browse-inspection-contract"
+    },
+    {
+      "id": "explicit-record-navigation-return-with-back",
+      "result": "accepted",
+      "assertion": "Clicking the named full-record control navigates to the grounded record document, and browser Back restores the same collection path, filter, card count, and full-record control",
+      "fixture": "contract-result-inspection-return-with-back"
     }
   ],
-  "assertions_sha256": "c589ba401735ed0d3fc3e0aa88456e100cb8392a77b00d3bc14b5882f9547426"
+  "assertions_sha256": "587b7c72c4c929aa69a80e61689526bee4371c92ac0a7f7ffbfa47885597814f"
 }
