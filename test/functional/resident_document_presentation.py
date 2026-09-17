@@ -1002,7 +1002,14 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--case",
-        choices=["notice-shell", "notice-subject", "notice-tools", "contract-evidence", "research-tools"],
+        choices=[
+            "notice-shell",
+            "notice-subject",
+            "notice-tools",
+            "contract-evidence",
+            "research-tools",
+            "typography",
+        ],
         required=True,
     )
     parser.add_argument("--write-manifest", action="store_true")
@@ -1010,12 +1017,21 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.self_test:
-        run_writer_self_tests()
+        if args.case == "typography":
+            from typography_case import run_writer_self_tests as run_typography_writer_self_tests
+            run_typography_writer_self_tests()
+        else:
+            run_writer_self_tests()
         return
 
     if args.case == "contract-evidence":
         from contract_evidence_case import run_contract_evidence_case
         run_contract_evidence_case(os.environ.get("CROL_BASE"))
+        return
+
+    if args.case == "typography":
+        from typography_case import run_typography_case
+        run_typography_case(os.environ.get("CROL_BASE"), write_manifest=args.write_manifest)
         return
 
     process = staging = state_dir = upstream = None

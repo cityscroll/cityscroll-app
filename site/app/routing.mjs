@@ -676,9 +676,9 @@ function routeBackHTML(fallbackHash,fallbackLabel,className){
     ? resolveTraversalBackHref(location.href, fallbackHref)
     : context ? context.hash : fallbackHref;
   const label=routeBackLabel(context, fallbackLabel);
-  const classAttr=className?' class="'+escUiHtml(className)+'"':"";
-  const styleAttr=className?"":' style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none"';
-  return '<a'+classAttr+styleAttr+' href="'+escUiHtml(href)+'" data-route-back="'+(traversal.hops.length?"traversal":context?"history":"fallback")+'">'+label+'</a>';
+  const resolvedClass=className||"route-back-link";
+  const classAttr=' class="'+escUiHtml(resolvedClass)+'"';
+  return '<a'+classAttr+' href="'+escUiHtml(href)+'" data-route-back="'+(traversal.hops.length?"traversal":context?"history":"fallback")+'">'+label+'</a>';
 }
 
 let pendingItemRouteContext=null;
@@ -895,7 +895,7 @@ async function showTaskFirst(task, id){
     const presentation = TaskFirst.presentExample(example);
     box.innerHTML = `<div class="task-first">
       <p style="margin:4px 0 12px">${routeBackHTML(TaskFirst.taskCollectionHash(task),t("task_back_examples"))}
-      · <a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+      · <a class="route-back-link" href="${backHref}">${t("back_browse")}</a></p>
       <header class="task-first-head">
         <p class="task-first-kicker">${t("task_entry_kicker")}</p>
         <h2>${t(titleKey)}</h2>

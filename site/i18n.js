@@ -4681,7 +4681,12 @@ function applyStrings() {
   // w8-06: per-language font stack + line-height as CSS custom properties (CJK/Bengali/
   // Arabic typography needs a script-aware stack; the :lang() rules in each page's CSS do
   // the case/tracking neutralization, this just supplies the stack the rules reference).
-  document.documentElement.style.setProperty("--lang-font-stack", (meta && meta.fontStack) || "inherit");
+  // Never write the CSS-wide `inherit` keyword into the stack list — that computed to Times.
+  if (meta && meta.fontStack) {
+    document.documentElement.style.setProperty("--lang-font-stack", meta.fontStack);
+  } else if (typeof document.documentElement.style.removeProperty === "function") {
+    document.documentElement.style.removeProperty("--lang-font-stack");
+  }
   document.documentElement.style.setProperty("--lang-line-height-scale", (meta && meta.lineHeightScale) || 1);
   updateLangNotice();
 }

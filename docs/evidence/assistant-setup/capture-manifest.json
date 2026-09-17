@@ -4,7 +4,7 @@
   "condition": "Chromium viewport witnesses over tracked HTML; no image binary is committed.",
   "image_binaries_committed": false,
   "capture_mode": "headless-playwright-loopback-static-render",
-  "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
+  "revision": "de44d68e5c675b39f90c3f32f9e41f1c428d7924cd28fd96b66b886711cdecb6",
   "revision_format": "sha256 of path:source-digest lines for setup sources",
   "data_vintage": "tracked site HTML at content revision",
   "capture_clock": "2026-09-16T12:00:00.000Z",
@@ -23,12 +23,12 @@
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
+      "revision": "de44d68e5c675b39f90c3f32f9e41f1c428d7924cd28fd96b66b886711cdecb6",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "primary search remains visible before Ask with AI at this viewport",
-      "sha256": "e88a7c3632781d8581af50e30c53ced89f4d8f5de7248f13e744c959d821a81f",
+      "sha256": "52f7e1e28c8023354e2360b76e5eed1b5d3f33491c485e0a84605b859f4652d1",
       "source_path": "site/index.html",
-      "source_sha256": "95d51803daa89c546676ba0fe46b5358162f813fb395d373bf93b480e4e3dc65",
+      "source_sha256": "cde1e933c0580ee166b2c746bf982d1e1e15487587d047857c6c7964a20c8a26",
       "observed": {
         "inner_width": 1440,
         "inner_height": 1000,
@@ -52,12 +52,12 @@
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
+      "revision": "de44d68e5c675b39f90c3f32f9e41f1c428d7924cd28fd96b66b886711cdecb6",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "primary search remains visible before Ask with AI at this viewport",
-      "sha256": "25b28685231c9e418d07b7d2bef8a21ed3032490003eee46f10eb2345e1edcf5",
+      "sha256": "eeb46e2594a2f01a4f0c8830c477c8b556db360756d7482fc89ab7b2157edcb3",
       "source_path": "site/index.html",
-      "source_sha256": "95d51803daa89c546676ba0fe46b5358162f813fb395d373bf93b480e4e3dc65",
+      "source_sha256": "cde1e933c0580ee166b2c746bf982d1e1e15487587d047857c6c7964a20c8a26",
       "observed": {
         "inner_width": 390,
         "inner_height": 844,
@@ -81,10 +81,10 @@
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
+      "revision": "de44d68e5c675b39f90c3f32f9e41f1c428d7924cd28fd96b66b886711cdecb6",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
-      "sha256": "5c2a8fbc231af1985289f56983901e83d7971e0abac6843049d61929052e9fd6",
+      "sha256": "90ab75e8bbd9e6fde44aa2c552184d8ba2c9830a591f962253e5c585b15550c0",
       "source_path": "site/use-with-ai/index.html",
       "source_sha256": "4cdbd68e3088e378d58f998f65310afdfe67d149765bc8ec6ce645ea634a2706",
       "observed": {
@@ -123,7 +123,7 @@
           },
           "next": {
             "present": true,
-            "top": 735,
+            "top": 733,
             "width": 716,
             "in_layout": true
           }
@@ -147,10 +147,10 @@
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
+      "revision": "de44d68e5c675b39f90c3f32f9e41f1c428d7924cd28fd96b66b886711cdecb6",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
-      "sha256": "9f9c55c0d380b6b01b32c0432eee9b980be73737fcf23a4741f458fed3942ebe",
+      "sha256": "083a5611e1c2332066367f5167fed85f503f2f00bbb6cb9b50ef95171e439fa9",
       "source_path": "site/use-with-ai/index.html",
       "source_sha256": "4cdbd68e3088e378d58f998f65310afdfe67d149765bc8ec6ce645ea634a2706",
       "observed": {
@@ -189,7 +189,7 @@
           },
           "next": {
             "present": true,
-            "top": 481,
+            "top": 477,
             "width": 346,
             "in_layout": true
           }
@@ -213,7 +213,7 @@
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
+      "revision": "de44d68e5c675b39f90c3f32f9e41f1c428d7924cd28fd96b66b886711cdecb6",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "stable MCP heading and setup link remain reachable at this viewport",
       "sha256": "a9d6ce61a6c03067dc59c0cb339f75c221e8cbe193e2ec698d188099a94364f7",
@@ -249,10 +249,10 @@
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "1544ac34a7644e39b5924806259021be80a74f5532dfffc81d12954aef8ef8b8",
+      "revision": "de44d68e5c675b39f90c3f32f9e41f1c428d7924cd28fd96b66b886711cdecb6",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "stable MCP heading and setup link remain reachable at this viewport",
-      "sha256": "1b16767d5f2db5fbdce57778bc5889a874b01f6ed0ab4aec820e8652a193f27c",
+      "sha256": "101524240cf3e989742ff17f1ddcb348979720728fdd52f6a604e644c414e8e8",
       "source_path": "site/api.html",
       "source_sha256": "9f284d8eaf7b8a36e34bba68eae3f48a2064272d4e312f188938f787e0f9dbf7",
       "observed": {
@@ -267,7 +267,7 @@
         "anchors": {
           "mcp": {
             "present": true,
-            "top": 400,
+            "top": 401,
             "width": 346,
             "in_layout": true
           }

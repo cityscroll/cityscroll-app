@@ -31,20 +31,20 @@
 <link rel="preconnect" href="https://data.cityofnewyork.us">
 <link rel="preconnect" href="https://api.cityscroll.org">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
 <style>
   :root{
     /* Color, type, spacing, and container tokens live in brand.css (the single token sheet).
-       Only script-aware typography state is page-local here — w8-06: set per-language by
-       applyStrings() (i18n.js) via LANG_META[lang].fontStack/lineHeightScale; unset languages
-       get "inherit" (an invalid font-family list entry, so the rule below silently no-ops)
-       and scale 1 (a no-op). */
-    --lang-font-stack: inherit;
+       Script-aware typography state is page-local — applyStrings() (i18n.js) may replace
+       --lang-font-stack with a language face list. Default to the reading family so the
+       comma-list never starts with the CSS-wide `inherit` keyword (which computed to Times). */
+    --lang-font-stack: var(--font-reading, "Noto Sans", "Helvetica Neue", Arial, system-ui, sans-serif);
     --lang-line-height-scale: 1;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
-  body{background:var(--paper);color:var(--ink);font:17px/1.55 var(--font-body);-webkit-font-smoothing:antialiased}
-  body{font-family:var(--lang-font-stack),var(--font-body);line-height:calc(1.55 * var(--lang-line-height-scale))}
+  body{background:var(--paper);color:var(--ink);font:17px/1.55 var(--font-body,"Noto Sans","Helvetica Neue",Arial,system-ui,sans-serif);-webkit-font-smoothing:antialiased}
+  body{font-family:var(--lang-font-stack),var(--font-body,"Noto Sans","Helvetica Neue",Arial,system-ui,sans-serif);line-height:calc(1.55 * var(--lang-line-height-scale))}
   /* CJK has no letter-casing and the masthead's tracked/uppercased chrome devices are a
      Latin-typography convention — small-caps/letter-spacing/uppercase read as noise (or
      worse, are simply ignored) on Chinese text, so :lang() neutralizes them site-wide.
@@ -93,10 +93,10 @@
   .home-topic-entry h2{margin:0 0 5px;color:var(--ink);font:700 clamp(1.65rem,4vw,2.25rem)/1.1 var(--font-display)}
   .home-topic-entry p{margin:0;color:var(--ink-soft);font:15px/1.45 var(--font-body)}
   .home-topic-form{margin-top:13px}
-  .home-topic-form label{display:block;margin-bottom:5px;font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
+  .home-topic-form label{display:block;margin-bottom:5px;font:700 13px/1.3 var(--font-label);color:var(--ink)}
   .home-topic-form-row{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
   .home-topic-form input{flex:1 1 300px;min-width:0;min-height:46px;padding:9px 12px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);font:16px/1.3 var(--font-body)}
-  .home-topic-form button{min-height:46px;padding:9px 16px;border:1px solid var(--oxblood);border-radius:7px;background:var(--oxblood);color:#fff;font:700 14px/1.2 ui-sans-serif,system-ui,sans-serif;cursor:pointer}
+  .home-topic-form button{min-height:46px;padding:9px 16px;border:1px solid var(--oxblood);border-radius:7px;background:var(--oxblood);color:#fff;font:700 14px/1.2 var(--font-interface);cursor:pointer}
   .home-topic-note{margin-top:8px!important;color:var(--muted)!important;font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif!important}
   [data-primary-context="home"] .home-cta{margin-top:0}
   [data-primary-context="home"]:not([data-app-route="true"]) #tab-money{display:block;padding:0}
@@ -177,11 +177,11 @@
   .controls label{color:var(--muted)}
   .field{display:flex;flex-direction:column;gap:5px;flex:1 1 150px}
   .field.kw{flex:2 1 220px}
-  .field label{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-  select,input[type=text],input[type=email]{font:15px/1.3 Georgia,serif;padding:10px 11px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);width:100%}
-  button{font:600 14px/1 ui-sans-serif,system-ui,sans-serif;padding:11px 18px;border-radius:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+  .field label{font:600 11px/1 var(--font-label);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  select,input[type=text],input[type=email]{font:15px/1.3 var(--font-body);padding:10px 11px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);width:100%}
+  button{font:600 14px/1 var(--font-interface);padding:11px 18px;border-radius:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
   button:active{transform:translateY(1px)}
-  button.mini{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:6px 10px;background:#fff;color:var(--ink);border:1px solid var(--rule);border-radius:7px}
+  button.mini{font:600 11px/1 var(--font-interface);padding:6px 10px;background:#fff;color:var(--ink);border:1px solid var(--rule);border-radius:7px}
   #landlocation{min-height:32px;white-space:nowrap}
   .wand{display:flex;flex-wrap:wrap;gap:7px}
   .wandchip{font-family:var(--font-sc);font-weight:600;letter-spacing:.04em;font-size:12px;padding:7px 12px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer}
@@ -1866,7 +1866,6 @@
     a{color:#000!important}
   }
 </style>
-<link rel="stylesheet" href="brand.css">
 <link rel="stylesheet" href="procurement_pursuit_snapshot.css">
 <!-- No map dependency is on the Land critical path. app/map_runtime.mjs holds the browse Map
      shell, the point projection, and the detail map's Leaflet assets, and loads only on Map

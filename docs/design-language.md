@@ -99,8 +99,12 @@ neutralizes tracking and casing).
 
 ### Type scale
 
-Sizes are a reference for new work; existing components keep their tuned sizes but adopt the new
-families. Body line-height is generous (1.6) because the content is scanned and re-read.
+Family roles are normative: equivalent body text, labels, inputs, and buttons use the reading
+family (`--font-reading` / `--font-body` / `--font-interface` / `--font-label`), while brand
+display and nameplate keep Space Grotesk and identifiers keep a monospace stack. Size values in
+the table are a reference for new work; existing components keep their tuned sizes in this pass
+and adopt the shared families rather than a forced single pixel scale. Body line-height is
+generous (1.6) because the content is scanned and re-read.
 
 | Style | Family | Weight | Desktop | Mobile | Line height |
 | --- | --- | --- | --- | --- | --- |
@@ -111,8 +115,11 @@ families. Body line-height is generous (1.6) because the content is scanned and 
 | Intro / lead | Noto Sans | 500 | 1.25rem | 1.15rem | 1.5 |
 | Body | Noto Sans | 400 | 1.0625rem (17px) | 1rem (16px) | 1.6 |
 | Label / caption | Noto Sans | 600 | 0.8125rem (13px) | 0.8125rem | 1.4 |
+| Control (input / button) | Noto Sans | 400–700 | component-tuned | component-tuned | 1.2–1.35 |
 
-Minimum body size on mobile is 16px. Never set interface text below 13px.
+Minimum body size on mobile is 16px. Never set interface text below 13px. When webfonts are
+blocked, the reading stack falls through Helvetica Neue / Arial / system-ui so Latin and
+non-Latin script-aware `--lang-font-stack` overlays remain legible.
 
 ## Measure, grid, and spacing
 

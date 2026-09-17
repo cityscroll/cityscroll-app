@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c4c343f5d023b",
+  "status": "implemented",
+  "fingerprint": "reader-typography-roles.v1",
+  "updated_at": "2026-09-16T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "brand-type-tokens",
+      "path": "site/brand.css"
+    },
+    {
+      "id": "design-language-typography",
+      "path": "docs/design-language.md"
+    },
+    {
+      "id": "homepage-following-cta",
+      "path": "site/index.html"
+    },
+    {
+      "id": "community-board-proceedings-view-styling",
+      "path": "site/civic-documents.css"
+    },
+    {
+      "id": "notice-primary-readiness-owner",
+      "path": "site/app/routing.mjs"
+    },
+    {
+      "id": "reader-typography-roles-tests",
+      "path": "test/reader_typography_roles.test.mjs"
+    },
+    {
+      "id": "reader-typography-browser-case",
+      "path": "test/functional/typography_case.py"
+    },
+    {
+      "id": "reader-typography-capture-manifest",
+      "path": "docs/evidence/reader-typography/capture-manifest.json"
+    }
+  ]
+}
