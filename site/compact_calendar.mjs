@@ -227,6 +227,10 @@ function toEntry(occurrence, today) {
     // of the facts a reader needs before deciding to open the full page. It is
     // deliberately not painted into the cell itself.
     location: occurrence.location ?? null,
+    // Optional Now / host overview fields for informative previews. Omitted
+    // fields stay absent rather than becoming empty strings in the dialog.
+    agency: occurrence.agency ?? null,
+    summary: occurrence.summary ?? null,
     canonical_url: occurrence.canonical_url,
     source: occurrence.source,
     provenance: occurrence.provenance,

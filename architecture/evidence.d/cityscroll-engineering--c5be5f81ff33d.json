@@ -1,0 +1,53 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c5be5f81ff33d",
+  "status": "implemented",
+  "fingerprint": "now-inspection-projection.v1",
+  "updated_at": "2026-09-17T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "now-inspection-projection",
+      "path": "site/now_inspection_projection.mjs"
+    },
+    {
+      "id": "now-surface-meeting-routes",
+      "path": "site/now_surface.mjs"
+    },
+    {
+      "id": "now-calendar-projection",
+      "path": "site/now_calendar.mjs"
+    },
+    {
+      "id": "now-listing-adapter",
+      "path": "site/now_view.mjs"
+    },
+    {
+      "id": "citizen-entry-search-document",
+      "path": "site/primary_document_view.mjs"
+    },
+    {
+      "id": "calendar-event-preview-contract",
+      "path": "site/calendar_event_preview.mjs"
+    },
+    {
+      "id": "compact-month-component",
+      "path": "site/compact_calendar.mjs"
+    },
+    {
+      "id": "browse-inspection-contract-module",
+      "path": "site/browse_inspection_contract.mjs"
+    },
+    {
+      "id": "browse-inspection-catalog-projection",
+      "path": "test/standards/browse_inspection_catalog.json"
+    },
+    {
+      "id": "now-inspection-projection-tests",
+      "path": "test/now_inspection_projection.test.mjs"
+    },
+    {
+      "id": "now-inspection-projection-acceptance-manifest",
+      "path": "docs/evidence/now-inspection-projection/acceptance-manifest.json"
+    }
+  ]
+}

@@ -222,6 +222,7 @@ export function calendarEventPreviewFacts(entry = {}) {
   const state = PREVIEW_STATE_LABELS[entry.state] ? entry.state : null;
   const location = previewLocation(entry.location);
   const source = previewSource(entry.source, href);
+  const agency = previewText(entry.agency);
   return {
     v: CALENDAR_EVENT_PREVIEW_VERSION,
     uid,
@@ -235,6 +236,7 @@ export function calendarEventPreviewFacts(entry = {}) {
     ...(timeLabel ? { time: timeLabel } : {}),
     ...(lifecycle ? { lifecycle } : {}),
     ...(state ? { state } : {}),
+    ...(agency ? { agency } : {}),
     ...(location ? { location } : {}),
     ...(source ? { source } : {}),
   };
@@ -342,6 +344,7 @@ export function renderCalendarEventPreviewBody(facts, options = {}) {
   const rows = [
     previewDefinitionRow("Kind", kindLabel, esc),
     when ? previewDefinitionRow("Date", when, esc) : "",
+    facts.agency ? previewDefinitionRow("Agency", facts.agency, esc) : "",
     facts.location ? previewDefinitionRow("Where", facts.location, esc) : "",
   ].filter(Boolean).join("");
   const detail = previewText(options.detail);

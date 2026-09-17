@@ -22,14 +22,14 @@
       "viewport": "1440x1000",
       "data_vintage": "site build",
       "assertion": "Build-rendered Now mounts Keep following this selection without creating a subscription on open",
-      "sha256": "0ae7373b4dc211e641255cda6bbd9fb18444a149b4e18064c6f00d34e79e721f"
+      "sha256": "11e9cdd2bee687addbce624df760f77b92a8fc875c9c31906f6f434cb126a60a"
     },
     {
       "route": "/now/",
       "viewport": "390x844",
       "data_vintage": "site build",
       "assertion": "Phone Now keeps Keep following this selection beside the primary deadlines reading without a subscription on open",
-      "sha256": "0ae7373b4dc211e641255cda6bbd9fb18444a149b4e18064c6f00d34e79e721f"
+      "sha256": "11e9cdd2bee687addbce624df760f77b92a8fc875c9c31906f6f434cb126a60a"
     },
     {
       "route": "/#meetings?agency=Buildings&q=scaffold",
