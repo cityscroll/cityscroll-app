@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c5d5ad994b918",
+  "status": "implemented",
+  "fingerprint": "agency-page-leadership.v1",
+  "updated_at": "2026-09-17T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "agency-page-leadership-renderer",
+      "path": "site/agency_page_leadership.mjs"
+    },
+    {
+      "id": "agency-page-leadership-section",
+      "path": "site/agency_constellation_sections/leadership.mjs"
+    },
+    {
+      "id": "agency-page-leadership-tests",
+      "path": "test/agency_page_leadership.test.mjs"
+    },
+    {
+      "id": "agency-page-leadership-capture-manifest",
+      "path": "docs/evidence/agency-page-leadership/capture-manifest.json"
+    }
+  ]
+}
