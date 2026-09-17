@@ -37,6 +37,7 @@ import { affordanceHandoffPresentation } from "./affordance_grammar.mjs";
 import {
   bindCalendarEventPreview,
   calendarEventPreviewFacts,
+  renderCalendarEventFullRecordLink,
   renderCalendarEventPreviewButton,
 } from "./calendar_event_preview.mjs";
 import {
@@ -342,6 +343,12 @@ function timeLabelFor(occurrence) {
   }
 }
 
+function occurrenceTitleContent(occurrence, esc, kindLabel, timeLabel) {
+  return `<span class="compact-month-occ-kind">${esc(kindLabel)}</span>` +
+    (timeLabel ? `<span class="compact-month-occ-time">${esc(timeLabel)}</span>` : "") +
+    `<span class="compact-month-occ-title">${esc(occurrence.title || "Civic calendar item")}</span>`;
+}
+
 function occurrenceItemHTML(occurrence, esc) {
   const kindLabel = KIND_LABELS[occurrence.kind] || "Item";
   const timeLabel = timeLabelFor(occurrence);
@@ -371,10 +378,20 @@ function occurrenceItemHTML(occurrence, esc) {
       `${sourcePresentation.attributes}>${esc(OCCURRENCE_SOURCE_LABEL)}` +
       `${sourcePresentation.glyph}${sourcePresentation.announcement}</a>`
     : "";
-  // The preview trigger is a sibling of the anchor, never a child of it: the
-  // link stays a destination that works with scripting off, through the
-  // context menu and under a modified click, and the button stays an action.
-  const previewButton = renderCalendarEventPreviewButton(calendarEventPreviewFacts(occurrence), { esc });
+  // Progressive enhancement (CSS swap): the static title link remains the
+  // working destination until the preview binder marks the container ready.
+  // After enhancement, CSS hides that link and reveals a title-sized inspect
+  // button plus a separately named full-record link. The button is a sibling
+  // of every anchor, never nested inside one, and no full-card overlay
+  // intercepts destinations.
+  const facts = calendarEventPreviewFacts(occurrence);
+  const titleContent = occurrenceTitleContent(occurrence, esc, kindLabel, timeLabel);
+  const inspectButton = renderCalendarEventPreviewButton(facts, {
+    esc,
+    titleSized: true,
+    innerHTML: titleContent,
+  });
+  const fullRecordLink = renderCalendarEventFullRecordLink(facts, { esc });
   // An occurrence's canonical destination is usually a page of this site, but
   // the occurrence contract also accepts a publisher's own absolute URL — a
   // rulemaking month, for instance, is published under the rules portal. The
@@ -384,12 +401,11 @@ function occurrenceItemHTML(occurrence, esc) {
   const linkPresentation = affordanceHandoffPresentation({ href: occurrence.canonical_url, escape: esc });
   return `<li class="${classes.join(" ")}" data-compact-month-occ-uid="${esc(occurrence.uid)}">` +
     `<a class="compact-month-occ-link" href="${esc(occurrence.canonical_url)}"${linkPresentation.attributes}>` +
-    `<span class="compact-month-occ-kind">${esc(kindLabel)}</span>` +
-    (timeLabel ? `<span class="compact-month-occ-time">${esc(timeLabel)}</span>` : "") +
-    `<span class="compact-month-occ-title">${esc(occurrence.title || "Civic calendar item")}</span>` +
+    titleContent +
     `${linkPresentation.glyph}${linkPresentation.announcement}` +
     "</a>" +
-    previewButton +
+    inspectButton +
+    fullRecordLink +
     flag + sourceLink +
     "</li>";
 }

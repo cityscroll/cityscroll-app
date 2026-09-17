@@ -1,0 +1,83 @@
+{
+  "schema": "cityscroll.calendar_primary_inspection_acceptance.v1",
+  "record": "cityscroll-engineering/c6ca330ec16a0",
+  "route": "/now/#now?calview=calendar",
+  "revision": "ecd674bf17f99165551b9af67775dc7820f016c0",
+  "fixture_vintage": "2026-03-15",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-17T06:44:03Z",
+  "viewport": [
+    1440,
+    900
+  ],
+  "measurement_policy": "Assertions record deterministic primary-inspection fixtures over the shared compact-month renderer. No participant evaluation was run and no usability gain is claimed. Image binaries are not part of this proof.",
+  "image_policy": "No image binaries are committed for this acceptance record.",
+  "journey": {
+    "id": "calendar-primary-inspection",
+    "sequence": [
+      "set_scope_or_view",
+      "inspect",
+      "dismiss",
+      "open_full_record",
+      "return_with_back",
+      "continue"
+    ],
+    "variants": [
+      "desktop",
+      "narrow_touch",
+      "keyboard",
+      "no_javascript",
+      "failed_detail"
+    ],
+    "rendered_reference": {
+      "route": "/now/#now?calview=calendar",
+      "harness": "test/calendar_primary_inspection.test.mjs",
+      "assertion": "set scope or view, inspect, dismiss, open the explicit full record, return with Back, and continue from the restored collection state"
+    }
+  },
+  "assertions": [
+    {
+      "id": "reject-sibling-preview-chip",
+      "result": "rejected",
+      "assertion": "A visible Preview chip beside a leading title link is no longer the enhanced hierarchy",
+      "fixture": "sibling-preview-chip"
+    },
+    {
+      "id": "primary-inspect-no-navigation",
+      "result": "accepted",
+      "assertion": "Title-sized inspect control opens the shared modal without leaving the month",
+      "fixture": "primary-inspect"
+    },
+    {
+      "id": "named-full-record-link",
+      "result": "accepted",
+      "assertion": "Separately named full-record link keeps the canonical destination and native link semantics",
+      "fixture": "full-record-link"
+    },
+    {
+      "id": "no-js-title-link",
+      "result": "accepted",
+      "assertion": "Without the ready marker, CSS keeps the static title link and hides inspect plus full-record controls",
+      "fixture": "unbound-container"
+    },
+    {
+      "id": "failed-detail-keeps-record-link",
+      "result": "accepted",
+      "assertion": "Failed optional detail keeps the coherent summary and working full-page link",
+      "fixture": "failed-detail"
+    },
+    {
+      "id": "overflow-counts-preserved",
+      "result": "accepted",
+      "assertion": "Day overflow counts and agenda order match the compact-month view model exactly",
+      "fixture": "crowded-day"
+    },
+    {
+      "id": "eight-hosts-conforming",
+      "result": "accepted",
+      "assertion": "All eight compact-calendar hosts are conforming with the primary-inspection journey owner",
+      "compact_calendar_host_count": 8
+    }
+  ],
+  "assertions_sha256": "af2688b64984de29b9744a102b52e6a13982d4f6101b6c45003c107737112dcc"
+}

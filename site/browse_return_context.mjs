@@ -284,6 +284,14 @@ function headingFor(root, doc) {
     || null;
 }
 
+function occurrenceRecordLink(item) {
+  // Prefer the enhanced named full-record link when present; fall back to the
+  // static title link that remains for no-JavaScript and failed enhancement.
+  return item?.querySelector?.(".compact-month-occ-full-record")
+    || item?.querySelector?.(".compact-month-occ-link")
+    || null;
+}
+
 function collectCandidates(root) {
   const rows = [];
   const buttons = [...(root.querySelectorAll?.("[data-calendar-event-preview-uid]") || [])];
@@ -294,7 +302,7 @@ function collectCandidates(root) {
     const appearance = seen.get(uid) || 0;
     seen.set(uid, appearance + 1);
     const item = button.closest?.(".compact-month-occ") || button.parentNode;
-    const link = item?.querySelector?.(".compact-month-occ-link") || null;
+    const link = occurrenceRecordLink(item);
     const day = button.closest?.("[data-compact-month-day]")?.getAttribute("data-compact-month-day") || null;
     rows.push({
       uid,
@@ -387,11 +395,12 @@ export function restoreBrowseReturnFocus(root, options = {}) {
 
 function contextFromControl(control, locationObj, now, invoker) {
   const uid = control.getAttribute("data-calendar-event-preview-uid")
+    || control.getAttribute("data-browse-return-uid")
     || control.closest?.("[data-compact-month-occ-uid]")?.getAttribute("data-compact-month-occ-uid");
   const item = control.closest?.(".compact-month-occ") || control.parentNode;
-  const link = control.matches?.(".compact-month-occ-link")
+  const link = control.matches?.(".compact-month-occ-full-record, .compact-month-occ-link")
     ? control
-    : item?.querySelector?.(".compact-month-occ-link");
+    : occurrenceRecordLink(item);
   const href = link?.getAttribute?.("href") || control.getAttribute("href");
   if (!uid || !href) return null;
   const root = control.closest?.("[data-browse-return-ready]") || control.ownerDocument;
@@ -454,7 +463,7 @@ export function bindBrowseReturnContext(root, options = {}) {
       if (context) writeBrowseReturnHistory(historyObj, context, locationObj);
       return;
     }
-    const link = target.closest(".compact-month-occ-link");
+    const link = target.closest(".compact-month-occ-full-record, .compact-month-occ-link");
     if (!link || (typeof scope.contains === "function" && !scope.contains(link))) return;
     const href = link.getAttribute("href");
     if (!isSameOriginInternalHref(href, locationObj)) return;

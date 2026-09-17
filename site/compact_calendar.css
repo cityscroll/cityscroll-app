@@ -98,7 +98,9 @@
 }
 
 .compact-month-occ-link:hover .compact-month-occ-title,
-.compact-month-occ-link:focus .compact-month-occ-title {
+.compact-month-occ-link:focus .compact-month-occ-title,
+.compact-month-occ-inspect:hover .compact-month-occ-title,
+.compact-month-occ-inspect:focus .compact-month-occ-title {
   text-decoration: underline;
 }
 
@@ -186,32 +188,49 @@
   color: var(--muted, #5b6470);
 }
 
-/* ---------- on-demand event preview (PX-01) ---------- */
+/* ---------- on-demand event preview (primary inspect) ---------- */
 
-/* The trigger is progressive enhancement: it stays out of the document's
-   visual flow until `bindCalendarEventPreview` marks a container ready, so a
-   reader without scripting is only ever offered the canonical link, which
-   works for them. */
-.compact-month-occ-preview {
+/* Progressive enhancement CSS swap: until the binder marks a container ready,
+   only the static title link is offered. After ready, that link is hidden and
+   the title-sized inspect button plus a separately named full-record link are
+   revealed. Failed enhancement leaves the static title link reachable. */
+.compact-month-occ-preview,
+.compact-month-occ-full-record {
+  display: none;
+}
+
+[data-calendar-event-preview-ready] .compact-month-occ-link {
   display: none;
 }
 
 [data-calendar-event-preview-ready] .compact-month-occ-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: baseline;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  min-width: 0;
+  /* Comfortable target without inventing a second visual hierarchy. */
+  min-height: 24px;
+}
+
+[data-calendar-event-preview-ready] .compact-month-occ-full-record {
   display: inline-block;
   margin-top: 2px;
-  padding: 1px 6px;
-  font: inherit;
   font-size: 10px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
   color: var(--color-action, #1a44e0);
-  background: transparent;
-  border: 1px solid currentColor;
-  border-radius: 2px;
-  cursor: pointer;
-  /* A comfortable target on touch without stretching a dense month row. */
-  min-height: 24px;
+  /* Keep the named destination distinct from the title-sized inspect control. */
+  text-decoration: underline;
 }
 
 [data-calendar-event-preview-ready] .compact-month-occ-preview:hover {
@@ -549,16 +568,18 @@
     font-size: 13px;
   }
 
-  /* A finger needs a real target. The compact chip is fine for a pointer in a
-     dense desktop grid, but the agenda a narrow viewport actually reads gives
-     the preview trigger a full 44px touch target and room to sit apart from
-     the event link above it. */
+  /* A finger needs a real target. The title-sized inspect control already
+     fills the row; give it a full 44px minimum on the narrow agenda, and keep
+     the named full-record link equally reachable beside it. */
   [data-calendar-event-preview-ready] .compact-month-occ-preview {
     min-height: 44px;
-    min-width: 44px;
-    padding: 4px 12px;
-    margin-top: 4px;
-    font-size: 11px;
+    padding: 4px 0;
+  }
+
+  [data-calendar-event-preview-ready] .compact-month-occ-full-record {
+    min-height: 44px;
+    padding: 8px 0;
+    font-size: 12px;
   }
 
   /* The same finger reaches the panel the trigger opens. Its Close control and
@@ -665,6 +686,7 @@
 /* ---------- keyboard/focus ---------- */
 
 .compact-month-occ-link:focus-visible,
+.compact-month-occ-full-record:focus-visible,
 .compact-month-occ-source:focus-visible,
 .compact-month-occ-preview:focus-visible,
 .compact-month-day-more:focus-visible,
@@ -686,8 +708,15 @@
 }
 
 @media print {
+  /* Paper keeps the static title destination and drops interactive inspect
+     chrome; a printed month owes every title without requiring a control. */
   .compact-month-occ-preview,
+  .compact-month-occ-full-record,
   .calendar-event-preview-dialog {
     display: none !important;
+  }
+
+  [data-calendar-event-preview-ready] .compact-month-occ-link {
+    display: flex !important;
   }
 }

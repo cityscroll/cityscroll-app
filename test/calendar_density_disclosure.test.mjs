@@ -427,6 +427,7 @@ test("A3: at narrow widths every control in the day reading gets a 44px target",
   const narrow = CSS.slice(CSS.indexOf("@media (max-width: 640px)"), CSS.indexOf("/* ---------- print"));
   for (const selector of [
     ".compact-month-occ-preview",
+    ".compact-month-occ-full-record",
     ".compact-month-day-more",
     ".calendar-day-agenda-item-link",
     ".calendar-day-agenda-close",

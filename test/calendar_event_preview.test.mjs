@@ -120,25 +120,30 @@ test("A2: the canonical anchor is untouched — a real href, outside the button,
   // handler attribute. It stays a destination for a context menu or a
   // modified click, and it is the only affordance without scripting.
   assert.doesNotMatch(item, /<a[^>]*\srole=/);
-  assert.doesNotMatch(item, /<a[^>]*\sdata-calendar-event-preview/);
+  assert.doesNotMatch(item, /<a[^>]*\sdata-calendar-event-preview=/);
   assert.doesNotMatch(item, /<a[^>]*\sonclick/);
 });
 
-test("A2: the preview trigger is an explicit native button, a sibling of the anchor rather than nested inside it", () => {
+test("A2: the inspect trigger is an explicit native button, a sibling of every anchor rather than nested inside one", () => {
   const item = monthHTML().match(/<li class="compact-month-occ[\s\S]*?<\/li>/)[0];
-  const anchor = item.match(/<a class="compact-month-occ-link"[\s\S]*?<\/a>/)[0];
-  assert.doesNotMatch(anchor, /<button/, "the button must not be nested inside the link");
-  assert.match(item, /<button class="compact-month-occ-preview" type="button"/);
-  // The accessible name starts with the visible label, so speaking the visible
-  // word still activates the control.
+  const titleLink = item.match(/<a class="compact-month-occ-link"[\s\S]*?<\/a>/)[0];
+  const fullRecord = item.match(/<a class="compact-month-occ-full-record"[\s\S]*?<\/a>/)[0];
+  assert.doesNotMatch(titleLink, /<button/, "the button must not be nested inside the static title link");
+  assert.doesNotMatch(fullRecord, /<button/, "the button must not be nested inside the full-record link");
+  assert.match(item, /<button class="compact-month-occ-preview compact-month-occ-inspect" type="button"/);
+  // The accessible name still starts with Preview so speaking the known word
+  // activates the control; the visible content is the title-sized reading.
   assert.match(item, /aria-label="Preview: Full board meeting"/);
-  assert.match(item, />Preview<\/button>/);
+  assert.match(item, /<span class="compact-month-occ-title">Full board meeting<\/span><\/button>/);
+  assert.match(fullRecord, />Open the event page</);
 });
 
 test("A2: the trigger stays invisible until a container is bound, so an unenhanced document offers only what works", () => {
   const css = readFileSync(new URL("../site/compact_calendar.css", import.meta.url), "utf8");
-  assert.match(css, /\.compact-month-occ-preview\s*{\s*display:\s*none;/);
+  assert.match(css, /\.compact-month-occ-preview,\s*\n\.compact-month-occ-full-record\s*{\s*display:\s*none;/);
   assert.match(css, new RegExp(`\\[${CALENDAR_EVENT_PREVIEW_READY_ATTRIBUTE}\\] \\.compact-month-occ-preview`));
+  assert.match(css, new RegExp(`\\[${CALENDAR_EVENT_PREVIEW_READY_ATTRIBUTE}\\] \\.compact-month-occ-link`));
+  assert.match(css, new RegExp(`\\[${CALENDAR_EVENT_PREVIEW_READY_ATTRIBUTE}\\] \\.compact-month-occ-full-record`));
 
   const { container } = mountMonth();
   assert.equal(container.hasAttribute(CALENDAR_EVENT_PREVIEW_READY_ATTRIBUTE), true,

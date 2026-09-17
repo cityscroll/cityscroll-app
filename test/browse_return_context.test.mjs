@@ -265,7 +265,10 @@ test("A1/A3: an unmodified same-origin click remembers the item; a modified clic
   const history = makeHistory();
   const location = listingLocation();
   bindBrowseReturnContext(container, { history, location, restore: false, now: 1_000_000 });
-  const link = container.querySelector(".compact-month-occ-link");
+  // After enhancement the named full-record link is the deliberate destination;
+  // the static title link remains for no-JavaScript and failed enhancement.
+  const link = container.querySelector(".compact-month-occ-full-record")
+    || container.querySelector(".compact-month-occ-link");
   assert.ok(link, "expected a canonical occurrence link");
   click(link);
   const remembered = browseReturnFromHistoryState(history.state);
@@ -278,7 +281,9 @@ test("A1/A3: an unmodified same-origin click remembers the item; a modified clic
   const history2 = makeHistory();
   const { container: container2 } = mountDocument(monthHTML());
   bindBrowseReturnContext(container2, { history: history2, location, restore: false, now: 1_000_000 });
-  click(container2.querySelector(".compact-month-occ-link"), { metaKey: true });
+  const link2 = container2.querySelector(".compact-month-occ-full-record")
+    || container2.querySelector(".compact-month-occ-link");
+  click(link2, { metaKey: true });
   assert.equal(browseReturnFromHistoryState(history2.state), null);
 });
 
@@ -287,7 +292,8 @@ test("A1: restoring after Back focuses the originating event, not the document b
   const history = makeHistory();
   const location = listingLocation();
   bindBrowseReturnContext(container, { history, location, restore: false, now: 1_000_000 });
-  const link = container.querySelector(".compact-month-occ-link");
+  const link = container.querySelector(".compact-month-occ-full-record")
+    || container.querySelector(".compact-month-occ-link");
   click(link);
   doc.activeElement = doc.body;
   const focused = restoreBrowseReturnFocus(container, {
@@ -348,7 +354,7 @@ test("A3: a publisher (cross-origin) occurrence is left to the browser", () => {
     restore: false,
     now: 1_000_000,
   });
-  const external = [...container.querySelectorAll(".compact-month-occ-link")]
+  const external = [...container.querySelectorAll(".compact-month-occ-full-record, .compact-month-occ-link")]
     .find((node) => (node.getAttribute("href") || "").includes("rules.cityofnewyork.us"));
   assert.ok(external);
   click(external);
@@ -449,7 +455,8 @@ test("A5: a ninth host inherits the behaviour by mounting the shared component",
     restore: false,
     now: 1_000_000,
   });
-  click(container.querySelector(".compact-month-occ-link"));
+  click(container.querySelector(".compact-month-occ-full-record")
+    || container.querySelector(".compact-month-occ-link"));
   assert.equal(browseReturnFromHistoryState(history.state).uid, "occ:a");
 });
 
