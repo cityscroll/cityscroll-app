@@ -1,64 +1,101 @@
 {
-  "schema": "cityscroll.assistant_context_capture_manifest.v1",
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "assistant context handoff",
   "case": "ai-context",
-  "revision": "grounded at f3bce6ef485e7f7da1d0b818da22e129b1bb0d3b",
-  "data_vintage": "site build",
+  "base": "https://cityscroll.org/",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "image_binaries_committed": false,
+  "revision": "cf75b05d0",
+  "data_vintage": "2026-09-17T04:59:07.932Z",
+  "route": "/use-with-ai/",
   "captures": [
     {
+      "case": "ai-context-contract",
       "route": "/use-with-ai/?kind=contract",
-      "viewport": "1440x1000",
-      "data_vintage": "site build",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
       "assertion": "exact contract task panel with private fields stripped and clipboard fallback",
-      "sha256": "ac2be1847742e9d82eb90db80967d43e87b43abb54d7b4e019f264000ef2d702"
+      "render_sha256": "25e1d2c6d808e6bba33d2be64aca58f5017e68e3da87099341918104f8bfa14c"
     },
     {
+      "case": "ai-context-notice",
       "route": "/use-with-ai/?kind=notice&id=20240829105",
-      "viewport": "1440x1000",
-      "data_vintage": "site build",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
       "assertion": "notice RequestID preserved in contextual task",
-      "sha256": "2b101e7a05d22b1ab70ffb444cd27a18e25e4432704dd6707ad5892b88eef6de"
+      "render_sha256": "0c31ef3048f937f6ca88849e8e47c20d754712be9f3c67e22b33a19d4a78ffde"
     },
     {
+      "case": "ai-context-land",
       "route": "/use-with-ai/?kind=land_project&id=2024Q0356",
-      "viewport": "1440x1000",
-      "data_vintage": "site build",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
       "assertion": "land project get and decision-path tools preserved",
-      "sha256": "8ebcb8c9c5c7496a148b121e662a33642a54551f7a3eca42035bc67486be0d1c"
+      "render_sha256": "088ddf892c7b5b0fb8d7022f51bcdf61fe4bc8e7fd4ae501bd75f1af39354d2b"
     },
     {
+      "case": "ai-context-unsupported-filters",
       "route": "/use-with-ai/?kind=search_scope&status=unsupported_filters",
-      "viewport": "1440x1000",
-      "data_vintage": "site build",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
       "assertion": "unsupported filters disclosed while general setup remains reachable",
-      "sha256": "9d7a775269ceea5955ec47532981bda8681c375c9b0da5b583c145b12b421486"
+      "render_sha256": "f123cff643dcf792e4032ac4f231b573ac8a36c6b6b2f739cba21e712535121a"
     },
     {
+      "case": "ai-context-contract",
       "route": "/use-with-ai/?kind=contract",
-      "viewport": "390x844",
-      "data_vintage": "site build",
+      "viewport": {
+        "name": "phone",
+        "width": 390,
+        "height": 844
+      },
       "assertion": "exact contract task panel with private fields stripped and clipboard fallback",
-      "sha256": "ac2be1847742e9d82eb90db80967d43e87b43abb54d7b4e019f264000ef2d702"
+      "render_sha256": "25e1d2c6d808e6bba33d2be64aca58f5017e68e3da87099341918104f8bfa14c"
     },
     {
+      "case": "ai-context-notice",
       "route": "/use-with-ai/?kind=notice&id=20240829105",
-      "viewport": "390x844",
-      "data_vintage": "site build",
+      "viewport": {
+        "name": "phone",
+        "width": 390,
+        "height": 844
+      },
       "assertion": "notice RequestID preserved in contextual task",
-      "sha256": "2b101e7a05d22b1ab70ffb444cd27a18e25e4432704dd6707ad5892b88eef6de"
+      "render_sha256": "0c31ef3048f937f6ca88849e8e47c20d754712be9f3c67e22b33a19d4a78ffde"
     },
     {
+      "case": "ai-context-land",
       "route": "/use-with-ai/?kind=land_project&id=2024Q0356",
-      "viewport": "390x844",
-      "data_vintage": "site build",
+      "viewport": {
+        "name": "phone",
+        "width": 390,
+        "height": 844
+      },
       "assertion": "land project get and decision-path tools preserved",
-      "sha256": "8ebcb8c9c5c7496a148b121e662a33642a54551f7a3eca42035bc67486be0d1c"
+      "render_sha256": "088ddf892c7b5b0fb8d7022f51bcdf61fe4bc8e7fd4ae501bd75f1af39354d2b"
     },
     {
+      "case": "ai-context-unsupported-filters",
       "route": "/use-with-ai/?kind=search_scope&status=unsupported_filters",
-      "viewport": "390x844",
-      "data_vintage": "site build",
+      "viewport": {
+        "name": "phone",
+        "width": 390,
+        "height": 844
+      },
       "assertion": "unsupported filters disclosed while general setup remains reachable",
-      "sha256": "9d7a775269ceea5955ec47532981bda8681c375c9b0da5b583c145b12b421486"
+      "render_sha256": "f123cff643dcf792e4032ac4f231b573ac8a36c6b6b2f739cba21e712535121a"
     }
   ]
 }

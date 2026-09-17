@@ -457,6 +457,30 @@ def assert_subject_no_javascript(page, base: str) -> dict[str, object]:
 
 
 
+def _email_control_count(locator) -> int:
+    """Count Email controls, including Cloudflare email-protection rewrites."""
+    return locator.locator(
+        "a[href^='mailto:'], a[href*='email-protection'], a[href*='/cdn-cgi/l/email-protection']"
+    ).count()
+
+
+def _primary_fact_label(page, kind: str) -> str:
+    return page.evaluate(
+        """({ kind }) => {
+          const root = document.querySelector('#noticeview [data-notice-primary-facts]');
+          if (!root) return '';
+          const dts = Array.from(root.querySelectorAll('dt'));
+          const dt = dts.find((node) => new RegExp(kind, 'i').test(node.textContent || ''));
+          const dd = dt?.nextElementSibling;
+          if (!dd) return '';
+          const link = dd.querySelector('a');
+          const raw = (link?.textContent || dd.childNodes[0]?.textContent || dd.textContent || '');
+          return raw.replace(/◆/g, '').replace(/published by agency|named vendor/ig, '').trim();
+        }""",
+        {"kind": kind},
+    )
+
+
 def _visible_role_mentions(page, label: str) -> int:
     """Count visible primary-fact mentions of an agency/vendor role label."""
     return page.evaluate(
@@ -528,8 +552,7 @@ def assert_notice_tools(page, base: str, *, label: str) -> dict[str, object]:
     assert tools.first.get_attribute("open") is None, f"{label}: More tools should start closed"
     assert "More tools" in tools.first.locator("summary").inner_text().strip()
 
-    email = tools.locator("a[href^='mailto:']")
-    assert email.count() >= 1, f"{label}: Email control missing inside More tools"
+    assert _email_control_count(tools) >= 1, f"{label}: Email control missing inside More tools"
     if hydrated:
         assert page.locator("#noticeview #ncopy").count() == 1, f"{label}: missing modest #ncopy affordance"
         for control_id in ("nqr", "nxlsx", "nprint"):
@@ -546,24 +569,8 @@ def assert_notice_tools(page, base: str, *, label: str) -> dict[str, object]:
     ftype_text = page.locator("#noticeview .ftype").first.inner_text()
     primary = page.locator("#noticeview [data-notice-primary-facts]").first
     assert primary.count() == 1, f"{label}: primary facts region missing"
-    def primary_fact_label(kind: str) -> str:
-        return page.evaluate(
-            """({ kind }) => {
-              const root = document.querySelector('#noticeview [data-notice-primary-facts]');
-              if (!root) return '';
-              const dts = Array.from(root.querySelectorAll('dt'));
-              const dt = dts.find((node) => new RegExp(kind, 'i').test(node.textContent || ''));
-              const dd = dt?.nextElementSibling;
-              if (!dd) return '';
-              const link = dd.querySelector('a');
-              const raw = (link?.textContent || dd.childNodes[0]?.textContent || dd.textContent || '');
-              return raw.replace(/◆/g, '').replace(/published by agency|named vendor/ig, '').trim();
-            }""",
-            {"kind": kind},
-        )
-
-    agency_label = primary_fact_label("agency")
-    vendor_label = primary_fact_label("vendor")
+    agency_label = _primary_fact_label(page, "agency")
+    vendor_label = _primary_fact_label(page, "vendor")
     assert agency_label, f"{label}: agency missing from primary facts"
     assert vendor_label, f"{label}: vendor missing from primary facts"
     assert agency_label not in ftype_text, f"{label}: agency still repeated in the type line"
@@ -620,13 +627,17 @@ def assert_notice_tools_no_javascript(page, base: str) -> dict[str, object]:
     tools = page.locator("#noticeview details.notice-more-tools")
     assert tools.count() == 1
     assert tools.first.get_attribute("open") is None
-    assert page.locator("#noticeview details.notice-more-tools a[href^='mailto:']").count() >= 1
+    assert _email_control_count(tools) >= 1
     source = page.locator(f'#noticeview a.ui-official-source-link[href="{TOOLS_SOURCE}"]')
     assert source.count() >= 1
-    assert TOOLS_AGENCY not in page.locator("#noticeview .ftype").first.inner_text()
     assert page.locator("#noticeview [data-notice-primary-facts]").count() == 1
-    assert _visible_role_mentions(page, TOOLS_AGENCY) == 1
-    assert _visible_role_mentions(page, TOOLS_VENDOR) == 1
+    agency_label = _primary_fact_label(page, "agency")
+    vendor_label = _primary_fact_label(page, "vendor")
+    assert agency_label, "no-javascript: agency missing from primary facts"
+    assert vendor_label, "no-javascript: vendor missing from primary facts"
+    assert agency_label not in page.locator("#noticeview .ftype").first.inner_text()
+    assert _visible_role_mentions(page, agency_label) == 1
+    assert _visible_role_mentions(page, vendor_label) == 1
     return {
         "case": "notice-tools-no-javascript",
         "route": TOOLS_NOTICE_ROUTE,
