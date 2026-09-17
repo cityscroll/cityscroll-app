@@ -49,6 +49,12 @@ import {
   landRowMatchesRegulatoryEffect,
   normalizeLandRegulatoryEffect,
 } from "./land_regulatory_effect.mjs";
+import {
+  NEAR_YOU_RECORD_TITLE_LINK_CLASS,
+  nearYouRecordInspectionFacts,
+  renderNearYouRecordFullRecordLink,
+  renderNearYouRecordInspectButton,
+} from "./near_you_record_inspection.mjs";
 
 const LENS_LABELS = Object.freeze({
   land: "Zoning",
@@ -66,41 +72,6 @@ const BAG_LABELS = Object.freeze({
 });
 const BOROUGHS = Object.keys(BOROUGH_META);
 const NEAR_YOU_DATA_STATES = Object.freeze(["ready", "pending", "error"]);
-
-// Placement methods are machine provenance. Keep their stable enum values in
-// the read model, but never expose those identifiers as reader-facing copy.
-const PLACEMENT_METHOD_LABELS = Object.freeze({
-  agency_borough: "matched by agency area",
-  agency_community_board: "matched by community board area",
-  agency_hq: "agency headquarters fallback",
-  agency_service_area: "matched by agency service area",
-  cd_centroid_council: "district centroid",
-  civic_address_pip: "matched by civic address",
-  classic_affected_area: "matched by affected area",
-  community_board: "matched by community board area",
-  community_board_ontology: "matched by community board district",
-  coordinates_pip: "matched by coordinates",
-  citywide: "citywide placement",
-  citywide_phrase: "matched by citywide notice language",
-  hearing_matter: "matched by hearing matter",
-  matter_address: "matched by matter address",
-  matter_body_borough: "matched by matter borough",
-  matter_title_place: "matched by matter title",
-  neighborhood_place: "matched by neighborhood",
-  publisher_council: "matched by publisher district",
-  publisher_district: "matched by publisher district",
-  "rule-scope": "matched by rule scope",
-  rule_default_citywide: "citywide rule",
-  service_borough: "matched by service area",
-  stamped: "matched by published location",
-  structured_bag: "matched by published location",
-  title_borough: "matched by title borough",
-  vendor_address: "matched by vendor address",
-  vendor_place: "matched by vendor place",
-  venue_column: "matched by venue",
-  venue_line: "matched by venue",
-  virtual_only: "online-only event",
-});
 
 function esc(value) {
   return String(value ?? "")
@@ -611,50 +582,6 @@ function placeRoleUserLabel(role) {
   return "All local activity";
 }
 
-function placeRoleLabel(role) {
-  if (role === "venue") return "Meeting venue";
-  if (role === "matter") return "Matter place";
-  if (role === "property_affected") return "Affected property";
-  if (role === "project_geometry") return "Project area";
-  if (role === "place_of_performance") return "Place of performance";
-  return "Affected area";
-}
-
-function placementMethodLabel(method) {
-  return PLACEMENT_METHOD_LABELS[method] || "location evidence";
-}
-
-function whyHerePath(path) {
-  if (!path) return "";
-  const mandateLabel = path.mandate?.citation || path.mandate?.relation_label || "Connected mandate";
-  return `<div class="near-record-why" data-why-here-path="1"
-    data-located-in-method="${esc(path.provenance?.located_in_method)}"
-    data-cross-spine-method="${esc(path.provenance?.cross_spine_method)}"
-    data-publication-tier="${esc(path.provenance?.publication_tier)}"
-    aria-label="Why this record is here">
-    <strong>Why this is here</strong>
-    <span class="near-record-why-step">${esc(placeRoleLabel(path.location?.place_role))}: ${esc(path.location?.label)}</span>
-    <span class="near-record-why-separator" aria-hidden="true">·</span>
-    <span class="near-record-why-step">Process: <a href="${esc(path.agency?.href)}">${esc(path.agency?.name)}</a> → <a href="${esc(path.notice_href)}" title="${esc(path.mandate?.duty_text)}">Mandate: ${esc(mandateLabel)}</a></span>
-    <span class="near-record-why-source">Public location and civic-process links</span>
-  </div>`;
-}
-
-function geographyEvidence(evidence) {
-  if (!evidence) return "";
-  return `<details class="near-record-why" data-geography-evidence="1"
-    data-geography-key="${esc(evidence.key)}"
-    data-geography-source="${esc(evidence.source_id)}"
-    data-boundary-vintage="${esc(evidence.boundary_vintage)}"
-    aria-label="Why this geography matched">
-    <summary>Why this place matched</summary>
-    <span class="near-record-why-step">${esc(placeRoleLabel(evidence.location_role))}: ${esc(evidence.label)}</span>
-    <span class="near-record-why-separator" aria-hidden="true">·</span>
-    <span class="near-record-why-step">${esc(evidence.basis)}</span>
-    <span class="near-record-why-source">Publisher boundary ${esc(evidence.boundary_vintage)}</span>
-  </details>`;
-}
-
 function placeRoleBadge(role) {
   if (!PLACE_ROLES.includes(role)) return "";
   return `<span class="near-record-role" data-place-role="${esc(role)}">${esc(placeRoleUserLabel(role))}</span>`;
@@ -667,12 +594,24 @@ function recordCard(record) {
       : esc(meetingOriginLabel(record.meeting_origin))}</div>`
     : "";
   const placement = record.basis || "Local activity";
+  const facts = nearYouRecordInspectionFacts(record);
+  const inspectButton = facts
+    ? renderNearYouRecordInspectButton(facts, { escape: esc })
+    : "";
+  const fullRecord = facts
+    ? renderNearYouRecordFullRecordLink(facts, { escape: esc })
+    : "";
+  const uncertainty = facts?.uncertainty
+    ? `<p class="near-record-uncertainty">${esc(facts.uncertainty)}</p>`
+    : "";
+  // Static title link remains for no-JS / failed enhancement. After binding, CSS
+  // swaps it for the title-sized inspect control and the named full-record link.
   return `<li class="near-record" data-record-id="${esc(record.id)}">
-    <a class="near-record-title" href="${esc(record.route)}"
+    <a class="${NEAR_YOU_RECORD_TITLE_LINK_CLASS} near-record-title" href="${esc(record.route)}"
       data-pivot-schema="cityscroll.edge_summary.v1" data-pivot-status="accepted"
       data-pivot-relation-label="nearby record" data-pivot-target-kind="notice"
       data-pivot-target-id="${esc(record.id)}" data-pivot-source-kind="place"
-      data-pivot-source-id="near-you">${esc(record.title)}</a>
+      data-pivot-source-id="near-you">${esc(record.title)}</a>${inspectButton}
     ${placeRoleBadge(record.matched_place_role)}
     <div class="near-record-meta">
       ${record.agency ? `<span>${esc(record.agency)}</span>` : ""}
@@ -680,7 +619,9 @@ function recordCard(record) {
       <span>${esc(dateLabel(record.date))}</span>
     </div>
     ${meetingSource}
-    <div class="near-record-basis"><strong>${esc(placement)}</strong></div>${geographyEvidence(record.geography_evidence)}${whyHerePath(record.why_here)}
+    <div class="near-record-basis"><strong>${esc(placement)}</strong></div>
+    ${uncertainty}
+    ${fullRecord ? `<p class="near-record-actions">${fullRecord}</p>` : ""}
   </li>`;
 }
 
