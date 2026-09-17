@@ -11,6 +11,9 @@
 //      Following keep their existing preview/scope machinery
 //   A5 every audited host inherits this through the shared month binder
 //
+//   citizen-entry (ccf9db3fdfdd4): revised homepage search entry keeps /search/
+//      scope through return without absorbing a browse-return token
+//
 //   node --test test/browse_return_context.test.mjs
 
 import assert from "node:assert/strict";
@@ -423,6 +426,49 @@ test("A4: Search scope stays on the canonical route and does not absorb a return
   const nowScope = scopeFromRouteHash("#now?q=parks&boro=Bronx");
   assert.equal(nowScope.topic.query, "parks");
   assert.ok(!JSON.stringify(watchFromScope(nowScope)).includes(BROWSE_RETURN_HISTORY_KEY));
+});
+
+test("citizen-entry: revised homepage search entry keeps /search/ scope through return without absorbing a token", () => {
+  const home = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+  assert.match(home, /data-home-topic-entry/);
+  assert.match(home, /<form class="home-topic-form" method="get" action="\/search\/">/);
+  assert.match(home, /id="home-topic-query"[^>]*name="q"/);
+
+  const entryParams = new URLSearchParams("q=shelter");
+  entryParams.set(BROWSE_RETURN_HISTORY_KEY, "procurement:07122P0012063");
+  const frontDoor = searchFrontDoorHref("all", new URLSearchParams("q=shelter"));
+  assert.match(frontDoor, /^\/search\/\?/);
+  assert.match(frontDoor, /q=shelter/);
+  assert.doesNotMatch(frontDoor, new RegExp(BROWSE_RETURN_HISTORY_KEY));
+  assert.equal(
+    searchFrontDoorScopeFromParams(entryParams).id,
+    "all",
+    "a return token must not become a search front-door scope",
+  );
+
+  const searchLocation = {
+    pathname: "/search",
+    search: "?q=shelter",
+    hash: "",
+    href: "https://cityscroll.org/search/?q=shelter",
+  };
+  assert.equal(browseReturnScopeFromLocation(searchLocation), "/search?q=shelter");
+
+  const history = makeHistory();
+  const remembered = createBrowseReturnContext({
+    uid: "procurement:07122P0012063",
+    href: "/procurements/procurement%3A07122P0012063",
+    invoker: "preview",
+    scope: browseReturnScopeFromLocation(searchLocation),
+  }, 1_000_000);
+  assert.ok(remembered);
+  assert.equal(writeBrowseReturnHistory(history, remembered, searchLocation), true);
+  assert.equal(browseReturnFromHistoryState(history.state).scope, "/search?q=shelter");
+  assert.equal(
+    browseReturnScopeFromLocation(searchLocation),
+    "/search?q=shelter",
+    "Back keeps the homepage search entry on /search/ rather than inventing a new identity",
+  );
 });
 
 test("A5: all eight audited hosts inherit return context through the shared binder", () => {
