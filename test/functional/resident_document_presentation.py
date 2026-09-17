@@ -44,6 +44,7 @@ TOOLS_SOURCE = SUBJECT_SOURCE
 TOOLS_AGENCY = "Homeless Services"
 TOOLS_VENDOR = "BHRAGS Operating LLC"
 TOOLS_MANIFEST_PATH = ROOT / "docs" / "evidence" / "notice-tools" / "capture-manifest.json"
+RESEARCH_TOOLS_MANIFEST_PATH = ROOT / "docs" / "evidence" / "research-tools" / "capture-manifest.json"
 PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
 LOCAL_CONDITION = (
     "Local Wrangler Worker with HTMLRewriter and the verified public site artifact; "
@@ -1162,6 +1163,58 @@ def _with_query_value(href: str, key: str, value: str) -> str:
     return f"{parts[0]}?{'&'.join(kept)}"
 
 
+def write_research_tools_manifest(
+    captures: list[dict[str, object]],
+    *,
+    base: str,
+    revision: str,
+    path: pathlib.Path | None = None,
+) -> pathlib.Path:
+    """Retain the research-tools capture packet in the shared render-manifest shape.
+
+    Desktop and narrow #main text can differ under responsive chrome, so this
+    writer records both viewports without requiring hash equality (same posture
+    as the citizen-entry retention path).
+    """
+    by_case: dict[str, set[str]] = {}
+    for capture in captures:
+        by_case.setdefault(str(capture["case"]), set()).add(
+            viewport_name(capture["viewport"])  # type: ignore[arg-type]
+        )
+    for case, widths in sorted(by_case.items()):
+        assert widths == {"desktop", "narrow"}, (
+            f"research-tools writer: case {case} must be captured at desktop and narrow "
+            f"(got {sorted(widths)})"
+        )
+    target = path or RESEARCH_TOOLS_MANIFEST_PATH
+    payload = {
+        "schema": "cityscroll.render_capture_manifest.v1",
+        "surface": "research tools discovery",
+        "base": manifest_base_label(base),
+        "condition": manifest_condition(base),
+        "image_binaries_committed": False,
+        "revision": revision,
+        "data_vintage": "materialized notice fixture 2026-08-14",
+        "route": NOTICE_ROUTE,
+        "captures": [
+            {
+                "case": capture["case"],
+                "viewport": {
+                    "name": viewport_name(capture["viewport"]),
+                    "width": capture["viewport"]["width"],
+                    "height": capture["viewport"]["height"],
+                },
+                "assertion": capture["assertion"],
+                "render_sha256": capture["render_sha256"],
+            }
+            for capture in captures
+        ],
+    }
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    return target
+
+
 def run_research_tools_self_tests() -> None:
     """Fixture-closable checks for the research-navigation census comparison (no browser).
 
@@ -1277,6 +1330,44 @@ def run_research_tools_self_tests() -> None:
     # a pass: every shape above fired, so an always-empty helper cannot satisfy it.
     print("OK research-tools census-comparison self-test", flush=True)
 
+    # Writer shape check: the production retention path uses the shared
+    # render-capture manifest schema (no browser required).
+    scratch = pathlib.Path(tempfile.mkdtemp(prefix="research-tools-manifest-"))
+    try:
+        written = write_research_tools_manifest(
+            [
+                {
+                    "case": "research-tools-hydration",
+                    "route": NOTICE_ROUTE,
+                    "viewport": {"width": 1440, "height": 1000},
+                    "assertion": "writer self-test",
+                    "render_sha256": "a" * 64,
+                },
+                {
+                    "case": "research-tools-hydration",
+                    "route": NOTICE_ROUTE,
+                    "viewport": {"width": 390, "height": 844},
+                    "assertion": "writer self-test",
+                    "render_sha256": "b" * 64,
+                },
+            ],
+            base="https://cityscroll.org/",
+            revision="abcdef012",
+            path=scratch / "capture-manifest.json",
+        )
+        payload = json.loads(written.read_text(encoding="utf-8"))
+        assert payload["schema"] == "cityscroll.render_capture_manifest.v1"
+        assert payload["base"] == "https://cityscroll.org/"
+        assert "Production base https://cityscroll.org/" in payload["condition"]
+        assert payload["image_binaries_committed"] is False
+        assert payload["route"] == NOTICE_ROUTE
+        assert payload["revision"] == "abcdef012"
+        assert len(payload["captures"]) == 2
+        assert payload["captures"][0]["render_sha256"] != payload["captures"][1]["render_sha256"]
+    finally:
+        shutil.rmtree(scratch, ignore_errors=True)
+    print("OK research-tools capture-manifest writer self-test", flush=True)
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -1345,19 +1436,31 @@ def main() -> None:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
             if args.case == "research-tools":
-                # Prove the hydrated census and on-site addresses. Production
-                # render manifests for repaired gaps remain an operator step
-                # after deployment, so this case does not retain them.
+                # Prove the hydrated census and on-site addresses, and optionally
+                # retain the production render-capture manifest after deployment.
                 for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):
                     context = browser.new_context(viewport=viewport)
                     page = context.new_page()
                     result = assert_research_tools(page, base, label="research-tools hydration")
+                    captures.append({
+                        "case": "research-tools-hydration",
+                        "route": NOTICE_ROUTE,
+                        "viewport": viewport,
+                        "assertion": (
+                            "Hydrated notice More tools keeps research navigation matching the "
+                            "capability census exactly with on-site addresses and a closed disclosure."
+                        ),
+                        "render_sha256": result["render_sha256"],
+                    })
                     print(
                         f"OK research-tools {viewport['width']}x{viewport['height']}: {result['render_sha256']}",
                         flush=True,
                     )
                     context.close()
                 browser.close()
+                if args.write_manifest:
+                    write_research_tools_manifest(captures, base=base, revision=revision)
+                    print(f"wrote {RESEARCH_TOOLS_MANIFEST_PATH.relative_to(ROOT)}", flush=True)
                 return
 
             for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):

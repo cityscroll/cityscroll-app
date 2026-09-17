@@ -1,0 +1,32 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "research tools discovery",
+  "base": "https://cityscroll.org/",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "image_binaries_committed": false,
+  "revision": "9d247ea0f",
+  "data_vintage": "materialized notice fixture 2026-08-14",
+  "route": "/notices/20260810048/",
+  "captures": [
+    {
+      "case": "research-tools-hydration",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "Hydrated notice More tools keeps research navigation matching the capability census exactly with on-site addresses and a closed disclosure.",
+      "render_sha256": "cd43fa6ef54bb0e6f704223c0d5b684e357099d08d44efe430966fd204f52222"
+    },
+    {
+      "case": "research-tools-hydration",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "Hydrated notice More tools keeps research navigation matching the capability census exactly with on-site addresses and a closed disclosure.",
+      "render_sha256": "cd43fa6ef54bb0e6f704223c0d5b684e357099d08d44efe430966fd204f52222"
+    }
+  ]
+}
