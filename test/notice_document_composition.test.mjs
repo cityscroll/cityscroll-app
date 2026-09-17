@@ -285,13 +285,19 @@ test("A9 writer: capture-manifest condition and revision derive from the served 
   assert.match(toolsSelfTest.stdout, /OK notice-tools capture-manifest writer self-test/);
 });
 
-test("A9 writer: retained capture manifest records honest local condition and viewport hash invariance", async () => {
+test("A9 writer: retained capture manifest records honest production condition and viewport hash invariance", async () => {
   await withPinnedClock("2026-09-16T12:00:00.000Z", async () => {
     assert.equal(todayISO(), "2026-09-16");
+    assert.equal(captureManifest.schema, "cityscroll.render_capture_manifest.v1");
+    assert.equal(captureManifest.base, "https://cityscroll.org/");
     assert.equal(captureManifest.render_hash_viewport_invariant, true);
-    assert.match(String(captureManifest.condition || ""), /Local Wrangler Worker/);
-    assert.doesNotMatch(String(captureManifest.condition || ""), /^Production base/);
+    assert.match(
+      String(captureManifest.condition || ""),
+      /^Production base https:\/\/cityscroll\.org\/ after deployment; no image binary is committed\.$/,
+    );
+    assert.doesNotMatch(String(captureManifest.condition || ""), /Local Wrangler Worker/);
     assert.match(String(captureManifest.revision || ""), /^[0-9a-f]{9}$/);
+    assert.equal(captureManifest.route, "/notices/20260810048/");
     assert.equal(captureManifest.image_binaries_committed, false);
 
     const byCase = new Map();
@@ -301,6 +307,7 @@ test("A9 writer: retained capture manifest records honest local condition and vi
       byCase.set(capture.case, widths);
     }
     assert.ok(byCase.size >= 1, "A9 writer: retained manifest has captures");
+    assert.ok(byCase.size >= 6, "A9 writer: retained manifest covers the notice-shell cases");
     for (const [caseName, widths] of byCase) {
       assert.equal(
         widths.desktop,
