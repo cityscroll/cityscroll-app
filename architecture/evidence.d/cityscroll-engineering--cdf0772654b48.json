@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/cdf0772654b48",
+  "status": "implemented",
+  "fingerprint": "search-result-inspection.v1",
+  "updated_at": "2026-09-17T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "search-result-inspection-module",
+      "path": "site/search_result_inspection.mjs"
+    },
+    {
+      "id": "universal-search-relevance-ux",
+      "path": "site/universal_search_relevance_ux.mjs"
+    },
+    {
+      "id": "search-document-receipt-seam",
+      "path": "site/search_document.mjs"
+    },
+    {
+      "id": "search-result-inspection-styling",
+      "path": "site/search.css"
+    },
+    {
+      "id": "browse-inspection-contract-module",
+      "path": "site/browse_inspection_contract.mjs"
+    },
+    {
+      "id": "browse-inspection-catalog-projection",
+      "path": "test/standards/browse_inspection_catalog.json"
+    },
+    {
+      "id": "search-result-inspection-tests",
+      "path": "test/search_result_inspection.test.mjs"
+    },
+    {
+      "id": "search-result-inspection-acceptance-manifest",
+      "path": "docs/evidence/search-result-inspection/acceptance-manifest.json"
+    },
+    {
+      "id": "browse-inspection-acceptance-manifest",
+      "path": "docs/evidence/browse-inspection-contract/acceptance-manifest.json"
+    }
+  ]
+}

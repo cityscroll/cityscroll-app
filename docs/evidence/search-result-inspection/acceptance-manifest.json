@@ -1,0 +1,83 @@
+{
+  "schema": "cityscroll.search_result_inspection_acceptance.v1",
+  "record": "cityscroll-engineering/cdf0772654b48",
+  "route": "/search/?q=shelter",
+  "revision": "8cf1df2f2b5b3bf0a50cd5974d6cf24893d6bd5e",
+  "fixture_vintage": "20260818019",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-17T12:00:00Z",
+  "viewport": [
+    1440,
+    900
+  ],
+  "measurement_policy": "Assertions record deterministic search-result inspection fixtures over the shared relevance projection and inspection binder. No participant evaluation was run and no usability gain is claimed. Image binaries are not part of this proof.",
+  "image_policy": "No image binaries are committed for this acceptance record.",
+  "journey": {
+    "id": "search-result-inspection",
+    "sequence": [
+      "set_scope_or_view",
+      "inspect",
+      "dismiss",
+      "open_full_record",
+      "return_with_back",
+      "continue"
+    ],
+    "variants": [
+      "desktop",
+      "narrow_touch",
+      "keyboard",
+      "no_javascript",
+      "failed_detail"
+    ],
+    "rendered_reference": {
+      "route": "/search/?q=shelter",
+      "harness": "test/search_result_inspection.test.mjs",
+      "assertion": "set scope or view, inspect, dismiss, open the explicit full record, return with Back, and continue from the restored collection state"
+    }
+  },
+  "assertions": [
+    {
+      "id": "reject-money-title-collection-rewrite",
+      "result": "rejected",
+      "assertion": "Money primary title rewrite into the Contracts collection is no longer present",
+      "fixture": "money-title-rewrite"
+    },
+    {
+      "id": "primary-inspect-no-navigation",
+      "result": "accepted",
+      "assertion": "Title-sized inspect control opens the search-result modal without leaving search",
+      "fixture": "shelter-07122P0012063"
+    },
+    {
+      "id": "named-full-record-link",
+      "result": "accepted",
+      "assertion": "Separately named full-record link keeps the grounded procurement destination",
+      "fixture": "shelter-07122P0012063"
+    },
+    {
+      "id": "separate-contracts-continuation",
+      "result": "accepted",
+      "assertion": "Continue in Contracts remains a distinct handoff with exact record_ref scope",
+      "fixture": "shelter-07122P0012063"
+    },
+    {
+      "id": "source-observation-distinct-from-procurement-identity",
+      "result": "accepted",
+      "assertion": "Source observation notice:20260818019 is shown separately from procurement:07122P0012063",
+      "fixture": "shelter-07122P0012063"
+    },
+    {
+      "id": "land-family-nav-preserves-query",
+      "result": "accepted",
+      "assertion": "Land family navigation focuses its heading without rewriting the shelter query or URL",
+      "fixture": "family-nav-land"
+    },
+    {
+      "id": "failed-detail-keeps-summary-and-record-link",
+      "result": "accepted",
+      "assertion": "Failed detail keeps the coherent summary and explicit record link",
+      "fixture": "failed-detail"
+    }
+  ],
+  "assertions_sha256": "cbe09ba6baee7da1423b8c7dee51375e64ebb43b8a3da50d81f2ad3260c4b9cb"
+}
