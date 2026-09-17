@@ -620,6 +620,7 @@
 /site/near-you/
 /site/near_you_explanation_path.mjs
 /site/near_you_scope.mjs
+/site/near_you_scope_adoption.mjs
 /site/near_you_scope_runtime.mjs
 /site/near_you_view.mjs
 /site/neighborhood_search.mjs
