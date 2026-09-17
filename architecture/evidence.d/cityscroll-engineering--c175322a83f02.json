@@ -34,6 +34,10 @@
       "path": "test/contract_result_inspection.test.mjs"
     },
     {
+      "id": "contract-result-inspection-return-with-back-probe",
+      "path": "test/functional/contract_result_inspection_return_with_back.py"
+    },
+    {
       "id": "contract-result-inspection-acceptance-manifest",
       "path": "docs/evidence/contract-result-inspection/acceptance-manifest.json"
     },
