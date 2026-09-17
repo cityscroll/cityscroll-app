@@ -2,7 +2,7 @@
   "schema": "cityscroll.land_selection_readable_authority_acceptance.v1",
   "record": "cityscroll-engineering/cd4108a7db076",
   "route": "/browse/zoning/?view=map",
-  "revision": "ecd674bf17f99165551b9af67775dc7820f016c0",
+  "revision": "a0c80dbfb99b6e0d6d394e5ac44793fd149836e8",
   "fixture_vintage": "2026-09-09T06:46:42.537Z",
   "timezone": "America/New_York",
   "captured_at": "2026-09-17T06:26:00.000Z",

@@ -37,7 +37,7 @@ import { landMapAuthorityHandoff } from "../land_map_authority_handoff.mjs";
 import {
   landAuthorityProcedureLabel,
   landAuthorityStageLabel,
-} from "../land_authority_summary_view.mjs";
+} from "../land_authority_labels.mjs";
 import { landProjectPath } from "../land_project_route.mjs";
 import {
   landMapSelectionFocusIntent,

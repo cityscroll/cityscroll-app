@@ -17,7 +17,12 @@ import {
   nextDecisionEligibility,
 } from "./land_next_decision_watch.mjs";
 import { landAuthorityPlainRoleHTML } from "./land_hearing_authority_copy.mjs";
-import { resolveLandProcedureProfile } from "./land_procedure_profiles.mjs";
+import {
+  landAuthorityProcedureLabel,
+  landAuthorityStageLabel,
+} from "./land_authority_labels.mjs";
+
+export { landAuthorityProcedureLabel, landAuthorityStageLabel };
 
 export const LAND_AUTHORITY_SUMMARY_URL = "data/land_authority_summary.json";
 export const LAND_AUTHORITY_PANEL_HEADING = "Where this stands";
@@ -153,42 +158,6 @@ function roleKey(role) {
 function roleHereKey(role) {
   if (!role) return null;
   return `land_authority_role_here_${role}`;
-}
-
-function phaseLabel(phaseId, translate) {
-  const key = `land_phase_${phaseId}`;
-  const label = translate(key);
-  return label === key ? phaseId : label;
-}
-
-/**
- * A parallel-group next stage (e.g. Community Board / Borough President
- * reviewed at the same time under § 197-e) is never collapsed into a single
- * label implying a first-then-second order.
- */
-export function landAuthorityStageLabel(stage, translate) {
-  if (stage?.group_id && Array.isArray(stage.spine_phase_ids) && stage.spine_phase_ids.length) {
-    return translate("land_authority_expected_next_parallel", {
-      members: stage.spine_phase_ids.map((phaseId) => phaseLabel(phaseId, translate)).join(` ${translate("land_authority_and")} `),
-    });
-  }
-  if (!stage || stage.status === "unknown" || !stage.spine_phase_id) {
-    return translate("land_authority_unknown");
-  }
-  return phaseLabel(stage.spine_phase_id, translate);
-}
-
-/**
- * Resident procedure wording from the reviewed procedure-profile registry.
- * Raw procedure ids stay in data attributes; this never invents a label for an
- * unresolved or unknown procedure.
- */
-export function landAuthorityProcedureLabel(procedureId, translate) {
-  const id = clean(procedureId);
-  if (!id) return translate("land_authority_unknown");
-  const resolved = resolveLandProcedureProfile({ procedure_id: id });
-  const label = clean(resolved?.profile?.label);
-  return label || translate("land_authority_unknown");
 }
 
 function publishedOpportunityCopy(published, translate) {

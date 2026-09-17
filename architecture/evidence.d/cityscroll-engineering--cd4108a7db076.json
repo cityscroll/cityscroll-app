@@ -10,6 +10,10 @@
       "path": "site/app/map_runtime.mjs"
     },
     {
+      "id": "land-authority-resident-labels",
+      "path": "site/land_authority_labels.mjs"
+    },
+    {
       "id": "land-authority-panel-view",
       "path": "site/land_authority_summary_view.mjs"
     },

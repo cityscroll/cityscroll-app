@@ -16,7 +16,7 @@ import { buildLandMapModel } from "../site/land_map_model.mjs";
 import {
   landAuthorityProcedureLabel,
   landAuthorityStageLabel,
-} from "../site/land_authority_summary_view.mjs";
+} from "../site/land_authority_labels.mjs";
 import {
   LAND_MAP_SELECTION_ID,
   landMapSelectionHTML,
