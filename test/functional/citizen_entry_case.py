@@ -238,19 +238,52 @@ def assert_keyboard_reaches_search(page, *, label: str) -> None:
 
 def assert_translated_layout(page, base: str, *, label: str) -> dict:
     open_route(page, base, HOME_ROUTE, label=label)
-    page.select_option("#langSelect", "es")
-    page.wait_for_timeout(200)
+    # Offline shell fixtures stage i18n.js but not app/main.mjs, so the select change
+    # listener from home_entry never attaches. Drive setLang directly (same path the
+    # listener would call) and wait for the Spanish catalog to apply.
+    page.wait_for_function("() => typeof window.setLang === 'function'")
+    page.evaluate(
+        """() => new Promise((resolve) => {
+          const select = document.getElementById('langSelect');
+          if (select) select.value = 'es';
+          window.setLang('es', resolve);
+        })"""
+    )
+    page.wait_for_function("() => document.documentElement.lang === 'es'")
+    page.wait_for_function(
+        """() => {
+          const heading = document.querySelector('[data-i18n=\"topic_search_heading\"]');
+          const facet = document.querySelector('[data-i18n=\"browse_facet_label\"]');
+          const tagline = document.querySelector('[data-i18n=\"site_tagline\"]');
+          const text = (el) => (el?.textContent || '').trim();
+          return text(heading).includes('pasando en tu ciudad')
+            && text(facet) === 'Explorar por tipo'
+            && text(tagline).includes('oportunidades publicadas');
+        }"""
+    )
     sample = sample_hierarchy(page)
-    # Either the translated catalog applied, or English fallback remains coherent.
+    lang = page.evaluate("() => document.documentElement.lang || ''")
+    assert lang == "es", f"{label}: expected document lang es, got {lang!r}"
     assert sample["searchVisible"], f"{label}: search vanished after language change"
     assert not sample["ctaVisible"], f"{label}: contracts CTA appeared after language change"
-    body = page.locator("body").inner_text()
-    assert "civic object" not in body.lower(), f"{label}: civic-object wording after translation"
+    assert "pasando en tu ciudad" in sample["searchText"].lower(), (
+        f"{label}: Spanish search heading missing from rendered search task"
+    )
+    assert sample["facetLabel"] == "Explorar por tipo", (
+        f"{label}: expected Spanish facet label, got {sample['facetLabel']!r}"
+    )
+    assert "oportunidades publicadas" in sample["tagline"].lower(), (
+        f"{label}: Spanish tagline missing from rendered masthead"
+    )
+    assert "civic object" not in sample["searchText"].lower(), f"{label}: civic-object wording after translation"
+    assert "What's happening in your city?" not in sample["searchText"], (
+        f"{label}: English search heading still rendered after Spanish switch"
+    )
     return {
         "route": HOME_ROUTE,
         "viewport": page.viewport_size,
         "render_sha256": render_hash(page),
-        "lang": page.evaluate("() => document.documentElement.lang || ''"),
+        "lang": lang,
     }
 
 
@@ -433,9 +466,10 @@ def run_citizen_entry_case(base: str | None = None, *, write_manifest: bool = Fa
                     "case": "citizen-entry-translated",
                     "route": HOME_ROUTE,
                     "viewport": viewport,
+                    "lang": translated["lang"],
                     "assertion": (
-                        "Language switching keeps a clear primary search emphasis without revealing "
-                        "the specialist signup on home."
+                        "Spanish catalog applies (lang=es) with distinct citizen-entry copy while "
+                        "keeping one primary search task and hiding the specialist signup on home."
                     ),
                     "render_sha256": translated["render_sha256"],
                     "passed": True,
