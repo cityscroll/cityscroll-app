@@ -52,6 +52,7 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/calendar_subscription.mjs",
   "/watch_family_capabilities.mjs",
   "/search_document_contract.mjs",
+  "/search_result_inspection.mjs",
   "/zoning_hearing_calendar.mjs",
   "/guide_contextual_links.mjs",
   "/calendar_occurrence.mjs",
