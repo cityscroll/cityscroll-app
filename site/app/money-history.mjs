@@ -1043,7 +1043,7 @@ function solicitationContextHeadingHTML(r){
     section,
     r.agency_name ? pivotA(agencyHref(r.agency_name), r.agency_name) : "",
   ].filter(Boolean).join(" · ");
-  const projection=globalThis.moneyListInteractionProjection?.(r);
+  const projection=globalThis.contractResultInteractionProjection?.(r);
   const linkedTitle=renderObjectCardTitle(projection,{className:"money-detail-object-title",escape:escUiHtml})
     || escUiHtml(noticeDisplayTitle(r));
   return `<header class="notice-context-heading"${ready?' data-solicitation-context-ready="true"':""}>
@@ -1111,7 +1111,7 @@ function renderDetail(r, chain, stats, loadContext = true){
   if(!pending) html += noticeAgencyBar(stats, r.agency_name, "agencybar sub");
   $("#detail").innerHTML = html;
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
-  const detailProjection=globalThis.moneyListInteractionProjection?.(r);
+  const detailProjection=globalThis.contractResultInteractionProjection?.(r);
   const detailURL=detailProjection?.copy_target||noticeLink(r.request_id);
   const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(detailURL, dc));
   bindQRShare($("#dqr"), detailURL);

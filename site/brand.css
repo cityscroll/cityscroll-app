@@ -158,6 +158,25 @@
 .money-row-card .ui-object-card-interactions{display:grid;gap:6px;margin:0 0 6px}
 .money-row-card .ui-object-card-title{font-weight:700;font-size:15px}
 .money-row-card .ui-object-card-action-rail{margin-top:2px}
+.money-row-title-cluster{display:grid;gap:0;min-width:0}
+.money-row-title-link,.money-row-inspect{font-weight:700;font-size:15px;line-height:1.3;color:var(--color-text,#12181f);text-decoration:none}
+.money-row-title-link:hover{text-decoration:underline}
+.money-row-inspect{display:none;width:100%;margin:0;padding:0;border:0;background:transparent;text-align:left;cursor:pointer;font:inherit}
+.money-row-inspect:hover,.money-row-inspect:focus-visible{text-decoration:underline}
+[data-contract-result-inspect-ready] .money-row-title-link{display:none}
+[data-contract-result-inspect-ready] .money-row-inspect{display:block}
+.money-row-full-record{font:700 13px/1.3 var(--font-interface,ui-sans-serif,system-ui,sans-serif)}
+.contract-result-inspection-detail{display:grid;gap:10px}
+.contract-result-inspection-kicker{margin:0;font:700 12px/1.3 var(--font-interface,ui-sans-serif,system-ui,sans-serif);color:var(--color-text-soft,#3e4652)}
+.contract-result-inspection-overview{margin:0;display:grid;gap:6px}
+.contract-result-inspection-row{display:grid;grid-template-columns:minmax(7rem,9rem) 1fr;gap:8px}
+.contract-result-inspection-row dt{margin:0;font:700 12px/1.35 var(--font-interface,ui-sans-serif,system-ui,sans-serif);color:var(--color-text-soft,#3e4652)}
+.contract-result-inspection-row dd{margin:0;font:14px/1.4 var(--font-reading,var(--font-body),ui-serif,Georgia,serif)}
+.contract-result-inspection-summary,.contract-result-inspection-status,.contract-result-inspection-actions{margin:0}
+@media print{
+  [data-contract-result-inspect-ready] .money-row-title-link{display:inline}
+  [data-contract-result-inspect-ready] .money-row-inspect,.money-row-full-record{display:none!important}
+}
 .rules-fcard .ui-object-card-primary{align-items:flex-start;justify-content:space-between}
 .rules-fcard .ui-object-card-title{font-weight:700;font-size:15px;line-height:1.3}
 .rules-fcard .ui-object-card-handoffs{margin-top:6px}

@@ -139,15 +139,15 @@ export const BROWSE_INSPECTION_SURFACES = Object.freeze([
     family: "contracts",
     kind: "collection",
     primary_intent: "inspect",
-    classification: "legacy",
-    domain_adapter: "site/app/money-list.mjs",
+    classification: "conforming",
+    domain_adapter: "site/contract_result_inspection.mjs",
     render_owner: "site/app/money-list.mjs",
     canonical_destination_policy: "explicit_full_record_link",
     detail_host: "inline_detail",
-    detail_host_module: "site/app/money-list.mjs",
+    detail_host_module: "site/contract_result_inspection.mjs",
     restoration_adapter: "site/browse_return_context.mjs",
-    journey_owner: "test/browse_inspection_contract.test.mjs",
-    baseline_id: "contracts-row-click-diverges",
+    journey_owner: "test/contract_result_inspection.test.mjs",
+    baseline_id: null,
     route: "/browse/contracts/",
   }),
   freezeSurface({
@@ -385,14 +385,6 @@ export const BROWSE_INSPECTION_SURFACES = Object.freeze([
  * no longer appears in the named source. New entries are rejected.
  */
 export const BROWSE_INSPECTION_LEGACY_BASELINE = Object.freeze([
-  Object.freeze({
-    id: "contracts-row-click-diverges",
-    path: "site/app/money-list.mjs",
-    marker: "moneyListInteractionProjection",
-    reason:
-      "Contracts rows still diverge between title navigation, row selection, and source-native branches for the same collection.",
-    fingerprint: null,
-  }),
   Object.freeze({
     id: "board-position-title-navigates",
     path: "site/community_board_land_positions.mjs",

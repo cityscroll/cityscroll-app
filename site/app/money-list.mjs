@@ -5,10 +5,16 @@ import { moneyClosingWeekHash, moneyLocationBasisHref } from "../money_scope_lin
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import {
   installFilterChipNavigation,
-  objectCardInteractionProjection,
   renderObjectCardActionRail,
-  renderObjectCardPrimitives,
 } from "../affordance_grammar.mjs";
+import {
+  bindContractResultInspection,
+  contractResultInteractionProjection,
+  contractResultUsesSharedDetail,
+  projectContractResultInspection,
+  renderContractResultInspectionDetailHTML,
+  renderContractResultInteractionsHTML,
+} from "../contract_result_inspection.mjs";
 import { solicitationResponseContextReady } from "../solicitation_response_context.mjs";
 import {
   contractIdentityFromFacetValues,
@@ -1396,39 +1402,24 @@ function moneyListPrimaryAction(r, today=todayISO()){
     };
   }catch(_e){ return null; }
 }
-function moneyListInteractionProjection(r, today=todayISO()){
-  const requestId=String(r?.request_id||"").trim();
-  const inspectHref=String(r?.inspect_href||"").trim();
-  const canonicalHref=String(r?.canonical_href||"").trim();
-  const presentation=moneyListPrimaryAction(r,today);
-  const kineticActions=presentation ? [{
-    label:t(presentation.label_key),
-    href:presentation.href,
-    kind:presentation.action.type,
-    context_ready:true,
-    primary:true,
-  }] : [];
-  return objectCardInteractionProjection({
-    target:(inspectHref||canonicalHref||requestId) ? {
-      href:inspectHref||canonicalHref||`/notices/${encodeURIComponent(requestId)}`,
-      label:noticeDisplayTitle(r),
-    } : null,
-    kinetic_actions:kineticActions,
-  });
-}
 function moneyListPrimaryActionHTML(r, today=todayISO()){
-  return renderObjectCardActionRail(moneyListInteractionProjection(r,today),{
+  return renderObjectCardActionRail(contractResultInteractionProjection(r,{
+    today,
+    primaryAction:(row, day)=>moneyListPrimaryAction(row, day),
+    translate:t,
+  }),{
     heading:t("next_action_heading"),
     escape:escUiHtml,
     newTabLabel:t("ext_link_new_tab_sr"),
   });
 }
 function moneyListCardInteractionsHTML(r, titleMarkup, today=todayISO()){
-  const projection=moneyListInteractionProjection(r,today);
-  return renderObjectCardPrimitives(projection,{
+  return renderContractResultInteractionsHTML(r,{
     escape:escUiHtml,
     titleMarkup,
-    titleClassName:"ui-object-card-title rtitle",
+    today,
+    primaryAction:(row, day)=>moneyListPrimaryAction(row, day),
+    translate:t,
     copyLabel:t("copy_link"),
     actionHeading:t("next_action_heading"),
     newTabLabel:t("ext_link_new_tab_sr"),
@@ -1568,16 +1559,33 @@ async function consolidateMoneyAwardRows(rows){
     },
   });
 }
-function bindMoneyListRowClicks(lineageRows=null){
-  document.querySelectorAll("#list .row").forEach(el=>{
+function bindMoneyListInspection(lineageRows=null){
+  const list=document.querySelector("#list");
+  if(!list) return;
+  // Trusted reader input may load the planning surface; programmatic auto-select
+  // stays overview-only. Navigation no longer depends on event.isTrusted.
+  bindContractResultInspection(list,{
+    onInspect:(index, el, event)=>select(
+      index,
+      el,
+      event.isTrusted,
+      event.isTrusted ? null : (currentMoneyLineageRows || lineageRows),
+    ),
+  });
+  list.querySelectorAll(".row").forEach(el=>{
     el.addEventListener("click",event=>{
       if(event.target.closest?.("a,button")) return;
-      const row=currentRows[+el.dataset.i];
-      if(event.isTrusted&&row?.inspect_href){ location.assign(row.inspect_href); return; }
-      if(event.isTrusted&&!row?.request_id&&row?.canonical_href){ location.assign(row.canonical_href); return; }
-      select(+el.dataset.i, el, event.isTrusted, event.isTrusted?null:(currentMoneyLineageRows || lineageRows));
+      select(
+        +el.dataset.i,
+        el,
+        event.isTrusted,
+        event.isTrusted ? null : (currentMoneyLineageRows || lineageRows),
+      );
     });
   });
+}
+function bindMoneyListRowClicks(lineageRows=null){
+  bindMoneyListInspection(lineageRows);
 }
 async function enhanceMoneyAwardList(rows, terms){
   if(mode!=="award" || !rows.length) return;
@@ -1667,13 +1675,7 @@ function renderList(autoSelect,lineageRows=null){
       if(rmeta) rmeta.insertAdjacentHTML("afterend", chips);
     });
   }).catch(()=>{});
-  document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",event=>{
-    if(event.target.closest?.("a,button")) return;
-    const row=currentRows[+el.dataset.i];
-    if(event.isTrusted&&row?.inspect_href){ location.assign(row.inspect_href); return; }
-    if(event.isTrusted&&!row?.request_id&&row?.canonical_href){ location.assign(row.canonical_href); return; }
-      select(+el.dataset.i, el, event.isTrusted, event.isTrusted?null:(currentMoneyLineageRows || lineageRows));
-  }));
+  bindMoneyListInspection(lineageRows);
   if(autoSelect===false&&keepId){
     const idx=currentRows.findIndex(r=>r&&(r.procurement_id||r.request_id)===keepId);
     if(idx>=0){
@@ -1757,6 +1759,21 @@ async function loadLineageBadges(precomputedRows=null){
   });
 }
 
+function paintSharedContractInspectionDetail(r, { failed=false, detailStatus=null } = {}){
+  const facts=projectContractResultInspection(r);
+  const detail=$("#detail");
+  if(!detail) return;
+  if(!facts){
+    detail.innerHTML="";
+    return;
+  }
+  detail.innerHTML=renderContractResultInspectionDetailHTML(facts,{
+    escape:escUiHtml,
+    failed,
+    detailStatus,
+  });
+}
+
 async function select(i, el, planningDetailRequested=false, precomputedRows=null){
   const historyReady = globalThis.ensureMoneyHistory?.();
   document.querySelectorAll("#list .row.sel").forEach(e=>e.classList.remove("sel"));
@@ -1764,8 +1781,10 @@ async function select(i, el, planningDetailRequested=false, precomputedRows=null
   const r = currentRows[i];
   if(planningDetailRequested) r.planning_detail_requested = true;
   selectedRFP = r;
-  if(r?.inspect_href){ $("#detail").innerHTML=""; return; }
-  if(!r?.request_id&&r?.canonical_href){ $("#detail").innerHTML=""; return; }
+  if(contractResultUsesSharedDetail(r)){
+    paintSharedContractInspectionDetail(r);
+    return;
+  }
   if(typeof globalThis.renderDetail === "function") renderDetail(r, null, null, planningDetailRequested);
   else {
     const detail = $("#detail");
@@ -1823,8 +1842,9 @@ globalThis.isDefaultMoneySearchState = isDefaultMoneySearchState;
 globalThis.moneyActiveFilterChip = moneyActiveFilterChip;
 globalThis.moneyListPrimaryAction = moneyListPrimaryAction;
 globalThis.moneyListPrimaryActionHTML = moneyListPrimaryActionHTML;
-globalThis.moneyListInteractionProjection = moneyListInteractionProjection;
+globalThis.contractResultInteractionProjection = contractResultInteractionProjection;
 globalThis.moneyListCardInteractionsHTML = moneyListCardInteractionsHTML;
+globalThis.paintSharedContractInspectionDetail = paintSharedContractInspectionDetail;
 globalThis.moneyRowIsClosed = moneyRowIsClosed;
 globalThis.moneyRowHTML = moneyRowHTML;
 globalThis.paintMoneyRows = paintMoneyRows;
