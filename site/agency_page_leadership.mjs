@@ -29,8 +29,19 @@ function agencyEntityId(view = {}) {
   return canonical.includes(":") ? canonical : `agency:id:${canonical}`;
 }
 
+const SOURCE_SYSTEM_LABELS = Object.freeze({
+  nyc_open_data: "NYC Open Data",
+});
+
+function sourceSystemLabel(system) {
+  const key = clean(system);
+  return SOURCE_SYSTEM_LABELS[key] || humanStatus(key);
+}
+
 function sourceMarkup(source = {}) {
-  const label = [clean(source.system), clean(source.id)].filter(Boolean).join(" · ");
+  // Humanize the dataset system so resident copy never exposes snake_case
+  // identifiers such as nyc_open_data.
+  const label = [sourceSystemLabel(source.system), clean(source.id)].filter(Boolean).join(" · ");
   if (!label) return "";
   if (source.url) {
     return officialSourceLink({
@@ -51,15 +62,13 @@ function publishedBody(leadership) {
   const confidence = leadership.confidence
     ? `${humanStatus(leadership.confidence.status)} · ${humanStatus(leadership.confidence.basis)}`
     : "";
-  const fields = Array.isArray(leadership.source_fields)
-    ? leadership.source_fields.map(clean).filter(Boolean).join(", ")
-    : "";
+  // Resident copy stays plain-language: name the dataset and its date, never the
+  // publisher column identifiers (head_name / head_title) that built the record.
   return `<p class="agency-leadership-value" data-leadership-person="${esc(leadership.person)}"${title ? ` data-leadership-title="${esc(title)}"` : ""}>${personLine}</p>
     <details class="agency-leadership-provenance">
       <summary>Source and confidence</summary>
       <dl class="agency-leadership-facts">
         <div><dt>Source</dt><dd data-leadership-source>${sourceMarkup(leadership.source)}</dd></div>
-        ${fields ? `<div><dt>Publisher fields</dt><dd data-leadership-fields>${esc(fields)}</dd></div>` : ""}
         <div><dt>Source last updated</dt><dd><time datetime="${esc(leadership.observed_at)}" data-leadership-observed-at="${esc(leadership.observed_at)}">${esc(leadership.observed_at)}</time></dd></div>
         ${confidence ? `<div><dt>Confidence</dt><dd data-leadership-confidence="${esc(leadership.confidence.status)}" data-leadership-basis="${esc(leadership.confidence.basis)}">${esc(confidence)}</dd></div>` : ""}
       </dl>

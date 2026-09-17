@@ -109,6 +109,11 @@ test("an evaluated agency page names its leader with the same provenance the dos
     assert.match(html, /data-leadership-confidence="strong"/);
     assert.match(html, /data-leadership-basis="publisher_record"/);
     assert.match(html, /Source and confidence/);
+    // Resident page copy must not expose publisher column or system identifiers.
+    assert.doesNotMatch(html, /\bhead_name\b/);
+    assert.doesNotMatch(html, /\bhead_title\b/);
+    assert.doesNotMatch(html, /\bnyc_open_data\b/);
+    assert.match(html, /NYC Open Data/);
 
     assert.equal(fromDossier.person, expected.person);
     assert.equal(fromDossier.title, expected.title);

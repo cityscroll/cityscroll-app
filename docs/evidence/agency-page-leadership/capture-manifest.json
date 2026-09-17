@@ -16,9 +16,9 @@
       "fixture": "covered-agency-page",
       "route": "/agencies/buildings/",
       "viewport": "responsive",
-      "assertion": "The agency page includes a leadership block that states the question, names Ahmed Tigani, Commissioner, links the dataset the name came from (nyc_open_data t3jq-9nkf), names the publisher fields, shows 2026-08-09 as the source last-updated date, and carries the publisher confidence.",
-      "content_sha256": "affb49d3368bf2b8d92ef58f276d3282e4d1187631bbdf042ef391362132b4d5",
-      "bytes": 22038,
+      "assertion": "The agency page includes a leadership block that states the question, names Ahmed Tigani, Commissioner, links the dataset the name came from (nyc_open_data t3jq-9nkf), shows 2026-08-09 as the source last-updated date, and carries the publisher confidence without exposing publisher column identifiers.",
+      "content_sha256": "fc99d4a9812e060c84544279b47efcce7ed10200a3da6cf4826119abf9de0e2a",
+      "bytes": 21940,
       "file": null
     },
     {
@@ -26,7 +26,7 @@
       "route": "/agencies/community-boards/",
       "viewport": "responsive",
       "assertion": "The agency page includes the same leadership block stating Not recorded rather than omitting the question: it says the datasets it read carry no officer for this agency and that the record names nobody.",
-      "content_sha256": "77a5f7b742890bd824ebf112d2c837be84023fa5550e204943778eb85f1a5807",
+      "content_sha256": "fde7d4670440b123c8c4afb1b5a9821e9e6049d69e2f1adf46f449f1997ea049",
       "bytes": 22518,
       "file": null
     }
