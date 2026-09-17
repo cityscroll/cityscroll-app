@@ -2,8 +2,8 @@
   "schema": "cityscroll.near_you_record_inspection_acceptance.v1",
   "record": "cityscroll-engineering/c0830a62bcc4f",
   "route": "/near-you/?v=0&level=community_district&lens=meetings&boro=Brooklyn&cd=K18",
-  "revision": "a00b985a7754b3705e898bc79ece0853f6b29cdc",
-  "grounded_at": "a00b985a7754b3705e898bc79ece0853f6b29cdc",
+  "revision": "31d8fe647c874d3cfa425b031192d1262e9c5a93",
+  "grounded_at": "31d8fe647c874d3cfa425b031192d1262e9c5a93",
   "fixture_vintage": "2026-05-26",
   "timezone": "America/New_York",
   "captured_at": "2026-09-17T18:00:00Z",
@@ -11,7 +11,17 @@
     1440,
     900
   ],
-  "measurement_policy": "Assertions record deterministic Near You record-inspection fixtures over the shared place-scope contract and inspection binder. No participant evaluation was run and no usability gain is claimed. Image binaries are not part of this proof.",
+  "viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "measurement_policy": "Assertions record deterministic Near You record-inspection fixtures over the shared place-scope contract and inspection binder. Narrow-screen default density is observed by rendering the fixture document at 390x844 and comparing stacked inspection rows and compressed record padding against the 1440x900 desktop render. No participant evaluation was run and no usability gain is claimed. Image binaries are not part of this proof.",
   "image_policy": "No image binaries are committed for this acceptance record.",
   "journey": {
     "id": "near-you-record-inspection",
@@ -33,7 +43,8 @@
     "rendered_reference": {
       "route": "/near-you/?v=0&level=community_district&lens=meetings&boro=Brooklyn&cd=K18",
       "harness": "test/near_you_record_inspection.test.mjs",
-      "assertion": "set scope or view, inspect, dismiss, open the explicit full record, return with Back, and continue from the restored collection state"
+      "narrow_density_harness": "test/functional/near_you_record_inspection_narrow_density.py",
+      "assertion": "set scope or view, inspect, dismiss, open the explicit full record, return with Back, and continue from the restored collection state; observe narrow-screen default density at 390px"
     }
   },
   "assertions": [
@@ -74,11 +85,17 @@
       "fixture": "failed-detail"
     },
     {
-      "id": "narrow-and-keyboard-density",
+      "id": "keyboard-disclosure-operation",
       "result": "accepted",
-      "assertion": "Narrow-screen CSS and keyboard disclosure keep default density scannable while evidence remains optional",
-      "fixture": "civic-documents-css"
+      "assertion": "Escape, Close, Tab containment, and disappeared-trigger fallback keep keyboard disclosure operable",
+      "fixture": "venue-psc-201"
+    },
+    {
+      "id": "narrow-screen-default-density-observed",
+      "result": "accepted",
+      "assertion": "At a 390px viewport inspection fact rows stack, record padding compresses versus desktop, place role and basis stay visible, the inspect control remains usable, geographic evidence stays closed by default, and the surface does not introduce horizontal overflow",
+      "fixture": "near-you-record-inspection-narrow-density"
     }
   ],
-  "assertions_sha256": "2bd217dc521a6a2e112326e2f734cea10d46cbd3cd4f60f9a63a5ec62da786d9"
+  "assertions_sha256": "911e3d69991e9bc826a55d996d17ad3eee2ad386017a4345ca9b133cb409a903"
 }

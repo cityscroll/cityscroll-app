@@ -20,10 +20,13 @@
 //   node --test test/near_you_record_inspection.test.mjs
 
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
+import { pathToFileURL } from "node:url";
 
 import {
   BROWSE_INSPECTION_LEGACY_BASELINE,
@@ -57,12 +60,35 @@ import {
   FIXTURE_ONE_RECORDS,
 } from "./fixtures/place_scope_contract/geography.mjs";
 import { click, describeNode, keydown, mountDocument } from "./helpers/preview_dom.mjs";
+import { MILLISECONDS_PER_DAY, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const ROOT = process.cwd();
 const EVIDENCE_PATH = join("docs", "evidence", "near-you-record-inspection", "acceptance-manifest.json");
+const NARROW_DENSITY_PROBE = join("test", "functional", "near_you_record_inspection_narrow_density.py");
 const CSS = readFileSync(new URL("../site/civic-documents.css", import.meta.url), "utf8");
 const VIEW_SOURCE = readFileSync(new URL("../site/near_you_view.mjs", import.meta.url), "utf8");
-const GROUNDED_AT = "a00b985a7754b3705e898bc79ece0853f6b29cdc";
+const GROUNDED_AT = "31d8fe647c874d3cfa425b031192d1262e9c5a93";
+const FIXTURE_CLOCK = "2026-09-17T18:00:00.000Z";
+const FIXTURE_BOUNDARY_VINTAGE = "2026-05-26";
+
+function fixtureInstant(days = 0) {
+  return new Date(Date.parse(FIXTURE_CLOCK) + days * MILLISECONDS_PER_DAY).toISOString();
+}
+
+function pythonPlaywrightChromiumAvailable() {
+  const probe = spawnSync(
+    "python3",
+    [
+      "-c",
+      "from playwright.sync_api import sync_playwright\n"
+      + "with sync_playwright() as p:\n"
+      + "    browser = p.chromium.launch(headless=True)\n"
+      + "    browser.close()\n",
+    ],
+    { encoding: "utf8", timeout: 60_000, env: process.env },
+  );
+  return probe.status === 0;
+}
 
 function fixtureDistrictRecord(key, { confidence = "strong", method } = {}) {
   const { record, locatedEdges } = FIXTURE_ONE_RECORDS[key];
@@ -85,7 +111,7 @@ function fixtureDistrictRecord(key, { confidence = "strong", method } = {}) {
     title: `${key} meeting`,
     agency: "Transportation",
     type: "Public Hearings",
-    date: "2026-08-12T18:00:00.000",
+    date: fixtureInstant(-36),
     basis: record.basis,
     confidence,
     route: `/notices/${record.id}`,
@@ -117,8 +143,8 @@ function fixtureActivity(extraRecords = {}) {
   const ids = Object.keys(records);
   return {
     schema: "cityscroll.district_activity.v1",
-    boundary_vintage: "2026-05-26",
-    built_at: "2026-08-04T12:00:00.000Z",
+    boundary_vintage: FIXTURE_BOUNDARY_VINTAGE,
+    built_at: fixtureInstant(-44),
     levels: ["borough", "community_district", "council_district"],
     lenses: ["land", "property", "rules", "meetings", "money"],
     by_level: { borough: {}, community_district: {}, council_district: {} },
@@ -145,10 +171,39 @@ function fixtureActivity(extraRecords = {}) {
 
 const fixtureBoundaries = {
   schema: "cityscroll.district_boundaries.v1",
-  boundary_vintage: "2026-05-26",
+  boundary_vintage: FIXTURE_BOUNDARY_VINTAGE,
   community_districts: [],
   council_districts: [],
 };
+
+function narrowDensityDocumentHtml() {
+  const view = buildNearYouViewModel(placeScope({ placeRole: "venue" }), fixtureActivity(), fixtureBoundaries);
+  const resultsHtml = renderNearYouDeferredParts(view).resultsHtml;
+  const facts = nearYouRecordInspectionFacts(view.results.records[0]);
+  const body = renderNearYouRecordInspectionBody(facts);
+  const brandHref = pathToFileURL(join(ROOT, "site", "brand.css")).href;
+  const civicHref = pathToFileURL(join(ROOT, "site", "civic-documents.css")).href;
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="${brandHref}">
+<link rel="stylesheet" href="${civicHref}">
+</head>
+<body>
+<div data-near-you-root ${NEAR_YOU_RECORD_INSPECTION_READY_ATTRIBUTE} data-lens="meetings">
+${resultsHtml}
+</div>
+<dialog id="${NEAR_YOU_RECORD_INSPECTION_DIALOG_ID}" class="near-you-record-inspection-dialog" open>
+  <div class="near-you-record-inspection-inner">
+    <button class="near-you-record-inspection-close" type="button" data-near-you-record-inspection-close>Close</button>
+    ${body}
+  </div>
+</dialog>
+</body>
+</html>`;
+}
 
 function placeScope({ placeRole = null } = {}) {
   return scopeWithPlace(
@@ -328,7 +383,7 @@ test("A2: weak place matches announce approximate certainty without raw adapter 
     title: "Approximate match hearing",
     agency: "Transportation",
     type: "Public Hearings",
-    date: "2026-08-12T18:00:00.000",
+    date: fixtureInstant(-36),
     basis: "Affected area",
     route: "/notices/weak-geo",
     matched_place_role: "affected_area",
@@ -343,7 +398,7 @@ test("A2: weak place matches announce approximate certainty without raw adapter 
       confidence: "weak",
       method: "agency_hq",
       source_id: "fixture",
-      boundary_vintage: "2026-05-26",
+      boundary_vintage: FIXTURE_BOUNDARY_VINTAGE,
     },
   };
   const facts = nearYouRecordInspectionFacts(record);
@@ -379,10 +434,69 @@ test("A4: without the ready marker CSS keeps the title link and hides inspect pl
   assert.match(CSS, new RegExp(`\\[${NEAR_YOU_RECORD_INSPECTION_READY_ATTRIBUTE}\\] \\.near-record-title-link\\s*\\{[^}]*display:\\s*none`));
   assert.match(CSS, new RegExp(`\\[${NEAR_YOU_RECORD_INSPECTION_READY_ATTRIBUTE}\\] \\.near-record-inspect\\s*\\{`));
   assert.match(CSS, new RegExp(`\\[${NEAR_YOU_RECORD_INSPECTION_READY_ATTRIBUTE}\\] \\.near-record-full-record\\s*\\{[^}]*display:\\s*inline-block`));
-  assert.match(CSS, /@media \(max-width:\s*560px\)/);
   const { container } = mountDocument(`<div>${resultsHTML("venue")}</div>`);
   assert.equal(container.hasAttribute(NEAR_YOU_RECORD_INSPECTION_READY_ATTRIBUTE), false);
   assert.ok(titleLink(container));
+});
+
+test("A4: narrow-screen default density is observed at 390px rather than only declared", async (t) => {
+  if (!pythonPlaywrightChromiumAvailable()) {
+    t.skip("Python playwright Chromium is not launchable in this lane");
+    return;
+  }
+  assert.equal(existsSync(join(ROOT, NARROW_DENSITY_PROBE)), true);
+  await withPinnedClock(FIXTURE_CLOCK, () => {
+    const scratchRoot = process.env.FM_TASK_SCRATCH || tmpdir();
+    const dir = mkdtempSync(join(scratchRoot, "near-you-narrow-density-"));
+    const documentPath = join(dir, "index.html");
+    writeFileSync(documentPath, narrowDensityDocumentHtml());
+    const result = spawnSync("python3", [join(ROOT, NARROW_DENSITY_PROBE), documentPath], {
+      cwd: ROOT,
+      encoding: "utf8",
+      timeout: 120_000,
+      env: process.env,
+    });
+    assert.equal(result.status, 0, result.stderr || result.stdout);
+    const payload = JSON.parse(result.stdout);
+    assert.equal(payload.schema, "cityscroll.near_you_record_inspection_narrow_density.v1");
+    const byId = Object.fromEntries(payload.observations.map((row) => [row.id, row]));
+    const narrow = byId.narrow_touch;
+    const desktop = byId.desktop;
+    assert.ok(narrow && desktop);
+    assert.deepEqual(narrow.viewport, { width: 390, height: 844 });
+    assert.deepEqual(desktop.viewport, { width: 1440, height: 900 });
+
+    const seen = narrow.observed;
+    assert.equal(seen.place_role, "Happening here");
+    assert.equal(seen.basis, "Venue / logistics");
+    assert.match(seen.record_text || "", /venueHere meeting/);
+    assert.equal(seen.inspection_title, "venueHere meeting");
+    assert.equal(seen.inspect?.visible, true);
+    assert.ok(seen.inspect.height >= 40, "inspect control stays large enough to use on a narrow screen");
+    assert.equal(seen.title_link?.visible, false);
+    assert.equal(seen.full_record?.visible, true);
+    assert.equal(seen.fact_rows_stacked, true);
+    assert.equal(seen.fact_rows_side_by_side, false);
+    assert.equal(seen.no_horizontal_overflow, true);
+    assert.equal(seen.evidence_count >= 1, true);
+    assert.ok(seen.evidence_open.every((open) => open === false));
+    assert.equal(seen.record_padding_top_px, 12);
+
+    const wide = desktop.observed;
+    assert.equal(wide.fact_rows_stacked, false);
+    assert.equal(wide.fact_rows_side_by_side, true);
+    assert.equal(wide.record_padding_top_px, 16);
+    assert.notEqual(
+      seen.record_padding_top_px,
+      wide.record_padding_top_px,
+      "narrow density must differ from desktop density",
+    );
+    assert.notEqual(
+      seen.fact_rows_stacked,
+      wide.fact_rows_stacked,
+      "narrow inspection rows must stack while desktop rows stay side-by-side",
+    );
+  });
 });
 
 test("A4: no-JavaScript keeps the grounded title link", () => {
@@ -499,15 +613,29 @@ test("A4: acceptance manifest records the rendered journey with revision, route,
   assert.equal(manifest.record, "cityscroll-engineering/c0830a62bcc4f");
   assert.match(manifest.revision, /^[0-9a-f]{40}$/);
   assert.equal(manifest.revision, GROUNDED_AT);
+  assert.equal(manifest.grounded_at, GROUNDED_AT);
   assert.equal(manifest.route, "/near-you/?v=0&level=community_district&lens=meetings&boro=Brooklyn&cd=K18");
-  assert.equal(manifest.fixture_vintage, "2026-05-26");
-  assert.ok(Array.isArray(manifest.viewport) && manifest.viewport.length === 2);
+  assert.equal(manifest.fixture_vintage, FIXTURE_BOUNDARY_VINTAGE);
+  assert.deepEqual(manifest.viewport, [1440, 900]);
+  assert.deepEqual(manifest.viewports, [[1440, 900], [390, 844]]);
   assert.ok(Array.isArray(manifest.assertions) && manifest.assertions.length >= 4);
   assert.ok(manifest.assertions.some((row) => row.id === "primary-inspect-keeps-scope" && row.result === "accepted"));
   assert.ok(manifest.assertions.some((row) => row.id === "optional-geography-evidence" && row.result === "accepted"));
   assert.ok(manifest.assertions.some((row) => row.id === "reject-default-title-and-geography" && row.result === "rejected"));
   assert.ok(manifest.assertions.some((row) => row.id === "strong-derived-weak-place-roles" && row.result === "accepted"));
   assert.ok(manifest.assertions.some((row) => row.id === "failed-detail-keeps-summary-and-record-link" && row.result === "accepted"));
+  assert.ok(manifest.assertions.some((row) => row.id === "keyboard-disclosure-operation" && row.result === "accepted"));
+  const narrowDensity = manifest.assertions.find((row) => row.id === "narrow-screen-default-density-observed");
+  assert.ok(narrowDensity);
+  assert.equal(narrowDensity.result, "accepted");
+  assert.match(narrowDensity.assertion, /390px/);
+  assert.match(narrowDensity.assertion, /stack/);
+  assert.equal(narrowDensity.fixture, "near-you-record-inspection-narrow-density");
+  assert.equal(
+    manifest.assertions.some((row) => row.id === "narrow-and-keyboard-density"),
+    false,
+    "declared-only narrow density claim must not remain",
+  );
   assert.ok(manifest.journey?.sequence?.includes("inspect"));
   assert.ok(manifest.journey?.sequence?.includes("open_full_record"));
   assert.ok(manifest.journey?.sequence?.includes("continue"));
@@ -515,6 +643,10 @@ test("A4: acceptance manifest records the rendered journey with revision, route,
   assert.ok(manifest.journey?.variants?.includes("keyboard"));
   assert.ok(manifest.journey?.variants?.includes("no_javascript"));
   assert.ok(manifest.journey?.variants?.includes("failed_detail"));
+  assert.equal(
+    manifest.journey?.rendered_reference?.narrow_density_harness,
+    "test/functional/near_you_record_inspection_narrow_density.py",
+  );
   for (const banned of ["needs_james", "card_standard", "richness_profile", "autodispatch", "realization_gate"]) {
     assert.equal(JSON.stringify(manifest).includes(banned), false, banned);
   }

@@ -2,7 +2,7 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/c0830a62bcc4f",
   "status": "implemented",
-  "fingerprint": "near-you-record-inspection.v1",
+  "fingerprint": "near-you-record-inspection.v2-narrow-density-observed",
   "updated_at": "2026-09-17T18:00:00.000Z",
   "projections": [
     {
@@ -20,6 +20,10 @@
     {
       "id": "near-you-record-inspection-tests",
       "path": "test/near_you_record_inspection.test.mjs"
+    },
+    {
+      "id": "near-you-record-inspection-narrow-density-probe",
+      "path": "test/functional/near_you_record_inspection_narrow_density.py"
     },
     {
       "id": "near-you-record-inspection-acceptance-manifest",
