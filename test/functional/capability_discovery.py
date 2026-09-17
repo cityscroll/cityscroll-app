@@ -458,39 +458,50 @@ NOTICE_ROUTE = "notices/20260810048/"
 
 def assert_research_tools_journey(page, label: str) -> None:
     """Notice More tools region plus API research task entrances."""
+    from resident_document_presentation import RESEARCH_CENSUS_AGENCY, research_navigation_census
+
     page.set_default_timeout(20000)
     page.goto(BASE + NOTICE_ROUTE, timeout=30000)
     page.wait_for_selector("#noticeview .route-item, [data-edge-rendered='notice']", timeout=20000)
-    page.wait_for_selector("[data-more-tools-region], [data-research-navigation]", timeout=20000)
+    # Edge first paint may emit research navigation without comparative. Wait for
+    # the client More tools region before counting against the capability census.
+    page.wait_for_selector("[data-more-tools-region]", timeout=20000)
+    page.wait_for_selector("#ncopy", timeout=20000)
     more = page.locator("[data-more-tools-region]")
     research = page.locator("[data-research-navigation] [data-research-tool]")
-    if more.count():
+    step(
+        "OK" if more.count() == 1 and more.get_attribute("open") in (None, "") else "FAIL",
+        f"{label} notice More tools starts closed",
+        f"count={more.count()} open={more.get_attribute('open')}",
+    )
+    summary = more.locator("summary")
+    if summary.count() == 1:
+        summary.focus()
+        page.keyboard.press("Enter")
+        opened = more.evaluate("el => el.open")
+        step("OK" if opened else "FAIL", f"{label} notice More tools keyboard open")
+    for control_id in ("ncopy", "nqr", "nxlsx", "nprint"):
         step(
-            "OK" if more.count() == 1 and more.get_attribute("open") in (None, "") else "FAIL",
-            f"{label} notice More tools starts closed",
-            f"count={more.count()} open={more.get_attribute('open')}",
+            "OK" if page.locator(f"#{control_id}").count() == 1 else "FAIL",
+            f"{label} notice control #{control_id}",
         )
-        summary = more.locator("summary")
-        if summary.count() == 1:
-            summary.focus()
-            page.keyboard.press("Enter")
-            opened = more.evaluate("el => el.open")
-            step("OK" if opened else "FAIL", f"{label} notice More tools keyboard open")
-        for control_id in ("ncopy", "nqr", "nxlsx", "nprint"):
-            step(
-                "OK" if page.locator(f"#{control_id}").count() == 1 else "FAIL",
-                f"{label} notice control #{control_id}",
-            )
-    else:
-        step(
-            "OK" if research.count() >= 1 else "FAIL",
-            f"{label} notice research navigation without More tools shell",
-            f"research={research.count()}",
-        )
-    if research.count():
-        hrefs = research.evaluate_all("nodes => nodes.map(node => node.getAttribute('href') || '')")
-        onsite = all(href.startswith("/") for href in hrefs)
-        step("OK" if onsite else "FAIL", f"{label} notice research entrances stay on-site", str(len(hrefs)))
+    # The navigation is counted against the capability census as a complete
+    # ordered set — never a floor of one — so a navigation that rendered
+    # nothing, dropped a family, or added an uncatalogued one fails here.
+    census = research_navigation_census(RESEARCH_CENSUS_AGENCY)
+    expected_ids = [tool["id"] for tool in census["nav"]]
+    rendered_ids = research.evaluate_all(
+        "nodes => nodes.map(node => node.getAttribute('data-research-tool') || '')"
+    )
+    step(
+        "OK" if rendered_ids == expected_ids else "FAIL",
+        f"{label} notice research navigation matches the capability census",
+        f"rendered={rendered_ids} census={expected_ids}",
+    )
+    # The on-site address check runs unconditionally over whatever rendered.
+    hrefs = research.evaluate_all("nodes => nodes.map(node => node.getAttribute('href') || '')")
+    onsite = all(href.startswith("/") for href in hrefs)
+    step("OK" if onsite else "FAIL", f"{label} notice research entrances stay on-site", str(len(hrefs)))
 
     page.goto(BASE + "api.html#research-task-entrances", timeout=30000)
     page.wait_for_selector("#research-task-entrances, body", timeout=20000)

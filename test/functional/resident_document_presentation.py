@@ -27,6 +27,10 @@ NOTICE_ID = "20260810048"
 NOTICE_ROUTE = f"/notices/{NOTICE_ID}/"
 NOTICE_SOURCE = f"https://a856-cityrecord.nyc.gov/RequestDetail/{NOTICE_ID}"
 LEGACY_HASH_ROUTE = f"#notice/{NOTICE_ID}"
+# Agency spelling of the default notice fixture; the research-navigation census
+# derives from the same shared module and identity resolver the hydrated
+# client uses, so the browser case compares against the census itself.
+RESEARCH_CENSUS_AGENCY = "Design and Construction"
 MANIFEST_PATH = ROOT / "docs" / "evidence" / "notice-shell" / "capture-manifest.json"
 
 SUBJECT_NOTICE_ID = "20240829105"
@@ -966,29 +970,112 @@ def run_writer_self_tests() -> None:
     print("OK notice-tools capture-manifest writer self-test", flush=True)
 
 
+RESEARCH_CENSUS_SCRIPT = """
+Promise.all([
+  import('./site/research_discovery.mjs'),
+  import('./site/agency_identity.mjs'),
+  import('./test/helpers/test_clock.mjs'),
+]).then(([discovery, identity, clock]) => {
+  const path = discovery.agencyEvidencePath(identity.resolveAgencyIdentity(%(agency)s));
+  const projection = discovery.projectResearchTools({
+    surface: 'notice',
+    evidencePath: path,
+    asOfSupported: Boolean(path),
+    asOfPath: path,
+    comparativeAgency: %(agency)s,
+    hasShareHandler: true,
+    hasCollectionHandler: true,
+    hasExportHandler: true,
+    hasPrintHandler: true,
+  });
+  process.stdout.write(JSON.stringify({
+    nav: projection.eligible
+      .filter((tool) => tool.href)
+      .map((tool) => ({ id: tool.id, href: tool.href })),
+    clock_today: clock.todayISO(),
+  }));
+});
+"""
+
+
+def research_navigation_census(agency: str = RESEARCH_CENSUS_AGENCY) -> dict[str, object]:
+    """Complete href-entrance census for a notice surface, from the shared module.
+
+    Mirrors the exact projection inputs the hydrated notice client passes, so
+    the browser case checks the rendered research navigation against the
+    capability census as a complete ordered set — never a floor of one. The
+    only date this helper touches comes from the shared test clock helper, and
+    no clock shift is applied.
+    """
+    script = RESEARCH_CENSUS_SCRIPT % {"agency": json.dumps(agency)}
+    return json.loads(subprocess.check_output(["node", "-e", script], cwd=ROOT, text=True))
+
+
 def assert_research_tools(page, base: str, *, label: str) -> dict[str, object]:
     """Hydrated notice exposes More tools and scoped research entrances."""
     page.set_default_timeout(20000)
     response = page.goto(f"{base}{NOTICE_ROUTE.lstrip('/')}", wait_until="domcontentloaded")
     assert response and response.status == 200, f"{label}: notice route did not return 200"
     page.wait_for_selector("#noticeview .route-item", state="visible")
-    page.wait_for_selector("[data-more-tools-region], [data-research-navigation]", state="attached")
+    # Edge first paint may emit research navigation without comparative. Wait for
+    # the client More tools region (data-more-tools-region) before census compare.
+    page.wait_for_selector("[data-more-tools-region]", state="attached")
+    page.wait_for_selector("#ncopy", state="attached")
     more = page.locator("[data-more-tools-region]")
-    if more.count():
-        assert more.count() == 1, f"{label}: expected one More tools region"
-        assert more.get_attribute("open") in (None, ""), f"{label}: More tools must start closed"
-        summary = more.locator("summary")
-        assert summary.count() == 1
+    assert more.count() == 1, f"{label}: expected one More tools region"
+    assert more.get_attribute("open") in (None, ""), f"{label}: More tools must start closed"
+    summary = more.locator("summary")
+    assert summary.count() == 1
+    summary.focus()
+    page.keyboard.press("Enter")
+    assert more.evaluate("el => el.open") is True, f"{label}: keyboard must open More tools"
+    for control_id in ("ncopy", "nqr", "nxlsx", "nprint"):
+        assert page.locator(f"#{control_id}").count() == 1, f"{label}: missing #{control_id}"
+    assert page.locator("[data-pin]").count() >= 1, f"{label}: pin control missing"
+    research = page.locator("[data-research-navigation] [data-research-tool]")
+    hrefs = research.evaluate_all("nodes => nodes.map(node => node.getAttribute('href') || '')")
+    # The on-site address check runs unconditionally over whatever rendered.
+    assert all(href.startswith("/") for href in hrefs), f"{label}: research hrefs must stay on-site"
+    # The rendered navigation is compared against the census as a complete
+    # ordered set of (id, href) pairs — a navigation that rendered nothing, or
+    # dropped a family, or added an uncatalogued one, fails here.
+    census = research_navigation_census()
+    rendered = research.evaluate_all(
+        "nodes => nodes.map(node => ({"
+        " id: node.getAttribute('data-research-tool') || '',"
+        " href: node.getAttribute('href') || ''"
+        " }))"
+    )
+    assert rendered == census["nav"], (
+        f"{label}: research navigation must match the capability census exactly "
+        f"(rendered={rendered} census={census['nav']})"
+    )
+    # Entrance scope is pinned by value, not by presence.
+    rendered_by_id = {row["id"]: row["href"] for row in rendered}
+    comparative = rendered_by_id.get("comparative", "")
+    assert "ap_agency=" in comparative, (
+        f"{label}: comparative entrance must carry the agency population (got {comparative!r})"
+    )
+    evidence = rendered_by_id.get("evidence", "")
+    assert evidence.startswith("/agencies/") and "#edge-provenance" in evidence, (
+        f"{label}: evidence entrance must keep relation identity and source (got {evidence!r})"
+    )
+    as_of_day = (
+        urllib.parse.parse_qs(urllib.parse.urlparse(rendered_by_id.get("asOf", "")).query)
+        .get("as_of", [None])[0]
+    )
+    if as_of_day is not None:
+        clock_today = str(census["clock_today"])
+        assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", as_of_day) and as_of_day <= clock_today, (
+            f"{label}: as-of day {as_of_day!r} must be a supported day at or before the "
+            f"shared test clock day {clock_today!r}"
+        )
+    # Return More tools to its default closed state before hashing so the
+    # capture reflects the quiet notice, not the opened disclosure.
+    if more.evaluate("el => el.open"):
         summary.focus()
         page.keyboard.press("Enter")
-        assert more.evaluate("el => el.open") is True, f"{label}: keyboard must open More tools"
-        for control_id in ("ncopy", "nqr", "nxlsx", "nprint"):
-            assert page.locator(f"#{control_id}").count() == 1, f"{label}: missing #{control_id}"
-        assert page.locator("[data-pin]").count() >= 1, f"{label}: pin control missing"
-    research = page.locator("[data-research-navigation] [data-research-tool]")
-    assert research.count() >= 1, f"{label}: expected at least one research entrance"
-    hrefs = research.evaluate_all("nodes => nodes.map(node => node.getAttribute('href') || '')")
-    assert all(href.startswith("/") for href in hrefs), f"{label}: research hrefs must stay on-site"
+        assert more.evaluate("el => el.open") is False, f"{label}: More tools must close again"
     content = page.locator("#main").inner_text()
     return {
         "route": NOTICE_ROUTE,
@@ -1062,28 +1149,23 @@ def main() -> None:
         captures: list[dict[str, object]] = []
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
-            for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):
-                if args.case == "research-tools":
+            if args.case == "research-tools":
+                # Prove the hydrated census and on-site addresses. Production
+                # render manifests for repaired gaps remain an operator step
+                # after deployment, so this case does not retain them.
+                for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):
                     context = browser.new_context(viewport=viewport)
                     page = context.new_page()
                     result = assert_research_tools(page, base, label="research-tools hydration")
-                    captures.append({
-                        "case": "research-tools-hydration",
-                        "route": NOTICE_ROUTE,
-                        "viewport": viewport,
-                        "assertion": (
-                            "Hydrated notice keeps More tools closed by default, preserves share and "
-                            "export control ids, and offers scoped on-site research entrances."
-                        ),
-                        "render_sha256": result["render_sha256"],
-                    })
                     print(
                         f"OK research-tools {viewport['width']}x{viewport['height']}: {result['render_sha256']}",
                         flush=True,
                     )
                     context.close()
-                    continue
+                browser.close()
+                return
 
+            for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):
                 no_js = browser.new_context(viewport=viewport, java_script_enabled=False)
                 captures.append(assert_a4_source_access_without_javascript(no_js.new_page(), base))
                 no_js.close()
