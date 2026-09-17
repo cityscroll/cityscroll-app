@@ -184,6 +184,7 @@ function emptyHandoff(status, extras = {}) {
     arguments: Object.freeze(extras.arguments && typeof extras.arguments === "object" ? extras.arguments : {}),
     unsupported_filters: Object.freeze(Array.isArray(extras.unsupported_filters) ? extras.unsupported_filters : []),
     supported_filters: Object.freeze(extras.supported_filters && typeof extras.supported_filters === "object" ? extras.supported_filters : {}),
+    reason: extras.reason || null,
     task: extras.task || null,
     endpoint: AI_ENDPOINT,
     setup_href: AI_CONTEXT_SETUP_PATH,
@@ -416,14 +417,18 @@ export function buildUnsupportedFamilyAiContextHandoff(family, input = {}) {
   });
 }
 
-function generalSetupHandoff(surfaceId, input = {}) {
+function generalSetupHandoff(surfaceId, input = {}, reason = null) {
   const publicInput = stripPrivateFields(input);
   const name = cleanText(surfaceId, 40) || "this page";
+  const statedReason = cleanText(reason, MAX_TASK) || null;
   return emptyHandoff("general_setup", {
     family: name,
     kind: name,
     canonical_href: cleanPublicRoute(publicInput.canonical_href),
-    task: `Use the general CityScroll MCP setup from this page. No exact assistant task is published for ${name}.`,
+    reason: statedReason,
+    task: statedReason
+      ? `Use the general CityScroll MCP setup from this page. No exact assistant task is published for ${name}. Reason: ${statedReason}`
+      : `Use the general CityScroll MCP setup from this page. No exact assistant task is published for ${name}.`,
   });
 }
 
@@ -571,7 +576,7 @@ export function buildAiContextHandoffForSurface(surfaceId, input = {}) {
     return buildUnsupportedFamilyAiContextHandoff(row.family || row.surface_id, publicInput);
   }
   if (row.handoff === "general") {
-    return generalSetupHandoff(row.surface_id, publicInput);
+    return generalSetupHandoff(row.surface_id, publicInput, row.reason);
   }
   if (row.kind === "contract") return buildContractAiContextHandoff(publicInput);
   if (row.kind === "notice") return buildNoticeAiContextHandoff(publicInput);
@@ -699,6 +704,8 @@ export function formatAiContextTask(handoff) {
     lines.push(`Unsupported exact filters: ${handoff.unsupported_filters.join(", ")}`);
   } else if (handoff.status === "unsupported_family") {
     lines.push(`Exact support is not published for ${handoff.family || "this page"}.`);
+  } else if (handoff.status === "general_setup" && handoff.reason) {
+    lines.push(`General setup reason: ${handoff.reason}`);
   }
   if (handoff.id) lines.push(`Public id: ${handoff.id}`);
   if (handoff.canonical_href) lines.push(`CityScroll route: ${handoff.canonical_href}`);
