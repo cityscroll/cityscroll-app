@@ -51,7 +51,8 @@ LENSES = (
         "contracts",
         "browse/contracts/",
         "#list .money-row-card",
-        re.compile(r"^/notices/[^/]+/?$"),
+        # Notice-backed rows keep /notices/; source-native rows keep /procurements/.
+        re.compile(r"^/(?:notices|procurements)/[^/]+/?$"),
         "#list .money-row-card",
         "#list, #dactions, #detail > [data-export-class='actions']",
         "#detail a.money-detail-object-title",
@@ -312,6 +313,52 @@ def _assert_people_preview_layout(page, lens: Lens) -> None:
     )
 
 
+def _assert_contracts_card_grammar(page, card, lens: Lens, index: int) -> str:
+    """Contracts rows use primary inspect after enhancement, not a navigating title.
+
+    Progressive enhancement keeps a static full-record title link for no-JS, then
+    reveals a title-sized inspect control and a separately named full-record link.
+    """
+    static_title = card.locator("a.money-row-title-link")
+    inspect = card.locator("button.money-row-inspect")
+    full_record = card.locator("a.money-row-full-record")
+    copy = card.locator("button.ui-object-card-copy")
+    assert static_title.count() == 1, (
+        f"{lens.name} card {index + 1}: expected one static title link for no-JS"
+    )
+    assert inspect.count() == 1, (
+        f"{lens.name} card {index + 1}: expected one title-sized inspect control"
+    )
+    assert full_record.count() == 1, (
+        f"{lens.name} card {index + 1}: expected one named full-record link"
+    )
+    assert copy.count() == 1, f"{lens.name} card {index + 1}: expected one shared Copy link"
+    expect(inspect).to_be_visible()
+    expect(full_record).to_be_visible()
+    expect(copy).to_be_visible()
+    assert "Open the full record" in " ".join(full_record.inner_text().split()), (
+        f"{lens.name} card {index + 1}: full-record link must stay explicitly named"
+    )
+    title_path = _canonical_path(page, full_record.get_attribute("href") or "")
+    static_path = _canonical_path(page, static_title.get_attribute("href") or "")
+    assert static_path == title_path, (
+        f"{lens.name} card {index + 1}: static title and full-record destinations diverge "
+        f"({static_path!r} vs {title_path!r})"
+    )
+    assert lens.target_path.match(title_path), (
+        f"{lens.name} card {index + 1}: non-canonical full-record target {title_path!r}"
+    )
+    copy_target = copy.get_attribute("data-object-card-copy") or ""
+    assert _canonical_path(page, copy_target) == title_path, (
+        f"{lens.name} card {index + 1}: Copy target differs from full-record "
+        f"({copy_target!r} vs {title_path!r})"
+    )
+    assert copy.inner_text().strip() == "Copy link", (
+        f"{lens.name} card {index + 1}: Copy label must be exactly 'Copy link'"
+    )
+    return title_path
+
+
 def assert_lens_grammar(page, lens: Lens, *, verify_clipboard: bool = True) -> dict[str, object]:
     cards = page.locator(lens.card_selector)
     assert cards.count() > 0, f"{lens.name}: no cards rendered"
@@ -319,6 +366,11 @@ def assert_lens_grammar(page, lens: Lens, *, verify_clipboard: bool = True) -> d
     first_target = ""
     for index in range(inspected):
         card = cards.nth(index)
+        if lens.slug == "contracts":
+            title_path = _assert_contracts_card_grammar(page, card, lens, index)
+            if index == 0:
+                first_target = title_path
+            continue
         title = card.locator("a.ui-object-card-title")
         copy = card.locator("button.ui-object-card-copy")
         assert title.count() == 1, f"{lens.name} card {index + 1}: expected one shared title"
