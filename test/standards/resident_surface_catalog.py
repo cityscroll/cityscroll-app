@@ -14,6 +14,31 @@ from collections import Counter
 from typing import Any
 
 DEFAULT_ALLOWLIST = pathlib.Path(__file__).with_name("resident_surface_allowlist.json")
+DEFAULT_BROWSE_INSPECTION_CATALOG = pathlib.Path(__file__).with_name("browse_inspection_catalog.json")
+
+BROWSE_INSPECTION_CATALOG_SCHEMA = "cityscroll.browse_inspection_catalog.v1"
+BROWSE_PRIMARY_INTENTS = ("inspect", "directory_navigation", "act")
+BROWSE_CLASSIFICATIONS = ("conforming", "legacy", "directory_navigation")
+BROWSE_DETAIL_HOSTS = ("modal_preview", "selection_panel", "inline_detail", "day_agenda", "none_directory")
+BROWSE_REQUIRED_PRINCIPLES = (
+    "overview",
+    "useful_inspection",
+    "explicit_navigation_and_actions",
+    "coherent_restoration",
+    "identity",
+    "failure",
+    "accessibility",
+)
+COMPACT_CALENDAR_HOST_IDS = (
+    "calendar-host-now",
+    "calendar-host-community-boards",
+    "calendar-host-rules",
+    "calendar-host-land-projects",
+    "calendar-host-legislative-matters",
+    "calendar-host-exams",
+    "calendar-host-procurement",
+    "calendar-host-property",
+)
 
 SNAKE_CASE = re.compile(r"\b[a-z]+(?:_[a-z0-9]+)+\b")
 PUBLIC_URL = re.compile(r"\bhttps?://[^\s<>\"\']+", re.I)
@@ -100,6 +125,104 @@ def load_allowlist(path: pathlib.Path) -> list[dict[str, Any]]:
             raise ValueError(f"{path}: exception {entry['id']} requires a reason")
         ids.add(entry["id"])
     return entries
+
+
+def load_browse_inspection_catalog(path: pathlib.Path) -> dict[str, Any]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    problems = validate_browse_inspection_catalog(data)
+    if problems:
+        raise ValueError(f"{path}: " + "; ".join(problems))
+    return data
+
+
+def validate_browse_inspection_catalog(data: Any) -> list[str]:
+    """Validate browse-inspection declarations carried beside the surface catalog."""
+    problems: list[str] = []
+    if not isinstance(data, dict):
+        return ["browse inspection catalog must be an object"]
+    if data.get("schema") != BROWSE_INSPECTION_CATALOG_SCHEMA:
+        problems.append("unsupported or missing browse inspection catalog schema")
+    principles = data.get("principles")
+    if not isinstance(principles, dict):
+        problems.append("principles must be an object")
+    else:
+        for key in BROWSE_REQUIRED_PRINCIPLES:
+            if not isinstance(principles.get(key), str) or not principles[key].strip():
+                problems.append(f"principle missing prose: {key}")
+    surfaces = data.get("surfaces")
+    baseline = data.get("legacy_baseline")
+    if not isinstance(surfaces, list) or not surfaces:
+        problems.append("surfaces must be a non-empty list")
+        surfaces = []
+    if not isinstance(baseline, list):
+        problems.append("legacy_baseline must be a list")
+        baseline = []
+    baseline_ids = {
+        entry.get("id")
+        for entry in baseline
+        if isinstance(entry, dict) and isinstance(entry.get("id"), str)
+    }
+    surface_ids: set[str] = set()
+    for surface in surfaces:
+        if not isinstance(surface, dict):
+            problems.append("each browsing surface must be an object")
+            continue
+        surface_id = surface.get("surface_id")
+        if not isinstance(surface_id, str) or not surface_id.strip():
+            problems.append("each browsing surface requires surface_id")
+            continue
+        if surface_id in surface_ids:
+            problems.append(f"duplicate browsing surface: {surface_id}")
+        surface_ids.add(surface_id)
+        for field in (
+            "primary_intent",
+            "classification",
+            "domain_adapter",
+            "render_owner",
+            "canonical_destination_policy",
+            "detail_host",
+            "journey_owner",
+        ):
+            if not isinstance(surface.get(field), str) or not str(surface.get(field)).strip():
+                problems.append(f"{surface_id} missing {field}")
+        if surface.get("primary_intent") not in BROWSE_PRIMARY_INTENTS:
+            problems.append(f"{surface_id} has unsupported primary intent")
+        if surface.get("classification") not in BROWSE_CLASSIFICATIONS:
+            problems.append(f"{surface_id} has unsupported classification")
+        if surface.get("detail_host") not in BROWSE_DETAIL_HOSTS:
+            problems.append(f"{surface_id} has unsupported detail host")
+        if surface.get("classification") == "legacy":
+            baseline_id = surface.get("baseline_id")
+            if not isinstance(baseline_id, str) or baseline_id not in baseline_ids:
+                problems.append(f"legacy surface lacks baseline entry: {surface_id}")
+        elif surface.get("baseline_id"):
+            problems.append(f"non-legacy surface must not claim a baseline id: {surface_id}")
+        if surface.get("classification") == "directory_navigation":
+            if not isinstance(surface.get("semantic_reason"), str) or not surface["semantic_reason"].strip():
+                problems.append(f"directory navigation lacks semantic reason: {surface_id}")
+            if not isinstance(surface.get("positive_fixture"), str) or not surface["positive_fixture"].strip():
+                problems.append(f"directory navigation lacks positive fixture: {surface_id}")
+    for host_id in COMPACT_CALENDAR_HOST_IDS:
+        if host_id not in surface_ids:
+            problems.append(f"compact calendar host missing from inventory: {host_id}")
+    for entry in baseline:
+        if not isinstance(entry, dict):
+            problems.append("each baseline entry must be an object")
+            continue
+        for field in ("id", "path", "reason", "marker", "fingerprint"):
+            if not isinstance(entry.get(field), str) or not entry[field].strip():
+                problems.append(f"baseline entry missing {field}")
+    private_blob = json.dumps(data, sort_keys=True)
+    for banned in (
+        "needs_james",
+        "card_standard",
+        "richness_profile",
+        "autodispatch",
+        "realization_gate",
+    ):
+        if banned in private_blob:
+            problems.append(f"public catalog contains private planning token: {banned}")
+    return problems
 
 
 def matching_exception(finding: dict[str, str], entries: list[dict[str, Any]]) -> str | None:
@@ -281,9 +404,52 @@ def fixture_records(path: pathlib.Path, entries: list[dict[str, Any]]) -> list[d
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--allowlist", type=pathlib.Path, default=DEFAULT_ALLOWLIST)
-    parser.add_argument("--fixture", type=pathlib.Path, action="append", required=True)
+    parser.add_argument(
+        "--browse-inspection-catalog",
+        type=pathlib.Path,
+        default=None,
+        help="Validate browse-inspection declarations (defaults to the sibling catalog when --check-browse-inspection is set).",
+    )
+    parser.add_argument(
+        "--check-browse-inspection",
+        action="store_true",
+        help="Validate only the browse-inspection catalog projection and exit.",
+    )
+    parser.add_argument("--fixture", type=pathlib.Path, action="append", required=False)
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
+
+    if args.check_browse_inspection or args.browse_inspection_catalog is not None:
+        catalog_path = args.browse_inspection_catalog or DEFAULT_BROWSE_INSPECTION_CATALOG
+        try:
+            catalog = load_browse_inspection_catalog(catalog_path)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            print(f"browse-inspection catalog error: {exc}", file=sys.stderr)
+            return 2
+        if args.check_browse_inspection and not args.fixture:
+            payload = {
+                "schema": BROWSE_INSPECTION_CATALOG_SCHEMA,
+                "ok": True,
+                "surface_count": len(catalog["surfaces"]),
+                "baseline_count": len(catalog["legacy_baseline"]),
+                "compact_calendar_host_count": sum(
+                    1 for row in catalog["surfaces"] if row.get("kind") == "compact_calendar_host"
+                ),
+            }
+            if args.json:
+                print(json.dumps(payload, indent=2, sort_keys=True))
+            else:
+                print(
+                    "browse-inspection catalog OK "
+                    f"(surfaces={payload['surface_count']}, "
+                    f"baseline={payload['baseline_count']}, "
+                    f"calendar_hosts={payload['compact_calendar_host_count']})"
+                )
+            return 0
+
+    if not args.fixture:
+        parser.error("--fixture is required unless --check-browse-inspection is set")
+
     try:
         entries = load_allowlist(args.allowlist)
     except (OSError, ValueError, json.JSONDecodeError) as exc:

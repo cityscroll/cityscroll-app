@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/cc855a45ec2e1",
+  "status": "implemented",
+  "fingerprint": "browse-inspection-continuity.v1",
+  "updated_at": "2026-09-16T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "browse-inspection-continuity-adr",
+      "path": "docs/adr/browse-inspection-continuity.md"
+    },
+    {
+      "id": "architecture-reference-serving-seams",
+      "path": "docs/architecture.md"
+    },
+    {
+      "id": "cx-01-result-group-navigation-principle",
+      "path": "docs/design-principles-contextual-ux.md"
+    },
+    {
+      "id": "browse-inspection-contract-module",
+      "path": "site/browse_inspection_contract.mjs"
+    },
+    {
+      "id": "action-scent-classifier",
+      "path": "site/affordance_grammar.mjs"
+    },
+    {
+      "id": "browse-inspection-catalog-projection",
+      "path": "test/standards/browse_inspection_catalog.json"
+    },
+    {
+      "id": "resident-surface-catalog-rules",
+      "path": "test/standards/resident_surface_catalog.py"
+    },
+    {
+      "id": "browse-inspection-contract-tests",
+      "path": "test/browse_inspection_contract.test.mjs"
+    },
+    {
+      "id": "browse-inspection-acceptance-manifest",
+      "path": "docs/evidence/browse-inspection-contract/acceptance-manifest.json"
+    }
+  ]
+}
