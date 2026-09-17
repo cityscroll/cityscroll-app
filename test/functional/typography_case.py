@@ -361,6 +361,19 @@ def wait_for_reading_tokens(page, *, label: str) -> None:
         f"{label}: reading font tokens never became available on body ({last})"
     )
 
+def assert_no_horizontal_overflow(page, label: str) -> dict[str, int]:
+    overflow = page.evaluate(
+        """() => {
+          const d = document.documentElement;
+          return { scroll: d.scrollWidth, client: d.clientWidth };
+        }"""
+    )
+    assert overflow["scroll"] <= overflow["client"] + 1, (
+        f"{label}: horizontal overflow {overflow}"
+    )
+    return overflow
+
+
 def assert_typography_surface(page, base: str, route: str, *, label: str) -> dict[str, object]:
     open_route(page, base, route, label=label)
     wait_for_reading_tokens(page, label=label)
@@ -384,6 +397,94 @@ def assert_typography_surface(page, base: str, route: str, *, label: str) -> dic
         "render_sha256": render_hash(page),
         "roles": roles,
         "sample": sample,
+    }
+
+
+def assert_zoom_usability(page, base: str, *, label: str) -> dict[str, object]:
+    """200% zoom reflow: half the current CSS width must stay usable without horizontal overflow.
+
+    Prefer viewport compression over documentElement.style.zoom. CSS zoom inflates
+    scrollWidth without a matching layout reflow on some entry surfaces, so the
+    half-width viewport is the honest 200% reading condition.
+    """
+    current = page.viewport_size or {"width": 1440, "height": 1000}
+    # WCAG reflow floor is 320 CSS px; never compress below that when simulating 200% zoom.
+    zoomed = {
+        "width": max(320, int(current["width"]) // 2),
+        "height": int(current["height"]),
+    }
+    page.set_viewport_size(zoomed)
+    open_route(page, base, HOME_ROUTE, label=label)
+    wait_for_reading_tokens(page, label=label)
+    overflow = assert_no_horizontal_overflow(page, f"{label}:200% zoom reflow@{zoomed['width']}px")
+    readable = page.evaluate(
+        """() => {
+          const body = document.querySelector("[data-typography-role='body'] p, main p, body p");
+          if (!body) return false;
+          const style = getComputedStyle(body);
+          const box = body.getBoundingClientRect();
+          return style.display !== 'none' && box.height > 0 && box.width > 0;
+        }"""
+    )
+    assert readable, f"{label}: reading text not usable at 200% zoom reflow"
+    page.keyboard.press("Tab")
+    focused = page.evaluate(
+        "() => !!(document.activeElement && getComputedStyle(document.activeElement).display !== 'none')"
+    )
+    assert focused, f"{label}: keyboard focus lost at 200% zoom reflow"
+    digest = render_hash(page)
+    return {
+        "route": HOME_ROUTE,
+        "viewport": zoomed,
+        "render_sha256": digest,
+        "assertion": "zoom-200-reflow-no-horizontal-overflow",
+        "overflow": overflow,
+    }
+
+
+def assert_long_title_usability(page, base: str, *, label: str) -> dict[str, object]:
+    """A deliberately long title must stay visible without forcing page-level overflow."""
+    open_route(page, base, HOME_ROUTE, label=label)
+    wait_for_reading_tokens(page, label=label)
+    long_title = (
+        "Community board capital budget request for reconstruction of the "
+        "waterfront esplanade and adjacent pedestrian bridges across the "
+        "industrial waterway corridor — " + ("extended title token " * 12)
+    )
+    page.evaluate(
+        """(title) => {
+          const host = document.querySelector('main') || document.body;
+          const probe = document.createElement('h1');
+          probe.setAttribute('data-typography-role', 'brand');
+          probe.setAttribute('data-typography-long-title', '1');
+          probe.textContent = title;
+          probe.style.maxWidth = '100%';
+          probe.style.overflowWrap = 'anywhere';
+          host.prepend(probe);
+        }""",
+        long_title,
+    )
+    overflow = assert_no_horizontal_overflow(page, f"{label}:long title")
+    usable = page.evaluate(
+        """() => {
+          const el = document.querySelector('[data-typography-long-title="1"]');
+          if (!el) return false;
+          const style = getComputedStyle(el);
+          const box = el.getBoundingClientRect();
+          return (
+            style.display !== 'none'
+            && box.height > 0
+            && el.textContent.trim().length > 80
+          );
+        }"""
+    )
+    assert usable, f"{label}: long title not visible or truncated away"
+    return {
+        "route": HOME_ROUTE,
+        "viewport": page.viewport_size,
+        "render_sha256": render_hash(page),
+        "assertion": "long-title-remains-usable",
+        "overflow": overflow,
     }
 
 
@@ -607,10 +708,39 @@ def run_typography_case(base: str | None = None, *, write_manifest: bool = False
                 })
                 non_latin.close()
 
+                zoom_ctx = browser.new_context(viewport=viewport)
+                zoom_result = assert_zoom_usability(zoom_ctx.new_page(), base, label="zoom")
+                entries.append({
+                    "case": "typography-zoom",
+                    "route": HOME_ROUTE,
+                    "viewport": viewport,
+                    "assertion": (
+                        "At 200% zoom the home reading surface stays usable without horizontal overflow."
+                    ),
+                    "render_sha256": zoom_result["render_sha256"],
+                    "passed": True,
+                })
+                zoom_ctx.close()
+
+                long_ctx = browser.new_context(viewport=viewport)
+                long_result = assert_long_title_usability(long_ctx.new_page(), base, label="long-title")
+                entries.append({
+                    "case": "typography-long-title",
+                    "route": HOME_ROUTE,
+                    "viewport": viewport,
+                    "assertion": (
+                        "A long title remains visible and does not force page-level horizontal overflow."
+                    ),
+                    "render_sha256": long_result["render_sha256"],
+                    "passed": True,
+                })
+                long_ctx.close()
+
                 print(
                     f"OK typography {viewport['width']}x{viewport['height']}: "
                     f"home={home_ok['render_sha256'][:12]} notice={notice_ok['render_sha256'][:12]} "
-                    f"contract={contract_ok['render_sha256'][:12]}",
+                    f"contract={contract_ok['render_sha256'][:12]} zoom={zoom_result['render_sha256'][:12]} "
+                    f"long-title={long_result['render_sha256'][:12]}",
                     flush=True,
                 )
             browser.close()

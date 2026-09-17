@@ -34,6 +34,16 @@ test("design language makes family roles normative and sizes a reference", () =>
   assert.match(design, /script-aware/);
 });
 
+test("typography browser case asserts zoom and long-title usability", () => {
+  const harness = read("test/functional/typography_case.py");
+  assert.match(harness, /def assert_zoom_usability\(/);
+  assert.match(harness, /def assert_long_title_usability\(/);
+  assert.match(harness, /typography-zoom/);
+  assert.match(harness, /typography-long-title/);
+  assert.match(harness, /max\(320, int\(current\["width"\]\) \/\/ 2\)/);
+  assert.match(harness, /data-typography-long-title/);
+});
+
 test("homepage control roles drop Georgia and share reading tokens", () => {
   const home = read("site/index.html");
   assert.match(home, /<link rel="stylesheet" href="brand\.css">/);
