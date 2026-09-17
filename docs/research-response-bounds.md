@@ -79,3 +79,10 @@ all groups must remain reachable, and exact browse continuations must enumerate
 without duplicates. Additional checks cover every analytical dimension, unknown
 labels, combined filters, HTTP compatibility, multibyte byte accounting, and
 lossless identifier replay. Required checks use fixtures and never fetch publishers.
+
+[`worker/test/research_response_corpus_bounds.test.mjs`](../worker/test/research_response_corpus_bounds.test.mjs)
+re-runs the analysis read against the committed registered-contract projection.
+It records that the largest agency group in that corpus stays under the byte
+budget with a visible identifier note, and that the Health Department all-years
+group and its 2026 fiscal-year subset complete with retained before/after sizes
+in [`docs/evidence/research-response-bounds/bounded-identifier-arrays.json`](evidence/research-response-bounds/bounded-identifier-arrays.json).

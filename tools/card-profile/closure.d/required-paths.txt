@@ -1808,6 +1808,7 @@ tools/lib/agency_identity_evidence.mjs
 tools/lib/agency_publisher_crosswalk.mjs
 tools/lib/agency_route_classifications.mjs
 tools/lib/agency_successors.mjs
+tools/lib/analytical_projection_io.mjs
 tools/lib/batch_precompute_snapshots.mjs
 tools/lib/civic_action_paths_documentation.mjs
 tools/lib/civic_geography_oracles.mjs

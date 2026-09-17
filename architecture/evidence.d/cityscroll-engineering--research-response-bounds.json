@@ -3,7 +3,7 @@
   "id": "cityscroll-engineering/research-response-bounds",
   "status": "implemented",
   "fingerprint": "research-response-bounds.v1",
-  "updated_at": "2026-09-09T00:00:00.000Z",
+  "updated_at": "2026-09-17T00:00:00.000Z",
   "projections": [
     {
       "id": "response-limits",
@@ -26,8 +26,20 @@
       "path": "worker/test/research_response_budget.test.mjs"
     },
     {
+      "id": "research-corpus-bounds-tests",
+      "path": "worker/test/research_response_corpus_bounds.test.mjs"
+    },
+    {
       "id": "response-contract",
       "path": "docs/research-response-bounds.md"
+    },
+    {
+      "id": "corpus-bounds-recording",
+      "path": "docs/evidence/research-response-bounds/bounded-identifier-arrays.json"
+    },
+    {
+      "id": "corpus-bounds-recording-notes",
+      "path": "docs/evidence/research-response-bounds/bounded-identifier-arrays.md"
     }
   ]
 }
