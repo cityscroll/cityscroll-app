@@ -3,18 +3,19 @@ import {
   setFollowingDefaultWatchReceipt,
 } from "./following_default_watch_receipt.mjs";
 
-// The disclosed weekly-Contracts default under the masthead. The card ships on every
-// index.html route, so this enhancement has to attach whether the reader landed on the
-// static-first home (site/home_entry.mjs) or on a hash route that boots the full app
-// (site/app/main.mjs). It runs before core.mjs installs globalThis.workerFetch, so it
-// carries its own minimal fetch with the same two-origin fallback.
+// The disclosed weekly-Contracts default inside the Contracts intro. The card ships in
+// the shared index.html shell, so this enhancement has to attach whether the reader
+// landed on the static-first home (site/home_entry.mjs) or on a hash route that boots
+// the full app (site/app/main.mjs). It runs before core.mjs installs
+// globalThis.workerFetch, so it carries its own minimal fetch with the same two-origin
+// fallback.
 const API_ORIGINS = Object.freeze([
   window.CROL_API_ORIGIN || "https://api.cityscroll.org",
   window.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev",
 ]);
 
 async function subscribeHomeDefault(email, lang) {
-  const body = JSON.stringify({ email, no_topic: true, source: "top-of-site", lang });
+  const body = JSON.stringify({ email, no_topic: true, source: "contracts-intro", lang });
   let lastError;
   for (const origin of API_ORIGINS) {
     try {

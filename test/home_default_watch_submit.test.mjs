@@ -134,7 +134,7 @@ test("a valid address posts exactly the disclosed homepage-default intent", asyn
   assert.deepEqual(JSON.parse(request.options.body), {
     email: "reader@example.com",
     no_topic: true,
-    source: "top-of-site",
+    source: "contracts-intro",
     lang: "es",
   });
   assert.equal(langField.value, "es", "the no-JS form fields stay in sync with the posted language");

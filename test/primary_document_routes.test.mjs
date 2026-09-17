@@ -453,7 +453,7 @@ test("primary navigation is four real document links on every promoted shell", (
   assert.match(root, /<body data-primary-context="home" data-home-ready="true">/);
   assert.match(root, /<form class="home-topic-form" method="get" action="\/search\/">/);
   assert.match(root, /name="q"[^>]+maxlength="240"/);
-  assert.match(root, /What are you looking for\?/);
+  assert.match(root, /What's happening in your city\?/);
   assert.doesNotMatch(root, /<section id="tab-money" class="tabpane active"/);
   const loader = read("../site/app/main.mjs");
   assert.match(loader, /isNeutralHome/);
@@ -467,10 +467,10 @@ test("primary navigation is four real document links on every promoted shell", (
     ["exams", "/browse/exams/", "exams"],
   ];
   assert.match(root, /class="browse-child-nav"/);
-  assert.match(root, /Civic objects/);
-  const civicObjectNav = root.match(/<nav class="tabs browse-child-tabs" aria-label="Civic objects">[\s\S]*?<\/nav>/)?.[0] || "";
-  assert.ok(civicObjectNav, "the root chooser keeps its civic-object navigation");
-  assert.doesNotMatch(civicObjectNav, /class="tabbtn active"|aria-current="page"/, "the root chooser has no preselected civic object");
+  assert.match(root, /Browse by type/);
+  const civicObjectNav = root.match(/<nav class="tabs browse-child-tabs" aria-label="Browse by type"[^>]*>[\s\S]*?<\/nav>/)?.[0] || "";
+  assert.ok(civicObjectNav, "the root chooser keeps its record-type navigation");
+  assert.doesNotMatch(civicObjectNav, /class="tabbtn active"|aria-current="page"/, "the root chooser has no preselected record type");
   for (const [label, route, tab] of routes) {
     assert.match(root, new RegExp(`href="${route.replaceAll("/", "\\/")}"[^>]+data-tab="${tab}"`), `${label} keeps a canonical Browse destination`);
   }

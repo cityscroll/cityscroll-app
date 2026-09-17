@@ -271,9 +271,9 @@ function searchLane(id, title, { description = "", semantic = false, titleKey = 
 export function renderSearchDocument() {
   return `<div class="topic-search-document" data-search-document>
     <p class="topic-search-kicker" data-i18n="search_label">Search</p>
-    <header class="topic-search-head"><h2 id="search-heading" data-i18n="topic_search_heading">What are you looking for?</h2><p data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by civic object.</p></header>
+    <header class="topic-search-head"><h2 id="search-heading" data-i18n="topic_search_heading">What's happening in your city?</h2><p data-i18n="topic_search_intro">Search public records by topic, place, or agency. Results stay grouped by record type.</p></header>
     <form class="topic-search-form" method="get" action="/search/" data-search-form>
-      <label for="search-query" data-i18n="topic_search_heading">What are you looking for?</label>
+      <label for="search-query" class="sr-only" data-i18n="topic_search_query_label">Search public records</label>
       <div class="topic-search-form-row"><input id="search-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder"><button type="submit" data-i18n="search_label">Search</button></div>
     </form>
     <div class="topic-search-context" data-search-place hidden></div>
@@ -293,7 +293,7 @@ export function renderSearchDocument() {
     </div>
     <section class="topic-search-coverage is-unavailable" data-search-coverage data-coverage-state="unavailable" role="status" hidden></section>
     <nav class="topic-search-family-nav" data-search-family-nav aria-label="Jump to a result family" hidden><ul data-search-family-nav-list></ul></nav>
-    <div class="topic-search-lanes" data-semantic-lanes aria-label="Search results by civic object" data-i18n-aria="topic_search_results_aria">
+    <div class="topic-search-lanes" data-semantic-lanes aria-label="Search results by record type" data-i18n-aria="topic_search_results_aria">
       ${searchLane("contracts", "Contracts", { semantic: true, titleKey: "tab_money" })}
       ${searchLane("people-organizations", "People + organizations", { semantic: true })}
       ${searchLane("land", "Land", { semantic: true })}
@@ -327,12 +327,22 @@ export function buildSearchDocument(shell) {
   html = addRouteStyles(html, ["search.css"]);
   html = replaceElementContent(html, "browse-child-nav", "");
   html = replaceElementContent(html, "browseview", renderSearchDocument());
-  // The Search page keeps the Following handoff card but not the weekly-default email form,
-  // so its prompt stays the open-ended browse ask rather than the homepage promise.
-  html = removeElement(html, "homeCtaForm");
-  html = removeElement(html, "homeCtaMsg");
-  html = replaceElementContent(html, "homeCtaPrompt", "Want email updates on this?")
+  // Search keeps a Following handoff in the masthead, not the Contracts weekly-default
+  // email form that now lives inside the Contracts intro on the home shell.
+  const homeCtaRange = findElementRange(html, "homeCta");
+  const homeCtaMarkup = html.slice(homeCtaRange.openingStart, homeCtaRange.closingEnd);
+  html = `${html.slice(0, homeCtaRange.openingStart)}${html.slice(homeCtaRange.closingEnd)}`;
+  let searchCta = homeCtaMarkup
+    .replace(/\s*data-cta-context="contracts"/, "")
+    .replace(/\s*name="source" value="contracts-intro"/, ' name="source" value="search-following"');
+  searchCta = removeElement(searchCta, "homeCtaForm");
+  searchCta = removeElement(searchCta, "homeCtaMsg");
+  searchCta = replaceElementContent(searchCta, "homeCtaPrompt", "Want email updates on this?")
     .replace('id="homeCtaPrompt" data-i18n="home_cta_prompt"', 'id="homeCtaPrompt" data-i18n="browse_cta_prompt"');
+  html = html.replace(
+    '<div class="cr-rule cr-rule--mid"></div>',
+    `${searchCta}\n    <div class="cr-rule cr-rule--mid"></div>`,
+  );
   return html
     .replace(' data-i18n-title="index_title"', "")
     .replace('<script type="module" src="app/main.mjs"></script>', '<script type="module" src="search_entry.mjs"></script>');
