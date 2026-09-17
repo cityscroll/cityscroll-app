@@ -76,7 +76,13 @@ def check_lang(pw, lang):
     skip_x_ltr = page.locator(".skip").evaluate("el => el.getBoundingClientRect().x")
     page.goto(BASE + "browse/contracts/", timeout=30000)
     wait_for_locator(page.locator(".tag").first, label="contracts method tag")
-    wait_for_locator(page.locator(".rtitle span[lang='en']").first, label="English notice title")
+    # Enhanced Contracts rows keep a static title link for no-JS and a title-sized
+    # inspect control after binding; prefer the visible title so the hidden static
+    # duplicate is not treated as the readiness signal.
+    wait_for_locator(
+        page.locator(".rtitle span[lang='en']:visible").first,
+        label="English notice title",
+    )
     border_ltr = page.locator(".tag").first.evaluate(
         "el => [getComputedStyle(el).marginLeft, getComputedStyle(el).marginRight]")
 
