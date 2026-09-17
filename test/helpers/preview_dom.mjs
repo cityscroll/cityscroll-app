@@ -158,6 +158,63 @@ class FakeElement {
     return child;
   }
 
+  append(...nodes) {
+    for (const node of nodes) this.appendChild(node);
+  }
+
+  remove() {
+    if (!this.parentNode || !Array.isArray(this.parentNode.children)) {
+      this.parentNode = null;
+      return;
+    }
+    const siblings = this.parentNode.children;
+    const index = siblings.indexOf(this);
+    if (index >= 0) siblings.splice(index, 1);
+    this.parentNode = null;
+  }
+
+  replaceWith(...nodes) {
+    const parent = this.parentNode;
+    if (!parent || !Array.isArray(parent.children)) {
+      this.parentNode = null;
+      return;
+    }
+    const index = parent.children.indexOf(this);
+    if (index < 0) {
+      this.parentNode = null;
+      return;
+    }
+    const inserted = [];
+    for (const node of nodes) {
+      if (!node) continue;
+      node.parentNode = parent;
+      inserted.push(node);
+    }
+    parent.children.splice(index, 1, ...inserted);
+    this.parentNode = null;
+  }
+
+  replaceChildren(...nodes) {
+    for (const child of this.children) child.parentNode = null;
+    this.children = [];
+    this.text = "";
+    for (const node of nodes) {
+      if (node == null) continue;
+      if (typeof node === "string") this.text += node;
+      else this.appendChild(node);
+    }
+  }
+
+  cloneNode(deep = false) {
+    const copy = new FakeElement(this.tagName, this.ownerDocument);
+    for (const [name, value] of this.attributes) copy.setAttribute(name, value);
+    copy.text = this.text;
+    if (deep) {
+      for (const child of this.children) copy.appendChild(child.cloneNode(true));
+    }
+    return copy;
+  }
+
   contains(node) {
     for (let current = node; current; current = current.parentNode) if (current === this) return true;
     return false;
@@ -300,6 +357,12 @@ class FakeDocument {
 
   createElement(tagName) {
     return new FakeElement(tagName, this);
+  }
+
+  importNode(node, deep = false) {
+    if (!node) return null;
+    if (typeof node.cloneNode === "function") return node.cloneNode(deep);
+    return node;
   }
 
   getElementById(id) {
