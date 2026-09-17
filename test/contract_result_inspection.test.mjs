@@ -227,6 +227,10 @@ test("A3 negative fixture: trusted-click navigation branches and legacy projecti
   assert.doesNotMatch(MONEY_LIST_SOURCE, /event\.isTrusted&&!row\?\.request_id&&row\?\.canonical_href/);
   assert.doesNotMatch(MONEY_LIST_SOURCE, /location\.assign\(row\.inspect_href\)/);
   assert.doesNotMatch(MONEY_LIST_SOURCE, /location\.assign\(row\.canonical_href\)/);
+  // Planning-surface gating still keys off trusted reader input; only navigation
+  // branches were removed from the primary inspect path.
+  assert.match(MONEY_LIST_SOURCE, /event\.isTrusted/);
+  assert.match(MONEY_LIST_SOURCE, /planningDetailRequested/);
   assert.match(MONEY_LIST_SOURCE, /contractResultUsesSharedDetail/);
   assert.match(MONEY_LIST_SOURCE, /bindContractResultInspection/);
 });

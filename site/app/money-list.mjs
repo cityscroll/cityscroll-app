@@ -1562,13 +1562,25 @@ async function consolidateMoneyAwardRows(rows){
 function bindMoneyListInspection(lineageRows=null){
   const list=document.querySelector("#list");
   if(!list) return;
+  // Trusted reader input may load the planning surface; programmatic auto-select
+  // stays overview-only. Navigation no longer depends on event.isTrusted.
   bindContractResultInspection(list,{
-    onInspect:(index, el)=>select(index, el, false, currentMoneyLineageRows || lineageRows),
+    onInspect:(index, el, event)=>select(
+      index,
+      el,
+      event.isTrusted,
+      event.isTrusted ? null : (currentMoneyLineageRows || lineageRows),
+    ),
   });
   list.querySelectorAll(".row").forEach(el=>{
     el.addEventListener("click",event=>{
       if(event.target.closest?.("a,button")) return;
-      select(+el.dataset.i, el, false, currentMoneyLineageRows || lineageRows);
+      select(
+        +el.dataset.i,
+        el,
+        event.isTrusted,
+        event.isTrusted ? null : (currentMoneyLineageRows || lineageRows),
+      );
     });
   });
 }
