@@ -338,11 +338,19 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.match(deferred, /Affected area/);
   const residentText = deferred.replace(/<details\b[\s\S]*?<\/details>/gi, "").replace(/<[^>]+>/g, " ");
   assert.doesNotMatch(residentText, /strong basis|location evidence|community_board_ontology|placement_method/i);
-  assert.equal((deferred.match(/data-why-here-path="1"/g) || []).length, 1);
-  assert.match(deferred, /Why this is here/);
-  assert.match(deferred, /Affected area: Queens/);
-  assert.match(deferred, /href="\/agencies\/transportation\/"/);
-  assert.match(deferred, /href="\/notices\/m-queens"[^>]*>Mandate: Local Law § 1/);
+  // Geographic evidence and why-here stay inside inspection payloads, not the default card.
+  assert.equal((deferred.match(/data-why-here-path="1"/g) || []).length, 0);
+  assert.doesNotMatch(deferred, />Why this is here</);
+  assert.match(deferred, /near-record-title-link/);
+  assert.match(deferred, /near-record-inspect near-record-title/);
+  assert.match(deferred, /near-record-full-record/);
+  assert.match(deferred, /Open the full record/);
+  assert.match(deferred, /data-near-you-record-inspection=/);
+  assert.match(deferred, /&quot;place_role_label&quot;:&quot;Affected area&quot;/);
+  assert.match(deferred, /&quot;label&quot;:&quot;Queens&quot;/);
+  assert.match(deferred, /\/agencies\/transportation\//);
+  assert.match(deferred, /\/notices\/m-queens/);
+  assert.match(deferred, /Local Law § 1/);
   assert.match(html, /data-map-id="Queens"[^>]+data-count="1"/);
   assert.match(html, /data-map-area="Queens"[^>]+data-count="1"/);
   assert.match(deferred, /data-bag="citywide"/);

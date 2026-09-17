@@ -187,15 +187,15 @@ export const BROWSE_INSPECTION_SURFACES = Object.freeze([
     family: "near_you",
     kind: "collection",
     primary_intent: "inspect",
-    classification: "legacy",
+    classification: "conforming",
     domain_adapter: "site/near_you_view.mjs",
     render_owner: "site/near_you_view.mjs",
     canonical_destination_policy: "explicit_full_record_link",
-    detail_host: "inline_detail",
-    detail_host_module: "site/near_you_view.mjs",
+    detail_host: "modal_preview",
+    detail_host_module: "site/near_you_record_inspection.mjs",
     restoration_adapter: "site/browse_return_context.mjs",
-    journey_owner: "test/browse_inspection_contract.test.mjs",
-    baseline_id: "near-you-title-navigates",
+    journey_owner: "test/near_you_record_inspection.test.mjs",
+    baseline_id: null,
     route: "/near-you",
   }),
   freezeSurface({
@@ -407,14 +407,6 @@ export const BROWSE_INSPECTION_LEGACY_BASELINE = Object.freeze([
     marker: "positionMarkup",
     reason:
       "Board land positions keep rich inspection behind a secondary control while the project title navigates away.",
-    fingerprint: null,
-  }),
-  Object.freeze({
-    id: "near-you-title-navigates",
-    path: "site/near_you_view.mjs",
-    marker: "recordCard",
-    reason:
-      "Near You record cards still lead with linked titles and geographic evidence before staged inspection.",
     fingerprint: null,
   }),
 ].map((entry) => Object.freeze({

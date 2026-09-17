@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c0830a62bcc4f",
+  "status": "implemented",
+  "fingerprint": "near-you-record-inspection.v1",
+  "updated_at": "2026-09-17T18:00:00.000Z",
+  "projections": [
+    {
+      "id": "near-you-record-inspection-module",
+      "path": "site/near_you_record_inspection.mjs"
+    },
+    {
+      "id": "near-you-view-renderer",
+      "path": "site/near_you_view.mjs"
+    },
+    {
+      "id": "near-you-map-island",
+      "path": "site/app/map.mjs"
+    },
+    {
+      "id": "near-you-record-inspection-tests",
+      "path": "test/near_you_record_inspection.test.mjs"
+    },
+    {
+      "id": "near-you-record-inspection-acceptance-manifest",
+      "path": "docs/evidence/near-you-record-inspection/acceptance-manifest.json"
+    },
+    {
+      "id": "browse-inspection-contract-module",
+      "path": "site/browse_inspection_contract.mjs"
+    },
+    {
+      "id": "community-board-proceedings-view-styling",
+      "path": "site/civic-documents.css"
+    }
+  ]
+}

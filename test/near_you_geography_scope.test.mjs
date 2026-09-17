@@ -67,12 +67,24 @@ test("NTA and Police Precinct scopes drive the same Near You membership index an
     const initialHtml = renderNearYouBody(view);
     const { resultsHtml } = renderNearYouDeferredParts(view);
     assert.doesNotMatch(initialHtml, /data-geography-key=/);
-    assert.match(resultsHtml, new RegExp(`data-geography-key="${key}"`));
-    assert.match(resultsHtml, /data-geography-evidence="1"/);
-    assert.match(resultsHtml, /<details class="near-record-why"[^>]*>[\s\S]*?Why this place matched/);
+    // Geography evidence stays in the inspection payload, not the default card.
+    assert.doesNotMatch(resultsHtml, /data-geography-evidence="1"/);
+    assert.doesNotMatch(resultsHtml, /class="near-record-why"/);
+    assert.match(resultsHtml, /data-near-you-record-inspection=/);
+    assert.match(resultsHtml, /class="near-record-inspect/);
+    const payloadMatch = resultsHtml.match(/data-near-you-record-inspection="([^"]+)"/);
+    assert.ok(payloadMatch, "inspection payload is present on the result card");
+    const payload = JSON.parse(payloadMatch[1]
+      .replaceAll("&quot;", '"')
+      .replaceAll("&#39;", "'")
+      .replaceAll("&lt;", "<")
+      .replaceAll("&gt;", ">")
+      .replaceAll("&amp;", "&"));
+    assert.equal(payload.geography?.label, view.results.records[0].geography_evidence.label);
+    assert.equal(payload.geography?.basis, view.results.records[0].geography_evidence.basis);
+    assert.equal(payload.geography?.tier, view.results.records[0].geography_evidence.tier);
     const residentText = resultsHtml.replace(/<details\b[\s\S]*?<\/details>/gi, "").replace(/<[^>]+>/g, " ");
     assert.doesNotMatch(residentText, /strong basis|location evidence|placement_method|point_in_polygon/i);
-    assert.match(resultsHtml, /Why this place matched/);
     assert.match(initialHtml, new RegExp(`<option value="${key}" selected>`));
   }
 });
