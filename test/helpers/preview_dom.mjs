@@ -121,6 +121,15 @@ class FakeElement {
   get className() { return this.getAttribute("class") || ""; }
   set className(value) { this.setAttribute("class", value); }
 
+  // Reflect boolean `hidden` and form-control `value` the way binders read them.
+  get hidden() { return this.hasAttribute("hidden"); }
+  set hidden(value) {
+    if (value) this.setAttribute("hidden", "");
+    else this.removeAttribute("hidden");
+  }
+  get value() { return this.attributes.has("value") ? this.attributes.get("value") : ""; }
+  set value(next) { this.setAttribute("value", String(next ?? "")); }
+
   get isConnected() {
     let node = this;
     while (node.parentNode) node = node.parentNode;
@@ -204,7 +213,7 @@ class FakeElement {
     parseInto(this, String(html), this.ownerDocument);
   }
 
-  focus() {
+  focus(_options) {
     this.focusCount += 1;
     this.ownerDocument.activeElement = this;
   }
