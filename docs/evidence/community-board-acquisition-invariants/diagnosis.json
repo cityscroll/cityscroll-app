@@ -1,0 +1,60 @@
+{
+  "schema": "cityscroll.community_board_acquisition_cause_diagnosis.v1",
+  "public_alias": "cef222171a737",
+  "grounded_at": "ecd674bf17f99165551b9af67775dc7820f016c0",
+  "observed_at": "2026-09-17T00:00:00.000Z",
+  "summary": "Seven previously populated board calendars accounted for a 203-meeting shortfall. Presence and population are recorded separately so a successful empty response cannot pass as healthy.",
+  "sources": [
+    {
+      "board_id": "bronx-cb-06",
+      "role": "upcoming_meetings",
+      "cause_class": "publisher_change",
+      "observation": "Host returns HTTP 403 for empty or generic Mozilla/5.0 User-Agent strings and HTTP 200 for an identifying acquisition User-Agent; acquisition now sends cityscroll-community-board-acquisition/1.0."
+    },
+    {
+      "board_id": "bronx-cb-08",
+      "role": "upcoming_meetings",
+      "cause_class": "publisher_change",
+      "observation": "Same host-family User-Agent refusal as Bronx CB6; identifying User-Agent restores a populated calendar page."
+    },
+    {
+      "board_id": "manhattan-cb-02",
+      "role": "upcoming_meetings",
+      "cause_class": "publisher_change",
+      "observation": "Same host-family User-Agent refusal on cbmanhattan.cityofnewyork.us; identifying User-Agent restores extractable events."
+    },
+    {
+      "board_id": "manhattan-cb-04",
+      "role": "upcoming_meetings",
+      "cause_class": "publisher_change",
+      "observation": "Same host-family User-Agent refusal on cbmanhattan.cityofnewyork.us; identifying User-Agent restores extractable events."
+    },
+    {
+      "board_id": "manhattan-cb-10",
+      "role": "upcoming_meetings",
+      "cause_class": "parser_regression",
+      "observation": "Publisher returned HTTP 200 with extractable Schema.org events, but the acquisition transport treated ordinary prose containing the word challenges as challenge_html and yielded zero records."
+    },
+    {
+      "board_id": "manhattan-cb-11",
+      "role": "upcoming_meetings",
+      "cause_class": "publisher_change",
+      "observation": "Calendar page answered HTTP 200 while the required Airtable shared-view child produced no extractable meetings; presence without population. Current iframe harvest yields meetings once the shared-view child completes."
+    },
+    {
+      "board_id": "manhattan-cb-12",
+      "role": "upcoming_meetings",
+      "cause_class": "publisher_change",
+      "observation": "Same host-family User-Agent refusal on cbmanhattan.cityofnewyork.us; identifying User-Agent restores extractable events."
+    }
+  ],
+  "council_outcomes": {
+    "cause_class": "parser_regression",
+    "observation": "Roll calls with person rows but missing or mismatched event_id and event_item_id are reduced to tally-only retention so they are never published as agenda-item-traceable votes."
+  },
+  "invariants": {
+    "presence": "source responds with a non-error status",
+    "population": "response yields at least one extractable meeting for the role",
+    "rule": "A source that responds successfully while producing none fails population and must not pass on presence alone."
+  }
+}

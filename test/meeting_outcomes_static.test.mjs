@@ -4,10 +4,13 @@ import { test } from "node:test";
 
 import {
   buildMeetingOutcomesSnapshot,
+  compactMeetingOutcomeRecord,
   compactVotes,
+  retainBoundRollCall,
   renderMeetingOutcomesFirstPaint,
 } from "../site/meeting_outcomes_static.mjs";
 import { buildMeetingOutcomes } from "../worker/src/lib/meeting_outcomes.mjs";
+import { unboundRollCalls } from "../ops/first-class-refresh/guard-publication.mjs";
 
 const fixture = JSON.parse(readFileSync(new URL("./contract/fixtures/meeting_outcomes.json", import.meta.url), "utf8"));
 
@@ -61,4 +64,82 @@ test("compactVotes accepts aye/nay publisher keys without inventing persons", ()
   assert.equal(tallyOnly.yes, 0);
   assert.equal(tallyOnly.vote_identity, "tally_only");
   assert.equal(tallyOnly.by_person.length, 0);
+});
+
+test("named roll calls without exact event and agenda-item refs are not retained as traceable", () => {
+  const unbound = retainBoundRollCall(compactVotes({
+    result: "Passed",
+    counts: { aye: 5, nay: 1 },
+    vote_identity: "roll_call",
+    event_id: null,
+    event_item_id: null,
+    by_person: [{ person_id: "1", person_name: "Ada", vote_bucket: "aye" }],
+  }), { eventId: "event-1", agendaItemId: "item-1" });
+  assert.equal(unbound.person_count, 0);
+  assert.deepEqual(unbound.by_person, []);
+  assert.equal(unbound.vote_identity, "tally_only");
+  assert.equal(unbound.yes, 5);
+
+  const bound = retainBoundRollCall(compactVotes({
+    result: "Passed",
+    counts: { aye: 5, nay: 1 },
+    vote_identity: "roll_call",
+    event_id: "event-1",
+    event_item_id: "item-1",
+    by_person: [{ person_id: "1", person_name: "Ada", vote_bucket: "aye" }],
+  }), { eventId: "event-1", agendaItemId: "item-1" });
+  assert.equal(bound.person_count, 1);
+  assert.equal(bound.event_id, "event-1");
+  assert.equal(bound.event_item_id, "item-1");
+
+  const snapshot = buildMeetingOutcomesSnapshot([
+    {
+      request_id: "20260917001",
+      join: { matched: true },
+      council_event: { event_id: "event-1", name: "Stated Meeting", date: "2026-09-17", url: "https://example.test/event/1", documents: [] },
+      agenda_items: [{
+        agenda_item_id: "item-1",
+        title: "Example matter",
+        matters: [{
+          matter_id: "matter-1",
+          matter_file: "Int 0001",
+          agenda_item_id: "item-1",
+          outcome: "Adopted",
+          votes: {
+            result: "Passed",
+            counts: { aye: 5, nay: 1 },
+            vote_identity: "roll_call",
+            by_person: [{ person_id: "1", person_name: "Ada", vote_bucket: "aye" }],
+          },
+        }],
+      }],
+    },
+  ], { generatedAt: "2026-09-17T12:00:00Z" });
+  assert.equal(unboundRollCalls(snapshot).length, 0);
+  const action = Object.values(snapshot.by_notice)[0].matters[0].item_actions[0];
+  assert.equal(action.votes.person_count, 0);
+  assert.equal(action.vote_state, "tally_recorded");
+
+  const compacted = compactMeetingOutcomeRecord({
+    request_id: "20260917002",
+    join: { matched: true },
+    council_event: { event_id: "event-2", documents: [] },
+    agenda_items: [{
+      agenda_item_id: "item-2",
+      matters: [{
+        matter_id: "matter-2",
+        agenda_item_id: "item-2",
+        votes: {
+          result: "Passed",
+          counts: { aye: 3, nay: 0 },
+          event_id: "event-2",
+          event_item_id: "item-2",
+          vote_identity: "roll_call",
+          by_person: [{ person_id: "2", person_name: "Bea", vote_bucket: "aye" }],
+        },
+      }],
+    }],
+  });
+  assert.equal(compacted.matters[0].item_actions[0].votes.person_count, 1);
+  assert.equal(compacted.matters[0].item_actions[0].vote_state, "roll_call_recorded");
 });
