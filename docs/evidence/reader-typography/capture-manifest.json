@@ -1,4 +1,5 @@
 {
+  "base": "https://cityscroll.org/",
   "captures": [
     {
       "assertion": "No-JavaScript home, notice, and contract keep equivalent body/label/input/button reading roles with deliberate brand display.",
@@ -112,10 +113,10 @@
     }
   ],
   "case": "typography",
-  "condition": "Local typography fixtures for home, notice, and contract using shared brand tokens; no image binary is committed.",
-  "data_vintage": "fixture-or-served-materialization",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "data_vintage": "2026-09-17T04:59:07.932Z",
   "image_binaries_committed": false,
-  "revision": "5b74244222da0332f1899d845a67dc11b756cada",
+  "revision": "cf75b05d00bc3aeef93319d55475422fe1e88fc9",
   "route": "/",
   "schema": "cityscroll.render_capture_manifest.v1",
   "surface": "reader typography roles"

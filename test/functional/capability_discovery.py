@@ -102,6 +102,32 @@ def read_served_freshness() -> dict:
         return json.loads(response.read().decode("utf-8"))
 
 
+def read_served_artifact_manifest() -> dict:
+    import urllib.request
+
+    url = "https://cityscroll.org/artifact-manifest.json"
+    request = urllib.request.Request(url, headers={"User-Agent": UA})
+    with urllib.request.urlopen(request, timeout=30) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def deployed_build_revision() -> str:
+    """Serve Pages artifact revision (short), not the local checkout HEAD."""
+    payload = read_served_artifact_manifest()
+    sha = payload.get("source_commit_sha") if isinstance(payload, dict) else None
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+        raise RuntimeError("deployed artifact-manifest lacks a 40-hex source_commit_sha")
+    return sha[:9]
+
+
+def ai_context_task_text(page) -> str:
+    """Identity and tools live in the copyable textarea, not panel chrome text."""
+    task = page.locator("#ai-context-task-text")
+    if task.count() != 1:
+        return ""
+    return task.input_value()
+
+
 def capture_subscription_handoff(page, viewport_name: str) -> dict:
     """Complete calendar subscription handoff without enrolling a recipient."""
     enroll: list[dict] = []
@@ -261,16 +287,22 @@ def write_follow_calendar_production_captures(captures: list[dict], freshness: d
         for row in manifest.get("captures", [])
         if row.get("condition") != "production-subscription-handoff"
     ]
-    # Keep the local fixture revision pinned; production provenance is recorded beside it.
-    manifest["production_revision"] = f"grounded at {git_head()}"
+    # Production provenance comes from the served site, not the checkout that ran the harness.
+    served_identity = str(freshness.get("deployment_identity") or "").strip()
+    if not re.fullmatch(r"[0-9a-f]{40}", served_identity):
+        artifact = read_served_artifact_manifest()
+        served_identity = str(artifact.get("source_commit_sha") or "").strip()
+    if not re.fullmatch(r"[0-9a-f]{40}", served_identity):
+        raise RuntimeError("served deployment identity unavailable for follow-calendar production capture")
+    production_revision = f"grounded at {served_identity}"
+    manifest["production_revision"] = production_revision
     manifest["production_freshness_generated_at"] = freshness.get("generated_at")
-    manifest["production_deployment_identity"] = freshness.get("deployment_identity")
+    manifest["production_deployment_identity"] = served_identity
     for capture in captures:
-        capture["revision"] = manifest["production_revision"]
+        capture["revision"] = production_revision
     manifest["captures"] = retained + captures
     FOLLOW_CALENDAR_MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     step("WRITE", "follow-calendar capture-manifest", str(FOLLOW_CALENDAR_MANIFEST.relative_to(ROOT)))
-
 
 def assert_follow_calendar_journeys(browser) -> None:
     page = browser.new_context(viewport=DESKTOP, user_agent=UA).new_page()
@@ -513,19 +545,21 @@ def run_ai_context(page, viewport_name: str, failures: list[str]) -> list[dict]:
     page.goto(contract_url, wait_until="domcontentloaded", timeout=45000)
     page.wait_for_selector("[data-ai-context-panel]", timeout=15000)
     panel = page.locator("[data-ai-context-panel]")
-    text = panel.inner_text()
-    if CONTRACT_ID not in text:
+    task = ai_context_task_text(page)
+    panel_text = panel.inner_text()
+    combined = f"{panel_text}\n{task}"
+    if CONTRACT_ID not in task:
         failures.append(f"{viewport_name}: contract panel missing exact id")
-    if "get_contract" not in text:
+    if "get_contract" not in task:
         failures.append(f"{viewport_name}: contract panel missing tool")
-    if "watch-secret" in text:
+    if "watch-secret" in combined:
         failures.append(f"{viewport_name}: private token leaked into panel")
-    if "person@example.com" in text:
+    if "person@example.com" in combined:
         failures.append(f"{viewport_name}: email leaked into panel")
-    if "evil.example" in text:
+    if "evil.example" in combined:
         failures.append(f"{viewport_name}: hostile return URL leaked into panel")
     step(
-        "OK" if CONTRACT_ID in text and "get_contract" in text and "watch-secret" not in text else "FAIL",
+        "OK" if CONTRACT_ID in task and "get_contract" in task and "watch-secret" not in combined else "FAIL",
         f"{viewport_name} contextual contract handoff",
     )
 
@@ -549,10 +583,15 @@ def run_ai_context(page, viewport_name: str, failures: list[str]) -> list[dict]:
         failures.append(f"{viewport_name}: clipboard failure did not select task text")
     step("OK" if selected else "FAIL", f"{viewport_name} contextual clipboard fallback")
     captures.append({
+        "case": "ai-context-contract",
         "route": "/use-with-ai/?kind=contract",
-        "viewport": viewport_name,
+        "viewport": {
+            "name": viewport_name,
+            "width": page.viewport_size["width"] if page.viewport_size else 0,
+            "height": page.viewport_size["height"] if page.viewport_size else 0,
+        },
         "assertion": "exact contract task panel with private fields stripped and clipboard fallback",
-        "sha256": content_hash(panel.inner_html()),
+        "render_sha256": content_hash(panel.inner_html()),
     })
 
     notice_url = (
@@ -562,18 +601,23 @@ def run_ai_context(page, viewport_name: str, failures: list[str]) -> list[dict]:
     )
     page.goto(notice_url, wait_until="domcontentloaded", timeout=45000)
     page.wait_for_selector("[data-ai-context-panel]", timeout=15000)
-    notice_text = page.locator("[data-ai-context-panel]").inner_text()
-    if NOTICE_ID not in notice_text or "get_notice" not in notice_text:
+    notice_task = ai_context_task_text(page)
+    if NOTICE_ID not in notice_task or "get_notice" not in notice_task:
         failures.append(f"{viewport_name}: notice panel missing RequestID or tool")
     step(
-        "OK" if NOTICE_ID in notice_text and "get_notice" in notice_text else "FAIL",
+        "OK" if NOTICE_ID in notice_task and "get_notice" in notice_task else "FAIL",
         f"{viewport_name} contextual notice handoff",
     )
     captures.append({
+        "case": "ai-context-notice",
         "route": f"/use-with-ai/?kind=notice&id={NOTICE_ID}",
-        "viewport": viewport_name,
+        "viewport": {
+            "name": viewport_name,
+            "width": page.viewport_size["width"] if page.viewport_size else 0,
+            "height": page.viewport_size["height"] if page.viewport_size else 0,
+        },
         "assertion": "notice RequestID preserved in contextual task",
-        "sha256": content_hash(page.locator("[data-ai-context-panel]").inner_html()),
+        "render_sha256": content_hash(page.locator("[data-ai-context-panel]").inner_html()),
     })
 
     land_url = (
@@ -583,16 +627,25 @@ def run_ai_context(page, viewport_name: str, failures: list[str]) -> list[dict]:
     )
     page.goto(land_url, wait_until="domcontentloaded", timeout=45000)
     page.wait_for_selector("[data-ai-context-panel]", timeout=15000)
-    land_text = page.locator("[data-ai-context-panel]").inner_text()
-    land_ok = LAND_ID in land_text and "get_land_project" in land_text and "get_land_decision_path" in land_text
+    land_task = ai_context_task_text(page)
+    land_ok = (
+        LAND_ID in land_task
+        and "get_land_project" in land_task
+        and "get_land_decision_path" in land_task
+    )
     if not land_ok:
         failures.append(f"{viewport_name}: land panel missing project id or decision-path tools")
     step("OK" if land_ok else "FAIL", f"{viewport_name} contextual land handoff")
     captures.append({
+        "case": "ai-context-land",
         "route": f"/use-with-ai/?kind=land_project&id={LAND_ID}",
-        "viewport": viewport_name,
+        "viewport": {
+            "name": viewport_name,
+            "width": page.viewport_size["width"] if page.viewport_size else 0,
+            "height": page.viewport_size["height"] if page.viewport_size else 0,
+        },
         "assertion": "land project get and decision-path tools preserved",
-        "sha256": content_hash(page.locator("[data-ai-context-panel]").inner_html()),
+        "render_sha256": content_hash(page.locator("[data-ai-context-panel]").inner_html()),
     })
 
     unsupported_url = (
@@ -602,19 +655,26 @@ def run_ai_context(page, viewport_name: str, failures: list[str]) -> list[dict]:
     )
     page.goto(unsupported_url, wait_until="domcontentloaded", timeout=45000)
     page.wait_for_selector("[data-ai-context-panel]", timeout=15000)
-    unsupported_text = page.locator("[data-ai-context-panel]").inner_text()
+    unsupported_task = ai_context_task_text(page)
+    unsupported_panel = page.locator("[data-ai-context-panel]").inner_text()
+    unsupported_blob = f"{unsupported_panel}\n{unsupported_task}".lower()
     unsupported_ok = (
-        ("boro" in unsupported_text.lower() or "unsupported" in unsupported_text.lower())
+        ("boro" in unsupported_blob or "unsupported" in unsupported_blob)
         and page.locator("#mcp-endpoint").count() == 1
     )
     if not unsupported_ok:
         failures.append(f"{viewport_name}: unsupported filters not disclosed or setup missing")
     step("OK" if unsupported_ok else "FAIL", f"{viewport_name} contextual unsupported filters")
     captures.append({
+        "case": "ai-context-unsupported-filters",
         "route": "/use-with-ai/?kind=search_scope&status=unsupported_filters",
-        "viewport": viewport_name,
+        "viewport": {
+            "name": viewport_name,
+            "width": page.viewport_size["width"] if page.viewport_size else 0,
+            "height": page.viewport_size["height"] if page.viewport_size else 0,
+        },
         "assertion": "unsupported filters disclosed while general setup remains reachable",
-        "sha256": content_hash(page.locator("[data-ai-context-panel]").inner_html()),
+        "render_sha256": content_hash(page.locator("[data-ai-context-panel]").inner_html()),
     })
 
     page.focus("#ai-context-task-text")
@@ -628,17 +688,36 @@ def run_ai_context(page, viewport_name: str, failures: list[str]) -> list[dict]:
 def write_ai_context_manifest(captures: list[dict]) -> None:
     manifest_path = ROOT / "docs" / "evidence" / "assistant-context" / "ai-context-capture-manifest.json"
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    revision = os.environ.get("GIT_COMMIT") or os.environ.get("GITHUB_SHA") or "local"
+    if is_production_base():
+        artifact = read_served_artifact_manifest()
+        revision = deployed_build_revision()
+        data_vintage = str(artifact.get("generated_at") or "").strip() or "production"
+        condition = (
+            f"Production base {BASE} after deployment; "
+            "no image binary is committed."
+        )
+        base_label = BASE
+    else:
+        revision = os.environ.get("GIT_COMMIT") or os.environ.get("GITHUB_SHA") or git_head()[:9]
+        data_vintage = "site build"
+        condition = (
+            "Local assistant-context journeys; no image binary is committed."
+        )
+        base_label = BASE if BASE.startswith("http") else "local"
     manifest = {
-        "schema": "cityscroll.assistant_context_capture_manifest.v1",
+        "schema": "cityscroll.render_capture_manifest.v1",
+        "surface": "assistant context handoff",
         "case": "ai-context",
-        "revision": f"grounded at {revision}",
-        "data_vintage": "site build",
+        "base": base_label,
+        "condition": condition,
+        "image_binaries_committed": False,
+        "revision": revision,
+        "data_vintage": data_vintage,
+        "route": "/use-with-ai/",
         "captures": captures,
     }
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     step("WRITE", "capture-manifest", str(manifest_path.relative_to(ROOT)))
-
 
 def run_default_journeys(browser) -> None:
     desktop_ctx, desktop = open_page(browser, DESKTOP)

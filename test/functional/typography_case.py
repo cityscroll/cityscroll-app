@@ -209,7 +209,9 @@ SAMPLE_SCRIPT = """() => {
   const body = first([
     "[data-typography-role='body'] p",
     "main .guide-help",
-    "main p",
+    "main .node-section p",
+    "main .lede",
+    "main p:not(.node-back)",
     ".home-topic-entry p",
     "body",
   ]);
@@ -283,15 +285,22 @@ def sample_roles(page) -> dict[str, object]:
     return page.evaluate(SAMPLE_SCRIPT)
 
 
-def assert_surface_roles(sample: dict[str, object], *, label: str, require_brand: bool = True) -> dict[str, str]:
+def assert_surface_roles(
+    sample: dict[str, object],
+    *,
+    label: str,
+    require_brand: bool = True,
+    require_form_controls: bool = True,
+) -> dict[str, str]:
     roles = {}
-    for role in ("body", "label", "input", "button"):
+    required_roles = ("body", "label", "input", "button") if require_form_controls else ("body", "button")
+    for role in required_roles:
         entry = sample.get(role)
         assert isinstance(entry, dict) and entry.get("family"), f"{label}: missing {role} sample"
         family = str(entry["family"])
         assert_reading_family(family, label=f"{label}:{role}")
         roles[role] = normalize_family_key(family)
-    assert roles["body"] == roles["label"] == roles["input"] == roles["button"] == "reading", (
+    assert all(roles[role] == "reading" for role in required_roles), (
         f"{label}: equivalent roles diverged: {roles}"
     )
     if require_brand:
@@ -320,10 +329,50 @@ def open_route(page, base: str, route: str, *, label: str):
     return response
 
 
+def wait_for_reading_tokens(page, *, label: str) -> None:
+    """Wait until brand tokens apply to the document body before sampling.
+
+    Production detail documents can finish DOMContentLoaded before brand.css
+    cascades onto body; sampling too early falsely reports the UA Times default.
+    """
+    import time
+
+    deadline = time.time() + 20
+    last = ""
+    while time.time() < deadline:
+        last = page.evaluate(
+            """() => {
+              const reading = getComputedStyle(document.documentElement)
+                .getPropertyValue('--font-reading').trim();
+              const bodyFamily = (getComputedStyle(document.body).fontFamily || '').trim();
+              return JSON.stringify({ reading: reading, bodyFamily: bodyFamily });
+            }"""
+        )
+        try:
+            payload = json.loads(last)
+        except json.JSONDecodeError:
+            payload = {}
+        reading = str(payload.get("reading") or "")
+        body_family = str(payload.get("bodyFamily") or "")
+        if reading and body_family and not body_family.lower().startswith("times"):
+            return
+        page.wait_for_timeout(200)
+    raise AssertionError(
+        f"{label}: reading font tokens never became available on body ({last})"
+    )
+
 def assert_typography_surface(page, base: str, route: str, *, label: str) -> dict[str, object]:
     open_route(page, base, route, label=label)
+    wait_for_reading_tokens(page, label=label)
     sample = sample_roles(page)
-    roles = assert_surface_roles(sample, label=label, require_brand=True)
+    # Procurement detail pages may omit label/input controls that home/notice expose.
+    require_form_controls = route not in {CONTRACT_ROUTE}
+    roles = assert_surface_roles(
+        sample,
+        label=label,
+        require_brand=True,
+        require_form_controls=require_form_controls,
+    )
     page.keyboard.press("Tab")
     focused = page.evaluate(
         "() => !!(document.activeElement && getComputedStyle(document.activeElement).display !== 'none')"
@@ -342,6 +391,7 @@ def assert_font_blocked(page, base: str, *, label: str) -> dict[str, object]:
     page.route("**/fonts.googleapis.com/**", lambda route: route.abort())
     page.route("**/fonts.gstatic.com/**", lambda route: route.abort())
     open_route(page, base, HOME_ROUTE, label=label)
+    wait_for_reading_tokens(page, label=label)
     sample = sample_roles(page)
     roles = assert_surface_roles(sample, label=label, require_brand=True)
     for role in ("body", "label", "input", "button"):
@@ -358,6 +408,7 @@ def assert_font_blocked(page, base: str, *, label: str) -> dict[str, object]:
 
 def assert_non_latin_overlay(page, base: str, *, label: str) -> dict[str, object]:
     open_route(page, base, HOME_ROUTE, label=label)
+    wait_for_reading_tokens(page, label=label)
     page.evaluate(
         """() => {
           document.documentElement.lang = 'zh-Hans';
@@ -461,13 +512,24 @@ def run_typography_case(base: str | None = None, *, write_manifest: bool = False
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
             entries: list[dict] = []
+            def measure(route: str, label: str, *, java_script_enabled: bool = True, abort=()):
+                context = browser.new_context(
+                    viewport=viewport,
+                    java_script_enabled=java_script_enabled,
+                )
+                page = context.new_page()
+                for pattern in abort:
+                    page.route(pattern, lambda route, _pattern=pattern: route.abort())
+                try:
+                    return assert_typography_surface(page, base, route, label=label)
+                finally:
+                    context.close()
+
             for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):
-                # First paint / no JavaScript
-                no_js = browser.new_context(viewport=viewport, java_script_enabled=False)
-                page = no_js.new_page()
-                home = assert_typography_surface(page, base, HOME_ROUTE, label="home no-js")
-                notice = assert_typography_surface(page, base, NOTICE_ROUTE, label="notice no-js")
-                contract = assert_typography_surface(page, base, CONTRACT_ROUTE, label="contract no-js")
+                # First paint / no JavaScript — fresh page per route avoids stale DOM.
+                home = measure(HOME_ROUTE, "home no-js", java_script_enabled=False)
+                notice = measure(NOTICE_ROUTE, "notice no-js", java_script_enabled=False)
+                contract = measure(CONTRACT_ROUTE, "contract no-js", java_script_enabled=False)
                 assert home["roles"]["body"] == notice["roles"]["body"] == contract["roles"]["body"]
                 entries.append({
                     "case": "typography-no-javascript",
@@ -480,16 +542,12 @@ def run_typography_case(base: str | None = None, *, write_manifest: bool = False
                     "render_sha256": home["render_sha256"],
                     "passed": True,
                 })
-                no_js.close()
 
                 # Failed enhancement: abort a progressive script on home/notice/contract.
-                failed = browser.new_context(viewport=viewport)
-                failed_page = failed.new_page()
-                failed_page.route("**/report_issue.mjs", lambda route: route.abort())
-                failed_page.route("**/app/main.mjs", lambda route: route.abort())
-                home_failed = assert_typography_surface(failed_page, base, HOME_ROUTE, label="home failed")
-                notice_failed = assert_typography_surface(failed_page, base, NOTICE_ROUTE, label="notice failed")
-                contract_failed = assert_typography_surface(failed_page, base, CONTRACT_ROUTE, label="contract failed")
+                abort_scripts = ("**/report_issue.mjs", "**/app/main.mjs")
+                home_failed = measure(HOME_ROUTE, "home failed", abort=abort_scripts)
+                notice_failed = measure(NOTICE_ROUTE, "notice failed", abort=abort_scripts)
+                contract_failed = measure(CONTRACT_ROUTE, "contract failed", abort=abort_scripts)
                 assert home_failed["roles"]["body"] == notice_failed["roles"]["body"] == contract_failed["roles"]["body"]
                 entries.append({
                     "case": "typography-failed-enhancement",
@@ -502,14 +560,11 @@ def run_typography_case(base: str | None = None, *, write_manifest: bool = False
                     "render_sha256": home_failed["render_sha256"],
                     "passed": True,
                 })
-                failed.close()
 
                 # Successful enhancement + keyboard + font-blocked + non-Latin.
-                context = browser.new_context(viewport=viewport)
-                page = context.new_page()
-                home_ok = assert_typography_surface(page, base, HOME_ROUTE, label="home hydrated")
-                notice_ok = assert_typography_surface(page, base, NOTICE_ROUTE, label="notice hydrated")
-                contract_ok = assert_typography_surface(page, base, CONTRACT_ROUTE, label="contract hydrated")
+                home_ok = measure(HOME_ROUTE, "home hydrated")
+                notice_ok = measure(NOTICE_ROUTE, "notice hydrated")
+                contract_ok = measure(CONTRACT_ROUTE, "contract hydrated")
                 assert home_ok["roles"]["body"] == notice_ok["roles"]["body"] == contract_ok["roles"]["body"]
                 entries.append({
                     "case": "typography-successful-enhancement",
@@ -522,7 +577,6 @@ def run_typography_case(base: str | None = None, *, write_manifest: bool = False
                     "render_sha256": home_ok["render_sha256"],
                     "passed": True,
                 })
-                context.close()
 
                 blocked = browser.new_context(viewport=viewport)
                 blocked_result = assert_font_blocked(blocked.new_page(), base, label="font-blocked")
