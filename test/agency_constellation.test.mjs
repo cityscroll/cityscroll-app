@@ -88,6 +88,7 @@ test("section registry composes every capability in stable order", () => {
     AGENCY_CONSTELLATION_SECTIONS.map(({ id, order }) => [id, order]),
     [
       ["as-of", 0],
+      ["leadership", 2],
       ["institution-navigation", 4],
       ["identity", 5],
       ["record-capacity", 6],
