@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 
 import { persistScheduleResult, replayOutbox } from "../tools/external_schedule_outbox.mjs";
@@ -10,6 +11,12 @@ import {
   UNCHANGED_OBSERVATION,
 } from "../tools/digest_shadow_monitor_observation.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const LETTER_RECEIPTS = JSON.parse(
+  await readFile(join(ROOT, "test/fixtures/digest-shadow-monitor/letter-receipts.json"), "utf8"),
+);
 
 function fakeGithub() {
   const issues = [];
@@ -83,37 +90,24 @@ async function withDigestShadowEnv(env, run) {
   }
 }
 
-function emptySourceReceipt(runDay = "2026-09-10", ranAt = "2026-09-10T10:00:31.209Z") {
+function emptySourceReceipt(runDay = LETTER_RECEIPTS.unchanged_attention.run_day, ranAt = LETTER_RECEIPTS.unchanged_attention.ran_at) {
+  const fixture = LETTER_RECEIPTS.unchanged_attention;
   return {
     summary: {
-      status: "NEEDS_ATTENTION",
+      status: fixture.status,
       run_day: runDay,
       ran_at: ranAt,
       ok: false,
-      collapse_stage: "source_candidates",
-      selection_funnel: {
-        source_candidates: 0,
-        delivery_authorized: 0,
-        lens_evaluated: 0,
-        watermark_fresh: 0,
-        content_deduped: 0,
-        owed_drained: 0,
-        items: 0,
-      },
-      redlines: [{
-        code: "aggregate_count_collapse",
-        digest_id: "run",
-        watch_id: null,
-        reason: "Aggregate digest items collapsed against the trailing average.",
-        evidence: { collapse_stage: "source_candidates" },
-      }],
+      collapse_stage: fixture.collapse_stage,
+      selection_funnel: { ...fixture.selection_funnel },
+      redlines: structuredClone(fixture.redlines),
       observations: [],
       upstream_incidents: [],
     },
   };
 }
 
-function quietWatermarkReceipt(runDay = "2026-09-10", candidates = 379) {
+function quietWatermarkReceipt(runDay = LETTER_RECEIPTS.quiet_watermark.run_day, candidates = LETTER_RECEIPTS.quiet_watermark.candidates) {
   return {
     summary: {
       status: "READY",
@@ -144,85 +138,84 @@ function quietWatermarkReceipt(runDay = "2026-09-10", candidates = 379) {
   };
 }
 
-test("two cycles against one unchanged rehearsal receipt comment once", async () => {
-  await withTempDir("crol-digest-shadow-unchanged", async (stateDir) => {
-    const github = fakeGithub();
-    await github.createIssue({ title: DIGEST_SHADOW_JOB.issue_title, body: "prior finding" });
-    const receipt = emptySourceReceipt();
-    const observationPath = join(stateDir, "quiet-watermark-cycles.json");
-    async function cycle(now) {
-      return withDigestShadowEnv({
-        CITYSCROLL_ADMIN_KEY: "probe-secret",
-        CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
-      }, async () => {
-        const output = await runDigestShadowJob(DIGEST_SHADOW_JOB, {
-          stateDir,
-          now,
-          runKey: runKey(now),
-          observationPath,
-          async fetchImpl() {
-            return { ok: false, status: 503, async json() { return receipt; } };
-          },
+test("A2 named assertion: letter-receipts unchanged attention comments once; a changed receipt still comments", async () => {
+  await withPinnedClock("2026-09-10T12:00:00.000Z", async () => {
+    await withTempDir("crol-digest-shadow-unchanged", async (stateDir) => {
+      const github = fakeGithub();
+      await github.createIssue({ title: DIGEST_SHADOW_JOB.issue_title, body: "prior finding" });
+      const receipt = emptySourceReceipt();
+      const observationPath = join(stateDir, "quiet-watermark-cycles.json");
+      async function cycle(now) {
+        return withDigestShadowEnv({
+          CITYSCROLL_ADMIN_KEY: "probe-secret",
+          CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+        }, async () => {
+          const output = await runDigestShadowJob(DIGEST_SHADOW_JOB, {
+            stateDir,
+            now,
+            runKey: runKey(now),
+            observationPath,
+            async fetchImpl() {
+              return { ok: false, status: 503, async json() { return receipt; } };
+            },
+          });
+          await persistJobOutput(stateDir, now, output);
+          return output;
         });
-        await persistJobOutput(stateDir, now, output);
-        return output;
-      });
-    }
+      }
 
-    const first = await cycle(new Date("2026-09-10T10:10:00.000Z"));
-    await replayOutbox({ stateDir, github, now: "2026-09-10T10:10:00.000Z" });
-    const second = await cycle(new Date("2026-09-10T13:10:00.000Z"));
-    await replayOutbox({ stateDir, github, now: "2026-09-10T13:10:00.000Z" });
+      const first = await cycle(new Date("2026-09-10T10:10:00.000Z"));
+      await replayOutbox({ stateDir, github, now: "2026-09-10T10:10:00.000Z" });
+      const second = await cycle(new Date("2026-09-10T13:10:00.000Z"));
+      await replayOutbox({ stateDir, github, now: "2026-09-10T13:10:00.000Z" });
 
-    assert.equal(first.result.comment_written, true);
-    assert.equal(second.result.comment_written, false);
-    assert.equal(second.result.comment_suppressed, UNCHANGED_OBSERVATION);
-    assert.equal((await github.listComments(1)).length, 1);
-    const stored = JSON.parse(await readFile(observationPath, "utf8"));
-    assert.equal(stored.schema, DIGEST_SHADOW_MONITOR_OBSERVATION_SCHEMA);
-    assert.equal(stored.observations.length, 2);
-    assert.equal(stored.observations[0].comment_written, true);
-    assert.equal(stored.observations[1].comment_written, false);
-    assert.equal(stored.observations[1].comment_suppressed, UNCHANGED_OBSERVATION);
-    assert.equal(stored.observations[1].collapse_stage, "source_candidates");
-    assert.equal(stored.observations[1].source_candidates, 0);
-    assert.equal(stored.observations[1].finding_severity, "attention");
+      assert.equal(first.result.comment_written, true);
+      assert.equal(second.result.comment_written, false);
+      assert.equal(second.result.comment_suppressed, UNCHANGED_OBSERVATION);
+      assert.equal((await github.listComments(1)).length, 1);
+      const stored = JSON.parse(await readFile(observationPath, "utf8"));
+      assert.equal(stored.schema, DIGEST_SHADOW_MONITOR_OBSERVATION_SCHEMA);
+      assert.equal(stored.observations.length, 2);
+      assert.equal(stored.observations[0].comment_written, true);
+      assert.equal(stored.observations[1].comment_written, false);
+      assert.equal(stored.observations[1].comment_suppressed, UNCHANGED_OBSERVATION);
+      assert.equal(stored.observations[1].collapse_stage, "source_candidates");
+      assert.equal(stored.observations[1].source_candidates, 0);
+      assert.equal(stored.observations[1].finding_severity, "attention");
+    });
+
+    await withTempDir("crol-digest-shadow-changed", async (stateDir) => {
+      const github = fakeGithub();
+      await github.createIssue({ title: DIGEST_SHADOW_JOB.issue_title, body: "prior finding" });
+      let receipt = emptySourceReceipt("2026-09-10", "2026-09-10T10:00:31.209Z");
+      async function cycle(now) {
+        const current = receipt;
+        return withDigestShadowEnv({
+          CITYSCROLL_ADMIN_KEY: "probe-secret",
+          CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+        }, async () => {
+          const output = await runDigestShadowJob(DIGEST_SHADOW_JOB, {
+            stateDir,
+            now,
+            runKey: runKey(now),
+            async fetchImpl() {
+              return { ok: false, status: 503, async json() { return current; } };
+            },
+          });
+          await persistJobOutput(stateDir, now, output);
+          return output;
+        });
+      }
+
+      await cycle(new Date("2026-09-10T10:10:00.000Z"));
+      await replayOutbox({ stateDir, github, now: "2026-09-10T10:10:00.000Z" });
+      receipt = emptySourceReceipt("2026-09-11", "2026-09-11T10:00:22.000Z");
+      await cycle(new Date("2026-09-11T10:10:00.000Z"));
+      await replayOutbox({ stateDir, github, now: "2026-09-11T10:10:00.000Z" });
+      assert.equal((await github.listComments(1)).length, 2);
+    });
   });
 });
-
-test("a changed rehearsal receipt still comments", async () => {
-  await withTempDir("crol-digest-shadow-changed", async (stateDir) => {
-    const github = fakeGithub();
-    await github.createIssue({ title: DIGEST_SHADOW_JOB.issue_title, body: "prior finding" });
-    let receipt = emptySourceReceipt("2026-09-10", "2026-09-10T10:00:31.209Z");
-    async function cycle(now) {
-      const current = receipt;
-      return withDigestShadowEnv({
-        CITYSCROLL_ADMIN_KEY: "probe-secret",
-        CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
-      }, async () => {
-        const output = await runDigestShadowJob(DIGEST_SHADOW_JOB, {
-          stateDir,
-          now,
-          runKey: runKey(now),
-          async fetchImpl() {
-            return { ok: false, status: 503, async json() { return current; } };
-          },
-        });
-        await persistJobOutput(stateDir, now, output);
-        return output;
-      });
-    }
-
-    await cycle(new Date("2026-09-10T10:10:00.000Z"));
-    await replayOutbox({ stateDir, github, now: "2026-09-10T10:10:00.000Z" });
-    receipt = emptySourceReceipt("2026-09-11", "2026-09-11T10:00:22.000Z");
-    await cycle(new Date("2026-09-11T10:10:00.000Z"));
-    await replayOutbox({ stateDir, github, now: "2026-09-11T10:10:00.000Z" });
-    assert.equal((await github.listComments(1)).length, 2);
-  });
-});
-
 test("a quiet watermark rehearsal opens no attention issue", async () => {
   await withTempDir("crol-digest-shadow-quiet", async (stateDir) => {
     const github = fakeGithub();

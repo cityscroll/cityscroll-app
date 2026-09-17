@@ -1,0 +1,87 @@
+{
+  "schema": "cityscroll.digest_shadow_monitor_letter_receipts.v1",
+  "note": "Fixture receipts for the quiet-watermark acceptance letters. Quiet and empty-source cases share zero built items and are distinguished only by selection_funnel.collapse stage.",
+  "quiet_watermark": {
+    "run_day": "2026-09-10",
+    "ran_at": "2026-09-10T10:00:31.209Z",
+    "candidates": 379,
+    "selection_funnel": {
+      "source_candidates": 379,
+      "delivery_authorized": 379,
+      "lens_evaluated": 379,
+      "watermark_fresh": 0,
+      "content_deduped": 0,
+      "owed_drained": 0,
+      "items": 0
+    },
+    "backlog_flush_history": [
+      {
+        "day": "2026-09-07",
+        "mode": "inline",
+        "entries": [
+          {
+            "id": "sub:backlog",
+            "action": "match",
+            "traffic_class": "catch_up",
+            "sent": true,
+            "noticeCount": 234
+          }
+        ],
+        "sentCount": 1,
+        "totalNotices": 234
+      },
+      { "day": "2026-09-06", "totalNotices": 8, "sentCount": 2 },
+      { "day": "2026-09-05", "totalNotices": 12, "sentCount": 2 },
+      { "day": "2026-09-04", "totalNotices": 10, "sentCount": 2 },
+      { "day": "2026-09-03", "totalNotices": 9, "sentCount": 1 },
+      { "day": "2026-09-02", "totalNotices": 11, "sentCount": 2 },
+      { "day": "2026-09-01", "totalNotices": 8, "sentCount": 1 }
+    ]
+  },
+  "empty_source": {
+    "run_day": "2026-09-10",
+    "ran_at": "2026-09-10T10:00:31.209Z",
+    "selection_funnel": {
+      "source_candidates": 0,
+      "delivery_authorized": 0,
+      "lens_evaluated": 0,
+      "watermark_fresh": 0,
+      "content_deduped": 0,
+      "owed_drained": 0,
+      "items": 0
+    },
+    "history": [
+      { "day": "2026-09-07", "totalNotices": 234, "sentCount": 5 },
+      { "day": "2026-09-06", "totalNotices": 8, "sentCount": 2 },
+      { "day": "2026-09-05", "totalNotices": 12, "sentCount": 2 },
+      { "day": "2026-09-04", "totalNotices": 10, "sentCount": 2 },
+      { "day": "2026-09-03", "totalNotices": 9, "sentCount": 1 },
+      { "day": "2026-09-02", "totalNotices": 11, "sentCount": 2 },
+      { "day": "2026-09-01", "totalNotices": 8, "sentCount": 1 }
+    ]
+  },
+  "unchanged_attention": {
+    "run_day": "2026-09-10",
+    "ran_at": "2026-09-10T10:00:31.209Z",
+    "selection_funnel": {
+      "source_candidates": 0,
+      "delivery_authorized": 0,
+      "lens_evaluated": 0,
+      "watermark_fresh": 0,
+      "content_deduped": 0,
+      "owed_drained": 0,
+      "items": 0
+    },
+    "status": "NEEDS_ATTENTION",
+    "collapse_stage": "source_candidates",
+    "redlines": [
+      {
+        "code": "aggregate_count_collapse",
+        "digest_id": "run",
+        "watch_id": null,
+        "reason": "Aggregate digest items collapsed against the trailing average.",
+        "evidence": { "collapse_stage": "source_candidates" }
+      }
+    ]
+  }
+}
