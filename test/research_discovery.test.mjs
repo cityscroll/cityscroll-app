@@ -82,7 +82,10 @@ test("each capability family has one eligible and one ineligible fixture", () =>
   assert.match(eligible.eligible.find((tool) => tool.id === "comparative").href, /ap_agency=Department\+of\+Parks\+and\+Recreation/);
   assert.match(eligible.eligible.find((tool) => tool.id === "comparative").href, /ap_fy=2026/);
   assert.match(eligible.eligible.find((tool) => tool.id === "comparative").href, /ap_measure=current/);
-  assert.match(eligible.eligible.find((tool) => tool.id === "evidence").href, /claim=claim-1/);
+  assert.equal(
+    eligible.eligible.find((tool) => tool.id === "evidence").href,
+    "/agencies/parks-and-recreation/?claim=claim-1#claim-claim-1",
+  );
   assert.match(eligible.eligible.find((tool) => tool.id === "asOf").href, /as_of=2026-01-15/);
 
   const ineligible = projectResearchTools({
@@ -213,4 +216,68 @@ test("research-tools browser case is registered for composed notice verification
   assert.match(capabilityDiscoveryFunctional, /assert_research_tools_journey/);
   assert.match(capabilityDiscoveryFunctional, /data-more-tools-region/);
   assert.match(capabilityDiscoveryFunctional, /research-task-entrances/);
+});
+
+test("browser case counts the research navigation against the census and checks addresses unconditionally", () => {
+  // The staged hydration case compares rendered (id, href) pairs against the
+  // shared census projection and the live journey compares the complete
+  // ordered id set. Neither may fall back to a floor of one, and the on-site
+  // address check may not sit behind a rendered-count conditional. Both wait
+  // for the client More tools region so edge first paint cannot satisfy the
+  // census with a comparative-less navigation.
+  assert.match(functional, /research_navigation_census/);
+  assert.match(functional, /must match the capability census exactly/);
+  assert.match(functional, /data-more-tools-region/);
+  assert.match(functional, /#ncopy/);
+  assert.doesNotMatch(functional, /research\.count\(\) >= 1/);
+  assert.match(capabilityDiscoveryFunctional, /matches the capability census/);
+  assert.match(capabilityDiscoveryFunctional, /data-more-tools-region/);
+  assert.doesNotMatch(capabilityDiscoveryFunctional, /research\.count\(\) >= 1/);
+  assert.doesNotMatch(capabilityDiscoveryFunctional, /if research\.count\(\):/);
+  assert.match(functional, /stay on-site/);
+  assert.match(capabilityDiscoveryFunctional, /stay on-site/);
+});
+
+test("browser case preserves research entrance scope by value through the shared test clock", () => {
+  // Census expectations derive from the shared discovery module and identity
+  // resolver; the only date the browser case touches is the shared test clock
+  // day, read through the helper with no shift applied.
+  assert.match(functional, /test_clock\.mjs/);
+  assert.match(functional, /clock_today/);
+  assert.match(functional, /ap_agency=/);
+  assert.match(functional, /#edge-provenance/);
+  assert.match(functional, /as_of/);
+});
+
+test("comparative evidence and as-of entrances preserve scope by exact value", () => {
+  // Named boundary assertion: population and measure stay on the comparative
+  // address, relation identity stays on the evidence address, and only a
+  // supported day may appear on the as-of address. Absence yields null rather
+  // than an empty shell.
+  assert.equal(
+    comparativeAnalysisHref({
+      agency: "Department of Parks and Recreation",
+      fiscalYear: 2026,
+      measure: "current",
+    }),
+    "/browse/contracts/?mode=award&ap_agency=Department+of+Parks+and+Recreation&ap_fy=2026&ap_measure=current",
+  );
+  assert.equal(
+    evidenceContextHref({
+      path: "/agencies/parks-and-recreation/",
+      claimId: "claim-1",
+    }),
+    "/agencies/parks-and-recreation/?claim=claim-1#claim-claim-1",
+  );
+  assert.equal(
+    evidenceContextHref({ path: "/agencies/parks-and-recreation/" }),
+    "/agencies/parks-and-recreation/#edge-provenance",
+  );
+  assert.equal(
+    asOfContextHref({ path: "/agencies/parks-and-recreation/", asOfDay: "2026-01-15" }),
+    "/agencies/parks-and-recreation/?as_of=2026-01-15",
+  );
+  assert.equal(asOfContextHref({ path: "/agencies/parks-and-recreation/", asOfDay: "15 Jan 2026" }), null);
+  assert.equal(comparativeAnalysisHref({ measure: "current" }), null);
+  assert.equal(evidenceContextHref({ claimId: "claim-1" }), null);
 });
