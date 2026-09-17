@@ -2705,9 +2705,9 @@ select {
   padding: 0;
   border: 1px solid var(--color-border);
   border-radius: 10px;
-  background: var(--color-surface, var(--card, #fff));
+  background: var(--color-surface);
   color: var(--color-text);
-  box-shadow: var(--shadow, 0 12px 32px rgba(20, 28, 34, .18));
+  box-shadow: var(--shadow);
 }
 
 .near-you-record-inspection-dialog::backdrop {
@@ -2726,7 +2726,7 @@ select {
   padding: 6px 12px;
   border: 1px solid var(--color-border);
   border-radius: 7px;
-  background: var(--color-surface-2, var(--paper-2, #f5f0e6));
+  background: var(--color-surface-2);
   color: var(--color-text);
   font: 700 .75rem/1.2 var(--font-interface);
   cursor: pointer;
