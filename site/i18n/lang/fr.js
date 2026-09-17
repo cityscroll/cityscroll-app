@@ -2218,6 +2218,7 @@
     preview_digest_btn: "Aperçu du bulletin d'aujourd'hui",
     subscribe_btn:      "S'abonner →",
     home_cta_prompt: "Nouveaux contrats et appels d'offres de New York par e-mail chaque lundi.",
+    contracts_cta_email_placeholder: "",
     browse_cta_prompt: "Des nouvelles par e-mail ?",
     home_cta_active_now: "Vous les recevez déjà — nous continuerons à vous écrire chaque lundi.",
     home_cta_open_watches: "Ouvrir vos alertes",

@@ -1428,6 +1428,7 @@
     preview_digest_btn: "Previsualizar resumen",
     subscribe_btn: "Suscribirse",
     home_cta_prompt: "Nuevos contratos y licitaciones de NYC por correo cada lunes.",
+    contracts_cta_email_placeholder: "",
     browse_cta_prompt: "¿Quiere alertas por correo?",
     home_cta_active_now: "Ya recibe esto — seguiremos enviándole correos cada lunes.",
     home_cta_open_watches: "Abrir sus alertas",

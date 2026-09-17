@@ -2207,6 +2207,7 @@
     preview_digest_btn: "预览今日摘要",
     subscribe_btn: "订阅 →",
     home_cta_prompt: "每周一通过邮件获取纽约市最新合同和招标信息。",
+    contracts_cta_email_placeholder: "",
     browse_cta_prompt: "想用邮件收更新吗？",
     home_cta_active_now: "您已经在接收此内容——我们将继续每周一发送邮件。",
     home_cta_open_watches: "打开您的关注列表",

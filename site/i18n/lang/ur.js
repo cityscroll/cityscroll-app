@@ -2209,6 +2209,7 @@
     preview_digest_btn: "آج کا ڈائجسٹ دیکھیں",
     subscribe_btn: "سبسکرائب کریں ←",
     home_cta_prompt: "ہر پیر کو ای میل پر نئے NYC معاہدے اور RFPs حاصل کریں۔",
+    contracts_cta_email_placeholder: "",
     browse_cta_prompt: "ای میل اپ ڈیٹس چاہتے ہیں؟",
     home_cta_active_now: "آپ پہلے سے یہ حاصل کر رہے ہیں — ہم ہر پیر ای میل بھیجتے رہیں گے۔",
     home_cta_open_watches: "اپنی واچز کھولیں",

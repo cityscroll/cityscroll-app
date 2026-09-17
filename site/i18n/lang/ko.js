@@ -2207,6 +2207,7 @@
     preview_digest_btn: "오늘의 다이제스트 미리보기",
     subscribe_btn: "구독 →",
     home_cta_prompt: "매주 월요일 뉴욕시 신규 계약 및 입찰 공고를 이메일로 받아보세요.",
+    contracts_cta_email_placeholder: "",
     browse_cta_prompt: "이메일 업데이트를 원하세요?",
     home_cta_active_now: "이미 구독 중입니다 — 매주 월요일 계속 이메일을 보내드릴게요.",
     home_cta_open_watches: "관심 항목 열기",

@@ -2221,6 +2221,7 @@
     preview_digest_btn: "Zobacz dzisiejszy przegląd",
     subscribe_btn: "Subskrybuj →",
     home_cta_prompt: "Nowe kontrakty i przetargi NYC e-mailem w każdy poniedziałek.",
+    contracts_cta_email_placeholder: "",
     browse_cta_prompt: "Chcesz nowości e-mailem?",
     home_cta_active_now: "Już to otrzymujesz — będziemy nadal wysyłać e-maile w każdy poniedziałek.",
     home_cta_open_watches: "Otwórz swoje obserwowane",
