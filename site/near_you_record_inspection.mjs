@@ -270,7 +270,7 @@ function renderWhyHereDisclosure(facts, esc) {
   if (!path) return "";
   const duty = path.duty_text ? ` title="${esc(path.duty_text)}"` : "";
   return `<details class="near-you-record-inspection-evidence" data-why-here-path="1">` +
-    `<summary>Why this is here</summary>` +
+    `<summary>Why this appears</summary>` +
     `<span class="near-you-record-inspection-step">${esc(path.place_role_label)}: ${esc(path.label)}</span>` +
     `<span class="near-you-record-inspection-separator" aria-hidden="true">·</span>` +
     `<span class="near-you-record-inspection-step">Process: <a href="${esc(path.agency_href)}">${esc(path.agency_name)}</a>` +

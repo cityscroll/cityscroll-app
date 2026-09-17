@@ -271,7 +271,7 @@ test("A1: geographic evidence is optional inside inspection and the full-record 
   const disclosure = dialog.querySelector("[data-why-here-path='1']");
   assert.ok(disclosure, "why-here evidence is available inside inspection");
   assert.equal(disclosure.tagName, "details");
-  assert.match(disclosure.textContent, /Why this is here/);
+  assert.match(disclosure.textContent, /Why this appears/);
   assert.match(disclosure.textContent, /Meeting venue/);
   assert.equal(
     dialog.querySelector("[data-near-you-record-inspection-open]").getAttribute("href"),

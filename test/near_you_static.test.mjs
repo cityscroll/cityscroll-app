@@ -340,7 +340,7 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.doesNotMatch(residentText, /strong basis|location evidence|community_board_ontology|placement_method/i);
   // Geographic evidence and why-here stay inside inspection payloads, not the default card.
   assert.equal((deferred.match(/data-why-here-path="1"/g) || []).length, 0);
-  assert.doesNotMatch(deferred, />Why this is here</);
+  assert.doesNotMatch(deferred, />Why this appears</);
   assert.match(deferred, /near-record-title-link/);
   assert.match(deferred, /near-record-inspect near-record-title/);
   assert.match(deferred, /near-record-full-record/);
