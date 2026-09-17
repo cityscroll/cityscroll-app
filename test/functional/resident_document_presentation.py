@@ -1022,6 +1022,70 @@ def research_navigation_census(agency: str = RESEARCH_CENSUS_AGENCY) -> dict[str
     return json.loads(subprocess.check_output(["node", "-e", script], cwd=ROOT, text=True))
 
 
+def research_navigation_defects(
+    rendered: list[dict[str, object]],
+    census_nav: list[dict[str, object]],
+    *,
+    clock_today: str,
+) -> list[str]:
+    """Named failure shapes of a rendered research navigation against its census.
+
+    This is the single comparison behind the browser case, so the census
+    contract is pinned by behavior and not only by source text: a navigation
+    that rendered nothing, dropped a family, added an uncatalogued one, drifted
+    an address or an order, or left the site is reported by name, and the
+    on-site check runs over whatever rendered — never behind a rendered-count
+    conditional. Entrance scope is checked against the census, which
+    independently pins whether each entrance exists and what its address is.
+    """
+    defects: list[str] = []
+    rows = [row for row in (rendered or []) if isinstance(row, dict)]
+    census_rows = [row for row in (census_nav or []) if isinstance(row, dict)]
+    if census_rows and not rows:
+        defects.append("research-navigation-empty")
+    census_ids = [str(row.get("id") or "") for row in census_rows]
+    rendered_ids = [str(row.get("id") or "") for row in rows]
+    dropped_ids = [row_id for row_id in census_ids if row_id not in rendered_ids]
+    uncatalogued_ids = [row_id for row_id in rendered_ids if row_id not in census_ids]
+    for row_id in dropped_ids:
+        defects.append(f"research-navigation-dropped:{row_id}")
+    for row_id in uncatalogued_ids:
+        defects.append(f"research-navigation-uncatalogued:{row_id}")
+    if not dropped_ids and not uncatalogued_ids and rows != census_rows:
+        if len(rows) != len(census_rows):
+            defects.append("research-navigation-duplicate:" + ",".join(rendered_ids))
+        else:
+            for rendered_row, census_row in zip(rows, census_rows):
+                if rendered_row == census_row:
+                    continue
+                row_id = str(rendered_row.get("id") or "")
+                if rendered_row.get("id") == census_row.get("id"):
+                    defects.append(f"research-navigation-address:{row_id}")
+                else:
+                    defects.append("research-navigation-order:" + ",".join(rendered_ids))
+    rendered_by_id = {str(row.get("id") or ""): str(row.get("href") or "") for row in rows}
+    for row_id, href in rendered_by_id.items():
+        if not href.startswith("/"):
+            defects.append(f"research-navigation-off-site:{row_id} (hrefs must stay on-site)")
+    if "comparative" in census_ids and "ap_agency=" not in rendered_by_id.get("comparative", ""):
+        defects.append("comparative-lost-agency-population")
+    if "evidence" in census_ids:
+        evidence_href = rendered_by_id.get("evidence", "")
+        if not evidence_href.startswith("/agencies/") or "#edge-provenance" not in evidence_href:
+            defects.append("evidence-lost-identity-or-source")
+    if "asOf" in census_ids:
+        as_of_day = (
+            urllib.parse.parse_qs(urllib.parse.urlparse(rendered_by_id.get("asOf", "")).query)
+            .get("as_of", [None])[0]
+        )
+        if as_of_day is not None:
+            if re.fullmatch(r"\d{4}-\d{2}-\d{2}", as_of_day) is None:
+                defects.append("as-of-unsupported-day")
+            elif as_of_day > str(clock_today):
+                defects.append("as-of-after-clock-day")
+    return defects
+
+
 def assert_research_tools(page, base: str, *, label: str) -> dict[str, object]:
     """Hydrated notice exposes More tools and scoped research entrances."""
     page.set_default_timeout(20000)
@@ -1044,12 +1108,6 @@ def assert_research_tools(page, base: str, *, label: str) -> dict[str, object]:
         assert page.locator(f"#{control_id}").count() == 1, f"{label}: missing #{control_id}"
     assert page.locator("[data-pin]").count() >= 1, f"{label}: pin control missing"
     research = page.locator("[data-research-navigation] [data-research-tool]")
-    hrefs = research.evaluate_all("nodes => nodes.map(node => node.getAttribute('href') || '')")
-    # The on-site address check runs unconditionally over whatever rendered.
-    assert all(href.startswith("/") for href in hrefs), f"{label}: research hrefs must stay on-site"
-    # The rendered navigation is compared against the census as a complete
-    # ordered set of (id, href) pairs — a navigation that rendered nothing, or
-    # dropped a family, or added an uncatalogued one, fails here.
     census = research_navigation_census()
     rendered = research.evaluate_all(
         "nodes => nodes.map(node => ({"
@@ -1057,30 +1115,21 @@ def assert_research_tools(page, base: str, *, label: str) -> dict[str, object]:
         " href: node.getAttribute('href') || ''"
         " }))"
     )
-    assert rendered == census["nav"], (
+    # The rendered navigation is compared against the census as a complete
+    # ordered set of (id, href) pairs through the shared defects helper: a
+    # navigation that rendered nothing, dropped a family, added an
+    # uncatalogued one, drifted an address or an order, left the site, or lost
+    # an entrance's scope fails here by name — the on-site address check runs
+    # unconditionally over whatever rendered, never behind a count conditional.
+    defects = research_navigation_defects(
+        rendered,
+        census["nav"],
+        clock_today=str(census["clock_today"]),
+    )
+    assert defects == [], (
         f"{label}: research navigation must match the capability census exactly "
-        f"(rendered={rendered} census={census['nav']})"
+        f"(defects={defects} rendered={rendered} census={census['nav']})"
     )
-    # Entrance scope is pinned by value, not by presence.
-    rendered_by_id = {row["id"]: row["href"] for row in rendered}
-    comparative = rendered_by_id.get("comparative", "")
-    assert "ap_agency=" in comparative, (
-        f"{label}: comparative entrance must carry the agency population (got {comparative!r})"
-    )
-    evidence = rendered_by_id.get("evidence", "")
-    assert evidence.startswith("/agencies/") and "#edge-provenance" in evidence, (
-        f"{label}: evidence entrance must keep relation identity and source (got {evidence!r})"
-    )
-    as_of_day = (
-        urllib.parse.parse_qs(urllib.parse.urlparse(rendered_by_id.get("asOf", "")).query)
-        .get("as_of", [None])[0]
-    )
-    if as_of_day is not None:
-        clock_today = str(census["clock_today"])
-        assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", as_of_day) and as_of_day <= clock_today, (
-            f"{label}: as-of day {as_of_day!r} must be a supported day at or before the "
-            f"shared test clock day {clock_today!r}"
-        )
     # Return More tools to its default closed state before hashing so the
     # capture reflects the quiet notice, not the opened disclosure.
     if more.evaluate("el => el.open"):
@@ -1094,6 +1143,139 @@ def assert_research_tools(page, base: str, *, label: str) -> dict[str, object]:
         "render_sha256": hashlib.sha256(content.encode()).hexdigest(),
         "assertion": "research-tools",
     }
+
+
+def _research_fixture_rows(nav: list[dict[str, object]], row_id: str, **overrides) -> list[dict[str, object]]:
+    """Copy census rows, overriding one row's fields for a fixture."""
+    return [
+        {**row, **overrides} if row.get("id") == row_id else dict(row)
+        for row in nav
+    ]
+
+
+def _with_query_value(href: str, key: str, value: str) -> str:
+    """Replace one query parameter's value, preserving the rest of the address."""
+    parts = str(href).split("?", 1)
+    query = parts[1] if len(parts) > 1 else ""
+    kept = [piece for piece in query.split("&") if piece and not piece.startswith(f"{key}=")]
+    kept.append(f"{key}={urllib.parse.quote(value, safe='')}")
+    return f"{parts[0]}?{'&'.join(kept)}"
+
+
+def run_research_tools_self_tests() -> None:
+    """Fixture-closable checks for the research-navigation census comparison (no browser).
+
+    The census comparison used to be pinned only by source-text tripwires,
+    which a rewrite of the same hole in different syntax would defeat. These
+    fixtures exercise the shared comparison itself: every named failure shape
+    from the read-backs must fire, so the floor of one and the count-guarded
+    address check cannot return in any syntax. Every date is derived from the
+    shared test clock day the census itself reads.
+    """
+    import copy
+    import datetime as datetime_module
+
+    census = research_navigation_census()
+    nav = [dict(row) for row in census["nav"]]
+    clock_today = str(census["clock_today"])
+    census_ids = [str(row.get("id")) for row in nav]
+
+    # The fixture matrix only proves scope shapes when the census exposes the
+    # scoped entrances; say so loudly instead of passing vacuously.
+    assert "evidence" in census_ids, "census must expose the evidence entrance"
+    assert "asOf" in census_ids, "census must expose the as-of entrance"
+    assert "comparative" in census_ids, "census must expose the comparative entrance"
+    assert "ap_agency=" in next(row["href"] for row in nav if row["id"] == "comparative")
+    assert "#edge-provenance" in next(row["href"] for row in nav if row["id"] == "evidence")
+
+    # A navigation that matches the census passes, in these words.
+    assert research_navigation_defects(nav, nav, clock_today=clock_today) == []
+    # A surface that promises nothing and renders nothing stays clean.
+    assert research_navigation_defects([], [], clock_today=clock_today) == []
+
+    # A navigation that rendered nothing fails by name — any count floor
+    # (>= 1) would have let a partial or empty render through.
+    defects = research_navigation_defects([], nav, clock_today=clock_today)
+    assert "research-navigation-empty" in defects, defects
+
+    # A dropped family fails by name.
+    dropped = [row for row in nav if row.get("id") != "comparative"]
+    defects = research_navigation_defects(dropped, nav, clock_today=clock_today)
+    assert "research-navigation-dropped:comparative" in defects, defects
+
+    # An uncatalogued family fails by name.
+    uncatalogued = [*copy.deepcopy(nav), {"id": "misc", "href": "/misc/"}]
+    defects = research_navigation_defects(uncatalogued, nav, clock_today=clock_today)
+    assert "research-navigation-uncatalogued:misc" in defects, defects
+
+    # A duplicated entrance fails by name even though every family is present.
+    duplicated = [*copy.deepcopy(nav), dict(nav[-1])]
+    defects = research_navigation_defects(duplicated, nav, clock_today=clock_today)
+    assert any(str(d).startswith("research-navigation-duplicate:") for d in defects), defects
+
+    # A reordered navigation fails by name even with every family present.
+    assert len(nav) >= 2, "census must expose more than one entrance to pin order"
+    reordered = list(nav)
+    reordered[0], reordered[1] = reordered[1], reordered[0]
+    defects = research_navigation_defects(reordered, nav, clock_today=clock_today)
+    assert any(str(d).startswith("research-navigation-order:") for d in defects), defects
+
+    # A drifted address fails by name with every family in order.
+    drifted = _research_fixture_rows(nav, "evidence", href="/notices/elsewhere/")
+    defects = research_navigation_defects(drifted, nav, clock_today=clock_today)
+    assert "research-navigation-address:evidence" in defects, defects
+    assert "evidence-lost-identity-or-source" in defects, defects
+
+    # An off-site address fails by name over whatever rendered — this check
+    # may not sit behind a rendered-count conditional.
+    off_site = [dict(row, href=f"https://example.test/{row['id']}") for row in nav]
+    defects = research_navigation_defects(off_site, nav, clock_today=clock_today)
+    assert "research-navigation-off-site:evidence (hrefs must stay on-site)" in defects, defects
+    defects = research_navigation_defects(off_site[:1], nav, clock_today=clock_today)
+    assert "research-navigation-off-site:evidence (hrefs must stay on-site)" in defects, defects
+
+    # A comparative entrance that lost its agency population fails by name.
+    comparative_href = next(row["href"] for row in nav if row["id"] == "comparative")
+    unscaled = _research_fixture_rows(
+        nav, "comparative", href=re.sub(r"([?&])ap_agency=[^&]*&?", r"\1", comparative_href),
+    )
+    defects = research_navigation_defects(unscaled, nav, clock_today=clock_today)
+    assert "comparative-lost-agency-population" in defects, defects
+
+    # An evidence entrance without its provenance anchor loses the source.
+    anchorless = _research_fixture_rows(
+        nav, "evidence", href=str(next(row["href"] for row in nav if row["id"] == "evidence")).split("#")[0],
+    )
+    defects = research_navigation_defects(anchorless, nav, clock_today=clock_today)
+    assert "evidence-lost-identity-or-source" in defects, defects
+
+    # An as-of entrance carrying an unsupported spelling fails by name rather
+    # than linking a bad day. The census entrance itself pins no day; the
+    # fixture injects one the way a drifted render would.
+    as_of_href = next(row["href"] for row in nav if row["id"] == "asOf")
+    misspelled = _research_fixture_rows(nav, "asOf", href=_with_query_value(as_of_href, "as_of", "15 Jan 2026"))
+    defects = research_navigation_defects(misspelled, nav, clock_today=clock_today)
+    assert "research-navigation-address:asOf" in defects, defects
+    assert "as-of-unsupported-day" in defects, defects
+
+    # An as-of day after the shared test clock day fails by name; the day is
+    # derived from the clock day itself, never hardcoded.
+    after_clock_day = (
+        datetime_module.date.fromisoformat(clock_today) + datetime_module.timedelta(days=1)
+    ).isoformat()
+    future = _research_fixture_rows(nav, "asOf", href=_with_query_value(as_of_href, "as_of", after_clock_day))
+    defects = research_navigation_defects(future, nav, clock_today=clock_today)
+    assert "as-of-after-clock-day" in defects, defects
+
+    # A supported day at the shared test clock day is not a day defect: the
+    # address drift already names the failure, and the day check stays quiet.
+    supported = _research_fixture_rows(nav, "asOf", href=_with_query_value(as_of_href, "as_of", clock_today))
+    defects = research_navigation_defects(supported, nav, clock_today=clock_today)
+    assert defects == ["research-navigation-address:asOf"], defects
+
+    # A comparison that named nothing would be a defect of this self-test, not
+    # a pass: every shape above fired, so an always-empty helper cannot satisfy it.
+    print("OK research-tools census-comparison self-test", flush=True)
 
 
 def main() -> None:
@@ -1112,7 +1294,7 @@ def main() -> None:
         required=True,
     )
     parser.add_argument("--write-manifest", action="store_true")
-    parser.add_argument("--self-test", action="store_true", help="Run capture-manifest writer unit checks")
+    parser.add_argument("--self-test", action="store_true", help="Run fixture self-tests without a browser")
     args = parser.parse_args()
 
     if args.self_test:
@@ -1122,6 +1304,8 @@ def main() -> None:
         elif args.case == "citizen-entry":
             from citizen_entry_case import run_writer_self_tests as run_citizen_entry_writer_self_tests
             run_citizen_entry_writer_self_tests()
+        elif args.case == "research-tools":
+            run_research_tools_self_tests()
         else:
             run_writer_self_tests()
         return

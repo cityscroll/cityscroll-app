@@ -6,6 +6,7 @@
 
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 import {
@@ -236,6 +237,29 @@ test("browser case counts the research navigation against the census and checks 
   assert.doesNotMatch(capabilityDiscoveryFunctional, /if research\.count\(\):/);
   assert.match(functional, /stay on-site/);
   assert.match(capabilityDiscoveryFunctional, /stay on-site/);
+});
+
+test("research-tools census comparison runs as a fixture self-test, not source text alone", () => {
+  // The source-text tripwires above can be defeated by rewriting the same
+  // hole in different syntax. The browser case now routes its comparison
+  // through a shared named-defects helper, and this runs that helper's own
+  // fixture self-test so each failure shape — a navigation that rendered
+  // nothing, dropped a family, added an uncatalogued one, drifted an address
+  // or an order, left the site, or lost an entrance's scope — fails
+  // behaviorally. Every date routes through the shared test clock day the
+  // census itself reads.
+  const result = spawnSync(
+    "python3",
+    ["test/functional/resident_document_presentation.py", "--case", "research-tools", "--self-test"],
+    { encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /OK research-tools census-comparison self-test/);
+  assert.match(functional, /def research_navigation_defects\(/);
+  assert.match(functional, /research-navigation-empty/);
+  assert.match(functional, /research-navigation-dropped:/);
+  assert.match(functional, /research-navigation-uncatalogued:/);
+  assert.match(functional, /research-navigation-off-site:/);
 });
 
 test("browser case preserves research entrance scope by value through the shared test clock", () => {
