@@ -2,7 +2,7 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/cb6a1923a239c",
   "status": "implemented",
-  "fingerprint": "assistant-context-handoff.v1",
+  "fingerprint": "assistant-context-handoff.v2-general-reason-by-value",
   "updated_at": "2026-09-16T00:00:00.000Z",
   "projections": [
     {
