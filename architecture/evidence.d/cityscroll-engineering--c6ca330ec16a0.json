@@ -1,0 +1,41 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c6ca330ec16a0",
+  "status": "implemented",
+  "fingerprint": "calendar-primary-inspection.v1",
+  "updated_at": "2026-09-17T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "compact-month-component",
+      "path": "site/compact_calendar.mjs"
+    },
+    {
+      "id": "calendar-event-preview-contract",
+      "path": "site/calendar_event_preview.mjs"
+    },
+    {
+      "id": "compact-month-styling",
+      "path": "site/compact_calendar.css"
+    },
+    {
+      "id": "browse-return-context-contract",
+      "path": "site/browse_return_context.mjs"
+    },
+    {
+      "id": "browse-inspection-contract-module",
+      "path": "site/browse_inspection_contract.mjs"
+    },
+    {
+      "id": "browse-inspection-catalog-projection",
+      "path": "test/standards/browse_inspection_catalog.json"
+    },
+    {
+      "id": "calendar-primary-inspection-tests",
+      "path": "test/calendar_primary_inspection.test.mjs"
+    },
+    {
+      "id": "calendar-primary-inspection-acceptance-manifest",
+      "path": "docs/evidence/calendar-primary-inspection/acceptance-manifest.json"
+    }
+  ]
+}

@@ -1,29 +1,25 @@
 /**
- * Bounded in-place calendar event preview (PX-01).
+ * Bounded in-place calendar event preview (PX-01, successor primary inspect).
  *
  * Every mounted calendar — Now, Community Boards, rulemaking, land projects,
  * legislative matters, exams, procurement, property opportunities — paints its
  * month through the one shared occurrence renderer in `compact_calendar.mjs`.
- * That renderer emits a real canonical anchor per occurrence, so activating an
- * event has always meant leaving the calendar: the reader loses the month they
- * had selected, their filters, their scroll position and the day they had
- * expanded, in order to answer a question the calendar could have answered in
- * place.
  *
- * This module adds inspection *beside* that anchor rather than instead of it.
- * Two separate affordances, two separate meanings:
+ * Progressive enhancement keeps two separate affordances with two meanings:
  *
- *   - the existing `<a>` is the destination. It keeps working with scripting
- *     off, through the context menu, and under a modified click, because
- *     nothing here intercepts it.
- *   - a sibling native `<button>` is the action. It opens a bounded summary of
- *     one event and nothing else — no navigation, no subscription change, no
- *     save, and no request to the event's publisher.
+ *   - the static title `<a>` is the destination until enhancement is ready. It
+ *     keeps working with scripting off, through the context menu, and under a
+ *     modified click, because nothing here intercepts it.
+ *   - once `bindCalendarEventPreview` marks the container ready, CSS reveals a
+ *     title-sized native `<button>` as the primary inspect control and a
+ *     separately named full-record `<a>` for deliberate navigation. The static
+ *     title link is hidden rather than rewritten, so a failed bind cannot
+ *     strand the item.
  *
- * The button is never nested inside the anchor, and the anchor is never
- * silently re-cast as a dialog control. The button is invisible until
- * `bindCalendarEventPreview` marks its container ready, so a reader without
- * scripting is offered only the affordance that actually works for them.
+ * The button is never nested inside an anchor, and no full-card overlay or
+ * blanket interception turns destinations into dialogs. Inspection opens a
+ * bounded summary of one event and nothing else — no navigation, no
+ * subscription change, no save, and no request to the event's publisher.
  *
  * The preview facts come from the already-accepted display occurrence: the
  * same title, date precision, lifecycle, location and source-backed
@@ -67,6 +63,7 @@ export const CALENDAR_EVENT_PREVIEW_TITLE_ID = "calendar-event-preview-title";
 export const CALENDAR_EVENT_PREVIEW_ATTRIBUTE = "data-calendar-event-preview";
 export const CALENDAR_EVENT_PREVIEW_READY_ATTRIBUTE = "data-calendar-event-preview-ready";
 export const CALENDAR_EVENT_PREVIEW_BUTTON_CLASS = "compact-month-occ-preview";
+export const CALENDAR_EVENT_FULL_RECORD_CLASS = "compact-month-occ-full-record";
 
 const PREVIEW_BUTTON_LABEL = "Preview";
 const PREVIEW_CLOSE_LABEL = "Close";
@@ -262,19 +259,55 @@ export function parseCalendarEventPreview(value) {
 }
 
 /**
- * The preview trigger: an explicit native button, rendered as a sibling of the
- * canonical anchor rather than inside it, so the two affordances never nest
- * and the link keeps its own meaning. It stays invisible until a bound
- * container marks itself ready.
+ * Accessible name and visible label for the explicit full-record destination.
+ * Kind-specific when the destination stays on this site; a handoff label when
+ * the occurrence's canonical URL leaves for a publisher.
+ */
+export function calendarEventFullRecordLabel(facts) {
+  if (!facts) return null;
+  const openPresentation = affordanceHandoffPresentation({ href: facts.href });
+  if (openPresentation.role === AFFORDANCE_ACTION_ROLES.handoff) {
+    return PREVIEW_HANDOFF_ACTION_LABEL;
+  }
+  return PREVIEW_KIND_ACTION_LABELS[facts.kind] || PREVIEW_KIND_ACTION_LABELS.event;
+}
+
+/**
+ * The primary inspect trigger: an explicit native button, rendered as a
+ * sibling of the static title link rather than inside it. With `innerHTML`
+ * (title-sized content from the shared month renderer) it becomes the enhanced
+ * primary control; without it, a short "Preview" chip remains available for
+ * callers that only need the compact affordance. It stays invisible until a
+ * bound container marks itself ready.
  */
 export function renderCalendarEventPreviewButton(facts, options = {}) {
   if (!facts) return "";
   const esc = previewEscapeFor(options);
   const label = `${PREVIEW_BUTTON_LABEL}: ${facts.title}`;
-  return `<button class="${CALENDAR_EVENT_PREVIEW_BUTTON_CLASS}" type="button"` +
+  const classes = [CALENDAR_EVENT_PREVIEW_BUTTON_CLASS];
+  if (options.titleSized) classes.push("compact-month-occ-inspect");
+  const inner = typeof options.innerHTML === "string" ? options.innerHTML : esc(PREVIEW_BUTTON_LABEL);
+  return `<button class="${classes.join(" ")}" type="button"` +
     ` ${CALENDAR_EVENT_PREVIEW_ATTRIBUTE}="${esc(serializeCalendarEventPreview(facts))}"` +
     ` data-calendar-event-preview-uid="${esc(facts.uid)}"` +
-    ` aria-label="${esc(label)}">${esc(PREVIEW_BUTTON_LABEL)}</button>`;
+    ` aria-label="${esc(label)}">${inner}</button>`;
+}
+
+/**
+ * Separately named canonical destination kept beside the inspect control after
+ * enhancement. Native link behaviour (modified click, context menu, copy URL)
+ * belongs here — never on the inspect button.
+ */
+export function renderCalendarEventFullRecordLink(facts, options = {}) {
+  if (!facts) return "";
+  const esc = previewEscapeFor(options);
+  const action = calendarEventFullRecordLabel(facts);
+  if (!action) return "";
+  const openPresentation = affordanceHandoffPresentation({ href: facts.href, escape: esc });
+  return `<a class="${CALENDAR_EVENT_FULL_RECORD_CLASS}" href="${esc(facts.href)}"` +
+    ` data-browse-return-uid="${esc(facts.uid)}"` +
+    `${openPresentation.attributes}>${esc(action)}` +
+    `${openPresentation.glyph}${openPresentation.announcement}</a>`;
 }
 
 /* ---------- dialog body ---------- */
