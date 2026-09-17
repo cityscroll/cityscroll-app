@@ -34,10 +34,11 @@
       }
     },
     {
-      "assertion": "Language switching keeps a clear primary search emphasis without revealing the specialist signup on home.",
+      "assertion": "Spanish catalog applies (lang=es) with distinct citizen-entry copy while keeping one primary search task and hiding the specialist signup on home.",
       "case": "citizen-entry-translated",
+      "lang": "es",
       "passed": true,
-      "render_sha256": "2380ac87658f4baf5c012cdc978396b1c81b691351758de5c7e81072af6b92c8",
+      "render_sha256": "4e7259a7d08030b4f1cf3a7e3ff8d385c86f129708f2b558e45cb7b67838652d",
       "route": "/",
       "viewport": {
         "height": 1000,
@@ -89,10 +90,11 @@
       }
     },
     {
-      "assertion": "Language switching keeps a clear primary search emphasis without revealing the specialist signup on home.",
+      "assertion": "Spanish catalog applies (lang=es) with distinct citizen-entry copy while keeping one primary search task and hiding the specialist signup on home.",
       "case": "citizen-entry-translated",
+      "lang": "es",
       "passed": true,
-      "render_sha256": "2380ac87658f4baf5c012cdc978396b1c81b691351758de5c7e81072af6b92c8",
+      "render_sha256": "4e7259a7d08030b4f1cf3a7e3ff8d385c86f129708f2b558e45cb7b67838652d",
       "route": "/",
       "viewport": {
         "height": 844,
@@ -115,7 +117,7 @@
   "condition": "Local citizen-entry shell fixtures for homepage hierarchy and Contracts signup; no image binary is committed.",
   "data_vintage": "fixture-or-served-materialization",
   "image_binaries_committed": false,
-  "revision": "6563e208b582bb5da08f4d44e675ec5a3ce26b58",
+  "revision": "65faa0e32d815b295cdb63527a172d0179f8f7a3",
   "route": "/",
   "schema": "cityscroll.render_capture_manifest.v1",
   "surface": "citizen entry homepage"

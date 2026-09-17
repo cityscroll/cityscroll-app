@@ -99,3 +99,52 @@ test("English catalog ships the citizen-entry keys", () => {
     assert.match(i18n, new RegExp(`${key}\\s*:`));
   }
 });
+
+test("A6: translated citizen-entry layout asserts Spanish lang and distinct catalog copy", () => {
+  const es = read("site/i18n/lang/es.js");
+  const harness = read("test/functional/citizen_entry_case.py");
+  const manifest = JSON.parse(read("docs/evidence/citizen-entry/capture-manifest.json"));
+
+  assert.match(es, /topic_search_heading:\s*"¿Qué está pasando en tu ciudad\?"/);
+  assert.match(es, /browse_facet_label:\s*"Explorar por tipo"/);
+  assert.match(es, /site_tagline:\s*"Explore decisiones locales, gasto público y oportunidades publicadas para participar\."/);
+  assert.match(i18n, /topic_search_heading:\s*"What's happening in your city\?"/);
+  assert.notEqual(
+    es.match(/topic_search_heading:\s*"([^"]+)"/)?.[1],
+    i18n.match(/topic_search_heading:\s*"([^"]+)"/)?.[1],
+    "Spanish search heading must differ from English"
+  );
+
+  assert.match(harness, /document\.documentElement\.lang === 'es'/);
+  assert.match(harness, /assert lang == "es"/);
+  assert.match(harness, /Explorar por tipo/);
+  assert.match(harness, /pasando en tu ciudad/);
+  assert.match(harness, /oportunidades publicadas/);
+  assert.doesNotMatch(
+    harness,
+    /Either the translated catalog applied, or English fallback remains coherent/
+  );
+
+  const translated = (manifest.captures || []).filter((entry) => entry.case === "citizen-entry-translated");
+  assert.equal(translated.length, 2, "translated captures retained for both viewports");
+  for (const entry of translated) {
+    assert.equal(entry.lang, "es", "retained translated capture must record lang=es");
+    assert.equal(entry.passed, true);
+  }
+  const englishCases = new Set([
+    "citizen-entry-no-javascript",
+    "citizen-entry-failed-enhancement",
+    "citizen-entry-successful-enhancement",
+  ]);
+  const englishHashes = new Set(
+    (manifest.captures || [])
+      .filter((entry) => englishCases.has(entry.case))
+      .map((entry) => entry.render_sha256)
+  );
+  const translatedHashes = new Set(translated.map((entry) => entry.render_sha256));
+  assert.ok(englishHashes.size >= 1, "English captures must retain at least one body hash");
+  assert.ok(translatedHashes.size >= 1, "translated captures must retain at least one body hash");
+  for (const hash of translatedHashes) {
+    assert.ok(!englishHashes.has(hash), "translated body hash must differ from English captures");
+  }
+});
