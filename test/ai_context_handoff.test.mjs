@@ -106,12 +106,17 @@ test("A1 census: declared page families equal the published surface manifest", a
         assert.equal(handoff.setup_href, AI_CONTEXT_SETUP_PATH, row.surface_id);
       } else {
         assert.equal(row.handoff, "general", row.surface_id);
-        assert.ok(row.reason && row.reason.length > 20, row.surface_id);
+        assert.equal(typeof row.reason, "string", row.surface_id);
+        assert.ok(row.reason.length > 0, row.surface_id);
         const handoff = buildAiContextHandoffForSurface(row.surface_id, { canonical_href: `/${row.surface_id}/` });
         assert.equal(handoff.status, "general_setup", row.surface_id);
         assert.equal(handoff.support, "general", row.surface_id);
         assert.equal(handoff.tools.length, 0, row.surface_id);
         assert.equal(handoff.setup_href, AI_CONTEXT_SETUP_PATH, row.surface_id);
+        // A1: general disposition states its census reason by value, not by length.
+        assert.equal(handoff.reason, row.reason, row.surface_id);
+        assert.match(handoff.task, new RegExp(row.reason.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), row.surface_id);
+        assert.match(formatAiContextTask(handoff), new RegExp(row.reason.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), row.surface_id);
       }
     }
 
