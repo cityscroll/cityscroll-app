@@ -31,21 +31,21 @@ export const CONTRACT_RESULT_FULL_RECORD_CLASS = "money-row-full-record";
 export const CONTRACT_RESULT_DETAIL_CLASS = "contract-result-inspection-detail";
 export const CONTRACT_RESULT_OVERVIEW_CLASS = "contract-result-inspection-overview";
 
-const FULL_RECORD_LABEL = "Open the full record";
-const DETAIL_FAILURE_STATUS = "Further detail did not load. The full record link below is unaffected.";
-const DETAIL_KICKER = "Contract overview";
+const CONTRACT_RESULT_FULL_RECORD_LABEL = "Open the full record";
+const CONTRACT_RESULT_DETAIL_FAILURE_STATUS = "Further detail did not load. The full record link below is unaffected.";
+const CONTRACT_RESULT_DETAIL_KICKER = "Contract overview";
 
-function cleanText(value, max = 2_000) {
+function contractResultCleanText(value, max = 2_000) {
   const text = String(value ?? "").replace(/\s+/g, " ").trim();
   return text ? text.slice(0, max) : null;
 }
 
-function cleanId(value, max = 320) {
+function contractResultCleanId(value, max = 320) {
   const text = String(value ?? "").trim();
   return text ? text.slice(0, max) : null;
 }
 
-function escapeHtml(value) {
+function contractResultEscapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -54,12 +54,12 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
-function escapeFor(options = {}) {
-  return typeof options.escape === "function" ? options.escape : escapeHtml;
+function contractResultEscapeFor(options = {}) {
+  return typeof options.escape === "function" ? options.escape : contractResultEscapeHtml;
 }
 
-function noticeHref(requestId) {
-  const id = cleanId(requestId, 100);
+function contractResultNoticeHref(requestId) {
+  const id = contractResultCleanId(requestId, 100);
   return id ? `/notices/${encodeURIComponent(id)}` : null;
 }
 
@@ -69,39 +69,39 @@ function noticeHref(requestId) {
  * href, then the notice document. Absence stays null rather than inventing a path.
  */
 export function contractResultFullRecordHref(row = {}) {
-  return cleanText(row.inspect_href, 600)
-    || cleanText(row.canonical_href, 600)
-    || noticeHref(row.request_id);
+  return contractResultCleanText(row.inspect_href, 600)
+    || contractResultCleanText(row.canonical_href, 600)
+    || contractResultNoticeHref(row.request_id);
 }
 
 /**
  * Stable uid used by inspect controls and return-context anchors.
  */
 export function contractResultInspectionUid(row = {}) {
-  return cleanId(row.procurement_id, 320)
-    || cleanId(row.request_id, 100)
-    || cleanId(row.id, 160)
-    || cleanId(row.contract_id, 160)
-    || cleanId(row.canonical_href, 600)
-    || cleanId(row.inspect_href, 600)
+  return contractResultCleanId(row.procurement_id, 320)
+    || contractResultCleanId(row.request_id, 100)
+    || contractResultCleanId(row.id, 160)
+    || contractResultCleanId(row.contract_id, 160)
+    || contractResultCleanId(row.canonical_href, 600)
+    || contractResultCleanId(row.inspect_href, 600)
     || null;
 }
 
-function sourceObservationRef(row = {}) {
+function contractResultSourceObservationRef(row = {}) {
   const refs = Array.isArray(row.source_observation_refs) ? row.source_observation_refs : [];
   for (const ref of refs) {
-    const cleaned = cleanText(ref, 240);
+    const cleaned = contractResultCleanText(ref, 240);
     if (cleaned) return cleaned;
   }
-  const requestId = cleanId(row.request_id, 100);
+  const requestId = contractResultCleanId(row.request_id, 100);
   return requestId ? `notice:${requestId}` : null;
 }
 
 function lifecycleLabel(row = {}) {
-  const typed = cleanText(row.type_of_notice_description, 120);
+  const typed = contractResultCleanText(row.type_of_notice_description, 120);
   if (typed) return typed;
-  const stage = cleanText(row.primary_stage, 80)
-    || (Array.isArray(row.procurement_stages) ? cleanText(row.procurement_stages[0], 80) : null);
+  const stage = contractResultCleanText(row.primary_stage, 80)
+    || (Array.isArray(row.procurement_stages) ? contractResultCleanText(row.procurement_stages[0], 80) : null);
   return stage;
 }
 
@@ -111,25 +111,25 @@ function lifecycleLabel(row = {}) {
  */
 export function projectContractResultInspection(row = {}) {
   const href = contractResultFullRecordHref(row);
-  const title = cleanText(noticeDisplayTitle(row), 500);
+  const title = contractResultCleanText(noticeDisplayTitle(row), 500);
   const uid = contractResultInspectionUid(row);
   if (!href || !title || !uid) return null;
-  const requestId = cleanId(row.request_id, 100);
-  const procurementId = cleanId(row.procurement_id, 320);
-  const pin = cleanId(row.pin, 160);
-  const contractId = cleanId(row.contract_id, 160);
-  const agency = cleanText(row.agency_name, 240);
-  const vendor = cleanText(row.vendor_name, 240);
-  const summary = cleanText(row.additional_description_1, 1_200);
+  const requestId = contractResultCleanId(row.request_id, 100);
+  const procurementId = contractResultCleanId(row.procurement_id, 320);
+  const pin = contractResultCleanId(row.pin, 160);
+  const contractId = contractResultCleanId(row.contract_id, 160);
+  const agency = contractResultCleanText(row.agency_name, 240);
+  const vendor = contractResultCleanText(row.vendor_name, 240);
+  const summary = contractResultCleanText(row.additional_description_1, 1_200);
   const amount = row.contract_amount == null || row.contract_amount === ""
     ? null
     : Number(row.contract_amount);
-  const due = cleanText(String(row.due_date || "").slice(0, 10), 40);
-  const start = cleanText(String(row.start_date || "").slice(0, 10), 40);
-  const method = cleanText(row.selection_method_description, 240);
-  const category = cleanText(row.category_description, 240);
-  const sourceSystem = cleanText(row.source_system, 120);
-  const observation = sourceObservationRef(row);
+  const due = contractResultCleanText(String(row.due_date || "").slice(0, 10), 40);
+  const start = contractResultCleanText(String(row.start_date || "").slice(0, 10), 40);
+  const method = contractResultCleanText(row.selection_method_description, 240);
+  const category = contractResultCleanText(row.category_description, 240);
+  const sourceSystem = contractResultCleanText(row.source_system, 120);
+  const observation = contractResultSourceObservationRef(row);
   const shape = row.inspect_href
     ? "analytical"
     : (procurementId && !requestId ? "source_native" : (requestId ? "notice_backed" : "source_native"));
@@ -159,7 +159,7 @@ export function projectContractResultInspection(row = {}) {
       ? observation
       : null,
     source_system: sourceSystem,
-    inspect_href: cleanText(row.inspect_href, 600),
+    inspect_href: contractResultCleanText(row.inspect_href, 600),
   });
 }
 
@@ -171,7 +171,7 @@ export function projectContractResultInspection(row = {}) {
  */
 export function contractResultInteractionProjection(row = {}, options = {}) {
   const href = contractResultFullRecordHref(row);
-  const title = cleanText(noticeDisplayTitle(row), 500);
+  const title = contractResultCleanText(noticeDisplayTitle(row), 500);
   const presentation = typeof options.primaryAction === "function"
     ? options.primaryAction(row, options.today)
     : options.primaryAction || null;
@@ -190,18 +190,18 @@ export function contractResultInteractionProjection(row = {}, options = {}) {
 }
 
 export function contractResultFullRecordLabel() {
-  return FULL_RECORD_LABEL;
+  return CONTRACT_RESULT_FULL_RECORD_LABEL;
 }
 
 export function contractResultDetailFailureStatus() {
-  return DETAIL_FAILURE_STATUS;
+  return CONTRACT_RESULT_DETAIL_FAILURE_STATUS;
 }
 
 export function renderContractResultFullRecordLink(facts, options = {}) {
   if (!facts?.href) return "";
-  const esc = escapeFor(options);
+  const esc = contractResultEscapeFor(options);
   const openPresentation = affordanceHandoffPresentation({ href: facts.href, escape: esc });
-  const label = options.label || FULL_RECORD_LABEL;
+  const label = options.label || CONTRACT_RESULT_FULL_RECORD_LABEL;
   return `<a class="${CONTRACT_RESULT_FULL_RECORD_CLASS}" href="${esc(facts.href)}"` +
     ` data-browse-return-uid="${esc(facts.uid)}"` +
     `${openPresentation.attributes}>${esc(label)}` +
@@ -214,7 +214,7 @@ export function renderContractResultFullRecordLink(facts, options = {}) {
  */
 export function renderContractResultTitleClusterHTML(facts, options = {}) {
   if (!facts) return "";
-  const esc = escapeFor(options);
+  const esc = contractResultEscapeFor(options);
   const inner = typeof options.titleMarkup === "string" ? options.titleMarkup : esc(facts.title);
   const inspectLabel = `Inspect: ${facts.title}`;
   return `<div class="money-row-title-cluster">` +
@@ -225,12 +225,12 @@ export function renderContractResultTitleClusterHTML(facts, options = {}) {
     `</div>`;
 }
 
-function definitionRow(term, value, esc) {
+function contractResultDefinitionRow(term, value, esc) {
   if (!value) return "";
   return `<div class="contract-result-inspection-row"><dt>${esc(term)}</dt><dd>${esc(value)}</dd></div>`;
 }
 
-function formatAmount(amount) {
+function contractResultFormatAmount(amount) {
   if (amount == null || !Number.isFinite(Number(amount))) return null;
   try {
     return new Intl.NumberFormat("en-US", {
@@ -249,26 +249,26 @@ function formatAmount(amount) {
  */
 export function renderContractResultInspectionOverviewHTML(facts, options = {}) {
   if (!facts) return "";
-  const esc = escapeFor(options);
+  const esc = contractResultEscapeFor(options);
   const rows = [
-    definitionRow("Agency", facts.agency, esc),
-    definitionRow("Vendor", facts.vendor, esc),
-    definitionRow("Status", facts.lifecycle, esc),
-    definitionRow("Method", facts.method, esc),
-    definitionRow("Category", facts.category, esc),
-    definitionRow("Due", facts.due_date, esc),
-    definitionRow("Start", facts.start_date, esc),
-    definitionRow("Amount", formatAmount(facts.amount), esc),
-    definitionRow("PIN", facts.pin, esc),
-    definitionRow("Contract id", facts.contract_id, esc),
-    definitionRow("Procurement identity", facts.procurement_id, esc),
-    definitionRow("Notice", facts.request_id, esc),
+    contractResultDefinitionRow("Agency", facts.agency, esc),
+    contractResultDefinitionRow("Vendor", facts.vendor, esc),
+    contractResultDefinitionRow("Status", facts.lifecycle, esc),
+    contractResultDefinitionRow("Method", facts.method, esc),
+    contractResultDefinitionRow("Category", facts.category, esc),
+    contractResultDefinitionRow("Due", facts.due_date, esc),
+    contractResultDefinitionRow("Start", facts.start_date, esc),
+    contractResultDefinitionRow("Amount", contractResultFormatAmount(facts.amount), esc),
+    contractResultDefinitionRow("PIN", facts.pin, esc),
+    contractResultDefinitionRow("Contract id", facts.contract_id, esc),
+    contractResultDefinitionRow("Procurement identity", facts.procurement_id, esc),
+    contractResultDefinitionRow("Notice", facts.request_id, esc),
     facts.source_observation_ref && facts.source_observation_ref !== `notice:${facts.request_id || ""}`
-      ? definitionRow("Source observation", facts.source_observation_ref, esc)
+      ? contractResultDefinitionRow("Source observation", facts.source_observation_ref, esc)
       : (facts.source_observation_ref && !facts.request_id
-        ? definitionRow("Source observation", facts.source_observation_ref, esc)
+        ? contractResultDefinitionRow("Source observation", facts.source_observation_ref, esc)
         : ""),
-    definitionRow("Source", facts.source_system, esc),
+    contractResultDefinitionRow("Source", facts.source_system, esc),
   ].filter(Boolean).join("");
   const summary = facts.summary
     ? `<p class="contract-result-inspection-summary">${esc(facts.summary)}</p>`
@@ -283,22 +283,22 @@ export function renderContractResultInspectionOverviewHTML(facts, options = {}) 
  */
 export function renderContractResultInspectionDetailHTML(facts, options = {}) {
   if (!facts) return "";
-  const esc = escapeFor(options);
+  const esc = contractResultEscapeFor(options);
   const overview = renderContractResultInspectionOverviewHTML(facts, { escape: esc });
   const statusText = options.failed
-    ? (options.detailStatus || DETAIL_FAILURE_STATUS)
+    ? (options.detailStatus || CONTRACT_RESULT_DETAIL_FAILURE_STATUS)
     : options.detailStatus;
   const status = statusText
     ? `<p class="contract-result-inspection-status" role="status">${esc(statusText)}</p>`
     : "";
   const fullRecord = renderContractResultFullRecordLink(facts, {
     escape: esc,
-    label: options.fullRecordLabel || FULL_RECORD_LABEL,
+    label: options.fullRecordLabel || CONTRACT_RESULT_FULL_RECORD_LABEL,
   });
   return `<div class="${CONTRACT_RESULT_DETAIL_CLASS}" data-contract-result-detail="1"` +
     ` data-contract-result-uid="${esc(facts.uid)}"` +
     ` data-contract-result-shape="${esc(facts.shape)}">` +
-    `<p class="contract-result-inspection-kicker">${esc(options.kicker || DETAIL_KICKER)}</p>` +
+    `<p class="contract-result-inspection-kicker">${esc(options.kicker || CONTRACT_RESULT_DETAIL_KICKER)}</p>` +
     `<h2 class="rolename" lang="en" dir="ltr">${esc(facts.title)}</h2>` +
     overview +
     status +
@@ -313,7 +313,7 @@ export function renderContractResultInspectionDetailHTML(facts, options = {}) {
 export function renderContractResultInteractionsHTML(row = {}, options = {}) {
   const facts = projectContractResultInspection(row);
   if (!facts) return "";
-  const esc = escapeFor(options);
+  const esc = contractResultEscapeFor(options);
   const projection = contractResultInteractionProjection(row, {
     primaryAction: options.primaryAction,
     today: options.today,
@@ -346,8 +346,8 @@ export function renderContractResultInteractionsHTML(row = {}, options = {}) {
  */
 export function contractResultUsesSharedDetail(row = {}) {
   if (!row || typeof row !== "object") return false;
-  if (cleanText(row.inspect_href, 600)) return true;
-  const requestId = cleanId(row.request_id, 100);
+  if (contractResultCleanText(row.inspect_href, 600)) return true;
+  const requestId = contractResultCleanId(row.request_id, 100);
   if (requestId) return false;
   return Boolean(contractResultFullRecordHref(row));
 }

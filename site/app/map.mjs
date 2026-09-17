@@ -15,6 +15,7 @@ import {
   beginNearYouDeferredGeneration,
   isNearYouDeferredGenerationCurrent,
 } from "../near_you_scope_adoption.mjs";
+import { bindNearYouRecordInspection } from "../near_you_record_inspection.mjs";
 import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
 import {
   nearYouFrameReady,
@@ -402,6 +403,12 @@ function reportNearYouReadiness() {
   });
 }
 
+function wireRecordInspection() {
+  if (!root) return;
+  // Idempotent: delegated binding survives deferred result adoption.
+  bindNearYouRecordInspection(root);
+}
+
 function wireIsland() {
   if (!root) return;
   root.dataset.enhanced = "true";
@@ -411,6 +418,7 @@ function wireIsland() {
   wireGeolocation();
   wireForms();
   wireSurfaceSwitch();
+  wireRecordInspection();
   void hydrateCurrentNearYouDeferred();
 }
 

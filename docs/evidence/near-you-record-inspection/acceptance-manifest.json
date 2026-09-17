@@ -1,0 +1,84 @@
+{
+  "schema": "cityscroll.near_you_record_inspection_acceptance.v1",
+  "record": "cityscroll-engineering/c0830a62bcc4f",
+  "route": "/near-you/?v=0&level=community_district&lens=meetings&boro=Brooklyn&cd=K18",
+  "revision": "a00b985a7754b3705e898bc79ece0853f6b29cdc",
+  "grounded_at": "a00b985a7754b3705e898bc79ece0853f6b29cdc",
+  "fixture_vintage": "2026-05-26",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-17T18:00:00Z",
+  "viewport": [
+    1440,
+    900
+  ],
+  "measurement_policy": "Assertions record deterministic Near You record-inspection fixtures over the shared place-scope contract and inspection binder. No participant evaluation was run and no usability gain is claimed. Image binaries are not part of this proof.",
+  "image_policy": "No image binaries are committed for this acceptance record.",
+  "journey": {
+    "id": "near-you-record-inspection",
+    "sequence": [
+      "set_scope_or_view",
+      "inspect",
+      "dismiss",
+      "open_full_record",
+      "return_with_back",
+      "continue"
+    ],
+    "variants": [
+      "desktop",
+      "narrow_touch",
+      "keyboard",
+      "no_javascript",
+      "failed_detail"
+    ],
+    "rendered_reference": {
+      "route": "/near-you/?v=0&level=community_district&lens=meetings&boro=Brooklyn&cd=K18",
+      "harness": "test/near_you_record_inspection.test.mjs",
+      "assertion": "set scope or view, inspect, dismiss, open the explicit full record, return with Back, and continue from the restored collection state"
+    }
+  },
+  "assertions": [
+    {
+      "id": "reject-default-title-and-geography",
+      "result": "rejected",
+      "assertion": "Default Near You cards no longer lead with linked titles and open geographic evidence",
+      "fixture": "prior-title-and-geography-card"
+    },
+    {
+      "id": "primary-inspect-keeps-scope",
+      "result": "accepted",
+      "assertion": "Title-sized inspect opens the Nearby record modal without leaving the selected place or topic",
+      "fixture": "venue-psc-201"
+    },
+    {
+      "id": "optional-geography-evidence",
+      "result": "accepted",
+      "assertion": "Geographic and why-here evidence stay optional inside inspection; the named full-record link keeps the destination",
+      "fixture": "venue-psc-201"
+    },
+    {
+      "id": "strong-derived-weak-place-roles",
+      "result": "accepted",
+      "assertion": "Strong, derived, and weak placement fixtures keep meaningful place roles; weak matches announce approximate certainty without adapter enums",
+      "fixture": "place-scope-contract-2026-05-26"
+    },
+    {
+      "id": "absent-enrichment-no-empty-panel",
+      "result": "accepted",
+      "assertion": "Records without optional geographic enrichment render no empty evidence panel",
+      "fixture": "weak-fallback-psc-204"
+    },
+    {
+      "id": "failed-detail-keeps-summary-and-record-link",
+      "result": "accepted",
+      "assertion": "Failed detail keeps the coherent summary and explicit record link",
+      "fixture": "failed-detail"
+    },
+    {
+      "id": "narrow-and-keyboard-density",
+      "result": "accepted",
+      "assertion": "Narrow-screen CSS and keyboard disclosure keep default density scannable while evidence remains optional",
+      "fixture": "civic-documents-css"
+    }
+  ],
+  "assertions_sha256": "2bd217dc521a6a2e112326e2f734cea10d46cbd3cd4f60f9a63a5ec62da786d9"
+}
