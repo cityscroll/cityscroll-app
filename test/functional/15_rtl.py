@@ -64,10 +64,13 @@ def check_lang(pw, lang):
           && document.body?.dataset.homeReady === 'true'
           && document.querySelector('[data-home-topic-entry] input[name=\"q\"]')?.getClientRects().length > 0"""
     )
-    # The readiness contract includes the same visible method tag used by the
-    # explicit lenses. Keep this assertion on the neutral home so RTL cannot
-    # hide a stalled or locale-specific render behind a later navigation.
-    wait_for_locator(page.locator("[data-home-topic-entry] .tag").first, label="neutral home method tag")
+    # The neutral home leads with one search task and no method-tag kicker. Keep a
+    # visible home-topic control in the readiness contract so RTL cannot hide a
+    # stalled or locale-specific render behind a later navigation.
+    wait_for_locator(
+        page.locator("[data-home-topic-entry] #home-topic-heading").first,
+        label="neutral home topic heading",
+    )
 
     # Baseline (English) physical resolution, BEFORE switching -- what "mirrored" is relative to.
     skip_x_ltr = page.locator(".skip").evaluate("el => el.getBoundingClientRect().x")
