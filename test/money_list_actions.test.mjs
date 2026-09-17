@@ -5,10 +5,10 @@ import actionRegistry from "../site/action_registry.js";
 import { noticeDisplayTitle } from "../site/display_title.mjs";
 import { solicitationResponseContextReady } from "../site/solicitation_response_context.mjs";
 import {
-  objectCardInteractionProjection,
-  renderObjectCardActionRail,
-  renderObjectCardPrimitives,
-} from "../site/affordance_grammar.mjs";
+  contractResultInteractionProjection,
+  renderContractResultInteractionsHTML,
+} from "../site/contract_result_inspection.mjs";
+import { renderObjectCardActionRail } from "../site/affordance_grammar.mjs";
 
 const source = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
 const historySource = readFileSync(new URL("../site/app/money-history.mjs", import.meta.url), "utf8");
@@ -38,16 +38,14 @@ function extractFunction(name) {
 const {
   moneyListPrimaryAction,
   moneyListPrimaryActionHTML,
-  moneyListInteractionProjection,
   moneyListCardInteractionsHTML,
 } = new Function(
   "t", "todayISO", "escUiHtml", "noticeDisplayTitle", "solicitationResponseContextReady",
-  "objectCardInteractionProjection", "renderObjectCardActionRail", "renderObjectCardPrimitives",
+  "contractResultInteractionProjection", "renderObjectCardActionRail", "renderContractResultInteractionsHTML",
   `${extractFunction("moneyListPrimaryAction")}
-   ${extractFunction("moneyListInteractionProjection")}
    ${extractFunction("moneyListPrimaryActionHTML")}
    ${extractFunction("moneyListCardInteractionsHTML")}
-   return { moneyListPrimaryAction, moneyListPrimaryActionHTML, moneyListInteractionProjection, moneyListCardInteractionsHTML };`,
+   return { moneyListPrimaryAction, moneyListPrimaryActionHTML, moneyListCardInteractionsHTML };`,
 )(
   (key) => ({
     respond_lbl: "Respond",
@@ -61,9 +59,9 @@ const {
   (value) => String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"),
   noticeDisplayTitle,
   solicitationResponseContextReady,
-  objectCardInteractionProjection,
+  contractResultInteractionProjection,
   renderObjectCardActionRail,
-  renderObjectCardPrimitives,
+  renderContractResultInteractionsHTML,
 );
 
 const priorActions = globalThis.CrolActions;
@@ -156,15 +154,24 @@ test("Money row keeps the whole row as a selector while shared controls remain n
   assert.doesNotMatch(rowSource, /<a\b[^>]*class="money-row-card"/);
 });
 
-test("Contracts rows adopt the shared object-card interaction grammar", () => {
-  const projection = moneyListInteractionProjection(OPEN_SOLICITATION, "2026-08-04");
+test("Contracts rows project Copy and Respond through the shared inspection interaction grammar", () => {
+  const projection = contractResultInteractionProjection(OPEN_SOLICITATION, {
+    today: "2026-08-04",
+    primaryAction: (row, day) => moneyListPrimaryAction(row, day),
+    translate: (key) => ({
+      respond_lbl: "Respond",
+      award_guide_heading: "Follow this award",
+    })[key] || key,
+  });
   assert.equal(projection.target.href, "/notices/20260624023");
   assert.equal(projection.copy_target, "https://cityscroll.org/notices/20260624023");
   assert.deepEqual(projection.kinetic_actions.map((action) => action.label), ["Respond"]);
 
   const html = moneyListCardInteractionsHTML(OPEN_SOLICITATION, "<mark>Tub Grinder</mark>", "2026-08-04");
-  assert.match(html, /class="ui-constellation-link ui-object-card-title rtitle"[^>]*href="\/notices\/20260624023"/);
-  assert.match(html, /<span aria-hidden="true">◆<\/span><mark>Tub Grinder<\/mark>/);
+  assert.match(html, /class="money-row-title-link rtitle"[^>]*href="\/notices\/20260624023"/);
+  assert.match(html, /class="money-row-inspect rtitle"/);
+  assert.match(html, /<mark>Tub Grinder<\/mark>/);
+  assert.match(html, /class="money-row-full-record"[^>]*href="\/notices\/20260624023"/);
   assert.match(html, /data-object-card-copy="https:\/\/cityscroll\.org\/notices\/20260624023"[^>]*>Copy link<\/button>/);
   assert.match(html, /<h3>What can I do now\?<\/h3>/);
   assert.match(html, />Respond<span aria-hidden="true">↗<\/span>/);
@@ -183,10 +190,18 @@ test("context-incomplete Contracts rows keep title and Copy but omit Respond and
   assert.doesNotMatch(html, /Respond|ui-object-card-action-rail|What can I do now/);
 });
 
-test("the Contracts preview reuses the row projection for its linked title and canonical Copy target", () => {
+test("the Contracts preview reuses the shared projection for its linked title and canonical Copy target", () => {
   const heading = extractSourceFunction(historySource, "solicitationContextHeadingHTML");
   const detail = extractSourceFunction(historySource, "renderDetail");
-  assert.match(heading, /globalThis\.moneyListInteractionProjection\?\.\(r\)/);
+  assert.match(heading, /globalThis\.contractResultInteractionProjection\?\.\(r\)/);
   assert.match(heading, /renderObjectCardTitle\(projection/);
   assert.match(detail, /detailProjection\?\.copy_target\|\|noticeLink\(r\.request_id\)/);
+});
+
+test("Contracts list no longer navigates on trusted row clicks for source-native or analytical rows", () => {
+  assert.doesNotMatch(source, /moneyListInteractionProjection/);
+  assert.doesNotMatch(source, /event\.isTrusted&&row\?\.inspect_href/);
+  assert.doesNotMatch(source, /event\.isTrusted&&!row\?\.request_id&&row\?\.canonical_href/);
+  assert.doesNotMatch(source, /location\.assign\(row\.inspect_href\)/);
+  assert.doesNotMatch(source, /location\.assign\(row\.canonical_href\)/);
 });

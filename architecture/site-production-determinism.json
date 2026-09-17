@@ -233,6 +233,7 @@
     "site/contextual_ux_feedback_prompt.mjs",
     "site/contract_action_location.mjs",
     "site/contract_award_search_producer.mjs",
+    "site/contract_result_inspection.mjs",
     "site/contract_search_bridge.mjs",
     "site/contracts_analysis_projection.mjs",
     "site/contracts_rum.mjs",

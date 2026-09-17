@@ -75,9 +75,9 @@
       "result": "accepted",
       "assertion": "Eight audited families and eight compact-calendar hosts are classified in the maintained inventory",
       "surface_count": 17,
-      "baseline_count": 4,
+      "baseline_count": 2,
       "compact_calendar_host_count": 8
     }
   ],
-  "assertions_sha256": "7d3276222d8ba6489ff14e969f6e862de6f09232c27d061fbe6b6fc8a4d855f6"
+  "assertions_sha256": "a500e1a09eb179561e4865fa95a560724dc02d2ac21e868e44b29231d4d3e11f"
 }

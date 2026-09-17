@@ -1,0 +1,94 @@
+{
+  "schema": "cityscroll.contract_result_inspection_acceptance.v1",
+  "record": "cityscroll-engineering/c175322a83f02",
+  "route": "/browse/contracts/",
+  "revision": "9a0b834810a6b2b5bb306eee767fa53a0352ef88",
+  "fixture_vintage": "20260624023",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-17T16:00:00Z",
+  "viewport": [
+    1440,
+    900
+  ],
+  "measurement_policy": "Assertions record deterministic Contracts result inspection fixtures over notice-backed and source-native rows. No participant evaluation was run and no usability gain is claimed. Image binaries are not part of this proof.",
+  "image_policy": "No image binaries are committed for this acceptance record.",
+  "journey": {
+    "id": "contract-result-inspection",
+    "sequence": [
+      "set_scope_or_view",
+      "inspect",
+      "dismiss",
+      "open_full_record",
+      "return_with_back",
+      "continue"
+    ],
+    "variants": [
+      "desktop",
+      "narrow_touch",
+      "keyboard",
+      "no_javascript",
+      "failed_detail"
+    ],
+    "rendered_reference": {
+      "route": "/browse/contracts/",
+      "harness": "test/contract_result_inspection.test.mjs",
+      "assertion": "set scope or view, inspect notice-backed and source-native rows, dismiss, open the explicit full record, return with Back, and continue from the restored collection state"
+    }
+  },
+  "assertions": [
+    {
+      "id": "reject-trusted-click-navigation",
+      "result": "rejected",
+      "assertion": "Trusted row-click location.assign branches for inspect_href and source-native canonical_href are no longer present",
+      "fixture": "trusted-click-branches"
+    },
+    {
+      "id": "primary-inspect-notice-and-source-native",
+      "result": "accepted",
+      "assertion": "Notice-backed and source-native rows share a title-sized inspect control that fills the shared detail host without navigating",
+      "fixtures": [
+        "20260624023",
+        "procurement:07122P0012063"
+      ]
+    },
+    {
+      "id": "named-full-record-link",
+      "result": "accepted",
+      "assertion": "Separately named full-record links keep grounded notice and procurement destinations",
+      "fixtures": [
+        "20260624023",
+        "procurement:07122P0012063"
+      ]
+    },
+    {
+      "id": "lifecycle-action-boundaries",
+      "result": "accepted",
+      "assertion": "Open, expired, guide-only and award fixtures retain their Respond and award-guide action rules",
+      "fixtures": [
+        "20260624023",
+        "20260624038",
+        "20260603042",
+        "20260723031"
+      ]
+    },
+    {
+      "id": "no-fabricated-notice-join",
+      "result": "accepted",
+      "assertion": "Missing notice identities never become fabricated joins or successful empty details",
+      "fixture": "missing-notice-identity"
+    },
+    {
+      "id": "failed-detail-keeps-summary-and-record-link",
+      "result": "accepted",
+      "assertion": "Failed optional detail keeps the coherent overview and explicit full-record link",
+      "fixture": "failed-detail"
+    },
+    {
+      "id": "surface-conforming-baseline-removed",
+      "result": "accepted",
+      "assertion": "contracts-money-list is conforming and contracts-row-click-diverges is absent from the shrink-only baseline",
+      "fixture": "browse-inspection-contract"
+    }
+  ],
+  "assertions_sha256": "c589ba401735ed0d3fc3e0aa88456e100cb8392a77b00d3bc14b5882f9547426"
+}

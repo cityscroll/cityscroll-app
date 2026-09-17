@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c175322a83f02",
+  "status": "implemented",
+  "fingerprint": "contract-result-inspection.v1",
+  "updated_at": "2026-09-17T16:00:00.000Z",
+  "projections": [
+    {
+      "id": "contract-result-inspection-module",
+      "path": "site/contract_result_inspection.mjs"
+    },
+    {
+      "id": "contracts-browse-scoped-surface",
+      "path": "site/app/money-list.mjs"
+    },
+    {
+      "id": "procurement-pursuit-snapshot-notice-detail-mount",
+      "path": "site/app/money-history.mjs"
+    },
+    {
+      "id": "brand-type-tokens",
+      "path": "site/brand.css"
+    },
+    {
+      "id": "browse-inspection-contract-module",
+      "path": "site/browse_inspection_contract.mjs"
+    },
+    {
+      "id": "browse-inspection-catalog-projection",
+      "path": "test/standards/browse_inspection_catalog.json"
+    },
+    {
+      "id": "contract-result-inspection-tests",
+      "path": "test/contract_result_inspection.test.mjs"
+    },
+    {
+      "id": "contract-result-inspection-acceptance-manifest",
+      "path": "docs/evidence/contract-result-inspection/acceptance-manifest.json"
+    },
+    {
+      "id": "browse-inspection-acceptance-manifest",
+      "path": "docs/evidence/browse-inspection-contract/acceptance-manifest.json"
+    }
+  ]
+}
