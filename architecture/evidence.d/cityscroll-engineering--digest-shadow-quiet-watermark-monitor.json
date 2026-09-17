@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/digest-shadow-quiet-watermark-monitor",
   "status": "implemented",
-  "fingerprint": "digest-shadow-quiet-watermark-monitor.v1",
-  "updated_at": "2026-09-10T00:00:00.000Z",
+  "fingerprint": "digest-shadow-quiet-watermark-monitor.v2",
+  "updated_at": "2026-09-17T00:00:00.000Z",
   "projections": [
     {
       "id": "digest-shadow-detector",
@@ -20,6 +20,22 @@
     {
       "id": "quiet-watermark-cycle-evidence",
       "path": "docs/evidence/digest-shadow-monitor/quiet-watermark-cycles-2026-09-14.json"
+    },
+    {
+      "id": "quiet-watermark-letter-receipts",
+      "path": "test/fixtures/digest-shadow-monitor/letter-receipts.json"
+    },
+    {
+      "id": "quiet-watermark-synthetic-trailing-series",
+      "path": "test/fixtures/digest-shadow-monitor/synthetic-trailing-series.json"
+    },
+    {
+      "id": "quiet-watermark-retained-cycles",
+      "path": "test/fixtures/digest-shadow-monitor/retained-cycles.json"
+    },
+    {
+      "id": "quiet-watermark-named-assertions",
+      "path": "test/digest_shadow_quiet_watermark.test.mjs"
     }
   ]
 }

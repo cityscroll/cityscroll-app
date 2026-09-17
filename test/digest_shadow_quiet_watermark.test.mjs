@@ -11,6 +11,8 @@ import {
   buildDigestShadowSummary,
 } from "../worker/src/digest_shadow.mjs";
 import { normalizeFunnel } from "../worker/src/lib/digest_funnel.mjs";
+import { runDigestShadowJob } from "../tools/digest_shadow_monitor.mjs";
+import { persistScheduleResult, replayOutbox } from "../tools/external_schedule_outbox.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 import { withPinnedClock } from "./helpers/test_clock.mjs";
 import {
@@ -28,38 +30,18 @@ import {
 import { PRODUCTION_PROVENANCE_SCHEMA } from "../tools/lib/production_provenance.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const RETAINED = JSON.parse(await readFile(join(ROOT, "test/fixtures/digest-shadow-monitor/retained-cycles.json"), "utf8"));
+const FIXTURE_DIR = join(ROOT, "test/fixtures/digest-shadow-monitor");
+const RETAINED = JSON.parse(await readFile(join(FIXTURE_DIR, "retained-cycles.json"), "utf8"));
+const LETTER_RECEIPTS = JSON.parse(await readFile(join(FIXTURE_DIR, "letter-receipts.json"), "utf8"));
+const SYNTHETIC = JSON.parse(await readFile(join(FIXTURE_DIR, "synthetic-trailing-series.json"), "utf8"));
 const EVIDENCE = JSON.parse(await readFile(join(ROOT, DIGEST_SHADOW_MONITOR_EVIDENCE_RELPATH), "utf8"));
 
 function spikeHistory() {
-  return [
-    { day: "2026-09-07", totalNotices: 234, sentCount: 5 },
-    { day: "2026-09-06", totalNotices: 8, sentCount: 2 },
-    { day: "2026-09-05", totalNotices: 12, sentCount: 2 },
-    { day: "2026-09-04", totalNotices: 10, sentCount: 2 },
-    { day: "2026-09-03", totalNotices: 9, sentCount: 1 },
-    { day: "2026-09-02", totalNotices: 11, sentCount: 2 },
-    { day: "2026-09-01", totalNotices: 8, sentCount: 1 },
-  ];
+  return SYNTHETIC.history.map((row) => ({ ...row }));
 }
 
 function backlogFlushHistory() {
-  return [
-    {
-      day: "2026-09-07",
-      mode: "inline",
-      entries: [{
-        id: "sub:backlog",
-        action: "match",
-        traffic_class: "catch_up",
-        sent: true,
-        noticeCount: 234,
-      }],
-      sentCount: 1,
-      totalNotices: 234,
-    },
-    ...spikeHistory().slice(1),
-  ];
+  return LETTER_RECEIPTS.quiet_watermark.backlog_flush_history.map((row) => structuredClone(row));
 }
 
 function ordinaryHistory() {
@@ -137,7 +119,208 @@ function seedObservations(cycles) {
   return observations;
 }
 
-test("replaying retained 2026-09-06..10 receipts raises no attention on quiet watermark days", async () => {
+function summaryFromLetter(letter, { history, now } = {}) {
+  const funnel = normalizeFunnel(letter.selection_funnel);
+  const items = Number(funnel.items) || 0;
+  return buildDigestShadowSummary({
+    run: {
+      results: [{
+        sub: "account:letter",
+        new: items,
+        forecasts: 0,
+        preview: items > 0
+          ? { subject: `CityScroll: ${items} new`, html: itemHtml(items), listUnsubscribe: "<https://api.cityscroll.org/unsubscribe?example=1>" }
+          : undefined,
+        selection_funnel: funnel,
+      }],
+    },
+    history: history || [],
+    now: now || new Date(`${letter.run_day}T10:00:00.000Z`),
+  });
+}
+
+function fakeGithub() {
+  const issues = [];
+  const comments = new Map();
+  return {
+    issues,
+    async listIssues() { return issues.filter((issue) => issue.state === "open"); },
+    async listComments(number) { return comments.get(number) || []; },
+    async createIssue(issue) {
+      const created = { number: issues.length + 1, state: "open", ...issue };
+      issues.push(created);
+      return created;
+    },
+    async createComment(number, body) {
+      const list = comments.get(number) || [];
+      list.push({ body });
+      comments.set(number, list);
+    },
+    async updateIssue(number, patch) {
+      Object.assign(issues.find((issue) => issue.number === number), patch);
+    },
+  };
+}
+
+const DIGEST_SHADOW_JOB = {
+  id: "digest-shadow-monitor",
+  runner: "digest-shadow",
+  issue_title: "Digest shadow run needs attention",
+};
+
+async function withDigestShadowEnv(env, run) {
+  const keys = ["CITYSCROLL_ADMIN_KEY", "ADMIN_KEY", "CITYSCROLL_ADMIN_KEY_FILE", "CITYSCROLL_DIGEST_SHADOW_URL"];
+  const saved = Object.fromEntries(keys.map((key) => [key, process.env[key]]));
+  for (const key of keys) delete process.env[key];
+  Object.assign(process.env, env);
+  try { return await run(); } finally {
+    for (const key of keys) {
+      if (saved[key] === undefined) delete process.env[key];
+      else process.env[key] = saved[key];
+    }
+  }
+}
+
+test("A1 named assertion: letter-receipts distinguish quiet watermark info from empty-source attention", async () => {
+  await withPinnedClock("2026-09-10T12:00:00.000Z", async () => {
+    const quiet = summaryFromLetter(LETTER_RECEIPTS.quiet_watermark, {
+      history: LETTER_RECEIPTS.quiet_watermark.backlog_flush_history,
+    });
+    assert.equal(quiet.status, DIGEST_SHADOW_READY);
+    assert.equal(quiet.collapse_stage, "watermark_fresh");
+    assert.ok(quiet.selection_funnel.source_candidates > QUIET_WATERMARK_CANDIDATE_FLOOR);
+    assert.equal(quiet.selection_funnel.watermark_fresh, 0);
+    assert.equal(quiet.total_items, 0);
+    assert.deepEqual(quiet.redlines.map((row) => row.code), []);
+    const quietObservation = quiet.observations.find((row) => row.code === "quiet_watermark");
+    assert.ok(quietObservation);
+    assert.equal(quietObservation.severity, "info");
+    assert.equal(
+      findingSeverity({ healthy: true, summary: quiet, opening: false }),
+      "info",
+    );
+
+    const empty = summaryFromLetter(LETTER_RECEIPTS.empty_source, {
+      history: LETTER_RECEIPTS.empty_source.history,
+    });
+    assert.equal(empty.status, DIGEST_SHADOW_ATTENTION);
+    assert.equal(empty.collapse_stage, "source_candidates");
+    assert.equal(empty.selection_funnel.source_candidates, 0);
+    assert.equal(empty.total_items, 0);
+    assert.ok(empty.redlines.some((row) => row.code === "aggregate_count_collapse"));
+    assert.equal(empty.observations.find((row) => row.code === "quiet_watermark"), undefined);
+    assert.equal(
+      findingSeverity({ healthy: false, summary: empty, opening: true }),
+      "attention",
+    );
+
+    // Same zero item count; only the funnel stage separates the two cases.
+    assert.equal(quiet.total_items, empty.total_items);
+    assert.notEqual(quiet.collapse_stage, empty.collapse_stage);
+
+    await withTempDir("crol-digest-shadow-a1", async (stateDir) => {
+      const github = fakeGithub();
+      const quietReceipt = {
+        summary: {
+          status: DIGEST_SHADOW_READY,
+          run_day: LETTER_RECEIPTS.quiet_watermark.run_day,
+          ran_at: LETTER_RECEIPTS.quiet_watermark.ran_at,
+          ok: true,
+          collapse_stage: "watermark_fresh",
+          selection_funnel: { ...LETTER_RECEIPTS.quiet_watermark.selection_funnel },
+          redlines: [],
+          observations: [{
+            code: "quiet_watermark",
+            severity: "info",
+            stage: "watermark_fresh",
+            classification: "watermark exhaustion after backlog flush",
+            reason: "watermark exhaustion after backlog flush",
+          }],
+          upstream_incidents: [],
+        },
+      };
+      const quietOutput = await withDigestShadowEnv({
+        CITYSCROLL_ADMIN_KEY: "probe-secret",
+        CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+      }, async () => {
+        const now = new Date("2026-09-10T10:10:00.000Z");
+        const ran = await runDigestShadowJob(DIGEST_SHADOW_JOB, {
+          stateDir,
+          now,
+          runKey: now.toISOString().slice(0, 16).replace(/:/g, "-"),
+          async fetchImpl() {
+            return { ok: true, status: 200, async json() { return quietReceipt; } };
+          },
+        });
+        await persistScheduleResult({
+          stateDir,
+          jobId: DIGEST_SHADOW_JOB.id,
+          runKey: now.toISOString().slice(0, 16).replace(/:/g, "-"),
+          now,
+          result: ran.result,
+          issue: ran.intents[0].issue,
+        });
+        return ran;
+      });
+      await replayOutbox({ stateDir, github, now: "2026-09-10T10:10:00.000Z" });
+      assert.equal(quietOutput.result.finding_severity, "info");
+      assert.equal(quietOutput.result.comment_written, false);
+      assert.equal(quietOutput.intents[0].issue.mode, "close");
+      assert.equal(github.issues.length, 0);
+
+      const emptyGithub = fakeGithub();
+      const emptyReceipt = {
+        summary: {
+          status: DIGEST_SHADOW_ATTENTION,
+          run_day: LETTER_RECEIPTS.empty_source.run_day,
+          ran_at: LETTER_RECEIPTS.empty_source.ran_at,
+          ok: false,
+          collapse_stage: "source_candidates",
+          selection_funnel: { ...LETTER_RECEIPTS.empty_source.selection_funnel },
+          redlines: [{
+            code: "aggregate_count_collapse",
+            digest_id: "run",
+            watch_id: null,
+            reason: "Aggregate digest items collapsed against the trailing average.",
+            evidence: { collapse_stage: "source_candidates" },
+          }],
+          observations: [],
+          upstream_incidents: [],
+        },
+      };
+      const emptyOutput = await withDigestShadowEnv({
+        CITYSCROLL_ADMIN_KEY: "probe-secret",
+        CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+      }, async () => {
+        const now = new Date("2026-09-10T13:10:00.000Z");
+        const ran = await runDigestShadowJob(DIGEST_SHADOW_JOB, {
+          stateDir,
+          now,
+          runKey: now.toISOString().slice(0, 16).replace(/:/g, "-"),
+          async fetchImpl() {
+            return { ok: false, status: 503, async json() { return emptyReceipt; } };
+          },
+        });
+        await persistScheduleResult({
+          stateDir,
+          jobId: DIGEST_SHADOW_JOB.id,
+          runKey: now.toISOString().slice(0, 16).replace(/:/g, "-"),
+          now,
+          result: ran.result,
+          issue: ran.intents[0].issue,
+        });
+        return ran;
+      });
+      await replayOutbox({ stateDir, github: emptyGithub, now: "2026-09-10T13:10:00.000Z" });
+      assert.equal(emptyOutput.result.finding_severity, "attention");
+      assert.equal(emptyOutput.result.comment_written, true);
+      assert.equal(emptyOutput.intents[0].issue.mode, "open");
+      assert.equal(emptyGithub.issues.length, 1);
+    });
+  });
+});
+
+test("A3 named assertion: retained cycles and synthetic trailing series raise no weekday collapse", async () => {
   await withPinnedClock("2026-09-14T12:00:00.000Z", () => {
     const watermarkDays = new Set(["2026-09-08", "2026-09-09", "2026-09-10"]);
     for (const cycle of RETAINED.cycles) {
@@ -158,6 +341,21 @@ test("replaying retained 2026-09-06..10 receipts raises no attention on quiet wa
         assert.equal(replayed.finding_severity, "attention", cycle.run_key);
       }
     }
+
+    const synthetic = summaryFromLetter(SYNTHETIC, {
+      history: SYNTHETIC.history,
+      now: new Date(SYNTHETIC.ran_at),
+    });
+    assert.equal(synthetic.status, DIGEST_SHADOW_READY);
+    assert.equal(synthetic.collapse_stage, SYNTHETIC.expectations.collapse_stage);
+    assert.equal(synthetic.total_items, SYNTHETIC.current_items);
+    assert.equal(synthetic.redlines.find((row) => row.code === "aggregate_count_collapse"), undefined);
+
+    const trailingMean = SYNTHETIC.history
+      .slice(0, 7)
+      .reduce((sum, row) => sum + Number(row.totalNotices), 0) / 7;
+    assert.ok(SYNTHETIC.expectations.mean_would_collapse);
+    assert.ok((SYNTHETIC.current_items / trailingMean) < 0.25);
   });
 });
 

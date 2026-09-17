@@ -1,0 +1,31 @@
+{
+  "schema": "cityscroll.digest_shadow_monitor_synthetic_trailing_series.v1",
+  "note": "One backlog Monday followed by ordinary weekdays. The seven-day mean is dominated by the spike; the weekday-matched or median baseline is not. Ordinary weekdays with modest built-item counts must not raise aggregate_count_collapse.",
+  "run_day": "2026-09-08",
+  "ran_at": "2026-09-08T10:00:00.000Z",
+  "current_items": 8,
+  "selection_funnel": {
+    "source_candidates": 400,
+    "delivery_authorized": 400,
+    "lens_evaluated": 400,
+    "watermark_fresh": 8,
+    "content_deduped": 8,
+    "owed_drained": 8,
+    "items": 8
+  },
+  "history": [
+    { "day": "2026-09-07", "totalNotices": 234, "sentCount": 5 },
+    { "day": "2026-09-06", "totalNotices": 8, "sentCount": 2 },
+    { "day": "2026-09-05", "totalNotices": 12, "sentCount": 2 },
+    { "day": "2026-09-04", "totalNotices": 10, "sentCount": 2 },
+    { "day": "2026-09-03", "totalNotices": 9, "sentCount": 1 },
+    { "day": "2026-09-02", "totalNotices": 11, "sentCount": 2 },
+    { "day": "2026-09-01", "totalNotices": 8, "sentCount": 1 }
+  ],
+  "expectations": {
+    "status": "READY",
+    "collapse_stage": null,
+    "no_aggregate_collapse": true,
+    "mean_would_collapse": true
+  }
+}
