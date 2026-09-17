@@ -1,0 +1,87 @@
+{
+  "schema": "cityscroll.research_response_bounds.recording.v1",
+  "record": "cityscroll-engineering/c574ffb1646b6",
+  "grounded_at": "9610d5faf2e95fa6df89e88b1d5efd95120204f2",
+  "projection": {
+    "path": "site/data/analytics_registered_contracts.json",
+    "schema": "cityscroll.analytics_registered_contracts.v1",
+    "generated_at": "2026-09-09T06:33:01.880Z",
+    "snapshot_date": "2026-09-09",
+    "row_count": 26846
+  },
+  "response_budget_bytes": 65536,
+  "sample_default": 10,
+  "sample_maximum": 50,
+  "image_policy": "Textual recording only; no image binaries are committed.",
+  "diagnosed_failure": {
+    "source": "first evaluation attempt, retained with the live responses",
+    "identifiers_health_all_years": 1821,
+    "identifiers_health_fiscal_year_2026": 806,
+    "tool_output_bytes": 644929,
+    "answer_model_response": "bodyless HTTP 400, rejected before tokenizing"
+  },
+  "reconstructed_unbounded_agency_page": {
+    "description": "Unfiltered agency analysis with identifiers=full and limit=100 against the committed projection — the same shape that produced the diagnosed turn failure.",
+    "response_bytes": 642928,
+    "group_count": 69,
+    "identifier_total": 26846
+  },
+  "cases": {
+    "largest_corpus_group": {
+      "letter": "A3",
+      "agency": "Department of Education",
+      "fiscal_year": null,
+      "identifier_count": 7717,
+      "sample_length": 50,
+      "response_bytes": 10412,
+      "bound_visible": true,
+      "identifier_field": "contract_sample[].procurement_id",
+      "has_full_identifier_arrays": false,
+      "availability": "complete",
+      "turn_completes": true,
+      "selection": "largest agency group by registration count in the committed projection"
+    },
+    "health_all_years": {
+      "letter": "A5",
+      "agency": "Department of Health and Mental Hygiene",
+      "fiscal_year": null,
+      "identifier_count": 1821,
+      "sample_length": 10,
+      "response_bytes": 8116,
+      "bound_visible": true,
+      "identifier_field": "contract_sample[].procurement_id",
+      "has_full_identifier_arrays": false,
+      "availability": "complete",
+      "turn_completes": true,
+      "response_bytes_before_diagnosed_turn": 644929,
+      "response_bytes_before_reconstructed_unbounded_page": 642928
+    },
+    "health_fiscal_year_2026": {
+      "letter": "A5",
+      "agency": "Department of Health and Mental Hygiene",
+      "fiscal_year": 2026,
+      "identifier_count": 806,
+      "sample_length": 10,
+      "response_bytes": 8227,
+      "bound_visible": true,
+      "identifier_field": "contract_sample[].procurement_id",
+      "has_full_identifier_arrays": false,
+      "availability": "complete",
+      "turn_completes": true,
+      "response_bytes_before_diagnosed_turn": 644929,
+      "response_bytes_before_reconstructed_unbounded_page": 642928
+    }
+  },
+  "acceptance_assertions": {
+    "A3": {
+      "assertion": "A response for the largest agency group in the committed registered-contract corpus stays under the documented research byte budget, and the bound is named in the response identifier note.",
+      "artifact": "docs/evidence/research-response-bounds/bounded-identifier-arrays.json",
+      "proof": "worker/test/research_response_corpus_bounds.test.mjs :: A3 largest corpus group response stays within the stated bound"
+    },
+    "A5": {
+      "assertion": "The Health Department all-years group and its 2026 fiscal-year subset are re-run and recorded with identifier counts, before and after response sizes, and a completing turn under the research byte budget.",
+      "artifact": "docs/evidence/research-response-bounds/bounded-identifier-arrays.json",
+      "proof": "worker/test/research_response_corpus_bounds.test.mjs :: A5 demonstrated Health Department cases are recorded and complete"
+    }
+  }
+}
