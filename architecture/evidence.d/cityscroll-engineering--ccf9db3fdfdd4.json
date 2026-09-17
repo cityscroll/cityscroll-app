@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/ccf9db3fdfdd4",
   "status": "implemented",
-  "fingerprint": "citizen-entry-presentation.v1",
-  "updated_at": "2026-09-16T00:00:00.000Z",
+  "fingerprint": "citizen-entry-presentation.v2",
+  "updated_at": "2026-09-17T00:00:00.000Z",
   "projections": [
     {
       "id": "homepage-following-cta",
