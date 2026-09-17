@@ -9,6 +9,7 @@ import {
   COMMUNITY_BOARD_SOURCE_RECORD_SCHEMA,
   sourceAdapterContract,
   communityBoardSourceAdapterId,
+  evaluateBoardSourceAcquisitionInvariants,
 } from "../site/community_board_source_adapters.mjs";
 import { extractPdfCalendarText } from "./lib/pdf_calendar_text.mjs";
 import { normalizeCommunityBoardMeeting } from "../site/meeting_object_contract.mjs";
@@ -168,6 +169,11 @@ function sourceRoleReceipt(descriptor, result, records, observedAt) {
     (descriptor.source_role === "minutes" ? record.record_kind === "document" : record.record_kind === "event")
       && record.record_id && record.date
   ));
+  const invariants = evaluateBoardSourceAcquisitionInvariants({
+    receipt,
+    records,
+    role: descriptor.source_role,
+  });
   return {
     board_id: descriptor.board_id,
     role: descriptor.source_role,
@@ -180,7 +186,70 @@ function sourceRoleReceipt(descriptor, result, records, observedAt) {
     inventory_receipt: descriptor.verification || null,
     record_count: records.length,
     materialized_record_count: materialized.length,
+    // Presence and population stay separate so a 200 with nothing extractable
+    // cannot pass as healthy on status alone.
+    acquisition_invariants: invariants,
   };
+}
+
+/** Boards whose shortfall this repair owns; both invariants must hold. */
+export const BOARD_MEETING_ACQUISITION_PRESENCE_POPULATION_BOARDS = Object.freeze([
+  "bronx-cb-06",
+  "bronx-cb-08",
+  "manhattan-cb-02",
+  "manhattan-cb-04",
+  "manhattan-cb-10",
+  "manhattan-cb-11",
+  "manhattan-cb-12",
+]);
+
+/**
+ * Assert presence and population for named board sources on an acquisition pass.
+ * Every receipt still carries both readings; this gate fails closed for the
+ * boards whose silent-empty responses previously hid the largest shortfall.
+ */
+export function assertBoardSourceAcquisitionInvariants(receipts = [], {
+  requiredBoardIds = BOARD_MEETING_ACQUISITION_PRESENCE_POPULATION_BOARDS,
+  role = "upcoming_meetings",
+} = {}) {
+  const required = new Set(requiredBoardIds);
+  const findings = [];
+  for (const receipt of receipts) {
+    if (role && receipt.role !== role) continue;
+    if (!required.has(receipt.board_id)) continue;
+    const invariants = receipt.acquisition_invariants || evaluateBoardSourceAcquisitionInvariants({
+      receipt: receipt.observed_receipt,
+      records: (receipt.materialized_record_count > 0)
+        ? [{ record_kind: role === "minutes" ? "document" : "event", record_id: "materialized", date: "1970-01-01" }]
+        : [],
+      role: receipt.role || role,
+    });
+    if (!invariants.presence?.ok || !invariants.population?.ok) {
+      findings.push({
+        board_id: receipt.board_id,
+        role: receipt.role,
+        presence: invariants.presence,
+        population: invariants.population,
+      });
+    }
+  }
+  for (const boardId of required) {
+    if (!receipts.some((receipt) => receipt.board_id === boardId && (!role || receipt.role === role))) {
+      findings.push({
+        board_id: boardId,
+        role,
+        presence: { ok: false, reason: "receipt_missing" },
+        population: { ok: false, extractable_count: 0 },
+      });
+    }
+  }
+  if (findings.length) {
+    const detail = findings.map((row) => (
+      `${row.board_id}:${row.role} presence=${row.presence?.ok} population=${row.population?.ok}`
+    )).join("; ");
+    throw new Error(`board source acquisition invariants failed: ${detail}`);
+  }
+  return { ok: true, checked: required.size };
 }
 
 const BOARD_COVERAGE_STATES = Object.freeze(["indexed", "checked-empty", "unreadable", "not-registered"]);
@@ -550,6 +619,11 @@ export async function buildCommunityBoardMeetingIndex({
       }));
     if (meetingRows.length) byBoard[descriptor.board_id] = [...(byBoard[descriptor.board_id] || []), ...meetingRows];
   }
+  // Enforce only when the full named set is in the inventory. Focused fixture
+  // inventories intentionally omit boards and must not trip this gate.
+  const namedPresent = BOARD_MEETING_ACQUISITION_PRESENCE_POPULATION_BOARDS
+    .every((boardId) => boardById.has(boardId));
+  if (namedPresent) assertBoardSourceAcquisitionInvariants(receipts);
   return assembleCommunityBoardMeetingIndex({
     inventory,
     byBoard,

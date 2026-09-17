@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.community_board_acquisition_invariants_manifest.v1",
+  "public_alias": "cef222171a737",
+  "grounded_at": "ecd674bf17f99165551b9af67775dc7820f016c0",
+  "verification": {
+    "command": "node --test test/community_board_source_adapters.test.mjs test/meeting_outcomes_static.test.mjs test/first_class_refresh_committed_read_models.test.mjs",
+    "scope": "challenge-html detector, identifying User-Agent, presence/population invariants, bound roll-call retention, publication cause classes"
+  },
+  "diagnosis": "docs/evidence/community-board-acquisition-invariants/diagnosis.json",
+  "image_policy": "No image binaries are committed; this manifest is textual evidence only."
+}

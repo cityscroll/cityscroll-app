@@ -70,6 +70,73 @@ export const COMMUNITY_BOARD_TRANSPORT_DEFAULTS = Object.freeze({
   maxRunMs: 600_000, parserVersion: "community_board_acquisition.v1",
 });
 
+/** Identifying User-Agent for board-owned hosts that refuse empty or generic browser UAs. */
+export const COMMUNITY_BOARD_ACQUISITION_USER_AGENT = "cityscroll-community-board-acquisition/1.0";
+
+/**
+ * Challenge / access-denied HTML is a transport failure, not ordinary page copy.
+ * A bare "challenge" match rejects publisher prose such as "identify challenges".
+ */
+export function looksLikeChallengeHtml(text, contentType = "text/html") {
+  if (!/html/i.test(String(contentType || ""))) return false;
+  const body = String(text || "");
+  if (/<h1>\s*Access Denied\s*<\/h1>/i.test(body)) return true;
+  if (/cloudflare ray id/i.test(body)) return true;
+  if (/just a moment/i.test(body) && /(?:cdn-cgi|cf-browser-verification|challenge-platform|cf-challenge)/i.test(body)) {
+    return true;
+  }
+  if (/\bcaptcha\b/i.test(body) && /(?:cdn-cgi|cf-|challenge-platform|recaptcha)/i.test(body)) return true;
+  return false;
+}
+
+/**
+ * Presence and population are separate acquisition invariants.
+ * A successful HTTP response with no extractable meetings fails population
+ * without being treated as healthy on presence alone.
+ */
+export function evaluateBoardSourceAcquisitionInvariants({
+  receipt = null,
+  records = [],
+  role = "upcoming_meetings",
+} = {}) {
+  const fetchStatus = String(receipt?.fetch_status ?? "").trim();
+  const numericStatus = Number(fetchStatus);
+  const errorReason = new Set([
+    "http_error",
+    "challenge_html",
+    "access_denied",
+    "timeout",
+    "fetch_error",
+    "byte_limit_exceeded",
+    "source_contract_unavailable",
+  ]);
+  const presenceOk = Boolean(
+    receipt
+      && receipt.status === "ok"
+      && !errorReason.has(String(receipt.reason || ""))
+      && !(Number.isInteger(numericStatus) && (numericStatus < 200 || numericStatus >= 300)),
+  );
+  const expectedKind = role === "minutes" ? "document" : "event";
+  const extractable = (Array.isArray(records) ? records : []).filter((record) => (
+    record?.record_kind === expectedKind && record?.record_id && record?.date
+  ));
+  const populationOk = extractable.length > 0;
+  return Object.freeze({
+    presence: Object.freeze({
+      ok: presenceOk,
+      status: receipt?.status || null,
+      fetch_status: fetchStatus || null,
+      reason: receipt?.reason || null,
+    }),
+    population: Object.freeze({
+      ok: populationOk,
+      extractable_count: extractable.length,
+      expected_kind: expectedKind,
+    }),
+    ok: presenceOk && populationOk,
+  });
+}
+
 async function buildAcquisitionRequestReceipt({
   requestId, parentRequestId = null, url, requestedAt, retrievedAt,
   status = null, bytes = null, latencyMs = null, parserVersion,
@@ -131,8 +198,13 @@ export function createBoundedCommunityBoardTransport(fetchImpl, options = {}) {
         let rejectTimeout;
         const timeout = setTimeout(() => rejectTimeout(Object.assign(new Error("timeout"), { name: "AbortError" })), cfg.requestTimeoutMs);
         try {
+          const incomingHeaders = init.headers && typeof init.headers === "object" ? init.headers : {};
+          const hasUserAgent = Object.keys(incomingHeaders).some((key) => key.toLowerCase() === "user-agent");
+          const headers = hasUserAgent
+            ? incomingHeaders
+            : { ...incomingHeaders, "User-Agent": COMMUNITY_BOARD_ACQUISITION_USER_AGENT };
           response = await Promise.race([
-            fetchImpl(currentUrl, { ...init, signal: controller.signal, redirect: "manual" }),
+            fetchImpl(currentUrl, { ...init, headers, signal: controller.signal, redirect: "manual" }),
             new Promise((_, reject) => { rejectTimeout = reject; }),
           ]);
         }
@@ -152,7 +224,7 @@ export function createBoundedCommunityBoardTransport(fetchImpl, options = {}) {
         totalBytes += bytes.length; if (totalBytes > cfg.maxBytes) throw new Error("whole_run_byte_limit_exceeded");
         const contentType = response.headers?.get?.("content-type") || null;
         const text = /text|json|html|javascript/i.test(contentType || "") ? new TextDecoder().decode(bytes) : "";
-        if (/access denied|captcha|challenge|cloudflare ray id/i.test(text) && /html/i.test(contentType || "")) throw new Error("challenge_html");
+        if (looksLikeChallengeHtml(text, contentType)) throw new Error("challenge_html");
         if (init._expectedJson) { try { JSON.parse(text); } catch { throw new Error("malformed_json"); } }
         if (status < 200 || status >= 300) throw new Error(`http_${status || "error"}`);
         outcome = "ok"; break;

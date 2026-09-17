@@ -44,16 +44,21 @@ function rollCallRecord({
       event_url: "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=abc",
     },
     agenda_items: [{
+      agenda_item_id: "22526-79062",
       matters: [{
         matter_id: "79062",
         matter_file: "LU 0091-2026",
         title: "Landmarks, Public School 15 Annex, Brooklyn",
         outcome: "Approved by Subcommittee",
         matter_url: "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79062",
+        agenda_item_id: "22526-79062",
         votes: [{
           result: "Passed",
           counts: { aye: 6, nay: 0, abstain: 1 },
           vote_identity: withPeople ? "roll_call" : "tally_only",
+          // Exact event + agenda-item refs are required to retain named roll calls.
+          event_id: eventId,
+          event_item_id: "22526-79062",
           person_count: withPeople ? 7 : 0,
           by_person: withPeople
             ? [

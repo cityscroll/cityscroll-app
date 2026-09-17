@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/cef222171a737",
+  "status": "implemented",
+  "fingerprint": "cef222171a737.board-meeting-acquisition-invariants.v1",
+  "updated_at": "2026-09-17T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "community-board-source-adapters",
+      "path": "site/community_board_source_adapters.mjs"
+    },
+    {
+      "id": "materialized-source-condition-seam",
+      "path": "tools/build_community_board_meeting_index.mjs"
+    },
+    {
+      "id": "meeting-outcomes-first-paint-destinations",
+      "path": "site/meeting_outcomes_static.mjs"
+    },
+    {
+      "id": "source-preserving-publication",
+      "path": "ops/first-class-refresh/guard-publication.mjs"
+    },
+    {
+      "id": "board-acquisition-cause-diagnosis",
+      "path": "docs/evidence/community-board-acquisition-invariants/diagnosis.json"
+    },
+    {
+      "id": "board-acquisition-invariants-manifest",
+      "path": "docs/evidence/community-board-acquisition-invariants/manifest.json"
+    },
+    {
+      "id": "board-acquisition-invariant-contract",
+      "path": "test/community_board_source_adapters.test.mjs"
+    }
+  ]
+}

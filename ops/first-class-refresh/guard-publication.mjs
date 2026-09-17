@@ -30,19 +30,49 @@ export function unboundRollCalls(snapshot) {
   return findings;
 }
 
+function classifyEmptyBoardCause(receipt) {
+  const reason = receipt?.state_reason || receipt?.observed_receipt?.reason || null;
+  const fetchStatus = String(receipt?.observed_receipt?.fetch_status || "");
+  const invariants = receipt?.acquisition_invariants || null;
+  if (receipt?.state === "unavailable" || reason === "http_error" || /^[45]\d\d$/.test(fetchStatus)) {
+    return {
+      cause_class: "publisher_change",
+      cause: `publisher retrieval failed: ${reason || fetchStatus || "unavailable"}`,
+    };
+  }
+  if (reason === "challenge_html") {
+    return {
+      cause_class: "parser_regression",
+      cause: "response matched challenge_html while still returning publisher HTML; detector rejected extractable events",
+    };
+  }
+  if (invariants?.presence?.ok && !invariants?.population?.ok) {
+    return {
+      cause_class: "parser_regression",
+      cause: "presence succeeded with zero extractable meetings (population invariant failed)",
+    };
+  }
+  return {
+    cause_class: "unresolved",
+    cause: "no events extracted; publisher window change versus parser regression is not established",
+  };
+}
+
 export function meetingPublicationFindings(previous, current) {
   const findings = [];
   for (const [board, rows] of Object.entries(previous.by_board || {})) {
     const count = current.by_board?.[board]?.length || 0;
     if (!rows.length || count) continue;
     const receipt = current.receipts?.find((row) => row.board_id === board && row.role === "upcoming_meetings");
+    const classified = classifyEmptyBoardCause(receipt);
     findings.push({
       board, previous: rows.length, attempted: count,
       source_url: receipt?.source_url || null,
       http_status: receipt?.observed_receipt?.fetch_status || null,
-      cause: receipt?.state === "unavailable"
-        ? `publisher retrieval failed: ${receipt.state_reason || "unavailable"}`
-        : "no events extracted; publisher window change versus parser regression is not established",
+      cause_class: classified.cause_class,
+      cause: classified.cause,
+      presence_ok: receipt?.acquisition_invariants?.presence?.ok ?? null,
+      population_ok: receipt?.acquisition_invariants?.population?.ok ?? null,
     });
   }
   if (current.rows.length < previous.rows.length * 0.8 && !findings.length) {

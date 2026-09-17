@@ -182,7 +182,18 @@ test("publication retains a previously covered board after HTTP failure or unexp
   const previous = { by_board: { "manhattan-cb-10": [{}] }, rows: [{}] };
   const attempt = { by_board: {}, rows: [], receipts: [{ board_id: "manhattan-cb-10", role: "upcoming_meetings", state: "unavailable", state_reason: "http_error", observed_receipt: { fetch_status: "403" } }] };
   assert.equal(meetingPublicationFindings(previous, attempt)[0].http_status, "403");
+  assert.equal(meetingPublicationFindings(previous, attempt)[0].cause_class, "publisher_change");
   attempt.receipts[0].state = "checked-empty";
+  attempt.receipts[0].state_reason = "no_explicit_records";
+  attempt.receipts[0].observed_receipt = { fetch_status: "200", status: "ok", reason: null };
+  attempt.receipts[0].acquisition_invariants = {
+    presence: { ok: true, status: "ok", fetch_status: "200", reason: null },
+    population: { ok: false, extractable_count: 0, expected_kind: "event" },
+    ok: false,
+  };
+  assert.equal(meetingPublicationFindings(previous, attempt)[0].cause_class, "parser_regression");
+  assert.match(meetingPublicationFindings(previous, attempt)[0].cause, /population invariant failed/);
+  attempt.receipts[0].acquisition_invariants = null;
   assert.match(meetingPublicationFindings(previous, attempt)[0].cause, /not established/);
   assert.deepEqual(meetingPublicationFindings(previous, previous), []);
 });
