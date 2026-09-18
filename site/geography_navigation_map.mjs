@@ -769,6 +769,11 @@ export async function createGeographyNavigationMap(options = {}) {
       throw error;
     }
 
+    // Reveal the enhanced host before constructing the map. MapLibre measures the
+    // container during construction; a hidden host yields a zero-size canvas and
+    // a style failure that would otherwise look like a permanent enhancement miss.
+    hideServerMapFallback(root, { enhancedHost: container });
+
     const mapOptions = {
       container,
       style: buildBaseStyle(),
@@ -794,8 +799,6 @@ export async function createGeographyNavigationMap(options = {}) {
       throw error;
     }
 
-    hideServerMapFallback(root, { enhancedHost: container });
-
     const on = (target, type, handler) => {
       target.on?.(type, handler);
       listeners.push(() => target.off?.(type, handler));
@@ -803,11 +806,16 @@ export async function createGeographyNavigationMap(options = {}) {
 
     on(map, "error", (event) => {
       const message = String(event?.error?.message || event?.error || "");
-      if (/tile|raster|basemap|cartocdn/i.test(message)) {
+      const sourceId = String(event?.sourceId || event?.error?.sourceId || "");
+      // Basemap tiles are decorative. Network/CDN failures must not revert the map.
+      if (
+        sourceId === GEOGRAPHY_MAP_SOURCE_IDS.basemap
+        || /tile|raster|basemap|cartocdn|ajaxerror|failed to load/i.test(message)
+      ) {
         onTileFailure?.(GEOGRAPHY_MAP_FALLBACK_REASONS.tile_failure);
         return;
       }
-      if (/style|source/i.test(message)) {
+      if (/style/i.test(message)) {
         fail(GEOGRAPHY_MAP_FALLBACK_REASONS.style_failure, event?.error);
       }
     });

@@ -264,7 +264,7 @@ def run(base: str) -> None:
                       paths: Object.fromEntries([...document.querySelectorAll('[data-map-id]')].map(el => [el.dataset.mapId, Number(el.dataset.count)])),
                       areas: Object.fromEntries([...document.querySelectorAll('[data-map-area]')].map(el => [el.dataset.mapArea, Number(el.dataset.count)])),
                       enhanced: document.querySelector('[data-near-you-root]')?.dataset.enhanced,
-                      listFirst: getComputedStyle(document.querySelector('[data-near-surface-panel="list"]')||document.body).display !== 'none',
+                      listFirst: getComputedStyle(document.querySelector('[data-near-surface-panel="records"]')||document.body).display !== 'none',
                       mapHidden: getComputedStyle(document.querySelector('[data-near-surface-panel="map"]')||document.body).display === 'none',
                     })"""
                 )

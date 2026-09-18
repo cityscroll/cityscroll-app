@@ -53,8 +53,8 @@ def assert_journey(page: Page) -> None:
     assert page.url == before_url, "switching to the map view changed the scope-bearing URL"
 
     # 5. Return to the Records view.
-    page.locator('[data-near-surface="list"]').click()
-    assert page.locator('[data-near-surface="list"]').get_attribute("aria-current") == "true"
+    page.locator('[data-near-surface="records"]').click()
+    assert page.locator('[data-near-surface="records"]').get_attribute("aria-current") == "true"
     assert page.url == before_url, "returning to the records view changed the scope-bearing URL"
 
     # 6. A hard reload of the same URL reconstructs the exact same scope (A2: reload-safe).

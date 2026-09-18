@@ -129,8 +129,9 @@ test("Near-you initial body keeps the map frame and exposes the deferred list", 
   assert.doesNotMatch(body, /data-near-surface-panel="list"/);
   assert.match(body, /data-near-deferred="results"/);
   assert.match(body, /data-near-surface-panel="map"/);
+  assert.match(body, /data-near-surface-panel="records"/);
   const listSlot = body.indexOf('data-near-deferred="results"');
   const mapPanel = body.indexOf('data-near-surface-panel="map"');
-  assert.ok(listSlot >= 0 && mapPanel > listSlot, "deferred list slot precedes map for mobile-first order");
+  assert.ok(listSlot >= 0 && mapPanel >= 0 && mapPanel < listSlot, "map precedes deferred records for map-first shell");
   assert.match(map, /wireSurfaceSwitch/);
 });

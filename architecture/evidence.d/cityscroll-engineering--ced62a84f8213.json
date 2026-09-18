@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/ced62a84f8213",
+  "status": "implemented",
+  "fingerprint": "near-you-map-first-shell.v1",
+  "updated_at": "2026-09-18T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "resident-geography-shell",
+      "path": "site/geography_navigation_shell.mjs"
+    },
+    {
+      "id": "resident-geography-shell-tests",
+      "path": "test/geography_navigation_shell.test.mjs"
+    },
+    {
+      "id": "geography-navigation-shell-capture",
+      "path": "tools/capture_geography_navigation.py"
+    },
+    {
+      "id": "geography-navigation-shell-manifest",
+      "path": "docs/evidence/geography-navigation-shell/capture-manifest.json"
+    }
+  ]
+}

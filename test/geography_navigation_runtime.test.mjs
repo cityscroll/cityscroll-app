@@ -481,7 +481,9 @@ test("A7: MapLibre loads only through the adapter seam; Land does not adopt it",
   assert.doesNotMatch(MODULE_SOURCE, /getCurrentPosition|navigator\.geolocation/);
   assert.doesNotMatch(LAND_RUNTIME_SOURCE, /geography_navigation_map/);
   assert.doesNotMatch(LAND_APP_SOURCE, /geography_navigation_map/);
-  assert.doesNotMatch(MAP_ISLAND_SOURCE, /geography_navigation_map/);
+  // Near You island mounts the progressive adapter; Land stays on map_runtime.
+  assert.match(MAP_ISLAND_SOURCE, /geography_navigation_map/);
+  assert.doesNotMatch(MAP_ISLAND_SOURCE, /map_runtime\.mjs/);
   assert.equal(typeof importPinnedMapLibre, "function");
 });
 

@@ -22,7 +22,7 @@ def assert_geometry(page, width, height):
       const rect = selector => document.querySelector(selector)?.getBoundingClientRect();
       const values = {
         heading: rect("h1"), board: rect(".near-board-link"), topic: rect("[data-scope-axis='topic']"),
-        switch: rect("[data-near-surface-switch]"), state: rect("[data-near-surface-panel='list']")
+        switch: rect("[data-near-surface-switch]"), state: rect("[data-near-surface-panel='records']")
       };
       return Object.fromEntries(Object.entries(values).map(([key, value]) => [key, value && {top: value.top, bottom: value.bottom}]));
     }""", height)
@@ -49,8 +49,8 @@ def assert_transitions(page):
     before = page.url
     page.locator('[data-near-surface="map"]').click()
     assert page.url == before and page.locator('[data-near-surface="map"]').get_attribute("aria-current") == "true"
-    page.locator('[data-near-surface="list"]').click()
-    assert page.url == before and page.locator('[data-near-surface="list"]').get_attribute("aria-current") == "true"
+    page.locator('[data-near-surface="records"]').click()
+    assert page.url == before and page.locator('[data-near-surface="records"]').get_attribute("aria-current") == "true"
 
 
 def assert_journey_and_failure(page):

@@ -259,7 +259,7 @@ test("A9: an end-to-end browser test drives select place -> select affecting thi
   assert.match(source, /select_option\("affected_area"\)/); // select "Affecting this place"
   assert.match(source, /data-scope-axis='local activity'/); // inspect results
   assert.match(source, /data-near-surface="map"/); // switch view
-  assert.match(source, /data-near-surface="list"/); // return
+  assert.match(source, /data-near-surface="records"/); // return
   assert.match(source, /page\.url == before_url/); // same scope retained across the switch
   assert.match(source, /placeRole.*affected_area/s); // reload-safe: the role survives a full reload
 });

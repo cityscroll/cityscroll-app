@@ -55,6 +55,19 @@ import {
   renderNearYouRecordFullRecordLink,
   renderNearYouRecordInspectButton,
 } from "./near_you_record_inspection.mjs";
+import {
+  geographyShellAreasListHtml,
+  geographyShellLayerSwitcherHtml,
+  navigationAreaEntriesFromLayerDoc,
+  renderGeographyShellEntry,
+  renderGeographyShellSurfaceSwitch,
+  resolveShellSurface,
+} from "./geography_navigation_shell.mjs";
+import {
+  GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+  GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
+  parseGeographyNavigationState,
+} from "./geography_navigation_state.mjs";
 
 const LENS_LABELS = Object.freeze({
   land: "Zoning",
@@ -427,6 +440,26 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   const hasPlace = !!(scope.place.boroughs.length || scope.place.community_districts.length
     || scope.place.council_districts.length || (scope.place.geographies || []).length || scope.place.neighborhood
     || scope.place.location_scope);
+  const geographyState = options.geographyState
+    || parseGeographyNavigationState(options.geographySearch || options.shareSearch || "");
+  const explicitSurface = Boolean(
+    options.shellSurface
+    || geographyState?.surface
+    || (typeof options.geographySearch === "string" && /(?:^|[?&])surface=/.test(options.geographySearch)),
+  );
+  const shellSurface = resolveShellSurface(options.shellSurface || geographyState?.surface, {
+    hasExplicitSurface: explicitSurface,
+    hasPlace,
+  });
+  const activeGeographyLayer = options.navigationLayerType
+    || geographyState?.compare
+    || geographyState?.type
+    || "nta2020";
+  const navigationAreas = options.navigationLayerDoc
+    ? navigationAreaEntriesFromLayerDoc(options.navigationLayerDoc, {
+      layerType: options.navigationLayerType || activeGeographyLayer,
+    })
+    : [];
   const requestedPlaceRole = placeRoleSupportedForDomain(lens) && PLACE_ROLES.includes(scope.facets.values?.place_role)
     ? scope.facets.values.place_role
     : null;
@@ -537,6 +570,10 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       .sort((left, right) => left.type.localeCompare(right.type) || left.label.localeCompare(right.label)),
     results: { ids: resultIds, count: resultCount, records: resultRecords },
     features,
+    navigationAreas,
+    activeGeographyLayer,
+    shellSurface,
+    geographyState,
     max: mappedFeatures.max,
     level,
     parent,
@@ -692,7 +729,7 @@ export function renderNearYouDeferredParts(view) {
   const moreResults = view.results.records.length > INITIAL_RECORD_LIMIT && resultCount != null
     ? `<p class="near-results-more"><a href="${esc(view.browseHref)}">Open all ${resultCount} matching records</a></p>`
     : "";
-  const resultsHtml = `<section class="near-results" aria-labelledby="near-results-heading"${resultCount == null ? "" : ` data-results-count="${resultCount}"`} data-near-surface-panel="list">
+  const resultsHtml = `<section class="near-results" aria-labelledby="near-results-heading"${resultCount == null ? "" : ` data-results-count="${resultCount}"`} data-near-surface-panel="records">
       <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${resultCount == null ? `Matching ${esc(view.lensLabel)} records` : `${resultCount} ${esc(view.lensLabel)} records for these filters`}</h2></div></div>
       ${recordList(visibleResults, view.mapState === "unsupported"
         ? `${esc(view.lensLabel)} records are not mapped here.`
@@ -715,7 +752,7 @@ export function renderNearYouDeferredBody(view) {
 
 function renderNearYouDeferredShell(view, part, { includeListPanelMarker = false } = {}) {
   if (part === "results") {
-    return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending"${includeListPanelMarker ? ` data-near-surface-panel="list"` : ""} aria-busy="true">
+    return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending"${includeListPanelMarker ? ` data-near-surface-panel="records"` : ""} aria-busy="true">
       <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>
       <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
     </section>`;
@@ -798,10 +835,20 @@ function renderNearYouMapState(view) {
       data-map-label="${esc(feature.id)}" data-area-name="${esc(feature.label)}"
       x="${esc(feature.labelPoint?.x)}" y="${esc(feature.labelPoint?.y)}"
       text-anchor="middle" dominant-baseline="central" aria-label="${esc(feature.label)}">${esc(feature.labelText)}</text>`).join("");
-  const areas = [...view.features]
+  const featureAreas = [...view.features]
     .sort((a, b) => b.total - a.total || String(a.label).localeCompare(String(b.label)))
     .map((feature) => `<li><a data-map-area="${esc(feature.id)}" data-count="${feature.total}" href="${esc(feature.href)}"><span>${esc(feature.label)}</span><strong>${feature.total}</strong></a></li>`)
     .join("");
+  const navigationAreasHtml = view.navigationAreas?.length
+    ? geographyShellAreasListHtml(view.navigationAreas, {
+      activeType: view.activeGeographyLayer || "nta2020",
+      base: view.canonicalBase || "/near-you/",
+      surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+    })
+    : `<div class="near-area-panel" id="near-area-list">
+          <h3>Areas</h3>
+          <ol class="near-area-list">${featureAreas || "<li>No areas match these filters.</li>"}</ol>
+        </div>`;
   return `<div class="near-map-grid" data-near-map-state="${esc(state)}">
         <div class="near-map-wrap">
           <svg id="nearMapSvg" role="img" aria-labelledby="nearMapTitle nearMapDesc" viewBox="${esc(view.viewBox)}" preserveAspectRatio="xMidYMid meet">
@@ -810,22 +857,76 @@ function renderNearYouMapState(view) {
             <g fill-rule="evenodd">${paths}</g>
             <g aria-hidden="true">${labels}</g>
           </svg>
+          <div id="near-map-enhanced" class="near-map-enhanced" hidden></div>
           <p class="map-legend"><span></span> Fewer to more qualifying records</p>
           <p class="near-vintage">Map boundaries: ${esc(view.activity?.boundary_vintage || "not published")}</p>
         </div>
-        <div class="near-area-panel" id="near-area-list">
-          <h3>Areas</h3>
-          <ol class="near-area-list">${areas || "<li>No areas match these filters.</li>"}</ol>
-        </div>
+        ${navigationAreasHtml}
       </div>`;
+}
+
+function renderNearYouAdvancedFilters(view) {
+  const currentBorough = first(view.scope.place.boroughs);
+  const currentGeography = first(view.scope.place.geographies);
+  return `<details class="near-advanced"><summary>Advanced filters</summary><form class="near-form" id="near-place-fields" method="get" action="${esc(view.canonicalBase)}">
+      ${hiddenScopeFields(view.scope, new Set(["lens", "agency", "type", "boro", "cd", "council", "geo", "neighborhood", "scope", "id", "parent", "basis", "placeRole"]))}
+      <label>Topic<select name="lens">${lensOptions(view.lens)}</select></label>
+      ${placeRoleSupportedForDomain(view.lens)
+        ? `<label>What kind of local activity<select name="placeRole">${placeRoleOptions(view.scope.facets.values?.place_role)}</select></label>`
+        : view.scope.facets.values?.place_role
+          ? `<input type="hidden" name="placeRole" value="${esc(view.scope.facets.values.place_role)}">`
+          : ""}
+      <label>Agency<input name="agency" value="${esc(first(view.scope.facets.agencies) || "")}" placeholder="Any agency"></label>
+      <label>Type<input name="type" value="${esc(view.scope.facets.values?.type || "")}" placeholder="Any record type"></label>
+      <label>Borough<select name="boro">${boroughOptions(currentBorough)}</select></label>
+      <label>Neighborhood<input name="neighborhood" value="${esc(view.scope.place.neighborhood || "")}" placeholder="e.g. Elmhurst"></label>
+      <label>Community district<input name="cd" value="${esc(first(view.scope.place.community_districts) || "")}" placeholder="e.g. Q04" pattern="[MXKQR][0-9]{2}"></label>
+      <label>Council district<input name="council" value="${esc(first(view.scope.place.council_districts) || "")}" placeholder="1–51" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])"></label>
+      <label>Neighborhood or precinct<select name="geo">${geographyOptions(view.geographyOptions, currentGeography)}</select></label>
+      ${view.lens === "money" ? `<label>Location basis<select name="basis">${basisOptions(view.basis)}</select></label>` : ""}
+      <button type="submit">Apply filters</button>
+    </form></details>`;
+}
+
+function renderNearYouMapSection(view) {
+  return `<section class="near-map-section" aria-labelledby="near-map-heading" data-near-surface-panel="map">
+      <div class="near-section-heading"><div><p class="near-kicker">Map view</p><h2 id="near-map-heading">${view.hasPlace ? `${esc(view.placePresentation.label)} on the map` : "Neighborhoods on the map"}</h2></div>
+        <div class="map-controls js-only" hidden>
+          <button type="button" data-map-zoom="in" aria-label="Zoom in">+</button>
+          <button type="button" data-map-zoom="out" aria-label="Zoom out">−</button>
+          <button type="button" data-map-pan="west" aria-label="Pan west">←</button>
+          <button type="button" data-map-pan="north" aria-label="Pan north">↑</button>
+          <button type="button" data-map-pan="south" aria-label="Pan south">↓</button>
+          <button type="button" data-map-pan="east" aria-label="Pan east">→</button>
+          <button type="button" data-map-zoom="reset">Reset</button>
+        </div>
+      </div>
+      ${view.hasPlace ? geographyShellLayerSwitcherHtml({
+        activeType: view.activeGeographyLayer || "nta2020",
+        base: view.canonicalBase || "/near-you/",
+        surface: view.shellSurface || GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+      }) : ""}
+      ${renderNearYouMapState(view)}
+    </section>`;
+}
+
+function renderNearYouGeoWorkspace(view) {
+  return `<div class="near-geo-workspace" data-geography-workspace data-geography-drawer-state="open">
+      <aside class="near-geo-rail near-geo-drawer" data-geography-drawer>
+        <button type="button" class="near-geo-drawer-toggle js-only" data-geography-drawer-toggle hidden aria-expanded="true">Map details</button>
+        <div class="near-geo-rail-body">
+          <p class="near-kicker">Choose a place</p>
+          <p>Every area on the map also appears in this list.</p>
+        </div>
+      </aside>
+      ${renderNearYouMapSection(view)}
+    </div>`;
 }
 
 export function renderNearYouBody(view, { includeListPanelMarker = false } = {}) {
   const scopeChips = view.scopeSummary
     .filter((chip) => chip.axis !== "lens")
     .map((chip) => `<li data-scope-axis="${esc(chip.axis)}"><span>${esc(chip.label)}</span><a href="${esc(nearYouUrlFromScope(scopeWithoutAxis(view.scope, chip.axis), { base: view.canonicalBase }))}" data-remove-filter="${esc(chip.axis)}" aria-label="Remove ${esc(chip.label)}">×</a></li>`).join("");
-  const currentBorough = first(view.scope.place.boroughs);
-  const currentGeography = first(view.scope.place.geographies);
   const walkQuery = view.scope.topic?.query || first(view.scope.topic?.keywords);
   const walkFamilies = Object.entries(LENS_LABELS).map(([lens, label]) => {
     const nextScope = normalizeScope({
@@ -851,7 +952,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
   });
   const walkHref = view.hasPlace
     ? walkEntryHref(view.shareHref, { source: "near_you", query: walkQuery, place: view.scope })
-    : "#near-place-fields";
+    : "#near-area-list";
   const walkEntry = renderWalkEntry({
     source: "near_you",
     query: walkQuery,
@@ -865,23 +966,18 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       : "Choose a place first. A guessed location is not an edge.",
     compact: true,
   });
-  return `<main id="main" data-near-you-root data-lens="${esc(view.lens)}" data-level="${esc(view.level)}"
-    data-near-data-state="${esc(view.dataState)}" data-near-map-state="${esc(view.mapState)}" data-near-recovery-href="${esc(view.recoveryHref)}"
-    data-near-deferred-href="${esc(view.deferredDataHref || "")}" data-near-deferred-state="pending"
-    data-message-updating="Updating the map…"
-    data-message-updated="Map updated. Map and list counts match."
-    data-message-location-unavailable="Location is not available in this browser. Choose an area from the list."
-    data-message-location-finding="Finding your district…"
-    data-message-location-matched="Location matched {district}."
-    data-message-location-unmatched="Your district could not be matched. Choose an area from the list."
-    data-message-location-update-failed="Location matched {district}, but the page could not update. Try again or choose the district from the list."
-    data-message-location-denied="Location permission was not granted. Choose an area from the list."
-    data-message-deferred-unavailable="Matching records are temporarily unavailable."
-    data-message-bags-unavailable="Other place records are temporarily unavailable."
-    data-translation-all-boroughs="All boroughs"
-    data-translation-borough-label="Borough"
-    data-translation-context-strip-label="Context">
-    <section class="near-hero">
+  const shellSurface = view.shellSurface || (view.hasPlace
+    ? GEOGRAPHY_NAVIGATION_SURFACE_RECORDS
+    : GEOGRAPHY_NAVIGATION_SURFACE_MAP);
+  const advancedFilters = renderNearYouAdvancedFilters(view);
+  const coverageNotes = `${view.mapState === "unsupported" ? `<aside class="near-coverage" role="note"><strong>${esc(view.lensLabel)} place data is not available.</strong> Your other filters stay in place; this is not an empty activity result.</aside>` : ""}
+    ${view.basis === "contract_action_address" ? `<aside class="near-coverage" role="note"><strong>${esc(view.basisLabel)}.</strong> This shows where to submit a bid, attend a pre-bid event, or pick up a file. It does not say where the contract work will happen.</aside>` : ""}`;
+  const recordsBlock = `<div class="near-records-surface" data-near-surface-panel="records">
+      ${advancedFilters}
+      ${coverageNotes}
+      ${renderNearYouDeferredShell(view, "results", { includeListPanelMarker })}
+    </div>`;
+  const selectedHero = view.hasPlace ? `<section class="near-hero">
       <p class="near-kicker">Place-first civic records</p>
       <h1>${esc(view.placePresentation.label)}</h1>
       ${view.placePresentation.boardHref ? `<p class="near-board-link"><a href="${esc(view.placePresentation.boardHref)}">${esc(view.placePresentation.boardLabel)}</a></p>` : ""}
@@ -897,56 +993,53 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       ${renderNearYouOverview(view)}
       <details class="near-explore"><summary>Explore related records</summary>${walkEntry}</details>
       ${renderLocalConstellationHTML(view.local_constellation, { heading: "Nearby place records", id: "place-local-constellation-heading" })}
-    <section class="near-place-guide${view.hasPlace ? " is-set" : ""}" aria-labelledby="near-place-heading">
-      <p class="near-kicker">${view.hasPlace ? "Place set" : "Start here"}</p>
-      <h2 id="near-place-heading">${view.hasPlace ? "Change what “near you” means" : "Set what “near you” means"}</h2>
-      <p>Choose a borough, neighborhood, community district, or council district. Or use your location once to match your district. Your coordinates stay in this browser; CityScroll does not save them.</p>
+    <section class="near-place-guide is-set" aria-labelledby="near-place-heading">
+      <p class="near-kicker">Place set</p>
+      <h2 id="near-place-heading">Change what “near you” means</h2>
+      <p>Choose another borough, neighborhood, community district, or council district. Or use your location once to match your district. Your coordinates stay in this browser; CityScroll does not save them.</p>
       <div class="near-place-actions">
         <button type="button" class="js-only near-location-action" data-use-location hidden>Use my location</button>
         <a href="#near-place-fields">Choose a place</a>
         <a href="#near-area-list">Browse the area list</a>
       </div>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
-    </section>
-    <details class="near-advanced"><summary>Advanced filters</summary><form class="near-form" id="near-place-fields" method="get" action="${esc(view.canonicalBase)}">
-      ${hiddenScopeFields(view.scope, new Set(["lens", "agency", "type", "boro", "cd", "council", "geo", "neighborhood", "scope", "id", "parent", "basis", "placeRole"]))}
-      <label>Topic<select name="lens">${lensOptions(view.lens)}</select></label>
-      ${placeRoleSupportedForDomain(view.lens)
-        ? `<label>What kind of local activity<select name="placeRole">${placeRoleOptions(view.scope.facets.values?.place_role)}</select></label>`
-        : view.scope.facets.values?.place_role
-          ? `<input type="hidden" name="placeRole" value="${esc(view.scope.facets.values.place_role)}">`
-          : ""}
-      <label>Agency<input name="agency" value="${esc(first(view.scope.facets.agencies) || "")}" placeholder="Any agency"></label>
-      <label>Type<input name="type" value="${esc(view.scope.facets.values?.type || "")}" placeholder="Any record type"></label>
-      <label>Borough<select name="boro">${boroughOptions(currentBorough)}</select></label>
-      <label>Neighborhood<input name="neighborhood" value="${esc(view.scope.place.neighborhood || "")}" placeholder="e.g. Elmhurst"></label>
-      <label>Community district<input name="cd" value="${esc(first(view.scope.place.community_districts) || "")}" placeholder="e.g. Q04" pattern="[MXKQR][0-9]{2}"></label>
-      <label>Council district<input name="council" value="${esc(first(view.scope.place.council_districts) || "")}" placeholder="1–51" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])"></label>
-      <label>Neighborhood or precinct<select name="geo">${geographyOptions(view.geographyOptions, currentGeography)}</select></label>
-      ${view.lens === "money" ? `<label>Location basis<select name="basis">${basisOptions(view.basis)}</select></label>` : ""}
-      <button type="submit">Apply filters</button>
-    </form></details>
-    ${view.mapState === "unsupported" ? `<aside class="near-coverage" role="note"><strong>${esc(view.lensLabel)} place data is not available.</strong> Your other filters stay in place; this is not an empty activity result.</aside>` : ""}
-    ${view.basis === "contract_action_address" ? `<aside class="near-coverage" role="note"><strong>${esc(view.basisLabel)}.</strong> This shows where to submit a bid, attend a pre-bid event, or pick up a file. It does not say where the contract work will happen.</aside>` : ""}
-    <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
-      <a class="near-surface-link is-active" href="#near-results-heading" data-near-surface="list">${knownCount(view.results.count) == null ? "Records" : `Records (${view.results.count})`}</a>
-      <a class="near-surface-link" href="#near-map-heading" data-near-surface="map">Map</a>
-    </nav>
-    ${renderNearYouDeferredShell(view, "results", { includeListPanelMarker })}
-    <section class="near-map-section" aria-labelledby="near-map-heading" data-near-surface-panel="map">
-      <div class="near-section-heading"><div><p class="near-kicker">Map view</p><h2 id="near-map-heading">${esc(view.lensLabel)} by area</h2></div>
-        <div class="map-controls js-only" hidden>
-          <button type="button" data-map-zoom="in" aria-label="Zoom in">+</button>
-          <button type="button" data-map-zoom="out" aria-label="Zoom out">−</button>
-          <button type="button" data-map-pan="west" aria-label="Pan west">←</button>
-          <button type="button" data-map-pan="north" aria-label="Pan north">↑</button>
-          <button type="button" data-map-pan="south" aria-label="Pan south">↓</button>
-          <button type="button" data-map-pan="east" aria-label="Pan east">→</button>
-          <button type="button" data-map-zoom="reset">Reset</button>
-        </div>
-      </div>
-      ${renderNearYouMapState(view)}
-    </section>
+    </section>` : "";
+  const unselectedEntry = view.hasPlace ? "" : renderGeographyShellEntry({
+    canonicalBase: view.canonicalBase || "/near-you/",
+    surface: shellSurface,
+    activeType: view.activeGeographyLayer || "nta2020",
+    searchValue: view.scope.place.neighborhood || "",
+  });
+  const surfaceSwitch = view.hasPlace
+    ? renderGeographyShellSurfaceSwitch({
+      canonicalBase: view.canonicalBase || "/near-you/",
+      surface: shellSurface,
+      recordsLabel: knownCount(view.results.count) == null ? "Browse records" : "Browse records",
+      recordsCount: knownCount(view.results.count),
+    })
+    : "";
+  // Unselected entry already includes the surface switch; selected routes add one here.
+  return `<main id="main" data-near-you-root data-geography-shell="map-first" data-near-surface="${esc(shellSurface)}" data-geography-layer="${esc(view.activeGeographyLayer || "nta2020")}" data-lens="${esc(view.lens)}" data-level="${esc(view.level)}"
+    data-near-data-state="${esc(view.dataState)}" data-near-map-state="${esc(view.mapState)}" data-near-recovery-href="${esc(view.recoveryHref)}"
+    data-near-deferred-href="${esc(view.deferredDataHref || "")}" data-near-deferred-state="pending"
+    data-message-updating="Updating the map…"
+    data-message-updated="Map updated. Map and list counts match."
+    data-message-location-unavailable="Location is not available in this browser. Choose an area from the list."
+    data-message-location-finding="Finding your district…"
+    data-message-location-matched="Location matched {district}."
+    data-message-location-unmatched="Your district could not be matched. Choose an area from the list."
+    data-message-location-update-failed="Location matched {district}, but the page could not update. Try again or choose the district from the list."
+    data-message-location-denied="Location permission was not granted. Choose an area from the list."
+    data-message-deferred-unavailable="Matching records are temporarily unavailable."
+    data-message-bags-unavailable="Other place records are temporarily unavailable."
+    data-translation-all-boroughs="All boroughs"
+    data-translation-borough-label="Borough"
+    data-translation-context-strip-label="Context">
+    ${selectedHero}
+    ${unselectedEntry}
+    ${surfaceSwitch}
+    ${renderNearYouGeoWorkspace(view)}
+    ${recordsBlock}
     ${renderNearYouDeferredShell(view, "bags")}
   </main>`;
 }
