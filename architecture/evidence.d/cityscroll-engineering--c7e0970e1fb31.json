@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c7e0970e1fb31",
+  "status": "implemented",
+  "fingerprint": "direct-nta-boundary-crosswalks.v1",
+  "updated_at": "2026-09-17T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "geography-crosswalk-artifacts",
+      "path": "site/geography_crosswalk_artifacts.mjs"
+    },
+    {
+      "id": "geography-crosswalk-builder",
+      "path": "tools/build_geography_crosswalks.mjs"
+    },
+    {
+      "id": "geography-crosswalk-manifest",
+      "path": "site/data/geography/crosswalks/manifest.json"
+    },
+    {
+      "id": "civic-geography-overlay",
+      "path": "site/civic_geography_overlay.mjs"
+    },
+    {
+      "id": "geography-crosswalk-contract-tests",
+      "path": "test/geography_navigation_crosswalk.test.mjs"
+    }
+  ]
+}

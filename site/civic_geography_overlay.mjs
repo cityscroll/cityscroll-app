@@ -293,7 +293,11 @@ export function overlayCivicGeographies({
   const fromArea = civicGeometryArea(fromFeature, { projector });
   const toArea = civicGeometryArea(toFeature, { projector });
   const threshold = Math.max(0, Number(minAreaSqFt) || 0);
-  const touch = boundariesTouch(fromFeature, toFeature);
+  // Touch detection is only decisive when the quantitative area does not already
+  // classify the pair; skip the segment walk for ordinary intersecting rows.
+  const touch = intersectionArea > threshold
+    ? false
+    : boundariesTouch(fromFeature, toFeature);
   const relation = intersectionArea > threshold
     ? "intersects"
     : intersectionArea > EPSILON
