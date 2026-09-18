@@ -212,7 +212,7 @@ export function renderGeographyShellEntry({
   return `<section class="near-geo-entry" aria-labelledby="near-geo-heading" data-geography-entry>
       <p class="near-kicker">Local geography</p>
       <h1 id="near-geo-heading">${esc(GEOGRAPHY_SHELL_HEADING)}</h1>
-      <p>Choose a neighborhood or district on the map. Then browse the records for that place.</p>
+      <p>Pick a place on the map. Then open the records for that place.</p>
       ${geographyShellSearchFormHtml({ action: canonicalBase, value: searchValue })}
       <div class="near-place-actions near-geo-actions">
         <button type="button" class="js-only near-location-action" data-use-location hidden>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
