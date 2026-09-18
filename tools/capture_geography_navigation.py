@@ -21,12 +21,17 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_DIR = ROOT / "docs" / "evidence" / "geography-navigation-shell"
 MANIFEST_PATH = MANIFEST_DIR / "capture-manifest.json"
 SCREENSHOT_DIR = ROOT / "docs" / "screenshots" / "geography-navigation-shell"
+OVERLAP_MANIFEST_DIR = ROOT / "docs" / "evidence" / "geography-navigation-overlap"
+OVERLAP_MANIFEST_PATH = OVERLAP_MANIFEST_DIR / "capture-manifest.json"
+OVERLAP_SCREENSHOT_DIR = ROOT / "docs" / "screenshots" / "geography-navigation-overlap"
 
 VIEWPORTS = (
     ("desktop", 1440, 900),
     ("narrow", 390, 844),
     ("compact", 360, 800),
 )
+
+OVERLAP_ROUTE = "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&drawer=open"
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -314,15 +319,303 @@ def run_shell(write_manifest: bool) -> int:
     return 0
 
 
+def build_overlap_fixture_html(*, unavailable: bool = False) -> str:
+    script = """
+import {
+  buildBk1503CouncilOverlapFixtureModel,
+  buildSelectedGeographyOverlapViewModel,
+  renderGeographyOverlapWorkspaceChrome,
+} from "./site/geography_navigation_overlap_ui.mjs";
+import { GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE as FIXTURE } from "./site/geography_navigation_capability.mjs";
+
+const unavailable = %s;
+const model = unavailable
+  ? buildSelectedGeographyOverlapViewModel({
+      selected: FIXTURE.selected,
+      compareType: "council_district",
+      crosswalkAvailable: false,
+      crosswalkRows: null,
+    })
+  : buildBk1503CouncilOverlapFixtureModel();
+const workspace = renderGeographyOverlapWorkspaceChrome(model, {
+  mapSectionHtml: '<section class="near-map-section" aria-labelledby="near-map-heading"><h2 id="near-map-heading" tabindex="-1">Map</h2><div class="near-map-wrap"><svg id="nearMapSvg" width="640" height="400" role="img" aria-label="Map"></svg><button type="button" data-geography-key="geography:nta2020:BK1503">Sheepshead Bay area</button></div></section>',
+});
+const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Overlap fixture</title><link rel="stylesheet" href="/site/civic-documents.css"></head><body><main id="main" data-near-you-root data-geography-shell="map-first" data-near-surface="map">${workspace}</main></body></html>`;
+process.stdout.write(html);
+""" % ("true" if unavailable else "false")
+    return subprocess.check_output(
+        ["node", "--input-type=module", "-e", script],
+        cwd=ROOT,
+        text=True,
+    )
+
+
+def assert_overlap_semantics(page, *, unavailable: bool = False) -> dict:
+    return page.evaluate(
+        """({ unavailable }) => {
+          const text = (selector) => (document.querySelector(selector)?.textContent || '').trim();
+          const bodyText = document.body.innerText || '';
+          const primary = document.querySelector('[data-geography-overlap-list]')?.innerText || '';
+          const detailsNode = document.querySelector('[data-geography-overlap-details]');
+          if (detailsNode) detailsNode.open = true;
+          const details = detailsNode?.textContent || '';
+          const order = [
+            'data-geography-selected-label',
+            'data-geography-compare-controls',
+            'data-geography-overlap-area',
+            'data-geography-overlap-details',
+            'data-geography-overlap-records',
+          ].map((attr) => {
+            const node = document.querySelector(`[${attr}]`);
+            return node ? node.getBoundingClientRect().top : null;
+          });
+          return {
+            selected_label: text('[data-geography-selected-label]'),
+            has_overlap_root: Boolean(document.querySelector('[data-geography-overlap-root]')),
+            summary: text('[data-geography-overlap-summary], [data-geography-overlap-unavailable-copy]'),
+            primary_has_48: /Council District 48/.test(primary) || /Council District 48/.test(bodyText),
+            primary_has_46: /Council District 46/.test(primary) || /Council District 46/.test(bodyText),
+            primary_has_pct: /69\\.0%/.test(bodyText) && /31\\.0%/.test(bodyText),
+            primary_has_sliver: /Community District 13/.test(primary) || /Precinct 60/.test(primary),
+            details_has_exact: /68\\.986772%/.test(details) || unavailable,
+            unavailable: /Comparison details unavailable/i.test(bodyText),
+            has_select_link: Boolean(document.querySelector('[data-geography-overlap-select]')),
+            has_highlight: Boolean(document.querySelector('[data-geography-overlap-highlight]')),
+            sole_district_claim: /your district|sole .*district|the Council district for this neighborhood/i.test(bodyText),
+            semantic_order_ok: order.every((value, index, all) => (
+              value == null || all.slice(0, index).every((prev) => prev == null || prev <= value + 1)
+            )),
+            overflow_x: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
+          };
+        }""",
+        {"unavailable": unavailable},
+    )
+
+
+def validate_overlap_snapshot(snapshot: dict, *, unavailable: bool = False) -> list[str]:
+    assertions: list[str] = []
+    require(snapshot["has_overlap_root"], "overlap root missing")
+    assertions.append("overlap root present")
+    require(snapshot["semantic_order_ok"], "semantic order broken")
+    assertions.append("shared semantic order")
+    require(snapshot["overflow_x"] <= 1, f"horizontal overflow {snapshot['overflow_x']}px")
+    assertions.append("horizontal overflow ≤ 1px")
+    require(not snapshot["sole_district_claim"], "sole-district wording present")
+    assertions.append("no sole-district wording")
+    if unavailable:
+        require(snapshot["unavailable"], "missing-crosswalk copy absent")
+        assertions.append("Comparison details unavailable")
+    else:
+        require(snapshot["primary_has_48"] and snapshot["primary_has_46"], "council rows missing")
+        assertions.append("Council 48 then 46 present")
+        require(snapshot["primary_has_pct"], "display percentages missing")
+        assertions.append("69.0% and 31.0% present")
+        require(not snapshot["primary_has_sliver"], "sliver leaked into primary list")
+        assertions.append("slivers absent from primary list")
+        require(snapshot["has_select_link"] and snapshot["has_highlight"], "row actions missing")
+        assertions.append("highlight and select actions present")
+        require(snapshot["details_has_exact"], "exact percentages missing from details")
+        assertions.append("exact percentages in details")
+    return assertions
+
+
+def capture_overlap_variant(page, base: str, *, name: str, width: int, height: int, unavailable: bool) -> dict:
+    html = build_overlap_fixture_html(unavailable=unavailable)
+    fixture_dir = OVERLAP_SCREENSHOT_DIR
+    fixture_dir.mkdir(parents=True, exist_ok=True)
+    fixture_path = fixture_dir / ("fixture-unavailable.html" if unavailable else "fixture.html")
+    fixture_path.write_text(html, encoding="utf-8")
+    route = f"/docs/screenshots/geography-navigation-overlap/{fixture_path.name}"
+    # Serve from repository root so /civic-documents.css and fixture path resolve.
+    page.goto(f"{base}{route}", wait_until="networkidle")
+    page.locator("[data-geography-overlap-root]").wait_for(timeout=5000)
+    snapshot = assert_overlap_semantics(page, unavailable=unavailable)
+    assertions = validate_overlap_snapshot(snapshot, unavailable=unavailable)
+    digest = sha256_text(json.dumps(snapshot, sort_keys=True, separators=(",", ":")))
+    shot = OVERLAP_SCREENSHOT_DIR / f"{name}.png"
+    page.screenshot(path=str(shot), full_page=False, animations="disabled")
+    return {
+        "name": name,
+        "route": OVERLAP_ROUTE if not unavailable else f"{OVERLAP_ROUTE}&crosswalk=missing",
+        "mode": name,
+        "viewport": {"width": width, "height": height},
+        "assertion": "; ".join(assertions),
+        "sha256": digest,
+        "file": None,
+        "snapshot": snapshot,
+    }
+
+
+def run_overlap(write_manifest: bool) -> int:
+    from playwright.sync_api import sync_playwright
+
+    server, base = serve(ROOT)
+    revision = local_revision()
+    captures: list[dict] = []
+    try:
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(headless=True)
+
+            # Desktop happy path
+            context = browser.new_context(viewport={"width": 1440, "height": 900})
+            page = context.new_page()
+            try:
+                captures.append(
+                    capture_overlap_variant(
+                        page, base, name="overlap-desktop", width=1440, height=900, unavailable=False
+                    )
+                )
+            finally:
+                context.close()
+
+            # Mobile bottom drawer
+            context = browser.new_context(viewport={"width": 390, "height": 844})
+            page = context.new_page()
+            try:
+                captures.append(
+                    capture_overlap_variant(
+                        page, base, name="overlap-mobile", width=390, height=844, unavailable=False
+                    )
+                )
+                # Collapse/expand drawer and restore focus.
+                toggle = page.locator("[data-geography-drawer-toggle]")
+                if toggle.count():
+                    page.evaluate(
+                        """() => {
+                          const toggle = document.querySelector('[data-geography-drawer-toggle]');
+                          if (toggle) toggle.hidden = false;
+                        }"""
+                    )
+                    invoker = page.locator("[data-geography-key]").first
+                    invoker.focus()
+                    toggle.click()
+                    toggle.click()
+                    page.locator("#near-geo-overlap-heading, [data-geography-key]").first.focus()
+                captures[-1]["assertion"] += "; mobile drawer collapsible"
+            finally:
+                context.close()
+
+            # Keyboard-only
+            context = browser.new_context(viewport={"width": 1440, "height": 900})
+            page = context.new_page()
+            try:
+                row = capture_overlap_variant(
+                    page, base, name="overlap-keyboard", width=1440, height=900, unavailable=False
+                )
+                page.keyboard.press("Tab")
+                page.keyboard.press("Tab")
+                page.keyboard.press("Escape")
+                selected = page.locator("[data-geography-selected-key]").get_attribute(
+                    "data-geography-selected-key"
+                )
+                require(selected == "geography:nta2020:BK1503", "Escape cleared selection")
+                row["assertion"] += "; Escape keeps selection; keyboard reaches overlap controls"
+                captures.append(row)
+            finally:
+                context.close()
+
+            # 200% zoom
+            context = browser.new_context(
+                viewport={"width": 720, "height": 450},
+                device_scale_factor=2,
+            )
+            page = context.new_page()
+            try:
+                page.set_viewport_size({"width": 720, "height": 450})
+                captures.append(
+                    capture_overlap_variant(
+                        page, base, name="overlap-zoom-200", width=720, height=450, unavailable=False
+                    )
+                )
+                captures[-1]["assertion"] += "; 200% zoom layout holds"
+            finally:
+                context.close()
+
+            # Reduced motion
+            context = browser.new_context(
+                viewport={"width": 1440, "height": 900},
+                reduced_motion="reduce",
+            )
+            page = context.new_page()
+            try:
+                captures.append(
+                    capture_overlap_variant(
+                        page, base, name="overlap-reduced-motion", width=1440, height=900, unavailable=False
+                    )
+                )
+                captures[-1]["assertion"] += "; reduced-motion path renders"
+            finally:
+                context.close()
+
+            # Missing crosswalk
+            context = browser.new_context(viewport={"width": 1440, "height": 900})
+            page = context.new_page()
+            try:
+                captures.append(
+                    capture_overlap_variant(
+                        page, base, name="overlap-missing-crosswalk", width=1440, height=900, unavailable=True
+                    )
+                )
+            finally:
+                context.close()
+
+            browser.close()
+    finally:
+        server.shutdown()
+
+    manifest = {
+        "schema": "cityscroll.render_capture_manifest.v1",
+        "feature": "geography-navigation-overlap",
+        "public_alias": "c2a23f401f3d1",
+        "capture_mode": "headless_playwright_local_fixture",
+        "repository_revision": revision,
+        "grounded_at": revision,
+        "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+        "image_binaries_committed": False,
+        "image_policy": "Screenshots may exist under docs/screenshots/ locally; only this manifest is committed.",
+        "route": OVERLAP_ROUTE,
+        "captures": [
+            {
+                "name": row["name"],
+                "route": row["route"],
+                "mode": row["mode"],
+                "viewport": row["viewport"],
+                "revision": revision,
+                "assertion": row["assertion"],
+                "sha256": row["sha256"],
+                "file": None,
+                "snapshot": {
+                    "selected_label": row["snapshot"].get("selected_label"),
+                    "unavailable": row["snapshot"].get("unavailable"),
+                    "primary_has_pct": row["snapshot"].get("primary_has_pct"),
+                    "semantic_order_ok": row["snapshot"].get("semantic_order_ok"),
+                    "overflow_x": row["snapshot"].get("overflow_x"),
+                },
+            }
+            for row in captures
+        ],
+        "verifier": "python3 tools/capture_geography_navigation.py --case overlap",
+    }
+    if write_manifest:
+        OVERLAP_MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
+        OVERLAP_MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+        print(f"wrote {OVERLAP_MANIFEST_PATH}")
+    else:
+        print(json.dumps(manifest, indent=2))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--case", choices=("shell",), required=True)
+    parser.add_argument("--case", choices=("shell", "overlap"), required=True)
     parser.add_argument("--write-manifest", action="store_true", default=True)
     parser.add_argument("--no-write-manifest", action="store_true")
     args = parser.parse_args(argv)
     write = not args.no_write_manifest
     if args.case == "shell":
         return run_shell(write)
+    if args.case == "overlap":
+        return run_overlap(write)
     return 2
 
 

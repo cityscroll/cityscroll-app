@@ -84,6 +84,7 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
       dataState: "error",
       recoveryHref,
       communityGeography,
+      geographySearch: url.search,
     });
     return new Response(request.method === "HEAD" ? null : renderNearYouDocument(view, {
       canonicalBase: CANONICAL_BASE,
@@ -100,6 +101,7 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
     communityGeography: routeReadModel.communityGeography?.public_edges?.length
       ? routeReadModel.communityGeography
       : communityGeography,
+    geographySearch: url.search,
   });
   const deferredParts = deferred ? renderNearYouDeferredParts(view) : null;
   const body = deferred

@@ -175,3 +175,6 @@ docs/evidence/desk-operator-exception-overview/captures/
 docs/evidence/priority-source-health-closure/captures/
 docs/evidence/board-scorecard-observation-closure/captures/
 docs/screenshots/land-same-applicant-projects/*.png
+
+# Local overlap drawer captures (manifest only is committed)
+docs/screenshots/geography-navigation-overlap/

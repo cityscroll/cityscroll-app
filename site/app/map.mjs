@@ -22,6 +22,8 @@ import {
   nearYouMapReady,
 } from "../rum_maps_entities_async_instrumentation.mjs";
 import {
+  GEOGRAPHY_NAVIGATION_DRAWER_CLOSED,
+  GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
   GEOGRAPHY_NAVIGATION_SURFACE_MAP,
   GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
   bindGeographyNavigationPopState,
@@ -43,6 +45,14 @@ import {
   resolveGeographyEntryFromMapClick,
   resolveGeographyEntryFromPlaceLabel,
 } from "../geography_navigation_entry.mjs";
+import {
+  buildSelectedGeographyOverlapViewModel,
+  loadCrosswalkRowsForSelection,
+  overlapEscapePolicy,
+  rememberOverlapInvoker,
+  renderSelectedGeographyOverlapDrawerHtml,
+  restoreOverlapInvokerFocus,
+} from "../geography_navigation_overlap_ui.mjs";
 import { loadCivicGeographyLayer } from "../civic_geography.mjs";
 import { geocodeAddressText } from "../address_geocoder.mjs";
 
@@ -51,6 +61,8 @@ let geographyMapController = null;
 let geographyLayerCache = new Map();
 let geographyEntryLayerPromise = null;
 let geographyRegistry = null;
+let overlapPointBundle = null;
+let overlapHighlightKey = null;
 const NEAR_YOU_STRING_DATASETS = Object.freeze({
   all_boroughs: "translationAllBoroughs",
   borough_label: "translationBoroughLabel",
@@ -360,8 +372,28 @@ async function adoptGeographyEntrySelection(entry, { ephemeralPoint = null } = {
     type: entry.selection.type,
     id: entry.selection.id,
     surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+    drawer: GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
+    focus: entry.selection.key,
   };
   writeGeographyNavigationHistory(history, location, nextState, { mode: "push" });
+  overlapPointBundle = entry.bundle
+    ? {
+      id: entry.source || "entry",
+      label: entry.selected?.label || null,
+      membership: Object.fromEntries(
+        Object.entries(entry.bundle.by_type || {}).map(([type, matches]) => [
+          type,
+          Array.isArray(matches) && matches[0]
+            ? {
+              id: matches[0].id,
+              label: matches[0].label,
+              boundary_vintage: matches[0].boundary_vintage,
+            }
+            : null,
+        ]),
+      ),
+    }
+    : overlapPointBundle;
   if (geographyMapController) {
     geographyMapController.setSelectedKey(entry.selection.key);
     if (ephemeralPoint && typeof geographyMapController.setPointMarker === "function") {
@@ -371,8 +403,10 @@ async function adoptGeographyEntrySelection(entry, { ephemeralPoint = null } = {
         geographyMapController.setPointMarker([lon, lat]);
       }
     }
+    geographyMapController.fitSelection?.({ padding: 48, maxZoom: 13 });
   }
   status(geographyEntryStatusMessage(entry));
+  await refreshOverlapDrawer({ pointBundle: overlapPointBundle });
   return true;
 }
 
@@ -551,9 +585,205 @@ function wireGeographyDrawer() {
   toggle.hidden = false;
   toggle.addEventListener("click", () => {
     const open = workspace.dataset.geographyDrawerState !== "closed";
-    workspace.dataset.geographyDrawerState = open ? "closed" : "open";
-    toggle.setAttribute("aria-expanded", open ? "false" : "true");
+    const next = open ? GEOGRAPHY_NAVIGATION_DRAWER_CLOSED : GEOGRAPHY_NAVIGATION_DRAWER_OPEN;
+    workspace.dataset.geographyDrawerState = next;
+    toggle.setAttribute("aria-expanded", next === GEOGRAPHY_NAVIGATION_DRAWER_OPEN ? "true" : "false");
+    const state = {
+      ...parseGeographyNavigationState(location.search),
+      drawer: next,
+      ok: true,
+    };
+    writeGeographyNavigationHistory(history, location, state, { mode: "replace" });
+    if (next === GEOGRAPHY_NAVIGATION_DRAWER_CLOSED) {
+      const token = workspace.dataset.geographyFocusRestore
+        || root.querySelector("[data-geography-overlap-root]")?.dataset?.geographyFocusRestore;
+      restoreOverlapInvokerFocus(token, { root });
+    } else {
+      rememberOverlapInvoker(
+        workspace.dataset.geographyFocusRestore || "geography-drawer-toggle",
+        toggle,
+      );
+      root.querySelector("#near-geo-overlap-heading")?.focus?.({ preventScroll: true });
+    }
   });
+}
+
+function replaceOverlapRailBody(html) {
+  const aside = root.querySelector("[data-geography-drawer]");
+  if (!aside) return;
+  const toggle = aside.querySelector("[data-geography-drawer-toggle]");
+  const existing = aside.querySelector("[data-geography-overlap-root]")
+    || aside.querySelector("[data-geography-overlap-empty]")
+    || aside.querySelector(".near-geo-rail-body");
+  if (existing) existing.outerHTML = html;
+  else if (toggle) toggle.insertAdjacentHTML("afterend", html);
+  else aside.insertAdjacentHTML("beforeend", html);
+  wireOverlapDrawerInteractions();
+}
+
+async function refreshOverlapDrawer({
+  pointBundle = overlapPointBundle,
+} = {}) {
+  const state = parseGeographyNavigationState(location.search);
+  if (!state?.key) {
+    // Empty-rail copy lives in the shared overlap module (outside site/app scan).
+    replaceOverlapRailBody(renderSelectedGeographyOverlapDrawerHtml(null));
+    return null;
+  }
+  overlapPointBundle = pointBundle || overlapPointBundle;
+  let crosswalkRows = null;
+  let crosswalkAvailable = false;
+  if (state.compare) {
+    const loaded = await loadCrosswalkRowsForSelection(state.key, state.compare, { siteRoot: "/" });
+    crosswalkRows = loaded.rows;
+    crosswalkAvailable = loaded.available;
+  }
+  const model = buildSelectedGeographyOverlapViewModel({
+    selected: {
+      key: state.key,
+      type: state.type,
+      id: state.id,
+      label: root.querySelector("[data-geography-selected-label]")?.textContent?.trim() || null,
+    },
+    compareType: state.compare || null,
+    crosswalkRows,
+    crosswalkAvailable: state.compare ? crosswalkAvailable : true,
+    pointBundle: overlapPointBundle,
+    base: `${location.origin}/near-you/`,
+    surface: state.surface || GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+    drawer: state.drawer || GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
+    focusToken: state.focus || state.key,
+  });
+  replaceOverlapRailBody(renderSelectedGeographyOverlapDrawerHtml(model));
+  const workspace = root.querySelector("[data-geography-workspace]");
+  if (workspace && model.focus_token) {
+    workspace.dataset.geographyFocusRestore = model.focus_token;
+  }
+  return model;
+}
+
+function featureBounds(feature) {
+  const coords = [];
+  const walk = (value) => {
+    if (!Array.isArray(value)) return;
+    if (typeof value[0] === "number" && typeof value[1] === "number") {
+      coords.push(value);
+      return;
+    }
+    for (const entry of value) walk(entry);
+  };
+  walk(feature?.geometry?.coordinates);
+  if (!coords.length) return null;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (const [x, y] of coords) {
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x);
+    maxY = Math.max(maxY, y);
+  }
+  return [[minX, minY], [maxX, maxY]];
+}
+
+async function highlightOverlapComparison(key) {
+  if (!geographyMapController || !key) return;
+  const state = parseGeographyNavigationState(location.search);
+  if (!state.compare) return;
+  overlapHighlightKey = key;
+  const layer = await loadGeographyLayer(state.compare);
+  const features = (layer.features || []).filter((feature) => (
+    (feature.properties?.key || feature.key) === key
+  ));
+  const layerDoc = {
+    type: state.compare,
+    geometry_fidelity: layer.geometry_fidelity || "simplified",
+    vintage: layer.vintage || null,
+    features: features.length
+      ? features.map((feature) => ({
+        key: feature.properties?.key || feature.key,
+        id: feature.properties?.id || feature.id,
+        type: feature.properties?.type || state.compare,
+        label: feature.properties?.label || feature.label,
+        subtype: feature.properties?.subtype ?? feature.subtype ?? null,
+        geometry: feature.geometry,
+      }))
+      : (layer.features || []).map((feature) => ({
+        key: feature.properties?.key || feature.key,
+        id: feature.properties?.id || feature.id,
+        type: feature.properties?.type || state.compare,
+        label: feature.properties?.label || feature.label,
+        subtype: feature.properties?.subtype ?? feature.subtype ?? null,
+        geometry: feature.geometry,
+      })),
+  };
+  geographyMapController.setComparisonLayer(state.compare, layerDoc);
+  if (state.key) geographyMapController.setSelectedKey(state.key);
+  const bounds = features[0] ? featureBounds(features[0]) : null;
+  if (bounds && typeof geographyMapController.map?.fitBounds === "function") {
+    geographyMapController.map.fitBounds(bounds, { padding: 48, maxZoom: 13, duration: 0 });
+  }
+}
+
+function wireOverlapDrawerInteractions() {
+  const rail = root.querySelector("[data-geography-overlap-root]");
+  if (!rail || wired.has(rail)) return;
+  wired.add(rail);
+  rail.querySelectorAll("[data-geography-overlap-highlight]").forEach((button) => {
+    const key = button.dataset.geographyOverlapHighlight;
+    button.addEventListener("click", () => {
+      void highlightOverlapComparison(key);
+    });
+    button.addEventListener("focus", () => {
+      void highlightOverlapComparison(key);
+    });
+  });
+  rail.querySelectorAll("[data-geography-compare]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const type = link.dataset.geographyCompare;
+      if (!type) return;
+      event.preventDefault();
+      const state = {
+        ...parseGeographyNavigationState(location.search),
+        compare: type,
+        ok: true,
+      };
+      writeGeographyNavigationHistory(history, location, state, { mode: "push" });
+      void applyGeographyComparison(type);
+      void refreshOverlapDrawer();
+    });
+  });
+}
+
+async function applyGeographyComparison(compareType) {
+  if (!geographyMapController) return;
+  const state = parseGeographyNavigationState(location.search);
+  if (!compareType) {
+    geographyMapController.setComparisonLayer(null);
+    overlapHighlightKey = null;
+    if (state.key) geographyMapController.setSelectedKey(state.key);
+    return;
+  }
+  const layer = await loadGeographyLayer(compareType);
+  const layerDoc = {
+    type: compareType,
+    geometry_fidelity: layer.geometry_fidelity || "simplified",
+    vintage: layer.vintage || null,
+    features: (layer.features || []).map((feature) => ({
+      key: feature.properties?.key || feature.key,
+      id: feature.properties?.id || feature.id,
+      type: feature.properties?.type || compareType,
+      label: feature.properties?.label || feature.label,
+      subtype: feature.properties?.subtype ?? feature.subtype ?? null,
+      geometry: feature.geometry,
+    })),
+  };
+  geographyMapController.setComparisonLayer(compareType, layerDoc);
+  if (state.key) geographyMapController.setSelectedKey(state.key);
+  if (overlapHighlightKey) {
+    await highlightOverlapComparison(overlapHighlightKey);
+  }
 }
 
 async function loadGeographyRegistry() {
@@ -605,8 +835,43 @@ function setActiveLayerButtons(type) {
   root.dataset.geographyLayer = type;
 }
 
-async function activateGeographyLayer(type) {
+async function activateGeographyLayer(type, { asComparison = null } = {}) {
   if (!geographyMapController) return;
+  const state = parseGeographyNavigationState(location.search);
+  const selectedType = state.type || null;
+  const useComparison = asComparison != null
+    ? asComparison
+    : Boolean(state.key && type && type !== selectedType && type !== "nta2020");
+  if (useComparison) {
+    setActiveLayerButtons(type);
+    const next = {
+      ...state,
+      compare: type,
+      ok: true,
+    };
+    writeGeographyNavigationHistory(history, location, next, { mode: "replace" });
+    await applyGeographyComparison(type);
+    // Keep the selected geography's own layer mounted beneath the comparison.
+    if (selectedType && selectedType !== type) {
+      const selectedLayer = await loadGeographyLayer(selectedType);
+      geographyMapController.setActiveLayer(selectedType, {
+        type: selectedType,
+        geometry_fidelity: selectedLayer.geometry_fidelity || "simplified",
+        vintage: selectedLayer.vintage || null,
+        features: (selectedLayer.features || []).map((feature) => ({
+          key: feature.properties?.key || feature.key,
+          id: feature.properties?.id || feature.id,
+          type: feature.properties?.type || selectedType,
+          label: feature.properties?.label || feature.label,
+          subtype: feature.properties?.subtype ?? feature.subtype ?? null,
+          geometry: feature.geometry,
+        })),
+      });
+      if (state.key) geographyMapController.setSelectedKey(state.key);
+    }
+    await refreshOverlapDrawer();
+    return;
+  }
   const layer = await loadGeographyLayer(type);
   // loadSimplifiedNavigationLayer already projects features; pass a layer-shaped
   // document so setActiveLayer can re-project from top-level label/id fields.
@@ -626,6 +891,13 @@ async function activateGeographyLayer(type) {
   geographyMapController.setActiveLayer(type, layerDoc);
   setActiveLayerButtons(type);
   refreshGeographyAreasList(type, layerDoc);
+  if (state.key && state.compare) {
+    await applyGeographyComparison(state.compare);
+  } else {
+    geographyMapController.setComparisonLayer(null);
+  }
+  if (state.key) geographyMapController.setSelectedKey(state.key);
+  await refreshOverlapDrawer();
 }
 
 function wireGeographyLayerSwitcher() {
@@ -718,10 +990,16 @@ async function wireGeographyNavigationMap() {
         // Basemap is decorative; keep local boundaries and controls.
       },
     });
-    const initialType = root.dataset.geographyLayer || "nta2020";
-    await activateGeographyLayer(initialType);
     const selected = parseGeographyNavigationState(location.search);
+    const initialType = selected?.compare
+      || selected?.type
+      || root.dataset.geographyLayer
+      || "nta2020";
+    await activateGeographyLayer(initialType);
     if (selected?.key) geographyMapController.setSelectedKey(selected.key);
+    if (selected?.compare) await applyGeographyComparison(selected.compare);
+    await refreshOverlapDrawer();
+    wireOverlapDrawerInteractions();
     geographyMapController.getState?.();
   } catch {
     geographyMapController = null;
@@ -789,6 +1067,28 @@ if (root) {
     if (state?.key && geographyMapController) {
       geographyMapController.setSelectedKey(state.key);
     }
+    if (geographyMapController) {
+      void (state?.compare
+        ? applyGeographyComparison(state.compare)
+        : applyGeographyComparison(null));
+    }
+    const workspace = root.querySelector("[data-geography-workspace]");
+    if (workspace && state?.drawer) {
+      workspace.dataset.geographyDrawerState = state.drawer;
+      const toggle = root.querySelector("[data-geography-drawer-toggle]");
+      toggle?.setAttribute(
+        "aria-expanded",
+        state.drawer === GEOGRAPHY_NAVIGATION_DRAWER_CLOSED ? "false" : "true",
+      );
+    }
+    void refreshOverlapDrawer();
+  });
+  addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const policy = overlapEscapePolicy();
+    if (policy.clears_hover) geographyMapController?.setHoveredKey?.(null);
+    if (policy.clears_focus_ring) geographyMapController?.setFocusedKey?.(null);
+    // Durable selection and drawer stay put.
   });
   addEventListener("popstate", () => {
     // Document-scoped filters still require a full adopt; surface-only pops are handled above.

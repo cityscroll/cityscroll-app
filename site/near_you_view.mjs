@@ -64,10 +64,18 @@ import {
   resolveShellSurface,
 } from "./geography_navigation_shell.mjs";
 import {
+  GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
   GEOGRAPHY_NAVIGATION_SURFACE_MAP,
   GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
   parseGeographyNavigationState,
 } from "./geography_navigation_state.mjs";
+import {
+  GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE,
+} from "./geography_navigation_capability.mjs";
+import {
+  buildSelectedGeographyOverlapViewModel,
+  renderSelectedGeographyOverlapDrawerHtml,
+} from "./geography_navigation_overlap_ui.mjs";
 
 const LENS_LABELS = Object.freeze({
   land: "Zoning",
@@ -317,7 +325,10 @@ function formatCouncilDistrict(id) {
   return id ? `City Council District ${Number(id)}` : null;
 }
 
-function selectedPlacePresentation(scope, communityGeography = {}) {
+function selectedPlacePresentation(scope, communityGeography = {}, {
+  geographyState = null,
+  geographyDefinitions = null,
+} = {}) {
   const community = first(scope.place.community_districts);
   const council = first(scope.place.council_districts);
   const borough = first(scope.place.boroughs);
@@ -337,6 +348,18 @@ function selectedPlacePresentation(scope, communityGeography = {}) {
   if (council) return { label: formatCouncilDistrict(council) };
   if (borough) return { label: borough };
   if (scope.place.neighborhood) return { label: scope.place.neighborhood };
+  const geoKey = geographyState?.key || first(scope.place.geographies);
+  if (geoKey) {
+    const definition = geographyDefinitions?.[geoKey]
+      || (GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected.key === geoKey
+        ? GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected
+        : null);
+    if (definition?.label) return { label: definition.label, geographyKey: geoKey };
+    if (geographyState?.id && geographyState?.type === "nta2020") {
+      return { label: geographyState.id, geographyKey: geoKey };
+    }
+    return { label: geographyState?.id || geoKey, geographyKey: geoKey };
+  }
   return { label: "Near you" };
 }
 
@@ -460,6 +483,53 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       layerType: options.navigationLayerType || activeGeographyLayer,
     })
     : [];
+  const selectedGeographyKey = geographyState?.key || first(scope.place.geographies) || null;
+  const selectedGeographyDefinition = selectedGeographyKey
+    ? (activity?.geography_items?.definitions?.[selectedGeographyKey]
+      || (GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected.key === selectedGeographyKey
+        ? GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected
+        : null))
+    : null;
+  const overlapSelected = selectedGeographyKey
+    ? {
+      key: selectedGeographyKey,
+      type: geographyState?.type
+        || selectedGeographyDefinition?.type
+        || String(selectedGeographyKey).split(":")[1]
+        || null,
+      id: geographyState?.id
+        || selectedGeographyDefinition?.id
+        || String(selectedGeographyKey).split(":")[2]
+        || null,
+      label: selectedGeographyDefinition?.label
+        || (GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected.key === selectedGeographyKey
+          ? GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected.label
+          : null),
+      boundary_vintage: selectedGeographyDefinition?.boundary_vintage
+        || (GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected.key === selectedGeographyKey
+          ? GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected.boundary_vintage
+          : null),
+    }
+    : null;
+  const overlapBase = `${String(canonicalBase || "/near-you").replace(/\/$/, "")}/`;
+  const crosswalkRowsProvided = Array.isArray(options.crosswalkRows);
+  const crosswalkAvailable = crosswalkRowsProvided
+    ? options.crosswalkAvailable !== false
+    : options.crosswalkAvailable === true;
+  const overlapModel = overlapSelected
+    ? buildSelectedGeographyOverlapViewModel({
+      selected: overlapSelected,
+      compareType: geographyState?.compare || null,
+      crosswalkRows: crosswalkRowsProvided ? options.crosswalkRows : null,
+      crosswalkAvailable,
+      pointBundle: options.pointBundle || null,
+      labelIndex: options.geographyLabelIndex || null,
+      base: overlapBase,
+      surface: shellSurface,
+      drawer: geographyState?.drawer || GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
+      focusToken: geographyState?.focus || null,
+    })
+    : null;
   const requestedPlaceRole = placeRoleSupportedForDomain(lens) && PLACE_ROLES.includes(scope.facets.values?.place_role)
     ? scope.facets.values.place_role
     : null;
@@ -558,7 +628,10 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     basis,
     basisLabel: basisLayer?.basis_label || "Affected area or place of performance",
     hasPlace,
-    placePresentation: selectedPlacePresentation(scope, options.communityGeography || {}),
+    placePresentation: selectedPlacePresentation(scope, options.communityGeography || {}, {
+      geographyState,
+      geographyDefinitions: activity?.geography_items?.definitions || null,
+    }),
     isOverview,
     overview,
     localFollowBundle,
@@ -574,6 +647,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     activeGeographyLayer,
     shellSurface,
     geographyState,
+    overlapModel,
     max: mappedFeatures.max,
     level,
     parent,
@@ -905,19 +979,30 @@ function renderNearYouMapSection(view) {
         activeType: view.activeGeographyLayer || "nta2020",
         base: view.canonicalBase || "/near-you/",
         surface: view.shellSurface || GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+        selectedGeo: view.geographyState?.geo
+          || (view.overlapModel?.selected
+            ? `${view.overlapModel.selected.type}:${view.overlapModel.selected.id}`
+            : null),
       }) : ""}
       ${renderNearYouMapState(view)}
     </section>`;
 }
 
 function renderNearYouGeoWorkspace(view) {
-  return `<div class="near-geo-workspace" data-geography-workspace data-geography-drawer-state="open">
-      <aside class="near-geo-rail near-geo-drawer" data-geography-drawer>
-        <button type="button" class="near-geo-drawer-toggle js-only" data-geography-drawer-toggle hidden aria-expanded="true">Map details</button>
-        <div class="near-geo-rail-body">
+  const drawerState = view.geographyState?.drawer
+    || view.overlapModel?.drawer
+    || "open";
+  const open = drawerState !== "closed";
+  const railBody = view.overlapModel && !view.overlapModel.empty
+    ? renderSelectedGeographyOverlapDrawerHtml(view.overlapModel)
+    : `<div class="near-geo-rail-body" data-geography-overlap-empty="true">
           <p class="near-kicker">Choose a place</p>
           <p>The list shows the same places as the map.</p>
-        </div>
+        </div>`;
+  return `<div class="near-geo-workspace" data-geography-workspace data-geography-drawer-state="${open ? "open" : "closed"}"${view.overlapModel?.focus_token ? ` data-geography-focus-restore="${esc(view.overlapModel.focus_token)}"` : ""}>
+      <aside class="near-geo-rail near-geo-drawer" data-geography-drawer${view.overlapModel?.selected ? ' aria-labelledby="near-geo-overlap-heading"' : ""}>
+        <button type="button" class="near-geo-drawer-toggle js-only" data-geography-drawer-toggle hidden aria-expanded="${open ? "true" : "false"}">Map details</button>
+        ${railBody}
       </aside>
       ${renderNearYouMapSection(view)}
     </div>`;
