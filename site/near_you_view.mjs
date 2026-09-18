@@ -1009,6 +1009,10 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
     surface: shellSurface,
     activeType: view.activeGeographyLayer || "nta2020",
     searchValue: view.scope.place.neighborhood || "",
+    listHref: view.browseHref,
+    watchHref: view.watchHref,
+    shareHref: view.shareHref,
+    followDiscoveryHtml: renderFollowDiscoveryForNearYou(view),
   });
   const surfaceSwitch = view.hasPlace
     ? renderGeographyShellSurfaceSwitch({

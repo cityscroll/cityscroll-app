@@ -186,6 +186,10 @@ export function renderGeographyShellEntry({
   activeType = "nta2020",
   searchValue = "",
   recordsHref = null,
+  listHref = null,
+  watchHref = null,
+  shareHref = null,
+  followDiscoveryHtml = "",
 } = {}) {
   const browseHref = recordsHref || geographyNavigationUrlFromState({
     ok: true,
@@ -195,6 +199,16 @@ export function renderGeographyShellEntry({
     ok: true,
     surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
   }, { base: canonicalBase });
+  const actionLinks = [
+    listHref ? `<a href="${esc(listHref)}">Open as a list</a>` : "",
+    watchHref ? `<a href="${esc(watchHref)}">Watch these filters</a>` : "",
+    shareHref ? `<a href="${esc(shareHref)}">Share this map</a>` : "",
+  ].filter(Boolean).join("\n        ");
+  const actions = actionLinks
+    ? `<nav class="near-actions" aria-label="Map actions">
+        ${actionLinks}
+      </nav>`
+    : "";
   return `<section class="near-geo-entry" aria-labelledby="near-geo-heading" data-geography-entry>
       <p class="near-kicker">Local geography</p>
       <h1 id="near-geo-heading">${esc(GEOGRAPHY_SHELL_HEADING)}</h1>
@@ -204,6 +218,8 @@ export function renderGeographyShellEntry({
         <button type="button" class="js-only near-location-action" data-use-location hidden>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
         <a href="#near-area-list">Browse the area list</a>
       </div>
+      ${actions}
+      ${followDiscoveryHtml || ""}
       <p class="near-map-status" data-map-status aria-live="polite"></p>
       ${geographyShellLayerSwitcherHtml({ activeType, base: canonicalBase, surface })}
       <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
