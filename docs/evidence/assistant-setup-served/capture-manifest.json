@@ -1,0 +1,77 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "public assistant discovery and MCP setup",
+  "base": "https://cityscroll.org/",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "image_binaries_committed": false,
+  "revision": "4cb9e5dfa39248578e99be7979bc9fec753aceb7",
+  "data_vintage": "2026-09-17T23:58:43.865Z",
+  "captures": [
+    {
+      "case": "assistant-setup-home",
+      "route": "/",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "primary search remains visible before Ask with AI at this viewport",
+      "render_sha256": "8bc131c49c66847e4a5e6dbcedd438cb729b173f4701b05003942614645fa1c9"
+    },
+    {
+      "case": "assistant-setup-home",
+      "route": "/",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "primary search remains visible before Ask with AI at this viewport",
+      "render_sha256": "8bc131c49c66847e4a5e6dbcedd438cb729b173f4701b05003942614645fa1c9"
+    },
+    {
+      "case": "assistant-setup-introduction",
+      "route": "/use-with-ai/",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
+      "render_sha256": "5ac21e03aec8b33b3cdefb6b9a2ffb249f77f29a199e6466872d7bfbddca45c0"
+    },
+    {
+      "case": "assistant-setup-introduction",
+      "route": "/use-with-ai/",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
+      "render_sha256": "5ac21e03aec8b33b3cdefb6b9a2ffb249f77f29a199e6466872d7bfbddca45c0"
+    },
+    {
+      "case": "assistant-setup-api-mcp",
+      "route": "/api.html#mcp",
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "assertion": "stable MCP heading and setup link remain reachable at this viewport",
+      "render_sha256": "29e1058a9d345b1baac0c7cb750c6266720a27aecd4605671909839f8f4861b0"
+    },
+    {
+      "case": "assistant-setup-api-mcp",
+      "route": "/api.html#mcp",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "stable MCP heading and setup link remain reachable at this viewport",
+      "render_sha256": "29e1058a9d345b1baac0c7cb750c6266720a27aecd4605671909839f8f4861b0"
+    }
+  ]
+}

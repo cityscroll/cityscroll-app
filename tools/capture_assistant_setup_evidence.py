@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
 """Headless assistant-setup capture harness.
 
-Retained proof is the textual manifest under docs/evidence/assistant-setup/:
+Local retained proof is the textual v2 manifest under docs/evidence/assistant-setup/:
 route, viewport, revision, data vintage, assertion, and sha256. Image binaries
 are never written. Each sha256 digests a viewport-witnessed observation document
 recomputed by loading the tracked page in Chromium at that width.
 
+Production retained proof (served-site v1) lives alongside under
+docs/evidence/assistant-setup-served/capture-manifest.json. Set
+CROL_BASE=https://cityscroll.org/ to capture against the deployed site and emit
+that packet without replacing the local v2 manifest.
+
 Run:
   python3 tools/capture_assistant_setup_evidence.py
   python3 tools/capture_assistant_setup_evidence.py --verify-only
+  CROL_BASE=https://cityscroll.org/ python3 tools/capture_assistant_setup_evidence.py
 """
 
 from __future__ import annotations
@@ -17,10 +23,14 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import tempfile
 import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -28,25 +38,36 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "evidence" / "assistant-setup"
 MANIFEST = OUT / "capture-manifest.json"
+PRODUCTION_OUT = ROOT / "docs" / "evidence" / "assistant-setup-served"
+PRODUCTION_MANIFEST = PRODUCTION_OUT / "capture-manifest.json"
 SITE = ROOT / "site"
+PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
+ARTIFACT_MANIFEST_PATH = "/artifact-manifest.json"
+ARTIFACT_MANIFEST_UA = "cityscroll-assistant-setup-capture/1"
+BROWSER_UA = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+)
 
 # Pinned through the shared test-clock contract (CITYSCROLL_TEST_TIME_PIN).
 CAPTURE_CLOCK = os.environ.get("CITYSCROLL_TEST_TIME_PIN", "2026-09-16T12:00:00.000Z")
-
 ROUTES = (
     {
+        "case": "assistant-setup-home",
         "route": "/",
         "path": "/",
         "source_path": "site/index.html",
         "assertion": "primary search remains visible before Ask with AI at this viewport",
     },
     {
+        "case": "assistant-setup-introduction",
         "route": "/use-with-ai/",
         "path": "/use-with-ai/",
         "source_path": "site/use-with-ai/index.html",
         "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
     },
     {
+        "case": "assistant-setup-api-mcp",
         "route": "/api.html#mcp",
         "path": "/api.html",
         "hash": "#mcp",
@@ -68,9 +89,93 @@ SOURCE_PATHS = (
 )
 
 
+def normalize_base(base: str) -> str:
+    return base.rstrip("/") + "/"
+
+
+def is_production_base(base: str) -> bool:
+    host = (urllib.parse.urlparse(normalize_base(base)).hostname or "").lower()
+    return host in PRODUCTION_HOSTS
+
+
+def resolve_base() -> str | None:
+    raw = (os.environ.get("CROL_BASE") or "").strip()
+    return normalize_base(raw) if raw else None
+
+
+def production_condition(base: str) -> str:
+    return (
+        f"Production base {normalize_base(base)} after deployment; "
+        "no image binary is committed."
+    )
+
+
+def open_artifact_manifest(url: str, timeout: int = 20):
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": ARTIFACT_MANIFEST_UA,
+            "Accept": "application/json",
+        },
+    )
+    return urllib.request.urlopen(request, timeout=timeout)
+
+
+def read_served_artifact_manifest(base: str, *, opener=open_artifact_manifest) -> dict:
+    origin = normalize_base(base).rstrip("/")
+    url = f"{origin}{ARTIFACT_MANIFEST_PATH}"
+    try:
+        with opener(url, timeout=20) as response:
+            payload = json.load(response)
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError) as error:
+        raise RuntimeError(f"deployed build revision unavailable at {url}: {error}") from error
+    if not isinstance(payload, dict):
+        raise RuntimeError(f"deployed artifact-manifest at {url} is not an object")
+    return payload
+
+
+def deployed_build_revision(base: str, *, opener=open_artifact_manifest) -> str:
+    payload = read_served_artifact_manifest(base, opener=opener)
+    sha = payload.get("source_commit_sha")
+    if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+        raise RuntimeError(
+            f"deployed artifact-manifest at {normalize_base(base).rstrip('/')}{ARTIFACT_MANIFEST_PATH} "
+            "lacks a 40-hex source_commit_sha"
+        )
+    return sha
+
+
+def resolve_data_vintage(base: str, *, opener=open_artifact_manifest) -> str:
+    payload = read_served_artifact_manifest(base, opener=opener)
+    generated_at = payload.get("generated_at")
+    if isinstance(generated_at, str) and generated_at.strip():
+        return generated_at.strip()
+    raise RuntimeError(
+        f"deployed artifact-manifest at {normalize_base(base).rstrip('/')}{ARTIFACT_MANIFEST_PATH} "
+        "lacks generated_at"
+    )
+
+
 def sha256_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
+
+def viewport_name(viewport: dict) -> str:
+    width = int(viewport["width"])
+    height = int(viewport["height"])
+    if width >= 1000:
+        return "desktop"
+    return "narrow"
+
+
+def main_render_hash(page) -> str:
+    html = page.evaluate(
+        """() => {
+          const main = document.querySelector('main#main, main, [role=main]');
+          return (main || document.body || document.documentElement).innerHTML || '';
+        }"""
+    )
+    return sha256_text(str(html))
 
 def sha256_file(relative: str) -> str:
     return hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
@@ -268,18 +373,21 @@ def holds(route_spec: dict, viewport: dict, observed: dict) -> list[str]:
     return failures
 
 
-def build_captures(base: str) -> list[dict]:
+def build_captures(base: str, *, production: bool = False) -> list[dict]:
     revision = content_revision()
     captures: list[dict] = []
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         for route_spec in ROUTES:
-            source_sha = sha256_file(route_spec["source_path"])
+            source_sha = None if production else sha256_file(route_spec["source_path"])
             for viewport in VIEWPORTS:
-                context = browser.new_context(
-                    viewport={"width": viewport["width"], "height": viewport["height"]},
-                    device_scale_factor=1,
-                )
+                context_kwargs = {
+                    "viewport": {"width": viewport["width"], "height": viewport["height"]},
+                    "device_scale_factor": 1,
+                }
+                if production:
+                    context_kwargs["user_agent"] = BROWSER_UA
+                context = browser.new_context(**context_kwargs)
                 page = context.new_page()
                 url = base.rstrip("/") + route_spec["path"]
                 page.goto(url, wait_until="networkidle", timeout=45_000)
@@ -288,37 +396,146 @@ def build_captures(base: str) -> list[dict]:
                     page.wait_for_timeout(50)
                 observed = observe(page, route_spec, viewport)
                 failures = holds(route_spec, viewport, observed)
-                witness = {
-                    "route": route_spec["route"],
-                    "viewport": viewport["viewport"],
-                    "viewport_width": viewport["width"],
-                    "viewport_height": viewport["height"],
-                    "source_path": route_spec["source_path"],
-                    "source_sha256": source_sha,
-                    "observed": observed,
-                }
-                digest = witness_digest(witness)
-                captures.append(
-                    {
+                render_digest = main_render_hash(page) if production else None
+                if production:
+                    captures.append(
+                        {
+                            "case": route_spec["case"],
+                            "route": route_spec["route"],
+                            "viewport": {
+                                "name": viewport_name(viewport),
+                                "width": viewport["width"],
+                                "height": viewport["height"],
+                            },
+                            "assertion": route_spec["assertion"],
+                            "render_sha256": render_digest,
+                            "observed": observed,
+                            "holds": len(failures) == 0,
+                            "failures": failures,
+                        }
+                    )
+                else:
+                    witness = {
                         "route": route_spec["route"],
                         "viewport": viewport["viewport"],
                         "viewport_width": viewport["width"],
                         "viewport_height": viewport["height"],
-                        "revision": revision,
-                        "data_vintage": "tracked site HTML at content revision",
-                        "assertion": route_spec["assertion"],
-                        "sha256": digest,
                         "source_path": route_spec["source_path"],
                         "source_sha256": source_sha,
                         "observed": observed,
-                        "holds": len(failures) == 0,
-                        "failures": failures,
                     }
-                )
+                    digest = witness_digest(witness)
+                    captures.append(
+                        {
+                            "route": route_spec["route"],
+                            "viewport": viewport["viewport"],
+                            "viewport_width": viewport["width"],
+                            "viewport_height": viewport["height"],
+                            "revision": revision,
+                            "data_vintage": "tracked site HTML at content revision",
+                            "assertion": route_spec["assertion"],
+                            "sha256": digest,
+                            "source_path": route_spec["source_path"],
+                            "source_sha256": source_sha,
+                            "observed": observed,
+                            "holds": len(failures) == 0,
+                            "failures": failures,
+                        }
+                    )
                 page.close()
                 context.close()
         browser.close()
     return captures
+
+
+def write_production_manifest(
+    captures: list[dict],
+    *,
+    base: str,
+    revision: str,
+    data_vintage: str,
+    path: Path | None = None,
+) -> Path:
+    """Retain the served-site assistant-setup packet as render_capture_manifest.v1.
+
+    Keeps the local v2 packet untouched. Desktop and narrow #main digests may
+    differ under responsive chrome, so both viewports are required without
+    hash equality (same posture as citizen-entry / research-tools retention).
+    """
+    by_case: dict[str, set[str]] = {}
+    for capture in captures:
+        by_case.setdefault(str(capture["case"]), set()).add(str(capture["viewport"]["name"]))
+    for case, widths in sorted(by_case.items()):
+        if widths != {"desktop", "narrow"}:
+            raise AssertionError(
+                f"assistant-setup production writer: case {case} must be captured at "
+                f"desktop and narrow (got {sorted(widths)})"
+            )
+    target = path or PRODUCTION_MANIFEST
+    payload = {
+        "schema": "cityscroll.render_capture_manifest.v1",
+        "surface": "public assistant discovery and MCP setup",
+        "base": normalize_base(base),
+        "condition": production_condition(base),
+        "image_binaries_committed": False,
+        "revision": revision,
+        "data_vintage": data_vintage,
+        "captures": [
+            {
+                "case": capture["case"],
+                "route": capture["route"],
+                "viewport": {
+                    "name": capture["viewport"]["name"],
+                    "width": capture["viewport"]["width"],
+                    "height": capture["viewport"]["height"],
+                },
+                "assertion": capture["assertion"],
+                "render_sha256": capture["render_sha256"],
+            }
+            for capture in captures
+        ],
+    }
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    return target
+
+
+def run_production_writer_self_test() -> None:
+    scratch = Path(tempfile.mkdtemp(prefix="assistant-setup-served-manifest-"))
+    try:
+        written = write_production_manifest(
+            [
+                {
+                    "case": "assistant-setup-home",
+                    "route": "/",
+                    "viewport": {"name": "desktop", "width": 1440, "height": 1000},
+                    "assertion": "writer self-test home",
+                    "render_sha256": "a" * 64,
+                },
+                {
+                    "case": "assistant-setup-home",
+                    "route": "/",
+                    "viewport": {"name": "narrow", "width": 390, "height": 844},
+                    "assertion": "writer self-test home",
+                    "render_sha256": "b" * 64,
+                },
+            ],
+            base="https://cityscroll.org/",
+            revision="abcdef0123456789abcdef0123456789abcdef01",
+            data_vintage="2026-09-17T00:00:00.000Z",
+            path=scratch / "capture-manifest.json",
+        )
+        payload = json.loads(written.read_text(encoding="utf-8"))
+        assert payload["schema"] == "cityscroll.render_capture_manifest.v1"
+        assert payload["base"] == "https://cityscroll.org/"
+        assert "Production base https://cityscroll.org/" in payload["condition"]
+        assert payload["image_binaries_committed"] is False
+        assert payload["revision"] == "abcdef0123456789abcdef0123456789abcdef01"
+        assert len(payload["captures"]) == 2
+        assert payload["captures"][0]["render_sha256"] != payload["captures"][1]["render_sha256"]
+    finally:
+        shutil.rmtree(scratch, ignore_errors=True)
+    print("OK assistant-setup production capture-manifest writer self-test", flush=True)
 
 
 def write_manifest(captures: list[dict]) -> dict:
@@ -415,9 +632,61 @@ def verify(captures: list[dict]) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--verify-only", action="store_true")
+    parser.add_argument(
+        "--self-test",
+        action="store_true",
+        help="Run the production writer shape self-test without a browser.",
+    )
     args = parser.parse_args()
 
+    if args.self_test:
+        run_production_writer_self_test()
+        return 0
+
     os.environ.setdefault("CITYSCROLL_TEST_TIME_PIN", CAPTURE_CLOCK)
+    configured_base = resolve_base()
+    production = bool(configured_base and is_production_base(configured_base))
+
+    if production:
+        assert configured_base is not None
+        run_production_writer_self_test()
+        revision = deployed_build_revision(configured_base)
+        data_vintage = resolve_data_vintage(configured_base)
+        captures = build_captures(configured_base, production=True)
+        failing = [capture for capture in captures if capture["failures"]]
+        if failing:
+            for capture in failing:
+                viewport = capture["viewport"]
+                label = (
+                    viewport["name"]
+                    if isinstance(viewport, dict)
+                    else viewport
+                )
+                print(
+                    f"FAIL {capture['route']} @{label}: {capture['failures']}",
+                    flush=True,
+                )
+            return 1
+        if args.verify_only:
+            print(
+                "OK assistant-setup production captures hold against served site "
+                f"(revision {revision})",
+                flush=True,
+            )
+            return 0
+        written = write_production_manifest(
+            captures,
+            base=configured_base,
+            revision=revision,
+            data_vintage=data_vintage,
+        )
+        print(
+            f"wrote {len(captures)} production captures under {written.relative_to(ROOT)} "
+            f"(revision {revision})",
+            flush=True,
+        )
+        return 0
+
     server = None
     ready_dir = None
     try:
