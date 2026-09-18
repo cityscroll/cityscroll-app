@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c771a3f8dc5aa",
+  "status": "implemented",
+  "fingerprint": "near-you-progressive-map-runtime.v1",
+  "updated_at": "2026-09-18T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "resident-geography-map-runtime",
+      "path": "site/geography_navigation_map.mjs"
+    },
+    {
+      "id": "resident-geography-map-runtime-tests",
+      "path": "test/geography_navigation_runtime.test.mjs"
+    },
+    {
+      "id": "maplibre-vendor-license",
+      "path": "site/vendor/maplibre-gl-LICENSE.txt"
+    },
+    {
+      "id": "friendly-geography-navigation-adr",
+      "path": "docs/adr/friendly-geography-navigation.md"
+    }
+  ]
+}

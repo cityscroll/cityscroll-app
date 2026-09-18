@@ -487,6 +487,7 @@
 /site/franchise_phase_spine.mjs
 /site/geography_crosswalk_artifacts.mjs
 /site/geography_navigation_capability.mjs
+/site/geography_navigation_map.mjs
 /site/geography_navigation_state.mjs
 /site/geography_relations.mjs
 /site/government_observation_refresh.mjs

@@ -79,6 +79,9 @@ geography registry.
 * Later Near You UI, URL state, map runtime, overlap drawer, and record
   handoff cards consume one capability record for labels, order, eligibility,
   language, and fixtures.
+* The progressive Near You map adapter (`site/geography_navigation_map.mjs`)
+  renders only committed simplified local layers through a MapLibre seam and
+  leaves Land on `site/app/map_runtime.mjs`.
 * Crosswalk builders and entry resolvers must honor independent point
   membership and direct polygon intersection; hierarchy shortcuts fail the
   contract tests.

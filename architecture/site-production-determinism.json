@@ -287,6 +287,7 @@
     "site/franchise_phase_spine.mjs",
     "site/geography_crosswalk_artifacts.mjs",
     "site/geography_navigation_capability.mjs",
+    "site/geography_navigation_map.mjs",
     "site/geography_navigation_state.mjs",
     "site/geography_relations.mjs",
     "site/government_observation_refresh.mjs",
@@ -664,6 +665,14 @@
     "site/zoning_hearing_calendar.mjs"
   ],
   "third_party": [
+    {
+      "path": "site/vendor/maplibre-gl-4.7.1-csp-worker.js",
+      "reason": "Vendored MapLibre GL JS 4.7.1 CSP worker companion, kept byte-identical to upstream under site/vendor/maplibre-gl-LICENSE.txt. Required for same-origin Web Worker construction under the Near You CSP."
+    },
+    {
+      "path": "site/vendor/maplibre-gl-4.7.1.js",
+      "reason": "Vendored third-party build of MapLibre GL JS 4.7.1 (BSD-3-Clause), kept byte-identical to upstream under site/vendor/maplibre-gl-LICENSE.txt. Progressive Near You map runtime loads it same-origin; editing it would break provenance and CSP-safe delivery."
+    },
     {
       "path": "site/vendor/web-vitals-6.0.1.mjs",
       "reason": "Vendored third-party build of web-vitals 6.0.1, kept byte-identical to upstream under site/vendor/web-vitals-LICENSE.txt. Its performance timing is not CityScroll source to change, and editing it would break the provenance the vendored copy exists to keep."
