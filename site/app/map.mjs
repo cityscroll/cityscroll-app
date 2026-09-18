@@ -31,12 +31,25 @@ import {
 import {
   createGeographyNavigationMap,
   loadSimplifiedNavigationLayer,
+  simplifiedLayerSiteUrl,
 } from "../geography_navigation_map.mjs";
 import { geographyShellAreasListHtml } from "../geography_navigation_shell.mjs";
+import { GEOGRAPHY_NAVIGATION_LAYER_TYPES } from "../geography_navigation_capability.mjs";
+import {
+  geographyEntryUnavailableApiResult,
+  resolveGeographyEntryFromAddressAsync,
+  resolveGeographyEntryFromGeolocation,
+  resolveGeographyEntryFromGeolocationError,
+  resolveGeographyEntryFromMapClick,
+  resolveGeographyEntryFromPlaceLabel,
+} from "../geography_navigation_entry.mjs";
+import { loadCivicGeographyLayer } from "../civic_geography.mjs";
+import { geocodeAddressText } from "../address_geocoder.mjs";
 
 const root = document.querySelector("[data-near-you-root]");
 let geographyMapController = null;
 let geographyLayerCache = new Map();
+let geographyEntryLayerPromise = null;
 let geographyRegistry = null;
 const NEAR_YOU_STRING_DATASETS = Object.freeze({
   all_boroughs: "translationAllBoroughs",
@@ -294,52 +307,136 @@ async function locationTargetHref(preferred, fallback) {
   return areaHref(boroughDocument.incoming, preferred, boroughDocument.href);
 }
 
+async function loadGeographyEntryLayers() {
+  if (geographyEntryLayerPromise) return geographyEntryLayerPromise;
+  geographyEntryLayerPromise = (async () => {
+    const registry = await loadGeographyRegistry();
+    const layers = [];
+    for (const type of GEOGRAPHY_NAVIGATION_LAYER_TYPES) {
+      const url = simplifiedLayerSiteUrl(type, registry, { siteRoot: "/" });
+      if (!url) continue;
+      const response = await fetch(url, { headers: { Accept: "application/json" } });
+      if (!response.ok) continue;
+      const doc = loadCivicGeographyLayer(await response.json());
+      if (doc) layers.push(doc);
+    }
+    if (!layers.length) throw new Error("geography-entry-layers-unavailable");
+    return layers;
+  })().catch((error) => {
+    geographyEntryLayerPromise = null;
+    throw error;
+  });
+  return geographyEntryLayerPromise;
+}
+
+function geographyEntryStatusMessage(entry) {
+  if (!entry) return copy("messageLocationUnmatched");
+  if (entry.ok) {
+    const label = entry.selected?.label || entry.selection?.id || "area";
+    return copy("messageLocationMatched", { district: label });
+  }
+  const reason = entry.recovery?.reason;
+  if (reason === "geolocation_unavailable") return copy("messageLocationUnavailable") || entry.recovery.message;
+  if (reason === "geolocation_denied") return copy("messageLocationDenied") || entry.recovery.message;
+  if (reason === "geolocation_timeout") return copy("messageLocationTimeout") || entry.recovery.message;
+  if (reason === "outside_covered_land") return copy("messageLocationOutside") || entry.recovery.message;
+  if (reason === "lookup_failure") return copy("messageLocationLookupFailed") || entry.recovery.message;
+  if (reason === "no_result" || reason === "empty_query" || reason === "ambiguous_place_label") {
+    return entry.recovery?.message || copy("messageLocationUnmatched");
+  }
+  return entry.recovery?.message || copy("messageLocationUnmatched");
+}
+
+async function adoptGeographyEntrySelection(entry, { ephemeralPoint = null } = {}) {
+  if (!entry?.ok || !entry.selection) {
+    status(geographyEntryStatusMessage(entry));
+    return false;
+  }
+  const nextState = {
+    ...parseGeographyNavigationState(location.search),
+    ok: true,
+    geo: entry.selection.geo,
+    key: entry.selection.key,
+    type: entry.selection.type,
+    id: entry.selection.id,
+    surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+  };
+  writeGeographyNavigationHistory(history, location, nextState, { mode: "push" });
+  if (geographyMapController) {
+    geographyMapController.setSelectedKey(entry.selection.key);
+    if (ephemeralPoint && typeof geographyMapController.setPointMarker === "function") {
+      const lon = Number(ephemeralPoint.lon ?? ephemeralPoint[0]);
+      const lat = Number(ephemeralPoint.lat ?? ephemeralPoint[1]);
+      if (Number.isFinite(lon) && Number.isFinite(lat)) {
+        geographyMapController.setPointMarker([lon, lat]);
+      }
+    }
+  }
+  status(geographyEntryStatusMessage(entry));
+  return true;
+}
+
+async function adoptCompatibilityDistrictSelection(coords) {
+  const response = await fetch(new URL("../data/district_boundaries.json", import.meta.url));
+  const layer = response.ok ? await response.json() : null;
+  const found = resolveDistricts(coords.latitude, coords.longitude, layer);
+  const preferred = root.dataset.level === "council_district"
+    ? found.council_district
+    : found.community_district;
+  const fallback = boroughFromCommunity(found.community_district);
+  const href = await locationTargetHref(preferred, fallback);
+  if (!href) {
+    status(copy("messageLocationOutside") || copy("messageLocationUnmatched"));
+    return false;
+  }
+  const district = preferred || fallback;
+  try {
+    await adoptDocument(href);
+    status(copy("messageLocationMatched", { district }));
+    return true;
+  } catch {
+    status(copy("messageLocationUpdateFailed", { district }));
+    return false;
+  }
+}
+
 function wireGeolocation() {
   const button = root.querySelector("[data-use-location]");
   if (!button || wired.has(button)) return;
   wired.add(button);
   button.addEventListener("click", () => {
     if (!navigator.geolocation) {
-      status(copy("messageLocationUnavailable"));
+      status(geographyEntryStatusMessage(geographyEntryUnavailableApiResult()));
       return;
     }
     button.disabled = true;
     status(copy("messageLocationFinding"));
     navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-      let preferred = null;
-      let fallback = null;
-      let href = null;
       try {
-        const response = await fetch(new URL("../data/district_boundaries.json", import.meta.url));
-        const layer = response.ok ? await response.json() : null;
-        const found = resolveDistricts(coords.latitude, coords.longitude, layer);
-        preferred = root.dataset.level === "council_district"
-          ? found.council_district
-          : found.community_district;
-        fallback = boroughFromCommunity(found.community_district);
-        href = await locationTargetHref(preferred, fallback);
+        if (root.dataset.geographyShell) {
+          const layerData = await loadGeographyEntryLayers();
+          const entry = resolveGeographyEntryFromGeolocation(
+            coords.longitude,
+            coords.latitude,
+            { layerData },
+          );
+          // Coordinates are used for containment and optional marker only.
+          await adoptGeographyEntrySelection(entry, {
+            ephemeralPoint: entry.ok
+              ? { lon: coords.longitude, lat: coords.latitude }
+              : null,
+          });
+        } else {
+          await adoptCompatibilityDistrictSelection(coords);
+        }
       } catch {
-        status(copy("messageLocationUnmatched"));
-        button.disabled = false;
-        return;
-      }
-      if (!href) {
-        status(copy("messageLocationUnmatched"));
-        button.disabled = false;
-        return;
-      }
-      const district = preferred || fallback;
-      try {
-        await adoptDocument(href);
-        status(copy("messageLocationMatched", { district }));
-      } catch {
-        status(copy("messageLocationUpdateFailed", { district }));
+        status(copy("messageLocationLookupFailed") || copy("messageLocationUnmatched"));
       } finally {
         button.disabled = false;
       }
-    }, () => {
+    }, (error) => {
       button.disabled = false;
-      status(copy("messageLocationDenied"));
+      status(geographyEntryStatusMessage(resolveGeographyEntryFromGeolocationError(error)));
     }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
   });
 }
@@ -350,6 +447,28 @@ function wireForms() {
     wired.add(form);
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      if (root.dataset.geographyShell && form.matches("[data-geography-search]")) {
+        const query = String(new FormData(form).get("neighborhood") || "").trim();
+        try {
+          const layerData = await loadGeographyEntryLayers();
+          let entry = resolveGeographyEntryFromPlaceLabel(query, { layerData });
+          if (!entry.ok) {
+            entry = await resolveGeographyEntryFromAddressAsync(query, {
+              layerData,
+              geocode: geocodeAddressText,
+            });
+          }
+          if (entry.ok) {
+            await adoptGeographyEntrySelection(entry);
+            return;
+          }
+          status(geographyEntryStatusMessage(entry));
+          return;
+        } catch {
+          status(copy("messageLocationLookupFailed") || copy("messageLocationUnmatched"));
+          return;
+        }
+      }
       const url = new URL(form.action, location.href);
       url.search = new URLSearchParams(new FormData(form)).toString();
       try {
@@ -561,7 +680,27 @@ async function wireGeographyNavigationMap() {
     geographyMapController = await createGeographyNavigationMap({
       container,
       root,
-      onSelect: ({ key }) => {
+      onSelect: ({ key, originalEvent }) => {
+        const lngLat = originalEvent?.lngLat;
+        if (lngLat && Number.isFinite(lngLat.lng) && Number.isFinite(lngLat.lat)) {
+          void loadGeographyEntryLayers()
+            .then((layerData) => resolveGeographyEntryFromMapClick(lngLat.lng, lngLat.lat, { layerData }))
+            .then((entry) => adoptGeographyEntrySelection(entry, {
+              ephemeralPoint: entry?.ok ? { lon: lngLat.lng, lat: lngLat.lat } : null,
+            }))
+            .catch(() => {
+              if (!key) return;
+              const state = {
+                ...parseGeographyNavigationState(location.search),
+                ok: true,
+                geo: String(key).replace(/^geography:/, ""),
+                key,
+                surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+              };
+              writeGeographyNavigationHistory(history, location, state, { mode: "push" });
+            });
+          return;
+        }
         if (!key) return;
         const state = {
           ...parseGeographyNavigationState(location.search),
