@@ -1,0 +1,824 @@
+{
+  "schema": "cityscroll.connected_history_documents.v1",
+  "version": 1,
+  "generated_at": "2026-09-18T00:00:00.000Z",
+  "parser_version": "connected_history_documents.v1",
+  "transport": {
+    "maxRetries": 2,
+    "maxRequests": 40,
+    "responseCapBytes": 8000000,
+    "parserVersion": "connected_history_documents.v1"
+  },
+  "source_policy": "fixed-six-case-dossier-ceqr-dot-edc-only",
+  "boundaries": {
+    "board_scraper": false,
+    "bsa_calendar": false,
+    "historical_presentations_as_consultations": false
+  },
+  "counts": {
+    "sources": 12,
+    "retained": 12,
+    "acquisition_failures": 0,
+    "dot_selectors_resolved": 5,
+    "dot_selectors_mismatched": 0
+  },
+  "dot_selector_manifest": {
+    "schema": "cityscroll.connected_history_dot_selector_manifest.v1",
+    "version": 1,
+    "parent_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+    "observed_at": "2026-09-18T00:00:00.000Z",
+    "entry_count": 5,
+    "resolved_count": 5,
+    "mismatch_count": 0,
+    "entries": [
+      {
+        "source_id": "sixth-avenue-june-2024-cb2",
+        "family_id": "sixth-avenue",
+        "subject_ids": [
+          "dot:corridor:sixth-avenue-lispenard-w14"
+        ],
+        "parent_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+        "selector": {
+          "heading": "Sixth Avenue, Lispenard Street to West 14th Street",
+          "link_label": "June 2024 CB2"
+        },
+        "status": "resolved",
+        "reason": null,
+        "heading": "Sixth Avenue, Lispenard Street to West 14th Street",
+        "link_label": "June 2024 CB2",
+        "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-lispenard-w14-june2024-cb2.pdf",
+        "matched_anchor_text": "June 2024 CB2",
+        "consultation": false
+      },
+      {
+        "source_id": "sixth-avenue-february-2025-cb4-cb5",
+        "family_id": "sixth-avenue",
+        "subject_ids": [
+          "dot:corridor:sixth-avenue-w14-w35"
+        ],
+        "parent_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+        "selector": {
+          "heading": "Sixth Avenue, West 14th Street to West 35th Street",
+          "link_label": "February 2025 CB4/CB5"
+        },
+        "status": "resolved",
+        "reason": null,
+        "heading": "Sixth Avenue, West 14th Street to West 35th Street",
+        "link_label": "February 2025 CB4/CB5",
+        "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-w14-w35-feb2025-cb4-cb5.pdf",
+        "matched_anchor_text": "February 2025 CB4/CB5",
+        "consultation": false
+      },
+      {
+        "source_id": "sixth-avenue-june-2026-cb2-cb4-cb5",
+        "family_id": "sixth-avenue",
+        "subject_ids": [
+          "dot:corridor:sixth-avenue-watts-w59"
+        ],
+        "parent_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+        "selector": {
+          "heading": "Sixth Avenue, Watts Street to West 59th Street",
+          "link_label": "June 2026 CB2/CB4/CB5"
+        },
+        "status": "resolved",
+        "reason": null,
+        "heading": "Sixth Avenue, Watts Street to West 59th Street",
+        "link_label": "June 2026 CB2/CB4/CB5",
+        "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-watts-w59-june2026-cb2-cb4-cb5.pdf",
+        "matched_anchor_text": "June 2026 CB2/CB4/CB5",
+        "consultation": false
+      },
+      {
+        "source_id": "thirty-first-avenue-september-2023-workshop",
+        "family_id": "thirty-first-avenue",
+        "subject_ids": [
+          "dot:corridor:31st-avenue-vernon-51"
+        ],
+        "parent_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+        "selector": {
+          "heading": "31st Avenue, Vernon Boulevard to 51st Street",
+          "link_label": "September 2023 workshop"
+        },
+        "status": "resolved",
+        "reason": null,
+        "heading": "31st Avenue, Vernon Boulevard to 51st Street",
+        "link_label": "September 2023 workshop",
+        "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-sept2023-workshop.pdf",
+        "matched_anchor_text": "September 2023 workshop",
+        "consultation": false
+      },
+      {
+        "source_id": "thirty-first-avenue-may-june-2024",
+        "family_id": "thirty-first-avenue",
+        "subject_ids": [
+          "dot:corridor:31st-avenue-vernon-51"
+        ],
+        "parent_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+        "selector": {
+          "heading": "31st Avenue, Vernon Boulevard to 51st Street",
+          "link_label": "May/June 2024 materials"
+        },
+        "status": "resolved",
+        "reason": null,
+        "heading": "31st Avenue, Vernon Boulevard to 51st Street",
+        "link_label": "May/June 2024 materials",
+        "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-may-june2024-materials.pdf",
+        "matched_anchor_text": "May/June 2024 materials",
+        "consultation": false
+      }
+    ]
+  },
+  "observations": [
+    {
+      "source_id": "kingsbridge-ceqr-13dme013x-page",
+      "family_id": "kingsbridge-armory",
+      "publisher": "ceqr",
+      "subject_ids": [
+        "ceqr:13DME013X"
+      ],
+      "title": "Kingsbridge Armory ice-center CEQR 13DME013X",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
+      "resolved_url": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
+      "content_hash": "sha256:44e839831499ec74d5cb248307b1829841dc709fcf376dd527884e971a013686",
+      "byte_count": 384,
+      "source_span": {
+        "locator": "oec_environmental_quality_review_page",
+        "quote": "13DME013X"
+      },
+      "publication": {
+        "value": "2013",
+        "precision": "year",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [
+        {
+          "value": "2018",
+          "precision": "year",
+          "kind": "internal_section",
+          "locator": "anticipated_operation_forecast",
+          "note": "forecast operation year, not an opening event",
+          "observation_time": "2026-09-18T00:00:00.000Z"
+        }
+      ],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": null,
+      "request_receipt": {
+        "request_id": "kingsbridge-ceqr-13dme013x-page",
+        "parent_request_id": null,
+        "url": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 384,
+        "content_hash": "sha256:44e839831499ec74d5cb248307b1829841dc709fcf376dd527884e971a013686",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": null
+    },
+    {
+      "source_id": "kingsbridge-ceqr-25dme006x-details",
+      "family_id": "kingsbridge-armory",
+      "publisher": "ceqr",
+      "subject_ids": [
+        "ceqr:25DME006X"
+      ],
+      "title": "CEQR Access details for 25DME006X",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://a002-ceqraccess.nyc.gov/ceqr/Details?data=MjVETUUwMDZY0&signature=7baabc56de3147946d9415dc8b59f436a8e7c9ca",
+      "resolved_url": "https://a002-ceqraccess.nyc.gov/ceqr/Details?data=MjVETUUwMDZY0&signature=7baabc56de3147946d9415dc8b59f436a8e7c9ca",
+      "content_hash": "sha256:a8355219ca31dddca6b54a85b4b4cf57f990af389e681b6833aee517e586b48d",
+      "byte_count": 240,
+      "source_span": {
+        "locator": "ceqr_access_details",
+        "quote": "25DME006X"
+      },
+      "publication": {
+        "value": "2025",
+        "precision": "year",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": null,
+      "request_receipt": {
+        "request_id": "kingsbridge-ceqr-25dme006x-details",
+        "parent_request_id": null,
+        "url": "https://a002-ceqraccess.nyc.gov/ceqr/Details?data=MjVETUUwMDZY0&signature=7baabc56de3147946d9415dc8b59f436a8e7c9ca",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 240,
+        "content_hash": "sha256:a8355219ca31dddca6b54a85b4b4cf57f990af389e681b6833aee517e586b48d",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": null
+    },
+    {
+      "source_id": "kingsbridge-ceqr-25dme006x-findings",
+      "family_id": "kingsbridge-armory",
+      "publisher": "ceqr",
+      "subject_ids": [
+        "ceqr:25DME006X"
+      ],
+      "title": "Statement of Findings PDF for 25DME006X",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://a002-ceqraccess.nyc.gov/Handlers/ProjectFile.ashx?file=MjAyNVwyNURNRTAwNlhcZmluZGluZ3NcMjVETUUwMDZYX1N0YXRlbWVudF9PZl9GaW5kaW5nc18xMDAxMjAyNS5wZGY1&signature=203eb9aee503f4ce2970ef6e003267bb39fb5d6c",
+      "resolved_url": "https://a002-ceqraccess.nyc.gov/Handlers/ProjectFile.ashx?file=MjAyNVwyNURNRTAwNlhcZmluZGluZ3NcMjVETUUwMDZYX1N0YXRlbWVudF9PZl9GaW5kaW5nc18xMDAxMjAyNS5wZGY1&signature=203eb9aee503f4ce2970ef6e003267bb39fb5d6c",
+      "content_hash": "sha256:0fb9899b9a3ba9db28c68a63ad0447a73b6cf8999bd32306f157ead8b74425a1",
+      "byte_count": 277,
+      "source_span": {
+        "locator": "ceqr_access_project_file",
+        "quote": "25DME006X_Statement_Of_Findings"
+      },
+      "publication": {
+        "value": "2025-10-01",
+        "precision": "day",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": null,
+      "request_receipt": {
+        "request_id": "kingsbridge-ceqr-25dme006x-findings",
+        "parent_request_id": null,
+        "url": "https://a002-ceqraccess.nyc.gov/Handlers/ProjectFile.ashx?file=MjAyNVwyNURNRTAwNlhcZmluZGluZ3NcMjVETUUwMDZYX1N0YXRlbWVudF9PZl9GaW5kaW5nc18xMDAxMjAyNS5wZGY1&signature=203eb9aee503f4ce2970ef6e003267bb39fb5d6c",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 277,
+        "content_hash": "sha256:0fb9899b9a3ba9db28c68a63ad0447a73b6cf8999bd32306f157ead8b74425a1",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": null
+    },
+    {
+      "source_id": "kingsbridge-zap-2025x0262",
+      "family_id": "kingsbridge-armory",
+      "publisher": "ceqr",
+      "subject_ids": [
+        "land:project:2025X0262",
+        "ceqr:25DME006X"
+      ],
+      "title": "Kingsbridge Armory redevelopment ZAP 2025X0262",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://zap.planning.nyc.gov/projects/2025X0262",
+      "resolved_url": "https://zap.planning.nyc.gov/projects/2025X0262",
+      "content_hash": "sha256:d2585406f1b38e4834df905411bc13dec1d75a54e7a5aa5ec42299a4340a451b",
+      "byte_count": 239,
+      "source_span": {
+        "locator": "zap_project_page",
+        "quote": "2025X0262"
+      },
+      "publication": {
+        "value": "2025",
+        "precision": "year",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": null,
+      "request_receipt": {
+        "request_id": "kingsbridge-zap-2025x0262",
+        "parent_request_id": null,
+        "url": "https://zap.planning.nyc.gov/projects/2025X0262",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 239,
+        "content_hash": "sha256:d2585406f1b38e4834df905411bc13dec1d75a54e7a5aa5ec42299a4340a451b",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": null
+    },
+    {
+      "source_id": "lighthouse-point-opening-announcement",
+      "family_id": "lighthouse-point",
+      "publisher": "edc",
+      "subject_ids": [
+        "edc:project:lighthouse-point"
+      ],
+      "title": "EDC Lighthouse Point first-phase opening announcement",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://edc.nyc/press-release/mixed-use-housing-complex-opens-lighthouse-point",
+      "resolved_url": "https://edc.nyc/press-release/mixed-use-housing-complex-opens-lighthouse-point",
+      "content_hash": "sha256:b58c1312ee3c1b7cbe650d7ff0ad48d1be9394258aace499adea5b613186f3c8",
+      "byte_count": 417,
+      "source_span": {
+        "locator": "edc_press_release",
+        "quote": "115 units"
+      },
+      "publication": {
+        "value": "2025-06-05",
+        "precision": "day",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [
+        {
+          "value": "2025-06-05",
+          "precision": "day",
+          "kind": "internal_section",
+          "locator": "first_residential_phase_opening",
+          "note": "first residential phase opening; Phase 2 remains future",
+          "observation_time": "2026-09-18T00:00:00.000Z"
+        }
+      ],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": null,
+      "request_receipt": {
+        "request_id": "lighthouse-point-opening-announcement",
+        "parent_request_id": null,
+        "url": "https://edc.nyc/press-release/mixed-use-housing-complex-opens-lighthouse-point",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 417,
+        "content_hash": "sha256:b58c1312ee3c1b7cbe650d7ff0ad48d1be9394258aace499adea5b613186f3c8",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": null
+    },
+    {
+      "source_id": "lighthouse-point-project-page",
+      "family_id": "lighthouse-point",
+      "publisher": "edc",
+      "subject_ids": [
+        "edc:project:lighthouse-point"
+      ],
+      "title": "EDC Lighthouse Point project page",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://edc.nyc/project/lighthouse-point",
+      "resolved_url": "https://edc.nyc/project/lighthouse-point",
+      "content_hash": "sha256:199f59372f41f931259965474719ab667a520c17c45ce7bf87b68b20148fb52b",
+      "byte_count": 313,
+      "source_span": {
+        "locator": "edc_project_page",
+        "quote": "Lighthouse Point"
+      },
+      "publication": {
+        "value": "2014",
+        "precision": "year",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [
+        {
+          "value": "2014",
+          "precision": "year",
+          "kind": "internal_section",
+          "locator": "lease_and_planned_components",
+          "note": "historical plan remains inspectable separately from later openings",
+          "observation_time": "2026-09-18T00:00:00.000Z"
+        }
+      ],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": null,
+      "request_receipt": {
+        "request_id": "lighthouse-point-project-page",
+        "parent_request_id": null,
+        "url": "https://edc.nyc/project/lighthouse-point",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 313,
+        "content_hash": "sha256:199f59372f41f931259965474719ab667a520c17c45ce7bf87b68b20148fb52b",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": null
+    },
+    {
+      "source_id": "sixth-avenue-february-2025-cb4-cb5",
+      "family_id": "sixth-avenue",
+      "publisher": "dot",
+      "subject_ids": [
+        "dot:corridor:sixth-avenue-w14-w35"
+      ],
+      "title": "Sixth Avenue W14–W35 February 2025 CB4/CB5 presentation",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+      "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-w14-w35-feb2025-cb4-cb5.pdf",
+      "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+      "byte_count": 208,
+      "source_span": {
+        "locator": "dot_current_projects_heading_link",
+        "quote": "February 2025 CB4/CB5"
+      },
+      "publication": {
+        "value": "2025-02",
+        "precision": "month",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": false,
+      "request_receipt": {
+        "request_id": "sixth-avenue-february-2025-cb4-cb5",
+        "parent_request_id": "dot-parent-current-projects",
+        "url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-w14-w35-feb2025-cb4-cb5.pdf",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 208,
+        "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": {
+        "source_id": "sixth-avenue-february-2025-cb4-cb5",
+        "family_id": "sixth-avenue",
+        "subject_ids": [
+          "dot:corridor:sixth-avenue-w14-w35"
+        ],
+        "parent_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+        "selector": {
+          "heading": "Sixth Avenue, West 14th Street to West 35th Street",
+          "link_label": "February 2025 CB4/CB5"
+        },
+        "status": "resolved",
+        "reason": null,
+        "heading": "Sixth Avenue, West 14th Street to West 35th Street",
+        "link_label": "February 2025 CB4/CB5",
+        "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-w14-w35-feb2025-cb4-cb5.pdf",
+        "matched_anchor_text": "February 2025 CB4/CB5",
+        "consultation": false
+      }
+    },
+    {
+      "source_id": "sixth-avenue-june-2024-cb2",
+      "family_id": "sixth-avenue",
+      "publisher": "dot",
+      "subject_ids": [
+        "dot:corridor:sixth-avenue-lispenard-w14"
+      ],
+      "title": "Sixth Avenue Lispenard–W14 June 2024 CB2 presentation",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+      "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-lispenard-w14-june2024-cb2.pdf",
+      "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+      "byte_count": 208,
+      "source_span": {
+        "locator": "dot_current_projects_heading_link",
+        "quote": "June 2024 CB2"
+      },
+      "publication": {
+        "value": "2024-06",
+        "precision": "month",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": false,
+      "request_receipt": {
+        "request_id": "sixth-avenue-june-2024-cb2",
+        "parent_request_id": "dot-parent-current-projects",
+        "url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-lispenard-w14-june2024-cb2.pdf",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 208,
+        "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": {
+        "source_id": "sixth-avenue-june-2024-cb2",
+        "family_id": "sixth-avenue",
+        "subject_ids": [
+          "dot:corridor:sixth-avenue-lispenard-w14"
+        ],
+        "parent_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+        "selector": {
+          "heading": "Sixth Avenue, Lispenard Street to West 14th Street",
+          "link_label": "June 2024 CB2"
+        },
+        "status": "resolved",
+        "reason": null,
+        "heading": "Sixth Avenue, Lispenard Street to West 14th Street",
+        "link_label": "June 2024 CB2",
+        "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-lispenard-w14-june2024-cb2.pdf",
+        "matched_anchor_text": "June 2024 CB2",
+        "consultation": false
+      }
+    },
+    {
+      "source_id": "sixth-avenue-june-2026-cb2-cb4-cb5",
+      "family_id": "sixth-avenue",
+      "publisher": "dot",
+      "subject_ids": [
+        "dot:corridor:sixth-avenue-watts-w59"
+      ],
+      "title": "Sixth Avenue Watts–W59 June 2026 multi-board presentation",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+      "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-watts-w59-june2026-cb2-cb4-cb5.pdf",
+      "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+      "byte_count": 208,
+      "source_span": {
+        "locator": "dot_current_projects_heading_link",
+        "quote": "June 2026 CB2/CB4/CB5"
+      },
+      "publication": {
+        "value": "2026-06",
+        "precision": "month",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": false,
+      "request_receipt": {
+        "request_id": "sixth-avenue-june-2026-cb2-cb4-cb5",
+        "parent_request_id": "dot-parent-current-projects",
+        "url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-watts-w59-june2026-cb2-cb4-cb5.pdf",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 208,
+        "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": {
+        "source_id": "sixth-avenue-june-2026-cb2-cb4-cb5",
+        "family_id": "sixth-avenue",
+        "subject_ids": [
+          "dot:corridor:sixth-avenue-watts-w59"
+        ],
+        "parent_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+        "selector": {
+          "heading": "Sixth Avenue, Watts Street to West 59th Street",
+          "link_label": "June 2026 CB2/CB4/CB5"
+        },
+        "status": "resolved",
+        "reason": null,
+        "heading": "Sixth Avenue, Watts Street to West 59th Street",
+        "link_label": "June 2026 CB2/CB4/CB5",
+        "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/sixth-ave-watts-w59-june2026-cb2-cb4-cb5.pdf",
+        "matched_anchor_text": "June 2026 CB2/CB4/CB5",
+        "consultation": false
+      }
+    },
+    {
+      "source_id": "thirty-first-avenue-may-2026-phase-ii",
+      "family_id": "thirty-first-avenue",
+      "publisher": "dot",
+      "subject_ids": [
+        "dot:corridor:31st-avenue-vernon-51"
+      ],
+      "title": "31st Avenue Phase II May 2026 materials",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+      "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+      "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+      "byte_count": 208,
+      "source_span": {
+        "locator": "dot_pdf_direct",
+        "quote": "31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf"
+      },
+      "publication": {
+        "value": "2026-05",
+        "precision": "month",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [
+        {
+          "value": "2024",
+          "precision": "year",
+          "kind": "internal_section",
+          "locator": "phase_i_implementation_period",
+          "note": "Phase I measurement period remains distinct from Phase II proposal",
+          "observation_time": "2026-09-18T00:00:00.000Z"
+        }
+      ],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": false,
+      "request_receipt": {
+        "request_id": "thirty-first-avenue-may-2026-phase-ii",
+        "parent_request_id": null,
+        "url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 208,
+        "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": null
+    },
+    {
+      "source_id": "thirty-first-avenue-may-june-2024",
+      "family_id": "thirty-first-avenue",
+      "publisher": "dot",
+      "subject_ids": [
+        "dot:corridor:31st-avenue-vernon-51"
+      ],
+      "title": "31st Avenue May/June 2024 materials",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+      "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-may-june2024-materials.pdf",
+      "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+      "byte_count": 208,
+      "source_span": {
+        "locator": "dot_current_projects_heading_link",
+        "quote": "May/June 2024 materials"
+      },
+      "publication": {
+        "value": "2024-06",
+        "precision": "month",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": false,
+      "request_receipt": {
+        "request_id": "thirty-first-avenue-may-june-2024",
+        "parent_request_id": "dot-parent-current-projects",
+        "url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-may-june2024-materials.pdf",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 208,
+        "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": {
+        "source_id": "thirty-first-avenue-may-june-2024",
+        "family_id": "thirty-first-avenue",
+        "subject_ids": [
+          "dot:corridor:31st-avenue-vernon-51"
+        ],
+        "parent_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+        "selector": {
+          "heading": "31st Avenue, Vernon Boulevard to 51st Street",
+          "link_label": "May/June 2024 materials"
+        },
+        "status": "resolved",
+        "reason": null,
+        "heading": "31st Avenue, Vernon Boulevard to 51st Street",
+        "link_label": "May/June 2024 materials",
+        "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-may-june2024-materials.pdf",
+        "matched_anchor_text": "May/June 2024 materials",
+        "consultation": false
+      }
+    },
+    {
+      "source_id": "thirty-first-avenue-september-2023-workshop",
+      "family_id": "thirty-first-avenue",
+      "publisher": "dot",
+      "subject_ids": [
+        "dot:corridor:31st-avenue-vernon-51"
+      ],
+      "title": "31st Avenue September 2023 workshop materials",
+      "status": "retained",
+      "retained": true,
+      "reason": null,
+      "requested_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+      "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-sept2023-workshop.pdf",
+      "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+      "byte_count": 208,
+      "source_span": {
+        "locator": "dot_current_projects_heading_link",
+        "quote": "September 2023 workshop"
+      },
+      "publication": {
+        "value": "2023-09",
+        "precision": "month",
+        "kind": "document_publication",
+        "locator": null,
+        "note": null,
+        "observation_time": "2026-09-18T00:00:00.000Z"
+      },
+      "internal_dates": [],
+      "observation_time": "2026-09-18T00:00:00.000Z",
+      "consultation": false,
+      "request_receipt": {
+        "request_id": "thirty-first-avenue-september-2023-workshop",
+        "parent_request_id": "dot-parent-current-projects",
+        "url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-sept2023-workshop.pdf",
+        "requested_at": "2026-09-18T00:00:00.000Z",
+        "retrieved_at": "2026-09-18T00:00:00.000Z",
+        "http_status": 200,
+        "bytes": 208,
+        "content_hash": "sha256:4d81a23705500f68d2fd6562835b05ab103679653100bf6c079b18724164c2aa",
+        "latency_ms": 0,
+        "parser_version": "connected_history_documents.v1",
+        "retries": 0,
+        "outcome": "ok",
+        "reason": null
+      },
+      "selector_resolution": {
+        "source_id": "thirty-first-avenue-september-2023-workshop",
+        "family_id": "thirty-first-avenue",
+        "subject_ids": [
+          "dot:corridor:31st-avenue-vernon-51"
+        ],
+        "parent_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+        "selector": {
+          "heading": "31st Avenue, Vernon Boulevard to 51st Street",
+          "link_label": "September 2023 workshop"
+        },
+        "status": "resolved",
+        "reason": null,
+        "heading": "31st Avenue, Vernon Boulevard to 51st Street",
+        "link_label": "September 2023 workshop",
+        "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-sept2023-workshop.pdf",
+        "matched_anchor_text": "September 2023 workshop",
+        "consultation": false
+      }
+    }
+  ]
+}

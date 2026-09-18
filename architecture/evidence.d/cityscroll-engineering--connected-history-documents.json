@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/connected-history-documents",
+  "status": "implemented",
+  "fingerprint": "connected-history-documents.v1",
+  "updated_at": "2026-09-18T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "connected-history-documents-lib",
+      "path": "tools/lib/connected_history_documents.mjs"
+    },
+    {
+      "id": "connected-history-documents-builder",
+      "path": "tools/build_connected_history_documents.mjs"
+    },
+    {
+      "id": "connected-history-documents-artifact",
+      "path": "site/data/connected_history_documents.json"
+    },
+    {
+      "id": "connected-history-documents-receipt",
+      "path": "site/data/connected_history_sources/verification_receipts/connected_history_documents_latest.json"
+    },
+    {
+      "id": "connected-history-documents-tests",
+      "path": "test/connected_history_documents.test.mjs"
+    },
+    {
+      "id": "connected-history-documents-fixtures",
+      "path": "test/fixtures/connected_history_documents/http_fixture_map.mjs"
+    }
+  ]
+}
