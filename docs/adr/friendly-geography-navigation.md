@@ -4,7 +4,7 @@
 | --- | --- |
 | Status | Accepted |
 | Date | 2026-09-17 |
-| Scope | `site/geography_navigation_capability.mjs`, Near You layer vocabulary and fixtures |
+| Scope | `site/geography_navigation_capability.mjs`, `site/geography_navigation_entry.mjs`, Near You layer vocabulary and fixtures |
 | Supersedes | — |
 | Related | `docs/adr/typed-geography-relations.md`, `site/civic_geography_registry.mjs`, `site/geography_relations.mjs`, `docs/design-principles-contextual-ux.md`, `docs/mobile-surface-contract.md` |
 
@@ -85,6 +85,10 @@ geography registry.
 * Crosswalk builders and entry resolvers must honor independent point
   membership and direct polygon intersection; hierarchy shortcuts fail the
   contract tests.
+* Address search, place-label selection, map clicks, and explicit geolocation
+  resolve through `site/geography_navigation_entry.mjs` into the same point
+  bundle and durable selection state. Coordinates and address query text stay
+  ephemeral after containment.
 * Adding State Assembly or State Senate requires a later card that registers
   independently versioned sources and proves a useful resident destination.
 * Precincts remain searchable and comparable under More boundaries without

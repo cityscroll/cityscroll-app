@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/cd6f2047f7af0",
+  "status": "implemented",
+  "fingerprint": "resident-geography-entry-resolution.v1",
+  "updated_at": "2026-09-18T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "resident-geography-entry",
+      "path": "site/geography_navigation_entry.mjs"
+    },
+    {
+      "id": "resident-geography-entry-tests",
+      "path": "test/geography_navigation_entry.test.mjs"
+    },
+    {
+      "id": "near-you-map-island",
+      "path": "site/app/map.mjs"
+    },
+    {
+      "id": "near-you-view-renderer",
+      "path": "site/near_you_view.mjs"
+    },
+    {
+      "id": "near-you-scope-adoption-module",
+      "path": "site/near_you_scope_adoption.mjs"
+    },
+    {
+      "id": "geography-navigation-capability",
+      "path": "site/geography_navigation_capability.mjs"
+    },
+    {
+      "id": "friendly-geography-navigation-adr",
+      "path": "docs/adr/friendly-geography-navigation.md"
+    }
+  ]
+}
