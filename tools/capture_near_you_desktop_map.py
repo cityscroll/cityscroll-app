@@ -45,7 +45,7 @@ def surface_metrics(page: Page) -> dict[str, object]:
             viewport: {width: innerWidth, height: innerHeight},
             switch_display: switchNode ? getComputedStyle(switchNode).display : null,
             switch_rect: rect('[data-near-surface-switch]'),
-            results_rect: rect('[data-near-surface-panel="list"]'),
+            results_rect: rect('[data-near-surface-panel="records"], [data-near-surface-panel="list"]'),
             map_rect: rect('[data-near-surface-panel="map"]'),
             active_surface: document.querySelector('[data-near-you-root]')?.dataset.nearMobileSurface || null,
           };

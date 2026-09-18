@@ -10,12 +10,15 @@
 /** Regions replaced on every successful document adoption. */
 export const NEAR_YOU_SCOPE_REGION_SELECTORS = Object.freeze([
   ".near-hero",
+  ".near-geo-entry",
   ".near-overview",
   ".near-place-guide",
   ".near-form",
   ".near-coverage",
   ".near-surface-switch",
+  ".near-geo-workspace",
   ".near-map-section",
+  ".near-records-surface",
   ".near-results",
   ".near-bags",
 ]);

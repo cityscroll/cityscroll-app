@@ -54,6 +54,21 @@ function outputPath(publicPath) {
   return join(SITE, publicPath.replace(/^\/+/, ""), "index.html");
 }
 
+function loadNavigationLayerDoc() {
+  const candidates = [
+    join(SITE, "data/geography/layers/nta2020/26B.json"),
+  ];
+  for (const path of candidates) {
+    try {
+      if (!existsSync(path)) continue;
+      return json(path);
+    } catch {
+      // Layer artifacts are optional in reduced checkouts; shell falls back to SVG areas.
+    }
+  }
+  return null;
+}
+
 function buildDocuments() {
   const activity = mergeConsultationActivity(
     json(join(SITE, "data/district_activity.json")),
@@ -61,6 +76,7 @@ function buildDocuments() {
   );
   const boundaries = json(join(SITE, "data/district_boundaries.json"));
   const communityGeography = json(join(SITE, "data/community_board_geography_lookup.json"));
+  const navigationLayerDoc = loadNavigationLayerDoc();
   return commonScopes().map((scope) => {
     const publicPath = commonNearYouPath(scope);
     const urlForScope = (next) => commonNearYouPath(next)
@@ -69,6 +85,8 @@ function buildDocuments() {
       canonicalBase: CANONICAL_BASE,
       urlForScope,
       communityGeography,
+      navigationLayerDoc,
+      navigationLayerType: "nta2020",
     });
     const deferredParts = renderNearYouDeferredParts(view);
     return {

@@ -48,10 +48,10 @@ function staffingResolvedMarkup() {
     <button type="submit">Apply filters</button>
   </form>
   <nav class="near-surface-switch" data-near-surface-switch>
-    <a data-near-surface="list" class="is-active">Records (2)</a>
+    <a data-near-surface="records" class="is-active">Records (2)</a>
     <a data-near-surface="map">Map</a>
   </nav>
-  <section class="near-results" aria-labelledby="near-results-heading" data-results-count="2" data-near-surface-panel="list">
+  <section class="near-results" aria-labelledby="near-results-heading" data-results-count="2" data-near-surface-panel="records">
     <h2 id="near-results-heading">2 Staffing records for these filters</h2>
     <article data-record-id="staff-1"><h3>Staffing appointment A</h3></article>
     <article data-record-id="staff-2"><h3>Staffing appointment B</h3></article>
@@ -86,10 +86,10 @@ function meetingsPendingMarkup() {
     <button type="submit">Apply filters</button>
   </form>
   <nav class="near-surface-switch" data-near-surface-switch>
-    <a data-near-surface="list" class="is-active">Records</a>
+    <a data-near-surface="records" class="is-active">Records</a>
     <a data-near-surface="map">Map</a>
   </nav>
-  <section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending" data-near-surface-panel="list" aria-busy="true">
+  <section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending" data-near-surface-panel="records" aria-busy="true">
     <h2 id="near-results-heading">Matching Meetings records</h2>
     <p class="near-deferred-status" role="status">Loading matching records…</p>
   </section>
@@ -107,7 +107,7 @@ function meetingsPendingMarkup() {
 function meetingsDeferredPayload() {
   return {
     schema: "cityscroll.near_you_deferred.v1",
-    results_html: `<section class="near-results" aria-labelledby="near-results-heading" data-results-count="36" data-near-surface-panel="list">
+    results_html: `<section class="near-results" aria-labelledby="near-results-heading" data-results-count="36" data-near-surface-panel="records">
       <h2 id="near-results-heading">36 Meetings records for these filters</h2>
       <article data-record-id="meet-1"><h3>Community board hearing</h3></article>
     </section>`,
@@ -121,7 +121,7 @@ function meetingsDeferredPayload() {
 function staffingDeferredPayload() {
   return {
     schema: "cityscroll.near_you_deferred.v1",
-    results_html: `<section class="near-results" aria-labelledby="near-results-heading" data-results-count="2" data-near-surface-panel="list">
+    results_html: `<section class="near-results" aria-labelledby="near-results-heading" data-results-count="2" data-near-surface-panel="records">
       <h2 id="near-results-heading">2 Staffing records for these filters</h2>
       <article data-record-id="staff-stale"><h3>Stale staffing row</h3></article>
     </section>`,

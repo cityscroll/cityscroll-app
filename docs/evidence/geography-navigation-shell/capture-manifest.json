@@ -1,0 +1,231 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "feature": "geography-navigation-shell",
+  "public_alias": "ced62a84f8213",
+  "capture_mode": "headless_playwright_local_site",
+  "repository_revision": "ac2200af7efa836006ad815fb8d5d861f7dea5d8",
+  "grounded_at": "ac2200af7efa836006ad815fb8d5d861f7dea5d8",
+  "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under docs/screenshots/ locally; only this manifest is committed.",
+  "route": "/near-you/",
+  "captures": [
+    {
+      "name": "shell-server-1440",
+      "route": "/near-you/",
+      "mode": "server",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "ac2200af7efa836006ad815fb8d5d861f7dea5d8",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; server SVG visible path",
+      "sha256": "cfff12c9da687b4aabc9751494818cd020c1bb0597d8483c169880defba98655",
+      "file": null,
+      "snapshot": {
+        "heading": "What's near you?",
+        "overflow_x": 0,
+        "area_key_count": 197,
+        "surface": "map",
+        "runtime": null,
+        "code_like_labels": 0,
+        "advanced_precedes_map": false,
+        "has_map_canvas": false,
+        "has_map_svg": true
+      }
+    },
+    {
+      "name": "shell-server-390",
+      "route": "/near-you/",
+      "mode": "server",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "ac2200af7efa836006ad815fb8d5d861f7dea5d8",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; server SVG visible path",
+      "sha256": "5f7f0f031d7b38a873628372a4409f91faa5b206ee2b53055d2fe57eb49ec923",
+      "file": null,
+      "snapshot": {
+        "heading": "What's near you?",
+        "overflow_x": 0,
+        "area_key_count": 197,
+        "surface": "map",
+        "runtime": null,
+        "code_like_labels": 0,
+        "advanced_precedes_map": false,
+        "has_map_canvas": false,
+        "has_map_svg": true
+      }
+    },
+    {
+      "name": "shell-server-360",
+      "route": "/near-you/",
+      "mode": "server",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "revision": "ac2200af7efa836006ad815fb8d5d861f7dea5d8",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; server SVG visible path",
+      "sha256": "b7a3d9c275cc57ca36abc523e30f94243e1b4bba7febeacd82c236d294412428",
+      "file": null,
+      "snapshot": {
+        "heading": "What's near you?",
+        "overflow_x": 0,
+        "area_key_count": 197,
+        "surface": "map",
+        "runtime": null,
+        "code_like_labels": 0,
+        "advanced_precedes_map": false,
+        "has_map_canvas": false,
+        "has_map_svg": true
+      }
+    },
+    {
+      "name": "shell-enhanced-1440",
+      "route": "/near-you/",
+      "mode": "enhanced",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "ac2200af7efa836006ad815fb8d5d861f7dea5d8",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; first-viewport heading present; advanced filters do not precede the map",
+      "sha256": "d7d2a4c62b68f8d8ef404426acf4d5820e6d460ab3ed44a4e4793f384f6535dd",
+      "file": null,
+      "snapshot": {
+        "heading": "What's near you?",
+        "overflow_x": 0,
+        "area_key_count": 197,
+        "surface": "map",
+        "runtime": "failed",
+        "code_like_labels": 0,
+        "advanced_precedes_map": false,
+        "has_map_canvas": false,
+        "has_map_svg": true
+      }
+    },
+    {
+      "name": "shell-enhanced-390",
+      "route": "/near-you/",
+      "mode": "enhanced",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "ac2200af7efa836006ad815fb8d5d861f7dea5d8",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present",
+      "sha256": "63b380f40e6255112624e3260a677fe42b7817ebe418da357873944ac05d7e5b",
+      "file": null,
+      "snapshot": {
+        "heading": "What's near you?",
+        "overflow_x": 0,
+        "area_key_count": 197,
+        "surface": "map",
+        "runtime": "failed",
+        "code_like_labels": 0,
+        "advanced_precedes_map": false,
+        "has_map_canvas": false,
+        "has_map_svg": true
+      }
+    },
+    {
+      "name": "shell-enhanced-360",
+      "route": "/near-you/",
+      "mode": "enhanced",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "revision": "ac2200af7efa836006ad815fb8d5d861f7dea5d8",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present",
+      "sha256": "893768b8935e83452f2e3d5cad734b66a54976c60f84504e8d906718e9be030b",
+      "file": null,
+      "snapshot": {
+        "heading": "What's near you?",
+        "overflow_x": 0,
+        "area_key_count": 197,
+        "surface": "map",
+        "runtime": "failed",
+        "code_like_labels": 0,
+        "advanced_precedes_map": false,
+        "has_map_canvas": false,
+        "has_map_svg": true
+      }
+    },
+    {
+      "name": "shell-failed-1440",
+      "route": "/near-you/",
+      "mode": "failed",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "ac2200af7efa836006ad815fb8d5d861f7dea5d8",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; failed enhancement restored SVG",
+      "sha256": "0d0a2db62340477f71d65eb7f343b6cd352cf21295aa80791cda815a38a0d55b",
+      "file": null,
+      "snapshot": {
+        "heading": "What's near you?",
+        "overflow_x": 0,
+        "area_key_count": 197,
+        "surface": "map",
+        "runtime": null,
+        "code_like_labels": 0,
+        "advanced_precedes_map": false,
+        "has_map_canvas": false,
+        "has_map_svg": true
+      }
+    },
+    {
+      "name": "shell-failed-390",
+      "route": "/near-you/",
+      "mode": "failed",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "ac2200af7efa836006ad815fb8d5d861f7dea5d8",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; failed enhancement restored SVG",
+      "sha256": "9eb6b7cd6e470a675bccd2064ffe93202425673583fa4ce6f7f45aed04c47b65",
+      "file": null,
+      "snapshot": {
+        "heading": "What's near you?",
+        "overflow_x": 0,
+        "area_key_count": 197,
+        "surface": "map",
+        "runtime": null,
+        "code_like_labels": 0,
+        "advanced_precedes_map": false,
+        "has_map_canvas": false,
+        "has_map_svg": true
+      }
+    },
+    {
+      "name": "shell-failed-360",
+      "route": "/near-you/",
+      "mode": "failed",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "revision": "ac2200af7efa836006ad815fb8d5d861f7dea5d8",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; failed enhancement restored SVG",
+      "sha256": "22e758e9de225b667f66508f330736880312b74aa3b48248356d0743120458e1",
+      "file": null,
+      "snapshot": {
+        "heading": "What's near you?",
+        "overflow_x": 0,
+        "area_key_count": 197,
+        "surface": "map",
+        "runtime": null,
+        "code_like_labels": 0,
+        "advanced_precedes_map": false,
+        "has_map_canvas": false,
+        "has_map_svg": true
+      }
+    }
+  ],
+  "verifier": "python3 tools/capture_geography_navigation.py --case shell"
+}

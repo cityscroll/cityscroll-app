@@ -66,7 +66,7 @@ SURFACES: dict[str, dict[str, str]] = {
         "path": "/near-you/",
         "root": "main[data-near-you-root]",
         "ready": "main[data-near-you-root][data-near-deferred-state='ready']",
-        "component": "[data-near-surface-panel='list'], [data-near-surface-switch]",
+        "component": "[data-near-surface-panel='records'], [data-near-surface-panel='list'], [data-near-surface-switch]",
         "records": "[data-record-id]",
         "controls": "[data-near-you-root] a, [data-near-you-root] button, [data-near-you-root] input, [data-near-you-root] select, [data-near-you-root] summary",
     },

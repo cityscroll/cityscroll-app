@@ -23,9 +23,9 @@ def assert_switches(page: Page, width: int, height: int) -> None:
     page.goto(f"{BASE}/near-you/", wait_until="networkidle")
 
     switch = page.locator("[data-near-surface-switch]")
-    records = page.locator('[data-near-surface="list"]')
+    records = page.locator('[data-near-surface="records"]')
     map_link = page.locator('[data-near-surface="map"]')
-    results = '[data-near-surface-panel="list"]'
+    results = '[data-near-surface-panel="records"]'
     map_panel = '[data-near-surface-panel="map"]'
 
     assert switch.is_visible(), f"Records/Map switch hidden at {width}px"
@@ -126,7 +126,7 @@ def main() -> None:
         ).new_page()
         no_script.goto(f"{BASE}/near-you/", wait_until="domcontentloaded")
         assert no_script.locator("[data-near-surface-switch]").is_visible()
-        assert is_visible(no_script, '[data-near-surface-panel="list"]')
+        assert is_visible(no_script, '[data-near-surface-panel="records"]')
         assert is_visible(no_script, '[data-near-surface-panel="map"]')
         assert no_script.locator('[data-near-surface="map"]').get_attribute("href") == "#near-map-heading"
         browser.close()

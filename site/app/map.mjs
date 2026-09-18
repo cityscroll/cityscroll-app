@@ -21,8 +21,23 @@ import {
   nearYouFrameReady,
   nearYouMapReady,
 } from "../rum_maps_entities_async_instrumentation.mjs";
+import {
+  GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+  GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
+  bindGeographyNavigationPopState,
+  parseGeographyNavigationState,
+  writeGeographyNavigationHistory,
+} from "../geography_navigation_state.mjs";
+import {
+  createGeographyNavigationMap,
+  loadSimplifiedNavigationLayer,
+} from "../geography_navigation_map.mjs";
+import { geographyShellAreasListHtml } from "../geography_navigation_shell.mjs";
 
 const root = document.querySelector("[data-near-you-root]");
+let geographyMapController = null;
+let geographyLayerCache = new Map();
+let geographyRegistry = null;
 const NEAR_YOU_STRING_DATASETS = Object.freeze({
   all_boroughs: "translationAllBoroughs",
   borough_label: "translationBoroughLabel",
@@ -347,32 +362,231 @@ function wireForms() {
   }
 }
 
-/** Records / Map switch keeps count≡list while map stays optional. */
+function normalizeSurfaceToken(raw) {
+  if (raw === "list" || raw === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS) {
+    return GEOGRAPHY_NAVIGATION_SURFACE_RECORDS;
+  }
+  if (raw === GEOGRAPHY_NAVIGATION_SURFACE_MAP) return GEOGRAPHY_NAVIGATION_SURFACE_MAP;
+  return root?.dataset?.nearSurface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS
+    ? GEOGRAPHY_NAVIGATION_SURFACE_RECORDS
+    : GEOGRAPHY_NAVIGATION_SURFACE_MAP;
+}
+
+function applySurfaceChrome(surface) {
+  const next = normalizeSurfaceToken(surface);
+  root.dataset.nearSurface = next;
+  root.dataset.nearMobileSurface = next === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS
+    ? GEOGRAPHY_NAVIGATION_SURFACE_RECORDS
+    : GEOGRAPHY_NAVIGATION_SURFACE_MAP;
+  for (const nav of root.querySelectorAll("[data-near-surface-switch]")) {
+    nav.querySelectorAll("[data-near-surface]").forEach((node) => {
+      const token = normalizeSurfaceToken(node.dataset.nearSurface);
+      const active = token === next;
+      node.classList.toggle("is-active", active);
+      if (active) node.setAttribute("aria-current", "true");
+      else node.removeAttribute("aria-current");
+    });
+  }
+}
+
+/** Map / Browse records switch; URL surface is durable geography state. */
 function wireSurfaceSwitch() {
-  const nav = root.querySelector("[data-near-surface-switch]");
-  if (!nav || wired.has(nav)) return;
-  wired.add(nav);
-  if (
-    !root.dataset.nearMobileSurface
-    && window.matchMedia?.("(max-width: 560px)").matches
-  ) root.dataset.nearMobileSurface = "list";
-  nav.querySelectorAll("[data-near-surface]").forEach((link) => {
-    link.addEventListener("click", (event) => {
-      const surface = link.dataset.nearSurface;
-      if (surface !== "list" && surface !== "map") return;
-      event.preventDefault();
-      root.dataset.nearMobileSurface = surface;
-      nav.querySelectorAll("[data-near-surface]").forEach((node) => {
-        node.classList.toggle("is-active", node === link);
-        if (node === link) node.setAttribute("aria-current", "true");
-        else node.removeAttribute("aria-current");
+  const navs = [...root.querySelectorAll("[data-near-surface-switch]")];
+  if (!navs.length) return;
+  const initial = normalizeSurfaceToken(
+    parseGeographyNavigationState(location.search).surface || root.dataset.nearSurface,
+  );
+  applySurfaceChrome(initial);
+  for (const nav of navs) {
+    if (wired.has(nav)) continue;
+    wired.add(nav);
+    nav.querySelectorAll("[data-near-surface]").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const surface = normalizeSurfaceToken(link.dataset.nearSurface);
+        if (surface !== GEOGRAPHY_NAVIGATION_SURFACE_MAP
+          && surface !== GEOGRAPHY_NAVIGATION_SURFACE_RECORDS) return;
+        event.preventDefault();
+        applySurfaceChrome(surface);
+        const state = {
+          ...parseGeographyNavigationState(location.search),
+          surface,
+          ok: true,
+        };
+        writeGeographyNavigationHistory(history, location, state, { mode: "push" });
+        const target = root.querySelector(
+          surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP
+            ? "#near-map-heading"
+            : "#near-results-heading",
+        );
+        target?.focus?.({ preventScroll: true });
       });
-      const target = root.querySelector(
-        surface === "map" ? "#near-map-heading" : "#near-results-heading",
-      );
-      target?.focus?.({ preventScroll: true });
+    });
+  }
+}
+
+function wireGeographyDrawer() {
+  const workspace = root.querySelector("[data-geography-workspace]");
+  const toggle = root.querySelector("[data-geography-drawer-toggle]");
+  if (!workspace || !toggle || wired.has(toggle)) return;
+  wired.add(toggle);
+  toggle.hidden = false;
+  toggle.addEventListener("click", () => {
+    const open = workspace.dataset.geographyDrawerState !== "closed";
+    workspace.dataset.geographyDrawerState = open ? "closed" : "open";
+    toggle.setAttribute("aria-expanded", open ? "false" : "true");
+  });
+}
+
+async function loadGeographyRegistry() {
+  if (geographyRegistry) return geographyRegistry;
+  const response = await fetch("/data/geography/layer_registry.json", {
+    headers: { Accept: "application/json" },
+  });
+  if (!response.ok) throw new Error(`geography-registry-${response.status}`);
+  geographyRegistry = await response.json();
+  return geographyRegistry;
+}
+
+async function loadGeographyLayer(type) {
+  if (geographyLayerCache.has(type)) return geographyLayerCache.get(type);
+  const registry = await loadGeographyRegistry();
+  const layer = await loadSimplifiedNavigationLayer(type, { registry, siteRoot: "/" });
+  geographyLayerCache.set(type, layer);
+  return layer;
+}
+
+function refreshGeographyAreasList(type, layerDoc) {
+  const panel = root.querySelector("#near-area-list")
+    || root.querySelector("[data-geography-areas]");
+  if (!panel || !layerDoc) return;
+  const html = geographyShellAreasListHtml(
+    (layerDoc.features || []).map((feature) => ({
+      key: feature.properties?.key || feature.key,
+      id: feature.properties?.id || feature.id,
+      type: feature.properties?.type || type,
+      label: feature.properties?.label || feature.label,
+      subtype: feature.properties?.subtype || feature.subtype,
+    })).filter((entry) => entry.key && entry.label),
+    {
+      activeType: type,
+      base: `${location.origin}/near-you/`,
+      surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+    },
+  );
+  panel.outerHTML = html;
+}
+
+function setActiveLayerButtons(type) {
+  root.querySelectorAll("[data-geography-layer]").forEach((button) => {
+    const active = button.dataset.geographyLayer === type;
+    button.setAttribute("aria-pressed", active ? "true" : "false");
+    if (active) button.setAttribute("data-geography-layer-active", "true");
+    else button.removeAttribute("data-geography-layer-active");
+  });
+  root.dataset.geographyLayer = type;
+}
+
+async function activateGeographyLayer(type) {
+  if (!geographyMapController) return;
+  const layer = await loadGeographyLayer(type);
+  // loadSimplifiedNavigationLayer already projects features; pass a layer-shaped
+  // document so setActiveLayer can re-project from top-level label/id fields.
+  const layerDoc = {
+    type,
+    geometry_fidelity: layer.geometry_fidelity || "simplified",
+    vintage: layer.vintage || null,
+    features: (layer.features || []).map((feature) => ({
+      key: feature.properties?.key || feature.key,
+      id: feature.properties?.id || feature.id,
+      type: feature.properties?.type || type,
+      label: feature.properties?.label || feature.label,
+      subtype: feature.properties?.subtype ?? feature.subtype ?? null,
+      geometry: feature.geometry,
+    })),
+  };
+  geographyMapController.setActiveLayer(type, layerDoc);
+  setActiveLayerButtons(type);
+  refreshGeographyAreasList(type, layerDoc);
+}
+
+function wireGeographyLayerSwitcher() {
+  const switcher = root.querySelector("[data-geography-layer-switcher]");
+  if (!switcher || wired.has(switcher)) return;
+  wired.add(switcher);
+  switcher.querySelectorAll("[data-geography-layer]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const type = button.dataset.geographyLayer;
+      if (!type) return;
+      void activateGeographyLayer(type).catch(() => {
+        status(copy("messageUpdated"));
+      });
     });
   });
+}
+
+function waitForGeographyMapHost(container) {
+  return new Promise((resolve) => {
+    const prepare = () => {
+      container.hidden = false;
+      container.removeAttribute("aria-hidden");
+      if (!container.style.minHeight) container.style.minHeight = "320px";
+      const wrap = container.closest(".near-map-wrap");
+      if (wrap) wrap.dataset.geographyMapMode = "enhanced";
+      const rect = container.getBoundingClientRect();
+      if (rect.width >= 160 && rect.height >= 160) {
+        resolve(rect);
+        return true;
+      }
+      return false;
+    };
+    if (prepare()) return;
+    let frames = 0;
+    const tick = () => {
+      frames += 1;
+      if (prepare() || frames > 30) resolve(container.getBoundingClientRect());
+      else requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+}
+
+async function wireGeographyNavigationMap() {
+  const container = root.querySelector("#near-map-enhanced");
+  if (!container || geographyMapController) return;
+  if (globalThis.__CITYSCROLL_FORCE_GEOGRAPHY_MAP_FAILURE) {
+    throw new Error("forced_geography_map_failure");
+  }
+  try {
+    await waitForGeographyMapHost(container);
+    geographyMapController = await createGeographyNavigationMap({
+      container,
+      root,
+      onSelect: ({ key }) => {
+        if (!key) return;
+        const state = {
+          ...parseGeographyNavigationState(location.search),
+          ok: true,
+          geo: String(key).replace(/^geography:/, ""),
+          key,
+          surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+        };
+        writeGeographyNavigationHistory(history, location, state, { mode: "push" });
+      },
+      onFallback: () => {
+        geographyMapController = null;
+      },
+      onTileFailure: () => {
+        // Basemap is decorative; keep local boundaries and controls.
+      },
+    });
+    const initialType = root.dataset.geographyLayer || "nta2020";
+    await activateGeographyLayer(initialType);
+    const selected = parseGeographyNavigationState(location.search);
+    if (selected?.key) geographyMapController.setSelectedKey(selected.key);
+    geographyMapController.getState?.();
+  } catch {
+    geographyMapController = null;
+  }
 }
 
 function nearYouMapStateFromRoot(node) {
@@ -418,8 +632,11 @@ function wireIsland() {
   wireGeolocation();
   wireForms();
   wireSurfaceSwitch();
+  wireGeographyDrawer();
+  wireGeographyLayerSwitcher();
   wireRecordInspection();
   void hydrateCurrentNearYouDeferred();
+  void wireGeographyNavigationMap();
 }
 
 if (root) {
@@ -428,7 +645,16 @@ if (root) {
     if (location.hash.startsWith("#map")) void adoptMapHashRoute();
   });
   void adoptMapHashRoute();
-  addEventListener("popstate", () => location.reload());
+  bindGeographyNavigationPopState(window, (state) => {
+    applySurfaceChrome(state?.surface || GEOGRAPHY_NAVIGATION_SURFACE_MAP);
+    if (state?.key && geographyMapController) {
+      geographyMapController.setSelectedKey(state.key);
+    }
+  });
+  addEventListener("popstate", () => {
+    // Document-scoped filters still require a full adopt; surface-only pops are handled above.
+    if (!location.search.includes("geo=") && !root.dataset.geographyShell) location.reload();
+  });
 }
 
 export { wireIsland as initNearYouMapIsland };
