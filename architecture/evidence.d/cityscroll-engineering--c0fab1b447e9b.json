@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c0fab1b447e9b",
+  "status": "implemented",
+  "fingerprint": "resident-geography-selection-state.v1",
+  "updated_at": "2026-09-17T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "resident-geography-selection-state",
+      "path": "site/geography_navigation_state.mjs"
+    },
+    {
+      "id": "resident-geography-selection-state-tests",
+      "path": "test/geography_navigation_state.test.mjs"
+    },
+    {
+      "id": "geography-navigation-capability",
+      "path": "site/geography_navigation_capability.mjs"
+    },
+    {
+      "id": "friendly-geography-navigation-adr",
+      "path": "docs/adr/friendly-geography-navigation.md"
+    }
+  ]
+}
