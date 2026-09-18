@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c3bd8e239a93a",
+  "status": "implemented",
+  "fingerprint": "friendly-geography-navigation.v1",
+  "updated_at": "2026-09-17T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "friendly-geography-navigation-adr",
+      "path": "docs/adr/friendly-geography-navigation.md"
+    },
+    {
+      "id": "geography-navigation-capability",
+      "path": "site/geography_navigation_capability.mjs"
+    },
+    {
+      "id": "civic-geography-registry",
+      "path": "site/civic_geography_registry.mjs"
+    },
+    {
+      "id": "typed-geography-relations",
+      "path": "site/geography_relations.mjs"
+    },
+    {
+      "id": "typed-geography-relations-adr",
+      "path": "docs/adr/typed-geography-relations.md"
+    },
+    {
+      "id": "geography-navigation-contract-tests",
+      "path": "test/geography_navigation_contract.test.mjs"
+    }
+  ]
+}
