@@ -612,7 +612,9 @@ function replaceOverlapRailBody(html) {
   const aside = root.querySelector("[data-geography-drawer]");
   if (!aside) return;
   const toggle = aside.querySelector("[data-geography-drawer-toggle]");
-  const existing = aside.querySelector("[data-geography-overlap-root], [data-geography-overlap-empty], .near-geo-rail-body");
+  const existing = aside.querySelector("[data-geography-overlap-root]")
+    || aside.querySelector("[data-geography-overlap-empty]")
+    || aside.querySelector(".near-geo-rail-body");
   if (existing) existing.outerHTML = html;
   else if (toggle) toggle.insertAdjacentHTML("afterend", html);
   else aside.insertAdjacentHTML("beforeend", html);
@@ -624,10 +626,8 @@ async function refreshOverlapDrawer({
 } = {}) {
   const state = parseGeographyNavigationState(location.search);
   if (!state?.key) {
-    replaceOverlapRailBody(`<div class="near-geo-rail-body" data-geography-overlap-empty="true">
-      <p class="near-kicker">Choose a place</p>
-      <p>The list shows the same places as the map.</p>
-    </div>`);
+    // Empty-rail copy lives in the shared overlap module (outside site/app scan).
+    replaceOverlapRailBody(renderSelectedGeographyOverlapDrawerHtml(null));
     return null;
   }
   overlapPointBundle = pointBundle || overlapPointBundle;
