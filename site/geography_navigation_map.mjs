@@ -135,6 +135,14 @@ function prefersReducedMotion(matchMedia = globalThis.matchMedia) {
   }
 }
 
+function prefersForcedColors(matchMedia = globalThis.matchMedia) {
+  try {
+    return Boolean(matchMedia?.("(forced-colors: active)")?.matches);
+  } catch {
+    return false;
+  }
+}
+
 function vendorUrl(relativePath, baseUrl = import.meta.url) {
   return new URL(`./${relativePath}`, baseUrl).href;
 }
@@ -437,7 +445,14 @@ function selectedSubset(collection, selectedKey) {
   return { type: "FeatureCollection", features };
 }
 
-function buildBaseStyle() {
+function selectedLineWidthForMode(forcedColors = false) {
+  return forcedColors
+    ? GEOGRAPHY_MAP_STYLE.FORCED_COLORS_SELECTED_LINE_WIDTH
+    : GEOGRAPHY_MAP_STYLE.SELECTED_LINE_WIDTH;
+}
+
+function buildBaseStyle({ forcedColors = false } = {}) {
+  const selectedLineWidth = selectedLineWidthForMode(forcedColors);
   return {
     version: 8,
     // No remote glyph atlas: MapLibre falls back to localIdeographFontFamily for
@@ -562,7 +577,7 @@ function buildBaseStyle() {
         source: GEOGRAPHY_MAP_SOURCE_IDS.selected,
         paint: {
           "line-color": GEOGRAPHY_MAP_STYLE.SELECTED_LINE_COLOR,
-          "line-width": GEOGRAPHY_MAP_STYLE.SELECTED_LINE_WIDTH,
+          "line-width": selectedLineWidth,
           "line-dasharray": [...GEOGRAPHY_MAP_STYLE.SELECTED_LINE_DASHARRAY],
         },
       },
@@ -713,6 +728,8 @@ function assertNavigationLayerType(type) {
  * @param {(reason: string, error?: Error) => void} [options.onFallback]
  * @param {(reason: string) => void} [options.onTileFailure]
  * @param {boolean} [options.reducedMotion]
+ * @param {boolean} [options.forcedColors] when true, selection outline uses the
+ *   forced-colors line width so selection stays identifiable without color.
  */
 export async function createGeographyNavigationMap(options = {}) {
   const {
@@ -725,6 +742,7 @@ export async function createGeographyNavigationMap(options = {}) {
     onFallback = null,
     onTileFailure = null,
     reducedMotion = prefersReducedMotion(),
+    forcedColors = prefersForcedColors(),
     documentRef = globalThis.document,
     // Renderer-seam tests inject createMap and may omit a real WebGL canvas.
     webglSupported = createMap ? true : null,
@@ -771,7 +789,7 @@ export async function createGeographyNavigationMap(options = {}) {
 
     const mapOptions = {
       container,
-      style: buildBaseStyle(),
+      style: buildBaseStyle({ forcedColors }),
       bounds: [
         [NYC_BOUNDS.minLon, NYC_BOUNDS.minLat],
         [NYC_BOUNDS.maxLon, NYC_BOUNDS.maxLat],
@@ -1085,6 +1103,7 @@ export async function createGeographyNavigationMap(options = {}) {
     map,
     maplibregl,
     reducedMotion,
+    forcedColors,
     getState() {
       return {
         activeType,
@@ -1093,6 +1112,7 @@ export async function createGeographyNavigationMap(options = {}) {
         hoveredKey,
         focusedKey,
         pointMarker,
+        forcedColors,
         activeFeatureCount: activeCollection.features?.length || 0,
         comparisonFeatureCount: comparisonCollection.features?.length || 0,
         style: GEOGRAPHY_MAP_STYLE,
@@ -1141,6 +1161,8 @@ export const __test__ = Object.freeze({
   selectedSubset,
   emptyGeoJson,
   prefersReducedMotion,
+  prefersForcedColors,
+  selectedLineWidthForMode,
   EMPTY_FEATURE_COLLECTION,
   FEATURE_STATE_HOVER,
   FEATURE_STATE_FOCUS,
