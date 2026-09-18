@@ -40,15 +40,25 @@ with sync_playwright() as pw:
     assert money_tab_en.strip().lower() == "contracts", f"expected English chrome, got {money_tab_en!r}"  # CSS uppercases tabs
 
     # Switch to Spanish.
+    # setLang() applies English fallbacks immediately, then re-applies once the
+    # lazy shipping dictionary loads. Wait for dictionary-applied chrome — not
+    # merely html[lang] + banner presence — before sampling translated text.
     page.select_option("#langSelect", "es")
     wait_for_function(
         page,
-        "() => document.documentElement.lang === 'es' && document.querySelector('#langNotice')",
+        """() => {
+          const tab = document.querySelector('[data-i18n=tab_money]');
+          const text = (tab?.textContent || '').trim().toLowerCase();
+          return document.documentElement.lang === 'es'
+            && document.querySelector('#langNotice')
+            && text
+            && text !== 'contracts';
+        }""",
         label="Spanish language applied",
     )
     assert sel.input_value() == "es", "Español should now be selected"
     money_tab_es = page.locator('[data-i18n="tab_money"]').first.inner_text()
-    assert money_tab_es.strip().lower() != "money", "chrome must translate on switch"
+    assert money_tab_es.strip().lower() not in ("money", "contracts"), "chrome must translate on switch"
     step("OK", "chrome translates", f"tab_money: {money_tab_en!r} -> {money_tab_es!r}")
 
     assert page.evaluate("document.documentElement.lang") == "es", "document lang must follow"
@@ -67,7 +77,13 @@ with sync_playwright() as pw:
     page.reload()
     wait_for_function(
         page,
-        "() => document.documentElement.lang === 'es' && document.querySelector('[data-i18n=tab_money]')?.textContent.trim()",
+        """() => {
+          const tab = document.querySelector('[data-i18n=tab_money]');
+          const text = (tab?.textContent || '').trim().toLowerCase();
+          return document.documentElement.lang === 'es'
+            && text
+            && text !== 'contracts';
+        }""",
         label="Spanish language restored after reload",
     )
     assert page.locator('[data-i18n="tab_money"]').first.inner_text().strip() == money_tab_es.strip(), "es must survive reload"
