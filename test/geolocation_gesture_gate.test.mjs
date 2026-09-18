@@ -14,7 +14,10 @@ const siteRoot = resolve(new URL("../site", import.meta.url).pathname);
 function sourceFiles(directory) {
   return readdirSync(directory).flatMap((name) => {
     const path = resolve(directory, name);
-    if (name === "data") return [];
+    // Committed data and third-party vendor builds are not CityScroll gesture
+    // gates. MapLibre ships an unused GeolocateControl that mentions
+    // getCurrentPosition; Near You never mounts that control.
+    if (name === "data" || name === "vendor") return [];
     if (statSync(path).isDirectory()) return sourceFiles(path);
     return /\.(?:html|m?js)$/.test(name) ? [path] : [];
   });

@@ -23,7 +23,9 @@ function responseHeaders() {
   return {
     "Content-Type": "text/html; charset=utf-8",
     "Cache-Control": "public, max-age=300, s-maxage=900, stale-while-revalidate=86400",
-    "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cityscroll.org; style-src 'self' https://cityscroll.org https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://cityscroll.org; base-uri 'none'; frame-ancestors 'none'",
+    // Basemap tiles are contextual decoration for the progressive Near You map.
+    // Local boundary layers and controls remain usable when cartocdn is blocked.
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cityscroll.org; worker-src 'self' blob:; style-src 'self' https://cityscroll.org https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.basemaps.cartocdn.com; connect-src 'self' https://cityscroll.org https://*.basemaps.cartocdn.com; base-uri 'none'; frame-ancestors 'none'",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Content-Type-Options": "nosniff",
     "Access-Control-Allow-Origin": SITE_BASE,
