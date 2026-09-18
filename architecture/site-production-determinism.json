@@ -285,6 +285,7 @@
     "site/following_view.mjs",
     "site/franchise_notice.mjs",
     "site/franchise_phase_spine.mjs",
+    "site/geography_navigation_capability.mjs",
     "site/geography_relations.mjs",
     "site/government_observation_refresh.mjs",
     "site/government_observe.mjs",
