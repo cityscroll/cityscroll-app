@@ -385,6 +385,7 @@ family_static_standards() {
   run_and_fail node tools/build_primary_documents.mjs --check
   run_and_fail node tools/build_exam_documents.mjs --check
   run_and_fail node tools/build_near_you_pages.mjs --check
+  run_and_fail node tools/build_geography_crosswalks.mjs --check
   run_and_fail node tools/build_following_page.mjs --check
   run_and_fail node tools/build_guide_documents.mjs --check
   run_and_fail node tools/build_guide_review.mjs --check

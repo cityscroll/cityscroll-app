@@ -1,0 +1,142 @@
+{
+  "schema": "cityscroll.geography_crosswalk_manifest.v1",
+  "from_type": "nta2020",
+  "target_types": [
+    "community_district",
+    "council_district",
+    "police_precinct"
+  ],
+  "generator": {
+    "name": "cityscroll_geography_crosswalk",
+    "version": 1
+  },
+  "method": "polygon_intersection_epsg2263",
+  "threshold": {
+    "min_area_sqft": 50
+  },
+  "materiality": {
+    "field": "pct_from",
+    "minimum_for_navigation": 0.1
+  },
+  "partition_check": {
+    "target_types": [
+      "community_district",
+      "council_district",
+      "police_precinct"
+    ],
+    "tolerance_pct": {
+      "excess": 0.05,
+      "residential_gap": 0.1,
+      "nonresidential_gap": 10
+    },
+    "policy": "fail_closed_no_renormalization"
+  },
+  "commission_pins": {
+    "selected_key": "geography:nta2020:BK1503",
+    "from_vintage": "26B",
+    "row_count": 7
+  },
+  "source_layers": {
+    "nta2020": {
+      "boundary_vintage": "26B",
+      "full_path": "data/geography/layers/nta2020/26B.full.json",
+      "full_sha256": "cc45246a78753a1d46f7925e5269200406de230e4e1f8d4082e7bf07de280ac8",
+      "geometry_fidelity": "full"
+    },
+    "community_district": {
+      "boundary_vintage": "2026-05-26",
+      "full_path": "data/geography/layers/community_district/2026-05-26.full.json",
+      "full_sha256": "07b00972e656fe9ef51e38510cabc42b10368fa1db87d24d5ff1f8c32b8b8ca8",
+      "geometry_fidelity": "full"
+    },
+    "council_district": {
+      "boundary_vintage": "2026-05-26",
+      "full_path": "data/geography/layers/council_district/2026-05-26.full.json",
+      "full_sha256": "207205e5c4c48f45869737793552ed6d8ab4c346b36512e67dcad25656d91242",
+      "geometry_fidelity": "full"
+    },
+    "police_precinct": {
+      "boundary_vintage": "26B",
+      "full_path": "data/geography/layers/police_precinct/26B.full.json",
+      "full_sha256": "3eafc22012253bb95f2dca62fe6e3e7ad378d7c10244b02a09f32ff2c37aa3b0",
+      "geometry_fidelity": "full"
+    }
+  },
+  "shards": [
+    {
+      "path": "site/data/geography/crosswalks/nta2020__community_district/26B__2026-05-26.json",
+      "pair_id": "nta2020__community_district",
+      "from_type": "nta2020",
+      "to_type": "community_district",
+      "source_vintages": {
+        "from": "26B",
+        "to": "2026-05-26"
+      },
+      "source_artifacts": {
+        "from": {
+          "path": "data/geography/layers/nta2020/26B.full.json",
+          "sha256": "cc45246a78753a1d46f7925e5269200406de230e4e1f8d4082e7bf07de280ac8",
+          "geometry_fidelity": "full"
+        },
+        "to": {
+          "path": "data/geography/layers/community_district/2026-05-26.full.json",
+          "sha256": "07b00972e656fe9ef51e38510cabc42b10368fa1db87d24d5ff1f8c32b8b8ca8",
+          "geometry_fidelity": "full"
+        }
+      },
+      "row_count": 717,
+      "material_row_count": 450,
+      "sha256": "f5763440a6951e537af38b4f2833530b9e1f0c0fbeb4e7fbf38b98e27d4576cc"
+    },
+    {
+      "path": "site/data/geography/crosswalks/nta2020__council_district/26B__2026-05-26.json",
+      "pair_id": "nta2020__council_district",
+      "from_type": "nta2020",
+      "to_type": "council_district",
+      "source_vintages": {
+        "from": "26B",
+        "to": "2026-05-26"
+      },
+      "source_artifacts": {
+        "from": {
+          "path": "data/geography/layers/nta2020/26B.full.json",
+          "sha256": "cc45246a78753a1d46f7925e5269200406de230e4e1f8d4082e7bf07de280ac8",
+          "geometry_fidelity": "full"
+        },
+        "to": {
+          "path": "data/geography/layers/council_district/2026-05-26.full.json",
+          "sha256": "207205e5c4c48f45869737793552ed6d8ab4c346b36512e67dcad25656d91242",
+          "geometry_fidelity": "full"
+        }
+      },
+      "row_count": 634,
+      "material_row_count": 473,
+      "sha256": "3fa539b2a2773184ff69b96fac951b05be8e9eac88382f04366c36d2849c5dc0"
+    },
+    {
+      "path": "site/data/geography/crosswalks/nta2020__police_precinct/26B__26B.json",
+      "pair_id": "nta2020__police_precinct",
+      "from_type": "nta2020",
+      "to_type": "police_precinct",
+      "source_vintages": {
+        "from": "26B",
+        "to": "26B"
+      },
+      "source_artifacts": {
+        "from": {
+          "path": "data/geography/layers/nta2020/26B.full.json",
+          "sha256": "cc45246a78753a1d46f7925e5269200406de230e4e1f8d4082e7bf07de280ac8",
+          "geometry_fidelity": "full"
+        },
+        "to": {
+          "path": "data/geography/layers/police_precinct/26B.full.json",
+          "sha256": "3eafc22012253bb95f2dca62fe6e3e7ad378d7c10244b02a09f32ff2c37aa3b0",
+          "geometry_fidelity": "full"
+        }
+      },
+      "row_count": 743,
+      "material_row_count": 479,
+      "sha256": "60a24ed4b72a85af15f06da48ca7db109a815dcd7a80d2b5edc1279a3c9cb2ac"
+    }
+  ]
+}
