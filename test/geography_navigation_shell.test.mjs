@@ -8,15 +8,20 @@ import { join } from "node:path";
 import { test } from "node:test";
 
 import {
+  GEOGRAPHY_SHELL_BASEMAP_CONTRAST_SAMPLES,
   GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL,
   GEOGRAPHY_SHELL_HEADING,
+  GEOGRAPHY_SHELL_LABEL_BUDGET,
   GEOGRAPHY_SHELL_MORE_BOUNDARIES_LABEL,
   GEOGRAPHY_SHELL_USE_LOCATION_LABEL,
   RESIDENT_GEOGRAPHY_SHELL_SCHEMA,
   areaEntryKeys,
   areaListMatchesMapKeys,
+  contrastRatio,
+  estimateNeighborhoodLabelBudget,
   geographyShellAreasListHtml,
   geographyShellLayerSwitcherHtml,
+  labelWrapsToAtMostTwoLines,
   navigationAreaEntriesFromLayerDoc,
   renderGeographyShellEntry,
   resolveShellSurface,
@@ -26,6 +31,11 @@ import {
   GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
 } from "../site/geography_navigation_state.mjs";
 import { geographyNavigationPrimaryLayers, geographyNavigationMoreBoundaryLayers } from "../site/geography_navigation_capability.mjs";
+import {
+  GEOGRAPHY_MAP_LAYER_IDS,
+  GEOGRAPHY_MAP_STYLE,
+  __test__ as geographyMapTest,
+} from "../site/geography_navigation_map.mjs";
 import { buildNearYouViewModel, renderNearYouDocument } from "../site/near_you_view.mjs";
 import { scopeFromLensState } from "../site/scope_v0.mjs";
 import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
@@ -220,4 +230,63 @@ test("entry chrome render includes required first-viewport controls", () => {
   assert.match(html, /Use my location/);
   assert.match(html, /Browse records/);
   assert.match(html, /data-near-surface="map"[^>]*aria-current="true"|aria-current="true"[^>]*data-near-surface="map"/);
+});
+
+test("A13: all-city label budgets stay inside 12–40 desktop and 6–20 narrow", () => {
+  const desktop = estimateNeighborhoodLabelBudget(GEOGRAPHY_SHELL_LABEL_BUDGET.desktop);
+  const narrow = estimateNeighborhoodLabelBudget(GEOGRAPHY_SHELL_LABEL_BUDGET.narrow);
+  assert.ok(desktop);
+  assert.ok(narrow);
+  assert.ok(desktop.estimate >= 12 && desktop.estimate <= 40, `desktop budget ${desktop.estimate}`);
+  assert.ok(narrow.estimate >= 6 && narrow.estimate <= 20, `narrow budget ${narrow.estimate}`);
+  assert.deepEqual(
+    { min: desktop.min, max: desktop.max },
+    { min: GEOGRAPHY_SHELL_LABEL_BUDGET.desktop.min, max: GEOGRAPHY_SHELL_LABEL_BUDGET.desktop.max },
+  );
+  assert.deepEqual(
+    { min: narrow.min, max: narrow.max },
+    { min: GEOGRAPHY_SHELL_LABEL_BUDGET.narrow.min, max: GEOGRAPHY_SHELL_LABEL_BUDGET.narrow.max },
+  );
+
+  const style = geographyMapTest.buildBaseStyle();
+  const labels = style.layers.find((layer) => layer.id === GEOGRAPHY_MAP_LAYER_IDS.labels);
+  const selected = style.layers.find((layer) => layer.id === GEOGRAPHY_MAP_LAYER_IDS.selectedLabel);
+  assert.equal(labels.layout["text-allow-overlap"], false);
+  assert.equal(labels.layout["text-ignore-placement"], false);
+  assert.equal(selected.layout["text-allow-overlap"], true);
+  assert.equal(selected.layout["text-field"][1], "label");
+  assert.equal(labels.layout["text-field"][1], "label");
+  // Selected neighborhood name remains drawable even when ordinary labels collide.
+  assert.notEqual(labels.layout["text-allow-overlap"], selected.layout["text-allow-overlap"]);
+});
+
+test("A14: quiet fills, two-line wrap, label/halo contrast, and no NTA codes as primary copy", () => {
+  assert.ok(GEOGRAPHY_MAP_STYLE.ACTIVE_FILL_OPACITY < 0.2);
+  assert.ok(GEOGRAPHY_MAP_STYLE.SELECTED_FILL_OPACITY <= 0.25);
+  assert.ok(GEOGRAPHY_MAP_STYLE.SELECTED_LINE_WIDTH > GEOGRAPHY_MAP_STYLE.ACTIVE_LINE_WIDTH);
+  assert.ok(labelWrapsToAtMostTwoLines(10));
+  assert.ok(labelWrapsToAtMostTwoLines(12));
+  assert.equal(labelWrapsToAtMostTwoLines(1, { typicalChars: 18 }), false);
+
+  const style = geographyMapTest.buildBaseStyle();
+  const labels = style.layers.find((layer) => layer.id === GEOGRAPHY_MAP_LAYER_IDS.labels);
+  assert.equal(labels.paint["text-color"], GEOGRAPHY_MAP_STYLE.LABEL_TEXT_COLOR);
+  assert.equal(labels.paint["text-halo-color"], GEOGRAPHY_MAP_STYLE.LABEL_HALO_COLOR);
+  const labelOnHalo = contrastRatio(
+    GEOGRAPHY_MAP_STYLE.LABEL_TEXT_COLOR,
+    GEOGRAPHY_MAP_STYLE.LABEL_HALO_COLOR,
+  );
+  assert.ok(labelOnHalo >= 4.5, `label/halo contrast ${labelOnHalo}`);
+  for (const sample of GEOGRAPHY_SHELL_BASEMAP_CONTRAST_SAMPLES) {
+    const haloOnBasemap = contrastRatio(GEOGRAPHY_MAP_STYLE.LABEL_HALO_COLOR, sample);
+    // Halo stays light against quiet basemap samples; label contrast is via halo.
+    assert.ok(haloOnBasemap != null);
+    const labelThroughHalo = contrastRatio(GEOGRAPHY_MAP_STYLE.LABEL_TEXT_COLOR, sample);
+    assert.ok(labelThroughHalo >= 4.5, `label vs basemap ${sample}: ${labelThroughHalo}`);
+  }
+
+  const entries = navigationAreaEntriesFromLayerDoc(NTA_LAYER, { layerType: "nta2020" });
+  assert.ok(entries.every((entry) => !/^[A-Z]{2}\d{4}$/.test(entry.label)));
+  assert.doesNotMatch(MAP_ISLAND_SOURCE, /map_runtime\.mjs/);
+  assert.match(MAP_ISLAND_SOURCE, /createGeographyNavigationMap/);
 });

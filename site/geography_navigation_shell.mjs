@@ -29,6 +29,20 @@ export const GEOGRAPHY_SHELL_SEARCH_LABEL = "Address or place";
 export const GEOGRAPHY_SHELL_SEARCH_PLACEHOLDER = "Neighborhood, district, or address";
 export const GEOGRAPHY_SHELL_AREAS_HEADING = "Areas";
 
+/** Binding viewport budgets for residential neighborhood labels at all-city zoom. */
+export const GEOGRAPHY_SHELL_LABEL_BUDGET = Object.freeze({
+  desktop: Object.freeze({ width: 1440, height: 900, min: 12, max: 40 }),
+  narrow: Object.freeze({ width: 390, height: 844, min: 6, max: 20 }),
+});
+
+/** Basemap sample fills used for label/halo contrast checks (quiet light basemap). */
+export const GEOGRAPHY_SHELL_BASEMAP_CONTRAST_SAMPLES = Object.freeze([
+  "#f4f1ea",
+  "#f0eee8",
+  "#e8e6e0",
+  "#ffffff",
+]);
+
 function esc(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -234,5 +248,70 @@ export function resolveShellSurface(raw, { hasExplicitSurface = false, hasPlace 
   // Ordinary enhanced entry opens Map; selected-place routes keep Records leading
   // unless an explicit surface says otherwise.
   if (hasExplicitSurface) return GEOGRAPHY_NAVIGATION_DEFAULT_SURFACE;
-  return hasPlace ? GEOGRAPHY_NAVIGATION_SURFACE_RECORDS : GEOGRAPHY_NAVIGATION_SURFACE_MAP;
+  return hasPlace ? GEOGRAPHY_NAVIGATION_SURFACE_RECORDS : GEOGRAPHY_NAVIGATION_DEFAULT_SURFACE;
+}
+
+function srgbChannel(value) {
+  const channel = Number(value) / 255;
+  return channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+}
+
+function parseHexColor(hex) {
+  const raw = String(hex || "").replace("#", "").trim();
+  if (!/^[0-9a-fA-F]{6}$/.test(raw)) return null;
+  return [
+    Number.parseInt(raw.slice(0, 2), 16),
+    Number.parseInt(raw.slice(2, 4), 16),
+    Number.parseInt(raw.slice(4, 6), 16),
+  ];
+}
+
+export function relativeLuminance(hex) {
+  const rgb = parseHexColor(hex);
+  if (!rgb) return null;
+  return 0.2126 * srgbChannel(rgb[0]) + 0.7152 * srgbChannel(rgb[1]) + 0.0722 * srgbChannel(rgb[2]);
+}
+
+/** WCAG contrast ratio between two hex colors. */
+export function contrastRatio(foregroundHex, backgroundHex) {
+  const left = relativeLuminance(foregroundHex);
+  const right = relativeLuminance(backgroundHex);
+  if (left == null || right == null) return null;
+  const lighter = Math.max(left, right);
+  const darker = Math.min(left, right);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+/**
+ * Deterministic all-city residential label budget from viewport size.
+ * Matches the binding 12–40 / 6–20 ranges; collision-aware rendering must stay inside.
+ */
+export function estimateNeighborhoodLabelBudget({ width, height } = {}) {
+  const w = Number(width);
+  const h = Number(height);
+  if (!Number.isFinite(w) || !Number.isFinite(h) || w <= 0 || h <= 0) return null;
+  // ~11ch × 2 lines at 12px with halo padding ≈ 132×36 CSS px per label cell.
+  const cell = 132 * 36;
+  const usable = Math.max(0, (w - 48) * (h - 120));
+  const estimate = Math.floor(usable / cell);
+  if (w >= 1200) {
+    return Object.freeze({
+      estimate: Math.min(GEOGRAPHY_SHELL_LABEL_BUDGET.desktop.max, Math.max(GEOGRAPHY_SHELL_LABEL_BUDGET.desktop.min, estimate)),
+      min: GEOGRAPHY_SHELL_LABEL_BUDGET.desktop.min,
+      max: GEOGRAPHY_SHELL_LABEL_BUDGET.desktop.max,
+    });
+  }
+  return Object.freeze({
+    estimate: Math.min(GEOGRAPHY_SHELL_LABEL_BUDGET.narrow.max, Math.max(GEOGRAPHY_SHELL_LABEL_BUDGET.narrow.min, estimate)),
+    min: GEOGRAPHY_SHELL_LABEL_BUDGET.narrow.min,
+    max: GEOGRAPHY_SHELL_LABEL_BUDGET.narrow.max,
+  });
+}
+
+/** True when text-max-width ems at the given size wrap to at most two lines for typical names. */
+export function labelWrapsToAtMostTwoLines(textMaxWidthEm, { typicalChars = 18, charsPerEm = 2 } = {}) {
+  const width = Number(textMaxWidthEm);
+  if (!Number.isFinite(width) || width <= 0) return false;
+  const charsPerLine = width * charsPerEm;
+  return typicalChars / charsPerLine <= 2;
 }

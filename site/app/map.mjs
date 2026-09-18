@@ -456,7 +456,8 @@ async function loadGeographyLayer(type) {
 }
 
 function refreshGeographyAreasList(type, layerDoc) {
-  const panel = root.querySelector("#near-area-list, [data-geography-areas]");
+  const panel = root.querySelector("#near-area-list")
+    || root.querySelector("[data-geography-areas]");
   if (!panel || !layerDoc) return;
   const html = geographyShellAreasListHtml(
     (layerDoc.features || []).map((feature) => ({
