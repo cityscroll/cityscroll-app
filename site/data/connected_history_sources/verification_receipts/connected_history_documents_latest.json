@@ -1,0 +1,19 @@
+{
+  "schema": "cityscroll.connected_history_documents_receipt.v1",
+  "version": 1,
+  "observed_at": "2026-09-18T00:00:00.000Z",
+  "parser_version": "connected_history_documents.v1",
+  "max_retries": 2,
+  "checkpointed": true,
+  "request_count": 13,
+  "counts": {
+    "sources": 12,
+    "retained": 12,
+    "acquisition_failures": 0,
+    "dot_selectors_resolved": 5,
+    "dot_selectors_mismatched": 0
+  },
+  "selection_hash": "7789b0bb88f3a6390fff67e5c9d3d495b0f78a1c36726b43a8f921897817cbaf",
+  "artifact": "site/data/connected_history_documents.json",
+  "failures": []
+}

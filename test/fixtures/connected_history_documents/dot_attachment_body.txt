@@ -1,0 +1,3 @@
+NYC DOT community board presentation attachment (fixture bytes).
+This file stands in for resolved PDF attachments under the fixed dossier
+selectors during offline acquisition. It is not an open consultation.
