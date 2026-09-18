@@ -55,8 +55,8 @@ SURFACES = (
     ("property", "#property", "#propertyfeed .fcard"),
     ("rules", "#rules", "#rulesfeed .fcard"),
     ("meetings", "#meetings", "#meetingsfeed .fcard"),
-    # List-first mobile Near you: exact records ready before the optional Map surface.
-    ("near you", "near-you/", ".near-results[data-results-count], [data-near-surface='list']"),
+    # Map-first mobile Near you: geography shell and Map surface ready before Records.
+    ("near you", "near-you/", "#near-geo-heading, [data-near-surface='map'], .near-geo-workspace"),
     ("following", "following/", "[data-following-preview-form]"),
     ("rule detail", "#notice/20260714029", ".rule-phase-stepper"),
     ("reader action", "#notice/20260701099", "#noticeview .panel"),
@@ -259,35 +259,47 @@ def run(base: str) -> None:
             if name == "near you":
                 contract = page.evaluate(
                     """() => ({
-                      count: Number(document.querySelector('.near-results')?.dataset.resultsCount || 0),
-                      ids: [...document.querySelectorAll('.near-results [data-record-id]')].map(el => el.dataset.recordId),
-                      paths: Object.fromEntries([...document.querySelectorAll('[data-map-id]')].map(el => [el.dataset.mapId, Number(el.dataset.count)])),
-                      areas: Object.fromEntries([...document.querySelectorAll('[data-map-area]')].map(el => [el.dataset.mapArea, Number(el.dataset.count)])),
+                      heading: (document.querySelector('#near-geo-heading')?.textContent || '').trim(),
+                      areaCount: document.querySelectorAll('.near-area-list a[data-geography-key], .near-area-list a[data-map-area]').length,
                       enhanced: document.querySelector('[data-near-you-root]')?.dataset.enhanced,
-                      listFirst: getComputedStyle(document.querySelector('[data-near-surface-panel="records"]')||document.body).display !== 'none',
-                      mapHidden: getComputedStyle(document.querySelector('[data-near-surface-panel="map"]')||document.body).display === 'none',
+                      surface: document.querySelector('[data-near-you-root]')?.dataset.nearSurface
+                        || document.querySelector('[data-near-you-root]')?.dataset.nearMobileSurface
+                        || null,
+                      mapVisible: getComputedStyle(document.querySelector('[data-near-surface-panel="map"]')||document.body).display !== 'none',
+                      recordsHidden: getComputedStyle(document.querySelector('[data-near-surface-panel="records"]')||document.body).display === 'none',
                     })"""
                 )
-                assert len(contract["ids"]) == len(set(contract["ids"])), contract
-                assert len(contract["ids"]) <= contract["count"], contract
-                if len(contract["ids"]) < contract["count"]:
-                    assert page.locator(".near-results-more a").count() == 1, contract
-                assert contract["paths"] == contract["areas"], contract
+                assert "near you" in contract["heading"].lower(), contract
+                assert contract["areaCount"] > 0, contract
                 assert contract["enhanced"] == "true", contract
-                assert contract["listFirst"], contract
-                # Enhanced mobile defaults to the list surface; Map remains one tap away.
+                # Enhanced mobile defaults to Map; Records remains one tap away.
                 if contract["enhanced"] == "true":
-                    assert contract["mapHidden"], contract
-                    map_switch = page.locator("[data-near-surface='map']")
-                    assert map_switch.count() > 0, contract
-                    map_switch.first.click()
+                    assert contract["mapVisible"], contract
+                    assert contract["recordsHidden"], contract
                     wait_for_locator(
                         page.locator(".near-area-list a").first,
                         label="Near you map area link",
                     )
-                    assert page.evaluate(
-                        """() => getComputedStyle(document.querySelector('[data-near-surface-panel="map"]')).display !== 'none'"""
+                    records_switch = page.locator("[data-near-surface='records']")
+                    assert records_switch.count() > 0, contract
+                    records_switch.first.click()
+                    wait_for_locator(
+                        page.locator(".near-results[data-results-count], #near-results-heading").first,
+                        label="Near you records surface",
                     )
+                    assert page.evaluate(
+                        """() => getComputedStyle(document.querySelector('[data-near-surface-panel="records"]')).display !== 'none'"""
+                    )
+                    records = page.evaluate(
+                        """() => ({
+                          count: Number(document.querySelector('.near-results')?.dataset.resultsCount || 0),
+                          ids: [...document.querySelectorAll('.near-results [data-record-id]')].map(el => el.dataset.recordId),
+                        })"""
+                    )
+                    assert len(records["ids"]) == len(set(records["ids"])), records
+                    assert len(records["ids"]) <= records["count"], records
+                    if len(records["ids"]) < records["count"]:
+                        assert page.locator(".near-results-more a").count() == 1, records
                 else:
                     wait_for_locator(
                         page.locator(".near-area-list a").first,
