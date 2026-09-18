@@ -374,6 +374,48 @@ test("A1/A2/A8: renderer seam drives pan, zoom, selection, comparison persistenc
   assert.equal(root.dataset.nearMapRuntime, "svg");
 });
 
+test("A1: click selection and hover highlight operate through the renderer seam", async () => {
+  const { root, host } = fakeRoot();
+  const fake = createFakeMap();
+  const selections = [];
+  const hovers = [];
+  const controller = await createGeographyNavigationMap({
+    container: host,
+    root,
+    reducedMotion: true,
+    importMapLibre: async () => ({ Map: function Map() {} }),
+    createMap: fake.createMap,
+    onSelect: (event) => selections.push(event),
+    onHover: (event) => hovers.push(event),
+  });
+
+  controller.setActiveLayer("nta2020", NTA_LAYER);
+  const expectedKey = fake.map.getSource(GEOGRAPHY_MAP_SOURCE_IDS.active).data.features[0].properties.key;
+  assert.ok(expectedKey);
+
+  fake.map.emit("mousemove", { point: { x: 12, y: 18 } });
+  assert.equal(controller.getState().hoveredKey, expectedKey);
+  assert.equal(
+    fake.map.featureState.get(`${GEOGRAPHY_MAP_SOURCE_IDS.active}:${expectedKey}`).hover,
+    true,
+  );
+  assert.ok(hovers.some((event) => event.key === expectedKey));
+
+  fake.map.emit("mouseleave");
+  assert.equal(controller.getState().hoveredKey, null);
+  assert.ok(hovers.some((event) => event.key === null));
+
+  fake.map.emit("click", { point: { x: 12, y: 18 } });
+  assert.equal(controller.getState().selectedKey, expectedKey);
+  assert.ok(selections.some((event) => event.method === "click" && event.key === expectedKey));
+  assert.equal(
+    fake.map.getSource(GEOGRAPHY_MAP_SOURCE_IDS.selected).data.features[0].properties.key,
+    expectedKey,
+  );
+
+  controller.destroy();
+});
+
 test("A5: basemap attribution is present; tile failure does not destroy local layers", async () => {
   const { root, host } = fakeRoot();
   const fake = createFakeMap();
@@ -537,7 +579,7 @@ test("A10: inventory includes the public module; adapter never computes membersh
   );
 });
 
-test("A12: style paint uses named constants; ordinary map is not a choropleth", () => {
+test("A12: style paint uses named constants; forced-colors selection width is consumed; ordinary map is not a choropleth", async () => {
   const style = __test__.buildBaseStyle();
   const activeFill = style.layers.find((layer) => layer.id === GEOGRAPHY_MAP_LAYER_IDS.activeFill);
   const selectedLine = style.layers.find((layer) => layer.id === GEOGRAPHY_MAP_LAYER_IDS.selectedLine);
@@ -553,6 +595,52 @@ test("A12: style paint uses named constants; ordinary map is not a choropleth", 
   assert.equal(selectedLabel.layout["text-allow-overlap"], true);
   assert.equal(selectedLabel.layout["text-field"][1], "label");
   assert.doesNotMatch(JSON.stringify(style), /choropleth|fill-color.*interpolate.*count/i);
+
+  assert.equal(
+    __test__.selectedLineWidthForMode(false),
+    GEOGRAPHY_MAP_STYLE.SELECTED_LINE_WIDTH,
+  );
+  assert.equal(
+    __test__.selectedLineWidthForMode(true),
+    GEOGRAPHY_MAP_STYLE.FORCED_COLORS_SELECTED_LINE_WIDTH,
+  );
+  assert.notEqual(
+    GEOGRAPHY_MAP_STYLE.FORCED_COLORS_SELECTED_LINE_WIDTH,
+    GEOGRAPHY_MAP_STYLE.SELECTED_LINE_WIDTH,
+  );
+
+  const forcedStyle = __test__.buildBaseStyle({ forcedColors: true });
+  const forcedSelectedLine = forcedStyle.layers.find(
+    (layer) => layer.id === GEOGRAPHY_MAP_LAYER_IDS.selectedLine,
+  );
+  assert.equal(
+    forcedSelectedLine.paint["line-width"],
+    GEOGRAPHY_MAP_STYLE.FORCED_COLORS_SELECTED_LINE_WIDTH,
+  );
+  assert.notEqual(forcedSelectedLine.paint["line-width"], selectedLine.paint["line-width"]);
+
+  const { root, host } = fakeRoot();
+  let capturedStyle = null;
+  const fake = createFakeMap();
+  const controller = await createGeographyNavigationMap({
+    container: host,
+    root,
+    forcedColors: true,
+    importMapLibre: async () => ({ Map: function Map() {} }),
+    createMap(maplibregl, options) {
+      capturedStyle = options.style;
+      return fake.createMap(maplibregl, options);
+    },
+  });
+  assert.equal(controller.forcedColors, true);
+  const liveSelectedLine = capturedStyle.layers.find(
+    (layer) => layer.id === GEOGRAPHY_MAP_LAYER_IDS.selectedLine,
+  );
+  assert.equal(
+    liveSelectedLine.paint["line-width"],
+    GEOGRAPHY_MAP_STYLE.FORCED_COLORS_SELECTED_LINE_WIDTH,
+  );
+  controller.destroy();
 });
 
 test("A13 special-use labels stay off the ordinary filter until zoom or selection", async () => {
