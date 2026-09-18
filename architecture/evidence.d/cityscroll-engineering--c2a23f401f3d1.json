@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c2a23f401f3d1",
+  "status": "implemented",
+  "fingerprint": "resident-geography-selection-overlap-drawer.v1",
+  "updated_at": "2026-09-18T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "resident-geography-overlap-ui",
+      "path": "site/geography_navigation_overlap_ui.mjs"
+    },
+    {
+      "id": "resident-geography-overlap-ui-tests",
+      "path": "test/geography_navigation_overlap_ui.test.mjs"
+    },
+    {
+      "id": "near-you-view-renderer",
+      "path": "site/near_you_view.mjs"
+    },
+    {
+      "id": "near-you-map-island",
+      "path": "site/app/map.mjs"
+    },
+    {
+      "id": "geography-navigation-shell-capture",
+      "path": "tools/capture_geography_navigation.py"
+    },
+    {
+      "id": "geography-navigation-overlap-manifest",
+      "path": "docs/evidence/geography-navigation-overlap/capture-manifest.json"
+    }
+  ]
+}
