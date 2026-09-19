@@ -861,6 +861,9 @@ export function classifyBrowserObservation(observation) {
       },
     }), EVIDENCE_TYPES.BROWSER_DOM);
   }
+  const retainedEvidence = observation.evidence && typeof observation.evidence === "object"
+    ? observation.evidence
+    : null;
   return withEvidenceType(productionPathObservation({
     id: observation.id,
     url: observation.url,
@@ -876,6 +879,8 @@ export function classifyBrowserObservation(observation) {
       render_hash: observation.render_hash || null,
       revision: observation.revision || null,
       data_vintage: observation.data_vintage || null,
+      ...(retainedEvidence?.desktop ? { desktop: retainedEvidence.desktop } : {}),
+      ...(retainedEvidence?.mobile ? { mobile: retainedEvidence.mobile } : {}),
     },
   }), EVIDENCE_TYPES.BROWSER_DOM);
 }

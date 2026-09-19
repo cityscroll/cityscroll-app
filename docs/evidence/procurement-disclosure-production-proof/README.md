@@ -19,8 +19,10 @@ assertions cover Firematic original/current/action amounts and TAMEER
 original/current/action amounts from retained fixtures (or an explicitly dated
 newer source observation). BHRAGS requires headline/payment-section agreement,
 31 payments, source dates, and scoped coverage. Browser obligations at 1440x900
-and 390x844 must run after app readiness and notice settlement; HTML equality,
-viewport request headers, HTTP 200, and text hashes are supporting evidence only.
+and 390x844 must run after app readiness and notice settlement; museum scope must
+remain visible at both sizes, and search `ACEDCA215` must expose a usable result
+link that opens the museum notice at both sizes. HTML equality, viewport request
+headers, HTTP 200, and text hashes are supporting evidence only.
 
 ## Regenerate
 
