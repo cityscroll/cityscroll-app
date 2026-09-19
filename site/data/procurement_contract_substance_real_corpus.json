@@ -1,0 +1,151 @@
+{
+  "schema": "cityscroll.procurement_contract_substance_real_corpus.v1",
+  "generated_at": "2026-09-19T07:05:00.000Z",
+  "retrieval_vintage": {
+    "retrieved_at": "2026-09-19T07:05:00.000Z",
+    "baseline_revision": "7d950ae75bd3066a6fa82d150f5f3162ccfcbc03",
+    "notes": "Hash-addressed retention of four official public documents used to ground contract-substance access. MOCS remains proposed without admitted signature and effective status. The Comptroller audit links to CT180620248801671 by contract number 20248801671 and is not the executed agreement."
+  },
+  "document_roles": {
+    "award_notice": "award_notice",
+    "bid_tab": "bid_tab",
+    "proposed_agreement": "proposed_agreement",
+    "site_schedule": "site_schedule",
+    "performance_evaluation": "performance_evaluation"
+  },
+  "fixed_contract_ids": [
+    "CT107120258801626",
+    "CT110220271400991",
+    "CT105720278802113",
+    "CT104020273009333"
+  ],
+  "docgo_contract_id": "CT180620248801671",
+  "docgo_contract_number": "20248801671",
+  "absence_scope": "An unlocated executed agreement remains a bounded access result and is not an assertion that no agreement exists.",
+  "role_boundary": "Bid tabs, proposed agreements, site schedules, award notices, and performance evaluations retain their source roles and do not become executed agreements without independent signature and effective-status evidence.",
+  "rows": [
+    {
+      "document_id": "city-record-notice-20240829105",
+      "publisher": "NYC City Record Online",
+      "retrieved_at": "2026-09-19T07:05:00.000Z",
+      "final_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20240829105",
+      "content_hash": "sha256:b5891c5d897765a1f6314fbe9e96fc47c23b1dae0624cfbecc9b59c76322d445",
+      "media_type": "text/html",
+      "page_count": null,
+      "extraction_extent": "full HTML notice detail for request_id 20240829105",
+      "locator": "section Notice Detail / request_id 20240829105 / facility 3218 Emmons Avenue",
+      "document_role": "award_notice",
+      "publication_date": "2024-09-05",
+      "redistribution_authority": true,
+      "first_party_provenance": true,
+      "execution_evidence": {
+        "signature_present": false,
+        "effective_status_admitted": false,
+        "status": "not_admitted",
+        "notes": "Award notice is not an executed agreement."
+      },
+      "identity_links": [
+        {
+          "relation": "exact_contract_id",
+          "contract_id": "CT107120258801626",
+          "matched_value": "CT107120258801626"
+        }
+      ]
+    },
+    {
+      "document_id": "dcas-bid-tab-2000090",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "retrieved_at": "2026-09-19T07:05:00.000Z",
+      "final_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/business/bidtabs/2000090.pdf",
+      "content_hash": "sha256:87c994e8427d1e6c19ea89d4c63e805ab09890d8e81ba24d609f2e7dc4f8d447",
+      "media_type": "application/pdf",
+      "page_count": 2,
+      "extraction_extent": "2 PDF pages; item descriptions and unit prices on page 1; class-award totals on page 2",
+      "locator": "PDF page 1 / BID NUMBER 2000090 tabulation; PDF page 2 / class awards",
+      "document_role": "bid_tab",
+      "publication_date": "2020-02-27",
+      "redistribution_authority": true,
+      "first_party_provenance": true,
+      "execution_evidence": {
+        "signature_present": false,
+        "effective_status_admitted": false,
+        "status": "not_admitted",
+        "notes": "Bid tabulation is bid evidence, not executed-contract pricing."
+      },
+      "identity_links": []
+    },
+    {
+      "document_id": "mocs-fcrc-packet-202411-proposed-agreement",
+      "publisher": "NYC Mayor's Office of Contract Services",
+      "retrieved_at": "2026-09-19T07:05:00.000Z",
+      "final_url": "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf",
+      "content_hash": "sha256:0ec5d908a7a4dbe09ff52079cebd63756c054be39cc240c59a785cbb4209e4d8",
+      "media_type": "application/pdf",
+      "page_count": 207,
+      "extraction_extent": "207 PDF pages; GrowNYC proposed license agreement with blank signature blocks",
+      "locator": "PDF page 70 / IN WITNESS WHEREOF; PDF page 71 / blank notary acknowledgment for GrowNYC",
+      "document_role": "proposed_agreement",
+      "publication_date": "2024-11-01",
+      "redistribution_authority": true,
+      "first_party_provenance": true,
+      "execution_evidence": {
+        "signature_present": false,
+        "effective_status_admitted": false,
+        "status": "blank_signature",
+        "notes": "Notary and signature lines are blank; agreement remains proposed."
+      },
+      "identity_links": []
+    },
+    {
+      "document_id": "mocs-fcrc-packet-202411-site-schedule",
+      "publisher": "NYC Mayor's Office of Contract Services",
+      "retrieved_at": "2026-09-19T07:05:00.000Z",
+      "final_url": "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf",
+      "content_hash": "sha256:0ec5d908a7a4dbe09ff52079cebd63756c054be39cc240c59a785cbb4209e4d8",
+      "media_type": "application/pdf",
+      "page_count": 207,
+      "extraction_extent": "207 PDF pages; Exhibit A GrowNYC Greenmarket locations, days, and hours",
+      "locator": "PDF page 72 / EXHIBIT A GrowNYC Greenmarket Permit Locations, Days and Hours of Operation",
+      "document_role": "site_schedule",
+      "publication_date": "2024-11-01",
+      "redistribution_authority": true,
+      "first_party_provenance": true,
+      "execution_evidence": {
+        "signature_present": false,
+        "effective_status_admitted": false,
+        "status": "not_admitted",
+        "notes": "Site schedule is part of the proposed packet and is not an executed agreement."
+      },
+      "identity_links": []
+    },
+    {
+      "document_id": "comptroller-docgo-audit-20248801671",
+      "publisher": "Office of the New York City Comptroller",
+      "retrieved_at": "2026-09-19T07:05:00.000Z",
+      "final_url": "https://comptroller.nyc.gov/reports/audit-of-the-department-of-housing-preservation-and-developments-oversight-of-its-contract-with-rapid-reliable-testing-ny-llc-aka-docgo/",
+      "content_hash": "sha256:b5fb5a340d7e5d9801911c2cb2b46148a0a6be74f1fb1511237102007c80fede",
+      "media_type": "text/html",
+      "page_count": null,
+      "extraction_extent": "full HTML audit report body",
+      "locator": "section Audit Report / contract 20248801671 / reported meal and security rates",
+      "document_role": "performance_evaluation",
+      "publication_date": "2024-08-06",
+      "redistribution_authority": true,
+      "first_party_provenance": true,
+      "execution_evidence": {
+        "signature_present": false,
+        "effective_status_admitted": false,
+        "status": "not_admitted",
+        "notes": "Comptroller audit reports contract terms and later performance; it is not the executed agreement."
+      },
+      "identity_links": [
+        {
+          "relation": "exact_contract_number",
+          "contract_id": "CT180620248801671",
+          "matched_value": "20248801671"
+        }
+      ],
+      "reports_contract_number": "20248801671"
+    }
+  ]
+}
