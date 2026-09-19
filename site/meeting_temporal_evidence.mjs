@@ -28,10 +28,10 @@ export const MEETING_SCHEDULE_BASES = Object.freeze([
 
 export const DEFAULT_MEETING_TIMEZONE = "America/New_York";
 
-const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
-const ISO_DATE_TIME = /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(Z|[+-]\d{2}:?\d{2})?$/;
-const CLOCK = /^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?$/i;
-const US_DATE = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+const MEETING_ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
+const MEETING_ISO_DATE_TIME = /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(Z|[+-]\d{2}:?\d{2})?$/;
+const MEETING_CLOCK = /^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?$/i;
+const MEETING_US_DATE = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
 
 function text(value) {
   const result = String(value ?? "").trim();
@@ -45,14 +45,14 @@ function object(value) {
 function validIsoDate(value) {
   const candidate = text(value);
   if (!candidate) return null;
-  const iso = candidate.match(ISO_DATE);
+  const iso = candidate.match(MEETING_ISO_DATE);
   const normalized = iso
     ? candidate
-    : candidate.match(US_DATE)
-      ? `${candidate.match(US_DATE)[3]}-${candidate.match(US_DATE)[1].padStart(2, "0")}-${candidate.match(US_DATE)[2].padStart(2, "0")}`
+    : candidate.match(MEETING_US_DATE)
+      ? `${candidate.match(MEETING_US_DATE)[3]}-${candidate.match(MEETING_US_DATE)[1].padStart(2, "0")}-${candidate.match(MEETING_US_DATE)[2].padStart(2, "0")}`
       : null;
   if (!normalized) return null;
-  const [, year, month, day] = normalized.match(ISO_DATE);
+  const [, year, month, day] = normalized.match(MEETING_ISO_DATE);
   const date = new Date(`${normalized}T00:00:00Z`);
   return date.getUTCFullYear() === Number(year)
     && date.getUTCMonth() + 1 === Number(month)
@@ -64,7 +64,7 @@ function validIsoDate(value) {
 function validDateTime(value) {
   const candidate = text(value);
   if (!candidate) return null;
-  const match = candidate.match(ISO_DATE_TIME);
+  const match = candidate.match(MEETING_ISO_DATE_TIME);
   if (!match) return null;
   const [, year, month, day, hour, minute, second = "00", offset] = match;
   const numeric = [year, month, day, hour, minute, second].map(Number);
@@ -82,7 +82,7 @@ function validDateTime(value) {
 function normalizeClock(value) {
   const candidate = text(value);
   if (!candidate) return null;
-  const match = candidate.match(CLOCK);
+  const match = candidate.match(MEETING_CLOCK);
   if (!match) return null;
   let hour = Number(match[1]);
   const minute = Number(match[2]);
