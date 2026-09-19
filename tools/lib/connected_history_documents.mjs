@@ -598,13 +598,14 @@ async function fetchWithRetries(httpGet, url, {
   let lastError = null;
   while (retries <= maxRetries) {
     const requestedAt = observedAt;
-    const started = Date.now();
     try {
       const result = await httpGet(url);
       const retrievedAt = observedAt;
       const status = Number.isInteger(result?.status) ? result.status : null;
       const bytes = result?.bytes ? Buffer.from(result.bytes) : null;
       const ok = Boolean(bytes) && status != null && status >= 200 && status < 300;
+      // Request/retrieved timestamps are pinned to observedAt for deterministic
+      // materialization, so latency_ms stays 0 rather than wall-clock noise.
       const receipt = buildAcquisitionRequestReceipt({
         requestId: retries === 0 ? requestId : `${requestId}:retry${retries}`,
         parentRequestId,
@@ -613,7 +614,7 @@ async function fetchWithRetries(httpGet, url, {
         retrievedAt,
         status,
         bytes: ok ? bytes : null,
-        latencyMs: Date.now() - started,
+        latencyMs: 0,
         parserVersion: CONNECTED_HISTORY_DOCUMENTS_PARSER_VERSION,
         outcome: ok ? "ok" : "retrieval_failure",
         reason: ok ? null : `http_status_${status ?? "missing"}`,
@@ -634,7 +635,7 @@ async function fetchWithRetries(httpGet, url, {
         retrievedAt,
         status: null,
         bytes: null,
-        latencyMs: Date.now() - started,
+        latencyMs: 0,
         parserVersion: CONNECTED_HISTORY_DOCUMENTS_PARSER_VERSION,
         outcome: "retrieval_failure",
         reason: `request_failed:${clean(error?.message, 120)}`,
