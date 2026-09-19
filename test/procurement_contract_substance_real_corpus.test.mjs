@@ -16,6 +16,7 @@ import {
   attachDocumentViaExactIdentity,
   buildRealCorpusDocument,
   classifyCorpusDocumentRole,
+  evaluateExecutedScopeClaims,
   mutationBlocksExecutedScopeClaims,
   refuseNonPublicOrExecutedClaim,
   resolveDocGoAuditIdentity,
@@ -24,6 +25,7 @@ import {
   validateRealCorpusCoverage,
   verifyRetainedBytes,
 } from "../site/procurement_contract_substance_real_corpus.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const CORPUS = JSON.parse(readFileSync(
   new URL("../site/data/procurement_contract_substance_real_corpus.json", import.meta.url),
@@ -237,53 +239,85 @@ test("A5: nonofficial reposts, authenticated PASSPort views, login URLs, unsigne
   }
 });
 
-test("A6: one-at-a-time mutations prove no executed-scope, contractual-price, or vendor-promise assertion survives", () => {
-  const base = {
-    ...rowById("mocs-fcrc-packet-202411-proposed-agreement"),
-    identity_links: [
-      {
-        relation: "exact_contract_id",
-        contract_id: "CT999999999999999",
-        matched_value: "CT999999999999999",
+test("A6: one-at-a-time mutations prove no executed-scope, contractual-price, or vendor-promise assertion survives", async () => {
+  await withPinnedClock("2026-09-19T12:00:00.000Z", async () => {
+    // Positive control: signed, effective, exact identity, hash, and locator intact.
+    // Claims must survive on this base so each single-field removal is shown to
+    // knock them down rather than starting from an already-false base.
+    const positiveControl = {
+      ...rowById("mocs-fcrc-packet-202411-site-schedule"),
+      retrieved_at: testClockISOString(),
+      identity_links: [
+        {
+          relation: "exact_contract_id",
+          contract_id: "CT999999999999999",
+          matched_value: "CT999999999999999",
+        },
+      ],
+      execution_evidence: {
+        signature_present: true,
+        effective_status_admitted: true,
+        status: "executed_admitted",
       },
-    ],
-    // Even with a fabricated "would-be executed" stamp, blank signature evidence blocks claims.
-    execution_evidence: {
-      signature_present: false,
-      effective_status_admitted: false,
-      status: "blank_signature",
-    },
-  };
+    };
 
-  const fields = [
-    "document_role",
-    "publisher",
-    "contract_identity",
-    "signature_execution_evidence",
-    "public_url",
-    "content_hash",
-    "page_locator",
-  ];
-
-  for (const field of fields) {
-    const result = mutationBlocksExecutedScopeClaims(base, field);
-    assert.equal(result.any_claim_survives, false, field);
+    const intact = evaluateExecutedScopeClaims(positiveControl);
+    assert.equal(intact.retained_ok, true);
+    assert.equal(intact.any_claim_survives, true);
     for (const claim of EXECUTED_SCOPE_CLAIMS) {
-      assert.equal(result.claims[claim], false, `${field}/${claim}`);
+      assert.equal(intact.claims[claim], true, `intact/${claim}`);
     }
-  }
 
-  // Bid tab and audit bases likewise cannot support executed-scope claims after mutation.
-  for (const documentId of ["dcas-bid-tab-2000090", "comptroller-docgo-audit-20248801671"]) {
-    const result = mutationBlocksExecutedScopeClaims(rowById(documentId), "signature_execution_evidence");
-    assert.equal(result.any_claim_survives, false, documentId);
-  }
+    const fields = [
+      "document_role",
+      "publisher",
+      "contract_identity",
+      "signature_execution_evidence",
+      "public_url",
+      "content_hash",
+      "page_locator",
+    ];
 
-  const built = buildRealCorpusDocument({
-    rows: CORPUS.rows,
-    generatedAt: CORPUS.generated_at,
-    retrievalVintage: CORPUS.retrieval_vintage,
+    for (const field of fields) {
+      const result = mutationBlocksExecutedScopeClaims(positiveControl, field);
+      assert.equal(result.any_claim_survives, false, field);
+      for (const claim of EXECUTED_SCOPE_CLAIMS) {
+        assert.equal(result.claims[claim], false, `${field}/${claim}`);
+      }
+    }
+
+    // Unsigned proposed-agreement, bid-tab, and audit bases remain hard negatives.
+    const unsignedProposed = {
+      ...rowById("mocs-fcrc-packet-202411-proposed-agreement"),
+      retrieved_at: testClockISOString(),
+      identity_links: [
+        {
+          relation: "exact_contract_id",
+          contract_id: "CT999999999999999",
+          matched_value: "CT999999999999999",
+        },
+      ],
+      execution_evidence: {
+        signature_present: false,
+        effective_status_admitted: false,
+        status: "blank_signature",
+      },
+    };
+    assert.equal(evaluateExecutedScopeClaims(unsignedProposed).any_claim_survives, false);
+    for (const documentId of ["dcas-bid-tab-2000090", "comptroller-docgo-audit-20248801671"]) {
+      const result = mutationBlocksExecutedScopeClaims(
+        { ...rowById(documentId), retrieved_at: testClockISOString() },
+        "signature_execution_evidence",
+      );
+      assert.equal(result.any_claim_survives, false, documentId);
+    }
+
+    const built = buildRealCorpusDocument({
+      rows: CORPUS.rows,
+      generatedAt: CORPUS.generated_at,
+      retrievalVintage: CORPUS.retrieval_vintage,
+    });
+    assert.equal(validateRealCorpusCoverage(built).ok, true);
+    assert.equal(built.rows.length, CORPUS.rows.length);
   });
-  assert.equal(validateRealCorpusCoverage(built).ok, true);
-  assert.equal(built.rows.length, CORPUS.rows.length);
 });

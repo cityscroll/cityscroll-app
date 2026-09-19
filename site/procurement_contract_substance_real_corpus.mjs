@@ -457,6 +457,25 @@ export function refuseNonPublicOrExecutedClaim(candidate = {}) {
 }
 
 /**
+ * Evaluate whether executed-scope, contractual-price, and vendor-promise claims
+ * survive for a candidate document. Used as the positive-control oracle before
+ * one-at-a-time field removal.
+ */
+export function evaluateExecutedScopeClaims(document) {
+  const retained = retainCorpusDocument(document);
+  const claims = {};
+  for (const claim of EXECUTED_SCOPE_CLAIMS) {
+    claims[claim] = claimSurvivesMutation(retained, document, claim);
+  }
+  return {
+    retained_ok: retained.ok,
+    reasons: retained.reasons,
+    claims,
+    any_claim_survives: Object.values(claims).some(Boolean),
+  };
+}
+
+/**
  * Prove that removing one required field at a time blocks executed-scope,
  * contractual-price, and vendor-promise assertions.
  */
@@ -498,23 +517,28 @@ export function mutationBlocksExecutedScopeClaims(baseDocument, field) {
       throw new Error(`unknown mutation field: ${field}`);
   }
 
-  const retained = retainCorpusDocument(mutated);
-  const claims = {};
-  for (const claim of EXECUTED_SCOPE_CLAIMS) {
-    claims[claim] = claimSurvivesMutation(retained, mutated, claim);
-  }
   return {
     field,
-    retained_ok: retained.ok,
-    reasons: retained.reasons,
-    claims,
-    any_claim_survives: Object.values(claims).some(Boolean),
+    ...evaluateExecutedScopeClaims(mutated),
   };
+}
+
+function hasExactContractIdentity(doc) {
+  const links = Array.isArray(doc?.identity_links) ? doc.identity_links : [];
+  return links.some((link) => (
+    (link.relation === "exact_contract_id" || link.relation === "exact_contract_number")
+    && Boolean(link.contract_id)
+    && Boolean(link.matched_value)
+  ));
 }
 
 function claimSurvivesMutation(retained, candidate, claim) {
   if (!retained.ok) return false;
   const doc = retained.document;
+  // Claims require the positive-control surface intact: publisher, public URL,
+  // content hash, page locator, and an exact contract identity relation.
+  if (!doc.publisher || !doc.final_url || !doc.content_hash || !doc.locator) return false;
+  if (!hasExactContractIdentity(doc)) return false;
   if (claim === "executed_scope" || claim === "vendor_promise") {
     return doc.execution_evidence?.signature_present === true
       && doc.execution_evidence?.effective_status_admitted === true
