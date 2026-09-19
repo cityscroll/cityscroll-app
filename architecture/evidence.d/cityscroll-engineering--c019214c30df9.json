@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c019214c30df9",
+  "status": "implemented",
+  "fingerprint": "procurement-contract-substance-access.v1",
+  "updated_at": "2026-09-18T19:15:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-contract-substance-access",
+      "path": "site/procurement_contract_substance_access.mjs"
+    },
+    {
+      "id": "procurement-contract-substance-access-data",
+      "path": "site/data/procurement_contract_substance_access.json"
+    },
+    {
+      "id": "procurement-contract-substance-access-tests",
+      "path": "test/procurement_contract_substance_access.test.mjs"
+    }
+  ]
+}

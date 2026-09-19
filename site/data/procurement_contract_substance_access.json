@@ -1,0 +1,312 @@
+{
+  "schema": "cityscroll.procurement_contract_substance_access.v1",
+  "generated_at": "2026-09-18T19:15:00.000Z",
+  "observation_vintage": {
+    "observed_at": "2026-09-18T19:15:00.000Z",
+    "baseline_revision": "5a1943cb2ec0072e56e2255e6c5351d9f781eec9",
+    "notes": "Access classification for the four named contracts from PASSPort Public metadata, authenticated PASSPort contract-tab documentation, and bounded public-source search. No public executed-contract, statement-of-work, pricing-schedule, site-schedule, or performance-evaluation document was admitted."
+  },
+  "source_coverage": [
+    {
+      "source_id": "checkbook-contracts",
+      "label": "Checkbook registered contracts",
+      "source_class": "public_retrievable_document"
+    },
+    {
+      "source_id": "city-record-awards",
+      "label": "City Record award notices",
+      "source_class": "public_retrievable_document"
+    },
+    {
+      "source_id": "passport-public",
+      "label": "PASSPort Public",
+      "source_class": "passport_public_metadata"
+    },
+    {
+      "source_id": "passport-authenticated-contract",
+      "label": "PASSPort authenticated contract record",
+      "source_class": "passport_authenticated_contract"
+    }
+  ],
+  "absence_scope": "not_located means no qualifying public document was found in the named checked sources at observed_at. It does not establish that a document does not exist.",
+  "account_access_boundary": "account_gated records require publisher sign-in and never imply redistribution authority.",
+  "fetch_failure_boundary": "fetch_failed is distinct from not_located and must not render as an absence of a document.",
+  "rows": [
+    {
+      "contract_id": "CT107120258801626",
+      "document_role": "executed_contract",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT107120258801626",
+      "document_role": "statement_of_work",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT107120258801626",
+      "document_role": "pricing_schedule",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT107120258801626",
+      "document_role": "site_schedule",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT107120258801626",
+      "document_role": "performance_evaluation",
+      "access_state": "not_located",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "public_retrievable_document",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT110220271400991",
+      "document_role": "executed_contract",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT110220271400991",
+      "document_role": "statement_of_work",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT110220271400991",
+      "document_role": "pricing_schedule",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT110220271400991",
+      "document_role": "site_schedule",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT110220271400991",
+      "document_role": "performance_evaluation",
+      "access_state": "not_located",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "public_retrievable_document",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT105720278802113",
+      "document_role": "executed_contract",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT105720278802113",
+      "document_role": "statement_of_work",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT105720278802113",
+      "document_role": "pricing_schedule",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT105720278802113",
+      "document_role": "site_schedule",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT105720278802113",
+      "document_role": "performance_evaluation",
+      "access_state": "not_located",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "public_retrievable_document",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT104020273009333",
+      "document_role": "executed_contract",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT104020273009333",
+      "document_role": "statement_of_work",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT104020273009333",
+      "document_role": "pricing_schedule",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT104020273009333",
+      "document_role": "site_schedule",
+      "access_state": "account_gated",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "passport-authenticated-contract",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "passport_authenticated_contract",
+      "redistribution_authority": false
+    },
+    {
+      "contract_id": "CT104020273009333",
+      "document_role": "performance_evaluation",
+      "access_state": "not_located",
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "checked_source_ids": [
+        "passport-public",
+        "checkbook-contracts",
+        "city-record-awards"
+      ],
+      "source_class": "public_retrievable_document",
+      "redistribution_authority": false
+    }
+  ]
+}
