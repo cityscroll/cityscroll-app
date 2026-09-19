@@ -296,3 +296,35 @@ test("editing the destination topic drops stale handoff evidence from canonical 
   assert.equal(retainSearchHandoffForQuery(facet, "rats").search_handoff, undefined);
   assert.equal(retainSearchHandoffForQuery(facet, "rats").contract_identity, undefined);
 });
+
+test("A3: evidence-only museum notice search hit maps into Contracts so the notice link stays usable", () => {
+  const museum = {
+    object_ref: "notice:20260810048",
+    object_type: "unclassified",
+    domain: null,
+    canonical_href: "/notices/20260810048",
+    title: "ACEDCA215 Brooklyn Children s Museum HVAC Upgrade",
+    source_family: "city_record_notice",
+    outcome: "evidence_only",
+    lens: "notices",
+    matched_lenses: ["notices"],
+  };
+  assert.equal(searchFamilyForResult(museum), "contracts");
+  assert.equal(
+    searchFamilyForResult({
+      ...museum,
+      outcome: "indexed",
+      matched_lenses: ["notices"],
+    }),
+    null,
+    "typed misses without evidence_only stay unmapped",
+  );
+  assert.equal(
+    searchFamilyForResult({
+      ...museum,
+      canonical_href: "/browse/contracts/?mode=award&q=85026B0110",
+    }),
+    null,
+    "non-notice evidence hrefs stay unmapped",
+  );
+});

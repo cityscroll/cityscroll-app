@@ -41,6 +41,9 @@ import {
 import { productionPathObservation, productionProvenance } from "../tools/lib/production_provenance.mjs";
 import { solicitationFixture } from "./fixtures/procurement_project_context_fixtures.mjs";
 import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
+import { searchFamilyForResult } from "../site/search_lens_handoff.mjs";
+import { buildSearchRenderPlan } from "../site/search_render_plan.mjs";
+import { relevanceResultHref } from "../site/universal_search_relevance_ux.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(readFileSync(new URL("../site/data/shared_procurement_read_model.json", import.meta.url)));
@@ -647,6 +650,40 @@ test("A3: shelter contract-lifecycle route and museum project-code search resolv
   const matches = searchKeywordDocuments(documents, resolveKeywordQuery("ACEDCA215"), { limit: 100 });
   assert.equal(matches.length, 1);
   assert.equal(matches[0].provenance.notice_evidence[0].request_id, "20260810048");
+});
+
+test("A3: evidence-only ACEDCA215 federated hit keeps a usable notice result link in the Search plan", async () => {
+  await withPinnedClock("2026-09-18T12:00:00Z", () => {
+    assert.equal(testClockISOString(), "2026-09-18T12:00:00.000Z");
+    const museumHit = {
+      schema: "cityscroll.search_document.v1",
+      object_ref: "notice:20260810048",
+      object_type: "unclassified",
+      domain: null,
+      canonical_href: "/notices/20260810048",
+      title: "ACEDCA215 Brooklyn Children s Museum HVAC Upgrade",
+      source_family: "city_record_notice",
+      outcome: "evidence_only",
+      lens: "notices",
+      matched_lenses: ["notices"],
+    };
+    assert.equal(searchFamilyForResult(museumHit), "contracts");
+    assert.equal(relevanceResultHref(museumHit), "/notices/20260810048");
+    const plan = buildSearchRenderPlan({
+      state: "legacy",
+      payload: {
+        schema: "cityscroll.keyword_search_response.v1",
+        match_mode: "keyword",
+        lanes: [{ id: "contracts", status: "matched", count: 1 }],
+        results: [museumHit],
+      },
+      coverage: null,
+    });
+    const contracts = plan.families.find((family) => family.id === "contracts");
+    assert.equal(plan.rendered_count, 1);
+    assert.equal(contracts?.items[0]?.row?.canonical_href, "/notices/20260810048");
+    assert.match(contracts?.items[0]?.row?.title || "", /ACEDCA215/);
+  });
 });
 
 test("A4: served identity binds observer revision, artifact commit, and source vintages separately", () => {
