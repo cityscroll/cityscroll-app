@@ -885,6 +885,32 @@ test("A6: implementation delivery and production readiness stay separate", () =>
   assert.equal(timestampOnly.production_readiness.ready, false);
 });
 
+test("A3: retained production read-back browser obligations pass at 1440x900 and 390x844 with ACEDCA215 search link", () => {
+  assert.equal(productionReadback.schema, PRODUCTION_SCHEMA);
+  assertProductionReadback(productionReadback, { requireReady: false });
+  const byId = new Map((productionReadback.paths || []).map((row) => [row.id, row]));
+  for (const id of ["browser-museum-desktop", "browser-museum-mobile", "browser-search-ACEDCA215"]) {
+    const row = byId.get(id);
+    assert.ok(row, id);
+    assert.equal(row.evidence_type, EVIDENCE_TYPES.BROWSER_DOM, id);
+    assert.equal(row.state, "passed", `${id}: ${JSON.stringify(row.evidence)}`);
+  }
+  const museumDesktop = byId.get("browser-museum-desktop");
+  const museumMobile = byId.get("browser-museum-mobile");
+  assert.equal(museumDesktop.evidence?.viewport, "desktop");
+  assert.equal(museumMobile.evidence?.viewport, "mobile");
+  assert.equal(museumDesktop.evidence?.assertions?.project_context_visible, true);
+  assert.equal(museumMobile.evidence?.assertions?.project_context_visible, true);
+  const search = byId.get("browser-search-ACEDCA215");
+  assert.equal(search.evidence?.assertions?.result_link_present, true);
+  assert.equal(search.evidence?.assertions?.result_link_opens_notice, true);
+  assert.match(search.url || "", /ACEDCA215/);
+  assert.equal(search.evidence?.desktop?.assertions?.result_link_present, true);
+  assert.equal(search.evidence?.desktop?.assertions?.result_link_opens_notice, true);
+  assert.equal(search.evidence?.mobile?.assertions?.result_link_present, true);
+  assert.equal(search.evidence?.mobile?.assertions?.result_link_opens_notice, true);
+});
+
 test("A5/A6: committed production read-back is structurally valid under the complete-reader schema when present as v2", () => {
   if (productionReadback.schema !== PRODUCTION_SCHEMA) {
     // Historical v1 envelopes are intentionally rejected until regenerated.

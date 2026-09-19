@@ -7,13 +7,13 @@
   "served_build": {
     "live_base": "https://cityscroll.org",
     "api_base": "https://api.cityscroll.org",
-    "pages_deploy_commit": "c2ae5dcff6569e0b405d79d89e3081a73ed08ff2",
-    "pages_deploy_completed_at": "2026-09-16T18:01:08Z",
-    "pages_deploy_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/35126215796",
-    "shared_procurement_read_model_generated_at": "2026-09-16T17:28:23.866Z",
+    "pages_deploy_commit": "727f48e41b4a132b082acd3542c20337065f1525",
+    "pages_deploy_completed_at": "2026-09-19T08:52:39Z",
+    "pages_deploy_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/35430453172",
+    "shared_procurement_read_model_generated_at": "2026-09-19T08:12:50.076Z",
     "shared_procurement_read_model_http_status": 200,
-    "performance_evidence_snapshot_date": "2026-09-16",
-    "performance_evidence_generated_at": "2026-09-16T17:28:23.866Z",
+    "performance_evidence_snapshot_date": "2026-09-19",
+    "performance_evidence_generated_at": "2026-09-19T08:12:50.076Z",
     "performance_evidence_http_status": 200,
     "artifact_manifest_http_status": 200,
     "freshness_report_http_status": 200
@@ -21,15 +21,15 @@
   "served_identity": {
     "status": "matched",
     "reasons": [],
-    "observer_revision": "16dc9c72aec5f8ef7306ec48bed1b391256b7dbb",
-    "pages_deploy_commit": "c2ae5dcff6569e0b405d79d89e3081a73ed08ff2",
-    "artifact_source_commit_sha": "c2ae5dcff6569e0b405d79d89e3081a73ed08ff2",
-    "artifact_hash": "37d249d4d751c1fea78217d07c9bb1981dfabc84cfba4fcfaf0a68117b4a6fe4",
-    "deployment_identity": "c2ae5dcff6569e0b405d79d89e3081a73ed08ff2",
+    "observer_revision": "2b057850490579ebc560a7fcf29b91f557d08c21",
+    "pages_deploy_commit": "727f48e41b4a132b082acd3542c20337065f1525",
+    "artifact_source_commit_sha": "727f48e41b4a132b082acd3542c20337065f1525",
+    "artifact_hash": "dad9f250d98f68fa1031865bb8b02b7e0d94937299f10ee252a8e9bd0a0f170e",
+    "deployment_identity": "727f48e41b4a132b082acd3542c20337065f1525",
     "source_acquisition_vintages": {
-      "shared_procurement_read_model_generated_at": "2026-09-16T17:28:23.866Z",
-      "performance_evidence_snapshot_date": "2026-09-16",
-      "performance_evidence_generated_at": "2026-09-16T17:28:23.866Z",
+      "shared_procurement_read_model_generated_at": "2026-09-19T08:12:50.076Z",
+      "performance_evidence_snapshot_date": "2026-09-19",
+      "performance_evidence_generated_at": "2026-09-19T08:12:50.076Z",
       "bhrags_payment_observation_acquisition": "2026-09-14T13:10:41.533Z",
       "firematic_field_roles": {
         "kind": "retained_fixture",
@@ -55,10 +55,10 @@
     "schema": "cityscroll.production_provenance.v1",
     "evidence_class": "live-production-read",
     "isolated": false,
-    "observed_at": "2026-09-16T18:53:21.795Z",
+    "observed_at": "2026-09-19T09:39:27.140Z",
     "observer": {
       "tool": "tools/capture_procurement_disclosure_production_proof.mjs",
-      "source_revision": "16dc9c72aec5f8ef7306ec48bed1b391256b7dbb"
+      "source_revision": "2b057850490579ebc560a7fcf29b91f557d08c21"
     },
     "methods": [
       "GET"
@@ -205,7 +205,7 @@
         "method": null,
         "field_roles": null,
         "field_role_observation": null,
-        "sha256": "66ca5946cc7f0844752d9fe6a5f0d0fae2805ceb67cb1bbe596927e7c8ffbf70"
+        "sha256": "062a3d22ce31d1277c55b73bad9c7ec2f19c60f439cfc0f721be368a15fda1d1"
       },
       "note": null,
       "evidence_type": "dom_assertion"
@@ -218,7 +218,7 @@
       "state": "passed",
       "assertion": "CT110220271400991 production markup is identical across desktop and 390px request variants (supporting evidence only)",
       "evidence": {
-        "sha256": "66ca5946cc7f0844752d9fe6a5f0d0fae2805ceb67cb1bbe596927e7c8ffbf70",
+        "sha256": "062a3d22ce31d1277c55b73bad9c7ec2f19c60f439cfc0f721be368a15fda1d1",
         "property": "deterministic server-rendered markup across viewport variants",
         "supporting_only": true
       },
@@ -239,7 +239,7 @@
         "method": null,
         "field_roles": null,
         "field_role_observation": null,
-        "sha256": "12b08a6678604038059ae7661e653fbadf9f19f7eee04e1cd2a7a99a699a548e"
+        "sha256": "561a5af52b3716a5914c22c6b53041e145a00d4c8bc8e94eda6acc8f194490e6"
       },
       "note": null,
       "evidence_type": "dom_assertion"
@@ -252,7 +252,7 @@
       "state": "passed",
       "assertion": "CT105720278802113 production markup is identical across desktop and 390px request variants (supporting evidence only)",
       "evidence": {
-        "sha256": "12b08a6678604038059ae7661e653fbadf9f19f7eee04e1cd2a7a99a699a548e",
+        "sha256": "561a5af52b3716a5914c22c6b53041e145a00d4c8bc8e94eda6acc8f194490e6",
         "property": "deterministic server-rendered markup across viewport variants",
         "supporting_only": true
       },
@@ -273,7 +273,7 @@
         "method": null,
         "field_roles": null,
         "field_role_observation": null,
-        "sha256": "412d9509cb29532da93a04624fc51bf4571ee945dd04862a971c70546cc55daa"
+        "sha256": "f92f41439a91b33e5820b6be02e6dc7cc019109f453d34817d0bafe8b7cf8cf4"
       },
       "note": null,
       "evidence_type": "dom_assertion"
@@ -286,7 +286,7 @@
       "state": "passed",
       "assertion": "CT104020273009333 production markup is identical across desktop and 390px request variants (supporting evidence only)",
       "evidence": {
-        "sha256": "412d9509cb29532da93a04624fc51bf4571ee945dd04862a971c70546cc55daa",
+        "sha256": "f92f41439a91b33e5820b6be02e6dc7cc019109f453d34817d0bafe8b7cf8cf4",
         "property": "deterministic server-rendered markup across viewport variants",
         "supporting_only": true
       },
@@ -298,27 +298,24 @@
       "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185720228800365/",
       "method": "GET",
       "status": 200,
-      "state": "failed",
-      "assertion": "Firematic live page contradicts a retained disclosure or field-role claim",
+      "state": "passed",
+      "assertion": "Firematic live page preserves original/current/action field roles and disclosure refusals",
       "evidence": {
-        "missing": [],
-        "fieldRoleMissing": [
-          {
-            "role": "original",
-            "expected": 158997.84
-          },
-          {
-            "role": "current",
-            "expected": 208687.62
-          }
-        ],
-        "disclosureFailures": [],
-        "invented": [],
+        "contract_id": "CT185720228800365",
+        "amount": "$208,687.62",
+        "vendor": "FIREMATIC SUPPLY CO. INC",
+        "method": "Competitive Sealed Bid",
+        "field_roles": {
+          "original": 158997.84,
+          "current": 208687.62,
+          "action": 49689.78
+        },
         "field_role_observation": {
           "kind": "retained_fixture",
           "source": "passport_action_families",
           "note": "Retained Firematic base 4561064 + action 4618449 expectations."
-        }
+        },
+        "sha256": "a570f31c83250091a940e9ee869992e315126dbf7980e5c2b3def3acbb684bb7"
       },
       "note": null,
       "evidence_type": "dom_field_role"
@@ -331,7 +328,7 @@
       "state": "passed",
       "assertion": "CT185720228800365 production markup is identical across desktop and 390px request variants (supporting evidence only)",
       "evidence": {
-        "sha256": "fac5286b5c462a76b64e95ae1d1e6dcfdab410422713efc8d915f29e1408dfca",
+        "sha256": "a570f31c83250091a940e9ee869992e315126dbf7980e5c2b3def3acbb684bb7",
         "property": "deterministic server-rendered markup across viewport variants",
         "supporting_only": true
       },
@@ -343,27 +340,24 @@
       "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185020228802305/",
       "method": "GET",
       "status": 200,
-      "state": "failed",
-      "assertion": "TAMEER live page contradicts a retained disclosure or field-role claim",
+      "state": "passed",
+      "assertion": "TAMEER live page preserves original/current/action field roles and disclosure refusals",
       "evidence": {
-        "missing": [],
-        "fieldRoleMissing": [
-          {
-            "role": "original",
-            "expected": 1442820.77
-          },
-          {
-            "role": "current",
-            "expected": 1779343.45
-          }
-        ],
-        "disclosureFailures": [],
-        "invented": [],
+        "contract_id": "CT185020228802305",
+        "amount": "$1,779,343.45",
+        "vendor": "TAMEER INC",
+        "method": "Competitive Sealed Bid",
+        "field_roles": {
+          "original": 1442820.77,
+          "current": 1779343.45,
+          "action": 26112.93
+        },
         "field_role_observation": {
           "kind": "retained_fixture",
           "source": "passport_action_families",
           "note": "Retained TAMEER base 4579402 + revision 5372858 action expectations."
-        }
+        },
+        "sha256": "dde85a3a0bbad84928ca65d190c855450abba5f493b29fbcc59b9bbc2c96cd3c"
       },
       "note": null,
       "evidence_type": "dom_field_role"
@@ -376,7 +370,7 @@
       "state": "passed",
       "assertion": "CT185020228802305 production markup is identical across desktop and 390px request variants (supporting evidence only)",
       "evidence": {
-        "sha256": "f64f3b3a216f95e553186741c767bfbd802b94118e79dc54c2ee2edc9fc2b917",
+        "sha256": "dde85a3a0bbad84928ca65d190c855450abba5f493b29fbcc59b9bbc2c96cd3c",
         "property": "deterministic server-rendered markup across viewport variants",
         "supporting_only": true
       },
@@ -397,7 +391,7 @@
         "method": null,
         "field_roles": null,
         "field_role_observation": null,
-        "sha256": "38717aece89b647c985881be841d74063c61d2730c76a747021d63d7672a6d66"
+        "sha256": "5bfa5437ca6f5fc569241895f29260c65f7267b7649f125b8895230718c9efd2"
       },
       "note": null,
       "evidence_type": "dom_assertion"
@@ -410,7 +404,7 @@
       "state": "passed",
       "assertion": "CT107120258801626 production markup is identical across desktop and 390px request variants (supporting evidence only)",
       "evidence": {
-        "sha256": "38717aece89b647c985881be841d74063c61d2730c76a747021d63d7672a6d66",
+        "sha256": "5bfa5437ca6f5fc569241895f29260c65f7267b7649f125b8895230718c9efd2",
         "property": "deterministic server-rendered markup across viewport variants",
         "supporting_only": true
       },
@@ -427,7 +421,7 @@
       "evidence": {
         "coverage_state": "checked-no-match",
         "checked_pin": "10220272001881",
-        "coverage_context": "Checked 2026-09-16; source as of 2026-08-02"
+        "coverage_context": "Checked 2026-09-19; source as of 2026-08-02"
       },
       "note": null,
       "evidence_type": "dom_assertion"
@@ -437,14 +431,10 @@
       "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
       "method": "GET",
       "status": 200,
-      "state": "failed",
-      "assertion": "BHRAGS headline paid total, payment section, notice linkage, or scoped coverage is incomplete",
+      "state": "passed",
+      "assertion": "BHRAGS headline and payment section agree on the retained lifecycle paid total with 31 payments, source dates, and scoped coverage",
       "evidence": {
-        "failures": [
-          "headline_payment_section_mismatch",
-          "unqualified_spending_coverage_miss"
-        ],
-        "headline_paid": 7319455.51,
+        "headline_paid": 7385672.19,
         "payment_section_spent": 7385672.19,
         "payment_count": 31,
         "latest_payment_date": "2026-08-06",
@@ -453,7 +443,8 @@
           "kind": "retained_lifecycle",
           "acquisition": "2026-09-14T13:10:41.533Z",
           "note": "Headline Paid amount and payment-section Amount paid must agree on the lifecycle total."
-        }
+        },
+        "sha256": "5bfa5437ca6f5fc569241895f29260c65f7267b7649f125b8895230718c9efd2"
       },
       "note": null,
       "evidence_type": "dom_field_role"
@@ -469,7 +460,7 @@
         "needles": [
           "20240829105"
         ],
-        "sha256": "adfedec22c6dcbed9185e8975d75fb7f6a5ba8b8f496cd60052d052c44c31943"
+        "sha256": "6ef7c509bca59cfc667c19c7878cbbadd819edf11e54dc44be5cbe96f124a4ce"
       },
       "note": null,
       "evidence_type": "dom_assertion"
@@ -489,7 +480,7 @@
           "85026B0110",
           "85026B01107"
         ],
-        "sha256": "448023781540348d58d59917c89b8eb0fdb81c4113303eedeb8a110a8562745f"
+        "sha256": "981ab0d32a6e12b361f4dc12a73919c297f9671c92ee053ea7de5ee4a8828672"
       },
       "note": null,
       "evidence_type": "dom_assertion"
@@ -559,7 +550,7 @@
           "has_ACEDCA215": true,
           "has_budget": true
         },
-        "render_hash": "70c417fd381fac1dad87ed692ff297675ee4664246810761c167421e9983bb29",
+        "render_hash": "499e8c20a4b888fc5c6c1a8cb42e172f5acfcc430b23b804bcecf3a3358d83b6",
         "revision": null,
         "data_vintage": null
       },
@@ -571,17 +562,22 @@
       "url": "https://cityscroll.org/notices/20260810048/",
       "method": "GET",
       "status": 200,
-      "state": "failed",
-      "assertion": "Browser-rendered viewport failed a required reader assertion",
+      "state": "passed",
+      "assertion": "Museum project scope remains visible after app readiness and notice settlement at mobile",
       "evidence": {
         "viewport": "mobile",
-        "failedAssertions": [
-          "project_context_present",
-          "project_context_visible",
-          "has_BCM_HVAC",
-          "has_budget"
-        ],
-        "render_hash": "984b537b12dd4ad13eb2f8082506611e8273e27cb6b30e01463dcecd9521fe74"
+        "after_app_ready": true,
+        "after_notice_settled": true,
+        "assertions": {
+          "project_context_present": true,
+          "project_context_visible": true,
+          "has_BCM_HVAC": true,
+          "has_ACEDCA215": true,
+          "has_budget": true
+        },
+        "render_hash": "387dfc0dd7e8ba221795c57773286dfc8330a68f82ec684bd3b4d43c50b6f1d9",
+        "revision": null,
+        "data_vintage": null
       },
       "note": null,
       "evidence_type": "browser_dom"
@@ -591,15 +587,51 @@
       "url": "https://cityscroll.org/search/?q=ACEDCA215",
       "method": "GET",
       "status": 200,
-      "state": "failed",
-      "assertion": "Browser-rendered viewport failed a required reader assertion",
+      "state": "passed",
+      "assertion": "Search ACEDCA215 exposes a usable result link that opens the museum notice at 1440x900 and 390x844",
       "evidence": {
         "viewport": "desktop",
-        "failedAssertions": [
-          "result_link_present",
-          "result_link_opens_notice"
-        ],
-        "render_hash": "2e8c53be40c65fa9d775e6f6a4244aed7e88f2b7cf55c23b1442c74cc39a861c"
+        "after_app_ready": true,
+        "after_notice_settled": true,
+        "assertions": {
+          "result_link_present": true,
+          "result_link_opens_notice": true
+        },
+        "render_hash": "2fe276675823c25d588f153dc74e7692e7c13c01d5007f9ad8ed30830f1ebffc",
+        "revision": null,
+        "data_vintage": null,
+        "desktop": {
+          "assertions": {
+            "result_link_present": true,
+            "result_link_opens_notice": true
+          },
+          "evidence": {
+            "href": "/notices/20260810048",
+            "link_class": "topic-search-result-full-record",
+            "link_text": "Open the full record",
+            "hidden_only": false,
+            "app_ready_attr": false,
+            "search_shell_ready": true
+          },
+          "render_hash": "2fe276675823c25d588f153dc74e7692e7c13c01d5007f9ad8ed30830f1ebffc",
+          "error": null
+        },
+        "mobile": {
+          "assertions": {
+            "result_link_present": true,
+            "result_link_opens_notice": true
+          },
+          "evidence": {
+            "href": "/notices/20260810048",
+            "link_class": "topic-search-result-full-record",
+            "link_text": "Open the full record",
+            "hidden_only": false,
+            "app_ready_attr": false,
+            "search_shell_ready": true
+          },
+          "render_hash": "2fe276675823c25d588f153dc74e7692e7c13c01d5007f9ad8ed30830f1ebffc",
+          "error": null
+        }
       },
       "note": null,
       "evidence_type": "browser_dom"
@@ -610,138 +642,123 @@
       "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT110220271400991/",
       "viewport": "desktop",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "66ca5946cc7f0844752d9fe6a5f0d0fae2805ceb67cb1bbe596927e7c8ffbf70",
+      "sha256": "062a3d22ce31d1277c55b73bad9c7ec2f19c60f439cfc0f721be368a15fda1d1",
       "http_status": 200
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT110220271400991/",
       "viewport": "mobile",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "66ca5946cc7f0844752d9fe6a5f0d0fae2805ceb67cb1bbe596927e7c8ffbf70",
+      "sha256": "062a3d22ce31d1277c55b73bad9c7ec2f19c60f439cfc0f721be368a15fda1d1",
       "http_status": 200
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT105720278802113/",
       "viewport": "desktop",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "12b08a6678604038059ae7661e653fbadf9f19f7eee04e1cd2a7a99a699a548e",
+      "sha256": "561a5af52b3716a5914c22c6b53041e145a00d4c8bc8e94eda6acc8f194490e6",
       "http_status": 200
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT105720278802113/",
       "viewport": "mobile",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "12b08a6678604038059ae7661e653fbadf9f19f7eee04e1cd2a7a99a699a548e",
+      "sha256": "561a5af52b3716a5914c22c6b53041e145a00d4c8bc8e94eda6acc8f194490e6",
       "http_status": 200
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT104020273009333/",
       "viewport": "desktop",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "412d9509cb29532da93a04624fc51bf4571ee945dd04862a971c70546cc55daa",
+      "sha256": "f92f41439a91b33e5820b6be02e6dc7cc019109f453d34817d0bafe8b7cf8cf4",
       "http_status": 200
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT104020273009333/",
       "viewport": "mobile",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "412d9509cb29532da93a04624fc51bf4571ee945dd04862a971c70546cc55daa",
+      "sha256": "f92f41439a91b33e5820b6be02e6dc7cc019109f453d34817d0bafe8b7cf8cf4",
       "http_status": 200
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT185720228800365/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185720228800365/",
       "viewport": "desktop",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "fac5286b5c462a76b64e95ae1d1e6dcfdab410422713efc8d915f29e1408dfca",
+      "sha256": "a570f31c83250091a940e9ee869992e315126dbf7980e5c2b3def3acbb684bb7",
       "http_status": 200
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT185720228800365/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185720228800365/",
       "viewport": "mobile",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "fac5286b5c462a76b64e95ae1d1e6dcfdab410422713efc8d915f29e1408dfca",
+      "sha256": "a570f31c83250091a940e9ee869992e315126dbf7980e5c2b3def3acbb684bb7",
       "http_status": 200
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT185020228802305/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185020228802305/",
       "viewport": "desktop",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "f64f3b3a216f95e553186741c767bfbd802b94118e79dc54c2ee2edc9fc2b917",
+      "sha256": "dde85a3a0bbad84928ca65d190c855450abba5f493b29fbcc59b9bbc2c96cd3c",
       "http_status": 200
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT185020228802305/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185020228802305/",
       "viewport": "mobile",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "f64f3b3a216f95e553186741c767bfbd802b94118e79dc54c2ee2edc9fc2b917",
+      "sha256": "dde85a3a0bbad84928ca65d190c855450abba5f493b29fbcc59b9bbc2c96cd3c",
       "http_status": 200
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
       "viewport": "desktop",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "desktop live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "38717aece89b647c985881be841d74063c61d2730c76a747021d63d7672a6d66",
+      "sha256": "5bfa5437ca6f5fc569241895f29260c65f7267b7649f125b8895230718c9efd2",
       "http_status": 200
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
       "live_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
       "viewport": "mobile",
-      "data_vintage": "2026-09-16",
+      "data_vintage": "2026-09-19",
       "assertion": "mobile live contract page is keyboard-linkable, free of empty headings, and preserves disclosure refusals",
-      "sha256": "38717aece89b647c985881be841d74063c61d2730c76a747021d63d7672a6d66",
+      "sha256": "5bfa5437ca6f5fc569241895f29260c65f7267b7649f125b8895230718c9efd2",
       "http_status": 200
     }
   ],
-  "findings": [
-    {
-      "id": "aha-passport-coverage-state",
-      "severity": "observation",
-      "statement": "The live AHA page still names the PASSPort Public contracts handoff, and its coverage row remains checked-no-match. This read records that retained lookup state; it does not claim a newly joined PASSPort match on the deployed page.",
-      "evidence": {
-        "coverage_state": "checked-no-match"
-      }
-    }
-  ],
+  "findings": [],
   "counts": {
-    "passed": 17,
+    "passed": 22,
     "not-yet-observed": 0,
-    "failed": 5,
+    "failed": 0,
     "total": 22,
     "render_entries": 12
   },
   "rolling_release_gate": "Release gates assert population properties over the materialized set. Dated named-record failures block promotional readiness for these examples; they are not a permanent gate over unrelated deployments after a publisher window rolls.",
   "production_readiness": {
-    "ready": false,
-    "reason_codes": [
-      "failed:contract-CT185720228800365",
-      "failed:contract-CT185020228802305",
-      "failed:bhrags-payment-consistency",
-      "failed:browser-museum-mobile",
-      "failed:browser-search-ACEDCA215"
-    ],
+    "ready": true,
+    "reason_codes": [],
     "required_obligation_ids": [
       "contract-CT110220271400991",
       "contract-CT105720278802113",
@@ -759,218 +776,12 @@
       "browser-museum-mobile",
       "browser-search-ACEDCA215"
     ],
-    "failed_obligation_ids": [
-      "contract-CT185720228800365",
-      "contract-CT185020228802305",
-      "bhrags-payment-consistency",
-      "browser-museum-mobile",
-      "browser-search-ACEDCA215"
-    ],
+    "failed_obligation_ids": [],
     "not_yet_observed_obligation_ids": [],
     "missing_obligation_ids": [],
     "evidence_type_mismatch_ids": [],
     "served_identity_status": "matched",
-    "failure_reasons": {
-      "contract-CT185720228800365": {
-        "state": "failed",
-        "assertion": "Firematic live page contradicts a retained disclosure or field-role claim",
-        "evidence": {
-          "missing": [],
-          "fieldRoleMissing": [
-            {
-              "role": "original",
-              "expected": 158997.84
-            },
-            {
-              "role": "current",
-              "expected": 208687.62
-            }
-          ],
-          "disclosureFailures": [],
-          "invented": [],
-          "field_role_observation": {
-            "kind": "retained_fixture",
-            "source": "passport_action_families",
-            "note": "Retained Firematic base 4561064 + action 4618449 expectations."
-          }
-        },
-        "evidence_type": "dom_field_role"
-      },
-      "contract-CT185020228802305": {
-        "state": "failed",
-        "assertion": "TAMEER live page contradicts a retained disclosure or field-role claim",
-        "evidence": {
-          "missing": [],
-          "fieldRoleMissing": [
-            {
-              "role": "original",
-              "expected": 1442820.77
-            },
-            {
-              "role": "current",
-              "expected": 1779343.45
-            }
-          ],
-          "disclosureFailures": [],
-          "invented": [],
-          "field_role_observation": {
-            "kind": "retained_fixture",
-            "source": "passport_action_families",
-            "note": "Retained TAMEER base 4579402 + revision 5372858 action expectations."
-          }
-        },
-        "evidence_type": "dom_field_role"
-      },
-      "bhrags-payment-consistency": {
-        "state": "failed",
-        "assertion": "BHRAGS headline paid total, payment section, notice linkage, or scoped coverage is incomplete",
-        "evidence": {
-          "failures": [
-            "headline_payment_section_mismatch",
-            "unqualified_spending_coverage_miss"
-          ],
-          "headline_paid": 7319455.51,
-          "payment_section_spent": 7385672.19,
-          "payment_count": 31,
-          "latest_payment_date": "2026-08-06",
-          "latest_payment_amount": 66216.68,
-          "observation": {
-            "kind": "retained_lifecycle",
-            "acquisition": "2026-09-14T13:10:41.533Z",
-            "note": "Headline Paid amount and payment-section Amount paid must agree on the lifecycle total."
-          }
-        },
-        "evidence_type": "dom_field_role"
-      },
-      "browser-museum-mobile": {
-        "state": "failed",
-        "assertion": "Browser-rendered viewport failed a required reader assertion",
-        "evidence": {
-          "viewport": "mobile",
-          "failedAssertions": [
-            "project_context_present",
-            "project_context_visible",
-            "has_BCM_HVAC",
-            "has_budget"
-          ],
-          "render_hash": "984b537b12dd4ad13eb2f8082506611e8273e27cb6b30e01463dcecd9521fe74"
-        },
-        "evidence_type": "browser_dom"
-      },
-      "browser-search-ACEDCA215": {
-        "state": "failed",
-        "assertion": "Browser-rendered viewport failed a required reader assertion",
-        "evidence": {
-          "viewport": "desktop",
-          "failedAssertions": [
-            "result_link_present",
-            "result_link_opens_notice"
-          ],
-          "render_hash": "2e8c53be40c65fa9d775e6f6a4244aed7e88f2b7cf55c23b1442c74cc39a861c"
-        },
-        "evidence_type": "browser_dom"
-      }
-    }
+    "failure_reasons": {}
   },
-  "failure_reasons": {
-    "contract-CT185720228800365": {
-      "state": "failed",
-      "assertion": "Firematic live page contradicts a retained disclosure or field-role claim",
-      "evidence": {
-        "missing": [],
-        "fieldRoleMissing": [
-          {
-            "role": "original",
-            "expected": 158997.84
-          },
-          {
-            "role": "current",
-            "expected": 208687.62
-          }
-        ],
-        "disclosureFailures": [],
-        "invented": [],
-        "field_role_observation": {
-          "kind": "retained_fixture",
-          "source": "passport_action_families",
-          "note": "Retained Firematic base 4561064 + action 4618449 expectations."
-        }
-      },
-      "evidence_type": "dom_field_role"
-    },
-    "contract-CT185020228802305": {
-      "state": "failed",
-      "assertion": "TAMEER live page contradicts a retained disclosure or field-role claim",
-      "evidence": {
-        "missing": [],
-        "fieldRoleMissing": [
-          {
-            "role": "original",
-            "expected": 1442820.77
-          },
-          {
-            "role": "current",
-            "expected": 1779343.45
-          }
-        ],
-        "disclosureFailures": [],
-        "invented": [],
-        "field_role_observation": {
-          "kind": "retained_fixture",
-          "source": "passport_action_families",
-          "note": "Retained TAMEER base 4579402 + revision 5372858 action expectations."
-        }
-      },
-      "evidence_type": "dom_field_role"
-    },
-    "bhrags-payment-consistency": {
-      "state": "failed",
-      "assertion": "BHRAGS headline paid total, payment section, notice linkage, or scoped coverage is incomplete",
-      "evidence": {
-        "failures": [
-          "headline_payment_section_mismatch",
-          "unqualified_spending_coverage_miss"
-        ],
-        "headline_paid": 7319455.51,
-        "payment_section_spent": 7385672.19,
-        "payment_count": 31,
-        "latest_payment_date": "2026-08-06",
-        "latest_payment_amount": 66216.68,
-        "observation": {
-          "kind": "retained_lifecycle",
-          "acquisition": "2026-09-14T13:10:41.533Z",
-          "note": "Headline Paid amount and payment-section Amount paid must agree on the lifecycle total."
-        }
-      },
-      "evidence_type": "dom_field_role"
-    },
-    "browser-museum-mobile": {
-      "state": "failed",
-      "assertion": "Browser-rendered viewport failed a required reader assertion",
-      "evidence": {
-        "viewport": "mobile",
-        "failedAssertions": [
-          "project_context_present",
-          "project_context_visible",
-          "has_BCM_HVAC",
-          "has_budget"
-        ],
-        "render_hash": "984b537b12dd4ad13eb2f8082506611e8273e27cb6b30e01463dcecd9521fe74"
-      },
-      "evidence_type": "browser_dom"
-    },
-    "browser-search-ACEDCA215": {
-      "state": "failed",
-      "assertion": "Browser-rendered viewport failed a required reader assertion",
-      "evidence": {
-        "viewport": "desktop",
-        "failedAssertions": [
-          "result_link_present",
-          "result_link_opens_notice"
-        ],
-        "render_hash": "2e8c53be40c65fa9d775e6f6a4244aed7e88f2b7cf55c23b1442c74cc39a861c"
-      },
-      "evidence_type": "browser_dom"
-    }
-  }
+  "failure_reasons": {}
 }
