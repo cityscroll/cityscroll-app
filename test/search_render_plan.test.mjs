@@ -149,3 +149,29 @@ test("an unavailable execution marks every requested family incomplete under the
   assert.deepEqual(plan.incomplete_families, ["contracts"]);
   assert.equal(plan.outcome, "unavailable");
 });
+
+test("A3: evidence-only ACEDCA215 notice result renders a usable Contracts lane link", () => {
+  const museum = {
+    schema: "cityscroll.search_document.v1",
+    object_ref: "notice:20260810048",
+    object_type: "unclassified",
+    domain: null,
+    canonical_href: "/notices/20260810048",
+    title: "ACEDCA215 Brooklyn Children s Museum HVAC Upgrade",
+    source_family: "city_record_notice",
+    outcome: "evidence_only",
+    lens: "notices",
+    matched_lenses: ["notices"],
+  };
+  const plan = buildSearchRenderPlan({
+    state: "legacy",
+    payload: keywordPayload([museum]),
+    coverage: null,
+  });
+  const contracts = plan.families.find((family) => family.id === "contracts");
+  assert.equal(plan.rendered_count, 1);
+  assert.equal(plan.outcome, "matched");
+  assert.equal(contracts.count, 1);
+  assert.equal(contracts.items[0].row.canonical_href, "/notices/20260810048");
+  assert.match(contracts.items[0].row.title, /ACEDCA215/);
+});

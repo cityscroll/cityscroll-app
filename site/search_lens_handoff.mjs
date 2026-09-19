@@ -150,9 +150,35 @@ export function searchDestinationForResult(record = {}) {
   return destination ? Object.freeze({ ...destination }) : null;
 }
 
+function evidenceOnlyNoticeHref(record = {}) {
+  const href = clean(record.canonical_href || record.source_route, 600);
+  return /^\/notices\/[A-Za-z0-9_-]+\/?$/i.test(href) ? href : null;
+}
+
+function evidenceOnlyNoticeLens(record = {}) {
+  const lens = clean(record.lens, 80);
+  if (lens === "notices") return true;
+  if (clean(record.source_family, 80) === "city_record_notice") return true;
+  const matched = Array.isArray(record.matched_lenses) ? record.matched_lenses : [];
+  return matched.some((value) => clean(value, 80) === "notices");
+}
+
+/**
+ * Fail-closed City Record notices keep a safe `/notices/` href but no typed
+ * domain. Without a family they vanish from every Search lane even though the
+ * federator returned them — map that evidence into Contracts so the result
+ * link stays usable (museum project-code search depends on this).
+ */
+function evidenceOnlyNoticeFamily(record = {}) {
+  if (clean(record.outcome, 40) !== "evidence_only") return null;
+  if (!evidenceOnlyNoticeHref(record) || !evidenceOnlyNoticeLens(record)) return null;
+  return "contracts";
+}
+
 export function searchFamilyForResult(record = {}) {
   const destination = destinationForResult(record);
-  return record?.domain === "legal" ? "rules" : destination?.family || null;
+  if (record?.domain === "legal") return "rules";
+  return destination?.family || evidenceOnlyNoticeFamily(record) || null;
 }
 
 function normalizedTerms(response = {}) {
