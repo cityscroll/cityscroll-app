@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c950ddf69ee3e",
+  "status": "implemented",
+  "fingerprint": "procurement-contract-substance-role-corpus.v1",
+  "updated_at": "2026-09-19T12:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-contract-substance-role-corpus",
+      "path": "site/procurement_contract_substance_role_corpus.mjs"
+    },
+    {
+      "id": "procurement-contract-substance-role-corpus-data",
+      "path": "site/data/procurement_contract_substance_role_corpus.json"
+    },
+    {
+      "id": "procurement-contract-substance-role-passages",
+      "path": "test/fixtures/contract-substance-real-corpus/role-passages.json"
+    },
+    {
+      "id": "procurement-contract-substance-tests",
+      "path": "test/procurement_contract_substance.test.mjs"
+    },
+    {
+      "id": "procurement-contract-substance-real-corpus-tests",
+      "path": "test/procurement_contract_substance_real_corpus.test.mjs"
+    }
+  ]
+}

@@ -6,6 +6,8 @@ import {
   CONTRACT_SUBSTANCE_SCHEMA,
   EVIDENCE_ROLES,
   FACT_KINDS,
+  PROJECTOR_VERSION,
+  RESIDENT_VENDOR_PROMISE_LABEL,
   STANDING_LABELS,
   UNRESOLVED_REASONS,
   applyAmendment,
@@ -18,6 +20,7 @@ import {
   projectPriceTerm,
   projectScopeFact,
   refuseManufacturedRate,
+  residentClaimLabel,
   residentPositiveAssertions,
   resolveConflictingPassages,
   unresolvedFromAccessObservations,
@@ -388,4 +391,71 @@ test("A7: mutations removing document role, contract identity, page locator, and
   assert.equal(projected.price_terms.length, 1);
   assert.equal(projected.obligations.length, 1);
   assert.equal(projected.obligations[0].standing_label, STANDING_LABELS.VENDOR_PROMISED);
+});
+
+test("role-corpus A6: proposed, prior-term, bid, template, audit, title, payment, and project-summary evidence cannot produce What the vendor promised; rates are not manufactured by division", () => {
+  const forbiddenRoles = [
+    EVIDENCE_ROLES.PROPOSED_AGREEMENT,
+    EVIDENCE_ROLES.PRIOR_TERM,
+    EVIDENCE_ROLES.BID_TAB,
+    EVIDENCE_ROLES.TEMPLATE_PRICING,
+    EVIDENCE_ROLES.PERFORMANCE_EVALUATION,
+    EVIDENCE_ROLES.TITLE,
+    EVIDENCE_ROLES.PAYMENT,
+    EVIDENCE_ROLES.PROJECT_SUMMARY,
+  ];
+  for (const role of forbiddenRoles) {
+    const label = residentClaimLabel({
+      document_role: role,
+      standing_label: STANDING_LABELS.VENDOR_PROMISED,
+    });
+    assert.notEqual(label, RESIDENT_VENDOR_PROMISE_LABEL, role);
+  }
+
+  assert.equal(
+    residentClaimLabel({
+      document_role: EVIDENCE_ROLES.EXECUTED_OBLIGATION,
+      standing_label: STANDING_LABELS.VENDOR_PROMISED,
+    }),
+    RESIDENT_VENDOR_PROMISE_LABEL,
+  );
+
+  for (const rateSource of [
+    "total_divided_by_duration",
+    "total_divided_by_capacity",
+    "total_divided_by_meals",
+    "total_divided_by_sites",
+    "total_divided_by_payments",
+  ]) {
+    assert.deepEqual(
+      refuseManufacturedRate({ rate_source: rateSource }),
+      [UNRESOLVED_REASONS.MANUFACTURED_RATE],
+      rateSource,
+    );
+  }
+
+  const bid = projectPriceTerm(priceCandidate({
+    document_role: EVIDENCE_ROLES.BID_TAB,
+    source_document_id: "dcas-bid-tab-2000090",
+    locator: "PDF page 1 / item 1",
+    excerpt: "POT PAN & UTENSIL WASHER item 1 offered unit price 22287.0000000",
+  }));
+  assert.equal(bid.ok, true);
+  assert.equal(bid.fact.standing_label, STANDING_LABELS.BID_OFFER);
+  assert.equal(bid.fact.resident_claim_label, "Bid offer");
+  assert.equal(bid.fact.projector_version, PROJECTOR_VERSION);
+  assert.match(bid.fact.excerpt_hash, /^sha256:[a-f0-9]{64}$/);
+
+  const audit = projectPriceTerm(priceCandidate({
+    document_role: EVIDENCE_ROLES.PERFORMANCE_EVALUATION,
+    source_document_id: "comptroller-docgo-audit-20248801671",
+    locator: "section Audit Report / food caps",
+    excerpt: "food was to be billed at an actual cost not to exceed $11 per meal or $33 per person per day",
+    payment_basis: "not_to_exceed",
+    maximum: 11,
+    rate: null,
+  }));
+  assert.equal(audit.ok, true);
+  assert.equal(audit.fact.standing_label, STANDING_LABELS.AUDIT_REPORTED);
+  assert.equal(audit.fact.resident_claim_label, "The audit reports these contract terms");
 });
