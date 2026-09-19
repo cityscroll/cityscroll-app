@@ -286,7 +286,7 @@
     "manufactured_rates": "Contract totals are never divided by capacity, payments, or term to invent unit prices.",
     "solicitation_labeling": "Solicitation and RFx language is labeled advertised or requested, never executed.",
     "obligation_sources": "Project descriptions, titles, payment rows, and performance evaluations cannot create an obligation.",
-    "promise_wording": "Only executed document roles may be labeled \"the vendor promised.\"",
+    "promise_wording": "Only executed document roles may be labeled \"the vendor promised.\" Proposed, prior-term, bid, template, audit, title, payment, and project-summary evidence cannot produce \"What the vendor promised.\"",
     "quality_gate": "Empty text layers, low-quality extraction, and unreadable pages (no OCR) produce Desk unresolved rows with no positive resident assertion.",
     "amendments": "Amendments link to the affected term and retain the prior version."
   }

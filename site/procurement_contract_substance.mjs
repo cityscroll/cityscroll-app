@@ -8,7 +8,10 @@
  * titles, payment rows, or performance evaluations as obligations.
  */
 
-import { assessPageQuality } from "../warehouse/lib/document_processing.mjs";
+import {
+  assessPageQuality,
+  contentHashOf,
+} from "../warehouse/lib/document_processing.mjs";
 import {
   ACCESS_STATES,
   FIXED_CONTRACT_IDS,
@@ -16,6 +19,10 @@ import {
 
 export const CONTRACT_SUBSTANCE_SCHEMA =
   "cityscroll.procurement_contract_substance.v1";
+
+/** Projector version stamped on every admitted substance row. */
+export const PROJECTOR_VERSION =
+  "cityscroll.procurement_contract_substance.projector.v1";
 
 export const FACT_KINDS = Object.freeze({
   SCOPE_FACT: "scope_fact",
@@ -33,6 +40,13 @@ export const EVIDENCE_ROLES = Object.freeze({
   SITE_SCHEDULE: "site_schedule",
   INVOICE_OR_ACCEPTANCE: "invoice_or_acceptance",
   PERFORMANCE_EVALUATION: "performance_evaluation",
+  BID_TAB: "bid_tab",
+  PROPOSED_AGREEMENT: "proposed_agreement",
+  TEMPLATE_PRICING: "template_pricing",
+  PRIOR_TERM: "prior_term",
+  TITLE: "title",
+  PAYMENT: "payment",
+  PROJECT_SUMMARY: "project_summary",
 });
 
 export const STANDING_LABELS = Object.freeze({
@@ -41,7 +55,14 @@ export const STANDING_LABELS = Object.freeze({
   REQUESTED: "requested",
   EXECUTED: "executed",
   AMENDED: "amended",
+  BID_OFFER: "bid offer",
+  PROPOSED: "proposed",
+  TEMPLATE: "template pricing",
+  AUDIT_REPORTED: "the audit reports",
 });
+
+/** Resident-facing claim label reserved for executed vendor promises. */
+export const RESIDENT_VENDOR_PROMISE_LABEL = "What the vendor promised";
 
 export const UNRESOLVED_REASONS = Object.freeze({
   EMPTY_TEXT_LAYER: "empty_text_layer",
@@ -80,18 +101,29 @@ const SCOPE_ROLES = new Set([
 const PRICE_ROLES = new Set([
   EVIDENCE_ROLES.PRICING_SCHEDULE,
   EVIDENCE_ROLES.AMENDMENT,
+  EVIDENCE_ROLES.BID_TAB,
+  EVIDENCE_ROLES.PROPOSED_AGREEMENT,
+  EVIDENCE_ROLES.TEMPLATE_PRICING,
+  EVIDENCE_ROLES.PERFORMANCE_EVALUATION,
 ]);
 
 const OBLIGATION_ROLES = new Set([
   EVIDENCE_ROLES.EXECUTED_OBLIGATION,
   EVIDENCE_ROLES.EXECUTED_SCOPE,
   EVIDENCE_ROLES.AMENDMENT,
+  EVIDENCE_ROLES.PROPOSED_AGREEMENT,
 ]);
 
 const DISQUALIFIED_OBLIGATION_ROLES = new Set([
   EVIDENCE_ROLES.SOLICITATION_SCOPE,
   EVIDENCE_ROLES.PERFORMANCE_EVALUATION,
   EVIDENCE_ROLES.INVOICE_OR_ACCEPTANCE,
+  EVIDENCE_ROLES.BID_TAB,
+  EVIDENCE_ROLES.TEMPLATE_PRICING,
+  EVIDENCE_ROLES.PRIOR_TERM,
+  EVIDENCE_ROLES.TITLE,
+  EVIDENCE_ROLES.PAYMENT,
+  EVIDENCE_ROLES.PROJECT_SUMMARY,
   "project_description",
   "project_summary",
   "scope_summary",
@@ -102,6 +134,26 @@ const DISQUALIFIED_OBLIGATION_ROLES = new Set([
   "analytics_row",
   "notice_description",
   "metadata",
+  "bid",
+  "template",
+  "audit",
+]);
+
+const NON_PROMISE_ROLES = new Set([
+  EVIDENCE_ROLES.PROPOSED_AGREEMENT,
+  EVIDENCE_ROLES.PRIOR_TERM,
+  EVIDENCE_ROLES.BID_TAB,
+  EVIDENCE_ROLES.TEMPLATE_PRICING,
+  EVIDENCE_ROLES.PERFORMANCE_EVALUATION,
+  EVIDENCE_ROLES.TITLE,
+  EVIDENCE_ROLES.PAYMENT,
+  EVIDENCE_ROLES.PROJECT_SUMMARY,
+  EVIDENCE_ROLES.SOLICITATION_SCOPE,
+  "bid",
+  "template",
+  "audit",
+  "payment_row",
+  "project_description",
 ]);
 
 const CONTENT_HASH_RE = /^(sha256:)?[a-f0-9]{64}$/i;
@@ -248,6 +300,18 @@ function standingLabelForRole(documentRole, { forObligation = false } = {}) {
   if (role === EVIDENCE_ROLES.AMENDMENT) {
     return STANDING_LABELS.AMENDED;
   }
+  if (role === EVIDENCE_ROLES.BID_TAB) {
+    return STANDING_LABELS.BID_OFFER;
+  }
+  if (role === EVIDENCE_ROLES.TEMPLATE_PRICING) {
+    return STANDING_LABELS.TEMPLATE;
+  }
+  if (role === EVIDENCE_ROLES.PROPOSED_AGREEMENT) {
+    return STANDING_LABELS.PROPOSED;
+  }
+  if (role === EVIDENCE_ROLES.PERFORMANCE_EVALUATION) {
+    return STANDING_LABELS.AUDIT_REPORTED;
+  }
   if (forObligation && EXECUTED_ROLES.has(role) && OBLIGATION_ROLES.has(role)) {
     return STANDING_LABELS.VENDOR_PROMISED;
   }
@@ -255,6 +319,55 @@ function standingLabelForRole(documentRole, { forObligation = false } = {}) {
     return STANDING_LABELS.EXECUTED;
   }
   return STANDING_LABELS.REQUESTED;
+}
+
+/**
+ * Resident-facing claim label. Only an executed vendor-promise standing may
+ * produce "What the vendor promised"; bid, proposed, template, audit, title,
+ * payment, prior-term, and project-summary evidence never do.
+ */
+export function residentClaimLabel(factOrStanding = {}) {
+  const standing = clean(
+    typeof factOrStanding === "string"
+      ? factOrStanding
+      : (factOrStanding?.standing_label || factOrStanding?.standing),
+    80,
+  );
+  const role = normalizeRole(
+    typeof factOrStanding === "string" ? null : factOrStanding?.document_role,
+  );
+  if (role && NON_PROMISE_ROLES.has(role)) {
+    if (standing === STANDING_LABELS.AUDIT_REPORTED || role === EVIDENCE_ROLES.PERFORMANCE_EVALUATION) {
+      return "The audit reports these contract terms";
+    }
+    if (standing === STANDING_LABELS.BID_OFFER || role === EVIDENCE_ROLES.BID_TAB) {
+      return "Bid offer";
+    }
+    if (standing === STANDING_LABELS.PROPOSED || role === EVIDENCE_ROLES.PROPOSED_AGREEMENT) {
+      return "Proposed agreement term";
+    }
+    if (standing === STANDING_LABELS.TEMPLATE || role === EVIDENCE_ROLES.TEMPLATE_PRICING) {
+      return "Template pricing";
+    }
+    return standing || "Non-executed evidence";
+  }
+  if (standing === STANDING_LABELS.VENDOR_PROMISED) {
+    return RESIDENT_VENDOR_PROMISE_LABEL;
+  }
+  return standing || null;
+}
+
+function projectionProvenance(citation, qualityGate, raw = {}) {
+  const excerpt = citation?.excerpt || "";
+  return {
+    excerpt_hash: excerpt ? contentHashOf(excerpt) : null,
+    extraction_quality: qualityGate?.quality?.quality_state
+      || qualityGate?.quality_state
+      || raw.extraction_quality
+      || null,
+    projector_version: PROJECTOR_VERSION,
+    resident_claim_label: null,
+  };
 }
 
 function unresolvedRow({
@@ -295,6 +408,10 @@ export function refuseManufacturedRate(candidate = {}) {
   if (candidate.rate_source === "total_divided_by_quantity"
     || candidate.rate_source === "total_divided_by_payments"
     || candidate.rate_source === "total_divided_by_term"
+    || candidate.rate_source === "total_divided_by_duration"
+    || candidate.rate_source === "total_divided_by_capacity"
+    || candidate.rate_source === "total_divided_by_meals"
+    || candidate.rate_source === "total_divided_by_sites"
     || candidate.rate_source === "derived_from_total") {
     reasons.push(UNRESOLVED_REASONS.MANUFACTURED_RATE);
   }
@@ -412,37 +529,36 @@ export function projectScopeFact(raw = {}) {
 
   const factId = clean(raw.fact_id || raw.id, 120)
     || `scope:${citation.contract_id}:${citation.source_document_id}:${citation.locator}`;
-
-  return {
-    ok: true,
-    unresolved: null,
-    fact: {
-      schema: CONTRACT_SUBSTANCE_SCHEMA,
-      kind: FACT_KINDS.SCOPE_FACT,
-      status: "admitted",
-      fact_id: factId,
-      contract_id: citation.contract_id,
-      subject: subject,
-      action: action,
-      object: object,
-      exclusions: exclusions,
-      period: period,
-      document_role: role,
-      standing_label: standing,
-      locator: citation.locator,
-      excerpt: citation.excerpt,
-      source_document_id: citation.source_document_id,
-      content_hash: citation.content_hash,
-      public_url: citation.public_url,
-      publication_date: citation.publication_date,
-      effective_date: citation.effective_date,
-      version: clean(raw.version, 40) || "1",
-      supersedes_fact_id: clean(raw.supersedes_fact_id, 120),
-      superseded_by_fact_id: clean(raw.superseded_by_fact_id, 120),
-      resident_assertion: true,
-      desk_reviewable: false,
-    },
+  const provenance = projectionProvenance(citation, qualityGate, raw);
+  const fact = {
+    schema: CONTRACT_SUBSTANCE_SCHEMA,
+    kind: FACT_KINDS.SCOPE_FACT,
+    status: "admitted",
+    fact_id: factId,
+    contract_id: citation.contract_id,
+    subject,
+    action,
+    object,
+    exclusions,
+    period,
+    document_role: role,
+    standing_label: standing,
+    locator: citation.locator,
+    excerpt: citation.excerpt,
+    source_document_id: citation.source_document_id,
+    content_hash: citation.content_hash,
+    public_url: citation.public_url,
+    publication_date: citation.publication_date,
+    effective_date: citation.effective_date,
+    version: clean(raw.version, 40) || "1",
+    supersedes_fact_id: clean(raw.supersedes_fact_id, 120),
+    superseded_by_fact_id: clean(raw.superseded_by_fact_id, 120),
+    resident_assertion: true,
+    desk_reviewable: false,
+    ...provenance,
+    resident_claim_label: residentClaimLabel({ standing_label: standing, document_role: role }),
   };
+  return { ok: true, unresolved: null, fact };
 }
 
 /**
@@ -559,41 +675,41 @@ export function projectPriceTerm(raw = {}) {
 
   const factId = clean(raw.fact_id || raw.id, 120)
     || `price:${citation.contract_id}:${citation.source_document_id}:${citation.locator}`;
-
-  return {
-    ok: true,
-    unresolved: null,
-    fact: {
-      schema: CONTRACT_SUBSTANCE_SCHEMA,
-      kind: FACT_KINDS.PRICE_TERM,
-      status: "admitted",
-      fact_id: factId,
-      contract_id: citation.contract_id,
-      payment_basis: paymentBasis,
-      description: clean(raw.description, 400),
-      quantity,
-      unit,
-      rate,
-      maximum: finiteNumber(raw.maximum || raw.not_to_exceed),
-      period: clean(raw.period, 120),
-      option_period: clean(raw.option_period, 120),
-      conditions: clean(raw.conditions || raw.condition, 400),
-      document_role: role,
-      standing_label: standingLabelForRole(role),
-      locator: citation.locator,
-      excerpt: citation.excerpt,
-      source_document_id: citation.source_document_id,
-      content_hash: citation.content_hash,
-      public_url: citation.public_url,
-      publication_date: citation.publication_date,
-      effective_date: citation.effective_date,
-      version: clean(raw.version, 40) || "1",
-      supersedes_fact_id: clean(raw.supersedes_fact_id, 120),
-      superseded_by_fact_id: clean(raw.superseded_by_fact_id, 120),
-      resident_assertion: true,
-      desk_reviewable: false,
-    },
+  const standing = standingLabelForRole(role);
+  const provenance = projectionProvenance(citation, qualityGate, raw);
+  const fact = {
+    schema: CONTRACT_SUBSTANCE_SCHEMA,
+    kind: FACT_KINDS.PRICE_TERM,
+    status: "admitted",
+    fact_id: factId,
+    contract_id: citation.contract_id,
+    payment_basis: paymentBasis,
+    description: clean(raw.description, 400),
+    quantity,
+    unit,
+    rate,
+    maximum: finiteNumber(raw.maximum || raw.not_to_exceed),
+    period: clean(raw.period, 120),
+    option_period: clean(raw.option_period, 120),
+    conditions: clean(raw.conditions || raw.condition, 400),
+    document_role: role,
+    standing_label: standing,
+    locator: citation.locator,
+    excerpt: citation.excerpt,
+    source_document_id: citation.source_document_id,
+    content_hash: citation.content_hash,
+    public_url: citation.public_url,
+    publication_date: citation.publication_date,
+    effective_date: citation.effective_date,
+    version: clean(raw.version, 40) || "1",
+    supersedes_fact_id: clean(raw.supersedes_fact_id, 120),
+    superseded_by_fact_id: clean(raw.superseded_by_fact_id, 120),
+    resident_assertion: true,
+    desk_reviewable: false,
+    ...provenance,
+    resident_claim_label: residentClaimLabel({ standing_label: standing, document_role: role }),
   };
+  return { ok: true, unresolved: null, fact };
 }
 
 /**
@@ -725,40 +841,39 @@ export function projectObligation(raw = {}) {
 
   const factId = clean(raw.fact_id || raw.id, 120)
     || `obligation:${citation.contract_id}:${citation.source_document_id}:${citation.locator}`;
-
-  return {
-    ok: true,
-    unresolved: null,
-    fact: {
-      schema: CONTRACT_SUBSTANCE_SCHEMA,
-      kind: FACT_KINDS.OBLIGATION,
-      status: "admitted",
-      fact_id: factId,
-      contract_id: citation.contract_id,
-      obligated_party: obligatedParty,
-      action,
-      deliverable,
-      quantity: finiteNumber(raw.quantity),
-      frequency: clean(raw.frequency, 80),
-      deadline: clean(raw.deadline, 80),
-      period: clean(raw.period || raw.deadline_period, 120),
-      condition: clean(raw.condition || raw.conditions, 400),
-      document_role: documentRole,
-      standing_label: standing,
-      locator: citation.locator,
-      excerpt: citation.excerpt,
-      source_document_id: citation.source_document_id,
-      content_hash: citation.content_hash,
-      public_url: citation.public_url,
-      publication_date: citation.publication_date,
-      effective_date: citation.effective_date,
-      version: clean(raw.version, 40) || "1",
-      supersedes_fact_id: clean(raw.supersedes_fact_id, 120),
-      superseded_by_fact_id: clean(raw.superseded_by_fact_id, 120),
-      resident_assertion: true,
-      desk_reviewable: false,
-    },
+  const provenance = projectionProvenance(citation, qualityGate, raw);
+  const fact = {
+    schema: CONTRACT_SUBSTANCE_SCHEMA,
+    kind: FACT_KINDS.OBLIGATION,
+    status: "admitted",
+    fact_id: factId,
+    contract_id: citation.contract_id,
+    obligated_party: obligatedParty,
+    action,
+    deliverable,
+    quantity: finiteNumber(raw.quantity),
+    frequency: clean(raw.frequency, 80),
+    deadline: clean(raw.deadline, 80),
+    period: clean(raw.period || raw.deadline_period, 120),
+    condition: clean(raw.condition || raw.conditions, 400),
+    document_role: documentRole,
+    standing_label: standing,
+    locator: citation.locator,
+    excerpt: citation.excerpt,
+    source_document_id: citation.source_document_id,
+    content_hash: citation.content_hash,
+    public_url: citation.public_url,
+    publication_date: citation.publication_date,
+    effective_date: citation.effective_date,
+    version: clean(raw.version, 40) || "1",
+    supersedes_fact_id: clean(raw.supersedes_fact_id, 120),
+    superseded_by_fact_id: clean(raw.superseded_by_fact_id, 120),
+    resident_assertion: true,
+    desk_reviewable: false,
+    ...provenance,
+    resident_claim_label: residentClaimLabel({ standing_label: standing, document_role: documentRole }),
   };
+  return { ok: true, unresolved: null, fact };
 }
 
 /**
@@ -1005,7 +1120,7 @@ export function buildContractSubstanceDocument({
       manufactured_rates: "Contract totals are never divided by capacity, payments, or term to invent unit prices.",
       solicitation_labeling: "Solicitation and RFx language is labeled advertised or requested, never executed.",
       obligation_sources: "Project descriptions, titles, payment rows, and performance evaluations cannot create an obligation.",
-      promise_wording: "Only executed document roles may be labeled \"the vendor promised.\"",
+      promise_wording: "Only executed document roles may be labeled \"the vendor promised.\" Proposed, prior-term, bid, template, audit, title, payment, and project-summary evidence cannot produce \"What the vendor promised.\"",
       quality_gate: "Empty text layers, low-quality extraction, and unreadable pages (no OCR) produce Desk unresolved rows with no positive resident assertion.",
       amendments: "Amendments link to the affected term and retain the prior version.",
     },

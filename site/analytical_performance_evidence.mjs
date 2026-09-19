@@ -35,6 +35,24 @@ export const PERFORMANCE_EVIDENCE_SOURCE_COVERAGE = Object.freeze([
     role: "public procurement evidence",
     performance_evidence: true,
   }),
+  Object.freeze({
+    source_id: "dcas-bid-tabs",
+    label: "DCAS bid tabulations",
+    role: "public bid-offer evidence",
+    performance_evidence: true,
+  }),
+  Object.freeze({
+    source_id: "mocs-fcrc",
+    label: "MOCS FCRC public meeting packets",
+    role: "public proposed-agreement evidence",
+    performance_evidence: true,
+  }),
+  Object.freeze({
+    source_id: "comptroller-audits",
+    label: "NYC Comptroller audit reports",
+    role: "public performance-evaluation evidence",
+    performance_evidence: true,
+  }),
 ]);
 
 const SOURCE_IDS = new Set(PERFORMANCE_EVIDENCE_SOURCE_COVERAGE.map((source) => source.source_id));

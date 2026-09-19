@@ -25,6 +25,19 @@ import {
   validateRealCorpusCoverage,
   verifyRetainedBytes,
 } from "../site/procurement_contract_substance_real_corpus.mjs";
+import {
+  DCAS_BID_IDENTITY,
+  ROLE_CORPUS_SCHEMA,
+  mineRetainedRoleCorpus,
+  mutateRolePassage,
+  reportRoleCorpusBuildCounts,
+  toPerformanceEvidenceRows,
+} from "../site/procurement_contract_substance_role_corpus.mjs";
+import {
+  PROJECTOR_VERSION,
+  RESIDENT_VENDOR_PROMISE_LABEL,
+  STANDING_LABELS,
+} from "../site/procurement_contract_substance.mjs";
 import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const CORPUS = JSON.parse(readFileSync(
@@ -34,6 +47,21 @@ const CORPUS = JSON.parse(readFileSync(
 
 const ACCESS = JSON.parse(readFileSync(
   new URL("../site/data/procurement_contract_substance_access.json", import.meta.url),
+  "utf8",
+));
+
+const ROLE_PASSAGES = JSON.parse(readFileSync(
+  new URL("./fixtures/contract-substance-real-corpus/role-passages.json", import.meta.url),
+  "utf8",
+));
+
+const ROLE_CORPUS = JSON.parse(readFileSync(
+  new URL("../site/data/procurement_contract_substance_role_corpus.json", import.meta.url),
+  "utf8",
+));
+
+const PERFORMANCE_EVIDENCE = JSON.parse(readFileSync(
+  new URL("../site/data/performance_evidence_sources.json", import.meta.url),
   "utf8",
 ));
 
@@ -320,4 +348,147 @@ test("A6: one-at-a-time mutations prove no executed-scope, contractual-price, or
     assert.equal(validateRealCorpusCoverage(built).ok, true);
     assert.equal(built.rows.length, CORPUS.rows.length);
   });
+});
+
+test("role-corpus A1: real extraction yields accepted rows from DCAS, MOCS, and Comptroller with hash, locator, excerpt hash, quality, and projector version", () => {
+  const mined = mineRetainedRoleCorpus({ corpus: CORPUS, passages: ROLE_PASSAGES });
+  assert.equal(mined.ok, true, mined.errors.join(","));
+  assert.equal(mined.document.schema, ROLE_CORPUS_SCHEMA);
+  assert.equal(ROLE_CORPUS.schema, ROLE_CORPUS_SCHEMA);
+
+  const byDoc = {
+    "dcas-bid-tab-2000090": mined.document.rows.filter((row) => row.corpus_document_id === "dcas-bid-tab-2000090"),
+    "mocs-fcrc-packet-202411-proposed-agreement": mined.document.rows.filter((row) => row.corpus_document_id === "mocs-fcrc-packet-202411-proposed-agreement"),
+    "comptroller-docgo-audit-20248801671": mined.document.rows.filter((row) => row.corpus_document_id === "comptroller-docgo-audit-20248801671"),
+  };
+  for (const [documentId, rows] of Object.entries(byDoc)) {
+    assert.ok(rows.length >= 1, documentId);
+    for (const row of rows) {
+      assert.equal(row.provenance_class, "real_source");
+      assert.match(row.content_hash, /^sha256:[a-f0-9]{64}$/);
+      assert.match(row.excerpt_hash, /^sha256:[a-f0-9]{64}$/);
+      assert.ok(row.locator);
+      assert.ok(row.extraction_quality);
+      assert.equal(row.projector_version, PROJECTOR_VERSION);
+      assert.equal(row.status, "admitted");
+    }
+  }
+
+  // Hand-authored fixture-only rows do not satisfy the positive corpus obligation.
+  const counts = reportRoleCorpusBuildCounts({
+    realRows: mined.document.rows,
+    mutationRows: [],
+    fixtureRows: [{ fact_id: "fixture-only" }],
+  });
+  assert.equal(counts.real_source_row_count, mined.document.rows.length);
+  assert.equal(counts.fixture_row_count, 1);
+  assert.equal(ROLE_CORPUS.build_counts.real_source_row_count, ROLE_CORPUS.rows.length);
+  assert.equal(ROLE_CORPUS.build_counts.fixture_row_count, 0);
+});
+
+test("role-corpus A2: DCAS bid tab retains offered washer unit prices and class awards as bid_tab facts, never executed rates", () => {
+  const mined = mineRetainedRoleCorpus({ corpus: CORPUS, passages: ROLE_PASSAGES });
+  const dcas = mined.document.rows.filter((row) => row.contract_id === DCAS_BID_IDENTITY);
+  assert.ok(dcas.length >= 3);
+  assert.ok(dcas.some((row) => /item 1/.test(row.locator) && /POT PAN & UTENSIL WASHER/i.test(row.excerpt)));
+  assert.ok(dcas.some((row) => /item 2/.test(row.locator)));
+  assert.ok(dcas.some((row) => /page 2/.test(row.locator) && /AUKEE TRADING CORPORATION/i.test(row.excerpt)));
+  for (const row of dcas) {
+    assert.equal(row.document_role, "bid_tab");
+    assert.equal(row.standing_label, STANDING_LABELS.BID_OFFER);
+    assert.equal(row.resident_claim_label, "Bid offer");
+    assert.notEqual(row.standing_label, STANDING_LABELS.EXECUTED);
+    assert.notEqual(row.resident_claim_label, RESIDENT_VENDOR_PROMISE_LABEL);
+  }
+});
+
+test("role-corpus A3: MOCS retains proposed GrowNYC payment, duties, Exhibit A sites, and tennis template fees", () => {
+  const mined = mineRetainedRoleCorpus({ corpus: CORPUS, passages: ROLE_PASSAGES });
+  const mocs = mined.document.rows.filter((row) => row.corpus_document_id === "mocs-fcrc-packet-202411-proposed-agreement");
+  assert.ok(mocs.some((row) => /page 35/.test(row.locator) && /fees payable/i.test(row.excerpt)));
+  assert.ok(mocs.some((row) => /pages 41-43/.test(row.locator) && /sole cost and expense/i.test(row.excerpt)));
+  assert.ok(mocs.some((row) => /pages 48-53/.test(row.locator)));
+  assert.ok(mocs.some((row) => /EXHIBIT A/i.test(row.excerpt) && /Joyce Kilmer Park/i.test(row.excerpt) && /Poe Park/i.test(row.excerpt)));
+  assert.ok(mocs.some((row) => /Tennis/i.test(row.excerpt) && /Season 1 \(2024\): \$500\.00/.test(row.excerpt)));
+  for (const row of mocs) {
+    assert.ok(["proposed_agreement", "template_pricing"].includes(row.document_role), row.document_role);
+    assert.ok([STANDING_LABELS.PROPOSED, STANDING_LABELS.TEMPLATE].includes(row.standing_label));
+    assert.notEqual(row.resident_claim_label, RESIDENT_VENDOR_PROMISE_LABEL);
+    assert.notEqual(row.standing_label, STANDING_LABELS.EXECUTED);
+  }
+});
+
+test("role-corpus A4: DocGo audit retains reported meal and security rates linked to CT180620248801671 with audit wording", () => {
+  const mined = mineRetainedRoleCorpus({ corpus: CORPUS, passages: ROLE_PASSAGES });
+  const audit = mined.document.rows.filter((row) => row.contract_id === DOCGO_CONTRACT_ID);
+  assert.ok(audit.some((row) => /\$11 per meal/i.test(row.excerpt) && /\$33 per person per day/i.test(row.excerpt)));
+  assert.ok(audit.some((row) => /\$50 per hour/i.test(row.excerpt)));
+  assert.ok(audit.some((row) => /50 or more Service Recipients/i.test(row.excerpt)));
+  for (const row of audit) {
+    assert.equal(row.document_role, "performance_evaluation");
+    assert.equal(row.standing_label, STANDING_LABELS.AUDIT_REPORTED);
+    assert.equal(row.resident_claim_label, "The audit reports these contract terms");
+    assert.notEqual(row.resident_claim_label, RESIDENT_VENDOR_PROMISE_LABEL);
+  }
+});
+
+test("role-corpus A5: performance_evidence_sources.json carries only real retained provenance and separate build counts", () => {
+  assert.ok(Array.isArray(PERFORMANCE_EVIDENCE.rows));
+  assert.ok(PERFORMANCE_EVIDENCE.rows.length >= 3);
+  assert.ok(PERFORMANCE_EVIDENCE.build_counts.real_source_row_count >= 1);
+  assert.equal(PERFORMANCE_EVIDENCE.build_counts.fixture_row_count, 0);
+  assert.equal(PERFORMANCE_EVIDENCE.build_counts.mutation_row_count, 0);
+  assert.ok(PERFORMANCE_EVIDENCE.source_coverage.some((row) => row.source_id === "dcas-bid-tabs"));
+  assert.ok(PERFORMANCE_EVIDENCE.source_coverage.some((row) => row.source_id === "mocs-fcrc"));
+  assert.ok(PERFORMANCE_EVIDENCE.source_coverage.some((row) => row.source_id === "comptroller-audits"));
+
+  const mined = mineRetainedRoleCorpus({ corpus: CORPUS, passages: ROLE_PASSAGES });
+  const expected = toPerformanceEvidenceRows(mined.document.rows);
+  assert.deepEqual(
+    PERFORMANCE_EVIDENCE.rows.map((row) => row.prime_contract_id).sort(),
+    expected.map((row) => row.prime_contract_id).sort(),
+  );
+  for (const row of PERFORMANCE_EVIDENCE.rows) {
+    for (const item of row.evidence_items) {
+      assert.ok(item.source_passage.content_hash);
+      assert.ok(item.source_passage.excerpt_hash);
+      assert.ok(item.source_passage.locator);
+      assert.equal(item.source_passage.projector_version, PROJECTOR_VERSION);
+    }
+  }
+});
+
+test("role-corpus A7: role-swap, blank-signature, stale-hash, missing-page, OCR-garble, conflicting-passage, and missing-contract-identity fail closed", () => {
+  const base = {
+    contract_id: DCAS_BID_IDENTITY,
+    document_id: "dcas-bid-tab-2000090",
+    source_document_id: "dcas-bid-tab-2000090",
+    document_role: "bid_tab",
+    content_hash: rowById("dcas-bid-tab-2000090").content_hash,
+    public_url: rowById("dcas-bid-tab-2000090").final_url,
+    publication_date: "2020-02-27",
+    locator: "PDF page 1 / item 1",
+    excerpt: ROLE_PASSAGES.dcas_page1.slice(0, 500),
+    fact_kind: "price_term",
+    payment_basis: "unit_price",
+    description: "washer",
+    quantity: 1,
+    unit: "each",
+    rate: 22287,
+  };
+
+  for (const mutation of [
+    "role_swap",
+    "blank_signature",
+    "stale_hash",
+    "missing_page",
+    "ocr_garble",
+    "conflicting_passage",
+    "missing_contract_identity",
+  ]) {
+    const result = mutateRolePassage(base, mutation);
+    assert.equal(result.any_claim_survives, false, mutation);
+    assert.equal(result.document_retrievable, true, mutation);
+    assert.equal(result.unresolved?.resident_assertion, false, mutation);
+  }
 });
