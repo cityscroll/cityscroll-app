@@ -1,0 +1,378 @@
+{
+  "schema": "cityscroll.procurement_contract_service_geography.v1",
+  "version": 1,
+  "generated_at": "2026-09-19T03:00:00.000Z",
+  "policy": {
+    "vendor_address_never_service_geography": true,
+    "polygon_overlap_never_service_or_affecting_role": true,
+    "broad_scopes_not_collapsed": true,
+    "ambiguous_matches_not_resident_accepted": true,
+    "join_only_through_cited_contract_place": true
+  },
+  "rows": [
+    {
+      "kind": "contract_place",
+      "assertion": {
+        "schema": "cityscroll.procurement_contract_service_geography.v1",
+        "contract_id": "CT107120258801626",
+        "place_role": "facility_site",
+        "input": {
+          "input_kind": "exact_address",
+          "address": "3218 Emmons Avenue, Brooklyn",
+          "units": 60
+        },
+        "citation": {
+          "source_document_id": "city_record:20240829105",
+          "locator": "notice 20240829105 facility description",
+          "effective_period": null,
+          "notice_id": "20240829105",
+          "notice_href": "/notices/20240829105",
+          "source_observation_ref": "city_record:20240829105",
+          "attribution_label": "Notice 20240829105"
+        },
+        "units": 60,
+        "legacy_role": "facility_service_site"
+      },
+      "resolution": {
+        "ok": true,
+        "state": "resolved",
+        "geographies": [
+          {
+            "key": "geography:nta2020:BK1503",
+            "type": "nta2020",
+            "id": "BK1503",
+            "label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+            "class": "statistical",
+            "relation": "located_in",
+            "method": "exact_address_entry_resolver",
+            "source_id": "dcp-nta2020-boundaries",
+            "boundary_vintage": "26B",
+            "subtype": "residential"
+          },
+          {
+            "key": "geography:community_district:K15",
+            "type": "community_district",
+            "id": "K15",
+            "label": "Brooklyn Community District 15",
+            "class": "community_administrative",
+            "relation": "located_in",
+            "method": "exact_address_entry_resolver",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "subtype": "regular"
+          },
+          {
+            "key": "geography:council_district:48",
+            "type": "council_district",
+            "id": "48",
+            "label": "City Council District 48",
+            "class": "political",
+            "relation": "located_in",
+            "method": "exact_address_entry_resolver",
+            "source_id": "city-council-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "subtype": null
+          },
+          {
+            "key": "geography:police_precinct:61",
+            "type": "police_precinct",
+            "id": "61",
+            "label": "Police Precinct 61",
+            "class": "service_administrative",
+            "relation": "located_in",
+            "method": "exact_address_entry_resolver",
+            "source_id": "dcp-police-precinct-boundaries",
+            "boundary_vintage": "26B",
+            "subtype": null
+          }
+        ],
+        "candidates": [],
+        "vintage_drift": [],
+        "reason": null,
+        "entry": {
+          "selected_key": "geography:nta2020:BK1503",
+          "selection_policy": "residential_nta"
+        }
+      }
+    },
+    {
+      "kind": "vendor_address_identity",
+      "identity_only": {
+        "role": "vendor_address",
+        "contract_id": "CT107120258801626",
+        "address": "999 Vendor Headquarters Plaza, Albany, NY",
+        "source_document_id": "vendor-profile-1",
+        "retained_for": "entity_identity",
+        "emits_service_geography": false,
+        "near_you_local_count": false
+      },
+      "assertion": null,
+      "resolution": null
+    },
+    {
+      "kind": "contract_place",
+      "assertion": {
+        "schema": "cityscroll.procurement_contract_service_geography.v1",
+        "contract_id": "CT999900000000006",
+        "place_role": "work_site",
+        "input": {
+          "input_kind": "broad_scope",
+          "scope_kind": "multi_site",
+          "label": null,
+          "site_labels": [
+            "3218 Emmons Avenue, Brooklyn",
+            "1 Metrotech Center, Brooklyn",
+            "120 Schermerhorn Street, Brooklyn"
+          ]
+        },
+        "citation": {
+          "source_document_id": "doc-multi-site-1",
+          "locator": "Schedule A Sites",
+          "effective_period": null,
+          "notice_id": null,
+          "notice_href": null,
+          "source_observation_ref": null,
+          "attribution_label": null
+        },
+        "units": null,
+        "legacy_role": null
+      },
+      "resolution": {
+        "ok": true,
+        "state": "broad_scope",
+        "scope_kind": "multi_site",
+        "site_labels": [
+          "3218 Emmons Avenue, Brooklyn",
+          "1 Metrotech Center, Brooklyn",
+          "120 Schermerhorn Street, Brooklyn"
+        ],
+        "geographies": [],
+        "candidates": [],
+        "collapsed": false,
+        "reason": null
+      }
+    },
+    {
+      "kind": "contract_place",
+      "assertion": {
+        "schema": "cityscroll.procurement_contract_service_geography.v1",
+        "contract_id": "CT999900000000003",
+        "place_role": "service_area",
+        "input": {
+          "input_kind": "named_geography",
+          "name": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+          "geography_type": "nta2020"
+        },
+        "citation": {
+          "source_document_id": "doc-named-area-1",
+          "locator": "Service Area",
+          "effective_period": {
+            "start": "2024-07-01",
+            "end": "2026-06-30"
+          },
+          "notice_id": null,
+          "notice_href": null,
+          "source_observation_ref": null,
+          "attribution_label": null
+        },
+        "units": null,
+        "legacy_role": null
+      },
+      "resolution": {
+        "ok": true,
+        "state": "resolved",
+        "geographies": [
+          {
+            "key": "geography:nta2020:BK1503",
+            "type": "nta2020",
+            "id": "BK1503",
+            "label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+            "class": null,
+            "relation": "located_in",
+            "method": "canonical_label",
+            "source_id": "dcp-nta2020-boundaries",
+            "boundary_vintage": "26B",
+            "subtype": "residential"
+          },
+          {
+            "key": "geography:community_district:K15",
+            "type": "community_district",
+            "id": "K15",
+            "label": null,
+            "class": null,
+            "relation": "located_in",
+            "method": "versioned_crosswalk",
+            "source_id": "geography-crosswalk",
+            "boundary_vintage": "2026-05-26",
+            "subtype": null
+          }
+        ],
+        "candidates": [],
+        "reason": null
+      }
+    },
+    {
+      "kind": "contract_place",
+      "assertion": {
+        "schema": "cityscroll.procurement_contract_service_geography.v1",
+        "contract_id": "CT999900000000004",
+        "place_role": "work_site",
+        "input": {
+          "input_kind": "exact_address",
+          "address": "100 Broadway, New York",
+          "units": null
+        },
+        "citation": {
+          "source_document_id": "doc-ambiguous-1",
+          "locator": "page 2",
+          "effective_period": null,
+          "notice_id": null,
+          "notice_href": null,
+          "source_observation_ref": null,
+          "attribution_label": null
+        },
+        "units": null,
+        "legacy_role": null
+      },
+      "resolution": {
+        "ok": false,
+        "state": "ambiguous",
+        "geographies": [],
+        "candidates": [
+          {
+            "key": "geography:nta2020:MN0101",
+            "type": "nta2020",
+            "id": "MN0101",
+            "label": "Financial District-Battery Park City",
+            "class": null,
+            "relation": "located_in",
+            "method": "ambiguous_address_candidate",
+            "source_id": null,
+            "boundary_vintage": "26B",
+            "subtype": null
+          },
+          {
+            "key": "geography:nta2020:MN0102",
+            "type": "nta2020",
+            "id": "MN0102",
+            "label": "Tribeca-Civic Center",
+            "class": null,
+            "relation": "located_in",
+            "method": "ambiguous_address_candidate",
+            "source_id": null,
+            "boundary_vintage": "26B",
+            "subtype": null
+          }
+        ],
+        "reason": "ambiguous_address",
+        "resident_accepted": false
+      }
+    },
+    {
+      "kind": "contract_place",
+      "assertion": {
+        "schema": "cityscroll.procurement_contract_service_geography.v1",
+        "contract_id": "CT107120258801626",
+        "place_role": "facility_site",
+        "input": {
+          "input_kind": "exact_address",
+          "address": "3218 Emmons Avenue, Brooklyn",
+          "units": 60
+        },
+        "citation": {
+          "source_document_id": "city_record:20240829105:vintage-drift-check",
+          "locator": "notice 20240829105 facility description (vintage check)",
+          "effective_period": null,
+          "notice_id": "20240829105",
+          "notice_href": "/notices/20240829105",
+          "source_observation_ref": "city_record:20240829105",
+          "attribution_label": "Notice 20240829105"
+        },
+        "units": 60,
+        "legacy_role": "facility_service_site"
+      },
+      "resolution": {
+        "ok": true,
+        "state": "resolved",
+        "geographies": [
+          {
+            "key": "geography:nta2020:BK1503",
+            "type": "nta2020",
+            "id": "BK1503",
+            "label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+            "class": "statistical",
+            "relation": "located_in",
+            "method": "exact_address_entry_resolver",
+            "source_id": "dcp-nta2020-boundaries",
+            "boundary_vintage": "26B",
+            "subtype": "residential"
+          },
+          {
+            "key": "geography:community_district:K15",
+            "type": "community_district",
+            "id": "K15",
+            "label": "Brooklyn Community District 15",
+            "class": "community_administrative",
+            "relation": "located_in",
+            "method": "exact_address_entry_resolver",
+            "source_id": "community-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "subtype": "regular"
+          },
+          {
+            "key": "geography:council_district:48",
+            "type": "council_district",
+            "id": "48",
+            "label": "City Council District 48",
+            "class": "political",
+            "relation": "located_in",
+            "method": "exact_address_entry_resolver",
+            "source_id": "city-council-district-boundaries",
+            "boundary_vintage": "2026-05-26",
+            "subtype": null
+          },
+          {
+            "key": "geography:police_precinct:61",
+            "type": "police_precinct",
+            "id": "61",
+            "label": "Police Precinct 61",
+            "class": "service_administrative",
+            "relation": "located_in",
+            "method": "exact_address_entry_resolver",
+            "source_id": "dcp-police-precinct-boundaries",
+            "boundary_vintage": "26B",
+            "subtype": null
+          }
+        ],
+        "candidates": [],
+        "vintage_drift": [
+          {
+            "key": "geography:nta2020:BK1503",
+            "observed_vintage": "26B",
+            "expected_vintage": "25A"
+          },
+          {
+            "key": "geography:community_district:K15",
+            "observed_vintage": "2026-05-26",
+            "expected_vintage": "25A"
+          },
+          {
+            "key": "geography:council_district:48",
+            "observed_vintage": "2026-05-26",
+            "expected_vintage": "25A"
+          },
+          {
+            "key": "geography:police_precinct:61",
+            "observed_vintage": "26B",
+            "expected_vintage": "25A"
+          }
+        ],
+        "reason": null,
+        "entry": {
+          "selected_key": "geography:nta2020:BK1503",
+          "selection_policy": "residential_nta"
+        }
+      }
+    }
+  ]
+}
