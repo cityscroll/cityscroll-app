@@ -1,0 +1,242 @@
+/*
+ * "What this contract requires" section for canonical procurement documents.
+ *
+ * Reuses the token vocabulary of the other procurement context cards so the
+ * section reads as part of the same page. Advertised evidence is visually
+ * distinct from executed terms: advertised and requested standings carry a
+ * muted, dashed badge while executed and amended standings carry a solid one.
+ * Mobile-first: nothing assumes more than a 320px-wide viewport, and every
+ * long passage, identifier, and link wraps rather than pushing the page
+ * sideways. Excerpts live in native details elements so the section stays
+ * useful without JavaScript.
+ */
+
+.procurement-contract-substance {
+  font: 14px/1.5 var(--font-interface, ui-sans-serif, system-ui, sans-serif);
+  color: var(--ink, #12181f);
+  border: 1px solid var(--rule, #dde1e7);
+  border-inline-start: 3px solid var(--accent, #1a5fb4);
+  border-radius: 10px;
+  padding: 14px 16px 16px;
+  margin: 0 0 16px;
+  background: var(--paper-2, #f7f8fa);
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.procurement-contract-substance h2 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.substance-lede {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+}
+
+.substance-group {
+  border: 1px solid var(--rule, #e4e7ec);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 0 0 10px;
+  min-width: 0;
+  background: var(--paper, #fff);
+}
+
+.substance-group:last-child {
+  margin-bottom: 0;
+}
+
+.substance-group-heading {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink, #12181f);
+}
+
+.substance-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.substance-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--rule, #eef0f3);
+  min-width: 0;
+}
+
+.substance-row:last-child {
+  border-bottom: none;
+}
+
+@media (min-width: 560px) {
+  .substance-row {
+    grid-template-columns: 110px minmax(0, 1fr);
+  }
+}
+
+.substance-row-main {
+  min-width: 0;
+}
+
+.substance-row-text {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.substance-row-meta,
+.substance-row-conditions {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+  overflow-wrap: anywhere;
+}
+
+.substance-place-role {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted, #5b6470);
+  align-self: start;
+}
+
+/* Standing badges: advertised/requested stay visually quieter than the
+   executed and amended terms they sit beside. */
+.substance-standing {
+  display: inline-block;
+  align-self: start;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px dashed var(--muted, #8a93a1);
+  color: var(--muted, #5b6470);
+  background: transparent;
+}
+
+.substance-standing-executed,
+.substance-standing-amended {
+  border-style: solid;
+  border-color: var(--accent, #1a5fb4);
+  color: var(--accent, #1a5fb4);
+  background: var(--paper, #fff);
+}
+
+.substance-amends-note {
+  font-weight: 600;
+}
+
+.substance-citation-link,
+.substance-place-geography-link,
+.substance-place-record-link {
+  color: var(--link, #1a5fb4);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+.substance-place-geography-link.is-selected {
+  font-weight: 700;
+}
+
+.substance-citation-note {
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+  overflow-wrap: anywhere;
+}
+
+.substance-place-geographies {
+  margin: 4px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  min-width: 0;
+}
+
+/* A standalone control, not a link inside a sentence: it carries its own
+   minimum target height rather than relying on the inline-target exception. */
+.substance-excerpt {
+  margin: 6px 0 0;
+  font-size: 12px;
+  min-width: 0;
+}
+
+.substance-excerpt summary {
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--muted, #5b6470);
+}
+
+.substance-excerpt blockquote {
+  margin: 6px 0 0;
+  padding: 8px 10px;
+  border-inline-start: 3px solid var(--rule, #dde1e7);
+  background: var(--paper-2, #f7f8fa);
+  overflow-wrap: anywhere;
+}
+
+.substance-totals {
+  margin: 0 0 8px;
+}
+
+.substance-totals div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  align-items: baseline;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--rule, #eef0f3);
+  min-width: 0;
+}
+
+.substance-totals div:last-child {
+  border-bottom: none;
+}
+
+.substance-totals dt {
+  flex: 0 0 auto;
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+}
+
+.substance-totals dd {
+  flex: 1 1 auto;
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
+.substance-paid-as-of {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted, #5b6470);
+}
+
+.substance-no-rate-schedule {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+  overflow-wrap: anywhere;
+}
+
+.procurement-substance-access-note {
+  font-size: 12px;
+  color: var(--muted, #5b6470);
+  overflow-wrap: anywhere;
+}

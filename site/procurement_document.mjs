@@ -71,6 +71,14 @@ import {
 } from "./procurement_payment_place_context.mjs";
 import procurementContractLifecycleMaterialization from "./data/procurement_contract_lifecycle.json" with { type: "json" };
 import procurementPlaceFactsMaterialization from "./data/procurement_place_facts.json" with { type: "json" };
+import procurementContractSubstanceMaterialization from "./data/procurement_contract_substance.json" with { type: "json" };
+import procurementContractSubstanceAccessMaterialization from "./data/procurement_contract_substance_access.json" with { type: "json" };
+import procurementContractServiceGeographyMaterialization from "./data/procurement_contract_service_geography.json" with { type: "json" };
+import {
+  buildContractSubstanceView,
+  renderContractSubstanceAccessNoteHtml,
+  renderContractSubstanceHtml,
+} from "./procurement_contract_substance_ui.mjs";
 
 
 function esc(value) {
@@ -96,6 +104,24 @@ function formatAmount(value) {
   if (!raw && value !== 0 && value !== "0") return null;
   const number = Number(String(value).replace(/[$,]/g, ""));
   return Number.isFinite(number) ? `$${number.toLocaleString("en-US")}` : (raw || null);
+}
+
+function numericAmount(formatted) {
+  if (formatted == null || formatted === "") return null;
+  const number = Number(String(formatted).replace(/[$,]/g, ""));
+  return Number.isFinite(number) ? number : null;
+}
+
+/** Exact contract identities this procurement object carries. */
+function substanceContractIds(object = {}) {
+  const ids = new Set(
+    (Array.isArray(object?.identity_keys?.contract_ids) ? object.identity_keys.contract_ids : [])
+      .map((value) => clean(value, 160)?.toUpperCase())
+      .filter(Boolean),
+  );
+  const match = clean(object?.procurement_id, 320)?.match(/^procurement:contract:(.+)$/i);
+  if (match?.[1]) ids.add(match[1].toUpperCase());
+  return [...ids];
 }
 
 function factsFor(object, observations) {
@@ -584,6 +610,9 @@ export function renderProcurementDocument(object = {}, observations = [], {
   lookupReceipt = object?.procurement_source_lookup_receipt || null,
   contractLifecycleMaterialization = procurementContractLifecycleMaterialization,
   placeFactsMaterialization = procurementPlaceFactsMaterialization,
+  contractSubstanceMaterialization = procurementContractSubstanceMaterialization,
+  contractSubstanceAccessMaterialization = procurementContractSubstanceAccessMaterialization,
+  contractServiceGeographyMaterialization = procurementContractServiceGeographyMaterialization,
 } = {}) {
   const id = clean(object?.procurement_id, 320);
   if (!id.startsWith("procurement:")) return null;
@@ -687,6 +716,21 @@ export function renderProcurementDocument(object = {}, observations = [], {
   const coverageReader = reconcilePaymentCoverageProjection(coverageReaderBase, paymentEvidence);
   const claimCaveatsHtml = renderCoverageClaimCaveats(coverageReader);
   const placeFactsHtml = renderProcurementPlaceFactsHtml(placeFacts);
+  // Contract-substance projection: the typed model above, read as one concise
+  // resident section. A failed, absent, or inapplicable load renders nothing
+  // and never touches the identity, amount, payment, project, or facility
+  // facts this page already shows.
+  const contractSubstanceView = buildContractSubstanceView({
+    substance: contractSubstanceMaterialization,
+    access: contractSubstanceAccessMaterialization,
+    serviceGeography: contractServiceGeographyMaterialization,
+    contractIds: substanceContractIds(object),
+    authorizedTotal: numericAmount(facts.currentAmount) ?? numericAmount(facts.amount),
+    paidTotal: paymentSummary.paidAmount,
+    paidAsOf: paymentEvidence?.payment_as_of || null,
+  });
+  const contractSubstanceHtml = renderContractSubstanceHtml(contractSubstanceView);
+  const contractSubstanceAccessNoteHtml = renderContractSubstanceAccessNoteHtml(contractSubstanceView);
   const paymentEvidenceHtml = renderProcurementPaymentEvidenceHtml(paymentEvidence, {
     alternatePaidObservations: paymentSummary.alternatePaidObservations,
   });
@@ -710,7 +754,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
   const canonical = procurementCanonicalHref(object);
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}${opportunityMonth ? renderCalendarEventPreviewScript("/") : ""}${pursuitSnapshotHtml ? '<link rel="stylesheet" href="/procurement_pursuit_snapshot.css" data-route-style="procurement_pursuit_snapshot.css">' : ""}${relatedContextHtml ? '<link rel="stylesheet" href="/procurement_related_context.css" data-route-style="procurement_related_context.css">' : ""}${projectContextHtml ? '<link rel="stylesheet" href="/procurement_project_context.css" data-route-style="procurement_project_context.css">' : ""}${coverageReader ? '<link rel="stylesheet" href="/coverage_reader_projection.css" data-route-style="coverage_reader_projection.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
+<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}${opportunityMonth ? renderCalendarEventPreviewScript("/") : ""}${pursuitSnapshotHtml ? '<link rel="stylesheet" href="/procurement_pursuit_snapshot.css" data-route-style="procurement_pursuit_snapshot.css">' : ""}${relatedContextHtml ? '<link rel="stylesheet" href="/procurement_related_context.css" data-route-style="procurement_related_context.css">' : ""}${projectContextHtml ? '<link rel="stylesheet" href="/procurement_project_context.css" data-route-style="procurement_project_context.css">' : ""}${contractSubstanceHtml ? '<link rel="stylesheet" href="/procurement_contract_substance.css" data-route-style="procurement_contract_substance.css">' : ""}${coverageReader ? '<link rel="stylesheet" href="/coverage_reader_projection.css" data-route-style="coverage_reader_projection.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
 <body>${renderCivicDocumentMast({ current: "browse" })}<main class="node-document" data-civic-object-kind="procurement" data-procurement-id="${esc(id)}">
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
@@ -721,6 +765,7 @@ ${relatedContextHtml}
 ${projectContextInspect ? `<script type="application/json" data-project-context-inspect="1">${procurementJsonScriptPayload({ summary: projectContextInspect })}</script>` : ""}
 ${procurementActions(object, facts)}
 ${renderCrossSourceEvidenceReceipt(object?.cross_source_evidence_receipt)}
+${contractSubstanceHtml}
 ${placeFactsHtml}
 ${renderNodeSection({ heading: "Contract facts", body: factsBody })}
 ${paymentEvidenceHtml}
@@ -752,6 +797,7 @@ ${renderNodeSection({
 })}
 ${renderCoverageReaderProjection(coverageReader)}
 ${renderNodeProvenance({ heading: uniqueSourceItems.length ? "Official records" : "", sourceItems: uniqueSourceItems })}
+${contractSubstanceAccessNoteHtml}
 ${renderNodeSection({
   heading: "What these official records do not carry",
   headingId: "procurement-handoff-access",
