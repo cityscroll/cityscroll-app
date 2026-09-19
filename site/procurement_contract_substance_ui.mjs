@@ -20,7 +20,7 @@ import {
   RESIDENT_VENDOR_PROMISE_LABEL,
   STANDING_LABELS,
   residentPositiveAssertions,
-} from "./procurement_contract_substance.mjs";
+} from "./procurement_contract_substance_contract.mjs";
 import {
   ACCESS_STATES,
   CONTRACT_SUBSTANCE_ACCESS_SCHEMA,
