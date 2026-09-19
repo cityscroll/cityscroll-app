@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c6919ecb5874d",
+  "status": "implemented",
+  "fingerprint": "procurement-contract-substance-real-corpus.v1",
+  "updated_at": "2026-09-19T07:05:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-contract-substance-real-corpus",
+      "path": "site/procurement_contract_substance_real_corpus.mjs"
+    },
+    {
+      "id": "procurement-contract-substance-real-corpus-data",
+      "path": "site/data/procurement_contract_substance_real_corpus.json"
+    },
+    {
+      "id": "procurement-contract-substance-real-corpus-tests",
+      "path": "test/procurement_contract_substance_real_corpus.test.mjs"
+    }
+  ]
+}
