@@ -1,0 +1,293 @@
+{
+  "schema": "cityscroll.procurement_contract_substance.v1",
+  "generated_at": "2026-09-18T19:15:00.000Z",
+  "observation_vintage": {
+    "observed_at": "2026-09-18T19:15:00.000Z",
+    "baseline_revision": "5a1943cb2ec0072e56e2255e6c5351d9f781eec9",
+    "notes": "No public executed-contract, statement-of-work, or pricing-schedule document was admitted for the four fixed contracts at observation time. Positive scope_fact, price_term, and obligation rows remain empty; Desk unresolved rows record the access barrier without inventing clauses."
+  },
+  "notes": "Materialized substance projection for the four fixed contracts. Positive resident assertions require admitted public documents; absence of those documents yields reviewable unresolved rows rather than guessed terms.",
+  "fixed_contract_ids": [
+    "CT107120258801626",
+    "CT110220271400991",
+    "CT105720278802113",
+    "CT104020273009333"
+  ],
+  "scope_facts": [],
+  "price_terms": [],
+  "obligations": [],
+  "unresolved": [
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT107120258801626",
+      "document_role": "executed_contract",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    },
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT107120258801626",
+      "document_role": "statement_of_work",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    },
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT107120258801626",
+      "document_role": "pricing_schedule",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    },
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT110220271400991",
+      "document_role": "executed_contract",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    },
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT110220271400991",
+      "document_role": "statement_of_work",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    },
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT110220271400991",
+      "document_role": "pricing_schedule",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    },
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT105720278802113",
+      "document_role": "executed_contract",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    },
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT105720278802113",
+      "document_role": "statement_of_work",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    },
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT105720278802113",
+      "document_role": "pricing_schedule",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    },
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT104020273009333",
+      "document_role": "executed_contract",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    },
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT104020273009333",
+      "document_role": "statement_of_work",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    },
+    {
+      "schema": "cityscroll.procurement_contract_substance.v1",
+      "kind": null,
+      "status": "unresolved",
+      "reason": "access_not_public_document",
+      "contract_id": "CT104020273009333",
+      "document_role": "pricing_schedule",
+      "resident_assertion": false,
+      "desk_reviewable": true,
+      "details": {
+        "access_state": "account_gated",
+        "checked_source_ids": [
+          "passport-public",
+          "passport-authenticated-contract",
+          "checkbook-contracts",
+          "city-record-awards"
+        ],
+        "observed_at": "2026-09-18T19:15:00.000Z"
+      },
+      "quality": null,
+      "citations": null
+    }
+  ],
+  "boundaries": {
+    "manufactured_rates": "Contract totals are never divided by capacity, payments, or term to invent unit prices.",
+    "solicitation_labeling": "Solicitation and RFx language is labeled advertised or requested, never executed.",
+    "obligation_sources": "Project descriptions, titles, payment rows, and performance evaluations cannot create an obligation.",
+    "promise_wording": "Only executed document roles may be labeled \"the vendor promised.\"",
+    "quality_gate": "Empty text layers, low-quality extraction, and unreadable pages (no OCR) produce Desk unresolved rows with no positive resident assertion.",
+    "amendments": "Amendments link to the affected term and retain the prior version."
+  }
+}
