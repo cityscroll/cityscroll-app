@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c700eb51a6525",
+  "status": "implemented",
+  "fingerprint": "procurement-contract-service-geography.v1",
+  "updated_at": "2026-09-19T03:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-contract-service-geography",
+      "path": "site/procurement_contract_service_geography.mjs"
+    },
+    {
+      "id": "procurement-contract-service-geography-data",
+      "path": "site/data/procurement_contract_service_geography.json"
+    },
+    {
+      "id": "procurement-contract-service-geography-tests",
+      "path": "test/procurement_contract_service_geography.test.mjs"
+    }
+  ]
+}
