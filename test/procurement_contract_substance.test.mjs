@@ -29,6 +29,8 @@ import {
   ACCESS_STATES,
   FIXED_CONTRACT_IDS,
 } from "../site/procurement_contract_substance_access.mjs";
+import { mineRolePassage } from "../site/procurement_contract_substance_role_corpus.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const MATERIALIZED = JSON.parse(readFileSync(
   new URL("../site/data/procurement_contract_substance.json", import.meta.url),
@@ -393,69 +395,131 @@ test("A7: mutations removing document role, contract identity, page locator, and
   assert.equal(projected.obligations[0].standing_label, STANDING_LABELS.VENDOR_PROMISED);
 });
 
-test("role-corpus A6: proposed, prior-term, bid, template, audit, title, payment, and project-summary evidence cannot produce What the vendor promised; rates are not manufactured by division", () => {
-  const forbiddenRoles = [
-    EVIDENCE_ROLES.PROPOSED_AGREEMENT,
-    EVIDENCE_ROLES.PRIOR_TERM,
-    EVIDENCE_ROLES.BID_TAB,
-    EVIDENCE_ROLES.TEMPLATE_PRICING,
-    EVIDENCE_ROLES.PERFORMANCE_EVALUATION,
-    EVIDENCE_ROLES.TITLE,
-    EVIDENCE_ROLES.PAYMENT,
-    EVIDENCE_ROLES.PROJECT_SUMMARY,
-  ];
-  for (const role of forbiddenRoles) {
-    const label = residentClaimLabel({
-      document_role: role,
-      standing_label: STANDING_LABELS.VENDOR_PROMISED,
-    });
-    assert.notEqual(label, RESIDENT_VENDOR_PROMISE_LABEL, role);
-  }
+test("role-corpus A6: proposed, prior-term, bid, template, audit, title, payment, and project-summary evidence cannot produce What the vendor promised; rates are not manufactured by division", async () => {
+  await withPinnedClock("2026-09-19T12:00:00.000Z", async () => {
+    const forbiddenRoles = [
+      EVIDENCE_ROLES.PROPOSED_AGREEMENT,
+      EVIDENCE_ROLES.PRIOR_TERM,
+      EVIDENCE_ROLES.BID_TAB,
+      EVIDENCE_ROLES.TEMPLATE_PRICING,
+      EVIDENCE_ROLES.PERFORMANCE_EVALUATION,
+      EVIDENCE_ROLES.TITLE,
+      EVIDENCE_ROLES.PAYMENT,
+      EVIDENCE_ROLES.PROJECT_SUMMARY,
+    ];
+    for (const role of forbiddenRoles) {
+      const label = residentClaimLabel({
+        document_role: role,
+        standing_label: STANDING_LABELS.VENDOR_PROMISED,
+      });
+      assert.notEqual(label, RESIDENT_VENDOR_PROMISE_LABEL, role);
+    }
 
-  assert.equal(
-    residentClaimLabel({
-      document_role: EVIDENCE_ROLES.EXECUTED_OBLIGATION,
-      standing_label: STANDING_LABELS.VENDOR_PROMISED,
-    }),
-    RESIDENT_VENDOR_PROMISE_LABEL,
-  );
-
-  for (const rateSource of [
-    "total_divided_by_duration",
-    "total_divided_by_capacity",
-    "total_divided_by_meals",
-    "total_divided_by_sites",
-    "total_divided_by_payments",
-  ]) {
-    assert.deepEqual(
-      refuseManufacturedRate({ rate_source: rateSource }),
-      [UNRESOLVED_REASONS.MANUFACTURED_RATE],
-      rateSource,
+    assert.equal(
+      residentClaimLabel({
+        document_role: EVIDENCE_ROLES.EXECUTED_OBLIGATION,
+        standing_label: STANDING_LABELS.VENDOR_PROMISED,
+      }),
+      RESIDENT_VENDOR_PROMISE_LABEL,
     );
-  }
 
-  const bid = projectPriceTerm(priceCandidate({
-    document_role: EVIDENCE_ROLES.BID_TAB,
-    source_document_id: "dcas-bid-tab-2000090",
-    locator: "PDF page 1 / item 1",
-    excerpt: "POT PAN & UTENSIL WASHER item 1 offered unit price 22287.0000000",
-  }));
-  assert.equal(bid.ok, true);
-  assert.equal(bid.fact.standing_label, STANDING_LABELS.BID_OFFER);
-  assert.equal(bid.fact.resident_claim_label, "Bid offer");
-  assert.equal(bid.fact.projector_version, PROJECTOR_VERSION);
-  assert.match(bid.fact.excerpt_hash, /^sha256:[a-f0-9]{64}$/);
+    // Exercise the role-corpus projector itself for the four kinds not covered
+    // by A2–A4: prior-term, title, payment, and project-summary must refuse the
+    // vendor-promise label rather than inherit it from a forced standing.
+    const publicationDate = testClockISOString().slice(0, 10);
+    for (const role of [
+      EVIDENCE_ROLES.PRIOR_TERM,
+      EVIDENCE_ROLES.TITLE,
+      EVIDENCE_ROLES.PAYMENT,
+      EVIDENCE_ROLES.PROJECT_SUMMARY,
+    ]) {
+      const projected = mineRolePassage({
+        contract_id: CONTRACT_ID,
+        source_document_id: `doc-${role}-1`,
+        document_id: `doc-${role}-1`,
+        document_role: role,
+        content_hash: PUBLIC_HASH,
+        public_url: "https://www.nyc.gov/assets/example/non-executed.pdf",
+        publication_date: publicationDate,
+        locator: "page 1 / summary",
+        excerpt: "Prior term title payment and project summary language naming a fifty-dollar rate.",
+        fact_kind: FACT_KINDS.PRICE_TERM,
+        payment_basis: "unit_price",
+        description: "named rate",
+        quantity: 1,
+        unit: "hour",
+        rate: 50,
+        standing_label: STANDING_LABELS.VENDOR_PROMISED,
+      });
+      assert.equal(projected.ok, false, role);
+      assert.notEqual(
+        projected.fact?.resident_claim_label,
+        RESIDENT_VENDOR_PROMISE_LABEL,
+        role,
+      );
+      assert.equal(projected.unresolved?.resident_assertion, false, role);
+    }
 
-  const audit = projectPriceTerm(priceCandidate({
-    document_role: EVIDENCE_ROLES.PERFORMANCE_EVALUATION,
-    source_document_id: "comptroller-docgo-audit-20248801671",
-    locator: "section Audit Report / food caps",
-    excerpt: "food was to be billed at an actual cost not to exceed $11 per meal or $33 per person per day",
-    payment_basis: "not_to_exceed",
-    maximum: 11,
-    rate: null,
-  }));
-  assert.equal(audit.ok, true);
-  assert.equal(audit.fact.standing_label, STANDING_LABELS.AUDIT_REPORTED);
-  assert.equal(audit.fact.resident_claim_label, "The audit reports these contract terms");
+    // Division prohibition on this projector: manufactured rate sources fail
+    // closed through mineRolePassage, not only via the shared helper string.
+    for (const rateSource of [
+      "total_divided_by_duration",
+      "total_divided_by_capacity",
+      "total_divided_by_meals",
+      "total_divided_by_sites",
+      "total_divided_by_payments",
+    ]) {
+      assert.deepEqual(
+        refuseManufacturedRate({ rate_source: rateSource }),
+        [UNRESOLVED_REASONS.MANUFACTURED_RATE],
+        rateSource,
+      );
+      const refused = mineRolePassage({
+        contract_id: CONTRACT_ID,
+        source_document_id: "doc-manufactured-rate-1",
+        document_id: "doc-manufactured-rate-1",
+        document_role: EVIDENCE_ROLES.BID_TAB,
+        content_hash: PUBLIC_HASH,
+        public_url: "https://www.nyc.gov/assets/example/bid.pdf",
+        publication_date: publicationDate,
+        locator: "page 1 / item 1",
+        excerpt: "Offered unit price derived by dividing a contract total by duration.",
+        fact_kind: FACT_KINDS.PRICE_TERM,
+        payment_basis: "unit_price",
+        description: "manufactured rate",
+        quantity: 1,
+        unit: "hour",
+        rate: 50,
+        rate_source: rateSource,
+      });
+      assert.equal(refused.ok, false, rateSource);
+      assert.equal(refused.unresolved?.reason, UNRESOLVED_REASONS.MANUFACTURED_RATE, rateSource);
+      assert.equal(refused.unresolved?.resident_assertion, false, rateSource);
+    }
+
+    const bid = projectPriceTerm(priceCandidate({
+      document_role: EVIDENCE_ROLES.BID_TAB,
+      source_document_id: "dcas-bid-tab-2000090",
+      locator: "PDF page 1 / item 1",
+      excerpt: "POT PAN & UTENSIL WASHER item 1 offered unit price 22287.0000000",
+    }));
+    assert.equal(bid.ok, true);
+    assert.equal(bid.fact.standing_label, STANDING_LABELS.BID_OFFER);
+    assert.equal(bid.fact.resident_claim_label, "Bid offer");
+    assert.equal(bid.fact.projector_version, PROJECTOR_VERSION);
+    assert.match(bid.fact.excerpt_hash, /^sha256:[a-f0-9]{64}$/);
+
+    const audit = projectPriceTerm(priceCandidate({
+      document_role: EVIDENCE_ROLES.PERFORMANCE_EVALUATION,
+      source_document_id: "comptroller-docgo-audit-20248801671",
+      locator: "section Audit Report / food caps",
+      excerpt: "food was to be billed at an actual cost not to exceed $11 per meal or $33 per person per day",
+      payment_basis: "not_to_exceed",
+      maximum: 11,
+      rate: null,
+    }));
+    assert.equal(audit.ok, true);
+    assert.equal(audit.fact.standing_label, STANDING_LABELS.AUDIT_REPORTED);
+    assert.equal(audit.fact.resident_claim_label, "The audit reports these contract terms");
+  });
 });

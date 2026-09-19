@@ -28,12 +28,15 @@ import {
 import {
   DCAS_BID_IDENTITY,
   ROLE_CORPUS_SCHEMA,
+  evaluateRolePassageClaims,
   mineRetainedRoleCorpus,
   mutateRolePassage,
   reportRoleCorpusBuildCounts,
   toPerformanceEvidenceRows,
 } from "../site/procurement_contract_substance_role_corpus.mjs";
 import {
+  EVIDENCE_ROLES,
+  FACT_KINDS,
   PROJECTOR_VERSION,
   RESIDENT_VENDOR_PROMISE_LABEL,
   STANDING_LABELS,
@@ -458,37 +461,88 @@ test("role-corpus A5: performance_evidence_sources.json carries only real retain
   }
 });
 
-test("role-corpus A7: role-swap, blank-signature, stale-hash, missing-page, OCR-garble, conflicting-passage, and missing-contract-identity fail closed", () => {
-  const base = {
-    contract_id: DCAS_BID_IDENTITY,
-    document_id: "dcas-bid-tab-2000090",
-    source_document_id: "dcas-bid-tab-2000090",
-    document_role: "bid_tab",
-    content_hash: rowById("dcas-bid-tab-2000090").content_hash,
-    public_url: rowById("dcas-bid-tab-2000090").final_url,
-    publication_date: "2020-02-27",
-    locator: "PDF page 1 / item 1",
-    excerpt: ROLE_PASSAGES.dcas_page1.slice(0, 500),
-    fact_kind: "price_term",
-    payment_basis: "unit_price",
-    description: "washer",
-    quantity: 1,
-    unit: "each",
-    rate: 22287,
-  };
+test("role-corpus A7: role-swap, blank-signature, stale-hash, missing-page, OCR-garble, conflicting-passage, and missing-contract-identity fail closed", async () => {
+  await withPinnedClock("2026-09-19T12:00:00.000Z", async () => {
+    // Positive control: signed, effective, intact executed obligation. Claims
+    // must survive on this base so each adversarial mutation is shown to knock
+    // them down rather than starting from an already-false base.
+    const positiveControl = {
+      contract_id: "CT107120258801626",
+      document_id: "doc-executed-obligation-positive",
+      source_document_id: "doc-executed-obligation-positive",
+      document_role: EVIDENCE_ROLES.EXECUTED_OBLIGATION,
+      content_hash: rowById("dcas-bid-tab-2000090").content_hash,
+      public_url: "https://www.nyc.gov/assets/example/executed-obligation.pdf",
+      publication_date: testClockISOString().slice(0, 10),
+      locator: "page 3 / section 2.1 Scope of Services",
+      excerpt: "The Contractor shall provide home care services to eligible residents within the service area during the contract term at the agreed unit rates.",
+      fact_kind: FACT_KINDS.OBLIGATION,
+      obligated_party: "vendor",
+      action: "provide",
+      deliverable: "home care services",
+      execution_evidence: {
+        signature_present: true,
+        effective_status_admitted: true,
+        status: "executed_admitted",
+      },
+      retrieved_at: testClockISOString(),
+    };
 
-  for (const mutation of [
-    "role_swap",
-    "blank_signature",
-    "stale_hash",
-    "missing_page",
-    "ocr_garble",
-    "conflicting_passage",
-    "missing_contract_identity",
-  ]) {
-    const result = mutateRolePassage(base, mutation);
-    assert.equal(result.any_claim_survives, false, mutation);
-    assert.equal(result.document_retrievable, true, mutation);
-    assert.equal(result.unresolved?.resident_assertion, false, mutation);
-  }
+    const intact = evaluateRolePassageClaims(positiveControl);
+    assert.equal(intact.ok, true);
+    assert.equal(intact.any_claim_survives, true);
+    assert.equal(intact.fact?.resident_claim_label, RESIDENT_VENDOR_PROMISE_LABEL);
+    assert.equal(intact.fact?.resident_assertion, true);
+    assert.equal(intact.document_retrievable, true);
+
+    for (const mutation of [
+      "role_swap",
+      "blank_signature",
+      "stale_hash",
+      "missing_page",
+      "ocr_garble",
+      "conflicting_passage",
+      "missing_contract_identity",
+    ]) {
+      const result = mutateRolePassage(positiveControl, mutation);
+      assert.equal(result.any_claim_survives, false, mutation);
+      assert.equal(result.document_retrievable, true, mutation);
+      assert.equal(result.unresolved?.resident_assertion, false, mutation);
+    }
+
+    // Bid-tab bases remain hard negatives: the same mutations cannot manufacture
+    // a vendor-promise claim from non-executed evidence.
+    const bidBase = {
+      contract_id: DCAS_BID_IDENTITY,
+      document_id: "dcas-bid-tab-2000090",
+      source_document_id: "dcas-bid-tab-2000090",
+      document_role: EVIDENCE_ROLES.BID_TAB,
+      content_hash: rowById("dcas-bid-tab-2000090").content_hash,
+      public_url: rowById("dcas-bid-tab-2000090").final_url,
+      publication_date: testClockISOString().slice(0, 10),
+      locator: "PDF page 1 / item 1",
+      excerpt: ROLE_PASSAGES.dcas_page1.slice(0, 500),
+      fact_kind: FACT_KINDS.PRICE_TERM,
+      payment_basis: "unit_price",
+      description: "washer",
+      quantity: 1,
+      unit: "each",
+      rate: 22287,
+      retrieved_at: testClockISOString(),
+    };
+    assert.equal(evaluateRolePassageClaims(bidBase).any_claim_survives, false);
+    for (const mutation of [
+      "role_swap",
+      "blank_signature",
+      "stale_hash",
+      "missing_page",
+      "ocr_garble",
+      "conflicting_passage",
+      "missing_contract_identity",
+    ]) {
+      const result = mutateRolePassage(bidBase, mutation);
+      assert.equal(result.any_claim_survives, false, `bid/${mutation}`);
+      assert.equal(result.document_retrievable, true, `bid/${mutation}`);
+    }
+  });
 });

@@ -682,6 +682,55 @@ export function buildPerformanceEvidenceSourceCoverage(existing = []) {
   return [...byId.values()];
 }
 
+const EXECUTED_ROLE_CORPUS_ROLES = new Set([
+  EVIDENCE_ROLES.EXECUTED_OBLIGATION,
+  EVIDENCE_ROLES.EXECUTED_SCOPE,
+  EVIDENCE_ROLES.PRICING_SCHEDULE,
+  EVIDENCE_ROLES.AMENDMENT,
+]);
+
+function isExecutedRoleCorpusRole(role) {
+  return EXECUTED_ROLE_CORPUS_ROLES.has(clean(role, 80));
+}
+
+/**
+ * Positive-control oracle for role-corpus claims. An intact executed
+ * obligation yields a surviving vendor-promise claim; adversarial mutations
+ * must then knock that claim down rather than starting from an already-false base.
+ */
+export function evaluateRolePassageClaims(candidate = {}) {
+  const manufactured = refuseManufacturedRate({
+    ...candidate,
+    rate_source: candidate.rate_source,
+  });
+  if (manufactured.length) {
+    return {
+      ok: false,
+      any_claim_survives: false,
+      fact: null,
+      unresolved: {
+        reason: manufactured[0],
+        resident_assertion: false,
+        desk_reviewable: true,
+        document_retrievable: true,
+      },
+      document_retrievable: true,
+    };
+  }
+
+  const projected = mineRolePassage(candidate);
+  const survives = projected.ok
+    && projected.fact?.resident_assertion === true
+    && projected.fact?.resident_claim_label === RESIDENT_VENDOR_PROMISE_LABEL;
+  return {
+    ok: projected.ok,
+    any_claim_survives: Boolean(survives),
+    fact: projected.fact,
+    unresolved: projected.unresolved,
+    document_retrievable: true,
+  };
+}
+
 /**
  * Adversarial mutations must fail closed while preserving document retrievability.
  */
@@ -689,12 +738,22 @@ export function mutateRolePassage(baseCandidate = {}, mutation) {
   const candidate = { ...baseCandidate };
   switch (mutation) {
     case "role_swap":
-      candidate.document_role = EVIDENCE_ROLES.EXECUTED_OBLIGATION;
-      candidate.standing_label = STANDING_LABELS.VENDOR_PROMISED;
-      candidate.fact_kind = FACT_KINDS.OBLIGATION;
-      candidate.obligated_party = candidate.obligated_party || "vendor";
-      candidate.action = candidate.action || "provide";
-      candidate.deliverable = candidate.deliverable || candidate.description || "services";
+      // Swap across the executed / non-executed boundary while forcing
+      // vendor-promise standing. Fail closed either direction: a bid cannot
+      // become a promise by role rewrite, and an executed promise cannot keep
+      // that label after its role is corrupted to non-executed evidence.
+      if (isExecutedRoleCorpusRole(baseCandidate.document_role || baseCandidate.role)) {
+        candidate.document_role = EVIDENCE_ROLES.BID_TAB;
+        candidate.standing_label = STANDING_LABELS.VENDOR_PROMISED;
+        candidate.fact_kind = FACT_KINDS.PRICE_TERM;
+      } else {
+        candidate.document_role = EVIDENCE_ROLES.EXECUTED_OBLIGATION;
+        candidate.standing_label = STANDING_LABELS.VENDOR_PROMISED;
+        candidate.fact_kind = FACT_KINDS.OBLIGATION;
+        candidate.obligated_party = candidate.obligated_party || "vendor";
+        candidate.action = candidate.action || "provide";
+        candidate.deliverable = candidate.deliverable || candidate.description || "services";
+      }
       break;
     case "blank_signature":
       candidate.execution_evidence = {
@@ -746,10 +805,7 @@ export function mutateRolePassage(baseCandidate = {}, mutation) {
     && candidate.standing_label === STANDING_LABELS.VENDOR_PROMISED
     && candidate.document_role === EVIDENCE_ROLES.EXECUTED_OBLIGATION
     && baseCandidate.document_role
-    && baseCandidate.document_role !== EVIDENCE_ROLES.EXECUTED_OBLIGATION
-    && baseCandidate.document_role !== EVIDENCE_ROLES.EXECUTED_SCOPE
-    && baseCandidate.document_role !== EVIDENCE_ROLES.PRICING_SCHEDULE
-    && baseCandidate.document_role !== EVIDENCE_ROLES.AMENDMENT) {
+    && !isExecutedRoleCorpusRole(baseCandidate.document_role)) {
     // Keep the swapped role for projection, but the original corpus role is
     // non-executed; refuse the manufactured promise regardless of projection.
     const projected = mineRolePassage(candidate);
@@ -805,35 +861,31 @@ export function mutateRolePassage(baseCandidate = {}, mutation) {
     }
   }
 
-  const manufactured = refuseManufacturedRate({
-    ...candidate,
-    rate_source: candidate.rate_source,
-  });
-  if (manufactured.length) {
+  // Role-swap that corrupts an executed base into non-executed evidence must
+  // fail closed: the original vendor-promise claim does not survive the rewrite.
+  if (mutation === "role_swap"
+    && isExecutedRoleCorpusRole(baseCandidate.document_role || baseCandidate.role)
+    && !isExecutedRoleCorpusRole(candidate.document_role)) {
     return {
       ok: false,
       any_claim_survives: false,
       unresolved: {
-        reason: manufactured[0],
+        reason: "disqualified_source",
         resident_assertion: false,
         desk_reviewable: true,
+        details: {
+          mutation,
+          refused_label: RESIDENT_VENDOR_PROMISE_LABEL,
+          original_role: baseCandidate.document_role,
+          corrupted_role: candidate.document_role,
+        },
         document_retrievable: true,
       },
       document_retrievable: true,
     };
   }
 
-  const projected = mineRolePassage(candidate);
-  const survives = projected.ok
-    && projected.fact?.resident_assertion === true
-    && projected.fact?.resident_claim_label === RESIDENT_VENDOR_PROMISE_LABEL;
-  return {
-    ok: projected.ok,
-    any_claim_survives: Boolean(survives),
-    fact: projected.fact,
-    unresolved: projected.unresolved,
-    document_retrievable: true,
-  };
+  return evaluateRolePassageClaims(candidate);
 }
 
 export function buildRoleCorpusDocument({
