@@ -41,7 +41,7 @@
       "scroll_width": 1440,
       "client_width": 1440,
       "inner_width": 1440,
-      "content_height": 3323,
+      "content_height": 3782,
       "overflow": false
     },
     "mobile": {
@@ -52,13 +52,13 @@
       "scroll_width": 390,
       "client_width": 390,
       "inner_width": 390,
-      "content_height": 4077,
+      "content_height": 4712,
       "overflow": false
     },
     "keyboard": {
-      "visible_native_links": 24,
+      "visible_native_links": 29,
       "negative_tabindex": 0,
-      "reachable_links": 24,
+      "reachable_links": 29,
       "named_destinations": {
         "expected_destinations": [
           "/agencies/homeless-services/",
@@ -79,7 +79,7 @@
           "https://a0333-passportpublic.nyc.gov/contracts.html"
         ],
         "missing_destinations": [],
-        "tabs_pressed": 24,
+        "tabs_pressed": 29,
         "disclosures_opened": [
           "Payment source details",
           "Inspect source details"
@@ -193,7 +193,7 @@
           "valid-lang",
           "video-caption"
         ],
-        "nodes_examined": 254,
+        "nodes_examined": 281,
         "violations": [
           {
             "id": "heading-order",
@@ -208,7 +208,7 @@
         "passes": [
           {
             "id": "aria-allowed-attr",
-            "nodes": 7
+            "nodes": 8
           },
           {
             "id": "aria-allowed-role",
@@ -216,7 +216,7 @@
           },
           {
             "id": "aria-conditional-attr",
-            "nodes": 7
+            "nodes": 8
           },
           {
             "id": "aria-hidden-body",
@@ -228,15 +228,15 @@
           },
           {
             "id": "aria-prohibited-attr",
-            "nodes": 7
+            "nodes": 8
           },
           {
             "id": "aria-valid-attr-value",
-            "nodes": 7
+            "nodes": 8
           },
           {
             "id": "aria-valid-attr",
-            "nodes": 7
+            "nodes": 8
           },
           {
             "id": "avoid-inline-spacing",
@@ -248,15 +248,15 @@
           },
           {
             "id": "color-contrast",
-            "nodes": 157
+            "nodes": 174
           },
           {
             "id": "definition-list",
-            "nodes": 3
+            "nodes": 4
           },
           {
             "id": "dlitem",
-            "nodes": 46
+            "nodes": 50
           },
           {
             "id": "document-title",
@@ -264,11 +264,11 @@
           },
           {
             "id": "duplicate-id-aria",
-            "nodes": 9
+            "nodes": 10
           },
           {
             "id": "empty-heading",
-            "nodes": 6
+            "nodes": 9
           },
           {
             "id": "empty-table-header",
@@ -276,7 +276,7 @@
           },
           {
             "id": "heading-order",
-            "nodes": 5
+            "nodes": 8
           },
           {
             "id": "html-has-lang",
@@ -316,7 +316,7 @@
           },
           {
             "id": "landmark-unique",
-            "nodes": 8
+            "nodes": 9
           },
           {
             "id": "link-in-text-block",
@@ -324,15 +324,15 @@
           },
           {
             "id": "link-name",
-            "nodes": 23
+            "nodes": 28
           },
           {
             "id": "list",
-            "nodes": 2
+            "nodes": 3
           },
           {
             "id": "listitem",
-            "nodes": 7
+            "nodes": 8
           },
           {
             "id": "meta-viewport-large",
@@ -352,7 +352,7 @@
           },
           {
             "id": "region",
-            "nodes": 236
+            "nodes": 263
           },
           {
             "id": "scope-attr-valid",
@@ -376,7 +376,7 @@
           }
         ],
         "serious_or_critical": [],
-        "markup_sha256": "e73548bd10c8a001b97c0cbbd47315c91790a7f7d9fa03483322485af8966049",
+        "markup_sha256": "cb3408842946d86a64f74faa8a5139837979c46054d60862a91d88fb35885464",
         "scanned_at": "2026-09-09T06:33:01.880Z"
       },
       "mobile": {
@@ -475,7 +475,7 @@
           "valid-lang",
           "video-caption"
         ],
-        "nodes_examined": 213,
+        "nodes_examined": 240,
         "violations": [
           {
             "id": "heading-order",
@@ -490,7 +490,7 @@
         "passes": [
           {
             "id": "aria-allowed-attr",
-            "nodes": 7
+            "nodes": 8
           },
           {
             "id": "aria-allowed-role",
@@ -498,7 +498,7 @@
           },
           {
             "id": "aria-conditional-attr",
-            "nodes": 7
+            "nodes": 8
           },
           {
             "id": "aria-hidden-body",
@@ -510,15 +510,15 @@
           },
           {
             "id": "aria-prohibited-attr",
-            "nodes": 7
+            "nodes": 8
           },
           {
             "id": "aria-valid-attr-value",
-            "nodes": 7
+            "nodes": 8
           },
           {
             "id": "aria-valid-attr",
-            "nodes": 7
+            "nodes": 8
           },
           {
             "id": "avoid-inline-spacing",
@@ -530,15 +530,15 @@
           },
           {
             "id": "color-contrast",
-            "nodes": 129
+            "nodes": 146
           },
           {
             "id": "definition-list",
-            "nodes": 2
+            "nodes": 3
           },
           {
             "id": "dlitem",
-            "nodes": 38
+            "nodes": 42
           },
           {
             "id": "document-title",
@@ -546,11 +546,11 @@
           },
           {
             "id": "duplicate-id-aria",
-            "nodes": 9
+            "nodes": 10
           },
           {
             "id": "empty-heading",
-            "nodes": 6
+            "nodes": 9
           },
           {
             "id": "empty-table-header",
@@ -558,7 +558,7 @@
           },
           {
             "id": "heading-order",
-            "nodes": 5
+            "nodes": 8
           },
           {
             "id": "html-has-lang",
@@ -598,7 +598,7 @@
           },
           {
             "id": "landmark-unique",
-            "nodes": 8
+            "nodes": 9
           },
           {
             "id": "link-in-text-block",
@@ -606,15 +606,15 @@
           },
           {
             "id": "link-name",
-            "nodes": 19
+            "nodes": 24
           },
           {
             "id": "list",
-            "nodes": 1
+            "nodes": 2
           },
           {
             "id": "listitem",
-            "nodes": 1
+            "nodes": 2
           },
           {
             "id": "meta-viewport-large",
@@ -634,7 +634,7 @@
           },
           {
             "id": "region",
-            "nodes": 195
+            "nodes": 222
           },
           {
             "id": "scope-attr-valid",
@@ -658,7 +658,7 @@
           }
         ],
         "serious_or_critical": [],
-        "markup_sha256": "e73548bd10c8a001b97c0cbbd47315c91790a7f7d9fa03483322485af8966049",
+        "markup_sha256": "cb3408842946d86a64f74faa8a5139837979c46054d60862a91d88fb35885464",
         "scanned_at": "2026-09-09T06:33:01.880Z"
       }
     },

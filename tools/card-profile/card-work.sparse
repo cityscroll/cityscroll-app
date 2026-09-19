@@ -701,10 +701,13 @@
 /site/procurement_browse_query.mjs
 /site/procurement_browse_read_path.mjs
 /site/procurement_contract_service_geography.mjs
+/site/procurement_contract_substance.css
 /site/procurement_contract_substance.mjs
 /site/procurement_contract_substance_access.mjs
+/site/procurement_contract_substance_contract.mjs
 /site/procurement_contract_substance_real_corpus.mjs
 /site/procurement_contract_substance_role_corpus.mjs
+/site/procurement_contract_substance_ui.mjs
 /site/procurement_coverage_labels.mjs
 /site/procurement_detail_index.mjs
 /site/procurement_digest_compile.mjs

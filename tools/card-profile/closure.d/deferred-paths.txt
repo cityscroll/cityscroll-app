@@ -165,6 +165,9 @@ site/data/pin_family_mismatch_review.json
 site/data/process_conformance_lookup.json
 site/data/procurement_browse_rows.json
 site/data/procurement_contract_lifecycle.json
+site/data/procurement_contract_service_geography.json
+site/data/procurement_contract_substance.json
+site/data/procurement_contract_substance_access.json
 site/data/procurement_place_facts.json
 site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-11.json
 site/data/procurement_planning_payload.json

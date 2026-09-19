@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_detail_parity_capture_manifest.v1",
   "browser_mode": "headless Chromium with repository CSS; image binaries omitted from git",
-  "source_commit": "f5a4c5568a1868572a4eea4ef513a361dc373897",
+  "source_commit": "daa7efb86d9af2fade9df130c69f1e62e98027eb",
   "fixture": "test/fixtures/procurement-detail-parity/ct107120258801626.json",
   "fixture_sha256": "849258af42184d7fda487887a71868cd7f17e49387c1fe21c67114e07ef372ca",
   "data_vintage": "2026-09-09T06:33:01.880Z",
@@ -23,7 +23,7 @@
         "height": 900
       },
       "assertion": "Measured document boxes show no horizontal overflow; keyboard Tab reaches every named destination; automated accessibility checks report no serious or critical findings.",
-      "render_sha256": "e73548bd10c8a001b97c0cbbd47315c91790a7f7d9fa03483322485af8966049",
+      "render_sha256": "cb3408842946d86a64f74faa8a5139837979c46054d60862a91d88fb35885464",
       "layout": {
         "viewport": [
           1440,
@@ -32,11 +32,11 @@
         "scroll_width": 1440,
         "client_width": 1440,
         "inner_width": 1440,
-        "content_height": 3323,
+        "content_height": 3782,
         "overflow": false
       },
-      "layout_sha256": "4e89a09dc86ca5b055d7dd877507654b95dd448cd728fa9a4cc240f49323ffec",
-      "screenshot_sha256": "cb6247aaa84c79f1628a9a1067056b48d41cae5766d365430ee5e7ac7fc45bd9",
+      "layout_sha256": "783ee231bbd06d9da7c8781ec285f45f39d0e6403abf1a3d9b3e05847cea25be",
+      "screenshot_sha256": "ccd40e9533643586c1478ea903280d13fd17eb80c3b848a9a1a44ca7382934e4",
       "screenshot_path": ".artifacts/served-procurement-route/desktop.png"
     },
     {
@@ -46,7 +46,7 @@
         "height": 844
       },
       "assertion": "At 390 px, measured document boxes show no horizontal overflow and the layout measurement differs from the desktop viewport.",
-      "render_sha256": "e73548bd10c8a001b97c0cbbd47315c91790a7f7d9fa03483322485af8966049",
+      "render_sha256": "cb3408842946d86a64f74faa8a5139837979c46054d60862a91d88fb35885464",
       "layout": {
         "viewport": [
           390,
@@ -55,11 +55,11 @@
         "scroll_width": 390,
         "client_width": 390,
         "inner_width": 390,
-        "content_height": 4077,
+        "content_height": 4712,
         "overflow": false
       },
-      "layout_sha256": "e28225adda263490af316dd5dfd646809e4f94fbdb71a2c626958a056ea1cfc7",
-      "screenshot_sha256": "2f1ccb187177d7ac393ffe9db11b4aca62c430cad59fb7cb6597877ae8ab437d",
+      "layout_sha256": "5f646ed120ca2e446cb5b63443197dce24b6523dc373cd66dc3d5ceb3e67ea58",
+      "screenshot_sha256": "db39a582e72851e17701225876b97cb6a270b342cd541673951b28edf053d0d0",
       "screenshot_path": ".artifacts/served-procurement-route/mobile.png"
     }
   ],
@@ -83,7 +83,7 @@
       "https://a0333-passportpublic.nyc.gov/contracts.html"
     ],
     "missing_destinations": [],
-    "tabs_pressed": 24,
+    "tabs_pressed": 29,
     "disclosures_opened": [
       "Payment source details",
       "Inspect source details"
