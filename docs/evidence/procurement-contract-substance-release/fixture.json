@@ -1,0 +1,888 @@
+{
+  "schema": "cityscroll.procurement_contract_substance_release.v1",
+  "mode": "fixture",
+  "evidence_class": "offline-fixture-render",
+  "captured_at": "2026-09-20T00:00:00Z",
+  "tool": "tools/capture_procurement_contract_substance.mjs",
+  "served_build": {
+    "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+    "data_vintage": "2026-09-09T06:33:01.880Z",
+    "source": "site/data/shared_procurement_read_model.json"
+  },
+  "source_vintages": {
+    "contract_substance_access": {
+      "observed_at": "2026-09-18T19:15:00.000Z",
+      "baseline_revision": "5a1943cb2ec0072e56e2255e6c5351d9f781eec9",
+      "notes": "Access classification for the four named contracts from PASSPort Public metadata, authenticated PASSPort contract-tab documentation, and bounded public-source search. No public executed-contract, statement-of-work, pricing-schedule, site-schedule, or performance-evaluation document was admitted."
+    },
+    "service_geography": "2026-09-19T03:00:00.000Z"
+  },
+  "examples": [
+    {
+      "contract_id": "CT107120258801626",
+      "label": "BHRAGS",
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "amount": 10869881,
+      "vendor": "BHRAGS HOME CARE CORP",
+      "facts": {
+        "authorized_total": 10869881,
+        "paid_total": 7385672.19,
+        "payment_count": 31,
+        "notice_id": "20240829105",
+        "address": "3218 Emmons Avenue, Brooklyn",
+        "units": 60,
+        "place_role": "facility_site",
+        "neighborhood": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach"
+      },
+      "access": {
+        "executed_contract": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "statement_of_work": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "pricing_schedule": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "site_schedule": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "performance_evaluation": {
+          "access_state": "not_located",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "public_retrievable_document"
+        }
+      },
+      "claims": {
+        "amount": {
+          "status": "ready",
+          "reason": null,
+          "evidence": {
+            "evidence_type": "browser_dom",
+            "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "data_vintage": "2026-09-09T06:33:01.880Z",
+            "render_hash": "b56334781c5b262aa291e8d2506d73b13c1fb411fbb01a794b4ab038fe722e92",
+            "rendered": true,
+            "initialization": "settled",
+            "assertion": "BHRAGS page keeps exact contract identity, authorized total, paid total, and 31-payment coverage together",
+            "source": {
+              "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
+              "document_role": "checkbook_contract_and_payment_materialization",
+              "locator": "contract facts and payment summary",
+              "excerpt": "$10,869,881 authorized; $7,385,672.19 paid; 31 payments.",
+              "content_hash": null,
+              "identity_basis": "exact contract id CT107120258801626"
+            },
+            "served_passage": "$10,869,881 authorized; $7,385,672.19 paid; 31 payments.",
+            "place_role": null,
+            "claim": "amount",
+            "contract_id": "CT107120258801626"
+          }
+        },
+        "scope": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "pricing": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "promises": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "service_geography": {
+          "status": "ready",
+          "reason": null,
+          "evidence": {
+            "evidence_type": "browser_dom",
+            "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "data_vintage": "2026-09-09T06:33:01.880Z",
+            "render_hash": "b56334781c5b262aa291e8d2506d73b13c1fb411fbb01a794b4ab038fe722e92",
+            "rendered": true,
+            "initialization": "settled",
+            "assertion": "BHRAGS facility site at 3218 Emmons Avenue is resolved to Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+            "source": {
+              "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20240829105",
+              "document_role": "city_record_notice",
+              "locator": "notice 20240829105 facility description",
+              "excerpt": "3218 Emmons Avenue, Brooklyn; 60 units.",
+              "content_hash": null,
+              "identity_basis": "notice 20240829105 joined to exact contract id CT107120258801626"
+            },
+            "served_passage": "3218 Emmons Avenue, Brooklyn; 60 units.",
+            "place_role": "facility_site",
+            "claim": "service_geography",
+            "contract_id": "CT107120258801626"
+          }
+        },
+        "performance": {
+          "status": "not_ready",
+          "reason": "not_located",
+          "details": {
+            "access_state": "not_located"
+          }
+        }
+      }
+    },
+    {
+      "contract_id": "CT110220271400991",
+      "label": "S&P",
+      "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
+      "amount": 62500,
+      "vendor": "S &amp; P GLOBAL MARKET INTELLIGENCE LLC",
+      "facts": {
+        "amount": 62500
+      },
+      "access": {
+        "executed_contract": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "statement_of_work": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "pricing_schedule": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "site_schedule": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "performance_evaluation": {
+          "access_state": "not_located",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "public_retrievable_document"
+        }
+      },
+      "claims": {
+        "amount": {
+          "status": "ready",
+          "reason": null,
+          "evidence": {
+            "evidence_type": "browser_dom",
+            "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
+            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "data_vintage": "2026-09-09T06:33:01.880Z",
+            "render_hash": "1320d0891acce103732f3c57e26e8c87439f158ff4249b54128f32b1e22dfd3e",
+            "rendered": true,
+            "initialization": "settled",
+            "assertion": "S&P canonical page shows the retained below-$100,000 amount",
+            "source": {
+              "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT110220271400991/",
+              "document_role": "passport_public_metadata",
+              "locator": "contract amount definition",
+              "excerpt": "The served page shows $62,500 for CT110220271400991.",
+              "content_hash": null,
+              "identity_basis": "exact contract id CT110220271400991"
+            },
+            "served_passage": "The served page shows $62,500 for CT110220271400991.",
+            "place_role": null,
+            "claim": "amount",
+            "contract_id": "CT110220271400991"
+          }
+        },
+        "scope": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "pricing": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "promises": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "service_geography": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "performance": {
+          "status": "not_ready",
+          "reason": "not_located",
+          "details": {
+            "access_state": "not_located"
+          }
+        }
+      }
+    },
+    {
+      "contract_id": "CT105720278802113",
+      "label": "AHA/EMS",
+      "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
+      "amount": 46673.32,
+      "vendor": "AMERICAN HEART ASSOCIATION INC",
+      "facts": {
+        "amount": 46673.32
+      },
+      "access": {
+        "executed_contract": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "statement_of_work": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "pricing_schedule": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "site_schedule": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "performance_evaluation": {
+          "access_state": "not_located",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "public_retrievable_document"
+        }
+      },
+      "claims": {
+        "amount": {
+          "status": "ready",
+          "reason": null,
+          "evidence": {
+            "evidence_type": "browser_dom",
+            "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
+            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "data_vintage": "2026-09-09T06:33:01.880Z",
+            "render_hash": "3af74a805a643802d747a4e4e22be59f2ca5a66d21eff26751f9c94861c78b52",
+            "rendered": true,
+            "initialization": "settled",
+            "assertion": "AHA/EMS canonical page shows the retained below-$100,000 amount",
+            "source": {
+              "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT105720278802113/",
+              "document_role": "passport_public_metadata",
+              "locator": "contract amount definition",
+              "excerpt": "The served page shows $46,673.32 for CT105720278802113.",
+              "content_hash": null,
+              "identity_basis": "exact contract id CT105720278802113"
+            },
+            "served_passage": "The served page shows $46,673.32 for CT105720278802113.",
+            "place_role": null,
+            "claim": "amount",
+            "contract_id": "CT105720278802113"
+          }
+        },
+        "scope": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "pricing": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "promises": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "service_geography": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "performance": {
+          "status": "not_ready",
+          "reason": "not_located",
+          "details": {
+            "access_state": "not_located"
+          }
+        }
+      }
+    },
+    {
+      "contract_id": "CT104020273009333",
+      "label": "Quizizz",
+      "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
+      "amount": 25000,
+      "vendor": "QUIZIZZ INC",
+      "facts": {
+        "amount": 25000
+      },
+      "access": {
+        "executed_contract": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "statement_of_work": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "pricing_schedule": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "site_schedule": {
+          "access_state": "account_gated",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "passport-authenticated-contract",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "passport_authenticated_contract"
+        },
+        "performance_evaluation": {
+          "access_state": "not_located",
+          "observed_at": "2026-09-18T19:15:00.000Z",
+          "checked_source_ids": [
+            "passport-public",
+            "checkbook-contracts",
+            "city-record-awards"
+          ],
+          "source_class": "public_retrievable_document"
+        }
+      },
+      "claims": {
+        "amount": {
+          "status": "ready",
+          "reason": null,
+          "evidence": {
+            "evidence_type": "browser_dom",
+            "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
+            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "data_vintage": "2026-09-09T06:33:01.880Z",
+            "render_hash": "15f241f1e3fbeeca5c25a97f86d71c265585a52ab83ef69bda1d1652be1f7dc4",
+            "rendered": true,
+            "initialization": "settled",
+            "assertion": "Quizizz canonical page shows the retained below-$100,000 amount",
+            "source": {
+              "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT104020273009333/",
+              "document_role": "passport_public_metadata",
+              "locator": "contract amount definition",
+              "excerpt": "The served page shows $25,000 for CT104020273009333.",
+              "content_hash": null,
+              "identity_basis": "exact contract id CT104020273009333"
+            },
+            "served_passage": "The served page shows $25,000 for CT104020273009333.",
+            "place_role": null,
+            "claim": "amount",
+            "contract_id": "CT104020273009333"
+          }
+        },
+        "scope": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "pricing": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "promises": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "service_geography": {
+          "status": "not_ready",
+          "reason": "account_gated",
+          "details": {
+            "access_state": "account_gated"
+          }
+        },
+        "performance": {
+          "status": "not_ready",
+          "reason": "not_located",
+          "details": {
+            "access_state": "not_located"
+          }
+        }
+      }
+    }
+  ],
+  "render_entries": [
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "viewport": "desktop",
+      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "data_vintage": "2026-09-09T06:33:01.880Z",
+      "assertion": "BHRAGS canonical page renders the named contract at 1440x900 after initialization",
+      "render_hash": "b56334781c5b262aa291e8d2506d73b13c1fb411fbb01a794b4ab038fe722e92"
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "viewport": "mobile",
+      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "data_vintage": "2026-09-09T06:33:01.880Z",
+      "assertion": "BHRAGS canonical page renders the named contract at 390x844 after initialization",
+      "render_hash": "b56334781c5b262aa291e8d2506d73b13c1fb411fbb01a794b4ab038fe722e92"
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
+      "viewport": "desktop",
+      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "data_vintage": "2026-09-09T06:33:01.880Z",
+      "assertion": "S&P canonical page renders the named contract at 1440x900 after initialization",
+      "render_hash": "1320d0891acce103732f3c57e26e8c87439f158ff4249b54128f32b1e22dfd3e"
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
+      "viewport": "mobile",
+      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "data_vintage": "2026-09-09T06:33:01.880Z",
+      "assertion": "S&P canonical page renders the named contract at 390x844 after initialization",
+      "render_hash": "1320d0891acce103732f3c57e26e8c87439f158ff4249b54128f32b1e22dfd3e"
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
+      "viewport": "desktop",
+      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "data_vintage": "2026-09-09T06:33:01.880Z",
+      "assertion": "AHA/EMS canonical page renders the named contract at 1440x900 after initialization",
+      "render_hash": "3af74a805a643802d747a4e4e22be59f2ca5a66d21eff26751f9c94861c78b52"
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
+      "viewport": "mobile",
+      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "data_vintage": "2026-09-09T06:33:01.880Z",
+      "assertion": "AHA/EMS canonical page renders the named contract at 390x844 after initialization",
+      "render_hash": "3af74a805a643802d747a4e4e22be59f2ca5a66d21eff26751f9c94861c78b52"
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
+      "viewport": "desktop",
+      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "data_vintage": "2026-09-09T06:33:01.880Z",
+      "assertion": "Quizizz canonical page renders the named contract at 1440x900 after initialization",
+      "render_hash": "15f241f1e3fbeeca5c25a97f86d71c265585a52ab83ef69bda1d1652be1f7dc4"
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
+      "viewport": "mobile",
+      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "data_vintage": "2026-09-09T06:33:01.880Z",
+      "assertion": "Quizizz canonical page renders the named contract at 390x844 after initialization",
+      "render_hash": "15f241f1e3fbeeca5c25a97f86d71c265585a52ab83ef69bda1d1652be1f7dc4"
+    }
+  ],
+  "obligations": [
+    {
+      "id": "CT107120258801626:amount",
+      "contract_id": "CT107120258801626",
+      "claim": "amount",
+      "state": "ready"
+    },
+    {
+      "id": "CT107120258801626:scope",
+      "contract_id": "CT107120258801626",
+      "claim": "scope",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT107120258801626:pricing",
+      "contract_id": "CT107120258801626",
+      "claim": "pricing",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT107120258801626:promises",
+      "contract_id": "CT107120258801626",
+      "claim": "promises",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT107120258801626:service_geography",
+      "contract_id": "CT107120258801626",
+      "claim": "service_geography",
+      "state": "ready"
+    },
+    {
+      "id": "CT107120258801626:performance",
+      "contract_id": "CT107120258801626",
+      "claim": "performance",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT110220271400991:amount",
+      "contract_id": "CT110220271400991",
+      "claim": "amount",
+      "state": "ready"
+    },
+    {
+      "id": "CT110220271400991:scope",
+      "contract_id": "CT110220271400991",
+      "claim": "scope",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT110220271400991:pricing",
+      "contract_id": "CT110220271400991",
+      "claim": "pricing",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT110220271400991:promises",
+      "contract_id": "CT110220271400991",
+      "claim": "promises",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT110220271400991:service_geography",
+      "contract_id": "CT110220271400991",
+      "claim": "service_geography",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT110220271400991:performance",
+      "contract_id": "CT110220271400991",
+      "claim": "performance",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT105720278802113:amount",
+      "contract_id": "CT105720278802113",
+      "claim": "amount",
+      "state": "ready"
+    },
+    {
+      "id": "CT105720278802113:scope",
+      "contract_id": "CT105720278802113",
+      "claim": "scope",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT105720278802113:pricing",
+      "contract_id": "CT105720278802113",
+      "claim": "pricing",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT105720278802113:promises",
+      "contract_id": "CT105720278802113",
+      "claim": "promises",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT105720278802113:service_geography",
+      "contract_id": "CT105720278802113",
+      "claim": "service_geography",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT105720278802113:performance",
+      "contract_id": "CT105720278802113",
+      "claim": "performance",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT104020273009333:amount",
+      "contract_id": "CT104020273009333",
+      "claim": "amount",
+      "state": "ready"
+    },
+    {
+      "id": "CT104020273009333:scope",
+      "contract_id": "CT104020273009333",
+      "claim": "scope",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT104020273009333:pricing",
+      "contract_id": "CT104020273009333",
+      "claim": "pricing",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT104020273009333:promises",
+      "contract_id": "CT104020273009333",
+      "claim": "promises",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT104020273009333:service_geography",
+      "contract_id": "CT104020273009333",
+      "claim": "service_geography",
+      "state": "not_ready"
+    },
+    {
+      "id": "CT104020273009333:performance",
+      "contract_id": "CT104020273009333",
+      "claim": "performance",
+      "state": "not_ready"
+    }
+  ],
+  "boundaries": [
+    {
+      "contract_id": "CT185720228800365",
+      "label": "Firematic",
+      "status": "bounded",
+      "route": "/procurements/procurement%3Acontract%3ACT185720228800365/",
+      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "data_vintage": "2026-09-09T06:33:01.880Z",
+      "allowed_claims": [
+        "amendment_total"
+      ],
+      "disallowed_claims": [
+        "executed_scope",
+        "contractual_unit_pricing",
+        "vendor_promises"
+      ],
+      "assertion": "Firematic remains an amendment-total example; its page exposes field roles Original contract amount, Current contract total, Action amount."
+    },
+    {
+      "contract_id": "CT185020228802305",
+      "label": "TAMEER",
+      "status": "bounded",
+      "route": "/procurements/procurement%3Acontract%3ACT185020228802305/",
+      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "data_vintage": "2026-09-09T06:33:01.880Z",
+      "allowed_claims": [
+        "amendment_total"
+      ],
+      "disallowed_claims": [
+        "executed_scope",
+        "contractual_unit_pricing",
+        "vendor_promises"
+      ],
+      "assertion": "TAMEER remains an amendment-total example; its page exposes field roles Original contract amount, Current contract total, Action amount."
+    },
+    {
+      "example": "museum-project-context",
+      "route": "/notices/20260810048/",
+      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "data_vintage": "2026-09-09T06:33:01.880Z",
+      "status": "context_only",
+      "allowed_claims": [
+        "project_context"
+      ],
+      "disallowed_claims": [
+        "executed_contract_scope"
+      ],
+      "assertion": "Museum scope remains project context, not executed-contract scope."
+    }
+  ],
+  "admitted_public_executed_examples": [],
+  "readiness": {
+    "per_example": {
+      "CT107120258801626": {
+        "ready": false,
+        "ready_claims": 2,
+        "claim_count": 6
+      },
+      "CT110220271400991": {
+        "ready": false,
+        "ready_claims": 1,
+        "claim_count": 6
+      },
+      "CT105720278802113": {
+        "ready": false,
+        "ready_claims": 1,
+        "claim_count": 6
+      },
+      "CT104020273009333": {
+        "ready": false,
+        "ready_claims": 1,
+        "claim_count": 6
+      }
+    },
+    "per_claim": {
+      "amount": {
+        "ready": true,
+        "ready_examples": 4,
+        "example_count": 4
+      },
+      "scope": {
+        "ready": false,
+        "ready_examples": 0,
+        "example_count": 4
+      },
+      "pricing": {
+        "ready": false,
+        "ready_examples": 0,
+        "example_count": 4
+      },
+      "promises": {
+        "ready": false,
+        "ready_examples": 0,
+        "example_count": 4
+      },
+      "service_geography": {
+        "ready": false,
+        "ready_examples": 1,
+        "example_count": 4
+      },
+      "performance": {
+        "ready": false,
+        "ready_examples": 0,
+        "example_count": 4
+      }
+    },
+    "whole_set_ready": false
+  },
+  "production_readiness": {
+    "ready": false,
+    "reason": "fixture evidence is not a production observation"
+  }
+}
