@@ -11,6 +11,10 @@ import { normalizeGeographyKey, PLACE_ROLES } from "../../../site/scope_v0.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 import { KNOWN_PROCUREMENT_PROCESS_STATES } from "../../../site/procurement_process_state_vocabulary.mjs";
 import {
+  admitMeetingAvailability,
+  canonicalMeetingAvailability,
+} from "../../../site/meeting_availability_filter.mjs";
+import {
   TEXT_QUERY_STRUCTURED_SCOPE_FIELDS,
   textQueryAdmissionSupported,
   validateTextQuery,
@@ -56,7 +60,7 @@ export const LENSES = {
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
   rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version", "activity", "body", "access"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version", "activity", "body", "access", "availability"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab", "entity_refs_all"],
   // World-state agency mandates (statutory duties / approaching deadlines). Not a City
@@ -228,6 +232,8 @@ function clampField(name, v) {
     }
     case "access":
       return ["remote", "in_person", "unknown"].includes(v) ? v : null;
+    case "availability":
+      return canonicalMeetingAvailability(v);
     case "name":
       return typeof v === "string" && v.trim() ? v.replace(/\s+/g, " ").trim().slice(0, 120) : null;
     case "kind":
@@ -339,6 +345,7 @@ export function sanitize(lens, input) {
   if (!out.request_ids?.length) delete out.request_ids;
   if (!out.procurement_id) delete out.procurement_id;
   if (!out.processState) delete out.processState;
+  if (!out.availability) delete out.availability;
   if (!out.provision_id) delete out.provision_id;
   if (!out.interest) delete out.interest;
   if (!out.matter_ref) delete out.matter_ref;
@@ -398,6 +405,10 @@ export function admitTextQuery(lens, rawFilter) {
  * and refuse precise-watch expressions that this lens cannot admit.
  */
 export function prepareWatchFilter(lens, filter) {
+  const availability = admitMeetingAvailability(lens, filter);
+  if (!availability.ok) {
+    return { ok: false, reason: `meeting-availability-${availability.errors[0]?.code || "invalid"}`, lens: null, filter: {} };
+  }
   const admission = admitTextQuery(lens, filter);
   if (!admission.ok) {
     return { ok: false, reason: `text-query-${admission.code}`, lens: null, filter: {} };
@@ -415,6 +426,8 @@ export function prepareWatchFilter(lens, filter) {
   // (and an empty expression stays omitted rather than surviving as {}).
   if (admission.canonical) sanitized.text_query = admission.canonical;
   else delete sanitized.text_query;
+  if (availability.canonical) sanitized.availability = availability.canonical;
+  else delete sanitized.availability;
   return { ok: true, lens: resolveLens(lens), filter: sanitized, exact };
 }
 

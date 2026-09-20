@@ -51,6 +51,10 @@ import landDefaultFloor from "../../../site/data/land_default_ulurp.json" with {
 import { zoningHearingRowsForScope } from "../../../site/zoning_hearing_calendar.mjs";
 import { projectCalendarOccurrencesForRecord } from "../../../site/project_calendar.mjs";
 import { collapseMeetingDeliveryRows } from "../../../site/meeting_delivery_identity.mjs";
+import {
+  evaluateMeetingAvailabilityRows,
+  validateMeetingAvailability,
+} from "../../../site/meeting_availability_filter.mjs";
 export { vendorStem };
 
 const EMPTY_PROCUREMENT_DIGEST = Object.freeze({ rows: Object.freeze([]) });
@@ -154,30 +158,42 @@ export function communityBoardWatchCompilationStatus(sub) {
   return board ? "ready" : "unknown_board_identity";
 }
 
-function materializedMeetingRows(filter, todayISO, dateWindow, sourceRows = MEETING_FLOOR_ROWS) {
+function materializedMeetingRowsDetailed(filter, todayISO, dateWindow, sourceRows = MEETING_FLOOR_ROWS) {
   const end = dateWindowEnd(todayISO, dateWindow);
   const keywords = (Array.isArray(filter?.keywords) ? filter.keywords : [])
     .map((value) => String(value || "").trim().toLowerCase()).filter(Boolean);
   const rows = sourceRows === MEETING_FLOOR_ROWS ? localFloorMeetingRows(todayISO) : sourceRows;
   const dated = rows.filter((row) => meetingRowInWindow(row, todayISO, end));
-  const matchedIds = new Set(dated
+  const scoped = dated
     .filter((row) => meetingRowHostedByBoard(row, filter?.communityBoard))
-    .filter((row) => meetingRowMatchesWatch(row, filter, keywords))
-    .map((row) => row.meeting_id)
-    .filter(Boolean));
+    .filter((row) => meetingRowMatchesWatch(row, filter, keywords));
+  const availability = evaluateMeetingAvailabilityRows(scoped, filter?.availability, { asOf: todayISO });
+  const matchedIds = new Set(availability.rows.map((row) => row.meeting_id).filter(Boolean));
   const clustered = collapseMeetingDeliveryRows(dated);
-  return clustered
+  return {
+    rows: clustered
     .filter((row) => (row.delivery_aliases || []).some((id) => matchedIds.has(id)) || matchedIds.has(row.meeting_id))
     .map((row) => ({
       ...row,
       request_id: row.meeting_id,
       start_date: row.source_receipt?.observed_at || row.event_date,
-    }));
+    })),
+    availability: availability.counts,
+  };
+}
+
+function materializedMeetingRows(filter, todayISO, dateWindow, sourceRows = MEETING_FLOOR_ROWS) {
+  return materializedMeetingRowsDetailed(filter, todayISO, dateWindow, sourceRows).rows;
 }
 
 /** Scope-only meeting rows for an admitted v1 expression. Keywords stay unused. */
 export function scopedMeetingWatchRows(filter, todayISO, sourceRows) {
   return materializedMeetingRows(filter, todayISO, filter?.dateWindow || filter?.when, sourceRows);
+}
+
+/** Rows plus explicit availability exclusions for callers that render coverage metadata. */
+export function scopedMeetingWatchEvaluation(filter, todayISO, sourceRows) {
+  return materializedMeetingRowsDetailed(filter, todayISO, filter?.dateWindow || filter?.when, sourceRows);
 }
 
 // N months after an ISO date, as an ISO date — pure function of todayISO (not Date.now()),
@@ -345,7 +361,12 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
 }
 
 export function compileSub(sub, todayISO) {
-  const f = (sub && sub.filter) || {};
+  const f = { ...((sub && sub.filter) || {}) };
+  if (sub?.lens === "meetings" && Object.prototype.hasOwnProperty.call(f, "availability")) {
+    const availability = validateMeetingAvailability(f.availability);
+    if (!availability.ok) return null;
+    f.availability = availability.canonical;
+  }
   // Precise-watch expressions (text_query v1) must never disappear into the
   // legacy keyword compilers: a compiled query that ignored them would silently
   // widen a saved watch into an unfiltered one. Until a lens's evaluator is
