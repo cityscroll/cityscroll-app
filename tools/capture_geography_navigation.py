@@ -336,11 +336,36 @@ const model = unavailable
       crosswalkAvailable: false,
       crosswalkRows: null,
     })
-  : buildBk1503CouncilOverlapFixtureModel();
+  : buildBk1503CouncilOverlapFixtureModel({ focusToken: "geography:nta2020:BK1503" });
 const workspace = renderGeographyOverlapWorkspaceChrome(model, {
   mapSectionHtml: '<section class="near-map-section" aria-labelledby="near-map-heading"><h2 id="near-map-heading" tabindex="-1">Map</h2><div class="near-map-wrap"><svg id="nearMapSvg" width="640" height="400" role="img" aria-label="Map"></svg><button type="button" data-geography-key="geography:nta2020:BK1503">Sheepshead Bay area</button></div></section>',
 });
-const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Overlap fixture</title><link rel="stylesheet" href="/site/civic-documents.css"></head><body><main id="main" data-near-you-root data-geography-shell="map-first" data-near-surface="map">${workspace}</main></body></html>`;
+const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Overlap fixture</title><link rel="stylesheet" href="/site/civic-documents.css"></head><body><main id="main" data-near-you-root data-geography-shell="map-first" data-near-surface="map">${workspace}</main><script type="module">
+import { GEOGRAPHY_NAVIGATION_DRAWER_CLOSED, GEOGRAPHY_NAVIGATION_DRAWER_OPEN } from "/site/geography_navigation_state.mjs";
+import { rememberOverlapInvoker, restoreOverlapInvokerFocus } from "/site/geography_navigation_overlap_ui.mjs";
+const root = document.querySelector("[data-near-you-root]");
+const workspaceNode = root?.querySelector("[data-geography-workspace]");
+const toggle = root?.querySelector("[data-geography-drawer-toggle]");
+const invoker = root?.querySelector('[data-geography-key="geography:nta2020:BK1503"]');
+if (workspaceNode && toggle) {
+  toggle.hidden = false;
+  rememberOverlapInvoker(workspaceNode.dataset.geographyFocusRestore, invoker);
+  toggle.addEventListener("click", () => {
+    const open = workspaceNode.dataset.geographyDrawerState !== GEOGRAPHY_NAVIGATION_DRAWER_CLOSED;
+    const next = open ? GEOGRAPHY_NAVIGATION_DRAWER_CLOSED : GEOGRAPHY_NAVIGATION_DRAWER_OPEN;
+    workspaceNode.dataset.geographyDrawerState = next;
+    toggle.setAttribute("aria-expanded", next === GEOGRAPHY_NAVIGATION_DRAWER_OPEN ? "true" : "false");
+    const token = workspaceNode.dataset.geographyFocusRestore
+      || root.querySelector("[data-geography-overlap-root]")?.dataset?.geographyFocusRestore;
+    if (next === GEOGRAPHY_NAVIGATION_DRAWER_CLOSED) {
+      restoreOverlapInvokerFocus(token, { root });
+    } else {
+      rememberOverlapInvoker(token || "geography-drawer-toggle", toggle);
+      root.querySelector("#near-geo-overlap-heading")?.focus?.({ preventScroll: true });
+    }
+  });
+}
+</script></body></html>`;
 process.stdout.write(html);
 """ % ("true" if unavailable else "false")
     return subprocess.check_output(
@@ -419,7 +444,64 @@ def validate_overlap_snapshot(snapshot: dict, *, unavailable: bool = False) -> l
     return assertions
 
 
-def capture_overlap_variant(page, base: str, *, name: str, width: int, height: int, unavailable: bool) -> dict:
+def validate_mobile_drawer_snapshot(snapshot: dict) -> list[str]:
+    require(snapshot["drawer_toggle_present"], "drawer toggle missing")
+    require(snapshot["drawer_collapsed"], "drawer did not collapse its body")
+    require(snapshot["drawer_expanded"], "drawer did not re-expand")
+    require(snapshot["focus_restored_to_invoker"], "drawer close did not restore invoker focus")
+    return [
+        "mobile drawer collapses and re-expands",
+        "focus returns to invoking map feature on close",
+    ]
+
+
+def exercise_mobile_drawer(page) -> dict:
+    toggle = page.locator("[data-geography-drawer-toggle]")
+    require(toggle.count() == 1, "expected one mobile drawer toggle")
+    invoker = page.locator('[data-geography-key="geography:nta2020:BK1503"]')
+    require(invoker.count() == 1, "expected one invoking map feature")
+    invoker.focus()
+    toggle.click()
+    closed = page.evaluate(
+        """() => {
+          const workspace = document.querySelector('[data-geography-workspace]');
+          const body = document.querySelector('[data-geography-overlap-root]');
+          return {
+            state: workspace?.dataset?.geographyDrawerState,
+            expanded: document.querySelector('[data-geography-drawer-toggle]')?.getAttribute('aria-expanded'),
+            body_hidden: body ? getComputedStyle(body).display === 'none' : false,
+            focus_restored: document.activeElement?.matches('[data-geography-key="geography:nta2020:BK1503"]') || false,
+          };
+        }"""
+    )
+    toggle.click()
+    expanded = page.evaluate(
+        """() => {
+          const workspace = document.querySelector('[data-geography-workspace]');
+          const body = document.querySelector('[data-geography-overlap-root]');
+          return workspace?.dataset?.geographyDrawerState === 'open'
+            && document.querySelector('[data-geography-drawer-toggle]')?.getAttribute('aria-expanded') === 'true'
+            && body && getComputedStyle(body).display !== 'none';
+        }"""
+    )
+    return {
+        "drawer_toggle_present": True,
+        "drawer_collapsed": closed["state"] == "closed" and closed["expanded"] == "false" and closed["body_hidden"],
+        "drawer_expanded": bool(expanded),
+        "focus_restored_to_invoker": closed["focus_restored"],
+    }
+
+
+def capture_overlap_variant(
+    page,
+    base: str,
+    *,
+    name: str,
+    width: int,
+    height: int,
+    unavailable: bool,
+    exercise_drawer: bool = False,
+) -> dict:
     html = build_overlap_fixture_html(unavailable=unavailable)
     fixture_dir = OVERLAP_SCREENSHOT_DIR
     fixture_dir.mkdir(parents=True, exist_ok=True)
@@ -431,6 +513,9 @@ def capture_overlap_variant(page, base: str, *, name: str, width: int, height: i
     page.locator("[data-geography-overlap-root]").wait_for(timeout=5000)
     snapshot = assert_overlap_semantics(page, unavailable=unavailable)
     assertions = validate_overlap_snapshot(snapshot, unavailable=unavailable)
+    if exercise_drawer:
+        snapshot.update(exercise_mobile_drawer(page))
+        assertions.extend(validate_mobile_drawer_snapshot(snapshot))
     digest = sha256_text(json.dumps(snapshot, sort_keys=True, separators=(",", ":")))
     shot = OVERLAP_SCREENSHOT_DIR / f"{name}.png"
     page.screenshot(path=str(shot), full_page=False, animations="disabled")
@@ -474,24 +559,15 @@ def run_overlap(write_manifest: bool) -> int:
             try:
                 captures.append(
                     capture_overlap_variant(
-                        page, base, name="overlap-mobile", width=390, height=844, unavailable=False
+                        page,
+                        base,
+                        name="overlap-mobile",
+                        width=390,
+                        height=844,
+                        unavailable=False,
+                        exercise_drawer=True,
                     )
                 )
-                # Collapse/expand drawer and restore focus.
-                toggle = page.locator("[data-geography-drawer-toggle]")
-                if toggle.count():
-                    page.evaluate(
-                        """() => {
-                          const toggle = document.querySelector('[data-geography-drawer-toggle]');
-                          if (toggle) toggle.hidden = false;
-                        }"""
-                    )
-                    invoker = page.locator("[data-geography-key]").first
-                    invoker.focus()
-                    toggle.click()
-                    toggle.click()
-                    page.locator("#near-geo-overlap-heading, [data-geography-key]").first.focus()
-                captures[-1]["assertion"] += "; mobile drawer collapsible"
             finally:
                 context.close()
 
@@ -589,6 +665,9 @@ def run_overlap(write_manifest: bool) -> int:
                     "unavailable": row["snapshot"].get("unavailable"),
                     "primary_has_pct": row["snapshot"].get("primary_has_pct"),
                     "semantic_order_ok": row["snapshot"].get("semantic_order_ok"),
+                    "drawer_collapsed": row["snapshot"].get("drawer_collapsed"),
+                    "drawer_expanded": row["snapshot"].get("drawer_expanded"),
+                    "focus_restored_to_invoker": row["snapshot"].get("focus_restored_to_invoker"),
                     "overflow_x": row["snapshot"].get("overflow_x"),
                 },
             }

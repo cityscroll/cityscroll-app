@@ -3,8 +3,8 @@
   "feature": "geography-navigation-overlap",
   "public_alias": "c2a23f401f3d1",
   "capture_mode": "headless_playwright_local_fixture",
-  "repository_revision": "295c2ca540ad0fb82336a2040dc43df54752212e",
-  "grounded_at": "64188ac208078e0c25ccec30e466a50a270773f2",
+  "repository_revision": "7a1622639f089e09123320f5d171490bed2a96f9",
+  "grounded_at": "7a1622639f089e09123320f5d171490bed2a96f9",
   "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
   "image_binaries_committed": false,
   "image_policy": "Screenshots may exist under docs/screenshots/ locally; only this manifest is committed.",
@@ -18,7 +18,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "295c2ca540ad0fb82336a2040dc43df54752212e",
+      "revision": "7a1622639f089e09123320f5d171490bed2a96f9",
       "assertion": "overlap root present; shared semantic order; horizontal overflow \u2264 1px; no sole-district wording; Council 48 then 46 present; 69.0% and 31.0% present; slivers absent from primary list; highlight and select actions present; exact percentages in details",
       "sha256": "8ff1f5c005a16db6fe98f050d4f3ca6cb353e9a0b4e54877a02eca1dd7585a45",
       "file": null,
@@ -27,6 +27,9 @@
         "unavailable": false,
         "primary_has_pct": true,
         "semantic_order_ok": true,
+        "drawer_collapsed": null,
+        "drawer_expanded": null,
+        "focus_restored_to_invoker": null,
         "overflow_x": 0
       }
     },
@@ -38,15 +41,18 @@
         "width": 390,
         "height": 844
       },
-      "revision": "295c2ca540ad0fb82336a2040dc43df54752212e",
-      "assertion": "overlap root present; shared semantic order; horizontal overflow \u2264 1px; no sole-district wording; Council 48 then 46 present; 69.0% and 31.0% present; slivers absent from primary list; highlight and select actions present; exact percentages in details; mobile drawer collapsible",
-      "sha256": "8ff1f5c005a16db6fe98f050d4f3ca6cb353e9a0b4e54877a02eca1dd7585a45",
+      "revision": "7a1622639f089e09123320f5d171490bed2a96f9",
+      "assertion": "overlap root present; shared semantic order; horizontal overflow \u2264 1px; no sole-district wording; Council 48 then 46 present; 69.0% and 31.0% present; slivers absent from primary list; highlight and select actions present; exact percentages in details; mobile drawer collapses and re-expands; focus returns to invoking map feature on close",
+      "sha256": "801dee48c3c094a59a5c10f5ccd989ee501997ca65e285d7018482a706ef3cac",
       "file": null,
       "snapshot": {
         "selected_label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
         "unavailable": false,
         "primary_has_pct": true,
         "semantic_order_ok": true,
+        "drawer_collapsed": true,
+        "drawer_expanded": true,
+        "focus_restored_to_invoker": true,
         "overflow_x": 0
       }
     },
@@ -58,7 +64,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "295c2ca540ad0fb82336a2040dc43df54752212e",
+      "revision": "7a1622639f089e09123320f5d171490bed2a96f9",
       "assertion": "overlap root present; shared semantic order; horizontal overflow \u2264 1px; no sole-district wording; Council 48 then 46 present; 69.0% and 31.0% present; slivers absent from primary list; highlight and select actions present; exact percentages in details; Escape keeps selection; keyboard reaches overlap controls",
       "sha256": "8ff1f5c005a16db6fe98f050d4f3ca6cb353e9a0b4e54877a02eca1dd7585a45",
       "file": null,
@@ -67,6 +73,9 @@
         "unavailable": false,
         "primary_has_pct": true,
         "semantic_order_ok": true,
+        "drawer_collapsed": null,
+        "drawer_expanded": null,
+        "focus_restored_to_invoker": null,
         "overflow_x": 0
       }
     },
@@ -78,7 +87,7 @@
         "width": 720,
         "height": 450
       },
-      "revision": "295c2ca540ad0fb82336a2040dc43df54752212e",
+      "revision": "7a1622639f089e09123320f5d171490bed2a96f9",
       "assertion": "overlap root present; shared semantic order; horizontal overflow \u2264 1px; no sole-district wording; Council 48 then 46 present; 69.0% and 31.0% present; slivers absent from primary list; highlight and select actions present; exact percentages in details; 200% zoom layout holds",
       "sha256": "8ff1f5c005a16db6fe98f050d4f3ca6cb353e9a0b4e54877a02eca1dd7585a45",
       "file": null,
@@ -87,6 +96,9 @@
         "unavailable": false,
         "primary_has_pct": true,
         "semantic_order_ok": true,
+        "drawer_collapsed": null,
+        "drawer_expanded": null,
+        "focus_restored_to_invoker": null,
         "overflow_x": 0
       }
     },
@@ -98,7 +110,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "295c2ca540ad0fb82336a2040dc43df54752212e",
+      "revision": "7a1622639f089e09123320f5d171490bed2a96f9",
       "assertion": "overlap root present; shared semantic order; horizontal overflow \u2264 1px; no sole-district wording; Council 48 then 46 present; 69.0% and 31.0% present; slivers absent from primary list; highlight and select actions present; exact percentages in details; reduced-motion path renders",
       "sha256": "8ff1f5c005a16db6fe98f050d4f3ca6cb353e9a0b4e54877a02eca1dd7585a45",
       "file": null,
@@ -107,6 +119,9 @@
         "unavailable": false,
         "primary_has_pct": true,
         "semantic_order_ok": true,
+        "drawer_collapsed": null,
+        "drawer_expanded": null,
+        "focus_restored_to_invoker": null,
         "overflow_x": 0
       }
     },
@@ -118,7 +133,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "295c2ca540ad0fb82336a2040dc43df54752212e",
+      "revision": "7a1622639f089e09123320f5d171490bed2a96f9",
       "assertion": "overlap root present; shared semantic order; horizontal overflow \u2264 1px; no sole-district wording; Comparison details unavailable",
       "sha256": "3bd30d7f83232b5718b03808528f704d8867225f3c20ad52561b2c2241c7f735",
       "file": null,
@@ -127,6 +142,9 @@
         "unavailable": true,
         "primary_has_pct": false,
         "semantic_order_ok": true,
+        "drawer_collapsed": null,
+        "drawer_expanded": null,
+        "focus_restored_to_invoker": null,
         "overflow_x": 0
       }
     }
