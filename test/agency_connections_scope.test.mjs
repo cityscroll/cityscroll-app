@@ -76,6 +76,13 @@ test("connection and apply links round-trip as canonical typed scopes", () => {
   assert.equal(connectionScopeHash(hpd, "money", { scope: CrolScope }), money.view_all_href);
 });
 
+test("connection links carry a selected non-default language", () => {
+  const view = buildAgencyConnectionView(hpd, { scope: CrolScope, language: "es" });
+  const money = view.groups.find((group) => group.domain === "money");
+  assert.equal(new URL(money.view_all_href, "https://cityscroll.org").searchParams.get("lang"), "es");
+  assert.equal(new URL(view.apply_scope_href, "https://cityscroll.org").searchParams.get("lang"), "es");
+});
+
 test("empty and not-yet-ingested states stay distinct", () => {
   const response = structuredClone(hpd);
   response.domains.people = {

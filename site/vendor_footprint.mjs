@@ -28,10 +28,14 @@ const GROUPS = Object.freeze([
   { id: "franchise", label: "Franchises and concessions", domain: "franchise", surface: null },
 ]);
 
-function browseHref(hash, surface) {
+function browseHref(hash, surface, language = "en") {
   const facet = { money: "contracts", land: "zoning", property: "property", rules: "rules", meetings: "meetings" }[surface];
   if (!facet || !String(hash).startsWith("#")) return hash;
-  return canonicalizeBrowseUrl(`/browse/${facet}/?${String(hash).split("?", 2)[1] || ""}`);
+  const href = canonicalizeBrowseUrl(`/browse/${facet}/?${String(hash).split("?", 2)[1] || ""}`);
+  if (!language || language === "en") return href;
+  const url = new URL(href, "https://cityscroll.org");
+  url.searchParams.set("lang", language);
+  return `${url.pathname}${url.search}${url.hash}`;
 }
 
 // Vendor refs already percent-encode their normalized stem. URLSearchParams
@@ -74,7 +78,7 @@ export function vendorFootprintScopeHref(
     composed.facets.values.result_count_receipt = count;
   }
   return singlyEncodedVendorFacetHref(
-    browseHref(routeHashFromScope(composed, { surface: group.surface }), group.surface),
+    browseHref(routeHashFromScope(composed, { surface: group.surface }), group.surface, language),
   );
 }
 
@@ -105,10 +109,10 @@ export function vendorAgencyIntersectionHref(
   const entityScope = scopeWithEntity(emptyScope(language), ref);
   const agencyScope = scopeWithEntity(emptyScope(language), `agency:id:${agency.canonical_id}`);
   const composed = intersectScopes(intersectScopes(domainScope, agencyScope), entityScope);
-  return browseHref(routeHashFromScope(composed, { surface: "money" }), "money");
+  return browseHref(routeHashFromScope(composed, { surface: "money" }), "money", language);
 }
 
-export function vendorFootprintModel(response = {}) {
+export function vendorFootprintModel(response = {}, { language = "en" } = {}) {
   const footprint = response?.vendor_footprint;
   if (!footprint || response?.root?.kind !== "vendor") return null;
   const query = response.root.stem || response.root.display_name || "";
@@ -148,6 +152,7 @@ export function vendorFootprintModel(response = {}) {
           ? vendorFootprintScopeHref(response.root.ref, group.id, {
               query,
               resultCount: confirmedCount,
+              language,
             })
           : "",
         coverage_kind: group.id === "awards" ? "measured" : "unknown",
@@ -193,8 +198,11 @@ function objectHTML(object, formatDate) {
   return `<li class="ei-obj"><span class="ei-obj-main">${linkedLabel}${when}</span></li>`;
 }
 
-export function renderVendorFootprintHTML(response = {}, { formatDate = (value) => value } = {}) {
-  const model = vendorFootprintModel(response);
+export function renderVendorFootprintHTML(response = {}, {
+  formatDate = (value) => value,
+  language = globalThis.LANG || "en",
+} = {}) {
+  const model = vendorFootprintModel(response, { language });
   if (!model) return "";
   ensureLocalConstellationStylesheet();
   const displayName = model.root.display_name || model.root.stem || "this vendor";
