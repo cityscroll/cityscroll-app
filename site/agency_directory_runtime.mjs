@@ -133,6 +133,8 @@ export function mountAgencyDirectory(root = document, options = {}) {
   function writeUrl(state, { replace = true } = {}) {
     const url = new URL(locationRef.href);
     url.search = agencyDirectoryShareSearch(state, groupIds).toString();
+    const selectedLanguage = new URL(locationRef.href).searchParams.get("lang");
+    if (selectedLanguage) url.searchParams.set("lang", selectedLanguage);
     const next = `${url.pathname}${url.search}`;
     const method = replace ? "replaceState" : "pushState";
     historyRef[method](historyRef.state, "", next);

@@ -108,6 +108,16 @@ function currentLanguageURL(value) {
   return languageURL(value, window.LANG || "en");
 }
 
+function renderedLanguageHref(raw, next) {
+  // Keep authored relative paths relative (for example, the shared pages'
+  // `index.html` home link) while adding or removing only the language query.
+  // This preserves static link contracts used by no-script pages and tests.
+  if (/^[a-z][a-z\d+.-]*:/i.test(raw)) return next.toString();
+  const suffix = next.search + next.hash;
+  if (raw.startsWith("/")) return next.pathname + suffix;
+  return next.pathname.replace(/^\/+/, "") + suffix;
+}
+
 function syncLanguageURL(lang) {
   if (typeof location === "undefined" || typeof history === "undefined") return "";
   const next = languageURL(location.href, lang, location.href);
@@ -4658,21 +4668,32 @@ function applyStrings() {
   document.querySelectorAll("[data-i18n-alt]").forEach(function(el) {
     el.setAttribute("alt", t(el.dataset.i18nAlt));
   });
-  // The same language handoff covers contextual help and ordinary Guide entries.
-  // Authored links remain usable when JavaScript is unavailable.
-  document.querySelectorAll('a[href^="/guide/"]').forEach(function(el) {
-    const url = new URL(el.getAttribute("href"), location.href);
-    url.searchParams.set("lang", lang);
-    el.setAttribute("href", url.pathname + url.search + url.hash);
-  });
-  document.querySelectorAll('a[href*="#investigation"]').forEach(function(el) {
-    // Keep the default in-page footer contract, including after a language switch.
+  // Carry the selected language through every same-origin destination. A static
+  // href is still the no-script fallback; this pass makes the browser-enhanced
+  // route explicit instead of relying on a saved preference in localStorage.
+  // Keep the default English investigation footer as its literal in-page link.
+  document.querySelectorAll("a[href]").forEach(function(el) {
+    const raw = el.getAttribute("href");
     if (lang === "en" && el.getAttribute("data-i18n") === "footer_investigation") {
       el.setAttribute("href", "#investigation");
       return;
     }
-    // Canonical documents use a root <base>; a bare fragment otherwise loses lang.
-    el.setAttribute("href", languageURL(el.getAttribute("href"), lang, document.baseURI || location.href));
+    if (!raw) return;
+    const currentOrigin = new URL(location.href).origin;
+    if (raw.startsWith("#")) {
+      // A bare fragment stays on the current document, so the browser keeps
+      // its existing ?lang=... while preserving native hash-route focus and
+      // history behavior. Absolute same-origin document URLs below still get
+      // an explicit language parameter.
+      return;
+    }
+    if (/^(?:mailto:|tel:|javascript:|data:|blob:)/i.test(raw)) return;
+    let url;
+    try { url = new URL(raw, document.baseURI || location.href); } catch (_error) { return; }
+    if (url.origin !== currentOrigin) return;
+    const next = new URL(languageURL(raw, lang, document.baseURI || location.href));
+    if (lang === "en" && url.pathname.startsWith("/guide/")) next.searchParams.set("lang", "en");
+    el.setAttribute("href", renderedLanguageHref(raw, next));
   });
   // w9-05 (L6): document.title never translated -- each page marks its <html> with the title
   // key to use; applyStrings() runs on load and on every language switch, so this is the one

@@ -55,10 +55,14 @@ function relationForDomain(response, domain) {
     || "";
 }
 
-function browseHref(hash, domain) {
+function browseHref(hash, domain, language = "en") {
   const facet = { money: "contracts", people: "staffing", land: "zoning", property: "property", rules: "rules", meetings: "meetings" }[domain];
   if (!facet || !String(hash).startsWith("#")) return hash;
-  return canonicalizeBrowseUrl(`/browse/${facet}/?${String(hash).split("?", 2)[1] || ""}`);
+  const href = canonicalizeBrowseUrl(`/browse/${facet}/?${String(hash).split("?", 2)[1] || ""}`);
+  if (!language || language === "en") return href;
+  const url = new URL(href, "https://cityscroll.org");
+  url.searchParams.set("lang", language);
+  return `${url.pathname}${url.search}${url.hash}`;
 }
 
 /** Compose one populated relation/domain into a canonical, reload-safe scope. */
@@ -75,7 +79,7 @@ export function connectionScopeHash(response, domain, { language = "en", scope: 
   if (domain === "money" && (domainBlock.objects || []).some((object) => object.object_kind === "award")) {
     scoped.facets.values.mode = "award";
   }
-  return browseHref(routeHashFromScope(normalizeScope(scoped, { language }), { surface: domain }), domain);
+  return browseHref(routeHashFromScope(normalizeScope(scoped, { language }), { surface: domain }), domain, language);
 }
 
 /** Intersect this agency with the view that opened its profile. */
@@ -89,7 +93,7 @@ export function agencyApplyScopeHash(
   const agency = agencyConstraint(response, language, providedScopeApi);
   const composed = intersectScopes(current, agency);
   const surface = current.facets.domains?.[0] || "money";
-  return browseHref(routeHashFromScope(composed, { surface }), surface);
+  return browseHref(routeHashFromScope(composed, { surface }), surface, language);
 }
 
 /** Build bounded role groups while keeping weak/review-only candidates out. */

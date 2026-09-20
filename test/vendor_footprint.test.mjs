@@ -168,6 +168,21 @@ test("vendor footprint renders populated groups and strong objects only", () => 
   assert.match(html, /Acme &amp; Co\./);
 });
 
+test("vendor footprint browse pivots carry a selected non-default language", () => {
+  const response = {
+    ok: true,
+    root: { kind: "vendor", ref: REF, stem: "ACME", display_name: "Acme" },
+    vendor_footprint: {
+      section_counts: { awards: { confirmed_count: 1 } },
+      domains: {},
+      award_coverage: { linked: 1, eligible: 1 },
+    },
+    domains: { money: { objects: [{ object_kind: "award", confidence: "strong" }] } },
+  };
+  const model = vendorFootprintModel(response, { language: "ar" });
+  assert.equal(new URL(model.groups.find((group) => group.id === "awards").href, "https://cityscroll.org").searchParams.get("lang"), "ar");
+});
+
 test("view-all links compose a typed vendor constraint through scope v0", () => {
   const href = vendorFootprintScopeHref(SPACED_REF, "awards", { query: "P T II CONTRACTING", resultCount: 16 });
   assert.match(href, /^\/browse\/contracts\/\?mode=award&/);

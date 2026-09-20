@@ -1288,7 +1288,7 @@ function applyHash(){
 function forwardLegacyMapToNearYou(raw){
   const scope=CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"});
   const target=raw==="map"?"/near-you/":nearYouHref(scope);
-  location.replace(target);
+  location.replace(currentLanguageURL(target));
   return true;
 }
 
@@ -1297,7 +1297,7 @@ function forwardLegacyAlertsToFollowing(raw){
   const target=query
     ? "https://cityscroll.org/following?"+query
     : "/following/";
-  location.replace(target);
+  location.replace(currentLanguageURL(target));
   return true;
 }
 

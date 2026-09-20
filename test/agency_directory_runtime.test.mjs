@@ -144,6 +144,12 @@ test("A1 typing an agency name narrows the directory on a direct load", () => {
   assert.equal(doc.querySelector("[data-directory-empty]").hidden, true);
 });
 
+test("a selected language survives live directory query replacement", () => {
+  const { doc, location } = mountDirectory("https://cityscroll.org/agencies/?lang=es");
+  typeQuery(doc, "Parks");
+  assert.equal(location.search, "?q=Parks&lang=es");
+});
+
 // A1 / A3: the same search after an in-product arrival, not only a fresh load.
 test("A3 typing narrows the directory after in-product navigation into it", () => {
   // Prior page in the same session: Browse (no directory binder).

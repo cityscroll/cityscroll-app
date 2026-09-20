@@ -55,7 +55,7 @@ test("every rendered borough and community-district polygon has a matching serve
 
 test("legacy map hashes forward and no-JavaScript area paths stay keyboard native", () => {
   assert.match(routing, /raw==="map"\|\|raw\.startsWith\("map" \+ "\?"\)/);
-  assert.match(routing, /location\.replace\(target\)/);
+  assert.match(routing, /location\.replace\(currentLanguageURL\(target\)\)/);
   assert.match(near, /data-map-zoom="in"/);
   assert.match(near, /data-map-pan="west"/);
   assert.doesNotMatch(near, /class="map-district"[^>]+tabindex/);

@@ -243,7 +243,7 @@ test('home Guide links carry the selected language through the existing runtime 
       // Match the real home anchors against the guide-link selectors used by the runtime.
       return anchors.filter(anchor => selector.split(',').some(part => {
         const rule = part.trim();
-        return rule === 'a[href^="/guide/"]' ||
+        return rule === 'a[href]' || rule === 'a[href^="/guide/"]' ||
           (rule === 'a[data-i18n="footer_guide"]' && anchor.attributes.includes('data-i18n="footer_guide"'));
       }));
     },
@@ -273,7 +273,7 @@ test('investigation links retain language despite the document root base URL', (
   }));
   const document = {
     baseURI: 'https://cityscroll.org/',
-    querySelectorAll(selector) { return selector === 'a[href*="#investigation"]' ? links : []; },
+    querySelectorAll(selector) { return selector === 'a[href]' || selector === 'a[href*="#investigation"]' ? links : []; },
     getElementById() { return null; },
     documentElement: { dataset: {}, style: { setProperty() {}, removeProperty() {} } },
   };
@@ -281,15 +281,20 @@ test('investigation links retain language despite the document root base URL', (
   runInNewContext(i18n, context);
   for (const locale of [undefined, 'en', 'es', 'zh-Hans', 'ar', 'en']) {
     context.window.LANG = locale;
-    context.window.applyStrings();
     const selected = locale || 'en';
+    context.location.href = selected === 'en'
+      ? 'https://cityscroll.org/vendors/example/'
+      : `https://cityscroll.org/vendors/example/?lang=${selected}&token=example`;
+    context.window.applyStrings();
     if (selected === 'en') assert.equal(links[0].href, '#investigation');
-    for (const link of links) {
-      const url = new URL(link.href, document.baseURI);
-      assert.equal(url.searchParams.get('lang'), selected === 'en' ? null : selected);
-      assert.equal(url.pathname, '/');
-      assert.match(url.hash, /^#investigation/);
-      assert.ok(!url.searchParams.has('token'));
-    }
+    const fragment = new URL(links[0].href, context.location.href);
+    assert.equal(fragment.searchParams.get('lang'), selected === 'en' ? null : selected);
+    assert.equal(fragment.pathname, '/vendors/example/');
+    assert.equal(fragment.hash, '#investigation');
+    const documentLink = new URL(links[1].href, document.baseURI);
+    assert.equal(documentLink.searchParams.get('lang'), selected === 'en' ? null : selected);
+    assert.equal(documentLink.pathname, '/');
+    assert.equal(documentLink.hash, '#investigation/shared/example');
+    assert.ok(!documentLink.searchParams.has('token'));
   }
 });
