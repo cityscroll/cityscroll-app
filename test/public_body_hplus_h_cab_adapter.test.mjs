@@ -8,15 +8,16 @@ import {
   projectHplusHCabRecurrences,
 } from "../site/hplus_h_cab_calendar.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
+import { todayISO } from "./helpers/test_clock.mjs";
 
-const OBSERVED_AT = "2026-09-20T12:00:00.000Z";
-const SOURCE_RECEIPT = {
+const observedAt = () => `${todayISO()}T12:00:00.000Z`;
+const receipt = () => ({
   schema: "cityscroll.meeting_source_receipt.v1",
   source_url: HPLUS_H_CAB_SOURCE_URL,
-  observed_at: OBSERVED_AT,
+  observed_at: observedAt(),
   status: "ok",
   fetch_status: "snapshot",
-};
+});
 
 const RULES = [
   ["Bellevue", "4th Wednesday", "6:00 pm"],
@@ -50,8 +51,8 @@ function fixture(rows = RULES) {
 
 function options(extra = {}) {
   return {
-    observedAt: OBSERVED_AT,
-    receipt: SOURCE_RECEIPT,
+    observedAt: observedAt(),
+    receipt: receipt(),
     horizonStart: "2026-10-01",
     horizonEnd: "2026-10-31",
     ...extra,
@@ -67,7 +68,7 @@ test("all 21 published facility rows parse and the three anchors project in loca
   assert.equal(byFacility.get("bellevue").event_date, "2026-10-28T18:00:00");
   assert.equal(byFacility.get("kings-county").event_date, "2026-10-15T17:00:00");
   assert.ok(index.rows.every((row) => row.temporal_basis === "published_recurrence"));
-  assert.ok(index.rows.every((row) => row.source_receipt === SOURCE_RECEIPT));
+  assert.ok(index.rows.every((row) => row.source_receipt.observed_at === observedAt()));
 });
 
 test("recurrence projections keep unsupported location and participation facts unknown", () => {
@@ -116,7 +117,7 @@ test("removed rules retire future projections while historical rows and receipts
   }));
   assert.deepEqual(second.retired_rules.map((rule) => rule.facility_slug), ["kings-county"]);
   assert.equal(second.historical_rows.length, 2);
-  assert.equal(second.rows.find((row) => row.meeting_id === historical.meeting_id).source_receipt, SOURCE_RECEIPT);
+  assert.equal(second.rows.find((row) => row.meeting_id === historical.meeting_id).source_receipt.observed_at, observedAt());
   assert.equal(second.projected_rows.some((row) => row.facility_slug === "kings-county"), false);
 });
 
@@ -150,8 +151,8 @@ test("derived meetings enter the shared read model without losing recurrence evi
   const index = buildHplusHCabCalendarIndex(fixture([RULES[12]]), options());
   const model = buildSharedMeetingReadModel({
     publicBodyCalendarIndex: index,
-    generatedAt: OBSERVED_AT,
-    now: OBSERVED_AT,
+    generatedAt: observedAt(),
+    now: observedAt(),
   });
   assert.equal(model.sources.public_body_calendar.status, "fresh");
   assert.equal(model.rows[0].temporal_basis, "published_recurrence");
