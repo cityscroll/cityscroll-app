@@ -4057,6 +4057,18 @@ select {
 .near-map-wrap[data-geography-map-mode="enhanced"] .near-map-enhanced {
   display: block;
 }
+/* MapLibre's compact attribution control is 24px by default. Keep its
+   disclosure target usable when the enhanced map is active on touch screens. */
+.near-map-enhanced .maplibregl-ctrl-attrib-button {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 22px;
+}
+.near-map-enhanced .maplibregl-ctrl-attrib a {
+  text-decoration: underline;
+}
 .near-records-surface {
   min-width: 0;
   max-width: var(--maxw);
