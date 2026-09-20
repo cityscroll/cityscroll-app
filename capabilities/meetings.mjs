@@ -427,7 +427,8 @@ export function meetingsBrowseFromModel(model, input = {}) {
     if (normalized.status && (row.status || row.lifecycle || row.schedule?.status) !== normalized.status) return false;
     return true;
   }).sort((left, right) => dateForRow(left).localeCompare(dateForRow(right)) || left.meeting_id.localeCompare(right.meeting_id));
-  const availability = evaluateMeetingAvailabilityRows(candidates, normalized.availability, { asOf: model.freshness?.checked_at || model.generated_at || "1900-01-01" });
+  const modelAsOf = model.freshness?.checked_at || model.generated_at || "1900-01-01";
+  const availability = evaluateMeetingAvailabilityRows(candidates, normalized.availability, { asOf: String(modelAsOf).slice(0, 10) });
   const matched = availability.rows;
   const unknownStart = normalized.availability
     ? availability.counts.unknown_start
