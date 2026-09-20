@@ -69,8 +69,9 @@ function dateValue(value) {
   const month = MONTHS[match[1].toLowerCase()];
   const day = Number(match[2]);
   const year = Number(match[3]);
-  const candidate = new Date(Date.UTC(year, month - 1, day));
-  if (candidate.getUTCFullYear() !== year || candidate.getUTCMonth() !== month - 1 || candidate.getUTCDate() !== day) return null;
+  const leapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const daysInMonth = [31, leapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (day < 1 || day > daysInMonth[month - 1]) return null;
   return {
     iso: `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
     raw: match[0].replace(/\s+/g, " ").trim(),
