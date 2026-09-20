@@ -596,7 +596,7 @@ export function renderSelectedGeographyOverlapDrawerHtml(model, {
 
   const selected = model.selected;
   const compareButtons = (model.compare_controls || []).map((control) => (
-    `<a class="near-geo-layer${control.pressed ? " is-active" : ""}" data-geography-compare="${esc(control.type)}" href="${esc(control.href)}" aria-pressed="${control.pressed ? "true" : "false"}">${esc(control.label)}</a>`
+    `<a class="near-geo-layer${control.pressed ? " is-active" : ""}" data-geography-compare="${esc(control.type)}" href="${esc(control.href)}"${control.pressed ? ' aria-current="true"' : ""}>${esc(control.label)}</a>`
   )).join("");
 
   const pointHtml = model.point_section
@@ -665,7 +665,7 @@ export function renderSelectedGeographyOverlapDrawerHtml(model, {
       ${(model.record_lenses || []).length
         ? `<section class="near-geo-record-lenses" data-geography-record-lenses aria-labelledby="near-geo-record-lenses-heading">
         <h3 id="near-geo-record-lenses-heading">Records in this ${esc(selected.selection_noun)}</h3>
-        <ul>${model.record_lenses.map((row) => `<li><a data-geography-record-lens="${esc(row.lens)}" href="${esc(row.href)}">${esc(row.label)}</a> <strong>${esc(row.count)}</strong></li>`).join("")}</ul>
+        <ul aria-label="Available record lenses">${model.record_lenses.map((row) => `<li><a data-geography-record-lens="${esc(row.lens)}" href="${esc(row.href)}" aria-label="${esc(`${row.label}: ${row.count} records in this ${selected.selection_noun}`)}">${esc(row.label)} <span class="near-geo-record-lens-count" aria-hidden="true">${esc(row.count)}</span></a></li>`).join("")}</ul>
       </section>`
         : ""}
       <p class="near-geo-overlap-continuation"><a data-geography-overlap-records href="${esc(model.continuation.href)}">${esc(model.continuation.label)}</a></p>

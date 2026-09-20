@@ -9,13 +9,13 @@
       "viewport": [1440, 900],
       "mode": "no-javascript",
       "assertion": "With JavaScript disabled, the served K15 Near You markup contains native, resolvable community-board and Council-district reverse links.",
-      "sha256": "938ecdb10019db098636d451e1f9e7b54e63fd2d1bbecade07e9509b30a72d8c"
+      "sha256": "0e0d8f700da2ebdd64cc0e7c887a03721a90555f1f7218eb581401e8b6da88cf"
     },
     {
       "viewport": [390, 844],
       "mode": "keyboard",
       "assertion": "With JavaScript enabled, Tab reaches each K15 reverse-navigation link, Enter activates it, and the fiscal-year, agency, lens, and place scope parameters remain unchanged.",
-      "sha256": "6b45e5dcce0db08d05f2a648a0160a2384a3443aae4da3e020fb833ff91c42cc"
+      "sha256": "c2b3b33c6108eb0564ab8b0d2e3da565800e2b8b32cff4554ee5b2be35dbfb22"
     }
   ]
 }

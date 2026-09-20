@@ -9,6 +9,10 @@ import {
   scopeWithCanonicalGeography,
 } from "../site/geography_navigation_records.mjs";
 import {
+  buildSelectedGeographyOverlapViewModel,
+  renderSelectedGeographyOverlapDrawerHtml,
+} from "../site/geography_navigation_overlap_ui.mjs";
+import {
   buildNearYouViewModel,
   renderNearYouDeferredParts,
 } from "../site/near_you_view.mjs";
@@ -187,4 +191,29 @@ test("record inspection preserves the selected key, role, evidence tier, source,
   assert.match(html, /Geography key/);
   assert.match(html, /Source nta-26B/);
   assert.match(html, /Publisher boundary 26B/);
+});
+
+test("selected record lenses expose named, ordered, touch-sized links", () => {
+  const model = buildSelectedGeographyOverlapViewModel({
+    selected: {
+      type: "community_district",
+      id: "K15",
+      key: KEYS.community,
+      label: "Brooklyn Community District 15",
+      selection_noun: "community district",
+      type_explanation: "A local community district.",
+    },
+    recordLenses: {
+      meetings: { exact: true, count: 2 },
+      land: { exact: true, count: 0 },
+    },
+  });
+  const html = renderSelectedGeographyOverlapDrawerHtml(model);
+  assert.match(html, /aria-labelledby="near-geo-record-lenses-heading"/);
+  assert.match(html, /aria-label="Available record lenses"/);
+  assert.match(html, /aria-label="Meetings: 2 records in this community district"/);
+  assert.match(html, /aria-label="Zoning: 0 records in this community district"/);
+  assert.match(html, /class="near-geo-record-lens-count" aria-hidden="true">2<\/span>/);
+  assert.doesNotMatch(html, /data-geography-record-lens="meetings"[^>]*tabindex/);
+  assert.ok(html.indexOf('data-geography-record-lens="meetings"') < html.indexOf('data-geography-record-lens="land"'));
 });
