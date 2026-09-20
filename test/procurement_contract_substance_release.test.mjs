@@ -6,13 +6,17 @@ import {
   CLAIMS,
   EXAMPLES,
   FIXTURE_PATH,
+  PRODUCTION_PATH,
   RELEASE_SCHEMA,
+  PRODUCTION_SCHEMA,
   assertReleasePacket,
+  assertProductionPacket,
   buildFixturePacket,
   validateReleasePacket,
 } from "../tools/capture_procurement_contract_substance.mjs";
 
 const packet = JSON.parse(readFileSync(FIXTURE_PATH, "utf8"));
+const production = JSON.parse(readFileSync(PRODUCTION_PATH, "utf8"));
 
 function clone(value) {
   return structuredClone(value);
@@ -120,4 +124,35 @@ test("A6: readiness is per example and per claim, never a passing-subset flag", 
 test("fixture capture is reproducible from the real renderer and materialized data", async () => {
   const captured = await buildFixturePacket({ revision: packet.served_build.revision, captureClock: packet.captured_at });
   assert.deepEqual(captured, packet);
+});
+
+test("A1: the production artifact ties the named BHRAGS assertion to settled DOM observations", () => {
+  assert.equal(production.schema, PRODUCTION_SCHEMA);
+  assert.equal(production.mode, "production");
+  assert.equal(production.evidence_class, "production-browser-dom");
+  assert.equal(production.production_readiness.ready, true);
+  assertProductionPacket(production);
+
+  const example = production.examples[0];
+  assert.deepEqual(example.facts, {
+    authorized_total: 10869881,
+    paid_total: 7385672.19,
+    payment_count: 31,
+    notice_id: "20240829105",
+    address: "3218 Emmons Avenue, Brooklyn",
+    units: 60,
+    place_role: "facility_site",
+    neighborhood: "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+  });
+  assert.equal(example.claims.amount.evidence.evidence_type, "browser_dom");
+  assert.equal(example.claims.service_geography.evidence.place_role, "facility_site");
+  assert.deepEqual(example.viewport_observations.map((row) => row.viewport), ["desktop", "mobile"]);
+  assert.equal(production.assertions[0].id, "A1");
+  assert.match(production.assertions[0].artifact, /examples\[0\]/);
+});
+
+test("A1: production evidence rejects a stale served identity", () => {
+  const stale = structuredClone(production);
+  stale.examples[0].claims.amount.evidence.revision = "0".repeat(40);
+  assert.throws(() => assertProductionPacket(stale), /stale served identity amount/);
 });

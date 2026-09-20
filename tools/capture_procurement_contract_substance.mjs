@@ -14,7 +14,6 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
 
-import edgeWorker from "../site/pages_edge.mjs";
 import {
   ACCESS_STATES,
   DOCUMENT_ROLES,
@@ -22,14 +21,18 @@ import {
   REQUIRED_DOCUMENT_ROLES,
   validateFixedContractAccessCoverage,
 } from "../site/procurement_contract_substance_access.mjs";
-import { withPinnedClock } from "../test/helpers/test_clock.mjs";
+import { testClockISOString, withPinnedClock } from "../test/helpers/test_clock.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const EVIDENCE_DIR_RELATIVE = "docs/evidence/procurement-contract-substance-release";
 export const FIXTURE_NAME = "fixture.json";
 export const FIXTURE_PATH = join(ROOT, EVIDENCE_DIR_RELATIVE, FIXTURE_NAME);
+export const PRODUCTION_NAME = "production.json";
+export const PRODUCTION_PATH = join(ROOT, EVIDENCE_DIR_RELATIVE, PRODUCTION_NAME);
 export const RELEASE_SCHEMA = "cityscroll.procurement_contract_substance_release.v1";
+export const PRODUCTION_SCHEMA = "cityscroll.procurement_contract_substance_production.v1";
 export const TOOL = "tools/capture_procurement_contract_substance.mjs";
+export const PRODUCTION_CAPTURE_TOOL = "tools/capture_procurement_contract_substance_production.py";
 export const CAPTURE_CLOCK = "2026-09-20T00:00:00Z";
 export const PUBLIC_SITE = "https://cityscroll.org";
 export const VIEWPORTS = Object.freeze([
@@ -131,6 +134,7 @@ function assetEnvironment(readModel) {
 }
 
 async function servedContract(contractId, readModel, headers = {}) {
+  const { default: edgeWorker } = await import("../site/pages_edge.mjs");
   const response = await edgeWorker.fetch(
     new Request(procurementUrl(contractId), { headers }),
     assetEnvironment(readModel),
@@ -455,6 +459,231 @@ export async function buildFixturePacket({ revision = gitRevision(), captureCloc
   return packet;
 }
 
+function productionUrl(site, contractId) {
+  return `${site.replace(/\/$/, "")}${procurementRoute(contractId)}`;
+}
+
+function productionCapture({ site = PUBLIC_SITE } = {}) {
+  const result = spawnSync(
+    "python3",
+    [join(ROOT, PRODUCTION_CAPTURE_TOOL), "--site", site, "--json-stdout"],
+    { cwd: ROOT, encoding: "utf8", timeout: 180_000 },
+  );
+  if (result.status !== 0) {
+    throw new Error(String(result.stderr || result.stdout || `production browser capture exited ${result.status}`).trim());
+  }
+  try {
+    return JSON.parse(result.stdout);
+  } catch (error) {
+    throw new Error(`production browser capture returned invalid JSON: ${error.message}`);
+  }
+}
+
+function productionReadJson(url, fetchImpl) {
+  return fetchImpl(url).then(async (response) => {
+    const body = await response.text();
+    if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}`);
+    try {
+      return JSON.parse(body);
+    } catch (error) {
+      throw new Error(`${url} returned invalid JSON: ${error.message}`);
+    }
+  });
+}
+
+function productionEvidence({ observation, route, revision, dataVintage, claim, assertion, source, placeRole = null }) {
+  return {
+    evidence_type: "browser_dom",
+    route,
+    revision,
+    data_vintage: dataVintage,
+    render_hash: observation.render_hash,
+    rendered: observation.rendered,
+    initialization: observation.initialization,
+    viewport: observation.viewport,
+    assertion,
+    source,
+    served_passage: source.excerpt,
+    place_role: placeRole,
+    claim,
+    contract_id: "CT107120258801626",
+  };
+}
+
+export async function buildProductionPacket({
+  site = PUBLIC_SITE,
+  fetchImpl = fetch,
+  now = testClockISOString(),
+  groundedOriginMain = null,
+  observations = null,
+} = {}) {
+  const [artifactManifest, readModel] = await Promise.all([
+    productionReadJson(`${site.replace(/\/$/, "")}/artifact-manifest.json`, fetchImpl),
+    productionReadJson(`${site.replace(/\/$/, "")}/data/shared_procurement_read_model.json`, fetchImpl),
+  ]);
+  const captured = observations || productionCapture({ site });
+  const expectedRoute = procurementRoute("CT107120258801626");
+  const viewportObservations = captured.observations || [];
+  const desktop = viewportObservations.find((row) => row.viewport === "desktop");
+  const mobile = viewportObservations.find((row) => row.viewport === "mobile");
+  const requiredFacts = {
+    contract_id: "CT107120258801626",
+    vendor: "BHRAGS HOME CARE CORP",
+    authorized_total: 10869881,
+    paid_total: 7385672.19,
+    payment_count: 31,
+    notice_id: "20240829105",
+    address: "3218 Emmons Avenue, Brooklyn",
+    units: 60,
+    place_role: "facility_site",
+    neighborhood: "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+  };
+  const source = {
+    url: productionUrl(site, "CT107120258801626"),
+    document_role: "cityscroll_served_contract_page",
+    locator: "contract facts, payment summary, and facility-site row",
+    excerpt: "$10,869,881 authorized; $7,385,672.19 paid; 31 payments; notice 20240829105; 3218 Emmons Avenue, Brooklyn; 60 units; Facility site; Sheepshead Bay-Manhattan Beach-Gerritsen Beach.",
+    content_hash: null,
+    identity_basis: "exact contract id CT107120258801626 joined to notice 20240829105",
+  };
+  const geographySource = {
+    url: "https://a856-cityrecord.nyc.gov/RequestDetail/20240829105",
+    document_role: "city_record_notice",
+    locator: "notice 20240829105 facility description",
+    excerpt: "3218 Emmons Avenue, Brooklyn; 60 units.",
+    content_hash: null,
+    identity_basis: "notice 20240829105 joined to exact contract id CT107120258801626",
+  };
+  const observationReady = (row) => Boolean(
+    row
+      && row.http_status === 200
+      && row.rendered === true
+      && row.initialization === "settled"
+      && /^[a-f0-9]{64}$/i.test(String(row.render_hash || ""))
+      && Object.entries(requiredFacts).every(([key, value]) => row.facts?.[key] === value),
+  );
+  const ready = observationReady(desktop) && observationReady(mobile);
+  const example = {
+    contract_id: requiredFacts.contract_id,
+    label: "BHRAGS",
+    route: expectedRoute,
+    amount: requiredFacts.authorized_total,
+    vendor: requiredFacts.vendor,
+    facts: {
+      authorized_total: requiredFacts.authorized_total,
+      paid_total: requiredFacts.paid_total,
+      payment_count: requiredFacts.payment_count,
+      notice_id: requiredFacts.notice_id,
+      address: requiredFacts.address,
+      units: requiredFacts.units,
+      place_role: requiredFacts.place_role,
+      neighborhood: requiredFacts.neighborhood,
+    },
+    claims: {
+      amount: {
+        status: ready ? "ready" : "not_ready",
+        reason: ready ? null : "live_browser_observation_incomplete",
+        evidence: desktop ? productionEvidence({
+          observation: desktop,
+          route: expectedRoute,
+          revision: artifactManifest.source_commit_sha,
+          dataVintage: readModel.generated_at,
+          claim: "amount",
+          assertion: "BHRAGS live DOM keeps exact contract identity, authorized total, paid total, and 31-payment coverage together",
+          source,
+        }) : null,
+      },
+      service_geography: {
+        status: ready ? "ready" : "not_ready",
+        reason: ready ? null : "live_browser_observation_incomplete",
+        evidence: desktop ? productionEvidence({
+          observation: desktop,
+          route: expectedRoute,
+          revision: artifactManifest.source_commit_sha,
+          dataVintage: readModel.generated_at,
+          claim: "service_geography",
+          assertion: "BHRAGS live DOM identifies 3218 Emmons Avenue as a resolved facility site in Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+          source: geographySource,
+          placeRole: "facility_site",
+        }) : null,
+      },
+    },
+    viewport_observations: viewportObservations,
+  };
+  return {
+    schema: PRODUCTION_SCHEMA,
+    mode: "production",
+    evidence_class: "production-browser-dom",
+    captured_at: now,
+    tool: TOOL,
+    browser_capture_tool: PRODUCTION_CAPTURE_TOOL,
+    grounded_origin_main: groundedOriginMain,
+    served_build: {
+      live_base: site,
+      revision: artifactManifest.source_commit_sha,
+      artifact_hash: artifactManifest.artifact_hash,
+      data_vintage: readModel.generated_at,
+      artifact_manifest_generated_at: artifactManifest.generated_at,
+    },
+    assertions: [{
+      id: "A1",
+      assertion: "BHRAGS live proof covers $10,869,881 authorized, $7,385,672.19 paid, 31 payments, 3218 Emmons Avenue, 60 units, exact contract/notice identity, and resolved neighborhood with facility_site semantics.",
+      artifact: "examples[0].facts, examples[0].claims.amount.evidence, examples[0].claims.service_geography.evidence, and examples[0].viewport_observations",
+    }],
+    examples: [example],
+    admitted_public_executed_examples: [],
+    production_readiness: {
+      ready,
+      reason: ready ? null : "live browser observation did not cover every named BHRAGS fact at both viewports",
+    },
+  };
+}
+
+export function assertProductionPacket(packet) {
+  const errors = [];
+  if (!packet || packet.schema !== PRODUCTION_SCHEMA) errors.push(`schema must be ${PRODUCTION_SCHEMA}`);
+  if (packet?.mode !== "production") errors.push("production packet mode is required");
+  if (packet?.evidence_class !== "production-browser-dom") errors.push("production evidence class is required");
+  if (!packet?.served_build?.revision) errors.push("served production revision is required");
+  if (!packet?.served_build?.data_vintage) errors.push("served production data vintage is required");
+  if (packet?.production_readiness?.ready !== true) errors.push("production packet is not ready");
+  const assertion = packet?.assertions?.find((row) => row.id === "A1");
+  if (!assertion || !assertion.artifact.includes("examples[0]")) errors.push("A1 assertion is not tied to the production artifact");
+  const example = packet?.examples?.[0];
+  if (!example || example.contract_id !== "CT107120258801626") errors.push("BHRAGS production example is missing");
+  const facts = example?.facts || {};
+  for (const [key, value] of Object.entries({
+    authorized_total: 10869881,
+    paid_total: 7385672.19,
+    payment_count: 31,
+    notice_id: "20240829105",
+    address: "3218 Emmons Avenue, Brooklyn",
+    units: 60,
+    place_role: "facility_site",
+    neighborhood: "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+  })) if (facts[key] !== value) errors.push(`BHRAGS production fact mismatch ${key}`);
+  const observations = example?.viewport_observations || [];
+  for (const viewport of ["desktop", "mobile"]) {
+    const row = observations.find((entry) => entry.viewport === viewport);
+    if (!row || row.http_status !== 200 || row.rendered !== true || row.initialization !== "settled") {
+      errors.push(`missing settled live browser observation ${viewport}`);
+    }
+    if (!/^[a-f0-9]{64}$/i.test(String(row?.render_hash || ""))) errors.push(`missing live render hash ${viewport}`);
+  }
+  for (const claimId of ["amount", "service_geography"]) {
+    const evidence = example?.claims?.[claimId]?.evidence;
+    if (!evidence || evidence.evidence_type !== "browser_dom") errors.push(`missing browser DOM evidence ${claimId}`);
+    if (evidence?.revision !== packet?.served_build?.revision) errors.push(`stale served identity ${claimId}`);
+    if (evidence?.data_vintage !== packet?.served_build?.data_vintage) errors.push(`date-basis mismatch ${claimId}`);
+    if (claimId === "service_geography" && evidence?.place_role !== "facility_site") errors.push("wrong place role service_geography");
+  }
+  if (!Array.isArray(packet?.admitted_public_executed_examples) || packet.admitted_public_executed_examples.length !== 0) {
+    errors.push("production packet must not admit an unproven public executed example");
+  }
+  if (errors.length) throw new Error(`contract-substance production packet invalid:\n${errors.join("\n")}`);
+  return packet;
+}
+
 function error(errors, message) {
   errors.push(message);
 }
@@ -596,8 +825,16 @@ async function main() {
     process.stdout.write(`wrote ${EVIDENCE_DIR_RELATIVE}/${FIXTURE_NAME} (${packet.readiness.whole_set_ready ? "ready" : "not ready"})\n`);
     return;
   }
+  if (arg === "--production") {
+    const packet = assertProductionPacket(await buildProductionPacket({ groundedOriginMain: gitRevision() }));
+    mkdirSync(dirname(PRODUCTION_PATH), { recursive: true });
+    writeFileSync(PRODUCTION_PATH, `${JSON.stringify(packet, null, 2)}\n`);
+    process.stdout.write(`wrote ${EVIDENCE_DIR_RELATIVE}/${PRODUCTION_NAME} (ready)\n`);
+    return;
+  }
   if (arg === "--check") {
     assertReleasePacket(readJson(`${EVIDENCE_DIR_RELATIVE}/${FIXTURE_NAME}`));
+    assertProductionPacket(readJson(`${EVIDENCE_DIR_RELATIVE}/${PRODUCTION_NAME}`));
     process.stdout.write("contract-substance release fixture: valid\n");
     return;
   }

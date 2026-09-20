@@ -1,0 +1,149 @@
+{
+  "schema": "cityscroll.procurement_contract_substance_production.v1",
+  "mode": "production",
+  "evidence_class": "production-browser-dom",
+  "captured_at": "2026-09-20T15:41:21.228Z",
+  "tool": "tools/capture_procurement_contract_substance.mjs",
+  "browser_capture_tool": "tools/capture_procurement_contract_substance_production.py",
+  "grounded_origin_main": "a85ed938e76101d0af417a0bee8612859f72d630",
+  "served_build": {
+    "live_base": "https://cityscroll.org",
+    "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+    "artifact_hash": "06a53ee4047bd7d2731dd4049f15fcc8776aa2710df6412af3e4b000b132947c",
+    "data_vintage": "2026-09-20T14:43:52.376Z",
+    "artifact_manifest_generated_at": "2026-09-20T15:14:59.135Z"
+  },
+  "assertions": [
+    {
+      "id": "A1",
+      "assertion": "BHRAGS live proof covers $10,869,881 authorized, $7,385,672.19 paid, 31 payments, 3218 Emmons Avenue, 60 units, exact contract/notice identity, and resolved neighborhood with facility_site semantics.",
+      "artifact": "examples[0].facts, examples[0].claims.amount.evidence, examples[0].claims.service_geography.evidence, and examples[0].viewport_observations"
+    }
+  ],
+  "examples": [
+    {
+      "contract_id": "CT107120258801626",
+      "label": "BHRAGS",
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "amount": 10869881,
+      "vendor": "BHRAGS HOME CARE CORP",
+      "facts": {
+        "authorized_total": 10869881,
+        "paid_total": 7385672.19,
+        "payment_count": 31,
+        "notice_id": "20240829105",
+        "address": "3218 Emmons Avenue, Brooklyn",
+        "units": 60,
+        "place_role": "facility_site",
+        "neighborhood": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach"
+      },
+      "claims": {
+        "amount": {
+          "status": "ready",
+          "reason": null,
+          "evidence": {
+            "evidence_type": "browser_dom",
+            "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "data_vintage": "2026-09-20T14:43:52.376Z",
+            "render_hash": "1ffd1fd3a1773f02a3a1fc13f038f2fe7284a33d5189650b505b857c3bd5ccc7",
+            "rendered": true,
+            "initialization": "settled",
+            "viewport": "desktop",
+            "assertion": "BHRAGS live DOM keeps exact contract identity, authorized total, paid total, and 31-payment coverage together",
+            "source": {
+              "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
+              "document_role": "cityscroll_served_contract_page",
+              "locator": "contract facts, payment summary, and facility-site row",
+              "excerpt": "$10,869,881 authorized; $7,385,672.19 paid; 31 payments; notice 20240829105; 3218 Emmons Avenue, Brooklyn; 60 units; Facility site; Sheepshead Bay-Manhattan Beach-Gerritsen Beach.",
+              "content_hash": null,
+              "identity_basis": "exact contract id CT107120258801626 joined to notice 20240829105"
+            },
+            "served_passage": "$10,869,881 authorized; $7,385,672.19 paid; 31 payments; notice 20240829105; 3218 Emmons Avenue, Brooklyn; 60 units; Facility site; Sheepshead Bay-Manhattan Beach-Gerritsen Beach.",
+            "place_role": null,
+            "claim": "amount",
+            "contract_id": "CT107120258801626"
+          }
+        },
+        "service_geography": {
+          "status": "ready",
+          "reason": null,
+          "evidence": {
+            "evidence_type": "browser_dom",
+            "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "data_vintage": "2026-09-20T14:43:52.376Z",
+            "render_hash": "1ffd1fd3a1773f02a3a1fc13f038f2fe7284a33d5189650b505b857c3bd5ccc7",
+            "rendered": true,
+            "initialization": "settled",
+            "viewport": "desktop",
+            "assertion": "BHRAGS live DOM identifies 3218 Emmons Avenue as a resolved facility site in Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+            "source": {
+              "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20240829105",
+              "document_role": "city_record_notice",
+              "locator": "notice 20240829105 facility description",
+              "excerpt": "3218 Emmons Avenue, Brooklyn; 60 units.",
+              "content_hash": null,
+              "identity_basis": "notice 20240829105 joined to exact contract id CT107120258801626"
+            },
+            "served_passage": "3218 Emmons Avenue, Brooklyn; 60 units.",
+            "place_role": "facility_site",
+            "claim": "service_geography",
+            "contract_id": "CT107120258801626"
+          }
+        }
+      },
+      "viewport_observations": [
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "height": 900,
+          "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
+          "http_status": 200,
+          "render_hash": "1ffd1fd3a1773f02a3a1fc13f038f2fe7284a33d5189650b505b857c3bd5ccc7",
+          "rendered": true,
+          "initialization": "settled",
+          "facts": {
+            "contract_id": "CT107120258801626",
+            "vendor": "BHRAGS HOME CARE CORP",
+            "authorized_total": 10869881,
+            "paid_total": 7385672.19,
+            "payment_count": 31,
+            "notice_id": "20240829105",
+            "address": "3218 Emmons Avenue, Brooklyn",
+            "units": 60,
+            "place_role": "facility_site",
+            "neighborhood": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach"
+          }
+        },
+        {
+          "viewport": "mobile",
+          "width": 390,
+          "height": 844,
+          "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626/",
+          "http_status": 200,
+          "render_hash": "1ffd1fd3a1773f02a3a1fc13f038f2fe7284a33d5189650b505b857c3bd5ccc7",
+          "rendered": true,
+          "initialization": "settled",
+          "facts": {
+            "contract_id": "CT107120258801626",
+            "vendor": "BHRAGS HOME CARE CORP",
+            "authorized_total": 10869881,
+            "paid_total": 7385672.19,
+            "payment_count": 31,
+            "notice_id": "20240829105",
+            "address": "3218 Emmons Avenue, Brooklyn",
+            "units": 60,
+            "place_role": "facility_site",
+            "neighborhood": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach"
+          }
+        }
+      ]
+    }
+  ],
+  "admitted_public_executed_examples": [],
+  "production_readiness": {
+    "ready": true,
+    "reason": null
+  }
+}
