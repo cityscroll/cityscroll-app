@@ -277,6 +277,8 @@ test("A9: drawer markup order is shared; focus restore returns to invoker", () =
   const detailsIdx = html.indexOf("data-geography-overlap-details");
   const recordsIdx = html.indexOf("data-geography-overlap-records");
   assert.ok(selectedIdx < compareIdx && compareIdx < areaIdx && areaIdx < detailsIdx && detailsIdx < recordsIdx);
+  assert.doesNotMatch(html, /<a[^>]+data-geography-compare=[^>]+aria-pressed=/);
+  assert.match(html, /<a[^>]+data-geography-compare=[^>]+aria-current="true"/);
 
   const store = {};
   const invoker = {

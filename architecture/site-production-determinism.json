@@ -291,6 +291,7 @@
     "site/geography_navigation_entry.mjs",
     "site/geography_navigation_map.mjs",
     "site/geography_navigation_overlap_ui.mjs",
+    "site/geography_navigation_records.mjs",
     "site/geography_navigation_shell.mjs",
     "site/geography_navigation_state.mjs",
     "site/geography_relations.mjs",

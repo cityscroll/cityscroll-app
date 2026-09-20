@@ -32,6 +32,7 @@ const INSPECT_KICKER = "Nearby record";
 const FULL_RECORD_LABEL = "Open the full record";
 const DETAIL_FAILURE_STATUS = "Further detail did not load. The full record link below is unaffected.";
 const WEAK_UNCERTAINTY = "Place match is approximate";
+const EXPLICIT_AREA_ROLES = new Set(["subject_affected_area", "affected_area", "property_affected", "project_geometry"]);
 
 const PLACE_ROLE_USER_LABELS = Object.freeze({
   venue: "Happening here",
@@ -93,11 +94,16 @@ function geographyFacts(evidence) {
     ? evidence.tier
     : null;
   return Object.freeze({
+    key: inspectText(evidence.key, 180),
+    source_id: inspectText(evidence.source_id, 180),
     place_role: placeRole,
     place_role_label: nearYouPlaceRoleDetailLabel(placeRole) || "Place",
     label,
     basis,
     tier,
+    resident_label: tier !== "weak" && EXPLICIT_AREA_ROLES.has(placeRole)
+      ? "About or affecting this area"
+      : "Located in this area",
     boundary_vintage: inspectText(evidence.boundary_vintage, 80),
   });
 }
@@ -255,12 +261,22 @@ function renderGeographyDisclosure(facts, esc) {
   const vintage = geography.boundary_vintage
     ? `<span class="near-you-record-inspection-source">Publisher boundary ${esc(geography.boundary_vintage)}</span>`
     : "";
+  const source = geography.source_id
+    ? `<span class="near-you-record-inspection-source">Source ${esc(geography.source_id)}</span>`
+    : "";
+  const key = geography.key
+    ? `<span class="near-you-record-inspection-source">Geography key ${esc(geography.key)}</span>`
+    : "";
   return `<details class="near-you-record-inspection-evidence" data-geography-evidence="1">` +
     `<summary>Why this place matched</summary>` +
+    `<span class="near-you-record-inspection-step">${esc(geography.resident_label)}</span>` +
+    `<span class="near-you-record-inspection-separator" aria-hidden="true">·</span>` +
     `<span class="near-you-record-inspection-step">${esc(geography.place_role_label)}: ${esc(geography.label)}</span>` +
     `<span class="near-you-record-inspection-separator" aria-hidden="true">·</span>` +
     `<span class="near-you-record-inspection-step">${esc(geography.basis)}</span>` +
     uncertainty +
+    source +
+    key +
     vintage +
     `</details>`;
 }
