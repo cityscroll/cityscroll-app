@@ -16,9 +16,11 @@ import {
   normalizeBsaCalendarMeeting,
   normalizePdcCalendarMeeting,
   normalizeOathTrialCalendarMeeting,
-  normalizePublicBodyCalendarMeeting,
 } from "./meeting_object_contract.mjs";
-import { buildPublicBodyCalendarCoverage } from "./public_body_calendar_contract.mjs";
+import {
+  buildPublicBodyCalendarCoverage,
+  normalizePublicBodyCalendarMeeting,
+} from "./public_body_calendar_contract.mjs";
 import {
   attachMeetingDocuments,
   normalizeMeetingDocument,

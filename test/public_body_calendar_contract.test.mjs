@@ -7,6 +7,7 @@ import {
   assertNoPublicBodyCalendarIdentityCollisions,
   buildPublicBodyCalendarCoverage,
   normalizePublicBodyCalendarInput,
+  normalizePublicBodyCalendarMeeting,
   publicBodyCalendarIdentity,
   validatePublicBodyCalendarRegistry,
 } from "../site/public_body_calendar_contract.mjs";
@@ -14,7 +15,6 @@ import {
   MEETING_OBJECT_SCHEMA,
   MEETING_SOURCE_SYSTEMS,
   meetingIdForSource,
-  normalizePublicBodyCalendarMeeting,
 } from "../site/meeting_object_contract.mjs";
 
 const NOW = "2026-09-20T12:00:00.000Z";

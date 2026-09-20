@@ -1,4 +1,5 @@
 import registry from "./data/public_body_calendar_contracts.json" with { type: "json" };
+import { normalizeMeetingObject } from "./meeting_object_contract.mjs";
 
 export const PUBLIC_BODY_CALENDAR_SOURCE_SYSTEM = "public_body_calendar";
 export const PUBLIC_BODY_CALENDAR_REGISTRY_SCHEMA = "cityscroll.public_body_calendar_contract_registry.v1";
@@ -123,6 +124,14 @@ export function normalizePublicBodyCalendarInput(value = {}, { contracts = PUBLI
     institution_ref: text(input.institution_ref) || contract.institution_ref,
     official_source_url: officialUrl(input.official_source_url) || contract.official_source_url,
   };
+}
+
+export function normalizePublicBodyCalendarMeeting(row = {}) {
+  const input = normalizePublicBodyCalendarInput({
+    ...row,
+    source_system: PUBLIC_BODY_CALENDAR_SOURCE_SYSTEM,
+  });
+  return normalizeMeetingObject(input);
 }
 
 export function publicBodyCalendarIdentityCollisions(records = []) {

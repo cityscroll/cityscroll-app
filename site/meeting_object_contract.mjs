@@ -9,10 +9,6 @@
 
 import { resolveMeetingFamily } from "./meeting_process_profile.mjs";
 import { projectMeetingSchedule } from "./meeting_temporal_evidence.mjs";
-import {
-  normalizePublicBodyCalendarInput,
-  publicBodyCalendarIdentity,
-} from "./public_body_calendar_contract.mjs";
 
 export const MEETING_OBJECT_SCHEMA = "cityscroll.meeting_object.v1";
 
@@ -65,17 +61,14 @@ function sourceSystem(value) {
 
 function sourceKey(source, sourceId, row = {}) {
   if (source === "public_body_calendar") {
-    const identity = publicBodyCalendarIdentity({
-      source_contract_id: row.source_contract_id,
-      publisher_identifier: sourceId,
-    });
-    if (!identity) throw new TypeError("public_body_calendar requires source_contract_id and publisher identifier");
+    const contractId = requiredText(row.source_contract_id, "source_contract_id");
+    const publisherIdentifier = requiredText(sourceId, "publisher identifier");
     return {
       source_system: source,
       key_type: SOURCE_KEY_TYPES[source],
-      value: identity.slice("meeting:public_body_calendar:".length),
-      source_contract_id: requiredText(row.source_contract_id, "source_contract_id"),
-      publisher_identifier: requiredText(sourceId, "publisher identifier"),
+      value: `${contractId}:${publisherIdentifier}`,
+      source_contract_id: contractId,
+      publisher_identifier: publisherIdentifier,
     };
   }
   return {
@@ -281,7 +274,6 @@ export function meetingIdForSource(sourceSystemValue, sourceId, publisherIdentif
  */
 export function normalizeMeetingObject(row = {}) {
   const source = sourceSystem(row.source_system);
-  if (source === "public_body_calendar") normalizePublicBodyCalendarInput(row);
   const sourceId = row.publisher_identifier
     || row.source_id
     || publisherIdFor(source, row);
@@ -527,14 +519,6 @@ export function normalizeOathTrialCalendarMeeting(row = {}) {
     source_url: row.source_url || row.record_url,
     activity: "observe",
   });
-}
-
-export function normalizePublicBodyCalendarMeeting(row = {}) {
-  const input = normalizePublicBodyCalendarInput({
-    ...row,
-    source_system: "public_body_calendar",
-  });
-  return normalizeMeetingObject(input);
 }
 
 export function meetingCanonicalHref(recordOrId) {
