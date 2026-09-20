@@ -8,6 +8,7 @@
  */
 
 import { resolveMeetingFamily } from "./meeting_process_profile.mjs";
+import { projectMeetingSchedule } from "./meeting_temporal_evidence.mjs";
 
 export const MEETING_OBJECT_SCHEMA = "cityscroll.meeting_object.v1";
 
@@ -268,6 +269,12 @@ export function normalizeMeetingObject(row = {}) {
     venue_name: venue?.name || row.venue_name,
   };
   const meetingFamily = resolveMeetingFamily(row);
+  const schedule = projectMeetingSchedule({
+    ...row,
+    source_url: sourceHref || row.source_url,
+    source_receipt: sourceReceipt(row),
+    source_system: source,
+  });
 
   return {
     ...retainedNoticeFields(row),
@@ -282,6 +289,7 @@ export function normalizeMeetingObject(row = {}) {
     title: optionalText(row.title || row.short_title) || "Meeting",
     event_date: optionalText(row.event_date || row.date),
     event_end: optionalText(row.event_end || row.end_at),
+    schedule,
     meeting_family: meetingFamily,
     activity: normalizeActivity(row.activity, source),
     attendance_mode: optionalText(row.attendance_mode),

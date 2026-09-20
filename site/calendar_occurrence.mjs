@@ -401,6 +401,29 @@ function genericOccurrenceValues(record = {}, options = {}) {
   const kind = options.kind || "event";
   const values = [];
   if (kind === "meetings" || kind === "meeting") {
+    const schedule = record.schedule && typeof record.schedule === "object" ? record.schedule : null;
+    if (schedule) {
+      const date = validDate(schedule.raw_date);
+      if (schedule.status === "resolved" && schedule.precision === "exact_time" && validDate(schedule.starts_at)) {
+        values.push({
+          kind: "event",
+          when: schedule.starts_at,
+          ends_at: sourceDate(record, ["event_end", "ends_at", "end_at"]),
+          timezone: schedule.timezone,
+          provenance: { basis: schedule.basis, source_url: schedule.source_url, observed_at: schedule.observed_at },
+        });
+      } else if (date) {
+        // Date-only, invalid, and conflicted schedules remain browseable as
+        // date evidence, but never become a midnight or selected clock time.
+        values.push({
+          kind: "event",
+          when: date,
+          timezone: schedule.timezone,
+          provenance: { basis: schedule.basis, source_url: schedule.source_url, observed_at: schedule.observed_at },
+        });
+      }
+      return values;
+    }
     const when = sourceDate(record, ["event_date", "meeting_date", "starts_at"]);
     if (when) values.push({ kind: "event", when, ends_at: sourceDate(record, ["event_end", "ends_at", "end_at"]) });
   } else {
