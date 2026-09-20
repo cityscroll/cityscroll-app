@@ -7,7 +7,7 @@ source seam, materialized representation, meeting-document use, search use,
 alert use, and final disposition. The focused contract test fails when a row is
 missing any of those decisions.
 
-This audit distinguishes three source-qualified meeting producers. Agenda
+This audit distinguishes seven source-qualified meeting producers. Agenda
 items, votes, and attachments still enrich a City Record meeting in
 `meeting-outcomes` after the measured date-and-body join; the Events feed
 EventId is also a standalone meeting identity in the shared contract:
@@ -17,6 +17,10 @@ EventId is also a standalone meeting identity in the shared contract:
 | `city_record` | Meeting producer | Exact City Record `request_id` | [City Record Online](https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx) |
 | `community_board` | Meeting producer | Exact board publisher event identifier | [NYC community boards](https://www.nyc.gov/site/communityboards/index.page) and the per-board URLs recorded in [`board_source_inventory.json`](../site/data/non_council_outcome_sources/board_source_inventory.json) |
 | `legistar` | Meeting producer | Exact Events feed `EventId` (`meeting:nyc_legistar_events:<EventId>`). An exact date-and-body City Record join records a same-proceeding relation without replacing either identifier. | [NYC Council Legistar calendar](https://nyc.legistar.com/Calendar.aspx) and the authenticated [Legistar API](https://webapi.legistar.com/v1/nyc) |
+| `pdc_calendar` | Meeting producer | Exact commission publisher event identifier | [Public Design Commission](https://www.nyc.gov/site/designcommission/index.page) |
+| `bsa_calendar` | Meeting producer | Exact board session identifier | [Board of Standards and Appeals](https://www.nyc.gov/site/bsa/index.page) |
+| `oath_trial_calendar` | Meeting producer | Exact trial session identifier | [Office of Administrative Trials and Hearings](https://www.nyc.gov/site/oath/index.page) |
+| `public_body_calendar` | Bounded contract-scoped meeting producer | Exact `source_contract_id` plus publisher event identifier; the registry is frozen at five admitted contracts | Public-body sources listed in [`public_body_calendar_contracts.json`](../site/data/public_body_calendar_contracts.json) |
 
 A later City Record notice that satisfies the existing exact date-and-body join
 does not overwrite either meeting identifier. Collections show one

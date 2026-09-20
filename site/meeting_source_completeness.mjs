@@ -3,10 +3,15 @@
  *
  * This is a review contract, not a renderer. Every accepted source field has
  * one explicit materialization, document, search, and alert disposition. The
- * three producers deliberately keep different identity and publication roles.
+ * producer entries deliberately keep different identity and publication roles.
  */
 
 export const MEETING_SOURCE_COMPLETENESS_SCHEMA = "cityscroll.meeting_source_completeness.v1";
+
+import {
+  PUBLIC_BODY_CALENDAR_CONTRACTS,
+  validatePublicBodyCalendarRegistry,
+} from "./public_body_calendar_contract.mjs";
 
 const DISPOSITIONS = new Set([
   "rendered",
@@ -355,6 +360,73 @@ const legistar = [
   }),
 ];
 
+const pdc = [
+  ...rows(["meeting_date", "source_url", "source_receipt"], {
+    stream: "schedule",
+    source_seam: "site/pdc_calendar.mjs parsePdcScheduleHtml",
+    materialized_as: "meeting event_date, source_url, and source_receipt",
+    document_use: "meeting time and official PDC source link",
+    search_use: "date ordering and source-qualified result identity",
+    alert_use: "upcoming-event window and source freshness",
+    disposition: "rendered",
+  }),
+];
+
+const bsa = [
+  ...rows(["session_id", "meeting_date", "source_receipt"], {
+    stream: "session",
+    source_seam: "site/bsa_calendar.mjs and tools/build_bsa_calendar.mjs",
+    materialized_as: "meeting identity, schedule, access evidence, and source receipt",
+    document_use: "BSA session details and attendance links",
+    search_use: "typed meeting identity and materialized title/location",
+    alert_use: "upcoming-event window and source freshness",
+    disposition: "rendered",
+  }),
+];
+
+const oath = [
+  ...rows(["index", "date", "start", "type", "source_receipt"], {
+    stream: "trial_calendar",
+    source_seam: "site/oath_trial_calendar.mjs parseOathTrialCsv",
+    materialized_as: "meeting identity, schedule, proceeding type, and source receipt",
+    document_use: "OATH trial date, time, type, and official source link",
+    search_use: "typed meeting identity and date ordering",
+    alert_use: "upcoming-event window and source freshness",
+    disposition: "rendered",
+  }),
+];
+
+const publicBodyCalendar = [
+  ...rows(["source_contract_id", "institution_ref", "publisher_identifier", "source_url", "temporal_basis", "source_receipt"], {
+    stream: "publisher_calendar",
+    source_seam: "site/public_body_calendar_contract.mjs normalized contract input",
+    materialized_as: "contract-scoped meeting identity, institution reference, schedule basis, and receipt",
+    document_use: "official publisher source, institution, time, access, and lifecycle facts when published",
+    search_use: "source-qualified identity and materialized meeting text; no inferred fields",
+    alert_use: "contract-specific coverage, freshness, and delivery identity",
+    disposition: "rendered",
+  }),
+  ...rows(["cadence", "freshness", "health"], {
+    stream: "operator_health",
+    source_seam: "site/public_body_calendar_contract.mjs registry and observation status",
+    materialized_as: "contract coverage with fresh-empty, stale, failed, and unobserved states",
+    document_use: "intentionally omitted from resident meeting prose",
+    search_use: "coverage metadata only; not free-text",
+    alert_use: "operator health and source admission decisions",
+    disposition: "materialized_support",
+  }),
+];
+
+const PRODUCER_KEYS = Object.freeze([
+  "city_record",
+  "community_board",
+  "legistar",
+  "pdc_calendar",
+  "bsa_calendar",
+  "oath_trial_calendar",
+  "public_body_calendar",
+]);
+
 export const MEETING_SOURCE_COMPLETENESS = Object.freeze({
   schema: MEETING_SOURCE_COMPLETENESS_SCHEMA,
   producers: Object.freeze({
@@ -370,7 +442,25 @@ export const MEETING_SOURCE_COMPLETENESS = Object.freeze({
       role: "source-qualified meeting producer; exact date-and-body joins never overwrite identity",
       fields: Object.freeze(legistar),
     }),
+    pdc_calendar: Object.freeze({
+      role: "source-qualified public design commission calendar producer",
+      fields: Object.freeze(pdc),
+    }),
+    bsa_calendar: Object.freeze({
+      role: "source-qualified board of standards calendar producer",
+      fields: Object.freeze(bsa),
+    }),
+    oath_trial_calendar: Object.freeze({
+      role: "source-qualified OATH trial calendar producer",
+      fields: Object.freeze(oath),
+    }),
+    public_body_calendar: Object.freeze({
+      role: "bounded contract-scoped public-body calendar producer",
+      fields: Object.freeze(publicBodyCalendar),
+      contracts: Object.freeze(PUBLIC_BODY_CALENDAR_CONTRACTS),
+    }),
   }),
+  contracts: Object.freeze(PUBLIC_BODY_CALENDAR_CONTRACTS),
 });
 
 export function meetingSourceFieldNames(producer, stream = null) {
@@ -381,7 +471,7 @@ export function meetingSourceFieldNames(producer, stream = null) {
 export function auditMeetingSourceCompleteness(inventory = MEETING_SOURCE_COMPLETENESS) {
   const errors = [];
   if (inventory?.schema !== MEETING_SOURCE_COMPLETENESS_SCHEMA) errors.push("schema is missing or unsupported");
-  for (const producer of ["city_record", "community_board", "legistar"]) {
+  for (const producer of PRODUCER_KEYS) {
     const entry = inventory?.producers?.[producer];
     if (!entry) {
       errors.push(`${producer}: producer is missing`);
@@ -401,5 +491,12 @@ export function auditMeetingSourceCompleteness(inventory = MEETING_SOURCE_COMPLE
     }
     if (!seen.size) errors.push(`${producer}: field inventory is empty`);
   }
+  const contractErrors = validatePublicBodyCalendarRegistry({
+    schema: "cityscroll.public_body_calendar_contract_registry.v1",
+    family: "public_body_calendar",
+    version: 1,
+    contracts: inventory?.contracts || inventory?.producers?.public_body_calendar?.contracts,
+  });
+  errors.push(...contractErrors.map((error) => `public_body_calendar: ${error}`));
   return Object.freeze({ ok: errors.length === 0, errors: Object.freeze(errors) });
 }

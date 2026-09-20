@@ -1,0 +1,77 @@
+{
+  "schema": "cityscroll.public_body_calendar_contract_registry.v1",
+  "family": "public_body_calendar",
+  "version": 1,
+  "contracts": [
+    {
+      "id": "nycps_pep",
+      "source_contract_id": "nycps_pep",
+      "institution_ref": "nycps:panel-for-educational-policy",
+      "name": "NYCPS Panel for Educational Policy meeting schedule",
+      "official_source_url": "https://www.schools.nyc.gov/get-involved/families/panel-for-education-policy/panel-meetings",
+      "format": "html",
+      "identity": { "publisher_key": "local_date", "strategy": "contract_scoped" },
+      "temporal_basis": "explicit_instance",
+      "schedule_basis": "publisher_event",
+      "cadence": { "label": "daily", "minimum_observation_hours": 24, "max_stale_hours": 36 },
+      "freshness": { "max_age_hours": 36, "empty_state": "fresh-empty" },
+      "health_states": ["fresh-empty", "fresh", "stale", "failed", "unobserved"]
+    },
+    {
+      "id": "ccrb_board",
+      "source_contract_id": "ccrb_board",
+      "institution_ref": "ccrb:board",
+      "name": "CCRB Board Meeting Schedule",
+      "official_source_url": "https://www.nyc.gov/site/ccrb/about/news/board-meeting-schedule.page",
+      "format": "html",
+      "identity": { "publisher_key": "local_date", "strategy": "contract_scoped" },
+      "temporal_basis": "explicit_instance",
+      "schedule_basis": "publisher_event",
+      "cadence": { "label": "daily", "minimum_observation_hours": 24, "max_stale_hours": 36 },
+      "freshness": { "max_age_hours": 36, "empty_state": "fresh-empty" },
+      "health_states": ["fresh-empty", "fresh", "stale", "failed", "unobserved"]
+    },
+    {
+      "id": "brooklyn_borough_board",
+      "source_contract_id": "brooklyn_borough_board",
+      "institution_ref": "borough-president:brooklyn:borough-board",
+      "name": "Brooklyn Borough Board meeting schedule",
+      "official_source_url": "https://www.brooklynbp.nyc.gov/borough-boards/",
+      "format": "html",
+      "identity": { "publisher_key": "local_date", "strategy": "contract_scoped" },
+      "temporal_basis": "explicit_instance",
+      "schedule_basis": "publisher_event",
+      "cadence": { "label": "daily", "minimum_observation_hours": 24, "max_stale_hours": 36 },
+      "freshness": { "max_age_hours": 36, "empty_state": "fresh-empty" },
+      "health_states": ["fresh-empty", "fresh", "stale", "failed", "unobserved"]
+    },
+    {
+      "id": "brooklyn_bp_ulurp",
+      "source_contract_id": "brooklyn_bp_ulurp",
+      "institution_ref": "borough-president:brooklyn:land-use",
+      "name": "Brooklyn Borough President ULURP public hearings",
+      "official_source_url": "https://www.brooklynbp.nyc.gov/land-use/",
+      "format": "wordpress_events",
+      "identity": { "publisher_key": "event_id_or_permalink_slug", "strategy": "contract_scoped" },
+      "temporal_basis": "explicit_instance",
+      "schedule_basis": "publisher_event",
+      "cadence": { "label": "daily", "minimum_observation_hours": 24, "max_stale_hours": 36 },
+      "freshness": { "max_age_hours": 36, "empty_state": "fresh-empty" },
+      "health_states": ["fresh-empty", "fresh", "stale", "failed", "unobserved"]
+    },
+    {
+      "id": "hplus_h_cab",
+      "source_contract_id": "hplus_h_cab",
+      "institution_ref": "health-and-hospitals:community-advisory-boards",
+      "name": "NYC Health + Hospitals Community Advisory Board schedules",
+      "official_source_url": "https://www.nychealthandhospitals.org/public-meetings-notices/cabmeetings/",
+      "format": "html",
+      "identity": { "publisher_key": "facility_slug_and_derived_local_date", "strategy": "contract_scoped" },
+      "temporal_basis": "published_recurrence",
+      "schedule_basis": "published_recurrence",
+      "cadence": { "label": "weekly", "minimum_observation_hours": 168, "max_stale_hours": 192 },
+      "freshness": { "max_age_hours": 192, "empty_state": "fresh-empty" },
+      "health_states": ["fresh-empty", "fresh", "stale", "failed", "unobserved"]
+    }
+  ]
+}

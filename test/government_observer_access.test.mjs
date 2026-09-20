@@ -21,7 +21,7 @@ import { withPinnedClock, todayISO } from "./helpers/test_clock.mjs";
 const source = "https://example.nyc.gov/calendar";
 
 test("the three observer calendars are admitted with typed native keys", () => {
-  assert.deepEqual(MEETING_SOURCE_SYSTEMS.slice(-3), [
+  assert.deepEqual(MEETING_SOURCE_SYSTEMS.slice(3, 6), [
     "pdc_calendar", "bsa_calendar", "oath_trial_calendar",
   ]);
   const pdc = normalizePdcCalendarMeeting({ pdc_event_id: "2026-09-22", event_date: "2026-09-22", source_url: source });
