@@ -19,6 +19,10 @@ import {
   MEETING_GET_REPRESENTATIONS,
   executeMeetingGet,
   meetingGetFromModel,
+  MEETINGS_BROWSE_CAPABILITY_REFERENCE,
+  MEETINGS_BROWSE_PROVIDER_ID,
+  executeMeetingsBrowse,
+  meetingsBrowseFromModel,
 } from "../../capabilities/meetings.mjs";
 
 export const HEARINGS_KV_KEY = "hearings:location:v1";
@@ -84,6 +88,26 @@ export function workerMeetingGet(env, modelOverride = null) {
       if (!published) return result;
       const fromPublished = meetingGetFromModel(published, input);
       return fromPublished.availability === "available" ? fromPublished : result;
+    },
+  });
+}
+
+/** Explicit provider for the bounded, pageable shared meeting browse capability. */
+export function workerMeetingsBrowse(env, modelOverride = null) {
+  return Object.freeze({
+    capabilityReference: MEETINGS_BROWSE_CAPABILITY_REFERENCE,
+    providerId: MEETINGS_BROWSE_PROVIDER_ID,
+    async execute(input) {
+      let model = modelOverride;
+      if (!model) {
+        try {
+          const raw = env?.ALERT_STATE ? await env.ALERT_STATE.get(HEARINGS_KV_KEY) : null;
+          model = raw ? JSON.parse(raw) : null;
+        } catch {
+          model = null;
+        }
+      }
+      return meetingsBrowseFromModel(model, input);
     },
   });
 }
