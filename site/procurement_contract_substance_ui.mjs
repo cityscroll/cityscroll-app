@@ -80,9 +80,27 @@ const STANDING_BADGE_LABELS = Object.freeze({
   executed: "Executed",
   amended: "Amended",
   bid_offer: "Bid offer",
-  proposed: "Proposed",
+  proposed: "Proposed agreement term",
   template: "Template pricing",
-  audit_reported: "Audit-reported",
+  audit_reported: "Comptroller audit",
+});
+
+const ROLE_CORPUS_SCHEMA = "cityscroll.procurement_contract_substance_role_corpus.v1";
+
+const ROLE_EVIDENCE_HEADINGS = Object.freeze({
+  performance_evaluation: "Comptroller audit reports",
+  bid_tab: "DCAS bid offers",
+  proposed_agreement: "GrowNYC proposed agreement terms",
+  site_schedule: "Proposed site-schedule terms",
+  template_pricing: "Template pricing",
+});
+
+const ROLE_EVIDENCE_LABELS = Object.freeze({
+  performance_evaluation: "Comptroller audit",
+  bid_tab: "Bid offer",
+  proposed_agreement: "Proposed agreement term",
+  site_schedule: "Proposed site-schedule term",
+  template_pricing: "Template pricing",
 });
 
 /** Roles whose evidence may carry the resident vendor-promise wording. */
@@ -223,6 +241,58 @@ function promiseRow(fact) {
   };
 }
 
+function roleCorpusRows(roleCorpus, idSet) {
+  if (roleCorpus?.schema !== ROLE_CORPUS_SCHEMA || !Array.isArray(roleCorpus.rows)) return [];
+  return roleCorpus.rows.filter((row) => {
+    const checks = [
+      row?.status === "admitted",
+      row?.resident_assertion === true,
+      row?.provenance_class === "real_source",
+      idSet.has(text(row.contract_id, 160)?.toUpperCase()),
+      Object.hasOwn(ROLE_EVIDENCE_HEADINGS, text(row.document_role, 80)),
+      Boolean(text(row.public_url, 2000)),
+      Boolean(text(row.locator, 240)),
+      Boolean(text(row.excerpt, 800)),
+      Boolean(text(row.content_hash, 100)),
+      Boolean(text(row.excerpt_hash, 100)),
+      Boolean(text(row.extraction_quality, 80)),
+      Boolean(text(row.projector_version, 160)),
+    ];
+    return checks.every(Boolean);
+  });
+}
+
+function roleCorpusRow(fact) {
+  const role = text(fact.document_role, 80);
+  const row = fact.kind === FACT_KINDS.PRICE_TERM
+    ? priceRow(fact)
+    : fact.kind === FACT_KINDS.OBLIGATION
+      ? promiseRow(fact)
+      : scopeRow(fact);
+  return {
+    ...row,
+    source_role: role,
+    source_role_label: ROLE_EVIDENCE_LABELS[role],
+  };
+}
+
+function roleEvidenceGroups(rows) {
+  const order = [
+    "performance_evaluation",
+    "bid_tab",
+    "proposed_agreement",
+    "site_schedule",
+    "template_pricing",
+  ];
+  return order
+    .map((role) => ({
+      role,
+      heading: ROLE_EVIDENCE_HEADINGS[role],
+      rows: rows.filter((row) => row.source_role === role),
+    }))
+    .filter((group) => group.rows.length);
+}
+
 function geographyLink(match, index) {
   const key = text(match?.key, 120);
   if (!key) return null;
@@ -268,9 +338,11 @@ function placeRow(entry) {
     role,
     role_label: PLACE_ROLE_LABELS[role],
     place_label: placeLabel,
+    units: input.units ?? entry?.units ?? null,
     geographies,
     record_href: text(citation.notice_href, 300),
     record_label: text(citation.attribution_label, 160),
+    attribution_label: text(citation.attribution_label, 160),
     broad_scope: null,
     site_labels: [],
     resolution_state: text(resolution?.state, 40) || "unresolved",
@@ -313,6 +385,7 @@ function substanceAccessLimit(accessIndexed, contractIds, { hasAdmittedSubstance
 }
 
 function pricingNoScheduleBasis(accessIndexed, contractIds) {
+  if (!accessIndexed) return null;
   for (const contractId of contractIds) {
     const observation = accessIndexed.get(contractId)?.get(DOCUMENT_ROLES.PRICING_SCHEDULE);
     if (!observation) continue;
@@ -338,6 +411,7 @@ export function buildContractSubstanceView({
   substance = null,
   access = null,
   serviceGeography = null,
+  roleCorpus = null,
   contractIds = [],
   authorizedTotal = null,
   paidTotal = null,
@@ -355,6 +429,7 @@ export function buildContractSubstanceView({
     const admitted = substance
       ? residentPositiveAssertions(substance).filter((row) => idSet.has(text(row.contract_id, 160)?.toUpperCase()))
       : [];
+    const roleRows = roleCorpusRows(roleCorpus, idSet).map(roleCorpusRow);
 
     const scopeRows = admitted
       .filter((row) => row.kind === FACT_KINDS.SCOPE_FACT && isCurrentFact(row))
@@ -372,6 +447,8 @@ export function buildContractSubstanceView({
           || row.standing_label === STANDING_LABELS.AMENDED))
       .map(promiseRow)
       .filter((row) => row.sentence);
+
+    const roleEvidence = roleEvidenceGroups(roleRows);
 
     const accessIndexed = access ? indexAccessObservations(access.rows || []) : null;
 
@@ -405,6 +482,7 @@ export function buildContractSubstanceView({
       scopeRows.length
       || priceRows.length
       || promiseRows.length
+      || roleEvidence.length
       || places.length
       || (hasTotals && (priceRows.length || noRateSchedule)),
     );
@@ -423,6 +501,7 @@ export function buildContractSubstanceView({
             no_rate_schedule: null,
           },
           promises: [],
+          role_evidence: roleEvidence,
           places: [],
         },
         access_limit: accessLimit,
@@ -442,10 +521,19 @@ export function buildContractSubstanceView({
           no_rate_schedule: noRateSchedule,
         },
         promises: promiseRows,
+        role_evidence: roleEvidence,
         places,
       },
       access_limit: accessLimit,
       has_content: true,
+      role_corpus_receipt: roleEvidence.length
+        ? {
+          generated_at: text(roleCorpus.generated_at, 40),
+          observation_vintage: text(roleCorpus.observation_vintage?.observed_at || roleCorpus.generated_at, 40),
+          projector_version: text(roleCorpus.projector_version, 160),
+          real_source_row_count: Number(roleCorpus.build_counts?.real_source_row_count) || roleRows.length,
+        }
+        : null,
     };
   } catch {
     // A malformed payload never takes the rest of the page down.
@@ -455,7 +543,7 @@ export function buildContractSubstanceView({
 
 function standingBadge(row) {
   const kind = row.standing || "requested";
-  const label = STANDING_BADGE_LABELS[kind] || "Requested";
+  const label = row.source_role_label || STANDING_BADGE_LABELS[kind] || "Requested";
   return `<span class="substance-standing substance-standing-${esc(kind)}">${esc(label)}</span>`;
 }
 
@@ -476,6 +564,12 @@ function excerptDetails(row) {
   return `<details class="substance-excerpt"><summary>Cited passage</summary><blockquote>${esc(excerpt)}</blockquote></details>`;
 }
 
+function sourceRoleClaimHtml(row) {
+  return row.source_role && row.claim_label
+    ? `<p class="substance-row-attribution">${esc(row.claim_label)}</p>`
+    : "";
+}
+
 function substanceRowHtml(row) {
   const amendBit = row.amends_prior
     ? '<span class="substance-amends-note">Amends the prior term</span>'
@@ -486,14 +580,14 @@ function substanceRowHtml(row) {
       row.description ? esc(row.description) : "",
     ].filter(Boolean).join(" · ") || row.basis_label;
     const conditions = row.conditions ? `<p class="substance-row-conditions">${esc(row.conditions)}</p>` : "";
-    return `<li class="substance-row substance-price-row" data-substance-kind="price" data-payment-basis="${esc(row.basis || "other")}">${standingBadge(row)}<div class="substance-row-main"><p class="substance-row-text">${main}</p><p class="substance-row-meta">${esc(row.basis_label)}${row.period ? ` · ${esc(row.period)}` : ""}${amendBit ? ` · ${amendBit}` : ""}</p>${conditions}${citationLink(row)}${excerptDetails(row)}</div></li>`;
+    return `<li class="substance-row substance-price-row" data-substance-kind="price" data-payment-basis="${esc(row.basis || "other")}">${standingBadge(row)}${sourceRoleClaimHtml(row)}<div class="substance-row-main"><p class="substance-row-text">${main}</p><p class="substance-row-meta">${esc(row.basis_label)}${row.period ? ` · ${row.period}` : ""}${amendBit ? ` · ${amendBit}` : ""}</p>${conditions}${citationLink(row)}${excerptDetails(row)}</div></li>`;
   }
   const metaBits = [
     row.condition,
     row.kind === "promise" && row.amends_prior ? "Amends the prior term" : "",
   ].filter(Boolean);
   const meta = metaBits.length ? `<p class="substance-row-meta">${esc(metaBits.join(" · "))}</p>` : "";
-  return `<li class="substance-row substance-${esc(row.kind)}-row" data-substance-kind="${esc(row.kind)}">${standingBadge(row)}<div class="substance-row-main"><p class="substance-row-text">${esc(row.sentence)}</p>${meta}${citationLink(row)}${excerptDetails(row)}</div></li>`;
+  return `<li class="substance-row substance-${esc(row.kind)}-row" data-substance-kind="${esc(row.kind)}">${standingBadge(row)}${sourceRoleClaimHtml(row)}<div class="substance-row-main"><p class="substance-row-text">${esc(row.sentence)}</p>${meta}${citationLink(row)}${excerptDetails(row)}</div></li>`;
 }
 
 function placeRowHtml(row) {
@@ -505,8 +599,11 @@ function placeRowHtml(row) {
     : "";
   const main = row.broad_scope
     ? `<strong>${esc(row.broad_scope)}</strong>${row.site_labels.length ? ` · ${esc(row.site_labels.join("; "))}` : ""}`
-    : esc(row.place_label || row.role_label);
-  return `<li class="substance-row substance-place-row" data-substance-kind="place" data-substance-place-role="${esc(row.role)}" data-substance-resolution="${esc(row.resolution_state)}"><span class="substance-place-role">${esc(row.role_label)}</span><div class="substance-row-main"><p class="substance-row-text">${main}</p>${geographyLinks}${recordLink}</div></li>`;
+    : `${esc(row.place_label || row.role_label)}${row.units != null ? ` · ${esc(row.units)} units` : ""}`;
+  const attribution = row.attribution_label
+    ? `<p class="substance-place-attribution">Notice-attributed facility context</p>`
+    : "";
+  return `<li class="substance-row substance-place-row" data-substance-kind="place" data-substance-place-role="${esc(row.role)}" data-substance-resolution="${esc(row.resolution_state)}"><span class="substance-place-role">${esc(row.role_label)}</span><div class="substance-row-main"><p class="substance-row-text">${main}</p>${attribution}${geographyLinks}${recordLink}</div></li>`;
 }
 
 function pricingGroupHtml(pricing) {
@@ -548,25 +645,45 @@ function placesGroupHtml(rows) {
   return `<div class="substance-group substance-group-places"><h3 class="substance-group-heading">Where the work applies</h3><ul class="substance-rows">${rows.map(placeRowHtml).join("")}</ul></div>`;
 }
 
+function roleEvidenceGroupHtml(group) {
+  return `<div class="substance-group substance-group-role-evidence" data-substance-role="${esc(group.role)}"><h3 class="substance-group-heading">${esc(group.heading)}</h3><ul class="substance-rows">${group.rows.map(substanceRowHtml).join("")}</ul></div>`;
+}
+
+function evidenceReceiptHtml(receipt, pricing) {
+  if (!receipt) return "";
+  const amounts = [
+    pricing.authorized_total ? `authorized ${pricing.authorized_total}` : "",
+    pricing.paid_total ? `paid ${pricing.paid_total}` : "",
+  ].filter(Boolean).join("; ");
+  const vintage = receipt.observation_vintage || receipt.generated_at;
+  return `<p class="substance-evidence-receipt" data-substance-receipt="real-corpus" data-observation-vintage="${esc(vintage || "")}"${pricing.authorized_total ? ` data-observed-authorized-total="${esc(pricing.authorized_total)}"` : ""}${pricing.paid_total ? ` data-observed-paid-total="${esc(pricing.paid_total)}"` : ""}>Real-source evidence receipt${amounts ? ` · observed served amounts: ${esc(amounts)}` : ""}${vintage ? ` · data vintage ${esc(vintage)}` : ""}</p>`;
+}
+
 /**
- * Render the "What this contract requires" section. Empty input, a view with
- * no content, or a null view all render the empty string.
+ * Render the contract-substance section. Role-only evidence gets a neutral
+ * heading so a bid, proposed term, or audit observation cannot be mistaken for
+ * an executed obligation.
  */
 export function renderContractSubstanceHtml(view) {
   if (!view || view.has_content !== true) return "";
+  const roleOnly = (view.groups.role_evidence || []).length > 0
+    && view.groups.scope.length === 0
+    && view.groups.pricing.rate_rows.length === 0
+    && view.groups.promises.length === 0;
   const groups = [
     scopeGroupHtml(view.groups.scope),
     pricingGroupHtml(view.groups.pricing),
     promisesGroupHtml(view.groups.promises),
+    ...(view.groups.role_evidence || []).map(roleEvidenceGroupHtml),
     placesGroupHtml(view.groups.places),
   ].filter(Boolean).join("");
   if (!groups) return "";
   return renderNodeSection({
-    heading: "What this contract requires",
+    heading: roleOnly ? "Public source evidence" : "What this contract requires",
     headingId: SUBSTANCE_HEADING_ID,
     extraClass: "procurement-contract-substance",
     attrs: { id: SUBSTANCE_SECTION_ID, "data-contract-substance": "1" },
-    body: `<p class="substance-lede">Concise answers from the contract's own admitted terms. Every claim opens its cited passage.</p>${groups}`,
+    body: `<p class="substance-lede">${roleOnly ? "Cited passages retained from public source documents. Each row keeps its source role." : "Concise answers from the contract's own admitted terms. Every claim opens its cited passage."}</p>${evidenceReceiptHtml(view.role_corpus_receipt, view.groups.pricing)}${groups}`,
   });
 }
 

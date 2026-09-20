@@ -551,6 +551,37 @@ test("served procurement route reads one bounded shard and preserves the complet
   }
 });
 
+test("DocGo canonical route renders exactly joined Comptroller evidence with observed amounts", async () => {
+  const id = "procurement:contract:CT180620248801671";
+  const { env, requestedPaths, shardPath } = procurementAssetEnv(id);
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error("unexpected request-time procurement source fetch"); };
+  try {
+    const response = await edgeWorker.fetch(new Request(
+      `https://cityscroll.org/procurements/${encodeURIComponent(id)}/`,
+    ), env);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.deepEqual(requestedPaths, [
+      "/data/shared_procurement_read_model.json",
+      `/data/${shardPath}`,
+    ]);
+    assert.match(html, /DocGo-Asylee Housing Flex\/Surge Program for NYC/);
+    assert.match(html, /Current contract total<\/dt><dd>\$432,000,000/);
+    assert.match(html, /data-substance-receipt="real-corpus"/);
+    assert.match(html, /data-observed-authorized-total="\$432,000,000"/);
+    assert.match(html, /data-observed-paid-total="\$295,632,631\.69"/);
+    assert.match(html, /data-observation-vintage="2026-09-19T12:00:00\.000Z"/);
+    assert.match(html, /Comptroller audit reports/);
+    assert.match(html, /The audit reports these contract terms/);
+    assert.match(html, /href="https:\/\/comptroller\.nyc\.gov\/reports\/audit-of-the-department-of-housing-preservation-and-developments-oversight-of-its-contract-with-rapid-reliable-testing-ny-llc-aka-docgo\//);
+    assert.doesNotMatch(html, /<h3[^>]*>What the vendor promised<\/h3>/);
+    assert.doesNotMatch(html, /data-substance-role="performance_evaluation"[\s\S]*?What the vendor promised/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("canonical procurement route shows exact-contract payments and notice place facts from materializations", async () => {
   const { env, requestedPaths } = procurementAssetEnv();
   let publisherAttempts = 0;

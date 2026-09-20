@@ -1,0 +1,70 @@
+{
+  "schema": "cityscroll.contract_substance_role_corpus_capture_manifest.v1",
+  "capture_mode": "deterministic server render with headless viewport review; image binaries omitted",
+  "source_revision": "grounded origin/main 43de62acbd907c578c453343e193662dceb62471",
+  "data_vintages": {
+    "role_corpus_generated_at": "2026-09-19T12:00:00.000Z",
+    "bhrags_service_geography_generated_at": "2026-09-18T19:15:00.000Z",
+    "route_payment_observation": "served from the materialized procurement shard; the page receipt carries observed amounts"
+  },
+  "captures": [
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT180620248801671",
+      "case": "DocGo exact contract identity with Comptroller audit evidence",
+      "assertions": [
+        "The current $432,000,000 contract identity remains visible.",
+        "The served authorized and paid amounts are recorded in the real-corpus receipt with the data vintage.",
+        "Audit-reported passages use the Comptroller audit label and link the exact official source.",
+        "No What the vendor promised heading is emitted from performance evaluation evidence alone."
+      ],
+      "render_sha256": "d4ee71c92ed1cd82fb1219be215b13657ff2ac463cb24ca925d6f9075c0b7d1f",
+      "viewports": [
+        { "name": "desktop", "width": 1440, "height": 900, "assertion": "role label, source link, receipt, and identity remain readable without horizontal overflow" },
+        { "name": "mobile", "width": 390, "height": 844, "assertion": "role label, source link, receipt, and identity reflow at 390px without horizontal overflow" }
+      ],
+      "keyboard_source_open": true,
+      "no_javascript_source_destination": true
+    },
+    {
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
+      "case": "BHRAGS notice-attributed facility context",
+      "assertions": [
+        "3218 Emmons Avenue and 60 units are shown as notice-attributed facility context.",
+        "The facility row links the resolved neighborhood and Notice 20240829105.",
+        "The unit count is not emitted as a contractual deliverable."
+      ],
+      "render_sha256": "b56334781c5b262aa291e8d2506d73b13c1fb411fbb01a794b4ab038fe722e92",
+      "viewports": [
+        { "name": "desktop", "width": 1440, "height": 900, "assertion": "facility role, units, geography, and notice links remain readable without horizontal overflow" },
+        { "name": "mobile", "width": 390, "height": 844, "assertion": "facility role, units, geography, and notice links reflow at 390px without horizontal overflow" }
+      ],
+      "keyboard_source_open": true,
+      "no_javascript_source_destination": true
+    },
+    {
+      "route": "real-corpus-harness",
+      "case": "DCAS and GrowNYC role-specific retained passages",
+      "assertions": [
+        "DCAS values render as Bid offer rows linked to the bid-tab PDF.",
+        "GrowNYC clauses, sites, and fees render as Proposed agreement term rows linked to the MOCS PDF.",
+        "The same role labels and source destinations are used by the resident renderer after exact contract-id selection."
+      ],
+      "render_sha256": {
+        "BID2000090": "4974cf718b6c1d1649c391210bef779b7ad8ea124223a9dba05a13e3b0a73a3d",
+        "MOCS-FCRC-202411-GROWNYC": "adf439a3925962f95fabdcd7ffeeb6df7f670af2962266b4a73617ce34217006"
+      },
+      "viewports": [
+        { "name": "desktop", "width": 1440, "height": 900 },
+        { "name": "mobile", "width": 390, "height": 844 }
+      ],
+      "keyboard_source_open": true,
+      "no_javascript_source_destination": true
+    }
+  ],
+  "failure_and_boundary_probes": [
+    "late or failed substance initialization preserves the canonical identity and omits an empty card",
+    "role mutation, missing locator, stale hash, and missing contract identity fail closed",
+    "an unrelated contract id cannot consume retained role-corpus rows"
+  ],
+  "image_policy": "No screenshot or recording binaries are committed; this manifest records route, viewport, revision, data vintage, assertions, and render hashes."
+}
