@@ -101,7 +101,7 @@ def keyboard_traverse(page, expected: list[str]) -> dict:
 
 
 def main() -> int:
-    subprocess.run(["node", str(ROOT / "tools" / "render_contract_substance_role_corpus_capture.mjs"), str(OUTPUT)], cwd=ROOT, check=True)
+    subprocess.run(["node", str(ROOT / "tools" / "contract_substance_role_corpus_capture.mjs"), str(OUTPUT)], cwd=ROOT, check=True)
     metadata = json.loads((OUTPUT / "metadata.json").read_text())
     source_revision = subprocess.run(
         ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
