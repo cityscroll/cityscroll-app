@@ -1,4 +1,5 @@
 import { normalizePdcCalendarMeeting } from "./meeting_object_contract.mjs";
+import { projectMeetingSchedule } from "./meeting_temporal_evidence.mjs";
 
 export const PDC_CALENDAR_SCHEMA = "cityscroll.pdc_calendar.v1";
 export const PDC_CALENDAR_SOURCE_URL = "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page";
@@ -43,7 +44,7 @@ function columns(rows) {
 export function parsePdcScheduleHtml(html, { sourceUrl = PDC_CALENDAR_SOURCE_URL, observedAt = null, receipt = null } = {}) {
   const rows = htmlRows(html);
   const indexes = columns(rows);
-  if (!indexes || indexes.meeting_date == null) return { schema: PDC_CALENDAR_SCHEMA, rows: [], documents: [], receipt };
+  if (!indexes || indexes.meeting_date == null) return { schema: PDC_CALENDAR_SCHEMA, rows: [], records: [], documents: [], receipt };
   const headerIndex = rows.findIndex((row) => row.some((cell) => /meeting date|submission deadline|agenda/i.test(cell.text)));
   const records = [];
   for (const row of rows.slice(headerIndex + 1)) {
@@ -79,21 +80,51 @@ export function parsePdcAgendaText(text, { meetingDate = null, documentUrl = nul
   const quorumNotice = lines.find((line) => /no quorum|without quorum|lack of quorum/i.test(line))
     ? { status: "no_quorum", votes: [] }
     : null;
-  const clock = lines.join(" ").match(/\b(\d{1,2}):(\d{2})\s*(AM|PM)\b/i);
+  const clock = lines.join(" ").match(/\b(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(A\.?M\.?|P\.?M\.?)\b/i);
   let startTime = null;
+  let publishedTime = null;
   if (clock) {
-    let hour = Number(clock[1]); const suffix = clock[3].toUpperCase();
+    let hour = Number(clock[1]); const suffix = clock[4].replace(/\./g, "").toUpperCase();
     if (suffix === "AM" && hour === 12) hour = 0;
     if (suffix === "PM" && hour < 12) hour += 12;
-    if (hour < 24) startTime = `${String(hour).padStart(2, "0")}:${clock[2]}:00`;
+    if (hour < 24) {
+      startTime = `${String(hour).padStart(2, "0")}:${clock[2]}:${clock[3] || "00"}`;
+      publishedTime = clock[0];
+    }
   }
-  return { meeting_date: meetingDate, start_time: startTime, sections, arrival_advice: arrival, quorum_notice: quorumNotice, document_url: documentUrl, source_receipt: receipt || (observedAt ? { schema: "cityscroll.meeting_source_receipt.v1", observed_at: observedAt, status: "ok", fetch_status: "snapshot", parser: PDC_CALENDAR_PARSER } : null) };
+  return { meeting_date: meetingDate, start_time: startTime, published_time: publishedTime, sections, arrival_advice: arrival, quorum_notice: quorumNotice, document_url: documentUrl, source_receipt: receipt || (observedAt ? { schema: "cityscroll.meeting_source_receipt.v1", observed_at: observedAt, status: "ok", fetch_status: "snapshot", parser: PDC_CALENDAR_PARSER } : null) };
 }
 
 export function enrichPdcMeetingWithAgenda(record, agenda) {
   if (!record?.meeting_id || !agenda) return record;
   const sections = Array.isArray(agenda.sections) ? agenda.sections : [];
-  return { ...record, event_date: record.event_date?.slice(0, 10) === agenda.meeting_date ? (agenda.start_time ? `${agenda.meeting_date}T${agenda.start_time}` : record.event_date) : record.event_date, agenda_sections: sections, arrival_advice: agenda.arrival_advice || null, ...(agenda.quorum_notice ? { quorum_notice: agenda.quorum_notice } : {}), meeting_documents: [...(record.meeting_documents || []), ...(agenda.document_url ? [{ role: "agenda", document_id: agenda.document_url, document_url: agenda.document_url, meeting_id: record.meeting_id, attachment_status: "attached", adapter: PDC_CALENDAR_PARSER, source_receipt: agenda.source_receipt }] : [])] };
+  const recordDate = record.event_date?.slice(0, 10) || null;
+  const matchesRecord = Boolean(recordDate && agenda.meeting_date === recordDate);
+  const agendaSchedule = matchesRecord && agenda.start_time
+    ? projectMeetingSchedule({
+      event_date: `${recordDate}T${agenda.start_time}`,
+      schedule: {
+        raw_date: recordDate,
+        raw_time: agenda.start_time,
+        basis: "publisher_document",
+        source_url: agenda.document_url || record.source_url,
+        observed_at: agenda.source_receipt?.observed_at || record.source_receipt?.observed_at,
+      },
+    })
+    : null;
+  const promotesClock = agendaSchedule?.status === "resolved" && agendaSchedule.precision === "exact_time";
+  const documents = [...(record.meeting_documents || [])];
+  if (agenda.document_url && !documents.some((document) => document.document_url === agenda.document_url)) {
+    documents.push({ role: "agenda", document_id: agenda.document_url, document_url: agenda.document_url, meeting_id: record.meeting_id, attachment_status: "attached", adapter: PDC_CALENDAR_PARSER, source_receipt: agenda.source_receipt });
+  }
+  return {
+    ...record,
+    ...(promotesClock ? { event_date: agendaSchedule.starts_at, schedule: agendaSchedule } : {}),
+    agenda_sections: sections,
+    arrival_advice: agenda.arrival_advice || null,
+    ...(agenda.quorum_notice ? { quorum_notice: agenda.quorum_notice } : {}),
+    meeting_documents: documents,
+  };
 }
 
 export { pdcCalendarOccurrences } from "./observer_calendar_occurrences.mjs";
