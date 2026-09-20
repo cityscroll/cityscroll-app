@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import test from "node:test";
 
 import {
@@ -24,6 +25,7 @@ const BOARD = "brooklyn-cb-01";
 const KENT = "2024K0286";
 const MONITOR_POINT = "2024K0358";
 const QUAY_DEMAPPING = "2025K0287";
+const EVIDENCE_PATH = new URL("../docs/evidence/board-position-primary-inspection/acceptance-manifest.json", import.meta.url);
 
 function view(board = BOARD, source = lookup) {
   return communityBoardLandPositionsForBoard(source, board);
@@ -178,4 +180,35 @@ test("the board inspection surface is no longer admitted as a legacy exception",
   assert.equal(surface.baseline_id, null);
   assert.equal(surface.journey_owner, "test/board_position_primary_inspection.test.mjs");
   assert.equal(BROWSE_INSPECTION_LEGACY_BASELINE.length, 0);
+});
+
+test("A4: acceptance manifest records the Brooklyn journey with revision, route, viewport, and fixture vintage", () => {
+  assert.equal(existsSync(EVIDENCE_PATH), true);
+  const manifest = JSON.parse(readFileSync(EVIDENCE_PATH, "utf8"));
+  assert.equal(manifest.schema, "cityscroll.board_position_primary_inspection_acceptance.v1");
+  assert.equal(manifest.route, "/community-boards/brooklyn-cb-01/");
+  assert.match(manifest.revision, /^[0-9a-f]{40}$/);
+  assert.ok(manifest.grounded_at);
+  assert.ok(manifest.fixture_vintage);
+  assert.deepEqual(manifest.viewports, [[1440, 900], [390, 844]]);
+  assert.deepEqual(manifest.fixture.records.map((row) => row.project_id), [KENT, MONITOR_POINT, QUAY_DEMAPPING]);
+  assert.deepEqual(manifest.journey.sequence, [
+    "set_scope_or_view",
+    "inspect",
+    "dismiss",
+    "open_full_record",
+    "return_with_back",
+    "continue",
+  ]);
+  assert.equal(manifest.captures.length, 2);
+  assert.ok(manifest.captures.every((capture) => (
+    capture.route === manifest.route
+    && capture.revision === manifest.revision
+    && capture.fixture_vintage === manifest.fixture_vintage
+    && /^[0-9a-f]{64}$/.test(capture.screenshot_sha256)
+  )));
+  assert.deepEqual(manifest.assertions.map((row) => row.letter), ["A1", "A2", "A3", "A4"]);
+  assert.ok(manifest.assertions.every((row) => row.result === "accepted" && row.artifact));
+  const digest = createHash("sha256").update(JSON.stringify(manifest.assertions) + "\n").digest("hex");
+  assert.equal(manifest.assertions_sha256, digest);
 });
