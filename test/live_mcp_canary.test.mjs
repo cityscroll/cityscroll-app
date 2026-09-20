@@ -76,6 +76,8 @@ test("A0: discovery-read argument keys match the published MCP input schemas", (
     canarySource,
     /tool:\s*["']get_contract["'][\s\S]*?arguments:\s*\{\s*procurementId:/,
   );
+  assert.match(canarySource, /request_id:\s*["']20260824035["']/);
+  assert.match(canarySource, /request_id:\s*["']cs10-canary-missing["']/);
   assert.doesNotMatch(
     canarySource,
     /tool:\s*["']get_land_project["'][\s\S]*?arguments:\s*\{\s*projectId:/,
@@ -196,8 +198,8 @@ if (process.env.CS10_SKIP_LIVE_CANARY) {
     assert.equal(receipt.tool_inventory_drift.generated_tool_count, receipt.tool_inventory_drift.live_tool_count);
   });
 
-  test("A5: both read calls return valid structured capability envelopes", () => {
-    assert.equal(receipt.reads.length, 2);
+  test("A5: read calls return valid structured capability envelopes", () => {
+    assert.equal(receipt.reads.length, 4);
     for (const read of receipt.reads) {
       assert.equal(read.envelope_well_formed, true, `${read.tool} envelope was not well-formed`);
       assert.equal(read.is_error, false, `${read.tool} returned a tool error`);
@@ -209,6 +211,14 @@ if (process.env.CS10_SKIP_LIVE_CANARY) {
     assert.equal(staticRead.tool, "get_meeting");
     assert.equal(databaseRead.tool, "search_notices");
     assert.equal(databaseRead.store_access, "worker-d1.notice-search");
+    const noticeCitationRead = receipt.reads.find((read) => read.role === "notice_citation_read");
+    const missingNoticeRead = receipt.reads.find((read) => read.role === "missing_notice_read");
+    assert.ok(noticeCitationRead, "notice citation read is missing");
+    assert.ok(missingNoticeRead, "missing notice read is missing");
+    assert.equal(noticeCitationRead.tool, "get_notice");
+    assert.equal(noticeCitationRead.citation_matches_expected, true, JSON.stringify(noticeCitationRead));
+    assert.equal(missingNoticeRead.tool, "get_notice");
+    assert.equal(missingNoticeRead.no_citation_fabricated, true, JSON.stringify(missingNoticeRead));
   });
 
   test("A6: the receipt records an actual deployed Git commit", () => {

@@ -57,6 +57,14 @@ const DATABASE_READ = {
   tool: "search_notices",
   arguments: { section: "Public Hearings and Meetings", limit: 1 },
 };
+const NOTICE_CITATION_READ = {
+  tool: "get_notice",
+  arguments: { request_id: "20260824035" },
+};
+const MISSING_NOTICE_READ = {
+  tool: "get_notice",
+  arguments: { request_id: "cs10-canary-missing" },
+};
 // Discovery-contract live reads: exact public identifiers already named on the
 // assistant introduction page. Availability may be available / not_yet_public /
 // unavailable; only a malformed envelope or transport failure fails the probe.
@@ -280,6 +288,12 @@ export async function runLiveMcpCanary({
     const databaseCall = await safeTimedCall(`tools/call:${DATABASE_READ.tool}`, () => (
       client.callTool({ name: DATABASE_READ.tool, arguments: DATABASE_READ.arguments })
     ));
+    const noticeCitationCall = await safeTimedCall(`tools/call:${NOTICE_CITATION_READ.tool}`, () => (
+      client.callTool({ name: NOTICE_CITATION_READ.tool, arguments: NOTICE_CITATION_READ.arguments })
+    ));
+    const missingNoticeCall = await safeTimedCall(`tools/call:${MISSING_NOTICE_READ.tool}`, () => (
+      client.callTool({ name: MISSING_NOTICE_READ.tool, arguments: MISSING_NOTICE_READ.arguments })
+    ));
     const contractCall = await safeTimedCall(`tools/call:${CONTRACT_READ.tool}`, () => (
       client.callTool({ name: CONTRACT_READ.tool, arguments: CONTRACT_READ.arguments })
     ));
@@ -296,6 +310,8 @@ export async function runLiveMcpCanary({
     const catalogByName = new Map(catalog.tools.map((tool) => [tool.name, tool]));
     const staticEnvelope = staticCall.ok ? staticCall.result.structuredContent : null;
     const databaseEnvelope = databaseCall.ok ? databaseCall.result.structuredContent : null;
+    const noticeCitationEnvelope = noticeCitationCall.ok ? noticeCitationCall.result.structuredContent : null;
+    const missingNoticeEnvelope = missingNoticeCall.ok ? missingNoticeCall.result.structuredContent : null;
     const contractEnvelope = contractCall.ok ? contractCall.result.structuredContent : null;
     const landEnvelope = landCall.ok ? landCall.result.structuredContent : null;
     const citedEnvelope = citedCall.ok ? citedCall.result.structuredContent : null;
@@ -375,6 +391,39 @@ export async function runLiveMcpCanary({
           envelope_well_formed: databaseCall.ok && envelopeIsWellFormed(databaseEnvelope, ["terms_used", "total_matches", "retrieval", "results"]),
           is_error: databaseCall.ok ? Boolean(databaseCall.result.isError) : true,
           rpc_error: databaseCall.ok ? null : databaseCall.error,
+        },
+        {
+          role: "notice_citation_read",
+          tool: NOTICE_CITATION_READ.tool,
+          requested_id: NOTICE_CITATION_READ.arguments.request_id,
+          capability_reference: catalogByName.get(NOTICE_CITATION_READ.tool)?.capability_reference ?? null,
+          availability: noticeCitationEnvelope?.availability ?? null,
+          citation: noticeCitationEnvelope?.citation ?? null,
+          citation_matches_expected: stableJson(noticeCitationEnvelope?.citation) === stableJson({
+            schema: "cityscroll.notice_get.citation.v1",
+            publisher: "NYC City Record",
+            request_id: "20260824035",
+            publication_date: "2026-08-28",
+            cityscroll_url: "https://cityscroll.org/notices/20260824035/",
+            official_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260824035",
+          }),
+          envelope_well_formed: noticeCitationCall.ok && envelopeIsWellFormed(noticeCitationEnvelope, ["capability_reference", "availability", "notice", "source", "generated_at", "stale", "citation", "error"]),
+          is_error: noticeCitationCall.ok ? Boolean(noticeCitationCall.result.isError) : true,
+          rpc_error: noticeCitationCall.ok ? null : noticeCitationCall.error,
+        },
+        {
+          role: "missing_notice_read",
+          tool: MISSING_NOTICE_READ.tool,
+          requested_id: MISSING_NOTICE_READ.arguments.request_id,
+          capability_reference: catalogByName.get(MISSING_NOTICE_READ.tool)?.capability_reference ?? null,
+          availability: missingNoticeEnvelope?.availability ?? null,
+          citation: missingNoticeEnvelope?.citation ?? null,
+          no_citation_fabricated: missingNoticeCall.ok
+            && missingNoticeEnvelope?.availability === "not_yet_public"
+            && missingNoticeEnvelope?.citation === null,
+          envelope_well_formed: missingNoticeCall.ok && envelopeIsWellFormed(missingNoticeEnvelope, ["capability_reference", "availability", "notice", "source", "generated_at", "stale", "citation", "error"]),
+          is_error: missingNoticeCall.ok ? Boolean(missingNoticeCall.result.isError) : true,
+          rpc_error: missingNoticeCall.ok ? null : missingNoticeCall.error,
         },
       ],
       discovery_reads: [

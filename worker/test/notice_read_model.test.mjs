@@ -10,6 +10,7 @@ const notice = {
   agency_name: "Department of Test",
   type_of_notice_description: "Solicitation",
   short_title: "Materialized notice",
+  start_date: "2026-08-07T00:00:00.000",
   due_date: "2026-08-20T00:00:00.000",
 };
 const FIXTURE_NOW = Date.parse("2026-08-07T12:00:00.000Z");
@@ -79,6 +80,11 @@ test("notice endpoint serves the materialized raw row without an upstream fetch"
     assert.equal(body.source, "materialized");
     assert.equal(body.row.short_title, notice.short_title);
     assert.equal(body.stale, false);
+    assert.equal(body.citation.publisher, "NYC City Record");
+    assert.equal(body.citation.request_id, notice.request_id);
+    assert.equal(body.citation.publication_date, "2026-08-07");
+    assert.equal(body.citation.cityscroll_url, "https://cityscroll.org/notices/20260807001/");
+    assert.equal(body.citation.official_url, "https://a856-cityrecord.nyc.gov/RequestDetail/20260807001");
     assert.match(response.headers.get("Cache-Control"), /s-maxage=86400/);
   } finally {
     globalThis.fetch = originalFetch;
@@ -121,7 +127,57 @@ test("notice.get HTTP and MCP adapters preserve one direct provider result", asy
   assert.equal(httpBody.source, direct.source);
   assert.equal(httpBody.generated_at, direct.generated_at);
   assert.equal(httpBody.stale, direct.stale);
+  assert.deepEqual(httpBody.citation, direct.citation);
   assert.deepEqual(mcpNoticeGetInput({ request_id: notice.request_id }), input);
+});
+
+test("notice citations use source publication data and exact validated links", async () => {
+  const specimen = {
+    ...notice,
+    request_id: "20260824035",
+    start_date: "2026-08-28T00:00:00.000",
+    short_title: "HWS2026R-PRIOR NOTICE SIDEWALKS, STATEN ISLAND",
+    pin: "85027B0013",
+  };
+  const env = {
+    DB: dbFor({
+      ...d1Record(),
+      request_id: specimen.request_id,
+      raw: JSON.stringify(specimen),
+    }),
+  };
+  const direct = await executeNoticeGet(workerNoticeGet(env), { requestId: specimen.request_id });
+  assert.deepEqual(direct.citation, {
+    schema: "cityscroll.notice_get.citation.v1",
+    publisher: "NYC City Record",
+    request_id: "20260824035",
+    publication_date: "2026-08-28",
+    cityscroll_url: "https://cityscroll.org/notices/20260824035/",
+    official_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260824035",
+  });
+
+  const mcpBody = await (await handleMcp(mcpGetPost({ request_id: specimen.request_id }), {
+    ...env,
+    SUBS: new MockKV(),
+    NL_METER: new MockKV(),
+  })).json();
+  assert.deepEqual(mcpBody.result.structuredContent.citation, direct.citation);
+});
+
+test("missing notices carry null citation data", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response("[]", { status: 200, headers: { "Content-Type": "application/json" } });
+  try {
+    const body = await (await handleMcp(mcpGetPost({ request_id: "20260824035" }), {
+      DB: dbFor(null),
+      SUBS: new MockKV(),
+      NL_METER: new MockKV(),
+    })).json();
+    assert.equal(body.result.structuredContent.availability, "not_yet_public");
+    assert.equal(body.result.structuredContent.citation, null);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("notice read model exposes exact civic-time history with source-null clocks", async () => {

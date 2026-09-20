@@ -132,7 +132,15 @@
           "output": {
             "availability": "available",
             "source": "materialized",
-            "stale": false
+            "stale": false,
+            "citation": {
+              "schema": "cityscroll.notice_get.citation.v1",
+              "publisher": "NYC City Record",
+              "request_id": "20260807001",
+              "publication_date": "2026-08-07",
+              "cityscroll_url": "https://cityscroll.org/notices/20260807001/",
+              "official_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260807001"
+            }
           }
         },
         {
@@ -141,6 +149,7 @@
           },
           "output": {
             "availability": "not_yet_public",
+            "citation": null,
             "error": "not-found"
           }
         }
@@ -153,6 +162,8 @@
       "provenance": {
         "noticeIdentity": "notice.request_id",
         "sourceIdentity": "source + notice.request_id",
+        "citationIdentity": "citation.publisher + citation.request_id + citation.official_url",
+        "publicationClock": "citation.publication_date from notice.start_date",
         "observationClock": "generated_at",
         "staleSnapshotPreserved": true
       },
@@ -1890,7 +1901,15 @@
             "output": {
               "availability": "available",
               "source": "materialized",
-              "stale": false
+              "stale": false,
+              "citation": {
+                "schema": "cityscroll.notice_get.citation.v1",
+                "publisher": "NYC City Record",
+                "request_id": "20260807001",
+                "publication_date": "2026-08-07",
+                "cityscroll_url": "https://cityscroll.org/notices/20260807001/",
+                "official_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260807001"
+              }
             }
           },
           {
@@ -1899,6 +1918,7 @@
             },
             "output": {
               "availability": "not_yet_public",
+              "citation": null,
               "error": "not-found"
             }
           }

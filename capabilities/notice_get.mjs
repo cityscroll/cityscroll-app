@@ -6,6 +6,10 @@ export const NOTICE_GET_CAPABILITY_ID = "notice.get";
 export const NOTICE_GET_CAPABILITY_VERSION = "1.0.0";
 export const NOTICE_GET_CAPABILITY_REFERENCE = "notice.get@1";
 export const NOTICE_GET_PROVIDER_ID = "worker-notices.notice-get";
+export const NOTICE_GET_CITATION_SCHEMA = "cityscroll.notice_get.citation.v1";
+export const NOTICE_GET_CITATION_PUBLISHER = "NYC City Record";
+const CITYSCROLL_NOTICE_URL_BASE = "https://cityscroll.org/notices/";
+const CITY_RECORD_NOTICE_URL_BASE = "https://a856-cityrecord.nyc.gov/RequestDetail/";
 export const NOTICE_GET_LIMITS = Object.freeze({
   requestIdMaximumLength: 80,
   maximum: 1,
@@ -35,6 +39,20 @@ function deepFreeze(value) {
   return Object.freeze(value);
 }
 
+export const NOTICE_GET_CITATION_OUTPUT_SCHEMA = deepFreeze({
+  type: ["object", "null"],
+  additionalProperties: false,
+  required: ["schema", "publisher", "request_id", "publication_date", "cityscroll_url", "official_url"],
+  properties: {
+    schema: { type: "string", const: NOTICE_GET_CITATION_SCHEMA },
+    publisher: { type: "string", const: NOTICE_GET_CITATION_PUBLISHER },
+    request_id: { type: "string", minLength: 1, maxLength: NOTICE_GET_LIMITS.requestIdMaximumLength },
+    publication_date: { type: ["string", "null"], pattern: "^\\d{4}-\\d{2}-\\d{2}$" },
+    cityscroll_url: { type: "string", format: "uri", pattern: "^https://cityscroll\\.org/notices/" },
+    official_url: { type: "string", format: "uri", pattern: "^https://a856-cityrecord\\.nyc\\.gov/RequestDetail/" },
+  },
+});
+
 export const NOTICE_GET_CAPABILITY = deepFreeze({
   id: NOTICE_GET_CAPABILITY_ID,
   version: NOTICE_GET_CAPABILITY_VERSION,
@@ -61,13 +79,15 @@ export const NOTICE_GET_CAPABILITY = deepFreeze({
   },
   output: {
     schema: "cityscroll.capability.notice_get.output.v1",
-    fields: ["capability_reference", "availability", "notice", "source", "generated_at", "stale", "error"],
+    fields: ["capability_reference", "availability", "notice", "source", "generated_at", "stale", "citation", "error"],
     availability: NOTICE_GET_AVAILABILITY,
     representations: NOTICE_GET_REPRESENTATIONS,
   },
   provenance: {
     noticeIdentity: "notice.request_id",
     sourceIdentity: "source + notice.request_id",
+    citationIdentity: "citation.publisher + citation.request_id + citation.official_url",
+    publicationClock: "citation.publication_date from notice.start_date",
     observationClock: "generated_at",
     staleSnapshotPreserved: true,
   },
@@ -85,11 +105,23 @@ export const NOTICE_GET_CAPABILITY = deepFreeze({
   examples: [
     {
       input: { requestId: "20260807001" },
-      output: { availability: "available", source: "materialized", stale: false },
+      output: {
+        availability: "available",
+        source: "materialized",
+        stale: false,
+        citation: {
+          schema: NOTICE_GET_CITATION_SCHEMA,
+          publisher: NOTICE_GET_CITATION_PUBLISHER,
+          request_id: "20260807001",
+          publication_date: "2026-08-07",
+          cityscroll_url: "https://cityscroll.org/notices/20260807001/",
+          official_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260807001",
+        },
+      },
     },
     {
       input: { requestId: "20260807999" },
-      output: { availability: "not_yet_public", error: "not-found" },
+      output: { availability: "not_yet_public", citation: null, error: "not-found" },
     },
   ],
   adapters: [
@@ -137,6 +169,41 @@ function assertPublicNotice(notice, requestId) {
   return notice;
 }
 
+function sourcePublicationDate(notice) {
+  const value = typeof notice?.start_date === "string" ? notice.start_date : "";
+  const date = value.slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+  const parsed = new Date(`${date}T00:00:00Z`);
+  return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === date ? date : null;
+}
+
+/** Build publisher provenance only from a validated, exact notice identity. */
+export function buildNoticeCitation(notice, requestId = notice?.request_id) {
+  const id = typeof requestId === "string" ? requestId.trim() : "";
+  if (!NOTICE_GET_REQUEST_ID_PATTERN.test(id) || !notice || notice.request_id !== id) return null;
+  return {
+    schema: NOTICE_GET_CITATION_SCHEMA,
+    publisher: NOTICE_GET_CITATION_PUBLISHER,
+    request_id: id,
+    publication_date: sourcePublicationDate(notice),
+    cityscroll_url: `${CITYSCROLL_NOTICE_URL_BASE}${id}/`,
+    official_url: `${CITY_RECORD_NOTICE_URL_BASE}${id}`,
+  };
+}
+
+function validateNoticeCitation(citation, requestId) {
+  if (!citation || typeof citation !== "object" || Array.isArray(citation)
+      || citation.schema !== NOTICE_GET_CITATION_SCHEMA
+      || citation.publisher !== NOTICE_GET_CITATION_PUBLISHER
+      || citation.request_id !== requestId
+      || citation.cityscroll_url !== `${CITYSCROLL_NOTICE_URL_BASE}${requestId}/`
+      || citation.official_url !== `${CITY_RECORD_NOTICE_URL_BASE}${requestId}`
+      || (citation.publication_date !== null && sourcePublicationDate({ start_date: citation.publication_date }) !== citation.publication_date)) {
+    throw new TypeError("available notice.get output citation is invalid");
+  }
+  return citation;
+}
+
 export function validateNoticeGetOutput(result, input) {
   validateNoticeGetInput(input);
   if (!result || typeof result !== "object" || Array.isArray(result)) {
@@ -154,9 +221,11 @@ export function validateNoticeGetOutput(result, input) {
       throw new TypeError("available notice.get output requires a source");
     }
     if (typeof result.stale !== "boolean") throw new TypeError("notice.get stale state is required");
+    validateNoticeCitation(result.citation, input.requestId.trim());
     if (result.error !== null) throw new TypeError("available notice.get output cannot carry an error");
   } else {
     if (result.notice !== null) throw new TypeError("non-available notice.get output cannot carry a notice");
+    if (result.citation !== null) throw new TypeError("non-available notice.get output cannot carry a citation");
     if (typeof result.error !== "string" || !result.error) {
       throw new TypeError("non-available notice.get output requires an error code");
     }

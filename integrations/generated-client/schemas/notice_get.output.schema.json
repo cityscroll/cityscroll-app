@@ -8,6 +8,7 @@
     "source",
     "generated_at",
     "stale",
+    "citation",
     "error"
   ],
   "properties": {
@@ -46,6 +47,53 @@
         "boolean",
         "null"
       ]
+    },
+    "citation": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "publisher",
+        "request_id",
+        "publication_date",
+        "cityscroll_url",
+        "official_url"
+      ],
+      "properties": {
+        "schema": {
+          "type": "string",
+          "const": "cityscroll.notice_get.citation.v1"
+        },
+        "publisher": {
+          "type": "string",
+          "const": "NYC City Record"
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "publication_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "cityscroll_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://cityscroll\\.org/notices/"
+        },
+        "official_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://a856-cityrecord\\.nyc\\.gov/RequestDetail/"
+        }
+      }
     },
     "error": {
       "type": [
