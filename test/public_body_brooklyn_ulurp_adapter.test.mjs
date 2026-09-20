@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { todayISO } from "./helpers/test_clock.mjs";
+
 import {
   BROOKLYN_BP_ULURP_CALENDAR_PARSER,
   BROOKLYN_BP_ULURP_LAND_USE_URL,
@@ -8,13 +10,13 @@ import {
   parseBrooklynBpUlurpScheduleHtml,
 } from "../site/brooklyn_bp_ulurp_calendar.mjs";
 
-const RECEIPT = {
+const receipt = () => ({
   schema: "cityscroll.meeting_source_receipt.v1",
   source_url: BROOKLYN_BP_ULURP_SOURCE_URL,
-  observed_at: "2026-09-20T12:00:00.000Z",
+  observed_at: `${todayISO()}T12:00:00.000Z`,
   status: "ok",
   fetch_status: "snapshot",
-};
+});
 
 const LAND_USE_PAGE = `
   <main>
@@ -51,7 +53,7 @@ const EVENT_PAGE = `
 
 test("A1: the classified October hearing materializes with exact local bounds, venue, and testimony evidence", () => {
   const result = parseBrooklynBpUlurpScheduleHtml(EVENT_PAGE, {
-    receipt: RECEIPT,
+    receipt: receipt(),
     landUseHtml: LAND_USE_PAGE,
   });
   assert.equal(result.rows.length, 1);
@@ -76,7 +78,7 @@ test("A1: the classified October hearing materializes with exact local bounds, v
 
 test("A2: unrelated calendar categories are excluded and anomalous publisher times remain operator-visible", () => {
   const result = parseBrooklynBpUlurpScheduleHtml(EVENT_PAGE, {
-    receipt: RECEIPT,
+    receipt: receipt(),
     landUseHtml: LAND_USE_PAGE,
   });
   assert.deepEqual(result.rejected.map((entry) => entry.title), [
@@ -95,14 +97,14 @@ test("A3: permalink identity fallback and duplicate event identities are explici
     <article>
       <h3><a href="https://www.brooklynbp.nyc.gov/event/ulurp-fallback/">Uniform Land Use Review Procedure Public Hearing</a></h3>
       <div>October 21 @ 6:00 pm – 8:00 pm Brooklyn Borough Hall</div>
-    </article>`, { receipt: RECEIPT, landUseHtml: LAND_USE_PAGE });
+    </article>`, { receipt: receipt(), landUseHtml: LAND_USE_PAGE });
   assert.equal(fallback.rows[0].publisher_identifier, "https://www.brooklynbp.nyc.gov/event/ulurp-fallback/");
   assert.equal(fallback.rows[0].source_raw_values.publisher_identity_kind, "permalink_fallback");
 
   const duplicate = parseBrooklynBpUlurpScheduleHtml(`
     <h2>October 2026</h2>
     <article data-event-id="same-event"><h3>ULURP Public Hearing Meeting</h3><div>October 14 @ 6:00 pm – 8:00 pm</div></article>
-    <article data-event-id="same-event"><h3>ULURP Public Hearing Meeting</h3><div>October 14 @ 6:00 pm – 8:00 pm</div></article>`, { receipt: RECEIPT, landUseHtml: LAND_USE_PAGE });
+    <article data-event-id="same-event"><h3>ULURP Public Hearing Meeting</h3><div>October 14 @ 6:00 pm – 8:00 pm</div></article>`, { receipt: receipt(), landUseHtml: LAND_USE_PAGE });
   assert.equal(duplicate.rows.length, 0);
   assert.equal(duplicate.quarantined[0].reason, "duplicate_event_identity");
 });
