@@ -60,6 +60,12 @@ test("current Streamable HTTP client initializes, discovers, and calls all publi
         semanticHash(direct.get(toolCase.name)),
         `${toolCase.name} current-client result must match its direct provider`,
       );
+      if (toolCase.name === "get_notice") {
+        assert.equal(result.structuredContent.citation.publisher, "NYC City Record");
+        assert.equal(result.structuredContent.citation.request_id, toolCase.arguments.request_id);
+        assert.equal(result.structuredContent.citation.cityscroll_url, `https://cityscroll.org/notices/${toolCase.arguments.request_id}/`);
+        assert.equal(result.structuredContent.citation.official_url, `https://a856-cityrecord.nyc.gov/RequestDetail/${toolCase.arguments.request_id}`);
+      }
     }
     assert.deepEqual(calls, CAPABILITY_TOOL_CASES.map(({ name }) => name));
     assert.deepEqual(remoteFixture.reads.map(({ capability_reference: reference }) => reference), [

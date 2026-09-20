@@ -21,6 +21,7 @@ import {
   NOTICE_GET_LIMITS,
   NOTICE_GET_PROVIDER_ID,
   NOTICE_GET_REPRESENTATIONS,
+  NOTICE_GET_CITATION_OUTPUT_SCHEMA,
 } from "./notice_get.mjs";
 import {
   ENTITY_DOSSIER_CAPABILITY_REFERENCE,
@@ -240,7 +241,7 @@ const ENTITY_DOSSIER_OUTPUT_SCHEMA = Object.freeze({
 const NOTICE_GET_OUTPUT_SCHEMA = Object.freeze({
   type: "object",
   additionalProperties: false,
-  required: ["capability_reference", "availability", "notice", "source", "generated_at", "stale", "error"],
+  required: ["capability_reference", "availability", "notice", "source", "generated_at", "stale", "citation", "error"],
   properties: {
     capability_reference: { type: "string", const: NOTICE_GET_CAPABILITY_REFERENCE },
     availability: { type: "string", enum: ["available", "not_yet_public", "unavailable"] },
@@ -248,6 +249,7 @@ const NOTICE_GET_OUTPUT_SCHEMA = Object.freeze({
     source: { type: ["string", "null"] },
     generated_at: { type: ["string", "null"] },
     stale: { type: ["boolean", "null"] },
+    citation: NOTICE_GET_CITATION_OUTPUT_SCHEMA,
     error: { type: ["string", "null"] },
   },
 });
@@ -435,7 +437,7 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
   },
   {
     name: "get_notice",
-    description: "Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and distinguishes a missing public notice from a read that cannot be served.",
+    description: "Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and, when available, includes citation-ready publisher and record links; missing and unavailable reads remain explicit.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {

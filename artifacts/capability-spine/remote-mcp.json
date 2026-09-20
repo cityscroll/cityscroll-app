@@ -83,7 +83,7 @@
     },
     {
       "adapter_id": "mcp.get_notice@1",
-      "adapter_semantic_sha256": "35b86db1f4e08be3f80fd4de5ac620bc6552aa1d054ccfca0f8e93c00f8e3a4a",
+      "adapter_semantic_sha256": "4914fc2a9aa0d70a8f33a173bb55dfaac9a7f35f3e2c0139b5ece0e2b00b7f1c",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -97,7 +97,7 @@
       },
       "calls": 1,
       "capability_reference": "notice.get@1",
-      "direct_semantic_sha256": "35b86db1f4e08be3f80fd4de5ac620bc6552aa1d054ccfca0f8e93c00f8e3a4a",
+      "direct_semantic_sha256": "4914fc2a9aa0d70a8f33a173bb55dfaac9a7f35f3e2c0139b5ece0e2b00b7f1c",
       "name": "get_notice",
       "operation_class": "read",
       "parity": "pass",

@@ -7,6 +7,7 @@
 
 import {
   executeNoticeGet,
+  buildNoticeCitation,
   NOTICE_GET_CAPABILITY_REFERENCE,
   NOTICE_GET_PROVIDER_ID,
   NOTICE_GET_REPRESENTATIONS,
@@ -170,6 +171,7 @@ export function workerNoticeGet(env, { nowMs = Date.now() } = {}) {
             source: "materialized",
             generated_at: materialized.generated_at,
             stale: materialized.stale,
+            citation: buildNoticeCitation(materialized.row, requestId),
             error: null,
           };
         }
@@ -187,6 +189,7 @@ export function workerNoticeGet(env, { nowMs = Date.now() } = {}) {
             source: "public-source",
             generated_at: null,
             stale: null,
+            citation: null,
             error: "not-found",
           };
         }
@@ -197,6 +200,7 @@ export function workerNoticeGet(env, { nowMs = Date.now() } = {}) {
           source: "public-source-fallback",
           generated_at: null,
           stale: false,
+          citation: buildNoticeCitation(notice, requestId),
           error: null,
         };
       } catch (_error) {
@@ -207,6 +211,7 @@ export function workerNoticeGet(env, { nowMs = Date.now() } = {}) {
           source: "public-source",
           generated_at: null,
           stale: null,
+          citation: null,
           error: "unavailable",
         };
       }
@@ -231,8 +236,8 @@ export async function handleNotice(request, env, { skipCache = false, nowMs = Da
   }
 
   const result = await executeNoticeGet(workerNoticeGet(env, { nowMs }), { requestId: id });
-  if (result.availability === "not_yet_public") return json({ ok: false, reason: "not-found", source: result.source }, 404);
-  if (result.availability === "unavailable") return json({ ok: false, reason: "unavailable", source: result.source }, 503);
+  if (result.availability === "not_yet_public") return json({ ok: false, reason: "not-found", source: result.source, citation: null }, 404);
+  if (result.availability === "unavailable") return json({ ok: false, reason: "unavailable", source: result.source, citation: null }, 503);
   const isMaterialized = result.source === "materialized";
   const response = json({
     ok: true,
@@ -241,6 +246,7 @@ export async function handleNotice(request, env, { skipCache = false, nowMs = Da
     source: result.source,
     generated_at: result.generated_at,
     stale: result.stale,
+    citation: result.citation,
   }, 200, isMaterialized
     ? `public, max-age=60, s-maxage=${EDGE_MAX_AGE}, stale-while-revalidate=${EDGE_STALE}, stale-if-error=${EDGE_STALE}`
     : "public, max-age=30, s-maxage=300, stale-while-revalidate=3600, stale-if-error=86400");
