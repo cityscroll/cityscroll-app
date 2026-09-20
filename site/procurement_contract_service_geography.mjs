@@ -35,6 +35,12 @@ export const LEGACY_FACILITY_SERVICE_SITE = "facility_service_site";
 
 /** Entity-identity role that must never enter service geography. */
 export const VENDOR_ADDRESS_ROLE = "vendor_address";
+export const NON_SERVICE_LOCATION_ROLES = Object.freeze(new Set([
+  "agency_office",
+  "document_meeting_location",
+  "map_centroid",
+]));
+export const PORTFOLIO_EVALUATION_KIND = "portfolio_evaluation";
 
 export const PLACE_INPUT_KINDS = Object.freeze({
   EXACT_ADDRESS: "exact_address",
@@ -65,6 +71,16 @@ export const SPATIAL_EVIDENCE_KINDS = Object.freeze({
 export const GEOGRAPHY_RELATIONS = Object.freeze({
   LOCATED_IN: "located_in",
 });
+
+export const CONTRACT_EVIDENCE_ROLES = Object.freeze({
+  PROPOSED_AGREEMENT: "proposed_agreement",
+  SITE_SCHEDULE: "site_schedule",
+});
+
+export const MOCS_GROWNYC_CONTRACT_ID = "MOCS-FCRC-202411-GROWNYC";
+export const MOCS_GROWNYC_SITE_SCHEDULE_DOCUMENT_ID = "mocs-fcrc-packet-202411-site-schedule";
+export const MOCS_GROWNYC_SITE_SCHEDULE_LOCATOR =
+  "PDF page 72 / EXHIBIT A GrowNYC Greenmarket Permit Locations, Days and Hours of Operation";
 
 const FORBIDDEN_OVERLAP_RELATIONS = Object.freeze([
   "serves",
@@ -179,6 +195,10 @@ function citationFromCandidate(candidate = {}) {
       || (noticeId ? `city_record:${noticeId}` : null),
     attribution_label: clean(candidate.attribution_label, 160)
       || (noticeId ? `Notice ${noticeId}` : null),
+    source_document_role: clean(candidate.source_document_role || candidate.corpus_document_role, 80),
+    content_hash: clean(candidate.content_hash || candidate.document_hash, 100),
+    public_url: clean(candidate.public_url || candidate.final_url || candidate.url, 2000),
+    publication_date: clean(candidate.publication_date, 40),
   };
 }
 
@@ -225,14 +245,20 @@ function placeInputFromCandidate(candidate = {}) {
     input_kind: PLACE_INPUT_KINDS.EXACT_ADDRESS,
     address: clean(candidate.address || candidate.street_address, 240),
     units: Number.isFinite(Number(candidate.units)) ? Number(candidate.units) : null,
+    label: clean(candidate.label || candidate.site_name, 200),
+    location_description: clean(candidate.location_description, 800),
   };
 }
 
 function admissionRefusalReasons(candidate = {}) {
   const reasons = [];
   const rawRole = normalizeRole(candidate.place_role || candidate.evidence_role || candidate.role);
+  const sourceLocationRole = normalizeRole(candidate.location_role || candidate.source_location_role);
   if (rawRole === VENDOR_ADDRESS_ROLE) {
     reasons.push("vendor_address_is_not_service_geography");
+  }
+  if (NON_SERVICE_LOCATION_ROLES.has(sourceLocationRole)) {
+    reasons.push("non_service_location_role_is_not_service_geography");
   }
   const placeRole = normalizePlaceRole(rawRole);
   if (!placeRole) reasons.push("missing_or_unknown_place_role");
@@ -317,6 +343,16 @@ export function admitContractPlaceAssertion(candidate = {}) {
       }),
       units: Number.isFinite(units) ? units : null,
       legacy_role: rawRole === LEGACY_FACILITY_SERVICE_SITE ? LEGACY_FACILITY_SERVICE_SITE : null,
+      document_role: clean(candidate.document_role || candidate.evidence_document_role, 80),
+      source_document_role: clean(candidate.source_document_role || candidate.corpus_document_role, 80),
+      site_name: clean(candidate.site_name || candidate.label, 200),
+      schedule: isRecord(candidate.schedule)
+        ? Object.freeze({
+          day: clean(candidate.schedule.day || candidate.schedule.day_of_week, 80),
+          hours: clean(candidate.schedule.hours, 100),
+        })
+        : null,
+      location_description: clean(candidate.location_description, 800),
     }),
   });
 }
@@ -339,6 +375,98 @@ export function facilitySiteFromNoticePlaceFact(placeFact = {}, { contractId } =
     locator: placeFact.locator || `notice ${placeFact.request_id} facility description`,
     input_kind: PLACE_INPUT_KINDS.EXACT_ADDRESS,
   });
+}
+
+function scheduleSiteMatch(passage, siteName, nextSiteName = null) {
+  const boundary = nextSiteName
+    ? `(?=\\s+${nextSiteName}\\b)`
+    : "(?=\\s+Parking permits\\b|$)";
+  const pattern = new RegExp(
+    `${siteName}\\s*\\(CDBG\\)\\s*1?\\s+([A-Za-z]+),\\s*([^\\s]+\\s+to\\s+[^\\s]+)\\s+(Located[\\s\\S]*?)${boundary}`,
+    "i",
+  );
+  const match = String(passage || "").match(pattern);
+  if (!match) return null;
+  return {
+    site_name: siteName,
+    day: clean(match[1], 80),
+    hours: clean(match[2], 100),
+    location_description: clean(match[3], 800),
+  };
+}
+
+/**
+ * Extract the two explicitly located GrowNYC Exhibit A sites from the retained
+ * public passage. This keeps the printed schedule and location description as
+ * source evidence; resolution is deliberately a separate caller decision.
+ */
+export function extractGrownycSiteScheduleAssertions({
+  passage,
+  contractId = MOCS_GROWNYC_CONTRACT_ID,
+  sourceDocumentId = MOCS_GROWNYC_SITE_SCHEDULE_DOCUMENT_ID,
+  sourceDocumentRole = CONTRACT_EVIDENCE_ROLES.SITE_SCHEDULE,
+  locator = MOCS_GROWNYC_SITE_SCHEDULE_LOCATOR,
+  contentHash = null,
+  publicUrl = null,
+  publicationDate = null,
+} = {}) {
+  const text = clean(passage, 6000);
+  if (!text) return { ok: false, rows: [], errors: ["missing_exhibit_a_passage"] };
+  if (!/EXHIBIT A/i.test(text) || !/GrowNYC/i.test(text)) {
+    return { ok: false, rows: [], errors: ["not_grownyc_exhibit_a"] };
+  }
+
+  const sites = [
+    scheduleSiteMatch(text, "Joyce Kilmer Park", "Poe Park"),
+    scheduleSiteMatch(text, "Poe Park"),
+  ].filter(Boolean);
+  const rows = sites.map((site) => ({
+    contract_id: contractId,
+    place_role: CONTRACT_PLACE_ROLES.FACILITY_SITE,
+    input_kind: PLACE_INPUT_KINDS.EXACT_ADDRESS,
+    address: site.location_description,
+    label: site.site_name,
+    site_name: site.site_name,
+    location_description: site.location_description,
+    schedule: { day: site.day, hours: site.hours },
+    source_document_id: sourceDocumentId,
+    source_document_role: sourceDocumentRole,
+    document_role: CONTRACT_EVIDENCE_ROLES.PROPOSED_AGREEMENT,
+    locator,
+    content_hash: contentHash,
+    public_url: publicUrl,
+    publication_date: publicationDate,
+  }));
+  return {
+    ok: rows.length === 2,
+    rows,
+    errors: rows.length === 2 ? [] : ["incomplete_grownyc_exhibit_a_schedule"],
+  };
+}
+
+/**
+ * Materialize the extracted schedule with the same resolver used by contract
+ * places. Unresolved rows remain in the document with their citation and no
+ * geography membership.
+ */
+export function materializeGrownycSiteSchedule(options = {}) {
+  const extracted = extractGrownycSiteScheduleAssertions(options);
+  if (!extracted.rows.length) return extracted;
+  const rows = extracted.rows.map((candidate) => {
+    const admitted = admitContractPlaceAssertion(candidate);
+    if (!admitted.ok) return { kind: "unresolved_contract_place", candidate, reasons: admitted.reasons };
+    return {
+      kind: "contract_place",
+      assertion: admitted.assertion,
+      resolution: resolveContractPlaceAssertion(admitted.assertion, {
+        layerData: options.layerData,
+        geocode: options.geocode,
+        expectedBoundaryVintage: options.expectedBoundaryVintage,
+        crosswalkRows: options.crosswalkRows,
+      }),
+    };
+  });
+  return { ...extracted, rows };
 }
 
 function geographyMatchFromEntry(match, {
@@ -611,6 +739,36 @@ export function retainVendorAddressIdentity(candidate = {}) {
   });
 }
 
+/**
+ * Retain a portfolio-level evaluation statement without treating its count as
+ * a set of exact service sites. Exact place admission remains a separate step.
+ */
+export function retainPortfolioEvaluationScope(candidate = {}) {
+  const contractId = clean(candidate.contract_id, 160)?.toUpperCase() || null;
+  const sourceDocumentId = clean(candidate.source_document_id || candidate.document_id, 180);
+  const statement = clean(candidate.statement || candidate.excerpt, 1000);
+  if (!contractId || !sourceDocumentId || !statement) return null;
+  return Object.freeze({
+    kind: PORTFOLIO_EVALUATION_KIND,
+    contract_id: contractId,
+    document_role: clean(candidate.document_role || candidate.evidence_document_role, 80),
+    source_document_id: sourceDocumentId,
+    locator: clean(candidate.locator, 240),
+    statement,
+    reported_site_count: Number.isFinite(Number(candidate.reported_site_count))
+      ? Number(candidate.reported_site_count)
+      : null,
+    reported_nyc_site_count: Number.isFinite(Number(candidate.reported_nyc_site_count))
+      ? Number(candidate.reported_nyc_site_count)
+      : null,
+    reported_outside_nyc_site_count: Number.isFinite(Number(candidate.reported_outside_nyc_site_count))
+      ? Number(candidate.reported_outside_nyc_site_count)
+      : null,
+    emits_service_geography: false,
+    near_you_local_count: false,
+  });
+}
+
 function emptyLensSets(lenses) {
   return Object.fromEntries(lenses.map((lens) => [lens, []]));
 }
@@ -630,6 +788,13 @@ export function projectContractPlacesIntoGeographyItems(rows = [], {
   const skipped = [];
 
   for (const row of Array.isArray(rows) ? rows : []) {
+    if (row?.kind === PORTFOLIO_EVALUATION_KIND) {
+      skipped.push({
+        reason: "portfolio_evaluation_not_service_geography",
+        contract_id: row.contract_id || null,
+      });
+      continue;
+    }
     const assertion = row?.assertion || (row?.kind === "vendor_address_identity" ? null : row);
     const resolution = row?.resolution || null;
     if (
@@ -738,6 +903,10 @@ export function nearYouLocalContractIds(geographyItems, geographyKey, { lens = "
 }
 
 export function normalizeContractPlaceRow(row = {}) {
+  if (row.kind === PORTFOLIO_EVALUATION_KIND) {
+    const portfolio = retainPortfolioEvaluationScope(row);
+    return portfolio ? Object.freeze({ ...portfolio }) : null;
+  }
   if (isVendorAddressRole(row.place_role || row.evidence_role || row.role)) {
     const identity = retainVendorAddressIdentity(row);
     return identity
@@ -800,6 +969,12 @@ export function validateContractServiceGeographyDocument(doc = {}) {
   }
   const rows = Array.isArray(doc.rows) ? doc.rows : [];
   for (const [index, row] of rows.entries()) {
+    if (row.kind === PORTFOLIO_EVALUATION_KIND) {
+      if (row.emits_service_geography === true) {
+        errors.push(`row_${index}_portfolio_evaluation_emits_service_geography`);
+      }
+      continue;
+    }
     if (row.kind === "vendor_address_identity") {
       if (row.identity_only?.emits_service_geography === true) {
         errors.push(`row_${index}_vendor_address_emits_service_geography`);

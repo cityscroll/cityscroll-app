@@ -18,6 +18,10 @@ import {
   CONTRACT_PLACE_ROLES,
   CONTRACT_SERVICE_GEOGRAPHY_SCHEMA,
   GEOGRAPHY_RELATIONS,
+  MOCS_GROWNYC_CONTRACT_ID,
+  MOCS_GROWNYC_SITE_SCHEDULE_DOCUMENT_ID,
+  MOCS_GROWNYC_SITE_SCHEDULE_LOCATOR,
+  PORTFOLIO_EVALUATION_KIND,
   PLACE_INPUT_KINDS,
   RESOLUTION_STATES,
   SPATIAL_EVIDENCE_KINDS,
@@ -25,9 +29,11 @@ import {
   admitContractPlaceAssertion,
   buildContractServiceGeographyDocument,
   classifySpatialEvidence,
+  extractGrownycSiteScheduleAssertions,
   facilitySiteFromNoticePlaceFact,
   nearYouLocalContractIds,
   projectContractPlacesIntoGeographyItems,
+  retainPortfolioEvaluationScope,
   resolveContractPlaceAssertion,
   retainVendorAddressIdentity,
   validateContractServiceGeographyDocument,
@@ -40,6 +46,10 @@ const MATERIALIZED = JSON.parse(readFileSync(
 ));
 const PLACE_FACTS = JSON.parse(readFileSync(
   join(ROOT, "site/data/procurement_place_facts.json"),
+  "utf8",
+));
+const ROLE_PASSAGES = JSON.parse(readFileSync(
+  join(ROOT, "test/fixtures/contract-substance-real-corpus/role-passages.json"),
   "utf8",
 ));
 const CROSSWALK_CD = JSON.parse(readFileSync(
@@ -74,6 +84,11 @@ function emmonsGeocode() {
 
 function bhragsPlaceFact() {
   return PLACE_FACTS.rows.find((row) => row.request_id === BHRAGS_NOTICE_ID);
+}
+
+function grownycGeocode(query) {
+  if (/Joyce Kilmer Park/i.test(query)) return { lon: -73.9166, lat: 40.8258 };
+  return null;
 }
 
 test("A1: BHRAGS retains Emmons Avenue as notice-attributed facility_site with NTA membership and notice evidence", () => {
@@ -124,6 +139,91 @@ test("A1: BHRAGS retains Emmons Avenue as notice-attributed facility_site with N
   assert.equal(materializedBhrags.assertion.citation.notice_id, BHRAGS_NOTICE_ID);
   assert.equal(materializedBhrags.assertion.units, 60);
   assert.equal(materializedBhrags.assertion.input.address, BHRAGS_ADDRESS);
+});
+
+test("A2: real GrowNYC Exhibit A yields two proposed site-schedule rows with printed locations and source locator", () => {
+  const extracted = extractGrownycSiteScheduleAssertions({
+    passage: ROLE_PASSAGES.mocs_exhibit_a_p72,
+    contentHash: "sha256:0ec5d908a7a4dbe09ff52079cebd63756c054be39cc240c59a785cbb4209e4d8",
+    publicUrl: "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf",
+    publicationDate: "2024-11-01",
+  });
+  assert.equal(extracted.ok, true, extracted.errors.join("; "));
+  assert.deepEqual(extracted.rows.map((row) => [
+    row.site_name,
+    row.schedule.day,
+    row.schedule.hours,
+  ]), [
+    ["Joyce Kilmer Park", "Tuesdays", "6AM to 7PM"],
+    ["Poe Park", "Tuesdays", "6AM to 5PM"],
+  ]);
+  for (const row of extracted.rows) {
+    assert.equal(row.contract_id, MOCS_GROWNYC_CONTRACT_ID);
+    assert.equal(row.source_document_id, MOCS_GROWNYC_SITE_SCHEDULE_DOCUMENT_ID);
+    assert.equal(row.document_role, "proposed_agreement");
+    assert.equal(row.source_document_role, "site_schedule");
+    assert.equal(row.locator, MOCS_GROWNYC_SITE_SCHEDULE_LOCATOR);
+    assert.match(row.location_description, /^Located /);
+  }
+});
+
+test("A3: GrowNYC sites resolve only through the existing place resolver and retain proposed status", () => {
+  const extracted = extractGrownycSiteScheduleAssertions({
+    passage: ROLE_PASSAGES.mocs_exhibit_a_p72,
+  });
+  const resolved = extracted.rows.map((row) => {
+    const admitted = admitContractPlaceAssertion(row);
+    assert.equal(admitted.ok, true, row.site_name);
+    const resolution = resolveContractPlaceAssertion(admitted.assertion, {
+      layerData: LAYER_DATA,
+      geocode: grownycGeocode,
+    });
+    return { row, assertion: admitted.assertion, resolution };
+  });
+
+  const joyce = resolved.find(({ row }) => row.site_name === "Joyce Kilmer Park");
+  assert.equal(joyce.resolution.ok, true);
+  assert.equal(joyce.resolution.entry.selected_key, "geography:nta2020:BX0401");
+  assert.ok(joyce.resolution.geographies.every((match) => match.boundary_vintage));
+  assert.ok(joyce.resolution.geographies.every((match) => match.method === "exact_address_entry_resolver"));
+  assert.equal(joyce.assertion.document_role, "proposed_agreement");
+
+  const poe = resolved.find(({ row }) => row.site_name === "Poe Park");
+  assert.equal(poe.resolution.ok, false);
+  assert.equal(poe.resolution.state, RESOLUTION_STATES.UNRESOLVED);
+  assert.deepEqual(poe.resolution.geographies, []);
+  assert.equal(poe.assertion.input.location_description.startsWith("Located on the south side"), true);
+});
+
+test("A4-A5: portfolio evaluations and non-service locations never become neighborhood sites", () => {
+  const portfolio = retainPortfolioEvaluationScope({
+    contract_id: "CT180620248801671",
+    source_document_id: "comptroller-docgo-audit-20248801671",
+    document_role: "performance_evaluation",
+    locator: "PDF page 18 / hotel-service count",
+    statement: "Services occurred at 32 hotels, including 16 in New York City and 16 outside it.",
+    reported_site_count: 32,
+    reported_nyc_site_count: 16,
+    reported_outside_nyc_site_count: 16,
+  });
+  assert.equal(portfolio.kind, PORTFOLIO_EVALUATION_KIND);
+  assert.equal(portfolio.emits_service_geography, false);
+  const projectedPortfolio = projectContractPlacesIntoGeographyItems([portfolio]);
+  assert.deepEqual(projectedPortfolio.by_key, {});
+  assert.equal(projectedPortfolio.skipped[0].reason, "portfolio_evaluation_not_service_geography");
+
+  for (const location_role of ["agency_office", "document_meeting_location", "map_centroid"]) {
+    const refused = admitContractPlaceAssertion({
+      contract_id: "CT999900000000008",
+      place_role: CONTRACT_PLACE_ROLES.WORK_SITE,
+      address: "1 Civic Plaza, New York",
+      source_document_id: "doc-trap-1",
+      locator: "meeting header",
+      location_role,
+    });
+    assert.equal(refused.ok, false, location_role);
+    assert.ok(refused.reasons.includes("non_service_location_role_is_not_service_geography"));
+  }
 });
 
 test("A2: admitted contract passages create typed work, delivery, service, and beneficiary areas with citation fields", () => {
@@ -445,6 +545,15 @@ test("A8: fixtures cover BHRAGS, vendor-HQ trap, multi-site, named service area,
     assert.deepEqual(lenses.money, [...lenses.money].sort());
     assert.deepEqual(nearYouLocalContractIds(geographyItems, key), lenses.money);
   }
+  const joyceKey = "geography:nta2020:BX0401";
+  assert.deepEqual(nearYouLocalContractIds(geographyItems, joyceKey), [MOCS_GROWNYC_CONTRACT_ID]);
+  assert.deepEqual(geographyItems.by_key[joyceKey].place_roles[MOCS_GROWNYC_CONTRACT_ID], [
+    CONTRACT_PLACE_ROLES.FACILITY_SITE,
+  ]);
+  assert.equal(
+    geographyItems.skipped.some((row) => row.contract_id === MOCS_GROWNYC_CONTRACT_ID),
+    false,
+  );
 
   const rebuilt = buildContractServiceGeographyDocument([
     {
@@ -465,4 +574,47 @@ test("A8: fixtures cover BHRAGS, vendor-HQ trap, multi-site, named service area,
   ], { generatedAt: "2026-09-19T00:00:00.000Z" });
   assert.equal(validateContractServiceGeographyDocument(rebuilt).ok, true);
   assert.equal(rebuilt.rows.length, 2);
+
+  const blank = admitContractPlaceAssertion({
+    contract_id: "CT999900000000009",
+    place_role: CONTRACT_PLACE_ROLES.FACILITY_SITE,
+    source_document_id: "doc-blank-location",
+    locator: "Exhibit A",
+  });
+  assert.equal(blank.ok, false);
+  assert.ok(blank.reasons.includes("missing_exact_address"));
+
+  const ambiguousPark = admitContractPlaceAssertion({
+    contract_id: MOCS_GROWNYC_CONTRACT_ID,
+    place_role: CONTRACT_PLACE_ROLES.FACILITY_SITE,
+    address: "Poe Park, 192nd Street, Bronx",
+    source_document_id: MOCS_GROWNYC_SITE_SCHEDULE_DOCUMENT_ID,
+    locator: MOCS_GROWNYC_SITE_SCHEDULE_LOCATOR,
+  }).assertion;
+  const ambiguousParkResolution = resolveContractPlaceAssertion(ambiguousPark, {
+    layerData: LAYER_DATA,
+    geocode: () => ({
+      status: "ambiguous",
+      candidates: [
+        { type: "nta2020", id: "BX0702", label: "Bedford Park", boundary_vintage: "26B" },
+        { type: "nta2020", id: "BX0703", label: "Norwood", boundary_vintage: "26B" },
+      ],
+    }),
+  });
+  assert.equal(ambiguousParkResolution.state, RESOLUTION_STATES.AMBIGUOUS);
+  assert.deepEqual(ambiguousParkResolution.geographies, []);
+
+  const outside = admitContractPlaceAssertion({
+    contract_id: "CT999900000000010",
+    place_role: CONTRACT_PLACE_ROLES.FACILITY_SITE,
+    address: "1 Harbor Way, Boston, MA",
+    source_document_id: "doc-outside-nyc",
+    locator: "Schedule A",
+  }).assertion;
+  const outsideResolution = resolveContractPlaceAssertion(outside, {
+    layerData: LAYER_DATA,
+    geocode: () => ({ lon: -71.0589, lat: 42.3601 }),
+  });
+  assert.equal(outsideResolution.ok, false);
+  assert.equal(outsideResolution.state, RESOLUTION_STATES.UNRESOLVED);
 });

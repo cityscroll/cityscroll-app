@@ -110,6 +110,19 @@
       "resolution": null
     },
     {
+      "kind": "portfolio_evaluation",
+      "contract_id": "CT180620248801671",
+      "document_role": "performance_evaluation",
+      "source_document_id": "comptroller-docgo-audit-20248801671",
+      "locator": "PDF page 18 / hotel-service count",
+      "statement": "Services occurred at 32 hotels, including 16 in New York City and 16 outside it.",
+      "reported_site_count": 32,
+      "reported_nyc_site_count": 16,
+      "reported_outside_nyc_site_count": 16,
+      "emits_service_geography": false,
+      "near_you_local_count": false
+    },
+    {
       "kind": "contract_place",
       "assertion": {
         "schema": "cityscroll.procurement_contract_service_geography.v1",
@@ -373,6 +386,91 @@
           "selection_policy": "residential_nta"
         }
       }
+    },
+    {
+      "kind": "contract_place",
+      "assertion": {
+        "schema": "cityscroll.procurement_contract_service_geography.v1",
+        "contract_id": "MOCS-FCRC-202411-GROWNYC",
+        "place_role": "facility_site",
+        "input": {
+          "input_kind": "exact_address",
+          "address": "Located along the east side of Joyce Kilmer Park, the west side of Grand Concourse, between 161st and 163rd Streets. Includes curbside parking on the Grand Concourse service road. Farmer-vendor vehicles limited to twelve (12).",
+          "units": null,
+          "label": "Joyce Kilmer Park",
+          "location_description": "Located along the east side of Joyce Kilmer Park, the west side of Grand Concourse, between 161st and 163rd Streets. Includes curbside parking on the Grand Concourse service road. Farmer-vendor vehicles limited to twelve (12)."
+        },
+        "citation": {
+          "source_document_id": "mocs-fcrc-packet-202411-site-schedule",
+          "locator": "PDF page 72 / EXHIBIT A GrowNYC Greenmarket Permit Locations, Days and Hours of Operation",
+          "effective_period": null,
+          "notice_id": null,
+          "notice_href": null,
+          "source_observation_ref": null,
+          "attribution_label": null,
+          "source_document_role": "site_schedule",
+          "content_hash": "sha256:0ec5d908a7a4dbe09ff52079cebd63756c054be39cc240c59a785cbb4209e4d8",
+          "public_url": "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf",
+          "publication_date": "2024-11-01"
+        },
+        "units": null,
+        "legacy_role": null,
+        "document_role": "proposed_agreement",
+        "source_document_role": "site_schedule",
+        "site_name": "Joyce Kilmer Park",
+        "schedule": {"day": "Tuesdays", "hours": "6AM to 7PM"},
+        "location_description": "Located along the east side of Joyce Kilmer Park, the west side of Grand Concourse, between 161st and 163rd Streets. Includes curbside parking on the Grand Concourse service road. Farmer-vendor vehicles limited to twelve (12)."
+      },
+      "resolution": {
+        "ok": true,
+        "state": "resolved",
+        "geographies": [
+          {"key": "geography:nta2020:BX0401", "type": "nta2020", "id": "BX0401", "label": "Concourse-Concourse Village", "class": "statistical", "relation": "located_in", "method": "exact_address_entry_resolver", "source_id": "dcp-nta2020-boundaries", "boundary_vintage": "26B", "subtype": "residential"},
+          {"key": "geography:community_district:X04", "type": "community_district", "id": "X04", "label": "Bronx Community District 4", "class": "community_administrative", "relation": "located_in", "method": "exact_address_entry_resolver", "source_id": "community-district-boundaries", "boundary_vintage": "2026-05-26", "subtype": "regular"},
+          {"key": "geography:council_district:16", "type": "council_district", "id": "16", "label": "City Council District 16", "class": "political", "relation": "located_in", "method": "exact_address_entry_resolver", "source_id": "city-council-district-boundaries", "boundary_vintage": "2026-05-26", "subtype": null},
+          {"key": "geography:police_precinct:44", "type": "police_precinct", "id": "44", "label": "Police Precinct 44", "class": "service_administrative", "relation": "located_in", "method": "exact_address_entry_resolver", "source_id": "dcp-police-precinct-boundaries", "boundary_vintage": "26B", "subtype": null}
+        ],
+        "candidates": [],
+        "vintage_drift": [],
+        "reason": null,
+        "entry": {"selected_key": "geography:nta2020:BX0401", "selection_policy": "residential_nta"}
+      }
+    },
+    {
+      "kind": "contract_place",
+      "assertion": {
+        "schema": "cityscroll.procurement_contract_service_geography.v1",
+        "contract_id": "MOCS-FCRC-202411-GROWNYC",
+        "place_role": "facility_site",
+        "input": {
+          "input_kind": "exact_address",
+          "address": "Located on the south side of Poe Park, 192nd Street closed to traffic between Grand Concourse and Valentine.",
+          "units": null,
+          "label": "Poe Park",
+          "location_description": "Located on the south side of Poe Park, 192nd Street closed to traffic between Grand Concourse and Valentine."
+        },
+        "citation": {
+          "source_document_id": "mocs-fcrc-packet-202411-site-schedule",
+          "locator": "PDF page 72 / EXHIBIT A GrowNYC Greenmarket Permit Locations, Days and Hours of Operation",
+          "effective_period": null,
+          "notice_id": null,
+          "notice_href": null,
+          "source_observation_ref": null,
+          "attribution_label": null,
+          "source_document_role": "site_schedule",
+          "content_hash": "sha256:0ec5d908a7a4dbe09ff52079cebd63756c054be39cc240c59a785cbb4209e4d8",
+          "public_url": "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf",
+          "publication_date": "2024-11-01"
+        },
+        "units": null,
+        "legacy_role": null,
+        "document_role": "proposed_agreement",
+        "source_document_role": "site_schedule",
+        "site_name": "Poe Park",
+        "schedule": {"day": "Tuesdays", "hours": "6AM to 5PM"},
+        "location_description": "Located on the south side of Poe Park, 192nd Street closed to traffic between Grand Concourse and Valentine."
+      },
+      "resolution": {"ok": false, "state": "unresolved", "geographies": [], "candidates": [], "reason": "no_result", "resident_accepted": false}
     }
   ]
 }
