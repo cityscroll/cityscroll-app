@@ -660,6 +660,7 @@
 /site/now_inspection_projection.mjs
 /site/now_surface.mjs
 /site/now_view.mjs
+/site/nycps_pep_calendar.mjs
 /site/oath_trial_calendar.mjs
 /site/oath_trial_observation.mjs
 /site/observer_calendar_occurrences.mjs
