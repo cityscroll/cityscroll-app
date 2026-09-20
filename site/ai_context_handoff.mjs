@@ -15,6 +15,11 @@ export const AI_CONTEXT_SETUP_PATH = "/use-with-ai/";
 export const AI_CONTEXT_MORE_TOOLS_LABEL = "More tools";
 export const AI_CONTEXT_RECORD_ACTION_LABEL = "Investigate with an assistant";
 export const AI_CONTEXT_SCOPE_ACTION_LABEL = "Investigate this search with an assistant";
+export const AI_CONTEXT_CONNECTION_PREREQUISITE = [
+  "Prerequisite: The CityScroll MCP connector must already be enabled in this conversation.",
+  "If the named MCP tool is unavailable, stop and report that the CityScroll connector is unavailable.",
+  "Do not substitute web search or invent a REST route.",
+].join("\n");
 
 const MAX_ID = 320;
 const MAX_ROUTE = 500;
@@ -694,7 +699,7 @@ export function parseAiContextHandoff(input) {
 
 export function formatAiContextTask(handoff) {
   if (!handoff || typeof handoff !== "object") return "";
-  const lines = [];
+  const lines = [AI_CONTEXT_CONNECTION_PREREQUISITE];
   lines.push("CityScroll public research task");
   lines.push(`MCP endpoint: ${handoff.endpoint || AI_ENDPOINT}`);
   if (handoff.support === "exact" && handoff.tools?.length) {
