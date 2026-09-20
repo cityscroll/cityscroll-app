@@ -3,7 +3,7 @@
   "contract_id": "cityscroll.browse_inspection_contract.v1",
   "record": "cityscroll-engineering/cc855a45ec2e1",
   "route": "contract:browse-inspection",
-  "revision": "ecd674bf17f99165551b9af67775dc7820f016c0",
+  "revision": "a85ed938e76101d0af417a0bee8612859f72d630",
   "fixture_vintage": "2026-09-16",
   "timezone": "America/New_York",
   "captured_at": "2026-09-16T22:10:00Z",
@@ -21,6 +21,8 @@
       "reject_undeclared",
       "reject_baseline_growth",
       "accept_directory_navigation",
+      "run_registered_journeys",
+      "verify_external_evidence_hashes",
       "record_assertions"
     ],
     "rendered_reference": {
@@ -32,7 +34,8 @@
         "narrow_touch",
         "keyboard",
         "no_javascript",
-        "failed_detail"
+        "failed_detail",
+        "reversed_response"
       ]
     }
   },
@@ -75,9 +78,25 @@
       "result": "accepted",
       "assertion": "Eight audited families and eight compact-calendar hosts are classified in the maintained inventory",
       "surface_count": 17,
-      "baseline_count": 1,
+      "baseline_count": 0,
       "compact_calendar_host_count": 8
+    },
+    {
+      "id": "registered-functional-journeys",
+      "result": "accepted",
+      "assertion": "Existing Browse, board-pivot, and Near You functional journeys are registered as owners for inspection, content, scope, failure, and no-script coverage",
+      "fixtures": [
+        "test/functional/30_browse_interaction_grammar.py",
+        "test/functional/33_community_board_pivot.py",
+        "test/functional/34_near_you_surface_switch.py"
+      ]
+    },
+    {
+      "id": "external-visual-evidence-hashes",
+      "result": "accepted",
+      "assertion": "The shared rendered journey evidence has route, viewport, fixture vintage, revision, and SHA-256 for every capture without committing image binaries",
+      "fixture": "docs/evidence/browse-return-context/manifest.json"
     }
   ],
-  "assertions_sha256": "8dce5c29a9cc3426d2725dad1fcef1de8cbb29d550ca6ce355cd4a3beb25dc26"
+  "assertions_sha256": "347ce722685c3080041f297adf6c8985f833d61d5dfeffe70ea5fbb0df6f350d"
 }
