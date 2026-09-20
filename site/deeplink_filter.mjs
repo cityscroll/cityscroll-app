@@ -7,6 +7,7 @@
  */
 
 import { normalizeCommunityBoardRef } from "./community_board_watch.mjs";
+import { canonicalMeetingAvailability } from "./meeting_availability_filter.mjs";
 
 // DEEPLINK_LENSES/deeplinkClampField/sanitizeDeepLinkFilter are a hand-synced client port of
 // worker/src/lib/filter.mjs's LENSES/clampField/sanitize -- same dual-implementation convention
@@ -21,7 +22,7 @@ const DEEPLINK_LENSES = {
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
   rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version", "activity", "body", "access"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version", "activity", "body", "access", "availability"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab", "entity_refs_all"],
   mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
@@ -134,6 +135,7 @@ function deeplinkClampField(name, v){
       return ["pdc_calendar", "bsa_calendar", "oath_trial_calendar"].includes(s) ? s : null;
     }
     case "access": return ["remote", "in_person", "unknown"].includes(v) ? v : null;
+    case "availability": return canonicalMeetingAvailability(v);
     case "processState": {
       // Hand-synced with worker/src/lib/filter.mjs + KNOWN_PROCUREMENT_PROCESS_STATES.
       const s=typeof v==="string"?v.trim().toLowerCase():"";
@@ -178,6 +180,7 @@ function sanitizeDeepLinkFilter(lens, input){
   if(!out.access) delete out.access;
   if(!out.procurement_id) delete out.procurement_id;
   if(!out.processState) delete out.processState;
+  if(!out.availability) delete out.availability;
   if(!out.provision_id) delete out.provision_id;
   if(!out.matter_ref) delete out.matter_ref;
   if(!out.matter_scope_version) delete out.matter_scope_version;
