@@ -1,0 +1,131 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "feature": "geography-navigation-shell-target-size-zoom",
+  "public_alias": "ced62a84f8213",
+  "capture_mode": "headless_playwright_local_fixture",
+  "repository_revision": "22bf224bdfde2212632b956db06cd18444884777",
+  "grounded_at": "22bf224bdfde2212632b956db06cd18444884777",
+  "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under docs/screenshots/ locally; only this manifest is committed.",
+  "route": "/near-you/",
+  "captures": [
+    {
+      "name": "shell-a4-zoom-200",
+      "route": "/near-you/",
+      "mode": "a4-fixture-zoom-200",
+      "viewport": {
+        "width": 720,
+        "height": 450
+      },
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; interactive target width and height measurements retained; A4: visible interactive targets measure at least 44x44px and 200% zoom keeps search, layer control, selection, and record continuation visible",
+      "sha256": "006b75794c376370967598293301e04b12d706789216eb4522dde52b195491a3",
+      "file": null,
+      "snapshot": {
+        "overflow_x": 0,
+        "target_size_summary": [
+          {
+            "name": "search input",
+            "selector": "#near-geo-search-input",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 405,
+            "min_height": 44
+          },
+          {
+            "name": "search submit",
+            "selector": ".near-geo-search button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 81,
+            "min_height": 44
+          },
+          {
+            "name": "Use my location",
+            "selector": "[data-use-location]",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 143,
+            "min_height": 44
+          },
+          {
+            "name": "layer controls",
+            "selector": ".near-geo-layer",
+            "count": 4,
+            "visible_count": 4,
+            "min_width": 92,
+            "min_height": 44
+          },
+          {
+            "name": "More boundaries",
+            "selector": ".near-geo-more-boundaries > summary",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 129,
+            "min_height": 44
+          },
+          {
+            "name": "surface controls",
+            "selector": ".near-surface-link",
+            "count": 2,
+            "visible_count": 2,
+            "min_width": 54,
+            "min_height": 44
+          },
+          {
+            "name": "area selection links",
+            "selector": "#near-area-list a",
+            "count": 197,
+            "visible_count": 197,
+            "min_width": 423,
+            "min_height": 44
+          },
+          {
+            "name": "map attribution disclosure",
+            "selector": ".maplibregl-ctrl-attrib-button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 44,
+            "min_height": 44
+          }
+        ],
+        "zoom": {
+          "scale": 2,
+          "css_viewport": {
+            "width": 720,
+            "height": 450
+          },
+          "required": [
+            {
+              "name": "search",
+              "selector": "#near-geo-search-input",
+              "count": 1,
+              "visible_count": 1
+            },
+            {
+              "name": "layer control",
+              "selector": "[data-geography-layer-switcher]",
+              "count": 1,
+              "visible_count": 1
+            },
+            {
+              "name": "selection",
+              "selector": "#near-area-list a",
+              "count": 197,
+              "visible_count": 197
+            },
+            {
+              "name": "record continuation",
+              "selector": "a[data-near-surface=\"records\"]",
+              "count": 1,
+              "visible_count": 1
+            }
+          ],
+          "overflow_x": 0
+        }
+      },
+      "revision": "22bf224bdfde2212632b956db06cd18444884777"
+    }
+  ],
+  "verifier": "python3 tools/capture_geography_navigation.py --case a4"
+}
