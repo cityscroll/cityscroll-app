@@ -1,0 +1,131 @@
+{
+  "schema": "cityscroll.board_position_primary_inspection_acceptance.v1",
+  "record": "cityscroll-engineering/ca399f0771f76",
+  "route": "/community-boards/brooklyn-cb-01/",
+  "revision": "a85ed938e76101d0af417a0bee8612859f72d630",
+  "grounded_at": "a85ed938e76101d0af417a0bee8612859f72d630",
+  "fixture_vintage": "2026-09-09T06:46:42.537Z",
+  "timezone": "America/New_York",
+  "viewport": [
+    1440,
+    900
+  ],
+  "viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "fixture": {
+    "board_id": "brooklyn-cb-01",
+    "source_artifact": "site/data/community_board_land_positions.json",
+    "source_publisher": "NYC Department of City Planning, Zoning Application Portal",
+    "source_dataset_id": "hgx4-8ukb",
+    "records": [
+      {
+        "project_id": "2024K0286",
+        "title": "200 Kent Avenue Rezoning",
+        "source_record_id": "987f36a1-43bb-f011-bbd2-001dd8089923"
+      },
+      {
+        "project_id": "2024K0358",
+        "title": "Monitor Point",
+        "source_record_id": "1ce1d2fb-c6da-f011-8544-001dd80c0373"
+      },
+      {
+        "project_id": "2025K0287",
+        "title": "Monitor Point - 56 Quay Demapping",
+        "source_record_id": "48eb31fc-b34b-f011-877a-001dd80d9613"
+      }
+    ]
+  },
+  "measurement_policy": "Assertions record the deterministic board-position fixtures and one headless rendered journey at both declared viewports. No participant evaluation or usability gain is claimed.",
+  "image_policy": "No image binaries are committed. The local capture remains ignored; its sha256 is recorded with each rendered observation.",
+  "journey": {
+    "id": "board-position-primary-inspection",
+    "sequence": [
+      "set_scope_or_view",
+      "inspect",
+      "dismiss",
+      "open_full_record",
+      "return_with_back",
+      "continue"
+    ],
+    "variants": [
+      "desktop",
+      "narrow_touch",
+      "keyboard",
+      "no_javascript",
+      "failed_detail"
+    ],
+    "rendered_reference": {
+      "route": "/community-boards/brooklyn-cb-01/",
+      "harness": "test/board_position_primary_inspection.test.mjs",
+      "assertion": "inspect the 200 Kent Avenue position in place, dismiss it, open the explicit project record, return with Back, and continue from the same board-position collection"
+    }
+  },
+  "captures": [
+    {
+      "route": "/community-boards/brooklyn-cb-01/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "revision": "a85ed938e76101d0af417a0bee8612859f72d630",
+      "fixture_vintage": "2026-09-09T06:46:42.537Z",
+      "assertion": "document.activeElement observed the originating inspect control before opening, the dialog close control after opening, and the originating control after Escape; the full-record href remained unchanged.",
+      "screenshot": ".artifacts/board-land-positions/board-position-primary-inspection-1440x900.png",
+      "screenshot_sha256": "1139f2d3d29294ba61193b29207f88b93ca76151c17d0457ee916b305d0eef24"
+    },
+    {
+      "route": "/community-boards/brooklyn-cb-01/",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "a85ed938e76101d0af417a0bee8612859f72d630",
+      "fixture_vintage": "2026-09-09T06:46:42.537Z",
+      "assertion": "the narrow rendered row preserved the inspect control, project identifier, and explicit full-record link in content order while the same focus and href observations held.",
+      "screenshot": ".artifacts/board-land-positions/board-position-primary-inspection-390x844.png",
+      "screenshot_sha256": "373ed2b757eb89fbea7528bf537abbb153de04ca09b29383fc4c3956bcbbbb03"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "a1-focus-round-trip",
+      "letter": "A1",
+      "result": "accepted",
+      "artifact": "test/board_position_primary_inspection.test.mjs",
+      "capture": "captures",
+      "assertion": "The 200 Kent Avenue primary control opens recommendation context in place, records focus inside the dialog and back on the originating control after Escape, and preserves the explicit project href."
+    },
+    {
+      "id": "a2-record-separation-and-advisory-boundary",
+      "letter": "A2",
+      "result": "accepted",
+      "artifact": "test/board_position_primary_inspection.test.mjs",
+      "fixture": "site/data/community_board_land_positions.json",
+      "assertion": "The ordered Brooklyn CB1 fixture list keeps Monitor Point and 56 Quay Demapping distinct by project id, title, href, and source record id, while advisory wording rejects final-approval language."
+    },
+    {
+      "id": "a3-positive-and-negative-fixtures",
+      "letter": "A3",
+      "result": "accepted",
+      "artifact": "test/board_position_primary_inspection.test.mjs",
+      "assertion": "The focused six-test family covers the positive inspection journey and explicit missing-tally and unavailable-detail negative fixtures without leaving a dead primary control."
+    },
+    {
+      "id": "a4-recorded-brooklyn-journey",
+      "letter": "A4",
+      "result": "accepted",
+      "artifact": "docs/evidence/board-position-primary-inspection/acceptance-manifest.json",
+      "fixture": "site/data/community_board_land_positions.json",
+      "assertion": "The executed applicable journey is recorded for the three Brooklyn CB1 source-snapshot records with revision, route, desktop and narrow viewport, fixture vintage, keyboard/failure fixture coverage, and sha256-linked rendered observations."
+    }
+  ],
+  "assertions_sha256": "81715412d48d6def5c8df4e2fc058d821ca8aedfa99ab0d8e9c1a864036d93b4"
+}
