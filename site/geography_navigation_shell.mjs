@@ -236,16 +236,28 @@ export function renderGeographyShellSurfaceSwitch({
   geo = null,
   recordsLabel = GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL,
   recordsCount = null,
+  compare = null,
+  lens = null,
+  drawer = null,
+  focus = null,
 } = {}) {
   const mapHref = geographyNavigationUrlFromState({
     ok: true,
     geo,
+    compare,
     surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+    lens,
+    drawer,
+    focus,
   }, { base: canonicalBase });
   const recordsHref = geographyNavigationUrlFromState({
     ok: true,
     geo,
+    compare,
     surface: GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
+    lens,
+    drawer,
+    focus,
   }, { base: canonicalBase });
   const recordsText = recordsCount == null
     ? recordsLabel

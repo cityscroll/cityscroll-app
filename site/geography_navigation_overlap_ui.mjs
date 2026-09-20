@@ -24,9 +24,11 @@ import {
   GEOGRAPHY_NAVIGATION_DRAWER_CLOSED,
   GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
   GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+  GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
   geographyNavigationUrlFromState,
 } from "./geography_navigation_state.mjs";
 import { BOUNDARIES_AT_LOCATION_HEADING } from "./geography_navigation_entry.mjs";
+import { GEOGRAPHY_RECORD_LENS_LABELS } from "./geography_navigation_records.mjs";
 
 /** Schema id avoids the private-terms geography+navigation fold. */
 export const RESIDENT_GEOGRAPHY_OVERLAP_SCHEMA = "cityscroll.resident_geography_overlap.v1";
@@ -252,6 +254,7 @@ export function filterRowsForCompare(rows, compareType) {
  * @param {string|null} [options.drawer]
  * @param {string|null} [options.focusToken] focus restore token for the invoker
  * @param {string|null} [options.recordsHref]
+ * @param {object|null} [options.recordLenses] exact keyed lens projections
  */
 export function buildSelectedGeographyOverlapViewModel({
   selected: selectedInput = null,
@@ -265,6 +268,7 @@ export function buildSelectedGeographyOverlapViewModel({
   drawer = GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
   focusToken = null,
   recordsHref = null,
+  recordLenses = null,
 } = {}) {
   const selected = normalizeSelected(selectedInput);
   if (!selected) {
@@ -446,6 +450,22 @@ export function buildSelectedGeographyOverlapViewModel({
     surface: "records",
   }, { base });
   const noun = selectionNoun(selected.type);
+  const recordLensRows = Object.entries(recordLenses || {})
+    .filter(([, projection]) => projection?.exact)
+    .map(([lens, projection]) => ({
+      lens,
+      label: GEOGRAPHY_RECORD_LENS_LABELS[lens] || lens,
+      count: projection.count,
+      href: geographyNavigationUrlFromState({
+        ok: true,
+        geo: `${selected.type}:${selected.id}`,
+        key: selected.key,
+        type: selected.type,
+        id: selected.id,
+        surface: GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
+        lens,
+      }, { base }),
+    }));
 
   return freezeDeep({
     schema: RESIDENT_GEOGRAPHY_OVERLAP_SCHEMA,
@@ -476,6 +496,7 @@ export function buildSelectedGeographyOverlapViewModel({
       label: `${OVERLAP_RECORDS_CONTINUATION_PREFIX} ${noun}`,
       href: continuationHref,
     },
+    record_lenses: Object.freeze(recordLensRows),
     drawer: drawer || GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
     focus_token: focusToken,
     hard_negatives: Object.freeze([
@@ -641,6 +662,12 @@ export function renderSelectedGeographyOverlapDrawerHtml(model, {
       ${pointHtml}
       ${areaHtml}
       ${detailsHtml}
+      ${(model.record_lenses || []).length
+        ? `<section class="near-geo-record-lenses" data-geography-record-lenses aria-labelledby="near-geo-record-lenses-heading">
+        <h3 id="near-geo-record-lenses-heading">Records in this ${esc(selected.selection_noun)}</h3>
+        <ul>${model.record_lenses.map((row) => `<li><a data-geography-record-lens="${esc(row.lens)}" href="${esc(row.href)}">${esc(row.label)}</a> <strong>${esc(row.count)}</strong></li>`).join("")}</ul>
+      </section>`
+        : ""}
       <p class="near-geo-overlap-continuation"><a data-geography-overlap-records href="${esc(model.continuation.href)}">${esc(model.continuation.label)}</a></p>
     </div>`;
 }

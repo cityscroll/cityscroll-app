@@ -12,13 +12,18 @@ import {
   normalizeScope,
   PLACE_ROLES,
   placeRoleSupportedForDomain,
-  routeHashFromScope,
-  scopeWithGeographies,
   watchFromScope,
 } from "./scope_v0.mjs";
 import { ACTION_LOCATION_BASIS_LABELS } from "./contract_action_location.mjs";
 import { civicGeographyKey } from "./civic_geography_registry.mjs";
 import { scopeWithPlace } from "./near_you_scope_runtime.mjs";
+import {
+  geographyKeyForScope,
+  geographyRecordProjection,
+  geographyRecordLenses,
+  recordIdsForScope,
+  scopeWithCanonicalGeography,
+} from "./geography_navigation_records.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
 import {
@@ -67,6 +72,7 @@ import {
   GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
   GEOGRAPHY_NAVIGATION_SURFACE_MAP,
   GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
+  geographyNavigationUrlFromState,
   parseGeographyNavigationState,
 } from "./geography_navigation_state.mjs";
 import {
@@ -196,24 +202,21 @@ function intersection(ids, allowed) {
 }
 
 function itemIdsForPlace(activity, lens, scope) {
-  const index = activity?.district_items;
-  const geographyKeys = scope.place.geographies || [];
-  if (geographyKeys.length) {
-    const sets = geographyKeys.map((key) => new Set(activity?.geography_items?.by_key?.[key]?.[lens] || []));
-    if (!sets.length) return [];
-    return [...sets[0]].filter((id) => sets.slice(1).every((set) => set.has(id))).sort();
-  }
-  const locationScope = scope.place.location_scope;
-  if (locationScope && index?.[locationScope]?.[lens]) return index[locationScope][lens];
-  const council = first(scope.place.council_districts);
-  if (council) return index?.by_level?.council_district?.[council]?.[lens] || [];
-  const community = first(scope.place.community_districts);
-  if (community) return index?.by_level?.community_district?.[community]?.[lens] || [];
-  const borough = first(scope.place.boroughs);
-  if (borough) return index?.by_level?.borough?.[borough]?.[lens] || [];
-  const located = [];
-  for (const name of BOROUGHS) located.push(...(index?.by_level?.borough?.[name]?.[lens] || []));
-  return [...new Set(located)];
+  return recordIdsForScope(activity, lens, scope).ids;
+}
+
+function geographyRecordProjectionForArea(activity, lens, scope, key, allowed) {
+  if (!activity?.geography_items) return { count: null, state: "unavailable" };
+  const projection = geographyRecordProjection(activity, { key, lens });
+  return {
+    count: projection.exact ? intersection(projection.ids, allowed).length : null,
+    state: projection.state,
+    href: nearYouUrlFromScope(scopeWithCanonicalGeography({
+      ...scope,
+      place: { ...scope.place, geographies: [key] },
+      facets: { ...scope.facets, domains: [lens] },
+    }), { base: "https://cityscroll.invalid/near-you" }),
+  };
 }
 
 function filteredActivity(activity, lens, allowed) {
@@ -245,6 +248,7 @@ function scopeForFeature(scope, feature) {
   const basis = scope.place.viewport?.basis || scope.facets.values?.basis || "performance";
   if (feature.level === "borough") {
     const next = scopeWithPlace(scope, { borough: feature.id });
+    next.place.geographies = [civicGeographyKey("borough", feature.id)].filter(Boolean);
     next.place.viewport = {
       level: "community_district",
       id: null,
@@ -256,6 +260,7 @@ function scopeForFeature(scope, feature) {
   }
   if (feature.level === "community_district") {
     const next = scopeWithPlace(scope, { communityDistrict: feature.id, borough: feature.parent });
+    next.place.geographies = [civicGeographyKey("community_district", feature.id)].filter(Boolean);
     next.place.viewport = {
       level: "community_district",
       id: feature.id,
@@ -266,6 +271,7 @@ function scopeForFeature(scope, feature) {
     return normalizeScope(next);
   }
   const next = scopeWithPlace(scope, { councilDistrict: feature.id });
+  next.place.geographies = [civicGeographyKey("council_district", feature.id)].filter(Boolean);
   next.place.viewport = {
     level: "council_district",
     id: feature.id,
@@ -401,7 +407,7 @@ function viewBoardCoverage(scope, geography) {
 }
 
 export function buildNearYouViewModel(inputScope, activity, boundaries, options = {}) {
-  const scope = scopeWithGeographies(inputScope);
+  const scope = scopeWithCanonicalGeography(inputScope);
   const isOverview = scope.facets.domains.length === 0;
   const requestedLens = first(scope.facets.domains) || "meetings";
   const lens = requestedLens;
@@ -425,7 +431,11 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   const allowed = new Set(Object.values(records)
     .filter((record) => recordMatches(record, scope, activity?.built_at))
     .map((record) => String(record.id)));
-  const scopedActivity = dataState === "ready" && mapped
+  const membershipProjection = dataState === "ready"
+    ? recordIdsForScope(activityRoot, lens, scope)
+    : { exact: false, ids: [], state: dataState === "pending" ? "unavailable" : "error" };
+  const localMembershipAvailable = dataState === "ready" && mapped && membershipProjection.exact;
+  const scopedActivity = localMembershipAvailable
     ? filteredActivity(activityRoot, lens, allowed)
     : null;
   const viewport = scope.place.viewport || {};
@@ -449,15 +459,17 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     ...feature,
     href: urlForScope(scopeForFeature(scope, feature)),
   }));
-  const resultIds = dataState === "ready" && mapped
-    ? intersection(itemIdsForPlace(activityRoot, lens, scope), allowed)
+  const resultIds = localMembershipAvailable
+    ? intersection(membershipProjection.ids, allowed)
     : [];
-  const resultCount = dataState === "ready" && mapped ? resultIds.length : null;
+  const resultCount = localMembershipAvailable ? resultIds.length : null;
   const mapState = dataState === "pending"
     ? "pending"
     : dataState === "error"
       ? "error"
-      : mapped
+      : !localMembershipAvailable && mapped
+        ? "unsupported"
+        : mapped
         ? resultCount > 0 ? "populated" : "empty"
         : "unsupported";
   const hasPlace = !!(scope.place.boroughs.length || scope.place.community_districts.length
@@ -512,6 +524,20 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     }
     : null;
   const overlapBase = `${String(canonicalBase || "/near-you").replace(/\/$/, "")}/`;
+  const selectedRecordsHref = selectedGeographyKey
+    ? geographyNavigationUrlFromState({
+      ok: true,
+      geo: `${overlapSelected.type}:${overlapSelected.id}`,
+      key: selectedGeographyKey,
+      type: overlapSelected.type,
+      id: overlapSelected.id,
+      compare: geographyState?.compare || null,
+      surface: GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
+      drawer: geographyState?.drawer || GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
+      focus: geographyState?.focus || null,
+      lens,
+    }, { base: canonicalBase })
+    : null;
   const crosswalkRowsProvided = Array.isArray(options.crosswalkRows);
   const crosswalkAvailable = crosswalkRowsProvided
     ? options.crosswalkAvailable !== false
@@ -528,6 +554,10 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       surface: shellSurface,
       drawer: geographyState?.drawer || GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
       focusToken: geographyState?.focus || null,
+      recordsHref: selectedRecordsHref,
+      recordLenses: selectedGeographyKey && activity?.geography_items
+        ? geographyRecordLenses(activity, selectedGeographyKey)
+        : null,
     })
     : null;
   const requestedPlaceRole = placeRoleSupportedForDomain(lens) && PLACE_ROLES.includes(scope.facets.values?.place_role)
@@ -656,7 +686,15 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       : defaultViewBox(),
     bags,
     activity: dataState === "ready" ? activityRoot : null,
-    browseHref: migratedSiteHref(`/${routeHashFromScope(scope, { surface: lens })}`),
+    browseHref: nearYouUrlFromScope(scope, { base: canonicalBase }),
+    membershipProjection,
+    geographyLensCounts: geographyKeyForScope(scope) && activity?.geography_items
+      ? geographyRecordLenses(activity, geographyKeyForScope(scope))
+      : Object.freeze({}),
+    navigationAreaCountsByKey: Object.fromEntries((navigationAreas || []).map((entry) => {
+      const projection = geographyRecordProjectionForArea(activity, lens, scope, entry.key, allowed);
+      return [entry.key, projection.count];
+    })),
     watchHref: watchHref(scope, lens, resultCount),
     shareHref: nearYouUrlFromScope(scope, { base: canonicalBase }),
     recoveryHref: options.recoveryHref || nearYouUrlFromScope(scope, { base: canonicalBase }),
@@ -799,15 +837,22 @@ export function renderNearYouDeferredParts(view) {
       : `No ${bag.label.toLowerCase()} records match these filters.`)}
   </details>`).join("");
   const resultCount = knownCount(view.results.count);
+  const noResultsCopy = view.mapState === "unsupported" && view.membershipProjection?.state === "unfilterable"
+    ? "This lens cannot be filtered to this exact area yet."
+    : view.mapState === "unsupported" && view.membershipProjection?.state === "incomplete"
+      ? "This area’s materialized records are incomplete."
+      : view.mapState === "unsupported" && view.membershipProjection?.state === "unavailable"
+        ? "This area’s materialized records are unavailable right now."
+        : undefined;
   const visibleResults = view.results.records.slice(0, INITIAL_RECORD_LIMIT);
   const moreResults = view.results.records.length > INITIAL_RECORD_LIMIT && resultCount != null
     ? `<p class="near-results-more"><a href="${esc(view.browseHref)}">Open all ${resultCount} matching records</a></p>`
     : "";
   const resultsHtml = `<section class="near-results" aria-labelledby="near-results-heading"${resultCount == null ? "" : ` data-results-count="${resultCount}"`} data-near-surface-panel="records">
       <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${resultCount == null ? `Matching ${esc(view.lensLabel)} records` : `${resultCount} ${esc(view.lensLabel)} records for these filters`}</h2></div></div>
-      ${recordList(visibleResults, view.mapState === "unsupported"
+      ${recordList(visibleResults, noResultsCopy || (view.mapState === "unsupported"
         ? `${esc(view.lensLabel)} records are not mapped here.`
-        : resultCount == null ? "Matching records are not available right now." : undefined)}
+        : resultCount == null ? "Matching records are not available right now." : undefined))}
       ${moreResults}
     </section>`;
   const bagsHtml = `<section class="near-bags" aria-labelledby="near-bags-heading">
@@ -884,10 +929,14 @@ function renderNearYouOverview(view) {
 function renderNearYouMapState(view) {
   const state = view.mapState;
   if (state === "unsupported") {
+    const membershipState = view.membershipProjection?.state;
+    const exactLocalFilterUnavailable = ["unfilterable", "unavailable", "incomplete"].includes(membershipState);
     return `<div class="near-coverage near-map-state" data-near-map-state="unsupported" role="note">
-      <strong>${esc(view.lensLabel)} records are not mapped here.</strong>
-      <p>This map does not have place data for this lens, so it will not imply that no civic activity exists.</p>
-      <a href="${esc(view.browseHref)}" data-near-recovery="unsupported">Open ${esc(view.lensLabel)} records</a>
+      <strong>${esc(exactLocalFilterUnavailable ? `${view.lensLabel} records are not available for this exact area filter.` : `${view.lensLabel} records are not mapped here.`)}</strong>
+      <p>${esc(exactLocalFilterUnavailable
+        ? "This lens has no exact local membership materialization here, so no local count or broader destination is shown."
+        : "This map does not have place data for this lens, so it will not imply that no civic activity exists.")}</p>
+      ${exactLocalFilterUnavailable ? "" : `<a href="${esc(view.browseHref)}" data-near-recovery="unsupported">Open ${esc(view.lensLabel)} records</a>`}
     </div>`;
   }
   if (state === "pending") {
@@ -918,6 +967,7 @@ function renderNearYouMapState(view) {
       activeType: view.activeGeographyLayer || "nta2020",
       base: view.canonicalBase || "/near-you/",
       surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+      countsByKey: view.navigationAreaCountsByKey,
     })
     : `<div class="near-area-panel" id="near-area-list">
           <h3>Areas</h3>
@@ -1019,16 +1069,29 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       facets: { ...view.scope.facets, domains: [lens] },
     });
     const current = lens === view.lens;
+    const projection = view.geographyLensCounts?.[lens] || null;
+    const exact = projection?.exact === true;
+    const availableCount = current ? view.results.count : exact ? projection.count : null;
+    const exactHref = exact
+      ? nearYouUrlFromScope(normalizeScope({
+        ...view.scope,
+        facets: { ...view.scope.facets, domains: [lens] },
+      }), { base: view.canonicalBase })
+      : null;
     return {
       id: lens,
       label,
       kicker: current ? "Current records" : label,
       description: current
         ? "Open these records and follow their links."
-        : "No count for this family here.",
-      status: current ? (view.mapped ? "available" : "unknown") : "unknown",
-      count: current ? view.results.count : null,
-      href: walkEntryHref(nearYouUrlFromScope(nextScope, { base: view.canonicalBase }), {
+        : exact
+          ? "Open the records materialized for this place."
+          : "This lens has no exact local filter here.",
+      status: current
+        ? (view.mapped && view.results.count != null ? "available" : "unknown")
+        : exact ? (projection.count > 0 ? "available" : "empty") : "unsupported",
+      count: availableCount,
+      href: walkEntryHref(exactHref || (current ? nearYouUrlFromScope(nextScope, { base: view.canonicalBase }) : ""), {
         source: "near_you",
         query: walkQuery,
         place: view.scope,
@@ -1105,6 +1168,11 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       surface: shellSurface,
       recordsLabel: knownCount(view.results.count) == null ? "Browse records" : "Browse records",
       recordsCount: knownCount(view.results.count),
+      geo: view.geographyState?.geo || view.overlapModel?.selected?.key?.replace(/^geography:/, "") || null,
+      compare: view.geographyState?.compare || null,
+      lens: view.lens,
+      drawer: view.geographyState?.drawer || null,
+      focus: view.geographyState?.focus || null,
     })
     : "";
   // Unselected entry already includes the surface switch; selected routes add one here.
