@@ -74,6 +74,7 @@ import procurementPlaceFactsMaterialization from "./data/procurement_place_facts
 import procurementContractSubstanceMaterialization from "./data/procurement_contract_substance.json" with { type: "json" };
 import procurementContractSubstanceAccessMaterialization from "./data/procurement_contract_substance_access.json" with { type: "json" };
 import procurementContractServiceGeographyMaterialization from "./data/procurement_contract_service_geography.json" with { type: "json" };
+import procurementContractRoleCorpusMaterialization from "./data/procurement_contract_substance_role_corpus.json" with { type: "json" };
 import {
   buildContractSubstanceView,
   renderContractSubstanceAccessNoteHtml,
@@ -613,6 +614,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
   contractSubstanceMaterialization = procurementContractSubstanceMaterialization,
   contractSubstanceAccessMaterialization = procurementContractSubstanceAccessMaterialization,
   contractServiceGeographyMaterialization = procurementContractServiceGeographyMaterialization,
+  contractRoleCorpusMaterialization = procurementContractRoleCorpusMaterialization,
 } = {}) {
   const id = clean(object?.procurement_id, 320);
   if (!id.startsWith("procurement:")) return null;
@@ -724,6 +726,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
     substance: contractSubstanceMaterialization,
     access: contractSubstanceAccessMaterialization,
     serviceGeography: contractServiceGeographyMaterialization,
+    roleCorpus: contractRoleCorpusMaterialization,
     contractIds: substanceContractIds(object),
     authorizedTotal: numericAmount(facts.currentAmount) ?? numericAmount(facts.amount),
     paidTotal: paymentSummary.paidAmount,

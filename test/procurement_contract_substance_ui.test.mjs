@@ -36,6 +36,10 @@ const MATERIALIZED_SERVICE_GEOGRAPHY = JSON.parse(readFileSync(
   new URL("../site/data/procurement_contract_service_geography.json", import.meta.url),
   "utf8",
 ));
+const MATERIALIZED_ROLE_CORPUS = JSON.parse(readFileSync(
+  new URL("../site/data/procurement_contract_substance_role_corpus.json", import.meta.url),
+  "utf8",
+));
 const PARITY_FIXTURE = JSON.parse(readFileSync(
   new URL("./fixtures/procurement-detail-parity/ct107120258801626.json", import.meta.url),
   "utf8",
@@ -591,4 +595,68 @@ test("solicitation obligations never gain promise standing through the view alon
   const section = sectionHtml(renderContractSubstanceHtml(view));
   assert.doesNotMatch(section, new RegExp(RESIDENT_VENDOR_PROMISE_LABEL));
   assert.doesNotMatch(section, /monthly staffing reports/);
+});
+
+test("real role corpus renders DocGo audit evidence with its source role and observed receipt", () => {
+  const view = buildContractSubstanceView({
+    roleCorpus: MATERIALIZED_ROLE_CORPUS,
+    contractIds: ["CT180620248801671"],
+    authorizedTotal: 432000000,
+    paidTotal: 123456789,
+    paidAsOf: "2026-09-09",
+  });
+  const html = renderContractSubstanceHtml(view);
+  assert.match(html, /Comptroller audit reports/);
+  assert.match(html, /Comptroller audit/);
+  assert.match(html, /The audit reports these contract terms/);
+  assert.match(html, /audit-of-the-department-of-housing-preservation-and-development/);
+  assert.match(html, /data-observed-authorized-total="\$432,000,000"/);
+  assert.match(html, /data-observed-paid-total="\$123,456,789"/);
+  assert.match(html, /data-observation-vintage="2026-09-19T12:00:00.000Z"/);
+  assert.match(html, /Public source evidence/);
+  assert.doesNotMatch(html, /What this contract requires|contract requires/i);
+  assert.doesNotMatch(html, new RegExp(RESIDENT_VENDOR_PROMISE_LABEL));
+});
+
+test("real role corpus keeps DCAS offers and GrowNYC terms in explicit non-executed groups", () => {
+  const dcas = renderContractSubstanceHtml(buildContractSubstanceView({
+    roleCorpus: MATERIALIZED_ROLE_CORPUS,
+    contractIds: ["BID2000090"],
+  }));
+  assert.match(dcas, /DCAS bid offers/);
+  assert.match(dcas, /Bid offer/);
+  assert.match(dcas, /href="https:\/\/www\.nyc\.gov\/assets\/dcas\/downloads\/pdf\/business\/bidtabs\/2000090\.pdf"/);
+  assert.doesNotMatch(dcas, /What this contract requires|contract requires/i);
+  assert.doesNotMatch(dcas, new RegExp(RESIDENT_VENDOR_PROMISE_LABEL));
+
+  const mocs = renderContractSubstanceHtml(buildContractSubstanceView({
+    roleCorpus: MATERIALIZED_ROLE_CORPUS,
+    contractIds: ["MOCS-FCRC-202411-GROWNYC"],
+  }));
+  assert.match(mocs, /GrowNYC proposed agreement terms/);
+  assert.match(mocs, /Proposed agreement term/);
+  assert.match(mocs, /PublicMeetingDocuments_202411\.pdf/);
+  assert.match(mocs, /Joyce Kilmer Park/);
+  assert.doesNotMatch(mocs, /What this contract requires|contract requires/i);
+  assert.doesNotMatch(mocs, new RegExp(RESIDENT_VENDOR_PROMISE_LABEL));
+});
+
+test("BHRAGS notice context keeps units and notice attribution without contractual standing", () => {
+  const view = buildContractSubstanceView({
+    serviceGeography: MATERIALIZED_SERVICE_GEOGRAPHY,
+    contractIds: [BHRAGS],
+  });
+  const html = renderContractSubstanceHtml(view);
+  assert.match(html, /3218 Emmons Avenue, Brooklyn · 60 units/);
+  assert.match(html, /Notice-attributed facility context/);
+  assert.match(html, /href="\/notices\/20240829105"/);
+  assert.doesNotMatch(html, /contractual deliverable|What the vendor promised/);
+});
+
+test("role corpus requires the exact canonical contract id and refuses unrelated documents", () => {
+  const unrelated = buildContractSubstanceView({
+    roleCorpus: MATERIALIZED_ROLE_CORPUS,
+    contractIds: ["CT999900000000009"],
+  });
+  assert.equal(unrelated, null);
 });
