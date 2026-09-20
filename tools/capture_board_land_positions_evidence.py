@@ -58,7 +58,9 @@ VIEWPORTS = [(390, 844), (1440, 900)]
 MIN_TARGET_PX = 24
 
 SECTION = "#board-land-positions"
-PROJECT_LINK = "#board-land-positions a.board-land-position-link"
+STATIC_PROJECT_LINK = "#board-land-positions a.board-land-position-link"
+FULL_RECORD_LINK = "#board-land-positions a.board-land-position-full-record"
+PROJECT_DESTINATIONS = f"{STATIC_PROJECT_LINK}, {FULL_RECORD_LINK}"
 INSPECT = "#board-land-positions button.board-land-position-inspect"
 DIALOG = "#board-land-position-inspect"
 DIALOG_CLOSE = "#board-land-position-inspect [data-board-land-position-close]"
@@ -210,7 +212,7 @@ def section_observation(page) -> dict:
         "nodes => [...new Set(nodes.map((node) => node.getAttribute('data-recorded-on')))]",
     ) if present else []
     hrefs = page.eval_on_selector_all(
-        PROJECT_LINK, "nodes => nodes.map((node) => node.getAttribute('href'))",
+        PROJECT_DESTINATIONS, "nodes => nodes.map((node) => node.getAttribute('href'))",
     ) if present else []
     return {
         "section_present": present,
@@ -239,9 +241,9 @@ def capture_boards(browser, base, rev, vintage, receipts):
             page = context.new_page()
             page.goto(f"{base}{route}", wait_until="load")
             observed = section_observation(page)
-            observed["links"] = page.evaluate(LINK_PROBE, PROJECT_LINK)
+            observed["links"] = page.evaluate(LINK_PROBE, FULL_RECORD_LINK)
             observed["inspect_controls"] = page.evaluate(BUTTON_PROBE, INSPECT)
-            observed["smallest_target_px"] = page.evaluate(TARGET_PROBE, f"{PROJECT_LINK}, {INSPECT}")
+            observed["smallest_target_px"] = page.evaluate(TARGET_PROBE, f"{FULL_RECORD_LINK}, {INSPECT}")
             text = page.evaluate(SECTION_TEXT, SECTION)
             shot = OUT / f"{case}-{width}x{height}.png"
             page.screenshot(path=str(shot), full_page=True)
@@ -270,7 +272,7 @@ def capture_boards(browser, base, rev, vintage, receipts):
         page = context.new_page()
         page.goto(f"{base}{route}", wait_until="load")
         observed = section_observation(page)
-        observed["links"] = page.evaluate(LINK_PROBE, PROJECT_LINK)
+        observed["links"] = page.evaluate(LINK_PROBE, STATIC_PROJECT_LINK)
         observed["inspect_controls"] = page.evaluate(BUTTON_PROBE, INSPECT) \
             if observed["section_present"] else None
         text = page.evaluate(SECTION_TEXT, SECTION)
@@ -331,7 +333,7 @@ def capture_inspect_journey(browser, base, rev, vintage, receipts):
         observed["scroll_after_dismiss"] = page.evaluate("() => Math.round(window.scrollY)")
         observed["rows_after_dismiss"] = page.locator(f"{SECTION} li.board-land-position").count()
 
-        link = page.locator(f'{SECTION} a[href="/browse/zoning/#land/{POSITIVE_PROJECT}"]').first
+        link = page.locator(f'{FULL_RECORD_LINK}[href="/browse/zoning/#land/{POSITIVE_PROJECT}"]').first
         link.scroll_into_view_if_needed()
         before_leaving = page.evaluate("() => Math.round(window.scrollY)")
         link.click()
@@ -450,7 +452,7 @@ def capture_fixtures(browser, base, manifest, rev, vintage, receipts):
             "heading": section.locator("h2").inner_text() if present else None,
             "direction": section.get_attribute("dir") if present else None,
             "language": section.get_attribute("lang") if present else None,
-            "project_links": page.locator(PROJECT_LINK).count(),
+            "project_links": page.locator(STATIC_PROJECT_LINK).count(),
             "no_horizontal_overflow": page.evaluate(OVERFLOW_PROBE),
             "unresolved_key_rendered": "cblp_" in text,
         }

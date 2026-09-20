@@ -155,15 +155,15 @@ export const BROWSE_INSPECTION_SURFACES = Object.freeze([
     family: "community_board",
     kind: "collection",
     primary_intent: "inspect",
-    classification: "legacy",
+    classification: "conforming",
     domain_adapter: "site/community_board_land_positions.mjs",
     render_owner: "site/community_board_land_positions.mjs",
     canonical_destination_policy: "explicit_full_record_link",
     detail_host: "inline_detail",
     detail_host_module: "site/community_board_land_positions.mjs",
     restoration_adapter: "site/browse_return_context.mjs",
-    journey_owner: "test/browse_inspection_contract.test.mjs",
-    baseline_id: "board-position-title-navigates",
+    journey_owner: "test/board_position_primary_inspection.test.mjs",
+    baseline_id: null,
     route: "/community-boards/brooklyn-cb-01/",
   }),
   freezeSurface({
@@ -384,19 +384,7 @@ export const BROWSE_INSPECTION_SURFACES = Object.freeze([
  * Fingerprinted legacy baseline. Entries may only be removed once their marker
  * no longer appears in the named source. New entries are rejected.
  */
-export const BROWSE_INSPECTION_LEGACY_BASELINE = Object.freeze([
-  Object.freeze({
-    id: "board-position-title-navigates",
-    path: "site/community_board_land_positions.mjs",
-    marker: "positionMarkup",
-    reason:
-      "Board land positions keep rich inspection behind a secondary control while the project title navigates away.",
-    fingerprint: null,
-  }),
-].map((entry) => Object.freeze({
-  ...entry,
-  fingerprint: baselineEntryFingerprint(entry),
-})));
+export const BROWSE_INSPECTION_LEGACY_BASELINE = Object.freeze([]);
 
 export const BROWSE_INSPECTION_JOURNEY = Object.freeze({
   id: "browse-inspection-contract-enforcement",

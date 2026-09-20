@@ -15,18 +15,19 @@
  * `warehouse/lib/community_board_land_positions.mjs`). No page reads the
  * publisher, and every board reads the same population.
  *
- * Two affordances per row, with two different meanings, following the same
+ * Three affordances per row, with three different meanings, following the same
  * grammar the rendered documents already use for calendar events:
  *
  *  - the project title is a real anchor to that project's own page. It works
  *    with scripting off, under a modified click and through the context menu,
  *    because nothing here intercepts it.
- *  - a sibling native button element inspects the recorded position in place.
- *    It opens nothing but a bounded summary of one record: no navigation, no
- *    subscription, no request of any kind. It stays invisible until the boot
- *    module marks the section ready, so a reader without scripting is never
- *    offered an affordance that would not work for them, and the same facts are
- *    already written into the row for them to read.
+ *  - once enhanced, a title-sized sibling native button is the primary
+ *    inspection control. It opens nothing but a bounded summary of one
+ *    record: no navigation, no subscription, no request of any kind.
+ *  - a separately named project link remains beside that button. It is hidden
+ *    until the boot module marks the section ready; before then the ordinary
+ *    title link is the static fallback. That leaves a reader without
+ *    scripting with a working destination and no dead inspection affordance.
  *
  * The copy is bounded by what the source actually holds. A board position is
  * advisory and the section says so; a recorded tally is the vote on the board's
@@ -787,11 +788,12 @@ function positionMarkup(position, t, lang) {
     + `<div class="node-record-main">`
     + `<a class="ui-constellation-link board-land-position-link" href="${esc(position.href)}">`
     + `<strong lang="en" dir="ltr">${esc(position.title)}</strong></a> `
-    + `<span class="board-land-position-id" lang="en" dir="ltr">${esc(position.project_id)}</span>`
     + `<button class="board-land-position-inspect" type="button"`
     + ` ${COMMUNITY_BOARD_LAND_POSITIONS_ATTRIBUTE}="${esc(payload)}"`
     + ` data-board-land-position-id="${esc(position.project_id)}"`
-    + ` aria-label="${esc(inspectLabel)}">${esc(t("cblp_inspect"))}</button>`
+    + ` aria-label="${esc(inspectLabel)}"><strong lang="en" dir="ltr">${esc(position.title)}</strong></button>`
+    + `<span class="board-land-position-id" lang="en" dir="ltr">${esc(position.project_id)}</span>`
+    + `<a class="ui-constellation-link board-land-position-full-record" href="${esc(position.href)}">${esc(t("cblp_open_project"))}</a>`
     + `</div>`
     + `<span class="muted node-muted">${facts.map((fact) => `<span class="${fact.className}">${fact.html}</span>`).join(" · ")}</span>`
     + waiver
@@ -829,7 +831,7 @@ function sectionAttrs(view, langAttrs, extra = {}) {
  * Every destination is a plain anchor to the site's canonical project route, so
  * a modified click, a middle click and the browser's own history behave the way
  * they do anywhere else. The inspect control is a native button beside that
- * anchor, never inside it, and it is hidden until the boot module marks the
+ * anchors, never inside one, and it is hidden until the boot module marks the
  * section ready.
  */
 export function renderCommunityBoardLandPositionsSection(view, options = {}) {
