@@ -113,7 +113,6 @@ import { evaluateAdmittedTextQueryWatch } from "./lib/evaluate_watch_text_query.
 import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
-import { enrollAndWelcome } from "./subscribe.mjs";
 import { overSurfaceCap, overActorLimit } from "./lib/meter.mjs";
 import {
   filterToolsForProfile,
@@ -563,6 +562,7 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
     }
     case "create_watch": {
       if (!env.TOKEN_SECRET || !env.RESEND_API_KEY || !env.SUBS) return toolError("Watch creation isn't configured on this deployment.");
+      const { enrollAndWelcome } = await import("./subscribe.mjs");
       const email = String(args.email || "").trim();
       const lens = String(args.lens || "");
       if (!isValidEmail(email)) return toolError("A valid email address is required.");
