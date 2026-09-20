@@ -39,8 +39,9 @@ function sessionDateMatch(text) {
   const timed = new RegExp(`${WEEKDAY_PREFIX}${MONTH_DAY_YEAR}(?=\\s*,?\\s*${CLOCK_TIME})`, "gi");
   for (const match of cleaned.matchAll(timed)) {
     const prefix = cleaned.slice(Math.max(0, match.index - 48), match.index);
-    if (/Notice\s+published\b/i.test(prefix)) continue;
-    return match;
+    if (/Notice\s+published\b[^.;]*$/i.test(prefix)) continue;
+    const clock = cleaned.slice(match.index + match[0].length).match(new RegExp(`^\\s*,?\\s*(${CLOCK_TIME})`, "i"));
+    return { date_text: match[0], index: match.index, session_clock: clock?.[1]?.trim() || null };
   }
   const bare = new RegExp(`${WEEKDAY_PREFIX}${MONTH_DAY_YEAR}`, "gi");
   for (const match of cleaned.matchAll(bare)) {
@@ -49,9 +50,21 @@ function sessionDateMatch(text) {
     if (/Notice\s+published\b/i.test(prefix)) continue;
     if (/22\s+READE\s+STREET/i.test(suffix)) continue;
     if (/^\s*\d+\s*\/\s*\d+\b/.test(suffix)) continue;
-    return match;
+    return { date_text: match[0], index: match.index, session_clock: null };
   }
   return null;
+}
+
+function normalizeClock(value) {
+  const normalized = clean(value);
+  if (/^\d{2}:\d{2}:\d{2}$/.test(normalized)) return normalized;
+  const match = normalized.replace(/\./g, "").match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return null;
+  let hour = Number(match[1]);
+  if (match[3].toUpperCase() === "AM" && hour === 12) hour = 0;
+  if (match[3].toUpperCase() === "PM" && hour < 12) hour += 12;
+  if (hour > 23 || Number(match[2]) > 59) return null;
+  return `${String(hour).padStart(2, "0")}:${match[2]}:00`;
 }
 
 function sectionRole(value) {
@@ -112,12 +125,17 @@ export function parseBsaAgendaPages({ pages = [], notice = {}, publication_date 
     const text = clean(rawText);
     const match = sessionDateMatch(rawText);
     if (match) {
-      const date = dateFromHeading(match[0]);
+      const date = dateFromHeading(match.date_text);
       if (date && !sections.some((section) => section.date === date)) {
-        active = { date, text: "", pages: [], source_span: { page: page.page || page.number || null, start: match.index, end: text.length }, source_url: page.source_url || null };
+        active = { date, text: "", pages: [], date_phrase: clean(match.date_text), start_time: normalizeClock(match.session_clock), time_phrase: match.session_clock, source_span: { page: page.page || page.number || null, start: match.index, end: text.length }, source_url: page.source_url || null };
         sections.push(active);
       } else {
         active = sections.find((section) => section.date === date) || active;
+        if (active && !active.start_time) {
+          active.date_phrase = clean(match.date_text);
+          active.start_time = normalizeClock(match.session_clock);
+          active.time_phrase = match.session_clock;
+        }
       }
     }
     if (active) {
@@ -136,6 +154,9 @@ export function parseBsaAgendaPages({ pages = [], notice = {}, publication_date 
     return buildBsaSession({
       session_id: `bsa-${section.date}`,
       date: section.date,
+      date_phrase: section.date_phrase,
+      start_time: section.start_time,
+      time_phrase: section.time_phrase,
       source_url: section.source_url || notice.agenda_url || BSA_AGENDA_DOCUMENT_URL,
       remote_registration_url: registration,
       notice,
@@ -152,14 +173,22 @@ function pageRegistration(pages, date) {
   return page?.remote_registration_url || null;
 }
 
-export function buildBsaSession({ session_id, date, source_url, remote_registration_url, notice = {}, items = [], source_span = null, publication_date = null, sequence = null } = {}) {
+export function buildBsaSession({ session_id, date, date_phrase = null, start_time = null, time_phrase = null, source_url, remote_registration_url, notice = {}, items = [], source_span = null, publication_date = null, sequence = null } = {}) {
   const phases = [
     { id: `${session_id}:executive-review`, kind: "executive_review", state: "observation", access: "watch" },
     { id: `${session_id}:public-hearing`, kind: "public_hearing", state: "applicant_response_and_public_testimony", access: "register_to_testify" },
   ];
+  const clock = normalizeClock(start_time);
+  const eventDate = clock ? `${date}T${clock}` : date;
+  const timeEvidence = clock && source_url ? {
+    locator: { type: "agenda_session_header", date, time: time_phrase || start_time },
+    excerpt: `${date_phrase || date}${time_phrase ? `, ${time_phrase}` : ` ${start_time}`}`,
+    source_url,
+  } : null;
   const row = normalizeBsaCalendarMeeting({
     bsa_session_id: session_id,
-    event_date: `${date}T10:00:00`,
+    event_date: eventDate,
+    temporal_basis: clock ? "publisher_document" : null,
     title: `Board of Standards and Appeals hearing — ${date}`,
     source_url,
     agenda_url: source_url,
@@ -174,7 +203,7 @@ export function buildBsaSession({ session_id, date, source_url, remote_registrat
     source_receipt: { schema: "cityscroll.document_processing_receipt.v1", status: "ok", parser: "bsa_agenda_sections_v1", publication_date, source_url },
     provenance: { basis: "explicit_dated_agenda_section", source_span },
   });
-  return { ...row, schema: BSA_CALENDAR_SCHEMA, sequence, source_span, publication_date, agenda_items: items, phases, notice_id: notice.request_id || null, source_url, remote_registration_url };
+  return { ...row, schema: BSA_CALENDAR_SCHEMA, sequence, source_span, publication_date, agenda_items: items, phases, notice_id: notice.request_id || null, source_url, remote_registration_url, ...(timeEvidence ? { source_entry_evidence: timeEvidence } : {}) };
 }
 
 export { bsaCalendarOccurrences } from "./observer_calendar_occurrences.mjs";
