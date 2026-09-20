@@ -41,6 +41,11 @@ import {
 } from "../capabilities/evidence_classification.mjs";
 import { CONTRACT_AVAILABILITY } from "../capabilities/contracts.mjs";
 import { LAND_PROJECT_AVAILABILITY } from "../capabilities/land_projects.mjs";
+import {
+  NOTICE_GET_CAPABILITY_REFERENCE,
+  buildNoticeCitation,
+  validateNoticeGetOutput,
+} from "../capabilities/notice_get.mjs";
 
 const ROOT = resolve(import.meta.dirname, "..");
 const CANARY_SOURCE_PATH = resolve(ROOT, "tools/verify_live_remote_mcp_canary.mjs");
@@ -153,6 +158,52 @@ test("A4: discovery reads target registered public read tools with a closed avai
   }
   assert.deepEqual([...CONTRACT_AVAILABILITY], ["available", "not_yet_public", "unavailable"]);
   assert.deepEqual([...LAND_PROJECT_AVAILABILITY], ["available", "not_yet_public", "unavailable"]);
+});
+
+// Local half of the notice-citation canary: keep the exact specimen and the
+// deliberate miss fixture runnable without public DNS. The live branch below
+// repeats these same assertions against tools/call and retains its receipt;
+// this fixture closes the gap where a green offline sweep could otherwise
+// leave the citation and null-absence checks entirely unexecuted.
+test("A5: notice citation and missing-notice assertions run against fixtures (local half)", () => {
+  const requestId = "20260824035";
+  const available = {
+    capability_reference: NOTICE_GET_CAPABILITY_REFERENCE,
+    availability: "available",
+    notice: {
+      request_id: requestId,
+      start_date: "2026-08-28T00:00:00.000",
+    },
+    source: "materialized",
+    generated_at: "2026-08-28T11:00:00.000Z",
+    stale: false,
+    citation: buildNoticeCitation({
+      request_id: requestId,
+      start_date: "2026-08-28T00:00:00.000",
+    }, requestId),
+    error: null,
+  };
+  assert.deepEqual(available.citation, {
+    schema: "cityscroll.notice_get.citation.v1",
+    publisher: "NYC City Record",
+    request_id: requestId,
+    publication_date: "2026-08-28",
+    cityscroll_url: "https://cityscroll.org/notices/20260824035/",
+    official_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260824035",
+  });
+  assert.deepEqual(validateNoticeGetOutput(available, { requestId }), available);
+
+  const missing = {
+    capability_reference: NOTICE_GET_CAPABILITY_REFERENCE,
+    availability: "not_yet_public",
+    notice: null,
+    source: "public-source",
+    generated_at: null,
+    stale: null,
+    citation: null,
+    error: "not-found",
+  };
+  assert.deepEqual(validateNoticeGetOutput(missing, { requestId: "cs10-canary-missing" }), missing);
 });
 
 if (process.env.CS10_SKIP_LIVE_CANARY) {
