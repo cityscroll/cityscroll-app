@@ -52,7 +52,7 @@ test("A1 · the credential maps to a stable profile id and an exact allowlist", 
 
   // The allowlist is an exact literal, not a runtime filter over the registry.
   assert.ok(Array.isArray(PROFILE.allowlist));
-  assert.equal(PROFILE.allowlist.length, 16);
+  assert.equal(PROFILE.allowlist.length, 17);
   assert.equal(new Set(PROFILE.allowlist).size, PROFILE.allowlist.length);
 
   // ...and it is exactly the registered public-read set plus the endpoint's own

@@ -1,0 +1,159 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "from": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Inclusive meeting date lower bound."
+    },
+    "date_from": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Alias for from."
+    },
+    "to": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Inclusive meeting date upper bound."
+    },
+    "date_to": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Alias for to."
+    },
+    "availability": {
+      "type": "object",
+      "description": "Canonical local civil-time window union; invalid zones or windows are rejected."
+    },
+    "attendance_modes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "in_person",
+          "remote",
+          "watch_only",
+          "hybrid",
+          "not_stated"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "attendance": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "in_person",
+          "remote",
+          "watch_only",
+          "hybrid",
+          "not_stated"
+        ]
+      },
+      "uniqueItems": true,
+      "description": "Alias for attendance_modes."
+    },
+    "activity": {
+      "type": "string",
+      "enum": [
+        "observe",
+        "attend",
+        "speak"
+      ]
+    },
+    "speaking_rights": {
+      "type": "string",
+      "enum": [
+        "allowed",
+        "not_allowed",
+        "requires_registration",
+        "unknown"
+      ]
+    },
+    "observer_access": {
+      "type": "string",
+      "enum": [
+        "remote",
+        "in_person",
+        "watch_only",
+        "unknown"
+      ]
+    },
+    "source_contract_id": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "source_system": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "institution": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "body": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "agency": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "community_board": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "geography": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "place_scope": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Alias for geography."
+    },
+    "query": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "text_query": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "Alias for query."
+    },
+    "status": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 25
+    },
+    "cursor": {
+      "type": "string",
+      "maxLength": 512,
+      "description": "Opaque cursor returned by the previous page; repeat the same filters."
+    },
+    "identifier_path": {
+      "type": "string",
+      "maxLength": 1024,
+      "description": "JSON Pointer to the identifier array named by a continuation."
+    },
+    "identifier_offset": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+    },
+    "identifier_limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 10,
+      "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
+    }
+  }
+}

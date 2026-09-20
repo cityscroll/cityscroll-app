@@ -1,0 +1,83 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "capability_reference",
+    "availability",
+    "results",
+    "total_matches",
+    "pagination",
+    "filters",
+    "applied_filters",
+    "coverage",
+    "freshness",
+    "error"
+  ],
+  "properties": {
+    "capability_reference": {
+      "type": "string",
+      "const": "meetings.browse@1"
+    },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "empty",
+        "unavailable"
+      ]
+    },
+    "results": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "maxItems": 100,
+      "items": {
+        "type": "object"
+      }
+    },
+    "total_matches": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "pagination": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "filters": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "applied_filters": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "coverage": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "freshness": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

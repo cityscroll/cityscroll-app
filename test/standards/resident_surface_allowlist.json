@@ -34,6 +34,7 @@
         "request_id",
         "browse_organizations",
         "browse_contracts",
+        "browse_meetings",
         "retrieve_cited_passages",
         "search_federated",
         "search_notices"

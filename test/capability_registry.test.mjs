@@ -108,7 +108,7 @@ const API_CATALOG = new URL("../site/data/api_capability_catalog.json", import.m
 
 test("the registry is frozen, versioned, owned, and contains the federated search capability", () => {
   assert.equal(validateCapabilityRegistry(CAPABILITY_REGISTRY), CAPABILITY_REGISTRY);
-  assert.equal(CAPABILITY_REGISTRY.length, 15);
+  assert.equal(CAPABILITY_REGISTRY.length, 16);
   assert.equal(CAPABILITY_REGISTRY[0], NOTICE_SEARCH_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[1], NOTICE_GET_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[2], ENTITY_DOSSIER_CAPABILITY);
@@ -389,6 +389,7 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "land.project.get@1",
     "land.projects.browse@1",
     "land.decision_path.get@1",
+    "meetings.browse@1",
   ]);
   assert.deepEqual(catalog.tools.map(({ name }) => name), [
     "search_federated",
@@ -403,6 +404,7 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "get_person_or_organization",
     "browse_organizations",
     "get_meeting",
+    "browse_meetings",
     "get_land_project",
     "browse_land_projects",
     "get_land_decision_path",
@@ -437,7 +439,7 @@ test("topology and public MCP catalog are deterministic and committed", () => {
   const embeddedCatalog = renderedApi.match(/<script type="application\/json" id="api-capability-catalog">([\s\S]*)<\/script>/);
   assert.ok(embeddedCatalog, "generated API page must embed its machine-readable catalog");
   assert.deepEqual(JSON.parse(embeddedCatalog[1]), buildApiCapabilityCatalog());
-  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 18);
+  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 19);
 });
 
 test("an undocumented capability operation fails the generated documentation check", () => {

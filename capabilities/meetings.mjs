@@ -170,7 +170,7 @@ function browseEnum(value, field, values) {
 
 function browseArray(value, field, values) {
   if (value === undefined || value === null) return [];
-  if (!Array.isArray(value) || !value.length || value.some((item) => typeof item !== "string" || !values.includes(item))) {
+  if (!Array.isArray(value) || value.some((item) => typeof item !== "string" || !values.includes(item))) {
     throw new TypeError(`${field} contains an unsupported value`);
   }
   return [...new Set(value)];
@@ -342,8 +342,37 @@ export const MEETINGS_BROWSE_CAPABILITY = deepFreeze({
     availability: MEETINGS_BROWSE_AVAILABILITY,
     representations: MEETINGS_BROWSE_REPRESENTATIONS,
   },
+  provenance: {
+    identity: "meeting.meeting_id",
+    sourceObservation: "meeting.source_record and meeting.source_receipt",
+    coverage: "source and freshness envelopes from shared meeting read model",
+  },
+  freshness: {
+    owner: "committed shared meeting read model",
+    projection: "generated_at, checked_at, and per-source status",
+  },
   provider: { id: MEETINGS_BROWSE_PROVIDER_ID, module: "worker/src/hearings.mjs", export: "workerMeetingsBrowse", store: "precomputed shared meeting read model", readModel: MEETING_SHARED_READ_MODEL_SCHEMA },
-  adapters: [{ id: "mcp.browse_meetings@1", module: "worker/src/mcp.mjs", kind: "mcp-tool", tool: "browse_meetings", route: "POST /mcp", surface: "MCP", representations: MEETINGS_BROWSE_REPRESENTATIONS }],
+  examples: [
+    {
+      input: {
+        from: "2026-10-01",
+        to: "2026-10-31",
+        availability: {
+          timezone: "America/New_York",
+          windows: [{ weekdays: [1, 2, 3, 4, 5], start: "17:00" }, { weekdays: [0, 6] }],
+        },
+      },
+      output: { availability: "complete", pagination: { limit: 25, returned: 1 }, coverage: { state: "observed" } },
+    },
+    {
+      input: { attendanceModes: ["remote"], limit: 10 },
+      output: { availability: "empty", results: [], coverage: { unknown_start_exclusions: 0 } },
+    },
+  ],
+  adapters: [
+    { id: "worker-http.meetings-browse@1", module: "worker/src/hearings.mjs", kind: "http-route", route: "GET /hearings?from=…", surface: "Meeting browse", representations: MEETINGS_BROWSE_REPRESENTATIONS },
+    { id: "mcp.browse_meetings@1", module: "worker/src/mcp.mjs", kind: "mcp-tool", tool: "browse_meetings", route: "POST /mcp", surface: "MCP", representations: MEETINGS_BROWSE_REPRESENTATIONS },
+  ],
 });
 
 function browseResult(result, input) {
