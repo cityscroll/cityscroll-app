@@ -929,7 +929,7 @@
             "selector": ".near-area-list"
           },
           {
-            "selector": "#nearMapSvg"
+            "selector": "#nearMapSvg:not([aria-hidden=\"true\"]), .near-map-enhanced"
           }
         ],
         "notVisible": [

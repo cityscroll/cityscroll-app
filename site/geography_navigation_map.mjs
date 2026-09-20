@@ -372,6 +372,17 @@ function ensureStyleLink(documentRef, href) {
   return link;
 }
 
+function waitForMapReady(map) {
+  if (map?.loaded?.() || typeof map?.once !== "function") return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    map.once("load", resolve);
+    map.once("error", (event) => {
+      const message = String(event?.error?.message || event?.error || "");
+      if (/style|glyph|font/i.test(message)) reject(event?.error || new Error(message));
+    });
+  });
+}
+
 function loadScript(documentRef, src) {
   return new Promise((resolve, reject) => {
     const existing = documentRef.querySelector(`script[data-geography-map-js="${src}"]`);
@@ -455,8 +466,9 @@ function buildBaseStyle({ forcedColors = false } = {}) {
   const selectedLineWidth = selectedLineWidthForMode(forcedColors);
   return {
     version: 8,
-    // No remote glyph atlas: MapLibre falls back to localIdeographFontFamily for
-    // Latin labels so the resident path does not depend on a third-party font CDN.
+    // MapLibre requires a glyph atlas for symbol layers. The atlas is only for
+    // local civic labels; basemap tiles and their labels remain decorative.
+    glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
     sources: {
       [GEOGRAPHY_MAP_SOURCE_IDS.basemap]: {
         type: "raster",
@@ -538,28 +550,37 @@ function buildBaseStyle({ forcedColors = false } = {}) {
         id: GEOGRAPHY_MAP_LAYER_IDS.hoverFill,
         type: "fill",
         source: GEOGRAPHY_MAP_SOURCE_IDS.active,
-        filter: [
-          "any",
-          ["boolean", ["feature-state", FEATURE_STATE_HOVER], false],
-          ["boolean", ["feature-state", FEATURE_STATE_FOCUS], false],
-        ],
         paint: {
           "fill-color": GEOGRAPHY_MAP_STYLE.HOVER_FILL_COLOR,
-          "fill-opacity": GEOGRAPHY_MAP_STYLE.HOVER_FILL_OPACITY,
+          "fill-opacity": [
+            "case",
+            [
+              "any",
+              ["boolean", ["feature-state", FEATURE_STATE_HOVER], false],
+              ["boolean", ["feature-state", FEATURE_STATE_FOCUS], false],
+            ],
+            GEOGRAPHY_MAP_STYLE.HOVER_FILL_OPACITY,
+            0,
+          ],
         },
       },
       {
         id: GEOGRAPHY_MAP_LAYER_IDS.hoverLine,
         type: "line",
         source: GEOGRAPHY_MAP_SOURCE_IDS.active,
-        filter: [
-          "any",
-          ["boolean", ["feature-state", FEATURE_STATE_HOVER], false],
-          ["boolean", ["feature-state", FEATURE_STATE_FOCUS], false],
-        ],
         paint: {
           "line-color": GEOGRAPHY_MAP_STYLE.HOVER_LINE_COLOR,
           "line-width": GEOGRAPHY_MAP_STYLE.HOVER_LINE_WIDTH,
+          "line-opacity": [
+            "case",
+            [
+              "any",
+              ["boolean", ["feature-state", FEATURE_STATE_HOVER], false],
+              ["boolean", ["feature-state", FEATURE_STATE_FOCUS], false],
+            ],
+            1,
+            0,
+          ],
         },
       },
       {
@@ -588,7 +609,7 @@ function buildBaseStyle({ forcedColors = false } = {}) {
         layout: {
           "text-field": ["get", "label"],
           "text-size": GEOGRAPHY_MAP_STYLE.LABEL_SIZE,
-          "text-font": ["Open Sans Regular", "Arial Unicode MS Regular"],
+          "text-font": ["Noto Sans Regular"],
           "text-max-width": 10,
           "text-allow-overlap": false,
           "text-ignore-placement": false,
@@ -618,7 +639,7 @@ function buildBaseStyle({ forcedColors = false } = {}) {
         layout: {
           "text-field": ["get", "label"],
           "text-size": GEOGRAPHY_MAP_STYLE.SELECTED_LABEL_SIZE,
-          "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+          "text-font": ["Noto Sans Bold"],
           "text-max-width": 12,
           "text-allow-overlap": true,
           "text-ignore-placement": true,
@@ -764,6 +785,7 @@ export async function createGeographyNavigationMap(options = {}) {
   let focusedKey = null;
   let pointMarker = null;
   const listeners = [];
+  let recordRenderedNeighborhoodLabels = () => {};
 
   const fail = (reason, error) => {
     if (destroyed) return;
@@ -803,7 +825,7 @@ export async function createGeographyNavigationMap(options = {}) {
       attributionControl: true,
       cooperativeGestures: false,
       fadeDuration: reducedMotion ? 0 : 300,
-      // Basemap glyphs are optional; labels can still render with local fallbacks.
+      // Keep a local system fallback for glyphs not available in the atlas.
       localIdeographFontFamily: "system-ui, sans-serif",
     };
 
@@ -821,6 +843,33 @@ export async function createGeographyNavigationMap(options = {}) {
       target.on?.(type, handler);
       listeners.push(() => target.off?.(type, handler));
     };
+
+    // Keep a small DOM observation of the labels MapLibre actually retained
+    // after symbol collision handling. The capture verifier uses this to
+    // distinguish a painted map from the server SVG fallback; it is inert
+    // presentation metadata and does not alter the resident surface.
+    recordRenderedNeighborhoodLabels = () => {
+      if (!map?.queryRenderedFeatures || !container) return;
+      const styleLoaded = map.isStyleLoaded?.();
+      const layerPresent = Boolean(map.getLayer?.(GEOGRAPHY_MAP_LAYER_IDS.labels));
+      if (styleLoaded === false || !layerPresent) return;
+      let features = [];
+      try {
+        features = map.queryRenderedFeatures(undefined, {
+          layers: [GEOGRAPHY_MAP_LAYER_IDS.labels],
+        }) || [];
+      } catch {
+        return;
+      }
+      const labels = [...new Set(features
+        .map((feature) => String(feature?.properties?.label || "").trim())
+        .filter(Boolean))].sort((left, right) => left.localeCompare(right));
+      container.dataset.renderedNeighborhoodLabelCount = String(labels.length);
+      container.dataset.renderedNeighborhoodLabels = labels.join(" | ");
+    };
+    on(map, "idle", recordRenderedNeighborhoodLabels);
+    on(map, "render", recordRenderedNeighborhoodLabels);
+    on(map, "data", recordRenderedNeighborhoodLabels);
 
     on(map, "error", (event) => {
       const message = String(event?.error?.message || event?.error || "");
@@ -841,6 +890,11 @@ export async function createGeographyNavigationMap(options = {}) {
     on(map, "webglcontextlost", () => {
       fail(GEOGRAPHY_MAP_FALLBACK_REASONS.context_lost, new Error("webglcontextlost"));
     });
+
+    // The initial layer is installed by the Near You island immediately after
+    // this controller resolves. Wait for MapLibre's style/source registry so
+    // setData and setFilter do not race the first style load.
+    await waitForMapReady(map);
 
     const interactiveLayers = [
       GEOGRAPHY_MAP_LAYER_IDS.activeFill,
@@ -935,6 +989,9 @@ export async function createGeographyNavigationMap(options = {}) {
       setSourceData(GEOGRAPHY_MAP_SOURCE_IDS.active, activeCollection);
       refreshSelectedSource();
       refreshLabelFilter();
+      map.once?.("render", recordRenderedNeighborhoodLabels);
+      map.once?.("idle", recordRenderedNeighborhoodLabels);
+      map.triggerRepaint?.();
     } catch (error) {
       fail(GEOGRAPHY_MAP_FALLBACK_REASONS.layer_load, error);
       throw error;
