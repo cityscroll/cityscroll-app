@@ -27,9 +27,13 @@ import { CITY_RECORD_MEETING_SOURCE_FIELDS } from "../worker/src/hearings.mjs";
 
 test("meeting source completeness inventory covers every producer and surface disposition", () => {
   assert.deepEqual(Object.keys(MEETING_SOURCE_COMPLETENESS.producers).sort(), [
+    "bsa_calendar",
     "city_record",
     "community_board",
     "legistar",
+    "oath_trial_calendar",
+    "pdc_calendar",
+    "public_body_calendar",
   ]);
   const audit = auditMeetingSourceCompleteness();
   assert.deepEqual(audit.errors, []);
@@ -62,6 +66,10 @@ test("meeting is a registered source-qualified semantic object", () => {
     "city_record:request_id",
     "community_board:publisher_event_id",
     "nyc_legistar_events:event_id",
+    "pdc_calendar:pdc_event_id",
+    "bsa_calendar:bsa_session_id",
+    "oath_trial_calendar:oath_trial_session_id",
+    "public_body_calendar:contract_scoped_publisher_event_id",
   ]);
 });
 

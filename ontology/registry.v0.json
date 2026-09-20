@@ -673,7 +673,7 @@
       "id": "meeting",
       "status": "registered",
       "layer": "semantic",
-      "reason": "City Record, community-board, and NYC Council Legistar Events publishers share a source-qualified meeting object; exact source keys remain available for later joins.",
+      "reason": "City Record, community-board, Council Legistar Events, named civic calendars, and bounded public-body calendar contracts share a source-qualified meeting object; exact source keys remain available for later joins.",
       "primary_key_pattern": "meeting:{source_system}:{source_key}",
       "families": [
         "civic:meeting"
@@ -682,6 +682,10 @@
         "city_record",
         "community_board_source_registry",
         "nyc_legistar_events",
+        "pdc_calendar",
+        "bsa_calendar",
+        "oath_trial_calendar",
+        "public_body_calendar",
         "source_records"
       ],
       "properties_ref": [
@@ -692,6 +696,8 @@
         "source_url",
         "source_system",
         "publisher_identifier",
+        "source_contract_id",
+        "temporal_basis",
         "meeting_origin",
         "source_receipt",
         "join_status",
@@ -703,7 +709,11 @@
         "source_keys": [
           "city_record:request_id",
           "community_board:publisher_event_id",
-          "nyc_legistar_events:event_id"
+          "nyc_legistar_events:event_id",
+          "pdc_calendar:pdc_event_id",
+          "bsa_calendar:bsa_session_id",
+          "oath_trial_calendar:oath_trial_session_id",
+          "public_body_calendar:contract_scoped_publisher_event_id"
         ],
         "title_date_identity_forbidden": true
       },

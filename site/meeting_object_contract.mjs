@@ -9,6 +9,10 @@
 
 import { resolveMeetingFamily } from "./meeting_process_profile.mjs";
 import { projectMeetingSchedule } from "./meeting_temporal_evidence.mjs";
+import {
+  normalizePublicBodyCalendarInput,
+  publicBodyCalendarIdentity,
+} from "./public_body_calendar_contract.mjs";
 
 export const MEETING_OBJECT_SCHEMA = "cityscroll.meeting_object.v1";
 
@@ -19,6 +23,7 @@ export const MEETING_SOURCE_SYSTEMS = Object.freeze([
   "pdc_calendar",
   "bsa_calendar",
   "oath_trial_calendar",
+  "public_body_calendar",
 ]);
 
 export const MEETING_JOIN_STATUSES = Object.freeze([
@@ -36,6 +41,7 @@ const SOURCE_KEY_TYPES = Object.freeze({
   pdc_calendar: "pdc_event_id",
   bsa_calendar: "bsa_session_id",
   oath_trial_calendar: "oath_trial_session_id",
+  public_body_calendar: "contract_scoped_publisher_event_id",
 });
 
 function requiredText(value, label) {
@@ -57,7 +63,21 @@ function sourceSystem(value) {
   return normalized;
 }
 
-function sourceKey(source, sourceId) {
+function sourceKey(source, sourceId, row = {}) {
+  if (source === "public_body_calendar") {
+    const identity = publicBodyCalendarIdentity({
+      source_contract_id: row.source_contract_id,
+      publisher_identifier: sourceId,
+    });
+    if (!identity) throw new TypeError("public_body_calendar requires source_contract_id and publisher identifier");
+    return {
+      source_system: source,
+      key_type: SOURCE_KEY_TYPES[source],
+      value: identity.slice("meeting:public_body_calendar:".length),
+      source_contract_id: requiredText(row.source_contract_id, "source_contract_id"),
+      publisher_identifier: requiredText(sourceId, "publisher identifier"),
+    };
+  }
   return {
     source_system: source,
     key_type: SOURCE_KEY_TYPES[source],
@@ -95,6 +115,10 @@ function publisherIdFor(source, row) {
   if (source === "oath_trial_calendar") {
     return row.oath_trial_session_id || row.session_id || row.source_record_id || row.record_id;
   }
+  if (source === "public_body_calendar") {
+    return row.publisher_identifier || row.publisher_event_id || row.publisher_key || row.event_id
+      || row.source_record_id || row.record_id;
+  }
   return row.source_record_id || row.record_id;
 }
 
@@ -125,10 +149,12 @@ function institutionRefs(row, source) {
   const boardId = optionalText(refs.board_id || row.board_id);
   const boardRef = optionalText(refs.board_ref)
     || (boardId ? `community-board:${boardId}` : null);
-  return {
+  const result = {
     agency_ref: source === "community_board" ? null : agencyRef,
     board_ref: boardRef,
   };
+  if (source === "public_body_calendar") result.institution_ref = optionalText(refs.institution_ref || row.institution_ref);
+  return result;
 }
 
 function sourceUrl(row) {
@@ -242,9 +268,12 @@ function retainedNoticeFields(row) {
  * The exact key is retained separately in source_keys, so ids remain
  * inspectable even when a source identifier contains URL-significant text.
  */
-export function meetingIdForSource(sourceSystemValue, sourceId) {
+export function meetingIdForSource(sourceSystemValue, sourceId, publisherIdentifier = null) {
   const source = sourceSystem(sourceSystemValue);
-  return `meeting:${source}:${requiredText(sourceId, SOURCE_KEY_TYPES[source])}`;
+  const value = source === "public_body_calendar" && publisherIdentifier != null
+    ? `${requiredText(sourceId, "source_contract_id")}:${requiredText(publisherIdentifier, "publisher identifier")}`
+    : requiredText(sourceId, SOURCE_KEY_TYPES[source]);
+  return `meeting:${source}:${value}`;
 }
 
 /**
@@ -252,10 +281,11 @@ export function meetingIdForSource(sourceSystemValue, sourceId) {
  */
 export function normalizeMeetingObject(row = {}) {
   const source = sourceSystem(row.source_system);
+  if (source === "public_body_calendar") normalizePublicBodyCalendarInput(row);
   const sourceId = row.publisher_identifier
     || row.source_id
     || publisherIdFor(source, row);
-  const key = optionalText(sourceId) ? sourceKey(source, sourceId) : null;
+  const key = optionalText(sourceId) ? sourceKey(source, sourceId, row) : null;
   const meetingId = key ? meetingIdForSource(source, key.value) : null;
   const sourceHref = sourceUrl(row);
   const requestId = source === "city_record" ? key?.value || null : null;
@@ -282,7 +312,9 @@ export function normalizeMeetingObject(row = {}) {
     schema: MEETING_OBJECT_SCHEMA,
     meeting_id: meetingId,
     source_keys: key ? [key] : [],
-    publisher_identifier: source === "community_board"
+    publisher_identifier: source === "public_body_calendar"
+      ? optionalText(sourceId)
+      : source === "community_board"
       && row.meeting_origin === "official_community_board_calendar"
       ? optionalText(row.publisher_identifier)
       : (key?.value || null),
@@ -314,6 +346,12 @@ export function normalizeMeetingObject(row = {}) {
     meeting_documents: Array.isArray(row.meeting_documents) ? row.meeting_documents : [],
     source_url: sourceHref,
     source_system: source,
+    ...(source === "public_body_calendar" ? {
+      source_contract_id: optionalText(row.source_contract_id),
+      temporal_basis: optionalText(row.temporal_basis),
+      relationship_classification: optionalText(row.relationship_classification || row.authority_relationship),
+      source_raw_timezone: optionalText(row.source_raw_timezone || row.raw_timezone || row.publisher_timezone),
+    } : {}),
     meeting_origin: optionalText(row.meeting_origin) || "unknown",
     source_receipt: sourceReceipt(row),
     ...(row.source_raw_values && typeof row.source_raw_values === "object"
@@ -337,7 +375,9 @@ export function normalizeMeetingObject(row = {}) {
     // These aliases keep the existing hearing lens readable while migration
     // to meeting_id proceeds. They are not identity fields.
     request_id: requestId,
-    source_record_id: source === "community_board" || source === "nyc_legistar_events"
+    source_record_id: source === "public_body_calendar"
+      ? optionalText(row.source_record_id || sourceId)
+      : source === "community_board" || source === "nyc_legistar_events"
       ? optionalText(row.source_record_id || row.record_id || key?.value) : null,
     board_id: boardId,
     ...(source === "nyc_legistar_events" ? { event_id: key?.value || null } : {}),
@@ -487,6 +527,14 @@ export function normalizeOathTrialCalendarMeeting(row = {}) {
     source_url: row.source_url || row.record_url,
     activity: "observe",
   });
+}
+
+export function normalizePublicBodyCalendarMeeting(row = {}) {
+  const input = normalizePublicBodyCalendarInput({
+    ...row,
+    source_system: "public_body_calendar",
+  });
+  return normalizeMeetingObject(input);
 }
 
 export function meetingCanonicalHref(recordOrId) {
