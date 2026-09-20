@@ -269,6 +269,7 @@
 /site/canonical_entity_interpretation.mjs
 /site/capability_discovery_contract.mjs
 /site/cardinality_adaptive_facets.mjs
+/site/ccrb_board_calendar.mjs
 /site/changelog-data.json
 /site/changelog.html
 /site/checkbook_passport_corroboration.mjs
