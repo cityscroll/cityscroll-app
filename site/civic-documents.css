@@ -5162,28 +5162,49 @@ select {
   max-width: var(--measure);
 }
 
-/* The inspect control is progressive enhancement: it stays out of the
-   document's flow until the boot module marks the section ready, so a reader
-   without scripting is only ever offered the project link, which works for
-   them, and the facts it would have shown are already written into the row. */
+/* Progressive enhancement follows the calendar grammar: before binding, the
+   ordinary title link is the only offered destination. Once the behaviour is
+   ready, the title-sized inspect button becomes primary and a separately named
+   project link stays available beside it. */
 .board-land-position-inspect {
   display: none;
 }
 
+.board-land-position-full-record {
+  display: none;
+}
+
+[data-board-land-positions-ready] .board-land-position-link {
+  display: none;
+}
+
 [data-board-land-positions-ready] .board-land-position-inspect {
-  display: inline-block;
-  margin-inline-start: var(--space-1);
-  padding: 1px 8px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: baseline;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   font: inherit;
+  color: inherit;
+  text-align: start;
+  overflow-wrap: anywhere;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  min-width: 0;
+  min-height: 32px;
+}
+
+[data-board-land-positions-ready] .board-land-position-full-record {
+  display: inline-block;
+  margin-inline-start: var(--space-2);
   font-size: .75rem;
   font-weight: 600;
   color: var(--color-action);
-  background: transparent;
-  border: 1px solid currentColor;
-  border-radius: 2px;
-  cursor: pointer;
-  /* WCAG 2.5.8: a comfortable target on a touch screen. */
-  min-height: 24px;
+  overflow-wrap: anywhere;
 }
 
 [data-board-land-positions-ready] .board-land-position-inspect:hover {
