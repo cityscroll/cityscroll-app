@@ -1,70 +1,311 @@
 {
-  "schema": "cityscroll.contract_substance_role_corpus_capture_manifest.v1",
-  "capture_mode": "deterministic server render with headless viewport review; image binaries omitted",
-  "source_revision": "grounded origin/main 43de62acbd907c578c453343e193662dceb62471",
+  "schema": "cityscroll.contract_substance_role_corpus_capture_manifest.v2",
+  "capture_mode": "deterministic server render with headless Chromium viewport review; image binaries omitted",
+  "source_revision": "grounded origin/main fbcb3601ba653bcbfc44637c21ecdb429169481b",
   "data_vintages": {
     "role_corpus_generated_at": "2026-09-19T12:00:00.000Z",
-    "bhrags_service_geography_generated_at": "2026-09-18T19:15:00.000Z",
+    "service_geography_generated_at": "2026-09-19T03:00:00.000Z",
     "route_payment_observation": "served from the materialized procurement shard; the page receipt carries observed amounts"
   },
+  "assertions": [
+    {
+      "id": "A7",
+      "assertion": "Desktop and 390px captures observe distinct no-overflow layouts, keyboard source opening, no-JavaScript destinations, and a source-role mutation that fails closed.",
+      "artifact": "captures[].viewports[].layout, captures[].keyboard_source_open, captures[].viewports[].no_javascript_source_destination, source_role_mutation"
+    }
+  ],
   "captures": [
     {
       "route": "/procurements/procurement%3Acontract%3ACT180620248801671",
       "case": "DocGo exact contract identity with Comptroller audit evidence",
       "assertions": [
-        "The current $432,000,000 contract identity remains visible.",
-        "The served authorized and paid amounts are recorded in the real-corpus receipt with the data vintage.",
-        "Audit-reported passages use the Comptroller audit label and link the exact official source.",
-        "No What the vendor promised heading is emitted from performance evaluation evidence alone."
+        "The current $432,000,000 contract identity and served amounts remain observable beside the audit role label.",
+        "The audit source destination is retained without a vendor-promise heading."
       ],
-      "render_sha256": "d4ee71c92ed1cd82fb1219be215b13657ff2ac463cb24ca925d6f9075c0b7d1f",
       "viewports": [
-        { "name": "desktop", "width": 1440, "height": 900, "assertion": "role label, source link, receipt, and identity remain readable without horizontal overflow" },
-        { "name": "mobile", "width": 390, "height": 844, "assertion": "role label, source link, receipt, and identity reflow at 390px without horizontal overflow" }
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "assertion": "Headless layout measurement records no horizontal overflow and the named source destinations remain readable.",
+          "render_sha256": "e9b3e387f2647d3935664a9ced4ac3fa5f7dce3807400e30cc3040161c4e4510",
+          "layout": {
+            "viewport": [
+              1440,
+              900
+            ],
+            "scroll_width": 1440,
+            "client_width": 1440,
+            "inner_width": 1440,
+            "content_height": 1708,
+            "overflow": false
+          },
+          "layout_sha256": "947676af7b16169095e8bf701a21d6d60bb0762787501513472f9fbdc59a491f",
+          "screenshot_sha256": "1eda5a948d7be08cb5cac9f69faf00dfa8cb8e7100f7667f7182a80c4934e4e6",
+          "screenshot_path": ".artifacts/contract-substance-role-corpus/docgo-desktop.png",
+          "no_javascript_source_destination": {
+            "expected_destinations": [
+              "https://comptroller.nyc.gov/reports/audit-of-the-department-of-housing-preservation-and-developments-oversight-of-its-contract-with-rapid-reliable-testing-ny-llc-aka-docgo/"
+            ],
+            "destinations_in_rendered_markup": [
+              "https://comptroller.nyc.gov/reports/audit-of-the-department-of-housing-preservation-and-developments-oversight-of-its-contract-with-rapid-reliable-testing-ny-llc-aka-docgo/"
+            ],
+            "script_tag_count": 0,
+            "javascript_href_count": 0
+          }
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "assertion": "At 390px, headless layout measurement records no horizontal overflow and differs from desktop.",
+          "render_sha256": "e9b3e387f2647d3935664a9ced4ac3fa5f7dce3807400e30cc3040161c4e4510",
+          "layout": {
+            "viewport": [
+              390,
+              844
+            ],
+            "scroll_width": 390,
+            "client_width": 390,
+            "inner_width": 390,
+            "content_height": 1162,
+            "overflow": false
+          },
+          "layout_sha256": "3dc8759db235c6a15b6cc6f7ad2027794faf2a643355587c82fb71da66f377e4",
+          "screenshot_sha256": "a258a56a2375a68345c77dc49f44db9862af0ab8808e80567eee355ad60d3eea",
+          "screenshot_path": ".artifacts/contract-substance-role-corpus/docgo-mobile.png",
+          "no_javascript_source_destination": {
+            "expected_destinations": [
+              "https://comptroller.nyc.gov/reports/audit-of-the-department-of-housing-preservation-and-developments-oversight-of-its-contract-with-rapid-reliable-testing-ny-llc-aka-docgo/"
+            ],
+            "destinations_in_rendered_markup": [
+              "https://comptroller.nyc.gov/reports/audit-of-the-department-of-housing-preservation-and-developments-oversight-of-its-contract-with-rapid-reliable-testing-ny-llc-aka-docgo/"
+            ],
+            "script_tag_count": 0,
+            "javascript_href_count": 0
+          }
+        }
       ],
-      "keyboard_source_open": true,
-      "no_javascript_source_destination": true
+      "keyboard_source_open": {
+        "expected_destinations": [
+          "https://comptroller.nyc.gov/reports/audit-of-the-department-of-housing-preservation-and-developments-oversight-of-its-contract-with-rapid-reliable-testing-ny-llc-aka-docgo/"
+        ],
+        "reached_in_tab_order": [
+          "https://comptroller.nyc.gov/reports/audit-of-the-department-of-housing-preservation-and-developments-oversight-of-its-contract-with-rapid-reliable-testing-ny-llc-aka-docgo/"
+        ],
+        "missing_destinations": [],
+        "tabs_pressed": 1,
+        "disclosures_opened": [],
+        "all_named_destinations_reached": true
+      }
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
       "case": "BHRAGS notice-attributed facility context",
       "assertions": [
-        "3218 Emmons Avenue and 60 units are shown as notice-attributed facility context.",
-        "The facility row links the resolved neighborhood and Notice 20240829105.",
-        "The unit count is not emitted as a contractual deliverable."
+        "3218 Emmons Avenue and 60 units remain notice-attributed facility context with the resolved links.",
+        "The facility context does not become a contractual deliverable."
       ],
-      "render_sha256": "b56334781c5b262aa291e8d2506d73b13c1fb411fbb01a794b4ab038fe722e92",
       "viewports": [
-        { "name": "desktop", "width": 1440, "height": 900, "assertion": "facility role, units, geography, and notice links remain readable without horizontal overflow" },
-        { "name": "mobile", "width": 390, "height": 844, "assertion": "facility role, units, geography, and notice links reflow at 390px without horizontal overflow" }
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "assertion": "Headless layout measurement records no horizontal overflow and the named source destinations remain readable.",
+          "render_sha256": "70c18af61baa10b9063d08615705cd1908e96e9f2ffe1ac530c7026cca99aee3",
+          "layout": {
+            "viewport": [
+              1440,
+              900
+            ],
+            "scroll_width": 1440,
+            "client_width": 1440,
+            "inner_width": 1440,
+            "content_height": 900,
+            "overflow": false
+          },
+          "layout_sha256": "48351f127c72b1ec0ae126c029b34024fba49893f725ae8a34e56cddebc3d407",
+          "screenshot_sha256": "20bb62be3fe12861770d9e23e2db739b4bf480197c8c98b7a84fc6a608eef054",
+          "screenshot_path": ".artifacts/contract-substance-role-corpus/bhrags-desktop.png",
+          "no_javascript_source_destination": {
+            "expected_destinations": [
+              "/near-you/?v=0&lens=money&geo=geography%3Anta2020%3ABK1503",
+              "/near-you/?v=0&lens=money&geo=geography%3Acommunity_district%3AK15",
+              "/near-you/?v=0&lens=money&geo=geography%3Acouncil_district%3A48",
+              "/near-you/?v=0&lens=money&geo=geography%3Apolice_precinct%3A61",
+              "/notices/20240829105"
+            ],
+            "destinations_in_rendered_markup": [
+              "/near-you/?v=0&lens=money&geo=geography%3Anta2020%3ABK1503",
+              "/near-you/?v=0&lens=money&geo=geography%3Acommunity_district%3AK15",
+              "/near-you/?v=0&lens=money&geo=geography%3Acouncil_district%3A48",
+              "/near-you/?v=0&lens=money&geo=geography%3Apolice_precinct%3A61",
+              "/notices/20240829105"
+            ],
+            "script_tag_count": 0,
+            "javascript_href_count": 0
+          }
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "assertion": "At 390px, headless layout measurement records no horizontal overflow and differs from desktop.",
+          "render_sha256": "70c18af61baa10b9063d08615705cd1908e96e9f2ffe1ac530c7026cca99aee3",
+          "layout": {
+            "viewport": [
+              390,
+              844
+            ],
+            "scroll_width": 390,
+            "client_width": 390,
+            "inner_width": 390,
+            "content_height": 844,
+            "overflow": false
+          },
+          "layout_sha256": "49829908b681976e14f4cbd133d0ca57d5bbc9fb2df2ab7bbbd62d57b5edc7ae",
+          "screenshot_sha256": "f3ac245cdaa3339942e109a5a5bafeb223630b2a695dccaae290b396f525363c",
+          "screenshot_path": ".artifacts/contract-substance-role-corpus/bhrags-mobile.png",
+          "no_javascript_source_destination": {
+            "expected_destinations": [
+              "/near-you/?v=0&lens=money&geo=geography%3Anta2020%3ABK1503",
+              "/near-you/?v=0&lens=money&geo=geography%3Acommunity_district%3AK15",
+              "/near-you/?v=0&lens=money&geo=geography%3Acouncil_district%3A48",
+              "/near-you/?v=0&lens=money&geo=geography%3Apolice_precinct%3A61",
+              "/notices/20240829105"
+            ],
+            "destinations_in_rendered_markup": [
+              "/near-you/?v=0&lens=money&geo=geography%3Anta2020%3ABK1503",
+              "/near-you/?v=0&lens=money&geo=geography%3Acommunity_district%3AK15",
+              "/near-you/?v=0&lens=money&geo=geography%3Acouncil_district%3A48",
+              "/near-you/?v=0&lens=money&geo=geography%3Apolice_precinct%3A61",
+              "/notices/20240829105"
+            ],
+            "script_tag_count": 0,
+            "javascript_href_count": 0
+          }
+        }
       ],
-      "keyboard_source_open": true,
-      "no_javascript_source_destination": true
+      "keyboard_source_open": {
+        "expected_destinations": [
+          "/near-you/?v=0&lens=money&geo=geography%3Anta2020%3ABK1503",
+          "/near-you/?v=0&lens=money&geo=geography%3Acommunity_district%3AK15",
+          "/near-you/?v=0&lens=money&geo=geography%3Acouncil_district%3A48",
+          "/near-you/?v=0&lens=money&geo=geography%3Apolice_precinct%3A61",
+          "/notices/20240829105"
+        ],
+        "reached_in_tab_order": [
+          "/near-you/?v=0&lens=money&geo=geography%3Anta2020%3ABK1503",
+          "/near-you/?v=0&lens=money&geo=geography%3Acommunity_district%3AK15",
+          "/near-you/?v=0&lens=money&geo=geography%3Acouncil_district%3A48",
+          "/near-you/?v=0&lens=money&geo=geography%3Apolice_precinct%3A61",
+          "/notices/20240829105"
+        ],
+        "missing_destinations": [],
+        "tabs_pressed": 5,
+        "disclosures_opened": [],
+        "all_named_destinations_reached": true
+      }
     },
     {
       "route": "real-corpus-harness",
       "case": "DCAS and GrowNYC role-specific retained passages",
       "assertions": [
-        "DCAS values render as Bid offer rows linked to the bid-tab PDF.",
-        "GrowNYC clauses, sites, and fees render as Proposed agreement term rows linked to the MOCS PDF.",
-        "The same role labels and source destinations are used by the resident renderer after exact contract-id selection."
+        "DCAS values remain Bid offer rows linked to the bid-tab PDF.",
+        "GrowNYC clauses, sites, and fees remain Proposed agreement term rows linked to the MOCS PDF."
       ],
-      "render_sha256": {
-        "BID2000090": "4974cf718b6c1d1649c391210bef779b7ad8ea124223a9dba05a13e3b0a73a3d",
-        "MOCS-FCRC-202411-GROWNYC": "adf439a3925962f95fabdcd7ffeeb6df7f670af2962266b4a73617ce34217006"
-      },
       "viewports": [
-        { "name": "desktop", "width": 1440, "height": 900 },
-        { "name": "mobile", "width": 390, "height": 844 }
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "assertion": "Headless layout measurement records no horizontal overflow and the named source destinations remain readable.",
+          "render_sha256": "ef1006121fb3cae8c9bd22d915b8747848e8953fa5b07867597a4839721a29f0",
+          "layout": {
+            "viewport": [
+              1440,
+              900
+            ],
+            "scroll_width": 1440,
+            "client_width": 1440,
+            "inner_width": 1440,
+            "content_height": 3914,
+            "overflow": false
+          },
+          "layout_sha256": "6ce6ef82f3fe5ef61249a9bec25f667b34918d6235516c242263a4a1c95126a9",
+          "screenshot_sha256": "3c7edab2be1530daa9455162f1727a18ca6672913efcc4a83ae87856136f0720",
+          "screenshot_path": ".artifacts/contract-substance-role-corpus/real-corpus-harness-desktop.png",
+          "no_javascript_source_destination": {
+            "expected_destinations": [
+              "https://www.nyc.gov/assets/dcas/downloads/pdf/business/bidtabs/2000090.pdf",
+              "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf"
+            ],
+            "destinations_in_rendered_markup": [
+              "https://www.nyc.gov/assets/dcas/downloads/pdf/business/bidtabs/2000090.pdf",
+              "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf"
+            ],
+            "script_tag_count": 0,
+            "javascript_href_count": 0
+          }
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "assertion": "At 390px, headless layout measurement records no horizontal overflow and differs from desktop.",
+          "render_sha256": "ef1006121fb3cae8c9bd22d915b8747848e8953fa5b07867597a4839721a29f0",
+          "layout": {
+            "viewport": [
+              390,
+              844
+            ],
+            "scroll_width": 390,
+            "client_width": 390,
+            "inner_width": 390,
+            "content_height": 2333,
+            "overflow": false
+          },
+          "layout_sha256": "7a4a935e8ea9c7cf77a0c86cd909ca2340d3197deb69244e1d33ea31953f4a19",
+          "screenshot_sha256": "2a953b2b87958d4ae2d5c9eeb456b58e4c0ae95c201042ff0ffe551600a3c90f",
+          "screenshot_path": ".artifacts/contract-substance-role-corpus/real-corpus-harness-mobile.png",
+          "no_javascript_source_destination": {
+            "expected_destinations": [
+              "https://www.nyc.gov/assets/dcas/downloads/pdf/business/bidtabs/2000090.pdf",
+              "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf"
+            ],
+            "destinations_in_rendered_markup": [
+              "https://www.nyc.gov/assets/dcas/downloads/pdf/business/bidtabs/2000090.pdf",
+              "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf"
+            ],
+            "script_tag_count": 0,
+            "javascript_href_count": 0
+          }
+        }
       ],
-      "keyboard_source_open": true,
-      "no_javascript_source_destination": true
+      "keyboard_source_open": {
+        "expected_destinations": [
+          "https://www.nyc.gov/assets/dcas/downloads/pdf/business/bidtabs/2000090.pdf",
+          "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf"
+        ],
+        "reached_in_tab_order": [
+          "https://www.nyc.gov/assets/dcas/downloads/pdf/business/bidtabs/2000090.pdf",
+          "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf"
+        ],
+        "missing_destinations": [],
+        "tabs_pressed": 7,
+        "disclosures_opened": [],
+        "all_named_destinations_reached": true
+      }
     }
   ],
-  "failure_and_boundary_probes": [
-    "late or failed substance initialization preserves the canonical identity and omits an empty card",
-    "role mutation, missing locator, stale hash, and missing contract identity fail closed",
-    "an unrelated contract id cannot consume retained role-corpus rows"
-  ],
-  "image_policy": "No screenshot or recording binaries are committed; this manifest records route, viewport, revision, data vintage, assertions, and render hashes."
+  "source_role_mutation": {
+    "mutation": "bid_tab to executed_obligation",
+    "source_role_before": "bid_tab",
+    "source_role_after": "executed_obligation",
+    "rendered_row_count": 0,
+    "vendor_promise_label_emitted": false,
+    "contract_requires_heading_emitted": false,
+    "assertion": "A source-role mutation is refused rather than promoted into vendor-promise copy."
+  },
+  "image_policy": "No screenshot or recording binaries are committed; this manifest records route, viewport, revision, data vintage, assertion, layout measurements, and sha256 values."
 }

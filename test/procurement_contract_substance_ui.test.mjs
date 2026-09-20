@@ -40,6 +40,10 @@ const MATERIALIZED_ROLE_CORPUS = JSON.parse(readFileSync(
   new URL("../site/data/procurement_contract_substance_role_corpus.json", import.meta.url),
   "utf8",
 ));
+const ROLE_CAPTURE_MANIFEST = JSON.parse(readFileSync(
+  new URL("../docs/evidence/contract-substance-role-corpus/capture-manifest.json", import.meta.url),
+  "utf8",
+));
 const PARITY_FIXTURE = JSON.parse(readFileSync(
   new URL("./fixtures/procurement-detail-parity/ct107120258801626.json", import.meta.url),
   "utf8",
@@ -549,6 +553,61 @@ test("A7: source-link integrity keeps every substance href tied to admitted evid
   assert.doesNotMatch(section, /excerpt_hash|projector_version|desk_reviewable/);
   // Excerpts remain available for the reader who opens the passage details.
   assert.match(section, /The Contractor shall provide home care services/);
+});
+
+test("A7: the capture artifact observes both layouts, destinations, and source-role mutation refusal", () => {
+  assert.equal(ROLE_CAPTURE_MANIFEST.schema, "cityscroll.contract_substance_role_corpus_capture_manifest.v2");
+  assert.match(ROLE_CAPTURE_MANIFEST.source_revision, /^grounded origin\/main [a-f0-9]{40}$/);
+  assert.equal(ROLE_CAPTURE_MANIFEST.assertions.length, 1);
+  assert.equal(ROLE_CAPTURE_MANIFEST.assertions[0].id, "A7");
+  assert.match(ROLE_CAPTURE_MANIFEST.assertions[0].artifact, /viewports.*layout/);
+
+  for (const capture of ROLE_CAPTURE_MANIFEST.captures) {
+    assert.equal(capture.viewports.length, 2, capture.case);
+    const [desktop, mobile] = capture.viewports;
+    assert.deepEqual([desktop.width, desktop.height], [1440, 900]);
+    assert.deepEqual([mobile.width, mobile.height], [390, 844]);
+    for (const viewport of capture.viewports) {
+      assert.match(viewport.render_sha256, /^[a-f0-9]{64}$/);
+      assert.match(viewport.layout_sha256, /^[a-f0-9]{64}$/);
+      assert.equal(viewport.layout.overflow, false);
+      assert.equal(viewport.layout.scroll_width, viewport.layout.client_width);
+      assert.equal(viewport.no_javascript_source_destination.script_tag_count, 0);
+      assert.equal(viewport.no_javascript_source_destination.javascript_href_count, 0);
+      assert.deepEqual(
+        viewport.no_javascript_source_destination.destinations_in_rendered_markup,
+        viewport.no_javascript_source_destination.expected_destinations,
+      );
+    }
+    assert.notEqual(desktop.layout_sha256, mobile.layout_sha256, `${capture.case}: layout hash must differ by viewport`);
+    assert.notEqual(desktop.layout.content_height, mobile.layout.content_height, `${capture.case}: content height must be observed at both viewports`);
+    assert.equal(capture.keyboard_source_open.all_named_destinations_reached, true, capture.case);
+    assert.deepEqual(
+      capture.keyboard_source_open.reached_in_tab_order,
+      capture.keyboard_source_open.expected_destinations,
+    );
+    assert.deepEqual(capture.keyboard_source_open.missing_destinations, []);
+  }
+
+  assert.equal(ROLE_CAPTURE_MANIFEST.source_role_mutation.vendor_promise_label_emitted, false);
+  assert.equal(ROLE_CAPTURE_MANIFEST.source_role_mutation.contract_requires_heading_emitted, false);
+  assert.equal(ROLE_CAPTURE_MANIFEST.source_role_mutation.rendered_row_count, 0);
+});
+
+test("A7: mutating a retained bid source role cannot promote it into a vendor promise", () => {
+  const mutatedCorpus = structuredClone(MATERIALIZED_ROLE_CORPUS);
+  const rows = mutatedCorpus.rows.filter((candidate) => candidate.contract_id === "BID2000090");
+  assert.ok(rows.length);
+  for (const row of rows) {
+    row.document_role = "executed_obligation";
+    row.resident_claim_label = RESIDENT_VENDOR_PROMISE_LABEL;
+  }
+  const view = buildContractSubstanceView({
+    roleCorpus: mutatedCorpus,
+    contractIds: ["BID2000090"],
+  });
+  assert.equal(view, null, "a role mutation that is not in the role-evidence vocabulary must fail closed");
+  assert.doesNotMatch(renderContractSubstanceHtml(view), new RegExp(RESIDENT_VENDOR_PROMISE_LABEL));
 });
 
 test("A7: the three small contracts render through the canonical document without fabricated substance", () => {
