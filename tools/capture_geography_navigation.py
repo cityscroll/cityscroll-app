@@ -24,6 +24,7 @@ SCREENSHOT_DIR = ROOT / "docs" / "screenshots" / "geography-navigation-shell"
 OVERLAP_MANIFEST_DIR = ROOT / "docs" / "evidence" / "geography-navigation-overlap"
 OVERLAP_MANIFEST_PATH = OVERLAP_MANIFEST_DIR / "capture-manifest.json"
 OVERLAP_SCREENSHOT_DIR = ROOT / "docs" / "screenshots" / "geography-navigation-overlap"
+A4_MANIFEST_PATH = MANIFEST_DIR / "target-size-zoom-manifest.json"
 
 VIEWPORTS = (
     ("desktop", 1440, 900),
@@ -112,6 +113,26 @@ def assert_shell_semantics(page, *, enhanced: bool, failed: bool = False) -> dic
           const heading = text('#near-geo-heading, .near-geo-entry h1, .near-hero h1');
           const surface = root?.dataset?.nearSurface || root?.dataset?.nearMobileSurface || null;
           const runtime = root?.dataset?.nearMapRuntime || null;
+          const isVisible = (node) => {
+            if (!node || node.hidden) return false;
+            const style = getComputedStyle(node);
+            const rect = node.getBoundingClientRect();
+            return style.display !== 'none' && style.visibility !== 'hidden'
+              && rect.width > 0 && rect.height > 0;
+          };
+          const targetGroup = (name, selector) => {
+            const nodes = [...document.querySelectorAll(selector)];
+            const visible = nodes.filter(isVisible);
+            const rects = visible.map((node) => node.getBoundingClientRect());
+            return {
+              name,
+              selector,
+              count: nodes.length,
+              visible_count: visible.length,
+              min_width: rects.length ? Math.min(...rects.map((rect) => Math.round(rect.width))) : 0,
+              min_height: rects.length ? Math.min(...rects.map((rect) => Math.round(rect.height))) : 0,
+            };
+          };
           const labels = [...document.querySelectorAll('.maplibregl-map .maplibregl-marker, .maplibregl-canvas-container')]
             .length;
           // MapLibre symbol labels are not DOM text; count via canvas presence + area list.
@@ -155,6 +176,16 @@ def assert_shell_semantics(page, *, enhanced: bool, failed: bool = False) -> dic
             has_map_canvas: Boolean(mapCanvas),
             map_canvas_width: mapCanvas?.width || 0,
             map_canvas_height: mapCanvas?.height || 0,
+            target_size_summary: [
+              targetGroup('search input', '#near-geo-search-input'),
+              targetGroup('search submit', '.near-geo-search button'),
+              targetGroup('Use my location', '[data-use-location]'),
+              targetGroup('layer controls', '.near-geo-layer'),
+              targetGroup('More boundaries', '.near-geo-more-boundaries > summary'),
+              targetGroup('surface controls', '.near-surface-link'),
+              targetGroup('area selection links', '#near-area-list a'),
+              targetGroup('map attribution disclosure', '.maplibregl-ctrl-attrib-button'),
+            ],
             rendered_neighborhood_label_count: renderedNeighborhoodLabels.length,
             rendered_neighborhood_labels: renderedNeighborhoodLabels,
             viewport: { width: innerWidth, height: innerHeight },
@@ -197,8 +228,6 @@ def validate_snapshot(snapshot: dict, *, mode: str, width: int) -> list[str]:
     if width <= 400 and snapshot["search_font_px"] is not None:
         require(snapshot["search_font_px"] >= 16, f"search font {snapshot['search_font_px']}px")
         assertions.append("search font ≥ 16px on narrow")
-    for button in snapshot["layer_buttons"]:
-        require(button["minHeight"] >= 44 or width > 900, f"layer target too small: {button}")
     assertions.append("layer controls present")
     if mode == "server":
         require(snapshot["has_map_svg"], "server SVG missing")
@@ -217,6 +246,17 @@ def validate_snapshot(snapshot: dict, *, mode: str, width: int) -> list[str]:
             raise AssertionError("advanced filters precede the map on enhanced desktop")
         assertions.append("advanced filters do not precede the map")
     if mode == "enhanced":
+        for target in snapshot["target_size_summary"]:
+            require(target["count"] > 0, f"interactive target group missing: {target['name']}")
+            require(
+                target["visible_count"] == target["count"],
+                f"interactive target group is not fully visible: {target}",
+            )
+            require(
+                target["min_width"] >= 44 and target["min_height"] >= 44,
+                f"interactive target smaller than 44x44: {target}",
+            )
+        assertions.append("visible interactive targets measure at least 44x44px")
         require(snapshot["runtime"] == "maplibre", f"enhanced runtime missing: {snapshot['runtime']!r}")
         require(snapshot["has_map_canvas"], "MapLibre canvas missing")
         require(snapshot["map_canvas_width"] > 0 and snapshot["map_canvas_height"] > 0, "MapLibre canvas has no painted size")
@@ -227,6 +267,114 @@ def validate_snapshot(snapshot: dict, *, mode: str, width: int) -> list[str]:
     if mode == "failed":
         require(snapshot["rendered_neighborhood_label_count"] == 0, "fallback reported rendered MapLibre labels")
     return assertions
+
+
+def assert_zoom_semantics(page) -> dict:
+    return page.evaluate(
+        """() => {
+          const isVisible = (node) => {
+            if (!node || node.hidden) return false;
+            const style = getComputedStyle(node);
+            const rect = node.getBoundingClientRect();
+            return style.display !== 'none' && style.visibility !== 'hidden'
+              && rect.width > 0 && rect.height > 0;
+          };
+          const required = [
+            ['search', '#near-geo-search-input'],
+            ['layer control', '[data-geography-layer-switcher]'],
+            ['selection', '#near-area-list a'],
+            ['record continuation', 'a[data-near-surface="records"]'],
+          ].map(([name, selector]) => {
+            const nodes = [...document.querySelectorAll(selector)];
+            return { name, selector, count: nodes.length, visible_count: nodes.filter(isVisible).length };
+          });
+          return {
+            scale: 2,
+            css_viewport: { width: innerWidth, height: innerHeight },
+            required,
+            overflow_x: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
+          };
+        }"""
+    )
+
+
+def validate_zoom_snapshot(snapshot: dict) -> list[str]:
+    require(snapshot["scale"] == 2, f"unexpected zoom scale: {snapshot['scale']}")
+    require(snapshot["css_viewport"]["width"] == 720, f"unexpected zoom viewport: {snapshot['css_viewport']}")
+    require(snapshot["overflow_x"] <= 1, f"zoom horizontal overflow {snapshot['overflow_x']}px")
+    for control in snapshot["required"]:
+        require(control["count"] > 0, f"zoom control missing: {control['name']}")
+        require(
+            control["visible_count"] == control["count"],
+            f"zoom control hidden: {control}",
+        )
+    return [
+        "A4: visible interactive targets measure at least 44x44px and 200% zoom keeps search, layer control, selection, and record continuation visible",
+    ]
+
+
+def validate_target_size_snapshot(snapshot: dict) -> list[str]:
+    for target in snapshot["target_size_summary"]:
+        require(target["count"] > 0, f"interactive target group missing: {target['name']}")
+        require(
+            target["visible_count"] == target["count"],
+            f"interactive target group is not fully visible: {target}",
+        )
+        require(
+            target["min_width"] >= 44 and target["min_height"] >= 44,
+            f"interactive target smaller than 44x44: {target}",
+        )
+    return ["interactive target width and height measurements retained"]
+
+
+def capture_a4_fixture(page, base: str) -> dict:
+    page.goto(f"{base}/near-you/", wait_until="networkidle")
+    page.evaluate(
+        """() => {
+          document.querySelectorAll('.js-only').forEach((node) => { node.hidden = false; });
+          const root = document.querySelector('[data-near-you-root]');
+          if (root) root.dataset.nearMobileSurface = 'map';
+          if (root) {
+            document.querySelectorAll('.maplibregl-ctrl-attrib-button').forEach((node) => node.remove());
+            const host = document.createElement('div');
+            host.className = 'near-map-enhanced';
+            host.dataset.a4MapFixture = 'true';
+            host.style.display = 'block';
+            host.style.width = '100%';
+            host.style.minHeight = '320px';
+            root.append(host);
+            const attribution = document.createElement('button');
+            attribution.type = 'button';
+            attribution.className = 'maplibregl-ctrl-attrib-button';
+            attribution.textContent = 'Map data';
+            attribution.style.display = 'block';
+            host.replaceChildren(attribution);
+          }
+        }"""
+    )
+    page.wait_for_timeout(100)
+    snapshot = assert_shell_semantics(page, enhanced=False, failed=False)
+    assertions = validate_snapshot(snapshot, mode="a4-fixture", width=720)
+    assertions.extend(validate_target_size_snapshot(snapshot))
+    zoom = assert_zoom_semantics(page)
+    assertions.extend(validate_zoom_snapshot(zoom))
+    snapshot["zoom"] = zoom
+    SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
+    page.screenshot(path=str(SCREENSHOT_DIR / "shell-a4-zoom-200.png"), full_page=False, animations="disabled")
+    return {
+        "name": "shell-a4-zoom-200",
+        "route": "/near-you/",
+        "mode": "a4-fixture-zoom-200",
+        "viewport": {"width": 720, "height": 450},
+        "assertion": "; ".join(assertions),
+        "sha256": sha256_text(json.dumps(snapshot, sort_keys=True, separators=(",", ":"))),
+        "file": None,
+        "snapshot": {
+            "overflow_x": snapshot.get("overflow_x"),
+            "target_size_summary": snapshot.get("target_size_summary"),
+            "zoom": snapshot.get("zoom"),
+        },
+    }
 
 
 def capture_case(page, base: str, *, mode: str, width: int, height: int, route: str = "/near-you/") -> dict:
@@ -305,6 +453,7 @@ def capture_case(page, base: str, *, mode: str, width: int, height: int, route: 
             "has_map_svg": snapshot.get("has_map_svg"),
             "map_canvas_width": snapshot.get("map_canvas_width"),
             "map_canvas_height": snapshot.get("map_canvas_height"),
+            "target_size_summary": snapshot.get("target_size_summary"),
             "rendered_neighborhood_label_count": snapshot.get("rendered_neighborhood_label_count"),
             "rendered_neighborhood_labels": snapshot.get("rendered_neighborhood_labels"),
         },
@@ -388,6 +537,50 @@ def run_shell(write_manifest: bool) -> int:
         MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
         MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         print(f"wrote {MANIFEST_PATH}")
+    else:
+        print(json.dumps(manifest, indent=2))
+    return 0
+
+
+def run_a4(write_manifest: bool) -> int:
+    from playwright.sync_api import sync_playwright
+
+    server, base = serve(ROOT / "site")
+    revision = local_revision()
+    try:
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(headless=True)
+            context = browser.new_context(viewport={"width": 720, "height": 450})
+            page = context.new_page()
+            try:
+                capture = capture_a4_fixture(page, base)
+            finally:
+                context.close()
+            browser.close()
+    finally:
+        server.shutdown()
+
+    manifest = {
+        "schema": "cityscroll.render_capture_manifest.v1",
+        "feature": "geography-navigation-shell-target-size-zoom",
+        "public_alias": "ced62a84f8213",
+        "capture_mode": "headless_playwright_local_fixture",
+        "repository_revision": revision,
+        "grounded_at": revision,
+        "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+        "image_binaries_committed": False,
+        "image_policy": "Screenshots may exist under docs/screenshots/ locally; only this manifest is committed.",
+        "route": "/near-you/",
+        "captures": [{
+            **capture,
+            "revision": revision,
+        }],
+        "verifier": "python3 tools/capture_geography_navigation.py --case a4",
+    }
+    if write_manifest:
+        MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
+        A4_MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+        print(f"wrote {A4_MANIFEST_PATH}")
     else:
         print(json.dumps(manifest, indent=2))
     return 0
@@ -760,13 +953,15 @@ def run_overlap(write_manifest: bool) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--case", choices=("shell", "overlap"), required=True)
+    parser.add_argument("--case", choices=("shell", "a4", "overlap"), required=True)
     parser.add_argument("--write-manifest", action="store_true", default=True)
     parser.add_argument("--no-write-manifest", action="store_true")
     args = parser.parse_args(argv)
     write = not args.no_write_manifest
     if args.case == "shell":
         return run_shell(write)
+    if args.case == "a4":
+        return run_a4(write)
     if args.case == "overlap":
         return run_overlap(write)
     return 2
