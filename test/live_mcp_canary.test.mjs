@@ -204,6 +204,14 @@ test("A5: notice citation and missing-notice assertions run against fixtures (lo
     error: "not-found",
   };
   assert.deepEqual(validateNoticeGetOutput(missing, { requestId: "cs10-canary-missing" }), missing);
+  assert.throws(
+    () => validateNoticeGetOutput({ ...missing, citation: {} }, { requestId: "cs10-canary-missing" }),
+    {
+      name: "TypeError",
+      message: "non-available notice.get output cannot carry a citation",
+    },
+    "the missing-notice fixture must reject a fabricated citation",
+  );
 });
 
 if (process.env.CS10_SKIP_LIVE_CANARY) {
