@@ -31,6 +31,16 @@ VIEWPORTS = (
     ("compact", 360, 800),
 )
 
+# Headless Chromium on macOS does not reliably create a WebGL context with its
+# default renderer. ANGLE-on-Metal keeps this capture on the same browser path
+# as production, while SwiftShader provides a deterministic software fallback
+# for machines where the headless GPU is unavailable.
+WEBGL_BROWSER_ARGS = (
+    "--use-gl=angle",
+    "--use-angle=metal",
+    "--enable-unsafe-swiftshader",
+)
+
 OVERLAP_ROUTE = "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&drawer=open"
 
 
@@ -106,6 +116,9 @@ def assert_shell_semantics(page, *, enhanced: bool, failed: bool = False) -> dic
             .length;
           // MapLibre symbol labels are not DOM text; count via canvas presence + area list.
           const mapCanvas = document.querySelector('.maplibregl-canvas, .maplibregl-map canvas');
+          const renderedNeighborhoodLabels = enhancedHost?.dataset?.renderedNeighborhoodLabels
+            ? enhancedHost.dataset.renderedNeighborhoodLabels.split(' | ').filter(Boolean)
+            : [];
           return {
             heading,
             has_search: Boolean(search),
@@ -140,6 +153,10 @@ def assert_shell_semantics(page, *, enhanced: bool, failed: bool = False) -> dic
             surface,
             runtime,
             has_map_canvas: Boolean(mapCanvas),
+            map_canvas_width: mapCanvas?.width || 0,
+            map_canvas_height: mapCanvas?.height || 0,
+            rendered_neighborhood_label_count: renderedNeighborhoodLabels.length,
+            rendered_neighborhood_labels: renderedNeighborhoodLabels,
             viewport: { width: innerWidth, height: innerHeight },
             map_box: box('.near-map-wrap, #near-map-enhanced, #nearMapSvg'),
             entry_box: box('.near-geo-entry, #near-geo-heading'),
@@ -199,10 +216,22 @@ def validate_snapshot(snapshot: dict, *, mode: str, width: int) -> list[str]:
         if snapshot["advanced_precedes_map"] is True:
             raise AssertionError("advanced filters precede the map on enhanced desktop")
         assertions.append("advanced filters do not precede the map")
+    if mode == "enhanced":
+        require(snapshot["runtime"] == "maplibre", f"enhanced runtime missing: {snapshot['runtime']!r}")
+        require(snapshot["has_map_canvas"], "MapLibre canvas missing")
+        require(snapshot["map_canvas_width"] > 0 and snapshot["map_canvas_height"] > 0, "MapLibre canvas has no painted size")
+        minimum, maximum = (12, 40) if width >= 1400 else (6, 20)
+        count = snapshot["rendered_neighborhood_label_count"]
+        require(minimum <= count <= maximum, f"rendered neighborhood labels {count} outside {minimum}–{maximum}")
+        assertions.append(f"MapLibre rendered {count} neighborhood labels with collision handling")
+    if mode == "failed":
+        require(snapshot["rendered_neighborhood_label_count"] == 0, "fallback reported rendered MapLibre labels")
     return assertions
 
 
 def capture_case(page, base: str, *, mode: str, width: int, height: int, route: str = "/near-you/") -> dict:
+    from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+
     if mode == "server":
         page.goto(f"{base}{route}", wait_until="networkidle")
         # Disable JS by using a context without scripts — caller passes java_script_enabled=False.
@@ -226,8 +255,29 @@ def capture_case(page, base: str, *, mode: str, width: int, height: int, route: 
     else:
         page.goto(f"{base}{route}", wait_until="networkidle")
         page.locator("[data-near-you-root]").wait_for()
-        # Enhancement marker may be data-enhanced or map runtime.
-        page.wait_for_timeout(800)
+        if mode == "enhanced":
+            try:
+                page.wait_for_function(
+                    """() => {
+                      const root = document.querySelector('[data-near-you-root]');
+                      const host = document.querySelector('#near-map-enhanced');
+                      return root?.dataset?.nearMapRuntime === 'maplibre'
+                        && Number(host?.dataset?.renderedNeighborhoodLabelCount || 0) > 0;
+                    }""",
+                    timeout=10000,
+                )
+            except PlaywrightTimeoutError as error:
+                diagnostics = page.evaluate(
+                    """() => ({
+                      runtime: document.querySelector('[data-near-you-root]')?.dataset?.nearMapRuntime || null,
+                      reason: document.querySelector('[data-near-you-root]')?.dataset?.nearMapRuntimeReason || null,
+                      host: {...(document.querySelector('#near-map-enhanced')?.dataset || {})},
+                      canvas: Boolean(document.querySelector('.maplibregl-canvas, .maplibregl-map canvas')),
+                    })"""
+                )
+                raise AssertionError(f"enhanced map did not render neighborhood labels: {diagnostics}") from error
+        else:
+            page.wait_for_timeout(500)
 
     snapshot = assert_shell_semantics(page, enhanced=(mode == "enhanced"), failed=(mode == "failed"))
     assertions = validate_snapshot(snapshot, mode=mode, width=width)
@@ -253,19 +303,23 @@ def capture_case(page, base: str, *, mode: str, width: int, height: int, route: 
             "advanced_precedes_map": snapshot.get("advanced_precedes_map"),
             "has_map_canvas": snapshot.get("has_map_canvas"),
             "has_map_svg": snapshot.get("has_map_svg"),
+            "map_canvas_width": snapshot.get("map_canvas_width"),
+            "map_canvas_height": snapshot.get("map_canvas_height"),
+            "rendered_neighborhood_label_count": snapshot.get("rendered_neighborhood_label_count"),
+            "rendered_neighborhood_labels": snapshot.get("rendered_neighborhood_labels"),
         },
     }
 
 
 def run_shell(write_manifest: bool) -> int:
-    from playwright.sync_api import sync_playwright
+    from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, sync_playwright
 
     server, base = serve(ROOT / "site")
     revision = local_revision()
     captures: list[dict] = []
     try:
         with sync_playwright() as playwright:
-            browser = playwright.chromium.launch(headless=True)
+            browser = playwright.chromium.launch(headless=True, args=list(WEBGL_BROWSER_ARGS))
             for mode in ("server", "enhanced", "failed"):
                 for name, width, height in VIEWPORTS:
                     context = browser.new_context(
@@ -282,6 +336,26 @@ def run_shell(write_manifest: bool) -> int:
             browser.close()
     finally:
         server.shutdown()
+
+    by_viewport = {(row["mode"], row["viewport"]["width"]): row for row in captures}
+    for _, width, _ in VIEWPORTS:
+        enhanced = by_viewport[("enhanced", width)]
+        failed = by_viewport[("failed", width)]
+        enhanced_observation = enhanced["snapshot"]
+        failed_observation = failed["snapshot"]
+        require(
+            enhanced_observation["rendered_neighborhood_label_count"] > 0,
+            f"enhanced {width}px capture did not observe neighborhood labels",
+        )
+        require(
+            failed_observation["rendered_neighborhood_label_count"] == 0,
+            f"failed {width}px capture unexpectedly observed MapLibre labels",
+        )
+        require(
+            json.dumps(enhanced_observation, sort_keys=True, separators=(",", ":"))
+            != json.dumps(failed_observation, sort_keys=True, separators=(",", ":")),
+            f"enhanced and failed {width}px observations are identical",
+        )
 
     manifest = {
         "schema": "cityscroll.render_capture_manifest.v1",
