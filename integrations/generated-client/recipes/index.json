@@ -250,7 +250,15 @@
       "bounded_output": {
         "availability": "available",
         "source": "materialized",
-        "stale": false
+        "stale": false,
+        "citation": {
+          "schema": "cityscroll.notice_get.citation.v1",
+          "publisher": "NYC City Record",
+          "request_id": "20260807001",
+          "publication_date": "2026-08-07",
+          "cityscroll_url": "https://cityscroll.org/notices/20260807001/",
+          "official_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260807001"
+        }
       },
       "output_schema": "schemas/notice_get.output.schema.json",
       "availability": [
@@ -258,7 +266,10 @@
         "not_yet_public",
         "unavailable"
       ],
-      "canonical_link_fields": [],
+      "canonical_link_fields": [
+        "citation.cityscroll_url",
+        "citation.official_url"
+      ],
       "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
       "evidence_class": "local_contract"
     },

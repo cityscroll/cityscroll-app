@@ -65,7 +65,10 @@
         "not_yet_public",
         "unavailable"
       ],
-      "canonical_link_fields": [],
+      "canonical_link_fields": [
+        "citation.cityscroll_url",
+        "citation.official_url"
+      ],
       "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
     },
     {

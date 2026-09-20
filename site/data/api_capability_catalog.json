@@ -137,7 +137,7 @@
       "id": "notice.get",
       "version": "1.0.0",
       "title": "Notice Get",
-      "description": "Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and, when available, includes citation-ready publisher and record links; missing and unavailable reads remain explicit.",
+      "description": "Get one public City Record notice by its exact RequestID. The result preserves retrieval freshness and, when available, includes citation-ready publisher and record links; missing and unavailable reads remain explicit.",
       "owner": "notices",
       "operation": "read",
       "authority": {

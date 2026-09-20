@@ -437,7 +437,7 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
   },
   {
     name: "get_notice",
-    description: "Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and, when available, includes citation-ready publisher and record links; missing and unavailable reads remain explicit.",
+    description: "Get one public City Record notice by its exact RequestID. The result preserves retrieval freshness and, when available, includes citation-ready publisher and record links; missing and unavailable reads remain explicit.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {

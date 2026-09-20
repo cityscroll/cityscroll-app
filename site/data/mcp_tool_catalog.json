@@ -474,7 +474,7 @@
         "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
       },
       "authority_class": "public_read",
-      "description": "Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and, when available, includes citation-ready publisher and record links; missing and unavailable reads remain explicit.",
+      "description": "Get one public City Record notice by its exact RequestID. The result preserves retrieval freshness and, when available, includes citation-ready publisher and record links; missing and unavailable reads remain explicit.",
       "schema_reference": "notice.get@1",
       "capability_reference": "notice.get@1",
       "input_schema": {

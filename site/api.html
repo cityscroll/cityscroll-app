@@ -273,7 +273,7 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
       "id": "notice.get",
       "version": "1.0.0",
       "title": "Notice Get",
-      "description": "Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and, when available, includes citation-ready publisher and record links; missing and unavailable reads remain explicit.",
+      "description": "Get one public City Record notice by its exact RequestID. The result preserves retrieval freshness and, when available, includes citation-ready publisher and record links; missing and unavailable reads remain explicit.",
       "owner": "notices",
       "operation": "read",
       "authority": {
@@ -2751,7 +2751,7 @@ Per-IP and daily model-call ceilings apply. Machine-readable catalog: <code>JSON
 <ul>
   <li><code>search_federated</code> <span aria-hidden="true">·</span> read — Search the registered public CityScroll lenses in one bounded result set. Optional scope selects only allowlisted registered lenses. Preserves per-lens coverage, source observations, exact object routes, and federated ranking. It does not expose a raw store or arbitrary query language.</li>
   <li><code>search_notices</code> <span aria-hidden="true">·</span> read — Search NYC City Record notices (the daily-refreshed mirror). Keyword terms are OR-matched. Add structured filters to narrow. Amounts are validity-filtered (data-entry errors excluded). Rolling placeholder deadlines are labeled, never shown as dates.</li>
-  <li><code>get_notice</code> <span aria-hidden="true">·</span> read — Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and, when available, includes citation-ready publisher and record links. Missing and unavailable reads remain explicit.</li>
+  <li><code>get_notice</code> <span aria-hidden="true">·</span> read — Get one public City Record notice by its exact RequestID. The result preserves retrieval freshness and, when available, includes citation-ready publisher and record links. Missing and unavailable reads remain explicit.</li>
   <li><code>get_entity_dossier</code> <span aria-hidden="true">·</span> read — Get the bounded public dossier for one exact canonical CityScroll entity. Preserves attributed disagreements, availability, provenance, and public redaction.</li>
   <li><code>get_entity_relationships</code> <span aria-hidden="true">·</span> read — Explore the public links for one exact CityScroll entity. Agency leaders link to the same person's published leadership record when held. The result states if a separate dossier exists, gives the source date and confidence, and explains the source's limits.</li>
   <li><code>retrieve_cited_passages</code> <span aria-hidden="true">·</span> read — Find source passages with stable citations and exact source links. Results include the corpus date, source types, counts, and date bounds, even with no hits. The search returns source text and its scope. It does not write an answer or infer civic links.</li>
