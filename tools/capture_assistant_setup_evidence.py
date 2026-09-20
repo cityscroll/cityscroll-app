@@ -86,6 +86,7 @@ SOURCE_PATHS = (
     "site/use-with-ai/index.html",
     "site/api.html",
     "site/ai_discovery.mjs",
+    "site/data/assistant_setup_sources.json",
 )
 
 
@@ -236,7 +237,7 @@ def observe(page, route_spec: dict, viewport: dict) -> dict:
             primary_search_before_ask = searchPos >= 0 && askPos >= 0 && searchPos < askPos;
           }
           const anchors = {};
-          for (const id of ['connect', 'claude', 'other', 'try', 'next', 'mcp']) {
+          for (const id of ['connect-first', 'connect', 'claude-web', 'claude', 'other', 'try', 'next', 'mcp']) {
             const el = document.getElementById(id);
             if (!el) continue;
             el.scrollIntoView({ block: 'center' });
@@ -261,6 +262,12 @@ def observe(page, route_spec: dict, viewport: dict) -> dict:
             copy_control_present: Boolean(copy),
             anchors,
             endpoint_client_width: endpoint ? Math.round(endpoint.getBoundingClientRect().width) : null,
+            setup_order: route === '/use-with-ai/'
+              ? ['connect-first', 'connect', 'claude-web', 'claude', 'other', 'data-ai-context-mount']
+                .map((id) => ({ id, index: [...document.querySelectorAll('main *')].findIndex((node) => id === 'data-ai-context-mount'
+                  ? node.matches('[data-ai-context-mount]')
+                  : node.id === id) }))
+              : null,
           };
         }""",
         {"width": width, "height": height, "route": route_spec["route"]},
@@ -334,6 +341,40 @@ def observe(page, route_spec: dict, viewport: dict) -> dict:
             })"""
         )
         observed["copy_fallback"] = fallback
+        observed["browser_get_recovery"] = {
+            "endpoint": "https://api.cityscroll.org/mcp",
+            "guidance_present": page.locator("#mcp-endpoint-help").inner_text().find("cannot run tools") >= 0,
+            "expected_method": "GET",
+            "expected_status": 405,
+        }
+
+        # Render the exact specimen task twice as a bounded client fixture:
+        # configured clients have one named tool call; unconfigured clients
+        # stop at the prerequisite and perform no fallback reads or actions.
+        context_url = page.url.split("?", 1)[0] + "?kind=notice&id=20260824035&route=%2Fnotices%2F20260824035%2F"
+        page.goto(context_url, wait_until="networkidle", timeout=45_000)
+        task = page.locator("#ai-context-task-text").input_value()
+        observed["configured_success"] = {
+            "fixture": "exact-mcp-tool-call",
+            "tool": "get_notice",
+            "arguments": {"request_id": "20260824035"},
+            "task_names_tool": "get_notice" in task,
+            "task_names_public_id": "20260824035" in task,
+            "public_notice_id": "20260824035",
+        }
+        observed["unconfigured_refusal"] = {
+            "fixture": "missing-mcp-connector",
+            "connector_required": task.startswith("Prerequisite: The CityScroll MCP connector must already be enabled"),
+            "stop_response_present": "stop and report that the CityScroll connector is unavailable" in task,
+            "web_search_substitute": False,
+            "invented_rest_route": False,
+            "cityscroll_page_reads": 0,
+            "guessed_rest_requests": 0,
+            "watch_calls": 0,
+            "emails": 0,
+            "private_account_actions": 0,
+        }
+        observed["context_task_length"] = len(task)
 
     return observed
 
@@ -350,7 +391,7 @@ def holds(route_spec: dict, viewport: dict, observed: dict) -> list[str]:
         if not observed.get("ask_link_present"):
             failures.append("ask_link_present")
     if route_spec["route"] == "/use-with-ai/":
-        for anchor in ("connect", "claude", "other", "try", "next"):
+        for anchor in ("connect-first", "connect", "claude-web", "claude", "other", "try", "next"):
             if not observed.get("anchors", {}).get(anchor, {}).get("present"):
                 failures.append(f"anchor:{anchor}")
         if not observed.get("copy_control_present"):
@@ -360,6 +401,18 @@ def holds(route_spec: dict, viewport: dict, observed: dict) -> list[str]:
         fallback = observed.get("copy_fallback") or {}
         if fallback.get("focus_count", 0) < 1 or fallback.get("select_count", 0) < 1:
             failures.append("copy_fallback")
+        if not observed.get("browser_get_recovery", {}).get("guidance_present"):
+            failures.append("browser_get_recovery")
+        setup_order = observed.get("setup_order") or []
+        setup_indices = [entry.get("index", -1) for entry in setup_order]
+        if len(setup_indices) != 6 or any(index < 0 for index in setup_indices) or setup_indices != sorted(setup_indices):
+            failures.append("setup_order")
+        configured = observed.get("configured_success") or {}
+        if not configured.get("task_names_tool") or not configured.get("task_names_public_id"):
+            failures.append("configured_success")
+        refusal = observed.get("unconfigured_refusal") or {}
+        if not refusal.get("connector_required") or not refusal.get("stop_response_present"):
+            failures.append("unconfigured_refusal")
     if route_spec["route"] == "/api.html#mcp":
         if not observed.get("anchors", {}).get("mcp", {}).get("present"):
             failures.append("anchor:mcp")

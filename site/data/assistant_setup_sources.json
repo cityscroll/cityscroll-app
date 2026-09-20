@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.assistant_setup_sources.v1",
+  "observed_at": "2026-09-20",
+  "sources": [
+    {
+      "id": "claude-web-remote-mcp",
+      "url": "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp",
+      "observed_at": "2026-09-20",
+      "claims": [
+        "Add a custom connector from Customize > Connectors.",
+        "Add custom connectors with the remote MCP server URL.",
+        "Enable configured connectors for individual conversations from + > Connectors."
+      ]
+    },
+    {
+      "id": "claude-code-mcp",
+      "url": "https://code.claude.com/docs/en/mcp",
+      "observed_at": "2026-09-20",
+      "claims": [
+        "Use claude mcp add --transport http for remote HTTP servers.",
+        "Use /mcp to inspect server status."
+      ]
+    },
+    {
+      "id": "mcp-streamable-http-transport",
+      "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports",
+      "observed_at": "2026-09-20",
+      "claims": [
+        "Streamable HTTP is the remote transport named by the MCP specification."
+      ]
+    }
+  ]
+}

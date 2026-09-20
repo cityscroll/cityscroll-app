@@ -46,6 +46,7 @@ const SETUP_SOURCE_PATHS = Object.freeze([
   "site/use-with-ai/index.html",
   "site/api.html",
   "site/ai_discovery.mjs",
+  "site/data/assistant_setup_sources.json",
 ]);
 
 function read(rel) {
@@ -121,7 +122,9 @@ function assertionHolds(route, html) {
     for (const token of [
       "mcp-endpoint",
       "data-copy-endpoint",
+      "connect-first",
       "id=\"connect\"",
+      "id=\"claude-web\"",
       "id=\"claude\"",
       "id=\"other\"",
       "id=\"try\"",
@@ -272,6 +275,21 @@ test("A6: retained capture manifest anchors viewport-witnessed renders and a sou
     assert.ok(intro.observed.copy_fallback.focus_count >= 1);
     assert.ok(intro.observed.copy_fallback.select_count >= 1);
     assert.equal(intro.observed.translated.translated_label_visible, true);
+    assert.equal(intro.observed.configured_success.tool, "get_notice");
+    assert.deepEqual(intro.observed.configured_success.arguments, { request_id: "20260824035" });
+    assert.equal(intro.observed.configured_success.public_notice_id, "20260824035");
+    assert.equal(intro.observed.unconfigured_refusal.cityscroll_page_reads, 0);
+    assert.equal(intro.observed.unconfigured_refusal.guessed_rest_requests, 0);
+    assert.equal(intro.observed.unconfigured_refusal.watch_calls, 0);
+    assert.equal(intro.observed.unconfigured_refusal.emails, 0);
+    assert.equal(intro.observed.browser_get_recovery.expected_status, 405);
+    assert.deepEqual(
+      intro.observed.setup_order.map((entry) => entry.id),
+      ["connect-first", "connect", "claude-web", "claude", "other", "data-ai-context-mount"],
+    );
+    assert.ok(intro.observed.setup_order.every((entry, index, entries) => (
+      index === 0 || entry.index > entries[index - 1].index
+    )));
 
     const translated = renderAskWithAiLink({ translate: (value) => (value === "Ask with AI" ? "Preguntar con IA" : value) });
     assert.match(translated, /Preguntar con IA/);

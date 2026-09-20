@@ -4,7 +4,7 @@
   "condition": "Chromium viewport witnesses over tracked HTML; no image binary is committed.",
   "image_binaries_committed": false,
   "capture_mode": "headless-playwright-loopback-static-render",
-  "revision": "7d3bc42d41788dcc0d9a7929c01f7b78614235c447ffdaaf2aa312b0d0f37869",
+  "revision": "2e4fb046d3f8436c8c7067c5da6784edfe9b87b06d4f776d356c6924176c1886",
   "revision_format": "sha256 of path:source-digest lines for setup sources",
   "data_vintage": "tracked site HTML at content revision",
   "capture_clock": "2026-09-16T12:00:00.000Z",
@@ -15,7 +15,8 @@
     "site/index.html",
     "site/use-with-ai/index.html",
     "site/api.html",
-    "site/ai_discovery.mjs"
+    "site/ai_discovery.mjs",
+    "site/data/assistant_setup_sources.json"
   ],
   "captures": [
     {
@@ -23,10 +24,10 @@
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "7d3bc42d41788dcc0d9a7929c01f7b78614235c447ffdaaf2aa312b0d0f37869",
+      "revision": "2e4fb046d3f8436c8c7067c5da6784edfe9b87b06d4f776d356c6924176c1886",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "primary search remains visible before Ask with AI at this viewport",
-      "sha256": "f001b59c4419fd85830c1ef86a42a839d133c580e1fed19bf809346ac4ba0d60",
+      "sha256": "06098fac2769f04aefee1a6a943916541f1c4d4d10d803740883dac9579113ea",
       "source_path": "site/index.html",
       "source_sha256": "5c09d4fb2199c6df626000d267b0f7a2ef4aeeedcc0f0a1d24e10b1fcc7cd741",
       "observed": {
@@ -40,6 +41,7 @@
         "copy_control_present": false,
         "anchors": {},
         "endpoint_client_width": null,
+        "setup_order": null,
         "translated": {
           "replaced": 1,
           "translated_label_visible": true,
@@ -52,10 +54,10 @@
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "7d3bc42d41788dcc0d9a7929c01f7b78614235c447ffdaaf2aa312b0d0f37869",
+      "revision": "2e4fb046d3f8436c8c7067c5da6784edfe9b87b06d4f776d356c6924176c1886",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "primary search remains visible before Ask with AI at this viewport",
-      "sha256": "9a1dcbd992c3f0bc3bce8154e63da0b19bf8ab9bf298cba14dd7922e02805732",
+      "sha256": "0200bde1d4e1245fc2b1660d7af9ad6577402d623c8a2f2ec12561d0f632a5d0",
       "source_path": "site/index.html",
       "source_sha256": "5c09d4fb2199c6df626000d267b0f7a2ef4aeeedcc0f0a1d24e10b1fcc7cd741",
       "observed": {
@@ -69,6 +71,7 @@
         "copy_control_present": false,
         "anchors": {},
         "endpoint_client_width": null,
+        "setup_order": null,
         "translated": {
           "replaced": 1,
           "translated_label_visible": true,
@@ -81,12 +84,12 @@
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "7d3bc42d41788dcc0d9a7929c01f7b78614235c447ffdaaf2aa312b0d0f37869",
+      "revision": "2e4fb046d3f8436c8c7067c5da6784edfe9b87b06d4f776d356c6924176c1886",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
-      "sha256": "90ab75e8bbd9e6fde44aa2c552184d8ba2c9830a591f962253e5c585b15550c0",
+      "sha256": "6e035cb52bcbf46342b5acc56de2095a9b279c6fa1a87acc42a00023a4a4cf99",
       "source_path": "site/use-with-ai/index.html",
-      "source_sha256": "4cdbd68e3088e378d58f998f65310afdfe67d149765bc8ec6ce645ea634a2706",
+      "source_sha256": "c187584e15f651a458d31400e5c283e9f5c80ae9b7ee17bf500fea9af0f189cf",
       "observed": {
         "inner_width": 1440,
         "inner_height": 1000,
@@ -97,9 +100,21 @@
         "endpoint_present": true,
         "copy_control_present": true,
         "anchors": {
+          "connect-first": {
+            "present": true,
+            "top": 390,
+            "width": 716,
+            "in_layout": true
+          },
           "connect": {
             "present": true,
-            "top": 446,
+            "top": 479,
+            "width": 674,
+            "in_layout": true
+          },
+          "claude-web": {
+            "present": true,
+            "top": 480,
             "width": 674,
             "in_layout": true
           },
@@ -129,6 +144,32 @@
           }
         },
         "endpoint_client_width": 674,
+        "setup_order": [
+          {
+            "id": "connect-first",
+            "index": 3
+          },
+          {
+            "id": "connect",
+            "index": 8
+          },
+          {
+            "id": "claude-web",
+            "index": 15
+          },
+          {
+            "id": "claude",
+            "index": 27
+          },
+          {
+            "id": "other",
+            "index": 35
+          },
+          {
+            "id": "data-ai-context-mount",
+            "index": 42
+          }
+        ],
         "translated": {
           "replaced": 1,
           "translated_label_visible": true,
@@ -139,7 +180,36 @@
           "focus_count": 1,
           "select_count": 1,
           "active_is_endpoint": true
-        }
+        },
+        "browser_get_recovery": {
+          "endpoint": "https://api.cityscroll.org/mcp",
+          "guidance_present": true,
+          "expected_method": "GET",
+          "expected_status": 405
+        },
+        "configured_success": {
+          "fixture": "exact-mcp-tool-call",
+          "tool": "get_notice",
+          "arguments": {
+            "request_id": "20260824035"
+          },
+          "task_names_tool": true,
+          "task_names_public_id": true,
+          "public_notice_id": "20260824035"
+        },
+        "unconfigured_refusal": {
+          "fixture": "missing-mcp-connector",
+          "connector_required": true,
+          "stop_response_present": true,
+          "web_search_substitute": false,
+          "invented_rest_route": false,
+          "cityscroll_page_reads": 0,
+          "guessed_rest_requests": 0,
+          "watch_calls": 0,
+          "emails": 0,
+          "private_account_actions": 0
+        },
+        "context_task_length": 620
       }
     },
     {
@@ -147,12 +217,12 @@
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "7d3bc42d41788dcc0d9a7929c01f7b78614235c447ffdaaf2aa312b0d0f37869",
+      "revision": "2e4fb046d3f8436c8c7067c5da6784edfe9b87b06d4f776d356c6924176c1886",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
-      "sha256": "083a5611e1c2332066367f5167fed85f503f2f00bbb6cb9b50ef95171e439fa9",
+      "sha256": "8338a76778e7e07078eaacc83f8644fe875f177ac43caf6a740da38478484a96",
       "source_path": "site/use-with-ai/index.html",
-      "source_sha256": "4cdbd68e3088e378d58f998f65310afdfe67d149765bc8ec6ce645ea634a2706",
+      "source_sha256": "c187584e15f651a458d31400e5c283e9f5c80ae9b7ee17bf500fea9af0f189cf",
       "observed": {
         "inner_width": 390,
         "inner_height": 844,
@@ -163,9 +233,21 @@
         "endpoint_present": true,
         "copy_control_present": true,
         "anchors": {
+          "connect-first": {
+            "present": true,
+            "top": 237,
+            "width": 346,
+            "in_layout": true
+          },
           "connect": {
             "present": true,
-            "top": 401,
+            "top": 402,
+            "width": 304,
+            "in_layout": true
+          },
+          "claude-web": {
+            "present": true,
+            "top": 402,
             "width": 304,
             "in_layout": true
           },
@@ -195,6 +277,32 @@
           }
         },
         "endpoint_client_width": 304,
+        "setup_order": [
+          {
+            "id": "connect-first",
+            "index": 3
+          },
+          {
+            "id": "connect",
+            "index": 8
+          },
+          {
+            "id": "claude-web",
+            "index": 15
+          },
+          {
+            "id": "claude",
+            "index": 27
+          },
+          {
+            "id": "other",
+            "index": 35
+          },
+          {
+            "id": "data-ai-context-mount",
+            "index": 42
+          }
+        ],
         "translated": {
           "replaced": 1,
           "translated_label_visible": true,
@@ -205,7 +313,36 @@
           "focus_count": 1,
           "select_count": 1,
           "active_is_endpoint": true
-        }
+        },
+        "browser_get_recovery": {
+          "endpoint": "https://api.cityscroll.org/mcp",
+          "guidance_present": true,
+          "expected_method": "GET",
+          "expected_status": 405
+        },
+        "configured_success": {
+          "fixture": "exact-mcp-tool-call",
+          "tool": "get_notice",
+          "arguments": {
+            "request_id": "20260824035"
+          },
+          "task_names_tool": true,
+          "task_names_public_id": true,
+          "public_notice_id": "20260824035"
+        },
+        "unconfigured_refusal": {
+          "fixture": "missing-mcp-connector",
+          "connector_required": true,
+          "stop_response_present": true,
+          "web_search_substitute": false,
+          "invented_rest_route": false,
+          "cityscroll_page_reads": 0,
+          "guessed_rest_requests": 0,
+          "watch_calls": 0,
+          "emails": 0,
+          "private_account_actions": 0
+        },
+        "context_task_length": 620
       }
     },
     {
@@ -213,10 +350,10 @@
       "viewport": "1440x1000",
       "viewport_width": 1440,
       "viewport_height": 1000,
-      "revision": "7d3bc42d41788dcc0d9a7929c01f7b78614235c447ffdaaf2aa312b0d0f37869",
+      "revision": "2e4fb046d3f8436c8c7067c5da6784edfe9b87b06d4f776d356c6924176c1886",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "stable MCP heading and setup link remain reachable at this viewport",
-      "sha256": "a9d6ce61a6c03067dc59c0cb339f75c221e8cbe193e2ec698d188099a94364f7",
+      "sha256": "8d148bcb84dee79594c95e58cfc53992cbf3ed2dc62126fceaa59c54615ca5e3",
       "source_path": "site/api.html",
       "source_sha256": "9f284d8eaf7b8a36e34bba68eae3f48a2064272d4e312f188938f787e0f9dbf7",
       "observed": {
@@ -237,6 +374,7 @@
           }
         },
         "endpoint_client_width": null,
+        "setup_order": null,
         "translated": {
           "replaced": 2,
           "translated_label_visible": true,
@@ -249,10 +387,10 @@
       "viewport": "390x844",
       "viewport_width": 390,
       "viewport_height": 844,
-      "revision": "7d3bc42d41788dcc0d9a7929c01f7b78614235c447ffdaaf2aa312b0d0f37869",
+      "revision": "2e4fb046d3f8436c8c7067c5da6784edfe9b87b06d4f776d356c6924176c1886",
       "data_vintage": "tracked site HTML at content revision",
       "assertion": "stable MCP heading and setup link remain reachable at this viewport",
-      "sha256": "101524240cf3e989742ff17f1ddcb348979720728fdd52f6a604e644c414e8e8",
+      "sha256": "75d95eb9303b2caabf4b6b1e7490804e1064c1b841f9ada79f30ba584c30821e",
       "source_path": "site/api.html",
       "source_sha256": "9f284d8eaf7b8a36e34bba68eae3f48a2064272d4e312f188938f787e0f9dbf7",
       "observed": {
@@ -273,6 +411,7 @@
           }
         },
         "endpoint_client_width": null,
+        "setup_order": null,
         "translated": {
           "replaced": 2,
           "translated_label_visible": true,

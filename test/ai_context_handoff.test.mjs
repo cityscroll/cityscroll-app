@@ -5,6 +5,7 @@ import { readFile } from "node:fs/promises";
 
 import {
   AI_CONTEXT_HANDOFF_DISPOSITIONS,
+  AI_CONTEXT_CONNECTION_PREREQUISITE,
   AI_CONTEXT_HANDOFF_SCHEMA,
   AI_CONTEXT_MORE_TOOLS_LABEL,
   AI_CONTEXT_PRIVATE_KEYS,
@@ -272,6 +273,18 @@ test("A6 setup page and discovery suites remain reachable deliverables", async (
   assert.match(panel, /data-copy-ai-context-task/);
   assert.match(panel, /CT107120258801626/);
   assert.match(panel, /get_contract/);
+});
+
+test("exact copied tasks require an enabled connector and refuse web or REST fallbacks", () => {
+  const handoff = buildNoticeAiContextHandoff({ request_id: "20260824035" });
+  const task = formatAiContextTask(handoff);
+  assert.equal(task.indexOf(AI_CONTEXT_CONNECTION_PREREQUISITE), 0);
+  assert.match(task, /must already be enabled in this conversation/);
+  assert.match(task, /named MCP tool is unavailable/);
+  assert.match(task, /stop and report/);
+  assert.match(task, /Do not substitute web search or invent a REST route/);
+  assert.match(task, /get_notice/);
+  assert.match(task, /20260824035/);
 });
 
 test("URL round-trip keeps land decision-path tools and meeting identity", () => {
