@@ -28,6 +28,7 @@ import {
   overlapEscapePolicy,
   rememberOverlapInvoker,
   renderSelectedGeographyOverlapDrawerHtml,
+  renderGeographyOverlapWorkspaceChrome,
   restoreOverlapInvokerFocus,
   sortOverlapRows,
 } from "../site/geography_navigation_overlap_ui.mjs";
@@ -286,6 +287,16 @@ test("A9: drawer markup order is shared; focus restore returns to invoker", () =
   const restored = restoreOverlapInvokerFocus("map:nta2020:BK1503", { store });
   assert.equal(restored, invoker);
   assert.equal(invoker.focused, true);
+
+  const closedWorkspace = renderGeographyOverlapWorkspaceChrome(model, { drawerState: "closed" });
+  assert.match(closedWorkspace, /data-geography-drawer-state="closed"/);
+  assert.match(closedWorkspace, /data-geography-drawer-toggle[^>]+aria-expanded="false"/);
+  assert.match(MAP_SOURCE, /toggle\.addEventListener\("click"/);
+  assert.match(MAP_SOURCE, /workspace\.dataset\.geographyDrawerState = next/);
+  assert.match(
+    MAP_SOURCE,
+    /if \(next === GEOGRAPHY_NAVIGATION_DRAWER_CLOSED\)[\s\S]*restoreOverlapInvokerFocus\(token, \{ root \}\)/,
+  );
 });
 
 test("A10: keyboard/hover/tap expose equivalent names; Escape keeps selection", () => {
