@@ -150,6 +150,7 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/land_filter_parity.mjs",
   "/land_view_switch.mjs",
   "/community_board_watch.mjs",
+  "/meeting_availability_filter.mjs",
   "/app/boot.mjs",
   "/home_entry.mjs",
 ]);

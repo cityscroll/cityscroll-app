@@ -69,7 +69,10 @@ function validTimezone(value) {
   if (typeof value !== "string" || !value.trim()) return null;
   const timezone = value.trim();
   try {
-    new Intl.DateTimeFormat("en-US", { timeZone: timezone }).format();
+    // Constructing the formatter validates the IANA zone. Do not call format()
+    // without an explicit instant: that would read the host wall clock during
+    // admission and make shifted test runs depend on the day they execute.
+    new Intl.DateTimeFormat("en-US", { timeZone: timezone });
     return timezone;
   } catch {
     return null;
