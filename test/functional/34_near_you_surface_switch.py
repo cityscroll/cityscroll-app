@@ -80,6 +80,7 @@ def assert_failed_update_recovers(page: Page, width: int, height: int, keyboard:
     # or may already have recovered to ready after a same-document reload.
     assert page.locator("[data-near-you-root]").count() >= 1
     page.locator('[data-near-you-root][data-near-deferred-state="ready"]').wait_for()
+    assert int(page.locator("[data-near-you-root]").get_attribute("data-near-deferred-generation") or "0") >= 1
 
 
 def assert_topic_change_replaces_resolved_results(page: Page, width: int, height: int) -> None:
@@ -98,6 +99,7 @@ def assert_topic_change_replaces_resolved_results(page: Page, width: int, height
     page.locator('[data-near-you-root][data-near-deferred-state="ready"]').wait_for(timeout=30000)
 
     assert "lens=meetings" in page.url
+    assert int(page.locator("[data-near-you-root]").get_attribute("data-near-deferred-generation") or "0") >= 1
     assert page.locator("input[name='cd']").input_value() == "K15"
     assert page.locator(".near-results").count() == 1
     heading = page.locator("#near-results-heading").text_content() or ""

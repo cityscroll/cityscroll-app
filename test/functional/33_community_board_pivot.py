@@ -25,6 +25,32 @@ if "shards" in MEETING_INDEX:
 EXPECTED_CB10_MEETINGS = len(MEETING_INDEX["by_board"]["manhattan-cb-10"])
 
 
+def assert_board_position_inspection(page) -> None:
+    """The board journey must expose useful inspection before its project link."""
+    page.goto(f"{BASE}/community-boards/manhattan-cb-04/", wait_until="domcontentloaded", timeout=30000)
+    section = page.locator(
+        '[data-community-board-land-positions][data-land-positions-state="available"]'
+    )
+    section.wait_for(timeout=30000)
+    control = section.locator("button.board-land-position-inspect").first
+    control.wait_for(timeout=30000)
+    payload = json.loads(control.get_attribute("data-board-land-position") or "{}")
+    assert payload.get("title")
+    assert payload.get("href")
+    assert len(payload.get("facts", [])) >= 4
+    full_record = control.locator("xpath=../a.board-land-position-full-record")
+    assert full_record.count() == 1
+    assert full_record.get_attribute("href") == payload["href"]
+
+    control.click()
+    dialog = page.locator("#board-land-position-inspect")
+    dialog.wait_for(state="visible", timeout=30000)
+    assert dialog.locator(".board-land-position-dialog-title").inner_text().strip() == payload["title"]
+    assert dialog.locator("a.board-land-position-dialog-open").get_attribute("href") == payload["href"]
+    dialog.locator("[data-board-land-position-close]").click()
+    assert page.evaluate("document.activeElement?.classList.contains('board-land-position-inspect')")
+
+
 def main() -> None:
     assert EXPECTED_CB10_MEETINGS > 0
     with sync_playwright() as playwright:
@@ -69,6 +95,7 @@ def main() -> None:
         assert board_meetings.locator(
             '.near-record-basis:has-text("matched by community board district")'
         ).count() == EXPECTED_CB10_MEETINGS
+        assert_board_position_inspection(page)
 
         browser.close()
 

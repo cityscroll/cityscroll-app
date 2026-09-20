@@ -394,6 +394,8 @@ export const BROWSE_INSPECTION_JOURNEY = Object.freeze({
     "reject_undeclared",
     "reject_baseline_growth",
     "accept_directory_navigation",
+    "run_registered_journeys",
+    "verify_external_evidence_hashes",
     "record_assertions",
   ]),
   rendered_reference: Object.freeze({
@@ -407,8 +409,26 @@ export const BROWSE_INSPECTION_JOURNEY = Object.freeze({
       "keyboard",
       "no_javascript",
       "failed_detail",
+      "reversed_response",
     ]),
   }),
+  functional_references: Object.freeze([
+    Object.freeze({
+      path: "test/functional/30_browse_interaction_grammar.py",
+      surfaces: Object.freeze(["contracts-money-list", "search-results"]),
+      assertions: Object.freeze(["primary_inspection", "content_sufficiency"]),
+    }),
+    Object.freeze({
+      path: "test/functional/33_community_board_pivot.py",
+      surfaces: Object.freeze(["board-land-positions"]),
+      assertions: Object.freeze(["primary_inspection", "content_sufficiency"]),
+    }),
+    Object.freeze({
+      path: "test/functional/34_near_you_surface_switch.py",
+      surfaces: Object.freeze(["near-you-records", "near-you-scope"]),
+      assertions: Object.freeze(["scope_generation", "failed_detail", "no_javascript"]),
+    }),
+  ]),
 });
 
 function requireText(value, label, problems) {

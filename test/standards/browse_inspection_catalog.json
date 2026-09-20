@@ -476,6 +476,8 @@
       "reject_undeclared",
       "reject_baseline_growth",
       "accept_directory_navigation",
+      "run_registered_journeys",
+      "verify_external_evidence_hashes",
       "record_assertions"
     ],
     "rendered_reference": {
@@ -487,8 +489,44 @@
         "narrow_touch",
         "keyboard",
         "no_javascript",
-        "failed_detail"
+        "failed_detail",
+        "reversed_response"
       ]
-    }
+    },
+    "functional_references": [
+      {
+        "path": "test/functional/30_browse_interaction_grammar.py",
+        "surfaces": [
+          "contracts-money-list",
+          "search-results"
+        ],
+        "assertions": [
+          "primary_inspection",
+          "content_sufficiency"
+        ]
+      },
+      {
+        "path": "test/functional/33_community_board_pivot.py",
+        "surfaces": [
+          "board-land-positions"
+        ],
+        "assertions": [
+          "primary_inspection",
+          "content_sufficiency"
+        ]
+      },
+      {
+        "path": "test/functional/34_near_you_surface_switch.py",
+        "surfaces": [
+          "near-you-records",
+          "near-you-scope"
+        ],
+        "assertions": [
+          "scope_generation",
+          "failed_detail",
+          "no_javascript"
+        ]
+      }
+    ]
   }
 }

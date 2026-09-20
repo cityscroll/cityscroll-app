@@ -268,6 +268,9 @@ jobs:
         # drift apart, so a new family cannot be required here while the local
         # pre-push run silently skips it.
         run: python3 test/standards/preflight_unit_family_parity.py
+      - name: Browse inspection conformance
+        if: matrix.family == 'static-standards'
+        run: node --test test/browse_inspection_conformance.test.mjs
       - name: Legacy repository-name guard
         if: matrix.family == 'static-standards'
         env:
