@@ -12,6 +12,7 @@ import {
   normalizeScope,
   PLACE_ROLES,
   placeRoleSupportedForDomain,
+  routeHashFromScope,
   watchFromScope,
 } from "./scope_v0.mjs";
 import { ACTION_LOCATION_BASIS_LABELS } from "./contract_action_location.mjs";
@@ -686,7 +687,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       : defaultViewBox(),
     bags,
     activity: dataState === "ready" ? activityRoot : null,
-    browseHref: nearYouUrlFromScope(scope, { base: canonicalBase }),
+    browseHref: migratedSiteHref(`/${routeHashFromScope(scope, { surface: lens })}`),
     membershipProjection,
     geographyLensCounts: geographyKeyForScope(scope) && activity?.geography_items
       ? geographyRecordLenses(activity, geographyKeyForScope(scope))
