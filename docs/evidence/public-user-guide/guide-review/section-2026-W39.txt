@@ -1,0 +1,13 @@
+## Guide review
+
+Last checked 2026-09-21 at b3b58e6ec0bc. A check is machine evidence; an article's review date stays a human record and nothing here changes it.
+
+### Checks that could not run (1)
+
+- T1: Example semantic-search-housing was not exercised in this window, so its state is unknown.
+
+### Journeys nothing documents yet (1)
+
+- The site demonstrates notice-sanitation-connected-mandate through notice.get@1, and no guide article cites it yet.
+
+Each line is a suggestion for an editor to look at. Nothing above has been acted on.

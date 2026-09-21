@@ -1,0 +1,40 @@
+{
+  "schema": "cityscroll.guide_review_handoff_pointer.v1",
+  "producer": {
+    "report_schema": "cityscroll.guide_review.v1",
+    "report": "report-2026-W39.json",
+    "section": "section-2026-W39.txt",
+    "checked_at": "2026-09-21",
+    "run_key": "2026-W39",
+    "observed_commit": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+    "content_hash": "13445e6aee06870975ead97cf932207f61c4d566e13c235c3ae7a125f2b929d1"
+  },
+  "reproduction": {
+    "report_command": "node tools/build_guide_review.mjs --report --checked-at=<run-date> --run-key=<iso-week> --since=<previous-run-commit> --out=docs/evidence/public-user-guide/guide-review/report-<iso-week>.json",
+    "section_command": "node tools/build_guide_review.mjs --section --checked-at=<run-date> --run-key=<iso-week> --since=<previous-run-commit> --out=docs/evidence/public-user-guide/guide-review/section-<iso-week>.txt"
+  },
+  "consumer_handoff": {
+    "owner": "private weekly review consumer",
+    "input_schema": "cityscroll.guide_review.v1",
+    "deduplication_keys": [
+      "job_id",
+      "run_key",
+      "finding_id"
+    ],
+    "required_receipt_assertions": [
+      "one guide-review section is folded into the existing weekly batch",
+      "replaying the same run key and finding identities produces zero duplicate items"
+    ],
+    "receipt": {
+      "status": "not retained in this repository",
+      "storage_location": "not declared by the private consumer",
+      "producer_pointer": "docs/evidence/public-user-guide/guide-review/consumer-handoff-pointer.json"
+    }
+  },
+  "assertions": {
+    "A2-guide-section": "The producer report and rendered section are retained and point to the same run key and content hash.",
+    "A2-replay": "The private consumer replay assertion remains open; this pointer does not relabel a local rehearsal as a scheduled receipt.",
+    "A2-owner-entry": "The private weekly review consumer owns the fold; the reproduction commands above are the exact producer handoff.",
+    "A2-receipt": "No guide-specific consumer receipt was observed or retained; its storage location must be declared by the private consumer."
+  }
+}

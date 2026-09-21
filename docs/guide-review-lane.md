@@ -131,8 +131,13 @@ node tools/build_guide_review.mjs --rehearse --checked-at=2026-09-05 --run-key=2
 to invent it, because a projection that reads a clock cannot be rebuilt and
 compared.
 
-Reports are written under the ignored `.artifacts/` tree. They describe one
-moment rather than the state of the site, so they are not tracked.
+Local rehearsal reports are written under the ignored `.artifacts/` tree. They
+describe one moment rather than the state of the site. When an external weekly
+consumer needs a durable input, retain the producer report and its rendered
+section under
+`docs/evidence/public-user-guide/guide-review/consumer-handoff-pointer.json`;
+that pointer records the exact report, run key, content hash and reproduction
+commands without claiming that the private consumer has produced a receipt.
 
 ## The remaining private handoff
 
@@ -148,14 +153,20 @@ stays open until the private consumer runs it:
 > it reading a `cityscroll.guide_review.v1` report, folding the section into its
 > existing digest, and producing no duplicate item on a replay.
 
-The handoff needed for that is narrow and entirely on the private side:
+The public producer packet and the private consumer handoff are now explicit in
+[`consumer-handoff-pointer.json`](evidence/public-user-guide/guide-review/consumer-handoff-pointer.json).
+The handoff needed for the private side is narrow:
 
-1. Call `node tools/build_guide_review.mjs --section --checked-at=<the run date>
-   --since=<the previous run's commit>` and include the returned section.
+1. Read the retained `cityscroll.guide_review.v1` report and section, or call
+   `node tools/build_guide_review.mjs --section --checked-at=<run date>
+   --run-key=<ISO week> --since=<previous run's commit>` and retain the returned
+   section beside the batch it enters.
 2. Key deduplication on `job_id` + `run_key`, which produce the same `event_id`
    the existing scheduled jobs use, and on each finding's `finding_id`.
-3. Keep assignment, queue position, and reviewer identity on that side. Nothing
-   in this schema will accept them.
+3. Keep assignment, queue position, reviewer identity and the consumer receipt on
+   that side. Nothing in this public schema will accept them. The receipt must
+   name one folded guide-review section and a same-run replay with zero duplicate
+   findings.
 
 Until that receipt exists, this repository claims only what it can prove: the
 report contract, the finding vocabulary, the deduplication behaviour, and a
