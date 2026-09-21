@@ -26,15 +26,33 @@
       "replaying the same run key and finding identities produces zero duplicate items"
     ],
     "receipt": {
-      "status": "not retained in this repository",
-      "storage_location": "not declared by the private consumer",
+      "status": "retained",
+      "repository": "fiduciary-heartbeat",
+      "path": "docs/evidence/weekly-review-guide-review-consumer-receipt.json",
+      "commit": "262b23f400e7ca2e6327737d956b35db38d0b551",
+      "run_key": "2026-W39",
+      "owner": "fiduciary-heartbeat",
+      "entry_command": "python3 tools/weekly_review.py --json",
+      "folded_section": {
+        "section_id": "guide-review-2026-W39",
+        "section_count": 1,
+        "section_sha256": "7c4f23f38c44576f8046c36e8d5579097a2616e7b7a981956e036a7d1265061f"
+      },
+      "replay_result": {
+        "new_finding_ids": [],
+        "duplicate_finding_ids": [
+          "020d0447e485d1926c84b6855134b600",
+          "05484d09a45a247583e923925eb56b69"
+        ],
+        "section_count": 1
+      },
       "producer_pointer": "docs/evidence/public-user-guide/guide-review/consumer-handoff-pointer.json"
     }
   },
   "assertions": {
     "A2-guide-section": "The producer report and rendered section are retained and point to the same run key and content hash.",
-    "A2-replay": "The private consumer replay assertion remains open; this pointer does not relabel a local rehearsal as a scheduled receipt.",
+    "A2-replay": "The retained consumer receipt records the same run key and finding identities producing zero new items on replay.",
     "A2-owner-entry": "The private weekly review consumer owns the fold; the reproduction commands above are the exact producer handoff.",
-    "A2-receipt": "No guide-specific consumer receipt was observed or retained; its storage location must be declared by the private consumer."
+    "A2-receipt": "The guide-specific consumer receipt is retained at the declared repository, path, and commit for the producer run key."
   }
 }
