@@ -39,6 +39,7 @@ import {
   landAuthorityStageLabel,
 } from "../land_authority_labels.mjs";
 import { landProjectPath } from "../land_project_route.mjs";
+import { cartoBasemapTileUrl } from "../carto_basemap.mjs";
 import {
   landMapSelectionFocusIntent,
   landSelectionFromHistoryState,
@@ -232,7 +233,7 @@ async function landShowMap(lat, lon, label, selection, precision="approximate"){
   el.style.display="block";
   globalThis.landMap=L.map(el).setView([lat,lon],15);
   wireLandPanControls(globalThis.landMap);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(globalThis.landMap);
+  L.tileLayer(cartoBasemapTileUrl({subdomain:"{s}",retina:true}),{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(globalThis.landMap);
   // w9-10: Leaflet's marker icon renders as an <img> -- `alt` is its accessible name
   // (the list view, #llist, remains the real keyboard/SR-equivalent; this is a small assist).
   globalThis.landMarker=L.marker([lat,lon],{alt:label||t("map_marker_alt")}).addTo(globalThis.landMap);
@@ -252,7 +253,7 @@ async function landShowLots(gj, n, selection){
   el.style.display="block";
   globalThis.landMap=L.map(el);
   wireLandPanControls(globalThis.landMap);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO · lots © NYC MapPLUTO',subdomains:'abcd',maxZoom:19}).addTo(globalThis.landMap);
+  L.tileLayer(cartoBasemapTileUrl({subdomain:"{s}",retina:true}),{attribution:'© OpenStreetMap © CARTO · lots © NYC MapPLUTO',subdomains:'abcd',maxZoom:19}).addTo(globalThis.landMap);
   const layer=L.geoJSON(gj,{style:{color:'#1a44e0',weight:2,fillColor:'#1b3a8f',fillOpacity:.35}}).addTo(globalThis.landMap);
   try{ globalThis.landMap.fitBounds(layer.getBounds(),{padding:[20,20],maxZoom:17}); }catch(e){ globalThis.landMap.setView([40.71,-73.96],12); }
   setTimeout(()=>{ if(globalThis.landMap) globalThis.landMap.invalidateSize(); },160);

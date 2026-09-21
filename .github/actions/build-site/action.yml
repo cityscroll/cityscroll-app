@@ -35,6 +35,15 @@ inputs:
     required: false
     default: ""
 
+  carto-basemap-api-key:
+    description: Browser key for CARTO tiles, injected into build output only.
+    required: false
+    default: ""
+  require-carto-basemap-api-key:
+    description: Fail production builds when the basemap credential is missing.
+    required: false
+    default: "false"
+
 runs:
   using: composite
   steps:
@@ -73,6 +82,8 @@ runs:
         REFRESH_DECISION_OUTCOMES: ${{ inputs.refresh-decision-outcomes }}
         REFRESH_RESIDENT_SNAPSHOTS: ${{ inputs.refresh-resident-snapshots }}
         LEGISTAR_API_TOKEN: ${{ inputs.legistar-api-token }}
+        CARTO_BASEMAP_API_KEY: ${{ inputs.carto-basemap-api-key }}
+        REQUIRE_CARTO_BASEMAP_API_KEY: ${{ inputs.require-carto-basemap-api-key }}
       run: |
         set -euo pipefail
         # The committee sample records the instant it was retrieved.
@@ -88,6 +99,11 @@ runs:
           args+=(--refresh-resident-snapshots)
         fi
         node "$SOURCE_DIR/tools/build_cloudflare_pages.mjs" "${args[@]}"
+        carto_args=(--site-dir "$SITE_DIR")
+        if [ "$REQUIRE_CARTO_BASEMAP_API_KEY" = "true" ]; then
+          carto_args+=(--require)
+        fi
+        node "$SOURCE_DIR/tools/inject_carto_basemap_key.mjs" "${carto_args[@]}"
         node "$SOURCE_DIR/tools/check_pages_bundle_sizes.mjs" --site-dir "$SITE_DIR"
         node "$SOURCE_DIR/tools/artifact_manifest.mjs" \
           --site-dir "$SITE_DIR" \
