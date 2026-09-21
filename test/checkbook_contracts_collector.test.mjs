@@ -13,6 +13,10 @@ import {
 } from "../warehouse/lib/checkbook_contracts.mjs";
 import { parseContractTransactions } from "../worker/src/lib/checkbook_lifecycle.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
+import {
+  loadSourceContracts,
+  readRetainedVintage,
+} from "../tools/source_contracts.mjs";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const FIXTURE = join(ROOT, "warehouse/fixtures/checkbook-contracts/collector.json");
@@ -126,5 +130,22 @@ describe("Checkbook Contracts published graph", () => {
     assert.equal(new Set(rows.map((row) => row.contract_id)).size, rows.length);
     assert.ok(rows.every((row) => row.exact_key_status?.contract_id === "exact"));
     assert.equal(receipt.identity_policy.authority_keys, "exact contract_id and exact PIN/EPIN only");
+  });
+});
+
+describe("Checkbook Contracts source-contract vintage", () => {
+  it("declares retained vintage that resolves under the 45-day registration-driven contract", () => {
+    const registry = loadSourceContracts();
+    const contract = registry.contracts.find((entry) => entry.id === "checkbook-contracts");
+    assert.equal(contract.max_stale_days, 45);
+    assert.equal(contract.freshness_contract.max_stale_days, 45);
+    assert.equal(contract.freshness_contract.serving_max_age_days, 45);
+    assert.match(
+      contract.publisher_cadence,
+      /Registration-driven ongoing updates; no fixed daily publication promise \(Checkbook API\)/,
+    );
+    const vintage = readRetainedVintage(contract.freshness_contract.retained_vintage);
+    assert.equal(vintage.field, "snapshot_date");
+    assert.equal(vintage.at, "2026-09-09");
   });
 });

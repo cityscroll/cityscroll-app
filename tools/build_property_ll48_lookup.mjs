@@ -39,6 +39,8 @@ export function buildLl48Slice(rows, eligibleBbls, observedAt) {
   return {
     schema_version: 1,
     version: "property_ll48_lookup_v1",
+    // Top-level observed_at is the retained-vintage field read by source-contract freshness.
+    observed_at: observedAt,
     source: {
       id: "suitability-city-owned-leased-property-ll48",
       dataset_id: "4e2n-s75z",

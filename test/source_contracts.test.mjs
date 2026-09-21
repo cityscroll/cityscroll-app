@@ -80,6 +80,23 @@ test("LL48 contract records the exact-BBL graph-slice measurement", () => {
   assert.equal(contract.warehouse_snapshot.artifact, "site/data/property_ll48_lookup.json");
 });
 
+test("LL48 declares a two-year cadence and retained vintage that resolves", () => {
+  const registry = loadSourceContracts();
+  const contract = registry.contracts.find((entry) => entry.id === "suitability-city-owned-leased-property-ll48");
+  assert.equal(contract.max_stale_days, 730);
+  assert.equal(contract.freshness_policy.limit_days, 730);
+  assert.equal(contract.freshness_contract.max_stale_days, 730);
+  assert.equal(contract.freshness_contract.serving_max_age_days, 730);
+  assert.equal(freshnessLimit(contract), 730);
+  assert.match(contract.publisher_cadence, /Every 2 years \(NYC OpenData metadata\)/);
+  assert.match(contract.freshness_policy.derivation, /730-day freshness limit/);
+  assert.match(contract.freshness_policy.evidence, /Update Frequency Every 2 years/);
+  assert.equal(contract.freshness_policy.observed_metadata_lag_days, 0);
+  const vintage = readRetainedVintage(contract.freshness_contract.retained_vintage);
+  assert.equal(vintage.field, "observed_at");
+  assert.equal(vintage.at, "2025-09-17");
+});
+
 test("MIH freshness limit records its metadata-based cadence derivation", () => {
   const registry = loadSourceContracts();
   const mih = registry.contracts.find((entry) => entry.id === "mandatory-inclusionary-housing");

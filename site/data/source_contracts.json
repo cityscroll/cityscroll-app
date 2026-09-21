@@ -466,7 +466,7 @@
         "prime_contract_registration_date"
       ],
       "max_stale_days": 45,
-      "publisher_cadence": "Ongoing registrations and spending updates",
+      "publisher_cadence": "Registration-driven ongoing updates; no fixed daily publication promise (Checkbook API)",
       "product_freshness": "Queried live for contract details and daily for watched renewal estimates. A checkpointed host collector measures and materializes the FY2025-FY2027 registered-expense population for the bounded entity-intelligence graph feed.",
       "used_for": "Pending and registered contract amounts, paid-to-date totals, contract terms, the procurement lifecycle timeline, and a population-backed exact contract/PIN graph slice.",
       "code_references": [
@@ -488,6 +488,10 @@
         "mode": "continuous",
         "max_stale_days": 45,
         "clock_basis": "checked_acquired",
+        "retained_vintage": {
+          "artifact_path": "site/data/analytics_registered_contracts.json",
+          "vintage_fields": ["snapshot_date", "generated_at"]
+        },
         "serving_max_age_days": 45,
         "serve_contract_id": null
       },
@@ -1572,8 +1576,17 @@
         "potential_urban_ag",
         "date_created"
       ],
-      "max_stale_days": 365,
-      "publisher_cadence": "Periodic civic-data updates",
+      "max_stale_days": 730,
+      "freshness_policy": {
+        "limit_days": 730,
+        "method": "Publisher-declared two-year update frequency from NYC Open Data metadata",
+        "observed_on": "2026-09-21",
+        "declared_cadence_days": 730,
+        "observed_metadata_lag_days": 0,
+        "evidence": "https://data.cityofnewyork.us/api/views/4e2n-s75z declares Update Frequency Every 2 years and Data Change Frequency Every 2 years. On 2026-09-21 rowsUpdatedAt was 2025-09-17T19:32:38Z (1758137558), matching the retained artifact vintage with zero observed metadata lag beyond that publisher clock.",
+        "derivation": "Publisher-declared two-year cadence = 730-day freshness limit; the prior 365-day bound flagged legitimate two-year republication as drift."
+      },
+      "publisher_cadence": "Every 2 years (NYC OpenData metadata)",
       "product_freshness": "Bulk rows remain warehouse-side; the public property view serves only exact-BBL rows attached to the committed disposition graph slice.",
       "used_for": "Exact-BBL city-owned and leased property suitability evidence on Property parcel biographies.",
       "code_references": [
@@ -1610,9 +1623,13 @@
       },
       "freshness_contract": {
         "mode": "periodic",
-        "max_stale_days": 365,
+        "max_stale_days": 730,
         "clock_basis": "publisher_updated",
-        "serving_max_age_days": 365,
+        "retained_vintage": {
+          "artifact_path": "site/data/property_ll48_lookup.json",
+          "vintage_fields": ["observed_at"]
+        },
+        "serving_max_age_days": 730,
         "serve_contract_id": null
       },
       "health_policy": {
