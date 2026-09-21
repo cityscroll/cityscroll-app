@@ -104,6 +104,7 @@ import { handlePublicRelationshipGraph } from "./public_relationship_graph.mjs";
 import { handleEntityIntelligence } from "./entity_intelligence.mjs";
 import { handleAdminAttachmentMetadata, handleAttachmentMetadata } from "./attachment_metadata.mjs";
 import { runDigestShadow } from "./digest_shadow.mjs";
+import { handleDigestShadowRebuildQueueMessage } from "./digest_shadow_rebuild.mjs";
 import { handleNearYou } from "./near_you.mjs";
 import { handleFollowing } from "./following.mjs";
 import { handleSearch } from "./search.mjs";
@@ -561,6 +562,18 @@ export default {
 
   // Digest queue consumer: one account job per message (single watch or rollup; see alerts.mjs).
   async queue(batch, env) {
+    if (batch.queue === "crol-digest-shadow-rebuild") {
+      for (const msg of batch.messages) {
+        try {
+          await handleDigestShadowRebuildQueueMessage(env, msg, { now: new Date() });
+          msg.ack();
+        } catch (error) {
+          console.error("digest shadow rebuild job failed", String(error?.message || error));
+          msg.retry();
+        }
+      }
+      return;
+    }
     const deadLetterBatch = batch.queue === "crol-digests-dlq";
     for (const msg of batch.messages) {
       if (deadLetterBatch) {

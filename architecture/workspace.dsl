@@ -32,6 +32,7 @@ workspace {
                 tags "Database"
             }
             digest_queue = container "Digest queue" "Per-subscription digest jobs with retries and a dead-letter queue." "Cloudflare Queue"
+            digest_shadow_queue = container "Digest shadow rebuild queue" "Checkpointed operator-triggered digest rebuilds; one digest per retryable message." "Cloudflare Queue"
             analytics_engine = container "Usage analytics" "Bounded aggregate page, click, and search events without visitor identifiers." "Cloudflare Analytics Engine" {
                 tags "Database"
             }
@@ -84,6 +85,8 @@ workspace {
         worker_api -> kv_feedback "Stores feedback rows and rate-limit state [ARCHITECTURE.md:35; worker/wrangler.toml:137-142]" "KV binding FEEDBACK"
         worker_api -> digest_queue "Enqueues per-subscription digest jobs [ARCHITECTURE.md:48; worker/wrangler.toml:94-100; worker/src/worker.mjs:179-183]" "Queue producer DIGEST_QUEUE"
         digest_queue -> worker_api "Delivers retryable digest jobs to the queue consumer [worker/wrangler.toml:102-108; worker/src/worker.mjs:352-363]" "Queue consumer"
+        worker_api -> digest_shadow_queue "Queues authenticated post-repair shadow rebuilds; D1 checkpoints run and per-digest progress [ARCHITECTURE.md:55; docs/architecture.md:240; worker/wrangler.toml:157-166; worker/src/digest_shadow_rebuild.mjs]" "Queue producer DIGEST_SHADOW_QUEUE"
+        digest_shadow_queue -> worker_api "Delivers one checkpointed shadow-digest evaluation per message; retries resume queued items [worker/src/worker.mjs:565-575; worker/src/digest_shadow_rebuild.mjs]" "Queue consumer"
         worker_api -> analytics_engine "Writes bounded aggregate usage events when the production binding is present [worker/wrangler.toml:89-92; worker/src/events.mjs:110-129]" "Analytics Engine binding USAGE_ANALYTICS"
         worker_api -> rum_analytics "Writes normalized field-performance observations through the separate RUM_ANALYTICS binding only when the production environment and RUM_INGEST_ENABLED gates are on [worker/src/performance_events.mjs; worker/wrangler.toml]" "Analytics Engine binding RUM_ANALYTICS"
         worker_api -> r2_source_vault "Would serve approved public documents only when the disabled source-vault seam is enabled [worker/src/source_vault.mjs:68-69; worker/wrangler.toml:80-87]" "Conditional R2 binding"

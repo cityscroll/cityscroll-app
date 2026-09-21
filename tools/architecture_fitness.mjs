@@ -147,6 +147,8 @@ function factContainerEvidence(facts) {
     kv_feedback: Array.isArray(bindings.kv_namespaces) && bindings.kv_namespaces.some((item) => item.binding === "FEEDBACK"),
     digest_queue: Array.isArray(queues.producers) && queues.producers.some((item) => item.binding === "DIGEST_QUEUE") &&
       Array.isArray(queues.consumers) && queues.consumers.some((item) => item.queue === "crol-digests"),
+    digest_shadow_queue: Array.isArray(queues.producers) && queues.producers.some((item) => item.binding === "DIGEST_SHADOW_QUEUE") &&
+      Array.isArray(queues.consumers) && queues.consumers.some((item) => item.queue === "crol-digest-shadow-rebuild"),
     analytics_engine: Array.isArray(bindings.analytics_engine_datasets) && bindings.analytics_engine_datasets.some((item) => item.binding === "USAGE_ANALYTICS"),
     rum_analytics: Array.isArray(bindings.analytics_engine_datasets) && bindings.analytics_engine_datasets.some((item) => item.binding === "RUM_ANALYTICS"),
     r2_source_vault: Array.isArray(bindings.r2_buckets) && bindings.r2_buckets.length > 0,

@@ -493,43 +493,76 @@ test("GET /admin/digest-shadow accepts the read-only SHADOW_STATUS_KEY; POST rej
   assert.equal(postWithAdmin.status, 400);
 });
 
-// The repair contract names POST /admin/digest-shadow as the rerun method for a
-// redlined run, but the rerun never wrote the receipt the dead-man switch reads.
-// A repaired run therefore stayed DEGRADED until the next scheduled rehearsal,
-// so the switch could not be cleared by the action it asked for.
-test("a shadow rerun writes the receipt the dead-man switch reads", async () => {
-  const receipts = new Map();
-  const ALERT_STATE = {
-    async get(key) { return receipts.get(key) || null; },
-    async put(key, value) { receipts.set(key, String(value)); },
-  };
+test("scoped and unscoped shadow reruns enqueue and return within the request budget", async () => {
   const clean = summary([result()]);
-  const post = (runShadow) => handleAdminDigestShadow(
-    new Request("https://w/admin/digest-shadow", {
-      method: "POST",
-      headers: { authorization: "Bearer secret", "content-type": "application/json" },
-      body: JSON.stringify({ action: "rerun" }),
-    }),
-    { ADMIN_KEY: "secret", DB: readDb(clean), ALERT_STATE },
-    { now: NOW, runShadow },
+  const calls = [];
+  const enqueueRebuild = async (_env, input) => {
+    calls.push(input);
+    return { run_id: `run-${calls.length}`, status: "queued", requested_digest_ids: input.affectedDigestIds };
+  };
+  for (const body of [{ action: "rerun", affected_digest_ids: ["digest:one"] }, { action: "rerun" }]) {
+    const started = performance.now();
+    const response = await handleAdminDigestShadow(
+      new Request("https://w/admin/digest-shadow", {
+        method: "POST",
+        headers: { authorization: "Bearer secret", "content-type": "application/json" },
+        body: JSON.stringify(body),
+      }),
+      { ADMIN_KEY: "secret", DB: readDb(clean) },
+      { now: NOW, enqueueRebuild },
+    );
+    assert.equal(response.status, 202);
+    assert.ok(performance.now() - started < 100, "POST must not run the rebuild in-request");
+    assert.match((await response.json()).status_url, /run_id=run-[12]/);
+  }
+  assert.deepEqual(calls.map((call) => call.affectedDigestIds), [["digest:one"], null]);
+});
+
+test("shadow rebuild status reports checkpoint progress and the resulting receipt", async () => {
+  const runRow = {
+    run_id: "run-123",
+    run_day: "2026-08-04",
+    requested_digest_ids_json: JSON.stringify(["digest:one"]),
+    status: "complete",
+    total_count: 1,
+    completed_count: 1,
+    failed_count: 0,
+    receipt_json: JSON.stringify({ status: "READY", rebuild_run_id: "run-123" }),
+    error: null,
+    created_at: NOW.toISOString(),
+    updated_at: NOW.toISOString(),
+  };
+  const itemRow = {
+    run_id: "run-123",
+    digest_id: "digest:one",
+    job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+    status: "complete",
+    attempt_count: 1,
+    result_json: JSON.stringify({ status: "READY" }),
+    error: null,
+    started_at: NOW.toISOString(),
+    completed_at: NOW.toISOString(),
+  };
+  const DB = {
+    prepare(sql) {
+      const query = { sql, args: [] };
+      query.bind = (...args) => { query.args = args; return query; };
+      query.first = async () => sql.includes("digest_shadow_rebuild_runs") ? runRow : null;
+      query.all = async () => ({ results: sql.includes("digest_shadow_rebuild_items") ? [itemRow] : [] });
+      return query;
+    },
+  };
+  const response = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow?run_id=run-123", { headers: { authorization: "Bearer secret" } }),
+    { ADMIN_KEY: "secret", DB },
+    { now: NOW },
   );
-
-  const degraded = await post(async () => ({
-    ...summary([{ sub: "sub:er***", error: "boom" }]),
-    hold: null,
-  }));
-  assert.equal(degraded.status, 503);
-  const first = JSON.parse(receipts.get(`ops:digest:shadow:${NOW.toISOString().slice(0, 10)}`));
-  assert.equal(first.status, "DEGRADED");
-  assert.deepEqual(first.redline_codes, ["render_error"]);
-
-  // The repaired rerun clears the receipt on the same day rather than waiting
-  // for tomorrow's rehearsal.
-  const repaired = await post(async () => ({ ...clean, hold: null }));
-  assert.equal(repaired.status, 200);
-  const second = JSON.parse(receipts.get(`ops:digest:shadow:${NOW.toISOString().slice(0, 10)}`));
-  assert.equal(second.status, "READY");
-  assert.equal(second.redlines, 0);
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.status, "complete");
+  assert.equal(body.completed_count, 1);
+  assert.equal(body.receipt.rebuild_run_id, "run-123");
+  assert.equal(body.items[0].digest_id, "digest:one");
 });
 
 test("SHADOW_STATUS_KEY cannot substitute for ADMIN_KEY when ADMIN_KEY is the configured secret", async () => {
@@ -599,6 +632,8 @@ test("Worker cron, D1 migration, and independent scheduled wake monitor are wire
   const runner = readFileSync(new URL("../../tools/external_schedule_runner.mjs", import.meta.url), "utf8");
   const monitor = readFileSync(new URL("../../tools/digest_shadow_monitor.mjs", import.meta.url), "utf8");
   assert.match(wrangler, /crons\s*=\s*\[\s*"0 8 \* \* \*",\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
+  assert.match(wrangler, /binding = "DIGEST_SHADOW_QUEUE"/);
+  assert.match(wrangler, /queue = "crol-digest-shadow-rebuild"/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_runs/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_previews/);
   assert.match(holdMigration, /CREATE TABLE IF NOT EXISTS digest_shadow_hold_states/);
