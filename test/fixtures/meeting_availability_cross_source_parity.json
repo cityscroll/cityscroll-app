@@ -1,0 +1,83 @@
+{
+  "schema": "cityscroll.meeting_availability_cross_source_parity.v1",
+  "today": "2026-09-01",
+  "availability": {
+    "timezone": "America/New_York",
+    "windows": [
+      { "weekdays": [1, 2, 3, 4, 5], "start": "17:00" },
+      { "weekdays": [0, 6] }
+    ]
+  },
+  "anchors": [
+    "pep",
+    "ccrb",
+    "borough_board",
+    "h_plus_h",
+    "pdc",
+    "bsa",
+    "cb11",
+    "boundary_minute",
+    "weekend",
+    "canceled",
+    "rescheduled"
+  ],
+  "source_coverage": {
+    "city_record": { "status": "available" },
+    "community_board": { "status": "available" },
+    "pdc_calendar": { "status": "fresh" },
+    "bsa_calendar": { "status": "fresh" },
+    "public_body_calendar": {
+      "status": "partial",
+      "contracts": {
+        "nycps_pep": "fresh",
+        "ccrb_board": "fresh",
+        "brooklyn_borough_board": "fresh",
+        "hplus_h_cab": "fresh",
+        "nycps_pep_stale": "stale",
+        "ccrb_board_failed": "failed"
+      }
+    }
+  },
+  "cases": [
+    { "id": "pep-boundary", "anchor": "pep", "source": "public_body_calendar", "contract": "nycps_pep", "date": "2026-10-05", "time": "17:00", "expected": "accepted" },
+    { "id": "ccrb-evening", "anchor": "ccrb", "source": "public_body_calendar", "contract": "ccrb_board", "date": "2026-10-06", "time": "18:00", "expected": "accepted" },
+    { "id": "borough-board-weekend", "anchor": "borough_board", "source": "public_body_calendar", "contract": "brooklyn_borough_board", "date": "2026-10-10", "time": "10:00", "expected": "accepted" },
+    { "id": "h-plus-h-weekend", "anchor": "h_plus_h", "source": "public_body_calendar", "contract": "hplus_h_cab", "date": "2026-10-11", "time": "11:00", "expected": "accepted" },
+    { "id": "pdc-evening", "anchor": "pdc", "source": "pdc_calendar", "date": "2026-10-07", "time": "19:00", "expected": "accepted" },
+    { "id": "bsa-evening", "anchor": "bsa", "source": "bsa_calendar", "date": "2026-10-09", "time": "17:30", "expected": "accepted" },
+    { "id": "cb11-weekend", "anchor": "cb11", "source": "community_board", "board_id": "11", "date": "2026-10-03", "time": "09:00", "expected": "accepted" },
+    { "id": "city-record-evening", "source": "city_record", "date": "2026-10-08", "time": "18:00", "expected": "accepted" },
+    { "id": "weekday-before-boundary", "anchor": "boundary_minute", "source": "city_record", "date": "2026-10-05", "time": "16:59", "expected": "excluded", "reason": "outside_window" },
+    { "id": "weekend-date-only", "anchor": "weekend", "source": "community_board", "board_id": "11", "date": "2026-10-04", "expected": "excluded", "reason": "unknown_start", "schedule": "date_only" },
+    { "id": "conflicted-time", "source": "pdc_calendar", "date": "2026-10-14", "time": "18:00", "expected": "excluded", "reason": "conflicted", "schedule": "conflicted" },
+    { "id": "invalid-time", "source": "bsa_calendar", "date": "2026-10-15", "time": "25:00", "expected": "excluded", "reason": "invalid_time", "schedule": "invalid" },
+    { "id": "canceled-meeting", "anchor": "canceled", "source": "bsa_calendar", "date": "2026-10-16", "time": "18:00", "expected": "excluded", "reason": "canceled", "lifecycle": "canceled" },
+    { "id": "rescheduled-meeting", "anchor": "rescheduled", "source": "pdc_calendar", "date": "2026-10-12", "time": "18:00", "sequence": 0, "expected": "excluded", "reason": "outside_window", "delivery_key": "rescheduled-meeting" },
+    { "id": "rescheduled-meeting", "anchor": "rescheduled", "source": "pdc_calendar", "date": "2026-10-13", "time": "12:00", "sequence": 1, "expected": "excluded", "reason": "outside_window", "lifecycle": "rescheduled", "delivery_key": "rescheduled-meeting" },
+    { "id": "stale-pep-meeting", "source": "public_body_calendar", "contract": "nycps_pep_stale", "date": "2026-10-17", "time": "10:00", "expected": "excluded", "reason": "stale", "source_health": "stale" },
+    { "id": "failed-ccrb-meeting", "source": "public_body_calendar", "contract": "ccrb_board_failed", "date": "2026-10-18", "time": "10:00", "expected": "excluded", "reason": "failed", "source_health": "failed" },
+    { "id": "near-duplicate-cb11", "source": "community_board", "board_id": "11", "date": "2026-10-03", "time": "09:00", "expected": "excluded", "reason": "near_duplicate", "duplicate_of": "cb11-weekend" }
+  ],
+  "expected": {
+    "accepted_identities": [
+      "meeting:public_body_calendar:nycps_pep:pep-boundary",
+      "meeting:public_body_calendar:ccrb_board:ccrb-evening",
+      "meeting:public_body_calendar:brooklyn_borough_board:borough-board-weekend",
+      "meeting:public_body_calendar:hplus_h_cab:h-plus-h-weekend",
+      "meeting:pdc_calendar:pdc-evening",
+      "meeting:bsa_calendar:bsa-evening",
+      "meeting:community_board:cb11-weekend",
+      "meeting:city_record:city-record-evening"
+    ],
+    "exclusion_counts": {
+      "total": 14,
+      "matched": 8,
+      "excluded": 6,
+      "unknown_start": 1,
+      "conflicted": 1,
+      "invalid_time": 1,
+      "canceled": 1,
+      "outside_window": 2
+    }
+  }
+}
