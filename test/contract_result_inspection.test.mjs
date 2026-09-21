@@ -24,8 +24,7 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
 import { createRequire } from "node:module";
@@ -53,6 +52,7 @@ import {
 import { solicitationResponseContextReady } from "../site/solicitation_response_context.mjs";
 import { withPinnedClock } from "./helpers/test_clock.mjs";
 import { click, keydown, mountDocument } from "./helpers/preview_dom.mjs";
+import { withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
 
 const require = createRequire(import.meta.url);
 const CrolActions = require("../site/action_registry.js");
@@ -558,34 +558,34 @@ test("A4: explicit record navigation followed by Back restores the collection", 
   }
   assert.equal(existsSync(join(ROOT, RETURN_WITH_BACK_PROBE)), true);
   await withPinnedClock(FIXTURE_CLOCK, () => {
-    const scratchRoot = process.env.FM_TASK_SCRATCH || tmpdir();
-    const dir = mkdtempSync(join(scratchRoot, "contract-result-return-with-back-"));
-    const { collection, record } = returnWithBackFixtureDocuments();
-    const collectionPath = join(dir, "collection.html");
-    writeFileSync(collectionPath, collection);
-    writeFileSync(join(dir, "record.html"), record);
-    const result = spawnSync("python3", [join(ROOT, RETURN_WITH_BACK_PROBE), collectionPath], {
-      cwd: ROOT,
-      encoding: "utf8",
-      timeout: 120_000,
-      env: process.env,
+    withTempDirSync("contract-result-return-with-back", (dir) => {
+      const { collection, record } = returnWithBackFixtureDocuments();
+      const collectionPath = join(dir, "collection.html");
+      writeFileSync(collectionPath, collection);
+      writeFileSync(join(dir, "record.html"), record);
+      const result = spawnSync("python3", [join(ROOT, RETURN_WITH_BACK_PROBE), collectionPath], {
+        cwd: ROOT,
+        encoding: "utf8",
+        timeout: 120_000,
+        env: process.env,
+      });
+      assert.equal(result.status, 0, result.stderr || result.stdout);
+      const payload = JSON.parse(result.stdout);
+      assert.equal(payload.schema, "cityscroll.contract_result_inspection_return_with_back.v1");
+      assert.deepEqual(payload.viewport, { width: 1440, height: 900 });
+      assert.equal(payload.before.card_count, 2);
+      assert.equal(payload.before.filter, "shelter");
+      assert.equal(payload.before.full_record_href, "record.html");
+      assert.equal(payload.after_open.reached_record_document, true);
+      assert.equal(payload.after_open.navigated_away, true);
+      assert.equal(payload.observed.navigated_to_full_record, true);
+      assert.equal(payload.observed.returned_with_back, true);
+      assert.equal(payload.observed.card_count_after_back, 2);
+      assert.equal(payload.observed.filter_after_back, "shelter");
+      assert.equal(payload.after_back.full_record_present, true);
+      assert.equal(payload.after_back.full_record_href, "record.html");
+      assert.equal(payload.observed.collection_path_before, payload.observed.collection_path_after_back);
     });
-    assert.equal(result.status, 0, result.stderr || result.stdout);
-    const payload = JSON.parse(result.stdout);
-    assert.equal(payload.schema, "cityscroll.contract_result_inspection_return_with_back.v1");
-    assert.deepEqual(payload.viewport, { width: 1440, height: 900 });
-    assert.equal(payload.before.card_count, 2);
-    assert.equal(payload.before.filter, "shelter");
-    assert.equal(payload.before.full_record_href, "record.html");
-    assert.equal(payload.after_open.reached_record_document, true);
-    assert.equal(payload.after_open.navigated_away, true);
-    assert.equal(payload.observed.navigated_to_full_record, true);
-    assert.equal(payload.observed.returned_with_back, true);
-    assert.equal(payload.observed.card_count_after_back, 2);
-    assert.equal(payload.observed.filter_after_back, "shelter");
-    assert.equal(payload.after_back.full_record_present, true);
-    assert.equal(payload.after_back.full_record_href, "record.html");
-    assert.equal(payload.observed.collection_path_before, payload.observed.collection_path_after_back);
   });
 });
 
