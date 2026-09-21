@@ -17,6 +17,7 @@ import {
   renderEndpointControl,
 } from "../site/ai_discovery.mjs";
 import {
+  CAPABILITY_TASK_DISPOSITIONS,
   CAPABILITY_TASK_BINDINGS,
   CAPABILITY_TASK_PLACEMENTS,
   DISCOVERY_ANALYTICS_ALLOWLIST,
@@ -25,12 +26,14 @@ import {
   GENERIC_AI_INTRODUCTION_PATH,
   INTRODUCTION_FAMILY,
   PAGE_FAMILY_DISCOVERY,
+  pageFamilyCensusFromPublishedSurfaces,
   PRIVATE_DISCOVERY_BANLIST,
   pageFamilySurfaceIds,
   validateDiscoveryContract,
   validateMutatedDiscovery,
 } from "../site/capability_discovery_contract.mjs";
 import { AFFORDANCE_ACTION_ROLES } from "../site/affordance_grammar.mjs";
+import { renderCivicDocumentMast } from "../site/civic_document_chrome.mjs";
 import { GUIDE_HELP } from "../site/guide_contextual_links.mjs";
 import { withPinnedClock } from "./helpers/test_clock.mjs";
 import { mountDocument } from "./helpers/preview_dom.mjs";
@@ -73,6 +76,14 @@ function publishedSurfaceIds() {
 function mcpToolNames() {
   const catalog = JSON.parse(read("site/data/mcp_tool_catalog.json"));
   return catalog.tools.map((tool) => tool.name);
+}
+
+function discoveryRenderOwnerSources() {
+  const paths = new Set([
+    ...PAGE_FAMILY_DISCOVERY.map((row) => row.render_owner),
+    ...CAPABILITY_TASK_BINDINGS.map((row) => row.render_owner),
+  ]);
+  return Object.fromEntries([...paths].map((path) => [path, read(path)]));
 }
 
 function digest(text) {
@@ -182,8 +193,8 @@ test("introduction keeps primary recovery and copy fallback visible", async () =
     "mcp-endpoint",
     "data-copy-endpoint",
     "Claude Code",
-    "contract lookup",
-    "decision-path tools",
+    "get_contract",
+    "get_land_decision_path",
     "CT107120258801626",
     "2024Q0356",
     "/api.html#mcp",
@@ -352,28 +363,68 @@ test("A1: discovery contract states requirements and censes every published page
     mcpToolNames: mcpToolNames(),
     chromeSource: read("site/civic_document_chrome.mjs"),
     analyticsSource: read("site/analytics.js"),
-    renderOwnerSources: {
-      "site/civic_document_chrome.mjs": read("site/civic_document_chrome.mjs"),
-      "site/index.html": read("site/index.html"),
-      "site/about.html": read("site/about.html"),
-      "site/api.html": read("site/api.html"),
-      "site/stats.html": read("site/stats.html"),
-      "site/search/index.html": read("site/search/index.html"),
-    },
+    renderOwnerSources: discoveryRenderOwnerSources(),
   });
   assert.equal(result.contract_id, DISCOVERY_CONTRACT_ID);
   assert.deepEqual(result.problems, [], result.problems.join("\n"));
   assert.equal(result.ok, true);
   assert.equal(pageFamilySurfaceIds().sort().join(","), published.slice().sort().join(","));
-  assert.ok(PAGE_FAMILY_DISCOVERY.some((row) => row.disposition === "justified_omission"));
-  assert.ok(PAGE_FAMILY_DISCOVERY.every((row) => (
-    row.disposition !== "justified_omission" || (row.omission_reason && !row.ai_entry)
-  )));
+  assert.equal(PAGE_FAMILY_DISCOVERY.filter((row) => row.disposition === "justified_omission").length, 0);
+});
+
+test("A1: the published route-family census, not a hand-picked sample, owns every entry", () => {
+  const manifest = JSON.parse(read("site/data/performance-classification-manifest.v1.json"));
+  const census = pageFamilyCensusFromPublishedSurfaces(manifest.surfaces);
+  assert.equal(census.length, manifest.surfaces.length);
+  assert.equal(census.some((row) => row.census_declaration_missing), false, "every published family needs a declaration");
+
+  const standalone = census.filter((row) => row.disposition === "standalone_link");
+  assert.ok(standalone.some((row) => row.surface_id === "home"));
+  assert.ok(standalone.some((row) => row.surface_id === "about"));
+  assert.ok(standalone.some((row) => row.surface_id === "api-guide"));
+  assert.ok(standalone.some((row) => row.surface_id === "public-stats"));
+  assert.ok(census.some((row) => row.surface_id === "guide"));
+  for (const family of standalone) {
+    const source = read(family.render_owner);
+    assert.match(source, /use-with-ai\//, family.surface_id);
+    assert.match(source, /Ask with AI/, family.surface_id);
+  }
+
+  const inherited = census.filter((row) => row.disposition === "inherited_chrome");
+  assert.ok(inherited.length > 0, "the census must include generated document families");
+  assert.match(read("site/civic_document_chrome.mjs"), /renderAskWithAiLink/);
+  const mast = renderCivicDocumentMast({ current: "guide" });
+  assert.equal((mast.match(/class="ask-with-ai-link"/g) || []).length, 1, "shared chrome mounts one secondary Ask with AI entry");
+  for (const family of census) {
+    if (family.disposition === "justified_omission") {
+      assert.ok(family.omission_reason, family.surface_id);
+      continue;
+    }
+    assert.ok(family.ai_entry, family.surface_id);
+    assert.ok(family.render_owner, family.surface_id);
+  }
 });
 
 test("A2: topology-style discovery checks reject unknown bindings and dangling guides", () => {
   const healthy = validateDiscoveryContract({ mcpToolNames: mcpToolNames() });
   assert.equal(healthy.ok, true, healthy.problems.join("\n"));
+
+  const matrixByName = new Map(CAPABILITY_DISCOVERY_MATRIX.map((row) => [row[0], row]));
+  assert.equal(matrixByName.size, CAPABILITY_TASK_BINDINGS.length);
+  for (const binding of CAPABILITY_TASK_BINDINGS) {
+    const row = matrixByName.get(binding.name);
+    assert.ok(row, binding.name);
+    assert.equal(row[1], binding.task, binding.name);
+    assert.equal(row[3], binding.render_owner, binding.name);
+    assert.ok(CAPABILITY_TASK_DISPOSITIONS.includes(row[4]), `${binding.name}: disposition`);
+    assert.equal(row[5], binding.placement, binding.name);
+    assert.ok(discoveryRenderOwnerSources()[binding.render_owner], binding.name);
+  }
+
+  const home = read("site/index.html");
+  assert.equal((home.match(/<form\s+class="home-topic-form"/g) || []).length, 1, "homepage keeps one primary topic search");
+  assert.ok(home.indexOf('class="home-topic-form"') < home.indexOf("Ask with AI"), "assistant entry remains secondary to search");
+  assert.match(read("site/notice_reader_presentation.mjs"), /<details[^>]+notice-more-tools/, "record tools remain folded");
 
   const unknown = validateDiscoveryContract({
     mcpToolNames: mcpToolNames(),
@@ -524,6 +575,35 @@ test("A3: discovery reuses affordance roles and keeps analytics bounded", () => 
   for (const banned of ["Desk capability", "/admin/", "watch-management token"]) {
     assert.doesNotMatch(intro, new RegExp(banned.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
+});
+
+test("A4: public projection refuses private Desk text, credential-bearing URLs, and script-only navigation", () => {
+  const projectionPaths = [
+    "site/index.html",
+    "site/use-with-ai/index.html",
+    "site/about.html",
+    "site/api.html",
+    "site/stats.html",
+    "site/guide/index.html",
+  ];
+  const credentialAddress = /(?:[?&](?:key|token|secret|password|credential|authorization)=|Bearer\s+[A-Za-z0-9._-]+|\/admin\/)/i;
+  for (const path of projectionPaths) {
+    const html = read(path);
+    for (const banned of PRIVATE_DISCOVERY_BANLIST) {
+      const escaped = banned.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const pattern = banned === "Desk" ? `\\b${escaped}\\b` : escaped;
+      assert.doesNotMatch(html, new RegExp(pattern, "i"), `${path}: ${banned}`);
+    }
+    assert.doesNotMatch(html, credentialAddress, `${path}: credential-bearing address`);
+    assert.doesNotMatch(html, /href\s*=\s*["']javascript:/i, `${path}: javascript navigation`);
+  }
+
+  const chrome = read("site/civic_document_chrome.mjs");
+  assert.match(chrome, /renderAskWithAiLink\(\{\s*translate\s*\}/);
+  assert.doesNotMatch(chrome, /renderAskWithAiLink\([\s\S]{0,240}target=/);
+  assert.doesNotMatch(chrome, /renderAskWithAiLink\([\s\S]{0,240}external/);
+  assert.match(read("site/guide/es/index.html"), /href="\/use-with-ai\/\?lang=es"/);
+  assert.match(read("site/guide/es/index.html"), /class="ask-with-ai-link"/);
 });
 
 /*

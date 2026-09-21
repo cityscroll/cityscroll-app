@@ -8,8 +8,16 @@ import {
   handleMcp,
   MCP_CITED_PASSAGES_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
+  MCP_DEFAULT_LLM_CALLS_PER_DAY,
+  MCP_DEFAULT_PER_IP_DAY,
   MCP_TOOL_BINDINGS,
+  MCP_TOOLS,
 } from "../src/mcp.mjs";
+import { MCP_PUBLIC_READ_ANNOTATIONS } from "../../capabilities/mcp_tool_declarations.mjs";
+import {
+  MACHINE_CLIENT_PROFILES,
+  validateMachineClientProfiles,
+} from "../../capabilities/machine_client_profile.mjs";
 
 class MockKV {
   constructor() { this.store = new Map(); }
@@ -51,6 +59,8 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
   const env = { SUBS: new MockKV(), NL_METER: new MockKV() };
   const init = await (await handleMcp(post({ jsonrpc: "2.0", id: 1, method: "initialize" }), env)).json();
   assert.equal(init.result.serverInfo.name, "CityScroll");
+  assert.equal(MCP_DEFAULT_PER_IP_DAY, 300);
+  assert.equal(MCP_DEFAULT_LLM_CALLS_PER_DAY, 200);
   const list = await (await handleMcp(post({ jsonrpc: "2.0", id: 2, method: "tools/list" }), env)).json();
   assert.deepEqual(list.result.tools.map((t) => t.name), [
     "search_federated",
@@ -104,6 +114,39 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
     MCP_TOOL_BINDINGS.find(({ name }) => name === "retrieve_cited_passages").capabilityReference,
     "cited.passages.retrieve@1",
   );
+});
+
+test("A5: public MCP identity, grants, quotas, and POST-only transport stay contract-bound", async () => {
+  const env = { SUBS: new MockKV(), NL_METER: new MockKV() };
+  const init = await (await handleMcp(post({ jsonrpc: "2.0", id: 101, method: "initialize" }), env)).json();
+  assert.equal(init.result.serverInfo.name, "CityScroll");
+
+  const listed = await (await handleMcp(post({ jsonrpc: "2.0", id: 102, method: "tools/list" }), env)).json();
+  assert.deepEqual(listed.result.tools.map(({ name }) => name), MCP_TOOLS.map(({ name }) => name));
+  for (const tool of MCP_TOOLS) {
+    const listedTool = listed.result.tools.find(({ name }) => name === tool.name);
+    assert.ok(listedTool, tool.name);
+    assert.deepEqual(listedTool.annotations, tool.annotations, tool.name);
+  }
+
+  assert.deepEqual(validateMachineClientProfiles(), []);
+  const profile = MACHINE_CLIENT_PROFILES.find(({ id }) => id === "public-research-read");
+  assert.ok(profile);
+  assert.equal(profile.dailyRequestLimit, 5000);
+  assert.equal(profile.allowlist.includes("create_watch"), false);
+  assert.equal(profile.allowlist.includes("preview_watch"), false);
+  for (const name of profile.allowlist) {
+    const binding = MCP_TOOL_BINDINGS.find((candidate) => candidate.name === name);
+    assert.ok(binding, name);
+    assert.equal(binding.annotations?.readOnlyHint, true, name);
+    assert.deepEqual(binding.annotations, MCP_PUBLIC_READ_ANNOTATIONS, name);
+  }
+
+  const get = await handleMcp(new Request("https://api.cityscroll.org/mcp", { method: "GET" }), env);
+  assert.equal(get.status, 405);
+  assert.equal(get.headers.get("allow"), "POST");
+  assert.equal(get.headers.get("location"), null);
+  assert.match(await get.text(), /browser GET cannot run tools/);
 });
 
 // A declared gap is only useful if the machine surface carries it: an agent that can

@@ -39,6 +39,10 @@ import { HTTP_CITED_PASSAGES_ADAPTER } from "../worker/src/cited_retrieval.mjs";
 import { CONTRACT_GET_HTTP_ADAPTER, CONTRACTS_ANALYSIS_HTTP_ADAPTER, CONTRACTS_BROWSE_HTTP_ADAPTER } from "../worker/src/contracts.mjs";
 import { PEOPLE_GET_HTTP_ADAPTER, ORGANIZATIONS_BROWSE_HTTP_ADAPTER } from "../worker/src/people_organizations.mjs";
 import { MEETING_GET_HTTP_ADAPTER, MEETINGS_BROWSE_HTTP_ADAPTER } from "../worker/src/hearings.mjs";
+import {
+  CAPABILITY_TASK_BINDINGS,
+  PAGE_FAMILY_DISCOVERY,
+} from "../site/capability_discovery_contract.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TOPOLOGY_PATH = join(ROOT, "architecture/generated/capability-topology.json");
@@ -326,6 +330,11 @@ export function buildCapabilityTopology() {
         store_access: binding.storeAccess || null,
       })),
     },
+    discovery: {
+      contract: "cityscroll.public_entrance_contract.v1",
+      capabilities: CAPABILITY_TASK_BINDINGS,
+      page_families: PAGE_FAMILY_DISCOVERY,
+    },
   };
 }
 
@@ -455,11 +464,19 @@ export async function validateDiscoveryProjection({
     Promise.resolve(JSON.parse(readFileSync(join(ROOT, "site/data/performance-classification-manifest.v1.json"), "utf8"))),
   ]);
   const publishedSurfaceIds = performanceManifest.surfaces.map((surface) => surface.surface_id);
+  const renderOwnerPaths = new Set([
+    ...PAGE_FAMILY_DISCOVERY.map((row) => row.render_owner),
+    ...CAPABILITY_TASK_BINDINGS.map((row) => row.render_owner),
+  ]);
+  const renderOwnerSources = Object.fromEntries(
+    [...renderOwnerPaths].map((path) => [path, readFileSync(join(ROOT, path), "utf8")]),
+  );
   const result = validateDiscoveryContract({
     publishedSurfaceIds,
     mcpToolNames,
     chromeSource: readFileSync(join(ROOT, "site/civic_document_chrome.mjs"), "utf8"),
     analyticsSource: readFileSync(join(ROOT, "site/analytics.js"), "utf8"),
+    renderOwnerSources,
   });
   if (!result.ok) {
     throw new Error(`capability discovery contract failed: ${result.problems.join("; ")}`);

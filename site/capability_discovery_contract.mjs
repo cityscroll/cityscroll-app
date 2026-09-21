@@ -53,6 +53,16 @@ export const CAPABILITY_TASK_PLACEMENTS = Object.freeze([
   "more_tools",
 ]);
 
+/** Closed vocabulary for the matrix's user-visible disposition. */
+export const CAPABILITY_TASK_DISPOSITIONS = Object.freeze([
+  "machine_connector",
+  "existing_control",
+  "conditional_control",
+  "browser_local",
+  "contextual_control",
+  "machine_analysis",
+]);
+
 /**
  * Census of published page families from the performance-classification
  * surface registry. Each family declares how generic AI introduction reaches
@@ -80,10 +90,10 @@ export const PAGE_FAMILY_DISCOVERY = Object.freeze([
   Object.freeze({ surface_id: "about", route_family: "information-about", disposition: "standalone_link", render_owner: "site/about.html", ai_entry: "backhome" }),
   Object.freeze({ surface_id: "api-guide", route_family: "information-api", disposition: "standalone_link", render_owner: "site/api.html", ai_entry: "backhome" }),
   Object.freeze({ surface_id: "public-stats", route_family: "information-stats", disposition: "standalone_link", render_owner: "site/stats.html", ai_entry: "backhome" }),
-  Object.freeze({ surface_id: "data-guide", route_family: "information-data", disposition: "justified_omission", render_owner: "site/data.html", ai_entry: null, omission_reason: "Dataset aggregates page; generic AI setup remains reachable from shared API and About links without a second primary CTA." }),
+  Object.freeze({ surface_id: "data-guide", route_family: "information-data", disposition: "standalone_link", render_owner: "site/data.html", ai_entry: "body" }),
   Object.freeze({ surface_id: "data-health", route_family: "information-data-health", disposition: "inherited_chrome", render_owner: "site/civic_document_chrome.mjs", ai_entry: "mast" }),
-  Object.freeze({ surface_id: "changelog", route_family: "information-changelog", disposition: "justified_omission", render_owner: "site/changelog.html", ai_entry: null, omission_reason: "Release notes are not a research surface; omit an Ask with AI promise rather than invent a changelog task." }),
-  Object.freeze({ surface_id: "standards", route_family: "information-standards", disposition: "justified_omission", render_owner: "site/standards.html", ai_entry: null, omission_reason: "Standards documentation is reference prose without a supported exact MCP task context." }),
+  Object.freeze({ surface_id: "changelog", route_family: "information-changelog", disposition: "standalone_link", render_owner: "site/changelog.html", ai_entry: "body" }),
+  Object.freeze({ surface_id: "standards", route_family: "information-standards", disposition: "standalone_link", render_owner: "site/standards.html", ai_entry: "body" }),
   Object.freeze({ surface_id: "agency", route_family: "entity-agency", disposition: "inherited_chrome", render_owner: "site/civic_document_chrome.mjs", ai_entry: "mast" }),
   Object.freeze({ surface_id: "vendor", route_family: "entity-vendor", disposition: "inherited_chrome", render_owner: "site/civic_document_chrome.mjs", ai_entry: "mast" }),
   Object.freeze({ surface_id: "official", route_family: "entity-official", disposition: "inherited_chrome", render_owner: "site/civic_document_chrome.mjs", ai_entry: "mast" }),
@@ -97,7 +107,7 @@ export const PAGE_FAMILY_DISCOVERY = Object.freeze([
   Object.freeze({ surface_id: "mandate", route_family: "record-mandate", disposition: "inherited_chrome", render_owner: "site/civic_document_chrome.mjs", ai_entry: "mast" }),
   Object.freeze({ surface_id: "assertion", route_family: "record-assertion", disposition: "inherited_chrome", render_owner: "site/civic_document_chrome.mjs", ai_entry: "mast" }),
   Object.freeze({ surface_id: "rulemaking", route_family: "rulemaking", disposition: "inherited_chrome", render_owner: "site/civic_document_chrome.mjs", ai_entry: "mast" }),
-  Object.freeze({ surface_id: "district-digest", route_family: "district-digest", disposition: "justified_omission", render_owner: "site/civic_document_chrome.mjs", ai_entry: null, omission_reason: "Delivered digest artifact is email-oriented; readers return to Following or the shared introduction rather than a digest-scoped assistant promise." }),
+  Object.freeze({ surface_id: "district-digest", route_family: "district-digest", disposition: "inherited_chrome", render_owner: "site/composed_object_documents.mjs", ai_entry: "mast" }),
 ]);
 
 /** Introduction page is not a performance surface yet; keep it explicit. */
@@ -240,6 +250,24 @@ export function pageFamilySurfaceIds() {
   return PAGE_FAMILY_DISCOVERY.map((row) => row.surface_id);
 }
 
+/**
+ * Join the declaration to the published surface census without allowing the
+ * declaration to choose the population. A new published surface therefore
+ * produces a missing-declaration row instead of disappearing from the check.
+ */
+export function pageFamilyCensusFromPublishedSurfaces(surfaces = []) {
+  const declarations = new Map(PAGE_FAMILY_DISCOVERY.map((row) => [row.surface_id, row]));
+  return Object.freeze((surfaces || []).map((surface) => {
+    const declaration = declarations.get(surface.surface_id);
+    return Object.freeze({
+      surface_id: surface.surface_id,
+      route_family: surface.route_family || null,
+      public_safe_matcher: surface.public_safe_matcher || null,
+      ...(declaration || { census_declaration_missing: true }),
+    });
+  }));
+}
+
 export function capabilityTaskNames() {
   return CAPABILITY_TASK_BINDINGS.map((row) => row.name);
 }
@@ -284,6 +312,20 @@ export function validateDiscoveryContract({
   }
   for (const name of bindingNames) {
     if (!matrixNames.has(name)) problems.push(`task binding missing from matrix: ${name}`);
+  }
+  for (const row of matrix || []) {
+    const [name, task, availability, renderOwner, disposition, placement] = row;
+    const binding = (taskBindings || []).find((candidate) => candidate.name === name);
+    if (!task || !availability) problems.push(`matrix row lacks task or availability: ${name}`);
+    if (!renderOwner) problems.push(`matrix row lacks render owner: ${name}`);
+    if (!CAPABILITY_TASK_DISPOSITIONS.includes(disposition)) {
+      problems.push(`unsupported capability disposition for ${name}: ${disposition}`);
+    }
+    if (binding) {
+      if (binding.task !== task) problems.push(`matrix task drift for ${name}`);
+      if (binding.render_owner !== renderOwner) problems.push(`matrix render owner drift for ${name}`);
+      if (binding.placement !== placement) problems.push(`matrix placement drift for ${name}`);
+    }
   }
 
   const mcpNameSet = mcpToolNames == null ? null : new Set(mcpToolNames);
@@ -363,9 +405,9 @@ export function validateDiscoveryContract({
     for (const family of pageFamilies || []) {
       if (family.disposition === "justified_omission") continue;
       const source = sources.get(family.render_owner);
-      if (source == null) continue;
-      if (family.disposition === "inherited_chrome" && !/renderAskWithAiLink|ask-with-ai-link|use-with-ai/.test(source)) {
-        problems.push(`render owner missing Ask with AI mount: ${family.render_owner}`);
+      if (source == null) {
+        problems.push(`missing render owner source: ${family.render_owner}`);
+        continue;
       }
       if (family.disposition === "standalone_link" && !/use-with-ai/.test(source)) {
         problems.push(`standalone template missing Ask with AI link: ${family.render_owner}`);
