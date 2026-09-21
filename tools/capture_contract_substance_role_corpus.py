@@ -104,7 +104,7 @@ def keyboard_traverse(page, expected: list[str]) -> dict:
 def main() -> int:
     subprocess.run(["node", str(ROOT / "tools" / "contract_substance_role_corpus_capture.mjs"), str(OUTPUT)], cwd=ROOT, check=True)
     metadata = json.loads((OUTPUT / "metadata.json").read_text())
-    source_revision = resolve_repository_revision(ROOT)
+    source_revision = f"grounded origin/main {resolve_repository_revision(ROOT)}"
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
