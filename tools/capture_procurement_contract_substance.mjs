@@ -30,8 +30,11 @@ export const FIXTURE_NAME = "fixture.json";
 export const FIXTURE_PATH = join(ROOT, EVIDENCE_DIR_RELATIVE, FIXTURE_NAME);
 export const PRODUCTION_NAME = "production.json";
 export const PRODUCTION_PATH = join(ROOT, EVIDENCE_DIR_RELATIVE, PRODUCTION_NAME);
+export const PROMOTION_NAME = "real-example-promotion.json";
+export const PROMOTION_PATH = join(ROOT, EVIDENCE_DIR_RELATIVE, PROMOTION_NAME);
 export const RELEASE_SCHEMA = "cityscroll.procurement_contract_substance_release.v1";
 export const PRODUCTION_SCHEMA = "cityscroll.procurement_contract_substance_production.v1";
+export const PROMOTION_SCHEMA = "cityscroll.procurement_contract_substance_promotion.v1";
 export const TOOL = "tools/capture_procurement_contract_substance.mjs";
 export const PRODUCTION_CAPTURE_TOOL = "tools/capture_procurement_contract_substance_production.py";
 export const CAPTURE_CLOCK = "2026-09-20T00:00:00Z";
@@ -48,6 +51,25 @@ export const CLAIMS = Object.freeze([
   "promises",
   "service_geography",
   "performance",
+]);
+
+export const PROMOTION_CLAIM_FAMILIES = Object.freeze([
+  "access",
+  "pricing_role",
+  "obligation_role",
+  "performance",
+  "neighborhood",
+  "vendor_promise",
+]);
+
+export const PROMOTION_EXAMPLE_IDS = Object.freeze([
+  "bhrags-CT107120258801626",
+  "s-p-CT110220271400991",
+  "aha-CT105720278802113",
+  "quizizz-CT104020273009333",
+  "docgo-CT180620248801671",
+  "dcas-bid-tab-2000090",
+  "mocs-november-2024-fcrc",
 ]);
 
 export const EXAMPLES = Object.freeze({
@@ -103,6 +125,111 @@ function sha256(value) {
 
 function gitRevision() {
   return resolveRepositoryRevision(ROOT);
+}
+
+function isSha256(value) {
+  return /^sha256:[a-f0-9]{64}$/i.test(String(value || ""));
+}
+
+function manifestRevision(value) {
+  return String(value || "").replace(/^grounded origin\/main\s+/, "").trim();
+}
+
+function roleCapture(manifest, route) {
+  const capture = (manifest.captures || []).find((entry) => entry.route === route);
+  if (!capture) throw new Error(`missing role-corpus capture ${route}`);
+  const desktop = (capture.viewports || []).find((entry) => entry.name === "desktop");
+  if (!desktop?.render_sha256) throw new Error(`missing desktop render hash ${route}`);
+  return { capture, desktop };
+}
+
+function productionRender(readback, contractId) {
+  const route = procurementRoute(contractId);
+  const entry = (readback.render_entries || []).find((candidate) => (
+    candidate.route === route && candidate.viewport === "desktop" && candidate.http_status === 200
+  ));
+  if (!entry?.sha256) throw new Error(`missing production render ${contractId}`);
+  return {
+    route,
+    revision: readback.served_build.pages_deploy_commit,
+    data_vintage: readback.served_build.shared_procurement_read_model_generated_at,
+    render_hash: entry.sha256,
+    viewport: entry.viewport,
+  };
+}
+
+function corpusDocument(corpus, documentId) {
+  const row = (corpus.rows || []).find((entry) => entry.document_id === documentId);
+  if (!row) throw new Error(`missing real corpus document ${documentId}`);
+  return row;
+}
+
+function rolePassage(roleCorpus, documentId, predicate) {
+  const row = (roleCorpus.rows || []).find((entry) => (
+    entry.corpus_document_id === documentId && (!predicate || predicate(entry))
+  ));
+  if (!row) throw new Error(`missing role corpus passage ${documentId}`);
+  return row;
+}
+
+function promotionEvidence({
+  route,
+  servedBuildRevision,
+  dataVintage,
+  sourceUrl,
+  sourceHash,
+  documentRole,
+  locator,
+  assertion,
+  identityBasis,
+  renderHash,
+  viewport = "desktop",
+  evidenceType = "source_document",
+  provenanceClass = "real_source",
+  component = null,
+  placeRole = null,
+}) {
+  return {
+    evidence_type: evidenceType,
+    provenance_class: provenanceClass,
+    route,
+    component,
+    served_build_revision: servedBuildRevision,
+    data_vintage: dataVintage,
+    source_url: sourceUrl,
+    source_hash: sourceHash,
+    source_hash_basis: evidenceType === "source_document" ? "retrieved official document bytes" : "recorded served DOM capture bytes",
+    document_role: documentRole,
+    locator,
+    assertion,
+    identity_basis: identityBasis,
+    viewport,
+    place_role: placeRole,
+    render_hash: renderHash,
+    content_hash: evidenceType === "source_document" ? sourceHash : null,
+    initialization: evidenceType === "browser_dom" ? "settled" : null,
+  };
+}
+
+function promotionCell(claimFamily, evidence, assertion = evidence?.assertion) {
+  return {
+    claim_family: claimFamily,
+    status: "ready",
+    reason: null,
+    assertion,
+    evidence,
+  };
+}
+
+function promotionNotReady(claimFamily, reason, details = {}) {
+  return {
+    claim_family: claimFamily,
+    status: "not_ready",
+    reason,
+    assertion: details.assertion || `${claimFamily} remains not ready because ${reason}.`,
+    details,
+    evidence: null,
+  };
 }
 
 export function procurementRoute(contractId) {
@@ -357,6 +484,314 @@ function boundaryEvidence({ revision, dataVintage }) {
     disallowed_claims: ["executed_contract_scope"],
     assertion: "Museum scope remains project context, not executed-contract scope.",
   });
+}
+
+function vendorPromiseNotReady() {
+  return promotionNotReady("vendor_promise", "no_public_executed_agreement_or_sow", {
+    admission_rule: "A served exact passage from a publicly accessible or redistribution-authorized executed agreement or SOW is required.",
+    rejected_standins: [
+      "synthetic_fixture",
+      "draft",
+      "bid",
+      "audit_quotation",
+      "authenticated_screen",
+      "nonofficial_repost",
+      "narrative",
+    ],
+  });
+}
+
+function promotionAccessCell({
+  contractId,
+  label,
+  readback,
+  roleManifest,
+  sourceUrl,
+  sourceHash,
+  documentRole,
+  locator,
+  identityBasis,
+  assertion,
+  roleRoute = null,
+}) {
+  const rendered = roleRoute
+    ? roleCapture(roleManifest, roleRoute)
+    : productionRender(readback, contractId);
+  const browser = roleRoute
+    ? promotionEvidence({
+      route: rendered.capture.route,
+      component: rendered.capture.route === "real-corpus-harness" ? "real-corpus-harness" : null,
+      servedBuildRevision: manifestRevision(roleManifest.source_revision),
+      dataVintage: roleManifest.data_vintages.role_corpus_generated_at,
+      sourceUrl,
+      sourceHash,
+      documentRole,
+      locator,
+      assertion,
+      identityBasis,
+      renderHash: rendered.desktop.render_sha256,
+      viewport: rendered.desktop.name,
+      evidenceType: "browser_dom",
+      provenanceClass: "real_source_browser_dom",
+    })
+    : promotionEvidence({
+      route: rendered.route,
+      servedBuildRevision: rendered.revision,
+      dataVintage: rendered.data_vintage,
+      sourceUrl,
+      sourceHash: `sha256:${rendered.render_hash}`,
+      documentRole: "cityscroll_served_contract_page",
+      locator,
+      assertion,
+      identityBasis,
+      renderHash: rendered.render_hash,
+      viewport: rendered.viewport,
+      evidenceType: "browser_dom",
+      provenanceClass: "production_browser_dom",
+    });
+  return promotionCell("access", browser, `${label} ${assertion}`);
+}
+
+export function buildRealExamplePromotionReceipt({ groundedOriginMain = gitRevision() } = {}) {
+  const corpus = readJson("site/data/procurement_contract_substance_real_corpus.json");
+  const roleCorpus = readJson("site/data/procurement_contract_substance_role_corpus.json");
+  const roleManifest = readJson("docs/evidence/contract-substance-role-corpus/capture-manifest.json");
+  const readback = readJson("docs/evidence/procurement-disclosure-production-proof/production-readback.json");
+  const notice = corpusDocument(corpus, "city-record-notice-20240829105");
+  const dcasDocument = corpusDocument(corpus, "dcas-bid-tab-2000090");
+  const mocsDocument = corpusDocument(corpus, "mocs-fcrc-packet-202411-proposed-agreement");
+  const dcasCapture = roleCapture(roleManifest, "real-corpus-harness");
+  const docgoCapture = roleCapture(roleManifest, "/procurements/procurement%3Acontract%3ACT180620248801671");
+  const bhragsCapture = roleCapture(roleManifest, "/procurements/procurement%3Acontract%3ACT107120258801626");
+  const captureRevision = manifestRevision(roleManifest.source_revision);
+  if (captureRevision !== groundedOriginMain) {
+    throw new Error(`role-corpus capture is not grounded at origin/main ${groundedOriginMain}`);
+  }
+
+  const roleEvidence = (claimFamily, row, capture, identityBasis, assertion) => promotionCell(
+    claimFamily,
+    promotionEvidence({
+      route: capture.capture.route,
+      component: capture.capture.route === "real-corpus-harness" ? "real-corpus-harness" : null,
+      servedBuildRevision: captureRevision,
+      dataVintage: roleManifest.data_vintages.role_corpus_generated_at,
+      sourceUrl: row.public_url,
+      sourceHash: row.content_hash,
+      documentRole: row.document_role,
+      locator: row.locator,
+      assertion,
+      identityBasis,
+      renderHash: capture.desktop.render_sha256,
+      viewport: capture.desktop.name,
+    }),
+  );
+
+  const smallContract = (contractId, label, amount) => ({
+    example_id: `${label.toLowerCase().replace(/[^a-z]+/g, "-")}-${contractId}`,
+    label,
+    identity: contractId,
+    canonical_identity_basis: `exact contract id ${contractId} in the retained public contract materialization`,
+    route: procurementRoute(contractId),
+    stories: [`${label} proves below-$100,000 discovery ($${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}) while its contract-document access state remains separately classified.`],
+    cells: [
+      promotionAccessCell({
+        contractId,
+        label,
+        readback,
+        sourceUrl: `${PUBLIC_SITE}${procurementRoute(contractId)}`,
+        documentRole: "cityscroll_served_contract_page",
+        locator: "served contract amount and disclosure/access state",
+        identityBasis: `exact contract id ${contractId}`,
+        assertion: `the served page retains the ${label} amount and role-specific access state`,
+      }),
+      promotionNotReady("pricing_role", "account_gated_pricing_source", { access_state: "account_gated" }),
+      promotionNotReady("obligation_role", "account_gated_executed_source", { access_state: "account_gated" }),
+      promotionNotReady("performance", "not_located_public_evaluation", { access_state: "not_located" }),
+      promotionNotReady("neighborhood", "no_admitted_service_place_evidence"),
+      vendorPromiseNotReady(),
+    ],
+  });
+
+  const bhragsRoute = procurementRoute("CT107120258801626");
+  const bhragsSource = promotionEvidence({
+    route: bhragsRoute,
+    servedBuildRevision: captureRevision,
+    dataVintage: roleManifest.data_vintages.service_geography_generated_at,
+    sourceUrl: notice.final_url,
+    sourceHash: notice.content_hash,
+    documentRole: notice.document_role,
+    locator: notice.locator,
+    assertion: "BHRAGS joins the exact contract and notice to the facility address, unit count, and resolved neighborhood.",
+    identityBasis: "exact contract id CT107120258801626 joined to notice 20240829105",
+    renderHash: bhragsCapture.desktop.render_sha256,
+    placeRole: "facility_site",
+  });
+  const bhrags = {
+    example_id: "bhrags-CT107120258801626",
+    label: "BHRAGS",
+    identity: "CT107120258801626",
+    canonical_identity_basis: "exact contract id CT107120258801626 joined to notice 20240829105",
+    route: bhragsRoute,
+    stories: ["BHRAGS proves the joined authorized amount, payment total, facility address, unit count, notice identity, and neighborhood story without turning facility context into a contractual promise."],
+    cells: [
+      promotionCell("access", bhragsSource, "BHRAGS preserves the joined amount, payment, facility, and exact identity story."),
+      promotionNotReady("pricing_role", "account_gated_pricing_source", { access_state: "account_gated" }),
+      promotionNotReady("obligation_role", "account_gated_executed_source", { access_state: "account_gated" }),
+      promotionNotReady("performance", "not_located_public_evaluation", { access_state: "not_located" }),
+      promotionCell("neighborhood", bhragsSource, "BHRAGS notice-attributed facility site resolves to the named neighborhood."),
+      vendorPromiseNotReady(),
+    ],
+  };
+
+  const docgoRow = rolePassage(roleCorpus, "comptroller-docgo-audit-20248801671", (row) => /food cost caps/i.test(row.locator));
+  const docgoAccess = roleEvidence(
+    "access",
+    docgoRow,
+    docgoCapture,
+    "exact CityScroll contract id CT180620248801671 joined to publisher number 20248801671",
+    "canonical contract identity is joined to the official Comptroller audit without treating the audit as the executed agreement",
+  );
+  const docgo = {
+    example_id: "docgo-CT180620248801671",
+    label: "DocGo",
+    identity: "CT180620248801671 / 20248801671",
+    canonical_identity_basis: "exact contract id CT180620248801671 joined to publisher contract number 20248801671",
+    route: procurementRoute("CT180620248801671"),
+    stories: ["DocGo proves a canonical contract identity joined to official oversight evidence; the audit's reported rates remain audit-reported, not vendor promises."],
+    cells: [
+      docgoAccess,
+      roleEvidence("pricing_role", docgoRow, docgoCapture, "exact contract id CT180620248801671 joined to publisher number 20248801671", "the Comptroller audit reports contract rates with its audit role preserved"),
+      promotionNotReady("obligation_role", "audit_is_not_executed_agreement", { document_role: "performance_evaluation" }),
+      roleEvidence("performance", docgoRow, docgoCapture, "exact contract id CT180620248801671 joined to publisher number 20248801671", "the official audit supplies a performance-evaluation passage tied to DocGo"),
+      promotionNotReady("neighborhood", "no_admitted_service_place_evidence"),
+      vendorPromiseNotReady(),
+    ],
+  };
+
+  const dcasRow = rolePassage(roleCorpus, "dcas-bid-tab-2000090", (row) => /class awards/i.test(row.locator));
+  const dcas = {
+    example_id: "dcas-bid-tab-2000090",
+    label: "DCAS bid tab 2000090",
+    identity: "BID2000090",
+    canonical_identity_basis: "exact public bid number 2000090 in the DCAS bid-tab PDF",
+    route: "real-corpus-harness",
+    stories: ["DCAS proves offered unit prices and class-award totals with the bid-tab role intact; an offer is not an executed vendor promise."],
+    cells: [
+      roleEvidence("access", dcasRow, dcasCapture, "exact bid number 2000090 (BID2000090)", "the official DCAS bid tab is publicly retrievable and rendered through the role-corpus harness"),
+      roleEvidence("pricing_role", dcasRow, dcasCapture, "exact bid number 2000090 (BID2000090)", "DCAS offered unit prices and class awards remain bid-offer facts"),
+      promotionNotReady("obligation_role", "bid_is_not_executed_agreement", { document_role: "bid_tab" }),
+      promotionNotReady("performance", "no_admitted_performance_evaluation"),
+      promotionNotReady("neighborhood", "bid_tab_has_no_service_place"),
+      vendorPromiseNotReady(),
+    ],
+  };
+
+  const mocsObligation = rolePassage(roleCorpus, "mocs-fcrc-packet-202411-proposed-agreement", (row) => /pages 41-43/i.test(row.locator));
+  const mocsPricing = rolePassage(roleCorpus, "mocs-fcrc-packet-202411-proposed-agreement", (row) => row.document_role === "template_pricing");
+  const mocsSchedule = rolePassage(roleCorpus, "mocs-fcrc-packet-202411-proposed-agreement", (row) => /page 72/i.test(row.locator));
+  const mocs = {
+    example_id: "mocs-november-2024-fcrc",
+    label: "MOCS November 2024 FCRC packet",
+    identity: "MOCS-FCRC-202411",
+    canonical_identity_basis: "exact MOCS-FCRC-202411 packet source document and named proposed-agreement/template identities",
+    route: "real-corpus-harness",
+    stories: ["MOCS proves proposed duties, site schedules, and template fees with their proposed/template roles intact; the packet's blank execution state blocks a vendor-promise claim."],
+    cells: [
+      roleEvidence("access", mocsSchedule, dcasCapture, "exact MOCS-FCRC-202411 packet URL", "the official FCRC packet is publicly retrievable and rendered in the role-corpus harness"),
+      roleEvidence("pricing_role", mocsPricing, dcasCapture, "exact MOCS-FCRC-202411-CWTP template identity", "MOCS template pricing remains labeled as template pricing"),
+      roleEvidence("obligation_role", mocsObligation, dcasCapture, "exact MOCS-FCRC-202411-GROWNYC proposed identity", "MOCS proposed operational duties remain proposed agreement terms"),
+      promotionNotReady("performance", "no_admitted_performance_evaluation"),
+      promotionNotReady("neighborhood", "site_schedule_is_not_resolved_neighborhood", { document_role: "site_schedule" }),
+      vendorPromiseNotReady(),
+    ],
+  };
+
+  const examples = [
+    bhrags,
+    smallContract("CT110220271400991", "S&P", 62500),
+    smallContract("CT105720278802113", "AHA", 46673.32),
+    smallContract("CT104020273009333", "Quizizz", 25000),
+    docgo,
+    dcas,
+    mocs,
+  ];
+  const cells = examples.flatMap((example) => example.cells);
+  const readyCells = cells.filter((cell) => cell.status === "ready");
+  const provenanceCounts = readyCells.reduce((counts, cell) => {
+    const provenance = cell.evidence?.provenance_class || "unknown";
+    if (provenance === "synthetic_fixture") counts.synthetic_fixture_cells += 1;
+    else if (provenance === "mutation") counts.mutation_cells += 1;
+    else counts.real_source_cells += 1;
+    return counts;
+  }, { real_source_cells: 0, synthetic_fixture_cells: 0, mutation_cells: 0 });
+  return {
+    schema: PROMOTION_SCHEMA,
+    mode: "receipt-matrix",
+    grounded_origin_main: groundedOriginMain,
+    capture_manifest: {
+      path: "docs/evidence/contract-substance-role-corpus/capture-manifest.json",
+      revision: captureRevision,
+      assertion: "All role-corpus viewport hashes are from the headless capture recorded at the grounded origin/main revision.",
+    },
+    assertions: [
+      { id: "A1", assertion: "The matrix names BHRAGS, S&P, AHA, Quizizz, DocGo, DCAS bid tab 2000090, and the MOCS November 2024 FCRC packet with identity, route or component, role, and readiness state.", artifact: "examples[].example_id, examples[].canonical_identity_basis, examples[].route, examples[].cells[]" },
+      { id: "A2", assertion: "Each named example records the bounded resident story it proves, including joined payments and place, below-$100,000 discovery, oversight, offered pricing, and proposed roles.", artifact: "examples[].stories" },
+      { id: "A3", assertion: "The vendor-promise family remains not ready until a served exact passage from an admitted executed agreement or SOW exists, and listed stand-ins are rejected.", artifact: "boundary, examples[].cells[claim_family=vendor_promise]" },
+      { id: "A4", assertion: "The receipt completes without a publisher event while retaining the missing executed-document claim as red.", artifact: "completion" },
+      { id: "A5", assertion: "Every ready cell carries route, served revision, data vintage, source URL and hash, role, locator, assertion, viewport, and render or content hash; synthetic and mutation counts remain separate.", artifact: "examples[].cells[].evidence, provenance_counts, synthetic_fixture_policy" },
+      { id: "A6", assertion: "The validator rejects API-for-DOM substitution, stale identity, unrelated joins, role changes, blank execution evidence, login-only sources, failed initialization, wrong place roles, and omitted examples.", artifact: "validatePromotionReceipt and its mutation tests" },
+      { id: "A7", assertion: "The editor packet separates safe-now statements from statements blocked by contract-document disclosure and keeps engineering, deployment, and editorial status distinct.", artifact: "editor_packet, engineering_status, deployment_status, editorial_readiness" },
+    ],
+    examples,
+    claim_families: PROMOTION_CLAIM_FAMILIES,
+    provenance_counts: provenanceCounts,
+    synthetic_fixture_policy: {
+      synthetic_fixture_cells: provenanceCounts.synthetic_fixture_cells,
+      mutation_cells: provenanceCounts.mutation_cells,
+      rule: "Synthetic fixtures and mutations are counted and labeled, but neither can satisfy a ready cell.",
+    },
+    boundary: {
+      claim_family: "vendor_promise",
+      status: "not_ready",
+      required_evidence: "a publicly accessible or redistribution-authorized executed agreement or SOW with a served exact passage",
+      rejected_standins: ["fixture", "draft", "bid", "audit quotation", "authenticated screen", "nonofficial repost", "narrative"],
+      assertion: "The vendor-promise family remains red until an admitted executed document is served; no publisher event is required to complete this bounded receipt.",
+    },
+    completion: {
+      status: "complete",
+      publisher_event_required: false,
+      missing_claims_remain_red: true,
+      assertion: "The matrix and bounded editor packet are complete without waiting for a future executed-document publication.",
+    },
+    engineering_status: {
+      state: "complete",
+      assertion: "The receipt builder, validator, and mutation tests cover all seven named examples and the rejection boundary.",
+    },
+    deployment_status: {
+      state: "observed",
+      served_build_revision: readback.served_build.pages_deploy_commit,
+      data_vintage: readback.served_build.shared_procurement_read_model_generated_at,
+      assertion: "Production route observations remain separate from implementation completion.",
+    },
+    editorial_readiness: {
+      state: "bounded",
+      ready_claim_families: ["access", "pricing_role", "obligation_role", "performance", "neighborhood"],
+      blocked_claim_families: ["vendor_promise"],
+      assertion: "Only role-correct, source-grounded statements are safe to send; the vendor-promise statement remains blocked.",
+    },
+    editor_packet: {
+      safe_to_send_now: [
+        { id: "bhrags-joined-story", claim_family: "access", statement: "BHRAGS demonstrates a joined contract, payment, facility, and neighborhood story." },
+        { id: "small-contract-discovery", claim_family: "access", statement: "S&P, AHA, and Quizizz demonstrate below-$100,000 discovery with role-specific access states." },
+        { id: "docgo-oversight-join", claim_family: "performance", statement: "DocGo demonstrates a canonical contract joined to official oversight evidence." },
+        { id: "dcas-offered-pricing", claim_family: "pricing_role", statement: "DCAS demonstrates offered pricing and class awards labeled as bid-tab facts." },
+        { id: "mocs-proposed-roles", claim_family: "obligation_role", statement: "MOCS demonstrates proposed duties, site schedules, and template fees without role inflation." },
+      ],
+      blocked_by_contract_document_disclosure: [
+        { id: "vendor-promise", claim_family: "vendor_promise", statement: "The statement that a vendor promised a term remains blocked until an admitted executed agreement or SOW supplies a served exact passage." },
+      ],
+    },
+  };
 }
 
 export async function buildFixturePacket({ revision = gitRevision(), captureClock = CAPTURE_CLOCK } = {}) {
@@ -687,6 +1122,109 @@ function error(errors, message) {
   errors.push(message);
 }
 
+export function validatePromotionReceipt(receipt) {
+  const errors = [];
+  if (!receipt || receipt.schema !== PROMOTION_SCHEMA) error(errors, `schema must be ${PROMOTION_SCHEMA}`);
+  if (receipt?.mode !== "receipt-matrix") error(errors, "promotion receipt mode is required");
+  if (!/^[a-f0-9]{40}$/i.test(String(receipt?.grounded_origin_main || ""))) error(errors, "grounded origin/main revision is required");
+  if (receipt?.capture_manifest?.revision !== receipt?.grounded_origin_main) error(errors, "capture manifest is not grounded at origin/main");
+  const assertionIds = Array.isArray(receipt?.assertions) ? receipt.assertions.map((row) => row.id) : [];
+  if (JSON.stringify(assertionIds) !== JSON.stringify(["A1", "A2", "A3", "A4", "A5", "A6", "A7"])) error(errors, "promotion assertions A1-A7 are incomplete or reordered");
+  for (const assertion of receipt?.assertions || []) if (!assertion.assertion || !assertion.artifact) error(errors, `named assertion ${assertion.id} is incomplete`);
+  if (!Array.isArray(receipt?.claim_families) || JSON.stringify(receipt.claim_families) !== JSON.stringify(PROMOTION_CLAIM_FAMILIES)) {
+    error(errors, "promotion claim families are incomplete or reordered");
+  }
+  const examples = Array.isArray(receipt?.examples) ? receipt.examples : [];
+  const exampleIds = examples.map((example) => example.example_id);
+  if (JSON.stringify(exampleIds) !== JSON.stringify(PROMOTION_EXAMPLE_IDS)) error(errors, "matrix omits a named example or changes example order");
+  if (new Set(exampleIds).size !== exampleIds.length) error(errors, "duplicate named promotion example");
+
+  const roleAllowlist = {
+    access: new Set(["cityscroll_served_contract_page", "award_notice", "bid_tab", "proposed_agreement", "template_pricing", "site_schedule", "performance_evaluation"]),
+    pricing_role: new Set(["bid_tab", "template_pricing", "proposed_agreement", "performance_evaluation"]),
+    obligation_role: new Set(["proposed_agreement", "site_schedule", "executed_agreement", "executed_sow", "executed_obligation"]),
+    performance: new Set(["performance_evaluation"]),
+    neighborhood: new Set(["award_notice", "site_schedule"]),
+    vendor_promise: new Set(["executed_agreement", "executed_sow", "executed_obligation"]),
+  };
+  const readyCells = [];
+  for (const example of examples) {
+    const cells = Array.isArray(example.cells) ? example.cells : [];
+    const seen = new Set();
+    for (const cell of cells) {
+      if (!PROMOTION_CLAIM_FAMILIES.includes(cell.claim_family)) error(errors, `unknown claim family ${example.example_id}/${cell.claim_family}`);
+      if (seen.has(cell.claim_family)) error(errors, `duplicate claim family ${example.example_id}/${cell.claim_family}`);
+      seen.add(cell.claim_family);
+      if (!cell.assertion) error(errors, `missing named assertion ${example.example_id}/${cell.claim_family}`);
+      if (cell.status === "not_ready") {
+        if (!cell.reason) error(errors, `not-ready cell needs reason ${example.example_id}/${cell.claim_family}`);
+        continue;
+      }
+      if (cell.status !== "ready") {
+        error(errors, `invalid promotion cell state ${example.example_id}/${cell.claim_family}`);
+        continue;
+      }
+      readyCells.push(cell);
+      const evidence = cell.evidence;
+      if (!evidence) {
+        error(errors, `ready promotion cell lacks evidence ${example.example_id}/${cell.claim_family}`);
+        continue;
+      }
+      if (!["source_document", "browser_dom"].includes(evidence.evidence_type)) error(errors, `API-for-DOM substitution ${example.example_id}/${cell.claim_family}`);
+      if (!["real_source", "real_source_browser_dom", "production_browser_dom"].includes(evidence.provenance_class)) error(errors, `synthetic fixture cannot satisfy ready cell ${example.example_id}/${cell.claim_family}`);
+      if (!evidence.route && !evidence.component) error(errors, `missing route or component ${example.example_id}/${cell.claim_family}`);
+      if (!evidence.served_build_revision || !evidence.data_vintage) error(errors, `missing served revision or data vintage ${example.example_id}/${cell.claim_family}`);
+      if (![receipt.capture_manifest?.revision, receipt.deployment_status?.served_build_revision].includes(evidence.served_build_revision)) error(errors, `stale served identity ${example.example_id}/${cell.claim_family}`);
+      if (!evidence.source_url || !/^https:\/\//i.test(evidence.source_url) || LOGIN_URL_RE.test(evidence.source_url)) error(errors, `login-only or missing source URL ${example.example_id}/${cell.claim_family}`);
+      if (!isSha256(evidence.source_hash)) error(errors, `missing source hash ${example.example_id}/${cell.claim_family}`);
+      if (!evidence.document_role || !roleAllowlist[cell.claim_family]?.has(evidence.document_role)) error(errors, `source-role change or wrong role ${example.example_id}/${cell.claim_family}`);
+      if (!evidence.locator || !evidence.assertion || !evidence.identity_basis) error(errors, `incomplete source locator/assertion/identity ${example.example_id}/${cell.claim_family}`);
+      const identityTokens = String(example.identity || "").split(/\s+\/\s+/).filter(Boolean);
+      if (identityTokens.length > 0 && !identityTokens.some((token) => evidence.identity_basis.includes(token))) error(errors, `unrelated join ${example.example_id}/${cell.claim_family}`);
+      if (!evidence.viewport) error(errors, `missing viewport ${example.example_id}/${cell.claim_family}`);
+      if (evidence.evidence_type === "browser_dom") {
+        if (!HASH_RE.test(String(evidence.render_hash || ""))) error(errors, `missing render hash ${example.example_id}/${cell.claim_family}`);
+        if (evidence.initialization !== "settled") error(errors, `failed asynchronous initialization ${example.example_id}/${cell.claim_family}`);
+      } else if (!isSha256(evidence.content_hash)) {
+        error(errors, `missing content hash ${example.example_id}/${cell.claim_family}`);
+      }
+      if (cell.claim_family === "neighborhood" && evidence.place_role && evidence.place_role !== "facility_site" && evidence.place_role !== "service_area" && evidence.place_role !== "beneficiary_area") {
+        error(errors, `wrong place role ${example.example_id}/${cell.claim_family}`);
+      }
+      if (cell.claim_family === "vendor_promise") {
+        if (!evidence.execution_evidence || evidence.execution_evidence.signature_present !== true || evidence.execution_evidence.effective_status_admitted !== true) {
+          error(errors, `blank signature or missing effective status ${example.example_id}/${cell.claim_family}`);
+        }
+      }
+    }
+    for (const claimFamily of PROMOTION_CLAIM_FAMILIES) if (!seen.has(claimFamily)) error(errors, `matrix omits claim family ${example.example_id}/${claimFamily}`);
+  }
+
+  const counts = readyCells.reduce((result, cell) => {
+    const provenance = cell.evidence?.provenance_class;
+    if (provenance === "synthetic_fixture") result.synthetic_fixture_cells += 1;
+    else if (provenance === "mutation") result.mutation_cells += 1;
+    else result.real_source_cells += 1;
+    return result;
+  }, { real_source_cells: 0, synthetic_fixture_cells: 0, mutation_cells: 0 });
+  if (JSON.stringify(receipt.provenance_counts) !== JSON.stringify(counts)) error(errors, "provenance counts are stale");
+  if (receipt?.boundary?.claim_family !== "vendor_promise" || receipt.boundary.status !== "not_ready") error(errors, "vendor-promise boundary is missing");
+  if (receipt.boundary.required_evidence?.includes("executed agreement") !== true) error(errors, "vendor-promise boundary lacks executed-document rule");
+  if (receipt.boundary.rejected_standins?.includes("fixture") !== true || receipt.boundary.rejected_standins?.includes("audit quotation") !== true) error(errors, "vendor-promise stand-in rejection list is incomplete");
+  if (receipt.completion?.status !== "complete" || receipt.completion.publisher_event_required !== false || receipt.completion.missing_claims_remain_red !== true) error(errors, "completion falsely waits for or clears the missing document");
+  if (!receipt.engineering_status || !receipt.deployment_status || !receipt.editorial_readiness) error(errors, "engineering, deployment, and editorial statuses must remain separate");
+  if (receipt.editorial_readiness?.blocked_claim_families?.includes("vendor_promise") !== true) error(errors, "editorial packet does not block vendor promise");
+  if (!Array.isArray(receipt.editor_packet?.safe_to_send_now) || receipt.editor_packet.safe_to_send_now.length < 1) error(errors, "editor packet safe list is missing");
+  if (!Array.isArray(receipt.editor_packet?.blocked_by_contract_document_disclosure) || receipt.editor_packet.blocked_by_contract_document_disclosure.length < 1) error(errors, "editor packet blocked list is missing");
+  return { ok: errors.length === 0, errors };
+}
+
+export function assertPromotionReceipt(receipt) {
+  const result = validatePromotionReceipt(receipt);
+  if (!result.ok) throw new Error(`contract-substance promotion receipt invalid:\n${result.errors.join("\n")}`);
+  return receipt;
+}
+
 export function validateReleasePacket(packet) {
   const errors = [];
   if (!packet || packet.schema !== RELEASE_SCHEMA) error(errors, `schema must be ${RELEASE_SCHEMA}`);
@@ -821,7 +1359,15 @@ async function main() {
     const packet = await buildFixturePacket();
     mkdirSync(dirname(FIXTURE_PATH), { recursive: true });
     writeFileSync(FIXTURE_PATH, `${JSON.stringify(packet, null, 2)}\n`);
+    writeFileSync(PROMOTION_PATH, `${JSON.stringify(buildRealExamplePromotionReceipt({ groundedOriginMain: packet.served_build.revision }), null, 2)}\n`);
     process.stdout.write(`wrote ${EVIDENCE_DIR_RELATIVE}/${FIXTURE_NAME} (${packet.readiness.whole_set_ready ? "ready" : "not ready"})\n`);
+    return;
+  }
+  if (arg === "--real-corpus") {
+    const receipt = assertPromotionReceipt(buildRealExamplePromotionReceipt({ groundedOriginMain: gitRevision() }));
+    mkdirSync(dirname(PROMOTION_PATH), { recursive: true });
+    writeFileSync(PROMOTION_PATH, `${JSON.stringify(receipt, null, 2)}\n`);
+    process.stdout.write(`wrote ${EVIDENCE_DIR_RELATIVE}/${PROMOTION_NAME} (bounded)\n`);
     return;
   }
   if (arg === "--production") {
@@ -834,6 +1380,7 @@ async function main() {
   if (arg === "--check") {
     assertReleasePacket(readJson(`${EVIDENCE_DIR_RELATIVE}/${FIXTURE_NAME}`));
     assertProductionPacket(readJson(`${EVIDENCE_DIR_RELATIVE}/${PRODUCTION_NAME}`));
+    assertPromotionReceipt(readJson(`${EVIDENCE_DIR_RELATIVE}/${PROMOTION_NAME}`));
     process.stdout.write("contract-substance release fixture: valid\n");
     return;
   }
