@@ -240,6 +240,7 @@ test("a read-model miss uses the public source as an exceptional fallback", asyn
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async (url) => {
     assert.match(String(url), /data\.cityofnewyork\.us\/resource\/dg92-zbpx\.json/);
+    assert.equal(new URL(url).searchParams.get("$where"), "request_id=20260807001");
     return new Response(JSON.stringify([notice]), { status: 200, headers: { "Content-Type": "application/json" } });
   };
   try {
@@ -251,6 +252,34 @@ test("a read-model miss uses the public source as an exceptional fallback", asyn
     assert.equal(response.status, 200);
     assert.equal(body.source, "public-source-fallback");
     assert.equal(body.row.request_id, notice.request_id);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("a source-invalid notice identifier is an honest missing read", async () => {
+  let fetched = false;
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    fetched = true;
+    throw new Error("the numeric City Record source must not receive this identifier");
+  };
+  try {
+    const result = await executeNoticeGet(
+      workerNoticeGet({ DB: dbFor(null) }, { nowMs: FIXTURE_NOW }),
+      { requestId: "cs10-canary-missing" },
+    );
+    assert.equal(fetched, false);
+    assert.deepEqual(result, {
+      capability_reference: "notice.get@1",
+      availability: "not_yet_public",
+      notice: null,
+      source: "public-source",
+      generated_at: null,
+      stale: null,
+      citation: null,
+      error: "not-found",
+    });
   } finally {
     globalThis.fetch = originalFetch;
   }
