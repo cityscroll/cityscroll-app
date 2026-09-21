@@ -13,9 +13,9 @@
  *   - the browse Map shell paints the already filtered result set with the local SVG
  *     substrate (`map_exploration.mjs` projection + schematic borough outlines) over the
  *     committed, versioned point projection. No SDK, no tile provider, no live GIS.
- *   - the detail map keeps its existing Leaflet/Carto implementation unchanged. It is a
- *     detail of one selected project, not a browse dependency, and this card does not
- *     migrate it; it only moves it behind activation.
+ *   - the detail map keeps its existing Leaflet/Carto substrate. It is a detail of one
+ *     selected project, not a browse dependency, and remains behind activation; release
+ *     builds configure its browser-scoped CARTO key through `carto_basemap.mjs`.
  *
  * Failure is a presentation failure and never a scope failure: the filtered List stays on
  * screen with its count, rows, filters, and controls, and the resident gets a retry and a
