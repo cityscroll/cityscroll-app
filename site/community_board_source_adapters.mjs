@@ -32,7 +32,7 @@ export const COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS = Object.freeze({
     formats: Object.freeze(["html", "nyc_official_calendar"]),
     record_kinds: Object.freeze(["event"]),
     max_bytes: 2_000_000,
-    contract: "NYC-hosted community-board calendar HTML; each event requires an explicit heading, publisher date, and page-declared calendar year",
+    contract: "Official community-board calendar HTML; each event requires explicit publisher identity, date, and time or a date-only publisher event",
   }),
   google_calendar_v1: Object.freeze({
     id: "google_calendar_v1",
@@ -816,9 +816,40 @@ function dateFirstCalendarBlock(fragment, pageYear) {
   };
 }
 
-function officialCalendarBlocks(html, pageYear) {
+function modernCalendarBlocks(html, sourceUrl) {
+  const blocks = [];
+  const anchor = /<a\b[^>]*\bhref\s*=\s*(["'])([^"']+)\1[^>]*>([\s\S]*?)<\/a>/gi;
+  for (const match of String(html || "").matchAll(anchor)) {
+    const tag = match[0];
+    const url = safeUrl(attribute(tag, "href"), sourceUrl);
+    const date = url?.match(/\/calendar\/(20\d{2}-\d{2}-\d{2})-[^/]+\/?$/i)?.[1] || null;
+    const label = attribute(tag, "aria-label");
+    if (!url || !date || !label) continue;
+    const title = clean(label.split(/,\s*/, 1)[0], 500);
+    const startAt = calendarStartAt(date, label);
+    if (!title || !startAt) continue;
+    blocks.push({
+      title,
+      logistics: label,
+      lines: [],
+      bodyHtml: match[3],
+      date,
+      start_at: startAt,
+      record_url: url,
+      source_entry_evidence: {
+        locator: { type: "calendar_link", date, title },
+        excerpt: clean(label, 1_000),
+      },
+    });
+  }
+  return blocks;
+}
+
+function officialCalendarBlocks(html, pageYear, sourceUrl) {
   const calendarHtml = String(html || "").match(/<div\b[^>]*\babout-description\b[^>]*>([\s\S]*?)<\/div>/i)?.[1]
     || String(html || "");
+  const modernBlocks = modernCalendarBlocks(calendarHtml, sourceUrl);
+  if (modernBlocks.length) return modernBlocks;
   const blocks = [];
   const headings = /<h3\b[^>]*>([\s\S]*?)<\/h3>([\s\S]*?)(?=<h3\b|$)/gi;
   for (const match of calendarHtml.matchAll(headings)) {
@@ -899,9 +930,9 @@ export function parseNycOfficialCalendarSource(html, source = {}, options = {}) 
   if (!sourceUrl || !clean(descriptor.board_id || descriptor.body_id, 100)) return [];
   const pageYear = String(html || "").match(/Calendar\s+of\s+Meetings[\s\S]{0,120}?\b(20\d{2})\b/i)?.[1] || null;
   const found = [...jsonLdEvents(html, descriptor, receipt)];
-  for (const block of officialCalendarBlocks(html, pageYear)) {
-    const date = explicitCalendarDate(block.logistics, pageYear);
-    const startAt = calendarStartAt(date, block.logistics);
+  for (const block of officialCalendarBlocks(html, pageYear, sourceUrl)) {
+    const date = block.date || explicitCalendarDate(block.logistics, pageYear);
+    const startAt = block.start_at || calendarStartAt(date, block.logistics);
     const recordId = calendarRecordId(descriptor, date, block.title);
     if (!block.title || !date || (!startAt && !block.date_only) || !recordId) continue;
     const participation = eventPageParticipation(block.bodyHtml, sourceUrl);
@@ -917,8 +948,8 @@ export function parseNycOfficialCalendarSource(html, source = {}, options = {}) 
       mode: participation.remote_join_url ? "hybrid" : (block.mode || "not-stated"),
       participation: { ...participation, emails: [], phones: [], source_url: sourceUrl },
       format: "html",
-      record_url: sourceUrl,
-      source_entry_evidence: {
+      record_url: block.record_url || sourceUrl,
+      source_entry_evidence: block.source_entry_evidence || {
         locator: { type: "calendar_date_title", date, title: block.title },
         excerpt: clean(block.logistics, 1000),
       },

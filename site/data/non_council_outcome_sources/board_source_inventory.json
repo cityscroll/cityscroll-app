@@ -11584,10 +11584,11 @@
       "observed": "2026-08-13",
       "upcoming": {
         "source_type": "upcoming_meetings",
+        "adapter": "nyc_official_calendar_v1",
         "publisher": "Manhattan Community Board 12",
         "publisher_kind": "board_owned_official",
-        "url": "https://cbmanhattan.cityofnewyork.us/cb12/meeting-schedule-overview/",
-        "format": "explicit board calendar",
+        "url": "https://cb12m.org/en/calendar",
+        "format": "official board calendar HTML",
         "fetch_mode": "machine-fetchable",
         "access_constraint": null,
         "seen_on": "2026-08-13",
@@ -11720,11 +11721,11 @@
       "resource_tasks": [
         {
           "task": "calendar",
-          "url": "https://cbmanhattan.cityofnewyork.us/cb12/meeting-schedule-overview/",
+          "url": "https://cb12m.org/en/calendar",
           "source_role": "upcoming_meetings",
           "publisher": "Manhattan Community Board 12",
           "publisher_kind": "board_owned_official",
-          "format": "explicit board calendar",
+          "format": "official board calendar HTML",
           "observed_on": "2026-08-13",
           "status": "verified_destination",
           "disposition": "observed",

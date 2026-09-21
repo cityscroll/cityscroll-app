@@ -29,6 +29,7 @@ import {
 import { meetingSourceFieldNames } from "../site/meeting_source_completeness.mjs";
 
 const committeeRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/community_board_committees.json", import.meta.url)));
+const cb12Inventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url)));
 
 const receipt = { status: "ok", observed_at: "2026-08-14T12:00:00Z" };
 
@@ -75,6 +76,26 @@ test("NYC official-calendar adapter preserves explicit event logistics without i
   assert.ok(records.every((row) => row.record_kind === "event"));
   assert.ok(records.every((row) => row.observed_receipt.parser === "nyc_official_calendar_v1"));
   assert.ok(records.every((row) => !Object.hasOwn(row, "vote") && !Object.hasOwn(row, "outcome")));
+});
+
+test("CB12 live calendar links are parsed from the publisher's current markup", () => {
+  const board = cb12Inventory.boards.find((row) => row.id === "manhattan-cb-12");
+  const records = parseNycOfficialCalendarSource(
+    readFileSync(new URL("./fixtures/community_board_acquisition_sources/manhattan-cb-12-live.html", import.meta.url), "utf8"),
+    { ...board.upcoming, board_id: board.id, body_id: board.id, role: "upcoming_meetings", source_role: "upcoming_meetings" },
+    { receipt: { ...receipt, fetch_status: "200" } },
+  );
+
+  assert.equal(board.upcoming.adapter, "nyc_official_calendar_v1");
+  assert.equal(board.upcoming.url, "https://cb12m.org/en/calendar");
+  assert.deepEqual(records.map((row) => [row.date, row.title]), [
+    ["2026-09-01", "Business Development"],
+    ["2026-09-02", "Public Safety"],
+    ["2026-09-22", "General Board"],
+  ]);
+  assert.equal(records[2].start_at, "2026-09-22T18:30:00-04:00");
+  assert.equal(records[2].record_url, "https://cb12m.org/en/calendar/2026-09-22-general-board");
+  assert.equal(records[2].source_entry_evidence.locator.type, "calendar_link");
 });
 
 test("HTML/PDF adapter keeps explicit source and publisher fields", () => {
