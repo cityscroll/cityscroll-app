@@ -2,9 +2,7 @@
 /**
  * Retain fixed-dossier CEQR, DOT, and EDC documents as dated observations.
  *
- * Offline by default against committed fixtures (no live publisher fetch).
- *
- *   node tools/build_connected_history_documents.mjs
+ *   node tools/build_connected_history_documents.mjs             # live run
  *   node tools/build_connected_history_documents.mjs --check
  */
 
@@ -14,9 +12,11 @@ import { fileURLToPath } from "node:url";
 
 import {
   CONNECTED_HISTORY_DOCUMENTS_SCHEMA,
+  CONNECTED_HISTORY_DOCUMENTS_TRANSPORT,
   acquireConnectedHistoryDocuments,
+  assertRetainedObservationsHaveFetchReceipts,
+  createLiveHttpGet,
 } from "./lib/connected_history_documents.mjs";
-import { createFixtureHttpGet } from "../test/fixtures/connected_history_documents/http_fixture_map.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "site/data/connected_history_documents.json");
@@ -26,37 +26,32 @@ const RECEIPT = join(
 );
 
 const checkOnly = process.argv.includes("--check");
-const OBSERVED_AT = "2026-09-18T00:00:00.000Z";
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
-const httpGet = createFixtureHttpGet();
-const { artifact, receipt } = await acquireConnectedHistoryDocuments({
-  httpGet,
-  observedAt: OBSERVED_AT,
-});
-
-if (artifact.schema !== CONNECTED_HISTORY_DOCUMENTS_SCHEMA) {
-  console.error("unexpected artifact schema");
-  process.exit(1);
-}
-
 if (checkOnly) {
   const existing = readJson(OUT);
   const existingReceipt = readJson(RECEIPT);
-  if (JSON.stringify(existing) !== JSON.stringify(artifact)) {
-    console.error("connected_history_documents.json is stale — re-run without --check");
-    process.exit(1);
-  }
-  if (JSON.stringify(existingReceipt) !== JSON.stringify(receipt)) {
-    console.error("connected_history_documents_latest.json is stale — re-run without --check");
-    process.exit(1);
-  }
+  if (existing.schema !== CONNECTED_HISTORY_DOCUMENTS_SCHEMA) throw new Error("unexpected artifact schema");
+  assertRetainedObservationsHaveFetchReceipts(existing.observations);
+  if (existingReceipt.artifact !== "site/data/connected_history_documents.json") throw new Error("receipt does not name the committed artifact");
+  if (existingReceipt.acquisition_mode !== "live") throw new Error("committed corpus must be from a live acquisition run");
   console.log("ok connected history documents artifact is current");
   process.exit(0);
 }
+
+const httpGet = createLiveHttpGet();
+const { artifact, receipt } = await acquireConnectedHistoryDocuments({
+  httpGet,
+  observedAt: new Date().toISOString(),
+  runMode: "live",
+  requestTimeoutMs: CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.requestTimeoutMs,
+  responseCapBytes: CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.responseCapBytes,
+});
+
+if (artifact.schema !== CONNECTED_HISTORY_DOCUMENTS_SCHEMA) throw new Error("unexpected artifact schema");
 
 writeFileSync(OUT, `${JSON.stringify(artifact, null, 2)}\n`);
 writeFileSync(RECEIPT, `${JSON.stringify(receipt, null, 2)}\n`);
