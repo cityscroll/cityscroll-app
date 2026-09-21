@@ -6,6 +6,12 @@ import { buildEmmonsShelterMonitorPack, createEmmonsWatchChildren, EMMONS_ANCHOR
 
 const captureManifest = JSON.parse(readFileSync(new URL("../docs/evidence/emmons-shelter-monitor-pack/capture-manifest.json", import.meta.url)));
 const captureDigest = (html) => createHash("sha256").update(html).digest("hex");
+const canonicalize = (value) => Array.isArray(value)
+  ? value.map(canonicalize)
+  : value && typeof value === "object"
+    ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, canonicalize(value[key])]))
+    : value;
+const observationDigest = (observation) => captureDigest(JSON.stringify(canonicalize(observation)));
 
 test("the Emmons pack retains exact anchors and excludes the nearby address", () => {
   const pack = buildEmmonsShelterMonitorPack();
@@ -37,7 +43,7 @@ test("one reviewed action creates each child exactly once through an idempotent 
   assert.deepEqual(result.created, ["exact-procurement", "project-alias-money", "cb15-meeting-alias"]);
 });
 
-test("the retained journey manifest distinguishes taken static captures from untaken behavior journeys", () => {
+test("the retained journey manifest binds static and served observations without hashing untaken surfaces", () => {
   const expected = new Map([
     ["desktop", (html) => ["What CityScroll knows", "Timeline", "What to watch", "Not yet covered"].every((text) => html.includes(text))],
     ["narrow-touch", null],
@@ -46,18 +52,27 @@ test("the retained journey manifest distinguishes taken static captures from unt
     ["back-navigation", null],
     ["failed-detail-load", null],
   ]);
+  assert.equal(captureManifest.capture_tool, "python3 tools/capture_emmons_shelter_monitor_pack.py");
   assert.equal(captureManifest.runner, "node --test test/emmons_shelter_monitor_pack.test.mjs test/tracked_issue_read_model.test.mjs");
   assert.deepEqual(captureManifest.captures.map((capture) => capture.surface), [...expected.keys()]);
   const html = renderEmmonsShelterMonitorPack();
   for (const capture of captureManifest.captures) {
     const assertion = expected.get(capture.surface);
-    if (!assertion) {
-      assert.equal(capture.state, "not-yet-taken", capture.surface);
+    if (capture.state === "not-yet-taken") {
+      assert.equal(assertion, null, capture.surface);
       assert.match(capture.reason, /requires|cannot evidence/i, capture.surface);
       assert.equal("sha256" in capture, false, capture.surface);
       continue;
     }
     assert.equal(capture.state, "complete", capture.surface);
+    if (!assertion) {
+      assert.match(capture.method, /headless-playwright-loopback-served/, capture.surface);
+      assert.match(capture.sha256, /^[a-f0-9]{64}$/, capture.surface);
+      assert.equal(capture.observations.assertion, capture.assertion, capture.surface);
+      assert.equal(capture.observations.observation_digest_basis, "sorted JSON of this textual browser observation", capture.surface);
+      assert.equal(capture.sha256, observationDigest(capture.observations), capture.surface);
+      continue;
+    }
     assert.match(capture.method, /deterministic-render-fixture/, capture.surface);
     assert.match(capture.sha256, /^[a-f0-9]{64}$/, capture.surface);
     assert.equal(capture.sha256, captureDigest(html), capture.surface);

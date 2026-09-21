@@ -6,6 +6,7 @@ import {
   procurementIdentifierSearchHref,
   renderProcurementDocument,
 } from "../site/procurement_document.mjs";
+import { EMMONS_ROUTES, renderEmmonsShelterMonitorPack } from "../site/emmons_shelter_monitor_pack.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import {
   resolveKeywordQuery,
@@ -35,6 +36,15 @@ test("retained contract identifiers link to exact search destinations", () => {
   assert.equal(procurementIdentifierSearchHref("CT107120258801626"), "/search/?q=CT107120258801626");
   assert.equal(procurementIdentifierSearchHref(""), null);
   assert.equal(procurementIdentifierSearchHref("<script>alert(1)</script>"), null);
+});
+
+test("A2: the canonical procurement links back to the pack and the pack retains CB15 and parcel routes", () => {
+  const procurementHtml = renderProcurementDocument(fixture.object, fixture.observations);
+  const packHtml = renderEmmonsShelterMonitorPack();
+  assert.ok(procurementHtml.includes(`href="${EMMONS_ROUTES.issue}"`));
+  assert.ok(packHtml.includes(`href="${EMMONS_ROUTES.board}"`));
+  assert.ok(packHtml.includes(`href="${EMMONS_ROUTES.parcel}"`));
+  assert.doesNotMatch(procurementHtml, /3206 Emmons|separate procurement/i);
 });
 
 test("A3: an exact Contract ID search returns the procurement specimen", () => {
