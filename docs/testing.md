@@ -19,6 +19,12 @@ await withPinnedClock("2026-09-14T00:00:00.000Z", async () => {
 `finally` block. Keep scopes short and do not overlap them in concurrently running tests; the
 process clock is global. Explicit constructor arguments such as `new Date("...")` are unchanged.
 
+The `node tools/audit-test-clocks.mjs` static lint runs in the PR `static-standards` check and the
+local prepush family. It rejects new or changed test files that read `new Date()`, `Date.now()`,
+`Temporal.Now`, or a direct wrapper around them without a pinned clock or explicit time injection.
+For a test that genuinely must observe the real clock, put `// test-clock: allow-real-clock` on
+the specific read line and briefly state why; this is the only wall-clock exception mechanism.
+
 The preload at [`test/helpers/test_clock_preload.mjs`](../test/helpers/test_clock_preload.mjs)
 shifts and freezes the process clock for a whole test process. The existing local runner applies
 it when `CITYSCROLL_TEST_TIME_SHIFT_DAYS` is set and caps Node test concurrency at 2:

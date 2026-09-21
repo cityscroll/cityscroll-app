@@ -393,6 +393,8 @@ family_static_standards() {
   run_and_fail node tools/build_data_health_page.mjs --check
   run_and_fail node tools/depot_rederive.mjs --check
   run_and_fail node tools/validate_beta_flags.mjs
+  run_banner "Unit tests (site + worker)" "Wall-clock test lint" \
+    "node tools/audit-test-clocks.mjs"
   run_and_fail node tools/audit-test-clocks.mjs
   run_and_fail node tools/determinism_lint.mjs --check
   run_and_fail python3 -m unittest tests.test_diagnostic_card_producer

@@ -430,10 +430,10 @@ jobs:
       - name: Public demo-link manifest schema
         if: matrix.family == 'static-standards'
         run: python3 test/standards/demo_links.py
-      - name: Test-clock auditor (reject un-injected new Date()/Date.now() in tests)
+      - name: Wall-clock test lint (reject unpinned reads in changed tests)
         if: matrix.family == 'static-standards'
-        # Local preflight already runs this; promote into CI so a skipped preflight
-        # cannot land a date-boundary flake class that only fails at UTC midnight.
+        # Local preflight runs the same lint; keep this before the optional shifted-clock
+        # workflow so an unpinned read fails in the ordinary PR check.
         run: node tools/audit-test-clocks.mjs
       - name: Check-mode determinism lint
         if: matrix.family == 'static-standards'
