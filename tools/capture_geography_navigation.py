@@ -17,6 +17,8 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import threading
 
+from repository_revision import resolve_repository_revision
+
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_DIR = ROOT / "docs" / "evidence" / "geography-navigation-shell"
 MANIFEST_PATH = MANIFEST_DIR / "capture-manifest.json"
