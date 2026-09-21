@@ -39,7 +39,7 @@ import {
   COUNCIL_DISCOVERY_HEALTH_SCHEMA,
 } from "./council_discovery_health.mjs";
 
-export const OPS_CONTRACT_VERSION = "1.20.0";
+export const OPS_CONTRACT_VERSION = "1.21.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -98,6 +98,8 @@ export const DIGEST_SHADOW = Object.freeze({
     binding: "DB",
     run_table: "digest_shadow_runs",
     preview_table: "digest_shadow_previews",
+    rebuild_run_table: "digest_shadow_rebuild_runs",
+    rebuild_item_table: "digest_shadow_rebuild_items",
     hold_state_table: "digest_shadow_hold_states",
     hold_override_table: "digest_shadow_hold_overrides",
   },
@@ -118,7 +120,7 @@ export const DIGEST_SHADOW = Object.freeze({
     trailing_baseline_method: "weekday-matched median of built_digest_items when at least two same-weekday samples exist in the 30-day history; otherwise the median of the last 7 days, so a one-day backlog spike cannot dominate ordinary weekdays",
     quiet_watermark_policy: "A collapse at watermark_fresh with source_candidates at or above the floor is an informational observation, not a redline: the per-watch seen set already holds every candidate. An empty source_candidates stage still redlines.",
     wake: "Scheduled post-rehearsal and post-delivery monitors open or update a repair issue for redlines, missing runs, or open degraded receipts. A quiet-watermark observation does not open or comment an attention issue.",
-    rerun: "Authenticated POST /admin/digest-shadow rebuilds all previews after a repair; affected_digest_ids scopes diagnosis.",
+    rerun: "Authenticated POST /admin/digest-shadow validates and queues a checkpointed rebuild, returns 202 with run_id, and accepts affected_digest_ids to scope the work; GET ?run_id= reports progress and the resulting receipt.",
     delivery_effect: "At 12:45 UTC, only affected_digest_ids still redlined are held from the 13:00 UTC delivery path; unrelated digests remain eligible.",
   },
   hold: {
@@ -531,7 +533,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/digest-shadow",
     methods: ["GET", "POST"],
     auth: "ADMIN_KEY",
-    description: "GET reads the rehearsal, hold state, or rendered preview; GET also accepts the read-only SHADOW_STATUS_KEY. POST reruns after repair or overrides named affected digest holds (ADMIN_KEY only).",
+    description: "GET reads the rehearsal, hold state, rendered preview, or checkpointed rebuild status; GET also accepts the read-only SHADOW_STATUS_KEY. POST queues a checkpointed rebuild after repair or synchronously overrides named affected digest holds (ADMIN_KEY only).",
   },
   {
     path: "/admin/ops-alert",
@@ -741,6 +743,11 @@ export const FEATURE_FLAGS = Object.freeze([
     name: "DIGEST_QUEUE",
     values: ["binding", "unset"],
     description: "Cloudflare Queue binding required for queue mode.",
+  },
+  {
+    name: "DIGEST_SHADOW_QUEUE",
+    values: ["binding", "unset"],
+    description: "Cloudflare Queue binding required for asynchronous checkpointed digest-shadow rebuilds.",
   },
   {
     name: "rollup",

@@ -517,12 +517,14 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   const results = [];
 
   // Refresh Checkbook renewal estimates and purge disabled MOCS plan caches.
-  try {
-    await runMocsPlanPipeline(env);
-    const subs = await subWatches(env);
-    await runCheckbookPipeline(env, watches, subs);
-  } catch (e) {
-    console.error("alerts: forecasting pipelines error:", e);
+  if (!options.skipForecastingPipelines) {
+    try {
+      await runMocsPlanPipeline(env);
+      const subs = await listDigestSubscriptions(env);
+      await runCheckbookPipeline(env, watches, subs);
+    } catch (e) {
+      console.error("alerts: forecasting pipelines error:", e);
+    }
   }
 
 
@@ -636,8 +638,8 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   };
   let mode = "inline";
   let enqueued = 0;
-  const allSubs = await subWatches(env);
-  if (!options.forceInline && env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE) {
+  const allSubs = options.skipSubscriptions ? [] : await listDigestSubscriptions(env);
+  if (!options.skipSubscriptions && !options.forceInline && env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE) {
     mode = "queue";
     const jobs = buildDigestJobs(allSubs);
     const partition = await partitionDigestJobsByHold(jobs, shadowHold);
@@ -1805,7 +1807,7 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
   if (job.type === "rollup" && Array.isArray(job.keys) && job.keys.length) {
     const subs = [];
     for (const k of job.keys) {
-      const s = await loadSub(env, k);
+      const s = await loadDigestSubscription(env, k);
       if (s && isWatchActive(s)) subs.push(s);
     }
     if (!subs.length) {
@@ -1822,7 +1824,7 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
     if (!key) {
       r = { sub: "?", skipped: "bad-job" };
     } else {
-      const s = await loadSub(env, key);
+      const s = await loadDigestSubscription(env, key);
       if (!s) {
         r = { sub: key, kind: "subscription", skipped: "gone" };
       } else {
@@ -2077,7 +2079,7 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, n
   // Entitlement is the active-watch set used by the normal cron/queue path.
   // Paused watches remain in SUBS for preference management but must not receive
   // recovery delivery or consume a catch-up cap.
-  const allSubs = (await subWatches(env)).filter(isWatchActive);
+  const allSubs = (await listDigestSubscriptions(env)).filter(isWatchActive);
   const today = day;
 
   // lastsent is retained only as an operator-facing heartbeat selector. It is never passed
@@ -2213,7 +2215,7 @@ export async function readCatchUpReceipt(env) {
 export async function dryRunRollupForEmail(env, email) {
   const want = normalizeEmail(email);
   if (!want) return { ok: false, reason: "bad-email" };
-  const all = await subWatches(env);
+  const all = await listDigestSubscriptions(env);
   const list = all.filter((s) => normalizeEmail(s.email) === want);
   const active = list.filter(isWatchActive);
   if (!active.length) {
@@ -2274,7 +2276,7 @@ export async function dryRunRollupForEmail(env, email) {
  * account-level renderer used by the scheduled drain.
  */
 export async function previewNextDigestForSubscriber(env, subscriberId, { day, now = new Date() } = {}) {
-  const all = await subWatches(env, { readOnly: true });
+  const all = await listDigestSubscriptions(env, { readOnly: true });
   const list = all.filter((s) => s.subscriber_id === subscriberId);
   const active = list.filter(isWatchActive);
   if (!list.length) return { ok: false, reason: "subscriber-not-found" };
@@ -2326,7 +2328,7 @@ export async function previewNextDigestForSubscriber(env, subscriberId, { day, n
 export async function digestSendTestForEmail(env, email, { live = false, advanceState = false } = {}) {
   const want = normalizeEmail(email);
   if (!want) return { ok: false, reason: "bad-email" };
-  const all = await subWatches(env);
+  const all = await listDigestSubscriptions(env);
   const list = all.filter((s) => normalizeEmail(s.email) === want);
   const active = list.filter(isWatchActive);
   if (!active.length) {
@@ -2374,7 +2376,7 @@ export async function digestSendTestForEmail(env, email, { live = false, advance
   };
 }
 
-async function loadSub(env, key) {
+export async function loadDigestSubscription(env, key) {
   if (!env.SUBS) return null;
   try {
     const v = JSON.parse(await env.SUBS.get(key));
@@ -2774,7 +2776,7 @@ async function recordConfirmedWatchSend(env, { key, day, seenId = null, seenIds 
 
 // ---- confirmed subscriptions (SUBS KV) -----------------------------------
 
-async function subWatches(env, { readOnly = false } = {}) {
+export async function listDigestSubscriptions(env, { readOnly = false } = {}) {
   if (!env.SUBS) return [];
   const out = [];
   let cursor;

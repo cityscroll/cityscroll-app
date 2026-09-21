@@ -83,6 +83,7 @@ export async function recordDigestShadowReceipt(env, summary, now = new Date()) 
     // A stage name is a bounded label, not a daily count, so it stays alert-signature safe.
     collapse_stage: summary?.collapse_stage || null,
     selection_funnel: summary?.selection_funnel || null,
+    ...(summary?.rebuild_run_id ? { rebuild_run_id: summary.rebuild_run_id } : {}),
   };
   await putJson(env?.ALERT_STATE, key(DIGEST_SHADOW_LEDGER_PREFIX, now), receipt);
   return receipt;

@@ -38,7 +38,6 @@ import {
   opsAlertEvidenceFindings,
   mailWatchdogHasMailFindings,
   mailWatchdogSnapshot,
-  recordDigestShadowReceipt,
   recordSchedulerHeartbeat,
   recordDeskPublicationHeartbeat,
   schedulerWatchdogSnapshot,
@@ -111,7 +110,12 @@ import {
   listSourceAcquisitionReceipts,
   passportReceiptsFromMeta,
 } from "./lib/source_acquisition_receipt.mjs";
-import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
+import { readDigestShadow } from "./digest_shadow.mjs";
+import {
+  createDigestShadowRebuild,
+  normalizeDigestShadowRebuildScope,
+  readDigestShadowRebuildStatus,
+} from "./digest_shadow_rebuild.mjs";
 import { handlePrivateStats } from "./stats.mjs";
 import { readOwedBacklog, scanSubscriberMetadata, scheduledTimes } from "./owed_backlog.mjs";
 import {
@@ -1828,9 +1832,7 @@ export async function handleAdminDigestRollup(req, env) {
  */
 export async function handleAdminDigestShadow(req, env, {
   now = new Date(),
-  // Injectable so the rerun's receipt write can be pinned without standing up
-  // the whole live rehearsal; production always uses the real run.
-  runShadow = runDigestShadow,
+  enqueueRebuild = createDigestShadowRebuild,
 } = {}) {
   const auth = checkDigestShadowAuth(req, env);
   if (!auth.ok) return auth.res;
@@ -1865,18 +1867,31 @@ export async function handleAdminDigestShadow(req, env, {
         }
       }
       if (body.action && body.action !== "rerun") return json({ error: "invalid-action" }, 400);
-      const summary = await runShadow(env);
-      // The repair contract names this route as the rerun method, so the rerun
-      // has to leave the receipt the dead-man switch reads. Without this the
-      // day's receipt kept whatever the 06:00 ET rehearsal wrote and a repaired
-      // run could not clear the finding until the next scheduled cycle.
-      await recordDigestShadowReceipt(env, summary, new Date(now));
-      return json({ summary, hold: summary.hold }, summary.ok ? 200 : 503);
+      let affectedDigestIds;
+      try {
+        affectedDigestIds = normalizeDigestShadowRebuildScope(body.affected_digest_ids);
+      } catch (error) {
+        return json({ error: "invalid-affected-digest-ids", detail: String(error?.message || error) }, 400);
+      }
+      const queued = await enqueueRebuild(env, { affectedDigestIds, now });
+      const statusUrl = new URL(req.url);
+      statusUrl.search = "";
+      statusUrl.searchParams.set("run_id", queued.run_id);
+      return json({ ...queued, status_url: `${statusUrl.pathname}${statusUrl.search}` }, 202);
     } catch (error) {
       return json({ error: "shadow-rerun-failed", detail: String(error?.message || error) }, 503);
     }
   }
   const url = new URL(req.url);
+  const runId = url.searchParams.get("run_id");
+  if (runId) {
+    try {
+      const status = await readDigestShadowRebuildStatus(env.DB, runId);
+      return status ? json(status, 200) : json({ error: "rebuild-run-not-found" }, 404);
+    } catch (error) {
+      return json({ error: "rebuild-status-failed", detail: String(error?.message || error) }, 503);
+    }
+  }
   const day = url.searchParams.get("day");
   if (day && !/^\d{4}-\d{2}-\d{2}$/.test(day)) return json({ error: "invalid-day" }, 400);
   const digestId = url.searchParams.get("digest");
