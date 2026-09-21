@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 import {
   procurementIdentifierSearchHref,
   renderProcurementDocument,
@@ -38,13 +39,15 @@ test("retained contract identifiers link to exact search destinations", () => {
   assert.equal(procurementIdentifierSearchHref("<script>alert(1)</script>"), null);
 });
 
-test("A2: the canonical procurement links back to the pack and the pack retains CB15 and parcel routes", () => {
-  const procurementHtml = renderProcurementDocument(fixture.object, fixture.observations);
-  const packHtml = renderEmmonsShelterMonitorPack();
-  assert.ok(procurementHtml.includes(`href="${EMMONS_ROUTES.issue}"`));
-  assert.ok(packHtml.includes(`href="${EMMONS_ROUTES.board}"`));
-  assert.ok(packHtml.includes(`href="${EMMONS_ROUTES.parcel}"`));
-  assert.doesNotMatch(procurementHtml, /3206 Emmons|separate procurement/i);
+test("A2: the canonical procurement links back to the pack and the pack retains CB15 and parcel routes", async () => {
+  await withPinnedClock("2026-09-15T00:00:00Z", () => {
+    const procurementHtml = renderProcurementDocument(fixture.object, fixture.observations);
+    const packHtml = renderEmmonsShelterMonitorPack();
+    assert.ok(procurementHtml.includes(`href="${EMMONS_ROUTES.issue}"`));
+    assert.ok(packHtml.includes(`href="${EMMONS_ROUTES.board}"`));
+    assert.ok(packHtml.includes(`href="${EMMONS_ROUTES.parcel}"`));
+    assert.doesNotMatch(procurementHtml, /3206 Emmons|separate procurement/i);
+  });
 });
 
 test("A3: an exact Contract ID search returns the procurement specimen", () => {
