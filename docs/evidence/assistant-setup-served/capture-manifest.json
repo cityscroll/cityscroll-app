@@ -4,8 +4,10 @@
   "base": "https://cityscroll.org/",
   "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
   "image_binaries_committed": false,
-  "revision": "4cb9e5dfa39248578e99be7979bc9fec753aceb7",
-  "data_vintage": "2026-09-17T23:58:43.865Z",
+  "capture_mode": "headless-playwright-production-served-site",
+  "revision_format": "served artifact-manifest source_commit_sha",
+  "revision": "0fd65ab0d2e251b6de40ef26fe89bb863291b45a",
+  "data_vintage": "2026-09-21T01:47:47.164Z",
   "captures": [
     {
       "case": "assistant-setup-home",
@@ -38,7 +40,7 @@
         "height": 1000
       },
       "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
-      "render_sha256": "5ac21e03aec8b33b3cdefb6b9a2ffb249f77f29a199e6466872d7bfbddca45c0"
+      "render_sha256": "59d96ce6955a335ae0a0249b6241be68b08df5feca813b5629ff07416bdee18d"
     },
     {
       "case": "assistant-setup-introduction",
@@ -49,7 +51,7 @@
         "height": 844
       },
       "assertion": "endpoint copy fallback, recovery anchors, and translated label fit at this viewport",
-      "render_sha256": "5ac21e03aec8b33b3cdefb6b9a2ffb249f77f29a199e6466872d7bfbddca45c0"
+      "render_sha256": "59d96ce6955a335ae0a0249b6241be68b08df5feca813b5629ff07416bdee18d"
     },
     {
       "case": "assistant-setup-api-mcp",
@@ -60,7 +62,7 @@
         "height": 1000
       },
       "assertion": "stable MCP heading and setup link remain reachable at this viewport",
-      "render_sha256": "29e1058a9d345b1baac0c7cb750c6266720a27aecd4605671909839f8f4861b0"
+      "render_sha256": "cba8f4e8fb2d594f10896bf474a8e922c36411a2d0384993d4bcfe6c30c8352d"
     },
     {
       "case": "assistant-setup-api-mcp",
@@ -71,7 +73,7 @@
         "height": 844
       },
       "assertion": "stable MCP heading and setup link remain reachable at this viewport",
-      "render_sha256": "29e1058a9d345b1baac0c7cb750c6266720a27aecd4605671909839f8f4861b0"
+      "render_sha256": "cba8f4e8fb2d594f10896bf474a8e922c36411a2d0384993d4bcfe6c30c8352d"
     }
   ]
 }

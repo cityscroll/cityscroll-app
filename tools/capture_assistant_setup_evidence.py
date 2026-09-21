@@ -427,7 +427,7 @@ def holds(route_spec: dict, viewport: dict, observed: dict) -> list[str]:
 
 
 def build_captures(base: str, *, production: bool = False) -> list[dict]:
-    revision = content_revision()
+    revision = content_revision() if not production else None
     captures: list[dict] = []
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -447,9 +447,12 @@ def build_captures(base: str, *, production: bool = False) -> list[dict]:
                 if route_spec.get("hash"):
                     page.evaluate(f"location.hash = {route_spec['hash']!r}")
                     page.wait_for_timeout(50)
+                # Hash the requested route before the introduction witness
+                # navigates to its exact-context fixture for the configured
+                # and unconfigured branch assertions below.
+                render_digest = main_render_hash(page) if production else None
                 observed = observe(page, route_spec, viewport)
                 failures = holds(route_spec, viewport, observed)
-                render_digest = main_render_hash(page) if production else None
                 if production:
                     captures.append(
                         {
@@ -531,6 +534,8 @@ def write_production_manifest(
         "base": normalize_base(base),
         "condition": production_condition(base),
         "image_binaries_committed": False,
+        "capture_mode": "headless-playwright-production-served-site",
+        "revision_format": "served artifact-manifest source_commit_sha",
         "revision": revision,
         "data_vintage": data_vintage,
         "captures": [
