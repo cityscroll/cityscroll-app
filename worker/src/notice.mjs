@@ -16,6 +16,10 @@ import {
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_ID_RE = NOTICE_GET_REQUEST_ID_PATTERN;
+// Socrata publishes City Record RequestID as a numeric column. An identifier
+// outside that source shape cannot match a row; treating it as a miss avoids
+// turning the source's type-check rejection into a misleading outage.
+const CITY_RECORD_REQUEST_ID_RE = /^\d+$/;
 const MATERIALIZED_MAX_AGE_MS = 2 * 86400_000;
 const EDGE_MAX_AGE = 86400;
 const EDGE_STALE = 7 * 86400;
@@ -137,8 +141,9 @@ async function readMaterialized(env, id, nowMs = Date.now()) {
 }
 
 async function readUpstream(id) {
+  if (!CITY_RECORD_REQUEST_ID_RE.test(id)) return null;
   const url = new URL(CITY_RECORD_SODA);
-  url.searchParams.set("$where", `request_id='${id.replaceAll("'", "''")}'`);
+  url.searchParams.set("$where", `request_id=${id}`);
   url.searchParams.set("$limit", "1");
   const response = await fetch(url, {
     headers: { Accept: "application/json" },
