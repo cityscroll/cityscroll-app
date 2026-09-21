@@ -83,7 +83,7 @@ test("the rendered agenda exposes cases and returns through the canonical day ro
   assert.match(html, /22 Reade Street/);
   assert.match(html, /Executive review is a public observation phase/);
   assert.match(html, /Applicant response and public testimony/);
-  assert.match(html, new RegExp(`href="/browse/meetings/\\?when=day&day=${fixtureDays[0]}"`));
+  assert.match(html, new RegExp(`href="/browse/meetings/\\?when=day&amp;day=${fixtureDays[0]}"`));
   assert.match(html, new RegExp(`meeting:bsa_calendar:bsa-${fixtureDays[0]}`));
   const dayView = buildBrowseView("meetings", { rows: sessions, generated_at: fixture.publication_date }, new URLSearchParams(`when=day&day=${fixtureDays[0]}`), { asOf: fixture.publication_date });
   assert.deepEqual(dayView.rows.map((row) => row.meeting_id), [sessions[0].meeting_id]);

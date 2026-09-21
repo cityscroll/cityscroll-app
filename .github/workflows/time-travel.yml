@@ -49,6 +49,8 @@ jobs:
         if: matrix.family == 'site-node'
         with:
           node-version: "22"
+      - uses: ./.github/actions/setup-playwright
+        if: matrix.family == 'site-node' || matrix.family == 'combined'
       - name: Install Worker dependencies
         if: matrix.family == 'worker' || matrix.family == 'combined'
         run: tools/install_worker_dependencies.sh
