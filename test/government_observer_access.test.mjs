@@ -15,6 +15,7 @@ import {
   meetingProcessProjection,
 } from "../site/meeting_process_profile.mjs";
 import { buildConsequenceProjection } from "../site/consequence_projection.mjs";
+import { participationActionVerbs } from "../site/participation_action_verbs.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
 import { withPinnedClock, todayISO } from "./helpers/test_clock.mjs";
 
@@ -105,6 +106,26 @@ test("A1: PDC and BSA details show purpose, evidenced venue/watch access, and of
 });
 
 test("A3: existing City Record, community-board, and Council families retain their source behavior", () => {
+  const unsupported = {
+    source_system: "unsupported_calendar",
+    source_url: source,
+    observer_access: { watch_url: "https://video.example.nyc/watch/unsupported" },
+    access_steps: [{ kind: "observer_instructions", destination: source }],
+  };
+  const unsupportedProfile = meetingProcessProjection(unsupported);
+  const unsupportedProjection = buildConsequenceProjection("meeting", unsupported);
+  assert.equal(unsupportedProfile.meeting_family, MEETING_FAMILY.DESCRIPTIVE_MEETING_V0);
+  assert.equal(unsupportedProfile.process_profile.observer_access, undefined,
+    "unsupported bodies must not inherit an observer-access profile");
+  assert.equal(unsupportedProjection.speaking_rights, "unknown",
+    "unsupported bodies must not inherit testimony powers");
+  assert.deepEqual(unsupportedProjection.participation_modes, [],
+    "unsupported bodies must not claim observer access");
+  assert.deepEqual(unsupportedProjection.access_steps, [],
+    "unsupported bodies must not expose observer instructions");
+  assert.deepEqual(participationActionVerbs(unsupportedProjection), [],
+    "unsupported bodies must expose no testimony or observer action");
+
   const cityRecord = normalizeCityRecordMeeting({ request_id: "20260915001", title: "City Record hearing" });
   const board = normalizeCommunityBoardMeeting({
     source_record_id: "board-event-1", board_id: "brooklyn-cb-06", title: "Board meeting",
