@@ -30,4 +30,4 @@ semicolon	Weekdays from 17:00 (inclusive) onward; weekends all day; America/New_
 semicolon	Custom schedule: {days}, {boundary}, {timezone}; unknown starts {unknown}
 time_form	Weekdays from 17:00 (inclusive) onward; weekends all day; America/New_York; unknown starts excluded
 time_form	Evenings and weekends: weekdays from 17:00 (inclusive), weekends all day, America/New_York
-time_form	Weekdays from 17:00 (inclusive), all day Saturday and Sunday, America/New_York. Meetings without a start time stay in ordinary browse.
+time_form	Weekdays from 17:00 (inclusive), all day Saturday and Sunday, Eastern Time (New York). Meetings without a start time stay in ordinary browse.
