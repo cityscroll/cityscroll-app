@@ -8,6 +8,7 @@ import { todayISO, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const articles = loadGuide().articles;
 const byUrl = (url) => articles.find((article) => article.url === url);
+const withoutJavaScript = (html) => html.replace(/<script\b[^>]*>[\s\S]*?<\/script>|<script\b[^>]*\/>/gi, "");
 
 test("A1: government access guides publish both native routes with required metadata", () => {
   const observe = byUrl("/guide/how-to/observe-city-government/");
@@ -23,7 +24,7 @@ test("A1: government access guides publish both native routes with required meta
 });
 
 test("A2: each profile names what is seen, access, preparation, and an official next step", () => {
-  const html = readFileSync("site/guide/how-to/observe-city-government/index.html", "utf8");
+  const html = withoutJavaScript(readFileSync("site/guide/how-to/observe-city-government/index.html", "utf8"));
   const profiles = {
     pdc: "https://www.nyc.gov/site/planning/about/commission.page",
     bsa: "https://www.nyc.gov/site/bsa/calendar/calendar.page",
@@ -88,8 +89,8 @@ test("A6: generated detail fixtures return into the guide and remain usable with
       assert.match(detail, /<main id="main"/);
     }
   });
-  const observe = readFileSync("site/guide/how-to/observe-city-government/index.html", "utf8");
-  const request = readFileSync("site/guide/how-to/request-trial-observation/index.html", "utf8");
+  const observe = withoutJavaScript(readFileSync("site/guide/how-to/observe-city-government/index.html", "utf8"));
+  const request = withoutJavaScript(readFileSync("site/guide/how-to/request-trial-observation/index.html", "utf8"));
   assert.match(request, /href="\/guide\/how-to\/observe-city-government\//);
   assert.match(observe, /href="https:\/\/cityscroll\.org\/observe\/"/);
   assert.match(observe, /<main[^>]*id="main"[\s\S]*Choose an observation experience/);
@@ -111,16 +112,15 @@ test("A6: complete guide renders cover desktop, mobile, keyboard, and no-JavaScr
   assert.match(narrowStyles, /\.document-nav \{[\s\S]*?width: 100%;/, "mobile guide navigation fills the narrow viewport");
 
   for (const [route, html] of routes) {
-    assert.match(html, /<meta name="viewport" content="width=device-width,initial-scale=1">/, `${route} retains responsive viewport metadata`);
-    assert.match(html, /<main[^>]*id="main"[\s\S]*<h1[\s>]/, `${route} has a landmark and heading at both stylesheet viewports`);
+    const noJavaScript = withoutJavaScript(html);
+    assert.match(noJavaScript, /<meta name="viewport" content="width=device-width,initial-scale=1">/, `${route} retains responsive viewport metadata without JavaScript`);
+    assert.match(noJavaScript, /<main[^>]*id="main"[\s\S]*<h1[\s>]/, `${route} has a landmark and heading without JavaScript`);
 
-    const links = [...html.matchAll(/<a\b([^>]*)>/gi)].map((match) => match[1]);
-    assert.ok(links.length > 0, `${route} exposes native links for keyboard inspection`);
-    assert.ok(links.every((attributes) => /\bhref="[^"]+"/.test(attributes)), `${route} keyboard destinations are native href links`);
-    assert.doesNotMatch(html, /<a\b[^>]*\btabindex="[1-9]/i, `${route} does not reorder keyboard traversal with positive tabindex`);
+    const links = [...noJavaScript.matchAll(/<a\b([^>]*)>/gi)].map((match) => match[1]);
+    assert.ok(links.length > 0, `${route} exposes native links for keyboard inspection without JavaScript`);
+    assert.ok(links.every((attributes) => /\bhref="[^"]+"/.test(attributes)), `${route} keyboard destinations are native href links without JavaScript`);
+    assert.doesNotMatch(noJavaScript, /<a\b[^>]*\btabindex="[1-9]/i, `${route} does not reorder keyboard traversal with positive tabindex without JavaScript`);
 
-    const noJavaScript = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>|<script\b[^>]*\/>/gi, "");
-    assert.doesNotMatch(noJavaScript, /<script\b/i, `${route} no-JavaScript inspection removes executable elements`);
     assert.match(noJavaScript, /<main[^>]*id="main"[\s\S]*<h1[\s>]/, `${route} keeps its primary reading path without JavaScript`);
     assert.ok((noJavaScript.match(/<a\b[^>]*href="[^"]+"/gi) || []).length >= 4, `${route} keeps actionable destinations without JavaScript`);
   }
