@@ -161,6 +161,24 @@ def sha256_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
+def browser_clock_script(capture_clock: str) -> str:
+    """Pin browser Date so shifted test runs reproduce the retained witness."""
+    encoded = json.dumps(capture_clock)
+    return f"""
+(() => {{
+  const pinned = {encoded};
+  const epoch = Date.parse(pinned);
+  if (!Number.isFinite(epoch)) throw new Error(`invalid capture clock: ${{pinned}}`);
+  const NativeDate = Date;
+  class PinnedDate extends NativeDate {{
+    constructor(...args) {{ super(...(args.length ? args : [epoch])); }}
+    static now() {{ return epoch; }}
+  }}
+  globalThis.Date = PinnedDate;
+}})();
+"""
+
+
 def viewport_name(viewport: dict) -> str:
     width = int(viewport["width"])
     height = int(viewport["height"])
@@ -221,7 +239,7 @@ def start_server() -> tuple[subprocess.Popen, str, Path]:
     raise RuntimeError("local site server did not become ready")
 
 
-def observe(page, route_spec: dict, viewport: dict) -> dict:
+def observe(page, route_spec: dict, viewport: dict, capture_clock: str) -> dict:
     width = viewport["width"]
     height = viewport["height"]
     observed: dict = page.evaluate(
@@ -244,8 +262,6 @@ def observe(page, route_spec: dict, viewport: dict) -> dict:
             const rect = el.getBoundingClientRect();
             anchors[id] = {
               present: true,
-              top: Math.round(rect.top),
-              width: Math.round(rect.width),
               in_layout: rect.width > 0 || rect.height > 0 || el.offsetParent !== null,
             };
           }
@@ -254,6 +270,7 @@ def observe(page, route_spec: dict, viewport: dict) -> dict:
           return {
             inner_width: window.innerWidth,
             inner_height: window.innerHeight,
+            capture_clock: new Date().toISOString(),
             horizontal_overflow: doc.scrollWidth > width + 1,
             primary_search_before_ask,
             ask_link_present: Boolean(ask),
@@ -261,7 +278,6 @@ def observe(page, route_spec: dict, viewport: dict) -> dict:
             endpoint_present: Boolean(endpoint),
             copy_control_present: Boolean(copy),
             anchors,
-            endpoint_client_width: endpoint ? Math.round(endpoint.getBoundingClientRect().width) : null,
             setup_order: route === '/use-with-ai/'
               ? ['connect-first', 'connect', 'claude-web', 'claude', 'other', 'data-ai-context-mount']
                 .map((id) => ({ id, index: [...document.querySelectorAll('main *')].findIndex((node) => id === 'data-ai-context-mount'
@@ -379,10 +395,12 @@ def observe(page, route_spec: dict, viewport: dict) -> dict:
     return observed
 
 
-def holds(route_spec: dict, viewport: dict, observed: dict) -> list[str]:
+def holds(route_spec: dict, viewport: dict, observed: dict, capture_clock: str) -> list[str]:
     failures: list[str] = []
     if observed.get("inner_width") != viewport["width"]:
         failures.append(f"inner_width!={viewport['width']}")
+    if observed.get("capture_clock") != capture_clock:
+        failures.append("capture_clock")
     if observed.get("horizontal_overflow"):
         failures.append("horizontal_overflow")
     if route_spec["route"] == "/":
@@ -426,7 +444,7 @@ def holds(route_spec: dict, viewport: dict, observed: dict) -> list[str]:
     return failures
 
 
-def build_captures(base: str, *, production: bool = False) -> list[dict]:
+def build_captures(base: str, *, capture_clock: str = CAPTURE_CLOCK, production: bool = False) -> list[dict]:
     revision = content_revision() if not production else None
     captures: list[dict] = []
     with sync_playwright() as playwright:
@@ -441,6 +459,7 @@ def build_captures(base: str, *, production: bool = False) -> list[dict]:
                 if production:
                     context_kwargs["user_agent"] = BROWSER_UA
                 context = browser.new_context(**context_kwargs)
+                context.add_init_script(script=browser_clock_script(capture_clock))
                 page = context.new_page()
                 url = base.rstrip("/") + route_spec["path"]
                 page.goto(url, wait_until="networkidle", timeout=45_000)
@@ -451,8 +470,8 @@ def build_captures(base: str, *, production: bool = False) -> list[dict]:
                 # navigates to its exact-context fixture for the configured
                 # and unconfigured branch assertions below.
                 render_digest = main_render_hash(page) if production else None
-                observed = observe(page, route_spec, viewport)
-                failures = holds(route_spec, viewport, observed)
+                observed = observe(page, route_spec, viewport, capture_clock)
+                failures = holds(route_spec, viewport, observed, capture_clock)
                 if production:
                     captures.append(
                         {
@@ -596,7 +615,7 @@ def run_production_writer_self_test() -> None:
     print("OK assistant-setup production capture-manifest writer self-test", flush=True)
 
 
-def write_manifest(captures: list[dict]) -> dict:
+def write_manifest(captures: list[dict], *, capture_clock: str = CAPTURE_CLOCK) -> dict:
     revision = content_revision()
     manifest = {
         "schema": "cityscroll.assistant_setup_capture_manifest.v2",
@@ -607,7 +626,7 @@ def write_manifest(captures: list[dict]) -> dict:
         "revision": revision,
         "revision_format": "sha256 of path:source-digest lines for setup sources",
         "data_vintage": "tracked site HTML at content revision",
-        "capture_clock": CAPTURE_CLOCK,
+        "capture_clock": capture_clock,
         "capture_policy": "Textual viewport witnesses only; no image binaries are committed.",
         "runner": "python3 tools/capture_assistant_setup_evidence.py",
         "unit_gate": "node --test test/capability_discovery.test.mjs test/mcp_connection_introduction.test.mjs",
@@ -634,7 +653,7 @@ def write_manifest(captures: list[dict]) -> dict:
     return manifest
 
 
-def verify(captures: list[dict]) -> int:
+def verify(captures: list[dict], *, capture_clock: str) -> int:
     if not MANIFEST.is_file():
         print("FAIL missing retained manifest", flush=True)
         return 1
@@ -647,6 +666,8 @@ def verify(captures: list[dict]) -> int:
         errors.append("unexpected schema")
     if retained.get("image_binaries_committed") is not False:
         errors.append("image_binaries_committed")
+    if retained.get("capture_clock") != capture_clock:
+        errors.append("manifest capture_clock does not match the pinned render clock")
     if len(retained.get("captures") or []) != 6:
         errors.append("expected six captures")
 
@@ -701,7 +722,14 @@ def main() -> int:
         run_production_writer_self_test()
         return 0
 
-    os.environ.setdefault("CITYSCROLL_TEST_TIME_PIN", CAPTURE_CLOCK)
+    capture_clock = CAPTURE_CLOCK
+    if args.verify_only and MANIFEST.is_file():
+        retained = json.loads(MANIFEST.read_text(encoding="utf-8"))
+        capture_clock = str(retained.get("capture_clock") or capture_clock)
+    # A shifted CI process must not leak into any helper launched by this
+    # verifier; the retained manifest instant is the sole render clock.
+    os.environ.pop("CITYSCROLL_TEST_TIME_SHIFT_DAYS", None)
+    os.environ["CITYSCROLL_TEST_TIME_PIN"] = capture_clock
     configured_base = resolve_base()
     production = bool(configured_base and is_production_base(configured_base))
 
@@ -710,7 +738,7 @@ def main() -> int:
         run_production_writer_self_test()
         revision = deployed_build_revision(configured_base)
         data_vintage = resolve_data_vintage(configured_base)
-        captures = build_captures(configured_base, production=True)
+        captures = build_captures(configured_base, capture_clock=capture_clock, production=True)
         failing = [capture for capture in captures if capture["failures"]]
         if failing:
             for capture in failing:
@@ -749,7 +777,7 @@ def main() -> int:
     ready_dir = None
     try:
         server, base, ready_dir = start_server()
-        captures = build_captures(base)
+        captures = build_captures(base, capture_clock=capture_clock)
         failing = [capture for capture in captures if capture["failures"]]
         if failing and not args.verify_only:
             for capture in failing:
@@ -759,8 +787,8 @@ def main() -> int:
                 )
             return 1
         if args.verify_only:
-            return verify(captures)
-        write_manifest(captures)
+            return verify(captures, capture_clock=capture_clock)
+        write_manifest(captures, capture_clock=capture_clock)
         print(f"wrote {len(captures)} captures under {OUT.relative_to(ROOT)}", flush=True)
         return 0 if not failing else 1
     finally:

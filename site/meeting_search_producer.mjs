@@ -70,6 +70,28 @@ function summaryFor(row) {
   ], 1_200) || null;
 }
 
+function observerSearchFields(row) {
+  const bodies = new Set(["pdc_calendar", "bsa_calendar", "oath_trial_calendar"]);
+  if (!bodies.has(row?.source_system)) return null;
+  const venueLabel = String(row?.venue?.name || row?.venue?.address || "Venue not published").trim();
+  const affected = row?.affected_area || {};
+  const affectedValues = [
+    ...(Array.isArray(affected.community_districts) ? affected.community_districts : []),
+    ...(Array.isArray(affected.boroughs) ? affected.boroughs : []),
+    ...(Array.isArray(affected.neighborhoods) ? affected.neighborhoods : []),
+  ].map((value) => String(value || "").trim()).filter(Boolean);
+  const access = row?.observer_access?.watch_url || row?.observer_access?.remote_join_url || row?.remote_join_url
+    ? "remote" : row?.venue?.name || row?.venue?.address ? "in_person" : "unknown";
+  return {
+    activity: "observe",
+    body: row.source_system,
+    access,
+    place_role: null,
+    venue: { label: venueLabel, source_backed: venueLabel !== "Venue not published" },
+    affected_place: { label: affectedValues.join(", ") || "Affected place not published", source_backed: affectedValues.length > 0 },
+  };
+}
+
 /** Project one canonical shared-model row into an admitted SearchDocument. */
 export function materializeMeetingSearchDocument(row = {}) {
   const identity = sourceIdentity(row);
@@ -95,6 +117,7 @@ export function materializeMeetingSearchDocument(row = {}) {
     source_family: "shared_meeting_read_model",
     source_observation_refs: [identity.observationRef],
     process_role: process.process_role,
+    observation: observerSearchFields(row),
     classification: {
       method: "canonical_meeting_projection",
       basis: `${MEETING_OBJECT_SCHEMA}:exact_source_qualified_meeting_id`,

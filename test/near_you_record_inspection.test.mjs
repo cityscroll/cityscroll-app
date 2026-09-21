@@ -22,11 +22,11 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
 import { pathToFileURL } from "node:url";
+import { withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   BROWSE_INSPECTION_LEGACY_BASELINE,
@@ -446,56 +446,56 @@ test("A4: narrow-screen default density is observed at 390px rather than only de
   }
   assert.equal(existsSync(join(ROOT, NARROW_DENSITY_PROBE)), true);
   await withPinnedClock(FIXTURE_CLOCK, () => {
-    const scratchRoot = process.env.FM_TASK_SCRATCH || tmpdir();
-    const dir = mkdtempSync(join(scratchRoot, "near-you-narrow-density-"));
-    const documentPath = join(dir, "index.html");
-    writeFileSync(documentPath, narrowDensityDocumentHtml());
-    const result = spawnSync("python3", [join(ROOT, NARROW_DENSITY_PROBE), documentPath], {
-      cwd: ROOT,
-      encoding: "utf8",
-      timeout: 120_000,
-      env: process.env,
+    withTempDirSync("near-you-narrow-density", (dir) => {
+      const documentPath = join(dir, "index.html");
+      writeFileSync(documentPath, narrowDensityDocumentHtml());
+      const result = spawnSync("python3", [join(ROOT, NARROW_DENSITY_PROBE), documentPath], {
+        cwd: ROOT,
+        encoding: "utf8",
+        timeout: 120_000,
+        env: process.env,
+      });
+      assert.equal(result.status, 0, result.stderr || result.stdout);
+      const payload = JSON.parse(result.stdout);
+      assert.equal(payload.schema, "cityscroll.near_you_record_inspection_narrow_density.v1");
+      const byId = Object.fromEntries(payload.observations.map((row) => [row.id, row]));
+      const narrow = byId.narrow_touch;
+      const desktop = byId.desktop;
+      assert.ok(narrow && desktop);
+      assert.deepEqual(narrow.viewport, { width: 390, height: 844 });
+      assert.deepEqual(desktop.viewport, { width: 1440, height: 900 });
+
+      const seen = narrow.observed;
+      assert.equal(seen.place_role, "Happening here");
+      assert.equal(seen.basis, "Venue / logistics");
+      assert.match(seen.record_text || "", /venueHere meeting/);
+      assert.equal(seen.inspection_title, "venueHere meeting");
+      assert.equal(seen.inspect?.visible, true);
+      assert.ok(seen.inspect.height >= 40, "inspect control stays large enough to use on a narrow screen");
+      assert.equal(seen.title_link?.visible, false);
+      assert.equal(seen.full_record?.visible, true);
+      assert.equal(seen.fact_rows_stacked, true);
+      assert.equal(seen.fact_rows_side_by_side, false);
+      assert.equal(seen.no_horizontal_overflow, true);
+      assert.equal(seen.evidence_count >= 1, true);
+      assert.ok(seen.evidence_open.every((open) => open === false));
+      assert.equal(seen.record_padding_top_px, 12);
+
+      const wide = desktop.observed;
+      assert.equal(wide.fact_rows_stacked, false);
+      assert.equal(wide.fact_rows_side_by_side, true);
+      assert.equal(wide.record_padding_top_px, 16);
+      assert.notEqual(
+        seen.record_padding_top_px,
+        wide.record_padding_top_px,
+        "narrow density must differ from desktop density",
+      );
+      assert.notEqual(
+        seen.fact_rows_stacked,
+        wide.fact_rows_stacked,
+        "narrow inspection rows must stack while desktop rows stay side-by-side",
+      );
     });
-    assert.equal(result.status, 0, result.stderr || result.stdout);
-    const payload = JSON.parse(result.stdout);
-    assert.equal(payload.schema, "cityscroll.near_you_record_inspection_narrow_density.v1");
-    const byId = Object.fromEntries(payload.observations.map((row) => [row.id, row]));
-    const narrow = byId.narrow_touch;
-    const desktop = byId.desktop;
-    assert.ok(narrow && desktop);
-    assert.deepEqual(narrow.viewport, { width: 390, height: 844 });
-    assert.deepEqual(desktop.viewport, { width: 1440, height: 900 });
-
-    const seen = narrow.observed;
-    assert.equal(seen.place_role, "Happening here");
-    assert.equal(seen.basis, "Venue / logistics");
-    assert.match(seen.record_text || "", /venueHere meeting/);
-    assert.equal(seen.inspection_title, "venueHere meeting");
-    assert.equal(seen.inspect?.visible, true);
-    assert.ok(seen.inspect.height >= 40, "inspect control stays large enough to use on a narrow screen");
-    assert.equal(seen.title_link?.visible, false);
-    assert.equal(seen.full_record?.visible, true);
-    assert.equal(seen.fact_rows_stacked, true);
-    assert.equal(seen.fact_rows_side_by_side, false);
-    assert.equal(seen.no_horizontal_overflow, true);
-    assert.equal(seen.evidence_count >= 1, true);
-    assert.ok(seen.evidence_open.every((open) => open === false));
-    assert.equal(seen.record_padding_top_px, 12);
-
-    const wide = desktop.observed;
-    assert.equal(wide.fact_rows_stacked, false);
-    assert.equal(wide.fact_rows_side_by_side, true);
-    assert.equal(wide.record_padding_top_px, 16);
-    assert.notEqual(
-      seen.record_padding_top_px,
-      wide.record_padding_top_px,
-      "narrow density must differ from desktop density",
-    );
-    assert.notEqual(
-      seen.fact_rows_stacked,
-      wide.fact_rows_stacked,
-      "narrow inspection rows must stack while desktop rows stay side-by-side",
-    );
   });
 });
 

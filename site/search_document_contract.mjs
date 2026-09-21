@@ -126,6 +126,27 @@ function observationRefs(value) {
   return refs;
 }
 
+const OBSERVE_BODY_SET = new Set(["pdc_calendar", "bsa_calendar", "oath_trial_calendar"]);
+const OBSERVE_ACCESS_SET = new Set(["remote", "in_person", "unknown"]);
+const OBSERVE_PLACE_ROLE_SET = new Set(["venue", "matter", "affected_area"]);
+
+function normalizeObservation(candidate) {
+  if (candidate == null) return null;
+  if (!plainObject(candidate) || candidate.activity !== "observe" || !OBSERVE_BODY_SET.has(candidate.body)) return null;
+  if (!OBSERVE_ACCESS_SET.has(candidate.access)) return null;
+  if (candidate.place_role != null && !OBSERVE_PLACE_ROLE_SET.has(candidate.place_role)) return null;
+  const field = (value) => plainObject(value) && typeof value.source_backed === "boolean" && text(value.label, 240);
+  if (!field(candidate.venue) || !field(candidate.affected_place)) return null;
+  return {
+    activity: "observe",
+    body: candidate.body,
+    access: candidate.access,
+    place_role: candidate.place_role || null,
+    venue: { label: text(candidate.venue.label, 240), source_backed: candidate.venue.source_backed },
+    affected_place: { label: text(candidate.affected_place.label, 240), source_backed: candidate.affected_place.source_backed },
+  };
+}
+
 export function isSafeSearchCanonicalRoute(value, { evidenceOnly = false } = {}) {
   const route = text(value, 600);
   if (!route || !route.startsWith("/") || route.startsWith("//") || route.includes("\\")) return false;
@@ -170,6 +191,7 @@ function validate(candidate, outcome) {
   if (!text(candidate?.source_family, 120)) errors.push("source_family");
   if (!refs) errors.push("source_observation_refs");
   if (candidate?.process_role != null && !text(candidate.process_role, 160)) errors.push("process_role");
+  if (candidate?.observation != null && !normalizeObservation(candidate.observation)) errors.push("observation");
   if (
     !plainObject(classification)
     || !text(classification.method, 160)
@@ -192,6 +214,7 @@ function normalizedDocument(candidate) {
     source_family: text(candidate.source_family, 120),
     source_observation_refs: observationRefs(candidate.source_observation_refs),
     process_role: candidate.process_role == null ? null : text(candidate.process_role, 160),
+    observation: normalizeObservation(candidate.observation),
     classification: {
       method: text(candidate.classification.method, 160),
       basis: text(candidate.classification.basis, 600),

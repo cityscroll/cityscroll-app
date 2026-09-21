@@ -336,16 +336,28 @@ test("A6: capture harness re-renders both viewports against the retained manifes
     t.skip("Python playwright is not importable in this lane");
     return;
   }
-  await withPinnedClock("2026-09-16T12:00:00.000Z", async () => {
-    const { stdout, stderr } = await execFileAsync("python3", [fileURLToPath(CAPTURE_SCRIPT), "--verify-only"], {
-      cwd: repoRoot,
-      env: { ...process.env, CITYSCROLL_TEST_TIME_PIN: "2026-09-16T12:00:00.000Z" },
-      maxBuffer: 2 * 1024 * 1024,
-      timeout: 120_000,
-    });
-    const output = `${stdout}\n${stderr}`;
-    assert.match(output, /OK assistant-setup capture manifest verifies at both viewports/);
-    assert.doesNotMatch(output, /^FAIL /m);
+  const manifest = JSON.parse(await readFile(CAPTURE_MANIFEST, "utf8"));
+  await withPinnedClock(manifest.capture_clock, async () => {
+    const childEnv = Object.fromEntries(
+      Object.entries(process.env).filter(([key]) => (
+        key !== "CITYSCROLL_TEST_TIME_SHIFT_DAYS" && key !== "CITYSCROLL_TEST_TIME_PIN"
+      )),
+    );
+    childEnv.CITYSCROLL_TEST_TIME_PIN = manifest.capture_clock;
+    try {
+      const { stdout, stderr } = await execFileAsync("python3", [fileURLToPath(CAPTURE_SCRIPT), "--verify-only"], {
+        cwd: repoRoot,
+        env: childEnv,
+        maxBuffer: 2 * 1024 * 1024,
+        timeout: 120_000,
+      });
+      const output = `${stdout}\n${stderr}`;
+      assert.match(output, /OK assistant-setup capture manifest verifies at both viewports/);
+      assert.doesNotMatch(output, /^FAIL /m);
+    } catch (error) {
+      const output = `${error?.stdout || ""}\n${error?.stderr || ""}`.trim();
+      throw new Error(`${error?.message || error}\n${output}`.trim());
+    }
   });
 });
 
