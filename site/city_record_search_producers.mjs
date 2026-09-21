@@ -20,7 +20,7 @@ import {
 } from "./search_document_contract.mjs";
 import * as actionRegistryModule from "./action_registry.js";
 
-const actionRegistry = globalThis.CrolActions || actionRegistryModule.default || actionRegistryModule;
+const cityRecordActionRegistry = globalThis.CrolActions || actionRegistryModule.default || actionRegistryModule;
 // PHC-08 (A9): a qualifying contract-comment notice's normalised label leads a
 // cross-domain search result ahead of the notice's own (unchanged) legacy title text.
 const CONTRACT_PUBLIC_COMMENT_LABEL = "Contract public comment";
@@ -223,8 +223,8 @@ export function materializeCityRecordSearchDocument(observation = {}, options = 
   // A9: the notice's own section/type text is untouched (provenance, A7) — only the
   // search title is led with the normalised label when the notice itself carries
   // positive comment-window evidence (never for a genuine hearing or a bare label).
-  const isContractPublicComment = typeof actionRegistry.contractPublicCommentEvidence === "function"
-    && !!actionRegistry.contractPublicCommentEvidence(observation);
+  const isContractPublicComment = typeof cityRecordActionRegistry.contractPublicCommentEvidence === "function"
+    && !!cityRecordActionRegistry.contractPublicCommentEvidence(observation);
   const title = isContractPublicComment
     ? compactText([`${CONTRACT_PUBLIC_COMMENT_LABEL}: ${legacyTitle}`], 500)
     : legacyTitle;

@@ -418,7 +418,7 @@ function eventIsOccurred(event) {
 }
 
 /** Stage progression for multi-notice “best stage” pick (later wins). */
-const STAGE_RANK = Object.freeze({
+const rulesPhaseStageRank = Object.freeze({
   unknown: 0,
   proposed: 1,
   "comment-open": 2,
@@ -588,8 +588,8 @@ function pickRicherNycRules(a, b) {
 }
 
 function pickLaterStage(a, b) {
-  const ra = STAGE_RANK[clean(a) || ""] ?? 0;
-  const rb = STAGE_RANK[clean(b) || ""] ?? 0;
+  const ra = rulesPhaseStageRank[clean(a) || ""] ?? 0;
+  const rb = rulesPhaseStageRank[clean(b) || ""] ?? 0;
   return rb > ra ? b : a;
 }
 

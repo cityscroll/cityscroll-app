@@ -73,7 +73,7 @@ export const RULE_STAGE_TO_PHASE = Object.freeze({
 
 const PHASE_ORDER = new Map(RULES_PHASES.map((id, i) => [id, i]));
 
-const STAGE_RANK = Object.freeze({
+const rulesExplorerStageRank = Object.freeze({
   unknown: 0,
   anticipated: 1,
   proposed: 1,
@@ -107,7 +107,7 @@ function isoDate(value) {
 export function normalizeRuleStage(stage) {
   const id = clean(stage);
   if (!id || id === "unknown") return null;
-  return STAGE_RANK[id] != null ? id : null;
+  return rulesExplorerStageRank[id] != null ? id : null;
 }
 
 /**
@@ -146,8 +146,8 @@ export function rulesProcessFilterKey(row) {
 export function pickLaterRuleStage(a, b) {
   const sa = normalizeRuleStage(a) || "unknown";
   const sb = normalizeRuleStage(b) || "unknown";
-  const ra = STAGE_RANK[sa] ?? 0;
-  const rb = STAGE_RANK[sb] ?? 0;
+  const ra = rulesExplorerStageRank[sa] ?? 0;
+  const rb = rulesExplorerStageRank[sb] ?? 0;
   return rb > ra ? (normalizeRuleStage(b) || null) : (normalizeRuleStage(a) || null);
 }
 

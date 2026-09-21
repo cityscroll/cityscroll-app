@@ -10,7 +10,7 @@
 import { canonicalMandateId } from "./mandate_subject_ref.mjs";
 import * as actionRegistryModule from "./action_registry.js";
 
-const actionRegistry = globalThis.CrolActions || actionRegistryModule.default || actionRegistryModule;
+const noticeObjectActionRegistry = globalThis.CrolActions || actionRegistryModule.default || actionRegistryModule;
 
 export const NOTICE_OBJECT_LINK_SCHEMA = "cityscroll.notice_object_link.v1";
 
@@ -110,8 +110,8 @@ function contractAwardNotice(row = {}) {
   // site/action_registry.js's contractPublicCommentEvidence). A bare label, or a
   // notice that also publishes a genuinely separate live event, is left unmatched here
   // exactly as it is left unclassified there.
-  return typeof actionRegistry.contractPublicCommentEvidence === "function"
-    && !!actionRegistry.contractPublicCommentEvidence(row);
+  return typeof noticeObjectActionRegistry.contractPublicCommentEvidence === "function"
+    && !!noticeObjectActionRegistry.contractPublicCommentEvidence(row);
 }
 
 function contractIdentifiers(row = {}) {

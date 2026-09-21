@@ -166,7 +166,7 @@ def flatten_helper(
         )
         # action_registry.js is loaded as a classic script by the public shell;
         # the inline comparison fixture must use that same browser global.
-        return f"const {match.group(1)} = globalThis.CrolActions || {{}};"
+        return f"var {match.group(1)} = globalThis.CrolActions || {{}};"
 
     source = NAMESPACE_LOCAL_IMPORT.sub(inline_namespace_import, source)
     if scoped:
