@@ -1,4 +1,7 @@
 import { stampLandRegulatoryEffect } from "../../ontology/land_regulatory_effect.mjs";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 // Pure builders for daily resident snapshots. Publisher requests belong to the
 // acquisition commands; browser filters read the resulting artifacts locally.
@@ -8,6 +11,52 @@ export const LAND_DEFAULT_DATASET = "hgx4-8ukb";
 export const CITY_RECORD_DATASET = "dg92-zbpx";
 export const SODA_BASE = "https://data.cityofnewyork.us/resource";
 export const ZAP_OUTCOMES_ENDPOINT = "https://api.cityscroll.org/zap-outcomes";
+export const MONEY_AGENCIES_SNAPSHOT_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../site/data/money_procurement_agencies.json",
+);
+
+export const DEFAULT_FETCH_RETRY_OPTIONS = Object.freeze({
+  maxAttempts: 3,
+  initialDelayMs: 250,
+  maxDelayMs: 2_000,
+  jitterRatio: 0.25,
+});
+
+function errorText(error) {
+  const cause = error?.cause;
+  return [
+    error?.name,
+    error?.message,
+    error?.code,
+    cause?.name,
+    cause?.message,
+    cause?.code,
+  ].filter(Boolean).join(" ");
+}
+
+export function isRetryableFetchError(error) {
+  if (Number.isInteger(error?.status) && error.status >= 500 && error.status <= 599) return true;
+  const text = errorText(error);
+  return (
+    /fetch failed|connect timeout|socket hang up|connection reset|network error|timed out/i.test(text)
+    || /\b(?:ECONNRESET|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN|UND_ERR_CONNECT_TIMEOUT)\b/i.test(text)
+  );
+}
+
+function retryDelayMs(attempt, { initialDelayMs, maxDelayMs, jitterRatio }, random) {
+  const base = Math.min(maxDelayMs, initialDelayMs * (2 ** (attempt - 1)));
+  return Math.round(base * (1 + (Math.max(0, Math.min(1, random())) * jitterRatio)));
+}
+
+function attachAcquisitionMetadata(rows, metadata) {
+  Object.defineProperty(rows, "acquisition", {
+    configurable: true,
+    enumerable: false,
+    value: Object.freeze(metadata),
+  });
+  return rows;
+}
 
 // List-card fields only for the committed snapshot. project_brief stays off the
 // static artifact (publisher text is large and not required to paint the resident list).
@@ -293,7 +342,7 @@ export function buildMoneyDefaultOpenSnapshot(rows, { now = new Date() } = {}) {
   };
 }
 
-export function buildMoneyAgenciesSnapshot(rows, { now = new Date() } = {}) {
+export function buildMoneyAgenciesSnapshot(rows, { now = new Date(), acquisition = rows?.acquisition } = {}) {
   const agencies = (Array.isArray(rows) ? rows : [])
     .map((r) => (typeof r === "string" ? r : r?.agency_name))
     .filter((name) => typeof name === "string" && name.trim())
@@ -304,6 +353,12 @@ export function buildMoneyAgenciesSnapshot(rows, { now = new Date() } = {}) {
     schema_version: 1,
     delivery_tier: "inline-at-build",
     generated_at: now.toISOString(),
+    metadata: {
+      source_vintage: acquisition?.source_vintage || now.toISOString(),
+      fetched_at: acquisition?.fetched_at || now.toISOString(),
+      stale: Boolean(acquisition?.fallback_reason),
+      fallback_reason: acquisition?.fallback_reason || null,
+    },
     source: {
       name: "City Record Online",
       dataset: CITY_RECORD_DATASET,
@@ -448,14 +503,41 @@ export function sodaUrl(dataset, params) {
   return `${SODA_BASE}/${dataset}.json?${qs}`;
 }
 
-export async function fetchJson(fetchImpl, url) {
-  const response = await fetchImpl(url);
-  if (!response.ok) throw new Error(`fetch ${url} → HTTP ${response.status}`);
-  const body = await response.json();
-  if (!Array.isArray(body) && body && typeof body === "object" && body.error) {
-    throw new Error(`SODA error: ${body.message || JSON.stringify(body)}`);
+export async function fetchJson(fetchImpl, url, options = {}) {
+  const retry = { ...DEFAULT_FETCH_RETRY_OPTIONS, ...(options.retry || {}) };
+  const log = options.log || ((line) => console.error(line));
+  const sleep = options.sleep || ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
+  const random = options.random || Math.random;
+  const maxAttempts = Math.max(1, Number(retry.maxAttempts) || DEFAULT_FETCH_RETRY_OPTIONS.maxAttempts);
+  let lastError;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const response = await fetchImpl(url);
+      if (!response.ok) {
+        const error = new Error(`fetch ${url} → HTTP ${response.status}`);
+        error.status = response.status;
+        throw error;
+      }
+      const body = await response.json();
+      if (!Array.isArray(body) && body && typeof body === "object" && body.error) {
+        throw new Error(`SODA error: ${body.message || JSON.stringify(body)}`);
+      }
+      log(`[batch-precompute] fetch attempt ${attempt}/${maxAttempts} url=${url} outcome=success`);
+      return body;
+    } catch (error) {
+      lastError = error;
+      const retryable = isRetryableFetchError(error);
+      log(
+        `[batch-precompute] fetch attempt ${attempt}/${maxAttempts} url=${url} outcome=error retryable=${retryable} error=${errorText(error)}`,
+      );
+      if (!retryable || attempt >= maxAttempts) throw error;
+      const delay = retryDelayMs(attempt, retry, random);
+      log(`[batch-precompute] fetch retry ${attempt + 1}/${maxAttempts} url=${url} delay_ms=${delay}`);
+      await sleep(delay);
+    }
   }
-  return body;
+  throw lastError;
 }
 
 export async function fetchDataPageCharts(fetchImpl = fetch, now = new Date()) {
@@ -556,10 +638,50 @@ export async function fetchMoneyDefaultOpen(fetchImpl = fetch, now = new Date())
   return rows;
 }
 
-export async function fetchMoneyAgencies(fetchImpl = fetch) {
-  const rows = await fetchJson(fetchImpl, sodaUrl(CITY_RECORD_DATASET, moneyAgenciesQuery()));
-  if (!Array.isArray(rows)) throw new Error("money agencies SODA returned a non-array");
-  return rows;
+export async function fetchMoneyAgencies(
+  fetchImpl = fetch,
+  {
+    now = new Date(),
+    snapshotPath = MONEY_AGENCIES_SNAPSHOT_PATH,
+    retry,
+    log,
+    sleep,
+    random,
+  } = {},
+) {
+  const fetchedAt = now.toISOString();
+  const url = sodaUrl(CITY_RECORD_DATASET, moneyAgenciesQuery());
+  try {
+    const rows = await fetchJson(fetchImpl, url, { retry, log, sleep, random });
+    if (!Array.isArray(rows)) throw new Error("money agencies SODA returned a non-array");
+    return attachAcquisitionMetadata(rows, {
+      fetched_at: fetchedAt,
+      source_vintage: fetchedAt,
+      fallback_reason: null,
+    });
+  } catch (error) {
+    let snapshot;
+    try {
+      snapshot = JSON.parse(await readFile(snapshotPath, "utf8"));
+    } catch {
+      throw error;
+    }
+    const rows = Array.isArray(snapshot?.agencies)
+      ? snapshot.agencies.map((agency_name) => ({ agency_name }))
+      : null;
+    if (!rows) throw error;
+    const sourceVintage = snapshot?.metadata?.source_vintage || snapshot?.generated_at || null;
+    if (!sourceVintage) throw error;
+    const fallbackReason = `live fetch exhausted after ${retry?.maxAttempts || DEFAULT_FETCH_RETRY_OPTIONS.maxAttempts} attempts: ${errorText(error)}`;
+    (log || ((line) => console.error(line)))(
+      `[batch-precompute] money agencies fallback snapshot=${snapshotPath} source_vintage=${sourceVintage} fetched_at=${fetchedAt} reason=${fallbackReason}`,
+    );
+    return attachAcquisitionMetadata(rows, {
+      fetched_at: fetchedAt,
+      source_vintage: sourceVintage,
+      fallback_reason: fallbackReason,
+    });
+  }
 }
 
 export async function fetchStaffingHires(fetchImpl = fetch) {

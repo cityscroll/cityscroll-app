@@ -25,3 +25,8 @@ export function moneyStaleSourceNoticeHTML(freshness){
   }
   return "";
 }
+
+export function moneyAgencyStalenessNoticeHTML(metadata){
+  if(!metadata?.stale || !metadata.source_vintage) return "";
+  return `<div class="note warn contracts-freshness-note" role="status" data-contracts-agencies-freshness="stale">${t("money_agencies_source_stale",{date:String(metadata.source_vintage).slice(0,10)})}</div>`;
+}

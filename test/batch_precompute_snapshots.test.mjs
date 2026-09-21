@@ -15,6 +15,8 @@ import {
   buildMoneyDefaultOpenSnapshot,
   buildStaffingHiresSnapshot,
   compactZapOutcomeRecord,
+  fetchJson,
+  fetchMoneyAgencies,
   filterStillOpenNotices,
   isDefaultLandSearch,
   isDefaultMoneySearch,
@@ -183,6 +185,73 @@ test("buildMoneyAgenciesSnapshot unique-sorts agency names", () => {
   assert.equal(snap.count, snap.agencies.length);
   const sorted = [...snap.agencies].sort((a, b) => a.localeCompare(b));
   assert.deepEqual(snap.agencies, sorted);
+});
+
+test("fetchJson retries a network failure with bounded backoff before succeeding", async () => {
+  let attempts = 0;
+  const delays = [];
+  const logs = [];
+  const rows = await fetchJson(async () => {
+    attempts += 1;
+    if (attempts === 1) return { ok: false, status: 503, json: async () => ({}) };
+    if (attempts === 2) throw new TypeError("fetch failed");
+    return { ok: true, status: 200, json: async () => [{ agency_name: "Recovered" }] };
+  }, "https://example.invalid/retry", {
+    retry: { maxAttempts: 3, initialDelayMs: 10, maxDelayMs: 20, jitterRatio: 0 },
+    sleep: async (delay) => delays.push(delay),
+    log: (line) => logs.push(line),
+    random: () => 0,
+  });
+  assert.deepEqual(rows, [{ agency_name: "Recovered" }]);
+  assert.equal(attempts, 3);
+  assert.deepEqual(delays, [10, 20]);
+  assert.equal(logs.filter((line) => line.includes("fetch attempt")).length, 3);
+  assert.match(logs[0], /outcome=error retryable=true/);
+  assert.match(logs.at(-1), /outcome=success/);
+});
+
+test("fetchMoneyAgencies falls back to the committed agency snapshot after permanent failure", async () => {
+  const now = new Date("2026-09-21T12:00:00Z");
+  const logs = [];
+  const rows = await fetchMoneyAgencies(async () => {
+    throw Object.assign(new TypeError("fetch failed"), {
+      cause: { code: "UND_ERR_CONNECT_TIMEOUT", message: "Connect Timeout Error" },
+    });
+  }, {
+    now,
+    retry: { maxAttempts: 2, initialDelayMs: 0, maxDelayMs: 0, jitterRatio: 0 },
+    sleep: async () => {},
+    log: (line) => logs.push(line),
+    random: () => 0,
+  });
+  const committed = JSON.parse(readFileSync(join(ROOT, "site/data/money_procurement_agencies.json"), "utf8"));
+  assert.deepEqual(rows.map((row) => row.agency_name), committed.agencies);
+  assert.equal(rows.acquisition.fetched_at, now.toISOString());
+  assert.equal(rows.acquisition.source_vintage, committed.generated_at);
+  assert.match(rows.acquisition.fallback_reason, /exhausted after 2 attempts/);
+  assert.ok(logs.some((line) => line.includes("money agencies fallback")));
+
+  const snapshot = buildMoneyAgenciesSnapshot(rows, { now, acquisition: rows.acquisition });
+  assert.deepEqual(snapshot.metadata, {
+    source_vintage: committed.generated_at,
+    fetched_at: now.toISOString(),
+    stale: true,
+    fallback_reason: rows.acquisition.fallback_reason,
+  });
+});
+
+test("fetchMoneyAgencies remains fatal when no committed snapshot exists", async () => {
+  await assert.rejects(
+    fetchMoneyAgencies(async () => {
+      throw new TypeError("fetch failed");
+    }, {
+      snapshotPath: join(FIXTURE, "missing-money-agencies.json"),
+      retry: { maxAttempts: 1 },
+      sleep: async () => {},
+      log: () => {},
+    }),
+    /fetch failed/,
+  );
 });
 
 test("buildStaffingHiresSnapshot caps APPOINTED rows", () => {

@@ -26,7 +26,11 @@ import {
   procurementStagesForRow,
   vendorStemsFromEntityRefs,
 } from "../resident_snapshot_queries.mjs";
-import { moneyEvaluationClockMs, moneyStaleSourceNoticeHTML } from "../money-freshness.mjs";
+import {
+  moneyAgencyStalenessNoticeHTML,
+  moneyEvaluationClockMs,
+  moneyStaleSourceNoticeHTML,
+} from "../money-freshness.mjs";
 import { civicDayISO, closingWeekEndISO } from "../closing_this_week.mjs";
 import {
   CONTRACTS_BROWSE_SCOPE,
@@ -273,9 +277,20 @@ async function loadAgencies(){
     const snap=await loadMoneyAgenciesSnapshot();
     const names=snap&&Array.isArray(snap.agencies)?snap.agencies:[];
     paintMoneyAgencyOptions(names);
+    currentMoneyAgencyMetadata=snap?.metadata || null;
+    renderMoneyAgencyStalenessNotice();
   }catch(e){
+    currentMoneyAgencyMetadata=null;
     $("#agency").innerHTML = `<option value="">${t("all_agencies")}</option>`;
   }
+}
+
+function renderMoneyAgencyStalenessNotice(){
+  const list=$("#list");
+  if(!list) return;
+  list.querySelector("[data-contracts-agencies-freshness]")?.remove();
+  const notice=moneyAgencyStalenessNoticeHTML(currentMoneyAgencyMetadata);
+  if(notice) list.insertAdjacentHTML("afterbegin",notice);
 }
 
 let currentRows = [], currentMoneyLineageRows = [], mode = "open", selectedRFP = null, closingWeek = false, moneyLoaded = false, methodSel = "";
@@ -285,6 +300,7 @@ let moneyNlResolved = {};
 // Set only for the default open-contracts search; every other mode/filter
 // leaves this null so its "nothing found" reading is unaffected.
 let currentMoneyFreshness = null;
+let currentMoneyAgencyMetadata = null;
 const weekOutISO = () => closingWeekEndISO(civicDayISO()) + "T23:59:59";
 function moneyActiveFilterChip(item){
   const value = item.value;
@@ -1308,6 +1324,7 @@ function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null
   $("#rescount").textContent = countText;
   announce(countText + ` — ${$("#reshead").textContent}`);
   renderList(autoSelect,lineageRows);
+  renderMoneyAgencyStalenessNotice();
   if(scopedHistoryGap(currentRows)){
     const note = scopedHistoryNoteHTML(receiptCount, currentRows.length, narrowed);
     if(currentRows.length) $("#list").insertAdjacentHTML("afterbegin", note);
