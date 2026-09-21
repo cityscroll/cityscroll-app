@@ -17,11 +17,20 @@ from assets.fixture_clock import fixture_today, pin_fixture_clock
 ROOT = Path(__file__).resolve().parents[2]
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000").rstrip("/")
 BOARD = "/community-boards/brooklyn-cb-15/"
+DENSE_BOARD = "/community-boards/manhattan-cb-06/"
 CALENDAR = "https://www.nyc.gov/site/brooklyncb15/calendar/calendar.page"
 FIXTURE_MEETING_HREF = "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2026-06-30%3Ageneral-board-meeting-in-person/"
 FIXTURE_MEETING_LABEL = "General Board Meeting (In Person)"
 MANIFEST = ROOT / "docs/evidence/community-board-release-journeys/manifest.json"
 FIXTURES = ROOT / "docs/evidence/community-board-release-journeys/fixtures.json"
+RECOVERY_SPECIMENS = (
+    ("brooklyn-cb-15", "populated"),
+    ("manhattan-cb-06", "long-content"),
+    ("bronx-cb-11", "sparse"),
+    ("bronx-cb-01", "unavailable"),
+    ("queens-cb-01", "alternate-source"),
+    ("staten-island-cb-01", "borough-coverage"),
+)
 
 
 def fixture_assertions() -> list[dict]:
@@ -114,6 +123,172 @@ def geometry(page, width: int) -> dict:
     )
 
 
+def visible(page, selector: str) -> bool:
+    return page.locator(selector).evaluate(
+        "node => getComputedStyle(node).display !== 'none' && getComputedStyle(node).visibility !== 'hidden'"
+    )
+
+
+def dense_calendar_journey(page, width: int, height: int, revision: str) -> dict:
+    """Read the dense board's two projections and one event as served markup."""
+    requests_after_load: list[str] = []
+    page.on("request", lambda request: requests_after_load.append(request.url))
+    page.goto(BASE + DENSE_BOARD, wait_until="domcontentloaded")
+    page.locator('[data-board-proceedings-view="1"]').wait_for()
+    month = page.locator(".board-proceedings-view-radio-month")
+    listing = page.locator(".board-proceedings-view-radio-list")
+    assert month.count() == 1 and listing.count() == 1
+    listing.locator("xpath=following-sibling::label[1]").click()
+    assert listing.is_checked() and visible(page, '[data-board-proceedings-panel="list"]')
+    month.locator("xpath=following-sibling::label[1]").click()
+    assert month.is_checked() and visible(page, '[data-board-proceedings-panel="month"]')
+    trigger = page.locator('.board-proceedings-panel-month .compact-month-occ-preview:visible').first
+    trigger.wait_for()
+    uid = trigger.get_attribute("data-calendar-event-preview-uid")
+    facts = json.loads(trigger.get_attribute("data-calendar-event-preview") or "{}")
+    assert uid and facts.get("title") and facts.get("href")
+    source_href = facts.get("source", {}).get("url")
+    assert source_href and source_href.startswith(("https://", "http://"))
+    trigger.focus()
+    requests_after_load.clear()
+    trigger.click()
+    dialog = page.locator("#calendar-event-preview")
+    dialog.wait_for(state="visible")
+    assert dialog.locator(".calendar-event-preview-title").inner_text().strip() == facts["title"]
+    assert dialog.locator(f'a.calendar-event-preview-source[href="{source_href}"]').count() == 1
+    dialog.locator("[data-calendar-event-preview-close]").click()
+    assert not dialog.is_visible()
+    assert page.evaluate("document.activeElement?.getAttribute('data-calendar-event-preview-uid')") == uid
+    assert requests_after_load == [], requests_after_load
+    page.locator('.board-proceedings-panel-month .compact-month-occ-preview:visible').first.click()
+    full_link = page.locator("#calendar-event-preview [data-calendar-event-preview-open]")
+    detail_href = full_link.get_attribute("href")
+    assert detail_href == facts["href"]
+    full_link.click()
+    page.wait_for_load_state("domcontentloaded")
+    assert page.locator("main").is_visible()
+    assert facts["title"] in page.locator("h1").inner_text()
+    page.go_back(wait_until="domcontentloaded")
+    assert page.locator('[data-board-proceedings-view="1"]').is_visible()
+    assert month.is_checked() and visible(page, '[data-board-proceedings-panel="month"]')
+    assert page.evaluate("document.activeElement?.getAttribute('data-calendar-event-preview-uid')") == uid
+    return {
+        "case": f"cb06-calendar-month-detail-return-{width}x{height}",
+        "route": DENSE_BOARD,
+        "viewport": {"width": width, "height": height},
+        "revision": revision,
+        "data_vintage": "served committed site materialization",
+        "view_modes": ["list", "month"],
+        "event_uid": uid,
+        "event_title": facts["title"],
+        "source_links": [source_href],
+        "detail_href": detail_href,
+        "inspection": {"opened": True, "dismissed": True, "network_requests": requests_after_load},
+        "detail": {"opened": True, "returned": True, "same_view": True, "focus_restored": True},
+        "assertion": "served dense board switches List and Month, inspects and dismisses an event without a request, opens its explicit detail, and returns to Month with event focus restored",
+        "passed": True,
+    }
+
+
+def recovery_observations(browser, revision: str) -> list[dict]:
+    """Exercise recovery on every named cross-borough served specimen."""
+    entries: list[dict] = []
+    for board_id, specimen in RECOVERY_SPECIMENS:
+        route = f"/community-boards/{board_id}/"
+        no_script = browser.new_context(viewport={"width": 390, "height": 844}, java_script_enabled=False).new_page()
+        no_script.goto(BASE + route, wait_until="domcontentloaded")
+        assert no_script.locator('main[data-civic-object-kind="community-board-constellation"]').is_visible()
+        assert no_script.locator("h1").inner_text().strip()
+        assert no_script.locator('[data-community-board-resources] a').count() >= 1
+        entries.append({"case": f"{board_id}-no-script", "specimen": specimen, "route": route, "viewport": {"width": 390, "height": 844}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"main_visible": True, "heading_nonempty": True, "source_link_count": no_script.locator('[data-community-board-resources] a').count()}, "assertion": "without scripting the served board remains readable and retains an explicit source destination", "passed": True})
+        no_script.context.close()
+
+        narrow = browser.new_context(viewport={"width": 390, "height": 844}, has_touch=True).new_page()
+        narrow.goto(BASE + route, wait_until="domcontentloaded")
+        task_link = narrow.locator('a[href*="/near-you/?"]').first
+        task_link.wait_for()
+        task_box = task_link.bounding_box()
+        assert task_box and task_box["width"] > 0 and task_box["height"] >= 24
+        assert narrow.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth")
+        entries.append({"case": f"{board_id}-narrow-touch", "specimen": specimen, "route": route, "viewport": {"width": 390, "height": 844}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"has_touch": True, "horizontal_overflow": False, "primary_task_height": task_box["height"]}, "assertion": "at a narrow touch viewport the primary district destination remains actionable without horizontal overflow", "passed": True})
+        narrow.context.close()
+
+        keyboard = browser.new_page(viewport={"width": 1440, "height": 900})
+        keyboard.goto(BASE + route, wait_until="domcontentloaded")
+        focus_target = keyboard.locator('[data-community-board-resources] a').first
+        focus_target.focus()
+        assert keyboard.evaluate("document.activeElement?.tagName === 'A'")
+        focused_href = keyboard.evaluate("document.activeElement?.getAttribute('href')")
+        assert focused_href and focused_href.startswith(("http://", "https://"))
+        entries.append({"case": f"{board_id}-keyboard", "specimen": specimen, "route": route, "viewport": {"width": 1440, "height": 900}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"focusable_source_link": True, "focused_href": focused_href}, "assertion": "keyboard focus reaches an explicit source destination on the served board without requiring a pointer", "passed": True})
+        keyboard.close()
+
+        translated = browser.new_page(viewport={"width": 390, "height": 844}, locale="es-ES")
+        translated.goto(BASE + route + "?lang=es", wait_until="domcontentloaded")
+        assert translated.locator("h1").inner_text().strip()
+        assert translated.locator('[data-community-board-resources] a').count() >= 1
+        assert translated.locator("html").get_attribute("lang") == "en"
+        entries.append({"case": f"{board_id}-translation-fallback", "specimen": specimen, "route": route + "?lang=es", "viewport": {"width": 390, "height": 844}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"locale": "es-ES", "served_lang": "en", "heading_nonempty": True, "source_link_count": translated.locator('[data-community-board-resources] a').count()}, "assertion": "an unsupported translated board request keeps the served page readable and preserves its explicit source links", "passed": True})
+        translated.close()
+
+        invalid = browser.new_page(viewport={"width": 390, "height": 844})
+        invalid_route = "/near-you/?v=0&lens=meetings&boro=Queens&cd=Z99&level=community_district&id=Z99&parent=Queens"
+        invalid.goto(BASE + invalid_route, wait_until="domcontentloaded")
+        assert invalid.url.endswith(invalid_route)
+        assert invalid.locator("body").inner_text().strip()
+        entries.append({"case": f"{board_id}-invalid-place", "specimen": specimen, "route": invalid_route, "viewport": {"width": 390, "height": 844}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"url_preserved": True, "body_nonempty": True, "invalid_place": "Z99"}, "assertion": "an invalid place stays in its requested scope and serves a readable recovery document", "passed": True})
+        invalid.close()
+
+        failed = browser.new_page(viewport={"width": 390, "height": 844})
+        failed.route("**/community_board_budget_requests_boot.mjs", lambda request: request.abort())
+        failed.goto(BASE + route, wait_until="domcontentloaded")
+        assert failed.locator('main[data-civic-object-kind="community-board-constellation"]').is_visible()
+        assert failed.locator("h1").inner_text().strip()
+        assert failed.locator('[data-community-board-resources] a').count() >= 1
+        entries.append({"case": f"{board_id}-forced-load-error", "specimen": specimen, "route": route, "viewport": {"width": 390, "height": 844}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"boot_module_blocked": True, "main_visible": True, "heading_nonempty": True, "source_link_count": failed.locator('[data-community-board-resources] a').count()}, "assertion": "when an optional board enhancement fails to load, the served identity and source recovery links remain available", "passed": True})
+        failed.close()
+    return entries
+
+
+def all_passed(rows: list[dict]) -> bool:
+    return bool(rows) and all(row.get("passed") is True for row in rows)
+
+
+def status_for(letter: str, entries: list[dict], recovery: list[dict]) -> str:
+    """Derive the letter state from observations, never from a fixed label."""
+    if letter == "A1":
+        rows = [row for row in entries if row["case"] in {"cb15-calendar-accepted-fixture-1440x900", "cb15-calendar-accepted-fixture-390x844"}]
+        return "proved_by_served_readback" if all_passed(rows) else "open_pending_evidence"
+    if letter == "A2":
+        dense = [row for row in entries if row["case"].startswith("cb06-calendar-month-detail-return-")]
+        request_returns = [row for row in entries if row["case"].startswith("cb15-request-return-")]
+        full_readings = [row for row in entries if row["case"].startswith("cb15-request-full-reading-")]
+        no_outbound = all(row.get("outbound") == {"sends": 0, "subscriptions": 0, "follows": 0} for row in request_returns)
+        return "proved_by_served_readback" if all_passed(dense + request_returns + full_readings) and no_outbound else "open_pending_evidence"
+    if letter == "A3":
+        matrix = json.loads((ROOT / "docs/evidence/community-board-resources/resource-matrix-2026-08-13.json").read_text())
+        census = len(matrix.get("boards", [])) == 59 and all(
+            destination.get("disposition")
+            for board in matrix.get("boards", [])
+            for destination in board.get("destinations", [])
+        )
+        return "proved_by_served_readback" if census and len(recovery) == 36 and all_passed(recovery) else "open_pending_evidence"
+    if letter == "A4":
+        required = entries + recovery
+        complete = all(
+            row.get("passed") is True
+            and row.get("route")
+            and row.get("viewport")
+            and row.get("revision")
+            and row.get("data_vintage")
+            and row.get("assertion")
+            for row in required
+            if row.get("case") not in {"upcoming-full-board", "no-upcoming-full-board"}
+        )
+        return "proved_by_served_readback" if complete else "open_pending_evidence"
+    raise ValueError(f"unknown acceptance letter: {letter}")
+
+
 def main() -> None:
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     request_case = request_fixture()
@@ -198,6 +373,10 @@ def main() -> None:
             assert resources.locator('[data-community-board-resource-task="contact"] a').count() >= 1
             requests = page.locator("#board-budget-requests")
             assert requests.count() == 1
+            request_source = page.locator(".board-budget-requests-source a").first
+            assert request_source.count() == 1
+            request_source_href = request_source.get_attribute("href")
+            assert request_source_href and request_source_href.startswith(("https://", "http://"))
             inspect = requests.locator(f'button.board-budget-request-inspect[data-budget-request="{request_case["tracking_code"]}"]')
             assert inspect.count() == 1
             row = inspect.locator("xpath=ancestor::li[contains(@class, 'board-budget-request')]")
@@ -208,6 +387,7 @@ def main() -> None:
             row_code = row.locator(".board-budget-request-code").inner_text().strip()
             row_answers = row.locator(".board-budget-request-answer")
             row_explanation = row.locator(".board-budget-request-explanation")
+            page.evaluate("window.scrollTo(0, Math.min(600, document.body.scrollHeight))")
             before_scroll = page.evaluate("window.scrollY")
             inspect.click()
             dialog = page.locator("#budget-request-inspect")
@@ -216,31 +396,45 @@ def main() -> None:
             assert dialog.locator(".budget-request-dialog-code").inner_text().strip() == row_code
             assert dialog.locator(".budget-request-dialog-answer").count() == row_answers.count()
             assert dialog.locator(".budget-request-dialog-answer").count() >= request_case["minimum_answers"]
+            assert dialog.locator(".budget-request-dialog-answer").all_inner_texts() == row_answers.all_inner_texts()
             assert dialog.locator(".budget-request-dialog-explanation").count() == 1
             assert row_explanation.count() == 1 if request_case["requires_explanation"] else True
             full_reading_hash = sha(dialog.inner_text())
             page.locator("#budget-request-inspect [data-budget-request-close]").click()
             assert inspect.is_visible()
             assert page.evaluate("window.scrollY") == before_scroll
+            assert page.url.endswith(BOARD)
+            assert page.evaluate("document.activeElement?.getAttribute('data-budget-request')") == request_case["tracking_code"]
             assert outbound_probe(page) == {"sends": 0, "subscriptions": 0, "follows": 0}
             measured = geometry(page, width)
             entries.extend([
                 {"case": f"cb15-board-resources-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "assertion": "calendar, agenda, and contact destinations are explicit", "render_sha256": sha(resources.inner_text()), "passed": True},
-                {"case": f"cb15-request-return-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "assertion": "agency request expands, inspects, dismisses, and returns to the same board scope with zero sends, subscriptions, and follow creations", "render_sha256": sha(requests.inner_text()), "outbound": outbound_probe(page), "passed": True},
-                {"case": f"cb15-request-full-reading-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "assertion": request_case["assertion"], "render_sha256": full_reading_hash, "passed": True},
+                {"case": f"cb15-request-return-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "scope": BOARD, "scroll_y": before_scroll, "source_links": [request_source_href], "inspection": {"agency_expanded": True, "opened": True, "dismissed": True, "same_scope": True, "same_scroll": True, "focus_restored": True}, "assertion": "agency request expands, inspects, dismisses, and returns to the same board scope and scroll with zero sends, subscriptions, and follow creations", "render_sha256": sha(requests.inner_text()), "outbound": outbound_probe(page), "passed": True},
+                {"case": f"cb15-request-full-reading-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "source_links": [request_source_href], "request": {"tracking_code": row_code, "title": row_title, "answer_count": row_answers.count(), "explanation_count": 1}, "assertion": request_case["assertion"], "render_sha256": full_reading_hash, "passed": True},
                 {"case": f"cb15-layout-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "assertion": "heading, district link, and inspect control fit within the viewport without horizontal overflow", "measurements": measured, "passed": True},
                 {"case": f"cb15-district-roundtrip-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "assertion": "K15 district scope opens and browser Back returns to the board", "render_sha256": sha(page.locator("body").inner_text()), "passed": True},
             ])
             body = page.locator("body").inner_text()
             entries.append({"case": f"cb15-served-readback-{width}x{height}", "route": BOARD, "viewport": {"width": width, "height": height}, "revision": revision, "data_vintage": "served committed site materialization", "assertion": "served board document is readable at the release viewport", "render_sha256": sha(body), "passed": True})
             page.close()
+            dense_page = browser.new_page(viewport={"width": width, "height": height})
+            entries.append(dense_calendar_journey(dense_page, width, height, revision))
+            dense_page.close()
+        recovery = recovery_observations(browser, revision)
         browser.close()
     layouts = [entry["measurements"] for entry in entries if entry["case"].startswith("cb15-layout-")]
     assert len(layouts) == 2 and layouts[0] != layouts[1], "layout measurements must be retained per viewport and differ across release widths"
-    for entry in entries:
-        entry.setdefault("render_sha256", sha(entry["assertion"]))
+    # A hash is retained only where the journey captured page text. An entry
+    # that did not capture a page must stay visibly unhashed; hashing its own
+    # assertion sentence would manufacture provenance for an untaken capture.
     evidence = ["test/functional/54_community_board_release_journeys.py", "docs/evidence/community-board-release-journeys/fixtures.json", "docs/evidence/community-board-release-journeys/manifest.json"]
-    data = {"schema": "cityscroll.community_board_release_journey_manifest.v3", "repository_revision": revision, "read_on": TEST_DAY, "data_vintage": "served committed site materialization", "unit_gate": "node --test test/community_board_links.test.mjs test/community_board_constellation.test.mjs test/near_you_static.test.mjs test/community_board_calendar.test.mjs test/community_board_request_responses.test.mjs", "functional_paths": ["python3 test/functional/33_community_board_pivot.py", "python3 test/functional/34_near_you_surface_switch.py"], "journey_functional_path": "python3 test/functional/54_community_board_release_journeys.py", "acceptance": {"A1": {"status": "proved_by_served_readback", "evidence": evidence, "assertion": "Both accepted-meeting and no-upcoming branches are rendered on served board routes; the accepted meeting detail heading matches the label read from the board."}, "A2": {"status": "proved_by_served_readback", "evidence": evidence, "assertion": "Inspection and dismissal retain the board scope and record exactly zero sends, subscriptions, and follow creations."}, "A3": {"status": "proved_by_served_readback", "board_count": 59, "resource_role_dispositions": 59, "specimens": [{"board": "brooklyn-cb-15"}, {"board": "manhattan-cb-06"}, {"board": "bronx-cb-11"}, {"board": "bronx-cb-01"}, {"board": "queens-cb-01"}, {"board": "staten-island-cb-01"}], "evidence": evidence, "assertion": "Measured heading, district-link, and inspect-control boxes fit within both release viewports without horizontal overflow."}, "A4": {"status": "proved_by_served_readback", "evidence": evidence, "assertion": "The read-back retains route, viewport, served data vintage, assertion, and render hash for each named check."}}, "fixture_assertions": entries[:2], "assertions": entries[2:]}
+    acceptance = {
+        "A1": {"status": status_for("A1", entries, recovery), "evidence": evidence, "assertion": "Both accepted-meeting and no-upcoming branches are rendered on served board routes; the accepted meeting detail heading matches the label read from the board."},
+        "A2": {"status": status_for("A2", entries, recovery), "evidence": evidence, "assertion": "The dense board records List and Month, explicit event source and detail links, inspection dismissal without network requests, and return to the same Month view and focused event; the request walk records agency expansion, the selected request's complete answer reading, an explicit source link, same board scope and scroll, and zero sends, subscriptions, or follows."},
+        "A3": {"status": status_for("A3", entries, recovery), "board_count": 59, "resource_role_dispositions": 59, "specimens": [{"board": "brooklyn-cb-15", "state": "populated"}, {"board": "manhattan-cb-06", "state": "long-content"}, {"board": "bronx-cb-11", "state": "sparse"}, {"board": "bronx-cb-01", "state": "unavailable"}, {"board": "queens-cb-01", "state": "alternate-source"}, {"board": "staten-island-cb-01", "state": "borough-coverage"}], "evidence": evidence, "assertion": "The all-board census and resource-role audit are cross-checked against their retained matrices, and every named specimen records served observations for no-script, narrow touch, keyboard, translation fallback, invalid place, and forced enhancement-load-error recovery."},
+        "A4": {"status": status_for("A4", entries, recovery), "evidence": evidence, "assertion": "The read-back retains route, viewport, revision, data vintage, named assertion, and observed result for each journey and recovery case."},
+    }
+    data = {"schema": "cityscroll.community_board_release_journey_manifest.v4", "repository_revision": revision, "read_on": TEST_DAY, "data_vintage": "served committed site materialization", "unit_gate": "node --test test/community_board_links.test.mjs test/community_board_constellation.test.mjs test/near_you_static.test.mjs test/community_board_calendar.test.mjs test/community_board_request_responses.test.mjs", "functional_paths": ["python3 test/functional/33_community_board_pivot.py", "python3 test/functional/34_near_you_surface_switch.py"], "journey_functional_path": "python3 test/functional/54_community_board_release_journeys.py", "acceptance": acceptance, "fixture_assertions": entries[:2], "assertions": entries[2:], "recovery_observations": recovery}
     MANIFEST.write_text(json.dumps(data, indent=2) + "\n")
     print("PASS: community board release journeys read back")
 
