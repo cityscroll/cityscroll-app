@@ -1,31 +1,12 @@
-import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 
-const followingApp = readFileSync(new URL("../../site/app/following.mjs", import.meta.url), "utf8");
-const browseApp = readFileSync(new URL("../../site/app/feed-actions.mjs", import.meta.url), "utf8");
-const browsePage = readFileSync(new URL("../../site/index.html", import.meta.url), "utf8");
+const browserJourney = fileURLToPath(new URL("./following_availability.py", import.meta.url));
 
-test("browser controls update preview state and restore it through navigation", () => {
-  assert.match(followingApp, /data-following-availability-preset/);
-  assert.match(followingApp, /history\.replaceState/);
-  assert.match(followingApp, /addEventListener\("popstate"/);
-  assert.match(followingApp, /data-following-availability/);
-  assert.match(followingApp, /availabilityFromForm/);
-});
-
-test("browse controls support touch selection and share-state restoration", () => {
-  assert.match(browsePage, /data-meetings-availability/);
-  assert.match(browsePage, /data-meetings-availability-custom hidden/);
-  assert.match(browsePage, /data-meetings-availability-day/);
-  assert.match(browsePage, /data-meetings-availability-timezone/);
-  assert.match(browseApp, /wireMeetingAvailabilityControls/);
-  assert.match(browseApp, /typeof selection === "object"/);
-  assert.match(browseApp, /updateHash/);
-  assert.match(browseApp, /evaluateMeetingAvailabilityRows/);
-});
-
-test("the no-JavaScript form exposes the same availability fields", () => {
-  assert.match(browsePage, /name="meetingsAvailability" value="evenings_weekends"/);
-  assert.match(browsePage, /Weekdays from 17:00 \(inclusive\)/);
+test("rendered availability controls pass the resident browser journeys", () => {
+  execFileSync("python3", [browserJourney], {
+    cwd: fileURLToPath(new URL("../..", import.meta.url)),
+    stdio: "inherit",
+  });
 });
