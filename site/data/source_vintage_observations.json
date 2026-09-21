@@ -334,7 +334,7 @@
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
       },
-      "expected_cadence": "Ongoing registrations and spending updates",
+      "expected_cadence": "Registration-driven ongoing updates; no fixed daily publication promise (Checkbook API)",
       "expected_lag_tolerance_days": 45,
       "current_lag": {
         "value": null,
@@ -1925,8 +1925,8 @@
         "receipt_schema": null,
         "run_id": null
       },
-      "expected_cadence": "Periodic civic-data updates",
-      "expected_lag_tolerance_days": 365,
+      "expected_cadence": "Every 2 years (NYC OpenData metadata)",
+      "expected_lag_tolerance_days": 730,
       "current_lag": {
         "value": null,
         "unit": null,

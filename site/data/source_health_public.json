@@ -464,7 +464,7 @@
       "name": "Checkbook NYC registered contracts",
       "publisher": "Office of the New York City Comptroller",
       "official_url": "https://www.checkbooknyc.com/contract-api",
-      "expected_cadence": "Ongoing registrations and spending updates",
+      "expected_cadence": "Registration-driven ongoing updates; no fixed daily publication promise (Checkbook API)",
       "mode": "continuous",
       "health": {
         "status": "Healthy",
@@ -2899,7 +2899,7 @@
       "name": "Suitability of City-Owned and Leased Property for Urban Agriculture (LL48)",
       "publisher": "NYC Department of Citywide Administrative Services",
       "official_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
-      "expected_cadence": "Periodic civic-data updates",
+      "expected_cadence": "Every 2 years (NYC OpenData metadata)",
       "mode": "periodic",
       "health": {
         "status": "UNKNOWN",
@@ -2936,7 +2936,7 @@
         },
         "publisher_vintage": null,
         "retrieved_at": null,
-        "expected_lag_tolerance_days": 365,
+        "expected_lag_tolerance_days": 730,
         "current_lag": {
           "value": null,
           "unit": null
