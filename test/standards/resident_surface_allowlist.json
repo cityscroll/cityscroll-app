@@ -2,6 +2,22 @@
   "schema": "cityscroll.resident_surface_allowlist.v1",
   "exceptions": [
     {
+      "id": "use-with-ai-tool-bindings-disclosure",
+      "category": "implementation_schema",
+      "terms": [
+        "get_contract",
+        "get_land_decision_path",
+        "get_land_project",
+        "get_notice",
+        "search_notices"
+      ],
+      "surface_family": "other",
+      "surface_kind": "default_document",
+      "content_mode": "opt_in_disclosure",
+      "surface": "built:use-with-ai/index.html",
+      "reason": "The public setup page keeps exact tool bindings behind an explicit disclosure for clients that need the machine-readable names."
+    },
+    {
       "id": "api-reference-contract-identifiers",
       "category": "implementation_schema",
       "terms": [

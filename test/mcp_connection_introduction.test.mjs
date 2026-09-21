@@ -59,13 +59,16 @@ test("MCP setup puts connection prerequisites before exact task copying", async 
 test("A3: three setup tasks bind to declared tools, exact public records, and generic-client instructions", async () => {
   const html = await readFile(introduction, "utf8");
   const fixture = JSON.parse(await readFile(new URL("../site/data/assistant_setup_sources.json", import.meta.url), "utf8"));
-  const examples = html.match(/<ol>[\s\S]*?<\/ol>/)?.[0] || "";
+  const taskSection = html.match(/<section aria-labelledby="try">[\s\S]*?<\/section>/)?.[0] || "";
+  const examples = taskSection.match(/<ol>[\s\S]*?<\/ol>/)?.[0] || "";
+  const bindingDisclosure = taskSection.match(/<details>[\s\S]*?<\/details>/)?.[0] || "";
   assert.equal((examples.match(/<li>/g) || []).length, 3);
+  assert.doesNotMatch(examples, /<code>/, "visible tasks stay client-neutral");
   for (const tool of ["search_notices", "get_notice", "get_contract", "get_land_project", "get_land_decision_path"]) {
-    assert.match(examples, new RegExp(`<code>${tool}</code>`), tool);
+    assert.match(bindingDisclosure, new RegExp(`<code>${tool}</code>`), tool);
   }
   for (const recordId of ["20260824035", "CT107120258801626", "2024Q0356"]) {
-    assert.match(examples, new RegExp(recordId), recordId);
+    assert.match(taskSection, new RegExp(recordId), recordId);
   }
   assert.match(html, /Generic Streamable HTTP/);
   assert.match(html, /leave authentication blank/);
