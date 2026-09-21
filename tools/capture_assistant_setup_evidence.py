@@ -262,8 +262,6 @@ def observe(page, route_spec: dict, viewport: dict, capture_clock: str) -> dict:
             const rect = el.getBoundingClientRect();
             anchors[id] = {
               present: true,
-              top: Math.round(rect.top),
-              width: Math.round(rect.width),
               in_layout: rect.width > 0 || rect.height > 0 || el.offsetParent !== null,
             };
           }
@@ -280,7 +278,6 @@ def observe(page, route_spec: dict, viewport: dict, capture_clock: str) -> dict:
             endpoint_present: Boolean(endpoint),
             copy_control_present: Boolean(copy),
             anchors,
-            endpoint_client_width: endpoint ? Math.round(endpoint.getBoundingClientRect().width) : null,
             setup_order: route === '/use-with-ai/'
               ? ['connect-first', 'connect', 'claude-web', 'claude', 'other', 'data-ai-context-mount']
                 .map((id) => ({ id, index: [...document.querySelectorAll('main *')].findIndex((node) => id === 'data-ai-context-mount'
