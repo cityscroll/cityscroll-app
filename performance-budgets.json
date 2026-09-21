@@ -63,6 +63,15 @@
       "invariant": "precomputed-outcome-or-honest-absent-without-spinner",
       "settledMs": 1200,
       "comment": "The default Land detail must paint today's precomputed decision/outcome state within the loading-state budget; live freshness is an enhancement."
+    },
+    "near-you.geography-navigation": {
+      "viewports": [
+        "mobile",
+        "desktop"
+      ],
+      "wireBytes": 120000,
+      "settledMs": 1200,
+      "comment": "Fixture-backed geography navigation route ceiling. Retained 20-sample local observations and the reviewed pre-merge p95 plus 5% calculation are recorded in docs/evidence/geography-navigation-release/capture-manifest.json; deployed field-vital measurement remains open."
     }
   }
 }

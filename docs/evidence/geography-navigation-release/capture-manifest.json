@@ -1,0 +1,1083 @@
+{
+  "schema": "cityscroll.geography_navigation_release_manifest.v1",
+  "surface": "friendly navigator",
+  "public_alias": "cee00d62cd519",
+  "repository_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+  "grounded_at": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+  "deployed_version": {
+    "status": "not_taken",
+    "reason": "deployment-dependent CROL_BASE read-back"
+  },
+  "data_vintages": {
+    "nta": "26B",
+    "community": "2026-05-26",
+    "council": "2026-05-26",
+    "precinct": "26B"
+  },
+  "image_binaries_committed": false,
+  "capture_policy": "Hashes refer only to retained HTML; no image capture was taken.",
+  "not_taken": [
+    "production CROL_BASE journey",
+    "production field-vital measurement",
+    "production screenshot binaries"
+  ],
+  "captures": [
+    {
+      "name": "bk1503-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&drawer=open",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertion": "headless Chromium verified horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus, collapsible drawer behavior, selected labels, exact comparison percentages, and map geometry metrics",
+      "failure_mode": "none",
+      "asset_classes": [
+        "server_html",
+        "navigation_shell",
+        "simplified_geography_layers"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 5
+      },
+      "performance_samples": {
+        "samples": [
+          {
+            "readiness_ms": 23.2,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 22.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.1,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.5,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.3,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.5,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.3,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.7,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 18.8,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 20.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.5,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.8,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 18.7,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.5,
+            "wire_bytes": 300
+          }
+        ],
+        "reviewed_premerge_p95": {
+          "readiness_ms": 22.6,
+          "wire_bytes": 300
+        },
+        "route_ceiling": {
+          "readiness_ms": 24,
+          "wire_bytes": 315
+        }
+      },
+      "render_content_sha256": "7fecf148cbc66da9fa7ac65542378ac2013ca7f149adfab0867fa399c93122ce",
+      "visual_metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "rendered_neighborhood_label_count": 1,
+        "selected_label_present": true,
+        "clipped_or_overlapping_label_count": 0,
+        "computed_styles": {
+          "active": {
+            "display": "flex",
+            "color": "rgb(0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(0, 0, 0)"
+          },
+          "selected": {
+            "display": "block",
+            "color": "rgb(0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(0, 0, 0)"
+          },
+          "comparison": {
+            "display": "block",
+            "color": "rgb(0, 0, 0)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(0, 0, 0)"
+          }
+        },
+        "visible_map_area_css_px": {
+          "width": 876.53125,
+          "height": 591.1875
+        },
+        "control_occlusion": false,
+        "nta_codes_in_primary_labels": 0
+      },
+      "repository_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+      "deployed_version": {
+        "status": "not_taken",
+        "reason": "deployment-dependent CROL_BASE read-back"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "captures/bk1503-desktop.html"
+    },
+    {
+      "name": "narrow_touch",
+      "route": "/near-you/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "headless Chromium verified horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus, collapsible drawer behavior, selected labels, exact comparison percentages, and map geometry metrics",
+      "failure_mode": "none",
+      "asset_classes": [
+        "server_html",
+        "navigation_shell",
+        "simplified_geography_layers"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 11
+      },
+      "performance_samples": {
+        "samples": [
+          {
+            "readiness_ms": 23.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.2,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.1,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.1,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.1,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.1,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.2,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.9,
+            "wire_bytes": 1200
+          }
+        ],
+        "reviewed_premerge_p95": {
+          "readiness_ms": 26.4,
+          "wire_bytes": 1200
+        },
+        "route_ceiling": {
+          "readiness_ms": 28,
+          "wire_bytes": 1260
+        }
+      },
+      "render_content_sha256": "af4aefd4b21a5ae06407935b44af3abe0107013273a338045ddadaccc45456fb",
+      "visual_metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "rendered_neighborhood_label_count": 0,
+        "selected_label_present": false,
+        "clipped_or_overlapping_label_count": 0,
+        "computed_styles": {
+          "active": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "selected": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "comparison": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "rgb(122, 130, 143)"
+          }
+        },
+        "visible_map_area_css_px": {
+          "width": 326,
+          "height": 413.328125
+        },
+        "control_occlusion": false,
+        "nta_codes_in_primary_labels": 0
+      },
+      "repository_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+      "deployed_version": {
+        "status": "not_taken",
+        "reason": "deployment-dependent CROL_BASE read-back"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "captures/narrow_touch.html"
+    },
+    {
+      "name": "compact_touch",
+      "route": "/near-you/",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "assertion": "headless Chromium verified horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus, collapsible drawer behavior, selected labels, exact comparison percentages, and map geometry metrics",
+      "failure_mode": "none",
+      "asset_classes": [
+        "server_html",
+        "navigation_shell",
+        "simplified_geography_layers"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 11
+      },
+      "performance_samples": {
+        "samples": [
+          {
+            "readiness_ms": 22.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.8,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.2,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.8,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.8,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.4,
+            "wire_bytes": 1200
+          }
+        ],
+        "reviewed_premerge_p95": {
+          "readiness_ms": 26.5,
+          "wire_bytes": 1200
+        },
+        "route_ceiling": {
+          "readiness_ms": 28,
+          "wire_bytes": 1260
+        }
+      },
+      "render_content_sha256": "af4aefd4b21a5ae06407935b44af3abe0107013273a338045ddadaccc45456fb",
+      "visual_metrics": {
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "rendered_neighborhood_label_count": 0,
+        "selected_label_present": false,
+        "clipped_or_overlapping_label_count": 0,
+        "computed_styles": {
+          "active": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "selected": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "comparison": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "rgb(122, 130, 143)"
+          }
+        },
+        "visible_map_area_css_px": {
+          "width": 296,
+          "height": 420.75
+        },
+        "control_occlusion": false,
+        "nta_codes_in_primary_labels": 0
+      },
+      "repository_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+      "deployed_version": {
+        "status": "not_taken",
+        "reason": "deployment-dependent CROL_BASE read-back"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "captures/compact_touch.html"
+    }
+  ],
+  "accessibility_matrix": {
+    "landmarks": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "names": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "focus_order": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "focus_visibility": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "map_escape": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "list_equivalence": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "status_announcements": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "zoom_200_percent": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "reduced_motion": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "forced_colors": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "screen_reader_selection": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    }
+  },
+  "failure_mode_matrix": {
+    "no_javascript": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "dynamic_import_failure": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "no_webgl": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "context_loss": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "local_layer_failure": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "offline_basemap": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "stale_crosswalk": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "geolocation_denied": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "address_lookup_failure": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "outside_covered_land": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "zero_records": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "records_unavailable": {
+      "result": "passed",
+      "recovery_path": "server-owned navigation remains available",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    }
+  },
+  "privacy_assertions": {
+    "network": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "url": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "storage": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "analytics": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    },
+    "error_reporting": {
+      "result": "passed",
+      "artifact": "test/geography_navigation_release.test.mjs"
+    }
+  },
+  "boundaries": {
+    "full_fidelity_geometry_requested": false
+  },
+  "performance": {
+    "production_field_vitals": {
+      "status": "not_taken",
+      "reason": "deployment-dependent production measurement"
+    },
+    "retained_samples": [
+      {
+        "route": "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&drawer=open",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "samples": [
+          {
+            "readiness_ms": 23.2,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 22.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.1,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.5,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.3,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.5,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.3,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.7,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 18.8,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 20.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.5,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.8,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 18.7,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.5,
+            "wire_bytes": 300
+          }
+        ],
+        "reviewed_premerge_p95": {
+          "readiness_ms": 22.6,
+          "wire_bytes": 300
+        },
+        "route_ceiling": {
+          "readiness_ms": 24,
+          "wire_bytes": 315
+        }
+      },
+      {
+        "route": "/near-you/",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "samples": [
+          {
+            "readiness_ms": 23.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.2,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.1,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.1,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.1,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.1,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.2,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.9,
+            "wire_bytes": 1200
+          }
+        ],
+        "reviewed_premerge_p95": {
+          "readiness_ms": 26.4,
+          "wire_bytes": 1200
+        },
+        "route_ceiling": {
+          "readiness_ms": 28,
+          "wire_bytes": 1260
+        }
+      },
+      {
+        "route": "/near-you/",
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "samples": [
+          {
+            "readiness_ms": 22.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.8,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.2,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 22.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.8,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.8,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.4,
+            "wire_bytes": 1200
+          }
+        ],
+        "reviewed_premerge_p95": {
+          "readiness_ms": 26.5,
+          "wire_bytes": 1200
+        },
+        "route_ceiling": {
+          "readiness_ms": 28,
+          "wire_bytes": 1260
+        }
+      }
+    ]
+  },
+  "validation": {
+    "existing_suites": [
+      {
+        "path": "test/geography_navigation_entry.test.mjs",
+        "result": "not_taken",
+        "reason": "full-checkout-only in the focused-reduced profile; CI owns this suite"
+      },
+      {
+        "path": "test/geography_navigation_contract.test.mjs",
+        "result": "not_taken",
+        "reason": "full-checkout-only in the focused-reduced profile; CI owns this suite"
+      },
+      {
+        "path": "test/geography_navigation_crosswalk.test.mjs",
+        "result": "not_taken",
+        "reason": "full-checkout-only in the focused-reduced profile; CI owns this suite"
+      },
+      {
+        "path": "test/geography_navigation_overlap_ui.test.mjs",
+        "result": "not_taken",
+        "reason": "full-checkout-only in the focused-reduced profile; CI owns this suite"
+      },
+      {
+        "path": "test/geography_navigation_records.test.mjs",
+        "result": "not_taken",
+        "reason": "full-checkout-only in the focused-reduced profile; CI owns this suite"
+      },
+      {
+        "path": "test/geography_navigation_runtime.test.mjs",
+        "result": "not_taken",
+        "reason": "full-checkout-only in the focused-reduced profile; CI owns this suite"
+      },
+      {
+        "path": "test/geography_navigation_shell.test.mjs",
+        "result": "not_taken",
+        "reason": "full-checkout-only in the focused-reduced profile; CI owns this suite"
+      },
+      {
+        "path": "test/geography_navigation_state.test.mjs",
+        "result": "not_taken",
+        "reason": "full-checkout-only in the focused-reduced profile; CI owns this suite"
+      }
+    ],
+    "predeployment": {
+      "full_verify": {
+        "command": "node --test test/geography_navigation_release.test.mjs",
+        "result": "passed"
+      },
+      "make_a11y": {
+        "command": "make a11y",
+        "result": "not_taken",
+        "reason": "full-checkout-only in the focused-reduced profile; CI owns this gate"
+      },
+      "make_prepush": {
+        "command": "make prepush",
+        "result": "not_taken",
+        "reason": "full-checkout-only in the focused-reduced profile; CI owns this gate"
+      }
+    },
+    "deployed_crol_base": {
+      "command": "CROL_BASE=https://cityscroll.org/ python3 test/functional/geography_navigation.py --case release",
+      "result": "not_taken",
+      "reason": "deployment-dependent read-back"
+    }
+  },
+  "closure_evidence": [
+    {
+      "letter": "A1",
+      "result": "accepted",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A1 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A2",
+      "result": "accepted",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A2 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A3",
+      "result": "accepted",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A3 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A4",
+      "result": "accepted",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A4 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A5",
+      "result": "accepted",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A5 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A6",
+      "result": "accepted",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A6 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A7",
+      "result": "partial",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A7 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A8",
+      "result": "accepted",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A8 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A9",
+      "result": "accepted",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A9 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A10",
+      "result": "accepted",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A10 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A11",
+      "result": "partial",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A11 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A12",
+      "result": "partial",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A12 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A13",
+      "result": "accepted",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A13 assertion and retained manifest evidence."
+    },
+    {
+      "letter": "A14",
+      "result": "accepted",
+      "artifact": "test/geography_navigation_release.test.mjs",
+      "assertion": "Named A14 assertion and retained manifest evidence."
+    }
+  ]
+}

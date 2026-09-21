@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Overlap fixture</title><link rel="stylesheet" href="/site/civic-documents.css"></head><body><main id="main" data-near-you-root="" data-geography-shell="map-first" data-near-surface="map"><div class="near-geo-workspace" data-geography-workspace="" data-geography-drawer-state="open" data-geography-focus-restore="geography:nta2020:BK1503">
+      <aside class="near-geo-rail near-geo-drawer" data-geography-drawer="" aria-labelledby="near-geo-overlap-heading">
+        <button type="button" class="near-geo-drawer-toggle js-only" data-geography-drawer-toggle="" aria-expanded="true">Map details</button>
+        <div class="near-geo-rail-body" data-geography-overlap-root="" data-geography-selected-key="geography:nta2020:BK1503" data-geography-compare="council_district" data-geography-focus-restore="geography:nta2020:BK1503">
+      <p class="near-kicker">Selected place</p>
+      <h2 id="near-geo-overlap-heading" data-geography-selected-label="">Sheepshead Bay-Manhattan Beach-Gerritsen Beach</h2>
+      <p data-geography-selected-type="">NYC Neighborhood Tabulation Area (NTA 2020).</p>
+      <div class="near-geo-overlap-compare" data-geography-compare-controls="" role="group" aria-label="Compare with">
+        <p class="near-geo-overlap-compare-label">Compare with</p>
+        <div class="near-geo-layers-primary"><a class="near-geo-layer" data-geography-compare="community_district" href="/near-you/?geo=nta2020%3ABK1503&amp;compare=community_district&amp;surface=map&amp;drawer=open&amp;focus=geography%3Anta2020%3ABK1503">Community districts</a><a class="near-geo-layer is-active" data-geography-compare="council_district" href="/near-you/?geo=nta2020%3ABK1503&amp;compare=council_district&amp;surface=map&amp;drawer=open&amp;focus=geography%3Anta2020%3ABK1503" aria-current="true">Council districts</a><a class="near-geo-layer" data-geography-compare="police_precinct" href="/near-you/?geo=nta2020%3ABK1503&amp;compare=police_precinct&amp;surface=map&amp;drawer=open&amp;focus=geography%3Anta2020%3ABK1503">Precincts</a></div>
+      </div>
+
+      <section class="near-geo-overlap-area" data-geography-overlap-area="" aria-labelledby="near-geo-overlap-area-heading">
+        <h3 id="near-geo-overlap-area-heading">This neighborhood overlaps</h3>
+        <p data-geography-overlap-summary="">This neighborhood overlaps 2 Council districts.</p>
+        <ol class="near-geo-overlap-list" data-geography-overlap-list=""><li class="near-geo-overlap-row" data-geography-overlap-key="geography:council_district:48" data-geography-overlap-id="48" data-geography-overlap-material="true">
+      <button type="button" class="near-geo-overlap-highlight" data-geography-overlap-highlight="geography:council_district:48" data-geography-focus-target="geography:council_district:48">
+        <span class="near-geo-overlap-label">City Council District 48</span>
+        <span class="near-geo-overlap-pct">69.0%</span>
+      </button>
+      <a class="near-geo-overlap-select" data-geography-overlap-select="geography:council_district:48" href="/near-you/?geo=council_district%3A48&amp;surface=map&amp;drawer=open">Select this area</a>
+    </li><li class="near-geo-overlap-row" data-geography-overlap-key="geography:council_district:46" data-geography-overlap-id="46" data-geography-overlap-material="true">
+      <button type="button" class="near-geo-overlap-highlight" data-geography-overlap-highlight="geography:council_district:46" data-geography-focus-target="geography:council_district:46">
+        <span class="near-geo-overlap-label">City Council District 46</span>
+        <span class="near-geo-overlap-pct">31.0%</span>
+      </button>
+      <a class="near-geo-overlap-select" data-geography-overlap-select="geography:council_district:46" href="/near-you/?geo=council_district%3A46&amp;surface=map&amp;drawer=open">Select this area</a>
+    </li></ol>
+      </section>
+      <details class="near-geo-overlap-details" data-geography-overlap-details="">
+      <summary>Source and exact figures</summary>
+      <dl>
+        <div><dt>Selected id</dt><dd data-geography-detail="selected-id">BK1503</dd></div>
+        <div><dt>Selected key</dt><dd data-geography-detail="selected-key">geography:nta2020:BK1503</dd></div>
+        <div><dt>Selected source</dt><dd data-geography-detail="selected-source">NYC Department of City Planning (dcp-nta2020-boundaries)</dd></div>
+        <div><dt>Selected vintage</dt><dd data-geography-detail="selected-vintage">26B</dd></div>
+        <div><dt>Comparison layer</dt><dd data-geography-detail="compare-type">council_district</dd></div>
+        <div><dt>Comparison source</dt><dd data-geography-detail="compare-source">NYC Department of City Planning (city-council-district-boundaries)</dd></div>
+        <div><dt>Overlay method</dt><dd data-geography-detail="method">Direct polygon intersection on EPSG:2263 land coordinates</dd></div>
+      </dl>
+      <p data-geography-detail-row="geography:council_district:48">City Council District 48 · exact share of selected area 68.986772%</p><p data-geography-detail-row="geography:council_district:46">City Council District 46 · exact share of selected area 31.008101%</p>
+      <h4>Retained non-material relations</h4>
+      <p>No retained below-threshold relations for this comparison.</p>
+    </details>
+
+      <p class="near-geo-overlap-continuation"><a data-geography-overlap-records="" href="/near-you/?geo=nta2020%3ABK1503&amp;surface=records">See records in this neighborhood</a></p>
+    </div>
+      </aside>
+      <section class="near-map-section" aria-labelledby="near-map-heading"><h2 id="near-map-heading" tabindex="-1">Map</h2><div class="near-map-wrap"><svg id="nearMapSvg" width="640" height="400" role="img" aria-label="Map"></svg><button type="button" data-geography-key="geography:nta2020:BK1503">Sheepshead Bay area</button></div></section>
+    </div></main><script type="module">
+import { GEOGRAPHY_NAVIGATION_DRAWER_CLOSED, GEOGRAPHY_NAVIGATION_DRAWER_OPEN } from "/site/geography_navigation_state.mjs";
+import { rememberOverlapInvoker, restoreOverlapInvokerFocus } from "/site/geography_navigation_overlap_ui.mjs";
+const root = document.querySelector("[data-near-you-root]");
+const workspaceNode = root?.querySelector("[data-geography-workspace]");
+const toggle = root?.querySelector("[data-geography-drawer-toggle]");
+const invoker = root?.querySelector('[data-geography-key="geography:nta2020:BK1503"]');
+if (workspaceNode && toggle) {
+  toggle.hidden = false;
+  rememberOverlapInvoker(workspaceNode.dataset.geographyFocusRestore, invoker);
+  toggle.addEventListener("click", () => {
+    const open = workspaceNode.dataset.geographyDrawerState !== GEOGRAPHY_NAVIGATION_DRAWER_CLOSED;
+    const next = open ? GEOGRAPHY_NAVIGATION_DRAWER_CLOSED : GEOGRAPHY_NAVIGATION_DRAWER_OPEN;
+    workspaceNode.dataset.geographyDrawerState = next;
+    toggle.setAttribute("aria-expanded", next === GEOGRAPHY_NAVIGATION_DRAWER_OPEN ? "true" : "false");
+    const token = workspaceNode.dataset.geographyFocusRestore
+      || root.querySelector("[data-geography-overlap-root]")?.dataset?.geographyFocusRestore;
+    if (next === GEOGRAPHY_NAVIGATION_DRAWER_CLOSED) {
+      restoreOverlapInvokerFocus(token, { root });
+    } else {
+      rememberOverlapInvoker(token || "geography-drawer-toggle", toggle);
+      root.querySelector("#near-geo-overlap-heading")?.focus?.({ preventScroll: true });
+    }
+  });
+}
+</script></body></html>
