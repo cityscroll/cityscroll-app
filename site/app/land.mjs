@@ -71,6 +71,7 @@ import {
   fetchBrowseScoped,
   projectBrowseScopedRows,
 } from "../browse_scoped_adapters.mjs";
+import { renderLandSiteLifecycle } from "../land_site_lifecycle.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -87,7 +88,6 @@ let landProjectInventory=[];
 let landActionInventory=[];
 let landRecordLinksPromise=null;
 const mihOn = v => v===true || v==="true";
-
 function hydrateLandRecordLinks(record, selection){
   const detail=$("#ldetail");
   if(!detail) return;
@@ -821,8 +821,8 @@ async function landSelect(i, el){
     <button type="button" data-map-pan="east" aria-controls="landmap" aria-label="${t("map_pan_east")}">→</button>
   </div>
   <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
+  html=html.replace('<div id="slc"></div>', `<div id="slc">${renderLandSiteLifecycle(r.project_id)}</div>`);
   $("#ldetail").innerHTML=html;
-  import("../site_lifecycle_context.mjs").then(({loadSiteLifecycleContext,mountSiteLifecycleContext})=>loadSiteLifecycleContext().then(data=>{if(selection===landSelectionSeq)mountSiteLifecycleContext($("#slc"),data,["land","project",r.project_id].join(":"));}));
   hydrateLandRecordLinks(r, selection);
   wireLandFilingReportTrigger($("#ldetail"),{t,escape:escUiHtml});
   // Immediate rail from list row (ZAP status + portal); hydrates again when outcomes load.
