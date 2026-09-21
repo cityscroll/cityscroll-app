@@ -11,6 +11,7 @@ import { abandonGeneration, claimGeneration, createMemoryStateStore } from "../t
 import { loadManifest, modelEntry } from "../tools/d1_manifest.mjs";
 import { buildPublicationReceipt } from "../tools/d1_publication_receipt.mjs";
 import { buildMissingPriorSnapshotRecovery, runProductionDelta } from "../tools/d1_production_delta.mjs";
+import { tableRows } from "../tools/d1_stable_keys.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture = JSON.parse(readFileSync(join(ROOT, "test/fixtures/d1-production-delta/sources.json"), "utf8"));
@@ -168,6 +169,57 @@ test("an unchanged snapshot is a zero-write skip", { skip: !DatabaseSync }, asyn
   assert.equal(result.outcome, "skipped");
   assert.equal(result.batchPlan.summary.total_ops, 0);
   assert.deepEqual(adapter.executions, []);
+});
+
+test("A13: one changed partition converges on a no-op rerun without duplicate logical rows", { skip: !DatabaseSync }, async () => {
+  const prior = structuredClone(fixture.prior);
+  const current = structuredClone(prior);
+  current.keyword_search.families.alpha = {
+    ...current.keyword_search.families.alpha,
+    as_of: "2026-09-11T00:00:00Z",
+    documents: [
+      { ...current.keyword_search.families.alpha.documents[0], title: "Alpha hearing revised" },
+      current.keyword_search.families.alpha.documents[1],
+    ],
+  };
+  const priorSnapshot = snapshotFor(manifest, prior);
+  const currentSnapshot = snapshotFor(manifest, current);
+  const plan = planDelta({ prior: priorSnapshot, current: currentSnapshot });
+  const changed = plan.models.flatMap((model) => model.partitions
+    .filter((partition) => partition.counts.total_ops > 0)
+    .map((partition) => ({ model_id: model.model_id, ...partition })));
+  assert.deepEqual(changed.map(({ model_id, partition }) => `${model_id}:${partition}`), ["keyword_search:alpha"]);
+  assert.ok(plan.models.every((model) => model.partitions
+    .filter((partition) => `${model.model_id}:${partition.partition}` !== "keyword_search:alpha")
+    .every((partition) => partition.counts.total_ops === 0)));
+
+  const { fenceStore, generation, holder } = await claimed(currentSnapshot, "a13-first-run");
+  const db = openDatabase(prior);
+  const adapter = databaseAdapter(db);
+  const first = await runProductionDelta({
+    priorSnapshot, currentSnapshot, manifest, sourceDocuments: current,
+    generation, fingerprint, holder, fenceStore, adapter, appliedBatchStore: adapter, policy,
+    maxOpsPerBatch: 2, now: clock,
+  });
+  assert.equal(first.outcome, "published");
+
+  const rerunClaim = await claimed(currentSnapshot, "a13-no-op-rerun");
+  const rerun = await runProductionDelta({
+    priorSnapshot: currentSnapshot, currentSnapshot, manifest, sourceDocuments: current,
+    generation: rerunClaim.generation, fingerprint, holder: rerunClaim.holder,
+    fenceStore: rerunClaim.fenceStore, adapter, appliedBatchStore: adapter, policy, now: clock,
+  });
+  assert.equal(rerun.outcome, "skipped");
+  assert.equal(rerun.batchPlan.summary.total_ops, 0);
+
+  for (const entry of manifest.models) {
+    const expected = tableRows(entry, current[entry.model_id]).rows;
+    for (const table of entry.tables) {
+      const expectedCount = expected.filter((row) => row.table === table.name).length;
+      const actualCount = db.prepare(`SELECT COUNT(*) AS count FROM ${table.name}`).get().count;
+      assert.equal(actualCount, expectedCount, `${entry.model_id}/${table.name} has no duplicate logical rows`);
+    }
+  }
 });
 
 test("a stale generation is rejected before the first mutation", { skip: !DatabaseSync }, async () => {
