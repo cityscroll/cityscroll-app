@@ -24,7 +24,19 @@ test("retained packet keeps the consumer receipt boundary honest", () => {
   assert.deepEqual(pointer.consumer_handoff.deduplication_keys, ["job_id", "run_key", "finding_id"]);
   assert.match(pointer.consumer_handoff.required_receipt_assertions[0], /one guide-review section/);
   assert.match(pointer.consumer_handoff.required_receipt_assertions[1], /zero duplicate/);
-  assert.equal(pointer.consumer_handoff.receipt.status, "not retained in this repository");
-  assert.equal(pointer.consumer_handoff.receipt.storage_location, "not declared by the private consumer");
-  assert.match(pointer.assertions["A2-replay"], /does not relabel a local rehearsal/);
+  const receipt = pointer.consumer_handoff.receipt;
+  assert.equal(receipt.status, "retained");
+  for (const field of ["repository", "path", "commit", "run_key", "owner", "entry_command"]) {
+    assert.equal(typeof receipt[field], "string", `retained receipt requires ${field}`);
+    assert.notEqual(receipt[field], "", `retained receipt requires a non-empty ${field}`);
+  }
+  assert.equal(receipt.repository, "fiduciary-heartbeat");
+  assert.equal(receipt.path, "docs/evidence/weekly-review-guide-review-consumer-receipt.json");
+  assert.equal(receipt.commit, "262b23f400e7ca2e6327737d956b35db38d0b551");
+  assert.equal(receipt.run_key, pointer.producer.run_key);
+  assert.equal(receipt.folded_section.section_id, "guide-review-2026-W39");
+  assert.equal(receipt.folded_section.section_count, 1);
+  assert.deepEqual(receipt.replay_result.new_finding_ids, []);
+  assert.equal(receipt.replay_result.section_count, 1);
+  assert.match(pointer.assertions["A2-replay"], /zero new items/);
 });
