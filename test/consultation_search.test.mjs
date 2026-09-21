@@ -23,6 +23,13 @@ test("consultation rounds are admitted as a complete canonical search family", (
   ]);
   assert.ok(corpus.documents.every((row) => admitSearchDocument(row).document));
   assert.ok(corpus.documents.every((row) => searchFamilyForResult(row) === "consultations"));
+
+  // Consultation facets remain available after SearchDocument admission compacts the row.
+  assert.deepEqual(corpus.documents[0].provenance.consultation, {
+    organizer: "NYC Department of Transportation",
+    geography: ["Church Avenue", "Flatbush Avenue", "Utica Avenue"],
+    category: "Transit service and corridor priorities",
+  });
 });
 
 test("rendering, safe handoff, archive status, and failed retrieval stay explicit", () => {
@@ -35,6 +42,22 @@ test("rendering, safe handoff, archive status, and failed retrieval stay explici
   assert.match(buildSearchLensHandoffHref(archived, { query: "budget", resolved_term: { canonical_tokens: ["budget"] } }, "/search/?q=budget"), /^\/consultations\/\?.*q=budget/);
   const failed = buildSearchRenderPlan({ state: "combined", keyword: null, semantic: { groups: [] }, keywordCoverage: { lanes: [{ id: "consultations", status: "unknown" }] } });
   assert.ok(failed.incomplete_families.includes("consultations"));
+});
+
+test("consultation source absence is refused and counted as not indexed", () => {
+  const missingSource = buildConsultationSearchDocuments([{
+    id: "dot-fast-buses-central-brooklyn",
+    title: "Fast Buses: Central Brooklyn",
+    sources: [],
+    channels: [],
+  }]);
+  assert.equal(missingSource.coverage.state, "not_indexed");
+  assert.equal(missingSource.coverage.not_indexed_count, 1);
+  assert.equal(missingSource.outcomes[0].reason, "missing_consultation_source_observation");
+
+  const unavailable = buildConsultationSearchDocuments({});
+  assert.equal(unavailable.coverage.state, "not_indexed");
+  assert.equal(unavailable.coverage.not_indexed_count, 0);
 });
 
 test("A3 one result per round: first-wins identity retains every channel reference", () => {
