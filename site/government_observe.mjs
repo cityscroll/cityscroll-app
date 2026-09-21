@@ -258,5 +258,5 @@ function renderObserveDocumentRaw(surface) {
 export function renderObserveDocument(surface) {
   return renderObserveDocumentRaw(surface)
     .replace("<head>", "<head><base href=\"/\">")
-    .replace('<main id="main">', '<main id="main" data-document-rendered="true">');
+    .replace('<main id="main" data-observe-root', '<main id="main" data-document-rendered="true" data-observe-root');
 }

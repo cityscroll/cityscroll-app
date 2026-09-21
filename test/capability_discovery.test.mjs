@@ -336,10 +336,11 @@ test("A6: capture harness re-renders both viewports against the retained manifes
     t.skip("Python playwright is not importable in this lane");
     return;
   }
-  await withPinnedClock("2026-09-16T12:00:00.000Z", async () => {
+  const manifest = JSON.parse(await readFile(CAPTURE_MANIFEST, "utf8"));
+  await withPinnedClock(manifest.capture_clock, async () => {
     const { stdout, stderr } = await execFileAsync("python3", [fileURLToPath(CAPTURE_SCRIPT), "--verify-only"], {
       cwd: repoRoot,
-      env: { ...process.env, CITYSCROLL_TEST_TIME_PIN: "2026-09-16T12:00:00.000Z" },
+      env: { ...process.env, CITYSCROLL_TEST_TIME_PIN: manifest.capture_clock },
       maxBuffer: 2 * 1024 * 1024,
       timeout: 120_000,
     });
