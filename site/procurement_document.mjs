@@ -80,6 +80,7 @@ import {
   renderContractSubstanceAccessNoteHtml,
   renderContractSubstanceHtml,
 } from "./procurement_contract_substance_ui.mjs";
+import { EMMONS_ANCHORS, EMMONS_ROUTES } from "./emmons_shelter_monitor_pack.mjs";
 
 
 function esc(value) {
@@ -755,12 +756,16 @@ export function renderProcurementDocument(object = {}, observations = [], {
     claimCaveatsHtml,
   ].filter(Boolean).join("");
   const canonical = procurementCanonicalHref(object);
+  const relatedMonitorPackHtml = id === `procurement:contract:${EMMONS_ANCHORS.procurement_id}`
+    ? `<p class="procurement-related-pack"><a href="${esc(EMMONS_ROUTES.issue)}">Open the 3218 Emmons shelter tracker</a></p>`
+    : "";
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}${opportunityMonth ? renderCalendarEventPreviewScript("/") : ""}${pursuitSnapshotHtml ? '<link rel="stylesheet" href="/procurement_pursuit_snapshot.css" data-route-style="procurement_pursuit_snapshot.css">' : ""}${relatedContextHtml ? '<link rel="stylesheet" href="/procurement_related_context.css" data-route-style="procurement_related_context.css">' : ""}${projectContextHtml ? '<link rel="stylesheet" href="/procurement_project_context.css" data-route-style="procurement_project_context.css">' : ""}${contractSubstanceHtml ? '<link rel="stylesheet" href="/procurement_contract_substance.css" data-route-style="procurement_contract_substance.css">' : ""}${coverageReader ? '<link rel="stylesheet" href="/coverage_reader_projection.css" data-route-style="coverage_reader_projection.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
 <body>${renderCivicDocumentMast({ current: "browse" })}<main class="node-document" data-civic-object-kind="procurement" data-procurement-id="${esc(id)}">
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
+${relatedMonitorPackHtml}
 ${pursuitSnapshotHtml}
 ${projectContextHtml}
 ${siteLifecycleContextHtml}

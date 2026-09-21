@@ -5,7 +5,7 @@
   "captured_at": "2026-09-20T00:00:00Z",
   "tool": "tools/capture_procurement_contract_substance.mjs",
   "served_build": {
-    "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+    "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
     "data_vintage": "2026-09-09T06:33:01.880Z",
     "source": "site/data/shared_procurement_read_model.json"
   },
@@ -97,9 +97,9 @@
           "evidence": {
             "evidence_type": "browser_dom",
             "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
-            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
             "data_vintage": "2026-09-09T06:33:01.880Z",
-            "render_hash": "b56334781c5b262aa291e8d2506d73b13c1fb411fbb01a794b4ab038fe722e92",
+            "render_hash": "2c74a6be5f984cbf51304b2ef78f5798f81d01c8627389222fe064716736bed8",
             "rendered": true,
             "initialization": "settled",
             "assertion": "BHRAGS page keeps exact contract identity, authorized total, paid total, and 31-payment coverage together",
@@ -144,9 +144,9 @@
           "evidence": {
             "evidence_type": "browser_dom",
             "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
-            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
             "data_vintage": "2026-09-09T06:33:01.880Z",
-            "render_hash": "b56334781c5b262aa291e8d2506d73b13c1fb411fbb01a794b4ab038fe722e92",
+            "render_hash": "2c74a6be5f984cbf51304b2ef78f5798f81d01c8627389222fe064716736bed8",
             "rendered": true,
             "initialization": "settled",
             "assertion": "BHRAGS facility site at 3218 Emmons Avenue is resolved to Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
@@ -245,9 +245,9 @@
           "evidence": {
             "evidence_type": "browser_dom",
             "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
-            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
             "data_vintage": "2026-09-09T06:33:01.880Z",
-            "render_hash": "1320d0891acce103732f3c57e26e8c87439f158ff4249b54128f32b1e22dfd3e",
+            "render_hash": "7a1ee1fb1aa4cd1afe726351e2ada84f8fc9ac563314ed06f3579aff4b8dbff3",
             "rendered": true,
             "initialization": "settled",
             "assertion": "S&P canonical page shows the retained below-$100,000 amount",
@@ -374,9 +374,9 @@
           "evidence": {
             "evidence_type": "browser_dom",
             "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
-            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
             "data_vintage": "2026-09-09T06:33:01.880Z",
-            "render_hash": "3af74a805a643802d747a4e4e22be59f2ca5a66d21eff26751f9c94861c78b52",
+            "render_hash": "9f5504db333248e7f68849b169dc65737ef368291218abe7e6f3ee93da9d7b92",
             "rendered": true,
             "initialization": "settled",
             "assertion": "AHA/EMS canonical page shows the retained below-$100,000 amount",
@@ -503,9 +503,9 @@
           "evidence": {
             "evidence_type": "browser_dom",
             "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
-            "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+            "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
             "data_vintage": "2026-09-09T06:33:01.880Z",
-            "render_hash": "15f241f1e3fbeeca5c25a97f86d71c265585a52ab83ef69bda1d1652be1f7dc4",
+            "render_hash": "9e4ba57e27eeb578f9b22c6b65782f072f0c4c18c6392a18d29f387eae7d2448",
             "rendered": true,
             "initialization": "settled",
             "assertion": "Quizizz canonical page shows the retained below-$100,000 amount",
@@ -565,66 +565,66 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
       "viewport": "desktop",
-      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
       "data_vintage": "2026-09-09T06:33:01.880Z",
       "assertion": "BHRAGS canonical page renders the named contract at 1440x900 after initialization",
-      "render_hash": "b56334781c5b262aa291e8d2506d73b13c1fb411fbb01a794b4ab038fe722e92"
+      "render_hash": "2c74a6be5f984cbf51304b2ef78f5798f81d01c8627389222fe064716736bed8"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
       "viewport": "mobile",
-      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
       "data_vintage": "2026-09-09T06:33:01.880Z",
       "assertion": "BHRAGS canonical page renders the named contract at 390x844 after initialization",
-      "render_hash": "b56334781c5b262aa291e8d2506d73b13c1fb411fbb01a794b4ab038fe722e92"
+      "render_hash": "2c74a6be5f984cbf51304b2ef78f5798f81d01c8627389222fe064716736bed8"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
       "viewport": "desktop",
-      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
       "data_vintage": "2026-09-09T06:33:01.880Z",
       "assertion": "S&P canonical page renders the named contract at 1440x900 after initialization",
-      "render_hash": "1320d0891acce103732f3c57e26e8c87439f158ff4249b54128f32b1e22dfd3e"
+      "render_hash": "7a1ee1fb1aa4cd1afe726351e2ada84f8fc9ac563314ed06f3579aff4b8dbff3"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
       "viewport": "mobile",
-      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
       "data_vintage": "2026-09-09T06:33:01.880Z",
       "assertion": "S&P canonical page renders the named contract at 390x844 after initialization",
-      "render_hash": "1320d0891acce103732f3c57e26e8c87439f158ff4249b54128f32b1e22dfd3e"
+      "render_hash": "7a1ee1fb1aa4cd1afe726351e2ada84f8fc9ac563314ed06f3579aff4b8dbff3"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
       "viewport": "desktop",
-      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
       "data_vintage": "2026-09-09T06:33:01.880Z",
       "assertion": "AHA/EMS canonical page renders the named contract at 1440x900 after initialization",
-      "render_hash": "3af74a805a643802d747a4e4e22be59f2ca5a66d21eff26751f9c94861c78b52"
+      "render_hash": "9f5504db333248e7f68849b169dc65737ef368291218abe7e6f3ee93da9d7b92"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
       "viewport": "mobile",
-      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
       "data_vintage": "2026-09-09T06:33:01.880Z",
       "assertion": "AHA/EMS canonical page renders the named contract at 390x844 after initialization",
-      "render_hash": "3af74a805a643802d747a4e4e22be59f2ca5a66d21eff26751f9c94861c78b52"
+      "render_hash": "9f5504db333248e7f68849b169dc65737ef368291218abe7e6f3ee93da9d7b92"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
       "viewport": "desktop",
-      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
       "data_vintage": "2026-09-09T06:33:01.880Z",
       "assertion": "Quizizz canonical page renders the named contract at 1440x900 after initialization",
-      "render_hash": "15f241f1e3fbeeca5c25a97f86d71c265585a52ab83ef69bda1d1652be1f7dc4"
+      "render_hash": "9e4ba57e27eeb578f9b22c6b65782f072f0c4c18c6392a18d29f387eae7d2448"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
       "viewport": "mobile",
-      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
       "data_vintage": "2026-09-09T06:33:01.880Z",
       "assertion": "Quizizz canonical page renders the named contract at 390x844 after initialization",
-      "render_hash": "15f241f1e3fbeeca5c25a97f86d71c265585a52ab83ef69bda1d1652be1f7dc4"
+      "render_hash": "9e4ba57e27eeb578f9b22c6b65782f072f0c4c18c6392a18d29f387eae7d2448"
     }
   ],
   "obligations": [
@@ -779,7 +779,7 @@
       "label": "Firematic",
       "status": "bounded",
       "route": "/procurements/procurement%3Acontract%3ACT185720228800365/",
-      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
       "data_vintage": "2026-09-09T06:33:01.880Z",
       "allowed_claims": [
         "amendment_total"
@@ -796,7 +796,7 @@
       "label": "TAMEER",
       "status": "bounded",
       "route": "/procurements/procurement%3Acontract%3ACT185020228802305/",
-      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
       "data_vintage": "2026-09-09T06:33:01.880Z",
       "allowed_claims": [
         "amendment_total"
@@ -811,7 +811,7 @@
     {
       "example": "museum-project-context",
       "route": "/notices/20260810048/",
-      "revision": "cbd270f034d52562d7ff740b36108b4d52a6927c",
+      "revision": "96fedc6869fa23b2dc45ff5e3c225bbe4a186532",
       "data_vintage": "2026-09-09T06:33:01.880Z",
       "status": "context_only",
       "allowed_claims": [

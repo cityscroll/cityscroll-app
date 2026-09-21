@@ -14,6 +14,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import edgeWorker from "../site/pages_edge.mjs";
+import { withPinnedClock } from "../test/helpers/test_clock.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const MANIFEST_PATH = new URL("../docs/evidence/procurement-disclosure-production-proof/manifest.json", import.meta.url);
@@ -88,20 +89,22 @@ export async function buildProcurementDisclosureProductionProof({
   const tip = revision;
   const existing = readJson(MANIFEST_PATH);
   const entries = [];
-  for (const id of CONTRACTS) {
-    for (const [viewport, header] of VIEWPORTS) {
-      const html = await servedContract(id, { "X-Test-Viewport": header }, env);
-      const route = `/procurements/procurement%3Acontract%3A${id}/`;
-      entries.push({
-        route,
-        viewport,
-        revision: tip,
-        data_vintage: performance.snapshot_date,
-        assertion: `${viewport} server-rendered contract page is keyboard-linkable and free of empty headings`,
-        sha256: sha256(html),
-      });
+  await withPinnedClock(existing.capture_clock, async () => {
+    for (const id of CONTRACTS) {
+      for (const [viewport, header] of VIEWPORTS) {
+        const html = await servedContract(id, { "X-Test-Viewport": header }, env);
+        const route = `/procurements/procurement%3Acontract%3A${id}/`;
+        entries.push({
+          route,
+          viewport,
+          revision: tip,
+          data_vintage: performance.snapshot_date,
+          assertion: `${viewport} server-rendered contract page is keyboard-linkable and free of empty headings`,
+          sha256: sha256(html),
+        });
+      }
     }
-  }
+  });
   return {
     schema: "cityscroll.render_evidence_manifest.v1",
     revision: tip,

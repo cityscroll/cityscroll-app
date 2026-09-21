@@ -41,7 +41,7 @@
       "scroll_width": 1440,
       "client_width": 1440,
       "inner_width": 1440,
-      "content_height": 3782,
+      "content_height": 3863,
       "overflow": false
     },
     "mobile": {
@@ -52,13 +52,13 @@
       "scroll_width": 390,
       "client_width": 390,
       "inner_width": 390,
-      "content_height": 4712,
+      "content_height": 4789,
       "overflow": false
     },
     "keyboard": {
-      "visible_native_links": 29,
+      "visible_native_links": 30,
       "negative_tabindex": 0,
-      "reachable_links": 29,
+      "reachable_links": 30,
       "named_destinations": {
         "expected_destinations": [
           "/agencies/homeless-services/",
@@ -79,7 +79,7 @@
           "https://a0333-passportpublic.nyc.gov/contracts.html"
         ],
         "missing_destinations": [],
-        "tabs_pressed": 29,
+        "tabs_pressed": 30,
         "disclosures_opened": [
           "Payment source details",
           "Inspect source details"
@@ -193,7 +193,7 @@
           "valid-lang",
           "video-caption"
         ],
-        "nodes_examined": 281,
+        "nodes_examined": 284,
         "violations": [
           {
             "id": "heading-order",
@@ -248,7 +248,7 @@
           },
           {
             "id": "color-contrast",
-            "nodes": 174
+            "nodes": 176
           },
           {
             "id": "definition-list",
@@ -324,7 +324,7 @@
           },
           {
             "id": "link-name",
-            "nodes": 28
+            "nodes": 29
           },
           {
             "id": "list",
@@ -352,7 +352,7 @@
           },
           {
             "id": "region",
-            "nodes": 263
+            "nodes": 266
           },
           {
             "id": "scope-attr-valid",
@@ -376,7 +376,7 @@
           }
         ],
         "serious_or_critical": [],
-        "markup_sha256": "cb3408842946d86a64f74faa8a5139837979c46054d60862a91d88fb35885464",
+        "markup_sha256": "28b9d855183be5b33836aacf7f0c15532ec977eba7b803211232ee65bc0d4eef",
         "scanned_at": "2026-09-09T06:33:01.880Z"
       },
       "mobile": {
@@ -475,7 +475,7 @@
           "valid-lang",
           "video-caption"
         ],
-        "nodes_examined": 240,
+        "nodes_examined": 243,
         "violations": [
           {
             "id": "heading-order",
@@ -530,7 +530,7 @@
           },
           {
             "id": "color-contrast",
-            "nodes": 146
+            "nodes": 148
           },
           {
             "id": "definition-list",
@@ -606,7 +606,7 @@
           },
           {
             "id": "link-name",
-            "nodes": 24
+            "nodes": 25
           },
           {
             "id": "list",
@@ -634,7 +634,7 @@
           },
           {
             "id": "region",
-            "nodes": 222
+            "nodes": 225
           },
           {
             "id": "scope-attr-valid",
@@ -658,7 +658,7 @@
           }
         ],
         "serious_or_critical": [],
-        "markup_sha256": "cb3408842946d86a64f74faa8a5139837979c46054d60862a91d88fb35885464",
+        "markup_sha256": "28b9d855183be5b33836aacf7f0c15532ec977eba7b803211232ee65bc0d4eef",
         "scanned_at": "2026-09-09T06:33:01.880Z"
       }
     },
