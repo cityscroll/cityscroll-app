@@ -176,9 +176,7 @@ def main() -> None:
             all_files.extend(capture_one(browser, base_url, stem, label))
         browser.close()
 
-    revision = subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True
-    ).stdout.strip()
+    revision = resolve_repository_revision(ROOT)
     receipt = {
         "schema": "cityscroll.land-procedure-aware-timeline.capture.v1",
         "card": "cityscroll-engineering/land-procedure-aware-timeline",

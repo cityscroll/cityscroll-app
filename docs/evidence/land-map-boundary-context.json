@@ -2,7 +2,7 @@
   "schema": "cityscroll.land-map-boundary-context-receipt.v1",
   "card": "cityscroll-engineering/land-map-boundary-context",
   "browser_mode": "headless chromium (playwright), remote hosts blocked",
-  "revision": "417bc4e40cc6537921440ec52351a0de3d3273d3",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "artifact_vintage": "2026-05-26",
   "routes": {
     "brooklyn": "/browse/zoning/?boro=Brooklyn&view=map",

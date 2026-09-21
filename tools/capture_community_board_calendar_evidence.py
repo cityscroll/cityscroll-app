@@ -13,6 +13,8 @@ state, and the resulting assertion.
 """
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import json
 import subprocess
 import sys
@@ -61,10 +63,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 def git_revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def run_axe(page, selector: str | None = None) -> dict:
     page.add_script_tag(path=str(AXE))

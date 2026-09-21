@@ -3,7 +3,7 @@
   "card": "cityscroll-engineering/guide-documentation-map",
   "capture_mode": "public_base_playwright_no_committed_image",
   "base": "https://cityscroll.org",
-  "repository_revision": "ad171636d835ffec49c2db9bb1dfaa9d87dc0433",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "note": "A bounded baseline of About and the entry points the public guide will link from and back to, taken against the public deploy so it records what a signed-out reader actually sees. Captured images stay under the gitignored .artifacts/ path; the sha256 of each is the retained proof. render_structure_sha256 hashes the main landmark's element skeleton and is stable across an ordinary data refresh; content_sha256 hashes its rendered markup and is a point-in-time observation of live civic records, not a regression baseline. No accessibility gate ran here: this is a content and entry-point baseline, and the accessibility proof belongs to the change that ships a guide surface.",
   "data_vintage": "Live public deploy read at capture time. Record inventories on these surfaces roll with their publishers; the source-contract registry carried 63 contracts at this revision.",
   "viewports": [

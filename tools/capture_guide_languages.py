@@ -1,3 +1,5 @@
+from repository_revision import resolve_repository_revision
+
 #!/usr/bin/env python3
 """Read every static guide document without JavaScript and retain only public receipts.
 
@@ -68,7 +70,7 @@ def main():
     spec=json.loads(subprocess.check_output(['node','--input-type=module','-e',
         "import {loadGuide} from './tools/build_guide_documents.mjs'; import {loadGuideCatalog} from './tools/guide_translation_catalog.mjs'; const c=loadGuideCatalog(); console.log(JSON.stringify({locales:['en',...c.SHIPPING_LANGS],meta:c.LANG_META,routes:['/guide/',...loadGuide().articles.map(a=>a.url)]}))"],cwd=ROOT,text=True))
     locales=[] if args.journeys_only else (args.locales.split(',') if args.locales else spec['locales'])
-    revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    revision=resolve_repository_revision(ROOT)
     scratch=ROOT/'.artifacts/guide-language/rendered';scratch.mkdir(parents=True,exist_ok=True)
     receipts=[]
     server,thread,base=serve(args.site_dir)

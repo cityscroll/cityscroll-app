@@ -5,6 +5,8 @@ Capture proof is the committed manifest. Image binaries stay ignored.
 """
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import hashlib
 import json
 import subprocess
@@ -38,19 +40,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 def git_revision() -> str:
-    # Neighbouring Desk evidence manifests record the branch base, not the
-    # feature HEAD. Prefer merge-base with origin/main; fall back to HEAD.
-    merge_base = subprocess.run(
-        ["git", "merge-base", "HEAD", "origin/main"],
-        cwd=ROOT, capture_output=True, text=True,
-    )
-    sha = merge_base.stdout.strip() if merge_base.returncode == 0 else ""
-    if not sha:
-        sha = subprocess.run(
-            ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-        ).stdout.strip()
-    return sha[:12]
-
+    return resolve_repository_revision(ROOT)[:12]
 
 def build_pages() -> dict:
     script = """

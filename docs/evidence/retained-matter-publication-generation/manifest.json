@@ -2,7 +2,7 @@
   "schema": "cityscroll.retained_matter_publication_generation_evidence.v1",
   "engineering_record": "cityscroll-engineering/retained-matter-publication-generation",
   "renderer": "tools/render_retained_matter_publication_fixtures.mjs",
-  "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": "2026-09-04T13:09:00.447Z",
   "captured_at": "2026-09-06T22:16:38Z",
   "image_directory": ".artifacts/retained-matter-publication-generation",
@@ -17,7 +17,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px a multi-matter hearing requires an explicit choice",
@@ -50,7 +50,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px a multi-matter hearing requires an explicit choice",
@@ -83,7 +83,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the current published generation shows the official action and source evidence",
@@ -116,7 +116,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the current published generation shows the official action and source evidence",
@@ -149,7 +149,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px a later update names subcommittee approval and a native history link",
@@ -182,7 +182,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px a later update names subcommittee approval and a native history link",
@@ -215,7 +215,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px an older static fallback remains usable and does not claim current coverage",
@@ -248,7 +248,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px an older static fallback remains usable and does not claim current coverage",
@@ -281,7 +281,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px a stale refresh keeps last-known history visible",
@@ -313,7 +313,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px a stale refresh keeps last-known history visible",
@@ -345,7 +345,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px failed confirmation is distinct from successful following",
@@ -377,7 +377,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px failed confirmation is distinct from successful following",
@@ -409,7 +409,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px an unsupported source is not rendered as a saved watch",
@@ -441,7 +441,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px an unsupported source is not rendered as a saved watch",
@@ -473,7 +473,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px keyboard focus lands on the Back control and Back state is preserved",
@@ -507,7 +507,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px keyboard focus lands on the Back control and Back state is preserved",
@@ -541,7 +541,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the exact-matter follow control remains a native destination",
@@ -574,7 +574,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the exact-matter follow control remains a native destination",
@@ -607,7 +607,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "disabled",
       "assertion": "at 390px native matter history links remain usable with scripting disabled",
@@ -635,7 +635,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "disabled",
       "assertion": "at 1440px native matter history links remain usable with scripting disabled",
@@ -663,7 +663,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px zoomed to 200% the matter page reflows without horizontal overflow",
@@ -700,7 +700,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px zoomed to 200% the matter page reflows without horizontal overflow",

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_pursuit_decision_windows_manifest.v1",
   "captured_at": "2026-09-04T18:25:36Z",
-  "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "note": "Card 2 (procurement-pursuit-decision): the provenance-safe opportunity window. Screenshot binaries are not committed to this repository; they are written to an external directory (default a docs-evidence/ sibling of the repository root, override with CAPTURE_EXTERNAL_OUT) named by 'external_filename' below, and this manifest is the reproducible, reviewable record of what each capture shows and why.",
   "external_output_directory_note": "Not committed; see external_filename per capture. Re-run this script to regenerate byte-identical captures (same sha256) at this revision.",
   "captures": [
@@ -13,7 +13,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],
@@ -36,7 +36,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],
@@ -59,7 +59,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],
@@ -82,7 +82,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],
@@ -105,7 +105,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],
@@ -128,7 +128,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],
@@ -151,7 +151,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],
@@ -174,7 +174,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],
@@ -197,7 +197,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],
@@ -220,7 +220,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8eac76bc5f4204e43dd65d31a26bad1057ab15a3",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],

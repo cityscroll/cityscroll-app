@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.hearing_context_capture.v1",
   "captured_at": "2026-09-07T18:40:05.279988+00:00",
-  "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": {
     "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
     "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -31,7 +31,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -131,7 +131,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -231,7 +231,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -313,7 +313,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -395,7 +395,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -478,7 +478,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -514,7 +514,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -550,7 +550,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -577,7 +577,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -668,7 +668,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -759,7 +759,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -850,7 +850,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -941,7 +941,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -1032,7 +1032,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -1123,7 +1123,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -1214,7 +1214,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -1305,7 +1305,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -1396,7 +1396,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -1487,7 +1487,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",
@@ -1578,7 +1578,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f64a892a4606b20b54adf1689e2234a94a227978",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "community_board_hearing_context": "2026-09-07T18:12:14.249Z",
         "community_board_budget_register": "2026-09-07T11:54:00.629Z",

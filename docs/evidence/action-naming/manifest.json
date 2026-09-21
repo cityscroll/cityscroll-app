@@ -3,7 +3,7 @@
   "record": "cityscroll-engineering/named-next-step-actions",
   "route": "component-harness:action-naming",
   "harness": "test/harness/action_scent_harness.html",
-  "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
   "timezone": "America/New_York",
   "captured_at": "2026-09-06T03:28:24Z",
@@ -21,7 +21,7 @@
         390,
         844
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px each of the 4 act-by cards states its window kind, its exact date and its next step as three different things; the reported procurement card now reads \"See how to respond\" and points at /notices/bid-open, and no control on the lane promises material positioned elsewhere on the page",
@@ -56,7 +56,7 @@
         1440,
         900
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px each of the 4 act-by cards states its window kind, its exact date and its next step as three different things; the reported procurement card now reads \"See how to respond\" and points at /notices/bid-open, and no control on the lane promises material positioned elsewhere on the page",
@@ -91,7 +91,7 @@
         390,
         844
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px the 2 external submission controls each carry the arrow, the isolated new tab and the announcement that goes with one, while the 5 internal controls carry none of that \u2014 and every card offering a handoff still offers an ordinary internal link beside it",
@@ -122,7 +122,7 @@
         1440,
         900
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px the 2 external submission controls each carry the arrow, the isolated new tab and the announcement that goes with one, while the 5 internal controls carry none of that \u2014 and every card offering a handoff still offers an ordinary internal link beside it",
@@ -153,7 +153,7 @@
         390,
         844
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px activating a preview opens a bounded summary in place: the reader stays on the same URL, the panel submits nothing and subscribes to nothing, 0 requests were made and none of them reached a publisher, and the publisher's record inside the panel is offered as the handoff it is rather than as another page of this site",
@@ -186,7 +186,7 @@
         1440,
         900
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px activating a preview opens a bounded summary in place: the reader stays on the same URL, the panel submits nothing and subscribes to nothing, 0 requests were made and none of them reached a publisher, and the publisher's record inside the panel is offered as the handoff it is rather than as another page of this site",
@@ -219,7 +219,7 @@
         390,
         844
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px the preview takes focus onto its Close control, and both Close and Escape return focus to the exact trigger that opened it rather than dropping it on the document",
@@ -248,7 +248,7 @@
         1440,
         900
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px the preview takes focus onto its Close control, and both Close and Escape return focus to the exact trigger that opened it rather than dropping it on the document",
@@ -277,7 +277,7 @@
         390,
         844
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px a reader inspects an event in place, follows the named full-page link to https://cityscroll.org/x/density-spread-a, returns with Back to the same lane and month, and continues the original task by inspecting the same event again",
@@ -306,7 +306,7 @@
         1440,
         900
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px a reader inspects an event in place, follows the named full-page link to https://cityscroll.org/x/density-spread-a, returns with Back to the same lane and month, and continues the original task by inspecting the same event again",
@@ -335,7 +335,7 @@
         390,
         844
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px the preview opens from the keyboard alone and keeps focus inside it, and all 7 of the lane's next steps are ordinary focusable destinations",
@@ -365,7 +365,7 @@
         1440,
         900
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px the preview opens from the keyboard alone and keeps focus inside it, and all 7 of the lane's next steps are ordinary focusable destinations",
@@ -395,7 +395,7 @@
         390,
         844
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px a modified click on an occurrence is left to the browser \u2014 no preview opens and the reader is not navigated away \u2014 and with scripting off no inspection control is offered at all while all 7 named next steps still work as links",
@@ -425,7 +425,7 @@
         1440,
         900
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px a modified click on an occurrence is left to the browser \u2014 no preview opens and the reader is not navigated away \u2014 and with scripting off no inspection control is offered at all while all 7 named next steps still work as links",
@@ -455,7 +455,7 @@
         390,
         844
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px a preview whose optional enrichment fails keeps the selected item, every fact the cell was admitted with, and a working full-page link that is still named for what it opens; the failure is stated in its own line rather than replacing anything",
@@ -485,7 +485,7 @@
         1440,
         900
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px a preview whose optional enrichment fails keeps the selected item, every fact the cell was admitted with, and a working full-page link that is still named for what it opens; the failure is stated in its own line rather than replacing anything",
@@ -515,7 +515,7 @@
         390,
         844
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at the 195px CSS viewport a 200 percent zoom of a 390px window produces, the Now lane and the opened preview both read without any horizontal page scrolling, and every next step keeps its name",
@@ -545,7 +545,7 @@
         1440,
         900
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at the 720px CSS viewport a 200 percent zoom of a 1440px window produces, the Now lane and the opened preview both read without any horizontal page scrolling, and every next step keeps its name",
@@ -575,7 +575,7 @@
         390,
         844
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 390px every control this contract adds or renames \u2014 each named next step, the inspection trigger and every control in the panel \u2014 is at least 44px tall, so none of them is a target a finger cannot land on",
@@ -607,7 +607,7 @@
         1440,
         900
       ],
-      "revision": "0698b5a8a7dec0696a38ab1edf9c48512b13cefd",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-08-03 (Now lane) / 2026-03-15 (shared month)",
       "timezone": "America/New_York",
       "assertion": "at 1440px every control this contract adds or renames \u2014 each named next step, the inspection trigger and every control in the panel \u2014 is at least 24px tall, so none of them is a target a finger cannot land on",

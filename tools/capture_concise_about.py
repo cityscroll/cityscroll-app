@@ -1,3 +1,5 @@
+from repository_revision import resolve_repository_revision
+
 #!/usr/bin/env python3
 """Check concise About, localized exact links and mock-only feedback; images stay ignored."""
 import argparse
@@ -151,7 +153,7 @@ def main():
     parser.add_argument('--locales', default='en,es,zh-Hans,ru,bn,ht,ko,fr,pl,ar,ur')
     args = parser.parse_args()
     SCRATCH.mkdir(parents=True, exist_ok=True)
-    revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+    revision = resolve_repository_revision(ROOT)
     before = snapshot(args.before)
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)

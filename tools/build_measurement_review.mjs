@@ -45,6 +45,7 @@ import {
 } from "../site/measurement_review_source.mjs";
 import { persistScheduleResult, replayOutbox } from "./external_schedule_outbox.mjs";
 import { primaryDocumentOutputs } from "./build_primary_documents.mjs";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT_DIR = join(ROOT, ".artifacts/measurement-review");
@@ -76,7 +77,7 @@ export function parseArgs(argv) {
 }
 
 function gitHead() {
-  return execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).trim();
+  return resolveRepositoryRevision(ROOT);
 }
 
 /** The route a built document is served at, derived from where it sits in the site tree. */

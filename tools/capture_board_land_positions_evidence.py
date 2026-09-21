@@ -32,6 +32,8 @@ sha256 of the section's own rendered content the assertion was made against.
 """
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import hashlib
 import json
 import subprocess
@@ -113,9 +115,7 @@ def serve(handler):
 
 
 def revision() -> str:
-    return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT,
-                          capture_output=True, text=True, check=True).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def sha256_of(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()

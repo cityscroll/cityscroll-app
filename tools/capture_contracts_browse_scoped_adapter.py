@@ -22,6 +22,7 @@ import json
 import subprocess
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
+from repository_revision import resolve_repository_revision
 
 from playwright.sync_api import Route, sync_playwright
 
@@ -322,17 +323,7 @@ def base_revision() -> str:
     Both phases name the same base so the two receipts stay comparable across
     rebases and amends of the change itself.
     """
-    for command in (
-        ["git", "merge-base", "HEAD", "origin/main"],
-        ["git", "rev-parse", "HEAD"],
-    ):
-        try:
-            return subprocess.run(
-                command, cwd=ROOT, capture_output=True, text=True, check=True,
-            ).stdout.strip()
-        except Exception:  # pragma: no cover - evidence should never fail on git
-            continue
-    return "unknown"
+    return resolve_repository_revision(ROOT)
 
 
 def main() -> int:

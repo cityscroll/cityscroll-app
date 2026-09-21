@@ -14,6 +14,8 @@ case), per the workstream's no-committed-image-binaries convention (spec.md).
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import hashlib
 import json
 import re
@@ -250,9 +252,7 @@ def main() -> None:
     if hashes_by_case["partially_translated_locale"] & english:
         raise SystemExit("the partially translated locale fell all the way back to English")
 
-    repository_revision = subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
+    repository_revision = resolve_repository_revision(ROOT)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     manifest = {

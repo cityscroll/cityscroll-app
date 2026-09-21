@@ -15,7 +15,7 @@
         "route": "/?lang=es"
       },
       "case": "site-index",
-      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "route": "/?lang=es",
       "sha256": "0ace7f7c40b88ba55afdf22e5a060aaf4125a538068ae7e32ff4b7e47008bf7d",
       "viewport": [
@@ -35,7 +35,7 @@
         "route": "/following/?lang=es"
       },
       "case": "civic-document-chrome",
-      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "route": "/following/?lang=es",
       "sha256": "3c30e70cd167060bca3d6ff645ea178637cf9a6cab6ae964b0800cb42fed5337",
       "viewport": [
@@ -55,7 +55,7 @@
         "route": "/?lang=es"
       },
       "case": "boot-matter-copy",
-      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "route": "/?lang=es",
       "sha256": "a42b29ac9cb63f7cc42bc643f08d44260e5977651eec7d16b918060cb4ea1fa6",
       "viewport": [
@@ -75,7 +75,7 @@
         "route": "/?lang=es#matter/84124P0003001"
       },
       "case": "workspace-matter-copy",
-      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "route": "/?lang=es#matter/84124P0003001",
       "sha256": "2ddc516281e75edb04f43f2163c240a6cf557b9be0cbd0ef6c00146d2bf19a94",
       "viewport": [
@@ -95,7 +95,7 @@
         "route": "/?lang=es (directory runtime fixture)"
       },
       "case": "agency-directory-runtime",
-      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "route": "/?lang=es (directory runtime fixture)",
       "sha256": "d1c81eb82c7510c9d13a9900617da4ee41baf774fee4442b1b477936e140fbd7",
       "viewport": [
@@ -115,7 +115,7 @@
         "route": "/?lang=es (agency connections browser fixture)"
       },
       "case": "agency-connections",
-      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "route": "/?lang=es (agency connections browser fixture)",
       "sha256": "b152d80b95daca9c73a0a6359b61665802927df8a1db32cec5467d8f5501d77a",
       "viewport": [
@@ -135,7 +135,7 @@
         "route": "/?lang=ar (vendor footprint browser fixture)"
       },
       "case": "vendor-footprint",
-      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "route": "/?lang=ar (vendor footprint browser fixture)",
       "sha256": "efa491be3ec6fbe21fb1238616753331b3385239a15181d6bb0c631d94dd85b3",
       "viewport": [
@@ -155,7 +155,7 @@
         "route": "/following/?lang=es"
       },
       "case": "following-view",
-      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "route": "/following/?lang=es",
       "sha256": "2d1edffa9b25b17ac6a93e46da0db6283c1f2a302ba6e22f616b59696bdbfb86",
       "viewport": [
@@ -175,7 +175,7 @@
         "route": "/?lang=es#map"
       },
       "case": "routing",
-      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "route": "/?lang=es#map",
       "sha256": "60b6d52b37caf316b70eaba6b25b2c8a3af6ab96da32cf2f2380c9b377c0e6ce",
       "viewport": [
@@ -184,7 +184,7 @@
       ]
     }
   ],
-  "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "schema": "cityscroll.internal_language_links_browser_evidence.v1",
   "subject": "selected-language continuity across the inherited internal-link inventory"
 }

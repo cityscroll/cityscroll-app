@@ -256,9 +256,7 @@ def main() -> None:
                 harness_path.unlink(missing_ok=True)
         browser.close()
 
-    revision = subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True
-    ).stdout.strip()
+    revision = resolve_repository_revision(ROOT)
     receipt = {
         "schema": "cityscroll.land-authority-evidence-state-affordances.capture.v1",
         "card": "cityscroll-engineering/land-authority-evidence-state-affordances",

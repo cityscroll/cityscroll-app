@@ -12,6 +12,7 @@ import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 import edgeWorker from "../site/pages_edge.mjs";
 import { withPinnedClock } from "../test/helpers/test_clock.mjs";
@@ -75,9 +76,7 @@ async function servedContract(id, headers, env) {
 }
 
 function gitTip() {
-  const result = spawnSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" });
-  if (result.status !== 0) throw new Error(result.stderr || "git rev-parse HEAD failed");
-  return result.stdout.trim();
+  return resolveRepositoryRevision(ROOT);
 }
 
 export async function buildProcurementDisclosureProductionProof({

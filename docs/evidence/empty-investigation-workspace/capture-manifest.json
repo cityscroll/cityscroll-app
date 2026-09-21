@@ -15,7 +15,7 @@
       "height": 900
     }
   ],
-  "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "captures": [
     {
       "state": "empty",
@@ -25,7 +25,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "file": null,
       "sha256": "aa7439f07112da806c202b1f6a0591608e31397f1e5aed260cca92b82340bc3a",
       "assertion": "no investigation stored yet: the guide replaces all six output actions",
@@ -52,7 +52,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "file": null,
       "sha256": "b07038af18dc3fb9a41afbd2aa895e075ba3e01ab57162fc55764f775cb11e07",
       "assertion": "one item pinned: every existing control returns, the guide is gone",
@@ -84,7 +84,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "file": null,
       "sha256": "21145fbf6be7bd0e73cbf367c38b669b0067936e897e8f0867b1feb570a2719f",
       "assertion": "deleting the only pinned item (in the live page) restores the guide without a reload",
@@ -111,7 +111,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "file": null,
       "sha256": "aa7439f07112da806c202b1f6a0591608e31397f1e5aed260cca92b82340bc3a",
       "assertion": "a stored collection that is already empty (e.g. after a prior clear) reloads to the guide, not a stale action bar",
@@ -138,7 +138,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "file": null,
       "sha256": "9fedded1807b40cbacde212113cf2db841289cc6f33de1a506e5d2e3bb7ffaee",
       "assertion": "no investigation stored yet: the guide replaces all six output actions",
@@ -165,7 +165,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "file": null,
       "sha256": "740f37ca2aba27ff8ad3038c63e70f633949c02d6175f923c18a9b8415e74df6",
       "assertion": "one item pinned: every existing control returns, the guide is gone",
@@ -197,7 +197,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "file": null,
       "sha256": "d6de2b80b5ea08fbad9fc678e35ea4c25a346968eb5dff5ffe7e7e8dc13d5816",
       "assertion": "deleting the only pinned item (in the live page) restores the guide without a reload",
@@ -224,7 +224,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "2ea0193a62ad2e49c0f995ad45312262c27fd205",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "file": null,
       "sha256": "9fedded1807b40cbacde212113cf2db841289cc6f33de1a506e5d2e3bb7ffaee",
       "assertion": "a stored collection that is already empty (e.g. after a prior clear) reloads to the guide, not a stale action bar",

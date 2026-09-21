@@ -9,7 +9,7 @@
     "name": "not-applicable",
     "note": "network-order trace; no rendered viewport was captured"
   },
-  "revision": null,
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": {
     "fixture": "site/data/procurement_browse_rows.json",
     "fixture_generated_at": "2026-08-18T04:05:51.552Z",

@@ -37,6 +37,7 @@ import { fileURLToPath } from "node:url";
 
 import { closurePath, loadClosure } from "./card_profile_closure.mjs";
 import { isolatedGitEnv } from "./architecture_evidence_shards.mjs";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 // A test seam, and only that. The blocked, stale and malformed-manifest paths
 // have to be exercised against a checkout that really is missing its corpus,
@@ -147,7 +148,7 @@ function sourceVintage(anchor, missing) {
 
 function revision() {
   try {
-    return git(["rev-parse", "HEAD"]).trim();
+    return resolveRepositoryRevision(ROOT);
   } catch {
     return null;
   }

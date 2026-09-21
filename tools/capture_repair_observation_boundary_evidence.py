@@ -31,6 +31,8 @@ Run: python3 tools/capture_repair_observation_boundary_evidence.py
 """
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import hashlib
 import json
 import subprocess
@@ -82,10 +84,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 def git_revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def build_corpus() -> dict:
     """Ask the contract and the renderer for their own output, so nothing drifts."""

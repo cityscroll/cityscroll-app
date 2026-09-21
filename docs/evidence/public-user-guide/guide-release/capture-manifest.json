@@ -3,7 +3,7 @@
   "record": "cityscroll-engineering/public-guide-release",
   "capture_mode": "local_static_site_playwright_no_committed_image",
   "base": "local static site build (site/)",
-  "repository_revision": "c5561036e07bb7070fd276ab895c75668edc2d23",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "repository_state": "uncommitted changes present at capture time",
   "note": "Usability evidence for the published guide. Every check runs against the tracked static documents served locally, so it reproduces from a checkout with no network and no deploy. Accessibility, keyboard, reflow and link checks cover the guide documents; the front page and the search document keep their existing owners and are exercised here only as the journey's endpoints. A guide link to one civic record is followed only far enough to prove the route serves: those documents are materialized at deploy time, so a local build answers with the application shell rather than the record. Each such route is named per capture under record content deferred to live check, and the records themselves are proved by the live loads recorded in docs/evidence/public-user-guide/. Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, per docs/capture-manifest-guard.md.",
   "data_vintage": "Not applicable to the guide documents: they are prose built from tracked sources and contain no civic records. Their review dates are editorial facts recorded in the article sources, not observations of live data. The search document is served from the local build and its results are not asserted.",

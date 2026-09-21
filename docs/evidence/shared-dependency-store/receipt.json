@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.shared-dependency-store-receipt.v1",
-  "revision": "5f3cdd3474a0e993964ea6d941dcd3d82ec4ec54",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "lockfile": {
     "path": "worker/pnpm-lock.yaml",
     "sha256": "e8ddb27a2738f3582d45feb8aa03c3f0fb823b261c9aa274cf8c80cc4148ccb0"

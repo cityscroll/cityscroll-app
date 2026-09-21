@@ -29,6 +29,7 @@ import { fileURLToPath } from "node:url";
 
 import { loadClosure } from "./card_profile_closure.mjs";
 import { decide } from "./card_profile_router.mjs";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CONFIG_PATH = resolve(ROOT, "tools/card-profile/profile.config.v1.json");
@@ -271,7 +272,7 @@ function recordGate(argv) {
     gate_class: id,
     title: gate.title,
     command: gate.command,
-    revision: git(["rev-parse", "HEAD"]).trim(),
+    revision: resolveRepositoryRevision(ROOT),
     exit_status: result.status ?? 1,
     recorded_profile: recordedIn.profile,
     method:

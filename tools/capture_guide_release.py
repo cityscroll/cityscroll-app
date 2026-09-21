@@ -35,6 +35,8 @@ is never rewritten to describe a different change:
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import functools
 import hashlib
@@ -399,10 +401,7 @@ def sha256_file(path: Path) -> str:
 
 
 def repository_revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, check=True, capture_output=True, text=True
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def working_tree_state() -> str:
     """Say whether the captured documents were the committed ones.

@@ -31,6 +31,8 @@ committed -- this repository does not carry capture binaries.
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import hashlib
 import json
@@ -89,10 +91,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 def git_revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def render_fixtures() -> dict:
     """The real module's own output, rendered once per run."""

@@ -25,6 +25,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 import { CAPABILITY_REGISTRY } from "../capabilities/registry.mjs";
 import {
@@ -67,7 +68,7 @@ export function parseArgs(argv) {
 }
 
 function gitHead() {
-  return execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).trim();
+  return resolveRepositoryRevision(ROOT);
 }
 
 function changedPathsSince(since) {

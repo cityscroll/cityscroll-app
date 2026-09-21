@@ -13,6 +13,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 import {
   ACCESS_STATES,
@@ -101,9 +102,7 @@ function sha256(value) {
 }
 
 function gitRevision() {
-  const result = spawnSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" });
-  if (result.status !== 0) throw new Error("fixture capture requires a git revision");
-  return result.stdout.trim();
+  return resolveRepositoryRevision(ROOT);
 }
 
 export function procurementRoute(contractId) {

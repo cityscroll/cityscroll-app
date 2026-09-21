@@ -12,6 +12,8 @@ is manual evidence collection, never a resident read or a required CI input.
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import base64
 import hashlib
@@ -117,7 +119,7 @@ def capture():
     server, thread, base = serve(ROOT / "_site")
     captures = []
     journeys = []
-    revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    revision = resolve_repository_revision(ROOT)
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch()

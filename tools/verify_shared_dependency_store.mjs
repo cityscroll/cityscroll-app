@@ -5,6 +5,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 const root = resolve(new URL("..", import.meta.url).pathname);
 const args = process.argv.slice(2);
@@ -55,7 +56,7 @@ const first = join(temporary, "checkout-a");
 const second = join(temporary, "checkout-b");
 const baseline = join(temporary, "baseline-checkout");
 const missingStore = join(temporary, "missing-store");
-const revision = run("git", ["rev-parse", "HEAD"], { capture: true }).trim();
+const revision = resolveRepositoryRevision(root);
 const lockfile = readFileSync(join(root, "worker/pnpm-lock.yaml"));
 const packageJson = JSON.parse(readFileSync(join(root, "worker/package.json"), "utf8"));
 const managerVersion = packageJson.packageManager.replace("pnpm@", "");

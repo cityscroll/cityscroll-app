@@ -7,6 +7,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const SCHEMA = "cityscroll.resident_surface_presence_readback.v1";
@@ -35,8 +36,11 @@ function revision(file) {
 }
 
 function gitRevision() {
-  const result = spawnSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" });
-  return result.status === 0 ? result.stdout.trim() : null;
+  try {
+    return resolveRepositoryRevision(ROOT);
+  } catch {
+    return null;
+  }
 }
 
 function excerpt(body, needles) {

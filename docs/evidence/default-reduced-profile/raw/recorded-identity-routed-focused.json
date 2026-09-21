@@ -42,7 +42,7 @@
   "profile_override": null,
   "provision_identity": "8fd906227c696e64298284e571d6a441145c74f5ffd4ab26a067574f90d2dc9c",
   "provisioned_profile": "focused-reduced",
-  "revision": "0763af1a08a4949a7d8ebbf90b194603b08e3a27",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "routing_reason": "Implementing one card against a bounded set of profile-supported gate classes. This is the surface the reduced profile was measured for, and the only one it may be handed to.",
   "routing_rule": "focused-card-work-verified",
   "schema": "cityscroll.card-profile.identity.v1",

@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import functools
 import json
 import subprocess
@@ -141,7 +143,7 @@ def main() -> None:
         "schema": "cityscroll.land-map-boundary-context-receipt.v1",
         "card": "cityscroll-engineering/land-map-boundary-context",
         "browser_mode": "headless chromium (playwright), remote hosts blocked",
-        "revision": subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip(),
+        "revision": resolve_repository_revision(ROOT),
         "artifact_vintage": "2026-05-26",
         "routes": ROUTES,
         "viewports": [list(viewport) for viewport in VIEWPORTS],

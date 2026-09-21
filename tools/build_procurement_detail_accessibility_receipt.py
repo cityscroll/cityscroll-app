@@ -22,6 +22,7 @@ import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import socketserver
 from pathlib import Path
+from repository_revision import resolve_repository_revision
 
 from playwright.sync_api import sync_playwright
 
@@ -60,9 +61,7 @@ def render_fixture() -> str:
 
 
 def git_head() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
+    return resolve_repository_revision(ROOT)
 
 
 def sha256_text(value: str) -> str:

@@ -19,6 +19,7 @@ import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 import { subDigestHtml, rollupDigestHtml } from "../worker/src/alerts.mjs";
 import { buildProcurementAlertAtom, procurementAlertSubject } from "../site/procurement_alert_atom.mjs";
@@ -135,7 +136,7 @@ function multiWatchRollupCase() {
 }
 
 function gitRevision() {
-  return execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).trim();
+  return resolveRepositoryRevision(ROOT);
 }
 
 function sha256(text) {

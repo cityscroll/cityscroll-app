@@ -27,7 +27,7 @@
     },
     {
       "id": "after-unreachable",
-      "repository_revision": "working tree on card/c3eb8caa83b59",
+      "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "source_blob": {
         "site/stats.html": "91b47f8c3d2b8b81216cd0f57508f5ba26d01889"
       },
@@ -53,7 +53,7 @@
     },
     {
       "id": "after-published",
-      "repository_revision": "working tree on card/c3eb8caa83b59",
+      "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "source_blob": {
         "site/stats.html": "91b47f8c3d2b8b81216cd0f57508f5ba26d01889"
       },

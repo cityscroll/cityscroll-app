@@ -3,7 +3,7 @@
   "gate_class": "functional-site",
   "title": "Functional site preparation",
   "command": "node tools/build_primary_documents.mjs (the read-model builder tools/prepare_functional_site.sh runs before it serves the site)",
-  "revision": "9ae3afd8e4f1b403beda6dfec9ce005983a08ebd",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "exit_status": 0,
   "recorded_profile": "full-checkout",
   "method": "Recorded by tools/card_profile_sentinel.cjs on a full-checkout checkout. Every repository-relative path the process read through fs or loaded as a module, filtered to tracked paths and de-duplicated.",

@@ -70,6 +70,7 @@ import {
   materialisedByPatterns,
   sparsePath
 } from "./card_profile_closure.mjs";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CONFIG_PATH = resolve(ROOT, "tools/card-profile/profile.config.v1.json");
@@ -112,7 +113,7 @@ function trackedFiles() {
 
 function headRevision() {
   try {
-    return execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).trim();
+    return resolveRepositoryRevision(ROOT);
   } catch {
     return null;
   }

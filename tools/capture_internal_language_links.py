@@ -7,6 +7,8 @@ ignored .artifacts directory. No screenshot is needed for this URL-continuity pr
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import hashlib
 import functools
 import json
@@ -39,10 +41,7 @@ def serve(directory: Path):
 
 
 def revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, check=True, capture_output=True, text=True
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def assert_language(url: str, language: str) -> None:
     parsed = urlsplit(url)

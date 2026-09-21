@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.board_overview_verification_manifest.v1",
-  "revision": "111b80b6a41d1c203ec9023133aa19af93776b88",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": "Committed Community Board read model and source registry as built on 2026-09-14",
   "image_policy": "Textual geometry manifests are the committed evidence; any local captures remain ignored and no image binary is committed.",
   "captures": [

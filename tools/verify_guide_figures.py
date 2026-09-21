@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 from capture_guide_release import serve
+from repository_revision import resolve_repository_revision
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / '.artifacts/guide-figures'
@@ -24,7 +25,7 @@ def main():
     parser.add_argument('--only', help='Comma-separated article slugs; refresh only these existing evidence rows')
     args = parser.parse_args()
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+    revision = resolve_repository_revision(ROOT)
     articles = []
     for source in sorted((ROOT / 'site/guide/_articles').glob('*.md')):
         text = source.read_text()

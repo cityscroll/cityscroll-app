@@ -20,6 +20,8 @@ Fixture states:
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import functools
 import json
@@ -217,10 +219,7 @@ def capture_fixture(playwright, base: str, out: Path, fixture: str, revision: st
 
 
 def git_revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, check=True, capture_output=True, text=True
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def capture(out: Path | None = None) -> Path:
     target = out or DEFAULT_OUT

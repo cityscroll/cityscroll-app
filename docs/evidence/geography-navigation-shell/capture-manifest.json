@@ -3,8 +3,8 @@
   "feature": "geography-navigation-shell",
   "public_alias": "ced62a84f8213",
   "capture_mode": "headless_playwright_local_site",
-  "repository_revision": "f0b683e4d3a628973fae673978909961d153f9ed",
-  "grounded_at": "f0b683e4d3a628973fae673978909961d153f9ed",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+  "grounded_at": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
   "image_binaries_committed": false,
   "image_policy": "Screenshots may exist under docs/screenshots/ locally; only this manifest is committed.",
@@ -18,7 +18,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f0b683e4d3a628973fae673978909961d153f9ed",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; server SVG visible path",
       "sha256": "ba4597e0b2c926b06ded2937cad7150c1948566da5d12d381568da19192431a3",
       "file": null,
@@ -46,7 +46,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "f0b683e4d3a628973fae673978909961d153f9ed",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; server SVG visible path",
       "sha256": "181e8d39cec111380bd8959ca9a6887538342ae40dba22f8b5524b10fcad7d2e",
       "file": null,
@@ -74,7 +74,7 @@
         "width": 360,
         "height": 800
       },
-      "revision": "f0b683e4d3a628973fae673978909961d153f9ed",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; server SVG visible path",
       "sha256": "63a9a81bd619250b88f0f07751f299b306046f02e57d35314ded8f063519187f",
       "file": null,
@@ -102,7 +102,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f0b683e4d3a628973fae673978909961d153f9ed",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; first-viewport heading present; advanced filters do not precede the map; MapLibre rendered 22 neighborhood labels with collision handling",
       "sha256": "7e75ef6c961b7028eb7603d133d78c549aadc6687f8ae394a4902fa4ae1a347c",
       "file": null,
@@ -153,7 +153,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "f0b683e4d3a628973fae673978909961d153f9ed",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; MapLibre rendered 13 neighborhood labels with collision handling",
       "sha256": "075bfc83bc102d032e243f857bfd580a916c52877bfcaae0a7258b85e729c7df",
       "file": null,
@@ -195,7 +195,7 @@
         "width": 360,
         "height": 800
       },
-      "revision": "f0b683e4d3a628973fae673978909961d153f9ed",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; MapLibre rendered 12 neighborhood labels with collision handling",
       "sha256": "3b19000d73e9d11eed8adad1e3726603d4643ef7a939fafbdf5e3d5eb62f7532",
       "file": null,
@@ -236,7 +236,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "f0b683e4d3a628973fae673978909961d153f9ed",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; failed enhancement restored SVG",
       "sha256": "3079f9e0bda9b0a0a3212c86f94a76c22cc3d80c9ffc3f84c0f298bd2c2411b7",
       "file": null,
@@ -264,7 +264,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "f0b683e4d3a628973fae673978909961d153f9ed",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; failed enhancement restored SVG",
       "sha256": "1c90514859ccf5f25b61066f0cb5ac59b4c0262866fdc5dfb42defad59bcd6ba",
       "file": null,
@@ -292,7 +292,7 @@
         "width": 360,
         "height": 800
       },
-      "revision": "f0b683e4d3a628973fae673978909961d153f9ed",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; failed enhancement restored SVG",
       "sha256": "1f671c9f56e06399310364b6294d867bbf7cf60e17c0c157e4691045bbf23f0b",
       "file": null,

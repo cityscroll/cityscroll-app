@@ -15,6 +15,7 @@ import json
 import subprocess
 from pathlib import Path
 
+from repository_revision import resolve_repository_revision
 from playwright.sync_api import Page, Route, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,13 +25,7 @@ VIEWPORTS = ((1440, 1000), (390, 844))
 
 def captured_revision() -> str:
     """The revision the captured tree is at. Stamping a literal goes stale silently."""
-    result = subprocess.run(
-        ["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    return result.stdout.strip()
+    return resolve_repository_revision(ROOT)[:7]
 
 
 def load_performance_helpers():

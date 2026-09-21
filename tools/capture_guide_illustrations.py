@@ -22,6 +22,8 @@ the article builder checks dimensions and digests against the completed receipts
 Use --only following,calendar,connection,asof to capture just those controls.
 """
 from __future__ import annotations
+
+from repository_revision import resolve_repository_revision
 import argparse, base64, hashlib, json, math, subprocess, sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -33,7 +35,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'site/media/guide'
 SCRATCH = ROOT / '.artifacts/guide-illustrations'
 VIEWPORTS = [('mobile',390,844),('desktop',1440,900)]
-REVISION = subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+REVISION = resolve_repository_revision(ROOT)
 RECEIPTS = {}
 LOCALE = "en"
 

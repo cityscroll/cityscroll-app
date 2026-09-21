@@ -13,6 +13,8 @@ office to its board, Community Board and geography, then Back.
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import hashlib
 import json
@@ -55,10 +57,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 def git_revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def data_vintage() -> str:
     lookup = json.loads((SITE / "data" / "agency_constellation_lookup.json").read_text("utf-8"))

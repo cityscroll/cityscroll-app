@@ -25,6 +25,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 import edgeWorker from "../site/pages_edge.mjs";
 import { withPinnedClock } from "../test/helpers/test_clock.mjs";
@@ -216,8 +217,11 @@ export const REQUIRED_OBLIGATIONS = Object.freeze([
 export const REQUIRED_OBLIGATION_IDS = Object.freeze(REQUIRED_OBLIGATIONS.map((row) => row.id));
 
 function gitRevision(root = ROOT) {
-  const result = spawnSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" });
-  return result.status === 0 ? result.stdout.trim() : null;
+  try {
+    return resolveRepositoryRevision(root);
+  } catch {
+    return null;
+  }
 }
 
 function sha256Text(text) {

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.served_procurement_route_production_read.v1",
   "observed_at": "2026-09-16T18:14:03.231Z",
-  "grounded_at": "f5a4c5568a1868572a4eea4ef513a361dc373897",
+  "grounded_at": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "live_origin": "https://cityscroll.org",
   "api_origin": "https://api.cityscroll.org",
   "served_build_vintage": {

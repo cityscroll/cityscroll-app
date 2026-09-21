@@ -39,6 +39,8 @@ capture with its route, viewport, revision, data vintage, assertion and sha256
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import functools
 import hashlib
@@ -244,10 +246,7 @@ def assert_no_negative_claim(state: dict) -> None:
 
 
 def git_revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def data_vintage() -> str:
     payload = json.loads((SOURCE_DATA / "zap_projects_warehouse_lookup.json").read_text("utf-8"))

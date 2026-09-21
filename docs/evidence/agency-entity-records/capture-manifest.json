@@ -2,7 +2,7 @@
   "schema_version": 1,
   "card": "c2056c90e8441",
   "capture_mode": "headless-render",
-  "repository_revision": "779872f95",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "note": "Rendered output of the two organization surfaces that previously answered not-yet-public for these agencies, captured by invoking the route handlers directly with no store binding, so the bytes come only from the published agency entity records. No image binaries: each capture records the sha256 of the rendered HTML.",
   "data_vintage": "agency identity roster observed 2026-08-09 (t3jq-9nkf), expense budget observed 2026-07-08 (mwzb-yiwb), award-corroborated contract census observed 2026-09-06",
   "viewports": [

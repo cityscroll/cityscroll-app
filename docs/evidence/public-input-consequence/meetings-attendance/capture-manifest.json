@@ -2,7 +2,7 @@
   "schema_version": 1,
   "card": "cityscroll-engineering/meetings-entry-and-attendance-filter",
   "capture_mode": "chrome_devtools_local_static_shell",
-  "repository_revision": "bf578c2afa757e1b4dc4de5c4794840d79ad53e8",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "note": "Static site shell served locally (no live Worker/D1 backend); the meetings feed itself renders its loading-skeleton state rather than populated notices. Captures evidence the deck copy, disclosure, and independent attendance control render correctly at both viewports (A1, A2, A6); they do not evidence a data-populated attendance badge on a live notice card.",
   "data_vintage": "not_applicable_static_shell",
   "viewports": [
