@@ -1487,6 +1487,7 @@
     topic_search_heading: "¿Qué está pasando en tu ciudad?",
     topic_search_intro: "Busque registros públicos por tema, lugar o agencia. Los resultados se agrupan por tipo de registro.",
     topic_search_placeholder: "Pruebe un tema, lugar o agencia",
+    search_include_historical: "Incluir consultas históricas",
     browse_facet_label: "Explorar por tipo",
     topic_search_query_label: "Buscar registros públicos",
     topic_search_match_count_one: "1 coincidencia",

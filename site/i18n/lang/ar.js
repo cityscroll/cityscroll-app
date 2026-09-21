@@ -2269,6 +2269,7 @@
     topic_search_heading: "ماذا يحدث في مدينتك؟",
     topic_search_intro: "ابحث في السجلات العامة حسب الموضوع أو المكان أو الجهة. تبقى النتائج مجمّعة حسب نوع السجل.",
     topic_search_placeholder: "جرّب موضوعًا أو مكانًا أو وكالة",
+    search_include_historical: "تضمين المشاورات التاريخية",
     browse_facet_label: "تصفّح حسب النوع",
     topic_search_query_label: "البحث في السجلات العامة",
     topic_search_match_count_one: "مطابقة واحدة",

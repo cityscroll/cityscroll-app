@@ -2272,6 +2272,7 @@
     topic_search_heading: "Что происходит в вашем городе?",
     topic_search_intro: "Ищите публичные записи по теме, месту или агентству. Результаты сгруппированы по типу записи.",
     topic_search_placeholder: "Введите тему, место или ведомство",
+    search_include_historical: "Включить исторические консультации",
     browse_facet_label: "Просмотр по типу",
     topic_search_query_label: "Поиск публичных записей",
     topic_search_match_count_one: "1 совпадение",

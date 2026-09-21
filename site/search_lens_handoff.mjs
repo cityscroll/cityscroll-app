@@ -22,6 +22,8 @@ const CONTEXT_KEYS = Object.freeze([
   "scope",
   "when",
   "months",
+  "source_scope",
+  "archive",
 ]);
 
 const DESTINATIONS = Object.freeze({
@@ -242,6 +244,15 @@ function handoffEnvelope(record, response, destination, query) {
   });
 }
 
+function corpusVintageFor(response, destination) {
+  return clean(
+    response?.federated?.coverage?.by_lens?.[destination.family]?.as_of
+      || response?.coverage?.by_lens?.[destination.family]?.as_of
+      || response?.coverage?.as_of,
+    80,
+  ) || null;
+}
+
 function destinationParams(record, response, sourceSearch, destination) {
   const source = paramsFrom(sourceSearch);
   const params = new URLSearchParams();
@@ -266,6 +277,9 @@ function destinationParams(record, response, sourceSearch, destination) {
   const facet = {
     ...(agencyRef ? { entity_refs_all: [agencyRef] } : {}),
     ...(exactContract ? { contract_identity: exactContract } : {}),
+    ...(corpusVintageFor(response, destination)
+      ? { corpus_vintage: corpusVintageFor(response, destination) }
+      : {}),
     search_handoff: handoffEnvelope(record, response, destination, query),
   };
   const encoded = JSON.stringify(facet);
@@ -326,11 +340,34 @@ function validateEvidence(evidence) {
   });
 }
 
-export function parseSearchLensHandoff(search = "") {
+export function validateSearchFacetFreshness(facet = {}, corpusVintage = "") {
+  const facetVintage = clean(facet?.corpus_vintage, 80);
+  const currentVintage = clean(corpusVintage, 80);
+  if (!facetVintage || !currentVintage) {
+    return Object.freeze({ state: "unversioned", reason: "missing_corpus_vintage" });
+  }
+  if (facetVintage < currentVintage) {
+    return Object.freeze({
+      state: "stale",
+      reason: "facet_older_than_corpus",
+      facet_vintage: facetVintage,
+      corpus_vintage: currentVintage,
+    });
+  }
+  return Object.freeze({
+    state: "current",
+    facet_vintage: facetVintage,
+    corpus_vintage: currentVintage,
+  });
+}
+
+export function parseSearchLensHandoff(search = "", { corpusVintage = null } = {}) {
   const params = paramsFrom(search);
   const parsed = parsedFacet(params);
   const rawQuery = clean(params.get("q"));
   if (!parsed || !rawQuery || clean(parsed.handoff.raw_query) !== rawQuery) return null;
+  if (corpusVintage !== null
+      && validateSearchFacetFreshness(parsed.facet, corpusVintage).state !== "current") return null;
   const normalized = [...(parsed.handoff.normalized_terms || [])]
     .map((term) => clean(term, 80)).filter(Boolean).slice(0, 8);
   if (!normalized.length) return null;

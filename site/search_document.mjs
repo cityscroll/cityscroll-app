@@ -47,6 +47,7 @@ import { renderRecentSearches } from "./search_recent_history_view.mjs";
 
 const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
+const SEARCH_RETURN_STATE_KEY = "cityscroll.search_return_state.v1";
 const SEARCH_API_ORIGIN = "https://api.cityscroll.org";
 const SEARCH_API_FALLBACK_ORIGIN = "https://cityscroll-worker.crol-worker.workers.dev";
 const LANES = Object.freeze([
@@ -58,6 +59,17 @@ const LANES = Object.freeze([
   "exams",
   "consultations",
 ]);
+const SEARCH_SCOPE_DOMAIN_FAMILIES = Object.freeze({
+  contracts: "contracts",
+  people: "people-organizations",
+  places: "people-organizations",
+  property: "land",
+  zoning: "land",
+  rules: "rules",
+  meetings: "meetings",
+  staffing: "exams",
+  participation: "consultations",
+});
 // Stable resident labels are also inspected by entity surfaces that hand
 // results into Search; keep the product-domain vocabulary centralized here.
 const DOMAIN_LANES = Object.freeze({
@@ -106,6 +118,10 @@ function queryFromLocation() {
   return clean(params.get("q"));
 }
 
+function includeArchivedFromLocation() {
+  return new URLSearchParams(location.search).get("archive") === "1";
+}
+
 /**
  * The active front-door scope, read from `/search/`'s own URL. This is the
  * one source of truth for "all sources" versus an explicit narrowing —
@@ -150,13 +166,62 @@ function renderScopeBar(root, scope) {
  * families the URL and coverage receipt already describe.
  */
 function applyScopeLaneVisibility(root, scope) {
-  const allowed = scope.domains ? new Set(scope.domains) : null;
+  const allowed = scope.domains
+    ? new Set(scope.domains.map((domain) => SEARCH_SCOPE_DOMAIN_FAMILIES[domain] || domain))
+    : null;
   for (const lane of root.querySelectorAll("[data-semantic-family]")) {
     lane.hidden = Boolean(allowed) && !allowed.has(lane.dataset.semanticFamily);
   }
   for (const lane of root.querySelectorAll("[data-search-lane]")) {
     lane.hidden = Boolean(allowed) && !allowed.has(lane.dataset.searchLane);
   }
+}
+
+function rememberSearchReturnState(root) {
+  if (!root || root.dataset.searchReturnStateBound === "true") return;
+  root.dataset.searchReturnStateBound = "true";
+  root.addEventListener("click", (event) => {
+    const link = event.target.closest?.("a[href]");
+    if (!link) return;
+    const destination = new URL(link.href, location.href);
+    if (!destination.pathname.startsWith("/consultations/")) return;
+    try {
+      sessionStorage.setItem(SEARCH_RETURN_STATE_KEY, JSON.stringify({
+        route: `${location.pathname}${location.search}`,
+        scroll_y: Math.round(window.scrollY),
+        focus_href: document.activeElement?.getAttribute("href") || link.getAttribute("href"),
+      }));
+    } catch {
+      // A blocked session store must never prevent opening the detail.
+    }
+  });
+}
+
+function restoreSearchReturnState(root) {
+  let saved;
+  try {
+    saved = JSON.parse(sessionStorage.getItem(SEARCH_RETURN_STATE_KEY) || "null");
+  } catch {
+    return;
+  }
+  if (!saved || saved.route !== `${location.pathname}${location.search}`) return;
+  const target = [...root.querySelectorAll("a[href]")].find((link) => (
+    link.getAttribute("href") === saved.focus_href && link.offsetParent !== null
+  ));
+  const restore = (attempt = 0) => {
+    window.scrollTo(0, Number(saved.scroll_y) || 0);
+    target?.focus({ preventScroll: true });
+    if (target && document.activeElement !== target && attempt < 5) {
+      setTimeout(() => restore(attempt + 1), 25);
+      return;
+    }
+    try {
+      sessionStorage.removeItem(SEARCH_RETURN_STATE_KEY);
+    } catch {
+      // Restoration is complete even if cleanup is unavailable.
+    }
+  };
+  requestAnimationFrame(restore);
 }
 
 function placeFromLocation() {
@@ -721,7 +786,7 @@ async function fetchKeywordResults(query, scope) {
   throw lastError || new Error("keyword search unavailable");
 }
 
-async function loadResults(root, query, scope) {
+async function loadResults(root, query, scope, includeArchived) {
   if (!query) return;
   renderLoadingState(root);
   const searching = tr("topic_search_searching", null, "Searching…");
@@ -757,9 +822,10 @@ async function loadResults(root, query, scope) {
     keywordCoverage,
     candidateLegacy,
   });
-  const plan = buildSearchRenderPlan(lastResponse, { scope });
+  const plan = buildSearchRenderPlan(lastResponse, { scope, includeArchived });
   paintResults(root, plan);
   applyScopeLaneVisibility(root, scope);
+  restoreSearchReturnState(root);
   observeSearchExecution(root, query, plan);
 }
 
@@ -934,10 +1000,14 @@ function installSearchHistoryControls(root) {
 
 let lastResponse = null;
 let activeScope = SEARCH_FRONT_DOOR_SCOPES.all;
+let activeIncludeArchived = false;
 
 function repaintResults(root) {
   // Language switches repaint the same settled execution; they never re-observe it.
-  if (lastResponse) paintResults(root, buildSearchRenderPlan(lastResponse, { scope: activeScope }));
+  if (lastResponse) paintResults(root, buildSearchRenderPlan(lastResponse, {
+    scope: activeScope,
+    includeArchived: activeIncludeArchived,
+  }));
 }
 
 function render() {
@@ -945,6 +1015,8 @@ function render() {
   if (!root) return;
   const query = queryFromLocation();
   activeScope = scopeFromLocation();
+  activeIncludeArchived = includeArchivedFromLocation();
+  rememberSearchReturnState(root);
   const heading = root.querySelector("#search-heading");
   const input = root.querySelector("#search-query");
   const context = root.querySelector("[data-search-place]");
@@ -956,6 +1028,8 @@ function render() {
   };
   paintHeading();
   if (input) input.value = query;
+  const archiveToggle = root.querySelector("[data-search-archive]");
+  if (archiveToggle) archiveToggle.checked = activeIncludeArchived;
   const place = placeFromLocation();
   if (context && place) {
     context.textContent = `Place context · ${place}`;
@@ -970,7 +1044,7 @@ function render() {
   renderInitialState(root, query);
   installSearchHistoryControls(root);
   void loadSearchHistory(root);
-  void loadResults(root, query, activeScope);
+  void loadResults(root, query, activeScope, activeIncludeArchived);
   window.initSubpageLangSwitcher?.(() => {
     paintHeading();
     paintRecentSearches(root);

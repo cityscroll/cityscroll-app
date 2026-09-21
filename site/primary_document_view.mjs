@@ -288,6 +288,7 @@ export function renderSearchDocument() {
     <form class="topic-search-form" method="get" action="/search/" data-search-form>
       <label for="search-query" class="sr-only" data-i18n="topic_search_query_label">Search public records</label>
       <div class="topic-search-form-row"><input id="search-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder"><button type="submit" data-i18n="search_label">Search</button></div>
+      <label class="topic-search-archive-toggle"><input type="checkbox" name="archive" value="1" data-search-archive><span data-i18n="search_include_historical">Include historical consultations</span></label>
     </form>
     <div class="topic-search-context" data-search-place hidden></div>
     <div class="topic-search-scopebar" data-search-scope hidden></div>

@@ -2280,6 +2280,7 @@
     topic_search_heading: "Co się dzieje w Twoim mieście?",
     topic_search_intro: "Przeszukuj publiczne rejestry według tematu, miejsca lub agencji. Wyniki pozostają pogrupowane według typu rejestru.",
     topic_search_placeholder: "Wpisz temat, miejsce lub agencję",
+    search_include_historical: "Uwzględnij konsultacje historyczne",
     browse_facet_label: "Przeglądaj według typu",
     topic_search_query_label: "Szukaj publicznych rejestrów",
     topic_search_match_count_one: "1 dopasowanie",

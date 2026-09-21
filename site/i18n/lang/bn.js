@@ -2266,6 +2266,7 @@
     topic_search_heading: "আপনার শহরে কী ঘটছে?",
     topic_search_intro: "বিষয়, স্থান বা সংস্থা দিয়ে সরকারি নথি খুঁজুন। ফলাফল নথির ধরন অনুযায়ী সাজানো থাকে।",
     topic_search_placeholder: "কোনো বিষয়, স্থান বা সংস্থা লিখুন",
+    search_include_historical: "ঐতিহাসিক পরামর্শ অন্তর্ভুক্ত করুন",
     browse_facet_label: "ধরন অনুযায়ী ব্রাউজ করুন",
     topic_search_query_label: "সরকারি নথি খুঁজুন",
     topic_search_match_count_one: "১টি মিল",

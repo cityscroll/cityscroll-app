@@ -3,7 +3,12 @@ import { test } from "node:test";
 import { admitSearchDocument, SEARCH_DOCUMENT_DOMAINS, SEARCH_DOCUMENT_OBJECT_TYPES } from "../site/search_document_contract.mjs";
 import { buildConsultationSearchDocuments, projectConsultationSearchDocument } from "../site/consultation_search_producer.mjs";
 import { buildSearchRenderPlan } from "../site/search_render_plan.mjs";
-import { buildSearchLensHandoffHref, searchFamilyForResult } from "../site/search_lens_handoff.mjs";
+import {
+  buildSearchLensHandoffHref,
+  parseSearchLensHandoff,
+  searchFamilyForResult,
+  validateSearchFacetFreshness,
+} from "../site/search_lens_handoff.mjs";
 import {
   CONSULTATION_RESPONDENT_TEXT_FIXTURE,
   CONSULTATION_VARIANT_FIXTURE,
@@ -36,12 +41,52 @@ test("rendering, safe handoff, archive status, and failed retrieval stay explici
   const corpus = buildConsultationSearchDocuments();
   const keyword = { match_mode: "keyword", results: corpus.documents.map((document) => ({ ...document, entity_type: document.object_type })) };
   const plan = buildSearchRenderPlan({ state: "legacy", payload: keyword, coverage: { lanes: [{ id: "consultations", status: "matched" }] } });
-  assert.equal(plan.families.find((family) => family.id === "consultations").items.length, 4);
+  assert.equal(plan.families.find((family) => family.id === "consultations").items.length, 3, "historical consultations are excluded by default");
+  assert.deepEqual(
+    plan.families.find((family) => family.id === "consultations").items.map((item) => item.row.title),
+    ["Fast Buses: Central Brooklyn", "Secure Bike Parking", "Bloomingdale Library and Housing"],
+    "default rendering keeps current consultation rounds in fixture order",
+  );
+  const archivedPlan = buildSearchRenderPlan(
+    { state: "legacy", payload: keyword, coverage: { lanes: [{ id: "consultations", status: "matched" }] } },
+    { includeArchived: true },
+  );
+  assert.deepEqual(
+    archivedPlan.families.find((family) => family.id === "consultations").items.map((item) => item.row.title),
+    corpus.documents.map((row) => row.title),
+    "archive filter restores every historical round in fixture order",
+  );
+  const scopedPlan = buildSearchRenderPlan(
+    { state: "legacy", payload: keyword, coverage: { lanes: [{ id: "consultations", status: "matched" }] } },
+    { scope: { id: "consultations", domains: ["participation"] } },
+  );
+  assert.equal(scopedPlan.families.find((family) => family.id === "consultations").items.length, 3, "participation scope renders current consultations");
   const archived = corpus.documents.find((row) => row.title.includes("FY2028"));
   assert.equal(archived.provenance.lifecycle.state, "closed");
   assert.match(buildSearchLensHandoffHref(archived, { query: "budget", resolved_term: { canonical_tokens: ["budget"] } }, "/search/?q=budget"), /^\/consultations\/\?.*q=budget/);
   const failed = buildSearchRenderPlan({ state: "combined", keyword: null, semantic: { groups: [] }, keywordCoverage: { lanes: [{ id: "consultations", status: "unknown" }] } });
   assert.ok(failed.incomplete_families.includes("consultations"));
+});
+
+test("search facets refuse stale corpus vintages while compaction stays independent", () => {
+  const corpus = buildConsultationSearchDocuments();
+  const record = corpus.documents[1];
+  const response = {
+    query: "bike parking",
+    coverage: { by_lens: { consultations: { as_of: "2026-09-14T00:00:00.000Z" } } },
+    resolved_term: { canonical_tokens: ["bike", "parking"] },
+  };
+  const handoff = buildSearchLensHandoffHref(record, response, "/search/?q=bike%20parking&source_scope=consultations");
+  assert.ok(handoff);
+  const facet = JSON.parse(new URL(`https://cityscroll.test${handoff}`).searchParams.get("facet"));
+  assert.deepEqual(validateSearchFacetFreshness(facet, "2026-09-15T00:00:00.000Z").state, "stale", "older facet vintage is detected");
+  assert.equal(parseSearchLensHandoff(handoff, { corpusVintage: "2026-09-15T00:00:00.000Z" }), null, "older facet is refused at the destination");
+  const current = buildSearchLensHandoffHref(record, {
+    ...response,
+    coverage: { by_lens: { consultations: { as_of: "2026-09-15T00:00:00.000Z" } } },
+  }, "/search/?q=bike%20parking&source_scope=consultations");
+  assert.ok(parseSearchLensHandoff(current, { corpusVintage: "2026-09-15T00:00:00.000Z" }), "current facet remains usable");
+  assert.deepEqual(corpus.documents.map((row) => row.object_ref).length, 4, "facet freshness does not change corpus compaction");
 });
 
 test("consultation source absence is refused and counted as not indexed", () => {
@@ -166,7 +211,7 @@ test("A3 keeps consultation keyword results visible beside non-empty semantic fa
     });
     const consultations = plan.families.find((family) => family.id === "consultations");
     const exams = plan.families.find((family) => family.id === "exams");
-    assert.equal(consultations.items.length, 4);
+    assert.equal(consultations.items.length, 3, "current consultation rounds remain visible beside semantic results");
     assert.ok(consultations.items.every((item) => item.kind === "keyword"));
     assert.equal(exams.items.length, 1);
     assert.equal(exams.items[0].kind, "semantic");
