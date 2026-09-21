@@ -207,6 +207,21 @@ export function scheduleFreshnessGuidance({ lastSuccessAt, asOf = new Date().toI
   return { stale: age >= 36 * 60 * 60 * 1000, ageHours: Number.isFinite(age) ? age / 3_600_000 : null, prompt: age >= 36 * 60 * 60 * 1000 ? "Confirm the schedule with the official source before going." : null, officialUrl: officialUrl || null };
 }
 
+/**
+ * Separate 30-day guide policy review record. This is deliberately not the
+ * 36-hour schedule freshness prompt: it tracks when the resident-facing guide
+ * copy was last policy-reviewed, so a fresh schedule can still be overdue for
+ * review and a stale schedule can carry a current review.
+ */
+export const GUIDE_POLICY_REVIEW_INTERVAL_DAYS = 30;
+
+export function guidePolicyReviewState({ lastReviewAt, asOf = new Date().toISOString() } = {}) {
+  const reviewedAt = iso(lastReviewAt);
+  const age = reviewedAt ? Date.parse(asOf) - Date.parse(reviewedAt) : null;
+  const due = age === null || age >= GUIDE_POLICY_REVIEW_INTERVAL_DAYS * 24 * 60 * 60 * 1000;
+  return { kind: "guide_policy_review", interval_days: GUIDE_POLICY_REVIEW_INTERVAL_DAYS, due, age_days: Number.isFinite(age) ? age / 86_400_000 : null, last_review_at: reviewedAt };
+}
+
 export function writeGovernmentScheduledReceipt(path, receipt) {
   writeFileSync(path, `${JSON.stringify(receipt, null, 2)}\n`);
   return receipt;

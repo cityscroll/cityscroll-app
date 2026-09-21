@@ -4,10 +4,12 @@ import { join } from "node:path";
 import test from "node:test";
 
 import {
+  GOVERNMENT_RECEIPT_SCHEMA,
   GOVERNMENT_REFRESH_BOUNDS,
   GOVERNMENT_SOURCE_DEFINITIONS,
   buildGovernmentReadback,
   buildGovernmentScheduledReceipt,
+  guidePolicyReviewState,
   readGovernmentScheduledReceipt,
   refreshGovernmentSource,
   runGovernmentObservationRefresh,
@@ -141,4 +143,90 @@ test("scheduled receipts are machine-readable and round-trip without images", ()
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }
+});
+
+test("guide policy review is a separate 30-day record, independent of the 36-hour schedule prompt", () => {
+  const sameInstant = "2026-09-13T23:00:00.000Z";
+  const staleSchedule = scheduleFreshnessGuidance({ lastSuccessAt: sameInstant, asOf, officialUrl: source.url });
+  const currentReview = guidePolicyReviewState({ lastReviewAt: sameInstant, asOf });
+  assert.equal(staleSchedule.stale, true);
+  assert.equal(currentReview.due, false);
+  const freshSchedule = scheduleFreshnessGuidance({ lastSuccessAt: "2026-09-15T10:00:00.000Z", asOf, officialUrl: source.url });
+  const overdueReview = guidePolicyReviewState({ lastReviewAt: "2026-08-15T00:00:00.000Z", asOf });
+  assert.equal(freshSchedule.stale, false);
+  assert.equal(overdueReview.due, true);
+  assert.equal(overdueReview.kind, "guide_policy_review");
+  assert.equal(overdueReview.interval_days, 30);
+  assert.equal("prompt" in overdueReview, false);
+  assert.equal("stale" in overdueReview, false);
+  assert.equal("due" in staleSchedule, false);
+  assert.equal(guidePolicyReviewState({ asOf }).due, true);
+});
+
+test("resident reads make zero publisher requests over a poisoned global fetch", async () => {
+  const originalFetch = globalThis.fetch;
+  let poisonedCalls = 0;
+  globalThis.fetch = async (requested) => {
+    poisonedCalls += 1;
+    throw new Error(`resident read attempted a publisher request: ${requested}`);
+  };
+  const directory = mkdtempSync(join(process.env.FM_TASK_SCRATCH || process.cwd(), "government-resident-"));
+  try {
+    const cycle = { status: "succeeded", observed_at: "2026-09-15T11:00:00.000Z", source_hash: "hash" };
+    const readback = buildGovernmentReadback({
+      sourceId: source.id, cycle, materializationHash: "m", buildRevision: "rev", publicationId: "pub",
+      surfaces: Object.fromEntries(["canonical", "observer", "search", "ics"].map((key) => [key, { ok: true, content_hash: `${key}-hash` }])),
+    });
+    const receipt = buildGovernmentScheduledReceipt({ cycles: [cycle], readbacks: [readback], now: asOf });
+    writeGovernmentScheduledReceipt(join(directory, "receipt.json"), receipt);
+    assert.equal(readGovernmentScheduledReceipt(join(directory, "receipt.json")).schema, GOVERNMENT_RECEIPT_SCHEMA);
+    const guidance = scheduleFreshnessGuidance({ lastSuccessAt: "2026-09-13T00:00:00.000Z", asOf, officialUrl: source.url });
+    assert.equal(guidance.stale, true);
+    assert.equal(poisonedCalls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("cycle spacing fails closed for cycles closer than 24 hours and for a failed cycle", () => {
+  const closeCycles = buildGovernmentScheduledReceipt({
+    cycles: [
+      { status: "succeeded", observed_at: "2026-09-14T12:00:00.000Z", source_hash: "a" },
+      { status: "succeeded", observed_at: "2026-09-15T11:59:00.000Z", source_hash: "b" },
+    ],
+    now: asOf,
+  });
+  assert.equal(closeCycles.consecutive_successful_cycles, 2);
+  assert.equal(closeCycles.two_cycles_24h_apart, false);
+  const withFailedCycle = buildGovernmentScheduledReceipt({
+    cycles: [
+      { status: "succeeded", observed_at: "2026-09-13T12:00:00.000Z", source_hash: "a" },
+      { status: "failed", observed_at: "2026-09-14T12:00:00.000Z", source_hash: "b" },
+    ],
+    now: asOf,
+  });
+  assert.equal(withFailedCycle.consecutive_successful_cycles, 1);
+  assert.equal(withFailedCycle.two_cycles_24h_apart, false);
+});
+
+test("a source that returns after a failed cycle recovers to a fresh capture", async () => {
+  let failing = true;
+  const fetchImpl = async () => {
+    if (failing) throw new Error("offline");
+    return response(200, JSON.stringify({ schema: "pdc.v1", records: [{ id: "recovered" }] }), { etag: "etag-3" });
+  };
+  const degraded = await refreshGovernmentSource(source, { asOf, previous, fetchImpl, parse });
+  assert.equal(degraded.status, "degraded");
+  assert.equal(degraded.receipt.last_good_preserved, true);
+  assert.deepEqual(degraded.materialization.records, previous.materialization.records);
+  failing = false;
+  const recovered = await refreshGovernmentSource(source, { asOf, previous, fetchImpl, parse });
+  assert.equal(recovered.status, "succeeded");
+  assert.equal(recovered.receipt.failure, undefined);
+  assert.equal(recovered.receipt.last_good_preserved, false);
+  assert.equal(recovered.materialization.records[0].id, "recovered");
+  assert.equal(recovered.materialization.retained_after_failure, undefined);
+  assert.match(recovered.receipt.source_hash, /^[0-9a-f]{64}$/);
+  assert.equal(recovered.receipt.extraction_receipt.status, "ok");
 });
