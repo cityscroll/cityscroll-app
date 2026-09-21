@@ -472,30 +472,30 @@ test("A4: narrow-screen default density is observed at 390px rather than only de
       assert.equal(seen.inspection_title, "venueHere meeting");
       assert.equal(seen.inspect?.visible, true);
       assert.ok(seen.inspect.height >= 40, "inspect control stays large enough to use on a narrow screen");
-    });
-    assert.equal(seen.title_link?.visible, false);
-    assert.equal(seen.full_record?.visible, true);
-    assert.equal(seen.fact_rows_stacked, true);
-    assert.equal(seen.fact_rows_side_by_side, false);
-    assert.equal(seen.no_horizontal_overflow, true);
-    assert.equal(seen.evidence_count >= 1, true);
-    assert.ok(seen.evidence_open.every((open) => open === false));
-    assert.equal(seen.record_padding_top_px, 12);
+      assert.equal(seen.title_link?.visible, false);
+      assert.equal(seen.full_record?.visible, true);
+      assert.equal(seen.fact_rows_stacked, true);
+      assert.equal(seen.fact_rows_side_by_side, false);
+      assert.equal(seen.no_horizontal_overflow, true);
+      assert.equal(seen.evidence_count >= 1, true);
+      assert.ok(seen.evidence_open.every((open) => open === false));
+      assert.equal(seen.record_padding_top_px, 12);
 
-    const wide = desktop.observed;
-    assert.equal(wide.fact_rows_stacked, false);
-    assert.equal(wide.fact_rows_side_by_side, true);
-    assert.equal(wide.record_padding_top_px, 16);
-    assert.notEqual(
-      seen.record_padding_top_px,
-      wide.record_padding_top_px,
-      "narrow density must differ from desktop density",
-    );
-    assert.notEqual(
-      seen.fact_rows_stacked,
-      wide.fact_rows_stacked,
-      "narrow inspection rows must stack while desktop rows stay side-by-side",
-    );
+      const wide = desktop.observed;
+      assert.equal(wide.fact_rows_stacked, false);
+      assert.equal(wide.fact_rows_side_by_side, true);
+      assert.equal(wide.record_padding_top_px, 16);
+      assert.notEqual(
+        seen.record_padding_top_px,
+        wide.record_padding_top_px,
+        "narrow density must differ from desktop density",
+      );
+      assert.notEqual(
+        seen.fact_rows_stacked,
+        wide.fact_rows_stacked,
+        "narrow inspection rows must stack while desktop rows stay side-by-side",
+      );
+    });
   });
 });
 
