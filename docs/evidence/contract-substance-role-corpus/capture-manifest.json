@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.contract_substance_role_corpus_capture_manifest.v2",
   "capture_mode": "deterministic server render with headless Chromium viewport review; image binaries omitted",
-  "source_revision": "grounded origin/main fbcb3601ba653bcbfc44637c21ecdb429169481b",
+  "source_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
   "data_vintages": {
     "role_corpus_generated_at": "2026-09-19T12:00:00.000Z",
     "service_geography_generated_at": "2026-09-19T03:00:00.000Z",

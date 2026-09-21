@@ -1,0 +1,909 @@
+{
+  "schema": "cityscroll.procurement_contract_substance_promotion.v1",
+  "mode": "receipt-matrix",
+  "grounded_origin_main": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+  "capture_manifest": {
+    "path": "docs/evidence/contract-substance-role-corpus/capture-manifest.json",
+    "revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+    "assertion": "All role-corpus viewport hashes are from the headless capture recorded at the grounded origin/main revision."
+  },
+  "assertions": [
+    {
+      "id": "A1",
+      "assertion": "The matrix names BHRAGS, S&P, AHA, Quizizz, DocGo, DCAS bid tab 2000090, and the MOCS November 2024 FCRC packet with identity, route or component, role, and readiness state.",
+      "artifact": "examples[].example_id, examples[].canonical_identity_basis, examples[].route, examples[].cells[]"
+    },
+    {
+      "id": "A2",
+      "assertion": "Each named example records the bounded resident story it proves, including joined payments and place, below-$100,000 discovery, oversight, offered pricing, and proposed roles.",
+      "artifact": "examples[].stories"
+    },
+    {
+      "id": "A3",
+      "assertion": "The vendor-promise family remains not ready until a served exact passage from an admitted executed agreement or SOW exists, and listed stand-ins are rejected.",
+      "artifact": "boundary, examples[].cells[claim_family=vendor_promise]"
+    },
+    {
+      "id": "A4",
+      "assertion": "The receipt completes without a publisher event while retaining the missing executed-document claim as red.",
+      "artifact": "completion"
+    },
+    {
+      "id": "A5",
+      "assertion": "Every ready cell carries route, served revision, data vintage, source URL and hash, role, locator, assertion, viewport, and render or content hash; synthetic and mutation counts remain separate.",
+      "artifact": "examples[].cells[].evidence, provenance_counts, synthetic_fixture_policy"
+    },
+    {
+      "id": "A6",
+      "assertion": "The validator rejects API-for-DOM substitution, stale identity, unrelated joins, role changes, blank execution evidence, login-only sources, failed initialization, wrong place roles, and omitted examples.",
+      "artifact": "validatePromotionReceipt and its mutation tests"
+    },
+    {
+      "id": "A7",
+      "assertion": "The editor packet separates safe-now statements from statements blocked by contract-document disclosure and keeps engineering, deployment, and editorial status distinct.",
+      "artifact": "editor_packet, engineering_status, deployment_status, editorial_readiness"
+    }
+  ],
+  "examples": [
+    {
+      "example_id": "bhrags-CT107120258801626",
+      "label": "BHRAGS",
+      "identity": "CT107120258801626",
+      "canonical_identity_basis": "exact contract id CT107120258801626 joined to notice 20240829105",
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+      "stories": [
+        "BHRAGS proves the joined authorized amount, payment total, facility address, unit count, notice identity, and neighborhood story without turning facility context into a contractual promise."
+      ],
+      "cells": [
+        {
+          "claim_family": "access",
+          "status": "ready",
+          "reason": null,
+          "assertion": "BHRAGS preserves the joined amount, payment, facility, and exact identity story.",
+          "evidence": {
+            "evidence_type": "source_document",
+            "provenance_class": "real_source",
+            "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+            "component": null,
+            "served_build_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+            "data_vintage": "2026-09-19T03:00:00.000Z",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20240829105",
+            "source_hash": "sha256:b5891c5d897765a1f6314fbe9e96fc47c23b1dae0624cfbecc9b59c76322d445",
+            "source_hash_basis": "retrieved official document bytes",
+            "document_role": "award_notice",
+            "locator": "section Notice Detail / request_id 20240829105 / facility 3218 Emmons Avenue",
+            "assertion": "BHRAGS joins the exact contract and notice to the facility address, unit count, and resolved neighborhood.",
+            "identity_basis": "exact contract id CT107120258801626 joined to notice 20240829105",
+            "viewport": "desktop",
+            "place_role": "facility_site",
+            "render_hash": "70c18af61baa10b9063d08615705cd1908e96e9f2ffe1ac530c7026cca99aee3",
+            "content_hash": "sha256:b5891c5d897765a1f6314fbe9e96fc47c23b1dae0624cfbecc9b59c76322d445",
+            "initialization": null
+          }
+        },
+        {
+          "claim_family": "pricing_role",
+          "status": "not_ready",
+          "reason": "account_gated_pricing_source",
+          "assertion": "pricing_role remains not ready because account_gated_pricing_source.",
+          "details": {
+            "access_state": "account_gated"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "obligation_role",
+          "status": "not_ready",
+          "reason": "account_gated_executed_source",
+          "assertion": "obligation_role remains not ready because account_gated_executed_source.",
+          "details": {
+            "access_state": "account_gated"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "performance",
+          "status": "not_ready",
+          "reason": "not_located_public_evaluation",
+          "assertion": "performance remains not ready because not_located_public_evaluation.",
+          "details": {
+            "access_state": "not_located"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "neighborhood",
+          "status": "ready",
+          "reason": null,
+          "assertion": "BHRAGS notice-attributed facility site resolves to the named neighborhood.",
+          "evidence": {
+            "evidence_type": "source_document",
+            "provenance_class": "real_source",
+            "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
+            "component": null,
+            "served_build_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+            "data_vintage": "2026-09-19T03:00:00.000Z",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20240829105",
+            "source_hash": "sha256:b5891c5d897765a1f6314fbe9e96fc47c23b1dae0624cfbecc9b59c76322d445",
+            "source_hash_basis": "retrieved official document bytes",
+            "document_role": "award_notice",
+            "locator": "section Notice Detail / request_id 20240829105 / facility 3218 Emmons Avenue",
+            "assertion": "BHRAGS joins the exact contract and notice to the facility address, unit count, and resolved neighborhood.",
+            "identity_basis": "exact contract id CT107120258801626 joined to notice 20240829105",
+            "viewport": "desktop",
+            "place_role": "facility_site",
+            "render_hash": "70c18af61baa10b9063d08615705cd1908e96e9f2ffe1ac530c7026cca99aee3",
+            "content_hash": "sha256:b5891c5d897765a1f6314fbe9e96fc47c23b1dae0624cfbecc9b59c76322d445",
+            "initialization": null
+          }
+        },
+        {
+          "claim_family": "vendor_promise",
+          "status": "not_ready",
+          "reason": "no_public_executed_agreement_or_sow",
+          "assertion": "vendor_promise remains not ready because no_public_executed_agreement_or_sow.",
+          "details": {
+            "admission_rule": "A served exact passage from a publicly accessible or redistribution-authorized executed agreement or SOW is required.",
+            "rejected_standins": [
+              "synthetic_fixture",
+              "draft",
+              "bid",
+              "audit_quotation",
+              "authenticated_screen",
+              "nonofficial_repost",
+              "narrative"
+            ]
+          },
+          "evidence": null
+        }
+      ]
+    },
+    {
+      "example_id": "s-p-CT110220271400991",
+      "label": "S&P",
+      "identity": "CT110220271400991",
+      "canonical_identity_basis": "exact contract id CT110220271400991 in the retained public contract materialization",
+      "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
+      "stories": [
+        "S&P proves below-$100,000 discovery ($62,500.00) while its contract-document access state remains separately classified."
+      ],
+      "cells": [
+        {
+          "claim_family": "access",
+          "status": "ready",
+          "reason": null,
+          "assertion": "S&P the served page retains the S&P amount and role-specific access state",
+          "evidence": {
+            "evidence_type": "browser_dom",
+            "provenance_class": "production_browser_dom",
+            "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
+            "component": null,
+            "served_build_revision": "727f48e41b4a132b082acd3542c20337065f1525",
+            "data_vintage": "2026-09-19T08:12:50.076Z",
+            "source_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT110220271400991/",
+            "source_hash": "sha256:062a3d22ce31d1277c55b73bad9c7ec2f19c60f439cfc0f721be368a15fda1d1",
+            "source_hash_basis": "recorded served DOM capture bytes",
+            "document_role": "cityscroll_served_contract_page",
+            "locator": "served contract amount and disclosure/access state",
+            "assertion": "the served page retains the S&P amount and role-specific access state",
+            "identity_basis": "exact contract id CT110220271400991",
+            "viewport": "desktop",
+            "place_role": null,
+            "render_hash": "062a3d22ce31d1277c55b73bad9c7ec2f19c60f439cfc0f721be368a15fda1d1",
+            "content_hash": null,
+            "initialization": "settled"
+          }
+        },
+        {
+          "claim_family": "pricing_role",
+          "status": "not_ready",
+          "reason": "account_gated_pricing_source",
+          "assertion": "pricing_role remains not ready because account_gated_pricing_source.",
+          "details": {
+            "access_state": "account_gated"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "obligation_role",
+          "status": "not_ready",
+          "reason": "account_gated_executed_source",
+          "assertion": "obligation_role remains not ready because account_gated_executed_source.",
+          "details": {
+            "access_state": "account_gated"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "performance",
+          "status": "not_ready",
+          "reason": "not_located_public_evaluation",
+          "assertion": "performance remains not ready because not_located_public_evaluation.",
+          "details": {
+            "access_state": "not_located"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "neighborhood",
+          "status": "not_ready",
+          "reason": "no_admitted_service_place_evidence",
+          "assertion": "neighborhood remains not ready because no_admitted_service_place_evidence.",
+          "details": {},
+          "evidence": null
+        },
+        {
+          "claim_family": "vendor_promise",
+          "status": "not_ready",
+          "reason": "no_public_executed_agreement_or_sow",
+          "assertion": "vendor_promise remains not ready because no_public_executed_agreement_or_sow.",
+          "details": {
+            "admission_rule": "A served exact passage from a publicly accessible or redistribution-authorized executed agreement or SOW is required.",
+            "rejected_standins": [
+              "synthetic_fixture",
+              "draft",
+              "bid",
+              "audit_quotation",
+              "authenticated_screen",
+              "nonofficial_repost",
+              "narrative"
+            ]
+          },
+          "evidence": null
+        }
+      ]
+    },
+    {
+      "example_id": "aha-CT105720278802113",
+      "label": "AHA",
+      "identity": "CT105720278802113",
+      "canonical_identity_basis": "exact contract id CT105720278802113 in the retained public contract materialization",
+      "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
+      "stories": [
+        "AHA proves below-$100,000 discovery ($46,673.32) while its contract-document access state remains separately classified."
+      ],
+      "cells": [
+        {
+          "claim_family": "access",
+          "status": "ready",
+          "reason": null,
+          "assertion": "AHA the served page retains the AHA amount and role-specific access state",
+          "evidence": {
+            "evidence_type": "browser_dom",
+            "provenance_class": "production_browser_dom",
+            "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
+            "component": null,
+            "served_build_revision": "727f48e41b4a132b082acd3542c20337065f1525",
+            "data_vintage": "2026-09-19T08:12:50.076Z",
+            "source_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT105720278802113/",
+            "source_hash": "sha256:561a5af52b3716a5914c22c6b53041e145a00d4c8bc8e94eda6acc8f194490e6",
+            "source_hash_basis": "recorded served DOM capture bytes",
+            "document_role": "cityscroll_served_contract_page",
+            "locator": "served contract amount and disclosure/access state",
+            "assertion": "the served page retains the AHA amount and role-specific access state",
+            "identity_basis": "exact contract id CT105720278802113",
+            "viewport": "desktop",
+            "place_role": null,
+            "render_hash": "561a5af52b3716a5914c22c6b53041e145a00d4c8bc8e94eda6acc8f194490e6",
+            "content_hash": null,
+            "initialization": "settled"
+          }
+        },
+        {
+          "claim_family": "pricing_role",
+          "status": "not_ready",
+          "reason": "account_gated_pricing_source",
+          "assertion": "pricing_role remains not ready because account_gated_pricing_source.",
+          "details": {
+            "access_state": "account_gated"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "obligation_role",
+          "status": "not_ready",
+          "reason": "account_gated_executed_source",
+          "assertion": "obligation_role remains not ready because account_gated_executed_source.",
+          "details": {
+            "access_state": "account_gated"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "performance",
+          "status": "not_ready",
+          "reason": "not_located_public_evaluation",
+          "assertion": "performance remains not ready because not_located_public_evaluation.",
+          "details": {
+            "access_state": "not_located"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "neighborhood",
+          "status": "not_ready",
+          "reason": "no_admitted_service_place_evidence",
+          "assertion": "neighborhood remains not ready because no_admitted_service_place_evidence.",
+          "details": {},
+          "evidence": null
+        },
+        {
+          "claim_family": "vendor_promise",
+          "status": "not_ready",
+          "reason": "no_public_executed_agreement_or_sow",
+          "assertion": "vendor_promise remains not ready because no_public_executed_agreement_or_sow.",
+          "details": {
+            "admission_rule": "A served exact passage from a publicly accessible or redistribution-authorized executed agreement or SOW is required.",
+            "rejected_standins": [
+              "synthetic_fixture",
+              "draft",
+              "bid",
+              "audit_quotation",
+              "authenticated_screen",
+              "nonofficial_repost",
+              "narrative"
+            ]
+          },
+          "evidence": null
+        }
+      ]
+    },
+    {
+      "example_id": "quizizz-CT104020273009333",
+      "label": "Quizizz",
+      "identity": "CT104020273009333",
+      "canonical_identity_basis": "exact contract id CT104020273009333 in the retained public contract materialization",
+      "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
+      "stories": [
+        "Quizizz proves below-$100,000 discovery ($25,000.00) while its contract-document access state remains separately classified."
+      ],
+      "cells": [
+        {
+          "claim_family": "access",
+          "status": "ready",
+          "reason": null,
+          "assertion": "Quizizz the served page retains the Quizizz amount and role-specific access state",
+          "evidence": {
+            "evidence_type": "browser_dom",
+            "provenance_class": "production_browser_dom",
+            "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
+            "component": null,
+            "served_build_revision": "727f48e41b4a132b082acd3542c20337065f1525",
+            "data_vintage": "2026-09-19T08:12:50.076Z",
+            "source_url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT104020273009333/",
+            "source_hash": "sha256:f92f41439a91b33e5820b6be02e6dc7cc019109f453d34817d0bafe8b7cf8cf4",
+            "source_hash_basis": "recorded served DOM capture bytes",
+            "document_role": "cityscroll_served_contract_page",
+            "locator": "served contract amount and disclosure/access state",
+            "assertion": "the served page retains the Quizizz amount and role-specific access state",
+            "identity_basis": "exact contract id CT104020273009333",
+            "viewport": "desktop",
+            "place_role": null,
+            "render_hash": "f92f41439a91b33e5820b6be02e6dc7cc019109f453d34817d0bafe8b7cf8cf4",
+            "content_hash": null,
+            "initialization": "settled"
+          }
+        },
+        {
+          "claim_family": "pricing_role",
+          "status": "not_ready",
+          "reason": "account_gated_pricing_source",
+          "assertion": "pricing_role remains not ready because account_gated_pricing_source.",
+          "details": {
+            "access_state": "account_gated"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "obligation_role",
+          "status": "not_ready",
+          "reason": "account_gated_executed_source",
+          "assertion": "obligation_role remains not ready because account_gated_executed_source.",
+          "details": {
+            "access_state": "account_gated"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "performance",
+          "status": "not_ready",
+          "reason": "not_located_public_evaluation",
+          "assertion": "performance remains not ready because not_located_public_evaluation.",
+          "details": {
+            "access_state": "not_located"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "neighborhood",
+          "status": "not_ready",
+          "reason": "no_admitted_service_place_evidence",
+          "assertion": "neighborhood remains not ready because no_admitted_service_place_evidence.",
+          "details": {},
+          "evidence": null
+        },
+        {
+          "claim_family": "vendor_promise",
+          "status": "not_ready",
+          "reason": "no_public_executed_agreement_or_sow",
+          "assertion": "vendor_promise remains not ready because no_public_executed_agreement_or_sow.",
+          "details": {
+            "admission_rule": "A served exact passage from a publicly accessible or redistribution-authorized executed agreement or SOW is required.",
+            "rejected_standins": [
+              "synthetic_fixture",
+              "draft",
+              "bid",
+              "audit_quotation",
+              "authenticated_screen",
+              "nonofficial_repost",
+              "narrative"
+            ]
+          },
+          "evidence": null
+        }
+      ]
+    },
+    {
+      "example_id": "docgo-CT180620248801671",
+      "label": "DocGo",
+      "identity": "CT180620248801671 / 20248801671",
+      "canonical_identity_basis": "exact contract id CT180620248801671 joined to publisher contract number 20248801671",
+      "route": "/procurements/procurement%3Acontract%3ACT180620248801671/",
+      "stories": [
+        "DocGo proves a canonical contract identity joined to official oversight evidence; the audit's reported rates remain audit-reported, not vendor promises."
+      ],
+      "cells": [
+        {
+          "claim_family": "access",
+          "status": "ready",
+          "reason": null,
+          "assertion": "canonical contract identity is joined to the official Comptroller audit without treating the audit as the executed agreement",
+          "evidence": {
+            "evidence_type": "source_document",
+            "provenance_class": "real_source",
+            "route": "/procurements/procurement%3Acontract%3ACT180620248801671",
+            "component": null,
+            "served_build_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+            "data_vintage": "2026-09-19T12:00:00.000Z",
+            "source_url": "https://comptroller.nyc.gov/reports/audit-of-the-department-of-housing-preservation-and-developments-oversight-of-its-contract-with-rapid-reliable-testing-ny-llc-aka-docgo/",
+            "source_hash": "sha256:b5fb5a340d7e5d9801911c2cb2b46148a0a6be74f1fb1511237102007c80fede",
+            "source_hash_basis": "retrieved official document bytes",
+            "document_role": "performance_evaluation",
+            "locator": "section Audit Report / reported food cost caps",
+            "assertion": "canonical contract identity is joined to the official Comptroller audit without treating the audit as the executed agreement",
+            "identity_basis": "exact CityScroll contract id CT180620248801671 joined to publisher number 20248801671",
+            "viewport": "desktop",
+            "place_role": null,
+            "render_hash": "e9b3e387f2647d3935664a9ced4ac3fa5f7dce3807400e30cc3040161c4e4510",
+            "content_hash": "sha256:b5fb5a340d7e5d9801911c2cb2b46148a0a6be74f1fb1511237102007c80fede",
+            "initialization": null
+          }
+        },
+        {
+          "claim_family": "pricing_role",
+          "status": "ready",
+          "reason": null,
+          "assertion": "the Comptroller audit reports contract rates with its audit role preserved",
+          "evidence": {
+            "evidence_type": "source_document",
+            "provenance_class": "real_source",
+            "route": "/procurements/procurement%3Acontract%3ACT180620248801671",
+            "component": null,
+            "served_build_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+            "data_vintage": "2026-09-19T12:00:00.000Z",
+            "source_url": "https://comptroller.nyc.gov/reports/audit-of-the-department-of-housing-preservation-and-developments-oversight-of-its-contract-with-rapid-reliable-testing-ny-llc-aka-docgo/",
+            "source_hash": "sha256:b5fb5a340d7e5d9801911c2cb2b46148a0a6be74f1fb1511237102007c80fede",
+            "source_hash_basis": "retrieved official document bytes",
+            "document_role": "performance_evaluation",
+            "locator": "section Audit Report / reported food cost caps",
+            "assertion": "the Comptroller audit reports contract rates with its audit role preserved",
+            "identity_basis": "exact contract id CT180620248801671 joined to publisher number 20248801671",
+            "viewport": "desktop",
+            "place_role": null,
+            "render_hash": "e9b3e387f2647d3935664a9ced4ac3fa5f7dce3807400e30cc3040161c4e4510",
+            "content_hash": "sha256:b5fb5a340d7e5d9801911c2cb2b46148a0a6be74f1fb1511237102007c80fede",
+            "initialization": null
+          }
+        },
+        {
+          "claim_family": "obligation_role",
+          "status": "not_ready",
+          "reason": "audit_is_not_executed_agreement",
+          "assertion": "obligation_role remains not ready because audit_is_not_executed_agreement.",
+          "details": {
+            "document_role": "performance_evaluation"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "performance",
+          "status": "ready",
+          "reason": null,
+          "assertion": "the official audit supplies a performance-evaluation passage tied to DocGo",
+          "evidence": {
+            "evidence_type": "source_document",
+            "provenance_class": "real_source",
+            "route": "/procurements/procurement%3Acontract%3ACT180620248801671",
+            "component": null,
+            "served_build_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+            "data_vintage": "2026-09-19T12:00:00.000Z",
+            "source_url": "https://comptroller.nyc.gov/reports/audit-of-the-department-of-housing-preservation-and-developments-oversight-of-its-contract-with-rapid-reliable-testing-ny-llc-aka-docgo/",
+            "source_hash": "sha256:b5fb5a340d7e5d9801911c2cb2b46148a0a6be74f1fb1511237102007c80fede",
+            "source_hash_basis": "retrieved official document bytes",
+            "document_role": "performance_evaluation",
+            "locator": "section Audit Report / reported food cost caps",
+            "assertion": "the official audit supplies a performance-evaluation passage tied to DocGo",
+            "identity_basis": "exact contract id CT180620248801671 joined to publisher number 20248801671",
+            "viewport": "desktop",
+            "place_role": null,
+            "render_hash": "e9b3e387f2647d3935664a9ced4ac3fa5f7dce3807400e30cc3040161c4e4510",
+            "content_hash": "sha256:b5fb5a340d7e5d9801911c2cb2b46148a0a6be74f1fb1511237102007c80fede",
+            "initialization": null
+          }
+        },
+        {
+          "claim_family": "neighborhood",
+          "status": "not_ready",
+          "reason": "no_admitted_service_place_evidence",
+          "assertion": "neighborhood remains not ready because no_admitted_service_place_evidence.",
+          "details": {},
+          "evidence": null
+        },
+        {
+          "claim_family": "vendor_promise",
+          "status": "not_ready",
+          "reason": "no_public_executed_agreement_or_sow",
+          "assertion": "vendor_promise remains not ready because no_public_executed_agreement_or_sow.",
+          "details": {
+            "admission_rule": "A served exact passage from a publicly accessible or redistribution-authorized executed agreement or SOW is required.",
+            "rejected_standins": [
+              "synthetic_fixture",
+              "draft",
+              "bid",
+              "audit_quotation",
+              "authenticated_screen",
+              "nonofficial_repost",
+              "narrative"
+            ]
+          },
+          "evidence": null
+        }
+      ]
+    },
+    {
+      "example_id": "dcas-bid-tab-2000090",
+      "label": "DCAS bid tab 2000090",
+      "identity": "BID2000090",
+      "canonical_identity_basis": "exact public bid number 2000090 in the DCAS bid-tab PDF",
+      "route": "real-corpus-harness",
+      "stories": [
+        "DCAS proves offered unit prices and class-award totals with the bid-tab role intact; an offer is not an executed vendor promise."
+      ],
+      "cells": [
+        {
+          "claim_family": "access",
+          "status": "ready",
+          "reason": null,
+          "assertion": "the official DCAS bid tab is publicly retrievable and rendered through the role-corpus harness",
+          "evidence": {
+            "evidence_type": "source_document",
+            "provenance_class": "real_source",
+            "route": "real-corpus-harness",
+            "component": "real-corpus-harness",
+            "served_build_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+            "data_vintage": "2026-09-19T12:00:00.000Z",
+            "source_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/business/bidtabs/2000090.pdf",
+            "source_hash": "sha256:87c994e8427d1e6c19ea89d4c63e805ab09890d8e81ba24d609f2e7dc4f8d447",
+            "source_hash_basis": "retrieved official document bytes",
+            "document_role": "bid_tab",
+            "locator": "PDF page 2 / class awards",
+            "assertion": "the official DCAS bid tab is publicly retrievable and rendered through the role-corpus harness",
+            "identity_basis": "exact bid number 2000090 (BID2000090)",
+            "viewport": "desktop",
+            "place_role": null,
+            "render_hash": "ef1006121fb3cae8c9bd22d915b8747848e8953fa5b07867597a4839721a29f0",
+            "content_hash": "sha256:87c994e8427d1e6c19ea89d4c63e805ab09890d8e81ba24d609f2e7dc4f8d447",
+            "initialization": null
+          }
+        },
+        {
+          "claim_family": "pricing_role",
+          "status": "ready",
+          "reason": null,
+          "assertion": "DCAS offered unit prices and class awards remain bid-offer facts",
+          "evidence": {
+            "evidence_type": "source_document",
+            "provenance_class": "real_source",
+            "route": "real-corpus-harness",
+            "component": "real-corpus-harness",
+            "served_build_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+            "data_vintage": "2026-09-19T12:00:00.000Z",
+            "source_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/business/bidtabs/2000090.pdf",
+            "source_hash": "sha256:87c994e8427d1e6c19ea89d4c63e805ab09890d8e81ba24d609f2e7dc4f8d447",
+            "source_hash_basis": "retrieved official document bytes",
+            "document_role": "bid_tab",
+            "locator": "PDF page 2 / class awards",
+            "assertion": "DCAS offered unit prices and class awards remain bid-offer facts",
+            "identity_basis": "exact bid number 2000090 (BID2000090)",
+            "viewport": "desktop",
+            "place_role": null,
+            "render_hash": "ef1006121fb3cae8c9bd22d915b8747848e8953fa5b07867597a4839721a29f0",
+            "content_hash": "sha256:87c994e8427d1e6c19ea89d4c63e805ab09890d8e81ba24d609f2e7dc4f8d447",
+            "initialization": null
+          }
+        },
+        {
+          "claim_family": "obligation_role",
+          "status": "not_ready",
+          "reason": "bid_is_not_executed_agreement",
+          "assertion": "obligation_role remains not ready because bid_is_not_executed_agreement.",
+          "details": {
+            "document_role": "bid_tab"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "performance",
+          "status": "not_ready",
+          "reason": "no_admitted_performance_evaluation",
+          "assertion": "performance remains not ready because no_admitted_performance_evaluation.",
+          "details": {},
+          "evidence": null
+        },
+        {
+          "claim_family": "neighborhood",
+          "status": "not_ready",
+          "reason": "bid_tab_has_no_service_place",
+          "assertion": "neighborhood remains not ready because bid_tab_has_no_service_place.",
+          "details": {},
+          "evidence": null
+        },
+        {
+          "claim_family": "vendor_promise",
+          "status": "not_ready",
+          "reason": "no_public_executed_agreement_or_sow",
+          "assertion": "vendor_promise remains not ready because no_public_executed_agreement_or_sow.",
+          "details": {
+            "admission_rule": "A served exact passage from a publicly accessible or redistribution-authorized executed agreement or SOW is required.",
+            "rejected_standins": [
+              "synthetic_fixture",
+              "draft",
+              "bid",
+              "audit_quotation",
+              "authenticated_screen",
+              "nonofficial_repost",
+              "narrative"
+            ]
+          },
+          "evidence": null
+        }
+      ]
+    },
+    {
+      "example_id": "mocs-november-2024-fcrc",
+      "label": "MOCS November 2024 FCRC packet",
+      "identity": "MOCS-FCRC-202411",
+      "canonical_identity_basis": "exact MOCS-FCRC-202411 packet source document and named proposed-agreement/template identities",
+      "route": "real-corpus-harness",
+      "stories": [
+        "MOCS proves proposed duties, site schedules, and template fees with their proposed/template roles intact; the packet's blank execution state blocks a vendor-promise claim."
+      ],
+      "cells": [
+        {
+          "claim_family": "access",
+          "status": "ready",
+          "reason": null,
+          "assertion": "the official FCRC packet is publicly retrievable and rendered in the role-corpus harness",
+          "evidence": {
+            "evidence_type": "source_document",
+            "provenance_class": "real_source",
+            "route": "real-corpus-harness",
+            "component": "real-corpus-harness",
+            "served_build_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+            "data_vintage": "2026-09-19T12:00:00.000Z",
+            "source_url": "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf",
+            "source_hash": "sha256:0ec5d908a7a4dbe09ff52079cebd63756c054be39cc240c59a785cbb4209e4d8",
+            "source_hash_basis": "retrieved official document bytes",
+            "document_role": "proposed_agreement",
+            "locator": "PDF page 72 / EXHIBIT A GrowNYC Greenmarket Permit Locations, Days and Hours of Operation",
+            "assertion": "the official FCRC packet is publicly retrievable and rendered in the role-corpus harness",
+            "identity_basis": "exact MOCS-FCRC-202411 packet URL",
+            "viewport": "desktop",
+            "place_role": null,
+            "render_hash": "ef1006121fb3cae8c9bd22d915b8747848e8953fa5b07867597a4839721a29f0",
+            "content_hash": "sha256:0ec5d908a7a4dbe09ff52079cebd63756c054be39cc240c59a785cbb4209e4d8",
+            "initialization": null
+          }
+        },
+        {
+          "claim_family": "pricing_role",
+          "status": "ready",
+          "reason": null,
+          "assertion": "MOCS template pricing remains labeled as template pricing",
+          "evidence": {
+            "evidence_type": "source_document",
+            "provenance_class": "real_source",
+            "route": "real-corpus-harness",
+            "component": "real-corpus-harness",
+            "served_build_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+            "data_vintage": "2026-09-19T12:00:00.000Z",
+            "source_url": "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf",
+            "source_hash": "sha256:0ec5d908a7a4dbe09ff52079cebd63756c054be39cc240c59a785cbb4209e4d8",
+            "source_hash_basis": "retrieved official document bytes",
+            "document_role": "template_pricing",
+            "locator": "PDF pages 185-186 / Citywide Tennis Professionals seasonal fee schedule",
+            "assertion": "MOCS template pricing remains labeled as template pricing",
+            "identity_basis": "exact MOCS-FCRC-202411-CWTP template identity",
+            "viewport": "desktop",
+            "place_role": null,
+            "render_hash": "ef1006121fb3cae8c9bd22d915b8747848e8953fa5b07867597a4839721a29f0",
+            "content_hash": "sha256:0ec5d908a7a4dbe09ff52079cebd63756c054be39cc240c59a785cbb4209e4d8",
+            "initialization": null
+          }
+        },
+        {
+          "claim_family": "obligation_role",
+          "status": "ready",
+          "reason": null,
+          "assertion": "MOCS proposed operational duties remain proposed agreement terms",
+          "evidence": {
+            "evidence_type": "source_document",
+            "provenance_class": "real_source",
+            "route": "real-corpus-harness",
+            "component": "real-corpus-harness",
+            "served_build_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+            "data_vintage": "2026-09-19T12:00:00.000Z",
+            "source_url": "https://www.nyc.gov/assets/mocs/downloads/Opportunities/FCRC/agendas/2024/11nov/PublicMeetingDocuments_202411.pdf",
+            "source_hash": "sha256:0ec5d908a7a4dbe09ff52079cebd63756c054be39cc240c59a785cbb4209e4d8",
+            "source_hash_basis": "retrieved official document bytes",
+            "document_role": "proposed_agreement",
+            "locator": "PDF pages 41-43 / 7. OPERATIONS proposed duties",
+            "assertion": "MOCS proposed operational duties remain proposed agreement terms",
+            "identity_basis": "exact MOCS-FCRC-202411-GROWNYC proposed identity",
+            "viewport": "desktop",
+            "place_role": null,
+            "render_hash": "ef1006121fb3cae8c9bd22d915b8747848e8953fa5b07867597a4839721a29f0",
+            "content_hash": "sha256:0ec5d908a7a4dbe09ff52079cebd63756c054be39cc240c59a785cbb4209e4d8",
+            "initialization": null
+          }
+        },
+        {
+          "claim_family": "performance",
+          "status": "not_ready",
+          "reason": "no_admitted_performance_evaluation",
+          "assertion": "performance remains not ready because no_admitted_performance_evaluation.",
+          "details": {},
+          "evidence": null
+        },
+        {
+          "claim_family": "neighborhood",
+          "status": "not_ready",
+          "reason": "site_schedule_is_not_resolved_neighborhood",
+          "assertion": "neighborhood remains not ready because site_schedule_is_not_resolved_neighborhood.",
+          "details": {
+            "document_role": "site_schedule"
+          },
+          "evidence": null
+        },
+        {
+          "claim_family": "vendor_promise",
+          "status": "not_ready",
+          "reason": "no_public_executed_agreement_or_sow",
+          "assertion": "vendor_promise remains not ready because no_public_executed_agreement_or_sow.",
+          "details": {
+            "admission_rule": "A served exact passage from a publicly accessible or redistribution-authorized executed agreement or SOW is required.",
+            "rejected_standins": [
+              "synthetic_fixture",
+              "draft",
+              "bid",
+              "audit_quotation",
+              "authenticated_screen",
+              "nonofficial_repost",
+              "narrative"
+            ]
+          },
+          "evidence": null
+        }
+      ]
+    }
+  ],
+  "claim_families": [
+    "access",
+    "pricing_role",
+    "obligation_role",
+    "performance",
+    "neighborhood",
+    "vendor_promise"
+  ],
+  "provenance_counts": {
+    "real_source_cells": 13,
+    "synthetic_fixture_cells": 0,
+    "mutation_cells": 0
+  },
+  "synthetic_fixture_policy": {
+    "synthetic_fixture_cells": 0,
+    "mutation_cells": 0,
+    "rule": "Synthetic fixtures and mutations are counted and labeled, but neither can satisfy a ready cell."
+  },
+  "boundary": {
+    "claim_family": "vendor_promise",
+    "status": "not_ready",
+    "required_evidence": "a publicly accessible or redistribution-authorized executed agreement or SOW with a served exact passage",
+    "rejected_standins": [
+      "fixture",
+      "draft",
+      "bid",
+      "audit quotation",
+      "authenticated screen",
+      "nonofficial repost",
+      "narrative"
+    ],
+    "assertion": "The vendor-promise family remains red until an admitted executed document is served; no publisher event is required to complete this bounded receipt."
+  },
+  "completion": {
+    "status": "complete",
+    "publisher_event_required": false,
+    "missing_claims_remain_red": true,
+    "assertion": "The matrix and bounded editor packet are complete without waiting for a future executed-document publication."
+  },
+  "engineering_status": {
+    "state": "complete",
+    "assertion": "The receipt builder, validator, and mutation tests cover all seven named examples and the rejection boundary."
+  },
+  "deployment_status": {
+    "state": "observed",
+    "served_build_revision": "727f48e41b4a132b082acd3542c20337065f1525",
+    "data_vintage": "2026-09-19T08:12:50.076Z",
+    "assertion": "Production route observations remain separate from implementation completion."
+  },
+  "editorial_readiness": {
+    "state": "bounded",
+    "ready_claim_families": [
+      "access",
+      "pricing_role",
+      "obligation_role",
+      "performance",
+      "neighborhood"
+    ],
+    "blocked_claim_families": [
+      "vendor_promise"
+    ],
+    "assertion": "Only role-correct, source-grounded statements are safe to send; the vendor-promise statement remains blocked."
+  },
+  "editor_packet": {
+    "safe_to_send_now": [
+      {
+        "id": "bhrags-joined-story",
+        "claim_family": "access",
+        "statement": "BHRAGS demonstrates a joined contract, payment, facility, and neighborhood story."
+      },
+      {
+        "id": "small-contract-discovery",
+        "claim_family": "access",
+        "statement": "S&P, AHA, and Quizizz demonstrate below-$100,000 discovery with role-specific access states."
+      },
+      {
+        "id": "docgo-oversight-join",
+        "claim_family": "performance",
+        "statement": "DocGo demonstrates a canonical contract joined to official oversight evidence."
+      },
+      {
+        "id": "dcas-offered-pricing",
+        "claim_family": "pricing_role",
+        "statement": "DCAS demonstrates offered pricing and class awards labeled as bid-tab facts."
+      },
+      {
+        "id": "mocs-proposed-roles",
+        "claim_family": "obligation_role",
+        "statement": "MOCS demonstrates proposed duties, site schedules, and template fees without role inflation."
+      }
+    ],
+    "blocked_by_contract_document_disclosure": [
+      {
+        "id": "vendor-promise",
+        "claim_family": "vendor_promise",
+        "statement": "The statement that a vendor promised a term remains blocked until an admitted executed agreement or SOW supplies a served exact passage."
+      }
+    ]
+  }
+}
