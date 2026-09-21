@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -29,23 +29,46 @@ const meetingIndex = readCommunityBoardMeetingIndex(new URL("../site/data/commun
 const sources = { sourceRegistry, sourceInventory, scorecard, geography };
 
 test("release journey evidence names every acceptance obligation and its retained artifacts", () => {
-  assert.equal(releaseJourneyManifest.schema, "cityscroll.community_board_release_journey_manifest.v3");
+  assert.equal(releaseJourneyManifest.schema, "cityscroll.community_board_release_journey_manifest.v4");
   assert.match(releaseJourneyManifest.repository_revision, /^[0-9a-f]{40}$/);
   assert.equal(releaseJourneyManifest.acceptance.A3.board_count, 59);
   assert.equal(releaseJourneyManifest.acceptance.A3.resource_role_dispositions, 59);
   assert.equal(resourceMatrix.scope.board_count, 59);
   assert.equal(resourceMatrix.boards.length, 59);
   assert.ok(resourceMatrix.boards.every((board) => board.destinations.every((destination) => destination.disposition)));
-  assert.deepEqual(
-    releaseJourneyManifest.acceptance.A3.specimens.map(({ board }) => board),
-    ["brooklyn-cb-15", "manhattan-cb-06", "bronx-cb-11", "bronx-cb-01", "queens-cb-01", "staten-island-cb-01"],
-  );
+  assert.deepEqual(releaseJourneyManifest.acceptance.A3.specimens, [
+    { board: "brooklyn-cb-15", state: "populated" },
+    { board: "manhattan-cb-06", state: "long-content" },
+    { board: "bronx-cb-11", state: "sparse" },
+    { board: "bronx-cb-01", state: "unavailable" },
+    { board: "queens-cb-01", state: "alternate-source" },
+    { board: "staten-island-cb-01", state: "borough-coverage" },
+  ]);
+  const retained = (key) => releaseJourneyManifest.acceptance[key].evidence.map((path) => {
+    const text = readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
+    assert.ok(text.trim().length > 0, `${key} retained artifact is empty: ${path}`);
+    return text;
+  });
+  assert.ok(releaseJourneyManifest.fixture_assertions.every((entry) => !Object.hasOwn(entry, "render_sha256")), "fixture-only assertions must not carry a synthetic hash");
+  const assertions = releaseJourneyManifest.assertions;
+  const dense = assertions.filter((entry) => entry.case.includes("cb06-calendar-month-detail-return-"));
+  const requestReturns = assertions.filter((entry) => entry.case.includes("request-return-"));
+  const requestReadings = assertions.filter((entry) => entry.case.includes("request-full-reading-"));
+  const recoveryRows = releaseJourneyManifest.recovery_observations;
+  const derivedStatuses = {
+    A1: releaseJourneyManifest.fixture_assertions.filter((entry) => entry.case === "upcoming-full-board" || entry.case === "no-upcoming-full-board").every((entry) => entry.passed === true),
+    A2: dense.length === 2 && requestReturns.length === 2 && requestReadings.length === 2
+      && [...dense, ...requestReturns, ...requestReadings].every((entry) => entry.passed === true)
+      && requestReturns.every((entry) => entry.outbound?.sends === 0 && entry.outbound?.subscriptions === 0 && entry.outbound?.follows === 0),
+    A3: resourceMatrix.boards.length === 59
+      && resourceMatrix.boards.every((board) => board.destinations.every((destination) => destination.disposition))
+      && recoveryRows.length === 36 && recoveryRows.every((entry) => entry.passed === true),
+    A4: [...assertions, ...recoveryRows].every((entry) => entry.passed === true && entry.route && entry.viewport && entry.revision && entry.data_vintage && entry.assertion),
+  };
   for (const key of ["A1", "A2", "A3", "A4"]) {
-    assert.equal(releaseJourneyManifest.acceptance[key].status, "proved_by_served_readback");
+    assert.equal(releaseJourneyManifest.acceptance[key].status, derivedStatuses[key] ? "proved_by_served_readback" : "open_pending_evidence");
     assert.ok(releaseJourneyManifest.acceptance[key].evidence.length > 0, `${key} has no retained evidence`);
-    for (const path of releaseJourneyManifest.acceptance[key].evidence) {
-      assert.equal(existsSync(new URL(`../${path}`, import.meta.url)), true, `${key} evidence missing: ${path}`);
-    }
+    retained(key);
   }
   assert.match(releaseJourneyManifest.unit_gate, /community_board_links\.test\.mjs/);
   assert.deepEqual(releaseJourneyManifest.functional_paths, [
@@ -53,11 +76,33 @@ test("release journey evidence names every acceptance obligation and its retaine
     "python3 test/functional/34_near_you_surface_switch.py",
   ]);
   assert.equal(releaseJourneyManifest.journey_functional_path, "python3 test/functional/54_community_board_release_journeys.py");
+  assert.equal(dense.length, 2);
+  for (const entry of dense) {
+    assert.deepEqual(entry.view_modes, ["list", "month"]);
+    assert.deepEqual(entry.inspection, { opened: true, dismissed: true, network_requests: [] });
+    assert.deepEqual(entry.detail, { opened: true, returned: true, same_view: true, focus_restored: true });
+    assert.equal(entry.source_links.length, 1);
+    assert.ok(entry.source_links.every((href) => /^https?:\/\//.test(href)));
+    assert.match(entry.detail_href, /^\//);
+    assert.equal(Object.hasOwn(entry, "render_sha256"), false, "untaken dense capture must not carry a synthetic hash");
+  }
   assert.equal(releaseJourneyManifest.assertions.filter((entry) => entry.case.includes("calendar-accepted-fixture")).length, 2);
-  assert.deepEqual(
-    releaseJourneyManifest.assertions.filter((entry) => entry.case.includes("request-return-")).map((entry) => entry.outbound),
-    [{ sends: 0, subscriptions: 0, follows: 0 }, { sends: 0, subscriptions: 0, follows: 0 }],
-  );
+  const requests = releaseJourneyManifest.assertions.filter((entry) => entry.case.includes("request-return-"));
+  assert.equal(requests.length, 2);
+  assert.deepEqual(requests.map((entry) => entry.outbound), [
+    { sends: 0, subscriptions: 0, follows: 0 },
+    { sends: 0, subscriptions: 0, follows: 0 },
+  ]);
+  for (const entry of requests) {
+    assert.deepEqual(entry.inspection, { agency_expanded: true, opened: true, dismissed: true, same_scope: true, same_scroll: true, focus_restored: true });
+    assert.equal(entry.source_links.length, 1);
+    assert.match(entry.source_links[0], /^https?:\/\//);
+    assert.equal(entry.scope, "/community-boards/brooklyn-cb-15/");
+    assert.ok(Number.isFinite(entry.scroll_y));
+  }
+  const fullReadings = releaseJourneyManifest.assertions.filter((entry) => entry.case.includes("request-full-reading-"));
+  assert.equal(fullReadings.length, 2);
+  assert.ok(fullReadings.every((entry) => entry.request.tracking_code && entry.request.title && entry.request.answer_count >= 2 && entry.request.explanation_count === 1));
   const layouts = releaseJourneyManifest.assertions.filter((entry) => entry.case.startsWith("cb15-layout-"));
   assert.equal(layouts.length, 2);
   assert.notDeepEqual(layouts[0].measurements, layouts[1].measurements);
@@ -71,6 +116,33 @@ test("release journey evidence names every acceptance obligation and its retaine
   for (const entry of releaseJourneyManifest.assertions.filter((row) => row.case.includes("served-readback-"))) {
     assert.equal(entry.data_vintage, "served committed site materialization");
     assert.match(entry.render_sha256, /^[0-9a-f]{64}$/);
+  }
+  const recovery = recoveryRows;
+  assert.equal(recovery.length, 36);
+  const recoveryBoards = new Set(recovery.map((entry) => entry.specimen));
+  assert.deepEqual([...recoveryBoards], ["populated", "long-content", "sparse", "unavailable", "alternate-source", "borough-coverage"]);
+  for (const specimen of recoveryBoards) {
+    const cases = recovery.filter((entry) => entry.specimen === specimen);
+    assert.equal(cases.length, 6);
+    assert.ok(cases.every((entry) => entry.passed === true && entry.observation && entry.route && entry.revision === releaseJourneyManifest.repository_revision));
+    assert.ok(cases.every((entry) => !Object.hasOwn(entry, "render_sha256")), "recovery observations have no capture hash without a capture");
+    const noScript = cases.find((entry) => entry.case.endsWith("no-script"));
+    assert.equal(noScript.observation.main_visible, true);
+    assert.equal(noScript.observation.heading_nonempty, true);
+    const narrow = cases.find((entry) => entry.case.endsWith("narrow-touch"));
+    assert.equal(narrow.observation.horizontal_overflow, false);
+    assert.equal(narrow.observation.has_touch, true);
+    const keyboard = cases.find((entry) => entry.case.endsWith("keyboard"));
+    assert.equal(keyboard.observation.focusable_source_link, true);
+    const translation = cases.find((entry) => entry.case.endsWith("translation-fallback"));
+    assert.equal(translation.observation.heading_nonempty, true);
+    assert.ok(translation.observation.source_link_count >= 1);
+    const invalid = cases.find((entry) => entry.case.endsWith("invalid-place"));
+    assert.equal(invalid.observation.url_preserved, true);
+    assert.equal(invalid.observation.body_nonempty, true);
+    const forced = cases.find((entry) => entry.case.endsWith("forced-load-error"));
+    assert.equal(forced.observation.boot_module_blocked, true);
+    assert.equal(forced.observation.main_visible, true);
   }
 });
 
