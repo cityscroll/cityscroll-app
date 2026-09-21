@@ -553,6 +553,9 @@ if [[ "$RUN_FULL" == "1" ]]; then
     exit 2
   fi
   run_and_fail python3 -m playwright install --with-deps chromium
+  run_banner "Retained browser journeys" "fixture-backed Chromium journeys" \
+    "node --test test/browser/*.test.mjs"
+  run_and_fail node --test test/browser/*.test.mjs
   if node tools/home_cold_load.mjs; then
     run_banner "Performance budgets (local smoke)" "home.cold fixture" \
       "python3 test/performance/verify.py --budgets performance-budgets.json --fixtures test/performance/fixtures --fixture home.cold --site-root site --samples 1"

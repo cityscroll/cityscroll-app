@@ -868,9 +868,27 @@ jobs:
   # w7-01: promotes the axe gate + language gate to every PR. The required job below
   # keeps its existing public name, while the browser/reader checks run in parallel behind
   # it. All shards consume one verified _site artifact and bind their own OS-assigned port.
+  # Retained browser journeys have their own always-on PR child because their fixture-backed
+  # harness serves the source tree directly and must not disappear on docs-only changes.
+  browser-journeys-pr:
+    name: Retained browser journeys
+    if: always() && github.event_name != 'merge_group'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: ./.github/actions/setup-playwright
+      - name: Run retained browser journeys
+        run: node --test test/browser/*.test.mjs
+
   a11y-pr:
     name: Accessibility + language gate (axe on every PR)
-    needs: [changes, unit, a11y-pr-shard, a11y-rendered-census-primary, a11y-rendered-census-retry, a11y-routes-focus-primary, a11y-routes-focus-retry]
+    needs: [changes, unit, browser-journeys-pr, a11y-pr-shard, a11y-rendered-census-primary, a11y-rendered-census-retry, a11y-routes-focus-primary, a11y-routes-focus-retry]
     # Merge-queue builds keep merge-base-sensitive gates only; PR and main push keep the full set.
     if: always() && github.event_name != 'merge_group'
     runs-on: ubuntu-latest
@@ -887,6 +905,11 @@ jobs:
             echo "Skipping heavy a11y suite (unit_full=${{ needs.changes.outputs.unit_full }}, frontend=${{ needs.changes.outputs.frontend }})."
           fi
           echo "Reporting success for 'Accessibility + language gate (axe on every PR)'."
+      - name: Fail when retained browser journeys fail or are missing
+        if: always() && needs.browser-journeys-pr.result != 'success'
+        run: |
+          echo "Retained browser journeys result: ${{ needs.browser-journeys-pr.result }}"
+          exit 1
       - name: Fail when an accessibility shard fails or is missing
         if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && (needs.a11y-pr-shard.result != 'success' || (needs.a11y-rendered-census-primary.outputs.rendered_census_primary_passed != 'true' && needs.a11y-rendered-census-retry.result != 'success') || (needs.a11y-routes-focus-primary.outputs.routes_focus_primary_passed != 'true' && needs.a11y-routes-focus-retry.result != 'success'))
         run: |
@@ -898,7 +921,7 @@ jobs:
           echo "Routes-focus fresh-runner retry result: ${{ needs.a11y-routes-focus-retry.result }}"
           exit 1
       - name: Report all accessibility shards green
-        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-shard.result == 'success' && (needs.a11y-rendered-census-primary.outputs.rendered_census_primary_passed == 'true' || needs.a11y-rendered-census-retry.result == 'success') && (needs.a11y-routes-focus-primary.outputs.routes_focus_primary_passed == 'true' || needs.a11y-routes-focus-retry.result == 'success')
+        if: always() && needs.browser-journeys-pr.result == 'success' && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.a11y-pr-shard.result == 'success' && (needs.a11y-rendered-census-primary.outputs.rendered_census_primary_passed == 'true' || needs.a11y-rendered-census-retry.result == 'success') && (needs.a11y-routes-focus-primary.outputs.routes_focus_primary_passed == 'true' || needs.a11y-routes-focus-retry.result == 'success')
         run: |
           # `needs` does not resolve until every matrix child and its final artifact
           # upload step completes. Keep the required verdict on that job result: a

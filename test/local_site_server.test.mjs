@@ -157,7 +157,7 @@ test("accessibility aggregate accepts only a green matrix and a green routes-foc
 
   assert.match(
     aggregate,
-    /needs:\s*\[changes,\s*unit,\s*a11y-pr-shard,\s*a11y-rendered-census-primary,\s*a11y-rendered-census-retry,\s*a11y-routes-focus-primary,\s*a11y-routes-focus-retry\]/,
+    /needs:\s*\[changes,\s*unit,\s*browser-journeys-pr,\s*a11y-pr-shard,\s*a11y-rendered-census-primary,\s*a11y-rendered-census-retry,\s*a11y-routes-focus-primary,\s*a11y-routes-focus-retry\]/,
   );
   assert.match(
     aggregate,

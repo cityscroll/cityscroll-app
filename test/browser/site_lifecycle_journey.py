@@ -8,14 +8,16 @@ import json
 import sys
 import threading
 from pathlib import Path
+from typing import TYPE_CHECKING
 from urllib.parse import unquote, urlsplit
-
-from playwright.sync_api import Page, Route, sync_playwright
-
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+if TYPE_CHECKING:
+    from playwright.sync_api import Page, Route
+
+from browser_support import launched_chromium  # noqa: E402
 from fixture_clock import pin_fixture_clock  # noqa: E402
 
 CAPTURE_ROOT = ROOT / "docs" / "evidence" / "site-lifecycle-journey" / "captures"
@@ -296,8 +298,7 @@ def main() -> int:
     server, base = serve_site()
     observations: list[dict[str, object]] = []
     try:
-        with sync_playwright() as playwright:
-            browser = playwright.chromium.launch(headless=True)
+        with launched_chromium() as browser:
             for width, height, name in VIEWPORTS:
                 context = browser.new_context(viewport={"width": width, "height": height}, has_touch=name == "narrow")
                 pin_fixture_clock(context)

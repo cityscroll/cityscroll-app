@@ -31,6 +31,7 @@ const TRIMMED_JOBS = [
   "performance-serial",
   "performance-shard",
   "performance",
+  "browser-journeys-pr",
   "a11y-pr",
   "a11y-pr-shard",
   "a11y-rendered-census-primary",

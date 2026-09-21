@@ -2,7 +2,7 @@
 
 /**
  * Keep the provider-neutral preflight contract wider than, and in parity with,
- * the three required hosted validation jobs. Setup/reporting shell and local-only
+ * the four required hosted validation jobs. Setup/reporting shell and local-only
  * performance helpers are intentionally outside this comparison.
  */
 
@@ -16,7 +16,7 @@ const PREFLIGHT_PATH = join(ROOT, "tools", "preflight-required-checks.sh");
 const A11Y_SHARD_RUNNER_PATH = join(ROOT, "tools", "run_a11y_ci_shard.sh");
 // Source: the required validation graph declared in .github/workflows/ci.yml. The Unit
 // aggregate owns the required status context; its matrix owns the hosted Unit commands.
-const REQUIRED_JOBS = ["unit-family", "a11y-pr-shard", "reading-level"];
+const REQUIRED_JOBS = ["unit-family", "a11y-pr-shard", "browser-journeys-pr", "reading-level"];
 
 function jobBlock(source, job) {
   const start = source.search(new RegExp(`^  ${job}:\\s*$`, "m"));
