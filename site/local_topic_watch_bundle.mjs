@@ -12,6 +12,7 @@ import {
 } from "./watch_text_query.mjs";
 import { normalizeCommunityBoardRef } from "./community_board_watch.mjs";
 import { normalizeGeographyKey } from "./scope_v0.mjs";
+import { monitorPackSubscribePayload } from "./watch_templates.mjs";
 
 export const LOCAL_TOPIC_WATCH_BUNDLE_SCHEMA = "cityscroll.local_topic_watch_bundle.v1";
 export const LOCAL_TOPIC_WATCH_BUNDLE_VERSION = 1;
@@ -162,6 +163,65 @@ export async function applyLocalTopicWatchBundle(bundle, createChild, existingId
   return { status: failed.length ? (created.length ? "partial" : "failed") : "created", created, failed, remaining };
 }
 
+/** Materialize one immutable source snapshot for preview, rehearsal, and delivery. */
+export function materializeLocalTopicWatchSnapshot(bundle, snapshot = {}) {
+  const rowsById = snapshot?.children && typeof snapshot.children === "object"
+    ? snapshot.children
+    : snapshot;
+  return {
+    snapshot_id: clean(snapshot?.snapshot_id, 120) || "local-topic-watch-snapshot",
+    children: (bundle?.children || []).map((child) => ({
+      id: child.id,
+      source_family: child.source_family,
+      label: child.label,
+      items: Array.isArray(rowsById?.[child.id]) ? rowsById[child.id] : [],
+    })),
+  };
+}
+
+function localTopicWatchDigest(bundle, snapshot = {}) {
+  const materialized = materializeLocalTopicWatchSnapshot(bundle, snapshot);
+  return {
+    title: "Local topic watch digest",
+    snapshot_id: materialized.snapshot_id,
+    sections: materialized.children.map((child) => ({
+      label: child.label,
+      source_family: child.source_family,
+      watch_id: child.id,
+      items: child.items,
+    })),
+  };
+}
+
+/** The stored subscription payload retains the canonical child identity. */
+export function localTopicWatchStoredPayload(bundle, { email = "", lang = "en", snapshot_id = null } = {}) {
+  const payload = monitorPackSubscribePayload(
+    { id: "local-topic-watch", watches: bundle?.children || [] },
+    { email, freq: bundle?.frequency, lang },
+  );
+  return {
+    ...payload,
+    ...(snapshot_id ? { snapshot_id: clean(snapshot_id, 120) } : {}),
+    children: payload.children.map((child, index) => ({
+      ...child,
+      id: canonicalLocalTopicWatchId(child),
+      source_family: bundle.children[index]?.source_family || null,
+    })),
+  };
+}
+
+export function previewLocalTopicWatch(bundle, snapshot = {}) {
+  return { mode: "preview", ...localTopicWatchDigest(bundle, snapshot) };
+}
+
+export function rehearseLocalTopicWatch(bundle, snapshot = {}) {
+  return { mode: "rehearsal", ...localTopicWatchDigest(bundle, snapshot) };
+}
+
+export function deliverLocalTopicWatch(bundle, snapshot = {}) {
+  return { mode: "delivery", ...localTopicWatchDigest(bundle, snapshot) };
+}
+
 /** Confirmation copy/data: every predicate is explicit and omissions remain visible. */
 export function localTopicWatchConfirmation(bundle) {
   if (!bundle || bundle.schema !== LOCAL_TOPIC_WATCH_BUNDLE_SCHEMA) return null;
@@ -185,4 +245,14 @@ export function renderLocalTopicWatchConfirmation(bundle) {
   const rows = view.children.map((child) => `<li data-watch-child-id="${esc(child.id)}"><strong>${esc(child.label)}</strong> · ${esc(child.district)}${child.board ? ` · ${esc(child.board)}` : ""} · “${esc(child.literal_query)}” · ${esc(child.frequency)} · ${child.preview_count == null ? "preview unavailable" : `${child.preview_count} preview matches`}</li>`).join("");
   const omitted = view.omissions.map((item) => `<li data-watch-omitted-family="${esc(item.source_family)}">${esc(item.source_family)}: ${esc(item.reason)}</li>`).join("");
   return `<section data-local-topic-watch-confirmation="1"><h2>Follow this topic in ${esc(view.district)}</h2><ul>${rows}</ul>${omitted ? `<h3>Not included</h3><ul>${omitted}</ul>` : ""}</section>`;
+}
+
+export function renderLocalTopicWatchDigest(bundle, snapshot = {}) {
+  const digest = localTopicWatchDigest(bundle, snapshot);
+  const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;" }[c]));
+  const sections = digest.sections.map((section) => {
+    const items = section.items.map((item) => `<li>${esc(item?.title || item?.id || "match")}</li>`).join("");
+    return `<section data-local-topic-watch-section="1" data-watch-child-id="${esc(section.watch_id)}" data-source-family="${esc(section.source_family)}"><h3>${esc(section.label)}</h3><ul>${items}</ul></section>`;
+  }).join("");
+  return `<article data-local-topic-watch-digest="1" data-snapshot-id="${esc(digest.snapshot_id)}"><h2>${esc(digest.title)}</h2>${sections}</article>`;
 }
