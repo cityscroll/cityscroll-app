@@ -115,6 +115,14 @@ test("the source-contract classification is the monitor's own, not a second opin
   assert.equal(sourceContractFailureClass("source is stale (261 days; limit 30)"), "source-contract-stale");
   assert.equal(sourceContractFailureClass("metadata fetch failed"), "source-contract-outage");
   assert.equal(sourceContractFailureClass("missing fields recipname"), "source-contract-schema-drift");
+  assert.equal(
+    sourceContractFailureClass("nyc-geosearch: upstream_unavailable HTTP 200 body=<html>Bad Gateway</html>"),
+    "source-contract-outage",
+  );
+  assert.equal(
+    sourceContractFailureClass("nyc-geosearch: response has no feature label"),
+    "source-contract-schema-drift",
+  );
 });
 
 test("an upstream gateway error inside a redline is read as an upstream fault", () => {

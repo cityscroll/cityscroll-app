@@ -698,6 +698,19 @@ test("a source-contract issue without a companion finding still reports the erro
   assert.doesNotMatch(body, /Stale side/);
 });
 
+test("a geosearch upstream_unavailable detail is an outage, not schema drift", () => {
+  const body = sourceContractIssueBody(
+    {
+      id: "nyc-geosearch",
+      detail: "nyc-geosearch: upstream_unavailable HTTP 200 body=<html><h1>Bad Gateway</h1></html>",
+    },
+    null,
+  );
+  assert.match(body, /^Classification: outage\./m);
+  assert.match(body, /upstream_unavailable HTTP 200/);
+  assert.doesNotMatch(body, /schema drift/);
+});
+
 
 test("outbox timestamps use the supplied clock and check mode leaves no writes or delivery", async () => {
   await withTempDir("outbox-check", async (stateDir) => {
