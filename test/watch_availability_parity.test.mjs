@@ -2,115 +2,128 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 import { meetingsBrowseFromModel } from "../capabilities/meetings.mjs";
-import { collapseMeetingDeliveryRows } from "../site/meeting_delivery_identity.mjs";
-import { compileSub, scopedMeetingWatchRows } from "../worker/src/lib/compile.mjs";
+import { compileSub, rowsForCompiledQuery, scopedMeetingWatchRows } from "../worker/src/lib/compile.mjs";
 import { prepareWatchFilter } from "../worker/src/lib/filter.mjs";
+import { handleFeed } from "../worker/src/feed.mjs";
+import { handleMcp } from "../worker/src/mcp.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
+import {
+  EXCLUDED_WATCH_MEETING_IDENTITIES,
+  EXPECTED_WATCH_MEETING_IDENTITIES,
+  TODAY,
+  WATCH_AVAILABILITY,
+  WATCH_CORPUS_ROWS,
+  watchCorpusEnv,
+  watchCorpusModel,
+} from "./helpers/watch_availability_corpus.mjs";
 
-const TODAY = "2026-09-01";
-const AVAILABILITY = {
-  timezone: "America/New_York",
-  windows: [
-    { weekdays: [1, 2, 3, 4, 5], start: "17:00" },
-    { weekdays: [0, 6] },
-  ],
-};
-
-function timed(meetingId, startsAt, extra = {}) {
-  const rawDate = startsAt.slice(0, 10);
-  return {
-    object_type: "meeting",
-    meeting_id: meetingId,
-    source_system: extra.source_system || "city_record",
-    title: extra.title || meetingId,
-    event_date: startsAt,
-    schedule: {
-      status: "resolved",
-      precision: "exact_time",
-      starts_at: startsAt,
-      timezone: "America/New_York",
-      raw_date: rawDate,
-      raw_time: startsAt.slice(11, 16),
-      basis: "publisher_field",
-      source_url: `https://official.example/${encodeURIComponent(meetingId)}`,
-    },
-    ...extra,
-  };
+async function mcpBrowseMeetings() {
+  const response = await handleMcp(
+    new Request("https://api.cityscroll.org/mcp", {
+      method: "POST",
+      headers: { "content-type": "application/json", "CF-Connecting-IP": "198.51.100.10" },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: 1,
+        method: "tools/call",
+        params: {
+          name: "browse_meetings",
+          arguments: {
+            from: "2026-10-01",
+            to: "2026-10-31",
+            availability: WATCH_AVAILABILITY,
+            limit: 25,
+          },
+        },
+      }),
+    }),
+    watchCorpusEnv(),
+  );
+  const payload = await response.json();
+  assert.equal(payload.error, undefined, JSON.stringify(payload));
+  assert.equal(payload.result.isError, undefined, JSON.stringify(payload.result));
+  return payload.result.structuredContent.results;
 }
 
-const RAW_ROWS = [
-  timed("meeting:weekday-evening", "2026-10-05T17:00:00"),
-  timed("meeting:weekday-before", "2026-10-05T16:59:00"),
-  timed("meeting:weekend-timed", "2026-10-04T10:00:00", { source_system: "public_body_calendar" }),
-  {
-    ...timed("meeting:weekend-date-only", "2026-10-03T00:00:00"),
-    event_date: "2026-10-03",
-    schedule: {
-      status: "date_only", precision: "date_only", raw_date: "2026-10-03",
-      raw_time: null, timezone: "America/New_York", basis: "publisher_field",
-    },
-  },
-  {
-    ...timed("meeting:conflicted", "2026-10-06T18:00:00"),
-    schedule: {
-      status: "conflicted", precision: "exact_time", raw_date: "2026-10-06",
-      raw_time: "18:00 / 18:30", timezone: "America/New_York", basis: "publisher_event",
-    },
-  },
-  {
-    ...timed("meeting:cancelled", "2026-10-07T18:00:00"),
-    status: "cancelled", lifecycle: "cancelled",
-  },
-  timed("meeting:rescheduled", "2026-10-05T18:00:00", { title: "Old time" }),
-  {
-    ...timed("meeting:rescheduled", "2026-10-06T12:00:00", { title: "Current time" }),
-    lifecycle: "rescheduled", sequence: 1,
-    schedule: {
-      status: "resolved", precision: "exact_time", starts_at: "2026-10-06T12:00:00",
-      timezone: "America/New_York", raw_date: "2026-10-06", raw_time: "12:00",
-      basis: "publisher_event", source_url: "https://official.example/rescheduled-current",
-    },
-  },
-];
-
-const CANONICAL_ROWS = collapseMeetingDeliveryRows(RAW_ROWS);
-
-function model() {
-  return {
-    schema: "cityscroll.shared_meeting_read_model.v1",
-    generated_at: "2026-09-30T12:00:00Z",
-    freshness: { generated_at: "2026-09-30T12:00:00Z", checked_at: "2026-09-30T12:00:00Z" },
-    sources: { city_record: { status: "available" }, public_body_calendar: { status: "fresh" } },
-    rows: CANONICAL_ROWS,
-  };
+async function feedResponse(pathname) {
+  const filter = encodeURIComponent(JSON.stringify({ availability: WATCH_AVAILABILITY }));
+  const response = await handleFeed(
+    new Request(`https://api.cityscroll.org${pathname}?lens=meetings&filter=${filter}`),
+    watchCorpusEnv(),
+    {},
+  );
+  if (response.status !== 200) {
+    assert.fail(`${pathname}: status ${response.status}: ${await response.text()}`);
+  }
+  return response.text();
 }
 
-test("browse, MCP capability, preview materialization, and email compilation share one identity set", () => {
-  const prepared = prepareWatchFilter("meetings", { availability: AVAILABILITY });
-  assert.equal(prepared.ok, true);
-  const watch = { lens: "meetings", filter: prepared.filter };
-  const expected = ["meeting:weekday-evening", "meeting:weekend-timed"];
+test("browse, MCP, preview, email compilation, JSON, Atom, and ICS accept one identity set for the frozen corpus", async () => {
+  await withPinnedClock(`${TODAY}T12:00:00.000Z`, async () => {
+    const prepared = prepareWatchFilter("meetings", { availability: WATCH_AVAILABILITY });
+    assert.equal(prepared.ok, true);
+    const watch = { lens: "meetings", filter: prepared.filter };
+    const expected = EXPECTED_WATCH_MEETING_IDENTITIES.slice().sort();
 
-  const browse = meetingsBrowseFromModel(model(), {
-    from: "2026-10-01", to: "2026-10-31", availability: AVAILABILITY,
-    attendanceModes: [], limit: 25,
+    // Browse: the structured browse capability over the shared read model.
+    const browse = meetingsBrowseFromModel(watchCorpusModel(), {
+      from: "2026-10-01", to: "2026-10-31", availability: WATCH_AVAILABILITY,
+      attendanceModes: [], limit: 25,
+    });
+
+    // MCP: the browse_meetings tool through the MCP handler, its own provider
+    // and KV-loaded model — compared as an identity set, not a schema string.
+    const mcpRows = await mcpBrowseMeetings();
+
+    // Preview: the alert-preview materializer over the raw corpus.
+    const preview = scopedMeetingWatchRows(watch.filter, TODAY, WATCH_CORPUS_ROWS);
+
+    // Email compilation: the digest cron's replay pair — compileSub descriptor
+    // plus rowsForCompiledQuery loading the corpus through the route read
+    // model manifest — not a second call to the preview materializer.
+    const compiled = compileSub(watch, TODAY);
+    assert.notEqual(compiled, null);
+    const emailRows = await rowsForCompiledQuery(compiled, watchCorpusEnv());
+
+    // Feed formats: each served end to end through the feed handler over the
+    // same corpus, so an excluded row must be shown absent from each format.
+    const [jsonBody, atomBody, icsBody] = await Promise.all([
+      feedResponse("/feed.json"),
+      feedResponse("/feed.xml"),
+      feedResponse("/feed.ics"),
+    ]);
+
+    const surfaces = {
+      browse: browse.results.map((row) => row.meeting_id).sort(),
+      mcp: mcpRows.map((row) => row.meeting_id).sort(),
+      preview: preview.map((row) => row.meeting_id).sort(),
+      email: emailRows.map((row) => row.meeting_id).sort(),
+      feed_json: JSON.parse(jsonBody).items.map((item) => item.id).sort(),
+      feed_atom: [...atomBody.matchAll(/<id>tag:[^,]+,\d{4}:([^<]+)<\/id>/g)].map((match) => match[1]).sort(),
+      feed_ics: [...icsBody.matchAll(/UID:([^\r\n]+)@[^\r\n]+/g)].map((match) => match[1]).sort(),
+    };
+    for (const [surface, identities] of Object.entries(surfaces)) {
+      assert.deepEqual(identities, expected, `${surface} accepted identities`);
+    }
+
+    // Named absence: every corpus identity availability excludes is absent
+    // from every surface's payload, not merely missing from the parsed list.
+    for (const id of EXCLUDED_WATCH_MEETING_IDENTITIES) {
+      assert.equal(jsonBody.includes(id), false, `feed JSON carries excluded ${id}`);
+      assert.equal(atomBody.includes(id), false, `feed Atom carries excluded ${id}`);
+      assert.equal(icsBody.includes(id), false, `feed ICS carries excluded ${id}`);
+      assert.equal(emailRows.some((row) => row.meeting_id === id), false, `email compilation carries excluded ${id}`);
+      assert.equal(preview.some((row) => row.meeting_id === id), false, `preview carries excluded ${id}`);
+      assert.equal(browse.results.some((row) => row.meeting_id === id), false, `browse carries excluded ${id}`);
+      assert.equal(mcpRows.some((row) => row.meeting_id === id), false, `MCP carries excluded ${id}`);
+    }
   });
-  const browseRows = browse.results;
-  const preview = scopedMeetingWatchRows(watch.filter, TODAY, RAW_ROWS);
-  const email = scopedMeetingWatchRows(watch.filter, TODAY, RAW_ROWS);
-  const compiled = compileSub(watch, TODAY);
-
-  assert.deepEqual(browseRows.map((row) => row.meeting_id).sort(), expected.slice().sort());
-  assert.deepEqual(preview.map((row) => row.meeting_id).sort(), expected.slice().sort());
-  assert.deepEqual(email.map((row) => row.meeting_id).sort(), expected.slice().sort());
-  assert.equal(compiled.routeReadModel.filter.availability.schema, "cityscroll.meeting_availability.v1");
 });
 
 test("cancellation, date-only, conflict, and reschedule updates cannot widen delivery", () => {
-  const prepared = prepareWatchFilter("meetings", { availability: AVAILABILITY });
-  const rows = scopedMeetingWatchRows(prepared.filter, TODAY, RAW_ROWS);
-  assert.deepEqual(rows.map((row) => row.meeting_id), [
-    "meeting:weekday-evening", "meeting:weekend-timed",
-  ]);
+  const prepared = prepareWatchFilter("meetings", { availability: WATCH_AVAILABILITY });
+  const rows = scopedMeetingWatchRows(prepared.filter, TODAY, WATCH_CORPUS_ROWS);
+  assert.deepEqual(rows.map((row) => row.meeting_id), EXPECTED_WATCH_MEETING_IDENTITIES);
   assert.equal(rows.some((row) => row.meeting_id === "meeting:rescheduled"), false);
   assert.equal(rows.some((row) => row.status === "cancelled"), false);
   assert.equal(rows.some((row) => row.schedule?.status === "date_only"), false);
