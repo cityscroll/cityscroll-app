@@ -210,6 +210,19 @@ test("cycle spacing fails closed for cycles closer than 24 hours and for a faile
   assert.equal(withFailedCycle.two_cycles_24h_apart, false);
 });
 
+test("scheduled receipt does not skip a failed cycle when counting consecutive successes", () => {
+  const receipt = buildGovernmentScheduledReceipt({
+    cycles: [
+      { status: "succeeded", observed_at: "2026-09-13T12:00:00.000Z", source_hash: "a" },
+      { status: "failed", observed_at: "2026-09-14T12:00:00.000Z", source_hash: "b" },
+      { status: "succeeded", observed_at: "2026-09-15T12:00:00.000Z", source_hash: "c" },
+    ],
+    now: asOf,
+  });
+  assert.equal(receipt.consecutive_successful_cycles, 1);
+  assert.equal(receipt.two_cycles_24h_apart, false);
+});
+
 test("a source that returns after a failed cycle recovers to a fresh capture", async () => {
   let failing = true;
   const fetchImpl = async () => {

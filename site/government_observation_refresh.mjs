@@ -196,10 +196,22 @@ export function buildGovernmentReadback({ sourceId, cycle, materializationHash: 
 }
 
 export function buildGovernmentScheduledReceipt({ cycles = [], readbacks = [], now = new Date().toISOString() } = {}) {
-  const successful = cycles.filter((cycle) => cycle?.status === "succeeded");
-  const ordered = [...successful].sort((a, b) => Date.parse(a.observed_at) - Date.parse(b.observed_at));
-  const twoApart = ordered.length >= 2 && Date.parse(ordered.at(-1).observed_at) - Date.parse(ordered.at(-2).observed_at) >= 24 * 60 * 60 * 1000;
-  return { schema: GOVERNMENT_RECEIPT_SCHEMA, generated_at: iso(now), cycles: ordered, readbacks, consecutive_successful_cycles: ordered.length, two_cycles_24h_apart: twoApart, readbacks_passed: readbacks.length > 0 && readbacks.every((readback) => readback.success) };
+  const ordered = [...cycles].sort((a, b) => Date.parse(a.observed_at) - Date.parse(b.observed_at));
+  let currentSuccessfulCycles = 0;
+  let consecutiveSuccessfulCycles = 0;
+  let twoApart = false;
+  for (let index = 0; index < ordered.length; index += 1) {
+    const cycle = ordered[index];
+    if (cycle?.status !== "succeeded") {
+      currentSuccessfulCycles = 0;
+      continue;
+    }
+    currentSuccessfulCycles += 1;
+    consecutiveSuccessfulCycles = Math.max(consecutiveSuccessfulCycles, currentSuccessfulCycles);
+    const previous = ordered[index - 1];
+    if (previous?.status === "succeeded" && Date.parse(cycle.observed_at) - Date.parse(previous.observed_at) >= 24 * 60 * 60 * 1000) twoApart = true;
+  }
+  return { schema: GOVERNMENT_RECEIPT_SCHEMA, generated_at: iso(now), cycles: ordered, readbacks, consecutive_successful_cycles: consecutiveSuccessfulCycles, two_cycles_24h_apart: twoApart, readbacks_passed: readbacks.length > 0 && readbacks.every((readback) => readback.success) };
 }
 
 export function scheduleFreshnessGuidance({ lastSuccessAt, asOf = new Date().toISOString(), officialUrl } = {}) {
