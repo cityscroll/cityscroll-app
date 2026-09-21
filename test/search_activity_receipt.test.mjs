@@ -76,6 +76,21 @@ const RATS_KEYWORD_PAYLOAD = {
   coverage: { schema: "cityscroll.universal_search_coverage.v1", returned_count: 2 },
 };
 
+const CONSULTATIONS_KEYWORD_PAYLOAD = {
+  ...RATS_KEYWORD_PAYLOAD,
+  query: "bike parking",
+  results: [
+    keywordRecord({
+      ref: "consultation:dot-secure-bike-parking",
+      type: "consultation",
+      domain: "participation",
+      title: "Secure Bike Parking",
+      route: "/consultations/dot-secure-bike-parking/",
+    }),
+  ],
+  coverage: { schema: "cityscroll.universal_search_coverage.v1", returned_count: 1 },
+};
+
 /** A `CB3` search: the community-board rows the document renders, with ranks. */
 const CB3_KEYWORD_PAYLOAD = {
   schema: "cityscroll.keyword_search_response.v1",
@@ -173,6 +188,22 @@ test("a rats search records exactly the Contract and Meeting rows rendered", () 
   ]);
   assert.deepEqual(normalized.value.results.map((row) => row.entity_type), ["procurement", "meeting"]);
   assert.equal(normalized.value.producers.search_schema, "cityscroll.keyword_search_response.v1");
+});
+
+test("a consultation search records the rendered consultation family", () => {
+  const plan = buildSearchRenderPlan({
+    state: "legacy",
+    payload: CONSULTATIONS_KEYWORD_PAYLOAD,
+    coverage: CONSULTATIONS_KEYWORD_PAYLOAD.coverage,
+  });
+  assert.equal(plan.families.find((family) => family.id === "consultations").items.length, 1);
+
+  const normalized = normalizeSearchExecutionSubmission(submissionFor(plan, "bike parking"));
+  assert.ok(normalized.ok, `expected a valid receipt, got ${normalized.reason}`);
+  assert.equal(normalized.value.family_counts.consultations, 1);
+  assert.deepEqual(normalized.value.results.map((row) => [row.reference, row.family]), [
+    ["consultation:dot-secure-bike-parking", "consultations"],
+  ]);
 });
 
 // ---- CB3, empty, partial, and unavailable stay distinct ----
