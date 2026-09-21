@@ -321,7 +321,7 @@ test("A3 live transport fixture server covers success, 404, timeout, and selecto
       return;
     }
     if (request.url === "/timeout") {
-      setTimeout(() => response.end("too late"), 100);
+      setTimeout(() => response.end("too late"), 2_000);
       return;
     }
     response.writeHead(404);
@@ -344,7 +344,9 @@ test("A3 live transport fixture server covers success, 404, timeout, and selecto
       sources,
       observedAt: "2026-09-21T00:00:00.000Z",
       maxRetries: 0,
-      requestTimeoutMs: 20,
+      // Leave scheduler headroom in the full shifted-clock suite; the timeout
+      // fixture remains decisively slower than the bounded transport budget.
+      requestTimeoutMs: 500,
     });
     const byId = new Map(artifact.observations.map((row) => [row.source_id, row]));
     assert.equal(byId.get("fixture-success").provenance, "retrieved");
