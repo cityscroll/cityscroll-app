@@ -42,6 +42,27 @@ function lifecycleOf(row = {}) {
   return "scheduled";
 }
 
+const AUTOMATIC_DELIVERY_EXCLUSIONS = new Map([
+  ["typical_recurrence", "typical_recurrence_requires_confirmation"],
+  ["conflicted", "conflicted_schedule"],
+  ["invalid", "invalid_schedule"],
+]);
+
+function temporalBasisOf(row = {}) {
+  return text(row.temporal_basis)
+    || text(row.schedule?.basis)
+    || text(row.provenance?.basis)
+    || null;
+}
+
+/** Automatic email may use an exact instance or a published recurrence, but
+ * never a typical pattern or a schedule the source marked conflicted/invalid. */
+export function meetingDeliveryEligibility(row = {}) {
+  const reason = AUTOMATIC_DELIVERY_EXCLUSIONS.get(temporalBasisOf(row))
+    || AUTOMATIC_DELIVERY_EXCLUSIONS.get(text(row.schedule?.status));
+  return reason ? { eligible: false, reason } : { eligible: true, reason: null };
+}
+
 /** Every source-qualified id that names the same proceeding. */
 export function meetingDeliveryIds(row = {}) {
   const ids = [];
@@ -199,6 +220,7 @@ export function reconcileMeetingDelivery({ rows = [], seen = new Set() } = {}) {
   const markSeenIds = [];
   const seenSet = seen instanceof Set ? seen : new Set(seen);
   for (const row of Array.isArray(rows) ? rows : []) {
+    if (!meetingDeliveryEligibility(row).eligible) continue;
     const identity = meetingDeliveryKey(row);
     if (!identity) continue;
     const aliases = meetingDeliveryIds(row);

@@ -21,6 +21,7 @@ import {
   buildPublicBodyCalendarCoverage,
   normalizePublicBodyCalendarMeeting,
 } from "./public_body_calendar_contract.mjs";
+import { buildPublicBodyCalendarIndex } from "./public_body_calendar_integration.mjs";
 import {
   attachMeetingDocuments,
   normalizeMeetingDocument,
@@ -304,9 +305,12 @@ export function buildSharedMeetingReadModel({
     ? dedupeRows(asRows(pdcCalendarIndex?.rows || pdcCalendarIndex?.records || pdcCalendarIndex?.sessions)
       .map((row) => normalizeRecord(row, "pdc_calendar", pdcCalendarIndex?.generated_at || generatedAt || now)))
     : [];
+  const publicIntegration = includePublicBody
+    ? buildPublicBodyCalendarIndex({ ...publicBodyCalendarIndex, now })
+    : null;
   const publicRows = includePublicBody
-    ? dedupeRows(asRows(publicBodyCalendarIndex?.rows || publicBodyCalendarIndex?.meetings)
-      .map((row) => normalizeRecord(row, "public_body_calendar", publicBodyCalendarIndex?.generated_at || generatedAt || now)))
+    ? dedupeRows(asRows(publicIntegration?.rows || publicIntegration?.meetings)
+      .map((row) => normalizeRecord(row, "public_body_calendar", publicIntegration?.generated_at || generatedAt || now)))
     : [];
   const joined = includeLegistar
     ? applySameProceedingJoins(cityRows, rawLegistarRows)
@@ -370,9 +374,9 @@ export function buildSharedMeetingReadModel({
     index: oathTrialCalendarIndex,
   }) : null;
   const publicCoverage = includePublicBody
-    ? (publicBodyCalendarIndex?.coverage
+    ? (publicIntegration?.coverage
       || buildPublicBodyCalendarCoverage({
-        observations: publicBodyCalendarIndex?.observations || [],
+        observations: publicIntegration?.observations || [],
         now,
       }).contracts)
     : null;
@@ -382,7 +386,7 @@ export function buildSharedMeetingReadModel({
     now,
     maxAgeMs: null,
     rows: publicRows,
-    index: { ...publicBodyCalendarIndex, coverage: publicCoverage },
+    index: { ...publicIntegration, coverage: publicCoverage },
   }) : null;
   const catalogRows = [...joinedCityRows, ...boardRows, ...legistarRows, ...bsaRows, ...pdcRows, ...oathRows, ...publicRows];
   const suppliedDocuments = [
