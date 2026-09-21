@@ -101,17 +101,18 @@ test("A6: complete guide renders cover desktop, mobile, keyboard, and no-JavaScr
     ["observe-city-government", readFileSync("site/guide/how-to/observe-city-government/index.html", "utf8")],
     ["request-trial-observation", readFileSync("site/guide/how-to/request-trial-observation/index.html", "utf8")],
   ];
-  const viewports = [
-    ["desktop", 1440],
-    ["mobile", 390],
-  ];
+
+  // The guide markup is deterministic across widths; the served stylesheet supplies the
+  // actual desktop/mobile difference. Keep the inspection tied to that source of truth.
+  const documentStyles = readFileSync("site/civic-documents.css", "utf8");
+  const narrowStyles = documentStyles.slice(documentStyles.indexOf("@media (max-width: 560px)"));
+  assert.match(documentStyles, /\.document-mast-inner \{[\s\S]*?display: flex;[\s\S]*?align-items: center;/, "desktop guide masthead keeps its horizontal flex layout");
+  assert.match(narrowStyles, /\.document-mast-inner \{[\s\S]*?flex-direction: column;/, "mobile guide masthead stacks at the narrow breakpoint");
+  assert.match(narrowStyles, /\.document-nav \{[\s\S]*?width: 100%;/, "mobile guide navigation fills the narrow viewport");
 
   for (const [route, html] of routes) {
-    for (const [viewport, width] of viewports) {
-      assert.ok(width === 390 || width === 1440, `${route} ${viewport} names a supported inspection viewport`);
-      assert.match(html, /<meta name="viewport" content="width=device-width,initial-scale=1">/, `${route} ${viewport} retains responsive viewport metadata`);
-      assert.match(html, /<main[^>]*id="main"[\s\S]*<h1[\s>]/, `${route} ${viewport} has a landmark and heading`);
-    }
+    assert.match(html, /<meta name="viewport" content="width=device-width,initial-scale=1">/, `${route} retains responsive viewport metadata`);
+    assert.match(html, /<main[^>]*id="main"[\s\S]*<h1[\s>]/, `${route} has a landmark and heading at both stylesheet viewports`);
 
     const links = [...html.matchAll(/<a\b([^>]*)>/gi)].map((match) => match[1]);
     assert.ok(links.length > 0, `${route} exposes native links for keyboard inspection`);
