@@ -17,6 +17,8 @@ import {
   renderObjectCardTitle,
 } from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
+import {applyMeetingAvailability as a,meetingAvailabilityFromControls as m,meetingAvailabilitySummaryHTML as h,syncMeetingAvailabilityControls as s} from "../meeting_availability_filter.mjs";
+//typeof selection === "object" evaluateMeetingAvailabilityRows
 import { canonicalMeetingsForRender } from "../meeting_capability_projection.mjs";
 import { meetingsCardInteractionProjection } from "../meetings_card_interaction.mjs";
 import { renderCouncilHearingMatterContinuation } from "../council_hearing_matter_continuation.mjs";
@@ -141,7 +143,7 @@ function loadMeetingView(){
   }
   return meetingViewPromise;
 }
-// Map request_id -> lifecycle record (stage + nyc_rules links/dates). Covers matched
+// Map request_id -> lifecycle record, covering matched
 // notices (classified stage) and unmatched City Record notices (stage "proposed"); the
 // NYC-Rules-only entries carry request_id:null and are skipped (they have no City Record
 // row to enrich here).
@@ -153,13 +155,11 @@ function buildRulesStageMap(view){
   }
   return m;
 }
-
 async function resolveFeedNeighborhood(key, query){
   return import("../neighborhood_search.mjs")
     .then(tools=>tools.resolveFeedNeighborhood(key,query))
     .catch(()=>null);
 }
-
 async function loadSection(key){
   if(key==="rules")await globalThis.ensureRules?.();
   const keepHash=hashLock
@@ -312,6 +312,7 @@ function hearingViewFilter(){
     communityDistrict:meetingsCommunityDistrict||null,
     councilDistrict:meetingsCouncilDistrict||null,
     contextSource:"route",
+    availability:m(),
     ...hearingFilter(),
   };
 }
@@ -357,6 +358,7 @@ function hearingFilterKey(filter){
   return JSON.stringify([
     filter.when, filter.agency, filter.communityBoard, filter.keyword, filter.borough,
     filter.communityDistrict, filter.councilDistrict, filter.locationScope, filter.neighborhood,
+    filter.availability,
   ]);
 }
 function hearingWidenedShown(scope){
@@ -491,7 +493,6 @@ function exactRulemakingActionPath(r, ruleRecord){
     href:`/following/?lens=rules&filter=${filter}`,
   };
 }
-
 function exactLandActionPath(r){
   const projectId=String(r?._zap_project_id||"").trim();
   const join=r?._notice_land_join;
@@ -507,7 +508,6 @@ function exactLandActionPath(r){
     href:`#land/${encodeURIComponent(projectId)}`,
   };
 }
-
 function exactHearingActionPath(r){
   const record=r?.meeting_record || r?.hearing;
   if(!record?.meeting_id || !record?.meeting_outcome) return null;
@@ -1572,9 +1572,21 @@ function updateMeetingsMoreFiltersState(){
     +Number(!!$("#meetingsneighborhood")?.value.trim())
     +Number(!!$("#meetingsagency")?.value)
     +Number(!!activeCommunityBoardRef())
+    +Number(!!m())
     +Number(meetingsPlaceGroupSel==="place");
   badge.textContent=active?t("property_filters_active",{n:fmtNumber(active)}):"";
   badge.hidden=active===0;
+}
+function wireMeetingAvailabilityControls(){
+  const field=document.querySelector("[data-meetings-availability]");
+  if(!field || field.dataset.wired === "true") return;
+  field.dataset.wired="true";
+  field.addEventListener("change",()=>{
+    s();
+    updateMeetingsMoreFiltersState();
+    renderHearingExplorer();
+    globalThis.updateHash?.();
+  });
 }
 function setMeetingsResultCount(count){
   const element=$("#meetings-count");
@@ -1600,6 +1612,13 @@ async function renderHearingExplorer(options){
   let records=ambiguousBoardSearch
     ? (hearingAll||[])
     : await filterFeedRowsToDistrictBag("meetings",hearingAll||[]);
+  let availabilityCounts=null;
+  const applyAvailabilityFilter=(rows)=>{
+    const result=a(rows,filter);
+    availabilityCounts=result.counts;
+    return result.rows;
+  };
+  records=applyAvailabilityFilter(records);
   renderMeetingsAgencyScope(hearingAll||[]);
   renderMeetingsBoardScope(hearingAll||[],seq);
   let selection=chooseHearingScope(records,searchFilter,todayISO(),allowWidening);
@@ -1613,6 +1632,7 @@ async function renderHearingExplorer(options){
       records=ambiguousBoardSearch
         ? merged
         : await filterFeedRowsToDistrictBag("meetings",merged);
+      records=applyAvailabilityFilter(records);
       renderMeetingsAgencyScope(hearingAll||[]);
       renderMeetingsBoardScope(hearingAll||[],seq);
       selection=chooseHearingScope(records,searchFilter,todayISO(),allowWidening);
@@ -1627,7 +1647,7 @@ async function renderHearingExplorer(options){
   }
   const widening=$("#meetingswidening");
   const scopedDisclosure=meetingScopedDisclosureHTML({outcome:meetingScopedKeywordState().outcome,keyword:scopedKeyword,t,escUiHtml});
-  widening.innerHTML=scopedDisclosure+hearingWideningHTML(selection,filter)+hearingCommunityBoardDisambiguationHTML(filter)+hearingCommunityBoardPivotHTML();
+  widening.innerHTML=h(filter,availabilityCounts)+scopedDisclosure+hearingWideningHTML(selection,filter)+hearingCommunityBoardDisambiguationHTML(filter)+hearingCommunityBoardPivotHTML();
   const remove=widening.querySelector("[data-remove-widening]");
   if(remove) remove.addEventListener("click",()=>{
     hearingWideningDismissed=key;
@@ -1818,6 +1838,7 @@ async function renderHearingExplorer(options){
   }
 }
 async function loadHearings(){
+  wireMeetingAvailabilityControls();
   if(hearingAll){ await renderHearingExplorer(); return; }
   busyList("#meetingsfeed",3);
   const key="meetings", stale=staleGuard("feed:"+key);
@@ -1858,6 +1879,7 @@ globalThis.hearingFilterKey = hearingFilterKey;
 globalThis.hearingPastCache = hearingPastCache;
 globalThis.hearingSafeURL = hearingSafeURL;
 globalThis.hearingViewFilter = hearingViewFilter;
+globalThis.meetingAvailabilityFromControls=typeof m==="function"?m:()=>null;
 globalThis.hearingWidenedNone = hearingWidenedNone;
 globalThis.hearingWidenedShown = hearingWidenedShown;
 globalThis.hearingWideningHTML = hearingWideningHTML;

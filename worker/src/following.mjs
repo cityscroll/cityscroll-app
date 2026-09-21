@@ -9,6 +9,7 @@ import {
   watchFromFollowingParams,
 } from "../../site/following_view.mjs";
 import { compileSub, getProcurementDigestSnapshot, rowsForCompiledQuery } from "./lib/compile.mjs";
+import { evaluateMeetingAvailabilityRows } from "../../site/meeting_availability_filter.mjs";
 import { feedItems } from "./lib/feed.mjs";
 import { prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
 import {
@@ -75,15 +76,22 @@ async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().
           queryRevision: revision,
         };
       }
+      let evaluatedRows = evaluated.rows;
+      let availabilityCounts = null;
+      if (watch.lens === "meetings" && watch.filter?.availability) {
+        const availability = evaluateMeetingAvailabilityRows(evaluatedRows, watch.filter.availability, { asOf: todayISO });
+        evaluatedRows = availability.rows;
+        availabilityCounts = availability.counts;
+      }
       const kind = watch.lens === "meetings"
         ? "meetings"
-        : evaluated.rows[0]?.type_of_notice_description === "Award"
-          || (evaluated.rows[0]?.procurement_id && !evaluated.rows[0]?.request_id)
+        : evaluatedRows[0]?.type_of_notice_description === "Award"
+          || (evaluatedRows[0]?.procurement_id && !evaluatedRows[0]?.request_id)
           ? "award"
           : "rfp";
-      const items = feedItems(kind, evaluated.rows)
+      const items = feedItems(kind, evaluatedRows)
         .slice(0, 5)
-        .map((item, index) => ({ ...item, ...previewItemFromRow(evaluated.rows[index]) }));
+        .map((item, index) => ({ ...item, ...previewItemFromRow(evaluatedRows[index]) }));
       return {
         items,
         count: items.length,
@@ -100,6 +108,7 @@ async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().
               : null,
           excerpt: row.text_query_evidence?.exclusion?.passage || null,
         })),
+        availabilityCounts,
         queryRevision: revision,
       };
     } catch {
@@ -117,12 +126,31 @@ async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().
   const query = compileSub(watch, todayISO);
   if (!query) return { items: [], error: "This scope cannot be previewed yet. You can still manage existing watches below." };
   try {
-    let rows = await rowsForCompiledQuery(query, env, fetchImpl);
+    let rows;
+    let availabilityCounts = null;
+    if (watch.lens === "meetings" && watch.filter?.availability) {
+      const baseWatch = { ...watch, filter: { ...watch.filter } };
+      delete baseWatch.filter.availability;
+      const baseQuery = compileSub(baseWatch, todayISO);
+      if (!baseQuery) return { items: [], error: "This scope cannot be previewed yet. You can still manage existing watches below." };
+      const baseRows = await rowsForCompiledQuery(baseQuery, env, fetchImpl);
+      const evaluated = evaluateMeetingAvailabilityRows(baseRows, watch.filter.availability, { asOf: todayISO });
+      rows = evaluated.rows;
+      availabilityCounts = evaluated.counts;
+    } else {
+      rows = await rowsForCompiledQuery(query, env, fetchImpl);
+    }
     if (!Array.isArray(rows)) rows = [];
     if (query.postFilter) rows = rows.filter(query.postFilter);
-    return { items: feedItems(query.kind, rows).slice(0, 5), count: rows.length, error: null, status: "complete" };
+    return {
+      items: feedItems(query.kind, rows).slice(0, 5),
+      count: rows.length,
+      error: null,
+      status: "complete",
+      availabilityCounts,
+    };
   } catch {
-    return { items: [], error: "The public data source is unavailable right now. The saved criteria are still shown.", status: "unavailable" };
+    return { items: [], error: "The public data source is unavailable right now. The saved criteria are still shown.", status: "unavailable", availabilityCounts: null };
   }
 }
 
@@ -276,6 +304,7 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
     previewItems: preview.items,
     previewError: preview.error,
     previewStatus: preview.status || null,
+    availabilityCounts: preview.availabilityCounts || null,
     previewContinuation: preview.continuation || null,
     previewSeq: url.searchParams.get("preview_seq"),
     excludedItems: preview.excludedItems || [],

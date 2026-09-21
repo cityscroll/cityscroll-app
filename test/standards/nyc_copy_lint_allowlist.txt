@@ -25,3 +25,9 @@ all_caps	ACRIS deeds
 # The published legal name of the organization in a real award record on the Stats page.
 # A record's own name is quoted exactly; spelling out the ampersand would misquote the source.
 ampersand	Housing Options & Geriatric Association Resources
+# Availability expressions intentionally expose the canonical clock boundary and timezone.
+semicolon	Weekdays from 17:00 (inclusive) onward; weekends all day; America/New_York; unknown starts excluded
+semicolon	Custom schedule: {days}, {boundary}, {timezone}; unknown starts {unknown}
+time_form	Weekdays from 17:00 (inclusive) onward; weekends all day; America/New_York; unknown starts excluded
+time_form	Evenings and weekends: weekdays from 17:00 (inclusive), weekends all day, America/New_York
+time_form	Weekdays from 17:00 (inclusive), all day Saturday and Sunday, Eastern Time (New York). Meetings without a start time stay in ordinary browse.

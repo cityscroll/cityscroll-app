@@ -4,6 +4,7 @@ import {
   composeWatchRuleSentence,
   followingWatchIdentityHtml,
   followingCadenceLabel,
+  EVENINGS_WEEKENDS_AVAILABILITY,
   requestedFollowingTab,
 } from "../following_view.mjs";
 import {
@@ -164,6 +165,47 @@ function duplicateWarning() {
 let previewSeq = 0;
 let previewTimer = 0;
 
+function availabilityFromForm(form, current) {
+  if (form.elements.lens?.value !== "meetings") return null;
+  const preset = form.querySelector("[data-following-availability-preset]:checked")?.value || "any";
+  if (preset === "any") return null;
+  if (preset === "evenings_weekends") return EVENINGS_WEEKENDS_AVAILABILITY;
+  const weekdays = [...form.querySelectorAll("[data-following-availability-day]:checked")]
+    .map((input) => Number(input.value))
+    .filter((value) => Number.isInteger(value) && value >= 0 && value <= 6);
+  if (!weekdays.length) return current?.availability || null;
+  return {
+    schema: EVENINGS_WEEKENDS_AVAILABILITY.schema,
+    timezone: form.querySelector("[data-following-availability-timezone]")?.value || "America/New_York",
+    windows: [{
+      weekdays: [...new Set(weekdays)].sort((left, right) => left - right),
+      start: form.querySelector("[data-following-availability-start]")?.value || null,
+      end: form.querySelector("[data-following-availability-end]")?.value || null,
+    }],
+    unknown_start: form.querySelector("[data-following-availability-unknown]")?.value || "exclude",
+  };
+}
+
+function syncAvailabilityControls(form, filter = {}) {
+  const field = form?.querySelector("[data-following-availability]");
+  if (!field) return filter;
+  const preset = field.querySelector("[data-following-availability-preset]:checked")?.value || "any";
+  const custom = field.querySelector("[data-following-availability-custom]");
+  if (custom) custom.hidden = preset !== "custom";
+  const availability = availabilityFromForm(form, filter);
+  if (availability) filter.availability = availability;
+  else delete filter.availability;
+  const summary = field.querySelector("[data-following-availability-summary]");
+  if (summary) {
+    summary.textContent = preset === "evenings_weekends"
+      ? (window.t?.("meeting_availability_evenings_summary") || "")
+      : preset === "custom"
+        ? (window.t?.("meeting_availability_custom_summary") || "")
+        : (window.t?.("meeting_availability_any") || "");
+  }
+  return filter;
+}
+
 function readRefineFilter() {
   const form = root?.querySelector("[data-following-preview-form]");
   if (!form) return { lens: root?.dataset.followingLens || "money", filter: {}, frequency: "daily" };
@@ -173,6 +215,7 @@ function readRefineFilter() {
   } catch { filter = {}; }
   const q = String(form.elements.q?.value || "").trim();
   const lens = form.elements.lens?.value || root?.dataset.followingLens || "money";
+  syncAvailabilityControls(form, filter);
   const built = watchFilterFromTextQueryControls({
     lens,
     filter,
@@ -215,6 +258,8 @@ function readRefineFilter() {
   const frequency = freqInput?.value === "weekly" ? "weekly" : "daily";
   const hiddenFilter = form.elements.filter;
   if (hiddenFilter) hiddenFilter.value = JSON.stringify(filter);
+  const subscribeFilter = root?.querySelector("[data-following-subscribe-form] [name=filter]");
+  if (subscribeFilter) subscribeFilter.value = JSON.stringify(filter);
   return {
     lens,
     filter,
@@ -277,18 +322,19 @@ function wireRefineLive() {
   form.dataset.ruleLive = "true";
   form.addEventListener("input", (event) => {
     updateRuleLine();
-    if (event.target?.closest?.("[data-following-precise], [data-following-refine]")) {
+    if (event.target?.closest?.("[data-following-precise], [data-following-refine], [data-following-availability]")) {
       scheduleDebouncedPreview();
     }
   });
   form.addEventListener("change", (event) => {
     updateRuleLine();
-    if (event.target?.closest?.("[data-following-precise], [data-following-refine]")) {
+    if (event.target?.closest?.("[data-following-precise], [data-following-refine], [data-following-availability]")) {
       scheduleDebouncedPreview();
     }
   });
   syncCouncilFieldVisibility(form);
   syncCommunityBoardFieldVisibility(form);
+  syncAvailabilityControls(form);
   updateRuleLine();
   window.applyStrings?.();
 }

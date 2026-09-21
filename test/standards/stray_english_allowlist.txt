@@ -151,3 +151,6 @@ cityscroll.land_filing_evidence_report_detail.v1
 
 # Route-lazy fetch path for the per-document filing-report JSON; never rendered chrome.
 data/land_filing_reports
+# Canonical availability schema and DOM selectors are machine-readable contract values.
+America/New_York
+[data-following-subscribe-form] [name=filter]

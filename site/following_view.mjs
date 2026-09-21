@@ -48,6 +48,10 @@ import {
   textQueryUiSupported,
   watchFilterFromTextQueryControls,
 } from "./watch_text_query_ui.mjs";
+import {
+  MEETING_AVAILABILITY_SCHEMA,
+  canonicalMeetingAvailability,
+} from "./meeting_availability_filter.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
@@ -96,6 +100,96 @@ const LENS_SUMMARY_SUBJECT = Object.freeze({
   district: "City Council District activity",
   entity: "new connected civic records",
 });
+
+export const EVENINGS_WEEKENDS_AVAILABILITY = Object.freeze({
+  schema: MEETING_AVAILABILITY_SCHEMA,
+  timezone: "America/New_York",
+  windows: Object.freeze([
+    Object.freeze({ weekdays: Object.freeze([1, 2, 3, 4, 5]), start: "17:00", end: null }),
+    Object.freeze({ weekdays: Object.freeze([0, 6]), start: null, end: null }),
+  ]),
+  unknown_start: "exclude",
+});
+
+const AVAILABILITY_WEEKDAYS = Object.freeze([
+  [1, "Monday"], [2, "Tuesday"], [3, "Wednesday"], [4, "Thursday"],
+  [5, "Friday"], [6, "Saturday"], [0, "Sunday"],
+]);
+
+function canonicalAvailability(value) {
+  return canonicalMeetingAvailability(value);
+}
+
+function availabilityPreset(value) {
+  const canonical = canonicalAvailability(value);
+  if (!canonical) return "any";
+  if (JSON.stringify(canonical) === JSON.stringify(EVENINGS_WEEKENDS_AVAILABILITY)) return "evenings_weekends";
+  return "custom";
+}
+
+function availabilityWindows(value) {
+  const canonical = canonicalAvailability(value);
+  return canonical?.windows || [];
+}
+
+function availabilityDays(value) {
+  return new Set(availabilityWindows(value).flatMap((window) => window.weekdays));
+}
+
+function availabilityBoundary(value, key) {
+  return availabilityWindows(value).find((window) => window[key] != null)?.[key] || "";
+}
+
+export function meetingAvailabilitySummary(value) {
+  const canonical = canonicalAvailability(value);
+  if (!canonical) return "Any meeting time";
+  const weekdayWindow = canonical.windows.find((window) => window.weekdays.some((day) => [1, 2, 3, 4, 5].includes(day)));
+  const weekendWindow = canonical.windows.find((window) => window.weekdays.some((day) => [0, 6].includes(day)));
+  const weekdayStart = weekdayWindow?.start || "00:00";
+  const weekdayEnd = weekdayWindow?.end || "24:00";
+  const weekdayText = weekdayWindow
+    ? (weekdayWindow.end
+      ? `Weekdays ${weekdayStart}–${weekdayEnd}`
+      : `Weekdays from ${weekdayStart} (inclusive) onward`)
+    : "No weekdays";
+  const weekendText = weekendWindow ? "weekends all day" : "no weekends";
+  return `${weekdayText}; ${weekendText}; ${canonical.timezone}; unknown starts ${canonical.unknown_start === "include" ? "included" : "excluded"}`;
+}
+
+export function meetingAvailabilityControlsHtml(view) {
+  if (view.lens !== "meetings") return "";
+  const availability = canonicalAvailability(view.filter?.availability);
+  const preset = availabilityPreset(availability);
+  const days = availabilityDays(availability);
+  const timezone = availability?.timezone || "America/New_York";
+  const unknownStart = availability?.unknown_start || "exclude";
+  const radios = [
+    ["any", "Any meeting time", "Use every meeting with a usable date."],
+    ["evenings_weekends", "Evenings and weekends", "Weekdays from 17:00 (inclusive), plus all day Saturday and Sunday."],
+    ["custom", "Custom weekly schedule", "Choose the days and clock boundaries below."],
+  ].map(([value, label, copy]) => `<label class="following-availability-option"><input type="radio" name="availability_preset" value="${value}"${preset === value ? " checked" : ""} data-following-availability-preset><span><strong>${label}</strong><small>${copy}</small></span></label>`).join("");
+  const dayInputs = AVAILABILITY_WEEKDAYS.map(([day, label]) => `<label><input type="checkbox" name="availability_day" value="${day}"${days.has(day) ? " checked" : ""} data-following-availability-day> ${label}</label>`).join("");
+  const timezones = ["America/New_York", "America/Chicago", "America/Denver", "America/Los_Angeles"].map((zone) => `<option value="${zone}"${zone === timezone ? " selected" : ""}>${zone}</option>`).join("");
+  const details = availability
+    ? `<p class="following-availability-summary" data-following-availability-summary>${escText(meetingAvailabilitySummary(availability))}</p>`
+    : `<p class="following-availability-summary" data-following-availability-summary>Any meeting time</p>`;
+  const customHidden = preset === "custom" ? "" : " hidden";
+  return `<fieldset class="following-availability" data-following-availability>
+    <legend>Meeting availability</legend>
+    <p class="following-availability-lead">Choose a weekly window, then inspect its days, boundary, timezone, and unknown-time rule before saving.</p>
+    <div class="following-availability-options" role="group" aria-label="Meeting availability preset">${radios}</div>
+    <div class="following-availability-inspection" data-following-availability-inspection>${details}</div>
+    <div class="following-availability-custom" data-following-availability-custom${customHidden}>
+      <fieldset><legend>Days</legend><div class="following-availability-days">${dayInputs}</div></fieldset>
+      <div class="following-availability-times">
+        <label>Starts at <input type="time" name="availability_start" value="${esc(availabilityBoundary(availability, "start"))}" data-following-availability-start></label>
+        <label>Ends before <input type="time" name="availability_end" value="${esc(availabilityBoundary(availability, "end"))}" data-following-availability-end></label>
+      </div>
+      <label>Timezone <select name="availability_timezone" data-following-availability-timezone>${timezones}</select></label>
+      <label>Meetings without a start time <select name="availability_unknown_start" data-following-availability-unknown><option value="exclude"${unknownStart === "exclude" ? " selected" : ""}>Exclude them</option><option value="include"${unknownStart === "include" ? " selected" : ""}>Include them</option></select></label>
+    </div>
+  </fieldset>`;
+}
 
 function esc(value) {
   return String(value ?? "").replace(/[<>&"']/g, (char) => ({
@@ -171,13 +265,35 @@ export function canonicalFollowingScope(input = {}) {
   return normalizedWatch(input.lens || "money", input.filter || {});
 }
 
+function availabilityFromParams(params, current) {
+  if (!params.has("availability_preset")) return current;
+  const preset = params.get("availability_preset");
+  if (preset === "any") return null;
+  if (preset === "evenings_weekends") return EVENINGS_WEEKENDS_AVAILABILITY;
+  if (preset !== "custom") return current;
+  const weekdays = params.getAll("availability_day")
+    .map((value) => Number(value))
+    .filter((value) => Number.isInteger(value) && value >= 0 && value <= 6);
+  if (!weekdays.length) return current;
+  return {
+    schema: MEETING_AVAILABILITY_SCHEMA,
+    timezone: params.get("availability_timezone") || "America/New_York",
+    windows: [{
+      weekdays: [...new Set(weekdays)].sort((left, right) => left - right),
+      start: params.get("availability_start") || null,
+      end: params.get("availability_end") || null,
+    }],
+    unknown_start: params.get("availability_unknown_start") || "exclude",
+  };
+}
+
 export function watchFromFollowingParams(input) {
   const params = input instanceof URLSearchParams ? input : new URL(input, "https://cityscroll.invalid").searchParams;
   const handoff = followingPreviewHandoffFromParams(params);
   const choosing = params.get("step") === FOLLOWING_CREATE_STEP_CHOOSE;
   const requested = !choosing && (params.has("lens") || params.has("filter") || params.has("q") || params.has("agency")
     || params.has("boro") || params.has("council") || params.has("boardBorough") || params.has("boardNumber")
-    || params.has("notice") || params.has("project"));
+    || params.has("notice") || params.has("project") || params.has("availability_preset"));
   if (handoff.status === "unrecognized_scope") {
     return {
       lens: null,
@@ -217,6 +333,9 @@ export function watchFromFollowingParams(input) {
     setOrDelete("dateWindow", params.get("when"));
   }
   if (params.has("type")) setOrDelete("noticeType", params.get("type"));
+  if (lens === "meetings" && params.has("availability_preset")) {
+    setOrDelete("availability", availabilityFromParams(params, filter.availability));
+  }
   if (textQueryUiSupported(lens)) {
     const controls = parseTextQueryControlParams(params);
     const hasControlParams = [...params.keys()].some((key) => key.startsWith("tq_"));
@@ -656,6 +775,7 @@ function scopeSummary(lens, filter) {
     ["record type", filter.noticeType],
     ["stage", filter.process || filter.stage],
     ["time", filter.dateWindow || filter.when],
+    ["availability", filter.availability ? (availabilityPreset(filter.availability) === "evenings_weekends" ? "Evenings and weekends" : "Custom meeting availability") : null],
     ["name", filter.name],
     ["agency id", filter.agency_id],
     ["mandate", filter.mandate_id],
@@ -683,6 +803,9 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
   const locationClause = location === "citywide"
     ? "citywide"
     : location.startsWith("in ") ? location : `in ${location}`;
+  const availabilityClause = wanted === "meetings" && filter.availability
+    ? (availabilityPreset(filter.availability) === "evenings_weekends" ? " during evenings and weekends" : " during the selected weekly availability")
+    : "";
 
   if (wanted === "meetings" && f.matter_ref) {
     const matterId = String(f.matter_ref).split(":").at(-1) || f.matter_ref;
@@ -691,7 +814,7 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
   if (wanted === "meetings" && communityBoardLabel(f.communityBoard)) {
     const described = describeTextQuery(f.text_query);
     const refine = described?.summary ? ` ${described.summary}` : "";
-    return `Notify me when meetings for ${communityBoardLabel(f.communityBoard)}${refine} are published.`;
+    return `Notify me when meetings for ${communityBoardLabel(f.communityBoard)}${refine}${availabilityClause} are published.`;
   }
   if (wanted === "district") {
     const n = f.councilDistrict || "?";
@@ -749,9 +872,9 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
     return `Notify me when ${bareSubject} ${roleClause}${refine} are published.`;
   }
   if (!clauses.length) {
-    return `Notify me when ${subject} are published ${locationClause}.`;
+    return `Notify me when ${subject}${availabilityClause} are published ${locationClause}.`;
   }
-  return `Notify me when ${subject} ${clauses.join(" ")} are published ${locationClause}.`;
+  return `Notify me when ${subject} ${clauses.join(" ")}${availabilityClause} are published ${locationClause}.`;
 }
 
 /** True when the filter has no geography pin (citywide / unscoped place). */
@@ -836,6 +959,7 @@ export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
     previewStatus: unrecognized ? null : (input.previewStatus || null),
     previewContinuation: unrecognized ? null : (input.previewContinuation || null),
     previewSeq: input.previewSeq || null,
+    availabilityCounts: unrecognized ? null : (input.availabilityCounts || null),
     excludedItems: unrecognized ? [] : (Array.isArray(input.excludedItems) ? input.excludedItems : []),
     editKey: input.editKey || null,
     scopeSummary: unrecognized ? [] : scopeSummary(watch.lens, watch.filter),
@@ -1084,6 +1208,9 @@ function previewHtml(view) {
     : (status === "incomplete"
       ? `<p class="following-note" role="status">This preview is not finished. More records may match.</p>`
       : `<p class="following-empty">No matches now — still watch for new.</p>`);
+  const availabilityCounts = view.filter?.availability && view.availabilityCounts
+    ? `<p class="following-availability-result" data-following-availability-result>${view.availabilityCounts.unknown_start || 0} meeting${view.availabilityCounts.unknown_start === 1 ? "" : "s"} without a start time excluded from this constrained result.</p>`
+    : "";
   const coverage = status === "incomplete"
     ? `<p class="following-note" data-following-preview-incomplete="true">This preview is not finished. More records may match.</p>
       ${view.previewContinuation ? `<p><button type="submit" form="following-preview-form" name="preview_continue" value="${esc(JSON.stringify(view.previewContinuation))}" data-following-preview-continue data-i18n="following_preview_continue">Show more matches</button></p>` : ""}`
@@ -1099,6 +1226,7 @@ function previewHtml(view) {
     ${coverage}
     ${awardNote}
     ${previewFocusHtml(view)}
+    ${availabilityCounts}
     ${partial}
     ${body}
     ${excludedResultsHtml(view)}
@@ -1288,6 +1416,7 @@ function controlsHtml(view) {
       </div>
       ${textQueryControlsHtml({ lens: view.lens, filter: view.filter })}
     </details>`}
+    ${meetingAvailabilityControlsHtml(view)}
     ${view.requested ? cadenceCardsHtml(view) : ""}
     <div class="following-form-actions">
       <button type="submit" class="following-form-action-preview" data-following-primary-choice="preview" data-i18n="${view.requested ? "following_update_matches" : "following_preview_matches"}" data-i18n-aria="${view.requested ? "following_update_matches" : "following_preview_matches"}" aria-label="${view.requested ? "Update matches" : "Preview matches"} before saving">${view.requested ? "Update matches" : "Preview matches"}</button>
