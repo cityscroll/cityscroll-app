@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { HEARINGS_KV_KEY } from "../worker/src/hearings.mjs";
 import { handleMcp } from "../worker/src/mcp.mjs";
-import { MEETINGS_BROWSE_CAPABILITY_REFERENCE } from "../capabilities/meetings.mjs";
+import { MEETINGS_BROWSE_CAPABILITY_REFERENCE, meetingsBrowseFromModel } from "../capabilities/meetings.mjs";
 
 const model = {
   schema: "cityscroll.shared_meeting_read_model.v1",
@@ -68,4 +68,30 @@ test("MCP browse rejects invalid zones and unknown fields instead of widening th
   const unknownField = await call({ source_contract: "not-a-supported-filter" });
   assert.equal(unknownField.result.isError, true);
   assert.match(unknownField.result.content[0].text, /does not accept|invalid/i);
+});
+
+test("capability and MCP browse paths preserve the same identities and exclusion counts", async () => {
+  const capabilityInput = {
+    availability: { timezone: "America/New_York", windows: [{ weekdays: [1, 2, 3, 4, 5], start: "17:00" }, { weekdays: [0, 6] }] },
+    attendanceModes: ["hybrid", "remote"],
+    limit: 10,
+  };
+  const capabilityResult = meetingsBrowseFromModel(model, capabilityInput);
+  const mcpResponse = await call({
+    availability: capabilityInput.availability,
+    attendance_modes: capabilityInput.attendanceModes,
+    limit: capabilityInput.limit,
+  });
+  const mcpResult = mcpResponse.result.structuredContent;
+
+  assert.deepEqual(
+    {
+      identities: mcpResult.results.map((row) => row.meeting_id),
+      exclusions: mcpResult.coverage.exclusions,
+    },
+    {
+      identities: capabilityResult.results.map((row) => row.meeting_id),
+      exclusions: capabilityResult.coverage.exclusions,
+    },
+  );
 });
