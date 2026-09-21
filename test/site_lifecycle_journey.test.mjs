@@ -13,6 +13,7 @@ import { withPinnedClock } from "./helpers/test_clock.mjs";
 const EVIDENCE_ROOT = new URL("../docs/evidence/site-lifecycle-journey/", import.meta.url);
 const MANIFEST = JSON.parse(readFileSync(new URL("capture-manifest.json", EVIDENCE_ROOT), "utf8"));
 const LAND_SOURCE = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
+const LIFECYCLE_SOURCE = readFileSync(new URL("../site/land_site_lifecycle.mjs", import.meta.url), "utf8");
 const TEST_DAY = process.env.CITYSCROLL_TEST_DAY || "2026-09-16";
 
 const LIFECYCLE = {
@@ -77,7 +78,9 @@ function journeyHtml() {
 
 test("A4: focused native journey keeps detail links, evidence, source, Back, focus and modified-click paths", async () => {
   await withPinnedClock(`${TEST_DAY}T12:00:00.000Z`, () => {
-    assert.match(LAND_SOURCE, /siteLifecycleShard from "\.\.\/data\/site_lifecycle\/0000\.json"/);
+    assert.match(LAND_SOURCE, /renderLandSiteLifecycle/);
+    assert.match(LIFECYCLE_SOURCE, /siteLifecycleShard from "\.\/data\/site_lifecycle\/0000\.json"/);
+    assert.match(LIFECYCLE_SOURCE, /siteLifecycleReverse from "\.\/data\/site_lifecycle\/reverse\.json"/);
     assert.match(LAND_SOURCE, /html=html\.replace\('<div id="slc"><\/div>'/);
     assert.doesNotMatch(LAND_SOURCE, /import\("\.\.\/site_lifecycle_context\.mjs"\)/);
     assert.doesNotMatch(LAND_SOURCE, /loadSiteLifecycleContext\(\)/);

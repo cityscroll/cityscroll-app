@@ -71,9 +71,7 @@ import {
   fetchBrowseScoped,
   projectBrowseScopedRows,
 } from "../browse_scoped_adapters.mjs";
-import { buildSiteLifecycleContext, renderSiteLifecycleContext } from "../site_lifecycle_context.mjs";
-import siteLifecycleShard from "../data/site_lifecycle/0000.json" with { type: "json" };
-import siteLifecycleReverse from "../data/site_lifecycle/reverse.json" with { type: "json" };
+import { renderLandSiteLifecycle } from "../land_site_lifecycle.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -90,24 +88,6 @@ let landProjectInventory=[];
 let landActionInventory=[];
 let landRecordLinksPromise=null;
 const mihOn = v => v===true || v==="true";
-const LAND_SITE_LIFECYCLE = {
-  schema: "cityscroll.site_lifecycle.v1",
-  parcels: Object.fromEntries((siteLifecycleShard.rows || []).map((row) => [row.parcel_id, row])),
-  members: siteLifecycleReverse.members || {},
-};
-
-// Land detail is an application route, but its reciprocal history is a resident
-// document concern. Keep the accepted projection in the bundle, as procurement
-// detail does, so the native links exist in the first rendered detail and do not
-// depend on a second read or a dynamic import settling after navigation.
-function landSiteLifecycleHTML(projectId) {
-  const context = buildSiteLifecycleContext(LAND_SITE_LIFECYCLE, {
-    subjectId: ["land", "project", projectId].join(":"),
-    surface: "land",
-  });
-  return renderSiteLifecycleContext(context);
-}
-
 function hydrateLandRecordLinks(record, selection){
   const detail=$("#ldetail");
   if(!detail) return;
@@ -841,7 +821,7 @@ async function landSelect(i, el){
     <button type="button" data-map-pan="east" aria-controls="landmap" aria-label="${t("map_pan_east")}">→</button>
   </div>
   <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
-  html=html.replace('<div id="slc"></div>', `<div id="slc">${landSiteLifecycleHTML(r.project_id)}</div>`);
+  html=html.replace('<div id="slc"></div>', `<div id="slc">${renderLandSiteLifecycle(r.project_id)}</div>`);
   $("#ldetail").innerHTML=html;
   hydrateLandRecordLinks(r, selection);
   wireLandFilingReportTrigger($("#ldetail"),{t,escape:escUiHtml});
