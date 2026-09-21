@@ -16,6 +16,7 @@ assertion or a reproducible receipt.
 | [`example-selection-records.md`](example-selection-records.md) | Per-example canonical route, evidence class, observable result, and selection note, plus the check-harness limitation found on the topic-search example. |
 | [`worked-example-verification.md`](worked-example-verification.md) | What a reader sees today on the five advanced journeys, and every step that is limited, unavailable, or exercised with a stand-in response instead of a real mutation. |
 | [`review-cadence-handoff.md`](review-cadence-handoff.md) | What runs in this repository and how often, why the weekly review is not reachable from here, and the exact interface a guide-review lane needs on each side. |
+| [`guide-review/consumer-handoff-pointer.json`](guide-review/consumer-handoff-pointer.json) | Retained producer report and section for the private weekly consumer, with deduplication keys and the still-open consumer-receipt boundary. |
 | [`source-checks.md`](source-checks.md) | Every official publisher and every product claim behind the explanation and reference pages, how each was checked, and the two corrections the check produced. |
 | [`ownership-map.md`](ownership-map.md) | For the explanation and reference articles: the owner each one defers to, what it is allowed to say, and what it must never restate. |
 | [`capture-manifest.json`](capture-manifest.json) | Baseline of About and five entry points at 390px and 1440px, as hashes and assertions. No image is committed. |

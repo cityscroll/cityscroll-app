@@ -65,7 +65,10 @@ example registry would duplicate an authority that exists.
    never an automatic publication or an automatic rewrite.
 3. **The entry point and its receipt.** The exact command or job that assembles a
    weekly batch, and the receipt it produces, so a rehearsal can prove one guide
-   section arrived once and that a replay produced no duplicate finding. Without
+   section arrived once and that a replay produced no duplicate finding. The
+   producer now retains the input report and section, with a pointer at
+   [`guide-review/consumer-handoff-pointer.json`](guide-review/consumer-handoff-pointer.json).
+   The private consumer still has to declare and retain its own receipt; without
    that receipt, integration cannot honestly be called complete.
 4. **The deduplication and job-identity conventions** already used there, so a
    guide lane reuses them instead of inventing a second scheme.
