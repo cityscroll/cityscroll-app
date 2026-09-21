@@ -410,7 +410,14 @@ function genericOccurrenceValues(record = {}, options = {}) {
           when: schedule.starts_at,
           ends_at: sourceDate(record, ["event_end", "ends_at", "end_at"]),
           timezone: schedule.timezone,
-          provenance: { basis: schedule.basis, source_url: schedule.source_url, observed_at: schedule.observed_at },
+          provenance: {
+            basis: schedule.basis,
+            source_url: schedule.source_url,
+            observed_at: schedule.observed_at,
+            precision: schedule.precision,
+            raw_date: schedule.raw_date,
+            raw_time: schedule.raw_time,
+          },
         });
       } else if (date) {
         // Date-only, invalid, and conflicted schedules remain browseable as
@@ -419,7 +426,14 @@ function genericOccurrenceValues(record = {}, options = {}) {
           kind: "event",
           when: date,
           timezone: schedule.timezone,
-          provenance: { basis: schedule.basis, source_url: schedule.source_url, observed_at: schedule.observed_at },
+          provenance: {
+            basis: schedule.basis,
+            source_url: schedule.source_url,
+            observed_at: schedule.observed_at,
+            precision: schedule.precision,
+            raw_date: schedule.raw_date,
+            raw_time: schedule.raw_time,
+          },
         });
       }
       return values;
@@ -498,8 +512,12 @@ function calendarOccurrenceFromLegacyFeedItem(item = {}) {
     kind: "event",
     title: item.title,
     ...(dateIsOnly(when) ? { date: when } : { starts_at: when }),
-    timezone: null,
+    timezone: item.schedule?.timezone || null,
     description: [item.summary, item.url].filter(Boolean).join(" · "),
+    provenance: item.schedule ? {
+      precision: item.schedule.precision || null,
+      source_url: item.schedule.source_url || null,
+    } : null,
   });
 }
 

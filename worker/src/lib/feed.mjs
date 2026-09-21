@@ -75,6 +75,31 @@ function textQueryEvidenceSummary(row) {
     .join(" · ");
 }
 
+function meetingScheduleForFeed(row) {
+  const schedule = row?.schedule;
+  if (!schedule || typeof schedule !== "object" || Array.isArray(schedule)) return null;
+  return {
+    status: schedule.status || null,
+    precision: schedule.precision || null,
+    starts_at: schedule.starts_at || null,
+    date: schedule.raw_date || null,
+    timezone: schedule.timezone || null,
+    basis: schedule.basis || null,
+    source_url: schedule.source_url || row.source_url || row.source?.url || null,
+  };
+}
+
+function feedItemContent(item) {
+  const schedule = item?.schedule;
+  if (!schedule) return item?.summary || item?.title || "";
+  return [
+    item.summary || item.title,
+    schedule.precision,
+    schedule.timezone,
+    schedule.source_url,
+  ].filter(Boolean).join(" · ");
+}
+
 // Normalize compileSub result rows → neutral feed items.
 export function feedItems(kind, rows) {
   return (rows || []).map((r) => {
@@ -103,6 +128,7 @@ export function feedItems(kind, rows) {
         eventDate: r.event_date || null,
         phase: "Hearing / meeting",
         nextStep: r.event_date ? `Event ${d10(r.event_date)}` : null,
+        schedule: meetingScheduleForFeed(r),
       };
     }
     if (kind === "exam" && r.exam_number) {
@@ -269,13 +295,13 @@ export function feedItems(kind, rows) {
   }).filter((it) => it.id);
 }
 
-export function atomFeed({ title, selfUrl, siteUrl, updated, items }) {
+export function atomFeed({ title, selfUrl, siteUrl, updated, items, availability = null }) {
   const entries = items.map((it) => `  <entry>
     <id>tag:crol-list.org,2026:${esc(it.id)}</id>
     <title>${esc(it.title)}</title>
     <link href="${esc(it.url)}"/>
     <updated>${esc(toRfc3339(it.date, updated))}</updated>
-    <summary>${esc(it.summary)}</summary>
+    <summary>${esc(feedItemContent(it))}</summary>
   </entry>`).join("\n");
   return `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
@@ -283,24 +309,27 @@ export function atomFeed({ title, selfUrl, siteUrl, updated, items }) {
   <id>${esc(selfUrl)}</id>
   <link rel="self" href="${esc(selfUrl)}"/>
   <link rel="alternate" href="${esc(siteUrl)}"/>
+${availability ? `  <subtitle>Availability: ${esc(JSON.stringify(availability))}</subtitle>\n` : ""}
   <updated>${esc(updated)}</updated>
 ${entries}
 </feed>
 `;
 }
 
-export function jsonFeed({ title, selfUrl, siteUrl, items }) {
+export function jsonFeed({ title, selfUrl, siteUrl, items, availability = null }) {
   return JSON.stringify({
     version: "https://jsonfeed.org/version/1.1",
     title,
     home_page_url: siteUrl,
     feed_url: selfUrl,
+    ...(availability ? { cityscroll_availability: availability } : {}),
     items: items.map((it) => ({
       id: it.id,
       url: it.url,
       title: it.title,
       date_published: toRfc3339(it.date, null) || undefined,
-      content_text: it.summary || it.title,
+      content_text: feedItemContent(it),
+      ...(it.schedule ? { cityscroll_schedule: it.schedule } : {}),
     })),
   }, null, 1);
 }
@@ -310,7 +339,7 @@ export function jsonFeed({ title, selfUrl, siteUrl, items }) {
 // producer-side adapter upgrades each legacy item's eventDate before it gets
 // here. The literal legacy shape `UID:${escIcs(it.id)}@crol-list` remains the
 // documented namespace contract even though new code serializes occurrence.uid.
-export function icsFeed({ title, occurrences, items }) {
+export function icsFeed({ title, occurrences, items, availability = null }) {
   const legacyInput = !Array.isArray(occurrences) && Array.isArray(items);
   const pad = (n) => String(n).padStart(2, "0");
   const dt = (s) => {
@@ -373,7 +402,7 @@ export function icsFeed({ title, occurrences, items }) {
         ? (dateParts(occurrence.ends_at) || nextDate(occurrence.date))
         : dt(occurrence.ends_at || occurrence.starts_at);
       if (!end) return null;
-      const description = [occurrence.description, occurrence.canonical_url]
+      const description = [occurrence.description, occurrence.canonical_url, occurrence.provenance?.source_url]
         .filter(Boolean).join(" · ");
       const lines = [
       "BEGIN:VEVENT",
@@ -381,6 +410,10 @@ export function icsFeed({ title, occurrences, items }) {
       `DTSTAMP:${occurrence.observed_at ? new Date(occurrence.observed_at).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z") : when}`,
       ...(occurrence.last_modified ? [`LAST-MODIFIED:${icsTimestamp(occurrence.last_modified)}`] : []),
       ...(Number.isSafeInteger(occurrence.sequence) ? [`SEQUENCE:${occurrence.sequence}`] : []),
+      ...(occurrence.provenance?.precision
+        ? [`X-CITYSCROLL-TEMPORAL-PRECISION:${escIcs(occurrence.provenance.precision)}`]
+        : []),
+      ...(occurrence.provenance?.source_url ? [`X-CITYSCROLL-SOURCE-URL:${escIcs(occurrence.provenance.source_url)}`] : []),
       ...(allDay
         ? [`DTSTART;VALUE=DATE:${when}`, `DTEND;VALUE=DATE:${end}`]
         : [formatDateTime(occurrence, occurrence.starts_at), occurrence.timezone
@@ -398,6 +431,7 @@ export function icsFeed({ title, occurrences, items }) {
   return [
     "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//CityScroll//feeds//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
     `X-WR-CALNAME:${escIcs(title)}`,
+    ...(availability ? [`X-CITYSCROLL-AVAILABILITY:${escIcs(JSON.stringify(availability))}`] : []),
     ...events,
     "END:VCALENDAR", "",
   ].join("\r\n");

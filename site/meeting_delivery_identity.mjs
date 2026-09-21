@@ -172,8 +172,11 @@ export function collapseMeetingDeliveryRows(rows = []) {
     const lifecycle = clusterLifecycle(members);
     const aliases = [...new Set(members.flatMap((row) => meetingDeliveryIds(row)))];
     const eventIdMember = members.find((row) => text(row.meeting_id) === key) || representative;
+    const currentSchedule = members.find((row) => lifecycleOf(row) === "rescheduled" && row.schedule)
+      ?.schedule || representative.schedule;
     return {
       ...representative,
+      ...(currentSchedule ? { schedule: currentSchedule } : {}),
       object_ref: key,
       delivery_key: key,
       delivery_aliases: aliases,
