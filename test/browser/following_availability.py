@@ -10,15 +10,17 @@ import sys
 import threading
 from datetime import date, timedelta
 from pathlib import Path
+from typing import TYPE_CHECKING
 from urllib.parse import urlsplit
-
-from playwright.sync_api import Page, Route, sync_playwright
-
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 sys.path.insert(0, str(ROOT))
 
+if TYPE_CHECKING:
+    from playwright.sync_api import Page, Route
+
+from browser_support import launched_chromium  # noqa: E402
 from fixture_clock import fixture_today, pin_fixture_clock  # noqa: E402
 from tools.local_site_server import QuietHandler, _RobustThreadingHTTPServer  # noqa: E402
 
@@ -128,8 +130,7 @@ def wait_for_preview(page: Page) -> None:
 def run_journeys(base: str) -> None:
     offset = int(os.environ.get("CITYSCROLL_TEST_DAY_OFFSET", "0"))
     pinned_day = (date.fromisoformat(fixture_today()) + timedelta(days=offset)).isoformat()
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=True)
+    with launched_chromium() as browser:
         context = browser.new_context(viewport={"width": 390, "height": 844}, has_touch=True)
         pin_fixture_clock(context, pinned_day)
         page = context.new_page()

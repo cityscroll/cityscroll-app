@@ -1,5 +1,9 @@
 # Testing
 
+## Browser journeys
+
+The retained browser journeys live in [`test/browser/`](../test/browser/): each Node test entrypoint invokes its adjacent Python Playwright harness against a fixture-backed local server. The `Retained browser journeys` CI gate provisions the repository-pinned Chromium and runs `node --test test/browser/*.test.mjs` on every pull request; the same command runs in the full local prepush path (`make a11y` or `./tools/preflight-required-checks.sh --full`) when the host has the browser environment installed. Missing harnesses, Python Playwright, or launchable Chromium fail the test with a diagnostic instead of being skipped.
+
 ## Wall-clock tests
 
 Tests must be deterministic about the instant they reason about. Prefer passing an explicit
