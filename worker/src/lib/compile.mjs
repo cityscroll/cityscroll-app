@@ -167,12 +167,15 @@ function materializedMeetingRowsDetailed(filter, todayISO, dateWindow, sourceRow
   const scoped = dated
     .filter((row) => meetingRowHostedByBoard(row, filter?.communityBoard))
     .filter((row) => meetingRowMatchesWatch(row, filter, keywords));
-  const availability = evaluateMeetingAvailabilityRows(scoped, filter?.availability, { asOf: todayISO });
-  const matchedIds = new Set(availability.rows.map((row) => row.meeting_id).filter(Boolean));
+  const scopedIds = new Set(scoped.map((row) => row.meeting_id).filter(Boolean));
   const clustered = collapseMeetingDeliveryRows(dated);
+  const candidates = clustered.filter((row) => (
+    scopedIds.has(row.meeting_id)
+      || (Array.isArray(row.delivery_aliases) && row.delivery_aliases.some((id) => scopedIds.has(id)))
+  ));
+  const availability = evaluateMeetingAvailabilityRows(candidates, filter?.availability, { asOf: todayISO });
   return {
-    rows: clustered
-    .filter((row) => (row.delivery_aliases || []).some((id) => matchedIds.has(id)) || matchedIds.has(row.meeting_id))
+    rows: availability.rows
     .map((row) => ({
       ...row,
       request_id: row.meeting_id,

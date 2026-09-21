@@ -50,17 +50,16 @@ export async function handleFeed(request, env, ctx) {
 
   let sub;
   if (parsed.modern) {
-    if (filter && Object.prototype.hasOwnProperty.call(filter, "text_query") && filter.text_query != null) {
-      const prepared = prepareWatchFilter(lens, filter);
-      if (!prepared.ok) {
-        return plain(`modern feed filter cannot be admitted: ${prepared.reason}`, 400);
-      }
-      lens = prepared.lens;
-      filter = prepared.filter;
+    const requestedFilter = filter;
+    const prepared = prepareWatchFilter(lens, requestedFilter || {});
+    if (!prepared.ok) {
+      return plain(`modern feed filter cannot be admitted: ${prepared.reason}`, 400);
     }
-    const unsupported = unsupportedModernFeedFilterFields(lens, filter, { format });
+    lens = prepared.lens;
+    filter = prepared.filter;
+    const unsupported = unsupportedModernFeedFilterFields(lens, requestedFilter, { format });
     if (unsupported.length) return plain(`modern feed filter cannot be replayed: ${unsupported.join(", ")}`, 400);
-    sub = { lens, filter: filter?.text_query != null ? filter : sanitize(lens, filter) };
+    sub = { lens, filter };
   } else {
     sub = { lens, filter: sanitize(lens, filter) };
   }
@@ -125,9 +124,9 @@ export async function handleFeed(request, env, ctx) {
   const updated = new Date().toISOString();
 
   let body;
-  if (url.pathname === "/feed.xml") body = atomFeed({ title, selfUrl: url.toString(), siteUrl, updated, items });
-  else if (url.pathname === "/feed.json") body = jsonFeed({ title, selfUrl: url.toString(), siteUrl, items });
-  else body = icsFeed({ title, occurrences });
+  if (url.pathname === "/feed.xml") body = atomFeed({ title, selfUrl: url.toString(), siteUrl, updated, items, availability: sub.filter?.availability });
+  else if (url.pathname === "/feed.json") body = jsonFeed({ title, selfUrl: url.toString(), siteUrl, items, availability: sub.filter?.availability });
+  else body = icsFeed({ title, occurrences, availability: sub.filter?.availability });
 
   const res = new Response(body, {
     status: 200,
