@@ -141,6 +141,7 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/investigation_comparative_signal.mjs",
   "/research_package.mjs",
   "/procurement_pin.mjs",
+  "/matter_permalink.mjs",
   "/app/now.mjs",
   "/app/routing.mjs",
   "/notice_permalink.mjs",
