@@ -2229,6 +2229,7 @@
     retry_open_data: "Dènye kopi done CityScroll la pa disponib. Eseye ankò nan yon ti moman.",
     nothing_found: "Nou pa jwenn anyen. Eseye yon mo kle pi laj oswa \"Tout RFP yo\".",
     contracts_source_stale: "Done sou RFP ki louvri yo pa ajou. CityScroll pa ka konfime lis konplè moun k ap aksepte repons kounye a. Dènye mizajou: {date}.",
+    money_agencies_source_stale: "Filtè ajans lan ap itilize yon kopi ki konsève paske li pa t kapab jwenn sous ki pi resan an. Dat kopi sous la: {date}.",
     subscribed_now: "Ou abòne — n ap voye yon imèl ba ou.",
     welcome_sent_to: "Imèl byenveni voye bay {email}.",
     turnstile_fail: "Verifikasyon moun lan pa t pase — eseye ankò.",

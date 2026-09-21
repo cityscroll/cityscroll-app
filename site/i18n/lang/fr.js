@@ -2245,6 +2245,7 @@
     retry_open_data:        "Le dernier instantané CityScroll est indisponible. Réessayez dans un instant.",
     nothing_found:          "Rien trouvé. Essayez un mot-clé plus large ou « Toutes les RFP ».",
     contracts_source_stale:          "Les données des appels d'offres ouverts sont obsolètes. CityScroll ne peut pas confirmer l'ensemble complet des appels acceptant actuellement des réponses. Dernière mise à jour : {date}.",
+    money_agencies_source_stale:     "Le filtre des agences utilise une copie conservée, car la source la plus récente n'a pas pu être récupérée. Copie de la source datée du {date}.",
     subscribed_now: "Vous êtes abonné — nous vous enverrons un e-mail.",
     welcome_sent_to: "E-mail de bienvenue envoyé à {email}.",
     turnstile_fail:         "La vérification humaine a échoué — réessayez.",

@@ -147,11 +147,14 @@ export async function buildAll({
     } else {
       [openRows, agencyRows] = await Promise.all([
         fetchMoneyDefaultOpen(fetchImpl, now),
-        fetchMoneyAgencies(fetchImpl),
+        fetchMoneyAgencies(fetchImpl, { now }),
       ]);
     }
     results.money_default_open = buildMoneyDefaultOpenSnapshot(openRows, { now });
-    results.money_agencies = buildMoneyAgenciesSnapshot(agencyRows, { now });
+    results.money_agencies = buildMoneyAgenciesSnapshot(agencyRows, {
+      now,
+      acquisition: agencyRows?.acquisition,
+    });
   }
   if (wants(args, "staffing")) {
     let hires;
