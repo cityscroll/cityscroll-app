@@ -30,6 +30,8 @@ Nothing here changes production code; this is evidence tooling only.
 """
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import hashlib
 import json
 import os
@@ -120,10 +122,7 @@ class SiteHandler(SimpleHTTPRequestHandler):
 
 
 def git_revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def render_fixtures() -> dict:
     result = subprocess.run(

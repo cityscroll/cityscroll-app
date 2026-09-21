@@ -18,6 +18,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 import { buildProcurementBrowseQueryArtifacts, loadProcurementBrowseQuery } from "../site/procurement_browse_query.mjs";
 import { filterMoneySnapshot } from "../site/resident_snapshot_queries.mjs";
@@ -37,7 +38,7 @@ function response(ok, payload) {
 
 function revision() {
   try {
-    return execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT }).toString().trim();
+    return resolveRepositoryRevision(ROOT);
   } catch {
     return null;
   }
@@ -110,7 +111,7 @@ function buildManifest(observed) {
     field_gate_eligible: false,
     route: ROUTE,
     viewport: { name: "not-applicable", note: "network-order trace; no rendered viewport was captured" },
-    revision: null,
+    revision: revision(),
     data_vintage: {
       fixture: "site/data/procurement_browse_rows.json",
       fixture_generated_at: observed.fixture_generated_at,

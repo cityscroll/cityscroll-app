@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.working-copy-measurement-environment.v1",
-  "revision": "f095d4b8d844d1a969c70e4909dc0f65960f1a7d",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "revision_branch": "main",
   "operating_system": {
     "family": "macOS",

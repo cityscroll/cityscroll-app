@@ -16,6 +16,8 @@ capture, so it never depends on the real wall clock.
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import hashlib
 import json
@@ -137,10 +139,7 @@ def page_html(panel_html: str) -> str:
 
 
 def git_revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def run_axe(page) -> dict:
     page.add_script_tag(path=str(AXE))

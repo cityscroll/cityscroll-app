@@ -188,7 +188,7 @@ cmd_provision() {
   local mode="full"
   [[ "$profile" == "focused-reduced" ]] && mode="card"
 
-  rev="${rev:-$(git -C "$ROOT" rev-parse HEAD)}"
+  rev="${rev:-$(python3 "$ROOT/tools/repository_revision.py" --cwd "$ROOT")}"
   source="${source:-$(git -C "$ROOT" remote get-url origin)}"
 
   local source_class="remote"

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "card": "cityscroll-engineering/scoped-machine-client-profile",
   "capture_mode": "local_python_playwright_axe_static_site",
-  "repository_revision": "1365859e9ebfdd1bf720ab523c749d772d4598e1",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "note": "The tool-discovery surface (site/api.html, which renders site/data/mcp_tool_catalog.json) is byte-identical on this branch: machine-client profiles filter the per-request tools/list response, they do not change the declared inventory the page publishes. This capture is a no-regression check on that surface rather than evidence of a changed page. axe-core (test/functional/assets/axe.min.js) ran against the served page at both review widths using the critical/serious failing-violation classification. No live Worker/D1 backend was running. Captured images are kept out of the repository under the ignored .artifacts/ path; the sha256 of each is recorded here as the proof.",
   "data_vintage": "mcp_tool_catalog.json sha256=2e41d08847c4de17",
   "viewports": [

@@ -2,7 +2,7 @@
   "schema": "cityscroll.notice_primary_readiness_cold_trace.v1",
   "version": 1,
   "measurement_class": "lab",
-  "revision": "9ae3afd8e-dirty",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "route": "/notices/20260710020",
   "cache_state": "cold",
   "deferred_owner_delay_ms": 3000,

@@ -3,7 +3,7 @@
   "evidence_class": "isolated-consumer-render",
   "capture_mode": "headless-playwright-loopback-static-render",
   "captured_at": "2026-09-07T13:23:26Z",
-  "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": "2026-09-07",
   "image_directory": ".artifacts/community-board-decisions",
   "image_policy": "Capture images remain ignored and are not committed. Their SHA-256 values bind this textual manifest to the reviewed render.",
@@ -23,7 +23,7 @@
         390,
         844
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -128,7 +128,7 @@
         390,
         844
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": false,
       "stylesheet": "loaded",
@@ -212,7 +212,7 @@
         390,
         844
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "blocked",
@@ -317,7 +317,7 @@
         1440,
         900
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -422,7 +422,7 @@
         1440,
         900
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": false,
       "stylesheet": "loaded",
@@ -506,7 +506,7 @@
         1440,
         900
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "blocked",
@@ -611,7 +611,7 @@
         390,
         844
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -770,7 +770,7 @@
         390,
         844
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -852,7 +852,7 @@
         390,
         844
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": false,
       "stylesheet": "loaded",
@@ -913,7 +913,7 @@
         390,
         844
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "blocked",
@@ -995,7 +995,7 @@
         1440,
         900
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -1077,7 +1077,7 @@
         1440,
         900
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": false,
       "stylesheet": "loaded",
@@ -1138,7 +1138,7 @@
         1440,
         900
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "blocked",
@@ -1220,7 +1220,7 @@
         390,
         844
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",
@@ -1348,7 +1348,7 @@
         1440,
         900
       ],
-      "revision": "cb734d3ed410419a2721267b32d93bff9f5eccca",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-07",
       "scripting": true,
       "stylesheet": "loaded",

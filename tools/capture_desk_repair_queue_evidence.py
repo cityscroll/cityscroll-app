@@ -32,6 +32,8 @@ Run: python3 tools/capture_desk_repair_queue_evidence.py
 """
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import hashlib
 import json
 import subprocess
@@ -86,10 +88,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 def git_revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def build_desk() -> dict:
     """Ask the producer for its own output, so the capture cannot drift from it."""

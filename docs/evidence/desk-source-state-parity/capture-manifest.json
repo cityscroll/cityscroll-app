@@ -5,7 +5,7 @@
   "captured_at": "2026-09-06T04:03:56Z",
   "route": "/data-sources?source=checkbook-contracts#source-checkbook-contracts",
   "revision_format": "git-object-id-prefix-12",
-  "revision": "320bd54850de",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "consumer_revision": "5fdb3424f3f4",
   "data_vintage": "2026-09-05",
   "data_revision": "0e958926826dadbd0ce9d5996687c821ec196220157b61e648a6d6e349b9405a",

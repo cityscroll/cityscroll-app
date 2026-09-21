@@ -12,6 +12,7 @@ import hashlib
 import json
 import subprocess
 from pathlib import Path
+from repository_revision import resolve_repository_revision
 
 from playwright.sync_api import sync_playwright
 
@@ -103,9 +104,7 @@ def keyboard_traverse(page, expected: list[str]) -> dict:
 def main() -> int:
     subprocess.run(["node", str(ROOT / "tools" / "contract_substance_role_corpus_capture.mjs"), str(OUTPUT)], cwd=ROOT, check=True)
     metadata = json.loads((OUTPUT / "metadata.json").read_text())
-    source_revision = subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
+    source_revision = resolve_repository_revision(ROOT)
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -167,7 +166,7 @@ def main() -> int:
     manifest = {
         "schema": "cityscroll.contract_substance_role_corpus_capture_manifest.v2",
         "capture_mode": "deterministic server render with headless Chromium viewport review; image binaries omitted",
-        "source_revision": f"grounded origin/main {source_revision}",
+        "source_revision": source_revision,
         "data_vintages": metadata["data_vintages"],
         "assertions": [{
             "id": "A7",

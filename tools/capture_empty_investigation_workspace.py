@@ -23,6 +23,8 @@ docs/evidence/empty-investigation-workspace/capture-manifest.json.
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import functools
 import hashlib
@@ -169,10 +171,7 @@ def sha256_file(path: Path) -> str:
 
 
 def revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def capture_state(browser, base_url, out_dir, rev, axe_failures, *, state, assertion, viewport_name, width, height,
                    seed, in_page_setup=None):

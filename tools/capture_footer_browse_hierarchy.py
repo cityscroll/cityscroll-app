@@ -15,6 +15,7 @@ import tempfile
 import threading
 
 from playwright.sync_api import sync_playwright
+from repository_revision import resolve_repository_revision
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -122,9 +123,7 @@ def main() -> None:
             browser.close()
     manifest = {
         "schema_version": 1,
-        "before_revision": subprocess.check_output(
-            ["git", "rev-parse", "--short=12", "HEAD"], cwd=ROOT, text=True
-        ).strip(),
+        "before_revision": resolve_repository_revision(ROOT)[:12],
         "javascript": "disabled (no-JS document parity)",
         "viewports": [list(viewport) for viewport in VIEWPORTS],
         "captures": records,

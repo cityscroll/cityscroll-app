@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_pursuit_decision_alerts_manifest.v1",
   "captured_at": "2026-09-04T19:43:03Z",
-  "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "note": "Card 1 (opportunity-first procurement alert atom) evidence. Rendered by calling the production subDigestHtml()/rollupDigestHtml() (worker/src/alerts.mjs) and buildProcurementAlertAtom()/procurementAlertSubject() (site/procurement_alert_atom.mjs) directly. Per this repository's binding evidence rule for this card, full HTML previews are committed in-repo (no screenshot binaries); each entry's sha256 is over the committed HTML file's content.",
   "captures": [
     {
@@ -9,7 +9,7 @@
       "surface": "email-preview",
       "route": "/_capture/alerts/alert-fixture-c-single-watch",
       "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
-      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "C"
       ],
@@ -25,7 +25,7 @@
       "surface": "email-preview",
       "route": "/_capture/alerts/alert-fixture-d-single-watch",
       "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
-      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "D"
       ],
@@ -41,7 +41,7 @@
       "surface": "email-preview",
       "route": "/_capture/alerts/alert-fixture-e-single-watch",
       "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
-      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "E"
       ],
@@ -57,7 +57,7 @@
       "surface": "email-preview",
       "route": "/_capture/alerts/alert-multi-watch-rollup",
       "viewport_intent": "responsive email HTML; reviewable at narrow mobile and desktop widths",
-      "revision": "bdb8a4d05061f0300b28ef062c3d88ee142a13d8",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "C"
       ],

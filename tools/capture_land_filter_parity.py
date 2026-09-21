@@ -19,6 +19,8 @@ capture cannot claim a state the page was not in.
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import functools
 import json
 import subprocess
@@ -239,10 +241,10 @@ def capture_tree(site: Path, phase: str) -> dict:
 
 
 def revision() -> dict:
-    head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True)
+    head = resolve_repository_revision(ROOT)
     status = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True, check=True)
     return {
-        "before_commit": head.stdout.strip(),
+        "before_commit": head,
         "after_tree": "working tree at the commit above plus this card's changes",
         "after_changed_paths": sorted(line[3:] for line in status.stdout.splitlines() if line[3:]),
     }

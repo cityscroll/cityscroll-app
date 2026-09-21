@@ -2,7 +2,7 @@
   "schema_version": 1,
   "card": "cityscroll-engineering/legislative-consequence-on-exact-joins",
   "capture_mode": "local_node_playwright_axe_static_render",
-  "repository_revision": "73cbf7a7150d38782466218b39294397c459794b",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "note": "renderMeetingDocument() rendered locally via node (no live Worker/D1 backend) for five synthetic City Record records, one per state named in the card, then served from site/ (real /brand.css, /civic-documents.css, /report_issue.mjs) via tools/local_site_server.py. axe-core (test/functional/assets/axe.min.js) ran against the rendered <main id=\"main\"> for each case at both review widths, using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py). Evidence proves the sourced consequence block's placement, content, and omission states (A1-A6) render as specified and introduce no new axe violation; it does not evidence a live-data-populated page, since no Worker/D1 backend was running.",
   "data_vintage": "not_applicable_synthetic_fixture_records",
   "viewports": [

@@ -10,7 +10,7 @@
     "closure_patterns_sha256": "14c56c50a0e14897a0f740ad6c4974c103bd8b33e46434f3212297acb28b0598",
     "synthetic_root": false
   },
-  "revision": "f680f672e0b395a25fcda6d3db01d569ffdf9445",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "corpus": {
     "gate_class": "functional-site",
     "builder": "tools/build_primary_documents.mjs",

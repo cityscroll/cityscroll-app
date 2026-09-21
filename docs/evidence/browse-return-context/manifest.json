@@ -3,7 +3,7 @@
   "record": "cityscroll-engineering/browse-return-context",
   "route": "component-harness:browse-return-context",
   "harness": "test/harness/browse_return_harness.html",
-  "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": "2026-03-15",
   "timezone": "America/New_York",
   "captured_at": "2026-09-06T04:39:52Z",
@@ -20,7 +20,7 @@
         390,
         844
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a reader sets Calendar view, inspects an event, closes it, opens its full page, returns with Back to the same event, and continues to the next item",
@@ -52,7 +52,7 @@
         1440,
         900
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a reader sets Calendar view, inspects an event, closes it, opens its full page, returns with Back to the same event, and continues to the next item",
@@ -84,7 +84,7 @@
         390,
         844
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a fresh direct visit to the calendar does not steal focus onto an event",
@@ -110,7 +110,7 @@
         1440,
         900
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a fresh direct visit to the calendar does not steal focus onto an event",
@@ -136,7 +136,7 @@
         390,
         844
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px Browser Back and Forward both keep the originating event as the focus target rather than dropping it on the document body",
@@ -163,7 +163,7 @@
         1440,
         900
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px Browser Back and Forward both keep the originating event as the focus target rather than dropping it on the document body",
@@ -190,7 +190,7 @@
         390,
         844
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px the round trip works from the keyboard: inspect, Escape, open the full page, Back, and focus is not left on the document body",
@@ -217,7 +217,7 @@
         1440,
         900
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px the round trip works from the keyboard: inspect, Escape, open the full page, Back, and focus is not left on the document body",
@@ -244,7 +244,7 @@
         390,
         844
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px a modified click is left to the browser, and with scripting off the canonical link still reaches the event page",
@@ -273,7 +273,7 @@
         1440,
         900
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px a modified click is left to the browser, and with scripting off the canonical link still reaches the event page",
@@ -302,7 +302,7 @@
         390,
         844
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px Search and Following keep their existing preview and scope machinery: Contracts stays the Search scope, Following pins the originating record, and neither surface is wrapped in a calendar preview",
@@ -332,7 +332,7 @@
         1440,
         900
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px Search and Following keep their existing preview and scope machinery: Contracts stays the Search scope, Following pins the originating record, and neither surface is wrapped in a calendar preview",
@@ -362,7 +362,7 @@
         390,
         844
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at the 195px CSS viewport a 200 percent zoom of a 390px window produces, the calendar and the opened preview both read without any horizontal page scrolling",
@@ -390,7 +390,7 @@
         1440,
         900
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at the 720px CSS viewport a 200 percent zoom of a 1440px window produces, the calendar and the opened preview both read without any horizontal page scrolling",
@@ -418,7 +418,7 @@
         390,
         844
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 390px every control this contract adds or uses is at least 44px, so none of them is a target a finger cannot land on",
@@ -449,7 +449,7 @@
         1440,
         900
       ],
-      "revision": "cf722e37edd4bebcb9520ff5c06159b260ca49ee",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-03-15",
       "timezone": "America/New_York",
       "assertion": "at 1440px every control this contract adds or uses is at least 24px, so none of them is a target a finger cannot land on",

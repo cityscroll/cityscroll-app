@@ -127,6 +127,10 @@ function scaffold({ corpusPaths = ["site/data/one.json", "site/data/two.json"], 
   writeFileSync(join(dir, "tools/card-profile/closure.v1.json"), `${JSON.stringify(contract, null, 2)}\n`);
   git("add", "-A");
   git("commit", "-qm", "scaffold");
+  // The production helper resolves the shared revision from origin/main. Give
+  // this synthetic repository the same ref so readiness receipts exercise the
+  // real provenance path instead of receiving a null revision.
+  git("update-ref", "refs/remotes/origin/main", "HEAD");
 
   // Mark the paths this checkout does not hold exactly the way a sparse
   // checkout does, so the tool sees the real condition rather than a simulation.

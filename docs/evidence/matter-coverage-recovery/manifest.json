@@ -2,7 +2,7 @@
   "schema": "cityscroll.matter_coverage_recovery_evidence.v1",
   "engineering_record": "cityscroll-engineering/matter-coverage-recovery",
   "renderer": "tools/render_matter_coverage_recovery_fixtures.mjs",
-  "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": "2026-09-04T13:09:00.447Z",
   "captured_at": "2026-09-06T22:17:07Z",
   "image_directory": ".artifacts/matter-coverage-recovery",
@@ -150,7 +150,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the healthy receipt stays usable and omits subscriber addresses",
@@ -185,7 +185,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the healthy receipt stays usable and omits subscriber addresses",
@@ -220,7 +220,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the stale refresh receipt stays usable and omits subscriber addresses",
@@ -255,7 +255,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the stale refresh receipt stays usable and omits subscriber addresses",
@@ -290,7 +290,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the publication lag receipt stays usable and omits subscriber addresses",
@@ -325,7 +325,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the publication lag receipt stays usable and omits subscriber addresses",
@@ -360,7 +360,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the delivery lag receipt stays usable and omits subscriber addresses",
@@ -395,7 +395,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the delivery lag receipt stays usable and omits subscriber addresses",
@@ -430,7 +430,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px the recovered receipt stays usable and omits subscriber addresses",
@@ -465,7 +465,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px the recovered receipt stays usable and omits subscriber addresses",
@@ -500,7 +500,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "disabled",
       "assertion": "at 390px the coverage receipt remains readable with scripting disabled",
@@ -527,7 +527,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "disabled",
       "assertion": "at 1440px the coverage receipt remains readable with scripting disabled",
@@ -554,7 +554,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px keyboard activation opens recovery details and return remains a native focus target",
@@ -587,7 +587,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px keyboard activation opens recovery details and return remains a native focus target",
@@ -620,7 +620,7 @@
         390,
         844
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 390px zoomed to 200% the coverage receipt reflows without horizontal overflow",
@@ -654,7 +654,7 @@
         1440,
         900
       ],
-      "revision": "e4eef518a2c77b499a08801704d6f336cd184e99",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-04T13:09:00.447Z",
       "scripting": "enabled",
       "assertion": "at 1440px zoomed to 200% the coverage receipt reflows without horizontal overflow",

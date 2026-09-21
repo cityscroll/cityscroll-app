@@ -16,6 +16,8 @@ the sha256 of the rendered scope. No image is written and none is committed.
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import hashlib
 import json
@@ -95,9 +97,7 @@ def sha256_text(value: str) -> str:
 
 
 def repository_revision() -> str:
-    return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, check=True,
-                          capture_output=True, text=True).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def source_blob() -> dict:
     paths = ["site/analytics.js", "site/analytics_surface_taxonomy.mjs"]

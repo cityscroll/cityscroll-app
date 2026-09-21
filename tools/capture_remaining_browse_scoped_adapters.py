@@ -15,6 +15,7 @@ import importlib.util
 import json
 import subprocess
 from pathlib import Path
+from repository_revision import resolve_repository_revision
 from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import Route, sync_playwright
@@ -47,10 +48,7 @@ SCOPE_LENSES = {
 
 
 def revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, check=True,
-        capture_output=True, text=True,
-    ).stdout.strip()
+    return resolve_repository_revision(ROOT)
 
 
 def search_document(case: tuple[str, str, str, str, str]) -> dict[str, object]:

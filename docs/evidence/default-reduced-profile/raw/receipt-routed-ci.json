@@ -8,7 +8,7 @@
     "manifest_version": 1,
     "manifest_digest": "971306899e0794a89e895f0c8c66e9478ca2f3c154ce459477d453531112466a",
     "provision_identity": "8fd906227c696e64298284e571d6a441145c74f5ffd4ab26a067574f90d2dc9c",
-    "revision": "0763af1a08a4949a7d8ebbf90b194603b08e3a27",
+    "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
     "identity_inputs": [
       {
         "id": "routing-manifest",

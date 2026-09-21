@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_project_context_capture_manifest.v1",
   "captured_at": "2026-09-06T01:53:14Z",
-  "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "note": "Wider-project context on procurement detail. Screenshot binaries are not committed to this repository; they are written to an external directory (default a docs-evidence/ sibling of the repository root, override with CAPTURE_EXTERNAL_OUT) named by 'external_filename' below, and this manifest is the reproducible, reviewable record of what each capture shows and why.",
   "external_output_directory_note": "Not committed; see external_filename per capture. Re-run this script to regenerate byte-identical captures (same sha256) at this revision.",
   "minimum_target_size_px": 24,
@@ -15,7 +15,7 @@
         "height": 844,
         "note": "narrow phone"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched construction solicitation whose notice names one published project code.",
       "assertion": "The section states the wider project's published scope, sponsor, phase, project budget, recorded project spending and project forecast completion beside the existing pursuit facts, attributes them to the whole project rather than the advertised package, and keeps the official City Record notice reachable.",
       "renders_project_context": true,
@@ -56,7 +56,7 @@
         "height": 900,
         "note": "desktop"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched construction solicitation whose notice names one published project code.",
       "assertion": "The section states the wider project's published scope, sponsor, phase, project budget, recorded project spending and project forecast completion beside the existing pursuit facts, attributes them to the whole project rather than the advertised package, and keeps the official City Record notice reachable.",
       "renders_project_context": true,
@@ -97,7 +97,7 @@
         "height": 450,
         "note": "desktop at 200% zoom"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched construction solicitation whose notice names one published project code.",
       "assertion": "The section states the wider project's published scope, sponsor, phase, project budget, recorded project spending and project forecast completion beside the existing pursuit facts, attributes them to the whole project rather than the advertised package, and keeps the official City Record notice reachable.",
       "renders_project_context": true,
@@ -138,7 +138,7 @@
         "height": 844,
         "note": "narrow phone"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A bundled solicitation naming two components, only one of which the city publishes as a project code.",
       "assertion": "Only the resolved component's project renders; the unjoined component is named as not covered, and no schedule number is shown for a project that publishes none.",
       "renders_project_context": true,
@@ -179,7 +179,7 @@
         "height": 900,
         "note": "desktop"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A bundled solicitation naming two components, only one of which the city publishes as a project code.",
       "assertion": "Only the resolved component's project renders; the unjoined component is named as not covered, and no schedule number is shown for a project that publishes none.",
       "renders_project_context": true,
@@ -220,7 +220,7 @@
         "height": 450,
         "note": "desktop at 200% zoom"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A bundled solicitation naming two components, only one of which the city publishes as a project code.",
       "assertion": "Only the resolved component's project renders; the unjoined component is named as not covered, and no schedule number is shown for a project that publishes none.",
       "renders_project_context": true,
@@ -261,7 +261,7 @@
         "height": 844,
         "note": "narrow phone"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched project whose published description column is the publisher's blank marker.",
       "assertion": "No scope paragraph and no empty row render; the published facts that do exist are unaffected, and the blank marker never reaches a reader.",
       "renders_project_context": true,
@@ -302,7 +302,7 @@
         "height": 900,
         "note": "desktop"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched project whose published description column is the publisher's blank marker.",
       "assertion": "No scope paragraph and no empty row render; the published facts that do exist are unaffected, and the blank marker never reaches a reader.",
       "renders_project_context": true,
@@ -343,7 +343,7 @@
         "height": 450,
         "note": "desktop at 200% zoom"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched project whose published description column is the publisher's blank marker.",
       "assertion": "No scope paragraph and no empty row render; the published facts that do exist are unaffected, and the blank marker never reaches a reader.",
       "renders_project_context": true,
@@ -384,7 +384,7 @@
         "height": 844,
         "note": "narrow phone"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched notice whose structured identifier is a qualification-list route.",
       "assertion": "The section says the published date belongs to a qualified vendor list rather than a construction bid deadline.",
       "renders_project_context": true,
@@ -425,7 +425,7 @@
         "height": 900,
         "note": "desktop"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched notice whose structured identifier is a qualification-list route.",
       "assertion": "The section says the published date belongs to a qualified vendor list rather than a construction bid deadline.",
       "renders_project_context": true,
@@ -466,7 +466,7 @@
         "height": 450,
         "note": "desktop at 200% zoom"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. A matched notice whose structured identifier is a qualification-list route.",
       "assertion": "The section says the published date belongs to a qualified vendor list rather than a construction bid deadline.",
       "renders_project_context": true,
@@ -507,7 +507,7 @@
         "height": 844,
         "note": "narrow phone"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The matched project context on a page whose opportunity month carries enough dated milestones to paint a calendar (the extra milestone dates are constructed by the fixture, not published).",
       "assertion": "The in-place inspection control sits beside the canonical anchor rather than replacing it, and the section is reachable without leaving the page.",
       "renders_project_context": true,
@@ -546,7 +546,7 @@
         "height": 900,
         "note": "desktop"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The matched project context on a page whose opportunity month carries enough dated milestones to paint a calendar (the extra milestone dates are constructed by the fixture, not published).",
       "assertion": "The in-place inspection control sits beside the canonical anchor rather than replacing it, and the section is reachable without leaving the page.",
       "renders_project_context": true,
@@ -585,7 +585,7 @@
         "height": 450,
         "note": "desktop at 200% zoom"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The matched project context on a page whose opportunity month carries enough dated milestones to paint a calendar (the extra milestone dates are constructed by the fixture, not published).",
       "assertion": "The in-place inspection control sits beside the canonical anchor rather than replacing it, and the section is reachable without leaving the page.",
       "renders_project_context": true,
@@ -624,7 +624,7 @@
         "height": 844,
         "note": "narrow phone"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The same solicitation rendered with no materialization supplied.",
       "assertion": "No section, no heading and no empty panel render; the page keeps its existing sections and its official record link.",
       "renders_project_context": false,
@@ -656,7 +656,7 @@
         "height": 900,
         "note": "desktop"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The same solicitation rendered with no materialization supplied.",
       "assertion": "No section, no heading and no empty panel render; the page keeps its existing sections and its official record link.",
       "renders_project_context": false,
@@ -688,7 +688,7 @@
         "height": 450,
         "note": "desktop at 200% zoom"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "Committed project-context materialization: 347 published procurement notices through 2026-09-04, joined to the 202605 capital project reporting period. The same solicitation rendered with no materialization supplied.",
       "assertion": "No section, no heading and no empty panel render; the page keeps its existing sections and its official record link.",
       "renders_project_context": false,
@@ -721,7 +721,7 @@
         "height": 844,
         "note": "narrow phone"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "result": {
         "scrolled_to": 4215,
         "inspection_opened_in_place": true,
@@ -743,7 +743,7 @@
         "height": 844,
         "note": "narrow phone"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "result": {
         "inspection_stays_open": true,
         "recovery_stated": true,
@@ -760,7 +760,7 @@
         "height": 900,
         "note": "desktop"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "result": {
         "scrolled_to": 3162,
         "inspection_opened_in_place": true,
@@ -782,7 +782,7 @@
         "height": 900,
         "note": "desktop"
       },
-      "revision": "e942968a7b2b4bf451f78e2f9a4e2d5e48689011",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "result": {
         "inspection_stays_open": true,
         "recovery_stated": true,

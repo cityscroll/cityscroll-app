@@ -41,7 +41,7 @@ done
 
 [[ -n "$SCRATCH" ]] || { echo "--scratch is required" >&2; exit 2; }
 [[ -n "$OUT" ]] || { echo "--out is required" >&2; exit 2; }
-REV="${REV:-$(git -C "$ROOT" rev-parse HEAD)}"
+REV="${REV:-$(python3 "$ROOT/tools/repository_revision.py" --cwd "$ROOT")}"
 SOURCE="${SOURCE:-$(git -C "$ROOT" remote get-url origin)}"
 
 mkdir -p "$SCRATCH" "$OUT"

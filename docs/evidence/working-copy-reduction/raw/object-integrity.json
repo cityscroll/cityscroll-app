@@ -36,6 +36,6 @@
     }
   ],
   "note": "git fsck --connectivity-only is the integrity check that is meaningful in a partial clone: it verifies the object graph without demanding blobs the profile deliberately did not fetch. The promisor remote is the durable origin, so a deferred blob is served on demand rather than lost.",
-  "revision": "be4f842ea237001e49e605a63233828a26753beb",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "schema": "cityscroll.card-profile-integrity.v1"
 }

@@ -17,6 +17,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from playwright.sync_api import Page, sync_playwright
+from repository_revision import resolve_repository_revision
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs" / "evidence" / "emmons-shelter-monitor-pack" / "capture-manifest.json"
@@ -192,7 +193,7 @@ def failed_detail_load(page: Page, base: str) -> dict:
 
 def main() -> None:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    rev = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    rev = resolve_repository_revision(ROOT)
     with StaticServer(render_pack()) as base, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page()

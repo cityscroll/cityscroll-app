@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "capture_mode": "local_candidate_with_snapshotted_public_reads",
-  "repository_revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "candidate_module_sha256": {
     "site/route_migration.mjs": "2ed4ef70b008444a18b52c3d7308ffb84284cb7a87a7e7e379040b329199f5e8",
     "site/app/entities.mjs": "7f09b923eba6c18667c96a0fd452355b4a38c4205d6b35bb0aae3c70c46dcc1d",
@@ -46,7 +46,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-08T14:02:41.886519+00:00",
       "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
       "assertion_holds": true,
@@ -61,7 +61,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-08T14:02:41.886519+00:00",
       "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
       "assertion_holds": true,
@@ -76,7 +76,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-08T14:02:41.886519+00:00",
       "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
       "assertion_holds": true,
@@ -91,7 +91,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "066ceaf024c39b9c681f1cd234ef371ced50e31b",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-08T14:02:41.886519+00:00",
       "assertion": "A fresh session restores the two-hop trail created by clicking agency, vendor and award connections.",
       "assertion_holds": true,

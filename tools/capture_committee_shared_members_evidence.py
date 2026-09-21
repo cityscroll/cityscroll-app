@@ -35,6 +35,7 @@ from __future__ import annotations
 import hashlib
 import json
 import subprocess
+from repository_revision import resolve_repository_revision
 import sys
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -107,12 +108,7 @@ def base_revision() -> str:
     from `source_blob` below, which content-addresses every file the captures
     depend on.
     """
-    for ref in ("origin/main", "main"):
-        result = subprocess.run(["git", "merge-base", "HEAD", ref], cwd=ROOT,
-                                capture_output=True, text=True)
-        if result.returncode == 0 and result.stdout.strip():
-            return result.stdout.strip()
-    return git("rev-parse", "HEAD")
+    return resolve_repository_revision(ROOT)
 
 
 def source_blobs() -> dict:

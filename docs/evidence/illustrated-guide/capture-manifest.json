@@ -3,7 +3,7 @@
   "record": "cityscroll-engineering/illustrated-guide",
   "capture_mode": "local_static_site_playwright_manifest_proof",
   "base": "local static preview of tracked guide documents",
-  "repository_revision": "286f76d1b6c1f4dc5e3f1b9be88bc3cb5536a271",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "repository_state": "uncommitted changes present at capture time",
   "note": "Illustrated procedures, static fallback, keyboard navigation and responsive layout.",
   "data_vintage": "Guide prose is built from tracked sources; review dates are recorded editorial facts. Illustrated public records retain their capture date, source route, revision and data provenance in the matching site/media/guide article receipt. The search document is served from the local build and its results are not asserted by this release check.",

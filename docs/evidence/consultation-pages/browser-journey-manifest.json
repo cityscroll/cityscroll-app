@@ -3,7 +3,7 @@
   "surface": "consultation browser journey",
   "condition": "Served site exercised with Playwright; no image binary is committed.",
   "image_binaries_committed": false,
-  "revision": "6314268e1",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": "materialized consultation fixtures retained by the repository",
   "captures": [
     {"case": "consultations-desktop-journey", "route": "/consultations/", "viewport": {"name": "desktop", "width": 1200, "height": 900}, "assertion": "Healthy served collection supports scope selection, inspection, dismissal, detail navigation, and Back.", "render_sha256": "9a0899126e556b1cff44f3c2e4630865654b1674da6c2dac49c76d3c6dd6ac17"},

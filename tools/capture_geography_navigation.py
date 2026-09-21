@@ -59,11 +59,7 @@ def serve(directory: Path) -> tuple[ThreadingHTTPServer, str]:
 
 
 def local_revision() -> str:
-    return subprocess.check_output(
-        ["git", "rev-parse", "HEAD"],
-        cwd=ROOT,
-        text=True,
-    ).strip()
+    return resolve_repository_revision(ROOT)
 
 
 def sha256_text(value: str) -> str:

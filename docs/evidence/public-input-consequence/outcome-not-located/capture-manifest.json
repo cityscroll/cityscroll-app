@@ -2,7 +2,7 @@
   "schema_version": 1,
   "card": "cityscroll-engineering/outcome-not-located-is-honest",
   "capture_mode": "local_node_playwright_axe_static_render",
-  "repository_revision": "772ad0bd4dca270c2d7f17f7f831ea609876a1d0",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "note": "Each case renders site/outcome_not_located_state.mjs's renderOutcomeState() directly via node, with no live Worker/D1 backend. The matched-decision and recorded-no-action cases use a synthetic lookup whose single row passes the receipt-backed exact source join; the not-located cases use the committed site/data/non_council_outcome_lookup.json, which matches no notices at all, and one case uses no lookup to evidence the fetch-failure path. tools/capture_phc07_outcome_not_located_state.py checks that site/app/meetings.mjs still mounts this projection before capture, so a later rewiring fails this capture rather than silently evidencing a component the product no longer shows. Fragments are served from site/ (real /index.html CSS rules) via tools/local_site_server.py. axe-core (test/functional/assets/axe.min.js) ran against each rendered fragment at both review widths, using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py). The capture fails unless all seven cases hash distinctly at each width, which is the evidence for A1. It does not evidence a live-data-populated page, since no Worker/D1 backend was running.",
   "data_vintage": "committed_non_council_outcome_lookup_generated_at_2026-08-11 (0 of 10 notices matched); synthetic joined rows for the two matched states",
   "viewports": [

@@ -33,7 +33,7 @@
     },
     {
       "id": "after",
-      "repository_revision": "working tree on card/c94dd02dd79a1",
+      "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": {
         "oldest": "2026-05-26T00:00:00.000Z",
         "newest": "2026-09-05T00:00:00.000Z"
@@ -65,7 +65,7 @@
     },
     {
       "id": "after-rtl",
-      "repository_revision": "working tree on card/c94dd02dd79a1",
+      "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "language": "ar",
       "assertion": "The same section renders right-to-left with translated column headings, record types, counting rules and states; official source titles remain in their published form and are isolated with lang=\"en\".",
       "observed": {

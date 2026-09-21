@@ -25,6 +25,8 @@ Three families of capture:
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import hashlib
 import json
@@ -174,9 +176,7 @@ def sha256_file(path: Path) -> str:
 
 
 def repository_revision() -> str:
-    return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, check=True,
-                          capture_output=True, text=True).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def source_blob() -> dict:
     out = subprocess.run(["git", "hash-object", "site/stats.html"], cwd=ROOT, check=True,

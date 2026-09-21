@@ -6,6 +6,8 @@ This is a manual release observation, independent of rolling-data release gates.
 """
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import hashlib
 import json
@@ -21,7 +23,7 @@ from capture_guide_product_access import serve
 from capture_guide_illustrations import following_html
 
 ROOT = Path(__file__).resolve().parents[1]
-REVISION = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+REVISION = resolve_repository_revision(ROOT)
 OUT = ROOT / '.artifacts/guide-journeys'
 MANIFEST = ROOT / 'docs/evidence/public-user-guide/literal-journeys/capture-manifest.json'
 ARTICLES = {
@@ -455,7 +457,7 @@ def main():
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     server, thread, base = serve(ROOT / '.artifacts/guide-preview')
-    manifest = {'schema_version': 1, 'record': 'ccf422a8ff4de', 'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+    manifest = {'schema_version': 1, 'record': 'ccf422a8ff4de', 'revision': resolve_repository_revision(ROOT),
                 'captured_at': datetime.now(timezone.utc).isoformat(), 'journeys': []}
     changed = subprocess.check_output(['git', 'diff', '--name-only'], cwd=ROOT, text=True).splitlines()
     manifest['candidate_source_sha256'] = {name: digest((ROOT / name).read_bytes()) for name in changed if name.startswith(('site/', 'tools/', 'test/')) and (ROOT / name).is_file()}

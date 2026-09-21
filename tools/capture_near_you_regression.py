@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import hashlib
 import json
 import os
@@ -15,7 +17,7 @@ from playwright.sync_api import sync_playwright
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000").rstrip("/")
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "screenshots" / "near-you-regression"
-REVISION = os.popen("git rev-parse HEAD").read().strip()
+REVISION = resolve_repository_revision(ROOT)
 
 
 def capture(page, route: str, width: int, phase: str) -> dict:

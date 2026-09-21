@@ -7,6 +7,8 @@ only to exercise the reader's recovery path.
 """
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import hashlib
 import json
 import os
@@ -25,11 +27,7 @@ ROUTE = "/near-you/?v=0&lens=meetings&boro=Queens&agency=Transportation&q=curb"
 
 
 def revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"],
-        cwd=ROOT, capture_output=True, text=True, check=True,
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def dom_hash(page) -> str:
     markup = page.locator("[data-near-you-root]").evaluate("node => node.outerHTML")

@@ -7,7 +7,7 @@
     "/agencies/economic-development-corporation/",
     "/community-boards/manhattan-cb-06/"
   ],
-  "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": "2026-09-05",
   "captured_at": "2026-09-06T03:43:46Z",
   "image_directory": ".artifacts/public-body-directory",
@@ -23,7 +23,7 @@
         844
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px a reader searching \u201cCPC\u201d in the public-body directory reaches City Planning Commission, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
       "observations": {
@@ -57,7 +57,7 @@
         900
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px a reader searching \u201cCPC\u201d in the public-body directory reaches City Planning Commission, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
       "observations": {
@@ -91,7 +91,7 @@
         844
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px a reader searching \u201cNYCEDC\u201d in the public-body directory reaches Economic Development Corporation, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
       "observations": {
@@ -125,7 +125,7 @@
         900
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px a reader searching \u201cNYCEDC\u201d in the public-body directory reaches Economic Development Corporation, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
       "observations": {
@@ -159,7 +159,7 @@
         844
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px a reader searching \u201cManhattan Community Board 6\u201d in the public-body directory reaches Manhattan Community Board 6, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
       "observations": {
@@ -193,7 +193,7 @@
         900
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px a reader searching \u201cManhattan Community Board 6\u201d in the public-body directory reaches Manhattan Community Board 6, opens its canonical destination, and browser Back returns them to the same query, rows, scroll position and focused row",
       "observations": {
@@ -227,7 +227,7 @@
         844
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px choosing a browse group narrows the directory, states the filtered count, and reaches a body placed in two groups exactly once in each",
       "observations": {
@@ -258,7 +258,7 @@
         900
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px choosing a browse group narrows the directory, states the filtered count, and reaches a body placed in two groups exactly once in each",
       "observations": {
@@ -289,7 +289,7 @@
         844
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px the whole search-to-profile-to-Back journey works from the keyboard alone, with visible focus, and Back returns the reader to the row they opened",
       "observations": {
@@ -319,7 +319,7 @@
         900
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px the whole search-to-profile-to-Back journey works from the keyboard alone, with visible focus, and Back returns the reader to the row they opened",
       "observations": {
@@ -349,7 +349,7 @@
         844
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px every destination and every browse group is an ordinary href, and a modified click opens a separate context while leaving the directory as it was",
       "observations": {
@@ -379,7 +379,7 @@
         900
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px every destination and every browse group is an ordinary href, and a modified click opens a separate context while leaving the directory as it was",
       "observations": {
@@ -409,7 +409,7 @@
         844
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px a search that matches nothing keeps the query, says so against the total rather than rendering as a loaded empty directory, and offers a control that restores it",
       "observations": {
@@ -440,7 +440,7 @@
         900
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px a search that matches nothing keeps the query, says so against the total rather than rendering as a loaded empty directory, and offers a control that restores it",
       "observations": {
@@ -471,7 +471,7 @@
         844
       ],
       "scripting": false,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px, with scripting unavailable, the directory renders every institution as a real anchor and offers the whole list rather than a filtered view a reader could not change, while a shared link keeps its query in the URL and its group anchor lands on that group's own section",
       "observations": {
@@ -505,7 +505,7 @@
         900
       ],
       "scripting": false,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px, with scripting unavailable, the directory renders every institution as a real anchor and offers the whole list rather than a filtered view a reader could not change, while a shared link keeps its query in the URL and its group anchor lands on that group's own section",
       "observations": {
@@ -539,7 +539,7 @@
         844
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 390px and 200 percent zoom the directory stays readable and searchable, with no horizontal overflow and no undersized target",
       "observations": {
@@ -566,7 +566,7 @@
         900
       ],
       "scripting": true,
-      "revision": "cecfe2a6351dafe77f9b44b072bb23b6dd1ab2c9",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "data_vintage": "2026-09-05",
       "assertion": "at 1440px and 200 percent zoom the directory stays readable and searchable, with no horizontal overflow and no undersized target",
       "observations": {

@@ -13,6 +13,8 @@ No publisher endpoint is contacted by this harness.
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import json
 import subprocess
@@ -53,11 +55,7 @@ MIXED_DOMAIN_SHAPES = (
 
 
 def revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, check=True,
-        capture_output=True, text=True,
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def canonical_document(index: int, object_type: str, domain: str, lens: str, href_root: str, title: str) -> dict[str, object]:
     ref = f"{lens}:preview-{index}"

@@ -41,6 +41,7 @@ import {
   loadClosure,
   materialisedByPatterns
 } from "./card_profile_closure.mjs";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = resolve(ROOT, "tools/card-profile/profiles.v1.json");
@@ -92,7 +93,7 @@ function resolveInput(input) {
   throw error;
 }
 
-export function computeIdentity(manifest = loadManifest(), revision = git(["rev-parse", "HEAD"]).trim()) {
+export function computeIdentity(manifest = loadManifest(), revision = resolveRepositoryRevision(ROOT)) {
   const inputs = manifest.identity.manifest_digest_inputs.map((input) =>
     (({ id, path, source, blob }) => ({ id, path, source, blob }))(resolveInput(input))
   );

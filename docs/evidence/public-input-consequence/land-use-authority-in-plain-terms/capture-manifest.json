@@ -2,7 +2,7 @@
   "schema_version": 1,
   "card": "cityscroll-engineering/land-use-authority-in-plain-terms",
   "capture_mode": "local_node_playwright_axe_static_render",
-  "repository_revision": "73cbf7a7150d38782466218b39294397c459794b",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "note": "The authority-panel cases render landAuthoritySummaryHTML() directly against committed land-project fixtures (site/data/*.json, test/fixtures/land_authority_summary/elurp_197e_corpus.v1.json) via node, with no live Worker/D1 backend. The hearing-row cases render the new landHearingRowRoleHTML() projection composed with a literal reproduction of site/app/land.mjs's landHearingRowHTML() markup (that function is not exported); tools/capture_phc06_land_hearing_authority_copy.py checks fixed substrings of the real source before capture so a later edit to the real row markup fails this capture rather than silently drifting from it. Fragments are served from site/ (real /index.html CSS rules) via tools/local_site_server.py. axe-core (test/functional/assets/axe.min.js) ran against each rendered fragment at both review widths, using the same failing-violation classification as test/functional/11_accessibility.py (a11y_gate.py). Evidence proves the new plain-role line/span renders for a resolved current_role and does not render for an unresolved one (A1-A6), and introduces no new axe violation; it does not evidence a live-data-populated page, since no Worker/D1 backend was running.",
   "data_vintage": "committed_fixture_snapshots_as_checked_in",
   "viewports": [

@@ -3,7 +3,7 @@
   "record": "cityscroll-engineering/guide-review-lane",
   "capture_mode": "local_static_site_playwright_no_committed_image",
   "base": "local static site build (site/)",
-  "repository_revision": "8bf1a28c9c863c68841a63190faf6a5d898517ed",
+  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "repository_state": "clean",
   "note": "No-regression evidence for the change that adds the guide review lane. The lane is a build-time projection with no public surface of its own, so this capture answers the question that matters for a reader: every published guide document still behaves as it did. Every check runs against the tracked static documents served locally, so it reproduces from a checkout with no network and no deploy. Screenshots stay under the ignored .artifacts/ path and only their sha256 is recorded, per docs/capture-manifest-guard.md.",
   "data_vintage": "Not applicable to the guide documents: they are prose built from tracked sources and contain no civic records. Their review dates are editorial facts recorded in the article sources, not observations of live data. The search document is served from the local build and its results are not asserted.",

@@ -15,6 +15,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 const ROOT = new URL("..", import.meta.url);
 const OUT = new URL("../docs/evidence/served-procurement-route/production-read.json", import.meta.url);
@@ -71,9 +72,7 @@ async function fetchJson(url) {
 }
 
 function groundedAt() {
-  const result = spawnSync("git", ["rev-parse", "HEAD"], { cwd: ROOT.pathname, encoding: "utf8" });
-  if (result.status !== 0) throw new Error(result.stderr || "git rev-parse failed");
-  return result.stdout.trim();
+  return resolveRepositoryRevision(ROOT.pathname);
 }
 
 async function capture() {

@@ -10,6 +10,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { resolveRepositoryRevision } from "./repository_revision.mjs";
 
 import {
   passportReceiptsFromMeta,
@@ -28,8 +29,11 @@ export const SCHEMA = "cityscroll.passport_ingest_meta_production_read.v1";
 export const TOOL = "tools/capture_priority_source_health_production_read.mjs";
 
 function gitRevision(root = ROOT) {
-  const result = spawnSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" });
-  return result.status === 0 ? result.stdout.trim() : null;
+  try {
+    return resolveRepositoryRevision(root);
+  } catch {
+    return null;
+  }
 }
 
 function readAdminKey(env = process.env) {

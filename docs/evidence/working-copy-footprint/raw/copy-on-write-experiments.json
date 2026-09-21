@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.working-copy-cow-experiment.v1",
-  "revision": "f095d4b8d844d1a969c70e4909dc0f65960f1a7d",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "filesystem_class": "APFS",
   "method": "Free-space delta on the measured volume, sampled with `df -k /` immediately before and after the operation with a `sync` on each side. Free-space delta is the only way to observe copy-on-write sharing on APFS, because st_blocks reports every clone at full size.",
   "caveat": "The host is a shared workstation, so free-space delta carries background noise. It is used only where the signal dwarfs that noise (two orders of magnitude), and never as the source for a headline byte total.",

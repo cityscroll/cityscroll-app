@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_pursuit_decision_gated_research_lanes_manifest.v1",
   "captured_at": "2026-09-05T16:39:51Z",
-  "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "note": "Card \"PPD-07\" (procurement-pursuit-decision): the two research lanes beside this workstream are held behind the shipped product cards and behind explicit pre-registration. This card ships gates and honest copy, not research results. The gate, the registry, the pre-registrations, and the access classification have no rendered page of their own; the one product-visible change is a disclosure spliced beneath the existing official-record handoff on procurement detail, and it renders only when a caller supplies the classification, like every other optional section on that page. This manifest therefore records textual evidence rather than a screenshot. No image binaries are produced or committed for this card.",
   "external_output_directory_note": "Not applicable -- no screenshot is produced for this card. Each capture’s evidence is the exact JSON text tools/render_procurement_research_lane_capture_fixtures.mjs prints for that case, reproduced verbatim in rendered-lines.md alongside this manifest and hashed as content_sha256 below. Re-run that script to regenerate byte-identical output (same content_sha256) at this revision.",
   "captures": [
@@ -9,7 +9,7 @@
       "case": "research-lane-gate-green",
       "surface": "procurement-research-lane-gate (registry + tool; no rendered page)",
       "route": null,
-      "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [],
       "data_vintage": "The committed research-lane registry site/procurement_research_lanes.json and the committed evidence of cards PPD-01 through PPD-06, at this revision.",
       "assertion": "evaluateResearchLaneGates() over the committed registry returns ok with no failures: every prerequisite card names an evidence shard or a capture manifest that is present on disk, and both runnable lanes carry a pre-registration whose content hash matches the file. Neither research lane can begin before that holds.",
@@ -21,7 +21,7 @@
       "case": "research-lane-gate-withdrawn-evidence",
       "surface": "procurement-research-lane-gate (registry + tool; no rendered page)",
       "route": null,
-      "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [],
       "data_vintage": "The same committed registry, copied in memory with one prerequisite card pointing at an evidence shard that is not present. Nothing on disk is modified.",
       "assertion": "The gate fails, and the failure names the card whose evidence is missing. Removing any prerequisite card’s independent proof stops both research lanes; the ordering claim is checked, not asserted.",
@@ -33,7 +33,7 @@
       "case": "access-classification-summary",
       "surface": "procurement-access-classification (committed research output; no rendered page)",
       "route": null,
-      "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [],
       "data_vintage": "Committed procurement records only: the browse projection and shared read model stamped 2026-08-18T04:05:51.552Z, the committed source-contract register, and the committed attachment metadata stamped 2026-08-09T01:41:39.752Z. No live retrieval, no scraping, and no credential automation of any kind.",
       "assertion": "Each of the 15 examined solicitation fields carries exactly one class (accessible, authenticated, unavailable, or unstable) and its own sample size, over a corpus of 13,791 procurement records spanning 101 agencies; the per-class counts sum to the field total.",
@@ -45,7 +45,7 @@
       "case": "handoff-copy-fixture-a",
       "surface": "procurement-detail handoff (site/procurement_handoff_copy.mjs, spliced beneath the official records on procurement detail)",
       "route": null,
-      "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],
@@ -59,7 +59,7 @@
       "case": "handoff-copy-no-observation-date",
       "surface": "procurement-detail handoff (site/procurement_handoff_copy.mjs, spliced beneath the official records on procurement detail)",
       "route": null,
-      "revision": "faece883d60825d329b0e8b47ec41f909230a9ac",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "fixture_ids": [
         "A"
       ],

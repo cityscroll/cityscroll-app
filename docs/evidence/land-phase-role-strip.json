@@ -2,7 +2,7 @@
   "schema": "cityscroll.land-phase-role-strip-receipt.v1",
   "card": "cityscroll-engineering/authority-panel-historical-semantics",
   "browser_mode": "headless chromium (Playwright)",
-  "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "specimens": [
     {
       "slug": "known",
@@ -44,7 +44,7 @@
         390,
         844
       ],
-      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "source_vintage": "test/fixtures/land_phase_spine/2024Q0419.json",
       "project_id": "2024Q0419",
       "phase_id": "cpc",
@@ -63,7 +63,7 @@
         1440,
         900
       ],
-      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "source_vintage": "test/fixtures/land_phase_spine/2024Q0419.json",
       "project_id": "2024Q0419",
       "phase_id": "cpc",
@@ -82,7 +82,7 @@
         390,
         844
       ],
-      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "source_vintage": "test/fixtures/land_phase_spine/2024Q0356.json",
       "project_id": "2024Q0356",
       "phase_id": "cpc",
@@ -101,7 +101,7 @@
         1440,
         900
       ],
-      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "source_vintage": "test/fixtures/land_phase_spine/2024Q0356.json",
       "project_id": "2024Q0356",
       "phase_id": "cpc",
@@ -120,7 +120,7 @@
         390,
         844
       ],
-      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "source_vintage": "test/fixtures/land_phase_spine/ulurp_control_2023X0100.json",
       "project_id": "2023X0100",
       "phase_id": "community_board",
@@ -139,7 +139,7 @@
         1440,
         900
       ],
-      "revision": "e19e6ac84058d3f2003f2af8757b0ede03df7fa5",
+      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
       "source_vintage": "test/fixtures/land_phase_spine/ulurp_control_2023X0100.json",
       "project_id": "2023X0100",
       "phase_id": "community_board",

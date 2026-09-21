@@ -22,6 +22,8 @@ Two hashes are recorded per capture because they answer different questions:
 
 from __future__ import annotations
 
+from repository_revision import resolve_repository_revision
+
 import argparse
 import hashlib
 import json
@@ -139,10 +141,7 @@ def sha256_file(path: Path) -> str:
 
 
 def repository_revision() -> str:
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, check=True, capture_output=True, text=True
-    ).stdout.strip()
-
+    return resolve_repository_revision(ROOT)
 
 def settle(page: Page) -> None:
     page.wait_for_timeout(SETTLE_MS)
