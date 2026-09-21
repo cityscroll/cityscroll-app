@@ -504,7 +504,7 @@ test("A7: canonical geography keys and place roles feed geography_items.by_key f
   assert.equal(geographyItems.definitions[ntaKey].boundary_vintage, SHEEPSHEAD.membership.nta2020.boundary_vintage);
 });
 
-test("A8: fixtures cover BHRAGS, vendor-HQ trap, multi-site, named service area, ambiguous address, vintage drift, and count-equals-list", () => {
+test("A7: real corpus fixtures cover BHRAGS, vendor-HQ trap, multi-site, named service area, ambiguous address, duplicate site, outside-NYC site, vintage drift, and count-equals-list", () => {
   const kinds = new Set(MATERIALIZED.rows.map((row) => {
     if (row.kind === "vendor_address_identity") return "vendor_hq";
     if ((row.resolution?.vintage_drift || []).length) return "vintage_drift";
@@ -524,6 +524,24 @@ test("A8: fixtures cover BHRAGS, vendor-HQ trap, multi-site, named service area,
   ]) {
     assert.ok(kinds.has(required), required);
   }
+
+  const duplicateSiteRows = MATERIALIZED.rows.filter((row) => (
+    row.kind === "contract_place"
+    && row.assertion?.contract_id === BHRAGS_CONTRACT_ID
+    && row.assertion?.place_role === CONTRACT_PLACE_ROLES.FACILITY_SITE
+    && row.resolution?.ok === true
+  ));
+  assert.equal(duplicateSiteRows.length, 2);
+  assert.deepEqual(
+    [...new Set(duplicateSiteRows.map((row) => row.assertion.input.address))],
+    [BHRAGS_ADDRESS],
+  );
+  const duplicateSiteProjection = projectContractPlacesIntoGeographyItems(duplicateSiteRows);
+  const bhragsKey = `geography:nta2020:${SHEEPSHEAD.membership.nta2020.id}`;
+  assert.deepEqual(
+    nearYouLocalContractIds(duplicateSiteProjection, bhragsKey),
+    [BHRAGS_CONTRACT_ID],
+  );
 
   const admitted = facilitySiteFromNoticePlaceFact(bhragsPlaceFact(), {
     contractId: BHRAGS_CONTRACT_ID,
@@ -617,4 +635,5 @@ test("A8: fixtures cover BHRAGS, vendor-HQ trap, multi-site, named service area,
   });
   assert.equal(outsideResolution.ok, false);
   assert.equal(outsideResolution.state, RESOLUTION_STATES.UNRESOLVED);
+  assert.equal(outsideResolution.reason, "outside_covered_land");
 });
