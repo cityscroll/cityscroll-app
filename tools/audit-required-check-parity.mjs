@@ -75,6 +75,7 @@ function isValidationCommand(command) {
   if (/^(?:if|then|else|fi|set|echo|sleep|gh|git)\b/.test(command)) return false;
   if (/^(?:python3|python)\s+-m\s+(?:pip|playwright)\b/.test(command)) return false;
   if (/^python3\s+tools\/local_site_server\.py\b/.test(command)) return false;
+  if (/^node tools\/check_temp_leaks\.mjs\b/.test(command)) return false;
   return /^(?:python3\s+test\/|node\s+(?:--test|tools\/)|npm\s+ci\b)/.test(command);
 }
 
@@ -109,12 +110,18 @@ function localCommands(source) {
   const commands = [];
   const lines = source.split("\n");
   for (let index = 0; index < lines.length; index += 1) {
-    const marker = lines[index].indexOf("run_and_fail ");
-    if (marker < 0) continue;
-    let command = lines[index].slice(marker + "run_and_fail ".length).trim();
+    const line = lines[index];
+    const marker = line.indexOf("run_and_fail ");
+    const testMarker = /(?:^|\s)run_node_test(?:\s|$)/.exec(line);
+    if (marker < 0 && !testMarker) continue;
+    const isNodeTest = marker < 0;
+    let command = isNodeTest
+      ? line.slice(testMarker.index + testMarker[0].lastIndexOf("run_node_test") + "run_node_test".length).trim()
+      : line.slice(marker + "run_and_fail ".length).trim();
     while (command.endsWith("\\") && index + 1 < lines.length) {
       command = `${command.slice(0, -1).trim()} ${lines[++index].trim()}`;
     }
+    if (isNodeTest) command = `node --test ${command}`.trim();
     command = normalize(command.replace(/[)]+$/, ""));
     if (isValidationCommand(command)) commands.push(command);
   }

@@ -571,6 +571,11 @@
   ],
   "not_rebuilt": [
     {
+      "builder": "tools/audit-required-check-parity.mjs",
+      "disposition": "validator",
+      "reason": "Compares the hosted and local required-check lists and writes no read model, so the refresh has no artifact to regenerate."
+    },
+    {
       "builder": "tools/build_ocp_warehouse_lookup.mjs",
       "disposition": "warehouse-backed",
       "reason": "Materialized from the retained analytical catalog, which a hosted runner does not have. The warehouse-held half of the refresh runs it; see the dataset table in this directory's README."

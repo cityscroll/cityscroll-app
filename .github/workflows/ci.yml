@@ -270,6 +270,9 @@ jobs:
         # drift apart, so a new family cannot be required here while the local
         # pre-push run silently skips it.
         run: python3 test/standards/preflight_unit_family_parity.py
+      - name: Local required-check parity
+        if: matrix.family == 'static-standards'
+        run: node tools/audit-required-check-parity.mjs --check
       - name: Browse inspection conformance
         if: matrix.family == 'static-standards'
         run: node --test test/browse_inspection_conformance.test.mjs

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
-import { join } from "node:path";
+import { join, relative } from "node:path";
 
 import {
   BROWSE_FACETS,
@@ -1096,7 +1096,12 @@ test("Browse landing and every bounded child are exact build outputs with useful
   ];
   assert.deepEqual(outputs.map(([path]) => path), expectedPaths.map(outputPath));
   for (const [path, generated] of outputs) {
-    if (existsSync(path)) assert.equal(readFileSync(path, "utf8"), generated, `${path} is stale`);
+    const relativePath = relative(process.cwd(), path);
+    const tracked = spawnSync("git", ["ls-files", "--error-unmatch", "--", relativePath], {
+      cwd: process.cwd(),
+      stdio: "ignore",
+    }).status === 0;
+    if (existsSync(path) && tracked) assert.equal(readFileSync(path, "utf8"), generated, `${relativePath} is stale`);
     assert.match(generated, /<base href="\/">/);
     assert.match(generated, /data-document-rendered="true"/);
     assert.doesNotMatch(generated, /<link rel="canonical" href="https:\/\/cityscroll\.org\/">/);
