@@ -87,24 +87,21 @@ function matchesFor(text, aliases) {
     .map((term) => ({ alias_group: group.id, term })));
 }
 
-function actionFor(role, row) {
+function actionFor(role) {
   if (FORMAL_ROLES.has(role)) return "formal_board_action";
   if (role === "committee_recommendation") return "committee_recommendation";
   if (role === "testimony") return "public_testimony";
   if (role === "chair_statement") return "chair_action";
   if (role === "member_statement") return "member_action";
-  // A retained vote/resolution/statement is the formal evidence boundary;
-  // wording alone, including a chair's wording, cannot upgrade a passage.
-  if (row.formal_evidence === true && row.board_action === true) return "formal_board_action";
   return "mention";
 }
 
 function formalStanceFor(role, row) {
   const stance = clean(row.formal_stance || row.stance || row.position, 40).toLowerCase();
   if (!FORMAL_STANCES.has(stance)) return null;
-  const retainedEvidence = FORMAL_STANCE_EVIDENCE_ROLES.has(role)
-    || (row.formal_evidence === true && row.board_action === true);
-  return retainedEvidence ? stance : null;
+  // The retained source role is the evidence boundary; row flags cannot
+  // certify a testimony or other non-qualifying record as formal evidence.
+  return FORMAL_STANCE_EVIDENCE_ROLES.has(role) ? stance : null;
 }
 
 function stanceEvidenceKindFor(role, row) {
@@ -174,7 +171,7 @@ function projectHit(row, topic, identity, matched) {
   const documentId = clean(row.document_id || row.id || row.source_record_id, 240);
   if (!meetingDate || !retrievalDate || !documentUrl || !documentId) return null;
   const boardName = identity.board_name;
-  const actionType = actionFor(role, row);
+  const actionType = actionFor(role);
   const route = href(row.route) || `/following/topics/${slug(topic.issue_id)}/board-documents/${slug(documentId)}/`;
   return Object.freeze({
     schema: COMMUNITY_BOARD_DOCUMENT_TOPIC_SLICE_SCHEMA,
