@@ -298,6 +298,7 @@
     "site/geography_navigation_state.mjs",
     "site/geography_relations.mjs",
     "site/government_observation_refresh.mjs",
+    "site/government_observe_runtime.mjs",
     "site/government_observe.mjs",
     "site/government_observer_calendar_feed.mjs",
     "site/graph_edge_provenance.mjs",

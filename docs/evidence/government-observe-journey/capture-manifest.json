@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.observe_discovery_journey_manifest.v1",
+  "surface": "/observe/ discovery and detail journey",
+  "condition": "Deterministic fixture renders and browser assertions; no image binary is committed.",
+  "image_binaries_committed": false,
+  "revision": "8ca490290abafebd247e1725f4b38a0cba9e6adf",
+  "data_vintage": "pinned materialized observer fixture dated 2026-09-15 and 2026-09-16",
+  "captures": [
+    {
+      "case": "observe-calendar-desktop",
+      "route": "/observe/?view=calendar&month=2026-09",
+      "viewport": { "name": "desktop", "width": 1280, "height": 844 },
+      "assertion": "The shared compact month shows complete titles, stable time ordering, exact crowded-day overflow, and separate program guides.",
+      "render_sha256": "706e9ebf3f09e4df34639cc8a8272e8795bb3c8a093a67e24ac3d7a65332f366"
+    },
+    {
+      "case": "observe-calendar-narrow-touch",
+      "route": "/observe/?view=calendar&month=2026-09",
+      "viewport": { "name": "narrow-touch", "width": 390, "height": 844 },
+      "assertion": "The narrow agenda keeps the same occurrences reachable by touch, with native inspect and full-record destinations.",
+      "render_sha256": "706e9ebf3f09e4df34639cc8a8272e8795bb3c8a093a67e24ac3d7a65332f366"
+    },
+    {
+      "case": "observe-keyboard-inspect",
+      "route": "/observe/?view=calendar&month=2026-09&body=pdc_calendar",
+      "viewport": { "name": "keyboard", "width": 1280, "height": 844 },
+      "assertion": "Keyboard interaction opens and dismisses native inspection, and a failed optional detail load leaves the canonical detail link usable.",
+      "render_sha256": "3e8c1c395c6fdffef9ba2ba26954788f89920f013677224314917f969d5fa839"
+    },
+    {
+      "case": "observe-no-javascript",
+      "route": "/observe/?view=calendar&month=2026-09",
+      "viewport": { "name": "no-javascript", "width": 1280, "height": 844 },
+      "assertion": "Without JavaScript, native disclosures and ordinary detail links remain available.",
+      "render_sha256": "706e9ebf3f09e4df34639cc8a8272e8795bb3c8a093a67e24ac3d7a65332f366"
+    },
+    {
+      "case": "observe-detail-back-state",
+      "route": "/meetings/meeting%3Apdc_calendar%3Apdc-1?return_to=%2Fobserve%2F%3Fview%3Dcalendar%26month%3D2026-09%26body%3Dpdc_calendar%26selection%3Dmeeting%253Apdc_calendar%253Apdc-1",
+      "viewport": { "name": "desktop", "width": 1280, "height": 844 },
+      "assertion": "Opening detail and returning preserves month, view, body filter, selection, scroll context, and originating focus, with a safe fallback when selection is gone.",
+      "render_sha256": "3e8c1c395c6fdffef9ba2ba26954788f89920f013677224314917f969d5fa839"
+    }
+  ]
+}

@@ -389,7 +389,7 @@ async function handleMeeting(request, env, meetingId) {
     }
   }
   if (record) {
-    const html = renderMeetingDocument(record, payload);
+    const html = renderMeetingDocument(record, payload, { currentHref: request.url });
     if (isMeetingDocumentHtml(html, decoded)) {
       const headers = new Headers({
         "Content-Type": "text/html; charset=utf-8",
