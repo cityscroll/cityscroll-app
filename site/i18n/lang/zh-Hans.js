@@ -2267,6 +2267,7 @@
     topic_search_heading: "你的城市正在发生什么？",
     topic_search_intro: "按主题、地点或机构搜索公共记录。结果按记录类型分组。",
     topic_search_placeholder: "试试主题、地点或机构",
+    search_include_historical: "包括历史咨询",
     browse_facet_label: "按类型浏览",
     topic_search_query_label: "搜索公共记录",
     topic_search_match_count_one: "1 条匹配",

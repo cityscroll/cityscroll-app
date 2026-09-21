@@ -2266,6 +2266,7 @@
     topic_search_heading: "Kisa k ap pase nan vil ou a?",
     topic_search_intro: "Chèche dosye piblik selon sijè, kote, oswa ajans. Rezilta yo rete gwoupe selon kalite dosye.",
     topic_search_placeholder: "Eseye yon sijè, yon kote oswa yon ajans",
+    search_include_historical: "Mete konsiltasyon istorik yo",
     browse_facet_label: "Navige selon kalite",
     topic_search_query_label: "Chèche dosye piblik",
     topic_search_match_count_one: "1 rezilta ki koresponn",

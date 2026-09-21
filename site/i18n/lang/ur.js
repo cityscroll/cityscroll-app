@@ -2270,6 +2270,7 @@
     topic_search_heading: "آپ کے شہر میں کیا ہو رہا ہے؟",
     topic_search_intro: "موضوع، جگہ یا ادارے کے لحاظ سے عوامی ریکارڈ تلاش کریں۔ نتائج ریکارڈ کی قسم کے لحاظ سے گروپ رہتے ہیں۔",
     topic_search_placeholder: "کوئی موضوع، جگہ یا ایجنسی آزمائیں",
+    search_include_historical: "تاریخی مشاورتیں شامل کریں",
     browse_facet_label: "قسم کے لحاظ سے براؤز کریں",
     topic_search_query_label: "عوامی ریکارڈ تلاش کریں",
     topic_search_match_count_one: "1 مماثلت",

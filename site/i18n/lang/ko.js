@@ -2267,6 +2267,7 @@
     topic_search_heading: "우리 도시에서 무슨 일이 일어나고 있나요?",
     topic_search_intro: "주제, 장소 또는 기관으로 공공 기록을 검색하세요. 결과는 기록 유형별로 묶입니다.",
     topic_search_placeholder: "주제, 장소 또는 기관을 입력하세요",
+    search_include_historical: "지난 상담 포함",
     browse_facet_label: "유형별 찾아보기",
     topic_search_query_label: "공공 기록 검색",
     topic_search_match_count_one: "일치 항목 1개",

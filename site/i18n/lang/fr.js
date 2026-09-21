@@ -2296,6 +2296,7 @@
     topic_search_heading: "Que se passe-t-il dans votre ville ?",
     topic_search_intro: "Recherchez des dossiers publics par sujet, lieu ou agence. Les résultats restent regroupés par type de dossier.",
     topic_search_placeholder: "Essayez un sujet, un lieu ou une agence",
+    search_include_historical: "Inclure les consultations historiques",
     browse_facet_label: "Parcourir par type",
     topic_search_query_label: "Rechercher des dossiers publics",
     topic_search_match_count_one: "1 correspondance",

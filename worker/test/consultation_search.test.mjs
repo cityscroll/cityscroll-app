@@ -20,9 +20,32 @@ function consultationDb() {
 }
 
 test("production-shaped Worker federation serves consultation results from D1", async () => {
-  const result = await workerFederatedSearch({ DB: consultationDb() }).execute({ query: "bike parking", limit: 10 });
-  assert.equal(result.results.length, 1);
-  assert.equal(result.results[0].object_ref, "consultation:dot-secure-bike-parking");
-  assert.equal(result.coverage.by_lens.consultations.state, "matched");
-  assert.equal(result.results[0].canonical_href, "/consultations/dot-secure-bike-parking/");
+  const fixtureOrder = buildConsultationSearchDocuments().documents.map(({ title, object_ref }) => ({ title, object_ref }));
+  const provider = workerFederatedSearch({ DB: consultationDb() });
+  const rounds = [
+    ["bus", "Fast Buses: Central Brooklyn", "consultation:dot-fast-buses-central-brooklyn"],
+    ["bike parking", "Secure Bike Parking", "consultation:dot-secure-bike-parking"],
+    ["CB14", "Brooklyn CB14 district needs, FY2028", "consultation:cb14-community-budget-fy2028"],
+    ["library", "Bloomingdale Library and Housing", "consultation:bloomingdale-library-and-housing"],
+  ];
+  assert.deepEqual(
+    rounds.map(([, title, objectRef]) => ({ title, object_ref: objectRef })),
+    fixtureOrder,
+    "the four provider assertions cover the complete fixture order",
+  );
+  const observed = [];
+  for (const [query, title, objectRef] of rounds) {
+    const result = await provider.execute({
+      query,
+      limit: 10,
+      scope: { lenses: ["consultations"] },
+    });
+    assert.equal(result.coverage.by_lens.consultations.state, "matched", `${query} round is covered`);
+    assert.equal(result.results.length, 1, `${query} returns one canonical round`);
+    assert.equal(result.results[0].title, title, `${query} returns the named round`);
+    assert.equal(result.results[0].object_ref, objectRef, `${query} retains the round identity`);
+    observed.push(result.results[0].title);
+  }
+  assert.deepEqual(observed, fixtureOrder.map(({ title }) => title), "provider returns all four rounds in fixture order");
+  assert.equal((await provider.execute({ query: "bike parking", limit: 10 })).results[0].canonical_href, "/consultations/dot-secure-bike-parking/");
 });

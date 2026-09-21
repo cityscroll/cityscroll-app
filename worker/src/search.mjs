@@ -593,6 +593,10 @@ function keywordFamilyProvider(familyId, env) {
   });
 }
 
+export function consultationSearchProvider(env) {
+  return keywordFamilyProvider("consultations", env);
+}
+
 function productionCollectionProviders(env) {
   return Object.freeze(Object.fromEntries(
     Object.entries(PRODUCTION_COLLECTION_FAMILIES).map(([lens, familyId]) => (
@@ -655,7 +659,7 @@ function productionFederatedProviders(env) {
     land: landFederatedProvider(env),
     meetings: keywordFamilyProvider("meetings", env),
     exams: keywordFamilyProvider("exams", env),
-    consultations: keywordFamilyProvider("consultations", env),
+    consultations: consultationSearchProvider(env),
     legal_code: legalCodeFederatedProvider(env),
   });
 }

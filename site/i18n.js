@@ -1648,6 +1648,7 @@ const STRINGS = {
     topic_search_intro: "Search public records by topic, place, or agency. Results stay grouped by record type.",
     topic_search_query_label: "Search public records",
     topic_search_placeholder: "Try a topic, place, or agency",
+    search_include_historical: "Include historical consultations",
     browse_facet_label: "Browse by type",
     topic_search_match_count_one: "1 match",
     topic_search_match_count_other: "{n} matches",

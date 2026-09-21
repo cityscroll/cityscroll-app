@@ -22,6 +22,17 @@ export const SEARCH_RENDER_FAMILIES = SEARCH_ACTIVITY_FAMILIES;
 
 /** Family coverage states that mean "this source was not fully checked". */
 const INCOMPLETE_FAMILY_STATUSES = new Set(["unknown", "not_covered"]);
+const SCOPE_DOMAIN_FAMILIES = Object.freeze({
+  contracts: "contracts",
+  people: "people-organizations",
+  places: "people-organizations",
+  property: "land",
+  zoning: "land",
+  rules: "rules",
+  meetings: "meetings",
+  staffing: "exams",
+  participation: "consultations",
+});
 
 function clean(value, max = 500) {
   return String(value ?? "")
@@ -51,6 +62,20 @@ function keywordRow(record) {
   };
 }
 
+function lifecycleState(record) {
+  return clean(
+    record?.provenance?.lifecycle?.state
+      || record?.lifecycle?.state
+      || record?.ranking?.lifecycle_state,
+    40,
+  ).toLowerCase();
+}
+
+function isArchivedConsultation(record) {
+  return searchFamilyForResult(record) === "consultations"
+    && ["archived", "closed", "expired", "past"].includes(lifecycleState(record));
+}
+
 function semanticRow(candidate) {
   const family = clean(candidate?.civic_object_family, 80);
   const reference = clean(candidate?.candidate_id, 360);
@@ -69,9 +94,10 @@ function semanticRow(candidate) {
 }
 
 /** Group keyword results into lanes exactly as the document renders them. */
-function keywordItemsByFamily(keywordPayload) {
+function keywordItemsByFamily(keywordPayload, { includeArchived = false } = {}) {
   const grouped = new Map(SEARCH_RENDER_FAMILIES.map((family) => [family, []]));
   for (const record of keywordPayload?.results || []) {
+    if (!includeArchived && isArchivedConsultation(record)) continue;
     const row = keywordRow(record);
     if (!row) continue;
     grouped.get(row.family).push({ kind: "keyword", record, row });
@@ -99,9 +125,9 @@ function semanticItemsByFamily(semantic) {
  * families can affect the honest matched/empty/partial/unavailable outcome.
  */
 function requestedFamilies(scope) {
-  return scope?.domains
-    ? SEARCH_RENDER_FAMILIES.filter((family) => scope.domains.includes(family))
-    : SEARCH_RENDER_FAMILIES;
+  if (!scope?.domains) return SEARCH_RENDER_FAMILIES;
+  const requested = new Set(scope.domains.map((domain) => SCOPE_DOMAIN_FAMILIES[domain] || domain));
+  return SEARCH_RENDER_FAMILIES.filter((family) => requested.has(family));
 }
 
 /**
@@ -151,7 +177,7 @@ function producersFor(keywordPayload, semantic) {
  * semantic candidates that survive dedupe appended after as
  * evidence-preserving enrichment, never interleaved ahead of it.
  */
-export function buildSearchRenderPlan(state, { scope = null } = {}) {
+export function buildSearchRenderPlan(state, { scope = null, includeArchived = false } = {}) {
   const mode = clean(state?.state, 40) || "unavailable";
   const keywordPayload = mode === "legacy" ? (state?.payload || null) : (state?.keyword || null);
   const semantic = state?.semantic || null;
@@ -159,7 +185,7 @@ export function buildSearchRenderPlan(state, { scope = null } = {}) {
   const requested = requestedFamilies(scope);
   const requestedSet = new Set(requested);
 
-  const keywordItems = keywordItemsByFamily(keywordPayload);
+  const keywordItems = keywordItemsByFamily(keywordPayload, { includeArchived });
   const semanticItems = mode === "legacy" || mode === "unavailable"
     ? new Map(SEARCH_RENDER_FAMILIES.map((family) => [family, []]))
     : semanticItemsByFamily(semantic);
