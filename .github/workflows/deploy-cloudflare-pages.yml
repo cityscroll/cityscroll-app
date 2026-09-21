@@ -314,6 +314,20 @@ jobs:
         env:
           CROL_BASE: ${{ steps.origin.outputs.base_host }}
         run: python3 test/functional/49_carto_basemap_key_live.py
+      - name: Verify keyed CARTO basemap tiles on the production origin
+        if: needs.deploy.outputs.is_preview != 'true'
+        env:
+          CROL_BASE: https://cityscroll.org
+        run: |
+          for attempt in {1..12}; do
+            if python3 test/functional/49_carto_basemap_key_live.py; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 12 ]; then
+              exit 1
+            fi
+            sleep 20
+          done
       - name: Post-deploy procurement detail parity canary
         if: needs.deploy.outputs.is_preview != 'true'
         env:
