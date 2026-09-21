@@ -80,16 +80,20 @@ test("A3: formal stance is retained only with vote, resolution, recommendation, 
     const vote = slice.hits.find((hit) => hit.document_id === "vote");
     assert.equal(chair.stance, null);
     assert.equal(testimony.stance, null);
-    assert.equal(selfCertified.stance, "support");
-    assert.equal(selfCertified.stance_evidence_kind, "Official board statement");
+    assert.equal(selfCertified.action_type, "public_testimony");
+    assert.equal(selfCertified.action_label, "Public testimony");
+    assert.equal(selfCertified.stance, null);
+    assert.equal(selfCertified.stance_evidence_kind, null);
     assert.equal(vote.stance, "opposition");
     assert.equal(vote.stance_evidence_kind, "Formal vote");
     const rendered = renderCommunityBoardDocumentTopicSlice(slice);
     assert.match(rendered, /Stance: opposition · Evidence: Formal vote/);
-    assert.match(rendered, /Stance: support · Evidence: Official board statement/);
+    const testimonyArticles = [...rendered.matchAll(/<article data-action-type="public_testimony">([\s\S]*?)<\/article>/g)]
+      .map((match) => match[1]);
+    assert.equal(testimonyArticles.length, 2);
+    for (const article of testimonyArticles) assert.doesNotMatch(article, /Stance:/);
     const article = (action) => rendered.match(new RegExp(`<article data-action-type="${action}">([\\s\\S]*?)</article>`))[1];
     assert.doesNotMatch(article("chair_action"), /Stance:/);
-    assert.doesNotMatch(article("public_testimony"), /Stance:/);
   });
 });
 
