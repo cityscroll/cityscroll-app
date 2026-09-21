@@ -54,7 +54,7 @@ function publishClientCapabilityModules(sourceDir, siteSource, siteDir) {
 
   for (const { sourcePath } of graph.modules.values()) {
     const repositoryPath = repositoryRelativePath(sourcePath, sourceDir);
-    if (!repositoryPath?.startsWith("capabilities/")) continue;
+    if (!repositoryPath?.startsWith("capabilities/") && !repositoryPath?.startsWith("site/")) continue;
     const destinationPath = join(siteDir, repositoryPath);
     mkdirSync(dirname(destinationPath), { recursive: true });
     cpSync(sourcePath, destinationPath);

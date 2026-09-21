@@ -10,7 +10,7 @@ import { FEDERATED_SEARCH_CAPABILITY } from "./federated_search.mjs";
 import { CONTRACT_GET_CAPABILITY, CONTRACTS_BROWSE_CAPABILITY } from "./contracts.mjs";
 import { CONTRACTS_ANALYSIS_CAPABILITY } from "./contracts_analysis.mjs";
 import { PEOPLE_GET_CAPABILITY, ORGANIZATIONS_BROWSE_CAPABILITY } from "./people_organizations.mjs";
-import { MEETING_GET_CAPABILITY } from "./meetings.mjs";
+import { MEETING_GET_CAPABILITY, MEETINGS_BROWSE_CAPABILITY } from "./meetings.mjs";
 import { LAND_PROJECT_GET_CAPABILITY, LAND_PROJECTS_BROWSE_CAPABILITY } from "./land_projects.mjs";
 import { LAND_DECISION_PATH_GET_CAPABILITY } from "./land_decision_path.mjs";
 
@@ -79,6 +79,7 @@ export const CAPABILITY_REGISTRY = deepFreeze([
   LAND_PROJECT_GET_CAPABILITY,
   LAND_PROJECTS_BROWSE_CAPABILITY,
   LAND_DECISION_PATH_GET_CAPABILITY,
+  MEETINGS_BROWSE_CAPABILITY,
 ]);
 
 validateCapabilityRegistry(CAPABILITY_REGISTRY);

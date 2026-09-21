@@ -10,7 +10,7 @@ import { executeNoticeSearch } from "../../capabilities/notice_search.mjs";
 import { executeFederatedSearch } from "../../capabilities/federated_search.mjs";
 import { executeContractGet, executeContractsBrowse } from "../../capabilities/contracts.mjs";
 import { executeContractsAnalysis } from "../../capabilities/contracts_analysis.mjs";
-import { executeMeetingGet } from "../../capabilities/meetings.mjs";
+import { executeMeetingGet, executeMeetingsBrowse } from "../../capabilities/meetings.mjs";
 import { executePeopleGet, executeOrganizationsBrowse } from "../../capabilities/people_organizations.mjs";
 import { executeLandProjectGet, executeLandProjectsBrowse } from "../../capabilities/land_projects.mjs";
 import { executeLandDecisionPathGet } from "../../capabilities/land_decision_path.mjs";
@@ -18,14 +18,14 @@ import { buildSharedProcurementReadModel } from "../../site/shared_procurement_r
 import { workerCitedPassages } from "../src/cited_retrieval.mjs";
 import { workerD1EntityDossier } from "../src/entity_dossier.mjs";
 import { workerD1NoticeSearch } from "../src/lib/notices.mjs";
-import { mcpCitedPassagesInput, mcpFederatedSearchInput, mcpNoticeGetInput, mcpNoticeSearchInput } from "../src/mcp.mjs";
+import { mcpCitedPassagesInput, mcpFederatedSearchInput, mcpMeetingsBrowseInput, mcpNoticeGetInput, mcpNoticeSearchInput } from "../src/mcp.mjs";
 import { mcpContractsAnalysisInput } from "../src/contracts.mjs";
 import { workerNoticeGet } from "../src/notice.mjs";
 import { workerD1EntityRelationships } from "../src/public_relationship_graph.mjs";
 import { workerFederatedSearch } from "../src/search.mjs";
 import { workerContractsAnalysis, workerProcurementContracts } from "../src/contracts.mjs";
 import { workerPeopleOrganizations } from "../src/people_organizations.mjs";
-import { workerMeetingGet } from "../src/hearings.mjs";
+import { workerMeetingGet, workerMeetingsBrowse } from "../src/hearings.mjs";
 import { workerLandProjects } from "../src/land_projects.mjs";
 
 export const CAPABILITY_TOOL_CASES = Object.freeze([
@@ -100,6 +100,11 @@ export const CAPABILITY_TOOL_CASES = Object.freeze([
     capabilityReference: "meeting.get@1",
     name: "get_meeting",
     arguments: Object.freeze({ meeting_id: "meeting:city_record:REMOTE-HEARING" }),
+  }),
+  Object.freeze({
+    capabilityReference: "meetings.browse@1",
+    name: "browse_meetings",
+    arguments: Object.freeze({ from: "2026-08-17", to: "2026-08-18", limit: 1 }),
   }),
   Object.freeze({
     capabilityReference: "land.project.get@1",
@@ -378,6 +383,11 @@ export async function directCapabilityResults(env) {
   results.set("get_meeting", await executeMeetingGet(
     workerMeetingGet(env),
     { meetingId: meetingArgs.meeting_id },
+  ));
+  const meetingsBrowseArgs = argsFor("browse_meetings");
+  results.set("browse_meetings", await executeMeetingsBrowse(
+    workerMeetingsBrowse(env),
+    mcpMeetingsBrowseInput(meetingsBrowseArgs),
   ));
   const landGetArgs = argsFor("get_land_project");
   results.set("get_land_project", await executeLandProjectGet(

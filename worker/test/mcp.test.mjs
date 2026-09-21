@@ -65,6 +65,7 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
     "get_person_or_organization",
     "browse_organizations",
     "get_meeting",
+    "browse_meetings",
     "get_land_project",
     "browse_land_projects",
     "get_land_decision_path",

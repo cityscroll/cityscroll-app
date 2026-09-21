@@ -26,7 +26,7 @@ import { buildCouncilHearingActionPath } from "./council_hearing_action_path.mjs
 import { buildRulesParticipationPath, extractCommentFacts } from "./rules_participation.mjs";
 import { landAuthorityPanelProjection } from "./land_authority_summary_view.mjs";
 
-const actionRegistry = globalThis.CrolActions || actionRegistryModule.default || actionRegistryModule;
+const consequenceActionRegistry = globalThis.CrolActions || actionRegistryModule.default || actionRegistryModule;
 
 export const CONSEQUENCE_PROJECTION_SCHEMA = "cityscroll.consequence_projection.v1";
 
@@ -301,7 +301,7 @@ export function councilHearingConsequence(record = {}, opts = {}) {
     sourceLinks: record.source_links || record.participation?.links?.map((link) => link?.url) || [],
     physicalLocation: record.venue?.address,
   });
-  const handoff = actionRegistry.hearingHandoff({
+  const handoff = consequenceActionRegistry.hearingHandoff({
     notice_text: body,
     participation: record.participation,
     participation_url: record.participation?.links?.[0]?.url,
@@ -377,7 +377,7 @@ export function ruleConsequence(record = {}, opts = {}) {
     sourceLinks: record.source_links || [],
     physicalLocation: record.venue?.address || record.street_address_1,
   });
-  const handoff = actionRegistry.ruleHandoff({ ...record, notice_text: body }, opts);
+  const handoff = consequenceActionRegistry.ruleHandoff({ ...record, notice_text: body }, opts);
   const { modes, evidence: participationEvidence } = participationSignals({ logistics, handoff, sourceUrl });
   evidence.push(...participationEvidence);
 
@@ -470,7 +470,7 @@ export function landHearingConsequence({ summary = null, matter = null } = {}) {
       sourceLinks: matter.source_links || [],
       physicalLocation: matter.venue?.address || matter.street_address_1,
     });
-    const handoff = actionRegistry.zoningHandoff({ ...matter, notice_text: body });
+    const handoff = consequenceActionRegistry.zoningHandoff({ ...matter, notice_text: body });
     const signals = participationSignals({ logistics, handoff, sourceUrl: matterSourceUrl });
     modes = signals.modes;
     evidence.push(...signals.evidence);

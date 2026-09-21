@@ -17,7 +17,8 @@
     "meeting.get@1",
     "land.project.get@1",
     "land.projects.browse@1",
-    "land.decision_path.get@1"
+    "land.decision_path.get@1",
+    "meetings.browse@1"
   ],
   "tools": [
     {
@@ -2739,6 +2740,337 @@
           "output": {
             "availability": "not_yet_public",
             "error": "not-found"
+          }
+        }
+      ],
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "store_access": "provider-only"
+    },
+    {
+      "name": "browse_meetings",
+      "operation_class": "read",
+      "research_response": {
+        "maximum_bytes": 65536,
+        "byte_basis": "UTF-8 JSON tool result, including content and structuredContent",
+        "identifier_default": 10,
+        "identifier_maximum": 50,
+        "continuation": "Analysis: group.browse and filters.pagination. Other identifier arrays: counts and replay arguments in content, with identifier_offset/identifier_limit.",
+        "overflow": "An explicit tool error asks for a smaller page or narrower filters; civic facts are never silently removed."
+      },
+      "authority_class": "public_read",
+      "description": "Browse the typed shared meeting read model with bounded dates, resident-time availability, attendance and source filters. Returns structured rows, applied filters, stable pages, per-source coverage, freshness, and explicit unknown-start exclusions.",
+      "schema_reference": "meetings.browse@1",
+      "capability_reference": "meetings.browse@1",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "from": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Inclusive meeting date lower bound."
+          },
+          "date_from": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Alias for from."
+          },
+          "to": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Inclusive meeting date upper bound."
+          },
+          "date_to": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Alias for to."
+          },
+          "availability": {
+            "type": "object",
+            "description": "Canonical local civil-time window union; invalid zones or windows are rejected."
+          },
+          "attendance_modes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "in_person",
+                "remote",
+                "watch_only",
+                "hybrid",
+                "not_stated"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "attendance": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "in_person",
+                "remote",
+                "watch_only",
+                "hybrid",
+                "not_stated"
+              ]
+            },
+            "uniqueItems": true,
+            "description": "Alias for attendance_modes."
+          },
+          "activity": {
+            "type": "string",
+            "enum": [
+              "observe",
+              "attend",
+              "speak"
+            ]
+          },
+          "speaking_rights": {
+            "type": "string",
+            "enum": [
+              "allowed",
+              "not_allowed",
+              "requires_registration",
+              "unknown"
+            ]
+          },
+          "observer_access": {
+            "type": "string",
+            "enum": [
+              "remote",
+              "in_person",
+              "watch_only",
+              "unknown"
+            ]
+          },
+          "source_contract_id": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "source_system": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "institution": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "agency": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "community_board": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "geography": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "place_scope": {
+            "type": "string",
+            "maxLength": 240,
+            "description": "Alias for geography."
+          },
+          "query": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "text_query": {
+            "type": "string",
+            "maxLength": 240,
+            "description": "Alias for query."
+          },
+          "status": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 25
+          },
+          "cursor": {
+            "type": "string",
+            "maxLength": 512,
+            "description": "Opaque cursor returned by the previous page; repeat the same filters."
+          },
+          "identifier_path": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "JSON Pointer to the identifier array named by a continuation."
+          },
+          "identifier_offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset for identifier arrays only; use the returned continuation with unchanged result filters."
+          },
+          "identifier_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10,
+            "description": "Maximum identifiers per array; counts and replay continuations accompany sampled arrays."
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "capability_reference",
+          "availability",
+          "results",
+          "total_matches",
+          "pagination",
+          "filters",
+          "applied_filters",
+          "coverage",
+          "freshness",
+          "error"
+        ],
+        "properties": {
+          "capability_reference": {
+            "type": "string",
+            "const": "meetings.browse@1"
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "empty",
+              "unavailable"
+            ]
+          },
+          "results": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "maxItems": 100,
+            "items": {
+              "type": "object"
+            }
+          },
+          "total_matches": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "pagination": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "filters": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "applied_filters": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "coverage": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "freshness": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "bounds": {
+        "input": {
+          "filterMaximumLength": 240,
+          "cursorMaximumLength": 512,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "from": "2026-10-01",
+            "to": "2026-10-31",
+            "availability": {
+              "timezone": "America/New_York",
+              "windows": [
+                {
+                  "weekdays": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                  ],
+                  "start": "17:00"
+                },
+                {
+                  "weekdays": [
+                    0,
+                    6
+                  ]
+                }
+              ]
+            }
+          },
+          "output": {
+            "availability": "complete",
+            "pagination": {
+              "limit": 25,
+              "returned": 1
+            },
+            "coverage": {
+              "state": "observed"
+            }
+          }
+        },
+        {
+          "input": {
+            "attendance_modes": [
+              "remote"
+            ],
+            "limit": 10
+          },
+          "output": {
+            "availability": "empty",
+            "results": [],
+            "coverage": {
+              "unknown_start_exclusions": 0
+            }
           }
         }
       ],

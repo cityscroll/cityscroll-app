@@ -38,7 +38,7 @@ test("current Streamable HTTP client initializes, discovers, and calls all publi
     assert.equal(transport.protocolVersion, "2025-06-18");
     const listed = await client.listTools();
     const byName = new Map(listed.tools.map((tool) => [tool.name, tool]));
-    assert.equal(listed.tools.length, 18);
+    assert.equal(listed.tools.length, 19);
     assert.ok(byName.has("get_land_decision_path"), "the Land decision path must be discoverable");
     assert.ok(byName.has("list_capability_gaps"), "the declared capability gaps must be discoverable");
     for (const toolCase of CAPABILITY_TOOL_CASES) {
@@ -76,7 +76,7 @@ test("current Streamable HTTP client initializes, discovers, and calls all publi
       "entity.dossier.get@1",
       "entity.relationships.get@1",
     ]);
-    assert.equal(requests.filter((method) => method === "POST").length, 18);
+    assert.equal(requests.filter((method) => method === "POST").length, 19);
   } finally {
     await client.close();
     directFixture.close();

@@ -443,6 +443,35 @@
       ],
       "canonical_link_fields": [],
       "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
+    },
+    {
+      "reference": "meetings.browse@1",
+      "id": "meetings.browse",
+      "version": "1.0.0",
+      "family": "meetings",
+      "method": "meetingsBrowse",
+      "tool": "browse_meetings",
+      "input_schema_file": "schemas/meetings_browse.input.schema.json",
+      "output_schema_file": "schemas/meetings_browse.output.schema.json",
+      "bounds": {
+        "input": {
+          "filterMaximumLength": 240,
+          "cursorMaximumLength": 512,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields."
     }
   ]
 }

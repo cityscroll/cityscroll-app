@@ -610,6 +610,57 @@
       "canonical_link_fields": [],
       "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
       "evidence_class": "local_contract"
+    },
+    {
+      "schema": "cityscroll.integration_recipe.v1",
+      "id": "meetings.capability-recipe",
+      "family": "meetings",
+      "capability_reference": "meetings.browse@1",
+      "method": "meetingsBrowse",
+      "input": {
+        "from": "2026-10-01",
+        "to": "2026-10-31",
+        "availability": {
+          "timezone": "America/New_York",
+          "windows": [
+            {
+              "weekdays": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "start": "17:00"
+            },
+            {
+              "weekdays": [
+                0,
+                6
+              ]
+            }
+          ]
+        }
+      },
+      "bounded_output": {
+        "availability": "complete",
+        "pagination": {
+          "limit": 25,
+          "returned": 1
+        },
+        "coverage": {
+          "state": "observed"
+        }
+      },
+      "output_schema": "schemas/meetings_browse.output.schema.json",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "canonical_link_fields": [],
+      "canonical_link_policy": "Validated responses are returned without projection; canonical links remain in their public response fields.",
+      "evidence_class": "local_contract"
     }
   ],
   "unsupported_question": {

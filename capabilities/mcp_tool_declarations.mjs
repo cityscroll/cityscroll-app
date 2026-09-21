@@ -70,6 +70,13 @@ import {
   MEETING_GET_LIMITS,
   MEETING_GET_PROVIDER_ID,
   MEETING_GET_REPRESENTATIONS,
+  MEETINGS_BROWSE_CAPABILITY_REFERENCE,
+  MEETINGS_BROWSE_LIMITS,
+  MEETINGS_BROWSE_PROVIDER_ID,
+  MEETINGS_BROWSE_ACTIVITY,
+  MEETINGS_BROWSE_SPEAKING_RIGHTS,
+  MEETINGS_BROWSE_OBSERVER_ACCESS,
+  MEETINGS_BROWSE_REPRESENTATIONS,
 } from "./meetings.mjs";
 import {
   LAND_FAMILY_FILTER_VALUES,
@@ -201,6 +208,7 @@ export const MCP_CONTRACTS_ANALYSIS_ADAPTER = Object.freeze({
 export const MCP_PEOPLE_GET_ADAPTER = Object.freeze({ id: "mcp.get_person_or_organization@1", capabilityReference: PEOPLE_GET_CAPABILITY_REFERENCE, providerId: PEOPLE_GET_PROVIDER_ID, route: "POST /mcp", tool: "get_person_or_organization", surface: "MCP" });
 export const MCP_ORGANIZATIONS_BROWSE_ADAPTER = Object.freeze({ id: "mcp.browse_organizations@1", capabilityReference: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE, providerId: ORGANIZATIONS_BROWSE_PROVIDER_ID, route: "POST /mcp", tool: "browse_organizations", surface: "MCP" });
 export const MCP_MEETING_GET_ADAPTER = Object.freeze({ id: "mcp.get_meeting@1", capabilityReference: MEETING_GET_CAPABILITY_REFERENCE, providerId: MEETING_GET_PROVIDER_ID, route: "POST /mcp", tool: "get_meeting", surface: "MCP", representations: MEETING_GET_REPRESENTATIONS });
+export const MCP_MEETINGS_BROWSE_ADAPTER = Object.freeze({ id: "mcp.browse_meetings@1", capabilityReference: MEETINGS_BROWSE_CAPABILITY_REFERENCE, providerId: MEETINGS_BROWSE_PROVIDER_ID, route: "POST /mcp", tool: "browse_meetings", surface: "MCP", representations: MEETINGS_BROWSE_REPRESENTATIONS });
 export const MCP_LAND_PROJECT_GET_ADAPTER = Object.freeze({ id: "mcp.get_land_project@1", capabilityReference: LAND_PROJECT_GET_CAPABILITY_REFERENCE, providerId: LAND_PROJECT_GET_PROVIDER_ID, route: "POST /mcp", tool: "get_land_project", surface: "MCP" });
 export const MCP_LAND_PROJECTS_BROWSE_ADAPTER = Object.freeze({ id: "mcp.browse_land_projects@1", capabilityReference: LAND_PROJECTS_BROWSE_CAPABILITY_REFERENCE, providerId: LAND_PROJECTS_BROWSE_PROVIDER_ID, route: "POST /mcp", tool: "browse_land_projects", surface: "MCP" });
 export const MCP_LAND_DECISION_PATH_GET_ADAPTER = Object.freeze({ id: "mcp.get_land_decision_path@1", capabilityReference: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE, providerId: LAND_DECISION_PATH_GET_PROVIDER_ID, route: "POST /mcp", tool: "get_land_decision_path", surface: "MCP" });
@@ -307,6 +315,22 @@ const ORGANIZATIONS_BROWSE_OUTPUT_SCHEMA = Object.freeze({
     availability: { type: "string", enum: ["complete", "empty", "unavailable"] },
     results: { type: ["array", "null"], maxItems: ORGANIZATIONS_BROWSE_LIMITS.maximum, items: { type: "object" } },
     total_matches: { type: ["integer", "null"], minimum: 0 }, pagination: { type: ["object", "null"] }, coverage: { type: ["object", "null"] }, freshness: { type: ["object", "null"] }, error: { type: ["string", "null"] },
+  },
+});
+const MEETINGS_BROWSE_OUTPUT_SCHEMA = Object.freeze({
+  type: "object", additionalProperties: false,
+  required: ["capability_reference", "availability", "results", "total_matches", "pagination", "filters", "applied_filters", "coverage", "freshness", "error"],
+  properties: {
+    capability_reference: { type: "string", const: MEETINGS_BROWSE_CAPABILITY_REFERENCE },
+    availability: { type: "string", enum: ["complete", "empty", "unavailable"] },
+    results: { type: ["array", "null"], maxItems: MEETINGS_BROWSE_LIMITS.maximum, items: { type: "object" } },
+    total_matches: { type: ["integer", "null"], minimum: 0 },
+    pagination: { type: ["object", "null"] },
+    filters: { type: ["object", "null"] },
+    applied_filters: { type: ["object", "null"] },
+    coverage: { type: ["object", "null"] },
+    freshness: { type: ["object", "null"] },
+    error: { type: ["string", "null"] },
   },
 });
 const CONTRACTS_ANALYSIS_OUTPUT_SCHEMA = Object.freeze({
@@ -634,6 +658,40 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
     annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   },
   {
+    name: "browse_meetings",
+    description: "Browse the typed shared meeting read model with bounded dates, resident-time availability, attendance and source filters. Returns structured rows, applied filters, stable pages, per-source coverage, freshness, and explicit unknown-start exclusions.",
+    inputSchema: {
+      type: "object", additionalProperties: false,
+      properties: {
+        from: { type: "string", pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: "Inclusive meeting date lower bound." },
+        date_from: { type: "string", pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: "Alias for from." },
+        to: { type: "string", pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: "Inclusive meeting date upper bound." },
+        date_to: { type: "string", pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: "Alias for to." },
+        availability: { type: "object", description: "Canonical local civil-time window union; invalid zones or windows are rejected." },
+        attendance_modes: { type: "array", items: { type: "string", enum: ["in_person", "remote", "watch_only", "hybrid", "not_stated"] }, uniqueItems: true },
+        attendance: { type: "array", items: { type: "string", enum: ["in_person", "remote", "watch_only", "hybrid", "not_stated"] }, uniqueItems: true, description: "Alias for attendance_modes." },
+        activity: { type: "string", enum: [...MEETINGS_BROWSE_ACTIVITY] },
+        speaking_rights: { type: "string", enum: [...MEETINGS_BROWSE_SPEAKING_RIGHTS] },
+        observer_access: { type: "string", enum: [...MEETINGS_BROWSE_OBSERVER_ACCESS] },
+        source_contract_id: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.filterMaximumLength },
+        source_system: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.filterMaximumLength },
+        institution: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.filterMaximumLength },
+        body: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.filterMaximumLength },
+        agency: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.filterMaximumLength },
+        community_board: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.filterMaximumLength },
+        geography: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.filterMaximumLength },
+        place_scope: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.filterMaximumLength, description: "Alias for geography." },
+        query: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.filterMaximumLength },
+        text_query: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.filterMaximumLength, description: "Alias for query." },
+        status: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.filterMaximumLength },
+        limit: { type: "integer", minimum: MEETINGS_BROWSE_LIMITS.minimum, maximum: MEETINGS_BROWSE_LIMITS.maximum, default: MEETINGS_BROWSE_LIMITS.default },
+        cursor: { type: "string", maxLength: MEETINGS_BROWSE_LIMITS.cursorMaximumLength, description: "Opaque cursor returned by the previous page; repeat the same filters." },
+      },
+    },
+    outputSchema: MEETINGS_BROWSE_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  },
+  {
     name: "get_land_project",
     description: "Get one exact Land (ZAP) project by its ZAP project id. Includes its deep link, status, geography, applicant, review procedure, exact actions and ids, environmental facts, milestones, outcomes, sources, and any conflicts, when known.",
     inputSchema: {
@@ -817,6 +875,7 @@ const MCP_REGISTERED_AND_PILOT_TOOL_BINDINGS = Object.freeze([
   Object.freeze({ name: "get_person_or_organization", operationClass: "read", schemaReference: PEOPLE_GET_CAPABILITY_REFERENCE, capabilityReference: PEOPLE_GET_CAPABILITY_REFERENCE, adapterId: MCP_PEOPLE_GET_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: PEOPLE_GET_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
   Object.freeze({ name: "browse_organizations", operationClass: "read", schemaReference: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE, capabilityReference: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE, adapterId: MCP_ORGANIZATIONS_BROWSE_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: ORGANIZATIONS_BROWSE_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
   Object.freeze({ name: "get_meeting", operationClass: "read", schemaReference: MEETING_GET_CAPABILITY_REFERENCE, capabilityReference: MEETING_GET_CAPABILITY_REFERENCE, adapterId: MCP_MEETING_GET_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: MEETING_GET_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
+  Object.freeze({ name: "browse_meetings", operationClass: "read", schemaReference: MEETINGS_BROWSE_CAPABILITY_REFERENCE, capabilityReference: MEETINGS_BROWSE_CAPABILITY_REFERENCE, adapterId: MCP_MEETINGS_BROWSE_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: MEETINGS_BROWSE_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
   Object.freeze({ name: "get_land_project", operationClass: "read", schemaReference: LAND_PROJECT_GET_CAPABILITY_REFERENCE, capabilityReference: LAND_PROJECT_GET_CAPABILITY_REFERENCE, adapterId: MCP_LAND_PROJECT_GET_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: LAND_PROJECT_GET_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
   Object.freeze({ name: "browse_land_projects", operationClass: "read", schemaReference: LAND_PROJECTS_BROWSE_CAPABILITY_REFERENCE, capabilityReference: LAND_PROJECTS_BROWSE_CAPABILITY_REFERENCE, adapterId: MCP_LAND_PROJECTS_BROWSE_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: LAND_PROJECTS_BROWSE_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
   Object.freeze({ name: "get_land_decision_path", operationClass: "read", schemaReference: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE, capabilityReference: LAND_DECISION_PATH_GET_CAPABILITY_REFERENCE, adapterId: MCP_LAND_DECISION_PATH_GET_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: LAND_DECISION_PATH_GET_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),

@@ -70,22 +70,25 @@ const AGENCY_NAMES = Object.freeze({
   MOME: "Office of Media and Entertainment",
 });
 
-const clean = (value, max = 4_000) => String(value ?? "")
+// Keep this helper module-local by name: the legacy inline reconstruction
+// flattens static modules into one classic script where generic `clean`
+// declarations collide with sibling helpers.
+const regulatoryAgendaClean = (value, max = 4_000) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ")
   .trim()
   .slice(0, max);
 
 function slug(value) {
-  return clean(value, 160).toLowerCase()
+  return regulatoryAgendaClean(value, 160).toLowerCase()
     .replace(/&/g, " and ")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "") || "unknown";
 }
 
 function fiscalYear(value, fallback = null) {
-  const match = clean(value, 120).match(/\b(?:fy|fiscal\s+year)\s*['’]?(\d{2,4})\b/i)
-    || clean(value, 120).match(/\b(20\d{2})\b/i);
+  const match = regulatoryAgendaClean(value, 120).match(/\b(?:fy|fiscal\s+year)\s*['’]?(\d{2,4})\b/i)
+    || regulatoryAgendaClean(value, 120).match(/\b(20\d{2})\b/i);
   if (!match) return fallback;
   const year = Number(match[1].length === 2 ? `20${match[1]}` : match[1]);
   return year >= 2000 && year <= 2200 ? `FY${year}` : fallback;
@@ -114,13 +117,13 @@ function decodeHtml(value) {
 }
 
 function parsePublishDate(value) {
-  const text = clean(value, 80);
+  const text = regulatoryAgendaClean(value, 80);
   const parsed = Date.parse(text);
   return Number.isFinite(parsed) ? new Date(parsed).toISOString().slice(0, 10) : null;
 }
 
 function agencyLabel(value) {
-  const raw = clean(value, 240);
+  const raw = regulatoryAgendaClean(value, 240);
   const code = raw.toUpperCase().replace(/\s+/g, "");
   return AGENCY_NAMES[code] || raw || null;
 }
@@ -130,15 +133,15 @@ function itemId({ agency, fiscal_year, publisher_item_id }) {
 }
 
 export function agendaItemHref(id) {
-  const value = clean(id, 500);
+  const value = regulatoryAgendaClean(id, 500);
   return value ? `/rules/agenda/${encodeURIComponent(value)}/` : null;
 }
 
 function fieldState(value, { acquired = true, headingFound = true } = {}) {
   if (!acquired) return "not_yet_acquired";
   if (!headingFound) return "parse_failed";
-  if (/^(?:none|not applicable|n\/a|not stated)$/i.test(clean(value))) return "source_not_published";
-  if (!clean(value)) return "empty";
+  if (/^(?:none|not applicable|n\/a|not stated)$/i.test(regulatoryAgendaClean(value))) return "source_not_published";
+  if (!regulatoryAgendaClean(value)) return "empty";
   return "published";
 }
 
@@ -170,7 +173,7 @@ function normalizedLines(text) {
 }
 
 function heading(line) {
-  const match = clean(line, 240).match(/^(?:[A-I]\s*[.)]\s*)?(.+?)\s*:\s*$/i);
+  const match = regulatoryAgendaClean(line, 240).match(/^(?:[A-I]\s*[.)]\s*)?(.+?)\s*:\s*$/i);
   if (!match) return null;
   const label = match[1].replace(/^[A-I]\s*[.)]\s*/i, "").toLowerCase().replace(/\s+/g, " ").trim();
   return FIELD_ALIASES[label] || null;
@@ -213,9 +216,9 @@ function subjectFromBlock(lines) {
       if (/^\s*[A-I]\s*[.)]\s*/i.test(lines[i])) break;
       parts.push(lines[i]);
     }
-    return clean(parts.join(" "), 500);
+    return regulatoryAgendaClean(parts.join(" "), 500);
   }
-  return clean(lines.find((line) => /^\s*\d+\.\s+\S/.test(line))?.replace(/^\s*\d+\.\s*/, ""), 500);
+  return regulatoryAgendaClean(lines.find((line) => /^\s*\d+\.\s+\S/.test(line))?.replace(/^\s*\d+\.\s*/, ""), 500);
 }
 
 /** Parse the current NYC Rules index's embedded agency_agendas JSON. */
@@ -241,11 +244,11 @@ export function parseRegulatoryAgendaIndex(html, { indexUrl = REGULATORY_AGENDA_
   const documents = rows.map((row, index) => {
     const rawButton = String(row.file_button || "");
     const href = sourceUrl(rawButton.match(/https:\/\/[^\s"']+\.pdf(?:\?[^\s"']*)?/i)?.[0] || row.url, indexUrl);
-    const label = clean(decodeHtml(rawButton), 240) || `${row.submitting_agency || "Agency"} Regulatory Agenda`;
+    const label = regulatoryAgendaClean(decodeHtml(rawButton), 240) || `${row.submitting_agency || "Agency"} Regulatory Agenda`;
     const agency = agencyLabel(row.submitting_agency || label.match(/^([A-Z][A-Z-]+)\s*-/)?.[1]);
     const fy = fiscalYear(label) || fiscalYear(href) || "FYunknown";
     return {
-      agency_code: clean(row.submitting_agency, 40) || null,
+      agency_code: regulatoryAgendaClean(row.submitting_agency, 40) || null,
       agency,
       fiscal_year: fy,
       publisher_document: href,
@@ -253,7 +256,7 @@ export function parseRegulatoryAgendaIndex(html, { indexUrl = REGULATORY_AGENDA_
       publish_date: parsePublishDate(row.publish_date),
       index_url: sourceUrl(indexUrl),
       retrieved_at: retrievedAt,
-      publisher_item_id: `${clean(row.submitting_agency, 40) || slug(agency)}-${fy}-${index + 1}`,
+      publisher_item_id: `${regulatoryAgendaClean(row.submitting_agency, 40) || slug(agency)}-${fy}-${index + 1}`,
       retrieval_status: href ? "available" : "not_yet_acquired",
     };
   }).filter((row) => row.agency || row.publisher_document);
@@ -300,7 +303,7 @@ export function extractRegulatoryAgendaItems(text, document = {}) {
       id,
       object_type: "regulatory-agenda-item",
       agency,
-      agency_code: clean(document.agency_code, 40) || null,
+      agency_code: regulatoryAgendaClean(document.agency_code, 40) || null,
       fiscal_year,
       subject: values.subject || null,
       justification: values.justification,
@@ -343,7 +346,7 @@ export function agendaFieldAvailability(items = []) {
 }
 
 function schedulePrecision(value) {
-  const text = clean(value, 240);
+  const text = regulatoryAgendaClean(value, 240);
   if (!text) return "not_stated";
   if (/\b20\d{2}-\d{2}-\d{2}\b/.test(text)) return "date";
   if (/\b(?:q[1-4]|first|second|third|fourth)\s+quarter\b/i.test(text)) return "quarter";
@@ -383,7 +386,7 @@ export function agendaExtractionChecks({ documents = [], items = [], index = nul
 }
 
 function norm(value) {
-  return clean(value, 4_000).toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
+  return regulatoryAgendaClean(value, 4_000).toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
 }
 
 function agencySame(left, right) {
@@ -403,13 +406,13 @@ function distinctiveOverlap(left, right) {
 /** Keep tentative matches out of the public graph unless evidence is explicit. */
 export function evaluateAgendaRulemakingLink(item, rulemaking) {
   const evidence = Array.isArray(rulemaking?.agenda_link_evidence)
-    ? rulemaking.agenda_link_evidence.filter((value) => clean(value, 300))
+    ? rulemaking.agenda_link_evidence.filter((value) => regulatoryAgendaClean(value, 300))
     : [];
   const exactAgency = agencySame(item?.agency, rulemaking?.agency);
   const supports = [
     distinctiveOverlap(item?.subject, rulemaking?.title || rulemaking?.subject),
-    clean(item?.legal_basis) && clean(rulemaking?.legal_basis) && distinctiveOverlap(item.legal_basis, rulemaking.legal_basis),
-    clean(item?.approximate_schedule) && clean(rulemaking?.notice_date) && /\b(?:fy|quarter|month|summer|fall|spring|winter)\b/i.test(item.approximate_schedule),
+    regulatoryAgendaClean(item?.legal_basis) && regulatoryAgendaClean(rulemaking?.legal_basis) && distinctiveOverlap(item.legal_basis, rulemaking.legal_basis),
+    regulatoryAgendaClean(item?.approximate_schedule) && regulatoryAgendaClean(rulemaking?.notice_date) && /\b(?:fy|quarter|month|summer|fall|spring|winter)\b/i.test(item.approximate_schedule),
     evidence.length > 0,
   ].filter(Boolean).length;
   const accepted = exactAgency && evidence.length >= 2 && supports >= 2;

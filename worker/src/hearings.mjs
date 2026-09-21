@@ -19,6 +19,11 @@ import {
   MEETING_GET_REPRESENTATIONS,
   executeMeetingGet,
   meetingGetFromModel,
+  MEETINGS_BROWSE_CAPABILITY_REFERENCE,
+  MEETINGS_BROWSE_PROVIDER_ID,
+  MEETINGS_BROWSE_REPRESENTATIONS,
+  executeMeetingsBrowse,
+  meetingsBrowseFromModel,
 } from "../../capabilities/meetings.mjs";
 
 export const HEARINGS_KV_KEY = "hearings:location:v1";
@@ -30,6 +35,14 @@ export const MEETING_GET_HTTP_ADAPTER = Object.freeze({
   route: "GET /hearings?id=…",
   surface: "Meeting detail",
   representations: MEETING_GET_REPRESENTATIONS,
+});
+export const MEETINGS_BROWSE_HTTP_ADAPTER = Object.freeze({
+  id: "worker-http.meetings-browse@1",
+  capabilityReference: MEETINGS_BROWSE_CAPABILITY_REFERENCE,
+  providerId: MEETINGS_BROWSE_PROVIDER_ID,
+  route: "GET /hearings?from=…",
+  surface: "Meeting browse",
+  representations: MEETINGS_BROWSE_REPRESENTATIONS,
 });
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const GEOSEARCH = "https://geosearch.planninglabs.nyc/v2/search";
@@ -84,6 +97,26 @@ export function workerMeetingGet(env, modelOverride = null) {
       if (!published) return result;
       const fromPublished = meetingGetFromModel(published, input);
       return fromPublished.availability === "available" ? fromPublished : result;
+    },
+  });
+}
+
+/** Explicit provider for the bounded, pageable shared meeting browse capability. */
+export function workerMeetingsBrowse(env, modelOverride = null) {
+  return Object.freeze({
+    capabilityReference: MEETINGS_BROWSE_CAPABILITY_REFERENCE,
+    providerId: MEETINGS_BROWSE_PROVIDER_ID,
+    async execute(input) {
+      let model = modelOverride;
+      if (!model) {
+        try {
+          const raw = env?.ALERT_STATE ? await env.ALERT_STATE.get(HEARINGS_KV_KEY) : null;
+          model = raw ? JSON.parse(raw) : null;
+        } catch {
+          model = null;
+        }
+      }
+      return meetingsBrowseFromModel(model, input);
     },
   });
 }
@@ -281,7 +314,9 @@ export async function handleHearings(request, env, _ctx) {
   let parsed = null;
   try { parsed = raw ? JSON.parse(raw) : null; } catch { parsed = null; }
   const age = parsed?.generated_at ? Date.now() - new Date(parsed.generated_at).getTime() : Infinity;
-  const requestedId = new URL(request.url).searchParams.get("id") || null;
+  const url = new URL(request.url);
+  const params = url.searchParams;
+  const requestedId = params.get("id") || null;
 
   const requestedMissing = requestedId && !parsed?.hearings?.some((hearing) => (
     hearing?.meeting_id === requestedId
@@ -289,6 +324,27 @@ export async function handleHearings(request, env, _ctx) {
       || hearing?.source_keys?.some((key) => key?.value === requestedId)
   ));
   if (!parsed) return response(JSON.stringify({ ok: false, reason: "snapshot-unavailable" }), 503);
+  const browseKeys = [
+    "from", "to", "date_from", "date_to", "availability", "attendance_modes", "attendance", "activity",
+    "speaking_rights", "observer_access", "source_contract_id", "source_system", "institution", "body", "agency",
+    "community_board", "geography", "place_scope", "query", "text_query", "status", "limit", "cursor",
+  ];
+  if (!requestedId && browseKeys.some((key) => params.has(key))) {
+    const browseInput = {};
+    for (const key of browseKeys) {
+      if (key === "attendance_modes") {
+        if (params.has(key)) browseInput.attendanceModes = params.get(key).split(",").filter(Boolean);
+        continue;
+      }
+      if (params.has(key)) browseInput[key.replaceAll(/_([a-z])/g, (_, letter) => letter.toUpperCase())] = params.get(key);
+    }
+    try {
+      const capability = await executeMeetingsBrowse(workerMeetingsBrowse(env, parsed), browseInput);
+      return response(JSON.stringify(capability));
+    } catch (error) {
+      return response(JSON.stringify({ ok: false, reason: "invalid-browse-request", error: error.message }), 400);
+    }
+  }
   const requestedRecord = requestedId ? materializedMeetingForId(parsed.hearings, requestedId) : null;
   // A canonical id the daily view has not caught up with can still be one this
   // deployment publishes, so resolve the capability before deciding the id names

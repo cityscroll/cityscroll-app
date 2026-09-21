@@ -18,7 +18,7 @@
   "policy_boundary": {
     "mutation_capabilities": 0,
     "raw_store_bindings_exposed": 0,
-    "registered_public_tools": 15,
+    "registered_public_tools": 16,
     "unregistered_public_tools": 0
   },
   "protocol": {
@@ -350,6 +350,34 @@
       "store_rows_read": 0
     },
     {
+      "adapter_id": "mcp.browse_meetings@1",
+      "adapter_semantic_sha256": "a4933249dbac2c2c2586ae20b146703d8b2de086605dc3112b43d29478a67433",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "cursorMaximumLength": 512,
+        "default": 25,
+        "filterMaximumLength": 240,
+        "maximum": 100,
+        "minimum": 1
+      },
+      "calls": 1,
+      "capability_reference": "meetings.browse@1",
+      "direct_semantic_sha256": "a4933249dbac2c2c2586ae20b146703d8b2de086605dc3112b43d29478a67433",
+      "name": "browse_meetings",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.shared-meetings.browse",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
       "adapter_id": "mcp.get_land_project@1",
       "adapter_semantic_sha256": "e47011530494ac402b386ae6245d70ee5bdcacbdb4cb078c99b6f7ed4ec7b85b",
       "annotations": {
@@ -429,11 +457,11 @@
     }
   ],
   "request_counts": {
-    "capability_calls": 15,
+    "capability_calls": 16,
     "initialize": 1,
     "list_tools": 1,
     "optional_get_probe": 1,
-    "post_requests": 18
+    "post_requests": 19
   },
   "schema": "cityscroll.remote_mcp_public_adapter_receipt.v1",
   "source_scan": {

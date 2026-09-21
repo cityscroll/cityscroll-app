@@ -58,7 +58,12 @@ import {
   executeContractsBrowse,
 } from "../../capabilities/contracts.mjs";
 import { CONTRACTS_ANALYSIS_LIMITS, executeContractsAnalysis } from "../../capabilities/contracts_analysis.mjs";
-import { executeMeetingGet, MEETING_GET_LIMITS } from "../../capabilities/meetings.mjs";
+import {
+  executeMeetingGet,
+  MEETING_GET_LIMITS,
+  executeMeetingsBrowse,
+  MEETINGS_BROWSE_LIMITS,
+} from "../../capabilities/meetings.mjs";
 import {
   executeLandProjectGet,
   executeLandProjectsBrowse,
@@ -95,6 +100,7 @@ export {
   MCP_FEDERATED_SEARCH_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS,
+  MCP_MEETINGS_BROWSE_ADAPTER,
   MCP_PUBLIC_READ_ANNOTATIONS,
   MCP_SERVER_INSTRUCTIONS,
   MCP_TOOL_BINDINGS,
@@ -107,7 +113,6 @@ import { evaluateAdmittedTextQueryWatch } from "./lib/evaluate_watch_text_query.
 import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
-import { enrollAndWelcome } from "./subscribe.mjs";
 import { overSurfaceCap, overActorLimit } from "./lib/meter.mjs";
 import {
   filterToolsForProfile,
@@ -135,7 +140,7 @@ import { workerFederatedSearch } from "./search.mjs";
 import { formatContractsAnalysisText, formatContractsBrowseText, formatContractText, mcpContractGetInput, mcpContractsAnalysisInput, mcpContractsBrowseInput, workerProcurementContracts } from "./contracts.mjs";
 import { formatLandDecisionPathText, formatLandProjectText, formatLandProjectsBrowseText, mcpLandDecisionPathGetInput, mcpLandProjectGetInput, mcpLandProjectsBrowseInput, workerLandDecisionPathGet, workerLandProjectGet, workerLandProjectsBrowse } from "./land_projects.mjs";
 import { formatPeopleGetText, formatOrganizationsBrowseText, mcpPeopleGetInput, mcpOrganizationsBrowseInput, workerPeopleOrganizations } from "./people_organizations.mjs";
-import { workerMeetingGet } from "./hearings.mjs";
+import { workerMeetingGet, workerMeetingsBrowse } from "./hearings.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
 const FEDERATED_SEARCH_MCP_INPUT_FIELDS = new Set(FEDERATED_SEARCH_INPUT_FIELDS);
@@ -244,10 +249,38 @@ export function mcpMeetingGetInput(args = {}) {
   return { meetingId: String(args.meeting_id || "").trim() };
 }
 
+export function mcpMeetingsBrowseInput(args = {}) {
+  const allowed = new Set([
+    "from", "to", "date_from", "date_to", "availability", "attendance_modes", "attendance", "activity", "speaking_rights", "observer_access",
+    "source_contract_id", "source_system", "institution", "body", "agency", "community_board", "geography", "place_scope", "query", "text_query", "status", "limit", "cursor",
+    "identifier_path", "identifier_offset", "identifier_limit",
+  ]);
+  for (const field of Object.keys(args || {})) if (!allowed.has(field)) throw new TypeError(`browse_meetings does not accept field: ${field}`);
+  const input = {};
+  const copy = [
+    ["from", "from"], ["date_from", "dateFrom"], ["to", "to"], ["date_to", "dateTo"], ["availability", "availability"],
+    ["attendance_modes", "attendanceModes"], ["attendance", "attendance"], ["activity", "activity"],
+    ["speaking_rights", "speakingRights"], ["observer_access", "observerAccess"],
+    ["source_contract_id", "sourceContractId"], ["source_system", "sourceSystem"], ["institution", "institution"], ["body", "body"],
+    ["agency", "agency"], ["community_board", "communityBoard"], ["geography", "geography"], ["place_scope", "placeScope"],
+    ["query", "query"], ["text_query", "textQuery"], ["status", "status"], ["limit", "limit"], ["cursor", "cursor"],
+  ];
+  for (const [wire, field] of copy) if (Object.hasOwn(args, wire)) input[field] = args[wire];
+  return input;
+}
+
 function formatMeetingText(result) {
   if (result.availability !== "available") return `Meeting is ${result.availability.replaceAll("_", " ")} (${result.error}).`;
   const meeting = result.meeting;
   return `Returned ${meeting.title || meeting.meeting_id}. Use the structured result for source receipt, coverage, freshness, and attached documents.`;
+}
+
+function formatMeetingsBrowseText(result) {
+  if (result.availability === "unavailable") return "Meeting browse is unavailable right now.";
+  if (!result.results.length) return "No meetings match the bounded filters in the shared read model.";
+  const rows = result.results.map((row, index) => `${index + 1}. ${row.event_date || "date not published"} · ${row.title || row.meeting_id}`);
+  const unknown = result.coverage?.unknown_start_exclusions || 0;
+  return `Returned ${result.results.length} of ${result.total_matches} matching meetings. Use structuredContent for source coverage, freshness, filters, and pagination.${unknown ? ` ${unknown} candidate meeting${unknown === 1 ? " has" : "s have"} an unknown start and was excluded.` : ""}\n\n${rows.join("\n")}`;
 }
 
 function structuredResult(result, summary) {
@@ -441,6 +474,18 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
       const result = await executeMeetingGet(workerMeetingGet(env), input);
       return structuredResult(result, formatMeetingText(result));
     }
+    case "browse_meetings": {
+      try {
+        const input = mcpMeetingsBrowseInput(args);
+        if (input.limit != null && (input.limit < MEETINGS_BROWSE_LIMITS.minimum || input.limit > MEETINGS_BROWSE_LIMITS.maximum)) {
+          return toolError(`limit must be a whole number from ${MEETINGS_BROWSE_LIMITS.minimum} through ${MEETINGS_BROWSE_LIMITS.maximum}.`);
+        }
+        const result = await executeMeetingsBrowse(workerMeetingsBrowse(env), input);
+        return structuredResult(result, formatMeetingsBrowseText(result));
+      } catch (error) {
+        return toolError(error?.message || "Meeting browse request is invalid.");
+      }
+    }
     case "get_land_project": {
       const input = mcpLandProjectGetInput(args);
       if (!input.projectId) return toolError("project_id is required.");
@@ -517,6 +562,7 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
     }
     case "create_watch": {
       if (!env.TOKEN_SECRET || !env.RESEND_API_KEY || !env.SUBS) return toolError("Watch creation isn't configured on this deployment.");
+      const { enrollAndWelcome } = await import("./subscribe.mjs");
       const email = String(args.email || "").trim();
       const lens = String(args.lens || "");
       if (!isValidEmail(email)) return toolError("A valid email address is required.");

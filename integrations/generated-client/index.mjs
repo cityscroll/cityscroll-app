@@ -29,6 +29,8 @@ import schema13Input from "./schemas/land_projects_browse.input.schema.json" wit
 import schema13Output from "./schemas/land_projects_browse.output.schema.json" with { type: "json" };
 import schema14Input from "./schemas/land_decision_path_get.input.schema.json" with { type: "json" };
 import schema14Output from "./schemas/land_decision_path_get.output.schema.json" with { type: "json" };
+import schema15Input from "./schemas/meetings_browse.input.schema.json" with { type: "json" };
+import schema15Output from "./schemas/meetings_browse.output.schema.json" with { type: "json" };
 import manifest from "./manifest.json" with { type: "json" };
 
 const SCHEMAS = new Map([
@@ -47,6 +49,7 @@ const SCHEMAS = new Map([
   ["land.project.get@1", { input: schema12Input, output: schema12Output }],
   ["land.projects.browse@1", { input: schema13Input, output: schema13Output }],
   ["land.decision_path.get@1", { input: schema14Input, output: schema14Output }],
+  ["meetings.browse@1", { input: schema15Input, output: schema15Output }],
 ]);
 const OPERATIONS = new Map(manifest.capabilities.map((operation) => [operation.reference, operation]));
 
@@ -189,6 +192,10 @@ export class IntegrationClient {
 
   async landDecisionPathGet(input) {
     return this.#invoke("land.decision_path.get@1", input);
+  }
+
+  async meetingsBrowse(input) {
+    return this.#invoke("meetings.browse@1", input);
   }
 
   async #invoke(reference, input) {
