@@ -40,6 +40,7 @@ const root = resolve(import.meta.dirname, "..");
 const siteRoot = new URL("../site/", import.meta.url);
 const repoRoot = fileURLToPath(new URL("..", import.meta.url));
 const CAPTURE_MANIFEST = new URL("../docs/evidence/assistant-setup/capture-manifest.json", import.meta.url);
+const PRODUCTION_CAPTURE_MANIFEST = new URL("../docs/evidence/assistant-setup-served/capture-manifest.json", import.meta.url);
 const CAPTURE_SCRIPT = new URL("../tools/capture_assistant_setup_evidence.py", import.meta.url);
 const SETUP_SOURCE_PATHS = Object.freeze([
   "site/index.html",
@@ -295,6 +296,27 @@ test("A6: retained capture manifest anchors viewport-witnessed renders and a sou
     assert.match(translated, /Preguntar con IA/);
     assert.doesNotMatch(translated, /Ask with AI/);
   });
+});
+
+test("A5: retained served-site manifest identifies production captures and deployed build", async () => {
+  const manifest = JSON.parse(await readFile(PRODUCTION_CAPTURE_MANIFEST, "utf8"));
+  assert.equal(manifest.schema, "cityscroll.render_capture_manifest.v1");
+  assert.equal(manifest.base, "https://cityscroll.org/");
+  assert.equal(manifest.capture_mode, "headless-playwright-production-served-site");
+  assert.equal(manifest.revision_format, "served artifact-manifest source_commit_sha");
+  assert.match(manifest.revision, /^[a-f0-9]{40}$/);
+  assert.match(manifest.data_vintage, /^\d{4}-\d{2}-\d{2}T/);
+  assert.equal(manifest.image_binaries_committed, false);
+  assert.equal(manifest.captures.length, 6);
+
+  const routes = new Set(manifest.captures.map((capture) => capture.route));
+  assert.deepEqual([...routes].sort(), ["/", "/api.html#mcp", "/use-with-ai/"]);
+  const viewports = new Set(manifest.captures.map((capture) => `${capture.viewport.width}x${capture.viewport.height}`));
+  assert.deepEqual([...viewports].sort(), ["1440x1000", "390x844"]);
+  for (const capture of manifest.captures) {
+    assert.ok(capture.assertion.length > 20, capture.route);
+    assert.match(capture.render_sha256, /^[a-f0-9]{64}$/, capture.route);
+  }
 });
 
 test("A6: capture harness re-renders both viewports against the retained manifest", async (t) => {
