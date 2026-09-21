@@ -200,7 +200,7 @@ def recovery_observations(browser, revision: str) -> list[dict]:
         assert no_script.locator('main[data-civic-object-kind="community-board-constellation"]').is_visible()
         assert no_script.locator("h1").inner_text().strip()
         assert no_script.locator('[data-community-board-resources] a').count() >= 1
-        entries.append({"case": f"{board_id}-no-script", "specimen": specimen, "route": route, "viewport": {"width": 390, "height": 844}, "revision": revision, "observation": {"main_visible": True, "heading_nonempty": True, "source_link_count": no_script.locator('[data-community-board-resources] a').count()}, "assertion": "without scripting the served board remains readable and retains an explicit source destination", "passed": True})
+        entries.append({"case": f"{board_id}-no-script", "specimen": specimen, "route": route, "viewport": {"width": 390, "height": 844}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"main_visible": True, "heading_nonempty": True, "source_link_count": no_script.locator('[data-community-board-resources] a').count()}, "assertion": "without scripting the served board remains readable and retains an explicit source destination", "passed": True})
         no_script.context.close()
 
         narrow = browser.new_context(viewport={"width": 390, "height": 844}, has_touch=True).new_page()
@@ -210,7 +210,7 @@ def recovery_observations(browser, revision: str) -> list[dict]:
         task_box = task_link.bounding_box()
         assert task_box and task_box["width"] > 0 and task_box["height"] >= 24
         assert narrow.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth")
-        entries.append({"case": f"{board_id}-narrow-touch", "specimen": specimen, "route": route, "viewport": {"width": 390, "height": 844}, "revision": revision, "observation": {"has_touch": True, "horizontal_overflow": False, "primary_task_height": task_box["height"]}, "assertion": "at a narrow touch viewport the primary district destination remains actionable without horizontal overflow", "passed": True})
+        entries.append({"case": f"{board_id}-narrow-touch", "specimen": specimen, "route": route, "viewport": {"width": 390, "height": 844}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"has_touch": True, "horizontal_overflow": False, "primary_task_height": task_box["height"]}, "assertion": "at a narrow touch viewport the primary district destination remains actionable without horizontal overflow", "passed": True})
         narrow.context.close()
 
         keyboard = browser.new_page(viewport={"width": 1440, "height": 900})
@@ -220,7 +220,7 @@ def recovery_observations(browser, revision: str) -> list[dict]:
         assert keyboard.evaluate("document.activeElement?.tagName === 'A'")
         focused_href = keyboard.evaluate("document.activeElement?.getAttribute('href')")
         assert focused_href and focused_href.startswith(("http://", "https://"))
-        entries.append({"case": f"{board_id}-keyboard", "specimen": specimen, "route": route, "viewport": {"width": 1440, "height": 900}, "revision": revision, "observation": {"focusable_source_link": True, "focused_href": focused_href}, "assertion": "keyboard focus reaches an explicit source destination on the served board without requiring a pointer", "passed": True})
+        entries.append({"case": f"{board_id}-keyboard", "specimen": specimen, "route": route, "viewport": {"width": 1440, "height": 900}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"focusable_source_link": True, "focused_href": focused_href}, "assertion": "keyboard focus reaches an explicit source destination on the served board without requiring a pointer", "passed": True})
         keyboard.close()
 
         translated = browser.new_page(viewport={"width": 390, "height": 844}, locale="es-ES")
@@ -228,7 +228,7 @@ def recovery_observations(browser, revision: str) -> list[dict]:
         assert translated.locator("h1").inner_text().strip()
         assert translated.locator('[data-community-board-resources] a').count() >= 1
         assert translated.locator("html").get_attribute("lang") == "en"
-        entries.append({"case": f"{board_id}-translation-fallback", "specimen": specimen, "route": route + "?lang=es", "viewport": {"width": 390, "height": 844}, "revision": revision, "observation": {"locale": "es-ES", "served_lang": "en", "heading_nonempty": True, "source_link_count": translated.locator('[data-community-board-resources] a').count()}, "assertion": "an unsupported translated board request keeps the served page readable and preserves its explicit source links", "passed": True})
+        entries.append({"case": f"{board_id}-translation-fallback", "specimen": specimen, "route": route + "?lang=es", "viewport": {"width": 390, "height": 844}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"locale": "es-ES", "served_lang": "en", "heading_nonempty": True, "source_link_count": translated.locator('[data-community-board-resources] a').count()}, "assertion": "an unsupported translated board request keeps the served page readable and preserves its explicit source links", "passed": True})
         translated.close()
 
         invalid = browser.new_page(viewport={"width": 390, "height": 844})
@@ -236,7 +236,7 @@ def recovery_observations(browser, revision: str) -> list[dict]:
         invalid.goto(BASE + invalid_route, wait_until="domcontentloaded")
         assert invalid.url.endswith(invalid_route)
         assert invalid.locator("body").inner_text().strip()
-        entries.append({"case": f"{board_id}-invalid-place", "specimen": specimen, "route": invalid_route, "viewport": {"width": 390, "height": 844}, "revision": revision, "observation": {"url_preserved": True, "body_nonempty": True, "invalid_place": "Z99"}, "assertion": "an invalid place stays in its requested scope and serves a readable recovery document", "passed": True})
+        entries.append({"case": f"{board_id}-invalid-place", "specimen": specimen, "route": invalid_route, "viewport": {"width": 390, "height": 844}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"url_preserved": True, "body_nonempty": True, "invalid_place": "Z99"}, "assertion": "an invalid place stays in its requested scope and serves a readable recovery document", "passed": True})
         invalid.close()
 
         failed = browser.new_page(viewport={"width": 390, "height": 844})
@@ -245,7 +245,7 @@ def recovery_observations(browser, revision: str) -> list[dict]:
         assert failed.locator('main[data-civic-object-kind="community-board-constellation"]').is_visible()
         assert failed.locator("h1").inner_text().strip()
         assert failed.locator('[data-community-board-resources] a').count() >= 1
-        entries.append({"case": f"{board_id}-forced-load-error", "specimen": specimen, "route": route, "viewport": {"width": 390, "height": 844}, "revision": revision, "observation": {"boot_module_blocked": True, "main_visible": True, "heading_nonempty": True, "source_link_count": failed.locator('[data-community-board-resources] a').count()}, "assertion": "when an optional board enhancement fails to load, the served identity and source recovery links remain available", "passed": True})
+        entries.append({"case": f"{board_id}-forced-load-error", "specimen": specimen, "route": route, "viewport": {"width": 390, "height": 844}, "revision": revision, "data_vintage": "served committed site materialization", "observation": {"boot_module_blocked": True, "main_visible": True, "heading_nonempty": True, "source_link_count": failed.locator('[data-community-board-resources] a').count()}, "assertion": "when an optional board enhancement fails to load, the served identity and source recovery links remain available", "passed": True})
         failed.close()
     return entries
 
