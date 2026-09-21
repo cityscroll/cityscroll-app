@@ -198,10 +198,10 @@ function syncAvailabilityControls(form, filter = {}) {
   const summary = field.querySelector("[data-following-availability-summary]");
   if (summary) {
     summary.textContent = preset === "evenings_weekends"
-      ? "Weekdays from 17:00 (inclusive) onward; weekends all day; America/New_York; unknown starts excluded"
+      ? (window.t?.("meeting_availability_evenings_summary") || "")
       : preset === "custom"
-        ? "Custom weekly schedule — inspect the selected days, boundaries, timezone, and unknown-time rule"
-        : "Any meeting time";
+        ? (window.t?.("meeting_availability_custom_summary") || "")
+        : (window.t?.("meeting_availability_any") || "");
   }
   return filter;
 }

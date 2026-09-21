@@ -328,15 +328,21 @@ function meetingAvailabilitySummaryHTML(filter, counts){
   const excluded=Number(counts?.unknown_start||0);
   const preset=JSON.stringify(filter.availability)===JSON.stringify(EVENINGS_WEEKENDS_AVAILABILITY);
   const windows=Array.isArray(filter.availability.windows)?filter.availability.windows:[];
-  const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   const dayText=[...new Set(windows.flatMap((window)=>Array.isArray(window.weekdays)?window.weekdays:[]))]
-    .sort((a,b)=>a-b).map((day)=>days[day]).join(", ") || "selected days";
+    .sort((a,b)=>a-b).map((day)=>String(day)).join(", ");
   const first=windows[0]||{};
-  const boundary=first.start&&first.end ? `${first.start}–${first.end}` : first.start ? `from ${first.start} onward` : "all day";
+  const boundary=`${first.start||"00:00"}–${first.end||"24:00"}`;
+  const unknown=filter.availability.unknown_start === "include"
+    ? (globalThis.t?.("meetings_availability_unknown_included") || "")
+    : (globalThis.t?.("meetings_availability_unknown_excluded") || "");
   const label=preset
-    ? "Evenings and weekends: weekdays from 17:00 (inclusive), weekends all day, America/New_York"
-    : `Custom schedule: ${dayText}, ${boundary}, ${filter.availability.timezone||"America/New_York"}; unknown starts ${filter.availability.unknown_start === "include" ? "included" : "excluded"}`;
-  return `<div class="note meetings-availability-result" role="status" data-meetings-availability-result>${escUiHtml(label)}. Meetings without a start time are excluded${excluded ? ` (${excluded} date-only meeting${excluded===1?"":"s"} excluded from this constrained result)` : ""}.</div>`;
+    ? (globalThis.t?.("meetings_availability_evenings_summary") || "")
+    : (globalThis.t?.("meetings_availability_custom_summary", {days:dayText,boundary,timezone:filter.availability.timezone||"America/New_York",unknown}) || "");
+  const resultCopy=globalThis.t?.("meetings_availability_result") || "";
+  const exclusion=excluded
+    ? globalThis.t?.(excluded===1 ? "meetings_availability_date_only_one" : "meetings_availability_date_only_other", {n:excluded}) || ""
+    : "";
+  return `<div class="note meetings-availability-result" role="status" data-meetings-availability-result>${escUiHtml(label)}. ${escUiHtml(resultCopy)}${exclusion ? ` (${escUiHtml(exclusion)})` : ""}.</div>`;
 }
 function applyMeetingAvailability(rows, filter){
   if(!filter?.availability) return {rows, counts:null};
