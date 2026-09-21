@@ -3,7 +3,7 @@
   "id": "cityscroll-engineering/council-native-meeting-surfaces",
   "status": "implemented",
   "fingerprint": "council-native-meeting-surfaces.v1",
-  "updated_at": "2026-09-10T00:00:00.000Z",
+  "updated_at": "2026-09-21T00:00:00.000Z",
   "projections": [
     {
       "id": "upcoming-council-meetings-read-index",
@@ -16,6 +16,14 @@
     {
       "id": "upcoming-council-meetings-snapshot-builder",
       "path": "tools/build_upcoming_council_meetings_snapshot.mjs"
+    },
+    {
+      "id": "upcoming-council-meetings-live-acquisition",
+      "path": "tools/acquire_upcoming_council_meetings.mjs"
+    },
+    {
+      "id": "upcoming-council-meetings-acquisition-receipt",
+      "path": "site/data/legistar_sources/verification_receipts/upcoming_council_meetings_latest.json"
     },
     {
       "id": "primary-document-meeting-build",

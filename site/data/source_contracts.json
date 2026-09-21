@@ -4524,7 +4524,7 @@
       "public_artifact_path": "site/data/upcoming_council_meetings.json",
       "primary_routes": ["/browse/meetings/", "/now/", "/search/"],
       "source_contract_id": "nyc-council-legistar",
-      "acquisition_command": ["node", "tools/build_upcoming_council_meetings_snapshot.mjs"],
+      "acquisition_command": ["node", "tools/acquire_upcoming_council_meetings.mjs"],
       "owning_builder": "tools/build_upcoming_council_meetings_snapshot.mjs",
       "builder_command": ["node", "tools/build_upcoming_council_meetings_snapshot.mjs"],
       "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
@@ -4536,7 +4536,8 @@
       "last_known_good_behavior": "Retain the last verified upcoming Council calendar snapshot within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe Council calendar hearings as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show Council calendar coverage as unavailable; never report that no Council hearings exist because acquisition failed.",
-      "production_evidence_field": "first_class.upcoming_council_meetings"
+      "production_evidence_field": "first_class.upcoming_council_meetings",
+      "production_freshness_gate": "block"
     },
     {
       "id": "meeting-outcomes",
