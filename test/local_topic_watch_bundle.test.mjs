@@ -5,8 +5,22 @@ import {
   applyLocalTopicWatchBundle,
   buildLocalTopicWatchBundle,
   canonicalLocalTopicWatchId,
+  deliverLocalTopicWatch,
+  localTopicWatchStoredPayload,
+  previewLocalTopicWatch,
+  rehearseLocalTopicWatch,
   renderLocalTopicWatchConfirmation,
+  renderLocalTopicWatchDigest,
 } from "../site/local_topic_watch_bundle.mjs";
+
+function renderedElementByChildId(html, tag, childId) {
+  const marker = `data-watch-child-id="${childId}"`;
+  const markerIndex = html.indexOf(marker);
+  if (markerIndex < 0) return "";
+  const start = html.lastIndexOf(`<${tag}`, markerIndex);
+  const end = html.indexOf(`</${tag}>`, markerIndex);
+  return start >= 0 && end >= 0 ? html.slice(start, end + tag.length + 3) : "";
+}
 
 test("confirmation exposes exact children, place, literal query, cadence, and preview counts", () => {
   const bundle = buildLocalTopicWatchBundle({
@@ -25,7 +39,10 @@ test("confirmation exposes exact children, place, literal query, cadence, and pr
   assert.match(html, /Community Board meetings/);
   assert.match(html, /3 preview matches/);
   assert.match(html, /“Shelter safety”/);
-  assert.match(html, /· weekly ·[\s\S]*· weekly ·/, "confirmation renders frequency for every child");
+  for (const child of bundle.children) {
+    const row = renderedElementByChildId(html, "li", child.id);
+    assert.ok(row.includes(` · ${child.frequency} ·`), `${child.id} confirmation row renders its frequency`);
+  }
 });
 
 test("unsupported source families are omitted and never widened into watches", () => {
@@ -62,4 +79,45 @@ test("one action is idempotent and partial retry only attempts missing children"
   assert.deepEqual(second.created, [first.remaining[0].id]);
   assert.equal(calls.length, 3);
   assert.equal(canonicalLocalTopicWatchId(bundle.children[0]), bundle.children[0].id);
+});
+
+test("one local topic digest preserves every labelled source-family section", () => {
+  const bundle = buildLocalTopicWatchBundle({ district: "K15", topic: "Shelter safety" });
+  const snapshot = {
+    snapshot_id: "k15-topic-fixture",
+    children: Object.fromEntries(bundle.children.map((child, index) => [child.id, [{ id: `item-${index}` }]])),
+  };
+  const html = renderLocalTopicWatchDigest(bundle, snapshot);
+  for (const child of bundle.children) {
+    const section = renderedElementByChildId(html, "section", child.id);
+    assert.ok(
+      section.includes(`data-source-family="${child.source_family}"`)
+        && section.includes(`<h3>${child.label}</h3>`),
+      `${child.id} digest section preserves ${child.label}`,
+    );
+  }
+});
+
+test("K15 preview, stored payload, rehearsal, and delivery share canonical IDs from one snapshot", () => {
+  const bundle = buildLocalTopicWatchBundle({ district: "K15", topic: "Shelter safety" });
+  const snapshot = {
+    snapshot_id: "k15-topic-fixture",
+    children: Object.fromEntries(bundle.children.map((child, index) => [child.id, [{ index }]])),
+  };
+  const preview = previewLocalTopicWatch(bundle, snapshot);
+  const stored = localTopicWatchStoredPayload(bundle, { email: "reader@example.com", snapshot_id: snapshot.snapshot_id });
+  const rehearsal = rehearseLocalTopicWatch(bundle, snapshot);
+  const delivery = deliverLocalTopicWatch(bundle, snapshot);
+  const ids = [
+    preview.sections.map(({ watch_id }) => watch_id),
+    stored.children.map(({ id }) => id),
+    rehearsal.sections.map(({ watch_id }) => watch_id),
+    delivery.sections.map(({ watch_id }) => watch_id),
+  ];
+  assert.ok(ids.every((stage) => stage.length === bundle.children.length));
+  assert.deepEqual(ids, [ids[0], ids[0], ids[0], ids[0]]);
+  assert.equal(preview.snapshot_id, snapshot.snapshot_id);
+  assert.equal(stored.snapshot_id, snapshot.snapshot_id);
+  assert.equal(rehearsal.snapshot_id, snapshot.snapshot_id);
+  assert.equal(delivery.snapshot_id, snapshot.snapshot_id);
 });
