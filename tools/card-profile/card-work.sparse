@@ -1039,6 +1039,7 @@
 /worker/src/digest_backfill.mjs
 /worker/src/digest_shadow.mjs
 /worker/src/digest_shadow_hold.mjs
+/worker/src/digest_shadow_rebuild.mjs
 /worker/src/entity_dossier.mjs
 /worker/src/entity_intelligence.mjs
 /worker/src/events.mjs
