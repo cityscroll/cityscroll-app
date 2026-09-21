@@ -2696,7 +2696,7 @@
                 <label><input type="radio" name="meetingsAvailability" value="any" checked> Any time</label>
                 <label><input type="radio" name="meetingsAvailability" value="evenings_weekends"> Evenings and weekends</label>
                 <label><input type="radio" name="meetingsAvailability" value="custom"> Custom weekly schedule</label>
-                <p class="meetings-availability-help">Weekdays from 17:00 (inclusive), all day Saturday and Sunday, America/New_York. Meetings without a start time stay in ordinary browse.</p>
+                <p class="meetings-availability-help">Weekdays from 17:00 (inclusive), all day Saturday and Sunday, Eastern Time (New York). Meetings without a start time stay in ordinary browse.</p>
                 <div class="meetings-availability-custom" data-meetings-availability-custom hidden>
                   <fieldset><legend>Days</legend>
                     <label><input type="checkbox" name="meetingsAvailabilityDay" value="1" data-meetings-availability-day> Monday</label>
@@ -2709,7 +2709,7 @@
                   </fieldset>
                   <label>Starts at <input type="time" name="meetingsAvailabilityStart" data-meetings-availability-start></label>
                   <label>Ends before <input type="time" name="meetingsAvailabilityEnd" data-meetings-availability-end></label>
-                  <label>Timezone <select name="meetingsAvailabilityTimezone" data-meetings-availability-timezone><option>America/New_York</option><option>America/Chicago</option><option>America/Denver</option><option>America/Los_Angeles</option></select></label>
+                  <label>Timezone <select name="meetingsAvailabilityTimezone" data-meetings-availability-timezone><option value="America/New_York">Eastern Time (New York)</option><option value="America/Chicago">Central Time (Chicago)</option><option value="America/Denver">Mountain Time (Denver)</option><option value="America/Los_Angeles">Pacific Time (Los Angeles)</option></select></label>
                   <label>Meetings without a start time <select name="meetingsAvailabilityUnknown" data-meetings-availability-unknown><option value="exclude">Exclude them</option><option value="include">Include them</option></select></label>
                 </div>
               </fieldset>

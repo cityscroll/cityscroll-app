@@ -17,7 +17,7 @@ import {
   renderObjectCardTitle,
 } from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
-import { applyMeetingAvailability as a, meetingAvailabilityFromControls as m, meetingAvailabilitySummaryHTML as h, syncMeetingAvailabilityControls as s } from "../meeting_availability_filter.mjs";
+import {applyMeetingAvailability as a,meetingAvailabilityFromControls as m,meetingAvailabilitySummaryHTML as h,syncMeetingAvailabilityControls as s} from "../meeting_availability_filter.mjs";
 //typeof selection === "object" evaluateMeetingAvailabilityRows
 import { canonicalMeetingsForRender } from "../meeting_capability_projection.mjs";
 import { meetingsCardInteractionProjection } from "../meetings_card_interaction.mjs";
@@ -143,7 +143,7 @@ function loadMeetingView(){
   }
   return meetingViewPromise;
 }
-// Map request_id -> lifecycle record (stage + nyc_rules links/dates). Covers matched
+// Map request_id -> lifecycle record, covering matched
 // notices (classified stage) and unmatched City Record notices (stage "proposed"); the
 // NYC-Rules-only entries carry request_id:null and are skipped (they have no City Record
 // row to enrich here).
@@ -1879,7 +1879,7 @@ globalThis.hearingFilterKey = hearingFilterKey;
 globalThis.hearingPastCache = hearingPastCache;
 globalThis.hearingSafeURL = hearingSafeURL;
 globalThis.hearingViewFilter = hearingViewFilter;
-globalThis.meetingAvailabilityFromControls = m;
+globalThis.meetingAvailabilityFromControls=typeof m==="function"?m:()=>null;
 globalThis.hearingWidenedNone = hearingWidenedNone;
 globalThis.hearingWidenedShown = hearingWidenedShown;
 globalThis.hearingWideningHTML = hearingWideningHTML;
