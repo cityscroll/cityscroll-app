@@ -4854,9 +4854,9 @@
       "source_structure": {
         "official_home": "https://cbmanhattan.cityofnewyork.us/cb12/",
         "upcoming_meetings": {
-          "url": "https://cbmanhattan.cityofnewyork.us/cb12/meeting-schedule-overview/",
-          "adapter": null,
-          "format": "explicit board calendar",
+          "url": "https://cb12m.org/en/calendar",
+          "adapter": "nyc_official_calendar_v1",
+          "format": "official board calendar HTML",
           "publisher_kind": "board_owned_official",
           "fetch_mode": "machine-fetchable",
           "inventory_status": "verified",

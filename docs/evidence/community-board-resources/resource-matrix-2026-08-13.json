@@ -5917,11 +5917,11 @@
       "destinations": [
         {
           "task": "calendar",
-          "url": "https://cbmanhattan.cityofnewyork.us/cb12/meeting-schedule-overview/",
+          "url": "https://cb12m.org/en/calendar",
           "source_role": "upcoming_meetings",
           "publisher": "Manhattan Community Board 12",
           "publisher_kind": "board_owned_official",
-          "format": "explicit board calendar",
+          "format": "official board calendar HTML",
           "observed_on": "2026-08-13",
           "status": "verified_destination",
           "disposition": "observed",
