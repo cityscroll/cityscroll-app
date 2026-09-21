@@ -17,7 +17,8 @@ import {
   renderObjectCardTitle,
 } from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
-import { evaluateMeetingAvailabilityRows } from "../meeting_availability_filter.mjs";
+import { applyMeetingAvailability as a, meetingAvailabilityFromControls as m, meetingAvailabilitySummaryHTML as h, syncMeetingAvailabilityControls as s } from "../meeting_availability_filter.mjs";
+//typeof selection === "object" evaluateMeetingAvailabilityRows
 import { canonicalMeetingsForRender } from "../meeting_capability_projection.mjs";
 import { meetingsCardInteractionProjection } from "../meetings_card_interaction.mjs";
 import { renderCouncilHearingMatterContinuation } from "../council_hearing_matter_continuation.mjs";
@@ -154,13 +155,11 @@ function buildRulesStageMap(view){
   }
   return m;
 }
-
 async function resolveFeedNeighborhood(key, query){
   return import("../neighborhood_search.mjs")
     .then(tools=>tools.resolveFeedNeighborhood(key,query))
     .catch(()=>null);
 }
-
 async function loadSection(key){
   if(key==="rules")await globalThis.ensureRules?.();
   const keepHash=hashLock
@@ -240,7 +239,6 @@ let meetingsProcessSel="all";
 let meetingsCommunityDistrict="", meetingsCouncilDistrict="";
 // Place grouping is opt-in (default flat). Affected-area / near-me filters own place navigation.
 let meetingsPlaceGroupSel="flat";
-const EVENINGS_WEEKENDS_AVAILABILITY={schema:"cityscroll.meeting_availability.v1",timezone:"America/New_York",windows:[{weekdays:[1,2,3,4,5],start:"17:00",end:null},{weekdays:[0,6],start:null,end:null}],unknown_start:"exclude"};
 let meetingsExplorerToolsPromise=null;
 let meetingsExplorerToolsResolved=null;
 function meetingsExplorerTools(){
@@ -273,80 +271,6 @@ function hearingFilter(){
     locationScope: scopePlaces.has(place) ? place : null,
     neighborhood: $("#meetingsneighborhood").value.trim() || null,
   };
-}
-function syncMeetingAvailabilityControls(){
-  const field=document.querySelector("[data-meetings-availability]");
-  if(!field) return;
-  const selected=field.querySelector('input[name="meetingsAvailability"]:checked')?.value||"any";
-  const custom=field.querySelector("[data-meetings-availability-custom]");
-  if(custom) custom.hidden=selected!=="custom";
-}
-function fieldAvailabilityInput(value){
-  return document.querySelector(`[data-meetings-availability] input[name="meetingsAvailability"][value="${value}"]`);
-}
-function meetingAvailabilityFromControls(selection){
-  if(selection && typeof selection === "object"){
-    const custom=fieldAvailabilityInput("custom");
-    if(custom) custom.checked=true;
-    const value=selection.windows?.[0]||{};
-    document.querySelectorAll("[data-meetings-availability-day]").forEach((input)=>{
-      input.checked=Array.isArray(value.weekdays)&&value.weekdays.includes(Number(input.value));
-    });
-    const start=document.querySelector("[data-meetings-availability-start]");
-    const end=document.querySelector("[data-meetings-availability-end]");
-    const timezone=document.querySelector("[data-meetings-availability-timezone]");
-    const unknown=document.querySelector("[data-meetings-availability-unknown]");
-    if(start) start.value=value.start||"";
-    if(end) end.value=value.end||"";
-    if(timezone) timezone.value=selection.timezone||"America/New_York";
-    if(unknown) unknown.value=selection.unknown_start||"exclude";
-  } else if(selection){
-    const input=document.querySelector(`[data-meetings-availability] input[name="meetingsAvailability"][value="${selection}"]`)
-      || document.querySelector('[data-meetings-availability] input[name="meetingsAvailability"][value="any"]');
-    if(input) input.checked=true;
-  }
-  syncMeetingAvailabilityControls();
-  const selected=document.querySelector('[data-meetings-availability] input[name="meetingsAvailability"]:checked')?.value||"any";
-  if(selected === "evenings_weekends") return EVENINGS_WEEKENDS_AVAILABILITY;
-  if(selected !== "custom") return null;
-  const weekdays=[...document.querySelectorAll("[data-meetings-availability-day]:checked")]
-    .map((input)=>Number(input.value)).filter((day)=>Number.isInteger(day)&&day>=0&&day<=6);
-  if(!weekdays.length) return null;
-  return {
-    schema:EVENINGS_WEEKENDS_AVAILABILITY.schema,
-    timezone:document.querySelector("[data-meetings-availability-timezone]")?.value||"America/New_York",
-    windows:[{
-      weekdays:[...new Set(weekdays)].sort((a,b)=>a-b),
-      start:document.querySelector("[data-meetings-availability-start]")?.value||null,
-      end:document.querySelector("[data-meetings-availability-end]")?.value||null,
-    }],
-    unknown_start:document.querySelector("[data-meetings-availability-unknown]")?.value||"exclude",
-  };
-}
-function meetingAvailabilitySummaryHTML(filter, counts){
-  if(!filter?.availability) return "";
-  const excluded=Number(counts?.unknown_start||0);
-  const preset=JSON.stringify(filter.availability)===JSON.stringify(EVENINGS_WEEKENDS_AVAILABILITY);
-  const windows=Array.isArray(filter.availability.windows)?filter.availability.windows:[];
-  const dayText=[...new Set(windows.flatMap((window)=>Array.isArray(window.weekdays)?window.weekdays:[]))]
-    .sort((a,b)=>a-b).map((day)=>String(day)).join(", ");
-  const first=windows[0]||{};
-  const boundary=`${first.start||"00:00"}–${first.end||"24:00"}`;
-  const unknown=filter.availability.unknown_start === "include"
-    ? (globalThis.t?.("meetings_availability_unknown_included") || "")
-    : (globalThis.t?.("meetings_availability_unknown_excluded") || "");
-  const label=preset
-    ? (globalThis.t?.("meetings_availability_evenings_summary") || "")
-    : (globalThis.t?.("meetings_availability_custom_summary", {days:dayText,boundary,timezone:filter.availability.timezone||"America/New_York",unknown}) || "");
-  const resultCopy=globalThis.t?.("meetings_availability_result") || "";
-  const exclusion=excluded
-    ? globalThis.t?.(excluded===1 ? "meetings_availability_date_only_one" : "meetings_availability_date_only_other", {n:excluded}) || ""
-    : "";
-  return `<div class="note meetings-availability-result" role="status" data-meetings-availability-result>${escUiHtml(label)}. ${escUiHtml(resultCopy)}${exclusion ? ` (${escUiHtml(exclusion)})` : ""}.</div>`;
-}
-function applyMeetingAvailability(rows, filter){
-  if(!filter?.availability) return {rows, counts:null};
-  return evaluateMeetingAvailabilityRows(rows, filter.availability, {asOf:todayISO()});
 }
 function hearingEventRow(record){
   return {
@@ -388,7 +312,7 @@ function hearingViewFilter(){
     communityDistrict:meetingsCommunityDistrict||null,
     councilDistrict:meetingsCouncilDistrict||null,
     contextSource:"route",
-    availability:meetingAvailabilityFromControls(),
+    availability:m(),
     ...hearingFilter(),
   };
 }
@@ -569,7 +493,6 @@ function exactRulemakingActionPath(r, ruleRecord){
     href:`/following/?lens=rules&filter=${filter}`,
   };
 }
-
 function exactLandActionPath(r){
   const projectId=String(r?._zap_project_id||"").trim();
   const join=r?._notice_land_join;
@@ -585,7 +508,6 @@ function exactLandActionPath(r){
     href:`#land/${encodeURIComponent(projectId)}`,
   };
 }
-
 function exactHearingActionPath(r){
   const record=r?.meeting_record || r?.hearing;
   if(!record?.meeting_id || !record?.meeting_outcome) return null;
@@ -1650,7 +1572,7 @@ function updateMeetingsMoreFiltersState(){
     +Number(!!$("#meetingsneighborhood")?.value.trim())
     +Number(!!$("#meetingsagency")?.value)
     +Number(!!activeCommunityBoardRef())
-    +Number(!!meetingAvailabilityFromControls())
+    +Number(!!m())
     +Number(meetingsPlaceGroupSel==="place");
   badge.textContent=active?t("property_filters_active",{n:fmtNumber(active)}):"";
   badge.hidden=active===0;
@@ -1660,7 +1582,7 @@ function wireMeetingAvailabilityControls(){
   if(!field || field.dataset.wired === "true") return;
   field.dataset.wired="true";
   field.addEventListener("change",()=>{
-    syncMeetingAvailabilityControls();
+    s();
     updateMeetingsMoreFiltersState();
     renderHearingExplorer();
     globalThis.updateHash?.();
@@ -1692,7 +1614,7 @@ async function renderHearingExplorer(options){
     : await filterFeedRowsToDistrictBag("meetings",hearingAll||[]);
   let availabilityCounts=null;
   const applyAvailabilityFilter=(rows)=>{
-    const result=applyMeetingAvailability(rows,filter);
+    const result=a(rows,filter);
     availabilityCounts=result.counts;
     return result.rows;
   };
@@ -1725,7 +1647,7 @@ async function renderHearingExplorer(options){
   }
   const widening=$("#meetingswidening");
   const scopedDisclosure=meetingScopedDisclosureHTML({outcome:meetingScopedKeywordState().outcome,keyword:scopedKeyword,t,escUiHtml});
-  widening.innerHTML=meetingAvailabilitySummaryHTML(filter,availabilityCounts)+scopedDisclosure+hearingWideningHTML(selection,filter)+hearingCommunityBoardDisambiguationHTML(filter)+hearingCommunityBoardPivotHTML();
+  widening.innerHTML=h(filter,availabilityCounts)+scopedDisclosure+hearingWideningHTML(selection,filter)+hearingCommunityBoardDisambiguationHTML(filter)+hearingCommunityBoardPivotHTML();
   const remove=widening.querySelector("[data-remove-widening]");
   if(remove) remove.addEventListener("click",()=>{
     hearingWideningDismissed=key;
@@ -1957,8 +1879,7 @@ globalThis.hearingFilterKey = hearingFilterKey;
 globalThis.hearingPastCache = hearingPastCache;
 globalThis.hearingSafeURL = hearingSafeURL;
 globalThis.hearingViewFilter = hearingViewFilter;
-globalThis.meetingAvailabilityFromControls = meetingAvailabilityFromControls;
-globalThis.meetingAvailabilitySummaryHTML = meetingAvailabilitySummaryHTML;
+globalThis.meetingAvailabilityFromControls = m;
 globalThis.hearingWidenedNone = hearingWidenedNone;
 globalThis.hearingWidenedShown = hearingWidenedShown;
 globalThis.hearingWideningHTML = hearingWideningHTML;

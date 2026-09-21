@@ -153,8 +153,4 @@ cityscroll.land_filing_evidence_report_detail.v1
 data/land_filing_reports
 # Canonical availability schema and DOM selectors are machine-readable contract values.
 America/New_York
-cityscroll.meeting_availability.v1
 [data-following-subscribe-form] [name=filter]
-[data-meetings-availability] input[name="meetingsAvailability"]:checked
-[data-meetings-availability] input[name="meetingsAvailability"][value="
-[data-meetings-availability] input[name="meetingsAvailability"][value="any"]

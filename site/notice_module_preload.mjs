@@ -64,6 +64,7 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/agency_scope_links.mjs",
   "/cardinality_adaptive_facets.mjs",
   "/meeting_origin.mjs",
+  "/meeting_availability_filter.mjs",
   "/meeting_capability_projection.mjs",
   "/meetings_card_interaction.mjs",
   "/council_hearing_matter_continuation.mjs",
@@ -151,7 +152,6 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/land_filter_parity.mjs",
   "/land_view_switch.mjs",
   "/community_board_watch.mjs",
-  "/meeting_availability_filter.mjs",
   "/app/boot.mjs",
   "/home_entry.mjs",
 ]);
