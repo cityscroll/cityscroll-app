@@ -260,6 +260,8 @@ jobs:
         if: matrix.family != 'worker'
         with:
           node-version: "22"
+      - uses: ./.github/actions/setup-playwright
+        if: matrix.family == 'site-node'
       - name: Snapshot temp-dir state before this family's tests
         run: node tools/check_temp_leaks.mjs snapshot --out "$RUNNER_TEMP/temp-leak-${{ matrix.family }}.json"
       - name: Preflight unit-family parity
