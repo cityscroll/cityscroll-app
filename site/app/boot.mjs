@@ -423,6 +423,8 @@ function currentLensFilterState(tab){
       }
       if(typeof meetingsCommunityDistrict!=="undefined" && meetingsCommunityDistrict) state.communityDistrict=meetingsCommunityDistrict;
       if(typeof meetingsCouncilDistrict!=="undefined" && meetingsCouncilDistrict) state.councilDistrict=meetingsCouncilDistrict;
+      const availability = globalThis.meetingAvailabilityFromControls?.();
+      if(availability) state.availability = availability;
     }
     if(tab === "property"){
       if(typeof propAgency !== "undefined" && propAgency) state.agency = propAgency;

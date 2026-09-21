@@ -824,6 +824,7 @@ function nlFeed(key, placeholder){
         } else if(f.borough) $("#meetingsboro").value=f.borough;
         if(f.neighborhood) $("#meetingsneighborhood").value=f.neighborhood;
         if(f.attendance){ const at=$("#meetingsattendance"); if(at) at.value=f.attendance; }
+        if(f.availability){ globalThis.meetingAvailabilityFromControls?.(f.availability); }
         meetingsCommunityDistrict=f.communityDistrict||"";
         meetingsCouncilDistrict=f.councilDistrict||"";
         if(f.process && ["scheduled","agenda","held","outcomes","unstaged"].includes(f.process)){

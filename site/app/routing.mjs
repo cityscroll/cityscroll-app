@@ -359,6 +359,11 @@ function serializeState(){
     {...scope.facets.values,...activeRouteFacetValues},
     scope.topic.query,
   );
+  if(tab === "meetings"){
+    const availability = globalThis.meetingAvailabilityFromControls?.();
+    if(availability) scope.facets.values.availability = availability;
+    else delete scope.facets.values.availability;
+  }
   if(tab === "land"){
     const regulatoryEffect=$("#leffect")?.value||"any";
     if(regulatoryEffect!=="any") scope.facets.values.regulatoryEffect=regulatoryEffect;
