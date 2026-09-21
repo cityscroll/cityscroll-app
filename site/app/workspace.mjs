@@ -18,6 +18,7 @@ import {
   researchPackageRequestFromInvestigation,
 } from "../research_package.mjs";
 import { pinBase } from "../procurement_pin.mjs";
+import { matterPermalink } from "../matter_permalink.mjs";
 
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
    Aleph's Investigations, account-free: pin notices/entities/matters into a named local
@@ -772,7 +773,7 @@ async function showMatter(pin){
       }) : null);
   const latestNoticeId = (view && view.latest_notice_id) || rows[rows.length-1].request_id;
   const eventCount = view ? view.event_count : rows.length + (regDetail ? 2 : 0);
-  const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
+  const link = matterPermalink(pin);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">

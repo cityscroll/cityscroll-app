@@ -55,7 +55,26 @@ test("every rendered borough and community-district polygon has a matching serve
 
 test("legacy map hashes forward and no-JavaScript area paths stay keyboard native", () => {
   assert.match(routing, /raw==="map"\|\|raw\.startsWith\("map" \+ "\?"\)/);
-  assert.match(routing, /location\.replace\(currentLanguageURL\(target\)\)/);
+  const functionStart = routing.indexOf("function forwardLegacyMapToNearYou");
+  const functionEnd = routing.indexOf("\n}\n\nfunction forwardLegacyAlertsToFollowing", functionStart) + 2;
+  assert.ok(functionStart >= 0 && functionEnd > functionStart, "legacy map forwarder must be present");
+  const browserLocation = { replaced: "", replace(value) { this.replaced = value; } };
+  const forwardLegacyMapToNearYou = new Function(
+    "CrolScope",
+    "nearYouHref",
+    "currentLanguageURL",
+    "location",
+    "window",
+    `${routing.slice(functionStart, functionEnd)}; return forwardLegacyMapToNearYou;`,
+  )(
+    { scopeFromRouteHash: () => ({}) },
+    () => "/near-you/",
+    (target) => `${target}&lang=es`,
+    browserLocation,
+    { LANG: "es" },
+  );
+  forwardLegacyMapToNearYou("map");
+  assert.equal(browserLocation.replaced, "/near-you/&lang=es");
   assert.match(near, /data-map-zoom="in"/);
   assert.match(near, /data-map-pan="west"/);
   assert.doesNotMatch(near, /class="map-district"[^>]+tabindex/);

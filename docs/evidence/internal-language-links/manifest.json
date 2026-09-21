@@ -1,0 +1,190 @@
+{
+  "browser_mode": "headless Chromium (Playwright), local static site",
+  "data_vintage": "committed static site fixtures; no external civic-data reads",
+  "image_binaries_committed": false,
+  "records": [
+    {
+      "artifact": ".artifacts/internal-language-links/site-index.json",
+      "assertion": "The home guide link reaches the guide with the selected locale.",
+      "browser_observation": {
+        "assertion": "The home guide link reaches the guide with the selected locale.",
+        "case": "site-index",
+        "destination": "http://127.0.0.1:51058/guide/es/",
+        "followed": true,
+        "locale": "es",
+        "route": "/?lang=es"
+      },
+      "case": "site-index",
+      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "route": "/?lang=es",
+      "sha256": "0ace7f7c40b88ba55afdf22e5a060aaf4125a538068ae7e32ff4b7e47008bf7d",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "artifact": ".artifacts/internal-language-links/civic-document-chrome.json",
+      "assertion": "The shared mast Guide link reaches the guide with the selected locale.",
+      "browser_observation": {
+        "assertion": "The shared mast Guide link reaches the guide with the selected locale.",
+        "case": "civic-document-chrome",
+        "destination": "http://127.0.0.1:51058/guide/es/",
+        "followed": true,
+        "locale": "es",
+        "route": "/following/?lang=es"
+      },
+      "case": "civic-document-chrome",
+      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "route": "/following/?lang=es",
+      "sha256": "3c30e70cd167060bca3d6ff645ea178637cf9a6cab6ae964b0800cb42fed5337",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "artifact": ".artifacts/internal-language-links/boot-matter-copy.json",
+      "assertion": "The home matter Copy control produces a destination that keeps the selected locale.",
+      "browser_observation": {
+        "assertion": "The home matter Copy control produces a destination that keeps the selected locale.",
+        "case": "boot-matter-copy",
+        "destination": "http://127.0.0.1:51058/?lang=es#matter/84124P0003001",
+        "followed": true,
+        "locale": "es",
+        "route": "/?lang=es"
+      },
+      "case": "boot-matter-copy",
+      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "route": "/?lang=es",
+      "sha256": "a42b29ac9cb63f7cc42bc643f08d44260e5977651eec7d16b918060cb4ea1fa6",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "artifact": ".artifacts/internal-language-links/workspace-matter-copy.json",
+      "assertion": "The rendered matter Copy control produces a destination that keeps the selected locale.",
+      "browser_observation": {
+        "assertion": "The rendered matter Copy control produces a destination that keeps the selected locale.",
+        "case": "workspace-matter-copy",
+        "destination": "http://127.0.0.1:51058/?lang=es#matter/84124P0003001",
+        "followed": true,
+        "locale": "es",
+        "route": "/?lang=es#matter/84124P0003001"
+      },
+      "case": "workspace-matter-copy",
+      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "route": "/?lang=es#matter/84124P0003001",
+      "sha256": "2ddc516281e75edb04f43f2163c240a6cf557b9be0cbd0ef6c00146d2bf19a94",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "artifact": ".artifacts/internal-language-links/agency-directory-runtime.json",
+      "assertion": "The directory runtime clear link remains a same-locale destination in the browser.",
+      "browser_observation": {
+        "assertion": "The directory runtime clear link remains a same-locale destination in the browser.",
+        "case": "agency-directory-runtime",
+        "destination": "http://127.0.0.1:51058/agencies/?lang=es",
+        "followed": true,
+        "locale": "es",
+        "route": "/?lang=es (directory runtime fixture)"
+      },
+      "case": "agency-directory-runtime",
+      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "route": "/?lang=es (directory runtime fixture)",
+      "sha256": "d1c81eb82c7510c9d13a9900617da4ee41baf774fee4442b1b477936e140fbd7",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "artifact": ".artifacts/internal-language-links/agency-connections.json",
+      "assertion": "The agency connection browse link reaches a same-locale destination.",
+      "browser_observation": {
+        "assertion": "The agency connection browse link reaches a same-locale destination.",
+        "case": "agency-connections",
+        "destination": "http://127.0.0.1:51058/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&lang=es",
+        "followed": true,
+        "locale": "es",
+        "route": "/?lang=es (agency connections browser fixture)"
+      },
+      "case": "agency-connections",
+      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "route": "/?lang=es (agency connections browser fixture)",
+      "sha256": "b152d80b95daca9c73a0a6359b61665802927df8a1db32cec5467d8f5501d77a",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "artifact": ".artifacts/internal-language-links/vendor-footprint.json",
+      "assertion": "The right-to-left vendor browse link reaches a same-locale destination.",
+      "browser_observation": {
+        "assertion": "The right-to-left vendor browse link reaches a same-locale destination.",
+        "case": "vendor-footprint",
+        "destination": "http://127.0.0.1:51058/browse/contracts/?mode=award&facet=%7B%22result_count_receipt%22%3A0%7D&lang=ar",
+        "followed": true,
+        "locale": "ar",
+        "route": "/?lang=ar (vendor footprint browser fixture)"
+      },
+      "case": "vendor-footprint",
+      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "route": "/?lang=ar (vendor footprint browser fixture)",
+      "sha256": "efa491be3ec6fbe21fb1238616753331b3385239a15181d6bb0c631d94dd85b3",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "artifact": ".artifacts/internal-language-links/following-view.json",
+      "assertion": "The Following view's internal watch link reaches a same-locale destination.",
+      "browser_observation": {
+        "assertion": "The Following view's internal watch link reaches a same-locale destination.",
+        "case": "following-view",
+        "destination": "http://127.0.0.1:51058/following?lens=money&filter=%7B%7D&lang=es",
+        "followed": true,
+        "locale": "es",
+        "route": "/following/?lang=es"
+      },
+      "case": "following-view",
+      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "route": "/following/?lang=es",
+      "sha256": "2d1edffa9b25b17ac6a93e46da0db6283c1f2a302ba6e22f616b59696bdbfb86",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "artifact": ".artifacts/internal-language-links/routing.json",
+      "assertion": "The legacy map route forwards to Near You without dropping the selected locale.",
+      "browser_observation": {
+        "assertion": "The legacy map route forwards to Near You without dropping the selected locale.",
+        "case": "routing",
+        "destination": "http://127.0.0.1:51058/near-you/?lang=es",
+        "followed": true,
+        "locale": "es",
+        "route": "/?lang=es#map"
+      },
+      "case": "routing",
+      "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+      "route": "/?lang=es#map",
+      "sha256": "60b6d52b37caf316b70eaba6b25b2c8a3af6ab96da32cf2f2380c9b377c0e6ce",
+      "viewport": [
+        1440,
+        900
+      ]
+    }
+  ],
+  "revision": "5880b9becfa68cf302c129d4a65b057e62288c08",
+  "schema": "cityscroll.internal_language_links_browser_evidence.v1",
+  "subject": "selected-language continuity across the inherited internal-link inventory"
+}

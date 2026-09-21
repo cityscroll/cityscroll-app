@@ -605,6 +605,7 @@
 /site/mandate_subject_ref.mjs
 /site/map_exploration.mjs
 /site/matter_coverage_recovery.mjs
+/site/matter_permalink.mjs
 /site/matter_phase_spine.mjs
 /site/matter_publication_generation.mjs
 /site/measurement_review_source.mjs

@@ -1,3 +1,5 @@
+import { matterPermalink } from "../matter_permalink.mjs";
+
 // Initialize direct-manipulation controls.
 $("#nlgo").addEventListener("click", nlTranslate);
 $("#nlq").addEventListener("keydown", e=>{ if(e.key==="Enter") nlTranslate(); });
@@ -15,7 +17,7 @@ loadValidatedSuggestions();
 document.addEventListener("click",e=>{
   const matterCopy=e.target.closest("[data-matter-copy]");
   if(matterCopy){
-    const link=location.origin+location.pathname+"#matter/"+encodeURIComponent(matterCopy.dataset.matterCopy);
+    const link=matterPermalink(matterCopy.dataset.matterCopy);
     copyText(link,matterCopy);
     return;
   }
