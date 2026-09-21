@@ -143,6 +143,8 @@ import { formatPeopleGetText, formatOrganizationsBrowseText, mcpPeopleGetInput, 
 import { workerMeetingGet, workerMeetingsBrowse } from "./hearings.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
+export const MCP_DEFAULT_LLM_CALLS_PER_DAY = 200;
+export const MCP_DEFAULT_PER_IP_DAY = 300;
 const FEDERATED_SEARCH_MCP_INPUT_FIELDS = new Set(FEDERATED_SEARCH_INPUT_FIELDS);
 const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings"]);
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -311,7 +313,7 @@ async function runPreview(env, lens, request, { filter: explicitFilter } = {}) {
     lens = prepared.lens;
     filter = prepared.filter;
   } else {
-    const mcpCap = Number(env.MCP_MAX_CALLS_PER_DAY) || 200;
+    const mcpCap = Number(env.MCP_MAX_CALLS_PER_DAY) || MCP_DEFAULT_LLM_CALLS_PER_DAY;
     if (await overSurfaceCap(env.NL_METER, "mcp", mcpCap)) {
       return { error: "Daily capacity for plain-English parsing is exhausted — try tomorrow, or use search_notices with structured filters (not metered)." };
     }
@@ -691,7 +693,7 @@ export async function handleMcp(req, env, { federatedProvider = null } = {}) {
   // longer each other's noisy neighbours; anonymous callers keep the per-address meter.
   const ip = req.headers.get("CF-Connecting-IP") || "";
   const { meter, actor, limit } = machineClientMeterIdentity(profile, ip);
-  const cap = limit ?? (Number(env.MCP_MAX_PER_IP_DAY) || 300);
+  const cap = limit ?? (Number(env.MCP_MAX_PER_IP_DAY) || MCP_DEFAULT_PER_IP_DAY);
   if (await overActorLimit(env.SUBS, meter, actor, cap)) {
     recordMcpObservation(env, {
       ...baseObservation,

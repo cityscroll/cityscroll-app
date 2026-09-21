@@ -20,6 +20,18 @@ test("MCP introduction explains browser recovery without promising sign-in", asy
   assert.match(html, /\/api\.html#mcp/);
 });
 
+test("A5: the public interface keeps the stable MCP heading and recovery semantics", async () => {
+  const api = await readFile(new URL("../site/api.html", import.meta.url), "utf8");
+  assert.match(api, /<[^>]+id="mcp"[^>]*>/);
+  assert.match(api, /MCP/);
+  assert.match(api, /href="\/use-with-ai\/"/);
+  const intro = await readFile(introduction, "utf8");
+  assert.match(intro, /tools-only/);
+  assert.match(intro, /POST/);
+  assert.match(intro, /browser[^.]*cannot run tools/i);
+  assert.doesNotMatch(intro, /href="https:\/\/api\.cityscroll\.org\/mcp"[^>]*(?:target|window\.open)/i);
+});
+
 test("MCP setup puts connection prerequisites before exact task copying", async () => {
   const html = await readFile(introduction, "utf8");
   const fixture = JSON.parse(await readFile(new URL("../site/data/assistant_setup_sources.json", import.meta.url), "utf8"));
@@ -42,4 +54,32 @@ test("MCP setup puts connection prerequisites before exact task copying", async 
   const taskMount = html.indexOf("data-ai-context-mount");
   assert.ok(prerequisite >= 0 && taskMount > prerequisite);
   assert.match(html, new RegExp(claudeWeb.url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+});
+
+test("A3: three setup tasks bind to declared tools, exact public records, and generic-client instructions", async () => {
+  const html = await readFile(introduction, "utf8");
+  const fixture = JSON.parse(await readFile(new URL("../site/data/assistant_setup_sources.json", import.meta.url), "utf8"));
+  const taskSection = html.match(/<section aria-labelledby="try">[\s\S]*?<\/section>/)?.[0] || "";
+  const examples = taskSection.match(/<ol>[\s\S]*?<\/ol>/)?.[0] || "";
+  const bindingDisclosure = taskSection.match(/<details>[\s\S]*?<\/details>/)?.[0] || "";
+  assert.equal((examples.match(/<li>/g) || []).length, 3);
+  assert.doesNotMatch(examples, /<code>/, "visible tasks stay client-neutral");
+  for (const tool of ["search_notices", "get_notice", "get_contract", "get_land_project", "get_land_decision_path"]) {
+    assert.match(bindingDisclosure, new RegExp(`<code>${tool}</code>`), tool);
+  }
+  for (const recordId of ["20260824035", "CT107120258801626", "2024Q0356"]) {
+    assert.match(taskSection, new RegExp(recordId), recordId);
+  }
+  assert.match(html, /Generic Streamable HTTP/);
+  assert.match(html, /leave authentication blank/);
+
+  const officialHosts = new Set(["support.claude.com", "code.claude.com", "modelcontextprotocol.io"]);
+  assert.equal(fixture.sources.length, 3);
+  for (const source of fixture.sources) {
+    const url = new URL(source.url);
+    assert.equal(url.protocol, "https:");
+    assert.ok(officialHosts.has(url.hostname), source.id);
+    assert.ok(source.claims.length > 0, source.id);
+    assert.match(html, new RegExp(source.url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), source.id);
+  }
 });

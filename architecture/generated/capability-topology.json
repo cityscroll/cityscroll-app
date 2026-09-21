@@ -2817,5 +2817,390 @@
         "store_access": null
       }
     ]
+  },
+  "discovery": {
+    "contract": "cityscroll.public_entrance_contract.v1",
+    "capabilities": [
+      {
+        "name": "MCP",
+        "task": "Connect an assistant to public records",
+        "requires_mcp": true,
+        "mcp_tools": [
+          "list_capability_gaps"
+        ],
+        "render_owner": "worker/src/mcp.mjs",
+        "guide_topic": null,
+        "action_role": "navigate",
+        "placement": "introduction",
+        "analytics_event": null
+      },
+      {
+        "name": "Follow",
+        "task": "Follow a search",
+        "requires_mcp": false,
+        "mcp_tools": [],
+        "render_owner": "site/app/feed-actions.mjs",
+        "guide_topic": "following",
+        "action_role": "navigate",
+        "placement": "scope_tools",
+        "analytics_event": "alert_start"
+      },
+      {
+        "name": "Calendar",
+        "task": "Save dated events",
+        "requires_mcp": false,
+        "mcp_tools": [],
+        "render_owner": "site/calendar_subscription.mjs",
+        "guide_topic": "calendar",
+        "action_role": "handoff",
+        "placement": "scope_tools",
+        "analytics_event": "export"
+      },
+      {
+        "name": "Feeds",
+        "task": "Read a scoped feed",
+        "requires_mcp": false,
+        "mcp_tools": [],
+        "render_owner": "site/app/feed-actions.mjs",
+        "guide_topic": "following",
+        "action_role": "navigate",
+        "placement": "scope_tools",
+        "analytics_event": "feed_fetch"
+      },
+      {
+        "name": "Saved searches",
+        "task": "Keep a search in this browser",
+        "requires_mcp": false,
+        "mcp_tools": [],
+        "render_owner": "site/app/search-share.mjs",
+        "guide_topic": null,
+        "action_role": "inspect",
+        "placement": "more_tools",
+        "analytics_event": null
+      },
+      {
+        "name": "Collection/export",
+        "task": "Collect and export records",
+        "requires_mcp": false,
+        "mcp_tools": [],
+        "render_owner": "site/app/search-share.mjs",
+        "guide_topic": "emptyCollection",
+        "action_role": "inspect",
+        "placement": "more_tools",
+        "analytics_event": "export"
+      },
+      {
+        "name": "Evidence",
+        "task": "Inspect source and connections",
+        "requires_mcp": false,
+        "mcp_tools": [
+          "retrieve_cited_passages"
+        ],
+        "render_owner": "site/guide_contextual_links.mjs",
+        "guide_topic": "connection",
+        "action_role": "inspect",
+        "placement": "more_tools",
+        "analytics_event": null
+      },
+      {
+        "name": "As-of",
+        "task": "Read records as of a day",
+        "requires_mcp": false,
+        "mcp_tools": [],
+        "render_owner": "site/guide_contextual_links.mjs",
+        "guide_topic": "asOf",
+        "action_role": "navigate",
+        "placement": "more_tools",
+        "analytics_event": null
+      },
+      {
+        "name": "Comparative analysis",
+        "task": "Compare supported contract measures",
+        "requires_mcp": true,
+        "mcp_tools": [
+          "analyze_contracts"
+        ],
+        "render_owner": "capabilities/contracts_analysis.mjs",
+        "guide_topic": null,
+        "action_role": "navigate",
+        "placement": "more_tools",
+        "analytics_event": null
+      }
+    ],
+    "page_families": [
+      {
+        "surface_id": "home",
+        "route_family": "home",
+        "disposition": "standalone_link",
+        "render_owner": "site/index.html",
+        "ai_entry": "footer"
+      },
+      {
+        "surface_id": "search",
+        "route_family": "search",
+        "disposition": "standalone_link",
+        "render_owner": "site/search/index.html",
+        "ai_entry": "footer"
+      },
+      {
+        "surface_id": "now",
+        "route_family": "task-now",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/primary_document_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "near-you",
+        "route_family": "place-near-you",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/near_you_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "following",
+        "route_family": "stateful-following",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/following_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "following-pack",
+        "route_family": "stateful-following-pack",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "browse",
+        "route_family": "browse",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/browse_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "browse-contracts",
+        "route_family": "browse-contracts",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/browse_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "browse-exams",
+        "route_family": "browse-exams",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/browse_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "browse-meetings",
+        "route_family": "browse-meetings",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/browse_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "browse-people",
+        "route_family": "browse-people",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/browse_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "browse-places",
+        "route_family": "browse-places",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/browse_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "browse-property",
+        "route_family": "browse-property",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/browse_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "browse-rules",
+        "route_family": "browse-rules",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/browse_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "browse-staffing",
+        "route_family": "browse-staffing",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/browse_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "browse-zoning",
+        "route_family": "browse-zoning",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/browse_view.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "guide",
+        "route_family": "information-guide",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "guide-article",
+        "route_family": "information-guide",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "about",
+        "route_family": "information-about",
+        "disposition": "standalone_link",
+        "render_owner": "site/about.html",
+        "ai_entry": "backhome"
+      },
+      {
+        "surface_id": "api-guide",
+        "route_family": "information-api",
+        "disposition": "standalone_link",
+        "render_owner": "site/api.html",
+        "ai_entry": "backhome"
+      },
+      {
+        "surface_id": "public-stats",
+        "route_family": "information-stats",
+        "disposition": "standalone_link",
+        "render_owner": "site/stats.html",
+        "ai_entry": "backhome"
+      },
+      {
+        "surface_id": "data-guide",
+        "route_family": "information-data",
+        "disposition": "standalone_link",
+        "render_owner": "site/data.html",
+        "ai_entry": "body"
+      },
+      {
+        "surface_id": "data-health",
+        "route_family": "information-data-health",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "changelog",
+        "route_family": "information-changelog",
+        "disposition": "standalone_link",
+        "render_owner": "site/changelog.html",
+        "ai_entry": "body"
+      },
+      {
+        "surface_id": "standards",
+        "route_family": "information-standards",
+        "disposition": "standalone_link",
+        "render_owner": "site/standards.html",
+        "ai_entry": "body"
+      },
+      {
+        "surface_id": "agency",
+        "route_family": "entity-agency",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "vendor",
+        "route_family": "entity-vendor",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "official",
+        "route_family": "entity-official",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "committee",
+        "route_family": "entity-committee",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "community-board",
+        "route_family": "entity-community-board",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "notice",
+        "route_family": "record-notice",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "meeting",
+        "route_family": "record-meeting",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "procurement",
+        "route_family": "record-procurement",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "exam",
+        "route_family": "record-exam",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "parcel",
+        "route_family": "record-parcel",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "mandate",
+        "route_family": "record-mandate",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "assertion",
+        "route_family": "record-assertion",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "rulemaking",
+        "route_family": "rulemaking",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/civic_document_chrome.mjs",
+        "ai_entry": "mast"
+      },
+      {
+        "surface_id": "district-digest",
+        "route_family": "district-digest",
+        "disposition": "inherited_chrome",
+        "render_owner": "site/composed_object_documents.mjs",
+        "ai_entry": "mast"
+      }
+    ]
   }
 }

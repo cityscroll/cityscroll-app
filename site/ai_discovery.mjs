@@ -5,15 +5,16 @@ export const AI_ENDPOINT = "https://api.cityscroll.org/mcp";
 // This is deliberately a small projection, not a second capability registry.
 // The MCP catalog and each existing UI owner remain authoritative for behavior.
 export const CAPABILITY_DISCOVERY_MATRIX = Object.freeze([
-  ["MCP", "Connect an assistant to public records", "available", "worker/src/mcp.mjs"],
-  ["Follow", "Follow a search", "available", "site/app/feed-actions.mjs"],
-  ["Calendar", "Save dated events", "available when dated", "site/calendar_subscription.mjs"],
-  ["Feeds", "Read a scoped feed", "available", "site/app/feed-actions.mjs"],
-  ["Saved searches", "Keep a search in this browser", "available", "site/app/search-share.mjs"],
-  ["Collection/export", "Collect and export records", "available", "site/app/search-share.mjs"],
-  ["Evidence", "Inspect source and connections", "available", "site/guide_contextual_links.mjs"],
-  ["As-of", "Read records as of a day", "available", "site/guide_contextual_links.mjs"],
-  ["Comparative analysis", "Compare supported contract measures", "available when supported", "capabilities/contracts_analysis.mjs"],
+  // [name, task, availability, render owner, disposition, placement]
+  ["MCP", "Connect an assistant to public records", "available", "worker/src/mcp.mjs", "machine_connector", "introduction"],
+  ["Follow", "Follow a search", "available", "site/app/feed-actions.mjs", "existing_control", "scope_tools"],
+  ["Calendar", "Save dated events", "available when dated", "site/calendar_subscription.mjs", "conditional_control", "scope_tools"],
+  ["Feeds", "Read a scoped feed", "available", "site/app/feed-actions.mjs", "existing_control", "scope_tools"],
+  ["Saved searches", "Keep a search in this browser", "available", "site/app/search-share.mjs", "browser_local", "more_tools"],
+  ["Collection/export", "Collect and export records", "available", "site/app/search-share.mjs", "browser_local", "more_tools"],
+  ["Evidence", "Inspect source and connections", "available", "site/guide_contextual_links.mjs", "contextual_control", "more_tools"],
+  ["As-of", "Read records as of a day", "available", "site/guide_contextual_links.mjs", "contextual_control", "more_tools"],
+  ["Comparative analysis", "Compare supported contract measures", "available when supported", "capabilities/contracts_analysis.mjs", "machine_analysis", "more_tools"],
 ]);
 
 function esc(value) {
