@@ -729,6 +729,9 @@ def main() -> int:
     if args.verify_only and MANIFEST.is_file():
         retained = json.loads(MANIFEST.read_text(encoding="utf-8"))
         capture_clock = str(retained.get("capture_clock") or capture_clock)
+    # A shifted CI process must not leak into any helper launched by this
+    # verifier; the retained manifest instant is the sole render clock.
+    os.environ.pop("CITYSCROLL_TEST_TIME_SHIFT_DAYS", None)
     os.environ["CITYSCROLL_TEST_TIME_PIN"] = capture_clock
     configured_base = resolve_base()
     production = bool(configured_base and is_production_base(configured_base))
