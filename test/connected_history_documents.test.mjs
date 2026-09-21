@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createServer } from "node:http";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -13,9 +14,11 @@ import {
   DATE_KINDS,
   DOT_PARENT_URL,
   acquireConnectedHistoryDocuments,
+  assertRetainedObservationsHaveFetchReceipts,
   assertNotOpenConsultation,
   assertRetentionBoundaries,
   buildDotSelectorManifest,
+  createLiveHttpGet,
   resolveDotAttachmentSelector,
 } from "../tools/lib/connected_history_documents.mjs";
 import {
@@ -88,20 +91,48 @@ test("A1 retains every fixed dossier source or an explicit failure receipt", asy
   );
   assert.equal(receipt.checkpointed, true);
   assert.equal(receipt.max_retries, CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.maxRetries);
+  assert.equal(receipt.acquisition_mode, "injected");
   assert.ok(receipt.request_count > 0);
   assert.equal(receipt.parser_version, CONNECTED_HISTORY_DOCUMENTS_PARSER_VERSION);
 });
 
-test("A1 committed artifact matches a fresh fixture acquisition", async () => {
-  const httpGet = createFixtureHttpGet();
-  const { artifact, receipt } = await acquireConnectedHistoryDocuments({
-    httpGet,
-    observedAt: "2026-09-18T00:00:00.000Z",
-  });
-  assert.deepEqual(committed, artifact);
-  assert.deepEqual(committedReceipt, receipt);
-  assert.ok(committed.counts.retained > 0);
-  assert.equal(committed.counts.acquisition_failures, 0);
+test("A1 committed corpus is explicitly live-retrieved or failed", () => {
+  assert.equal(committedReceipt.acquisition_mode, "live");
+  assert.equal(committedReceipt.checkpointed, true);
+  assert.ok(Number.isInteger(committedReceipt.request_timeout_ms));
+  assert.ok(Number.isInteger(committedReceipt.request_count));
+  assert.equal(
+    committed.counts.retained + committed.counts.acquisition_failures,
+    committed.counts.sources,
+  );
+  for (const row of committed.observations) {
+    assert.ok(["retrieved", "failed"].includes(row.provenance));
+    if (row.provenance === "retrieved") {
+      assert.equal(row.status, "retained");
+      assert.equal(row.request_receipt.outcome, "ok");
+      assert.equal(row.content_hash, row.request_receipt.content_hash);
+      assert.equal(row.byte_count, row.request_receipt.byte_count);
+      assert.equal(row.source_span.located, true);
+    } else {
+      assert.equal(row.status, "acquisition_failure");
+      assert.equal(row.retained, false);
+      assert.equal(row.content_hash, null);
+    }
+  }
+  assertRetainedObservationsHaveFetchReceipts(committed.observations);
+});
+
+test("builder refuses a retained record without a successful fetch receipt", () => {
+  assert.throws(
+    () => assertRetainedObservationsHaveFetchReceipts([
+      {
+        source_id: "missing-receipt",
+        retained: true,
+        request_receipt: null,
+      },
+    ]),
+    /successful fetch receipt/,
+  );
 });
 
 test("A2 refuses a second board scraper, BSA calendar, or consultation conversion", () => {
@@ -270,6 +301,62 @@ test("A3 bounded acquisition run checkpoints, retries, and emits receipts", asyn
     false,
     "checkpointed parent html must prevent a second parent fetch",
   );
+});
+
+test("A3 live transport fixture server covers success, 404, timeout, and selector mismatch", async () => {
+  const server = createServer((request, response) => {
+    if (request.url === "/parent") {
+      response.writeHead(200, { "content-type": "text/html" });
+      response.end("<h2>Fixture corridor</h2><a href=\"/success\">different label</a>");
+      return;
+    }
+    if (request.url === "/success") {
+      response.writeHead(200, { "content-type": "text/plain" });
+      response.end("success body");
+      return;
+    }
+    if (request.url === "/missing") {
+      response.writeHead(404, { "content-type": "text/plain" });
+      response.end("not found");
+      return;
+    }
+    if (request.url === "/timeout") {
+      setTimeout(() => response.end("too late"), 2_000);
+      return;
+    }
+    response.writeHead(404);
+    response.end();
+  });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  try {
+    const address = server.address();
+    const base = `http://127.0.0.1:${address.port}`;
+    const template = CONNECTED_HISTORY_DOCUMENT_SOURCES[0];
+    const dotTemplate = CONNECTED_HISTORY_DOCUMENT_SOURCES.find((row) => row.kind === "dot_selector");
+    const sources = [
+      { ...template, source_id: "fixture-success", url: `${base}/success`, source_span: { locator: "body", quote: "success body" } },
+      { ...template, source_id: "fixture-404", url: `${base}/missing` },
+      { ...template, source_id: "fixture-timeout", url: `${base}/timeout` },
+      { ...dotTemplate, source_id: "fixture-selector-mismatch", parent_url: `${base}/parent`, selector: { heading: "Fixture corridor", link_label: "expected label" } },
+    ];
+    const { artifact, requestGraph } = await acquireConnectedHistoryDocuments({
+      httpGet: createLiveHttpGet(),
+      sources,
+      observedAt: "2026-09-21T00:00:00.000Z",
+      maxRetries: 0,
+      // Leave scheduler headroom in the full shifted-clock suite; the timeout
+      // fixture remains decisively slower than the bounded transport budget.
+      requestTimeoutMs: 500,
+    });
+    const byId = new Map(artifact.observations.map((row) => [row.source_id, row]));
+    assert.equal(byId.get("fixture-success").provenance, "retrieved");
+    assert.equal(byId.get("fixture-404").reason, "retrieval_failure");
+    assert.equal(byId.get("fixture-timeout").reason, "retrieval_failure");
+    assert.equal(byId.get("fixture-selector-mismatch").reason, "link_label_not_found_under_heading");
+    assert.equal(requestGraph.length, 4);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
 });
 
 test("A4 stays inside the fixed dossier and reports missing strata honestly", () => {

@@ -32,6 +32,7 @@ export const CONNECTED_HISTORY_DOT_SELECTOR_MANIFEST_SCHEMA =
 export const CONNECTED_HISTORY_DOCUMENTS_TRANSPORT = Object.freeze({
   maxRetries: 2,
   maxRequests: 40,
+  requestTimeoutMs: 15_000,
   responseCapBytes: 8_000_000,
   parserVersion: CONNECTED_HISTORY_DOCUMENTS_PARSER_VERSION,
 });
@@ -138,8 +139,8 @@ export const CONNECTED_HISTORY_DOCUMENT_SOURCES = Object.freeze([
     }),
     internal_dates: Object.freeze([]),
     source_span: Object.freeze({
-      locator: "ceqr_access_project_file",
-      quote: "25DME006X_Statement_Of_Findings",
+      locator: "ceqr_access_project_file_publication_date",
+      quote: "2025-10-01",
     }),
   }),
   Object.freeze({
@@ -161,8 +162,8 @@ export const CONNECTED_HISTORY_DOCUMENT_SOURCES = Object.freeze([
     }),
     internal_dates: Object.freeze([]),
     source_span: Object.freeze({
-      locator: "dot_current_projects_heading_link",
-      quote: "June 2024 CB2",
+      locator: "dot_attachment_body",
+      quote: "NYC DOT",
     }),
     consultation: false,
   }),
@@ -185,8 +186,8 @@ export const CONNECTED_HISTORY_DOCUMENT_SOURCES = Object.freeze([
     }),
     internal_dates: Object.freeze([]),
     source_span: Object.freeze({
-      locator: "dot_current_projects_heading_link",
-      quote: "February 2025 CB4/CB5",
+      locator: "dot_attachment_body",
+      quote: "NYC DOT",
     }),
     consultation: false,
   }),
@@ -209,8 +210,8 @@ export const CONNECTED_HISTORY_DOCUMENT_SOURCES = Object.freeze([
     }),
     internal_dates: Object.freeze([]),
     source_span: Object.freeze({
-      locator: "dot_current_projects_heading_link",
-      quote: "June 2026 CB2/CB4/CB5",
+      locator: "dot_attachment_body",
+      quote: "NYC DOT",
     }),
     consultation: false,
   }),
@@ -233,8 +234,8 @@ export const CONNECTED_HISTORY_DOCUMENT_SOURCES = Object.freeze([
     }),
     internal_dates: Object.freeze([]),
     source_span: Object.freeze({
-      locator: "dot_current_projects_heading_link",
-      quote: "September 2023 workshop",
+      locator: "dot_attachment_body",
+      quote: "NYC DOT",
     }),
     consultation: false,
   }),
@@ -257,8 +258,8 @@ export const CONNECTED_HISTORY_DOCUMENT_SOURCES = Object.freeze([
     }),
     internal_dates: Object.freeze([]),
     source_span: Object.freeze({
-      locator: "dot_current_projects_heading_link",
-      quote: "May/June 2024 materials",
+      locator: "dot_attachment_body",
+      quote: "NYC DOT",
     }),
     consultation: false,
   }),
@@ -286,7 +287,7 @@ export const CONNECTED_HISTORY_DOCUMENT_SOURCES = Object.freeze([
     ]),
     source_span: Object.freeze({
       locator: "dot_pdf_direct",
-      quote: "31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+      quote: "31st Avenue",
     }),
     consultation: false,
   }),
@@ -356,6 +357,98 @@ function clean(value, max = 400) {
 
 function sha256Text(value) {
   return createHash("sha256").update(String(value), "utf8").digest("hex");
+}
+
+function bodyText(bytes, contentType) {
+  const raw = Buffer.from(bytes).toString("utf8");
+  if (!String(contentType || "").toLowerCase().includes("html")) return raw;
+  return decodeHtmlEntities(
+    raw
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " "),
+  );
+}
+
+function locateSourceSpan(bytes, sourceSpan, contentType) {
+  const quote = clean(sourceSpan?.quote, 240);
+  const searchable = bodyText(bytes, contentType);
+  const pattern = quote
+    ? new RegExp(quote.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i")
+    : null;
+  const match = pattern?.exec(searchable) || null;
+  const index = match?.index ?? -1;
+  return {
+    ...sourceSpan,
+    located: index >= 0,
+    matched_text: match?.[0] ?? null,
+    match_offset: index >= 0 ? index : null,
+  };
+}
+
+function headerValue(headers, name) {
+  if (!headers) return null;
+  if (typeof headers.get === "function") return headers.get(name) || null;
+  return headers[name] || headers[name.toLowerCase()] || null;
+}
+
+async function readResponseBytes(response, responseCapBytes) {
+  if (!response.body?.getReader) {
+    const bytes = Buffer.from(await response.arrayBuffer());
+    if (bytes.length > responseCapBytes) {
+      throw new Error(`response exceeds ${responseCapBytes} byte cap`);
+    }
+    return bytes;
+  }
+  const reader = response.body.getReader();
+  const chunks = [];
+  let total = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > responseCapBytes) {
+      await reader.cancel();
+      throw new Error(`response exceeds ${responseCapBytes} byte cap`);
+    }
+    chunks.push(Buffer.from(value));
+  }
+  return Buffer.concat(chunks, total);
+}
+
+/** Live bounded transport used by the acquisition builder. */
+export function createLiveHttpGet({
+  userAgent = "CityScrollConnectedHistoryAcquisition/1.0",
+} = {}) {
+  return async (
+    url,
+    {
+      timeoutMs = CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.requestTimeoutMs,
+      responseCapBytes = CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.responseCapBytes,
+    } = {},
+  ) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const response = await fetch(url, {
+        redirect: "follow",
+        headers: {
+          "User-Agent": userAgent,
+          Accept: "text/html, application/pdf, text/plain, */*",
+        },
+        signal: controller.signal,
+      });
+      const bytes = await readResponseBytes(response, responseCapBytes);
+      return {
+        status: response.status,
+        bytes,
+        headers: response.headers,
+        finalUrl: response.url,
+      };
+    } finally {
+      clearTimeout(timer);
+    }
+  };
 }
 
 function decodeHtmlEntities(value) {
@@ -547,7 +640,15 @@ function failureObservation({
     requested_url: source.url || source.parent_url || null,
     resolved_url: resolvedUrl,
     content_hash: null,
-    source_span: { ...source.source_span },
+    byte_count: null,
+    fetched_at: requestReceipt?.retrieved_at ?? null,
+    provenance: "failed",
+    source_span: {
+      ...source.source_span,
+      located: false,
+      matched_text: null,
+      match_offset: null,
+    },
     publication: dateRecord(source.publication, observedAt),
     internal_dates: (source.internal_dates || []).map((row) => dateRecord(row, observedAt)),
     observation_time: observedAt,
@@ -578,7 +679,13 @@ function successObservation({
     resolved_url: resolvedUrl,
     content_hash: contentHashOf(bytes),
     byte_count: bytes.length,
-    source_span: { ...source.source_span },
+    fetched_at: requestReceipt.retrieved_at,
+    provenance: "retrieved",
+    source_span: locateSourceSpan(
+      bytes,
+      source.source_span,
+      requestReceipt.content_type,
+    ),
     publication: dateRecord(source.publication, observedAt),
     internal_dates: (source.internal_dates || []).map((row) => dateRecord(row, observedAt)),
     observation_time: observedAt,
@@ -588,25 +695,83 @@ function successObservation({
   };
 }
 
+export function assertRetainedObservationsHaveFetchReceipts(observations) {
+  for (const row of observations || []) {
+    if (!row?.retained) continue;
+    if (!row.request_receipt || row.request_receipt.outcome !== "ok") {
+      throw new Error(`${row.source_id || "observation"}: retained record requires a successful fetch receipt`);
+    }
+    if (!row.fetched_at || !row.content_hash || !Number.isInteger(row.byte_count)) {
+      throw new Error(`${row.source_id || "observation"}: retained record requires fetched_at, content hash, and byte count`);
+    }
+    if (row.source_span?.located !== true) {
+      throw new Error(`${row.source_id || "observation"}: retained record requires a located source span`);
+    }
+  }
+  return true;
+}
+
 async function fetchWithRetries(httpGet, url, {
   maxRetries = CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.maxRetries,
   requestId,
   parentRequestId = null,
   observedAt,
+  requestTimeoutMs = CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.requestTimeoutMs,
+  responseCapBytes = CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.responseCapBytes,
+  requestBudget = { used: 0, max: CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.maxRequests },
 } = {}) {
   let retries = 0;
   let lastError = null;
   while (retries <= maxRetries) {
     const requestedAt = observedAt;
+    if (requestBudget.used >= requestBudget.max) {
+      const limitReceipt = buildAcquisitionRequestReceipt({
+        requestId: retries === 0 ? requestId : `${requestId}:retry${retries}`,
+        parentRequestId,
+        url,
+        requestedAt,
+        retrievedAt: observedAt,
+        status: null,
+        bytes: null,
+        latencyMs: 0,
+        parserVersion: CONNECTED_HISTORY_DOCUMENTS_PARSER_VERSION,
+        outcome: "retrieval_failure",
+        reason: "request_limit_exceeded",
+        retries,
+      });
+      lastError = {
+        ...limitReceipt,
+        content_type: null,
+        byte_count: limitReceipt.bytes,
+        fetched_at: observedAt,
+      };
+      break;
+    }
+    requestBudget.used += 1;
     try {
-      const result = await httpGet(url);
+      let timeoutHandle;
+      const timeout = new Promise((_, reject) => {
+        timeoutHandle = setTimeout(
+          () => reject(new Error(`request timed out after ${requestTimeoutMs}ms`)),
+          requestTimeoutMs,
+        );
+      });
+      let result;
+      try {
+        result = await Promise.race([
+          httpGet(url, { timeoutMs: requestTimeoutMs, responseCapBytes }),
+          timeout,
+        ]);
+      } finally {
+        clearTimeout(timeoutHandle);
+      }
       const retrievedAt = observedAt;
       const status = Number.isInteger(result?.status) ? result.status : null;
       const bytes = result?.bytes ? Buffer.from(result.bytes) : null;
       const ok = Boolean(bytes) && status != null && status >= 200 && status < 300;
       // Request/retrieved timestamps are pinned to observedAt for deterministic
       // materialization, so latency_ms stays 0 rather than wall-clock noise.
-      const receipt = buildAcquisitionRequestReceipt({
+      const receiptBase = buildAcquisitionRequestReceipt({
         requestId: retries === 0 ? requestId : `${requestId}:retry${retries}`,
         parentRequestId,
         url,
@@ -620,6 +785,12 @@ async function fetchWithRetries(httpGet, url, {
         reason: ok ? null : `http_status_${status ?? "missing"}`,
         retries,
       });
+      const receipt = {
+        ...receiptBase,
+        content_type: headerValue(result?.headers, "content-type"),
+        byte_count: receiptBase.bytes,
+        fetched_at: retrievedAt,
+      };
       if (ok) return { ok: true, bytes, receipt, status };
       lastError = receipt;
       if (status != null && status >= 400 && status < 500 && status !== 408 && status !== 429) {
@@ -627,7 +798,7 @@ async function fetchWithRetries(httpGet, url, {
       }
     } catch (error) {
       const retrievedAt = observedAt;
-      lastError = buildAcquisitionRequestReceipt({
+      const failureReceipt = buildAcquisitionRequestReceipt({
         requestId: retries === 0 ? requestId : `${requestId}:retry${retries}`,
         parentRequestId,
         url,
@@ -641,6 +812,12 @@ async function fetchWithRetries(httpGet, url, {
         reason: `request_failed:${clean(error?.message, 120)}`,
         retries,
       });
+      lastError = {
+        ...failureReceipt,
+        content_type: null,
+        byte_count: failureReceipt.bytes,
+        fetched_at: retrievedAt,
+      };
     }
     retries += 1;
   }
@@ -658,6 +835,10 @@ export async function acquireConnectedHistoryDocuments({
   sources = CONNECTED_HISTORY_DOCUMENT_SOURCES,
   checkpoint = null,
   maxRetries = CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.maxRetries,
+  maxRequests = CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.maxRequests,
+  requestTimeoutMs = CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.requestTimeoutMs,
+  responseCapBytes = CONNECTED_HISTORY_DOCUMENTS_TRANSPORT.responseCapBytes,
+  runMode = "injected",
   storeParentHtml = null,
 } = {}) {
   if (typeof httpGet !== "function") {
@@ -676,13 +857,18 @@ export async function acquireConnectedHistoryDocuments({
   let parentHtml = prior?.parent_html || null;
   let parentReceipt = prior?.parent_receipt || null;
   let dotManifest = prior?.dot_selector_manifest || null;
+  const parentUrl = sources.find((source) => source.kind === "dot_selector")?.parent_url || DOT_PARENT_URL;
+  const requestBudget = { used: 0, max: maxRequests };
 
   const needsParent = sources.some((source) => source.kind === "dot_selector");
   if (needsParent && !parentHtml) {
-    const parentFetch = await fetchWithRetries(httpGet, DOT_PARENT_URL, {
+    const parentFetch = await fetchWithRetries(httpGet, parentUrl, {
       maxRetries,
       requestId: "dot-parent-current-projects",
       observedAt,
+      requestTimeoutMs,
+      responseCapBytes,
+      requestBudget,
     });
     requestGraph.push(parentFetch.receipt);
     parentReceipt = parentFetch.receipt;
@@ -712,14 +898,14 @@ export async function acquireConnectedHistoryDocuments({
       parentHtml = parentFetch.bytes.toString("utf8");
       if (typeof storeParentHtml === "function") storeParentHtml(parentHtml);
       dotManifest = buildDotSelectorManifest(parentHtml, {
-        parentUrl: DOT_PARENT_URL,
+        parentUrl,
         observedAt,
         sources,
       });
     }
   } else if (needsParent && parentHtml && !dotManifest) {
     dotManifest = buildDotSelectorManifest(parentHtml, {
-      parentUrl: DOT_PARENT_URL,
+      parentUrl,
       observedAt,
       sources,
     });
@@ -757,6 +943,9 @@ export async function acquireConnectedHistoryDocuments({
         requestId: source.source_id,
         parentRequestId: "dot-parent-current-projects",
         observedAt,
+        requestTimeoutMs,
+        responseCapBytes,
+        requestBudget,
       });
       requestGraph.push(fetched.receipt);
       if (!fetched.ok) {
@@ -772,6 +961,25 @@ export async function acquireConnectedHistoryDocuments({
         completed.set(source.source_id, row);
         continue;
       }
+      const sourceSpan = locateSourceSpan(
+        fetched.bytes,
+        source.source_span,
+        fetched.receipt.content_type,
+      );
+      if (!sourceSpan.located) {
+        const row = failureObservation({
+          source,
+          observedAt,
+          reason: "source_span_not_found",
+          resolvedUrl: entry.resolved_url,
+          requestReceipt: fetched.receipt,
+          selectorResolution: entry,
+        });
+        row.source_span = sourceSpan;
+        observations.push(row);
+        completed.set(source.source_id, row);
+        continue;
+      }
       const row = successObservation({
         source,
         observedAt,
@@ -780,6 +988,7 @@ export async function acquireConnectedHistoryDocuments({
         requestReceipt: fetched.receipt,
         selectorResolution: entry,
       });
+      row.source_span = sourceSpan;
       observations.push(row);
       completed.set(source.source_id, row);
       continue;
@@ -789,6 +998,9 @@ export async function acquireConnectedHistoryDocuments({
       maxRetries,
       requestId: source.source_id,
       observedAt,
+      requestTimeoutMs,
+      responseCapBytes,
+      requestBudget,
     });
     requestGraph.push(fetched.receipt);
     if (!fetched.ok) {
@@ -803,6 +1015,24 @@ export async function acquireConnectedHistoryDocuments({
       completed.set(source.source_id, row);
       continue;
     }
+    const sourceSpan = locateSourceSpan(
+      fetched.bytes,
+      source.source_span,
+      fetched.receipt.content_type,
+    );
+    if (!sourceSpan.located) {
+      const row = failureObservation({
+        source,
+        observedAt,
+        reason: "source_span_not_found",
+        resolvedUrl: source.url,
+        requestReceipt: fetched.receipt,
+      });
+      row.source_span = sourceSpan;
+      observations.push(row);
+      completed.set(source.source_id, row);
+      continue;
+    }
     const row = successObservation({
       source,
       observedAt,
@@ -810,6 +1040,7 @@ export async function acquireConnectedHistoryDocuments({
       bytes: fetched.bytes,
       requestReceipt: fetched.receipt,
     });
+    row.source_span = sourceSpan;
     observations.push(row);
     completed.set(source.source_id, row);
   }
@@ -833,6 +1064,10 @@ export async function acquireConnectedHistoryDocuments({
       sources: sources.length,
       retained: retained.length,
       acquisition_failures: failures.length,
+      provenance: {
+        retrieved: retained.length,
+        failed: failures.length,
+      },
       dot_selectors_resolved: dotManifest?.resolved_count ?? 0,
       dot_selectors_mismatched: dotManifest?.mismatch_count ?? 0,
     },
@@ -849,16 +1084,27 @@ export async function acquireConnectedHistoryDocuments({
     parent_receipt: parentReceipt,
     dot_selector_manifest: dotManifest,
     request_graph: requestGraph,
+    request_budget_used: requestBudget.used,
   };
+
+  assertRetainedObservationsHaveFetchReceipts(observations);
 
   const receipt = {
     schema: CONNECTED_HISTORY_DOCUMENTS_RECEIPT_SCHEMA,
     version: CONNECTED_HISTORY_DOCUMENTS_VERSION,
     observed_at: observedAt,
     parser_version: CONNECTED_HISTORY_DOCUMENTS_PARSER_VERSION,
+    acquisition_mode: runMode,
     max_retries: maxRetries,
+    max_requests: maxRequests,
+    request_timeout_ms: requestTimeoutMs,
+    response_cap_bytes: responseCapBytes,
     checkpointed: true,
-    request_count: requestGraph.length,
+    request_count: requestBudget.used,
+    checkpoint: {
+      completed_source_count: nextCheckpoint.completed_source_ids.length,
+      parent_cached: Boolean(parentHtml),
+    },
     counts: artifact.counts,
     selection_hash: sha256Text(
       artifact.observations

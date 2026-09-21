@@ -1,19 +1,72 @@
 {
   "schema": "cityscroll.connected_history_documents_receipt.v1",
   "version": 1,
-  "observed_at": "2026-09-18T00:00:00.000Z",
+  "observed_at": "2026-09-21T20:19:01.507Z",
   "parser_version": "connected_history_documents.v1",
+  "acquisition_mode": "live",
   "max_retries": 2,
+  "max_requests": 40,
+  "request_timeout_ms": 15000,
+  "response_cap_bytes": 8000000,
   "checkpointed": true,
-  "request_count": 13,
+  "request_count": 8,
+  "checkpoint": {
+    "completed_source_count": 12,
+    "parent_cached": true
+  },
   "counts": {
     "sources": 12,
-    "retained": 12,
-    "acquisition_failures": 0,
-    "dot_selectors_resolved": 5,
-    "dot_selectors_mismatched": 0
+    "retained": 4,
+    "acquisition_failures": 8,
+    "provenance": {
+      "retrieved": 4,
+      "failed": 8
+    },
+    "dot_selectors_resolved": 0,
+    "dot_selectors_mismatched": 5
   },
-  "selection_hash": "7789b0bb88f3a6390fff67e5c9d3d495b0f78a1c36726b43a8f921897817cbaf",
+  "selection_hash": "8af9223d8e45f005087b0ea3c7d920d6ae4c9ecd2bcd35cb90d1f788346d1f23",
   "artifact": "site/data/connected_history_documents.json",
-  "failures": []
+  "failures": [
+    {
+      "source_id": "kingsbridge-zap-2025x0262",
+      "reason": "source_span_not_found",
+      "resolved_url": "https://zap.planning.nyc.gov/projects/2025X0262"
+    },
+    {
+      "source_id": "sixth-avenue-june-2024-cb2",
+      "reason": "link_label_not_found_under_heading",
+      "resolved_url": null
+    },
+    {
+      "source_id": "sixth-avenue-february-2025-cb4-cb5",
+      "reason": "link_label_not_found_under_heading",
+      "resolved_url": null
+    },
+    {
+      "source_id": "sixth-avenue-june-2026-cb2-cb4-cb5",
+      "reason": "link_label_not_found_under_heading",
+      "resolved_url": null
+    },
+    {
+      "source_id": "thirty-first-avenue-september-2023-workshop",
+      "reason": "link_label_not_found_under_heading",
+      "resolved_url": null
+    },
+    {
+      "source_id": "thirty-first-avenue-may-june-2024",
+      "reason": "link_label_not_found_under_heading",
+      "resolved_url": null
+    },
+    {
+      "source_id": "lighthouse-point-project-page",
+      "reason": "retrieval_failure",
+      "resolved_url": "https://edc.nyc/project/lighthouse-point"
+    },
+    {
+      "source_id": "lighthouse-point-opening-announcement",
+      "reason": "retrieval_failure",
+      "resolved_url": "https://edc.nyc/press-release/mixed-use-housing-complex-opens-lighthouse-point"
+    }
+  ]
 }
