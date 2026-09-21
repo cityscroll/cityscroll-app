@@ -174,6 +174,38 @@ function agencyFromRouteFacet(values){
   return agencyNameFromEntityFacet(values);
 }
 
+function isDocumentHistoryTraversal(){
+  try{
+    return performance.getEntriesByType("navigation")[0]?.type === "back_forward";
+  }catch(_e){
+    return false;
+  }
+}
+
+function documentHistoryScrollKey(){
+  return `cityscroll:route-scroll:${location.pathname}${location.search}${location.hash}`;
+}
+
+function rememberDocumentRouteScroll(){
+  try{
+    sessionStorage.setItem(documentHistoryScrollKey(), JSON.stringify({ x: scrollX, y: scrollY }));
+  }catch(_e){
+    // Scroll continuity is best-effort when storage is unavailable.
+  }
+}
+
+function documentHistoryScrollEntry(){
+  if(!isDocumentHistoryTraversal()) return null;
+  try{
+    const parsed=JSON.parse(sessionStorage.getItem(documentHistoryScrollKey()) || "null");
+    return Number.isFinite(parsed?.x) && Number.isFinite(parsed?.y) ? parsed : null;
+  }catch(_e){
+    return null;
+  }
+}
+
+if(typeof window !== "undefined") window.addEventListener("pagehide", rememberDocumentRouteScroll);
+
 // Hash navigation changes both the visual viewport and the assistive-technology reading point.
 // The active-pane guard prevents a slow route from reclaiming focus after navigation moved on.
 // When history is restoring a prior scroll point, focus without scrollIntoView so we do not
@@ -184,13 +216,17 @@ function focusItemRouteTarget(target){
   requestAnimationFrame(()=>{
     if(routeFocusKey()!==routeKey || focusedItemRouteHash===routeKey ||
        !target.isConnected || !target.closest(".tabpane.active")) return;
-    const restoring=isRestoringHistoryRouteScroll();
+    const restoring=isRestoringHistoryRouteScroll() || isDocumentHistoryTraversal();
     if(!restoring) target.scrollIntoView({block:"start"});
     if(target.getAttribute("tabindex")!=="-1") target.setAttribute("tabindex","-1");
     target.setAttribute("aria-current","page");
     target.focus({preventScroll:true});
     focusedItemRouteHash=routeKey;
-    if(restoring) applyActiveHistoryRouteScroll();
+    if(restoring){
+      const documentEntry=documentHistoryScrollEntry();
+      if(documentEntry) scrollTo(documentEntry.x,documentEntry.y);
+      else applyActiveHistoryRouteScroll();
+    }
   });
 }
 

@@ -1,0 +1,1165 @@
+<body data-primary-context="home" data-home-ready="true" data-app-route="true" data-app-ready="true">
+<a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
+<div id="srstatus" class="sr-only" role="status" aria-live="polite"></div>
+<header class="masthead">
+  <div class="wrap">
+    <div class="lang-switcher" id="langSwitcher">
+      <select id="langSelect" class="lang-select" data-i18n-aria="lang_switcher_label" aria-label="Language" data-clarity-mask="true">
+        <option value="en" lang="en">English</option>
+        <option value="es" lang="es">Español</option>
+        <option value="zh-Hans" lang="zh-Hans">中文（简体）</option>
+        <option value="ru" lang="ru">Русский</option>
+        <option value="bn" lang="bn">বাংলা</option>
+        <option value="ht" lang="ht">Kreyòl ayisyen</option>
+        <option value="ko" lang="ko">한국어</option>
+        <option value="fr" lang="fr">Français</option>
+        <option value="pl" lang="pl">Polski</option>
+        <option value="ar" lang="ar" dir="rtl">العربية</option>
+        <option value="ur" lang="ur" dir="rtl">اردو</option>
+      </select>
+    </div>
+    <div class="cr-rule cr-rule--top"></div>
+    <div class="nameplate">
+      <a class="brand-lockup brand-lockup--masthead" href="/" aria-label="CityScroll home" data-i18n-aria="brand_home_aria">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"></path>
+          <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <h1 class="cr-title">CityScroll</h1>
+      </a>
+      <p class="cr-tagline" data-i18n="site_tagline">Explore local decisions, public spending, and published chances to take part.</p>
+    </div>
+    <section class="home-topic-entry" data-home-topic-entry="" aria-labelledby="home-topic-heading">
+      <h2 id="home-topic-heading" data-i18n="topic_search_heading">What's happening in your city?</h2>
+      <p data-i18n="topic_search_intro">Search public records by topic, place, or agency. Results stay grouped by record type.</p>
+      <form class="home-topic-form" method="get" action="/search/">
+        <label for="home-topic-query" class="sr-only" data-i18n="topic_search_query_label">Search public records</label>
+        <div class="home-topic-form-row"><input id="home-topic-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency" data-i18n-placeholder="topic_search_placeholder" data-clarity-mask="true"><button type="submit" data-i18n="search_label">Search</button></div>
+      </form>
+    </section>
+    <div class="cr-rule cr-rule--mid"></div>
+    <nav class="now-entry-row" aria-label="Primary">
+      <a class="now-entry" href="/now/"><strong data-i18n="now_title">Now</strong><span data-i18n="now_entry_link">See deadlines and upcoming events</span></a>
+      <a class="now-entry" href="/near-you/"><strong data-i18n="near_you_entry_title">Near you</strong><span data-i18n="near_you_entry_desc">Keep these filters. Add a place.</span></a>
+      <a class="now-entry" href="/following/"><strong>Following</strong><span>Open your watches</span></a>
+      <a class="now-entry" href="/browse/"><strong>Browse</strong><span>Explore city topics</span></a>
+      <a class="now-entry" href="/guide/?lang=en"><strong data-i18n="nav_guide">Guide</strong><span data-i18n="guide_entry_desc">Learn how to read city records</span></a>
+    </nav>
+    <div class="browse-child-nav" id="browse-child-nav">
+      <p class="browse-facet-label" data-i18n="browse_facet_label">Browse by type</p>
+      <nav class="tabs browse-child-tabs" aria-label="Browse by type" data-i18n-aria="browse_facet_label" role="tablist">
+        <a class="tabbtn" href="/browse/contracts/" data-tab="money" id="tabbtn-money" role="tab" aria-controls="tab-money" aria-selected="false" tabindex="-1">Contracts</a>
+        <a class="tabbtn" href="/browse/people/" data-tab="people" id="tabbtn-people" role="tab" aria-selected="false" tabindex="-1">People + organizations</a>
+        <a class="tabbtn active" href="/browse/zoning/" data-tab="land" data-route-facets="land property" id="tabbtn-land" role="tab" aria-controls="tab-land" aria-selected="true" tabindex="0">Land</a>
+        <a class="tabbtn" href="/browse/rules/" data-tab="rules" id="tabbtn-rules" role="tab" aria-controls="tab-rules" aria-selected="false" tabindex="-1">Rules</a>
+        <a class="tabbtn" href="/browse/meetings/" data-tab="meetings" id="tabbtn-meetings" role="tab" aria-controls="tab-meetings" aria-selected="false" tabindex="-1">Meetings</a>
+        <a class="tabbtn" href="/browse/exams/" data-tab="exams" id="tabbtn-exams" role="tab" aria-controls="tab-exams" aria-selected="false" tabindex="-1">Exams</a>
+      </nav>
+    </div>
+    <div id="langNotice" class="lang-notice" hidden=""></div><div id="place-context" class="session-banner" role="status" data-open="false" data-wired="true"><span data-place-context-label=""></span><button class="mini" data-place-context-change="" data-i18n="borough_label">Borough</button><select data-place-context-borough="" data-i18n-aria="borough_label" hidden="" aria-label="Borough" data-clarity-mask="true"><option value="" data-i18n="all_boroughs">All boroughs</option><option value="Manhattan">Manhattan</option><option value="Brooklyn">Brooklyn</option><option value="Queens">Queens</option><option value="Bronx">Bronx</option><option value="Staten Island">Staten Island</option></select><button class="mini" data-place-context-clear="" data-i18n="all_boroughs">All boroughs</button></div>
+    <div id="sessionBanner" class="session-banner" role="status" aria-live="polite" data-open="false" hidden="">
+      <span id="sessionBannerText" dir="auto">Signed in. Your pins stay here.</span>
+      <a id="sessionManage" class="session-manage" href="https://cityscroll.org/prefs" data-i18n="session_manage_watches">Manage watches</a>
+      <button type="button" id="sessionNotYou" class="session-dismiss" data-i18n="session_not_you">Not you?</button>
+      <button type="button" id="sessionDismiss" data-i18n="session_dismiss">Dismiss</button>
+    </div>
+    <div class="cr-rule cr-rule--bottom"></div>
+  </div>
+</header>
+<div id="notice-route-chrome" class="notice-route-chrome" data-notice-route-chrome="1" hidden=""></div>
+<main id="main" tabindex="-1">
+
+<!-- ============ BROWSE ============ -->
+<section id="tab-browse" class="tabpane">
+  <div class="wrap">
+    <div id="browseview"><aside class="traversal-path" data-traversal-status="active" data-traversal-hop-count="0" aria-label="Traversal history"><div class="traversal-path-head"><a class="traversal-path-back" href="#land/2020K0270" aria-label="Back one step" title="Back one step">‹</a><ol></ol><a class="traversal-path-restart" href="#land/2020K0270" aria-label="Restart at origin" title="Restart at origin">↺</a></div></aside><p class="home-topic-support">Search a topic first, then compare the public records that match it.</p></div>
+  </div>
+</section>
+
+<!-- ============ NOW (additive time-and-action entry; current lens navigation stays authoritative) ============ -->
+<section id="tab-now" class="tabpane">
+  <div class="wrap">
+    <div id="nowview" hidden=""></div>
+  </div>
+</section>
+
+<!-- ============ MONEY ============ -->
+<section id="tab-money" class="tabpane" role="tabpanel" aria-labelledby="tabbtn-money">
+  <div class="wrap">
+    <div class="money-domain-intro lens-intro" id="money-domain-intro">
+      <h2 class="lens-intro-heading lens-entry-heading" tabindex="-1" data-i18n="tab_money">Contracts</h2>
+      <p class="lens-intro-deck" id="money-intro-deck" data-i18n="money_intro_open">Solicitations still accepting responses. Registered contracts, including small purchases and PASSPort-only registrations, are in Recent Awards.</p>
+      <p class="lens-intro-signpost" id="money-awards-signpost"><a href="/browse/contracts/?mode=award" data-i18n="money_intro_awards_cta">See registered contracts in Recent Awards</a></p>
+      <div class="home-cta" id="homeCta" data-cta-context="contracts">
+        <p class="home-cta-prompt" id="homeCtaPrompt" data-i18n="home_cta_prompt">New NYC contracts and RFPs by email every Monday.</p>
+        <form class="home-cta-form" id="homeCtaForm" method="post" action="https://api.cityscroll.org/subscribe" data-default-watch-enhanced="true">
+          <input type="hidden" name="no_topic" value="true" data-clarity-mask="true">
+          <input type="hidden" name="source" value="contracts-intro" data-clarity-mask="true">
+          <input type="hidden" name="lang" value="en" id="homeCtaLang" data-clarity-mask="true">
+          <label for="homeCtaEmail" class="sr-only" data-i18n="email_label">Email address</label>
+          <input type="email" id="homeCtaEmail" name="email" required="" autocomplete="email" inputmode="email" data-clarity-mask="true" placeholder="" data-i18n-placeholder="contracts_cta_email_placeholder" aria-describedby="homeCtaMsg">
+          <button type="submit" id="homeCtaSubmit" data-i18n="home_cta_submit">Get weekly updates</button>
+        </form>
+        <p class="home-cta-msg" id="homeCtaMsg" role="status" aria-live="polite"></p>
+        <p class="home-cta-action"><a href="https://cityscroll.org/following?lens=land&amp;filter=%7B%22keywords%22%3A%5B%222134+coyle+street%22%5D%2C%22borough%22%3A%22Brooklyn%22%2C%22boro%22%3A%22Brooklyn%22%7D&amp;freq=daily&amp;project=2020K0270&amp;from=%2Fbrowse%2Fzoning%2F" id="homeCtaTopics" data-i18n="home_cta_topics">Choose what to follow</a></p>
+        <p class="home-cta-session"><a id="homeCtaManage" href="/following/#your-following" data-i18n="home_cta_open_watches" hidden="">Open your watches</a></p>
+      </div>
+      <details class="lens-method money-method">
+        <summary class="lens-method-summary" data-i18n="property_how_it_works">How this list works</summary>
+        <p class="money-how-modes" data-i18n="money_how_modes">Open RFPs lists solicitations still accepting responses. Recent Awards lists awarded and registered contracts, including small purchases and PASSPort-only registrations.</p>
+        <div class="contract-example-list">
+          <div class="contract-example">
+            <a href="#matter/84124P0003001"><span lang="en" dir="ltr">21st Avenue bridge engineering</span><code>84124P0003001</code></a>
+            <button type="button" class="mini" data-matter-copy="84124P0003001" data-i18n="copy_link_btn">Copy link</button>
+          </div>
+          <div class="contract-example">
+            <a href="#matter/06820P8165KXLR002"><span lang="en" dir="ltr">Bronx prevention services</span><code>06820P8165KXLR002</code></a>
+            <button type="button" class="mini" data-matter-copy="06820P8165KXLR002" data-i18n="copy_link_btn">Copy link</button>
+          </div>
+          <div class="contract-example">
+            <a href="#matter/07124N0007001R001"><span lang="en" dir="ltr">Emergency hotel management</span><code>07124N0007001R001</code></a>
+            <button type="button" class="mini" data-matter-copy="07124N0007001R001" data-i18n="copy_link_btn">Copy link</button>
+          </div>
+          <div class="contract-example">
+            <a href="#matter/82626B0029001"><span lang="en" dir="ltr">Owls Head settling-system rehabilitation</span><code>82626B0029001</code></a>
+            <button type="button" class="mini" data-matter-copy="82626B0029001" data-i18n="copy_link_btn">Copy link</button>
+          </div>
+        </div>
+      </details>
+    </div>
+    <div class="lens-toolbar money-toolbar">
+      <div class="field kw">
+        <label for="kw" data-i18n="keyword_label">Keyword</label>
+        <input type="text" id="kw" placeholder="shelter, IT, construction, security…" data-i18n-placeholder="kw_placeholder_money" data-clarity-mask="true">
+      </div>
+      <div class="lens-toolbar-actions">
+        <details class="utility-overflow lens-more-filters" id="money-more-filters">
+          <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="money-filter-badge" hidden=""></span></summary>
+          <div class="utility-overflow-content lens-more-content">
+            <div class="lens-controls-grid">
+              <div class="field">
+                <label for="agency" data-i18n="agency_label">Agency</label>
+                <select id="agency" data-clarity-mask="true"><option value="">All agencies</option></select>
+              </div>
+              <div class="field borough-scope-field">
+                <div class="field-label" id="moneyboro-label" data-i18n="borough_label">Borough</div>
+                <div id="money-borough-rail" role="group" aria-labelledby="moneyboro-label"></div>
+                <input type="hidden" id="moneyboro" value="" data-clarity-mask="true">
+              </div>
+              <div class="field money-district-facet" data-district-facet="community">
+                <div class="field-label" id="moneycd-label" data-i18n="money_community_district_label">Community district</div>
+                <div id="moneycd-facets" class="chiprow district-facet-rail" role="group" aria-labelledby="moneycd-label"></div>
+                <select id="moneycd" hidden="" aria-hidden="true" tabindex="-1" aria-label="Community district" data-i18n-aria="money_community_district_label" data-clarity-mask="true"><option value="" data-i18n="money_district_any">Any district</option></select>
+              </div>
+              <div class="field money-district-facet" data-district-facet="council">
+                <div class="field-label" id="moneycouncil-label" data-i18n="money_council_district_label">Council district</div>
+                <div id="moneycouncil-facets" class="chiprow district-facet-rail" role="group" aria-labelledby="moneycouncil-label"></div>
+                <select id="moneycouncil" hidden="" aria-hidden="true" tabindex="-1" aria-label="Council district" data-i18n-aria="money_council_district_label" data-clarity-mask="true"><option value="" data-i18n="money_district_any">Any district</option></select>
+              </div>
+              <div class="field" id="minwrap">
+                <label for="minamt" data-i18n="min_award_label">Min award $</label>
+                <select id="minamt" data-clarity-mask="true">
+                  <option value="" data-i18n="min_award_any">Any</option>
+                  <option value="100000">$100K+</option>
+                  <option value="1000000">$1M+</option>
+                  <option value="10000000">$10M+</option>
+                  <option value="100000000">$100M+</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </details>
+        <button type="button" class="watchbtn" data-lens="money" data-i18n="watch_this_search">Follow this search</button>
+        <a class="calendar-subscribe-btn" data-calendar-subscribe-lens="money" data-calendar-subscription="scope" href="#" hidden="" data-i18n="calendar_subscribe_control" data-i18n-aria="calendar_subscribe_control" aria-label="Subscribe to calendar">Subscribe to calendar</a>
+      </div>
+    </div>
+    <input type="hidden" id="mode" value="open" data-clarity-mask="true">
+    <input type="hidden" id="moneylocationbasis" value="" data-clarity-mask="true">
+    <div class="money-facet-rails">
+      <div class="money-facet-rail" role="group" aria-labelledby="money-mode-label">
+        <div class="property-rail-label lens-primary-label" id="money-mode-label" data-i18n="show_label">Show</div>
+        <nav class="chiprow lens-primary-rail" id="money-mode-rail" aria-labelledby="money-mode-label">
+          <button type="button" class="ui-filter-chip" data-money-mode="open" data-scope-edge="money.mode.open" data-filter-href="/browse/contracts/?mode=open" aria-pressed="true"><span data-i18n="mode_open">Open Requests for Proposals (RFPs) — accepting now</span></button>
+          <button type="button" class="ui-filter-chip" data-money-mode="allrfp" data-scope-edge="money.mode.allrfp" data-filter-href="/browse/contracts/?mode=allrfp" aria-pressed="false"><span data-i18n="mode_allrfp">All RFPs</span></button>
+          <button type="button" class="ui-filter-chip" data-money-mode="award" data-scope-edge="money.mode.award" data-filter-href="/browse/contracts/?mode=award" aria-pressed="false"><span data-i18n="mode_award">Recent Awards — registered contracts</span></button>
+          <button type="button" class="ui-filter-chip" data-money-mode="archive" data-scope-edge="money.mode.archive" aria-pressed="false"><span data-i18n="head_archive">Archived awards and contracts</span></button>
+        </nav>
+      </div>
+      <div class="money-facet-rail" role="group" aria-labelledby="money-location-label">
+        <div class="property-rail-label lens-primary-label" id="money-location-label" data-i18n="money_location_basis_label">Response location basis</div>
+        <nav class="chiprow lens-primary-rail" id="money-location-rail" aria-labelledby="money-location-label">
+          <button type="button" class="ui-filter-chip" data-money-location-basis="contract_action_address" data-scope-edge="money.location.contract_action_address" data-filter-href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%7D" aria-pressed="true"><span data-i18n="money_location_basis_response">Any response address</span></button>
+          <button type="button" class="ui-filter-chip" data-money-location-basis="submission_address" data-scope-edge="money.location.submission_address" data-filter-href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22submission_address%22%7D" aria-pressed="false"><span data-i18n="money_location_basis_submission">Located by submission address</span></button>
+          <button type="button" class="ui-filter-chip" data-money-location-basis="pre_bid_venue" data-scope-edge="money.location.pre_bid_venue" data-filter-href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22pre_bid_venue%22%7D" aria-pressed="false"><span data-i18n="money_location_basis_prebid">Located by pre-bid venue</span></button>
+          <button type="button" class="ui-filter-chip" data-money-location-basis="document_pickup" data-scope-edge="money.location.document_pickup" data-filter-href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22document_pickup%22%7D" aria-pressed="false"><span data-i18n="money_location_basis_pickup">Located by document-pickup address</span></button>
+        </nav>
+      </div>
+      <div class="money-facet-rail" id="moneyquick" role="group" aria-label="Contract timing">
+        <nav class="chiprow lens-primary-rail" id="money-temporal-rail" aria-label="Contract timing">
+          <button type="button" class="ui-filter-chip" id="closingweek" data-money-temporal="closing_week" data-scope-edge="money.time.closing_week" data-filter-href="#money?closing=week" aria-pressed="false" data-i18n="closing_this_week">Closing this week</button>
+        </nav>
+      </div>
+    </div>
+    <div class="money-method-slot">
+      <div id="money-method-primary" hidden="">
+        <div class="property-rail-label lens-primary-label" data-i18n="method_facet_label">Method:</div>
+        <div class="chiprow lens-primary-rail" id="methodfacet" role="group" aria-label="Procurement method"></div>
+      </div>
+    </div>
+    <details class="nlbox ask-cityscroll" data-ask-lens="money"><summary data-i18n="preview_panel_heading">Preview</summary><div class="nlbody">
+      <div class="nlrow"><input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money" data-clarity-mask="true"><button id="nlgo" data-i18n="preview_panel_heading">Preview</button></div>
+      <div id="nltry" class="nltry"><span class="teaching-examples-label" data-i18n="try_asking_label">Try asking:</span><div class="teaching-example-list"><button type="button" class="trychip teaching-example" data-i="6" data-i18n="sugg_money_6">contracts closing this week</button></div></div><div id="nltrans"></div><div id="landing-share-actions"><div class="nlqactions"><button type="button" class="mini" data-landing-copy="" data-i18n="copy_link">Copy link</button><button type="button" class="mini" data-qr-share="" data-i18n="qr_share_btn" data-qr-url="http://127.0.0.1:56763/browse/zoning/">QR code</button></div></div><div id="nlpresets" data-search-presets=""></div>
+    </div></details><p class="ask-context" data-i18n="topic_search_intro">Search public records by topic, place, or agency. Results stay grouped by record type.</p>
+    <div class="lens-search-state" id="moneyactivefilters"></div>
+    <div class="lens-resultbar">
+      <span class="lens-count" id="rescount" aria-live="polite"></span>
+      <div class="field lens-sort">
+        <label for="sort" data-i18n="sort_label">Sort by</label>
+        <select id="sort" data-clarity-mask="true">
+          <option value="deadline" data-i18n="sort_deadline">Deadline: soonest</option>
+          <option value="newest" data-i18n="sort_newest">Newest posted</option>
+          <option value="amount" data-i18n="sort_amount">Largest $</option>
+        </select>
+      </div>
+    </div>
+
+    <section class="contracts-analytics" id="contracts-analytics" hidden="" aria-labelledby="contracts-analytics-heading">
+      <div class="contracts-analytics-head">
+        <p class="contracts-analytics-kicker" id="contracts-analytics-kicker" data-i18n="analytics_compare_kicker">Compare / Overview</p>
+        <h2 id="contracts-analytics-heading" data-i18n="analytics_overview_heading">What is large in this population?</h2>
+        <p class="contracts-analytics-deck" id="contracts-analytics-deck" data-i18n="analytics_overview_deck">Compare registered contracts before opening an individual record. Rankings use the complete normalized Checkbook population, not the smaller published record list.</p>
+        <p class="contracts-analytics-population" id="contracts-analytics-population" role="status"></p>
+      </div>
+      <div class="contracts-analytics-controls" role="group" aria-label="Compare contracts" data-i18n-aria="analytics_compare_contracts_aria">
+        <div class="field"><label for="analytics-fact" data-i18n="analytics_fact_label">Fact</label><select id="analytics-fact" data-clarity-mask="true"><option value="registered_contract" data-i18n="analytics_fact_registered">Registered contracts</option><option value="payment" data-i18n="analytics_fact_payments">Actual payments</option></select></div>
+        <div class="field"><label for="analytics-view" data-i18n="analytics_view">View</label><select id="analytics-view" data-clarity-mask="true"><option value="overview" data-i18n="analytics_view_overview">Compare / Overview</option><option value="timing" data-i18n="analytics_view_timing">Registration timing</option><option value="performance_evidence" data-i18n="analytics_view_evidence">Performance evidence</option></select></div>
+        <div class="field"><label for="analytics-group" data-i18n="analytics_group_by">Group by</label><select id="analytics-group" data-clarity-mask="true"><option value="agency" data-i18n="analytics_group_agency">Agency</option><option value="vendor" data-i18n="analytics_group_vendor">Vendor</option><option value="registration_fiscal_year" data-i18n="analytics_group_fy">Registration FY</option><option value="amount_band" data-i18n="analytics_group_amount_band">Amount band</option></select></div>
+        <div class="field"><label for="analytics-measure" data-i18n="analytics_measure">Measure</label><select id="analytics-measure" data-clarity-mask="true"><option value="current" data-i18n="analytics_measure_current">Current registered contract value</option><option value="original" data-i18n="analytics_measure_original">Original registered contract value</option><option value="count" data-i18n="analytics_measure_count">Contract count</option></select></div>
+        <div class="field"><label for="analytics-fy" data-i18n="analytics_registration_fy">Registration FY</label><select id="analytics-fy" data-clarity-mask="true"><option value="" data-i18n="analytics_all_years">All years</option></select></div>
+        <div class="field"><label for="analytics-industry" data-i18n="buyer_history_industry">Industry</label><select id="analytics-industry" data-clarity-mask="true"><option value="" data-i18n="buyer_history_all_industries">All industries</option></select></div>
+        <div class="field"><label for="analytics-award-method" data-i18n="buyer_history_award_method">Award method</label><select id="analytics-award-method" data-clarity-mask="true"><option value="" data-i18n="buyer_history_all_award_methods">All award methods</option></select></div>
+        <div class="field"><label for="analytics-amount-band" data-i18n="buyer_history_amount_band">Amount</label><select id="analytics-amount-band" data-clarity-mask="true"><option value="" data-i18n="buyer_history_all_amount_bands">All amounts</option></select></div>
+        <div class="field"><label for="analytics-min" data-i18n="analytics_min_current">Minimum current value</label><input id="analytics-min" type="number" min="0" step="1000" placeholder="No minimum" data-i18n-placeholder="analytics_no_minimum" data-clarity-mask="true"></div>
+        <div class="field"><label for="analytics-max" data-i18n="analytics_max_current">Maximum current value</label><input id="analytics-max" type="number" min="0" step="1000" placeholder="No maximum" data-i18n-placeholder="analytics_no_maximum" data-clarity-mask="true"></div>
+      </div>
+      <p class="contracts-analytics-fact-status" id="contracts-analytics-fact-status" role="status" hidden=""></p>
+      <section class="contracts-analytics-fact-comparison" id="contracts-analytics-fact-comparison" hidden="" aria-labelledby="contracts-analytics-fact-comparison-heading">
+        <h3 id="contracts-analytics-fact-comparison-heading" data-i18n="analytics_fact_comparison_heading">Two distinct facts for this selection</h3>
+        <div class="contracts-analytics-fact-comparison-cards" id="contracts-analytics-fact-comparison-cards"></div>
+        <p class="contracts-analytics-fact-comparison-note" data-i18n="analytics_fact_comparison_note">Registered value describes contract authorization. Actual payments describe cash outlays from Checkbook NYC, the Comptroller's spending ledger.</p>
+      </section>
+      <section class="buyer-history" id="buyer-history" hidden="" aria-labelledby="buyer-history-heading">
+        <h3 id="buyer-history-heading" data-i18n="buyer_history_heading">This buyer's registered contracting history</h3>
+        <p class="buyer-history-scope" id="buyer-history-scope" role="status"></p>
+        <div class="buyer-history-metrics" id="buyer-history-metrics" role="group" aria-labelledby="buyer-history-heading"></div>
+        <p class="buyer-history-meaning" id="buyer-history-meaning"></p>
+        <p class="buyer-history-actions" id="buyer-history-actions"></p>
+        <p class="buyer-history-retry" id="buyer-history-retry" hidden=""><button type="button" class="act mini" id="buyer-history-retry-button" data-i18n="buyer_history_retry">Try again</button></p>
+        <p class="buyer-history-source" id="buyer-history-source"></p>
+        <div class="buyer-history-cases" id="buyer-history-cases" hidden=""></div>
+        <section class="buyer-history-inspect" id="buyer-history-inspect" hidden="" aria-labelledby="buyer-history-inspect-heading"></section>
+      </section>
+      <section class="contracts-analytics-concentration" id="contracts-analytics-concentration" hidden="" aria-labelledby="contracts-analytics-concentration-heading">
+        <h3 id="contracts-analytics-concentration-heading">Who receives this contract value?</h3>
+        <p class="contracts-analytics-concentration-deck" id="contracts-analytics-concentration-deck">Vendor shares within the selected agency.</p>
+        <p class="contracts-analytics-concentration-denominator" id="contracts-analytics-concentration-denominator" role="status"></p>
+        <div class="contracts-analytics-concentration-summaries" id="contracts-analytics-concentration-summaries" aria-label="Vendor concentration summary"></div>
+        <ol class="contracts-analytics-concentration-vendors" id="contracts-analytics-concentration-vendors"></ol>
+        <p class="contracts-analytics-concentration-note" id="contracts-analytics-concentration-note"></p>
+      </section>
+      <div class="contracts-analytics-timing" id="contracts-analytics-timing" hidden="" role="group" aria-labelledby="contracts-analytics-heading"></div>
+      <ol class="contracts-analytics-groups" id="contracts-analytics-groups"></ol>
+      <p class="contracts-analytics-note" id="contracts-analytics-note"></p>
+      <details class="contracts-analytics-coverage" id="contracts-analytics-coverage">
+        <summary id="contracts-analytics-coverage-disclosure" data-i18n="analytics_coverage_disclosure">Data coverage/methodology</summary>
+        <div class="contracts-analytics-coverage-body">
+          <h3 id="contracts-analytics-coverage-heading" data-i18n="analytics_coverage_heading">City Record match coverage</h3>
+          <p class="contracts-analytics-coverage-deck" data-i18n="analytics_coverage_deck">CityScroll found or did not find an exact City Record award notice for each registered contract. Contracts without a PIN remain a separate missing-evaluation state.</p>
+          <div class="contracts-analytics-coverage-controls" role="group" aria-label="City Record coverage controls" data-i18n-aria="analytics_coverage_controls_aria">
+            <div class="field"><label for="analytics-coverage-threshold" data-i18n="analytics_coverage_threshold">Minimum registered value</label><select id="analytics-coverage-threshold" data-clarity-mask="true"><option value="100000" selected="" data-i18n="analytics_coverage_over_100k">$100,000 and over</option><option value="0" data-i18n="analytics_coverage_all_values">All registered values</option></select></div>
+            <div class="field"><label for="analytics-coverage-band" data-i18n="analytics_coverage_amount_band">Amount band</label><select id="analytics-coverage-band" data-clarity-mask="true"><option value="" data-i18n="analytics_all_amount_bands">All amount bands</option><option value="Under $100,000">Under $100,000</option><option value="$100,000–$999,999">$100,000–$999,999</option><option value="$1 million–$9.99 million">$1 million–$9.99 million</option><option value="$10 million or more">$10 million or more</option></select></div>
+          </div>
+          <dl class="contracts-analytics-coverage-summary" id="contracts-analytics-coverage-summary"></dl>
+          <p class="contracts-analytics-coverage-statement" id="contracts-analytics-coverage-statement" role="status"></p>
+          <div class="table-scroll"><table class="contracts-analytics-coverage-table"><caption class="sr-only" data-i18n="analytics_coverage_table_caption">Whether CityScroll found an exact City Record notice, by agency. Each cell shows contracts and registered value.</caption><thead><tr><th scope="col" data-i18n="analytics_group_agency">Agency</th><th scope="col" data-i18n="analytics_coverage_eligible">Eligible</th><th scope="col" data-i18n="analytics_coverage_exact">Exact notice found</th><th scope="col" data-i18n="analytics_coverage_none">No exact notice found</th><th scope="col" data-i18n="analytics_coverage_missing_pin">Missing PIN</th></tr></thead><tbody id="contracts-analytics-coverage-groups"></tbody></table></div>
+          <p class="contracts-analytics-coverage-note" id="contracts-analytics-coverage-note"></p>
+        </div>
+      </details>
+      <div class="contracts-analytics-performance-evidence" id="contracts-analytics-performance-evidence" hidden="">
+        <h3 id="contracts-analytics-performance-evidence-heading" data-i18n="analytics_evidence_heading">What public performance evidence is available?</h3>
+        <p class="contracts-analytics-performance-evidence-deck" data-i18n="analytics_evidence_deck">Financial visibility and public performance evidence are separate. This view counts qualifying public terms and evaluation documents, and it does not assess outcomes.</p>
+        <dl class="contracts-analytics-performance-evidence-summary" id="contracts-analytics-performance-evidence-summary"></dl>
+        <p class="contracts-analytics-performance-evidence-statement" id="contracts-analytics-performance-evidence-statement" role="status"></p>
+        <div class="table-scroll"><table class="contracts-analytics-performance-evidence-table"><caption class="sr-only" data-i18n="analytics_evidence_table_caption">Public performance-evidence state coverage by group. Each cell shows contracts and registered value.</caption><thead><tr><th scope="col" data-i18n="analytics_group_agency">Agency</th><th scope="col" data-i18n="analytics_evidence_total">Total</th><th scope="col" data-i18n="analytics_evidence_terms">Performance terms located</th><th scope="col" data-i18n="analytics_evidence_evaluation">Evaluation document located</th><th scope="col" data-i18n="analytics_evidence_none">No located evidence</th></tr></thead><tbody id="contracts-analytics-performance-evidence-groups"></tbody></table></div>
+        <h4 data-i18n="analytics_evidence_passages_heading">Located source passages</h4>
+        <ol class="contracts-analytics-performance-evidence-passages" id="contracts-analytics-performance-evidence-passages"></ol>
+        <p class="contracts-analytics-performance-evidence-note" data-i18n="analytics_evidence_note">Coverage counts show whether declared CityScroll sources contain qualifying performance terms or evaluation documents. A no-located-evidence count identifies a source-coverage gap. Service outcomes, vendor blame, and performance scores remain unresolved.</p>
+      </div>
+    </section>
+
+    <div class="grid">
+      <div class="panel">
+        <div class="panelbar">
+          <!-- search() owns this heading; data-i18n preserves the default after deep-link rendering. -->
+          <h2><span id="reshead">Open RFPs</span></h2>
+          <span class="export-actions">
+            <span class="export-band" id="money-export-band" hidden="">
+              <button id="export" class="mini export-control" data-export-csv="money" data-i18n="export_csv">Export CSV</button>
+              <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel</button>
+              <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print</button>
+            </span>
+            <details class="utility-overflow export-overflow" id="money-export-overflow">
+              <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+              <div class="utility-overflow-content">
+                <button class="mini export-control" data-export-csv="money" data-i18n="export_csv">Export CSV</button>
+                <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel</button>
+                <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print</button>
+              </div>
+            </details>
+          </span>
+        </div>
+        <div class="list" id="list" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
+      </div>
+      <div class="panel">
+        <h2 data-i18n="money_trail_heading">Contract trail</h2>
+        <div class="detail" id="detail" translate="no"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STAFFING ============ -->
+<section id="tab-staffing" class="tabpane">
+  <div class="wrap">
+
+
+    <details class="staffing-ledger" id="staffing-ledger" open="">
+      <summary data-i18n="staffing_history_summary">Appointment record</summary>
+    <section class="staffing-feed" id="staffing-feed" aria-labelledby="staffing-feed-heading">
+      <div class="staffing-feed-head">
+        <div>
+          <p class="career-kicker" data-i18n="staffing_feed_kicker">City staffing</p>
+          <h2 id="staffing-feed-heading" data-i18n="staffing_feed_heading">Newest staffing notices</h2>
+          <p class="staffing-feed-deck" data-i18n="staffing_feed_deck">Recent city appointments, newest first. Search and filters refine this list. Each appointment links to City Record.</p>
+        </div>
+        <div class="staffing-feed-search">
+          <label for="staffing-query" data-i18n="staffing_search_label">Search these notices</label>
+          <input id="staffing-query" type="search" placeholder="role, person, agency, or title code…" data-i18n-placeholder="staffing_search_placeholder" data-clarity-mask="true">
+        </div>
+      </div>
+
+      <div class="staffing-filter-bar">
+        <fieldset class="staffing-filter-group">
+          <legend data-i18n="staffing_filter_roles">Role or title</legend>
+          <div class="staffing-filter-options" id="staffing-role-filters">
+            <button type="button" class="chip" data-staffing-role="" aria-pressed="true" data-i18n="staffing_all_roles">All roles</button>
+          </div>
+        </fieldset>
+        <fieldset class="staffing-filter-group">
+          <legend data-i18n="staffing_filter_agencies">Agency</legend>
+          <div class="staffing-filter-options" id="staffing-agency-filters">
+            <button type="button" class="chip" data-staffing-agency="" aria-pressed="true" data-i18n="staffing_all_agencies">All agencies</button>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="staffing-feed-meta">
+        <div>
+          <h3 id="staffing-feed-meta-heading" data-i18n="staffing_appointments_heading">Latest appointments</h3>
+          <p id="staffing-result-count" aria-live="polite"></p>
+        </div>
+      </div>
+      <div class="staffing-export-actions export-actions">
+        <span class="export-band" id="people-export-band">
+          <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
+          <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel</button>
+          <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print</button>
+        </span>
+        <details class="utility-overflow export-overflow" id="people-export-overflow" hidden="">
+          <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+          <div class="utility-overflow-content">
+            <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
+            <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel</button>
+            <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print</button>
+          </div>
+        </details>
+      </div>
+      <div class="staffing-notice-list" id="staffing-notice-list" aria-live="polite">
+        <div class="career-empty"><span class="loading" aria-hidden="true"></span> <span data-i18n="staffing_loading">Loading staffing notices…</span></div>
+      </div>
+      </section>
+    </details>
+
+    <!-- Compatibility-only nodes for old query links and alert parsing. They are not a
+         second Staffing interface; the visible landing is the notice feed above. -->
+    <div hidden="" aria-hidden="true">
+      <label for="pmode" data-i18n="look_up_label">Look up</label>
+      <select id="pmode" data-clarity-mask="true"><option value="role" data-i18n="pmode_role">A role / title</option><option value="person" data-i18n="pmode_person">A person</option></select>
+      <label for="pkw" id="pkwlabel" data-i18n="title_keyword_label">Title keyword</label>
+      <input type="text" id="pkw" list="ptitles" placeholder="emergency medical, attorney, engineer…" data-i18n-placeholder="kw_placeholder_people_role" data-clarity-mask="true">
+      <datalist id="ptitles"></datalist>
+      <div id="pchips"></div>
+      <span id="preshead" data-i18n="roles_heading">Roles</span>
+      <span id="prescount"></span>
+      <div id="plist"></div>
+      <div id="pdetail"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LAND ============ -->
+<section id="tab-land" class="tabpane active" role="tabpanel" aria-labelledby="tabbtn-land">
+  <div class="wrap">
+    <div class="land-domain-intro lens-intro" id="land-domain-intro">
+      <p class="career-kicker" data-i18n="tab_land">Zoning</p>
+      <h2 class="lens-intro-heading lens-entry-heading" tabindex="-1" data-i18n="rezonings_heading">Land-use applications</h2>
+      <p class="lens-intro-deck" data-i18n="pick_rezoning_empty">Pick a land-use application to see it in plain English -- applicant, what's proposed, affordable units when relevant, status -- and on a map. Try "79 Rivington" or "Gowanus".</p>
+      <details class="lens-method land-method">
+        <summary class="lens-method-summary" data-i18n="property_how_it_works">How this list works</summary>
+        <p class="land-method-copy" data-i18n="zap_explainer_html">Rezoning data comes from NYC's Zoning Application Portal (ZAP) via NYC Open Data, which the city refreshes about monthly. A change on the live ZAP site can take weeks to appear here. Lot outlines use the same tax-lot boundaries shown in ZAP Search. When a lot cannot be matched, confirm the location on ZoLa.</p>
+      </details>
+    </div>
+    <div class="lens-toolbar" id="land-toolbar">
+      <div class="field kw">
+        <label for="lkw" data-i18n="zip_addr_neighborhood">ZIP or place</label>
+        <input type="text" id="lkw" placeholder="Bushwick, 79 Rivington, Gowanus…" data-i18n-placeholder="kw_placeholder_land" data-clarity-mask="true">
+      </div>
+      <div class="lens-toolbar-actions">
+        <details class="utility-overflow lens-more-filters" id="land-more-filters">
+          <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="land-filter-badge">1 active</span></summary>
+          <div class="utility-overflow-content lens-more-content">
+            <div class="lens-controls-grid">
+              <div class="field borough-scope-field">
+                <span class="field-label" data-i18n="borough_label">Borough</span>
+                <div id="land-borough-rail"><div class="borough-scope-links" data-borough-scope="land" role="group" aria-label="Borough"><button type="button" class="ui-filter-chip borough-scope-link on" aria-pressed="true" data-borough-scope-link="all" data-scope-edge="land.borough.all" data-filter-href="#land">All boroughs</button><button type="button" class="ui-filter-chip borough-scope-link" aria-pressed="false" data-borough-scope-link="Manhattan" data-scope-edge="land.borough.Manhattan" data-filter-href="#land?boro=Manhattan">Manhattan</button><button type="button" class="ui-filter-chip borough-scope-link" aria-pressed="false" data-borough-scope-link="Brooklyn" data-scope-edge="land.borough.Brooklyn" data-filter-href="#land?boro=Brooklyn">Brooklyn</button><button type="button" class="ui-filter-chip borough-scope-link" aria-pressed="false" data-borough-scope-link="Queens" data-scope-edge="land.borough.Queens" data-filter-href="#land?boro=Queens">Queens</button><button type="button" class="ui-filter-chip borough-scope-link" aria-pressed="false" data-borough-scope-link="Bronx" data-scope-edge="land.borough.Bronx" data-filter-href="#land?boro=Bronx">Bronx</button><button type="button" class="ui-filter-chip borough-scope-link" aria-pressed="false" data-borough-scope-link="Staten Island" data-scope-edge="land.borough.Staten Island" data-filter-href="#land?boro=Staten+Island">Staten Island</button></div><a class="ui-constellation-link borough-map-pivot" href="/near-you/?v=0&amp;lens=land" data-borough-map-pivot="land" data-scope-edge="land.map.borough.all" data-near-you-link="" data-lens="land"><span aria-hidden="true">◆</span>See on map</a></div>
+              </div>
+              <div class="field" id="lhearingmode-field" hidden="">
+                <span class="field-label" data-i18n="land_hearings_mode_label">Attendance</span>
+                <div id="land-attendance-rail"><div class="attendance-scope-links" data-attendance-scope="land" role="group" aria-label="Attendance"><button type="button" class="ui-filter-chip attendance-scope-link on" aria-pressed="true" data-attendance-scope-link="all" data-scope-edge="land.attendance.all" data-filter-href="#land?status=hearings&amp;future=hearing" data-filter-navigation-installed="true">Any mode</button><button type="button" class="ui-filter-chip attendance-scope-link" aria-pressed="false" data-attendance-scope-link="in_person" data-scope-edge="land.attendance.in_person" data-filter-href="#land?status=hearings&amp;future=hearing&amp;attendance=in_person" data-filter-navigation-installed="true">In person</button><button type="button" class="ui-filter-chip attendance-scope-link" aria-pressed="false" data-attendance-scope-link="livestream" data-scope-edge="land.attendance.livestream" data-filter-href="#land?status=hearings&amp;future=hearing&amp;attendance=livestream" data-filter-navigation-installed="true">Livestream</button><button type="button" class="ui-filter-chip attendance-scope-link" aria-pressed="false" data-attendance-scope-link="hybrid" data-scope-edge="land.attendance.hybrid" data-filter-href="#land?status=hearings&amp;future=hearing&amp;attendance=hybrid" data-filter-navigation-installed="true">In person and online</button></div></div>
+                <div id="land-temporal-rail"><div class="land-temporal-scope-links" data-land-temporal-scope="land" role="group" aria-label="When"><button type="button" class="ui-filter-chip land-temporal-scope-link" aria-pressed="false" data-land-temporal-scope-link="closing_week" data-scope-edge="land.time.closing_week" data-filter-href="#land?status=hearings&amp;future=hearing&amp;closing=week" data-filter-navigation-installed="true">Closing this week</button></div></div>
+              </div>
+              <div class="field land-control-button"><button type="button" id="landlocation" data-i18n="use_my_location">Use my location</button></div>
+            </div>
+          </div>
+        </details>
+        <button type="button" class="watchbtn" data-lens="land" data-i18n="watch_this_search">Follow this search</button>
+        <a class="calendar-subscribe-btn" data-calendar-subscribe-lens="land" data-calendar-subscription="scope" href="#" hidden="" data-i18n="calendar_subscribe_control" data-i18n-aria="calendar_subscribe_control" aria-label="Subscribe to calendar">Subscribe to calendar</a>
+      </div>
+    </div><details class="nlbox ask-cityscroll" data-ask-lens="land"><summary data-i18n="ask_cityscroll_action">Ask CityScroll</summary><div class="nlbody"><div class="nlrow"><input type="text" id="nlq-land" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" data-i18n-placeholder="nl_placeholder_land" placeholder="for example, rezonings in Brooklyn, council district 33, or 79 Rivington" data-clarity-mask="true"><button id="nlgo-land" data-i18n="ask_btn">Ask</button></div><div id="nltry-land" class="nltry"><span class="teaching-examples-label" data-i18n="try_asking_label">Try asking:</span><div class="teaching-example-list"><button type="button" class="trychip teaching-example" data-i="2" data-i18n="sugg_land_2">79 Rivington</button><button type="button" class="trychip teaching-example" data-i="3" data-i18n="sugg_land_3">rezonings in the Bronx</button><button type="button" class="trychip teaching-example" data-i="4" data-i18n="sugg_land_4">rezonings in council district 33</button></div></div><div id="nltrans-land"></div></div></details><p class="ask-context" data-i18n="ask_cityscroll_context">Interprets your request</p><div class="search-scope-tools"><div id="searchactions-land" data-search-actions="land"></div><div id="nlpresets-land" data-search-presets=""></div></div>
+    <select id="lstatus" hidden="" aria-hidden="true" aria-label="Status" data-i18n-aria="status_label" data-clarity-mask="true"><option value="all" data-i18n="status_all">All</option><option value="active" selected="" data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option></select>
+    <div class="land-primary-facets" aria-label="Zoning action type, regulatory effect, procedure, stage, and next-opportunity filters" data-i18n-aria="land_filters_label">
+      <div class="field">
+        <label for="lfamily" data-i18n="land_family_label">Action type</label>
+        <select id="lfamily" data-clarity-mask="true"><option value="any">All (0)</option><option value="acquisition">Acquisition (0)</option><option value="disposition">Disposition (0)</option><option value="certification">Certification (0)</option><option value="renewal">Renewal (0)</option><option value="major_concession">Major concession (0)</option><option value="legal_document">Legal document (0)</option><option value="rezoning">Rezoning (0)</option><option value="special_permit">Special permit (0)</option><option value="authorization">Authorization (0)</option><option value="site_selection">Site selection (0)</option><option value="mapping">City map change (0)</option><option value="demapping">Demapping (0)</option><option value="urban_renewal">Urban renewal (0)</option><option value="landmark">Landmark designation (0)</option><option value="follow_up">Substantial compliance (0)</option><option value="office_space">Office space (0)</option><option value="bid">Business improvement district (0)</option><option value="franchise_consent">Franchise or consent (0)</option><option value="housing_plan">Housing plan (0)</option><option value="pops">Privately owned public space (0)</option><option value="landfill">Landfill (0)</option></select>
+      </div>
+      <div class="field">
+        <label for="leffect"><span data-i18n="land_regulatory_effect_label">Regulatory effect</span> <span class="muted" data-i18n="land_regulatory_effect_derived">derived from the project brief</span></label>
+        <select id="leffect" data-clarity-mask="true"><option value="any">All (0)</option><option value="upzone">Upzoning (0)</option><option value="downzone">Downzoning (0)</option><option value="mixed">Mixed density change (0)</option><option value="no_density_change">No density change (0)</option></select>
+      </div>
+      <div class="field">
+        <label for="lfiling" data-i18n="land_filing_applicability">Racial Equity Report required?</label>
+        <select id="lfiling" data-clarity-mask="true">
+          <option value="any" selected="" data-i18n="status_all">All</option>
+          <option value="required" data-i18n="land_filing_facet_required">Racial Equity Report required</option>
+          <option value="document_observed" data-i18n="land_filing_facet_document_observed">Racial Equity Report observed</option>
+          <option value="publisher_identifies_not_timely_filed" data-i18n="land_filing_facet_not_timely_filed">Publisher identifies as not timely filed</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="lprocedure" data-i18n="land_procedure_label">Review procedure</label>
+        <select id="lprocedure" data-clarity-mask="true"><option value="review">ULURP and expedited (0)</option><option value="ulurp">ULURP only (0)</option><option value="elurp">Expedited (ELURP) (0)</option><option value="non_ulurp">Non-ULURP (0)</option></select>
+      </div>
+      <div class="field">
+        <label for="lstage" data-i18n="property_stage_label">Stage</label>
+        <select id="lstage" data-clarity-mask="true"><option value="any">All (0)</option><option value="active">Active projects (0)</option><option value="public_review">Public review (0)</option><option value="pre_certification">Pre-certification / filed (0)</option><option value="community_board">Community Board review (0)</option><option value="borough_president">Borough President review (0)</option><option value="cpc">City Planning Commission (0)</option><option value="city_council">City Council review (0)</option><option value="completed">Completed / no longer active (0)</option></select>
+      </div>
+      <div class="field">
+        <label for="lfuture" data-i18n="land_future_label">Next opportunity</label>
+        <select id="lfuture" data-clarity-mask="true"><option value="any">All (0)</option><option value="any_future">Any future public action (0)</option><option value="hearing">Upcoming hearing (0)</option><option value="other">Other upcoming action (0)</option><option value="none">No known future public action (0)</option></select>
+      </div>
+    </div>
+    <div class="lens-search-state" data-search-state="land"></div>
+    <div class="lens-resultbar" id="land-resultbar">
+      <span class="land-result-heading" id="lreshead" data-i18n="recent_rezonings_heading">Land-use applications</span>
+      <span class="lens-count" id="lrescount" aria-live="polite">1 results</span>
+      <div class="land-view-switch" id="land-view-switch" role="group" aria-label="Show results as" data-i18n-aria="land_view_switch_label"></div>
+    </div>
+    <p class="land-view-note" id="land-view-note" role="status" hidden=""></p>
+    <div id="land-status" role="status"></div>
+    <div class="exportbar">
+      <span class="export-band" id="land-export-band" hidden="">
+        <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
+        <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel</button>
+        <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print</button>
+      </span>
+      <details class="utility-overflow export-overflow" id="land-export-overflow">
+        <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+        <div class="utility-overflow-content">
+          <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
+          <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel</button>
+          <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print</button>
+        </div>
+      </details>
+    </div>
+    <div class="land-results-grid" id="land-results-grid">
+      <div class="land-list-panel">
+        <div class="list land-list" id="llist" translate="no"><div class="row sel" data-i="0" tabindex="0" role="group">
+    <div class="ui-object-card-primary"><p class="rtitle"><a class="ui-constellation-link ui-object-card-title" href="/browse/zoning/#land/2020K0270"><span aria-hidden="true">◆</span><span lang="en" dir="ltr">2134 Coyle Street Rezoning</span></a></p><button type="button" class="ui-object-card-copy" data-object-card-copy="https://cityscroll.org/browse/zoning/#land/2020K0270" aria-live="polite">Copy link</button></div>
+    <p class="rmeta"><span class="ragency">Brooklyn · Coyle Properties LLC</span> · Active<br>
+      </p>
+
+  </div></div>
+      </div>
+      <div class="land-detail-panel route-item" id="land-item-card" tabindex="-1" aria-current="page">
+        <h2 data-i18n="land_listing_heading">Listing</h2>
+        <div class="detail" id="ldetail" translate="no"><p style="margin:4px 0 12px"><a class="route-back-link" href="/browse/zoning/" data-route-back="fallback">← Browse CityScroll</a></p><h2 class="rolename" lang="en" dir="ltr"><a class="ui-constellation-link ui-object-card-title" href="/browse/zoning/#land/2020K0270"><span aria-hidden="true">◆</span>2134 Coyle Street Rezoning</a></h2>
+    <div class="badges">
+      <span class="tag open">Active</span>
+
+
+    </div>
+    <div class="agencybar">
+      <div><div class="big" style="font-size:17px" data-land-record-applicant="">Coyle Properties LLC</div><div class="lbl">applicant</div></div>
+      <div><div class="big" style="font-size:17px" data-land-record-place-group=""><span data-land-record-place="borough"><a class="ui-constellation-link land-record-place-link" href="/near-you/?v=0&amp;lens=land&amp;boro=Brooklyn" data-place-kind="borough" data-place-id="Brooklyn" data-scope-edge="land.borough.Brooklyn" data-place-borough="Brooklyn"><span aria-hidden="true">◆</span>Brooklyn</a></span></div><div class="lbl">where</div></div>
+    </div>
+    <div id="land-same-applicant-host"></div><div class="scope" id="land-brief"><span class="lbl">In plain English</span>A bounded land-use project fixture for the reciprocal site-history journey.</div><div id="land-actions" class="next-action-rail-host"><section class="next-action-rail"><h3>What can I do now?</h3><div class="next-action-list"><a class="ui-external-action primary act" href="https://zap.planning.nyc.gov/projects/2020K0270" aria-label="Open ZAP project — zap.planning.nyc.gov" title="zap.planning.nyc.gov" target="_blank" rel="noopener noreferrer" data-action-outcome-index="0">Open ZAP project<span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span></a><a class="act" href="https://cityscroll.org/following?lens=land&amp;filter=%7B%22keywords%22%3A%5B%222134+coyle+street%22%5D%2C%22status%22%3A%22all%22%7D&amp;project=2020K0270&amp;from=%2Fbrowse%2Fzoning%2F">Follow land-use activity</a></div><details class="bid-guide" open=""><summary>How to participate in this land-use review</summary><dl class="bid-guide-facts"><dt>Public status</dt><dd><b>Active</b></dd></dl><ol><li>Public review has not started yet — watch for Community Board, Borough President, CPC, and Council hearings.</li><li>Full project record on ZAP: <a href="https://zap.planning.nyc.gov/projects/2020K0270" target="_blank" rel="noopener noreferrer" class="ui-external-action">zap.planning.nyc.gov<span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span></a>.</li></ol></details></section></div><div data-land-ai-context-tools="1"><details class="more-tools" data-more-tools="1"><summary>More tools</summary><div class="more-tools-body node-actions civic-object-actions" data-ai-context-tools="1"><a class="node-action ai-context-handoff" data-ai-context-handoff="land_project" data-ai-context-support="exact" href="/use-with-ai/?kind=land_project&amp;id=2020K0270&amp;route=%2Fbrowse%2Fzoning%2F%23land%2F2020K0270&amp;support=exact&amp;tool=get_land_project&amp;project_id=2020K0270">Investigate with an assistant</a></div></details></div>
+  <div class="actions" style="margin-top:12px">
+    <button type="button" class="ui-object-card-copy" data-object-card-copy="https://cityscroll.org/browse/zoning/#land/2020K0270" aria-live="polite">Copy link</button><button type="button" class="act" id="landqr" data-qr-share="" data-i18n="qr_share_btn" data-qr-url="http://127.0.0.1:56763/browse/zoning/#land/2020K0270">QR code</button>
+    <span class="project-calendar-actions" data-project-calendar-actions="1"><a class="act project-follow-btn" data-project-follow="project" href="/following?lens=entity&amp;filter=%7B%22entity_refs_all%22%3A%5B%22project%3A2020K0270%22%5D%7D&amp;freq=weekly">Follow project</a><a class="act calendar-subscribe-btn" data-calendar-subscription="scope" data-calendar-subscription-feed="https://api.cityscroll.org/feed.ics?lens=entity&amp;filter=%7B%22entity_refs_all%22%3A%5B%22project%3A2020K0270%22%5D%7D" data-calendar-subscription-webcal="webcal://api.cityscroll.org/feed.ics?lens=entity&amp;filter=%7B%22entity_refs_all%22%3A%5B%22project%3A2020K0270%22%5D%7D" data-calendar-subscription-label="Project calendar" href="webcal://api.cityscroll.org/feed.ics?lens=entity&amp;filter=%7B%22entity_refs_all%22%3A%5B%22project%3A2020K0270%22%5D%7D" aria-label="Subscribe to project calendar for 2020K0270">Subscribe to project calendar</a></span>
+    <a class="ui-external-action act" href="https://zap.planning.nyc.gov/projects/2020K0270" target="_blank" rel="noopener noreferrer">Open ZAP project<span aria-hidden="true">↗</span><span class="sr-only"> (opens in new tab)</span></a>
+    <button class="act" type="button" id="landalert" data-q="2134 Coyle Street">Follow this area</button>
+    <span id="land-city-record-source"></span>
+  </div>
+  <div id="project-connections"></div>
+  <div id="slc"><section class="node-section node-card site-lifecycle-context" data-site-lifecycle-context="1" data-site-lifecycle-parcel="3073670011" aria-labelledby="site-lifecycle-heading"><h2 id="site-lifecycle-heading">Other government activity at this site</h2><p>These are distinct public records connected by a shared place, not one continuous project.</p><ul><li class="site-lifecycle-record" data-site-lifecycle-subject="procurement:contract:CT107120258802303"><span><a href="/procurements/procurement%3Acontract%3ACT107120258802303">Coyle Family Residence</a></span> <span class="site-lifecycle-meta">November 4, 2024 · DHS · Westhab</span></li></ul><details><summary>Source evidence</summary><p>Connected through the same tax parcel (BBL 3073670011). <a href="https://www.pasport.org/public-search">Open the official source</a></p></details><p><a href="/parcels/3073670011/">Open parcel history</a></p></section></div>
+  <div id="project-connected-calendar"></div>
+  <div id="land-outcomes" class="land-outcomes"></div>
+  <div id="land-ulurp-rec"></div>
+  <div id="landmap" style="display:none"></div>
+  <div id="landpan" class="map-pan-controls" role="group" aria-label="Map pan controls" hidden="">
+    <button type="button" data-map-pan="west" aria-controls="landmap" aria-label="Pan map west">←</button>
+    <button type="button" data-map-pan="north" aria-controls="landmap" aria-label="Pan map north">↑</button>
+    <button type="button" data-map-pan="south" aria-controls="landmap" aria-label="Pan map south">↓</button>
+    <button type="button" data-map-pan="east" aria-controls="landmap" aria-label="Pan map east">→</button>
+  </div>
+  <div class="note" id="landmapnote">Location not resolved.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROPERTY / RULES / MEETINGS (feed lenses) ============ -->
+<section id="tab-property" class="tabpane">
+  <div class="wrap">
+    <div class="property-domain-intro lens-intro" id="property-domain-intro">
+      <p class="career-kicker" data-i18n="property_domain_kicker">City property disposition</p>
+      <h2 class="property-domain-heading lens-intro-heading lens-entry-heading" tabindex="-1" data-i18n="property_domain_heading">Hearings, sales, and awards</h2>
+      <p class="property-domain-deck lens-intro-deck" data-i18n="property_domain_deck">Property dispositions are grouped by parcel and process stage — hearing, auction or RFP, then award or conveyance — so repeated titles collapse when they share a tax lot. Links lead to the City Record source.</p>
+      <p class="property-tax-lien-link"><a href="#map?lens=property" data-i18n="property_explore_map_link">Explore property on the map</a></p>
+      <details class="lens-method property-method">
+        <summary class="lens-method-summary" data-i18n="property_how_it_works">How this list works</summary>
+        <ol class="lc-stepper disposition-phase-stepper property-domain-stepper" data-i18n-aria="property_process_stepper_aria" aria-label="Disposition process stages">
+          <li><span class="lc-step done" data-i18n="disposition_stage_hearing">Hearing</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
+          <li><span class="lc-step current" data-i18n="disposition_stage_auction_or_rfp">Auction / RFP</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
+          <li><span class="lc-step todo" data-i18n="disposition_stage_award_or_conveyance">Award / conveyance</span></li>
+        </ol>
+      </details>
+    </div>
+    <div class="chiprow property-view-switch" id="property-view-switch" role="group" aria-label="Current and archived Property records"></div>
+    <section class="parcel-biography-panel" id="parcel-biography-panel" aria-live="polite" hidden=""></section>
+    <!-- Archive/reference only: deep link #property?view=tax-lien. Not a property lens destination. -->
+    <section class="tax-lien-panel tax-lien-archive-panel" id="tax-lien-sale-panel" aria-live="polite" hidden="" data-tax-lien-archive="1">
+      <div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div>
+    </section>
+    <div class="lens-toolbar">
+      <div class="field kw"><label for="propertykw" data-i18n="search_label">Search</label><input type="text" id="propertykw" placeholder="address or neighborhood…" data-i18n-placeholder="kw_placeholder_property" data-clarity-mask="true"></div>
+      <div class="lens-toolbar-actions">
+        <details class="utility-overflow lens-more-filters" id="property-more-filters">
+          <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="property-filter-badge" hidden=""></span></summary>
+          <div class="utility-overflow-content lens-more-content">
+            <div class="lens-controls-grid">
+              <div class="field borough-scope-field"><span class="field-label" data-i18n="borough_label">Borough</span><div id="property-borough-rail"><a class="act mini borough-map-pivot" data-near-you-link="" data-lens="property" href="/near-you/lens/property/" data-i18n="near_you_map_scope">See on map</a></div></div>
+              <div class="field"><label for="propertyneighborhood" data-i18n="neighborhood_label">Neighborhood</label><input type="text" id="propertyneighborhood" placeholder="Astoria, Kingsbridge Heights…" data-i18n-placeholder="neighborhood_placeholder" data-clarity-mask="true"></div>
+              <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" id="propertylocation" data-i18n="use_my_location">Use my location</button></div>
+              <div class="field"><label for="propertyagency" data-i18n="agency_label">Agency</label><select id="propertyagency" data-clarity-mask="true"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
+            </div>
+            <div class="property-rail-label" data-i18n="property_sale_method_rail_label">Sale method</div>
+            <div class="chiprow" id="salerail" role="group" aria-label="Sale method"></div>
+            <div class="property-rail-label" data-i18n="property_price_rail_label">Price</div>
+            <div class="chiprow" id="pricerail" role="group" aria-label="Price"></div>
+            <div class="property-rail-label" data-i18n="property_process_rail_label">Disposition stage</div>
+            <div class="chiprow" id="processrail" role="group" aria-label="Disposition stage"></div>
+            <div class="property-rail-label" data-i18n="property_temporal_rail_label">When</div>
+            <div class="chiprow" id="liferail" role="group" aria-label="When"></div>
+          </div>
+        </details>
+        <button type="button" class="watchbtn" data-lens="property" data-i18n="watch_this_search">Follow this search</button>
+        <a class="calendar-subscribe-btn" data-calendar-subscribe-lens="property" data-calendar-subscription="scope" href="#" hidden="" data-i18n="calendar_subscribe_control" data-i18n-aria="calendar_subscribe_control" aria-label="Subscribe to calendar">Subscribe to calendar</a>
+      </div>
+    </div>
+    <div class="property-rail-label lens-primary-label" data-i18n="property_asset_rail_label">Item type</div>
+    <div class="chiprow lens-primary-rail" id="assettabs" role="group" aria-label="Item type"></div>
+    <section id="dcas-fleet-inventory" class="property-fleet-source" aria-live="polite" hidden=""></section>
+    <div class="lens-search-state" data-search-state="property"></div>
+    <div class="lens-resultbar">
+      <span class="lens-count" id="property-count" aria-hidden="true"></span>
+      <div class="field lens-sort">
+        <label for="propsort" data-i18n="property_sort_label">Sort by</label>
+        <select id="propsort" data-clarity-mask="true">
+          <option value="closing_soon" data-i18n="property_sort_closing_soon">Closing soonest</option>
+          <option value="newest" data-i18n="property_sort_newest">Newest posted</option>
+          <option value="price_desc" data-i18n="property_sort_price_desc">Price: high to low</option>
+          <option value="price_asc" data-i18n="property_sort_price_asc">Price: low to high</option>
+        </select>
+      </div>
+    </div>
+    <div class="exportbar">
+      <span class="export-band" id="property-export-band" hidden="">
+        <button class="mini export-control" data-export-property-auction="" hidden=""><span data-i18n="disposition_stage_auction_or_rfp">Auction / RFP</span> · <span data-i18n="export_csv">Export CSV</span> <span data-property-auction-count=""></span></button>
+        <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>
+        <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel</button>
+        <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print</button>
+      </span>
+      <details class="utility-overflow export-overflow" id="property-export-overflow">
+        <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+        <div class="utility-overflow-content">
+          <button class="mini export-control" data-export-property-auction="" hidden=""><span data-i18n="disposition_stage_auction_or_rfp">Auction / RFP</span> · <span data-i18n="export_csv">Export CSV</span> <span data-property-auction-count=""></span></button>
+          <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>
+          <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel</button>
+          <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print</button>
+        </div>
+      </details>
+    </div>
+    <div class="feed" id="propertyfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
+  </div>
+</section>
+
+<section id="tab-rules" class="tabpane" role="tabpanel" aria-labelledby="tabbtn-rules">
+  <div class="wrap">
+    <div class="rules-domain-intro lens-intro" id="rules-domain-intro">
+      <p class="career-kicker" data-i18n="rules_domain_kicker">City agency rulemaking</p>
+      <h2 class="rules-domain-heading lens-intro-heading lens-entry-heading" tabindex="-1" data-i18n="rules_domain_heading">Proposal, public process, adoption</h2>
+      <details class="lens-method rules-method">
+        <summary class="lens-method-summary" data-i18n="property_how_it_works">How this list works</summary>
+        <p class="rules-domain-deck rules-method-copy" data-i18n="rules_domain_deck">Agency rules are grouped by stage — proposal, public process, adoption, then effective date — when the connection is clear. Each stage links to its City Record source.</p>
+      </details>
+    </div>
+    <div class="lens-toolbar" id="rules-toolbar">
+      <div class="field kw"><label for="ruleskw" data-i18n="search_label">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…" data-i18n-placeholder="kw_placeholder_rules" data-clarity-mask="true"></div>
+      <div class="lens-toolbar-actions">
+        <details class="utility-overflow lens-more-filters" id="rules-more-filters">
+          <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="rules-filter-badge" hidden=""></span></summary>
+          <div class="utility-overflow-content lens-more-content">
+            <div class="lens-controls-grid">
+              <div class="field agency-scope-field"><span class="field-label" id="rules-agency-label" data-i18n="agency_label">Agency</span><div id="rules-agency-rail"><button type="button" class="ui-filter-chip" aria-pressed="true" data-scope-edge="rules.agency.all" data-filter-href="#rules" data-i18n="all_agencies">All agencies</button></div></div>
+              <div class="field borough-scope-field"><span class="field-label" data-i18n="borough_label">Borough</span><div id="rules-borough-rail"></div></div>
+            </div>
+          </div>
+        </details>
+        <button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Follow this search</button>
+        <a class="calendar-subscribe-btn" data-calendar-subscribe-lens="rules" data-calendar-subscription="scope" href="#" hidden="" data-i18n="calendar_subscribe_control" data-i18n-aria="calendar_subscribe_control" aria-label="Subscribe to calendar">Subscribe to calendar</a>
+      </div>
+    </div><details class="nlbox ask-cityscroll" data-ask-lens="rules"><summary data-i18n="ask_cityscroll_action">Ask CityScroll</summary><div class="nlbody"><div class="nlrow"><input type="text" id="nlq-rules" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" data-i18n-placeholder="nl_placeholder_rules" placeholder="for example, buildings rules, rules open for comment" data-clarity-mask="true"><button id="nlgo-rules" data-i18n="ask_btn">Ask</button></div><div id="nltry-rules" class="nltry"><span class="teaching-examples-label" data-i18n="try_asking_label">Try asking:</span><div class="teaching-example-list"><button type="button" class="trychip teaching-example" data-i="4" data-i18n="sugg_rules_4">rules open for comment</button><button type="button" class="trychip teaching-example" data-i="0" data-i18n="sugg_rules_0">buildings rules</button><button type="button" class="trychip teaching-example" data-i="2" data-i18n="sugg_rules_2">taxi rules</button></div></div><div id="nltrans-rules"></div></div></details><p class="ask-context" data-i18n="ask_cityscroll_context">Interprets your request</p><div class="search-scope-tools"><div id="searchactions-rules" data-search-actions="rules"></div><div id="nlpresets-rules" data-search-presets=""></div></div>
+    <div class="rules-rail-label lens-primary-label" id="rules-process-label" data-i18n="rules_process_rail_label">Includes phase</div>
+    <div class="chiprow lens-primary-rail" id="rulesprocessrail" role="group" aria-labelledby="rules-process-label"></div>
+    <p class="rules-action-band-note muted" data-i18n="rules_action_band_rail_label">What you can do now</p>
+    <div class="lens-search-state" data-search-state="rules"></div>
+    <div class="lens-resultbar" id="rules-resultbar"><span class="lens-count" id="rules-count" aria-hidden="true"></span></div>
+    <div class="exportbar">
+      <span class="export-band" id="rules-export-band" hidden="">
+        <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>
+        <button class="mini export-control" data-export-xlsx="rules" data-i18n="export_xlsx">Export Excel</button>
+        <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print</button>
+      </span>
+      <details class="utility-overflow export-overflow" id="rules-export-overflow" hidden="">
+        <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+        <div class="utility-overflow-content">
+          <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>
+          <button class="mini export-control" data-export-xlsx="rules" data-i18n="export_xlsx">Export Excel</button>
+          <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print</button>
+        </div>
+      </details>
+    </div>
+    <div class="feed" id="rulesfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
+  </div>
+</section>
+
+<section id="tab-meetings" class="tabpane" role="tabpanel" aria-labelledby="tabbtn-meetings">
+  <div class="wrap">
+    <div class="meetings-domain-intro lens-intro" id="meetings-domain-intro">
+      <p class="career-kicker" data-i18n="meetings_domain_kicker">Public hearings and meetings</p>
+      <h2 class="meetings-domain-heading lens-intro-heading lens-entry-heading" tabindex="-1" data-i18n="meetings_domain_heading">Not every meeting is a hearing</h2>
+      <p class="meetings-domain-deck lens-intro-deck" data-i18n="meetings_domain_deck">A public hearing is a scheduled chance to give testimony or evidence on a specific matter. A public meeting is broader — some are open only to observe. Open any listing to see what the body can do next and how you can take part.</p>
+      <details class="lens-method meetings-method">
+        <summary class="lens-method-summary" data-i18n="property_how_it_works">How this list works</summary>
+        <div class="hearingintro meetings-method-copy" data-i18n-html="meetings_method_arc_html">Public hearings follow a meeting arc — scheduled, agenda, held, then outcomes — with next steps when attendance or testimony is published. Same-board same-day notices collapse into one card. Each notice links to its City Record source.</div>
+        <div class="hearingintro meetings-method-copy" data-i18n-html="hearings_location_note_html"><b>Affected place drives “near me.”</b> The venue is shown separately, because a Manhattan hearing can decide a Queens matter. Citywide and unlocated notices stay visible.</div>
+      </details>
+      <div class="public-input-explainer-host" id="public-input-explainer-host" data-public-input-explainer-host="meetings-heading"><details class="public-input-explainer" id="public-input-explainer" data-public-input-explainer="1">
+    <summary class="public-input-explainer-summary" lang="en">How public input works</summary>
+    <div class="public-input-explainer-body">
+      <div class="public-input-explainer-what" lang="en"><p>Taking part in a public proceeding means putting something on an official record: speaking at a hearing, or sending a written comment before a published deadline. What that record then does depends on the proceeding, and every listing on this site states which one applies to it.</p></div>
+      <h3 class="public-input-explainer-subhead" lang="en">Where what you say ends up</h3>
+      <div class="public-input-explainer-destinations" data-explainer-destinations="1" lang="en"><ul><li><b>A public comment record</b> — a written comment filed in a comment period enters the record the body must consider.</li><li><b>Hearing testimony</b> — what you say at a hearing enters that hearing's testimony record.</li><li><b>A transcript</b> — some proceedings publish a word-for-word account of the session.</li><li><b>Minutes</b> — other bodies publish a summary of what happened instead.</li><li><b>A decision document</b> — a separate record, published when the body records a decision.</li></ul><p>Some proceedings also publish a report responding to the comments received. That is one of these destinations, and each listing states whether it applies.</p></div>
+      <h3 class="public-input-explainer-subhead" lang="en">The limits of taking part</h3>
+      <div class="public-input-explainer-limits" data-explainer-limits="1" lang="en"><p>A reply from an official is a separate thing from a record entry. Filing a comment or giving testimony puts your words on the record, and no official is required to answer you personally. This site promises no such answer.</p><p>A count of comments stays a count of comments. A body weighs what is said against the law it works under, so this site reports no comment totals as support or opposition and treats no comment volume as a vote.</p></div>
+      <h3 class="public-input-explainer-subhead" lang="en">Three ways this works in practice</h3>
+      <ul class="public-input-explainer-examples" lang="en"><li class="public-input-explainer-example" data-explainer-example="hearing">
+        <p class="public-input-explainer-example-title">Speak at a City Council hearing on a bill, or send written testimony.</p>
+        <p class="public-input-explainer-example-links"><a class="public-input-explainer-surface" href="#meetings" data-explainer-surface="hearing">See scheduled hearings and meetings</a><a class="public-input-explainer-source" href="https://council.nyc.gov/testify/" target="_blank" rel="noopener noreferrer" data-explainer-source="hearing"><span lang="en" dir="ltr">Official source: NYC Council testimony</span><span aria-hidden="true"> ↗</span></a></p>
+      </li><li class="public-input-explainer-example" data-explainer-example="rule">
+        <p class="public-input-explainer-example-title">Comment on an agency's proposed rule before its published deadline.</p>
+        <p class="public-input-explainer-example-links"><a class="public-input-explainer-surface" href="#rules" data-explainer-surface="rule">See open rule comment periods</a><a class="public-input-explainer-source" href="https://rules.cityofnewyork.us/capa/" target="_blank" rel="noopener noreferrer" data-explainer-source="rule"><span lang="en" dir="ltr">Official source: NYC Rules</span><span aria-hidden="true"> ↗</span></a></p>
+      </li><li class="public-input-explainer-example" data-explainer-example="contract">
+        <p class="public-input-explainer-example-title">Comment on a proposed contract award during its comment window.</p>
+        <p class="public-input-explainer-example-links"><a class="public-input-explainer-surface" href="#money" data-explainer-surface="contract">See contract comment deadlines</a><a class="public-input-explainer-source" href="https://www.nyc.gov/site/mocs/about/public-hearing.page" target="_blank" rel="noopener noreferrer" data-explainer-source="contract"><span lang="en" dir="ltr">Official source: Mayor's Office of Contract Services</span><span aria-hidden="true"> ↗</span></a></p>
+      </li></ul>
+      <details class="public-input-explainer-method">
+        <summary lang="en">Where this explanation comes from</summary>
+        <div class="public-input-explainer-method-body" lang="en"><p>Each example above links to the City page that governs it, and to the part of this site that lists live records of that kind. This explanation describes how those proceedings work in general. The specific date, status, purpose and participation channel for any one of them stays on its own listing, alongside its City Record source link.</p></div>
+      </details>
+    </div>
+  </details></div>
+    </div>
+    <div class="lens-toolbar" id="meetings-toolbar">
+      <div class="field kw"><label for="meetingskw" data-i18n="search_label">Search</label><input type="text" id="meetingskw" placeholder="Community Board, Brooklyn, landmark…" data-i18n-placeholder="kw_placeholder_meetings" data-clarity-mask="true"></div>
+      <div class="lens-toolbar-actions">
+        <details class="utility-overflow lens-more-filters" id="meetings-more-filters">
+          <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="meetings-filter-badge" hidden=""></span></summary>
+          <div class="utility-overflow-content lens-more-content">
+            <div class="lens-controls-grid">
+              <div class="field"><label for="meetingswhen" data-i18n="date_window_label">Date window</label><select id="meetingswhen" data-clarity-mask="true"><option value="week" data-i18n="this_week">This week</option><option value="month" data-i18n="next_30_days">Next 30 days</option><option value="upcoming" data-i18n="all_upcoming">All upcoming</option><option value="past" data-i18n="recent_past">Recent past</option></select></div>
+              <div class="field"><label for="meetingsboro" data-i18n="affected_area_label">Affected area</label><select id="meetingsboro" data-clarity-mask="true"><option value="" data-i18n="all_areas">All areas</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option><option value="citywide" data-i18n="map_bucket_citywide">Citywide</option><option value="virtual" data-i18n="map_bucket_virtual">Virtual / online only</option><option value="unlocated" data-i18n="map_bucket_unlocated">No place signal</option><option value="citywide-unlocated" data-i18n="citywide_unlocated">Citywide / unlocated</option></select></div>
+              <div class="field"><label for="meetingsattendance" data-i18n="meetings_attendance_label">Attendance</label><select id="meetingsattendance" data-clarity-mask="true"><option value="" data-i18n="meetings_attendance_any">Any attendance mode</option><option value="in_person" data-i18n="meetings_attendance_in_person">In person</option><option value="remote" data-i18n="meetings_attendance_remote">Remote participation</option><option value="watch_only" data-i18n="meetings_attendance_watch_only">Watch only</option><option value="hybrid" data-i18n="meetings_attendance_hybrid">Hybrid</option><option value="not_stated" data-i18n="meetings_attendance_not_stated">Not stated</option></select></div>
+              <fieldset class="field meetings-availability" data-meetings-availability="">
+                <legend>When can you attend?</legend>
+                <label><input type="radio" name="meetingsAvailability" value="any" checked="" data-clarity-mask="true"> Any time</label>
+                <label><input type="radio" name="meetingsAvailability" value="evenings_weekends" data-clarity-mask="true"> Evenings and weekends</label>
+                <label><input type="radio" name="meetingsAvailability" value="custom" data-clarity-mask="true"> Custom weekly schedule</label>
+                <p class="meetings-availability-help">Weekdays from 17:00 (inclusive), all day Saturday and Sunday, Eastern Time (New York). Meetings without a start time stay in ordinary browse.</p>
+                <div class="meetings-availability-custom" data-meetings-availability-custom="" hidden="">
+                  <fieldset><legend>Days</legend>
+                    <label><input type="checkbox" name="meetingsAvailabilityDay" value="1" data-meetings-availability-day="" data-clarity-mask="true"> Monday</label>
+                    <label><input type="checkbox" name="meetingsAvailabilityDay" value="2" data-meetings-availability-day="" data-clarity-mask="true"> Tuesday</label>
+                    <label><input type="checkbox" name="meetingsAvailabilityDay" value="3" data-meetings-availability-day="" data-clarity-mask="true"> Wednesday</label>
+                    <label><input type="checkbox" name="meetingsAvailabilityDay" value="4" data-meetings-availability-day="" data-clarity-mask="true"> Thursday</label>
+                    <label><input type="checkbox" name="meetingsAvailabilityDay" value="5" data-meetings-availability-day="" data-clarity-mask="true"> Friday</label>
+                    <label><input type="checkbox" name="meetingsAvailabilityDay" value="6" data-meetings-availability-day="" data-clarity-mask="true"> Saturday</label>
+                    <label><input type="checkbox" name="meetingsAvailabilityDay" value="0" data-meetings-availability-day="" data-clarity-mask="true"> Sunday</label>
+                  </fieldset>
+                  <label>Starts at <input type="time" name="meetingsAvailabilityStart" data-meetings-availability-start="" data-clarity-mask="true"></label>
+                  <label>Ends before <input type="time" name="meetingsAvailabilityEnd" data-meetings-availability-end="" data-clarity-mask="true"></label>
+                  <label>Timezone <select name="meetingsAvailabilityTimezone" data-meetings-availability-timezone="" data-clarity-mask="true"><option value="America/New_York">Eastern Time (New York)</option><option value="America/Chicago">Central Time (Chicago)</option><option value="America/Denver">Mountain Time (Denver)</option><option value="America/Los_Angeles">Pacific Time (Los Angeles)</option></select></label>
+                  <label>Meetings without a start time <select name="meetingsAvailabilityUnknown" data-meetings-availability-unknown="" data-clarity-mask="true"><option value="exclude">Exclude them</option><option value="include">Include them</option></select></label>
+                </div>
+              </fieldset>
+              <div class="field"><label for="meetingsneighborhood" data-i18n="neighborhood_label">Neighborhood</label><input type="text" id="meetingsneighborhood" placeholder="Astoria, Kingsbridge Heights…" data-i18n-placeholder="neighborhood_placeholder" data-clarity-mask="true"></div>
+              <div class="field meetings-agency-scope-field"><div class="field-label" id="meetings-agency-label" data-i18n="agency_label">Agency</div><nav id="meetings-agency-scope" class="chiprow" role="group" aria-labelledby="meetings-agency-label"></nav><select id="meetingsagency" hidden="" aria-hidden="true" tabindex="-1" aria-label="Agency" data-clarity-mask="true"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
+              <div class="field meetings-board-scope-field"><div class="field-label" id="meetings-board-label">Community board</div><nav id="meetings-board-scope" class="chiprow" role="group" aria-labelledby="meetings-board-label"></nav></div>
+              <div class="field meetings-location-control"><button type="button" id="meetingslocation" data-i18n="use_my_location">Use my location</button></div>
+            </div>
+            <div class="meetings-rail-label" data-i18n="meetings_place_group_rail_label">List layout</div>
+            <div class="chiprow" id="meetingsplacegrouprail" role="group" aria-label="List layout"></div>
+          </div>
+        </details>
+        <button type="button" class="watchbtn" data-lens="meetings" data-i18n="watch_this_search">Follow this search</button>
+        <a class="calendar-subscribe-btn" data-calendar-subscribe-lens="meetings" data-calendar-subscription="scope" href="#" hidden="" data-i18n="calendar_subscribe_control" data-i18n-aria="calendar_subscribe_control" aria-label="Subscribe to calendar">Subscribe to calendar</a>
+      </div>
+    </div><details class="nlbox ask-cityscroll" data-ask-lens="meetings"><summary data-i18n="ask_cityscroll_action">Ask CityScroll</summary><div class="nlbody"><div class="nlrow"><input type="text" id="nlq-meetings" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" data-i18n-placeholder="nl_placeholder_meetings" placeholder="for example, hearings this week, landmarks, city council" data-clarity-mask="true"><button id="nlgo-meetings" data-i18n="ask_btn">Ask</button></div><div id="nltry-meetings" class="nltry"><span class="teaching-examples-label" data-i18n="try_asking_label">Try asking:</span><div class="teaching-example-list"><button type="button" class="trychip teaching-example" data-i="5" data-i18n="sugg_meetings_5">what can I comment on this week</button><button type="button" class="trychip teaching-example" data-i="4" data-i18n="sugg_meetings_4">hearings this week</button></div></div><div id="nltrans-meetings"></div></div></details><p class="ask-context" data-i18n="ask_cityscroll_context">Interprets your request</p><div class="search-scope-tools"><div id="searchactions-meetings" data-search-actions="meetings"></div><div id="nlpresets-meetings" data-search-presets=""></div></div>
+    <div class="meetings-rail-label lens-primary-label" id="meetings-process-label" data-i18n="meetings_process_rail_label">Current stage</div>
+    <div class="chiprow lens-primary-rail" id="meetingsprocessrail" role="group" aria-labelledby="meetings-process-label"></div>
+    <div id="meetingswidening"></div>
+    <div class="lens-search-state" data-search-state="meetings"></div>
+    <div class="lens-resultbar" id="meetings-resultbar">
+      <span class="lens-count" id="meetings-count" aria-hidden="true"></span>
+    </div>
+    <div class="exportbar">
+      <span class="export-band" id="meetings-export-band" hidden="">
+        <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
+        <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel</button>
+        <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print</button>
+      </span>
+      <details class="utility-overflow export-overflow" id="meetings-export-overflow" hidden="">
+        <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+        <div class="utility-overflow-content">
+          <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
+          <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel</button>
+          <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print</button>
+        </div>
+      </details>
+    </div>
+    <div class="feed" id="meetingsfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
+  </div>
+</section>
+
+<!-- ============ EXAMS ============ -->
+<section id="tab-exams" class="tabpane" role="tabpanel" aria-labelledby="tabbtn-exams">
+  <div class="wrap">
+    <div id="examsview">
+<div class="career-guide" id="career-guide">
+      <section class="career-browser" aria-labelledby="career-browser-heading">
+        <div class="career-browser-head">
+          <div>
+            <p class="career-kicker">Exams</p>
+            <h2 id="career-browser-heading" class="lens-entry-heading" tabindex="-1">Civil-service exams</h2>
+          </div>
+          <p data-i18n="career_browser_note">Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile.</p>
+        </div>
+        <div class="lens-toolbar career-toolbar" id="career-toolbar">
+          <div class="field kw">
+            <label for="career-query" data-i18n="career_search_label">Job or exam number</label>
+            <input id="career-query" type="text" placeholder="for example, caseworker or 7016" data-i18n-placeholder="career_search_placeholder" data-clarity-mask="true">
+          </div>
+          <div class="lens-toolbar-actions">
+            <details class="utility-overflow lens-more-filters" id="staffing-more-filters">
+              <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="staffing-filter-badge" hidden=""></span></summary>
+              <div class="utility-overflow-content lens-more-content">
+                <div class="lens-controls-grid career-more-grid">
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-window-facets-label" data-i18n="career_window_label">Application window</span>
+                    <div id="career-window-facets" class="career-facet-links" data-career-facets="window" role="group" aria-labelledby="career-window-facets-label"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-salary-band-facets-label" data-i18n="career_salary_band_label">Starting salary</span>
+                    <div id="career-salary-band-facets" class="career-facet-links" data-career-facets="salary" role="group" aria-labelledby="career-salary-band-facets-label"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-fee-level-facets-label" data-i18n="career_fee_level_label">Application fee</span>
+                    <div id="career-fee-level-facets" class="career-facet-links" data-career-facets="fee" role="group" aria-labelledby="career-fee-level-facets-label"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-no-experience-facets-label" data-i18n="career_no_experience_label">Experience</span>
+                    <div id="career-no-experience-facets" class="career-facet-links" data-career-facets="experience" role="group" aria-labelledby="career-no-experience-facets-label"></div>
+                  </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-format-facets-label" data-i18n="career_format_label">Exam format</span>
+                    <div id="career-format-facets" class="career-facet-links" data-career-facets="format" role="group" aria-labelledby="career-format-facets-label"></div>
+                  </div>
+                </div>
+              </div>
+            </details>
+            <button type="button" class="watchbtn" data-lens="people" data-i18n="watch_this_search">Follow this search</button>
+          </div>
+        </div>
+        <div class="career-primary-facet">
+          <div class="career-rail-label lens-primary-label" id="career-eligibility-facets-label" data-i18n="career_eligibility_label">Who can apply</div>
+          <div id="career-eligibility-facets" class="career-facet-links lens-primary-rail" data-career-facets="eligibility" role="group" aria-labelledby="career-eligibility-facets-label"></div>
+          <select id="career-eligibility" hidden="" aria-hidden="true" tabindex="-1" aria-labelledby="career-eligibility-facets-label" data-clarity-mask="true">
+            <option value="open_competitive" data-i18n="career_anyone_option">Anyone who qualifies</option>
+            <option value="promotion" data-i18n="career_city_employee_option">Current City employees</option>
+            <option value="all" data-i18n="career_all_eligibility_option">All exam types</option>
+          </select>
+        </div>
+        <div class="career-primary-facet">
+          <div class="career-rail-label lens-primary-label" id="career-interest-facets-label" data-i18n="career_interest_label">Interest area</div>
+          <div id="career-interest-facets" class="career-facet-links lens-primary-rail career-interest-multi" data-career-facets="interest" role="group" aria-labelledby="career-interest-facets-label" data-interest-counts-basis="under_current_filter"></div>
+          <div id="career-interest-context"></div>
+        </div>
+        <div class="lens-search-state" id="staffing-active-filters" data-search-state="people"></div>
+        <div class="lens-resultbar career-resultbar" id="career-resultbar">
+          <span class="lens-count" id="career-result-count" aria-live="polite"></span>
+        </div>
+        <div class="career-source" id="career-source" role="status">
+          <span data-i18n="career_loading">Loading the DCAS exam guide…</span>
+        </div>
+        <div class="career-results" id="career-results" aria-live="polite"></div>
+      </section>
+
+      <div class="career-intro">
+        <details class="career-how" id="career-how-details">
+          <summary data-i18n="staffing_exam_help">Learn about exams</summary>
+          <div class="career-how-body">
+            <div class="career-facts" aria-label="Exam guide summary" data-i18n-aria="career_summary_aria">
+              <div class="career-fact"><b id="career-open-count">—</b><span data-i18n="career_open_count_label">open to applications now</span></div>
+              <div class="career-fact"><b id="career-upcoming-count">—</b><span data-i18n="career_upcoming_count_label">open-competitive exams scheduled next</span></div>
+              <div class="career-fact"><b data-i18n="career_no_account_fact">No account here</b><span data-i18n="career_no_account_label">Applications happen in the City's OASys system</span></div>
+            </div>
+            <p class="career-deck" data-i18n="career_deck">Civil-service exams can open a path to stable public-service work. You do not need to know City hiring jargon first: start with work that interests you, check the official requirements, and apply during the listed window.</p>
+            <section aria-labelledby="career-how-heading">
+              <h3 class="career-section-heading" id="career-how-heading" data-i18n="career_how_heading">What a civil-service exam does</h3>
+              <div class="career-steps">
+                <div class="career-step"><b data-i18n="career_step1_title">Find an exam</b><span data-i18n="career_step1_body">Open-competitive exams are available to anyone who meets the requirements.</span></div>
+                <div class="career-step"><b data-i18n="career_step2_title">Read the NOE</b><span data-i18n="career_step2_body">The Notice of Examination is the official guide to the job, qualifications, fee, and test.</span></div>
+                <div class="career-step"><b data-i18n="career_step3_title">Apply in the window</b><span data-i18n="career_step3_body">Create an OASys account, submit the application, and request a fee waiver if you qualify.</span></div>
+                <div class="career-step"><b data-i18n="career_step4_title">Join the eligible list</b><span data-i18n="career_step4_body">If you pass, your score places you on a list agencies use when they hire for that title.</span></div>
+              </div>
+            </section>
+          </div>
+        </details>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ALERTS ============ -->
+<section id="tab-alerts" class="tabpane">
+  <div class="wrap">
+
+    <!-- One subscribe surface: scope → optional refine → email → frequency → preview → subscribe.
+         Topic chips, narrow field, advanced watch types, and #awatch/#aparam/#afreq share one draft
+         (refreshQuizDisplay / aWatchChange). No second parallel form. -->
+    <details class="nlbox ask-cityscroll" data-ask-lens="alerts"><summary data-i18n="ask_cityscroll_action">Ask CityScroll</summary><div class="nlbody"><div class="nlrow"><input type="text" id="nlq-alerts" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" data-i18n-placeholder="nl_placeholder_alerts" placeholder="for example, education contracts over $200K due in 3 months, or awards over $1M" data-clarity-mask="true"><button id="nlgo-alerts" data-i18n="ask_btn">Ask</button></div><div id="nltry-alerts" class="nltry"><span class="teaching-examples-label" data-i18n="try_asking_label">Try asking:</span><div class="teaching-example-list"><button type="button" class="trychip teaching-example" data-i="1" data-i18n="sugg_alerts_1">education contracts over $200K due in 3 months</button><button type="button" class="trychip teaching-example" data-i="2" data-i18n="sugg_alerts_2">rezonings near 79 Rivington</button><button type="button" class="trychip teaching-example" data-i="3" data-i18n="sugg_alerts_3">sanitation contract awards</button></div></div><div id="nltrans-alerts"></div></div></details><p class="ask-context" data-i18n="ask_cityscroll_context">Interprets your request</p><div class="grid">
+      <div class="panel" id="quizpanel" style="padding:16px 18px 18px">
+      <h2 style="border:0;padding:0 0 4px" data-i18n="quiz_heading">Follow CityScroll</h2>
+      <p class="alerts-lead" data-i18n="alerts_flow_lead">Pick what to follow, enter your email, and subscribe. One form — no account required.</p>
+
+      <!-- Context-carry lead: filled when arriving with #alerts?lens=…&filter=… (or notice/project). -->
+      <div id="acontextlead" class="alert-context-lead" hidden="" role="status" style="margin:0 0 14px;padding:12px 14px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);max-width:62ch"></div>
+
+      <!-- Registry-driven ready-made watch sets (data/watch_templates.json). -->
+      <div class="watch-tpl-pack" id="watch-templates" data-watch-templates="1">
+        <h3 class="watch-tpl-heading" data-i18n="watch_tpl_heading">Ready-made watch sets</h3>
+        <p class="watch-tpl-lead muted" data-i18n="watch_tpl_lead">One-tap multi-watch bundles for industry associations. Each pack creates separate email watches immediately.</p>
+        <div class="watch-tpl-list" id="watch-template-list" role="group" data-i18n-aria="watch_tpl_heading" aria-label="Ready-made watch sets"></div>
+        <div class="watch-tpl-detail" id="watch-template-detail" hidden=""></div>
+      </div>
+
+      <div class="afield" style="margin-top:4px">
+        <label id="quizwhatlbl"><span class="qstep">1</span> <span data-i18n="quiz_step1">What should we watch for you?</span></label>
+        <div class="chiprow" id="quizwhat" role="group" aria-labelledby="quizwhatlbl" style="margin-top:6px">
+          <button type="button" class="chip" data-w="rfpkw" aria-pressed="false" data-i18n="quiz_rfpkw">City contracts and RFPs</button>
+          <button type="button" class="chip" data-w="bigaward" aria-pressed="false" data-i18n="quiz_bigaward">Big contract awards</button>
+          <button type="button" class="chip" data-w="rezone" aria-pressed="false" data-i18n="quiz_rezone">Rezonings near me</button>
+          <button type="button" class="chip" data-w="property" aria-pressed="false" data-i18n="quiz_property">Property sales</button>
+          <button type="button" class="chip" data-w="rules" aria-pressed="false" data-i18n="quiz_rules">Rule changes</button>
+          <button type="button" class="chip" data-w="meetings" aria-pressed="false" data-i18n="quiz_meetings">Hearings and meetings</button>
+          <button type="button" class="chip" data-w="district" aria-pressed="false" data-i18n="quiz_district">Follow City Council District</button>
+        </div>
+      </div>
+
+      <div class="afield" id="quiznarrowbox">
+        <label for="quiznarrow"><span class="qstep">2</span> <span data-i18n="quiz_step2">Narrow with a keyword (optional)</span></label>
+        <input type="text" id="quiznarrow" placeholder="type what you're looking for, or pick a topic above…" data-i18n-placeholder="quiz_narrow_placeholder" data-clarity-mask="true">
+      </div>
+
+      <!-- Type-specific refinement fields live in the main flow (visibility toggled by aWatchChange). -->
+      <div class="afield" id="aparambox">
+        <label id="aparamlabel" for="aparam">Minimum award</label>
+        <select id="athresh" aria-labelledby="aparamlabel" data-clarity-mask="true">
+          <option value="1000000">$1M+</option>
+          <option value="5000000">$5M+</option>
+          <option value="10000000">$10M+</option>
+          <option value="50000000">$50M+</option>
+        </select>
+        <input type="text" id="aparam" placeholder="" style="display:none" data-clarity-mask="true">
+        <input type="text" id="aagency" aria-label="Agency (optional)" data-i18n-aria="agency_filter_label" placeholder="agency (optional) — for example, Buildings" style="display:none;margin-top:6px" data-clarity-mask="true">
+      </div>
+      <div class="afield" id="adistrictbox" hidden="">
+        <label for="adistrict"><span class="qstep">2</span> <span data-i18n="district_pick_label">City Council District</span></label>
+        <select id="adistrict" aria-describedby="districtpresetnote" data-clarity-mask="true">
+          <option value="" data-i18n="district_pick_placeholder">Choose a City Council District</option>
+        <option value="1">Council District 1</option><option value="2">Council District 2</option><option value="3">Council District 3</option><option value="4">Council District 4</option><option value="5">Council District 5</option><option value="6">Council District 6</option><option value="7">Council District 7</option><option value="8">Council District 8</option><option value="9">Council District 9</option><option value="10">Council District 10</option><option value="11">Council District 11</option><option value="12">Council District 12</option><option value="13">Council District 13</option><option value="14">Council District 14</option><option value="15">Council District 15</option><option value="16">Council District 16</option><option value="17">Council District 17</option><option value="18">Council District 18</option><option value="19">Council District 19</option><option value="20">Council District 20</option><option value="21">Council District 21</option><option value="22">Council District 22</option><option value="23">Council District 23</option><option value="24">Council District 24</option><option value="25">Council District 25</option><option value="26">Council District 26</option><option value="27">Council District 27</option><option value="28">Council District 28</option><option value="29">Council District 29</option><option value="30">Council District 30</option><option value="31">Council District 31</option><option value="32">Council District 32</option><option value="33">Council District 33</option><option value="34">Council District 34</option><option value="35">Council District 35</option><option value="36">Council District 36</option><option value="37">Council District 37</option><option value="38">Council District 38</option><option value="39">Council District 39</option><option value="40">Council District 40</option><option value="41">Council District 41</option><option value="42">Council District 42</option><option value="43">Council District 43</option><option value="44">Council District 44</option><option value="45">Council District 45</option><option value="46">Council District 46</option><option value="47">Council District 47</option><option value="48">Council District 48</option><option value="49">Council District 49</option><option value="50">Council District 50</option><option value="51">Council District 51</option></select>
+        <p id="districtpresetnote" class="muted" data-i18n="district_preset_note" style="font:12.5px/1.5 ui-sans-serif,system-ui,sans-serif;margin:6px 0 0">One weekly email groups awards, hearings, land use actions, and property dispositions for this City Council District.</p>
+      </div>
+      <div class="afield" id="acommunityboardbox" hidden="">
+        <label for="acommunityboardboro"><span class="qstep">2</span> <span data-i18n="community_board_pick_label">Community Board</span></label>
+        <div class="community-board-picker">
+          <select id="acommunityboardboro" aria-label="Community Board" data-i18n-aria="community_board_pick_label" data-clarity-mask="true">
+            <option value="" data-i18n="community_board_borough_placeholder">Choose a borough</option>
+            <option value="Manhattan">Manhattan</option>
+            <option value="Bronx">Bronx</option>
+            <option value="Brooklyn">Brooklyn</option>
+            <option value="Queens">Queens</option>
+            <option value="Staten Island">Staten Island</option>
+          </select>
+          <select id="acommunityboardnumber" aria-label="Community Board number" data-clarity-mask="true">
+            <option value="" data-i18n="community_board_number_placeholder">Choose a Community Board</option>
+            <option value="1">Community Board 1</option><option value="2">Community Board 2</option>
+            <option value="3">Community Board 3</option><option value="4">Community Board 4</option>
+            <option value="5">Community Board 5</option><option value="6">Community Board 6</option>
+            <option value="7">Community Board 7</option><option value="8">Community Board 8</option>
+            <option value="9">Community Board 9</option><option value="10">Community Board 10</option>
+            <option value="11">Community Board 11</option><option value="12">Community Board 12</option>
+            <option value="13">Community Board 13</option><option value="14">Community Board 14</option>
+            <option value="15">Community Board 15</option><option value="16">Community Board 16</option>
+            <option value="17">Community Board 17</option><option value="18">Community Board 18</option>
+          </select>
+        </div>
+        <p id="communityboardnote" class="muted" style="font:12.5px/1.5 ui-sans-serif,system-ui,sans-serif;margin:6px 0 0">Choose a borough and board number. This follows that Community Board’s meetings.</p>
+      </div>
+      <div id="amoneyfields" hidden="">
+        <div class="afield" id="amoneyminbox" hidden="">
+          <label for="amoneymin" data-i18n="param_label_moneynl_min">Minimum $ (optional)</label>
+          <input type="number" id="amoneymin" min="0" step="1000" placeholder="200000" data-i18n-placeholder="param_placeholder_moneynl_min" data-clarity-mask="true">
+        </div>
+        <div class="afield" id="amoneymonthsbox" hidden="">
+          <label for="amoneymonths" data-i18n="param_label_moneynl_months">Due within months (optional)</label>
+          <input type="number" id="amoneymonths" min="1" max="60" placeholder="3" data-i18n-placeholder="param_placeholder_moneynl_months" data-clarity-mask="true">
+        </div>
+      </div>
+
+      <!-- Progressive disclosure: less-common watch types + examples — not a second subscribe form. -->
+      <details id="advopts">
+        <summary data-i18n="build_alert_heading">More ways to watch</summary>
+        <div style="padding:12px 14px 14px">
+          <div class="afield">
+            <label data-i18n="quick_suggestions">Quick suggestions</label>
+            <div class="wand">
+              <button type="button" class="wandchip" data-w="rezone" data-p="79 Rivington" data-i18n="sugg_rezone_rivington">Find Rivington rezonings</button>
+              <button type="button" class="wandchip" data-w="bigaward" data-p="1000000" data-i18n="sugg_awards_1m">Awards over $1M</button>
+              <button type="button" class="wandchip" data-w="rfpkw" data-p="construction" data-i18n="sugg_construction_rfp">Construction RFPs</button>
+            </div>
+          </div>
+          <div class="afield" style="margin-bottom:0">
+            <label for="awatch" data-i18n="watch_for_label">Watch for</label>
+            <select id="awatch" data-clarity-mask="true">
+              <option value="bigaward" data-i18n="watch_bigaward">Contract awards over a threshold</option>
+              <option value="rfpkw" data-i18n="watch_rfpkw">Open RFPs matching a keyword</option>
+              <option value="moneynl" data-i18n="watch_moneynl">Contracts or awards by description</option>
+              <option value="rezone" data-i18n="watch_rezone">Rezonings near a neighborhood</option>
+              <option value="property" data-i18n="watch_property">Property sale notices</option>
+              <option value="rules" data-i18n="watch_rules">Rule changes (Agency Rules)</option>
+              <option value="meetings" data-i18n="watch_meetings">Public hearings and meetings</option>
+              <option value="district" data-i18n="watch_district">Follow a City Council District</option>
+              <option value="communityboard" data-i18n="watch_community_board">Follow a Community Board</option>
+              <option value="entityvendor" data-i18n="watch_entityvendor">A vendor — anything naming them</option>
+              <option value="entityagency" data-i18n="watch_entityagency">An agency — anything they publish</option>
+              <option value="awardwatch" data-i18n="watch_awardwatch">The award on a notice I'm viewing</option>
+              <option value="examarea">A civil-service exam interest area</option>
+            </select>
+          </div>
+        </div>
+      </details>
+
+      <!-- Step 3: THE email field — one on the page, visually unmistakable. -->
+      <div class="afield alerts-email-step">
+        <label id="adestlabel" for="adest"><span class="qstep">3</span> <span data-i18n="alerts_email_step_label">Your email</span></label>
+        <input type="email" id="adest" data-clarity-mask="true" autocomplete="email" placeholder="example@example.com" data-i18n-placeholder="email_placeholder" aria-describedby="asubmsg">
+      </div>
+
+      <div class="afield">
+        <label id="quizfreqlbl"><span class="qstep">4</span> <span data-i18n="quiz_step3">How often?</span></label>
+        <div class="chiprow" id="quizfreq" role="group" aria-labelledby="quizfreqlbl" style="margin-top:6px">
+          <button type="button" class="chip on" data-f="Daily" aria-pressed="true" data-i18n="quiz_daily">Send daily</button>
+          <button type="button" class="chip" data-f="Weekly" aria-pressed="false" data-i18n="quiz_weekly">Weekly (Mondays)</button>
+        </div>
+        <!-- #afreq is the shared model for aDescribe/subscribe; frequency chips drive it.
+             hidden from the visual tree but still named for the label-coverage census. -->
+        <select id="afreq" hidden="" aria-labelledby="quizfreqlbl" data-clarity-mask="true"><option data-i18n="afreq_daily_opt">Daily</option><option data-i18n="afreq_weekly_opt">Weekly</option></select>
+        <div id="awhen" style="margin-top:6px;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)"></div>
+      </div>
+
+      <div class="alerts-finish">
+        <button id="asubscribe" type="button" data-i18n="subscribe_btn">Subscribe</button>
+        <button id="apreview" type="button" data-i18n="quiz_preview_btn">Preview digest</button>
+      </div>
+      <div id="asubwrap" style="margin-top:12px">
+        <div id="asubmsg" class="muted" role="status" style="font:13px/1.5 ui-sans-serif,system-ui,sans-serif"></div>
+        <div class="muted" style="margin-top:6px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="quiz_no_account">No account — your watch starts immediately. A welcome email includes manage and unsubscribe links.</div>
+        <div id="afeeds" class="muted" style="margin-top:12px;font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif"></div>
+      </div>
+      <div id="asaved"></div>
+      </div>
+      <div class="panel">
+        <h2 data-i18n="preview_panel_heading">Preview</h2>
+        <div class="detail" id="apreviewbox" translate="no"><div class="empty" data-i18n="empty_preview">Pick a topic (or open with a watch link) to preview today's digest.</div></div>
+      </div>
+    </div>
+
+    <!-- Multi-watch: demoted behind disclosure — present when the reader asks, not ambient weight. -->
+    <details class="panel route-item" id="alerts-rollup-prefs" tabindex="-1">
+      <summary data-i18n="alerts_rollup_summary">Manage existing alerts</summary>
+      <div class="rollup-body">
+        <h2 style="border:0;padding:0 0 4px;font:700 14px/1.3 ui-sans-serif,system-ui,sans-serif" data-i18n="alerts_rollup_heading">How multi-watch digests arrive</h2>
+        <p class="rollup-lead" data-i18n="alerts_rollup_lead">When one email has more than one active watch, CityScroll sends a single daily digest with a section per watch. Group the demo watches below by topic, agency, or geography to see how related alerts cluster.</p>
+        <div class="afield" style="margin-top:4px">
+          <label id="rollupgrouplbl"><span data-i18n="alerts_rollup_group_label">Group related watches by</span></label>
+          <div class="chiprow" id="rollupgroupby" role="group" aria-labelledby="rollupgrouplbl" style="margin-top:6px">
+            <button type="button" class="chip on" data-g="topic" aria-pressed="true" data-i18n="alerts_rollup_group_topic">Topic</button>
+            <button type="button" class="chip" data-g="agency" aria-pressed="false" data-i18n="alerts_rollup_group_agency">Agency</button>
+            <button type="button" class="chip" data-g="geography" aria-pressed="false" data-i18n="alerts_rollup_group_geography">Geography</button>
+          </div>
+        </div>
+        <div id="alerts-rollup-groups" class="rollup-groups" aria-live="polite"></div>
+        <h3 style="margin:8px 0 8px;font:700 14px/1.3 ui-sans-serif,system-ui,sans-serif" data-i18n="alerts_rollup_email_heading">Consolidated digest (demo)</h3>
+        <div class="detail" id="alerts-rollup-emailmock" translate="no"></div>
+        <div class="rollup-prefs-box" id="alerts-rollup-prefs-box">
+          <p data-i18n="alerts_rollup_prefs_lead">Change frequency, pause a watch, or unsubscribe from the preference center linked in every digest footer.</p>
+          <p><a id="alertsPrefsManage" class="act" href="https://cityscroll.org/prefs" data-i18n="alerts_rollup_manage_btn">Manage watches</a></p>
+          <p class="muted" style="font-size:12.5px" data-i18n="alerts_rollup_cutover">Changes apply to the next digest (about 9am Eastern).</p>
+          <p class="muted" style="font-size:12.5px" data-i18n="alerts_heartbeat_help">If a daily watch is quiet for 14 days, we send a still-watching note so silence never looks like an outage.</p>
+          <p class="muted" style="font-size:12.5px" data-i18n="alerts_unsub_immediate">Unsubscribe takes effect immediately.</p>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ============ SINGLE NOTICE (permalink view, reached via #notice/<request_id>) ============ -->
+<section id="tab-notice" class="tabpane">
+  <div class="wrap">
+    <div id="noticeview" translate="no"><div class="empty"><span class="loading"></span> loading notice…</div></div>
+    <!-- permalink views keep the inline spinner: a one-shot fetch with no prior layout to skeleton -->
+  </div>
+</section>
+
+<!-- ============ ENTITY PAGES (vendor / agency pivots, reached via #vendor/<name> · #agency/<name>) ============ -->
+<section id="tab-entity" class="tabpane">
+  <div class="wrap">
+    <div id="entityview"><div class="empty"><span class="loading"></span> building profile…</div></div>
+  </div>
+</section>
+
+<!-- ============ TASK-FIRST ENTRY (additive experiment: #task/can-i-bid · #task/what-will-change) ============ -->
+<section id="tab-task" class="tabpane">
+  <div class="wrap">
+    <div id="taskview"><div class="empty"><span class="loading"></span> loading task examples…</div></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0"><span data-i18n="footer_lede">CityScroll connects NYC agencies, mandates, parcels, people, and processes across public records, with City Record as one source among five, through August 5, 2026.</span> <a href="/guide/?lang=en" style="color:var(--oxblood)" data-i18n="footer_guide">Guide</a> · <a href="use-with-ai/" style="color:var(--oxblood)">Ask with AI</a> · <a href="about.html" style="color:var(--oxblood)" data-i18n="footer_about">About</a> · <a href="mailto:feedback%40cityscroll.org" style="color:var(--oxblood)" data-i18n="footer_feedback">Feedback</a> · <a href="#investigation" style="color:var(--oxblood)" data-i18n="footer_investigation">My investigation</a> · <a href="api.html" style="color:var(--oxblood)" data-i18n="footer_api">API and feeds</a> · <a href="stats.html" style="color:var(--oxblood)" data-i18n="footer_stats">Stats</a></p>
+  </div>
+</footer>
+
+<script type="module" src="app/main.mjs"></script>
+<!-- Cloudflare Web Analytics — cookieless, aggregate. Manual JS beacon: the static origin is served
+     through the Cloudflare Pages production site, so zone-level Automatic Setup collects
+     nothing — the snippet must live here. Token is a public site id, safe to commit. -->
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;: &quot;5d81fb4366b848dea15fb1862391909c&quot;}"></script>
+
+
+<dialog class="report-issue-dialog" data-report-issue-dialog="" aria-labelledby="report-issue-heading">
+    <div class="report-issue-dialog-inner">
+      <button class="report-issue-close" type="button" data-report-close="" aria-label="Close report form">×</button>
+      <h2 id="report-issue-heading">Report an issue</h2>
+      <p class="report-issue-intro">Tell us what is wrong with this CityScroll record. Your report is evidence of a disagreement, not an automatic change to the record.</p>
+      <div class="report-issue-target" data-report-target-panel="">
+        <span class="report-issue-target-label" data-report-target-label="">Reporting</span>
+        <strong data-report-target-description=""></strong>
+        <a data-report-target-link="" target="_blank" rel="noopener noreferrer"><span data-report-target-link-label="">Open this record</span><span class="sr-only"> (opens in new tab)</span></a>
+      </div>
+      <p class="report-issue-failure" data-report-failure="" hidden=""></p>
+      <form data-report-form="" novalidate="">
+        <input type="hidden" name="report_target" data-clarity-mask="true">
+        <input type="hidden" name="report_target_id" data-clarity-mask="true">
+        <input type="hidden" name="object_id" data-clarity-mask="true">
+        <input type="hidden" name="canonical_url" data-clarity-mask="true">
+        <label for="report-issue-category">Category</label>
+        <select id="report-issue-category" name="category" required="" data-report-category="" data-clarity-mask="true"></select>
+        <fieldset class="report-identity-picker" data-report-identity-picker="" hidden="">
+          <legend>Which existing profile is this report about?</legend>
+          <p class="report-identity-help">Choose the other person or organization profile you are comparing. Selecting a profile records a hypothesis for review; it does not change either profile.</p>
+          <label for="report-identity-search">Find a profile</label>
+          <input id="report-identity-search" type="search" autocomplete="off" data-report-identity-search="" placeholder="Search names and organizations" data-clarity-mask="true">
+          <div class="report-identity-results" role="list" aria-label="Existing people and organization profiles" data-report-identity-results=""></div>
+          <p class="report-identity-selected" data-report-identity-selected="" role="status" aria-live="polite"></p>
+        </fieldset>
+        <label for="report-issue-message">What is wrong?</label>
+        <textarea id="report-issue-message" name="message" required="" minlength="10" maxlength="2000" data-report-message="" data-clarity-mask="true"></textarea>
+        <label for="report-issue-evidence">Source or evidence <span class="report-issue-optional">— optional</span></label>
+        <textarea id="report-issue-evidence" name="evidence" maxlength="4000" data-report-evidence="" data-clarity-mask="true"></textarea>
+        <label for="report-issue-email">Email <span class="report-issue-optional">— optional, only if you would like a reply</span></label>
+        <input id="report-issue-email" type="email" name="email" autocomplete="email" data-report-email="" data-clarity-mask="true">
+        <div class="report-issue-actions">
+          <button class="ui-report-issue-submit" type="submit" data-report-submit="">Send report</button>
+          <button class="ui-report-issue-cancel" type="button" data-report-close="">Cancel</button>
+        </div>
+        <p class="report-issue-status" role="status" aria-live="polite" data-report-status=""></p>
+      </form>
+    </div>
+  </dialog></body>

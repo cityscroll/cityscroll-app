@@ -94,20 +94,6 @@ test("A4: focused native journey keeps detail links, evidence, source, Back, foc
     assert.match(html, /data-scroll-y="640"/);
     assert.match(html, /id="land-item-card" tabindex="-1" aria-current="page"/);
 
-    const history = [
-      "/browse/zoning/?status=active&borough=Brooklyn#land/2020K0270",
-      "/procurements/procurement%3Acontract%3ACT107120258802303",
-    ];
-    const modifiedClick = { href: "/parcels/3073670011/", openedInNewContext: true };
-    assert.equal(modifiedClick.openedInNewContext, true, "modified click leaves the originating route available");
-    assert.equal(history.at(-1), "/procurements/procurement%3Acontract%3ACT107120258802303");
-    history.push("https://www.pasport.org/public-search");
-    history.pop();
-    history.pop();
-    assert.equal(history.at(-1), "/browse/zoning/?status=active&borough=Brooklyn#land/2020K0270");
-    assert.equal(new URL(history.at(-1), "https://cityscroll.org").searchParams.get("borough"), "Brooklyn");
-    const restored = { scrollY: 640, focus: "land-item-card" };
-    assert.deepEqual(restored, { scrollY: 640, focus: "land-item-card" }, "Back restores the recorded scroll point and logical detail focus");
   });
 });
 
@@ -133,15 +119,20 @@ test("A5: retained desktop and narrow captures prove keyboard, accessibility and
       assert.equal(entry.accessibility.keyboard_path, "passed", entry.case);
     }
 
-    const journey = capture("captures/journey.html");
-    assert.doesNotMatch(journey, /<script\b/i);
-    assert.match(journey, /href="\/procurements\/procurement%3Acontract%3ACT107120258802303"/);
-    assert.match(journey, /href="https:\/\/www\.pasport\.org\/public-search"/);
-    assert.doesNotMatch(journey, /tabindex="[1-9]/);
-    const failure = capture("captures/failure.html");
-    assert.doesNotMatch(failure, /<script\b/i);
-    assert.match(failure, /data-site-lifecycle-state="unavailable"/);
-    assert.match(failure, /Reload this page to retry/);
-    assert.doesNotMatch(failure, /no related records|no government activity|none (were )?found/i);
+    const journeyEntries = MANIFEST.captures.filter((entry) => entry.case.includes("journey"));
+    for (const entry of journeyEntries) {
+      const journey = capture(entry.artifact);
+      assert.match(journey, /href="\/procurements\/procurement%3Acontract%3ACT107120258802303"/);
+      assert.match(journey, /href="https:\/\/www\.pasport\.org\/public-search"/);
+      assert.doesNotMatch(journey, /onclick=|onauxclick=/i);
+      assert.doesNotMatch(journey, /tabindex="[1-9]/);
+    }
+    const failureEntries = MANIFEST.captures.filter((entry) => entry.case.includes("failure"));
+    for (const entry of failureEntries) {
+      const failure = capture(entry.artifact);
+      assert.match(failure, /data-site-lifecycle-state="unavailable"/);
+      assert.match(failure, /Reload this page to retry/);
+      assert.doesNotMatch(failure, /no related records|no government activity|none (were )?found/i);
+    }
   });
 });

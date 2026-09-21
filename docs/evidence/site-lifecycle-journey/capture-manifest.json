@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.site_lifecycle_journey_manifest.v1",
   "surface": "reciprocal site history",
-  "revision": "8ca490290abafebd247e1725f4b38a0cba9e6adf",
-  "data_vintage": "materialized Coyle fixture with pinned test clock 2026-09-16",
+  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+  "data_vintage": "materialized Coyle fixture with pinned source observations through 2026-09-16",
   "image_binaries_committed": false,
   "capture_policy": "hashes refer only to retained HTML; no image capture was taken",
   "not_taken": [],
@@ -10,42 +10,78 @@
     {
       "case": "land-journey-desktop",
       "route": "/browse/zoning/?status=active&borough=Brooklyn#land/2020K0270",
-      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
-      "scripting": "disabled",
-      "assertion": "Desktop native land detail exposes site evidence, the canonical procurement destination, the official source, and a parcel-history link as ordinary anchors while the originating query, scroll point and focus remain recorded for Back.",
-      "artifact": "captures/journey.html",
-      "render_sha256": "1927726a69a8fb527babaea59ea7b086bca050777895f1d4f1a311f6ad3358bf",
-      "accessibility": { "violations_total": 0, "keyboard_path": "passed", "focus_target": "land-item-card", "no_positive_tabindex": true }
-    },
-    {
-      "case": "land-journey-narrow",
-      "route": "/browse/zoning/?status=active&borough=Brooklyn#land/2020K0270",
-      "viewport": { "name": "narrow", "width": 390, "height": 844 },
-      "scripting": "disabled",
-      "assertion": "Narrow native land detail preserves the same keyboard path and ordinary modified-click destinations for site evidence, another record, the official source, and Back.",
-      "artifact": "captures/journey.html",
-      "render_sha256": "1927726a69a8fb527babaea59ea7b086bca050777895f1d4f1a311f6ad3358bf",
-      "accessibility": { "violations_total": 0, "keyboard_path": "passed", "focus_target": "land-item-card", "no_positive_tabindex": true }
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "scripting": "enabled headless Chromium journey",
+      "assertion": "Observed native detail, site evidence, native record navigation, official source navigation, Back restoration, and real document route/query, scroll, and activeElement state.",
+      "artifact": "captures/land-journey-desktop.html",
+      "render_sha256": "913732269906fa4b4090a467e9b4b10c7b39929d31865c4abfd22ade14c48b04",
+      "accessibility": {
+        "violations_total": 0,
+        "keyboard_path": "passed",
+        "focus_target": "land-item-card",
+        "no_positive_tabindex": true
+      }
     },
     {
       "case": "land-failure-desktop",
       "route": "/browse/zoning/?status=active&borough=Brooklyn#land/2020K0270",
-      "viewport": { "name": "desktop", "width": 1440, "height": 900 },
-      "scripting": "disabled",
-      "assertion": "Desktop site-history failure remains visibly unavailable, offers retry and the official source, and never presents an empty successful result.",
-      "artifact": "captures/failure.html",
-      "render_sha256": "777c6c2fcbad417af7d4e28429b0b3517d3eace50286723c650b55d46bd3c289",
-      "accessibility": { "violations_total": 0, "keyboard_path": "passed", "focus_target": "land-item-card", "no_positive_tabindex": true }
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "scripting": "enabled headless Chromium journey",
+      "assertion": "Stubbed context fetch returns recovery state in the native land detail; retry and official source remain available without claiming an empty result.",
+      "artifact": "captures/land-failure-desktop.html",
+      "render_sha256": "b6dd5f6885af34526405df432572f57ce724d7e45eeab0a5d162cc713cd6b1d9",
+      "accessibility": {
+        "violations_total": 0,
+        "keyboard_path": "passed",
+        "focus_target": "land-item-card",
+        "no_positive_tabindex": true
+      }
+    },
+    {
+      "case": "land-journey-narrow",
+      "route": "/browse/zoning/?status=active&borough=Brooklyn#land/2020K0270",
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "scripting": "enabled headless Chromium journey",
+      "assertion": "Observed native detail, site evidence, native record navigation, official source navigation, Back restoration, and real document route/query, scroll, and activeElement state.",
+      "artifact": "captures/land-journey-narrow.html",
+      "render_sha256": "913732269906fa4b4090a467e9b4b10c7b39929d31865c4abfd22ade14c48b04",
+      "accessibility": {
+        "violations_total": 0,
+        "keyboard_path": "passed",
+        "focus_target": "land-item-card",
+        "no_positive_tabindex": true
+      }
     },
     {
       "case": "land-failure-narrow",
       "route": "/browse/zoning/?status=active&borough=Brooklyn#land/2020K0270",
-      "viewport": { "name": "narrow", "width": 390, "height": 844 },
-      "scripting": "disabled",
-      "assertion": "Narrow site-history failure keeps the detail recovery usable from the keyboard and distinguishes a failed read from absent history.",
-      "artifact": "captures/failure.html",
-      "render_sha256": "777c6c2fcbad417af7d4e28429b0b3517d3eace50286723c650b55d46bd3c289",
-      "accessibility": { "violations_total": 0, "keyboard_path": "passed", "focus_target": "land-item-card", "no_positive_tabindex": true }
+      "viewport": {
+        "name": "narrow",
+        "width": 390,
+        "height": 844
+      },
+      "scripting": "enabled headless Chromium journey",
+      "assertion": "Stubbed context fetch returns recovery state in the native land detail; retry and official source remain available without claiming an empty result.",
+      "artifact": "captures/land-failure-narrow.html",
+      "render_sha256": "2fb3b2a231249158b2dcd8ff8605a0eedc027d4cb4322c1264734f9a8af925b6",
+      "accessibility": {
+        "violations_total": 0,
+        "keyboard_path": "passed",
+        "focus_target": "land-item-card",
+        "no_positive_tabindex": true
+      }
     }
   ]
 }
