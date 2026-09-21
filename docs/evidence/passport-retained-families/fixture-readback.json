@@ -1,0 +1,275 @@
+{
+  "schema": "cityscroll.passport_retained_families_fixture_readback.v1",
+  "title": "Retained PASSPort families fixture read-back",
+  "grounded_origin_main": "363c3b12ea4aacf50220a56b799f140ee81cc7c5",
+  "evidence_class": "offline-fixture",
+  "capture_policy": "Textual assertions and source references only; no image binaries are committed.",
+  "materialization": {
+    "retained_rows": "site/data/passport_sources/retained_contract_families.json",
+    "selected_spine": "site/data/procurement_spine_sources.json",
+    "served_model": "site/data/shared_procurement_read_model.json",
+    "served_shards": "site/data/shared_procurement_read_model/",
+    "merge_receipt": "warehouse/receipts/proof/passport_retained_families_latest.json",
+    "builder": "tools/build_shared_procurement_read_model.mjs",
+    "spine_observed_on": "2026-09-09",
+    "spine_generated_at": "2026-09-09T06:33:01.880Z",
+    "acquisition_timestamps_preserved": true
+  },
+  "assertions": [
+    {
+      "id": "A1",
+      "name": "Firematic and TAMEER money roles survive publication materialization",
+      "claim": {
+        "firematic": {
+          "ctr_ids": ["4561064", "4618449"],
+          "original_amount": 158997.84,
+          "current_amount": 208687.62,
+          "action_amount": 49689.78
+        },
+        "tameer": {
+          "base_ctr_id": "4579402",
+          "revision_ctr_ids": [
+            "4980664",
+            "4982079",
+            "4983925",
+            "5224471",
+            "5240965",
+            "5243993",
+            "5247650",
+            "5340426",
+            "5359354",
+            "5371783",
+            "5372858"
+          ],
+          "original_amount": 1442820.77,
+          "current_amount": 1779343.45,
+          "action_ctr_id": "5372858",
+          "action_amount": 26112.93
+        }
+      },
+      "artifact": {
+        "parsed_input": {
+          "path": "site/data/passport_sources/retained_contract_families.json",
+          "row_ids": [
+            "4561064",
+            "4618449",
+            "4579402",
+            "4980664",
+            "4982079",
+            "4983925",
+            "5224471",
+            "5240965",
+            "5243993",
+            "5247650",
+            "5340426",
+            "5359354",
+            "5371783",
+            "5372858"
+          ]
+        },
+        "selected_spine": {
+          "path": "site/data/procurement_spine_sources.json",
+          "retained_row_ids_present": true,
+          "retained_row_ids": [
+            "4561064",
+            "4618449",
+            "4579402",
+            "4980664",
+            "4982079",
+            "4983925",
+            "5224471",
+            "5240965",
+            "5243993",
+            "5247650",
+            "5340426",
+            "5359354",
+            "5371783",
+            "5372858"
+          ]
+        },
+        "emitted_shards": [
+          {
+            "path": "site/data/shared_procurement_read_model/shard-012.json",
+            "served_object": "procurement:contract:CT185720228800365",
+            "source_observation_refs": [
+              "passport_public_contracts:contract:85721B0111001:4561064",
+              "passport_public_contracts:contract:85721B0111001A001:4618449"
+            ],
+            "action_roles": {"4561064": "base", "4618449": "action"},
+            "amounts": {"original": 158997.84, "current": 208687.62, "action": 49689.78}
+          },
+          {
+            "path": "site/data/shared_procurement_read_model/shard-011.json",
+            "served_object": "procurement:contract:CT185020228802305",
+            "source_observation_refs": [
+              "passport_public_contracts:contract:85021B0087001:4579402",
+              "passport_public_contracts:contract:85021B0087001C001:4980664",
+              "passport_public_contracts:contract:85021B0087001C002:4982079",
+              "passport_public_contracts:contract:85021B0087001C003:4983925",
+              "passport_public_contracts:contract:85021B0087001C004:5224471",
+              "passport_public_contracts:contract:85021B0087001C005:5240965",
+              "passport_public_contracts:contract:85021B0087001C006:5243993",
+              "passport_public_contracts:contract:85021B0087001C007:5247650",
+              "passport_public_contracts:contract:85021B0087001C008:5340426",
+              "passport_public_contracts:contract:85021B0087001C009:5359354",
+              "passport_public_contracts:contract:85021B0087001C010:5371783",
+              "passport_public_contracts:contract:85021B0087001C011:5372858"
+            ],
+            "action_roles": {"4579402": "base", "5372858": "action"},
+            "amounts": {"original": 1442820.77, "current": 1779343.45, "action": 26112.93}
+          }
+        ]
+      }
+    },
+    {
+      "id": "A2",
+      "name": "TAMEER revision identity and base/action boundary are retained",
+      "claim": {
+        "revision_ctr_ids": [
+          "4980664",
+          "4982079",
+          "4983925",
+          "5224471",
+          "5240965",
+          "5243993",
+          "5247650",
+          "5340426",
+          "5359354",
+          "5371783",
+          "5372858"
+        ],
+        "publisher_titles": {
+          "4980664": "LBC10CDHC -CO#1",
+          "5371783": "LBC10CDHC-CO#11",
+          "5372858": "LBC10CDHC-CO#8"
+        },
+        "base_ctr_id": "4579402",
+        "base_action_role": "base",
+        "revision_action_role": "action",
+        "base_amount_band": "$1 million–$9.99 million",
+        "base_is_not_classified_from_action_amount": true
+      },
+      "artifact": {
+        "parsed_input": "site/data/passport_sources/retained_contract_families.json rows with ctr_id 4579402 and 4980664, 4982079, 4983925, 5224471, 5240965, 5243993, 5247650, 5340426, 5359354, 5371783, 5372858",
+        "selected_spine": "site/data/procurement_spine_sources.json rows with the same ctr_id set",
+        "emitted_shard": {
+          "path": "site/data/shared_procurement_read_model/shard-011.json",
+          "served_object": "procurement:contract:CT185020228802305",
+          "family_key": "CT1-850-20228802305",
+          "action_count": 12,
+          "base_action": {"ctr_id": "4579402", "action_role": "base"},
+          "revision_actions": [
+            {"ctr_id": "4980664", "action_role": "action"},
+            {"ctr_id": "4982079", "action_role": "action"},
+            {"ctr_id": "4983925", "action_role": "action"},
+            {"ctr_id": "5224471", "action_role": "action"},
+            {"ctr_id": "5240965", "action_role": "action"},
+            {"ctr_id": "5243993", "action_role": "action"},
+            {"ctr_id": "5247650", "action_role": "action"},
+            {"ctr_id": "5340426", "action_role": "action"},
+            {"ctr_id": "5359354", "action_role": "action"},
+            {"ctr_id": "5371783", "action_role": "action"},
+            {"ctr_id": "5372858", "action_role": "action"}
+          ],
+          "boundary_check": {
+            "base_current_amount": 1779343.45,
+            "tip_action_amount": 26112.93,
+            "base_current_not_base_plus_revisions": true
+          }
+        }
+      }
+    },
+    {
+      "id": "A3",
+      "name": "AHA and BHRAGS retained observations remain exact and dated",
+      "claim": {
+        "aha": {
+          "ctr_id": "5778239",
+          "contract_id": "CT1-057-20278802113",
+          "served_contract_id": "CT105720278802113",
+          "program": "EMS ACADEMY (EMS TRAINING FT TOTTEN)",
+          "procurement_method": "Subscription",
+          "current_amount": 46673.32
+        },
+        "bhrags": {
+          "ctr_id": "5050251",
+          "paid_amount": 7385672.19,
+          "encumbered_amount": 7385672.52,
+          "spine_observed_on": "2026-09-09",
+          "spine_generated_at": "2026-09-09T06:33:01.880Z",
+          "retained_observation_is_not_a_fresh_pull": true
+        }
+      },
+      "artifact": {
+        "parsed_input": "site/data/passport_sources/retained_contract_families.json rows 5778239 and 5050251",
+        "selected_spine": {
+          "path": "site/data/procurement_spine_sources.json",
+          "rows": ["5778239", "5050251"],
+          "prior_observation_label": "2026-08-02 spine snapshot amounts",
+          "timestamp_preservation_fixture": {
+            "input_generated_at": "2026-08-02T12:00:00.000Z",
+            "output_generated_at": "2026-08-02T12:00:00.000Z",
+            "unchanged": true
+          }
+        },
+        "emitted_shards": [
+          {
+            "path": "site/data/shared_procurement_read_model/shard-002.json",
+            "served_object": "procurement:contract:CT105720278802113",
+            "source_observation_ref": "passport_public_contracts:contract:05727U0002001:5778239",
+            "program": "EMS ACADEMY (EMS TRAINING FT TOTTEN)",
+            "procurement_method": "Subscription",
+            "current_amount": 46673.32
+          },
+          {
+            "path": "site/data/shared_procurement_read_model/shard-005.json",
+            "served_object": "procurement:contract:CT107120258801626",
+            "source_observation_ref": "passport_public_contracts:contract:07124E0044001:5050251",
+            "paid_amount": 7385672.19,
+            "encumbered_amount": 7385672.52,
+            "ingested_at": "2026-09-09T06:33:01.880Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A4",
+      "name": "The retained-family builder reconciles every offline stage and emits fresh served artifacts",
+      "claim": {
+        "residual_exclusions": 0,
+        "raw_rows": 16,
+        "parsed_rows": 16,
+        "selected_rows": 16,
+        "served_rows": 16,
+        "pages_readback": "deployment-gated"
+      },
+      "artifact": {
+        "merge_receipt": "warehouse/receipts/proof/passport_retained_families_latest.json",
+        "stage_counts": {
+          "input_spine": 12782,
+          "retained_supplied": 16,
+          "admitted_missing": 13,
+          "refreshed_existing": 3,
+          "unchanged_existing": 0,
+          "excluded": 0,
+          "selected": 12795
+        },
+        "reconciliation": {
+          "raw_to_parsed": "16/16",
+          "parsed_to_selected": "16/16",
+          "selected_to_served": "16/16"
+        },
+        "focused_test": "test/shared_procurement_read_model.test.mjs (retained-family round-trip)",
+        "builder_check": "node tools/build_shared_procurement_read_model.mjs --check",
+        "served_artifacts": [
+          "site/data/shared_procurement_read_model.json",
+          "site/data/shared_procurement_read_model/shard-011.json",
+          "site/data/shared_procurement_read_model/shard-012.json",
+          "site/data/shared_procurement_read_model/shard-002.json",
+          "site/data/shared_procurement_read_model/shard-005.json"
+        ],
+        "route_consumer": "site/pages_edge.mjs -> site/procurement_read_model_shards.mjs"
+      }
+    }
+  ]
+}
