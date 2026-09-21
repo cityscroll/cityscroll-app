@@ -1,5 +1,7 @@
 {
   "schema": "cityscroll.render_evidence_manifest.v1",
+  "workstream": "procurement",
+  "card": "c02210922fbae",
   "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
   "data_vintage": "2026-09-09",
   "capture_clock": "2026-09-15T00:00:00Z",

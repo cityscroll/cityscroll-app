@@ -50,9 +50,20 @@ const manifest = JSON.parse(readFileSync(new URL("../site/data/shared_procuremen
 const performance = JSON.parse(readFileSync(new URL("../site/data/analytics_performance_evidence.json", import.meta.url)));
 const projectContext = JSON.parse(readFileSync(new URL("../site/data/procurement_project_context.json", import.meta.url)));
 const renderManifest = JSON.parse(readFileSync(new URL("../docs/evidence/procurement-disclosure-production-proof/manifest.json", import.meta.url)));
+const unrelatedCaptureManifest = JSON.parse(readFileSync(new URL("./fixtures/procurement-disclosure/other-card-capture-manifest.json", import.meta.url)));
 const productionReadbackPath = new URL("../docs/evidence/procurement-disclosure-production-proof/production-readback.json", import.meta.url);
 const productionReadback = JSON.parse(readFileSync(productionReadbackPath));
 const bhragsDetail = JSON.parse(readFileSync(new URL("./fixtures/procurement-detail-parity/ct107120258801626.json", import.meta.url)));
+
+const PROCUREMENT_DISCLOSURE_SCOPE = Object.freeze({
+  workstream: "procurement",
+  card: "c02210922fbae",
+});
+
+function isProcurementDisclosureManifest(candidate) {
+  return candidate?.workstream === PROCUREMENT_DISCLOSURE_SCOPE.workstream
+    && candidate?.card === PROCUREMENT_DISCLOSURE_SCOPE.card;
+}
 
 const CONTRACTS = {
   CT110220271400991: { amount: "$62,500", vendor: "S &amp; P GLOBAL MARKET INTELLIGENCE LLC" },
@@ -817,11 +828,21 @@ test("A5: optional enrichment failure retains the record, facts, and a working s
   });
 });
 
+test("A5 regression: an unscoped capture-manifest scan rejects a valid manifest from another card", () => {
+  assert.throws(
+    () => [renderManifest, unrelatedCaptureManifest].forEach(assertFixtureManifest),
+    /fixture manifest schema must be cityscroll\.render_evidence_manifest\.v1/,
+  );
+});
+
 test("A5: committed fixture manifest records each route, viewport, vintage, assertion, and render hash", async () => {
-  assertFixtureManifest(renderManifest);
-  assert.equal(renderManifest.schema, FIXTURE_SCHEMA);
-  await withPinnedClock(renderManifest.capture_clock, async () => {
-    const entries = new Map(renderManifest.entries.map((entry) => [`${entry.route}|${entry.viewport}`, entry]));
+  const manifests = [renderManifest, unrelatedCaptureManifest].filter(isProcurementDisclosureManifest);
+  assert.equal(manifests.length, 1, "A5 selects only the procurement disclosure card manifest");
+  const procurementManifest = manifests[0];
+  assertFixtureManifest(procurementManifest);
+  assert.equal(procurementManifest.schema, FIXTURE_SCHEMA);
+  await withPinnedClock(procurementManifest.capture_clock, async () => {
+    const entries = new Map(procurementManifest.entries.map((entry) => [`${entry.route}|${entry.viewport}`, entry]));
     assert.equal(entries.size, Object.keys(CONTRACTS).length * 2);
     for (const id of Object.keys(CONTRACTS)) {
       for (const [viewport, header] of [["desktop", "1440x900"], ["mobile", "390x844"]]) {

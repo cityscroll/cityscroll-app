@@ -1,0 +1,20 @@
+{
+  "schema": "cityscroll.capture_manifest.v1",
+  "workstream": "community",
+  "card": "other-card",
+  "base": "https://cityscroll.org/",
+  "case": "community-card-fixture",
+  "condition": "offline fixture",
+  "revision": "738879967cb14a44cf10072db48b1829e07c927c",
+  "data_vintage": "2026-09-16",
+  "entries": [
+    {
+      "route": "/community/",
+      "viewport": "1280x900",
+      "revision": "738879967cb14a44cf10072db48b1829e07c927c",
+      "data_vintage": "2026-09-16",
+      "assertion": "community fixture route renders its public record summary",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
+}
