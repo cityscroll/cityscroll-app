@@ -5,42 +5,23 @@ import { calendarOccurrencesForRows } from "../site/calendar_occurrence.mjs";
 import { calendarFeedUrlForScope } from "../site/scope_v0.mjs";
 import { atomFeed, feedItems, icsFeed, jsonFeed } from "../worker/src/lib/feed.mjs";
 import { handleFeed } from "../worker/src/feed.mjs";
+import { collapseMeetingDeliveryRows } from "../site/meeting_delivery_identity.mjs";
+import {
+  CANONICAL_WATCH_AVAILABILITY,
+  EXPECTED_WATCH_MEETING_IDENTITIES,
+  WATCH_AVAILABILITY,
+  WATCH_CORPUS_ROWS,
+} from "./helpers/watch_availability_corpus.mjs";
 
-const AVAILABILITY = {
-  schema: "cityscroll.meeting_availability.v1",
-  timezone: "America/New_York",
-  windows: [
-    { weekdays: [1, 2, 3, 4, 5], start: "17:00", end: null },
-    { weekdays: [0, 6], start: null, end: null },
-  ],
-  unknown_start: "exclude",
-};
-
-const ROWS = [
-  {
-    meeting_id: "meeting:city_record:weekday-evening",
-    title: "Evening hearing",
-    event_date: "2026-10-05T17:00:00",
-    schedule: {
-      status: "resolved", precision: "exact_time", starts_at: "2026-10-05T17:00:00",
-      timezone: "America/New_York", raw_date: "2026-10-05", raw_time: "17:00",
-      basis: "publisher_field", source_url: "https://official.example/evening",
-    },
-  },
-  {
-    meeting_id: "meeting:public_body_calendar:weekend",
-    title: "Weekend hearing",
-    event_date: "2026-10-04T10:00:00",
-    schedule: {
-      status: "resolved", precision: "exact_time", starts_at: "2026-10-04T10:00:00",
-      timezone: "America/New_York", raw_date: "2026-10-04", raw_time: "10:00",
-      basis: "publisher_event", source_url: "https://official.example/weekend",
-    },
-  },
-];
+// The rows admission hands the formatters: the collapsed corpus restricted to
+// the accepted identity set. Preservation of exactly these identities (and
+// their schedule evidence) is this suite's job; equal acceptance across every
+// surface is proven over the same corpus in watch_availability_parity.test.mjs.
+const ADMITTED_ROWS = collapseMeetingDeliveryRows(WATCH_CORPUS_ROWS)
+  .filter((row) => EXPECTED_WATCH_MEETING_IDENTITIES.includes(row.meeting_id));
 
 test("standing calendar URLs preserve the admitted availability expression", () => {
-  const url = calendarFeedUrlForScope({ lens: "meetings", filter: { availability: AVAILABILITY } });
+  const url = calendarFeedUrlForScope({ lens: "meetings", filter: { availability: WATCH_AVAILABILITY } });
   assert.match(url, /lens=meetings/);
   assert.match(decodeURIComponent(url), /"availability"/);
   assert.match(decodeURIComponent(url), /America\/New_York/);
@@ -50,22 +31,25 @@ test("standing calendar URLs preserve the admitted availability expression", () 
   }), null);
 });
 
-test("JSON, Atom, and ICS preserve the same meeting identities and schedule evidence", () => {
-  const items = feedItems("meetings", ROWS);
-  const occurrences = calendarOccurrencesForRows(ROWS, { kind: "meetings", legacy_uid: true, as_of: "2026-09-01" });
-  const json = JSON.parse(jsonFeed({ title: "Meetings", selfUrl: "https://example.test/feed.json", siteUrl: "https://cityscroll.org/", items, availability: AVAILABILITY }));
-  const atom = atomFeed({ title: "Meetings", selfUrl: "https://example.test/feed.xml", siteUrl: "https://cityscroll.org/", updated: "2026-09-30T12:00:00Z", items, availability: AVAILABILITY });
-  const ics = icsFeed({ title: "Meetings", occurrences, availability: AVAILABILITY });
+test("JSON, Atom, and ICS preserve the same meeting identities and schedule evidence over the shared corpus", () => {
+  const items = feedItems("meetings", ADMITTED_ROWS);
+  const occurrences = calendarOccurrencesForRows(ADMITTED_ROWS, { kind: "meetings", legacy_uid: true, as_of: "0000-01-01" });
+  const json = JSON.parse(jsonFeed({ title: "Meetings", selfUrl: "https://example.test/feed.json", siteUrl: "https://cityscroll.org/", items, availability: CANONICAL_WATCH_AVAILABILITY }));
+  const atom = atomFeed({ title: "Meetings", selfUrl: "https://example.test/feed.xml", siteUrl: "https://cityscroll.org/", updated: "2026-09-30T12:00:00Z", items, availability: CANONICAL_WATCH_AVAILABILITY });
+  const ics = icsFeed({ title: "Meetings", occurrences, availability: CANONICAL_WATCH_AVAILABILITY });
+  const expectedIds = ADMITTED_ROWS.map((row) => row.meeting_id);
 
-  assert.deepEqual(json.items.map((item) => item.id), ROWS.map((row) => row.meeting_id));
-  assert.deepEqual([...atom.matchAll(/<id>tag:[^,]+,\d{4}:([^<]+)<\/id>/g)].map((match) => match[1]), ROWS.map((row) => row.meeting_id));
-  assert.deepEqual([...ics.matchAll(/UID:([^\r\n]+)@[^\r\n]+/g)].map((match) => match[1]), ROWS.map((row) => row.meeting_id));
-  assert.deepEqual(json.cityscroll_availability, AVAILABILITY);
+  assert.deepEqual(json.items.map((item) => item.id), expectedIds);
+  assert.deepEqual([...atom.matchAll(/<id>tag:[^,]+,\d{4}:([^<]+)<\/id>/g)].map((match) => match[1]), expectedIds);
+  assert.deepEqual([...ics.matchAll(/UID:([^\r\n]+)@[^\r\n]+/g)].map((match) => match[1]), expectedIds);
+  assert.deepEqual(json.cityscroll_availability, CANONICAL_WATCH_AVAILABILITY);
   assert.match(atom, /America\/New_York/);
-  assert.match(atom, /https:\/\/official\.example\/evening/);
+  for (const row of ADMITTED_ROWS) {
+    assert.match(atom, new RegExp(row.schedule.source_url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(ics, new RegExp(`X-CITYSCROLL-SOURCE-URL:${row.schedule.source_url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
+    assert.match(ics, new RegExp(`X-CITYSCROLL-TEMPORAL-PRECISION:${row.schedule.precision}`));
+  }
   assert.match(ics, /X-CITYSCROLL-AVAILABILITY:/);
-  assert.match(ics, /X-CITYSCROLL-TEMPORAL-PRECISION:exact_time/);
-  assert.match(ics, /X-CITYSCROLL-SOURCE-URL:https:\/\/official\.example\/evening/);
 });
 
 test("modern delivery refuses invalid saved availability instead of sanitizing it away", async () => {
