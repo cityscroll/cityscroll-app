@@ -56,7 +56,7 @@
     },
     "after": {
       "site/app/land.mjs": 96896,
-      "site/app/map_runtime.mjs": 53661
+      "site/app/map_runtime.mjs": 53721
     }
   },
   "dependency_identity": {

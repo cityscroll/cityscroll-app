@@ -14,6 +14,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import { buildLandMapModel } from "../site/land_map_model.mjs";
+import { cartoBasemapTileUrl } from "../site/carto_basemap.mjs";
 import {
   LAND_MAP_PANEL_ID,
   LAND_MAP_POINTS_URL,
@@ -118,6 +119,7 @@ test("A2 browse Map activation requests exactly one approved projection path", (
 
 test("A2 no map SDK or tile provider is added, and the detail map keeps its own", () => {
   const hosts = [...runtimeSrc.matchAll(/https:\/\/([a-z0-9.{}-]+)/g)].map((match) => match[1]);
+  hosts.push(new URL(cartoBasemapTileUrl({ subdomain: "{s}" })).hostname);
   const remote = [...new Set(hosts)].filter((host) => !host.startsWith("data.cityofnewyork.us"));
   assert.deepEqual(remote.sort(), [...DETAIL_MAP_HOSTS].sort(), "unexpected remote map dependency");
   // Those hosts stay inside the detail-map functions; the browse shell never reaches them.

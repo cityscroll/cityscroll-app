@@ -14,6 +14,7 @@ import {
 } from "./geography_navigation_capability.mjs";
 import { NYC_BOUNDS } from "./map_exploration.mjs";
 import { civicFeaturePolygons } from "./civic_geography.mjs";
+import { cartoBasemapTileUrl } from "./carto_basemap.mjs";
 
 /** Schema id avoids the private-terms geography+navigation fold. */
 export const RESIDENT_GEOGRAPHY_MAP_SCHEMA = "cityscroll.resident_geography_map.v1";
@@ -31,10 +32,10 @@ export const MAPLIBRE_PIN = Object.freeze({
 export const GEOGRAPHY_MAP_BASEMAP = Object.freeze({
   id: "carto-light",
   tiles: Object.freeze([
-    "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-    "https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-    "https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-    "https://d.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+    cartoBasemapTileUrl({ subdomain: "a" }),
+    cartoBasemapTileUrl({ subdomain: "b" }),
+    cartoBasemapTileUrl({ subdomain: "c" }),
+    cartoBasemapTileUrl({ subdomain: "d" }),
   ]),
   attribution: "© OpenStreetMap © CARTO",
   tileSize: 256,

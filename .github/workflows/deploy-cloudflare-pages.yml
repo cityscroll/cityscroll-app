@@ -87,6 +87,8 @@ jobs:
           refresh-decision-outcomes: ${{ github.event_name == 'push' || inputs.refresh_decision_outcomes }}
           refresh-resident-snapshots: ${{ github.event_name == 'push' || github.event_name == 'schedule' || inputs.refresh_resident_snapshots }}
           legistar-api-token: ${{ secrets.LEGISTAR_API_TOKEN }}
+          carto-basemap-api-key: ${{ secrets.CARTO_BASEMAP_API_KEY }}
+          require-carto-basemap-api-key: "true"
       - name: Stage authenticated graph for the private Desk consumer
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
@@ -308,6 +310,24 @@ jobs:
           --base-url ${{ steps.origin.outputs.base_host }}
           --timeout-ms 720000
           --interval-ms 20000
+      - name: Verify keyed CARTO basemap tiles in a real browser
+        env:
+          CROL_BASE: ${{ steps.origin.outputs.base_host }}
+        run: python3 test/functional/49_carto_basemap_key_live.py
+      - name: Verify keyed CARTO basemap tiles on the production origin
+        if: needs.deploy.outputs.is_preview != 'true'
+        env:
+          CROL_BASE: https://cityscroll.org
+        run: |
+          for attempt in {1..12}; do
+            if python3 test/functional/49_carto_basemap_key_live.py; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 12 ]; then
+              exit 1
+            fi
+            sleep 20
+          done
       - name: Post-deploy procurement detail parity canary
         if: needs.deploy.outputs.is_preview != 'true'
         env:

@@ -117,6 +117,15 @@ least-privilege token limited to Workers and Pages deploys on this account;
 from the token. `LEGISTAR_API_TOKEN` is a separately managed repository secret
 that the Worker workflow re-syncs, non-fatally, to one Wrangler secret.
 
+`CARTO_BASEMAP_API_KEY` is a required repository Actions secret for Pages.
+The build injects it into both emitted `carto_basemap.mjs` layouts before hashing
+the artifact manifest; it never edits tracked source. Use the CARTO browser key
+restricted to the production and Pages preview origins. Browser tile requests
+necessarily expose this key to visitors; do not use an unrestricted server key.
+Production builds reject missing or malformed values, and the post-deploy browser
+canary verifies keyed renderer requests and compares a real tile with CARTO's
+unkeyed watermark response. For rotation, replace the Actions secret and redeploy.
+
 The `Deploy Cloudflare Pages` workflow resolves its single authorized account,
 builds `_site`, deploys branch `main`, and smokes the immutable deployment before
 checking route parity.
