@@ -1,5 +1,6 @@
 {
   "schema_version": "cityscroll.mih_project_lookup.v1",
+  "observed_at": "2026-08-05T00:00:00.000Z",
   "materialized_at": "2026-08-05T00:00:00.000Z",
   "source": {
     "dataset_id": "m79g-k9r4",

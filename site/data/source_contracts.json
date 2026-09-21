@@ -1454,6 +1454,10 @@
         "mode": "periodic",
         "max_stale_days": 120,
         "clock_basis": "publisher_updated",
+        "retained_vintage": {
+          "artifact_path": "site/data/mih_project_lookup.json",
+          "vintage_fields": ["observed_at"]
+        },
         "serving_max_age_days": 120,
         "serve_contract_id": null
       },
