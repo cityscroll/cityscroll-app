@@ -164,12 +164,14 @@ test("A6: address, URL, storage, analytics, and error payloads exclude raw locat
 
 test("A7: field-vital budgets and retained route samples are explicit, while production measurement stays open", () => {
   const budgets = JSON.parse(readFileSync(BUDGETS_PATH, "utf8"));
-  const budget = budgets.fixtures["near-you.geography-navigation"];
-  assert.deepEqual(budget.viewports, ["mobile", "desktop"]);
+  assert.equal(budgets.fixtures["near-you.geography-navigation"], undefined);
   assert.equal(budgets.fieldVitals.lcpMs, 2500);
   assert.equal(budgets.fieldVitals.inpMs, 200);
   assert.equal(budgets.fieldVitals.cls, 0.1);
   assert.equal(RELEASE_MANIFEST.performance.production_field_vitals.status, "not_taken");
+  assert.equal(RELEASE_MANIFEST.performance.route_budget.status, "not_taken");
+  assert.equal(RELEASE_MANIFEST.performance.route_budget.reduced_copy_mobile_observation.sample_count, 20);
+  assert.equal(RELEASE_MANIFEST.performance.route_budget.reduced_copy_mobile_observation.wire_bytes_p95, 484311);
   for (const sample of RELEASE_MANIFEST.performance.retained_samples) {
     assert.equal(sample.samples.length, 20);
     for (const metric of ["readiness_ms", "wire_bytes"]) {
@@ -186,6 +188,7 @@ test("A8: unrelated routes omit the navigator runtime and the map requests simpl
   assert.match(MAP_SOURCE, /loadSimplifiedNavigationLayer|simplifiedLayerSiteUrl/);
   assert.doesNotMatch(MAP_SOURCE, /artifacts\.full/);
   assert.equal(RELEASE_MANIFEST.boundaries.full_fidelity_geometry_requested, false);
+  assert.equal(RELEASE_MANIFEST.performance.route_budget.status, "not_taken");
 });
 
 test("A9: every retained manifest entry carries route, viewport, vintages, assertion, timings, mode, assets, and render hash", () => {

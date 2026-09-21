@@ -334,6 +334,25 @@ def main() -> int:
                     "status": "not_taken",
                     "reason": "deployment-dependent production measurement",
                 },
+                "route_budget": {
+                    "status": "not_taken",
+                    "reason": "A7/A8 keeper review remains open: the full route baseline needs generated simplified layer artifacts; the reduced-copy observation is retained without turning it into a ceiling.",
+                    "reduced_copy_mobile_observation": {
+                        "sample_count": 20,
+                        "wire_bytes_p95": 484311,
+                        "components": [
+                            {"path": "vendor/maplibre-gl-4.7.1.js", "gzip_bytes": 210896},
+                            {"path": "vendor/maplibre-gl-4.7.1.css", "gzip_bytes": 9239},
+                            {"path": "index.html", "gzip_bytes": 52051},
+                            {"path": "civic-documents.css", "gzip_bytes": 22020},
+                            {"path": "near-you/deferred.json", "gzip_bytes": 12192},
+                            {"path": "JavaScript modules (aggregate)", "gzip_bytes": 169479},
+                            {"path": "other CSS (aggregate)", "gzip_bytes": 30454},
+                        ],
+                        "simplified_layer_artifact": "not_observed: generated layer files are absent from the reduced copy",
+                        "full_fidelity_geometry_artifact": "not_observed",
+                    },
+                },
                 "retained_samples": [
                     {
                         "route": capture["route"],
@@ -369,7 +388,7 @@ def main() -> int:
                 },
             },
             "closure_evidence": [
-                {"letter": f"A{index}", "result": "partial" if index in (7, 11, 12) else "accepted", "artifact": "test/geography_navigation_release.test.mjs", "assertion": f"Named A{index} assertion and retained manifest evidence."}
+                {"letter": f"A{index}", "result": "partial" if index in (7, 8, 11, 12) else "accepted", "artifact": "test/geography_navigation_release.test.mjs", "assertion": f"Named A{index} assertion and retained manifest evidence."}
                 for index in range(1, 15)
             ],
         }
