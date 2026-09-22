@@ -528,6 +528,7 @@
     guide_text_4519627edf694ca3: "61 sous piblik ki dèyè dosye sa yo, dapre konbyen fwa chak chanje",
     guide_text_d56f9637f2ded084: "62 sous piblik ki dèyè dosye sa yo, dapre konbyen fwa chak chanje",
     guide_text_419cfd637c426254: "63 sous piblik ki dèyè dosye sa yo, dapre konbyen fwa chak chanje",
+    guide_text_6f86073a0d433ddd: "64 sous piblik ki dèyè dosye sa yo, dapre konbyen fwa chak chanje",
     guide_text_804d092455f8f8d9: "Pandan bagay yo rive",
     guide_text_cbb5a736940c6071: "Piblikatè a mete sa ajou lè dosye yo depoze; konsa sa ou wè suiv vil la pre.",
     guide_text_1816d56c3c707b5d: "Selon orè piblikatè a",

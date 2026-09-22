@@ -218,8 +218,10 @@ export function renderGeographyShellEntry({
         <button type="button" class="js-only near-location-action" data-use-location hidden>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
         <a href="#near-area-list">Browse the area list</a>
       </div>
-      ${actions}
-      ${followDiscoveryHtml || ""}
+      <details class="near-map-secondary"><summary>Follow or share</summary>
+        ${actions}
+        ${followDiscoveryHtml || ""}
+      </details>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
       ${geographyShellLayerSwitcherHtml({ activeType, base: canonicalBase, surface })}
       <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>

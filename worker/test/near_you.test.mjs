@@ -79,7 +79,7 @@ test("a failed Near You read serves an honest error document and scoped retry", 
   assert.match(response.headers.get("content-type") || "", /text\/html/);
   assert.match(html, /data-near-data-state="error"/);
   assert.match(html, /data-near-map-state="error"/);
-  assert.match(html, /Map data is temporarily unavailable/);
+  assert.match(html, /Local records are temporarily unavailable/);
   const retryHref = html.match(/<a href="([^"]+)" data-near-recovery="retry">/)?.[1]?.replaceAll("&amp;", "&");
   assert.ok(retryHref);
   assert.equal(new URL(retryHref).searchParams.get("agency"), "Transportation");

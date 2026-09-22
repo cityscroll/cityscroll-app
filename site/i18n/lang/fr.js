@@ -533,6 +533,7 @@
     guide_text_4519627edf694ca3: "Les 61 sources publiques derrière ces documents, selon la fréquence à laquelle chacune change",
     guide_text_d56f9637f2ded084: "Les 62 sources publiques derrière ces documents, selon la fréquence à laquelle chacune change",
     guide_text_419cfd637c426254: "Les 63 sources publiques derrière ces documents, selon la fréquence à laquelle chacune change",
+    guide_text_6f86073a0d433ddd: "Les 64 sources publiques derrière ces documents, selon la fréquence à laquelle chacune change",
     guide_text_804d092455f8f8d9: "Au fil des événements",
     guide_text_cbb5a736940c6071: "L’éditeur actualise la source lors du dépôt des documents ; ce que vous voyez suit donc étroitement la ville.",
     guide_text_1816d56c3c707b5d: "Selon le calendrier de l’éditeur",

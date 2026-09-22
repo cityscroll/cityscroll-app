@@ -497,6 +497,13 @@ export function geographyNavigationPayloadLeaksEphemeral(values) {
 function historyUrl(locationLike, pathAndQuery) {
   const base = locationLike?.href || "https://cityscroll.invalid/near-you/";
   const url = new URL(pathAndQuery, base);
+  // Presentation changes must not silently discard the active record filters.
+  for (const [key, value] of new URL(base).searchParams) {
+    if (!GEOGRAPHY_NAVIGATION_STATE_KEYS.includes(key)
+      && !GEOGRAPHY_NAVIGATION_EPHEMERAL_KEYS.includes(key)) {
+      url.searchParams.append(key, value);
+    }
+  }
   return `${url.pathname}${url.search}${url.hash || ""}`;
 }
 
@@ -532,16 +539,8 @@ export function writeGeographyNavigationHistory(historyLike, locationLike, state
   };
   const method = mode === "replace" ? "replaceState" : "pushState";
   historyLike[method](snapshot, "", url);
-  if (locationLike && typeof locationLike === "object") {
-    try {
-      const next = new URL(url, locationLike.href || "https://cityscroll.invalid/near-you/");
-      if ("pathname" in locationLike) locationLike.pathname = next.pathname;
-      if ("search" in locationLike) locationLike.search = next.search;
-      if ("href" in locationLike) locationLike.href = next.toString();
-    } catch {
-      // Location mocks without URL assignment stay history-only.
-    }
-  }
+  // pushState/replaceState own the URL update. Assigning native Location here
+  // starts a document navigation and discards the live map and its selection.
   return true;
 }
 

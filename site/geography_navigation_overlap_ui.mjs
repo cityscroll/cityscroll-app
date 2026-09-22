@@ -269,6 +269,7 @@ export function buildSelectedGeographyOverlapViewModel({
   focusToken = null,
   recordsHref = null,
   recordLenses = null,
+  relatedDistricts = [],
 } = {}) {
   const selected = normalizeSelected(selectedInput);
   if (!selected) {
@@ -497,6 +498,7 @@ export function buildSelectedGeographyOverlapViewModel({
       href: continuationHref,
     },
     record_lenses: Object.freeze(recordLensRows),
+    related_districts: Object.freeze(relatedDistricts),
     drawer: drawer || GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
     focus_token: focusToken,
     hard_negatives: Object.freeze([
@@ -655,6 +657,11 @@ export function renderSelectedGeographyOverlapDrawerHtml(model, {
       <p class="near-kicker">Selected place</p>
       <h2 id="near-geo-overlap-heading" data-geography-selected-label>${esc(selected.label)}</h2>
       <p data-geography-selected-type>${esc(selected.type_explanation)}</p>
+      ${(model.related_districts || []).length ? `<section class="near-geo-record-lenses" aria-label="Related district events and actions">
+        <h3>Events and actions in overlapping districts</h3>
+        <p>These community districts overlap this neighborhood. Their records cover a broader area.</p>
+        <ul>${model.related_districts.map((row) => `<li><a data-geography-related-district data-geography-key="${esc(row.key)}" href="${esc(row.href)}">${esc(row.label)}</a></li>`).join("")}</ul>
+      </section>` : ""}
       <div class="near-geo-overlap-compare" data-geography-compare-controls role="group" aria-label="Compare with">
         <p class="near-geo-overlap-compare-label">Compare with</p>
         <div class="near-geo-layers-primary">${compareButtons}</div>

@@ -3928,6 +3928,58 @@ select {
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   line-height: 1.1;
 }
+[data-geography-shell] .near-hero {
+  padding-block: var(--space-4) var(--space-3);
+}
+[data-geography-shell] .near-hero h1 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+[data-geography-shell][data-near-surface="map"] .near-hero > .near-kicker {
+  display: none;
+}
+[data-geography-shell] .near-place-guide {
+  padding-block: var(--space-2);
+}
+[data-geography-shell] .near-place-guide > summary {
+  cursor: pointer;
+  min-height: 44px;
+  align-content: center;
+  font-weight: 600;
+}
+[data-geography-shell][data-near-map-runtime="maplibre"] .near-map-section > .near-section-heading {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+[data-geography-shell] .near-map-secondary > summary {
+  cursor: pointer;
+  min-height: 44px;
+  align-content: center;
+}
+[data-geography-shell] .near-map-layers > summary {
+  cursor: pointer;
+  min-height: 44px;
+  align-content: center;
+  font-weight: 600;
+}
+.near-geo-workspace .near-map-section {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+}
+[data-geography-shell] .near-scope {
+  margin-block: var(--space-2);
+}
+[data-geography-shell][data-near-surface="map"] > .near-overview {
+  order: 6;
+}
 .near-geo-search {
   display: grid;
   gap: var(--space-2);
@@ -4014,7 +4066,7 @@ select {
   display: grid;
   gap: var(--space-4);
   min-width: 0;
-  max-width: var(--maxw);
+  max-width: 1440px;
   width: 100%;
   margin: var(--space-3) auto var(--space-5);
   padding-inline: clamp(var(--space-4), 4vw, var(--space-7));
@@ -4203,7 +4255,7 @@ select {
 }
 @media (min-width: 901px) {
   .near-geo-workspace {
-    grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.4fr);
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
     align-items: start;
   }
   .near-geo-rail {
@@ -4214,6 +4266,9 @@ select {
   }
   .near-geo-workspace .near-map-section {
     min-width: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
   }
   .near-geo-workspace .near-map-wrap {
     min-height: 60vh;

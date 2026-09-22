@@ -13,6 +13,8 @@ export const NEAR_YOU_SCOPE_REGION_SELECTORS = Object.freeze([
   ".near-geo-entry",
   ".near-overview",
   ".near-place-guide",
+  ".near-explore",
+  ".local-constellation",
   ".near-form",
   ".near-coverage",
   ".near-surface-switch",
@@ -27,6 +29,8 @@ export const NEAR_YOU_SCOPE_REGION_SELECTORS = Object.freeze([
 export const NEAR_YOU_SCOPE_ROOT_DATASET_KEYS = Object.freeze([
   "lens",
   "level",
+  "nearSurface",
+  "geographyLayer",
   "nearDataState",
   "nearMapState",
   "nearRecoveryHref",

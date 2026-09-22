@@ -2,7 +2,7 @@
   "schema": "cityscroll.public_source_health.v1",
   "generated_at": "2026-09-15T10:18:58.000Z",
   "available": true,
-  "source_count": 63,
+  "source_count": 64,
   "sources": [
     {
       "source_id": "abo-local-authorities",
@@ -1263,6 +1263,55 @@
         "publisher_vintage": null,
         "retrieved_at": null,
         "expected_lag_tolerance_days": 21,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
+      }
+    },
+    {
+      "source_id": "dcp-nta2020-boundaries",
+      "name": "2020 Neighborhood Tabulation Areas",
+      "publisher": "NYC Department of City Planning",
+      "official_url": "https://www.nyc.gov/content/planning/pages/resources/datasets/neighborhood-tabulation",
+      "expected_cadence": "Quarterly DCP BYTES release",
+      "mode": "periodic",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": "2026-05-04T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "publisher_record"
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-18T16:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-18T16:00:00.000Z",
+        "expected_lag_tolerance_days": 180,
         "current_lag": {
           "value": null,
           "unit": null
