@@ -30,6 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "docs/evidence/passport-retained-families/fixture-readback.json"
 OUTPUT = ROOT / "docs/evidence/passport-retained-families/production-read.json"
 SCHEMA = "cityscroll.passport_retained_families_production_read.v1"
+ORIGIN = "https://cityscroll.org"
 USER_AGENT = "CityScrollEvidence/1.0 (+https://cityscroll.org)"
 VIEWPORTS = (("desktop", 1440, 900), ("mobile", 390, 844))
 
@@ -132,8 +133,8 @@ def passport_observation(shard: dict[str, Any], procurement_id: str, ctr_id: str
     return matches[0]
 
 
-def capture(site: str) -> dict[str, Any]:
-    origin = site.rstrip("/")
+def capture() -> dict[str, Any]:
+    origin = ORIGIN
     fixture = read_json(FIXTURE)
     specs = contract_specs(fixture)
     _, deployment_bytes, deployment = fetch(origin, "/artifact-manifest.json")
@@ -254,6 +255,10 @@ def capture(site: str) -> dict[str, Any]:
             })
         browser.close()
 
+    _, final_deployment_bytes, _ = fetch(origin, "/artifact-manifest.json")
+    if final_deployment_bytes != deployment_bytes:
+        raise AssertionError("served deployment changed during production read-back capture")
+
     return {
         "schema": SCHEMA,
         "observed_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
@@ -295,8 +300,8 @@ def capture(site: str) -> dict[str, Any]:
     }
 
 
-def check(path: Path) -> None:
-    receipt = read_json(path)
+def check() -> None:
+    receipt = read_json(OUTPUT)
     fixture = read_json(FIXTURE)
     specs = {item["family"]: item for item in contract_specs(fixture)}
     if receipt.get("schema") != SCHEMA:
@@ -307,6 +312,12 @@ def check(path: Path) -> None:
         "viewport_observations": 8,
     }:
         raise AssertionError("production read-back summary is incomplete")
+    if receipt.get("origin") != ORIGIN:
+        raise AssertionError("production read-back is not from the canonical production origin")
+    if receipt.get("deployment", {}).get("manifest_url") != f"{ORIGIN}/artifact-manifest.json":
+        raise AssertionError("production read-back deployment manifest is not canonical")
+    if receipt.get("shared_model", {}).get("manifest_url") != f"{ORIGIN}/data/shared_procurement_read_model.json":
+        raise AssertionError("production read-back shared model is not canonical")
     revision = receipt.get("deployment", {}).get("revision", "")
     if not re.fullmatch(r"[0-9a-f]{40}", revision):
         raise AssertionError("production read-back has no deployment revision")
@@ -316,8 +327,11 @@ def check(path: Path) -> None:
         spec = specs[read["family"]]
         if read.get("procurement_id") != spec["procurement_id"] or read.get("result") != "pass":
             raise AssertionError(f"{read.get('family')} route identity/result mismatch")
-        if not read.get("url", "").startswith("https://"):
-            raise AssertionError(f"{read['family']} is not a deployed HTTPS route")
+        if read.get("url") != f"{ORIGIN}{read.get('route', '')}":
+            raise AssertionError(f"{read['family']} is not a canonical production route")
+        shard_path = read.get("shard", {}).get("path", "")
+        if read.get("shard", {}).get("url") != f"{ORIGIN}/{shard_path}":
+            raise AssertionError(f"{read['family']} shard is not from canonical production")
         for digest in (read.get("page_html_sha256"), read.get("shard", {}).get("sha256")):
             if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
                 raise AssertionError(f"{read['family']} has an invalid artifact hash")
@@ -363,19 +377,16 @@ def check(path: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--site", default="https://cityscroll.org")
-    parser.add_argument("--output", type=Path, default=OUTPUT)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    output = args.output if args.output.is_absolute() else ROOT / args.output
     if args.check:
-        check(output)
-        print(f"retained-family production read-back passed: {output.relative_to(ROOT)}")
+        check()
+        print(f"retained-family production read-back passed: {OUTPUT.relative_to(ROOT)}")
         return 0
-    receipt = capture(args.site)
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(f"{json.dumps(receipt, indent=2)}\n", encoding="utf-8")
-    print(f"wrote {output.relative_to(ROOT)} summary={receipt['summary']['result']}")
+    receipt = capture()
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT.write_text(f"{json.dumps(receipt, indent=2)}\n", encoding="utf-8")
+    print(f"wrote {OUTPUT.relative_to(ROOT)} summary={receipt['summary']['result']}")
     return 0
 
 
