@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.consultation_materialization.v1",
-  "observed_at": "2026-09-14T00:00:00.000Z",
+  "observed_at": "2026-09-22T17:22:12.050Z",
   "source_policy": "fixed-organizer-seeds-only",
   "consultations": [
     {
@@ -9,18 +9,78 @@
       "category": "Transit service and corridor priorities",
       "organizer": "NYC Department of Transportation",
       "purpose": "Share priorities for bus service and corridor improvements along Church, Flatbush and Utica avenues.",
-      "geography": { "kind": "corridor", "labels": ["Church Avenue", "Flatbush Avenue", "Utica Avenue"], "evidence": "organizer_project_copy" },
-      "deadline": { "value": "2026-10-31", "precision": "day", "source": "questionnaire_copy" },
+      "geography": {
+        "kind": "corridor",
+        "labels": [
+          "Church Avenue",
+          "Flatbush Avenue",
+          "Utica Avenue"
+        ],
+        "evidence": "organizer_project_copy"
+      },
+      "deadline": {
+        "value": "2026-10-31",
+        "precision": "day",
+        "source": "questionnaire_copy"
+      },
       "sources": [
-        { "id": "fast-buses-project", "role": "organizer_invitation", "url": "https://nycdotprojects.info/project/fast-buses-central-brooklyn", "source_hash": "8246f785cc670fac2e4f0834e1adc418326854b72dc6428bebbb004cc66bfb4b", "field_locator": "main h1; main article; response links" },
-        { "id": "fast-buses-survey", "role": "survey", "url": "https://www.surveymonkey.com/r/fastbuses-centralbk", "source_hash": "ea09ee4ebc60311680bb644fa2b4ff05843858f632416faed252a933ee1d00c7", "field_locator": "questionnaire body: deadline and duration" },
-        { "id": "fast-buses-map", "role": "feedback_map", "url": "https://nycdotprojects.info/project-feedback-map/feedback-map-centralbk", "source_hash": "e582ecfb8e85be21db338c758e60e77a697c76fce880a024c01b70f764e72823", "field_locator": "organizer project link; public map response affordance" }
+        {
+          "id": "fast-buses-project",
+          "role": "organizer_invitation",
+          "url": "https://nycdotprojects.info/project/fast-buses-central-brooklyn",
+          "source_hash": "8246f785cc670fac2e4f0834e1adc418326854b72dc6428bebbb004cc66bfb4b",
+          "field_locator": "main h1; main article; response links",
+          "max_bytes": null,
+          "observation": "dot-fast-buses-central-brooklyn:fast-buses-project"
+        },
+        {
+          "id": "fast-buses-survey",
+          "role": "survey",
+          "url": "https://www.surveymonkey.com/r/fastbuses-centralbk",
+          "source_hash": "ea09ee4ebc60311680bb644fa2b4ff05843858f632416faed252a933ee1d00c7",
+          "field_locator": "questionnaire body: deadline and duration",
+          "max_bytes": null,
+          "observation": "dot-fast-buses-central-brooklyn:fast-buses-survey"
+        },
+        {
+          "id": "fast-buses-map",
+          "role": "feedback_map",
+          "url": "https://nycdotprojects.info/project-feedback-map/feedback-map-centralbk",
+          "source_hash": "e582ecfb8e85be21db338c758e60e77a697c76fce880a024c01b70f764e72823",
+          "field_locator": "organizer project link; public map response affordance",
+          "max_bytes": null,
+          "observation": "dot-fast-buses-central-brooklyn:fast-buses-map"
+        }
       ],
       "channels": [
-        { "id": "fast-buses-survey", "kind": "survey", "label": "Complete the questionnaire", "url": "https://www.surveymonkey.com/r/fastbuses-centralbk", "state": "listed", "open_now": false, "deadline": "2026-10-31", "duration_minutes": { "min": 3, "max": 5 } },
-        { "id": "fast-buses-map", "kind": "feedback_map", "label": "Open the feedback map", "url": "https://nycdotprojects.info/project-feedback-map/feedback-map-centralbk", "state": "listed", "open_now": false }
+        {
+          "id": "fast-buses-survey",
+          "kind": "survey",
+          "label": "Complete the questionnaire",
+          "url": "https://www.surveymonkey.com/r/fastbuses-centralbk",
+          "state": "listed",
+          "open_now": false,
+          "deadline": "2026-10-31",
+          "duration_minutes": {
+            "min": 3,
+            "max": 5
+          }
+        },
+        {
+          "id": "fast-buses-map",
+          "kind": "feedback_map",
+          "label": "Open the feedback map",
+          "url": "https://nycdotprojects.info/project-feedback-map/feedback-map-centralbk",
+          "state": "listed",
+          "open_now": false
+        }
       ],
-      "lifecycle": { "invitation": "listed", "current": "unresolved", "open_now": false }
+      "lifecycle": {
+        "invitation": "listed",
+        "current": "unresolved",
+        "open_now": false,
+        "response_action": "view_channel"
+      }
     },
     {
       "id": "dot-coney-island-transportation-study",
@@ -28,14 +88,50 @@
       "category": "Street and neighborhood design",
       "organizer": "NYC Department of Transportation",
       "purpose": "Share transportation and street-design issues for the Coney Island study area.",
-      "geography": { "kind": "place_label", "labels": ["Coney Island"], "evidence": "organizer_project_title" },
+      "geography": {
+        "kind": "place_label",
+        "labels": [
+          "Coney Island"
+        ],
+        "evidence": "organizer_project_title"
+      },
       "deadline": null,
       "sources": [
-        { "id": "coney-island-project", "role": "organizer_invitation", "url": "https://nycdotprojects.info/project/coney-island-transportation-study", "source_hash": "77992a53a53cdb08b3c9d422aadcd618753619ceeb341289e4d11e7ba6ac335e", "field_locator": "main h1; main article; response link" },
-        { "id": "coney-island-map", "role": "feedback_map", "url": "https://nycdotprojects.info/project-feedback-map/traffic-and-transportation-issues-map", "source_hash": "8a4264663671164187adebe96248a08d8668336e3b929fb7d3b8fa0d0f28f58f", "field_locator": "public map response form; no deadline claim" }
+        {
+          "id": "coney-island-project",
+          "role": "organizer_invitation",
+          "url": "https://nycdotprojects.info/project/coney-island-transportation-study",
+          "source_hash": "77992a53a53cdb08b3c9d422aadcd618753619ceeb341289e4d11e7ba6ac335e",
+          "field_locator": "main h1; main article; response link",
+          "max_bytes": null,
+          "observation": "dot-coney-island-transportation-study:coney-island-project"
+        },
+        {
+          "id": "coney-island-map",
+          "role": "feedback_map",
+          "url": "https://nycdotprojects.info/project-feedback-map/traffic-and-transportation-issues-map",
+          "source_hash": "8a4264663671164187adebe96248a08d8668336e3b929fb7d3b8fa0d0f28f58f",
+          "field_locator": "public map response form; no deadline claim",
+          "max_bytes": null,
+          "observation": "dot-coney-island-transportation-study:coney-island-map"
+        }
       ],
-      "channels": [ { "id": "coney-island-map", "kind": "feedback_map", "label": "Open the feedback map", "url": "https://nycdotprojects.info/project-feedback-map/traffic-and-transportation-issues-map", "state": "listed", "open_now": false } ],
-      "lifecycle": { "invitation": "listed", "current": "unresolved", "open_now": false }
+      "channels": [
+        {
+          "id": "coney-island-map",
+          "kind": "feedback_map",
+          "label": "Open the feedback map",
+          "url": "https://nycdotprojects.info/project-feedback-map/traffic-and-transportation-issues-map",
+          "state": "listed",
+          "open_now": false
+        }
+      ],
+      "lifecycle": {
+        "invitation": "listed",
+        "current": "unresolved",
+        "open_now": false,
+        "response_action": "view_channel"
+      }
     },
     {
       "id": "dot-secure-bike-parking",
@@ -43,14 +139,50 @@
       "category": "Facility siting",
       "organizer": "NYC Department of Transportation",
       "purpose": "Suggest locations for secure bicycle parking across New York City.",
-      "geography": { "kind": "citywide", "labels": ["New York City"], "evidence": "organizer_program_scope" },
+      "geography": {
+        "kind": "citywide",
+        "labels": [
+          "New York City"
+        ],
+        "evidence": "organizer_program_scope"
+      },
       "deadline": null,
       "sources": [
-        { "id": "secure-bike-project", "role": "organizer_invitation", "url": "https://nycdotprojects.info/project/secure-bike-parking-program", "source_hash": "d20c1728b0f312ec16d30ddd42f1834df5dcd39b33b7d3be63faa3d09971bac9", "field_locator": "main h1; main article; response link" },
-        { "id": "secure-bike-suggestions", "role": "location_suggestion", "url": "https://nycdotprojects.info/SecureBikeParking", "source_hash": "d1a7695975e9dbce45d4c83d5aab0989d26be7891186c0b0080c4b68a83c424c", "field_locator": "public location-suggestion form; administrative links excluded", "max_bytes": 5000000 }
+        {
+          "id": "secure-bike-project",
+          "role": "organizer_invitation",
+          "url": "https://nycdotprojects.info/project/secure-bike-parking-program",
+          "source_hash": "d20c1728b0f312ec16d30ddd42f1834df5dcd39b33b7d3be63faa3d09971bac9",
+          "field_locator": "main h1; main article; response link",
+          "max_bytes": null,
+          "observation": "dot-secure-bike-parking:secure-bike-project"
+        },
+        {
+          "id": "secure-bike-suggestions",
+          "role": "location_suggestion",
+          "url": "https://nycdotprojects.info/SecureBikeParking",
+          "source_hash": "d1a7695975e9dbce45d4c83d5aab0989d26be7891186c0b0080c4b68a83c424c",
+          "field_locator": "public location-suggestion form; administrative links excluded",
+          "max_bytes": 5000000,
+          "observation": "dot-secure-bike-parking:secure-bike-suggestions"
+        }
       ],
-      "channels": [ { "id": "secure-bike-suggestions", "kind": "location_suggestion", "label": "Suggest a secure bike-parking location", "url": "https://nycdotprojects.info/SecureBikeParking", "state": "listed", "open_now": false } ],
-      "lifecycle": { "invitation": "listed", "current": "unresolved", "open_now": false }
+      "channels": [
+        {
+          "id": "secure-bike-suggestions",
+          "kind": "location_suggestion",
+          "label": "Suggest a secure bike-parking location",
+          "url": "https://nycdotprojects.info/SecureBikeParking",
+          "state": "listed",
+          "open_now": false
+        }
+      ],
+      "lifecycle": {
+        "invitation": "listed",
+        "current": "unresolved",
+        "open_now": false,
+        "response_action": "view_channel"
+      }
     },
     {
       "id": "dot-public-ebike-charging",
@@ -58,18 +190,68 @@
       "category": "Facility siting and program design",
       "organizer": "NYC Department of Transportation",
       "purpose": "Share feedback on public e-bike charging locations and program design.",
-      "geography": { "kind": "citywide", "labels": ["New York City"], "evidence": "organizer_program_scope" },
+      "geography": {
+        "kind": "citywide",
+        "labels": [
+          "New York City"
+        ],
+        "evidence": "organizer_program_scope"
+      },
       "deadline": null,
       "sources": [
-        { "id": "ebike-charging-project", "role": "organizer_invitation", "url": "https://nycdotprojects.info/project/public-e-bike-charging-pec-program", "source_hash": "de9bfb42e170599f316bbf94a3651904f715290c378d3a3852da84937d98b382", "field_locator": "main h1; main article; response links" },
-        { "id": "ebike-charging-feedback", "role": "feedback_landing", "url": "https://nycdotprojects.info/content/share-your-feedback", "source_hash": "b709c414522ab60191f4d0c187065062fbad4d4305e6b225824ea66b7eb4ad1c", "field_locator": "organizer response destination" },
-        { "id": "ebike-charging-form", "role": "microsoft_form", "url": "https://forms.office.com/g/CsmBAJsTkD?origin=lprLink", "source_hash": "328c16f08cdab133bd3639879ec8e1a9844b49f5cce5a1c0b8d96f36744b4961", "field_locator": "loading shell only; no submission or open-now evidence" }
+        {
+          "id": "ebike-charging-project",
+          "role": "organizer_invitation",
+          "url": "https://nycdotprojects.info/project/public-e-bike-charging-pec-program",
+          "source_hash": "de9bfb42e170599f316bbf94a3651904f715290c378d3a3852da84937d98b382",
+          "field_locator": "main h1; main article; response links",
+          "max_bytes": null,
+          "observation": "dot-public-ebike-charging:ebike-charging-project"
+        },
+        {
+          "id": "ebike-charging-feedback",
+          "role": "feedback_landing",
+          "url": "https://nycdotprojects.info/content/share-your-feedback",
+          "source_hash": "b709c414522ab60191f4d0c187065062fbad4d4305e6b225824ea66b7eb4ad1c",
+          "field_locator": "organizer response destination",
+          "max_bytes": null,
+          "observation": "dot-public-ebike-charging:ebike-charging-feedback"
+        },
+        {
+          "id": "ebike-charging-form",
+          "role": "microsoft_form",
+          "url": "https://forms.office.com/g/CsmBAJsTkD?origin=lprLink",
+          "source_hash": "328c16f08cdab133bd3639879ec8e1a9844b49f5cce5a1c0b8d96f36744b4961",
+          "field_locator": "loading shell only; no submission or open-now evidence",
+          "max_bytes": null,
+          "observation": "dot-public-ebike-charging:ebike-charging-form"
+        }
       ],
       "channels": [
-        { "id": "ebike-charging-feedback", "kind": "feedback_page", "label": "View feedback information", "url": "https://nycdotprojects.info/content/share-your-feedback", "state": "listed", "open_now": false },
-        { "id": "ebike-charging-form", "kind": "survey", "label": "View feedback form", "url": "https://forms.office.com/g/CsmBAJsTkD?origin=lprLink", "state": "unresolved", "open_now": false, "submission_side_effects": "excluded" }
+        {
+          "id": "ebike-charging-feedback",
+          "kind": "feedback_page",
+          "label": "View feedback information",
+          "url": "https://nycdotprojects.info/content/share-your-feedback",
+          "state": "listed",
+          "open_now": false
+        },
+        {
+          "id": "ebike-charging-form",
+          "kind": "survey",
+          "label": "View feedback form",
+          "url": "https://forms.office.com/g/CsmBAJsTkD?origin=lprLink",
+          "state": "unresolved",
+          "open_now": false,
+          "submission_side_effects": "excluded"
+        }
       ],
-      "lifecycle": { "invitation": "listed", "current": "unresolved", "open_now": false }
+      "lifecycle": {
+        "invitation": "listed",
+        "current": "unresolved",
+        "open_now": false,
+        "response_action": "view_channel"
+      }
     }
   ]
 }
