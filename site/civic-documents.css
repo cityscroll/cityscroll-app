@@ -2978,6 +2978,16 @@ select {
   color: var(--color-action);
 }
 
+.near-record-timing {
+  margin-block-start: var(--space-1);
+  color: var(--color-text-muted);
+  font: .8125rem/1.4 var(--font-interface);
+}
+
+.near-record-timing[data-action-open="false"] {
+  color: var(--color-text-soft);
+}
+
 .near-bags {
   border-block-start: 1px solid var(--color-border);
 }
@@ -4198,6 +4208,28 @@ select {
   flex: 0 0 auto;
   color: var(--color-text);
   font-variant-numeric: tabular-nums;
+}
+
+.near-geo-broader-suggestions li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.near-geo-broader-suggestions a {
+  flex: 1 1 auto;
+}
+
+.near-geo-broader-label {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  color: var(--color-text-muted);
+  font: 650 .75rem/1.2 var(--font-interface);
+  text-transform: lowercase;
 }
 .near-geo-overlap-compare-label {
   margin: 0 0 var(--space-2);

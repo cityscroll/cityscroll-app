@@ -30,9 +30,18 @@ export const NEAR_YOU_RECORD_FULL_RECORD_CLASS = "near-record-full-record";
 const INSPECT_CLOSE_LABEL = "Close";
 const INSPECT_KICKER = "Nearby record";
 const FULL_RECORD_LABEL = "Open the full record";
+const VIEW_RECORD_LABEL = "View the full record";
+const VIEW_PUBLISHED_LABEL = "View the published record";
 const DETAIL_FAILURE_STATUS = "Further detail did not load. The full record link below is unaffected.";
 const WEAK_UNCERTAINTY = "Place match is approximate";
 const EXPLICIT_AREA_ROLES = new Set(["subject_affected_area", "affected_area", "property_affected", "project_geometry"]);
+
+export const NEAR_YOU_RECORD_TIMING_STATES = Object.freeze([
+  "upcoming",
+  "past",
+  "closed",
+  "unknown",
+]);
 
 const PLACE_ROLE_USER_LABELS = Object.freeze({
   venue: "Happening here",
@@ -82,6 +91,131 @@ function dateLabel(value) {
   if (Number.isNaN(date.getTime())) return inspectText(value, 40);
   // determinism-lint: allow timezone — published dates render in the reader's zone.
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date);
+}
+
+function isoDay(value) {
+  const match = /^(\d{4}-\d{2}-\d{2})/.exec(String(value || "").trim());
+  return match ? match[1] : null;
+}
+
+function daysUntilDay(eventDay, todayDay) {
+  if (!eventDay || !todayDay) return null;
+  const eventMs = Date.parse(`${eventDay}T00:00:00Z`);
+  const todayMs = Date.parse(`${todayDay}T00:00:00Z`);
+  if (!Number.isFinite(eventMs) || !Number.isFinite(todayMs)) return null;
+  return Math.round((eventMs - todayMs) / 86_400_000);
+}
+
+/**
+ * Dated event or deadline status for a Near You record, against a frozen clock.
+ * Expired and unknown times never claim a currently open action.
+ */
+export function nearYouRecordTiming(record = {}, options = {}) {
+  const today = isoDay(options.now) || isoDay(new Date().toISOString());
+  const deadline = isoDay(record.deadline || record.due_date || record.comment_by_date);
+  const eventDay = isoDay(record.event_date || (!deadline ? record.date : null));
+
+  if (deadline) {
+    const daysLeft = daysUntilDay(deadline, today);
+    if (daysLeft == null) {
+      return Object.freeze({
+        kind: "deadline",
+        state: "unknown",
+        action_open: false,
+        event_at: deadline,
+        days_left: null,
+        label: "Deadline date not published",
+      });
+    }
+    if (daysLeft < 0) {
+      return Object.freeze({
+        kind: "deadline",
+        state: "closed",
+        action_open: false,
+        event_at: deadline,
+        days_left: daysLeft,
+        label: `Deadline closed ${dateLabel(deadline) || deadline}`,
+      });
+    }
+    return Object.freeze({
+      kind: "deadline",
+      state: "upcoming",
+      action_open: true,
+      event_at: deadline,
+      days_left: daysLeft,
+      label: `Deadline open through ${dateLabel(deadline) || deadline}`,
+    });
+  }
+
+  if (eventDay) {
+    const daysLeft = daysUntilDay(eventDay, today);
+    if (daysLeft == null) {
+      return Object.freeze({
+        kind: "event",
+        state: "unknown",
+        action_open: false,
+        event_at: eventDay,
+        days_left: null,
+        label: "Event date not published",
+      });
+    }
+    if (daysLeft < 0) {
+      return Object.freeze({
+        kind: "event",
+        state: "past",
+        action_open: false,
+        event_at: eventDay,
+        days_left: daysLeft,
+        label: `Past event · ${dateLabel(eventDay) || eventDay}`,
+      });
+    }
+    return Object.freeze({
+      kind: "event",
+      state: "upcoming",
+      action_open: true,
+      event_at: eventDay,
+      days_left: daysLeft,
+      label: `Upcoming · ${dateLabel(eventDay) || eventDay}`,
+    });
+  }
+
+  return Object.freeze({
+    kind: "unknown",
+    state: "unknown",
+    action_open: false,
+    event_at: null,
+    days_left: null,
+    label: "Date not published",
+  });
+}
+
+function timingFacts(value) {
+  if (!value || typeof value !== "object") return null;
+  const state = NEAR_YOU_RECORD_TIMING_STATES.includes(value.state) ? value.state : "unknown";
+  const kind = value.kind === "deadline" || value.kind === "event" || value.kind === "unknown"
+    ? value.kind
+    : "unknown";
+  const actionOpen = value.action_open === true && (state === "upcoming");
+  return Object.freeze({
+    kind,
+    state,
+    action_open: actionOpen,
+    event_at: isoDay(value.event_at),
+    days_left: Number.isFinite(value.days_left) ? value.days_left : null,
+    label: inspectText(value.label, 160) || "Date not published",
+  });
+}
+
+function recordActionLabel(facts, openPresentation) {
+  const closedOrUnknown = facts?.timing && facts.timing.action_open !== true;
+  if (closedOrUnknown) {
+    return openPresentation.role === AFFORDANCE_ACTION_ROLES.handoff
+      ? VIEW_PUBLISHED_LABEL
+      : VIEW_RECORD_LABEL;
+  }
+  return openPresentation.role === AFFORDANCE_ACTION_ROLES.handoff
+    ? "Open the published record"
+    : FULL_RECORD_LABEL;
 }
 
 function geographyFacts(evidence) {
@@ -142,7 +276,7 @@ function whyHereFacts(path) {
  * method enums from the resident projection while preserving place role,
  * consequential basis, and optional geographic evidence for disclosure.
  */
-export function nearYouRecordInspectionFacts(record = {}) {
+export function nearYouRecordInspectionFacts(record = {}, options = {}) {
   const uid = inspectText(record.id, 160);
   const title = inspectText(record.title, 500);
   const href = inspectText(record.route, 600);
@@ -151,6 +285,10 @@ export function nearYouRecordInspectionFacts(record = {}) {
   const geography = geographyFacts(record.geography_evidence);
   const whyHere = whyHereFacts(record.why_here);
   const weak = geography?.tier === "weak" || whyHere?.tier === "weak";
+  const timing = timingFacts(nearYouRecordTiming(record, options));
+  const sourceUrl = /^https?:\/\//i.test(String(record.source_url || "").trim())
+    ? inspectText(record.source_url, 500)
+    : null;
   return Object.freeze({
     schema: NEAR_YOU_RECORD_INSPECTION_SCHEMA,
     version: NEAR_YOU_RECORD_INSPECTION_VERSION,
@@ -159,10 +297,13 @@ export function nearYouRecordInspectionFacts(record = {}) {
     href,
     agency: inspectText(record.agency, 200),
     type: inspectText(record.type, 120),
-    date_label: dateLabel(record.date),
+    date_label: dateLabel(record.date || record.deadline || record.due_date || record.event_date),
     place_role: placeRole,
     place_role_label: nearYouPlaceRoleUserLabel(placeRole),
     basis: inspectText(record.basis, 160) || "Local activity",
+    source_url: sourceUrl,
+    source_label: sourceUrl ? (inspectText(record.source_label, 120) || "Official source") : null,
+    timing,
     geography,
     why_here: whyHere,
     uncertainty: weak ? WEAK_UNCERTAINTY : null,
@@ -201,6 +342,9 @@ export function parseNearYouRecordInspection(value) {
     const placeRole = inspectText(parsed.place_role, 80);
     const weak = geography?.tier === "weak" || whyHere?.tier === "weak"
       || inspectText(parsed.uncertainty, 120) === WEAK_UNCERTAINTY;
+    const sourceUrl = /^https?:\/\//i.test(String(parsed.source_url || "").trim())
+      ? inspectText(parsed.source_url, 500)
+      : null;
     return Object.freeze({
       schema: NEAR_YOU_RECORD_INSPECTION_SCHEMA,
       version: Number(parsed.version) || NEAR_YOU_RECORD_INSPECTION_VERSION,
@@ -213,6 +357,15 @@ export function parseNearYouRecordInspection(value) {
       place_role: placeRole,
       place_role_label: nearYouPlaceRoleUserLabel(placeRole) || inspectText(parsed.place_role_label, 80),
       basis: inspectText(parsed.basis, 160) || "Local activity",
+      source_url: sourceUrl,
+      source_label: sourceUrl
+        ? (inspectText(parsed.source_label, 120) || "Official source")
+        : null,
+      timing: timingFacts(parsed.timing) || timingFacts(nearYouRecordTiming({
+        date: parsed.date_label,
+        deadline: parsed.timing?.kind === "deadline" ? parsed.timing?.event_at : null,
+        event_date: parsed.timing?.kind === "event" ? parsed.timing?.event_at : null,
+      })),
       geography,
       why_here: whyHere,
       uncertainty: weak ? WEAK_UNCERTAINTY : null,
@@ -242,9 +395,11 @@ export function renderNearYouRecordFullRecordLink(facts, options = {}) {
   if (!facts) return "";
   const esc = escapeFor(options);
   const openPresentation = affordanceHandoffPresentation({ href: facts.href, escape: esc });
+  const actionOpen = facts.timing?.action_open === true;
   return `<a class="${NEAR_YOU_RECORD_FULL_RECORD_CLASS}" href="${esc(facts.href)}"` +
     ` data-browse-return-uid="${esc(facts.uid)}"` +
-    `${openPresentation.attributes}>${esc(FULL_RECORD_LABEL)}` +
+    ` data-action-open="${actionOpen ? "true" : "false"}"` +
+    `${openPresentation.attributes}>${esc(recordActionLabel(facts, openPresentation))}` +
     `${openPresentation.glyph}${openPresentation.announcement}</a>`;
 }
 
@@ -298,12 +453,19 @@ function renderWhyHereDisclosure(facts, esc) {
 export function renderNearYouRecordInspectionBody(facts, options = {}) {
   if (!facts) return "";
   const esc = escapeFor(options);
+  const timing = facts.timing;
+  const actionOpen = timing?.action_open === true;
+  const sourceRow = facts.source_url
+    ? `<div class="near-you-record-inspection-row"><dt>Source</dt><dd><a class="near-you-record-inspection-source-link" href="${esc(facts.source_url)}" rel="noopener noreferrer" data-near-you-record-source>${esc(facts.source_label || "Official source")}</a></dd></div>`
+    : "";
   const rows = [
     facts.place_role_label ? definitionRow("Place role", facts.place_role_label, esc) : "",
     definitionRow("Place claim", facts.basis, esc),
     facts.agency ? definitionRow("Agency", facts.agency, esc) : "",
     facts.type ? definitionRow("Type", facts.type, esc) : "",
     facts.date_label ? definitionRow("Date", facts.date_label, esc) : "",
+    timing ? `<div class="near-you-record-inspection-row" data-record-timing="${esc(timing.state)}" data-action-open="${actionOpen ? "true" : "false"}"><dt>Status</dt><dd>${esc(timing.label)}</dd></div>` : "",
+    sourceRow,
     facts.uncertainty ? definitionRow("Certainty", facts.uncertainty, esc) : "",
   ].filter(Boolean).join("");
   const detail = inspectText(options.detail);
@@ -316,9 +478,7 @@ export function renderNearYouRecordInspectionBody(facts, options = {}) {
     : "";
   const evidence = `${renderGeographyDisclosure(facts, esc)}${renderWhyHereDisclosure(facts, esc)}`;
   const openPresentation = affordanceHandoffPresentation({ href: facts.href, escape: esc });
-  const actionLabel = openPresentation.role === AFFORDANCE_ACTION_ROLES.handoff
-    ? "Open the published record"
-    : FULL_RECORD_LABEL;
+  const actionLabel = recordActionLabel(facts, openPresentation);
   return `<p class="near-you-record-inspection-kicker">${esc(INSPECT_KICKER)}</p>` +
     `<h2 class="near-you-record-inspection-title" id="${esc(NEAR_YOU_RECORD_INSPECTION_TITLE_ID)}">${esc(facts.title)}</h2>` +
     `<dl class="near-you-record-inspection-facts">${rows}</dl>` +
@@ -328,6 +488,7 @@ export function renderNearYouRecordInspectionBody(facts, options = {}) {
     `<p class="near-you-record-inspection-actions">` +
     `<a class="near-you-record-inspection-open" data-near-you-record-inspection-open href="${esc(facts.href)}"` +
     ` data-browse-return-uid="${esc(facts.uid)}"` +
+    ` data-action-open="${actionOpen ? "true" : "false"}"` +
     `${openPresentation.attributes}>${esc(actionLabel)}` +
     `${openPresentation.glyph}${openPresentation.announcement}</a>` +
     "</p>";

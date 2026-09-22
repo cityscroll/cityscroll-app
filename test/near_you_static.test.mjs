@@ -367,7 +367,10 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.match(deferred, /near-record-title-link/);
   assert.match(deferred, /near-record-inspect near-record-title/);
   assert.match(deferred, /near-record-full-record/);
-  assert.match(deferred, /Open the full record/);
+  // Past fixture dates use View…; upcoming dates keep Open… Neither promises a currently open action when closed.
+  assert.match(deferred, /data-action-open="(?:true|false)"/);
+  assert.match(deferred, /(?:Open|View) the full record/);
+  assert.match(deferred, /data-record-timing=/);
   assert.match(deferred, /data-near-you-record-inspection=/);
   assert.match(deferred, /&quot;place_role_label&quot;:&quot;Affected area&quot;/);
   assert.match(deferred, /&quot;label&quot;:&quot;Queens&quot;/);

@@ -41,7 +41,9 @@ import {
   NEAR_YOU_RECORD_TITLE_LINK_CLASS,
   bindNearYouRecordInspection,
   nearYouRecordInspectionFacts,
+  nearYouRecordTiming,
   renderNearYouRecordInspectionBody,
+  renderNearYouRecordFullRecordLink,
 } from "../site/near_you_record_inspection.mjs";
 import {
   buildNearYouViewModel,
@@ -71,8 +73,10 @@ const GROUNDED_AT = "31d8fe647c874d3cfa425b031192d1262e9c5a93";
 const FIXTURE_CLOCK = "2026-09-17T18:00:00.000Z";
 const FIXTURE_BOUNDARY_VINTAGE = "2026-05-26";
 
+// Relative to the ambient test clock (pinned or CITYSCROLL_TEST_TIME_SHIFT_DAYS),
+// so upcoming/past fixtures stay honest under +1d/+45d time-travel.
 function fixtureInstant(days = 0) {
-  return new Date(Date.parse(FIXTURE_CLOCK) + days * MILLISECONDS_PER_DAY).toISOString();
+  return new Date(Date.now() + days * MILLISECONDS_PER_DAY).toISOString();
 }
 
 function pythonPlaywrightChromiumAvailable() {
@@ -111,10 +115,11 @@ function fixtureDistrictRecord(key, { confidence = "strong", method } = {}) {
     title: `${key} meeting`,
     agency: "Transportation",
     type: "Public Hearings",
-    date: fixtureInstant(-36),
+    date: fixtureInstant(14),
     basis: record.basis,
     confidence,
     route: `/notices/${record.id}`,
+    source_url: `https://a856-cityrecord.nyc.gov/RequestDetail/${record.id}`,
     ...(candidates.length ? { why_here_candidates: candidates } : {}),
   };
 }
@@ -647,6 +652,134 @@ test("A4: acceptance manifest records the rendered journey with revision, route,
     manifest.journey?.rendered_reference?.narrow_density_harness,
     "test/functional/near_you_record_inspection_narrow_density.py",
   );
+  for (const banned of ["needs_james", "card_standard", "richness_profile", "autodispatch", "realization_gate"]) {
+    assert.equal(JSON.stringify(manifest).includes(banned), false, banned);
+  }
+  const digest = createHash("sha256").update(JSON.stringify(manifest.assertions) + "\n").digest("hex");
+  assert.equal(manifest.assertions_sha256, digest);
+});
+
+/* ---------- Local relevance: timing honesty + journey restore ---------- */
+
+test("A2: frozen fixtures cover venue, affected-place, bags, duplicates, and deadline honesty", () => {
+  withPinnedClock(FIXTURE_CLOCK, () => {
+    const view = buildNearYouViewModel(placeScope(), fixtureActivity(), fixtureBoundaries);
+    const byId = Object.fromEntries(view.results.records.map((record) => [record.id, record]));
+    assert.equal(byId["psc-201"].why_here.location.place_role, "venue");
+    assert.equal(byId["psc-derived"].why_here.location.place_role, "affected_area");
+
+    const bags = view.bags;
+    assert.equal(bags.citywide.count, 0);
+    assert.equal(bags.virtual.count, 0);
+    assert.equal(bags.unlocated.count, 0);
+
+    const duplicateActivity = fixtureActivity();
+    duplicateActivity.district_items.by_level.community_district[FIXTURE_COMMUNITY_DISTRICT].meetings = [
+      "psc-201",
+      "psc-201",
+      "psc-202",
+    ];
+    const deduped = buildNearYouViewModel(placeScope(), duplicateActivity, fixtureBoundaries);
+    assert.equal(deduped.results.ids.filter((id) => id === "psc-201").length, 1);
+
+    const past = nearYouRecordTiming({ id: "past", date: fixtureInstant(-10) }, { now: FIXTURE_CLOCK });
+    assert.equal(past.state, "past");
+    assert.equal(past.action_open, false);
+
+    const closed = nearYouRecordTiming({ id: "closed", deadline: fixtureInstant(-2).slice(0, 10) }, { now: FIXTURE_CLOCK });
+    assert.equal(closed.state, "closed");
+    assert.equal(closed.action_open, false);
+
+    const unknown = nearYouRecordTiming({ id: "unknown", title: "No date" }, { now: FIXTURE_CLOCK });
+    assert.equal(unknown.state, "unknown");
+    assert.equal(unknown.action_open, false);
+
+    const upcoming = nearYouRecordTiming({ id: "upcoming", date: fixtureInstant(10) }, { now: FIXTURE_CLOCK });
+    assert.equal(upcoming.state, "upcoming");
+    assert.equal(upcoming.action_open, true);
+
+    for (const record of [
+      { id: "past-event", title: "Past hearing", route: "/notices/past-event", date: fixtureInstant(-5) },
+      { id: "closed-deadline", title: "Closed comment", route: "/notices/closed-deadline", deadline: fixtureInstant(-1).slice(0, 10) },
+      { id: "unknown-time", title: "Undated matter", route: "/notices/unknown-time" },
+    ]) {
+      const facts = nearYouRecordInspectionFacts(record, { now: FIXTURE_CLOCK });
+      assert.equal(facts.timing.action_open, false, `${record.id} must not promise an open action`);
+      const body = renderNearYouRecordInspectionBody(facts);
+      assert.match(body, /data-action-open="false"/);
+      assert.doesNotMatch(body, /currently open|Attend now|Comment now|Deadline open through/i);
+      assert.match(body, /View the (full|published) record/);
+      const link = renderNearYouRecordFullRecordLink(facts);
+      assert.match(link, /data-action-open="false"/);
+      assert.doesNotMatch(link, /Open the full record/);
+    }
+
+    const openFacts = nearYouRecordInspectionFacts({
+      id: "open-deadline",
+      title: "Open comment",
+      route: "/notices/open-deadline",
+      deadline: fixtureInstant(12).slice(0, 10),
+    }, { now: FIXTURE_CLOCK });
+    assert.equal(openFacts.timing.action_open, true);
+    assert.match(renderNearYouRecordInspectionBody(openFacts), /data-action-open="true"/);
+    assert.match(renderNearYouRecordFullRecordLink(openFacts), /Open the full record|Open the published record/);
+  });
+});
+
+test("A3: select, inspect, source/action, and Back restore place, lens, filters, and scroll", () => {
+  const { doc, root, dialog, container } = mountResults("venue");
+  root.setAttribute("data-place", FIXTURE_COMMUNITY_DISTRICT);
+  root.setAttribute("data-lens", "meetings");
+  root.setAttribute("data-filters", "agency=Transportation");
+  root.scrollTop = 120;
+  assert.equal(root.scrollTop, 120);
+
+  const before = {
+    place: root.getAttribute("data-place"),
+    lens: root.getAttribute("data-lens"),
+    filters: root.getAttribute("data-filters"),
+    scrollTop: root.scrollTop,
+  };
+
+  click(inspectButton(container));
+  assert.equal(dialog.open, true);
+  assert.match(dialog.textContent, /Venue \/ logistics|Happening here/);
+  const source = dialog.querySelector("[data-near-you-record-source]");
+  assert.ok(source, "inspection exposes source detail");
+  assert.match(source.getAttribute("href") || "", /a856-cityrecord/);
+  const action = dialog.querySelector("[data-near-you-record-inspection-open]");
+  assert.ok(action);
+  assert.equal(action.getAttribute("href"), "/notices/psc-201");
+  assert.equal(action.getAttribute("data-action-open"), "true");
+
+  click(dialog.querySelector("[data-near-you-record-inspection-close]"));
+  assert.equal(dialog.open, false);
+  assert.equal(root.getAttribute("data-place"), before.place);
+  assert.equal(root.getAttribute("data-lens"), before.lens);
+  assert.equal(root.getAttribute("data-filters"), before.filters);
+  assert.equal(root.scrollTop, before.scrollTop);
+  assert.equal(container.querySelectorAll(".near-record").length >= 1, true);
+});
+
+test("A3: relevance acceptance manifest records live outcomes without a fixed event count", () => {
+  const relevancePath = join("docs", "evidence", "near-you-record-relevance", "acceptance-manifest.json");
+  assert.equal(existsSync(join(ROOT, relevancePath)), true);
+  const manifest = JSON.parse(readFileSync(join(ROOT, relevancePath), "utf8"));
+  assert.equal(manifest.schema, "cityscroll.near_you_record_relevance_acceptance.v1");
+  assert.equal(manifest.record, "cityscroll-engineering/c215a4b79deba");
+  assert.match(manifest.revision, /^[0-9a-f]{40}$/);
+  assert.equal(manifest.grounded_at, manifest.revision);
+  assert.deepEqual(manifest.viewports, [[1440, 900], [390, 844]]);
+  assert.ok(manifest.journey?.sequence?.includes("select"));
+  assert.ok(manifest.journey?.sequence?.includes("inspect"));
+  assert.ok(manifest.journey?.sequence?.includes("open_source_or_action"));
+  assert.ok(manifest.journey?.sequence?.includes("return_with_back"));
+  assert.equal(manifest.live_outcomes?.require_fixed_event_count, false);
+  assert.ok(Array.isArray(manifest.live_outcomes?.observations));
+  assert.ok(manifest.assertions.some((row) => row.id === "five-borough-place-basis-and-source"));
+  assert.ok(manifest.assertions.some((row) => row.id === "broader-district-labeled"));
+  assert.ok(manifest.assertions.some((row) => row.id === "deadline-honesty-frozen-clock"));
+  assert.ok(manifest.assertions.some((row) => row.id === "two-viewport-inspection-journey"));
   for (const banned of ["needs_james", "card_standard", "richness_profile", "autodispatch", "realization_gate"]) {
     assert.equal(JSON.stringify(manifest).includes(banned), false, banned);
   }

@@ -684,7 +684,7 @@ async function refreshOverlapDrawer({
       });
       relatedDistricts = (districtModel.area_section?.rows || []).map((row) => {
         const href = new URL(row.select_href);
-        return {key:row.key, label:row.label, href:href.toString()};
+        return {key:row.key, id:row.id, label:row.label, href:href.toString(), scope:"broader"};
       });
     }
   }

@@ -528,6 +528,18 @@ export function buildSelectedGeographyOverlapViewModel({
       }, { base }),
     }));
 
+  // Broader-district suggestions stay labeled and never enter exact neighborhood counts.
+  const broaderDistricts = Object.freeze((Array.isArray(relatedDistricts) ? relatedDistricts : [])
+    .filter((row) => row && (row.key || row.id) && row.href)
+    .map((row) => freezeDeep({
+      key: String(row.key || ""),
+      id: row.id == null ? null : String(row.id),
+      label: String(row.label || row.key || ""),
+      href: String(row.href),
+      scope: "broader",
+      count: null,
+    })));
+
   return freezeDeep({
     schema: RESIDENT_GEOGRAPHY_OVERLAP_SCHEMA,
     ok: true,
@@ -558,7 +570,7 @@ export function buildSelectedGeographyOverlapViewModel({
       href: continuationHref,
     },
     record_lenses: Object.freeze(recordLensRows),
-    related_districts: Object.freeze(relatedDistricts),
+    related_districts: broaderDistricts,
     drawer: drawer || GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
     focus_token: focusToken,
     hard_negatives: Object.freeze([
@@ -717,10 +729,10 @@ export function renderSelectedGeographyOverlapDrawerHtml(model, {
       <p class="near-kicker">Selected place</p>
       <h2 id="near-geo-overlap-heading" data-geography-selected-label>${esc(selected.label)}</h2>
       <p data-geography-selected-type>${esc(selected.type_explanation)}</p>
-      ${(model.related_districts || []).length ? `<section class="near-geo-record-lenses" aria-label="Related district events and actions">
+      ${(model.related_districts || []).length ? `<section class="near-geo-record-lenses near-geo-broader-suggestions" data-geography-broader-suggestions aria-label="Broader district suggestions">
         <h3>Events and actions in overlapping districts</h3>
-        <p>These community districts overlap this neighborhood. Their records cover a broader area.</p>
-        <ul>${model.related_districts.map((row) => `<li><a data-geography-related-district data-geography-key="${esc(row.key)}" href="${esc(row.href)}">${esc(row.label)}</a></li>`).join("")}</ul>
+        <p>These community districts overlap this neighborhood. Their records cover a broader area and are not counted as exact neighborhood records.</p>
+        <ul>${model.related_districts.map((row) => `<li data-geography-related-district data-geography-related-scope="broader" data-geography-key="${esc(row.key)}"><a href="${esc(row.href)}">${esc(row.label)}</a> <span class="near-geo-broader-label">broader</span></li>`).join("")}</ul>
       </section>` : ""}
       <div class="near-geo-overlap-compare" data-geography-compare-controls role="group" aria-label="Compare with">
         <p class="near-geo-overlap-compare-label">Compare with</p>
