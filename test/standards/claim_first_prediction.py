@@ -32,6 +32,8 @@ PUBLIC_SUFFIXES = {".js", ".mjs", ".html", ".md"}
 
 RENDERER_CONTRACTS = {
     "site/app/exams.mjs": (
+        'data-staffing-list-benchmark="1"',
+        'data-benchmark-subject="eligible-list-establishment"',
         'data-staffing-list-prediction="1"',
         'data-prediction-subject="eligible-list-establishment"',
         "data-prediction-value=",

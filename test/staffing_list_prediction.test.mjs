@@ -105,15 +105,40 @@ test("materialized staffing artifact exposes only cohort statistics below the sh
 });
 
 test("exam phase spine links to the compact eligible-list timing explainer", () => {
+  assert.match(indexHtml, /data-staffing-list-benchmark="1"/);
   assert.match(indexHtml, /data-staffing-list-prediction="1"/);
   assert.match(indexHtml, /data-staffing-list-law-context="1"/);
   assert.match(indexHtml, /flags-and-historical-patterns\/\?lang=.*#eligible-list-timing/);
+  assert.match(indexHtml, /data-benchmark-subject="eligible-list-establishment"/);
+  assert.match(indexHtml, /data-benchmark-cohort=/);
   assert.match(indexHtml, /data-prediction-subject="eligible-list-establishment"/);
   assert.match(indexHtml, /data-prediction-value=/);
-  assert.match(i18n, /Past exams like this show an eligible list about/);
-  assert.doesNotMatch(i18n, /exam_list_prediction_cohort_html:\s*"Predicted based on/);
+  assert.match(i18n, /exam_list_benchmark_html:\s*"\{cohort\} benchmark: Across \{n\} exams since \{year\}/);
+  assert.doesNotMatch(i18n, /Past exams like this show an eligible list about/);
+  assert.doesNotMatch(i18n, /exam_list_benchmark_html:\s*"Predicted based on/);
   assert.match(aboutHtml, /id="staffing-list-establishment-formula"/);
   const guide = readFileSync(new URL("../site/guide/_articles/flags-and-historical-patterns.md", import.meta.url), "utf8");
   assert.match(guide, /No applicant names, scores, or ranks/);
   assert.match(guide, /by exam number, from the filing deadline to list establishment/);
+});
+
+test("cohort-only resident copy names the exam-type benchmark, not a title-specific estimate", () => {
+  const openA = artifact.exams.find((row) => row.exam_number === "7016");
+  const openB = artifact.exams.find((row) => row.exam_number === "7006");
+  const promotion = artifact.exams.find((row) => row.list_establishment_forecast?.cohort === "promotion");
+  assert.ok(openA?.list_establishment_forecast);
+  assert.ok(openB?.list_establishment_forecast);
+  assert.ok(promotion?.list_establishment_forecast);
+  assert.equal(openA.list_establishment_forecast.prediction, null);
+  assert.equal(openB.list_establishment_forecast.prediction, null);
+  assert.equal(openA.list_establishment_forecast.cohort, openB.list_establishment_forecast.cohort);
+  assert.equal(openA.list_establishment_forecast.median_months, openB.list_establishment_forecast.median_months);
+  assert.equal(openA.list_establishment_forecast.public_projection, "cohort_statistic_only");
+  assert.match(i18n, /exam_list_benchmark_cohort_open_competitive:\s*"Open-competitive"/);
+  assert.match(i18n, /exam_list_benchmark_cohort_promotion:\s*"Promotion"/);
+  assert.notEqual(
+    promotion.list_establishment_forecast.median_months,
+    openA.list_establishment_forecast.median_months,
+  );
+  assert.equal(promotion.list_establishment_forecast.n, model.cohorts.promotion.n);
 });

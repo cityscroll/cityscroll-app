@@ -169,7 +169,9 @@ test("A3: a qualifying exam carrying a forecast still calendarizes only observed
   // The prediction remains explicit prose, not a calendar cell.
   const html = documentHtml(exam);
   assert.match(html, /Expect the eligible list about/);
+  assert.match(html, /What may happen next/);
   assert.match(html, /data-prediction-subject="eligible-list-establishment"/);
+  assert.doesNotMatch(html, /data-staffing-list-benchmark=/);
 });
 
 /* ---------- A4: continuous/rolling filing stays explicit, never a grid ---------- */
