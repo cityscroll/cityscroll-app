@@ -57,6 +57,7 @@ export function assertDigestShadowMonitorDocument(document, { requireProvenance 
 export function digestShadowObservationFingerprint(summary = {}, extras = {}) {
   const funnel = summary?.selection_funnel || {};
   const codes = [...new Set((summary?.redlines || []).map((row) => row?.code).filter(Boolean))].sort();
+  const observationCodes = [...new Set((summary?.observations || []).map((row) => row?.code).filter(Boolean))].sort();
   return [
     summary?.run_day || "",
     summary?.ran_at || "",
@@ -64,6 +65,7 @@ export function digestShadowObservationFingerprint(summary = {}, extras = {}) {
     summary?.collapse_stage || "",
     String(funnel.source_candidates ?? ""),
     codes.join(","),
+    observationCodes.join(","),
     extras.degraded_reason || "",
   ].join("\n");
 }
@@ -75,7 +77,7 @@ export function observationMarker(fingerprint) {
 
 export function findingSeverity({ healthy = false, summary = {}, opening = false } = {}) {
   const observations = Array.isArray(summary?.observations) ? summary.observations : [];
-  if (observations.some((row) => row?.code === "quiet_watermark")) return "info";
+  if (observations.some((row) => ["quiet_watermark", "expected_catch_up_explosion"].includes(row?.code))) return "info";
   if (healthy && !opening) return "ok";
   return "attention";
 }
@@ -89,6 +91,9 @@ export function observationFromCycle({
   const summary = result.summary || {};
   const funnel = summary.selection_funnel || {};
   const sourceCandidates = funnel.source_candidates;
+  const observation = (summary.observations || [])
+    .find((row) => row?.code)
+    || null;
   const rehearsalReason = (summary.observations || [])
     .find((row) => row?.classification || row?.reason)?.classification
     || (summary.observations || []).find((row) => row?.reason)?.reason
@@ -99,6 +104,7 @@ export function observationFromCycle({
     run_day: summary.run_day || null,
     collapse_stage: summary.collapse_stage || null,
     source_candidates: Number.isFinite(Number(sourceCandidates)) ? Number(sourceCandidates) : null,
+    observation_kind: observation?.code || null,
     rehearsal_reason: rehearsalReason,
     finding_severity: result.finding_severity
       || findingSeverity({

@@ -26,6 +26,7 @@ import { enqueueEvaluatedSection, SECTION_STATUS } from "../src/lib/digest_outbo
 import {
   DIGEST_SHADOW_ATTENTION,
   DIGEST_SHADOW_READY,
+  EXPECTED_CATCH_UP_EXPLOSION_CLASSIFICATION,
   QUIET_WATERMARK_CANDIDATE_FLOOR,
   buildDigestShadowSummary,
 } from "../src/digest_shadow.mjs";
@@ -60,6 +61,24 @@ function d1(sqlite) {
 
 function funnel(overrides = {}) {
   return normalizeFunnel({ ...overrides });
+}
+
+function explosionHistory() {
+  return [
+    { day: "2026-09-11", totalNotices: 5, sentCount: 1 },
+    { day: "2026-09-04", totalNotices: 5, sentCount: 1 },
+    { day: "2026-09-10", totalNotices: 5, sentCount: 1 },
+    { day: "2026-09-09", totalNotices: 5, sentCount: 1 },
+    { day: "2026-09-08", totalNotices: 5, sentCount: 1 },
+    { day: "2026-09-07", totalNotices: 5, sentCount: 1 },
+    { day: "2026-09-06", totalNotices: 5, sentCount: 1 },
+  ];
+}
+
+function explosionHtml(count) {
+  return `<ul>${Array.from({ length: count }, () => '<li data-digest-item="1">item</li>').join("")}</ul>`
+    + '<a href="https://cityscroll.org/#notice/1">View</a>'
+    + '<a href="https://api.cityscroll.org/unsubscribe?example=1">Unsubscribe</a>';
 }
 
 test("funnel names the stage that consumed the candidates", () => {
@@ -295,6 +314,81 @@ test("a healthy run raises neither the aggregate nor the stage redline", () => {
   });
   assert.equal(out.collapse_stage, null);
   assert.deepEqual(out.redlines.map((item) => item.code), []);
+});
+
+test("an owed-dominant catch-up explosion is an informational observation", () => {
+  const out = buildDigestShadowSummary({
+    run: {
+      results: [{
+        sub: "account:catch-up",
+        new: 122,
+        forecasts: 0,
+        preview: {
+          subject: "CityScroll: catching up — 122 new since your last digest on Sep 15 — 5 watches",
+          html: explosionHtml(122),
+          listUnsubscribe: "<https://api.cityscroll.org/unsubscribe?example=1>",
+        },
+        selection_funnel: funnel({
+          source_candidates: 116,
+          delivery_authorized: 116,
+          lens_evaluated: 116,
+          watermark_fresh: 116,
+          content_deduped: 12,
+          owed_drained: 122,
+          items: 122,
+        }),
+      }],
+    },
+    history: explosionHistory(),
+    now: new Date("2026-09-18T10:10:53.838Z"),
+  });
+
+  assert.equal(out.status, DIGEST_SHADOW_READY);
+  assert.equal(out.ok, true);
+  assert.equal(out.redlines.find((item) => item.code === "aggregate_count_explosion"), undefined);
+  const observation = out.observations.find((item) => item.code === "expected_catch_up_explosion");
+  assert.ok(observation);
+  assert.equal(observation.severity, "info");
+  assert.equal(observation.classification, EXPECTED_CATCH_UP_EXPLOSION_CLASSIFICATION);
+  assert.deepEqual(observation.evidence.selection_funnel, out.selection_funnel);
+  assert.equal(observation.evidence.selection_funnel.content_deduped, 12);
+  assert.equal(observation.evidence.selection_funnel.owed_drained, 122);
+  assert.match(observation.evidence.catch_up_subjects[0], /catching up/);
+});
+
+test("a fresh-dominant explosion still redlines", () => {
+  const out = buildDigestShadowSummary({
+    run: {
+      results: [{
+        sub: "account:fresh",
+        new: 122,
+        forecasts: 0,
+        preview: {
+          subject: "CityScroll: 122 new — 1 watch",
+          html: explosionHtml(122),
+          listUnsubscribe: "<https://api.cityscroll.org/unsubscribe?example=1>",
+        },
+        selection_funnel: funnel({
+          source_candidates: 122,
+          delivery_authorized: 122,
+          lens_evaluated: 122,
+          watermark_fresh: 122,
+          content_deduped: 122,
+          owed_drained: 122,
+          items: 122,
+        }),
+      }],
+    },
+    history: explosionHistory(),
+    now: new Date("2026-09-18T10:10:53.838Z"),
+  });
+
+  assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
+  const warning = out.redlines.find((item) => item.code === "aggregate_count_explosion");
+  assert.ok(warning);
+  assert.equal(warning.digest_id, "run");
+  assert.equal(warning.evidence.current_item_count, 122);
+  assert.equal(out.observations.find((item) => item.code === "expected_catch_up_explosion"), undefined);
 });
 
 test("one un-identifiable row does not cost its siblings their ledger entry", () => {

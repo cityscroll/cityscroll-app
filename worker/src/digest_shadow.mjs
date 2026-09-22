@@ -29,6 +29,7 @@ const MIN_TRAILING_AVERAGE = 4;
 // funnel's collapsing stage, never by item count alone.
 export const QUIET_WATERMARK_CANDIDATE_FLOOR = 1;
 export const WATERMARK_BACKLOG_FLUSH_CLASSIFICATION = "watermark exhaustion after backlog flush";
+export const EXPECTED_CATCH_UP_EXPLOSION_CLASSIFICATION = "expected catch-up after owed backlog drain";
 const WEEKDAY_MATCH_MIN_SAMPLES = 2;
 const WEEKDAY_MATCH_WEEKS = 4;
 
@@ -67,6 +68,15 @@ export function isQuietWatermarkCollapse(funnel, collapse = describeCollapse(fun
   return collapse?.stage === "watermark_fresh"
     && normalized.source_candidates >= QUIET_WATERMARK_CANDIDATE_FLOOR
     && normalized.items === 0;
+}
+
+/** True when an aggregate spike is explained by the owed backlog recovery path. */
+export function isExpectedCatchUpExplosion(funnel, previews = []) {
+  const normalized = normalizeFunnel(funnel);
+  const owedDrainDominates = normalized.owed_drained > normalized.content_deduped * EXPLOSION_RATIO;
+  const hasCatchUpSubject = (Array.isArray(previews) ? previews : [])
+    .some((preview) => /\bcatching up\b[\s\S]*\bnew since your last digest\b/i.test(String(preview?.subject || "")));
+  return owedDrainDominates || hasCatchUpSubject;
 }
 
 /** Find a recorded recovery send in the trailing comparison window. */
@@ -379,6 +389,7 @@ export function buildDigestShadowSummary({
   const collapse = describeCollapse(selectionFunnel);
   const backlogFlush = documentedBacklogFlush(history, day);
   const quietWatermark = isQuietWatermarkCollapse(selectionFunnel, collapse) && !!backlogFlush;
+  const expectedCatchUpExplosion = isExpectedCatchUpExplosion(selectionFunnel, previews);
   for (const watch of watchCounts) {
     const previous = historicMax.get(watch.historical_id) || { count: 0, day: null };
     if (watch.evaluation_state === "evaluated" && watch.item_count === 0 && previous.count > 0 && !quietWatermark) {
@@ -482,19 +493,37 @@ export function buildDigestShadowSummary({
         ));
       }
     } else if (ratio > EXPLOSION_RATIO) {
-      redlines.push(redline(
-        "aggregate_count_explosion",
-        "run",
-        "Aggregate digest items exploded against the trailing average.",
-        {
-          current_item_count: totalItems,
-          trailing_average: trailingAverage,
-          trailing_baseline: trailingBaseline,
-          trailing_baseline_method: baseline.method,
-          ratio,
-          history_days: baseline.history_days,
-        },
-      ));
+      const evidence = {
+        current_item_count: totalItems,
+        trailing_average: trailingAverage,
+        trailing_baseline: trailingBaseline,
+        trailing_baseline_method: baseline.method,
+        ratio,
+        history_days: baseline.history_days,
+      };
+      if (expectedCatchUpExplosion) {
+        const catchUpSubjects = previews
+          .map((preview) => preview.subject)
+          .filter((subject) => /\bcatching up\b[\s\S]*\bnew since your last digest\b/i.test(String(subject || "")));
+        observations.push({
+          code: "expected_catch_up_explosion",
+          severity: "info",
+          classification: EXPECTED_CATCH_UP_EXPLOSION_CLASSIFICATION,
+          reason: EXPECTED_CATCH_UP_EXPLOSION_CLASSIFICATION,
+          evidence: {
+            ...evidence,
+            selection_funnel: selectionFunnel,
+            catch_up_subjects: catchUpSubjects,
+          },
+        });
+      } else {
+        redlines.push(redline(
+          "aggregate_count_explosion",
+          "run",
+          "Aggregate digest items exploded against the trailing average.",
+          evidence,
+        ));
+      }
     }
   }
 
