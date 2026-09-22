@@ -96,6 +96,17 @@ def rendered_target_failures(page: Page) -> list[dict]:
     )
 
 
+def open_near_you_directory_list(page: Page) -> None:
+    """Reveal borough-grouped area links behind the searchable directory disclosure."""
+    disclosure = page.locator("[data-geography-directory-list] > summary")
+    if disclosure.count() == 0:
+        return
+    details = page.locator("[data-geography-directory-list]")
+    if details.count() > 0 and details.first.get_attribute("open") is not None:
+        return
+    disclosure.first.click()
+
+
 def assert_mobile_surface(page: Page, name: str) -> None:
     metrics = page.evaluate(
         """() => ({
@@ -277,6 +288,7 @@ def run(base: str) -> None:
                 if contract["enhanced"] == "true":
                     assert contract["mapVisible"], contract
                     assert contract["recordsHidden"], contract
+                    open_near_you_directory_list(page)
                     wait_for_locator(
                         page.locator(".near-area-list a").first,
                         label="Near you map area link",
@@ -305,6 +317,7 @@ def run(base: str) -> None:
                     if len(records["ids"]) < records["count"]:
                         assert page.locator(".near-results-more a").count() == 1, records
                 else:
+                    open_near_you_directory_list(page)
                     wait_for_locator(
                         page.locator(".near-area-list a").first,
                         label="Near you area link",
@@ -350,6 +363,7 @@ def run(base: str) -> None:
         pin_fixture_clock(no_js)
         no_js_page = no_js.new_page()
         no_js_page.goto(f"{base}near-you/", wait_until="domcontentloaded", timeout=30_000)
+        open_near_you_directory_list(no_js_page)
         wait_for_locator(
             no_js_page.locator(".near-area-list a").first,
             label="Near you no-JavaScript area link",

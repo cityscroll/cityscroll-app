@@ -2674,13 +2674,15 @@ select {
   gap: var(--space-2);
   align-items: stretch;
 }
+.near-area-directory-filter input,
+.near-area-directory-filter button {
+  box-sizing: border-box;
+  min-height: var(--control-min-size, 2.75rem);
+  min-width: var(--control-min-size, 2.75rem);
+}
 .near-area-directory-filter input {
   flex: 1 1 auto;
-  min-height: var(--control-min-size);
-}
-.near-area-directory-filter button {
-  min-height: var(--control-min-size);
-  min-width: var(--control-min-size);
+  width: 100%;
 }
 .near-area-directory-summary,
 .near-area-directory-empty,
@@ -2708,9 +2710,11 @@ select {
 .near-area-directory-list > summary,
 .near-area-special-use > summary {
   cursor: pointer;
-  min-height: var(--control-min-size);
+  box-sizing: border-box;
+  min-height: var(--control-min-size, 2.75rem);
   display: flex;
   align-items: center;
+  padding-block: 0.65rem;
 }
 .near-area-list {
   max-height: 560px;

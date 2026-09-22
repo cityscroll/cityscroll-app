@@ -2,20 +2,26 @@
   "schema": "cityscroll.render_capture_manifest.v1",
   "capture_mode": "headless_playwright_served_route",
   "route": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15&level=community_district&id=K15&parent=Brooklyn",
-  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+  "revision": "e1645ccb070ef06672f3aebe91df1d81c9379efa",
   "data_vintage": "2026-05-26",
   "captures": [
     {
-      "viewport": [1440, 900],
+      "viewport": [
+        1440,
+        900
+      ],
       "mode": "no-javascript",
       "assertion": "With JavaScript disabled, the served K15 Near You markup contains native, resolvable community-board and Council-district reverse links.",
-      "sha256": "0e0d8f700da2ebdd64cc0e7c887a03721a90555f1f7218eb581401e8b6da88cf"
+      "sha256": "75e0bc90a8e21d900fa648282a1168427ae7fb473f30e6d0ddae7a053ed66fcd"
     },
     {
-      "viewport": [390, 844],
+      "viewport": [
+        390,
+        844
+      ],
       "mode": "keyboard",
-      "assertion": "With JavaScript enabled, Tab reaches each K15 reverse-navigation link, Enter activates it, and the fiscal-year, agency, lens, and place scope parameters remain unchanged.",
-      "sha256": "c2b3b33c6108eb0564ab8b0d2e3da565800e2b8b32cff4554ee5b2be35dbfb22"
+      "assertion": "With JavaScript enabled, opening About this place then Tab reaches each K15 reverse-navigation link, Enter activates it, and the fiscal-year, agency, lens, and place scope parameters remain unchanged.",
+      "sha256": "faaadb42358f5666431df2b69ad80b3e53e5e91462712e2edd8969a06249dcbe"
     }
   ]
 }
