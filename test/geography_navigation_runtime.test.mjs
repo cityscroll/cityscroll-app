@@ -691,7 +691,7 @@ test("A2/A3: tile failure stays independent of record health and keeps local geo
   assert.equal(NTA_LAYER.vintage.id, "26B");
   // Record-loading failure is a separate axis; tile failure must not invent missing geometry.
   assert.match(MAP_ISLAND_SOURCE, /copy\("messageRetry"\)/);
-  assert.match(MAP_ISLAND_SOURCE, /retryLabel === "buyer_history_retry"/);
+  assert.match(MAP_ISLAND_SOURCE, /translated !== "buyer_history_retry"/);
   assert.doesNotMatch(
     MAP_ISLAND_SOURCE,
     /recovery\.textContent = globalThis\.t\("buyer_history_retry"\);/,
@@ -702,8 +702,6 @@ test("A2/A3: tile failure stays independent of record health and keeps local geo
 test("A3: deferred records retry copy never leaks a raw translation key", () => {
   assert.match(MAP_ISLAND_SOURCE, /dataset\.nearRecovery = "retry"/);
   assert.match(MAP_ISLAND_SOURCE, /copy\("messageRetry"\)/);
-  assert.match(MAP_ISLAND_SOURCE, /"Try again"/);
-  assert.ok(
-    MAP_ISLAND_SOURCE.includes('retryLabel === "buyer_history_retry" ? "Try again" : retryLabel'),
-  );
+  assert.match(MAP_ISLAND_SOURCE, /translated !== "buyer_history_retry"/);
+  assert.doesNotMatch(MAP_ISLAND_SOURCE, /"Try again"/);
 });

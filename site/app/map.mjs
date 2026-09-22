@@ -190,10 +190,12 @@ async function hydrateCurrentNearYouDeferred() {
       recovery.href = location.href || root.dataset.nearRecoveryHref || "/near-you/";
       recovery.dataset.nearRecovery = "retry";
       // Prefer Near You owned copy. Never leak a raw translation key when i18n is absent.
-      const retryLabel = copy("messageRetry")
-        || (typeof globalThis.t === "function" ? globalThis.t("buyer_history_retry") : "")
-        || "Try again";
-      recovery.textContent = retryLabel === "buyer_history_retry" ? "Try again" : retryLabel;
+      let retryLabel = copy("messageRetry");
+      if (!retryLabel && typeof globalThis.t === "function") {
+        const translated = globalThis.t("buyer_history_retry");
+        if (translated && translated !== "buyer_history_retry") retryLabel = translated;
+      }
+      recovery.textContent = retryLabel;
       host.replaceChildren(statusNode, recovery);
       host.setAttribute("aria-busy", "false");
       if (host.dataset.nearDeferred === "results") host.removeAttribute("data-results-count");
