@@ -51,12 +51,15 @@ def main():
                 page.add_init_script(INSTRUMENT)
                 page.goto(base+'/near-you/',wait_until='domcontentloaded')
                 ready(page)
+                page.evaluate("history.replaceState({}, '', '?scope=citywide&lens=meetings')")
                 page.evaluate('window.__sameDocument=true')
                 search=page.locator('[data-geography-search] input[name="neighborhood"]')
                 search.fill('Tribeca-Civic Center')
                 search.press('Enter')
                 page.wait_for_url('**geo=nta2020%3AMN0102**')
                 ready(page,selected=True)
+                assert page.url.find('scope=') == -1
+                assert 'lens=meetings' in page.url
                 assert page.evaluate('window.__sameDocument === true'), 'selection reloaded document'
                 evidence=page.locator('.near-results [data-near-you-record-inspection]').evaluate_all("nodes=>nodes.map(n=>JSON.parse(n.dataset.nearYouRecordInspection).geography)")
                 assert all(item and item.get('key')=='geography:nta2020:MN0102' for item in evidence), evidence[:2]
@@ -101,10 +104,14 @@ def main():
                 assert page.locator('.near-hero h1').inner_text()=='Greenpoint'
                 local_evidence=page.locator('.near-results [data-near-you-record-inspection]').evaluate_all("nodes=>nodes.map(n=>JSON.parse(n.dataset.nearYouRecordInspection).geography)")
                 assert all(item and item.get('key')=='geography:nta2020:BK0101' for item in local_evidence), 'neighborhood broadened to citywide records'
+                land_url = page.url.replace('lens=meetings', 'lens=land')
+                page.goto(land_url, wait_until='domcontentloaded')
+                ready(page,selected=True,allow_unavailable=True)
                 district=page.locator('[data-geography-related-district]').filter(has_text='Brooklyn Community District 1').first
                 district.wait_for()
                 district.click()
                 page.wait_for_url('**geo=community_district%3AK01**')
+                assert 'lens=land' in page.url
                 page.wait_for_function("() => document.querySelector('[data-near-you-root]')?.dataset.nearDeferredState==='ready'")
                 assert page.locator('.near-results').is_visible()
                 if server:

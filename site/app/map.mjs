@@ -385,7 +385,7 @@ function geographyEntryStatusMessage(entry) {
 
 function geographySelectionHref(state) {
   const target = new URL(location.href);
-  for (const name of ["geo", "boro", "cd", "council", "level", "id", "parent", "neighborhood"]) {
+  for (const name of ["geo", "boro", "cd", "council", "level", "id", "parent", "neighborhood", "scope"]) {
     target.searchParams.delete(name);
   }
   for (const [name, value] of serializeGeographyNavigationState(state, { includeDefaults: true })) {
@@ -685,7 +685,6 @@ async function refreshOverlapDrawer({
       });
       relatedDistricts = (districtModel.area_section?.rows || []).map((row) => {
         const href = new URL(row.select_href);
-        href.searchParams.set('lens', 'meetings');
         return {key:row.key, label:row.label, href:href.toString()};
       });
     }
