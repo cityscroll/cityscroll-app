@@ -38,7 +38,7 @@ import {
   __test__ as geographyMapTest,
 } from "../site/geography_navigation_map.mjs";
 import { buildNearYouViewModel, renderNearYouDocument } from "../site/near_you_view.mjs";
-import { scopeFromLensState } from "../site/scope_v0.mjs";
+import { scopeFromLensState, scopeWithGeographies } from "../site/scope_v0.mjs";
 import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
 
 const ROOT = process.cwd();
@@ -237,6 +237,43 @@ test("A12 boundary: Land map runtime stays untouched; shell may mount the adapte
   assert.doesNotMatch(LAND_RUNTIME_SOURCE, /geography_navigation_shell/);
   // The Near You island may import the progressive adapter; Land must not.
   assert.match(VIEW_SOURCE, /geography_navigation_shell/);
+});
+
+test("A1: comparison keeps Neighborhoods as the browsable primary layer for Greenpoint", () => {
+  const entries = navigationAreaEntriesFromLayerDoc(NTA_LAYER, { layerType: "nta2020" });
+  assert.ok(entries.some((entry) => entry.id === "BK0101" && entry.label === "Greenpoint"));
+  const areas = geographyShellAreasListHtml(entries.slice(0, 8), { activeType: "nta2020" });
+  assert.match(areas, /data-geography-layer="nta2020"/);
+  assert.doesNotMatch(areas, /No areas match/);
+
+  const switcher = geographyShellLayerSwitcherHtml({
+    activeType: "nta2020",
+    selectedGeo: "nta2020:BK0101",
+    surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+  });
+  assert.match(switcher, /data-geography-layer="nta2020"[^>]*aria-pressed="true"/);
+  assert.match(switcher, /data-geography-layer="community_district"[^>]*aria-pressed="false"/);
+  assert.match(SHELL_SOURCE, /Comparison overlays\s+live in the overlap drawer|must not steal the pressed primary control/);
+
+  const view = buildNearYouViewModel(
+    scopeWithGeographies(scopeFromLensState("meetings"), ["geography:nta2020:BK0101"]),
+    fixtureActivity(),
+    fixtureBoundaries,
+    {
+      geographySearch: "?geo=nta2020:BK0101&compare=police_precinct&surface=map",
+      navigationLayerDoc: NTA_LAYER,
+      navigationLayerType: "nta2020",
+      shellSurface: "map",
+      canonicalBase: "https://cityscroll.org/near-you",
+    },
+  );
+  assert.equal(view.activeGeographyLayer, "nta2020");
+  assert.equal(view.geographyState?.compare, "police_precinct");
+  assert.ok(view.navigationAreas.length > 0);
+  assert.ok(view.navigationAreas.every((entry) => entry.type === "nta2020"));
+  const html = renderNearYouDocument(view);
+  assert.match(html, /data-geography-layer="nta2020"/);
+  assert.doesNotMatch(html, /No areas match this layer|No areas match these filters/);
 });
 
 test("entry chrome render includes required first-viewport controls", () => {

@@ -265,23 +265,18 @@ export function parseGeographyNavigationState(input) {
     firstParam(params, GEOGRAPHY_NAVIGATION_COMPARE_PARAM),
     selection.resolved?.type || null,
   );
-  if (!compare.ok) {
-    return recoveryState(compare.recovery.reason, compare.recovery.explanation, {
-      surface,
-      drawer,
-      focus,
-      lens,
-    });
-  }
+  // Unsupported compare values recover transparently: drop the comparison
+  // dimension and keep the primary geography selection intact.
+  const recoveredCompare = compare.ok ? compare.compare : null;
   if (!selection.resolved) {
-    return emptyState({ surface, drawer, focus, lens, compare: compare.compare });
+    return emptyState({ surface, drawer, focus, lens, compare: recoveredCompare });
   }
   return emptyState({
     geo: geographyNavigationSelectionToken(selection.resolved),
     key: selection.resolved.key,
     type: selection.resolved.type,
     id: selection.resolved.id,
-    compare: compare.compare,
+    compare: recoveredCompare,
     surface,
     drawer,
     focus,

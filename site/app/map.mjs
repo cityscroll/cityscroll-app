@@ -743,10 +743,15 @@ function featureBounds(feature) {
 
 async function highlightOverlapComparison(key) {
   if (!geographyMapController || !key) return;
+  const generation = documentAdoptionGeneration;
   const state = parseGeographyNavigationState(location.search);
   if (!state.compare) return;
   overlapHighlightKey = key;
+  const requestedCompare = state.compare;
   const layer = await loadGeographyLayer(state.compare);
+  const current = parseGeographyNavigationState(location.search);
+  if (generation !== documentAdoptionGeneration) return;
+  if ((current.compare || null) !== requestedCompare) return;
   const features = (layer.features || []).filter((feature) => (
     (feature.properties?.key || feature.key) === key
   ));
@@ -815,6 +820,8 @@ function wireOverlapDrawerInteractions() {
 
 async function applyGeographyComparison(compareType) {
   if (!geographyMapController) return;
+  const generation = documentAdoptionGeneration;
+  const requestedCompare = compareType || null;
   const state = parseGeographyNavigationState(location.search);
   if (!compareType) {
     geographyMapController.setComparisonLayer(null);
@@ -823,6 +830,9 @@ async function applyGeographyComparison(compareType) {
     return;
   }
   const layer = await loadGeographyLayer(compareType);
+  const current = parseGeographyNavigationState(location.search);
+  if (generation !== documentAdoptionGeneration) return;
+  if ((current.compare || null) !== requestedCompare) return;
   const layerDoc = {
     type: compareType,
     geometry_fidelity: layer.geometry_fidelity || "simplified",
@@ -837,7 +847,7 @@ async function applyGeographyComparison(compareType) {
     })),
   };
   geographyMapController.setComparisonLayer(compareType, layerDoc);
-  if (state.key) geographyMapController.setSelectedKey(state.key);
+  if (current.key) geographyMapController.setSelectedKey(current.key);
   if (overlapHighlightKey) {
     await highlightOverlapComparison(overlapHighlightKey);
   }
@@ -901,7 +911,32 @@ async function activateGeographyLayer(type, { asComparison = null } = {}) {
     ? asComparison
     : Boolean(state.key && type && type !== selectedType && type !== "nta2020");
   if (useComparison) {
-    setActiveLayerButtons(type);
+    // Comparison is secondary: keep the selected place's primary layer, Areas
+    // directory, and friendly label while the compare dimension changes.
+    const primaryType = selectedType || "nta2020";
+    const selectedLayer = await loadGeographyLayer(primaryType);
+    const primaryDoc = {
+      type: primaryType,
+      geometry_fidelity: selectedLayer.geometry_fidelity || "simplified",
+      vintage: selectedLayer.vintage || null,
+      features: (selectedLayer.features || []).map((feature) => ({
+        key: feature.properties?.key || feature.key,
+        id: feature.properties?.id || feature.id,
+        type: feature.properties?.type || primaryType,
+        label: feature.properties?.label || feature.label,
+        subtype: feature.properties?.subtype ?? feature.subtype ?? null,
+        geometry: feature.geometry,
+      })),
+    };
+    geographyMapController.setActiveLayer(primaryType, primaryDoc);
+    setActiveLayerButtons(primaryType);
+    refreshGeographyAreasList(primaryType, primaryDoc);
+    const selectedFeature = primaryDoc.features.find((feature) => feature.key === state.key);
+    if (selectedFeature?.label) {
+      for (const node of root.querySelectorAll(".near-hero>h1,[data-geography-selected-label]")) {
+        node.textContent = selectedFeature.label;
+      }
+    }
     const next = {
       ...state,
       compare: type,
@@ -909,24 +944,7 @@ async function activateGeographyLayer(type, { asComparison = null } = {}) {
     };
     writeGeographyNavigationHistory(history, location, next, { mode: "replace" });
     await applyGeographyComparison(type);
-    // Keep the selected geography's own layer mounted beneath the comparison.
-    if (selectedType && selectedType !== type) {
-      const selectedLayer = await loadGeographyLayer(selectedType);
-      geographyMapController.setActiveLayer(selectedType, {
-        type: selectedType,
-        geometry_fidelity: selectedLayer.geometry_fidelity || "simplified",
-        vintage: selectedLayer.vintage || null,
-        features: (selectedLayer.features || []).map((feature) => ({
-          key: feature.properties?.key || feature.key,
-          id: feature.properties?.id || feature.id,
-          type: feature.properties?.type || selectedType,
-          label: feature.properties?.label || feature.label,
-          subtype: feature.properties?.subtype ?? feature.subtype ?? null,
-          geometry: feature.geometry,
-        })),
-      });
-      if (state.key) geographyMapController.setSelectedKey(state.key);
-    }
+    if (state.key) geographyMapController.setSelectedKey(state.key);
     await refreshOverlapDrawer();
     return;
   }
@@ -1064,11 +1082,11 @@ async function initializeGeographyNavigationMap() {
     }
     geographyMapController = controller;
     const selected = parseGeographyNavigationState(location.search);
-    const initialType = selected?.compare
-      || selected?.type
+    // Mount the primary selection layer first; comparison overlays afterward.
+    const initialType = selected?.type
       || root.dataset.geographyLayer
       || "nta2020";
-    await activateGeographyLayer(initialType);
+    await activateGeographyLayer(initialType, { asComparison: false });
     if (selected?.key) {
       geographyMapController.setSelectedKey(selected.key);
       geographyMapController.fitSelection({ padding: 40, maxZoom: 14 });
