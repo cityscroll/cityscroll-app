@@ -15,6 +15,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from repository_revision import resolve_repository_revision
+
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs/evidence/geography-navigation-preserve-place/capture-manifest.json"
 SCREENSHOT_DIR = Path(os.environ.get("FM_TASK_SCRATCH") or "/tmp") / "geography-navigation-preserve-place-screenshots"
@@ -74,7 +76,9 @@ CASES = (
 
 
 def revision() -> str:
-    return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    # Evidence revisions must remain ancestors of origin/main so retained
+    # manifests stay reachable after the branch tip moves.
+    return resolve_repository_revision(ROOT)
 
 
 def sha256(text: str) -> str:
