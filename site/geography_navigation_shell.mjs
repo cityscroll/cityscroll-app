@@ -537,10 +537,11 @@ export function renderGeographyShellEntry({
           <a href="#near-area-list">Browse the area list</a>
         </div>
         ${geographyShellLayerSwitcherHtml({ activeType, base: canonicalBase, surface })}
-        <details class="near-map-secondary"><summary>Follow or share</summary>
+        <div class="near-map-secondary">
+          <p class="near-map-secondary-label">Follow or share</p>
           ${actions}
           ${followDiscoveryHtml || ""}
-        </details>
+        </div>
       </details>
     </section>`;
 }
