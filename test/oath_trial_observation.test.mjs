@@ -92,6 +92,7 @@ test("captured OATH CSV yields the named trial-session and conference-exclusion 
       trial_session_count: 145,
       excluded_conference_count: 113,
       exact_duplicate_count: 1,
+      unaccounted_row_count: 0,
     });
     assert.equal(result.records.length, 145);
     assert.equal(
@@ -110,6 +111,18 @@ test("OATH builder fails closed when a capture has no trial records", () => {
   assert.throws(
     () => buildOathTrialCalendar({ csv: "Index,Date,Start,Type\n1,9/22/2026,10:00 AM,Conference", sourceUrl }),
     /no trial records; refusing to replace/,
+  );
+});
+
+test("OATH builder rejects a partial parse when a publisher row changes schema", () => {
+  const csv = [
+    "Index,Date,Start,Type,Category",
+    "1,9/22/2026,10:00 AM,Trial,",
+    "2,9/23/2026,11:00 AM,,Scheduled For Trial",
+  ].join("\n");
+  assert.throws(
+    () => buildOathTrialCalendar({ csv, sourceUrl }),
+    /left 1 of 2 input rows unaccounted; refusing to replace/,
   );
 });
 

@@ -55,6 +55,11 @@ test("PDC keeps a linked agenda date-only when its captured text has no valid cl
 test("PDC applies the single calendar heading year to live-shaped month/day rows", () => {
   const result = buildPdcCalendar({ html: liveHeadingYearHtml, sourceUrl, observedAt });
   assert.deepEqual(result.records.map((row) => row.event_date), ["2026-09-22", "2026-10-20"]);
+  assert.deepEqual(result.population, {
+    input_row_count: 2,
+    calendar_record_count: 2,
+    unaccounted_row_count: 0,
+  });
 });
 
 test("PDC fails closed when yearless rows have no unambiguous calendar heading", () => {
@@ -65,5 +70,13 @@ test("PDC fails closed when yearless rows have no unambiguous calendar heading",
   assert.throws(
     () => buildPdcCalendar({ html: ambiguous, sourceUrl, observedAt }),
     /no calendar records; refusing to replace/,
+  );
+});
+
+test("PDC builder rejects a partial parse when one schedule row changes shape", () => {
+  const partial = liveHeadingYearHtml.replace("Tuesday, October 20", "Date pending");
+  assert.throws(
+    () => buildPdcCalendar({ html: partial, sourceUrl, observedAt }),
+    /left 1 of 2 input rows unaccounted; refusing to replace/,
   );
 });

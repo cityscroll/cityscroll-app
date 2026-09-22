@@ -110,10 +110,12 @@ export function parseOathTrialCsv(csv, { sourceUrl = OATH_TRIAL_CALENDAR_SOURCE_
   const seen = new Set();
   let excludedConferenceCount = 0;
   let exactDuplicateCount = 0;
+  let unaccountedRowCount = 0;
   for (const row of rows) {
     if (!trialRow(row)) {
       const type = pick(row, ["type", "proceeding_type", "event_type", "hearing_type", "about"]);
       if (type && /conference/i.test(type)) excludedConferenceCount += 1;
+      else unaccountedRowCount += 1;
       continue;
     }
     const fields = sourceFields(row);
@@ -122,7 +124,10 @@ export function parseOathTrialCsv(csv, { sourceUrl = OATH_TRIAL_CALENDAR_SOURCE_
     const timeValue = pick(row, ["start", "start_time", "time", "trial_time", "hearing_time"]);
     const type = fields.type;
     const eventDate = localDateTime(dateValue, timeValue);
-    if (!index || !eventDate) continue;
+    if (!index || !eventDate) {
+      unaccountedRowCount += 1;
+      continue;
+    }
     const sessionId = oathTrialSessionId({ index, date: eventDate.slice(0, 10), start: eventDate.slice(11) || "", type });
     if (seen.has(sessionId)) {
       exactDuplicateCount += 1;
@@ -154,6 +159,7 @@ export function parseOathTrialCsv(csv, { sourceUrl = OATH_TRIAL_CALENDAR_SOURCE_
       trial_session_count: records.length,
       excluded_conference_count: excludedConferenceCount,
       exact_duplicate_count: exactDuplicateCount,
+      unaccounted_row_count: unaccountedRowCount,
     },
   };
 }

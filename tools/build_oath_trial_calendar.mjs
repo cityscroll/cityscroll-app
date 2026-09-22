@@ -12,6 +12,15 @@ export function buildOathTrialCalendar({ csv, sourceUrl, observedAt, sourceRevis
   if (!Array.isArray(result.records) || result.records.length === 0) {
     throw new Error("OATH capture produced no trial records; refusing to replace the last-known-good artifact");
   }
+  const population = result.population || {};
+  const accounted = Number(population.trial_session_count)
+    + Number(population.excluded_conference_count)
+    + Number(population.exact_duplicate_count)
+    + Number(population.unaccounted_row_count);
+  if (!Number.isFinite(accounted) || accounted !== Number(population.input_row_count)
+    || Number(population.unaccounted_row_count) !== 0) {
+    throw new Error(`OATH capture left ${population.unaccounted_row_count ?? "unknown"} of ${population.input_row_count ?? "unknown"} input rows unaccounted; refusing to replace the last-known-good artifact`);
+  }
   return result;
 }
 

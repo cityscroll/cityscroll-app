@@ -27,6 +27,12 @@ export function buildPdcCalendar({ html, sourceUrl, observedAt, receipt, agenda,
   if (!Array.isArray(parsed.records) || parsed.records.length === 0) {
     throw new Error("PDC capture produced no calendar records; refusing to replace the last-known-good artifact");
   }
+  const population = parsed.population || {};
+  const accounted = Number(population.calendar_record_count) + Number(population.unaccounted_row_count);
+  if (!Number.isFinite(accounted) || accounted !== Number(population.input_row_count)
+    || Number(population.unaccounted_row_count) !== 0) {
+    throw new Error(`PDC capture left ${population.unaccounted_row_count ?? "unknown"} of ${population.input_row_count ?? "unknown"} input rows unaccounted; refusing to replace the last-known-good artifact`);
+  }
   const captures = normalizeAgendaCaptures({ agenda, agendas, agendaCaptures, agendaText, agendaDate, agendaDocumentUrl, agendaReceipt });
   const records = (parsed.records || []).map((record) => {
     const capture = captures.find((candidate) => candidate.meetingDate === record.event_date?.slice(0, 10));
