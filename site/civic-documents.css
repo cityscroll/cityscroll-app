@@ -2701,9 +2701,11 @@ select {
   margin: 0 0 var(--space-2);
   font-size: 1rem;
 }
+.near-area-directory-list,
 .near-area-special-use {
   margin-top: var(--space-3);
 }
+.near-area-directory-list > summary,
 .near-area-special-use > summary {
   cursor: pointer;
   min-height: var(--control-min-size);

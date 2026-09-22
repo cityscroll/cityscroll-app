@@ -342,10 +342,13 @@ test("A1: residential directory groups by borough and keeps special-use behind a
   assert.match(html, /data-geography-borough-group="Brooklyn"/);
   assert.match(html, new RegExp(`<summary>${GEOGRAPHY_SHELL_SPECIAL_USE_SUMMARY}</summary>`));
   assert.match(html, /data-geography-special-use-directory/);
-  const withoutSpecial = html.replace(/<details class="near-area-special-use"[\s\S]*?<\/details>/, "");
-  assert.doesNotMatch(withoutSpecial, /data-map-area="QN8381"/);
-  assert.doesNotMatch(withoutSpecial, /data-map-area="BK0771"/);
-  assert.doesNotMatch(withoutSpecial, /data-geography-special-use="true"/);
+  assert.match(html, /data-geography-directory-list/);
+  assert.match(html, /Neighborhood list/);
+  const withoutDisclosures = html
+    .replace(/<details class="near-area-directory-list"[\s\S]*?<\/details>/, "")
+    .replace(/<details class="near-area-special-use"[\s\S]*?<\/details>/, "");
+  assert.doesNotMatch(withoutDisclosures, /data-map-area="/);
+  assert.doesNotMatch(withoutDisclosures, /data-geography-special-use="true"/);
   for (const row of DIRECTORY_ACCEPTANCE_CASES) {
     if (row.membership === "residential") {
       assert.ok(directory.residential.some((entry) => entry.id === row.id), row.label);
@@ -430,13 +433,15 @@ test("A3: directory fixtures and Browse records precede the area-link tab sequen
   assert.ok(recordsAt < firstAreaLink, "Browse records precedes area links");
   assert.ok(!html.slice(0, recordsAt).includes("data-map-area="));
 
-  const withoutSpecial = html.replace(/<details class="near-area-special-use"[\s\S]*?<\/details>/, "");
-  const defaultTabAreaLinks = (withoutSpecial.match(/data-map-area="/g) || []).length;
-  assert.equal(defaultTabAreaLinks, 197);
-  assert.ok(defaultTabAreaLinks < 262, "special-use stays out of the default tab sequence");
+  const withoutDisclosures = html
+    .replace(/<details class="near-area-directory-list"[\s\S]*?<\/details>/, "")
+    .replace(/<details class="near-area-special-use"[\s\S]*?<\/details>/, "");
+  const defaultTabAreaLinks = (withoutDisclosures.match(/data-map-area="/g) || []).length;
+  assert.equal(defaultTabAreaLinks, 0);
+  assert.ok(defaultTabAreaLinks < 262, "area links stay behind closed disclosures in the default tab sequence");
   assert.equal(view.navigationDirectory.residential_total, 197);
   assert.equal(view.navigationDirectory.special_use_total, 65);
-  assert.ok(recordsAt < withoutSpecial.search(/data-map-area="/));
+  assert.match(html, /data-geography-directory-list/);
 
   for (const expected of DIRECTORY_ACCEPTANCE_CASES) {
     const entry = [...view.navigationDirectory.residential, ...view.navigationDirectory.special_use]

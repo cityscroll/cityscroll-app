@@ -32,6 +32,7 @@ export const GEOGRAPHY_SHELL_SEARCH_PLACEHOLDER = "Neighborhood, district, or ad
 export const GEOGRAPHY_SHELL_AREAS_HEADING = "Areas";
 export const GEOGRAPHY_SHELL_DIRECTORY_FILTER_LABEL = "Filter neighborhoods";
 export const GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM = "area_q";
+export const GEOGRAPHY_SHELL_DIRECTORY_LIST_SUMMARY = "Neighborhood list";
 export const GEOGRAPHY_SHELL_SPECIAL_USE_SUMMARY = "Special-use areas";
 export const GEOGRAPHY_SHELL_SPECIAL_USE_NOTE =
   "Airports, parks, cemeteries, and other non-residential statistical areas.";
@@ -436,12 +437,19 @@ export function geographyShellAreasListHtml(entriesOrDirectory, {
     const summary = filterValue
       ? `<p class="near-area-directory-summary" data-geography-directory-summary>Showing ${matchedResidential} of ${projection.residential_total} neighborhoods.</p>`
       : `<p class="near-area-directory-summary" data-geography-directory-summary>${projection.residential_total} residential neighborhoods by borough.</p>`;
+    // Keep the long link list behind a closed disclosure so keyboard users reach
+    // Browse records and later page actions without tabbing through every area.
+    const openAttr = filterValue && matchedResidential > 0 && matchedResidential <= 12 ? " open" : "";
+    const listBlock = `<details class="near-area-directory-list" data-geography-directory-list${openAttr}>
+            <summary>${esc(GEOGRAPHY_SHELL_DIRECTORY_LIST_SUMMARY)}</summary>
+            <div class="near-area-directory-groups">${groupsMarkup}</div>
+          </details>`;
     return `<div class="near-area-panel near-area-directory" id="near-area-list" data-geography-areas data-geography-directory="residential" data-geography-layer="${esc(activeType)}">
           <h3>${esc(GEOGRAPHY_SHELL_AREAS_HEADING)}</h3>
           ${geographyShellDirectoryFilterHtml({ action: base, value: filterValue })}
           ${summary}
           ${emptyMarkup}
-          <div class="near-area-directory-groups">${groupsMarkup}</div>
+          ${listBlock}
           ${specialBlock}
         </div>`;
   }
