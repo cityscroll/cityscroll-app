@@ -138,6 +138,45 @@ function quietWatermarkReceipt(runDay = LETTER_RECEIPTS.quiet_watermark.run_day,
   };
 }
 
+function expectedCatchUpReceipt() {
+  return {
+    summary: {
+      status: "READY",
+      run_day: "2026-09-18",
+      ran_at: "2026-09-18T10:10:53.838Z",
+      ok: true,
+      selection_funnel: {
+        source_candidates: 116,
+        delivery_authorized: 116,
+        lens_evaluated: 116,
+        watermark_fresh: 116,
+        content_deduped: 12,
+        owed_drained: 122,
+        items: 122,
+      },
+      redlines: [],
+      observations: [{
+        code: "expected_catch_up_explosion",
+        severity: "info",
+        classification: "expected catch-up after owed backlog drain",
+        reason: "expected catch-up after owed backlog drain",
+        evidence: {
+          selection_funnel: {
+            source_candidates: 116,
+            delivery_authorized: 116,
+            lens_evaluated: 116,
+            watermark_fresh: 116,
+            content_deduped: 12,
+            owed_drained: 122,
+            items: 122,
+          },
+        },
+      }],
+      upstream_incidents: [],
+    },
+  };
+}
+
 test("A2 named assertion: letter-receipts unchanged attention comments once; a changed receipt still comments", async () => {
   await withPinnedClock("2026-09-10T12:00:00.000Z", async () => {
     await withTempDir("crol-digest-shadow-unchanged", async (stateDir) => {
@@ -242,6 +281,31 @@ test("a quiet watermark rehearsal opens no attention issue", async () => {
     assert.equal(output.result.comment_written, false);
     assert.equal(output.intents[0].issue.mode, "close");
     assert.equal(github.issues.length, 0);
+  });
+});
+
+test("a catch-up explosion receipt is informational and records its observation kind", async () => {
+  await withTempDir("crol-digest-shadow-catch-up", async (stateDir) => {
+    const github = fakeGithub();
+    const receipt = expectedCatchUpReceipt();
+    const output = await withDigestShadowEnv({
+      CITYSCROLL_ADMIN_KEY: "probe-secret",
+      CITYSCROLL_DIGEST_SHADOW_URL: "https://example.invalid/admin/digest-shadow",
+    }, async () => runDigestShadowJob(DIGEST_SHADOW_JOB, {
+      stateDir,
+      now: new Date("2026-09-18T10:10:00.000Z"),
+      runKey: runKey(new Date("2026-09-18T10:10:00.000Z")),
+      async fetchImpl() { return { ok: true, status: 200, async json() { return receipt; } }; },
+    }));
+
+    assert.equal(output.result.finding_severity, "info");
+    assert.match(output.result.body, /expected catch-up after owed backlog drain/);
+    assert.equal(output.result.comment_written, false);
+    assert.equal(output.intents[0].issue.mode, "close");
+    await persistJobOutput(stateDir, new Date("2026-09-18T10:10:00.000Z"), output);
+    const stored = JSON.parse(await readFile(join(stateDir, "jobs", DIGEST_SHADOW_JOB.id, "quiet-watermark-cycles-2026-09-14.json"), "utf8"));
+    assert.equal(stored.observations[0].observation_kind, "expected_catch_up_explosion");
+    assert.equal(stored.observations[0].rehearsal_reason, "expected catch-up after owed backlog drain");
   });
 });
 
