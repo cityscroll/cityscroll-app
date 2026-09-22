@@ -335,12 +335,14 @@ export function geographyShellLayerSwitcherHtml({
     return `<button type="button" class="near-geo-layer near-geo-layer-more" data-geography-layer="${esc(layer.type)}" aria-pressed="${pressed ? "true" : "false"}"${pressed ? ' data-geography-layer-active="true"' : ""}>${esc(layer.primary_label)}</button>`;
   }).join("");
 
+  // Plain group (not nested details) so these controls stay out of the closed
+  // parent-details focus probe while remaining available when More ways is open.
   return `<div class="near-geo-layers" data-geography-layer-switcher role="group" aria-label="Boundary layers">
       <div class="near-geo-layers-primary">${primary}</div>
-      <details class="near-geo-more-boundaries"${activeType === "police_precinct" ? " open" : ""}>
-        <summary>${esc(GEOGRAPHY_SHELL_MORE_BOUNDARIES_LABEL)}</summary>
+      <div class="near-geo-more-boundaries" role="group" aria-label="${esc(GEOGRAPHY_SHELL_MORE_BOUNDARIES_LABEL)}">
+        <p class="near-geo-more-boundaries-label">${esc(GEOGRAPHY_SHELL_MORE_BOUNDARIES_LABEL)}</p>
         <div class="near-geo-layers-more">${more}</div>
-      </details>
+      </div>
     </div>`;
 }
 
@@ -514,9 +516,10 @@ export function renderGeographyShellEntry({
         ${actionLinks}
       </nav>`
     : "";
-  // Surface switch, layer chrome, and follow/share stay outside the secondary
-  // disclosure so nested summaries are not focused under the map canvas, and
-  // Browse records stays ahead of the long area-directory tab sequence.
+  // Browse records stays outside the secondary disclosure for the mobile tab
+  // budget. Layer chrome and follow/share stay inside so the map remains in the
+  // first viewport. More-boundaries uses a plain group instead of nested details
+  // so closed-parent summaries are not force-focused under the map canvas.
   return `<section class="near-geo-entry" aria-labelledby="near-geo-heading" data-geography-entry>
       <p class="near-kicker">Local geography</p>
       <h1 id="near-geo-heading">${esc(GEOGRAPHY_SHELL_HEADING)}</h1>
@@ -526,7 +529,6 @@ export function renderGeographyShellEntry({
         <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? " is-active" : ""}" href="${esc(mapHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_MAP}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? ' aria-current="true"' : ""}>Map</a>
         <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? " is-active" : ""}" href="${esc(browseHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_RECORDS}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? ' aria-current="true"' : ""}>${esc(GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL)}</a>
       </nav>
-      ${geographyShellLayerSwitcherHtml({ activeType, base: canonicalBase, surface })}
       <p class="near-map-status" data-map-status aria-live="polite"></p>
       <details class="near-entry-secondary">
         <summary>More ways to choose</summary>
@@ -534,10 +536,11 @@ export function renderGeographyShellEntry({
           <button type="button" class="js-only near-location-action" data-use-location hidden>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
           <a href="#near-area-list">Browse the area list</a>
         </div>
-      </details>
-      <details class="near-map-secondary"><summary>Follow or share</summary>
-        ${actions}
-        ${followDiscoveryHtml || ""}
+        ${geographyShellLayerSwitcherHtml({ activeType, base: canonicalBase, surface })}
+        <details class="near-map-secondary"><summary>Follow or share</summary>
+          ${actions}
+          ${followDiscoveryHtml || ""}
+        </details>
       </details>
     </section>`;
 }
