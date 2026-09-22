@@ -71,6 +71,7 @@ function assertCaptureContract(capture) {
   assert.ok(capture.viewport?.width >= 320);
   assert.ok(capture.viewport?.height >= 480);
   assert.equal(capture.repository_revision, RELEASE_MANIFEST.repository_revision);
+  assert.equal(capture.candidate_revision, RELEASE_MANIFEST.candidate_revision);
   assert.deepEqual(capture.deployed_version, {
     status: "not_taken",
     reason: "deployment-dependent CROL_BASE read-back",
@@ -194,6 +195,7 @@ test("A8: unrelated routes omit the navigator runtime and the map requests simpl
 
 test("A9: every retained manifest entry carries route, viewport, vintages, assertion, timings, mode, assets, and render hash", () => {
   assert.match(RELEASE_MANIFEST.repository_revision, /^[0-9a-f]{40}$/);
+  assert.match(RELEASE_MANIFEST.candidate_revision, /^[0-9a-f]{40}$/);
   assert.match(RELEASE_MANIFEST.grounded_at, /^[0-9a-f]{40}$/);
   assert.equal(RELEASE_MANIFEST.repository_revision, RELEASE_MANIFEST.grounded_at);
   assert.ok(RELEASE_MANIFEST.deployed_version);

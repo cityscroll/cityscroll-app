@@ -23,7 +23,6 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 EVIDENCE_DIR = ROOT / "docs" / "evidence" / "geography-navigation-release"
-CAPTURE_DIR = EVIDENCE_DIR / "captures"
 ROUTE = "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&drawer=open"
 VIEWPORTS = (("desktop", 1440, 900), ("narrow_touch", 390, 844), ("compact_touch", 360, 800))
 MINIMUM_VISIBLE_MAP_HEIGHT = 240
@@ -170,7 +169,8 @@ def shell_snapshot(page) -> dict:
             map_runtime_reason: root?.dataset.nearMapRuntimeReason || null,
             selected_label_present: Boolean(selectedLabel),
             control_occlusion: controlRects.some((rect) => overlaps(rect, selectedLabelRect)),
-            focus_order: focusOrder,
+            focus_order: focusOrder.slice(0, 24),
+            focusable_count: focusOrder.length,
             computed_styles: { active: style(layer), selected: style(layer), comparison: style(comparison) },
             nta_codes_in_primary_labels: [...document.querySelectorAll('[data-geography-key] span, [data-geography-key]')].filter((node) => /^[A-Z]{2}\\d{4}$/.test((node.textContent || '').trim())).length,
           };
@@ -326,6 +326,7 @@ def browser_capture(
                         "map_runtime": snapshot.get("map_runtime"),
                         "map_runtime_reason": snapshot.get("map_runtime_reason"),
                         "focus_order": snapshot.get("focus_order", []),
+                        "focusable_count": snapshot.get("focusable_count", 0),
                         "control_occlusion": snapshot.get("control_occlusion", False),
                         "nta_codes_in_primary_labels": snapshot["nta_codes_in_primary_labels"],
                         "zoom_percent": zoom_percent,
@@ -404,16 +405,15 @@ def main() -> int:
 
     payload = {"captures": observations}
     if args.write_evidence:
-        CAPTURE_DIR.mkdir(parents=True, exist_ok=True)
-        (CAPTURE_DIR / "bk1503-overlap.html").write_text(fixture_html, encoding="utf-8")
-        from repository_revision import resolve_repository_revision
+        from repository_revision import branch_head, resolve_repository_revision
 
         revision = resolve_repository_revision(ROOT)
+        candidate_revision = branch_head(ROOT)
         for capture in observations:
-            artifact = f"captures/{capture['name']}.html"
-            (CAPTURE_DIR / f"{capture['name']}.html").write_text(capture.pop("rendered_html"), encoding="utf-8")
+            capture.pop("rendered_html")
             capture.pop("snapshot", None)
             capture["repository_revision"] = revision
+            capture["candidate_revision"] = candidate_revision
             capture["deployed_version"] = {
                 "status": "not_taken",
                 "reason": "deployment-dependent CROL_BASE read-back",
@@ -424,13 +424,14 @@ def main() -> int:
                 "council": "2026-05-26",
                 "precinct": "26B",
             }
-            capture["artifact"] = artifact
+            capture["artifact"] = f"capture-manifest.json#capture-{capture['name']}"
         payload["captures"] = observations
         manifest = {
             "schema": "cityscroll.geography_navigation_release_manifest.v1",
             "surface": "friendly navigator",
             "public_alias": "cee00d62cd519",
             "repository_revision": revision,
+            "candidate_revision": candidate_revision,
             "grounded_at": revision,
             "deployed_version": {
                 "status": "not_taken",
@@ -443,7 +444,7 @@ def main() -> int:
                 "precinct": "26B",
             },
             "image_binaries_committed": False,
-            "capture_policy": "Hashes refer only to retained HTML; no image capture was taken.",
+            "capture_policy": "Hashes record normalized HTML observed by headless Chromium; no image capture was taken or committed.",
             "not_taken": [
                 "production CROL_BASE journey",
                 "production field-vital measurement",

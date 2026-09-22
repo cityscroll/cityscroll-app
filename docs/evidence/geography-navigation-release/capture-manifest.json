@@ -2,8 +2,9 @@
   "schema": "cityscroll.geography_navigation_release_manifest.v1",
   "surface": "friendly navigator",
   "public_alias": "cee00d62cd519",
-  "repository_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
-  "grounded_at": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+  "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+  "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+  "grounded_at": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
   "deployed_version": {
     "status": "not_taken",
     "reason": "deployment-dependent CROL_BASE read-back"
@@ -15,7 +16,7 @@
     "precinct": "26B"
   },
   "image_binaries_committed": false,
-  "capture_policy": "Hashes refer only to retained HTML; no image capture was taken.",
+  "capture_policy": "Hashes record normalized HTML observed by headless Chromium; no image capture was taken or committed.",
   "not_taken": [
     "production CROL_BASE journey",
     "production field-vital measurement",
@@ -29,7 +30,7 @@
         "width": 1440,
         "height": 900
       },
-      "assertion": "headless Chromium verified horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus, collapsible drawer behavior, selected labels, exact comparison percentages, and map geometry metrics",
+      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -37,64 +38,12 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 6
+        "dom_content_loaded_ms": 5
       },
       "performance_samples": {
         "samples": [
           {
-            "readiness_ms": 21.8,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 26.3,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 20.2,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 20.8,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 19.9,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 20.7,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 20.7,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 21.4,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 21.4,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 18.5,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 19.3,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 18.6,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 23.7,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 25,
+            "readiness_ms": 23.1,
             "wire_bytes": 300
           },
           {
@@ -102,36 +51,88 @@
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.5,
+            "readiness_ms": 17.9,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 21.9,
+            "readiness_ms": 18.2,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.2,
+            "readiness_ms": 17.4,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 19.5,
+            "readiness_ms": 17.9,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.5,
+            "readiness_ms": 17.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 17.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 17.8,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 17.7,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 18.2,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 18.2,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.3,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 20.1,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 20,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 20.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.8,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 20.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 18.5,
             "wire_bytes": 300
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 25,
+          "readiness_ms": 20.4,
           "wire_bytes": 300
         },
         "route_ceiling": {
-          "readiness_ms": 27,
+          "readiness_ms": 22,
           "wire_bytes": 315
         }
       },
-      "render_content_sha256": "7fecf148cbc66da9fa7ac65542378ac2013ca7f149adfab0867fa399c93122ce",
+      "render_content_sha256": "b8d0c18b744c0c33c70ee4db423c42693f63d9e62c39a69e8fe6e79ddc5c7c28",
       "visual_metrics": {
         "viewport": {
           "width": 1440,
@@ -161,13 +162,24 @@
           }
         },
         "visible_map_area_css_px": {
-          "width": 876.53125,
+          "width": 1140,
           "height": 591.1875
         },
+        "initial_viewport_map_height_css_px": 0,
+        "map_top_css_px": null,
+        "place_choice_visible": true,
+        "map_runtime": null,
+        "map_runtime_reason": null,
+        "focus_order": [],
+        "focusable_count": 0,
         "control_occlusion": false,
-        "nta_codes_in_primary_labels": 0
+        "nta_codes_in_primary_labels": 0,
+        "zoom_percent": 100,
+        "zoom_reflow_basis": "native CSS viewport",
+        "reduced_motion": false
       },
-      "repository_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -178,7 +190,7 @@
         "council": "2026-05-26",
         "precinct": "26B"
       },
-      "artifact": "captures/bk1503-desktop.html"
+      "artifact": "capture-manifest.json#capture-bk1503-desktop"
     },
     {
       "name": "narrow_touch",
@@ -187,7 +199,7 @@
         "width": 390,
         "height": 844
       },
-      "assertion": "headless Chromium verified horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus, collapsible drawer behavior, selected labels, exact comparison percentages, and map geometry metrics",
+      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -200,31 +212,15 @@
       "performance_samples": {
         "samples": [
           {
-            "readiness_ms": 22.1,
+            "readiness_ms": 25.3,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 21.4,
+            "readiness_ms": 23.8,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 23.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 21.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 20.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 20.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 21,
+            "readiness_ms": 25,
             "wire_bytes": 1200
           },
           {
@@ -232,27 +228,7 @@
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 22.1,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.5,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.5,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.2,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.1,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.3,
+            "readiness_ms": 24,
             "wire_bytes": 1200
           },
           {
@@ -260,19 +236,55 @@
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 27,
+            "readiness_ms": 24.2,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.1,
+            "readiness_ms": 24.6,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 26.4,
+            "readiness_ms": 24.7,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.5,
+            "readiness_ms": 24,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.7,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.8,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.4,
             "wire_bytes": 1200
           },
           {
@@ -281,15 +293,15 @@
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 26.4,
+          "readiness_ms": 25.4,
           "wire_bytes": 1200
         },
         "route_ceiling": {
-          "readiness_ms": 28,
+          "readiness_ms": 27,
           "wire_bytes": 1260
         }
       },
-      "render_content_sha256": "af4aefd4b21a5ae06407935b44af3abe0107013273a338045ddadaccc45456fb",
+      "render_content_sha256": "6da36f6ec4b454a7313aba80ffe627c131f7e0d7759a4cf11be173541b52d1d9",
       "visual_metrics": {
         "viewport": {
           "width": 390,
@@ -319,13 +331,49 @@
           }
         },
         "visible_map_area_css_px": {
-          "width": 326,
+          "width": 358,
           "height": 413.328125
         },
+        "initial_viewport_map_height_css_px": 325.828125,
+        "map_top_css_px": 518.171875,
+        "place_choice_visible": true,
+        "map_runtime": "server-svg",
+        "map_runtime_reason": null,
+        "focus_order": [
+          "Skip to content",
+          "CityScroll home",
+          "Now",
+          "Near you",
+          "Following",
+          "Browse",
+          "Guide",
+          "Ask with AI",
+          "neighborhood",
+          "Search",
+          "More ways to choose",
+          "More boundaries",
+          "Follow or share",
+          "Zoom in",
+          "Zoom out",
+          "Pan west",
+          "Pan north",
+          "Pan south",
+          "Pan east",
+          "Reset",
+          "Allerton",
+          "Annadale-Huguenot-Prince's Bay-Woodrow",
+          "Arden Heights-Rossville",
+          "Astoria (Central)"
+        ],
+        "focusable_count": 221,
         "control_occlusion": false,
-        "nta_codes_in_primary_labels": 0
+        "nta_codes_in_primary_labels": 0,
+        "zoom_percent": 100,
+        "zoom_reflow_basis": "native CSS viewport",
+        "reduced_motion": false
       },
-      "repository_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -336,7 +384,7 @@
         "council": "2026-05-26",
         "precinct": "26B"
       },
-      "artifact": "captures/narrow_touch.html"
+      "artifact": "capture-manifest.json#capture-narrow_touch"
     },
     {
       "name": "compact_touch",
@@ -345,7 +393,7 @@
         "width": 360,
         "height": 800
       },
-      "assertion": "headless Chromium verified horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus, collapsible drawer behavior, selected labels, exact comparison percentages, and map geometry metrics",
+      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
       "failure_mode": "none",
       "asset_classes": [
         "server_html",
@@ -353,64 +401,16 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 11
+        "dom_content_loaded_ms": 10
       },
       "performance_samples": {
         "samples": [
           {
-            "readiness_ms": 22.3,
+            "readiness_ms": 25.2,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 22.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 27.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.5,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 22.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 22.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 22.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.8,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.3,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.7,
+            "readiness_ms": 23.9,
             "wire_bytes": 1200
           },
           {
@@ -418,11 +418,15 @@
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 26.2,
+            "readiness_ms": 24.7,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.6,
+            "readiness_ms": 24.2,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.3,
             "wire_bytes": 1200
           },
           {
@@ -430,24 +434,68 @@
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 27.6,
+            "readiness_ms": 25.5,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.4,
+            "readiness_ms": 25.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.7,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.7,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.7,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.2,
             "wire_bytes": 1200
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 27.6,
+          "readiness_ms": 25.9,
           "wire_bytes": 1200
         },
         "route_ceiling": {
-          "readiness_ms": 29,
+          "readiness_ms": 28,
           "wire_bytes": 1260
         }
       },
-      "render_content_sha256": "af4aefd4b21a5ae06407935b44af3abe0107013273a338045ddadaccc45456fb",
+      "render_content_sha256": "6da36f6ec4b454a7313aba80ffe627c131f7e0d7759a4cf11be173541b52d1d9",
       "visual_metrics": {
         "viewport": {
           "width": 360,
@@ -477,13 +525,49 @@
           }
         },
         "visible_map_area_css_px": {
-          "width": 296,
-          "height": 420.75
+          "width": 328,
+          "height": 397.5
         },
+        "initial_viewport_map_height_css_px": 256.234375,
+        "map_top_css_px": 543.765625,
+        "place_choice_visible": true,
+        "map_runtime": "server-svg",
+        "map_runtime_reason": null,
+        "focus_order": [
+          "Skip to content",
+          "CityScroll home",
+          "Now",
+          "Near you",
+          "Following",
+          "Browse",
+          "Guide",
+          "Ask with AI",
+          "neighborhood",
+          "Search",
+          "More ways to choose",
+          "More boundaries",
+          "Follow or share",
+          "Zoom in",
+          "Zoom out",
+          "Pan west",
+          "Pan north",
+          "Pan south",
+          "Pan east",
+          "Reset",
+          "Allerton",
+          "Annadale-Huguenot-Prince's Bay-Woodrow",
+          "Arden Heights-Rossville",
+          "Astoria (Central)"
+        ],
+        "focusable_count": 221,
         "control_occlusion": false,
-        "nta_codes_in_primary_labels": 0
+        "nta_codes_in_primary_labels": 0,
+        "zoom_percent": 100,
+        "zoom_reflow_basis": "native CSS viewport",
+        "reduced_motion": false
       },
-      "repository_revision": "b3b58e6ec0bc4fc7f3ccc48c21aa68544c54f151",
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -494,7 +578,721 @@
         "council": "2026-05-26",
         "precinct": "26B"
       },
-      "artifact": "captures/compact_touch.html"
+      "artifact": "capture-manifest.json#capture-compact_touch"
+    },
+    {
+      "name": "entry-default-desktop",
+      "route": "/near-you/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "failure_mode": "none",
+      "asset_classes": [
+        "server_html",
+        "navigation_shell",
+        "simplified_geography_layers"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 156
+      },
+      "render_content_sha256": "861dba85264b666df122072ee61fdfe7300e7c5e72dadf46206632138bbff602",
+      "visual_metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "rendered_neighborhood_label_count": 0,
+        "selected_label_present": false,
+        "clipped_or_overlapping_label_count": 0,
+        "computed_styles": {
+          "active": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "selected": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "comparison": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "rgb(122, 130, 143)"
+          }
+        },
+        "visible_map_area_css_px": {
+          "width": 1028,
+          "height": 717.25
+        },
+        "initial_viewport_map_height_css_px": 467.6875,
+        "map_top_css_px": 432.3125,
+        "place_choice_visible": true,
+        "map_runtime": "maplibre",
+        "map_runtime_reason": null,
+        "focus_order": [
+          "Skip to content",
+          "CityScroll home",
+          "Now",
+          "Near you",
+          "Following",
+          "Browse",
+          "Guide",
+          "Ask with AI",
+          "Back one step",
+          "Restart at origin",
+          "neighborhood",
+          "Search",
+          "More ways to choose",
+          "More boundaries",
+          "Follow or share",
+          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "Map",
+          "Toggle attribution",
+          "MapLibre",
+          "Greenpoint",
+          "Williamsburg",
+          "South Williamsburg",
+          "East Williamsburg",
+          "Brooklyn Heights"
+        ],
+        "focusable_count": 284,
+        "control_occlusion": false,
+        "nta_codes_in_primary_labels": 0,
+        "zoom_percent": 100,
+        "zoom_reflow_basis": "native CSS viewport",
+        "reduced_motion": false
+      },
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "deployed_version": {
+        "status": "not_taken",
+        "reason": "deployment-dependent CROL_BASE read-back"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "capture-manifest.json#capture-entry-default-desktop"
+    },
+    {
+      "name": "entry-default-narrow_touch",
+      "route": "/near-you/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "failure_mode": "none",
+      "asset_classes": [
+        "server_html",
+        "navigation_shell",
+        "simplified_geography_layers"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 120
+      },
+      "render_content_sha256": "fa844b0b45ac9117cb8d61f52abce587152bfff9e58aba2059dce05e621e0a5c",
+      "visual_metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "rendered_neighborhood_label_count": 0,
+        "selected_label_present": false,
+        "clipped_or_overlapping_label_count": 0,
+        "computed_styles": {
+          "active": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "selected": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "comparison": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "rgb(122, 130, 143)"
+          }
+        },
+        "visible_map_area_css_px": {
+          "width": 358,
+          "height": 662.046875
+        },
+        "initial_viewport_map_height_css_px": 343.828125,
+        "map_top_css_px": 500.171875,
+        "place_choice_visible": true,
+        "map_runtime": "maplibre",
+        "map_runtime_reason": null,
+        "focus_order": [
+          "Skip to content",
+          "CityScroll home",
+          "Now",
+          "Near you",
+          "Following",
+          "Browse",
+          "Guide",
+          "Ask with AI",
+          "Back one step",
+          "Restart at origin",
+          "neighborhood",
+          "Search",
+          "More ways to choose",
+          "More boundaries",
+          "Follow or share",
+          "Map details",
+          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "Map",
+          "Toggle attribution",
+          "MapLibre",
+          "Greenpoint",
+          "Williamsburg",
+          "South Williamsburg",
+          "East Williamsburg"
+        ],
+        "focusable_count": 285,
+        "control_occlusion": false,
+        "nta_codes_in_primary_labels": 0,
+        "zoom_percent": 100,
+        "zoom_reflow_basis": "native CSS viewport",
+        "reduced_motion": false
+      },
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "deployed_version": {
+        "status": "not_taken",
+        "reason": "deployment-dependent CROL_BASE read-back"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "capture-manifest.json#capture-entry-default-narrow_touch"
+    },
+    {
+      "name": "entry-greenpoint-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "failure_mode": "none",
+      "asset_classes": [
+        "server_html",
+        "navigation_shell",
+        "simplified_geography_layers"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 112
+      },
+      "render_content_sha256": "a79460d0dacf8744dcc5c450d77d45b9a2352ec28472b6134249aba19c78f823",
+      "visual_metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "rendered_neighborhood_label_count": 0,
+        "selected_label_present": true,
+        "clipped_or_overlapping_label_count": 0,
+        "computed_styles": {
+          "active": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "selected": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "comparison": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "rgb(122, 130, 143)"
+          }
+        },
+        "visible_map_area_css_px": {
+          "width": 1028,
+          "height": 717.25
+        },
+        "initial_viewport_map_height_css_px": 566.5,
+        "map_top_css_px": 333.5,
+        "place_choice_visible": true,
+        "map_runtime": "maplibre",
+        "map_runtime_reason": null,
+        "focus_order": [
+          "Skip to content",
+          "CityScroll home",
+          "Now",
+          "Near you",
+          "Following",
+          "Browse",
+          "Guide",
+          "Ask with AI",
+          "Back one step",
+          "Restart at origin",
+          "Change place",
+          "Map",
+          "Browse records",
+          "Brooklyn Community District 1",
+          "Community districts",
+          "Council districts",
+          "Precincts",
+          "Source and exact figures",
+          "See records in this neighborhood",
+          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "Map",
+          "Toggle attribution",
+          "MapLibre",
+          "Try again"
+        ],
+        "focusable_count": 292,
+        "control_occlusion": false,
+        "nta_codes_in_primary_labels": 0,
+        "zoom_percent": 100,
+        "zoom_reflow_basis": "native CSS viewport",
+        "reduced_motion": false
+      },
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "deployed_version": {
+        "status": "not_taken",
+        "reason": "deployment-dependent CROL_BASE read-back"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "capture-manifest.json#capture-entry-greenpoint-desktop"
+    },
+    {
+      "name": "entry-greenpoint-narrow_touch",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "failure_mode": "none",
+      "asset_classes": [
+        "server_html",
+        "navigation_shell",
+        "simplified_geography_layers"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 104
+      },
+      "render_content_sha256": "274b5f12a34ab747d3d1fb6a6c554f9b6dee3d5df1fd597f4bdb70a85f6286e4",
+      "visual_metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "rendered_neighborhood_label_count": 0,
+        "selected_label_present": true,
+        "clipped_or_overlapping_label_count": 0,
+        "computed_styles": {
+          "active": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "selected": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "comparison": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "rgb(122, 130, 143)"
+          }
+        },
+        "visible_map_area_css_px": {
+          "width": 358,
+          "height": 662.046875
+        },
+        "initial_viewport_map_height_css_px": 432.65625,
+        "map_top_css_px": 411.34375,
+        "place_choice_visible": true,
+        "map_runtime": "maplibre",
+        "map_runtime_reason": null,
+        "focus_order": [
+          "Skip to content",
+          "CityScroll home",
+          "Now",
+          "Near you",
+          "Following",
+          "Browse",
+          "Guide",
+          "Ask with AI",
+          "Back one step",
+          "Restart at origin",
+          "Change place",
+          "Map",
+          "Browse records",
+          "Map details",
+          "Brooklyn Community District 1",
+          "Community districts",
+          "Council districts",
+          "Precincts",
+          "Source and exact figures",
+          "See records in this neighborhood",
+          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "Map",
+          "Toggle attribution",
+          "MapLibre"
+        ],
+        "focusable_count": 293,
+        "control_occlusion": false,
+        "nta_codes_in_primary_labels": 0,
+        "zoom_percent": 100,
+        "zoom_reflow_basis": "native CSS viewport",
+        "reduced_motion": false
+      },
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "deployed_version": {
+        "status": "not_taken",
+        "reason": "deployment-dependent CROL_BASE read-back"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "capture-manifest.json#capture-entry-greenpoint-narrow_touch"
+    },
+    {
+      "name": "entry-tribeca-desktop",
+      "route": "/near-you/?geo=nta2020%3AMN0102&surface=map",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "failure_mode": "none",
+      "asset_classes": [
+        "server_html",
+        "navigation_shell",
+        "simplified_geography_layers"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 120
+      },
+      "render_content_sha256": "74c75964b9b4e70a09de9d452621ec9c9afe4fba7b46393bd761ead209a46c5d",
+      "visual_metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "rendered_neighborhood_label_count": 0,
+        "selected_label_present": true,
+        "clipped_or_overlapping_label_count": 0,
+        "computed_styles": {
+          "active": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "selected": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "comparison": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "rgb(122, 130, 143)"
+          }
+        },
+        "visible_map_area_css_px": {
+          "width": 1028,
+          "height": 717.25
+        },
+        "initial_viewport_map_height_css_px": 566.5,
+        "map_top_css_px": 333.5,
+        "place_choice_visible": true,
+        "map_runtime": "maplibre",
+        "map_runtime_reason": null,
+        "focus_order": [
+          "Skip to content",
+          "CityScroll home",
+          "Now",
+          "Near you",
+          "Following",
+          "Browse",
+          "Guide",
+          "Ask with AI",
+          "Back one step",
+          "Restart at origin",
+          "Change place",
+          "Map",
+          "Browse records (25)",
+          "Manhattan Community District 1",
+          "Community districts",
+          "Council districts",
+          "Precincts",
+          "Source and exact figures",
+          "Meetings: 25 records in this neighborhood",
+          "See records in this neighborhood",
+          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "Map",
+          "Toggle attribution",
+          "MapLibre"
+        ],
+        "focusable_count": 294,
+        "control_occlusion": false,
+        "nta_codes_in_primary_labels": 0,
+        "zoom_percent": 100,
+        "zoom_reflow_basis": "native CSS viewport",
+        "reduced_motion": false
+      },
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "deployed_version": {
+        "status": "not_taken",
+        "reason": "deployment-dependent CROL_BASE read-back"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "capture-manifest.json#capture-entry-tribeca-desktop"
+    },
+    {
+      "name": "entry-tribeca-narrow_touch",
+      "route": "/near-you/?geo=nta2020%3AMN0102&surface=map",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "failure_mode": "none",
+      "asset_classes": [
+        "server_html",
+        "navigation_shell",
+        "simplified_geography_layers"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 115
+      },
+      "render_content_sha256": "0211decf5e2935897074ae266bed4e953e455a1621079577139a94a4aca0c8b4",
+      "visual_metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "rendered_neighborhood_label_count": 0,
+        "selected_label_present": true,
+        "clipped_or_overlapping_label_count": 0,
+        "computed_styles": {
+          "active": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "selected": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "comparison": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "rgb(122, 130, 143)"
+          }
+        },
+        "visible_map_area_css_px": {
+          "width": 358,
+          "height": 662.046875
+        },
+        "initial_viewport_map_height_css_px": 432.65625,
+        "map_top_css_px": 411.34375,
+        "place_choice_visible": true,
+        "map_runtime": "maplibre",
+        "map_runtime_reason": null,
+        "focus_order": [
+          "Skip to content",
+          "CityScroll home",
+          "Now",
+          "Near you",
+          "Following",
+          "Browse",
+          "Guide",
+          "Ask with AI",
+          "Back one step",
+          "Restart at origin",
+          "Change place",
+          "Map",
+          "Browse records (25)",
+          "Map details",
+          "Manhattan Community District 1",
+          "Community districts",
+          "Council districts",
+          "Precincts",
+          "Source and exact figures",
+          "Meetings: 25 records in this neighborhood",
+          "See records in this neighborhood",
+          "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+          "Map",
+          "Toggle attribution"
+        ],
+        "focusable_count": 295,
+        "control_occlusion": false,
+        "nta_codes_in_primary_labels": 0,
+        "zoom_percent": 100,
+        "zoom_reflow_basis": "native CSS viewport",
+        "reduced_motion": false
+      },
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "deployed_version": {
+        "status": "not_taken",
+        "reason": "deployment-dependent CROL_BASE read-back"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "capture-manifest.json#capture-entry-tribeca-narrow_touch"
+    },
+    {
+      "name": "entry-boundary-360-zoom-200",
+      "route": "/near-you/",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "assertion": "headless Chromium verified a visible place choice, \u2265240px initial-viewport map geometry at binding viewports, horizontal overflow \u2264 1px, \u226544px targets, \u226516px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+      "failure_mode": "webgl_unavailable",
+      "asset_classes": [
+        "server_html",
+        "navigation_shell",
+        "simplified_geography_layers"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 123
+      },
+      "render_content_sha256": "0a7c0bc452dc24be1703841d431b894643ca91d0c96f5281179db52ec07c4d73",
+      "visual_metrics": {
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "rendered_neighborhood_label_count": 0,
+        "selected_label_present": false,
+        "clipped_or_overlapping_label_count": 0,
+        "computed_styles": {
+          "active": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "selected": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "comparison": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "rgb(122, 130, 143)"
+          }
+        },
+        "visible_map_area_css_px": {
+          "width": 328,
+          "height": 397.5
+        },
+        "initial_viewport_map_height_css_px": 178.234375,
+        "map_top_css_px": 621.765625,
+        "place_choice_visible": true,
+        "map_runtime": "failed",
+        "map_runtime_reason": "webgl_unsupported",
+        "focus_order": [
+          "Skip to content",
+          "CityScroll home",
+          "Now",
+          "Near you",
+          "Following",
+          "Browse",
+          "Guide",
+          "Ask with AI",
+          "Back one step",
+          "Restart at origin",
+          "neighborhood",
+          "Search",
+          "More ways to choose",
+          "More boundaries",
+          "Follow or share",
+          "Map details",
+          "Zoom in",
+          "Zoom out",
+          "Pan west",
+          "Pan north",
+          "Pan south",
+          "Pan east",
+          "Reset",
+          "Manhattan: 366 Meetings records"
+        ],
+        "focusable_count": 36,
+        "control_occlusion": false,
+        "nta_codes_in_primary_labels": 0,
+        "zoom_percent": 200,
+        "zoom_reflow_basis": "360 CSS px represents a 720 px viewport at 200% browser zoom",
+        "reduced_motion": true
+      },
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "deployed_version": {
+        "status": "not_taken",
+        "reason": "deployment-dependent CROL_BASE read-back"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "capture-manifest.json#capture-entry-boundary-360-zoom-200"
     }
   ],
   "accessibility_matrix": {
@@ -684,59 +1482,7 @@
         },
         "samples": [
           {
-            "readiness_ms": 21.8,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 26.3,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 20.2,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 20.8,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 19.9,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 20.7,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 20.7,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 21.4,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 21.4,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 18.5,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 19.3,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 18.6,
-            "wire_bytes": 0
-          },
-          {
-            "readiness_ms": 23.7,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 25,
+            "readiness_ms": 23.1,
             "wire_bytes": 300
           },
           {
@@ -744,32 +1490,84 @@
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.5,
+            "readiness_ms": 17.9,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 21.9,
+            "readiness_ms": 18.2,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.2,
+            "readiness_ms": 17.4,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 19.5,
+            "readiness_ms": 17.9,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.5,
+            "readiness_ms": 17.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 17.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 17.8,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 17.7,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 18.2,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 18.2,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.3,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 20.1,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 20,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 20.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.8,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 20.4,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 19.6,
+            "wire_bytes": 300
+          },
+          {
+            "readiness_ms": 18.5,
             "wire_bytes": 300
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 25,
+          "readiness_ms": 20.4,
           "wire_bytes": 300
         },
         "route_ceiling": {
-          "readiness_ms": 27,
+          "readiness_ms": 22,
           "wire_bytes": 315
         }
       },
@@ -781,31 +1579,15 @@
         },
         "samples": [
           {
-            "readiness_ms": 22.1,
+            "readiness_ms": 25.3,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 21.4,
+            "readiness_ms": 23.8,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 23.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 21.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 20.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 20.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 21,
+            "readiness_ms": 25,
             "wire_bytes": 1200
           },
           {
@@ -813,27 +1595,7 @@
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 22.1,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.5,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.5,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.2,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.1,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.3,
+            "readiness_ms": 24,
             "wire_bytes": 1200
           },
           {
@@ -841,19 +1603,55 @@
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 27,
+            "readiness_ms": 24.2,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.1,
+            "readiness_ms": 24.6,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 26.4,
+            "readiness_ms": 24.7,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.5,
+            "readiness_ms": 24,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.7,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.8,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 23.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.4,
             "wire_bytes": 1200
           },
           {
@@ -862,11 +1660,11 @@
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 26.4,
+          "readiness_ms": 25.4,
           "wire_bytes": 1200
         },
         "route_ceiling": {
-          "readiness_ms": 28,
+          "readiness_ms": 27,
           "wire_bytes": 1260
         }
       },
@@ -878,59 +1676,11 @@
         },
         "samples": [
           {
-            "readiness_ms": 22.3,
+            "readiness_ms": 25.2,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 22.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 27.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.5,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 22.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 22.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 22.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 23.8,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.9,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.3,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.7,
+            "readiness_ms": 23.9,
             "wire_bytes": 1200
           },
           {
@@ -938,11 +1688,15 @@
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 26.2,
+            "readiness_ms": 24.7,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.6,
+            "readiness_ms": 24.2,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.3,
             "wire_bytes": 1200
           },
           {
@@ -950,20 +1704,64 @@
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 27.6,
+            "readiness_ms": 25.5,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.4,
+            "readiness_ms": 25.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.7,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.7,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.6,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 24.7,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.2,
             "wire_bytes": 1200
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 27.6,
+          "readiness_ms": 25.9,
           "wire_bytes": 1200
         },
         "route_ceiling": {
-          "readiness_ms": 29,
+          "readiness_ms": 28,
           "wire_bytes": 1260
         }
       }
