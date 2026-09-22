@@ -468,24 +468,41 @@ function examStageCountHTML(stageOrPhase){
   if(kind==="appointment") return t("exam_stage_hired_count",{n:fmtNumber(count)});
   return "";
 }
+function examListBenchmarkCohortLabel(cohort){
+  if(cohort==="promotion") return t("exam_list_benchmark_cohort_promotion");
+  if(cohort==="citywide") return t("exam_list_benchmark_cohort_citywide");
+  return t("exam_list_benchmark_cohort_open_competitive");
+}
 function examListForecastHTML(exam){
   const forecast=exam?.list_establishment_forecast;
   if(!forecast) return "";
   const months=fmtNumber(forecast.median_months);
-  const statistic=t("exam_list_prediction_cohort_html",{
+  const monthsValue=`${escUiHtml(months)}-months`;
+  const methodHref=`/guide/understand/flags-and-historical-patterns/?lang=${encodeURIComponent(window.LANG || "en")}#eligible-list-timing`;
+  const prediction=forecast.prediction;
+  const qualified=Boolean(prediction?.predicted_window)
+    || forecast.public_projection==="per_matter_projection";
+  if(qualified){
+    const expect=t("exam_list_prediction_expect_html",{months});
+    const range=prediction?.predicted_window
+      ?`<div class="lc-pct">${t("exam_list_prediction_window",{
+        first:fdate(prediction.predicted_window.p10),
+        median:fdate(prediction.predicted_window.p50),
+        last:fdate(prediction.predicted_window.p90)
+      })}</div>`:"";
+    return `<div class="note" data-staffing-list-prediction="1" data-prediction-subject="eligible-list-establishment" data-prediction-value="${monthsValue}">${expect} ${range}
+    <a href="${methodHref}">${t("exam_list_prediction_method")}</a></div>`;
+  }
+  const cohort=forecast.cohort||"open_competitive";
+  const statistic=t("exam_list_benchmark_html",{
+    cohort:escUiHtml(examListBenchmarkCohortLabel(cohort)),
     n:fmtNumber(forecast.n),
     year:escUiHtml(forecast.since_year||2018),
     months
   });
-  const prediction=forecast.prediction;
-  const window=prediction?.predicted_window
-    ?`<div class="lc-pct">${t("exam_list_prediction_window",{
-      first:fdate(prediction.predicted_window.p10),
-      median:fdate(prediction.predicted_window.p50),
-      last:fdate(prediction.predicted_window.p90)
-    })}</div>`:"";
-  return `<div class="note" data-staffing-list-prediction="1" data-prediction-subject="eligible-list-establishment" data-prediction-value="${escUiHtml(months)}-months">${statistic} ${window}
-    <a href="/guide/understand/flags-and-historical-patterns/?lang=${encodeURIComponent(window.LANG || "en")}#eligible-list-timing">${t("exam_list_prediction_method")}</a></div>`;
+  const cohortN=Number(forecast.n);
+  return `<div class="note" data-staffing-list-benchmark="1" data-benchmark-subject="eligible-list-establishment" data-benchmark-cohort="${escUiHtml(cohort)}" data-benchmark-value="${monthsValue}" data-benchmark-n="${escUiHtml(Number.isFinite(cohortN)?String(cohortN):"")}" data-benchmark-since-year="${escUiHtml(forecast.since_year||2018)}">${statistic}
+    <a href="${methodHref}">${t("exam_list_prediction_method")}</a></div>`;
 }
 function examListStatutoryContextHTML(exam){
   const extension=exam?.list_aggregate?.extension_date;

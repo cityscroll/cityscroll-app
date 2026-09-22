@@ -68,10 +68,17 @@ test("exam documents have typed identity, attached context, and static-first aff
   assert.match(html, /class="ui-official-source-link [^"]*exam-action/);
   assert.match(html, new RegExp(`data-exam-watch="${exam.exam_number}"`));
   assert.match(html, /data-export-class="exam_prediction"/);
-  assert.match(html, /data-prediction-subject="eligible-list-establishment"/);
-  assert.match(html, /data-prediction-value=/);
-  assert.match(html, /Expect the eligible list about/);
-  assert.match(html, /How this range is calculated/);
+  assert.match(html, /Eligible-list timing benchmark/);
+  assert.match(html, /data-staffing-list-benchmark="1"/);
+  assert.match(html, /data-benchmark-subject="eligible-list-establishment"/);
+  assert.match(html, /data-benchmark-cohort=/);
+  assert.match(html, /data-benchmark-value=/);
+  assert.doesNotMatch(html, /data-prediction-subject=/);
+  assert.doesNotMatch(html, /data-prediction-value=/);
+  assert.doesNotMatch(html, /Expect the eligible list about/);
+  assert.doesNotMatch(html, /Past exams like this/);
+  assert.doesNotMatch(html, /What may happen next/);
+  assert.match(html, /How this is calculated/);
   assert.match(html, /data-exam-copy/);
   assert.match(html, /data-exam-print/);
   assert.match(html, /data-exam-export="json"/);
@@ -213,5 +220,85 @@ test("retained exam navigation migrates without replacing historical facts", () 
   assert.match(after, /Retained cohort: 308 exams/);
   assert.match(after, /flags-and-historical-patterns\/#eligible-list-timing/);
   assert.match(after, /src="\/guide_navigation.mjs"/);
+  assert.equal(refreshRetainedExamNavigation(after), after);
+});
+
+test("cohort-only exam documents name the exam-type benchmark for unrelated open titles and promotions", () => {
+  const openA = artifact.exams.find((row) => row.exam_number === "7016");
+  const openB = artifact.exams.find((row) => row.exam_number === "7006");
+  const promotion = artifact.exams.find((row) => row.list_establishment_forecast?.cohort === "promotion");
+  assert.ok(openA && openB && promotion);
+  const render = (exam) => renderExamDocument(exam, {
+    today: "2026-08-05",
+    status: Staffing.statusFor(exam, "2026-08-05"),
+    feeSalary: Staffing.examFeeSalaryView(exam),
+    outcome: Staffing.examOutcomeView(exam),
+    phaseView: buildExamPhaseView(buildExamProcessSpine(exam)),
+  });
+  const htmlA = render(openA);
+  const htmlB = render(openB);
+  const htmlPromo = render(promotion);
+  for (const html of [htmlA, htmlB]) {
+    assert.match(html, /Open-competitive benchmark/);
+    assert.match(html, new RegExp(`data-benchmark-n="${openA.list_establishment_forecast.n}"`));
+    assert.match(html, new RegExp(`data-benchmark-since-year="${openA.list_establishment_forecast.since_year}"`));
+    assert.match(html, new RegExp(`${openA.list_establishment_forecast.median_months} months`));
+    assert.match(html, /data-benchmark-cohort="open_competitive"/);
+    assert.doesNotMatch(html, /Past exams like this|Expect the eligible list about|What may happen next/);
+    assert.doesNotMatch(html, /data-prediction-subject=|data-prediction-value=/);
+    assert.doesNotMatch(html, /Statistical range|exam-prediction-window/);
+  }
+  assert.match(htmlPromo, /Promotion benchmark/);
+  assert.match(htmlPromo, /data-benchmark-cohort="promotion"/);
+  assert.match(htmlPromo, new RegExp(`data-benchmark-n="${promotion.list_establishment_forecast.n}"`));
+  assert.match(htmlPromo, new RegExp(`${promotion.list_establishment_forecast.median_months} months`));
+  assert.doesNotMatch(htmlPromo, new RegExp(`data-benchmark-n="${openA.list_establishment_forecast.n}"`));
+});
+
+test("qualified per-exam prediction keeps forecast copy and prediction attributes", () => {
+  const base = artifact.exams.find((row) => row.list_establishment_forecast?.cohort === "open_competitive");
+  assert.ok(base);
+  const exam = {
+    ...base,
+    list_establishment_forecast: {
+      ...base.list_establishment_forecast,
+      public_projection: "per_matter_projection",
+      prediction: {
+        predicted_window: { p10: "2026-09-01", p50: "2026-11-15", p90: "2027-02-01" },
+      },
+    },
+  };
+  const html = renderExamDocument(exam, {
+    today: "2026-08-05",
+    status: Staffing.statusFor(exam, "2026-08-05"),
+    feeSalary: Staffing.examFeeSalaryView(exam),
+    outcome: Staffing.examOutcomeView(exam),
+    phaseView: buildExamPhaseView(buildExamProcessSpine(exam)),
+  });
+  assert.match(html, /What may happen next/);
+  assert.match(html, /Expect the eligible list about/);
+  assert.match(html, /data-prediction-subject="eligible-list-establishment"/);
+  assert.match(html, /data-prediction-value=/);
+  assert.match(html, /Statistical range/);
+  assert.doesNotMatch(html, /data-staffing-list-benchmark=/);
+  assert.doesNotMatch(html, /Eligible-list timing benchmark/);
+});
+
+test("retained cohort-only timing copy is rewritten to the benchmark claim", () => {
+  const before = [
+    '<body><div>Eligibility</dt><dd>Open competitive</dd>',
+    '<section class="node-section exam-section" aria-labelledby="exam-prediction-heading" data-export-class="exam_prediction">',
+    '<h2 id="exam-prediction-heading">What may happen next</h2>',
+    '<p class="exam-prediction-claim" data-prediction-subject="eligible-list-establishment" data-prediction-value="8-months">Expect the eligible list about <strong>8 months after applications close.</strong></p>',
+    '<p class="exam-muted">Historical cohort: 303 past exams since 2018. <a href="/guide/understand/flags-and-historical-patterns/#eligible-list-timing">How this range is calculated</a>.</p>',
+    "</section></body>",
+  ].join("");
+  const after = refreshRetainedExamNavigation(before);
+  assert.match(after, /Eligible-list timing benchmark/);
+  assert.match(after, /Open-competitive benchmark/);
+  assert.match(after, /data-benchmark-n="303"/);
+  assert.match(after, /data-benchmark-since-year="2018"/);
+  assert.match(after, /data-benchmark-value="8-months"/);
+  assert.doesNotMatch(after, /Expect the eligible list about|What may happen next|data-prediction-subject=/);
   assert.equal(refreshRetainedExamNavigation(after), after);
 });

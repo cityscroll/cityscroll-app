@@ -169,19 +169,55 @@ function titleCodeFamilyHTML(exam, familyMembers = []) {
   });
 }
 
+function cohortBenchmarkLabel(cohort) {
+  if (cohort === "promotion") return "Promotion";
+  if (cohort === "citywide") return "Citywide";
+  return "Open-competitive";
+}
+
+function hasQualifiedListPrediction(forecast) {
+  return Boolean(forecast?.prediction?.predicted_window)
+    || forecast?.public_projection === "per_matter_projection";
+}
+
 function predictionHTML(exam) {
   const forecast = exam?.list_establishment_forecast;
   if (!forecast) return "";
   const months = Number(forecast.median_months);
-  const window = forecast.prediction?.predicted_window;
-  const basis = Number.isFinite(Number(forecast.n))
-    ? `Historical cohort: ${Number(forecast.n).toLocaleString("en-US")} past exams since ${esc(forecast.since_year || 2018)}.`
-    : "Historical cohort from the current exam snapshot.";
+  const monthsText = Number.isFinite(months) ? months.toLocaleString("en-US") : "—";
+  const monthsValue = Number.isFinite(months) ? `${months}-months` : "unknown";
+  if (hasQualifiedListPrediction(forecast)) {
+    const window = forecast.prediction?.predicted_window;
+    const basis = Number.isFinite(Number(forecast.n))
+      ? `Historical cohort: ${Number(forecast.n).toLocaleString("en-US")} past exams since ${esc(forecast.since_year || 2018)}.`
+      : "Historical cohort from the current exam snapshot.";
+    return [
+      `<p class="exam-prediction-claim" data-prediction-subject="eligible-list-establishment" data-prediction-value="${esc(monthsValue)}">Expect the eligible list about <strong>${monthsText} months after applications close.</strong></p>`,
+      window ? `<p class="exam-prediction-window">Statistical range ${date(window.p10)}–${date(window.p90)}; median ${date(window.p50)}.</p>` : "",
+      `<p class="exam-muted">${basis} <a href="${ELIGIBLE_LIST_GUIDE_HREF}">How this range is calculated</a>.</p>`,
+    ].filter(Boolean).join("\n");
+  }
+  const cohort = clean(forecast.cohort) || "open_competitive";
+  const n = Number(forecast.n);
+  const year = forecast.since_year || 2018;
+  const nText = Number.isFinite(n) ? n.toLocaleString("en-US") : "—";
   return [
-    `<p class="exam-prediction-claim" data-prediction-subject="eligible-list-establishment" data-prediction-value="${esc(Number.isFinite(months) ? `${months}-months` : "unknown")}">Expect the eligible list about <strong>${Number.isFinite(months) ? months.toLocaleString("en-US") : "—"} months after applications close.</strong></p>`,
-    window ? `<p class="exam-prediction-window">Statistical range ${date(window.p10)}–${date(window.p90)}; median ${date(window.p50)}.</p>` : "",
-    `<p class="exam-muted">${basis} <a href="${ELIGIBLE_LIST_GUIDE_HREF}">How this range is calculated</a>.</p>`,
-  ].filter(Boolean).join("\n");
+    `<p class="exam-list-timing-benchmark" data-staffing-list-benchmark="1" data-benchmark-subject="eligible-list-establishment" data-benchmark-cohort="${esc(cohort)}" data-benchmark-value="${esc(monthsValue)}" data-benchmark-n="${esc(Number.isFinite(n) ? String(n) : "")}" data-benchmark-since-year="${esc(String(year))}">${esc(cohortBenchmarkLabel(cohort))} benchmark: Across <strong>${nText} exams since ${esc(String(year))}</strong>, the median time from application close to eligible-list establishment was about <strong>${monthsText} months</strong>.</p>`,
+    `<p class="exam-muted"><a href="${ELIGIBLE_LIST_GUIDE_HREF}">How this is calculated</a>.</p>`,
+  ].join("\n");
+}
+
+function listTimingSection(exam) {
+  const forecast = exam?.list_establishment_forecast;
+  if (!forecast) return "";
+  const qualified = hasQualifiedListPrediction(forecast);
+  return renderNodeSection({
+    heading: qualified ? "What may happen next" : "Eligible-list timing benchmark",
+    headingId: qualified ? "exam-prediction-heading" : "exam-list-timing-benchmark-heading",
+    exportClass: "exam_prediction",
+    extraClass: "exam-section",
+    body: predictionHTML(exam),
+  });
 }
 
 function payloadScript(exam) {
@@ -299,13 +335,7 @@ export function renderExamDocument(exam, options = {}) {
     body: noticeDetails,
   })}
   ${examFacetPivotsHTML(exam, today)}${titleCodeFamilyHTML(exam, familyMembers)}
-  ${renderNodeSection({
-    heading: "What may happen next",
-    headingId: "exam-prediction-heading",
-    exportClass: "exam_prediction",
-    extraClass: "exam-section",
-    body: predictionHTML(exam),
-  })}
+  ${listTimingSection(exam)}
   ${renderNodeSection({
     heading: "Application and exam dates",
     headingId: "exam-calendar-heading",
