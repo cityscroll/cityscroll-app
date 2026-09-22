@@ -3,7 +3,7 @@ import { projectMeetingSchedule } from "./meeting_temporal_evidence.mjs";
 
 export const PDC_CALENDAR_SCHEMA = "cityscroll.pdc_calendar.v1";
 export const PDC_CALENDAR_SOURCE_URL = "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page";
-export const PDC_CALENDAR_PARSER = "pdc_calendar_acquisition.v1";
+export const PDC_CALENDAR_PARSER = "pdc_calendar_acquisition.v2";
 
 const clean = (value, max = 2_000) => String(value ?? "")
   .replace(/<[^>]*>/g, " ").replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&")
@@ -21,14 +21,22 @@ function hrefFrom(html) {
   return match?.[1] || null;
 }
 
-function dateFrom(value) {
-  const text = clean(value, 200);
+function dateFrom(value, tableYear = null) {
+  let text = clean(value, 200).replace(/\*/g, "");
+  if (!/\b20\d{2}\b/.test(text) && tableYear) {
+    text = text.replace(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})\b/i, `$1 $2, ${tableYear}`);
+  }
   const match = text.match(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),?\s+(20\d{2})\b/i)
     || text.match(/\b(20\d{2})[-/]([01]?\d)[-/]([0-3]?\d)\b/);
   if (!match) return null;
-  if (/^20/.test(match[1])) return `${match[1]}-${String(match[2]).padStart(2, "0")}-${String(match[3]).padStart(2, "0")}`;
+  if (/^20/.test(match[1])) return validDate(`${match[1]}-${String(match[2]).padStart(2, "0")}-${String(match[3]).padStart(2, "0")}`);
   const month = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].indexOf(match[1].toLowerCase()) + 1;
-  return `${match[3]}-${String(month).padStart(2, "0")}-${String(match[2]).padStart(2, "0")}`;
+  return validDate(`${match[3]}-${String(month).padStart(2, "0")}-${String(match[2]).padStart(2, "0")}`);
+}
+
+function validDate(value) {
+  const date = new Date(`${value}T00:00:00.000Z`);
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value ? value : null;
 }
 
 function columns(rows) {
@@ -42,26 +50,34 @@ function columns(rows) {
 
 /** Parse only explicit meeting-date cells from the official PDC table. */
 export function parsePdcScheduleHtml(html, { sourceUrl = PDC_CALENDAR_SOURCE_URL, observedAt = null, receipt = null } = {}) {
-  const rows = htmlRows(html);
-  const indexes = columns(rows);
-  if (!indexes || indexes.meeting_date == null) return { schema: PDC_CALENDAR_SCHEMA, rows: [], records: [], documents: [], receipt };
-  const headerIndex = rows.findIndex((row) => row.some((cell) => /meeting date|submission deadline|agenda/i.test(cell.text)));
   const records = [];
-  for (const row of rows.slice(headerIndex + 1)) {
-    const meetingCell = row[indexes.meeting_date];
-    const eventDate = dateFrom(meetingCell?.text);
-    if (!eventDate) continue;
-    const agendaCell = indexes.agenda == null ? null : row[indexes.agenda];
-    const agendaHref = hrefFrom(agendaCell?.html);
-    records.push(normalizePdcCalendarMeeting({
-      pdc_event_id: `pdc-${eventDate}`,
-      title: "Public Design Commission meeting",
-      event_date: eventDate,
-      source_url: sourceUrl,
-      meeting_origin: "official_pdc_schedule",
-      source_receipt: receipt || { schema: "cityscroll.meeting_source_receipt.v1", source_url: sourceUrl, observed_at: observedAt, status: "ok", fetch_status: "snapshot", parser: PDC_CALENDAR_PARSER },
-      meeting_documents: agendaHref ? [{ role: "agenda", document_id: agendaHref, document_url: new URL(agendaHref, sourceUrl).href, source_url: sourceUrl, meeting_id: `meeting:pdc_calendar:pdc-${eventDate}`, attachment_status: "attached", adapter: PDC_CALENDAR_PARSER }] : [],
-    }));
+  const seen = new Set();
+  const source = String(html || "");
+  for (const table of source.matchAll(/<table\b[^>]*>[\s\S]*?<\/table>/gi)) {
+    const rows = htmlRows(table[0]);
+    const indexes = columns(rows);
+    // Minutes/certificates tables also contain dates, but are not schedule tables.
+    if (!indexes || indexes.meeting_date == null || (indexes.submission_deadline == null && indexes.agenda == null)) continue;
+    const heading = [...source.slice(0, table.index).matchAll(/<h[1-6]\b[^>]*>([\s\S]*?)<\/h[1-6]>/gi)].at(-1)?.[1];
+    const tableYear = clean(heading).match(/Public Design Commission Calendar\s+(20\d{2})\b/i)?.[1] || null;
+    const headerIndex = rows.findIndex((row) => row.some((cell) => /meeting date/i.test(cell.text)));
+    for (const row of rows.slice(headerIndex + 1)) {
+      const meetingCell = row[indexes.meeting_date];
+      const eventDate = dateFrom(meetingCell?.text, tableYear);
+      if (!eventDate || seen.has(eventDate)) continue;
+      seen.add(eventDate);
+      const agendaCell = indexes.agenda == null ? null : row[indexes.agenda];
+      const agendaHref = hrefFrom(agendaCell?.html) || hrefFrom(meetingCell?.html);
+      records.push(normalizePdcCalendarMeeting({
+        pdc_event_id: `pdc-${eventDate}`,
+        title: "Public Design Commission meeting",
+        event_date: eventDate,
+        source_url: sourceUrl,
+        meeting_origin: "official_pdc_schedule",
+        source_receipt: receipt || { schema: "cityscroll.meeting_source_receipt.v1", source_url: sourceUrl, observed_at: observedAt, status: "ok", fetch_status: "snapshot", parser: PDC_CALENDAR_PARSER },
+        meeting_documents: agendaHref ? [{ role: "agenda", document_id: agendaHref, document_url: new URL(agendaHref, sourceUrl).href, source_url: sourceUrl, meeting_id: `meeting:pdc_calendar:pdc-${eventDate}`, attachment_status: "attached", adapter: PDC_CALENDAR_PARSER }] : [],
+      }));
+    }
   }
   return { schema: PDC_CALENDAR_SCHEMA, rows: records, documents: records.flatMap((row) => row.meeting_documents || []), records };
 }
