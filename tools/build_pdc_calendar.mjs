@@ -28,7 +28,9 @@ export function buildPdcCalendar({ html, sourceUrl, observedAt, receipt, agenda,
     throw new Error("PDC capture produced no calendar records; refusing to replace the last-known-good artifact");
   }
   const population = parsed.population || {};
-  const accounted = Number(population.calendar_record_count) + Number(population.unaccounted_row_count);
+  const accounted = Number(population.calendar_record_count)
+    + Number(population.excluded_non_meeting_count)
+    + Number(population.unaccounted_row_count);
   if (!Number.isFinite(accounted) || accounted !== Number(population.input_row_count)
     || Number(population.unaccounted_row_count) !== 0) {
     throw new Error(`PDC capture left ${population.unaccounted_row_count ?? "unknown"} of ${population.input_row_count ?? "unknown"} input rows unaccounted; refusing to replace the last-known-good artifact`);

@@ -72,21 +72,26 @@ export function parsePdcScheduleHtml(html, { sourceUrl = PDC_CALENDAR_SOURCE_URL
     records: [],
     documents: [],
     receipt,
-    population: { input_row_count: 0, calendar_record_count: 0, unaccounted_row_count: 0 },
+    population: { input_row_count: 0, calendar_record_count: 0, excluded_non_meeting_count: 0, unaccounted_row_count: 0 },
   };
   const fallbackYear = calendarYearContext(html);
   const headerIndex = rows.findIndex((row) => row.some((cell) => /meeting date|submission deadline|agenda/i.test(cell.text)));
   const inputRows = rows.slice(headerIndex + 1).filter((row) => row.some((cell) => cell.text));
   const records = [];
+  let excludedNonMeetingCount = 0;
   let unaccountedRowCount = 0;
   for (const row of inputRows) {
     const meetingCell = row[indexes.meeting_date];
+    if (meetingCell && !meetingCell.text) {
+      excludedNonMeetingCount += 1;
+      continue;
+    }
     const eventDate = dateFrom(meetingCell?.text, fallbackYear);
     if (!eventDate) {
       unaccountedRowCount += 1;
       continue;
     }
-    const agendaCell = indexes.agenda == null ? null : row[indexes.agenda];
+    const agendaCell = indexes.agenda == null ? meetingCell : row[indexes.agenda];
     const agendaHref = hrefFrom(agendaCell?.html);
     records.push(normalizePdcCalendarMeeting({
       pdc_event_id: `pdc-${eventDate}`,
@@ -106,6 +111,7 @@ export function parsePdcScheduleHtml(html, { sourceUrl = PDC_CALENDAR_SOURCE_URL
     population: {
       input_row_count: inputRows.length,
       calendar_record_count: records.length,
+      excluded_non_meeting_count: excludedNonMeetingCount,
       unaccounted_row_count: unaccountedRowCount,
     },
   };
