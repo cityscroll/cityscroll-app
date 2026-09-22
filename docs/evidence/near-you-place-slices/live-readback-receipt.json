@@ -1,0 +1,72 @@
+{
+  "schema": "cityscroll.near_you_place_slices_live_readback.v1",
+  "record": "cityscroll-engineering/c76db1a2c9474",
+  "grounded_at": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+  "status": "awaiting_production_readback",
+  "note": "Local materialization states are committed with the publisher change. Production deferred.json read-back for the five borough fixtures is retained here after Worker publication, with response bodies redacted to schema/state/count fields only.",
+  "fixtures": [
+    {
+      "id": "BK0101",
+      "label": "Greenpoint",
+      "route": "/near-you/deferred.json?geo=nta2020%3ABK0101&lens=meetings&surface=map",
+      "expected_local_coverage": "source_unavailable",
+      "expected_projection_state": "unavailable",
+      "production_readback": null
+    },
+    {
+      "id": "QN0103",
+      "label": "Astoria (Central)",
+      "route": "/near-you/deferred.json?geo=nta2020%3AQN0103&lens=meetings&surface=map",
+      "expected_local_coverage": "source_unavailable",
+      "expected_projection_state": "unavailable",
+      "production_readback": null
+    },
+    {
+      "id": "SI0101",
+      "label": "St. George-New Brighton",
+      "route": "/near-you/deferred.json?geo=nta2020%3ASI0101&lens=meetings&surface=map",
+      "expected_local_coverage": "source_unavailable",
+      "expected_projection_state": "unavailable",
+      "production_readback": null
+    },
+    {
+      "id": "MN0102",
+      "label": "Tribeca-Civic Center",
+      "route": "/near-you/deferred.json?geo=nta2020%3AMN0102&lens=meetings&surface=map",
+      "expected_local_coverage": "ready",
+      "expected_projection_state": "ready",
+      "production_readback": null
+    },
+    {
+      "id": "BX0101",
+      "label": "Mott Haven-Port Morris",
+      "route": "/near-you/deferred.json?geo=nta2020%3ABX0101&lens=meetings&surface=map",
+      "expected_local_coverage": "zero",
+      "expected_projection_state": "zero",
+      "production_readback": null
+    }
+  ],
+  "assertions": [
+    {
+      "id": "canonical-registry-census",
+      "result": "accepted"
+    },
+    {
+      "id": "no-fabricated-zero-for-source-gap",
+      "result": "accepted"
+    },
+    {
+      "id": "fail-then-recover-activation",
+      "result": "accepted"
+    },
+    {
+      "id": "atomic-publication-gate",
+      "result": "accepted"
+    },
+    {
+      "id": "production-five-fixture-readback",
+      "result": "pending"
+    }
+  ],
+  "assertions_sha256": "d0ffd4010425e0a43c260843c719da28b6f9aff216c7892f94644786ce9e6b96"
+}

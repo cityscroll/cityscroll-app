@@ -1,8 +1,33 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { handleNearYou } from "../src/near_you.mjs";
-import { buildNearYou } from "../../tools/build_worker_route_read_models.mjs";
+import {
+  LENSES,
+  buildNearYou,
+  decideNearYouManifestActivation,
+  residentialPlacesFromNtaLayer,
+  validateNearYouManifestCompleteness,
+} from "../../tools/build_worker_route_read_models.mjs";
+
+const ROOT = new URL("../../", import.meta.url);
+const readJson = (path) => JSON.parse(readFileSync(new URL(path, ROOT), "utf8"));
+const committedActivity = readJson("site/data/district_activity.json");
+const residentialPlaces = residentialPlacesFromNtaLayer(
+  readJson("site/data/geography/layers/nta2020/26B.json"),
+);
+
+function kv(values) {
+  return { async get(key) { return values.get(key) || null; } };
+}
+
+function materialize(activity, version = "near-you-place-slices") {
+  const built = buildNearYou(activity, {}, version, { residentialPlaces });
+  const values = new Map(built.entries.map(({ key, value }) => [key, value]));
+  values.set("route-read-model:near-you:manifest:v1", JSON.stringify(built.manifest));
+  return { built, values };
+}
 
 test("native place searches resolve retained names to canonical geography without losing filters", async () => {
   const key = "geography:nta2020:MN0102";
@@ -12,9 +37,7 @@ test("native place searches resolve retained names to canonical geography withou
     district_items:{by_level:{borough:{Manhattan:{meetings:["m1"]}}}},
     geography_items:{definitions:{[key]:{key,type:"nta2020",id:"MN0102",label:"Tribeca-Civic Center"}},by_key:{[key]:{meetings:["m1"]}}},
   };
-  const materialized = buildNearYou(activity, {}, "native-search-test");
-  const values = new Map(materialized.entries.map(({key,value})=>[key,value]));
-  values.set("route-read-model:near-you:manifest:v1", JSON.stringify(materialized.manifest));
+  const { values } = materialize(activity, "native-search-test");
   const response = await handleNearYou(new Request("https://cityscroll.org/near-you/?neighborhood=Tribeca-Civic+Center&lens=meetings&agency=Transportation&q=curb"), {ALERT_STATE:kv(values)});
   assert.equal(response.status, 303);
   const target = new URL(response.headers.get("location"));
@@ -38,9 +61,77 @@ test("native place searches resolve retained names to canonical geography withou
   assert.match(unknownBody.results_html, /unavailable/i);
 });
 
-function kv(values) {
-  return { async get(key) { return values.get(key) || null; } };
-}
+test("A1: residential fixtures publish typed coverage instead of a fabricated zero or silent miss", async () => {
+  const { built, values } = materialize(committedActivity, "residential-coverage");
+  assert.equal(validateNearYouManifestCompleteness(built.manifest, residentialPlaces, LENSES).ok, true);
+
+  for (const code of ["BK0101", "QN0103", "SI0101"]) {
+    const sliceId = `geography:nta2020:${code}:meetings`;
+    const slice = JSON.parse(values.get(built.manifest.slices[sliceId]));
+    assert.equal(slice.coverage.state, "source_unavailable", code);
+    const deferred = await handleNearYou(new Request(
+      `https://cityscroll.org/near-you/deferred.json?geo=nta2020:${code}&lens=meetings&surface=map`,
+    ), { ALERT_STATE: kv(values) });
+    assert.equal(deferred.status, 200, code);
+    const body = await deferred.json();
+    assert.equal(body.schema, "cityscroll.near_you_deferred.v1", code);
+    assert.doesNotMatch(body.results_html, /data-results-count="0"/, code);
+    assert.match(body.results_html, /unavailable|not available|materializ/i, code);
+  }
+});
+
+test("A2: ready, zero, unknown geography, and transient failure remain distinct on the Worker path", async () => {
+  const { built, values } = materialize(committedActivity, "distinct-states");
+
+  const ready = await handleNearYou(new Request(
+    "https://cityscroll.org/near-you/deferred.json?geo=nta2020:MN0102&lens=meetings",
+  ), { ALERT_STATE: kv(values) });
+  assert.equal(ready.status, 200);
+  const readyBody = await ready.json();
+  assert.equal(readyBody.schema, "cityscroll.near_you_deferred.v1");
+  assert.match(readyBody.results_html, /data-record-id=/);
+  assert.match(readyBody.results_html, /data-results-count="[1-9]/);
+
+  const zero = await handleNearYou(new Request(
+    "https://cityscroll.org/near-you/deferred.json?geo=nta2020:BX0101&lens=meetings",
+  ), { ALERT_STATE: kv(values) });
+  assert.equal(zero.status, 200);
+  const zeroBody = await zero.json();
+  assert.equal(zeroBody.schema, "cityscroll.near_you_deferred.v1");
+  assert.match(zeroBody.results_html, /data-results-count="0"/);
+  assert.doesNotMatch(zeroBody.results_html, /temporarily unavailable/i);
+
+  // Pattern-valid but unpublished identity: distinct from source_unavailable slices.
+  const unknown = await handleNearYou(new Request(
+    "https://cityscroll.org/near-you/deferred.json?geo=nta2020:BK9999&lens=meetings",
+  ), { ALERT_STATE: kv(values) });
+  assert.equal(unknown.status, 503);
+  const unknownBody = await unknown.json();
+  assert.equal(unknownBody.schema, "cityscroll.near_you_deferred_error.v1");
+  assert.equal(unknownBody.reason, "near-you-read-model-unavailable");
+
+  const transient = await handleNearYou(new Request(
+    "https://cityscroll.org/near-you/deferred.json?geo=nta2020:BK0101&lens=meetings",
+  ), { ALERT_STATE: kv(new Map()) });
+  assert.equal(transient.status, 503);
+  assert.equal((await transient.json()).schema, "cityscroll.near_you_deferred_error.v1");
+
+  const previous = { ...built.manifest, version: "prior-good" };
+  const refused = decideNearYouManifestActivation({
+    previousManifest: previous,
+    candidateManifest: {
+      ...built.manifest,
+      version: "partial-candidate",
+      slices: Object.fromEntries(
+        Object.entries(built.manifest.slices).filter(([sliceId]) => !sliceId.includes("BK0101")),
+      ),
+    },
+    residentialPlaces,
+  });
+  assert.equal(refused.activate, false);
+  assert.equal(refused.activeManifest.version, "prior-good");
+});
+
 
 test("the edge renderer returns an inspectable scoped HTML document and public cache policy", async () => {
   const response = await handleNearYou(new Request(
