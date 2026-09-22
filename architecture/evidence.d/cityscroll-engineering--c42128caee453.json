@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c42128caee453",
+  "status": "implemented",
+  "fingerprint": "near-you-map-record-health.v1",
+  "updated_at": "2026-09-22T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "near-you-view-renderer",
+      "path": "site/near_you_view.mjs"
+    },
+    {
+      "id": "resident-geography-overlap-ui",
+      "path": "site/geography_navigation_overlap_ui.mjs"
+    },
+    {
+      "id": "near-you-map-island",
+      "path": "site/app/map.mjs"
+    },
+    {
+      "id": "near-you-worker-geography-owners",
+      "path": "worker/src/near_you.mjs"
+    },
+    {
+      "id": "near-you-static-tests",
+      "path": "test/near_you_static.test.mjs"
+    },
+    {
+      "id": "resident-geography-overlap-ui-tests",
+      "path": "test/geography_navigation_overlap_ui.test.mjs"
+    },
+    {
+      "id": "resident-geography-map-runtime-tests",
+      "path": "test/geography_navigation_runtime.test.mjs"
+    },
+    {
+      "id": "near-you-map-record-health-capture",
+      "path": "docs/evidence/near-you-map-record-health/capture-manifest.json"
+    },
+    {
+      "id": "near-you-map-record-health-capture-tool",
+      "path": "tools/capture_near_you_map_record_health.py"
+    }
+  ]
+}

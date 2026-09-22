@@ -121,6 +121,66 @@ export function labelForGeographyId(type, id, { labelIndex = null } = {}) {
   return String(id);
 }
 
+function isBareNtaCode(label) {
+  return /^[A-Z]{2}\d{4}$/.test(String(label || "").trim());
+}
+
+/**
+ * Resolve resident identity + boundary vintage from geography owners
+ * (label index, layer document, explicit selected fields). Records/activity
+ * state must not invent these values.
+ */
+export function resolveGeographyOwnerPresentation({
+  type = null,
+  id = null,
+  key = null,
+  label = null,
+  boundary_vintage = null,
+  labelIndex = null,
+  layerDoc = null,
+} = {}) {
+  const resolvedType = type || layerDoc?.type || null;
+  const resolvedId = id == null ? null : String(id);
+  const resolvedKey = key
+    || (resolvedType && resolvedId ? `geography:${resolvedType}:${resolvedId}` : null);
+  const layerFeature = resolvedId && Array.isArray(layerDoc?.features)
+    ? layerDoc.features.find((feature) => (
+      String(feature?.id) === resolvedId
+      || feature?.key === resolvedKey
+      || feature?.key === `${resolvedType}:${resolvedId}`
+    )) || null
+    : null;
+
+  let resolvedLabel = label || layerFeature?.label || null;
+  if (!resolvedLabel && resolvedType && resolvedId) {
+    resolvedLabel = labelForGeographyId(resolvedType, resolvedId, { labelIndex });
+  } else if (resolvedLabel && resolvedType === "nta2020" && isBareNtaCode(resolvedLabel) && labelIndex) {
+    const indexed = labelForGeographyId(resolvedType, resolvedId, { labelIndex });
+    if (indexed && !isBareNtaCode(indexed)) resolvedLabel = indexed;
+  }
+
+  let resolvedVintage = boundary_vintage
+    || layerFeature?.boundary_vintage
+    || layerDoc?.vintage?.id
+    || null;
+  if (resolvedVintage != null) resolvedVintage = String(resolvedVintage);
+
+  const friendly = Boolean(
+    resolvedLabel
+    && !(resolvedType === "nta2020" && isBareNtaCode(resolvedLabel)),
+  );
+
+  return Object.freeze({
+    key: resolvedKey,
+    type: resolvedType,
+    id: resolvedId,
+    label: resolvedLabel,
+    boundary_vintage: resolvedVintage,
+    has_friendly_label: friendly,
+    geometry_available: Boolean(layerFeature || resolvedVintage || (layerDoc && Array.isArray(layerDoc.features))),
+  });
+}
+
 function selectedLabel(selected, { labelIndex = null } = {}) {
   if (selected?.label) return String(selected.label);
   if (!selected?.type || !selected?.id) return "Selected place";

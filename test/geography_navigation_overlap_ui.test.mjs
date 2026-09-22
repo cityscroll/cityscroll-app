@@ -25,10 +25,12 @@ import {
   buildSheepsheadStationOverlapFixtureModel,
   crosswalkRowsFromCommittedArtifacts,
   formatOverlapDisplayPercent,
+  labelForGeographyId,
   overlapEscapePolicy,
   rememberOverlapInvoker,
   renderSelectedGeographyOverlapDrawerHtml,
   renderGeographyOverlapWorkspaceChrome,
+  resolveGeographyOwnerPresentation,
   restoreOverlapInvokerFocus,
   sortOverlapRows,
 } from "../site/geography_navigation_overlap_ui.mjs";
@@ -368,4 +370,82 @@ test("selected Near You document renders overlap drawer for BK1503 council compa
   assert.match(html, /This neighborhood overlaps 2 Council districts/);
   assert.match(html, /69\.0%/);
   assert.match(html, /data-geography-overlap-root/);
+});
+
+test("A1/A2: geography owners keep friendly labels and vintage when records are unavailable", () => {
+  const layerDoc = {
+    type: "nta2020",
+    vintage: { id: "26B" },
+    features: [
+      { key: "geography:nta2020:BK0101", id: "BK0101", type: "nta2020", label: "Greenpoint", subtype: "residential" },
+      { key: "geography:nta2020:QN0103", id: "QN0103", type: "nta2020", label: "Astoria (Central)", subtype: "residential" },
+      { key: "geography:nta2020:SI0101", id: "SI0101", type: "nta2020", label: "St. George-New Brighton", subtype: "residential" },
+    ],
+  };
+  const labelIndex = {
+    "geography:nta2020:BK0101": "Greenpoint",
+    "geography:nta2020:QN0103": "Astoria (Central)",
+    "geography:nta2020:SI0101": "St. George-New Brighton",
+  };
+
+  for (const specimen of [
+    { id: "BK0101", label: "Greenpoint" },
+    { id: "QN0103", label: "Astoria (Central)" },
+    { id: "SI0101", label: "St. George-New Brighton" },
+  ]) {
+    const owner = resolveGeographyOwnerPresentation({
+      type: "nta2020",
+      id: specimen.id,
+      labelIndex,
+      layerDoc,
+    });
+    assert.equal(owner.label, specimen.label, specimen.id);
+    assert.equal(owner.boundary_vintage, "26B", specimen.id);
+    assert.equal(owner.has_friendly_label, true, specimen.id);
+    assert.notEqual(owner.label, specimen.id, specimen.id);
+  }
+
+  assert.equal(
+    labelForGeographyId("nta2020", "BK0101", { labelIndex }),
+    "Greenpoint",
+  );
+  assert.equal(
+    labelForGeographyId("nta2020", "BK0101"),
+    "BK0101",
+  );
+
+  const missing = resolveGeographyOwnerPresentation({
+    type: "nta2020",
+    id: "BK0101",
+    labelIndex,
+    layerDoc: null,
+  });
+  assert.equal(missing.label, "Greenpoint");
+  assert.equal(missing.boundary_vintage, null);
+
+  const scope = scopeWithGeographies(scopeFromLensState("meetings", { agency: "Transportation", q: "curb" }), [
+    "geography:nta2020:BK0101",
+  ]);
+  const view = buildNearYouViewModel(scope, null, {
+    schema: "cityscroll.district_boundaries.v1",
+    boundary_vintage: "2026-05-26",
+    community_districts: [],
+    council_districts: [],
+  }, {
+    dataState: "error",
+    geometryState: "ready",
+    geographySearch: "?geo=nta2020:BK0101&surface=map&compare=council_district&lens=meetings&agency=Transportation&q=curb",
+    navigationLayerDoc: layerDoc,
+    geographyLabelIndex: labelIndex,
+    canonicalBase: "https://cityscroll.org/near-you",
+  });
+  const html = renderNearYouDocument(view);
+  assert.equal(view.placePresentation.label, "Greenpoint");
+  assert.equal(view.boundaryVintage, "26B");
+  assert.equal(view.overlapModel?.selected?.label, "Greenpoint");
+  assert.equal(view.overlapModel?.selected?.boundary_vintage, "26B");
+  assert.match(html, /Map boundaries: 26B/);
+  assert.match(html, /<h1>Greenpoint<\/h1>/);
+  assert.doesNotMatch(html, /buyer_history_retry/);
+  assert.doesNotMatch(html, /<h1>BK0101<\/h1>/);
 });

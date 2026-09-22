@@ -1,5 +1,6 @@
 import boundaries from "./data/district_boundaries.json" with { type: "json" };
 import communityGeography from "./data/community_board_geography_lookup.json" with { type: "json" };
+import nta2020Layer from "./data/geography/layers/nta2020/26B.json" with { type: "json" };
 import { scopeFromNearYouUrl } from "../../site/near_you_scope_runtime.mjs";
 import { geographyNavigationUrlWithFilters } from "../../site/geography_navigation_state.mjs";
 import { resolveGeographyEntryFromPlaceLabel } from "../../site/geography_navigation_entry.mjs";
@@ -15,6 +16,31 @@ import { loadNearYouActivity, RouteReadModelUnavailable } from "./lib/route_read
 function activityWithConsultations(activity) {
   if (!activity) return activity;
   return mergeConsultationActivity(activity, consultationMaterializationRecords());
+}
+
+function labelIndexFromLayerDoc(layerDoc) {
+  const index = Object.create(null);
+  for (const feature of layerDoc?.features || []) {
+    if (!feature?.label) continue;
+    if (feature.key) index[feature.key] = feature.label;
+    if (feature.type && feature.id) {
+      index[`${feature.type}:${feature.id}`] = feature.label;
+      index[String(feature.id)] = feature.label;
+    }
+  }
+  return index;
+}
+
+const NAVIGATION_LAYER_DOC = nta2020Layer;
+const NAVIGATION_LABEL_INDEX = labelIndexFromLayerDoc(NAVIGATION_LAYER_DOC);
+
+function nearYouGeographyOwnerOptions(url) {
+  return {
+    geographySearch: url.search,
+    navigationLayerDoc: NAVIGATION_LAYER_DOC,
+    navigationLayerType: "nta2020",
+    geographyLabelIndex: NAVIGATION_LABEL_INDEX,
+  };
 }
 
 const SITE_BASE = "https://cityscroll.org";
@@ -84,9 +110,10 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
       canonicalBase: CANONICAL_BASE,
       siteBase: SITE_BASE,
       dataState: "error",
+      geometryState: "ready",
       recoveryHref,
       communityGeography,
-      geographySearch: url.search,
+      ...nearYouGeographyOwnerOptions(url),
     });
     return new Response(request.method === "HEAD" ? null : renderNearYouDocument(view, {
       canonicalBase: CANONICAL_BASE,
@@ -117,7 +144,7 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
     communityGeography: routeReadModel.communityGeography?.public_edges?.length
       ? routeReadModel.communityGeography
       : communityGeography,
-    geographySearch: url.search,
+    ...nearYouGeographyOwnerOptions(url),
   });
   const deferredParts = deferred ? renderNearYouDeferredParts(view) : null;
   const body = deferred

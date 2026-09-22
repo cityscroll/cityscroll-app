@@ -666,3 +666,42 @@ test("A13 special-use labels stay off the ordinary filter until zoom or selectio
   assert.ok(JSON.stringify(filterAfter).includes("geography:nta2020:BK5591"));
   controller.destroy();
 });
+
+test("A2/A3: tile failure stays independent of record health and keeps local geometry", async () => {
+  const { root, host } = fakeRoot();
+  const fake = createFakeMap();
+  const tileFailures = [];
+  const controller = await createGeographyNavigationMap({
+    container: host,
+    root,
+    reducedMotion: true,
+    importMapLibre: async () => ({ Map: function Map() {} }),
+    createMap: fake.createMap,
+    onTileFailure: (reason) => tileFailures.push(reason),
+  });
+  controller.setActiveLayer("nta2020", NTA_LAYER);
+  controller.setSelectedKey("geography:nta2020:BK0101");
+
+  fake.map.emit("error", { error: new Error("basemap tile failed from cartocdn") });
+  assert.deepEqual(tileFailures, [GEOGRAPHY_MAP_FALLBACK_REASONS.tile_failure]);
+  assert.equal(controller.getState().selectedKey, "geography:nta2020:BK0101");
+  assert.ok(fake.map.getSource(GEOGRAPHY_MAP_SOURCE_IDS.active).data.features.length > 0);
+  const greenpoint = NTA_LAYER.features.find((feature) => feature.id === "BK0101");
+  assert.equal(greenpoint.label, "Greenpoint");
+  assert.equal(NTA_LAYER.vintage.id, "26B");
+  // Record-loading failure is a separate axis; tile failure must not invent missing geometry.
+  assert.match(MAP_ISLAND_SOURCE, /copy\("messageRetry"\)/);
+  assert.match(MAP_ISLAND_SOURCE, /translated !== "buyer_history_retry"/);
+  assert.doesNotMatch(
+    MAP_ISLAND_SOURCE,
+    /recovery\.textContent = globalThis\.t\("buyer_history_retry"\);/,
+  );
+  controller.destroy();
+});
+
+test("A3: deferred records retry copy never leaks a raw translation key", () => {
+  assert.match(MAP_ISLAND_SOURCE, /dataset\.nearRecovery = "retry"/);
+  assert.match(MAP_ISLAND_SOURCE, /copy\("messageRetry"\)/);
+  assert.match(MAP_ISLAND_SOURCE, /translated !== "buyer_history_retry"/);
+  assert.doesNotMatch(MAP_ISLAND_SOURCE, /"Try again"/);
+});
