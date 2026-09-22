@@ -3,7 +3,7 @@
   "feature": "geography-navigation-preserve-place",
   "public_alias": "cc669bf6bea4a",
   "capture_mode": "local_rendered_transition_receipts",
-  "repository_revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+  "repository_revision": "b0e717a97ccc6b40882f09db7e80c24b00aff6cd",
   "grounded_at": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
   "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
   "image_binaries_committed": false,
@@ -19,7 +19,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "revision": "b0e717a97ccc6b40882f09db7e80c24b00aff6cd",
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "assertion": "Greenpoint stays named; Precinct 94 overlap renders; Areas stay on nta2020 with no empty-directory claim.",
       "sha256": "4b93a2620a032b4d99e4dacb83ce129e2ddeed3861cdc2d82ed05eab8ddc8726",
@@ -39,7 +39,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "revision": "b0e717a97ccc6b40882f09db7e80c24b00aff6cd",
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "assertion": "Greenpoint stays named; Precinct 94 overlap renders; Areas stay on nta2020 with no empty-directory claim.",
       "sha256": "4b93a2620a032b4d99e4dacb83ce129e2ddeed3861cdc2d82ed05eab8ddc8726",
@@ -59,7 +59,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "revision": "b0e717a97ccc6b40882f09db7e80c24b00aff6cd",
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "assertion": "Switching to community district comparison keeps Greenpoint, meetings lens, and the NTA Areas directory.",
       "sha256": "52bcf1c9ce3074a32c36980b99455531494ea8a7f41110e015799dfe49276af4",
@@ -79,7 +79,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "revision": "b0e717a97ccc6b40882f09db7e80c24b00aff6cd",
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "assertion": "Switching to community district comparison keeps Greenpoint, meetings lens, and the NTA Areas directory.",
       "sha256": "52bcf1c9ce3074a32c36980b99455531494ea8a7f41110e015799dfe49276af4",
@@ -99,7 +99,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "revision": "b0e717a97ccc6b40882f09db7e80c24b00aff6cd",
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "assertion": "Switching to council district comparison keeps Greenpoint, meetings lens, and the NTA Areas directory.",
       "sha256": "9e36e716f0f59a5b3f78ebfa58a53c5aab688f63ed33e258c0b638981f6164ae",
@@ -119,7 +119,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "revision": "b0e717a97ccc6b40882f09db7e80c24b00aff6cd",
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "assertion": "Switching to council district comparison keeps Greenpoint, meetings lens, and the NTA Areas directory.",
       "sha256": "9e36e716f0f59a5b3f78ebfa58a53c5aab688f63ed33e258c0b638981f6164ae",
@@ -139,7 +139,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "revision": "b0e717a97ccc6b40882f09db7e80c24b00aff6cd",
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "assertion": "BK1503 multi-council fixture keeps the selected neighborhood label and usable council overlap rows.",
       "sha256": "9149aca0ba12007f127e14fc5049fa15924054ed07cd8301ed0ac20af3260e71",
@@ -159,7 +159,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "revision": "b0e717a97ccc6b40882f09db7e80c24b00aff6cd",
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "assertion": "BK1503 multi-council fixture keeps the selected neighborhood label and usable council overlap rows.",
       "sha256": "9149aca0ba12007f127e14fc5049fa15924054ed07cd8301ed0ac20af3260e71",
@@ -179,7 +179,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "revision": "b0e717a97ccc6b40882f09db7e80c24b00aff6cd",
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "assertion": "Unsupported compare=council recovers without clearing Greenpoint or inventing an empty Areas directory.",
       "sha256": "2c0bcd0a128a8a19e6dc2af2facbca140f6d2f261b589cc6abe1c4a00158c848",
@@ -199,7 +199,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "revision": "b0e717a97ccc6b40882f09db7e80c24b00aff6cd",
       "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
       "assertion": "Unsupported compare=council recovers without clearing Greenpoint or inventing an empty Areas directory.",
       "sha256": "2c0bcd0a128a8a19e6dc2af2facbca140f6d2f261b589cc6abe1c4a00158c848",
