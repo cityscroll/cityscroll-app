@@ -73,8 +73,10 @@ const GROUNDED_AT = "31d8fe647c874d3cfa425b031192d1262e9c5a93";
 const FIXTURE_CLOCK = "2026-09-17T18:00:00.000Z";
 const FIXTURE_BOUNDARY_VINTAGE = "2026-05-26";
 
+// Relative to the ambient test clock (pinned or CITYSCROLL_TEST_TIME_SHIFT_DAYS),
+// so upcoming/past fixtures stay honest under +1d/+45d time-travel.
 function fixtureInstant(days = 0) {
-  return new Date(Date.parse(FIXTURE_CLOCK) + days * MILLISECONDS_PER_DAY).toISOString();
+  return new Date(Date.now() + days * MILLISECONDS_PER_DAY).toISOString();
 }
 
 function pythonPlaywrightChromiumAvailable() {
