@@ -32,7 +32,7 @@ async function getJson(kv, key, state, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) 
     const timeout = new Promise((_, reject) => {
       timer = setTimeout(() => reject(new RouteReadModelUnavailable(`route read-model read exceeded ${timeoutMs}ms`)), timeoutMs);
     });
-    const pending = Promise.race([read, timeout]).then((raw) => {
+    const value = await Promise.race([read, timeout]).then((raw) => {
       if (raw == null || raw === "") throw new RouteReadModelUnavailable(`missing route read-model key ${key}`);
       try {
         const value = typeof raw === "string" ? JSON.parse(raw) : raw;
@@ -44,7 +44,10 @@ async function getJson(kv, key, state, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) 
     }).finally(() => {
       clearTimeout(timer);
     });
-    state.values.set(key, pending);
+    // Only completed data may outlive a request. A pending KV read and its
+    // timeout belong to the request that created them and can be cancelled
+    // when that request ends (including an early unavailable-coverage reply).
+    state.values.set(key, value);
   }
   return state.values.get(key);
 }
@@ -57,14 +60,15 @@ async function manifestFor(kv, kind, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) {
       : kind === "community-district-digest"
         ? COMMUNITY_DISTRICT_DIGEST_MANIFEST_KEY
         : MEETING_MANIFEST_KEY;
-    const pending = getJson(kv, key, state, timeoutMs).then((manifest) => {
+    const manifest = await getJson(kv, key, state, timeoutMs).then((manifest) => {
       if (Number(manifest.schema_version) !== ROUTE_READ_MODEL_SCHEMA_VERSION
         || manifest.kind !== kind || !manifest.version || !manifest.slices) {
+        state.values.delete(key);
         throw new RouteReadModelUnavailable(`invalid ${kind} route read-model manifest`);
       }
       return manifest;
     });
-    state.manifests.set(kind, pending);
+    state.manifests.set(kind, manifest);
   }
   return state.manifests.get(kind);
 }
@@ -151,11 +155,15 @@ export async function loadNearYouActivity(env, scope, lens = scope?.facets?.doma
   const ids = nearYouSliceIds(scope);
   const sliceLens = ["land", "property", "rules", "meetings", "money"].includes(lens) ? lens : "meetings";
   const state = stateFor(kv);
-  const slices = await Promise.all(ids.map(async (id) => {
+  const keys = ids.map((id) => {
     const key = sliceKey(manifest, id, sliceLens);
     if (!key) throw new RouteReadModelUnavailable(`missing near-you slice ${id}:${sliceLens}`);
-    return getJson(kv, key, state, timeoutMs);
-  }));
+    return key;
+  });
+  // Deduplicate only within this request, never by sharing active I/O across
+  // requests. Validate every key first so missing coverage starts no reads.
+  const reads = new Map([...new Set(keys)].map((key) => [key, getJson(kv, key, state, timeoutMs)]));
+  const slices = await Promise.all(keys.map((key) => reads.get(key)));
   if (!slices.length || slices.some((slice) => !slice.activity?.records)) {
     throw new RouteReadModelUnavailable("near-you slice is empty");
   }
