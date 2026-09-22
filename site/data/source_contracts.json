@@ -12,7 +12,7 @@
       "landing_page": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
       "required_fields": ["meeting_date", "source_url", "source_receipt"],
       "publisher_cadence": "Meeting schedule and agenda publication cadence",
-      "product_freshness": "A bounded native HTML schedule is materialized before agendas appear; agenda PDFs are attached only through explicit publisher links and retained receipts.",
+      "product_freshness": "Only schedule tables beneath an explicit Public Design Commission calendar-year heading are materialized. Agenda PDFs are attached only through explicit publisher links, and acquisition, content, parse, or checksum failures preserve the last-known-good capture and calendar.",
       "used_for": "Public Design Commission dated sessions and agenda context.",
       "code_references": [{"path": "site/pdc_calendar.mjs", "contains": "parsePdcScheduleHtml"}],
       "delivery_tier": "inline-at-build",
