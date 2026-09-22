@@ -926,7 +926,7 @@
             "text": "Near you"
           },
           {
-            "selector": ".near-area-list"
+            "selector": "[data-geography-areas], #near-area-list"
           },
           {
             "selector": "#nearMapSvg:not([aria-hidden=\"true\"]), .near-map-enhanced"
@@ -952,7 +952,7 @@
             "selector": "[data-near-you-root][data-lens=\"land\"][data-level=\"community_district\"]"
           },
           {
-            "selector": ".near-area-list"
+            "selector": "[data-geography-areas], #near-area-list"
           }
         ],
         "notVisible": [

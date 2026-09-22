@@ -10,27 +10,45 @@ import { test } from "node:test";
 import {
   GEOGRAPHY_SHELL_BASEMAP_CONTRAST_SAMPLES,
   GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL,
+  GEOGRAPHY_SHELL_DIRECTORY_EMPTY,
+  GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM,
   GEOGRAPHY_SHELL_HEADING,
   GEOGRAPHY_SHELL_LABEL_BUDGET,
   GEOGRAPHY_SHELL_MORE_BOUNDARIES_LABEL,
+  GEOGRAPHY_SHELL_SPECIAL_USE_SUMMARY,
   GEOGRAPHY_SHELL_USE_LOCATION_LABEL,
   RESIDENT_GEOGRAPHY_SHELL_SCHEMA,
+  aliasesByNtaIdFromGazetteer,
   areaEntryKeys,
   areaListMatchesMapKeys,
   contrastRatio,
+  directoryEntryMatchesQuery,
   estimateNeighborhoodLabelBudget,
   geographyShellAreasListHtml,
   geographyShellSearchFormHtml,
   geographyShellLayerSwitcherHtml,
+  groupDirectoryEntriesByBorough,
   labelWrapsToAtMostTwoLines,
   navigationAreaEntriesFromLayerDoc,
+  navigationDirectoryFromLayerDoc,
   renderGeographyShellEntry,
   resolveShellSurface,
 } from "../site/geography_navigation_shell.mjs";
+import neighborhoodGazetteer from "../site/data/neighborhood_gazetteer.json" with { type: "json" };
 import {
   GEOGRAPHY_NAVIGATION_SURFACE_MAP,
   GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
 } from "../site/geography_navigation_state.mjs";
+
+const DIRECTORY_ACCEPTANCE_CASES = Object.freeze([
+  Object.freeze({ id: "BK0101", label: "Greenpoint", borough: "Brooklyn", membership: "residential" }),
+  Object.freeze({ id: "MN0102", label: "Tribeca-Civic Center", borough: "Manhattan", membership: "residential" }),
+  Object.freeze({ id: "QN0103", label: "Astoria (Central)", borough: "Queens", membership: "residential" }),
+  Object.freeze({ id: "BX0101", label: "Mott Haven-Port Morris", borough: "Bronx", membership: "residential" }),
+  Object.freeze({ id: "SI0101", label: "St. George-New Brighton", borough: "Staten Island", membership: "residential" }),
+  Object.freeze({ id: "QN8381", label: "John F. Kennedy International Airport", borough: "Queens", membership: "special_use" }),
+  Object.freeze({ id: "BK0771", label: "Green-Wood Cemetery", borough: "Brooklyn", membership: "special_use" }),
+]);
 import { geographyNavigationPrimaryLayers, geographyNavigationMoreBoundaryLayers } from "../site/geography_navigation_capability.mjs";
 import {
   GEOGRAPHY_MAP_LAYER_IDS,
@@ -292,7 +310,150 @@ test("entry chrome render includes required first-viewport controls", () => {
   assert.match(html, /data-near-surface="map"[^>]*aria-current="true"|aria-current="true"[^>]*data-near-surface="map"/);
   assert.match(html, /<details class="near-entry-secondary">\s*<summary>More ways to choose<\/summary>/);
   assert.ok(html.indexOf("near-geo-search-input") < html.indexOf("near-entry-secondary"));
+  assert.ok(html.indexOf('data-near-surface="records"') < html.indexOf("near-entry-secondary"));
   assert.ok(html.indexOf("near-entry-secondary") < html.indexOf("data-geography-layer-switcher"));
+});
+
+test("A1: residential directory groups by borough and keeps special-use behind a labeled option", () => {
+  const aliases = aliasesByNtaIdFromGazetteer(neighborhoodGazetteer);
+  const directory = navigationDirectoryFromLayerDoc(NTA_LAYER, {
+    layerType: "nta2020",
+    aliasesByNtaId: aliases,
+  });
+  assert.equal(directory.residential_total, 197);
+  assert.equal(directory.special_use_total, 65);
+  assert.ok(directory.groups.length >= 5);
+  assert.deepEqual(
+    directory.groups.map((group) => group.borough),
+    ["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"],
+  );
+  for (const entry of directory.residential) {
+    assert.equal(entry.is_special_use, false);
+    assert.ok(entry.borough);
+  }
+  for (const entry of directory.special_use) {
+    assert.equal(entry.is_special_use, true);
+  }
+  const html = geographyShellAreasListHtml(directory.residential, {
+    activeType: "nta2020",
+    directory,
+  });
+  assert.match(html, /data-geography-directory="residential"/);
+  assert.match(html, /data-geography-borough-group="Brooklyn"/);
+  assert.match(html, new RegExp(`<summary>${GEOGRAPHY_SHELL_SPECIAL_USE_SUMMARY}</summary>`));
+  assert.match(html, /data-geography-special-use-directory/);
+  assert.match(html, /data-geography-directory-list/);
+  assert.match(html, /Neighborhood list/);
+  const withoutDisclosures = html
+    .replace(/<details class="near-area-directory-list"[\s\S]*?<\/details>/, "")
+    .replace(/<details class="near-area-special-use"[\s\S]*?<\/details>/, "");
+  assert.doesNotMatch(withoutDisclosures, /data-map-area="/);
+  assert.doesNotMatch(withoutDisclosures, /data-geography-special-use="true"/);
+  for (const row of DIRECTORY_ACCEPTANCE_CASES) {
+    if (row.membership === "residential") {
+      assert.ok(directory.residential.some((entry) => entry.id === row.id), row.label);
+      assert.match(html, new RegExp(`data-map-area="${row.id}"`));
+    } else {
+      assert.ok(directory.special_use.some((entry) => entry.id === row.id), row.label);
+      assert.equal(directory.residential.some((entry) => entry.id === row.id), false);
+    }
+  }
+});
+
+test("A1/A2: local name filter retains aliases and recovers on no match", () => {
+  const aliases = aliasesByNtaIdFromGazetteer(neighborhoodGazetteer);
+  const mott = navigationDirectoryFromLayerDoc(NTA_LAYER, {
+    layerType: "nta2020",
+    aliasesByNtaId: aliases,
+    query: "Mott Haven",
+  });
+  assert.equal(mott.residential.length, 1);
+  assert.equal(mott.residential[0].id, "BX0101");
+  assert.equal(mott.empty, false);
+
+  const tribeca = navigationDirectoryFromLayerDoc(NTA_LAYER, {
+    layerType: "nta2020",
+    aliasesByNtaId: aliases,
+    query: "Tribeca",
+  });
+  assert.ok(tribeca.residential.some((entry) => entry.id === "MN0102"));
+
+  const jfk = navigationDirectoryFromLayerDoc(NTA_LAYER, {
+    layerType: "nta2020",
+    aliasesByNtaId: aliases,
+    query: "JFK Airport",
+  });
+  assert.equal(jfk.residential.length, 0);
+  assert.ok(jfk.special_use.some((entry) => entry.id === "QN8381"));
+
+  const none = navigationDirectoryFromLayerDoc(NTA_LAYER, {
+    layerType: "nta2020",
+    aliasesByNtaId: aliases,
+    query: "zzz-no-such-neighborhood",
+  });
+  assert.equal(none.empty, true);
+  const emptyHtml = geographyShellAreasListHtml([], { activeType: "nta2020", directory: none, query: none.query });
+  assert.match(emptyHtml, new RegExp(GEOGRAPHY_SHELL_DIRECTORY_EMPTY.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  assert.match(emptyHtml, new RegExp(`name="${GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM}"`));
+});
+
+test("A2: directory native links keep topic filters and omit location permission", () => {
+  const directory = navigationDirectoryFromLayerDoc(NTA_LAYER, { layerType: "nta2020", query: "Greenpoint" });
+  const base = "/near-you/?lens=land&agency=Transportation&q=curb&area_q=Greenpoint";
+  const html = geographyShellAreasListHtml(directory.residential, {
+    activeType: "nta2020",
+    base,
+    directory,
+    query: "Greenpoint",
+  });
+  const href = html.match(/data-map-area="BK0101"[^>]*href="([^"]+)"/)[1].replaceAll("&amp;", "&");
+  const params = new URL(href, "https://cityscroll.org").searchParams;
+  assert.equal(params.get("geo"), "nta2020:BK0101");
+  assert.equal(params.get("lens"), "land");
+  assert.equal(params.get("agency"), "Transportation");
+  assert.equal(params.get("q"), "curb");
+  assert.equal(params.has("lat"), false);
+  assert.equal(params.has("lon"), false);
+  assert.doesNotMatch(SHELL_SOURCE, /geolocation|getCurrentPosition/);
+  assert.ok(directoryEntryMatchesQuery(directory.residential[0], "Greenpoint"));
+  assert.ok(groupDirectoryEntriesByBorough(directory.residential).length >= 1);
+});
+
+test("A3: directory fixtures and Browse records precede the area-link tab sequence", () => {
+  const aliases = aliasesByNtaIdFromGazetteer(neighborhoodGazetteer);
+  const view = buildNearYouViewModel(scopeFromLensState("meetings"), fixtureActivity(), fixtureBoundaries, {
+    canonicalBase: "https://cityscroll.org/near-you",
+    navigationLayerDoc: NTA_LAYER,
+    navigationLayerType: "nta2020",
+  });
+  const html = renderNearYouDocument(view);
+  const recordsAt = html.search(/data-near-surface="records"/);
+  const firstAreaLink = html.search(/data-map-area="/);
+  assert.ok(recordsAt >= 0 && firstAreaLink >= 0);
+  assert.ok(recordsAt < firstAreaLink, "Browse records precedes area links");
+  assert.ok(!html.slice(0, recordsAt).includes("data-map-area="));
+
+  const withoutDisclosures = html
+    .replace(/<details class="near-area-directory-list"[\s\S]*?<\/details>/, "")
+    .replace(/<details class="near-area-special-use"[\s\S]*?<\/details>/, "");
+  const defaultTabAreaLinks = (withoutDisclosures.match(/data-map-area="/g) || []).length;
+  assert.equal(defaultTabAreaLinks, 0);
+  assert.ok(defaultTabAreaLinks < 262, "area links stay behind closed disclosures in the default tab sequence");
+  assert.equal(view.navigationDirectory.residential_total, 197);
+  assert.equal(view.navigationDirectory.special_use_total, 65);
+  assert.match(html, /data-geography-directory-list/);
+
+  for (const expected of DIRECTORY_ACCEPTANCE_CASES) {
+    const entry = [...view.navigationDirectory.residential, ...view.navigationDirectory.special_use]
+      .find((row) => row.id === expected.id);
+    assert.ok(entry, expected.label);
+    assert.equal(entry.label, expected.label);
+    assert.equal(entry.borough, expected.borough);
+    assert.equal(entry.is_special_use, expected.membership === "special_use");
+  }
+  assert.match(html, /data-geography-special-use-directory/);
+  assert.match(html, /data-geography-borough-group="Brooklyn"/);
+  assert.ok(aliases.BK0101?.includes("Greenpoint") || aliases.BX0101?.includes("Mott Haven"));
 });
 
 test("first-view geometry uses shared target and map-visibility floors", () => {

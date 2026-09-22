@@ -160,7 +160,7 @@ def shell_snapshot(page) -> dict:
             overflow_x: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
             form_font_px: search ? Number.parseFloat(getComputedStyle(search).fontSize) : null,
             targets: boxes('#near-geo-search-input, .near-geo-search button, .near-place-guide > summary, [data-near-recovery="retry"]'),
-            drawer_present: Boolean(document.querySelector('details.near-geo-more-boundaries, [data-geography-drawer-toggle], .near-geo-drawer')),
+            drawer_present: Boolean(document.querySelector('.near-geo-more-boundaries, [data-geography-drawer-toggle], .near-geo-drawer')),
             map_area: mapRect ? { width: mapRect.width, height: mapRect.height } : { width: 0, height: 0 },
             visible_map_height: mapRect ? Math.max(0, Math.min(innerHeight, mapRect.bottom) - Math.max(0, mapRect.top)) : 0,
             map_top: mapRect?.top ?? null,

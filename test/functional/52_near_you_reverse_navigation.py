@@ -54,8 +54,12 @@ const scope = scopeFromNearYouUrl(new URL(process.env.ROUTE_URL));
 const activity = JSON.parse(readFileSync("site/data/district_activity.json", "utf8"));
 const boundaries = JSON.parse(readFileSync("worker/src/data/district_boundaries.json", "utf8"));
 const geography = JSON.parse(readFileSync("site/data/community_board_geography_lookup.json", "utf8"));
+const nta = JSON.parse(readFileSync("site/data/geography/layers/nta2020/26B.json", "utf8"));
 const view = buildNearYouViewModel(scope, activity, boundaries, {
-  canonicalBase: "https://cityscroll.org/near-you", communityGeography: geography,
+  canonicalBase: "https://cityscroll.org/near-you",
+  communityGeography: geography,
+  navigationLayerDoc: nta,
+  navigationLayerType: "nta2020",
 });
 process.stdout.write(renderNearYouDocument(view, { assetPrefix: "/" }));
 '''
@@ -117,12 +121,24 @@ def no_script_capture(browser, html: str):
     return digest(result)
 
 
+def open_selected_place_context(page) -> None:
+    """Reveal reverse-navigation links kept under the selected-place disclosure."""
+    disclosure = page.locator(".near-selected-context > summary")
+    if disclosure.count() == 0:
+        return
+    details = page.locator(".near-selected-context")
+    if details.count() > 0 and details.first.get_attribute("open") is not None:
+        return
+    disclosure.first.click()
+
+
 def keyboard_capture(browser, html: str):
     context = browser.new_context(viewport={"width": 390, "height": 844})
     page = context.new_page()
     install_local_route(page, html)
     page.goto(BASE + ROUTE, wait_until="domcontentloaded", timeout=30000)
     expected = scope(page.url)
+    open_selected_place_context(page)
     selector = "[data-local-constellation='1'] a.local-constellation-node-link"
     links = page.locator(selector)
     assert links.count() >= 2
@@ -131,6 +147,7 @@ def keyboard_capture(browser, html: str):
     for expected_href in hrefs:
         # Reload resets focus and makes each activation an independent keyboard journey.
         page.goto(BASE + ROUTE, wait_until="domcontentloaded", timeout=30000)
+        open_selected_place_context(page)
         for _ in range(120):
             page.keyboard.press("Tab")
             if page.evaluate("expected => document.activeElement?.href === expected", expected_href):
