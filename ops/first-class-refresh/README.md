@@ -91,6 +91,16 @@ read model derived from them, writes the freshness report, and opens a pull
 request when something changed. It never pushes to the default branch and never
 merges.
 
+PDC and OATH are required hosted refreshes. Their acquisition commands first
+capture the live publisher response and a receipt in ignored `.artifacts/`
+scratch space; their owning builders then parse those exact bytes and replace
+the committed artifact only when every publisher row is accounted for. An
+acquisition or validation failure retains the last-known-good artifact and
+fails the hosted workflow instead of restamping an old snapshot. The scheduled
+reliability watchdog opens an issue after two consecutive failed runs or 36
+hours without a successful run, then closes it after the refresh returns to its
+healthy window.
+
 The existing warehouse refresh rail also runs bounded source-health observations
 for the Council Events API and NYC Rules RSS feed before rematerialization. The
 Council probe reads the already-installed `LEGISTAR_API_TOKEN_FILE` credential

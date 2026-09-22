@@ -50,23 +50,7 @@
         "public_visibility": "public",
         "backstage_detail": "receipts-and-errors",
         "relationship_coverage": "separate"
-      },
-      "public_artifact_path": "site/data/oath_trial_calendar.json",
-      "primary_routes": ["/browse/meetings/", "/now/", "/meetings/"],
-      "source_contract_id": "oath-trial-calendar",
-      "acquisition_command": ["node", "tools/build_oath_trial_calendar.mjs"],
-      "owning_builder": "tools/build_oath_trial_calendar.mjs",
-      "builder_command": ["node", "tools/build_oath_trial_calendar.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
-      "normal_refresh_cadence_hours": 24,
-      "warning_age_hours": 48,
-      "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at", "source_revision", "rows[].source_receipt.observed_at"],
-      "population_fields": ["records", "rows"],
-      "last_known_good_behavior": "Retain the last verified OATH trial rows and their source revision.",
-      "resident_stale_behavior": "Do not describe retained OATH trials as current after the hard maximum age.",
-      "resident_unavailable_behavior": "Show OATH trial coverage as unavailable; never infer that no trials exist.",
-      "production_evidence_field": "first_class.oath_trial_calendar"
+      }
     },
     {
       "id": "ibo-fiscal-history",
