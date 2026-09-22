@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
@@ -29,6 +29,18 @@ test("retained-family production read-back passes its fixture-linked checker", (
     { cwd: new URL("..", import.meta.url), encoding: "utf8" },
   );
   assert.match(output, /production read-back passed/);
+});
+
+test("retained-family production evidence rejects alternate targets", () => {
+  for (const option of ["--site", "--output"]) {
+    const result = spawnSync(
+      "python3",
+      ["tools/capture_passport_retained_families_production_read.py", option, "alternate"],
+      { cwd: new URL("..", import.meta.url), encoding: "utf8" },
+    );
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /unrecognized arguments/);
+  }
 });
 
 test("retained-family production read-back covers four routes at both viewports", () => {
