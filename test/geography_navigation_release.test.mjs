@@ -41,6 +41,7 @@ const EVIDENCE_PATH = join(ROOT, "docs/evidence/geography-navigation-release/cap
 const BUDGETS_PATH = join(ROOT, "performance-budgets.json");
 const MAP_SOURCE = readText(join(ROOT, "site/app/map.mjs"), "utf8");
 const LAND_SOURCE = readText(join(ROOT, "site/app/land.mjs"), "utf8");
+const RELEASE_BROWSER_SOURCE = readText(join(ROOT, "test/browser/geography_navigation_release.py"), "utf8");
 const RELEASE_MANIFEST = JSON.parse(readFileSync(EVIDENCE_PATH, "utf8"));
 
 const BK1503 = "geography:nta2020:BK1503";
@@ -256,4 +257,47 @@ test("A14: desktop and mobile manifests record visual metrics and meet the bindi
   }
   assert.ok(GEOGRAPHY_MAP_STYLE.ACTIVE_FILL_OPACITY < 0.2);
   assert.ok(GEOGRAPHY_MAP_STYLE.SELECTED_LINE_WIDTH > GEOGRAPHY_MAP_STYLE.ACTIVE_LINE_WIDTH);
+});
+
+test("Near You A1/A3: default, Greenpoint, and Tribeca captures bind first-view map geometry", () => {
+  assert.match(RELEASE_BROWSER_SOURCE, /MINIMUM_VISIBLE_MAP_HEIGHT = 240/);
+  assert.match(RELEASE_BROWSER_SOURCE, /BK0101/);
+  assert.match(RELEASE_BROWSER_SOURCE, /MN0102/);
+  const rows = allCaptureRows().filter((capture) => /^entry-(?:default|greenpoint|tribeca)-/.test(capture.name || ""));
+  assert.equal(rows.length, 6);
+  for (const place of ["default", "greenpoint", "tribeca"]) {
+    const placeRows = rows.filter((capture) => capture.name.startsWith(`entry-${place}-`));
+    assert.deepEqual(placeRows.map((capture) => capture.viewport.width).sort((a, b) => a - b), [390, 1440]);
+    for (const capture of placeRows) {
+      assert.ok(capture.visual_metrics.initial_viewport_map_height_css_px >= 240, capture.name);
+      assert.equal(capture.visual_metrics.place_choice_visible, true, capture.name);
+      assert.equal(capture.visual_metrics.control_occlusion, false, capture.name);
+    }
+  }
+});
+
+test("Near You A2/A3: capture focus order keeps the primary place action ahead of map detail", () => {
+  const rows = allCaptureRows().filter((capture) => /^entry-(?:default|greenpoint|tribeca)-/.test(capture.name || "") && capture.viewport.width === 390);
+  assert.equal(rows.length, 3);
+  for (const capture of rows) {
+    const order = capture.visual_metrics.focus_order;
+    assert.ok(Array.isArray(order) && order.length > 0, capture.name);
+    const primaryAt = order.findIndex((label) => /Search|Change (?:place|neighborhood)/.test(label));
+    const mapDetailAt = order.findIndex((label) => /Map details|Toggle attribution/.test(label));
+    assert.ok(primaryAt >= 0, `${capture.name}: primary place action missing`);
+    assert.ok(mapDetailAt < 0 || primaryAt < mapDetailAt, `${capture.name}: unreadable focus order`);
+  }
+});
+
+test("Near You A2: 360px boundary capture combines 200% zoom, reduced motion, and unavailable WebGL", () => {
+  const capture = allCaptureRows().find((row) => row.name === "entry-boundary-360-zoom-200");
+  assert.ok(capture);
+  assert.equal(capture.viewport.width, 360);
+  assert.equal(capture.visual_metrics.zoom_percent, 200);
+  assert.equal(capture.visual_metrics.reduced_motion, true);
+  assert.equal(capture.failure_mode, "webgl_unavailable");
+  assert.notEqual(capture.visual_metrics.map_runtime, "maplibre");
+  assert.match(capture.assertion, /horizontal overflow ≤ 1px/);
+  assert.match(capture.assertion, /≥44px targets/);
+  assert.match(capture.assertion, /keyboard focus order/);
 });

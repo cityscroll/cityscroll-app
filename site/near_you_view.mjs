@@ -978,7 +978,7 @@ function renderNearYouMapState(view) {
           <h3>Areas</h3>
           <ol class="near-area-list">${featureAreas || "<li>No areas match these filters.</li>"}</ol>
         </div>`;
-  return `${notice}<div class="near-map-grid" data-near-map-state="${esc(state)}">
+  return `<div class="near-map-grid" data-near-map-state="${esc(state)}">
         <div class="near-map-wrap">
           <svg id="nearMapSvg" role="img" aria-labelledby="nearMapTitle nearMapDesc" viewBox="${esc(view.viewBox)}" preserveAspectRatio="xMidYMid meet">
             <title id="nearMapTitle">New York City ${esc(view.level.replaceAll("_", " "))} map</title>
@@ -990,6 +990,7 @@ function renderNearYouMapState(view) {
           <p class="map-legend"><span></span> Fewer to more qualifying records</p>
           <p class="near-vintage">Map boundaries: ${esc(view.activity?.boundary_vintage || "not published")}</p>
         </div>
+        ${notice}
         ${navigationAreasHtml}
       </div>`;
 }
@@ -1030,6 +1031,7 @@ function renderNearYouMapSection(view) {
           <button type="button" data-map-zoom="reset">Reset</button>
         </div>
       </div>
+      ${renderNearYouMapState(view)}
       ${view.hasPlace ? `<details class="near-map-layers"><summary>Boundary layers</summary>${geographyShellLayerSwitcherHtml({
         activeType: view.activeGeographyLayer || "nta2020",
         base: view.canonicalBase || "/near-you/",
@@ -1039,7 +1041,6 @@ function renderNearYouMapSection(view) {
             ? `${view.overlapModel.selected.type}:${view.overlapModel.selected.id}`
             : null),
       })}</details>` : ""}
-      ${renderNearYouMapState(view)}
     </section>`;
 }
 
@@ -1131,9 +1132,24 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       ${renderNearYouDeferredShell(view, "results", { includeListPanelMarker })}
     </div>`;
   const selectedHero = view.hasPlace ? `<section class="near-hero">
-      <p class="near-kicker">Place-first civic records</p>
       <h1>${esc(view.placePresentation.label)}</h1>
       ${view.placePresentation.boardHref ? `<p class="near-board-link"><a href="${esc(view.placePresentation.boardHref)}">${esc(view.placePresentation.boardLabel)}</a></p>` : ""}
+    </section>
+    <details class="near-place-guide is-set">
+      <summary id="near-place-heading">Change place</summary>
+      ${geographyShellSearchFormHtml({ action: view.shareHref || view.canonicalBase })}
+      <details class="near-place-options"><summary>Other ways to choose</summary>
+        <p>Choose another borough, neighborhood, community district, or council district. Or use your location once to match your district. Your coordinates stay in this browser; CityScroll does not save them.</p>
+        <div class="near-place-actions">
+          <button type="button" class="js-only near-location-action" data-use-location hidden>Use my location</button>
+          <a href="#near-place-fields">Choose a place</a>
+          <a href="#near-area-list">Browse the area list</a>
+        </div>
+      </details>
+      <p class="near-map-status" data-map-status aria-live="polite"></p>
+    </details>` : "";
+  const selectedSecondary = view.hasPlace ? `<details class="near-selected-context">
+      <summary>About this place</summary>
       <p>${view.isOverview ? "See this place summary. Then choose records to explore." : `${esc(view.lensLabel)} and public records linked to this place.`}</p>
       <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="topic"><span>Topic: ${esc(view.lensLabel)}</span></li>${scopeChips}</ul>
       <details class="near-map-secondary"><summary>Follow or share</summary><nav class="near-actions" aria-label="Map actions">
@@ -1143,20 +1159,9 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       </nav>
       ${renderFollowDiscoveryForNearYou(view)}
       </details>
-    </section>
       ${renderNearYouOverview(view)}
       <details class="near-explore"><summary>Explore related records</summary>${walkEntry}</details>
       ${renderLocalConstellationHTML(view.local_constellation, { heading: "Nearby place records", id: "place-local-constellation-heading" })}
-    <details class="near-place-guide is-set">
-      <summary id="near-place-heading">Change neighborhood or address</summary>
-      ${geographyShellSearchFormHtml({ action: view.shareHref || view.canonicalBase })}
-      <p>Choose another borough, neighborhood, community district, or council district. Or use your location once to match your district. Your coordinates stay in this browser; CityScroll does not save them.</p>
-      <div class="near-place-actions">
-        <button type="button" class="js-only near-location-action" data-use-location hidden>Use my location</button>
-        <a href="#near-place-fields">Choose a place</a>
-        <a href="#near-area-list">Browse the area list</a>
-      </div>
-      <p class="near-map-status" data-map-status aria-live="polite"></p>
     </details>` : "";
   const unselectedEntry = view.hasPlace ? "" : renderGeographyShellEntry({
     canonicalBase: view.shareHref || view.canonicalBase || "/near-you/",
@@ -1205,6 +1210,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
     ${unselectedEntry}
     ${surfaceSwitch}
     ${renderNearYouGeoWorkspace(view)}
+    ${selectedSecondary}
     ${recordsBlock}
     ${renderNearYouDeferredShell(view, "bags")}
   </main>`;

@@ -10,6 +10,7 @@ import argparse
 import hashlib
 import json
 import math
+import subprocess
 import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -25,6 +26,12 @@ EVIDENCE_DIR = ROOT / "docs" / "evidence" / "geography-navigation-release"
 CAPTURE_DIR = EVIDENCE_DIR / "captures"
 ROUTE = "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&drawer=open"
 VIEWPORTS = (("desktop", 1440, 900), ("narrow_touch", 390, 844), ("compact_touch", 360, 800))
+MINIMUM_VISIBLE_MAP_HEIGHT = 240
+ENTRY_ROUTES = (
+    ("default", "/near-you/"),
+    ("greenpoint", "/near-you/?geo=nta2020%3ABK0101&surface=map"),
+    ("tribeca", "/near-you/?geo=nta2020%3AMN0102&surface=map"),
+)
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -42,6 +49,22 @@ def serve() -> tuple[ThreadingHTTPServer, str]:
     server = ThreadingHTTPServer(("127.0.0.1", 0), partial(QuietHandler, directory=str(ROOT)))
     Thread(target=server.serve_forever, daemon=True).start()
     return server, f"http://127.0.0.1:{server.server_port}"
+
+
+def serve_near_you() -> tuple[subprocess.Popen, str]:
+    process = subprocess.Popen(
+        ["node", "tools/serve_near_you_capture.mjs"],
+        cwd=ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    base = (process.stdout.readline() if process.stdout else "").strip()
+    if not base.startswith("http://127.0.0.1:"):
+        error = process.stderr.read() if process.stderr else ""
+        process.terminate()
+        raise RuntimeError(f"Near You capture server did not start: {base} {error}")
+    return process, base
 
 
 def sha256(value: str) -> str:
@@ -96,6 +119,11 @@ def shell_snapshot(page) -> dict:
         """() => {
           const visible = (node) => {
             if (!node || node.hidden) return false;
+            const closed = node.closest('details:not([open])');
+            if (closed) {
+              const summary = closed.querySelector(':scope > summary');
+              if (node !== summary && !summary?.contains(node)) return false;
+            }
             const style = getComputedStyle(node);
             const rect = node.getBoundingClientRect();
             return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
@@ -107,7 +135,21 @@ def shell_snapshot(page) -> dict:
           const search = document.querySelector('#near-geo-search-input');
           const layer = document.querySelector('[data-geography-layer="nta2020"]');
           const comparison = document.querySelector('[data-geography-layer="council_district"]');
-          const map = document.querySelector('#nearMapSvg, #near-map-enhanced, .near-map-wrap');
+          const map = document.querySelector('.near-map-wrap, #near-map-enhanced, #nearMapSvg');
+          const mapRect = map?.getBoundingClientRect();
+          const selectedLabel = document.querySelector('[data-geography-selected-label]');
+          const selectedLabelRect = visible(selectedLabel) ? selectedLabel.getBoundingClientRect() : null;
+          const controlRects = [...document.querySelectorAll('.maplibregl-ctrl, .map-controls button')]
+            .filter(visible)
+            .map((node) => node.getBoundingClientRect());
+          const overlaps = (left, right) => Boolean(left && right
+            && left.left < right.right && left.right > right.left
+            && left.top < right.bottom && left.bottom > right.top);
+          const focusOrder = [...document.querySelectorAll('a[href], button, input, summary, [tabindex]')]
+            .filter((node) => visible(node) && !node.disabled && node.getAttribute('tabindex') !== '-1')
+            .map((node) => (node.getAttribute('aria-label') || node.textContent || node.name || node.id || node.tagName).trim().replace(/\\s+/g, ' ').slice(0, 80));
+          const placeChoice = document.querySelector('.near-hero h1, #near-geo-heading');
+          const root = document.querySelector('[data-near-you-root]');
           const style = (node) => node ? {
             display: getComputedStyle(node).display,
             color: getComputedStyle(node).color,
@@ -118,9 +160,17 @@ def shell_snapshot(page) -> dict:
             body_text: document.body.innerText || '',
             overflow_x: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
             form_font_px: search ? Number.parseFloat(getComputedStyle(search).fontSize) : null,
-            targets: boxes('#near-geo-search-input, .near-geo-search button, [data-use-location], .near-geo-layer, .near-geo-more-boundaries > summary, .near-surface-link'),
+            targets: boxes('#near-geo-search-input, .near-geo-search button, .near-place-guide > summary, [data-near-recovery="retry"]'),
             drawer_present: Boolean(document.querySelector('details.near-geo-more-boundaries, [data-geography-drawer-toggle], .near-geo-drawer')),
-            map_area: map ? (() => { const rect = map.getBoundingClientRect(); return { width: rect.width, height: rect.height }; })() : { width: 0, height: 0 },
+            map_area: mapRect ? { width: mapRect.width, height: mapRect.height } : { width: 0, height: 0 },
+            visible_map_height: mapRect ? Math.max(0, Math.min(innerHeight, mapRect.bottom) - Math.max(0, mapRect.top)) : 0,
+            map_top: mapRect?.top ?? null,
+            place_choice_visible: visible(placeChoice),
+            map_runtime: root?.dataset.nearMapRuntime || 'server-svg',
+            map_runtime_reason: root?.dataset.nearMapRuntimeReason || null,
+            selected_label_present: Boolean(selectedLabel),
+            control_occlusion: controlRects.some((rect) => overlaps(rect, selectedLabelRect)),
+            focus_order: focusOrder,
             computed_styles: { active: style(layer), selected: style(layer), comparison: style(comparison) },
             nta_codes_in_primary_labels: [...document.querySelectorAll('[data-geography-key] span, [data-geography-key]')].filter((node) => /^[A-Z]{2}\\d{4}$/.test((node.textContent || '').trim())).length,
           };
@@ -133,6 +183,8 @@ def shell_snapshot(page) -> dict:
     assert snapshot["targets"] and min(item["height"] for item in snapshot["targets"]) >= 44
     assert snapshot["drawer_present"]
     assert snapshot["map_area"]["width"] > 0 and snapshot["map_area"]["height"] > 0
+    assert snapshot["place_choice_visible"]
+    assert not snapshot["control_occlusion"]
     assert snapshot["nta_codes_in_primary_labels"] == 0
     return snapshot
 
@@ -175,29 +227,69 @@ def overlap_snapshot(page) -> dict:
     return snapshot
 
 
-def browser_capture(base: str, *, name: str, width: int, height: int, overlap: bool, fixture_path: str | None = None) -> dict:
+def browser_capture(
+    base: str,
+    *,
+    name: str,
+    width: int,
+    height: int,
+    overlap: bool,
+    fixture_path: str | None = None,
+    route: str | None = None,
+    dynamic: bool = False,
+    retain_performance: bool = True,
+    reduced_motion: bool = False,
+    webgl_unavailable: bool = False,
+    zoom_percent: int = 100,
+) -> dict:
     from tools.capture_geography_navigation import build_overlap_fixture_html
 
-    route = ROUTE if overlap else "/near-you/"
+    route = route or (ROUTE if overlap else "/near-you/")
     if overlap:
         assert fixture_path
         page_url = f"{base}/{fixture_path}"
     else:
-        page_url = f"{base}/site{route}"
+        page_url = f"{base}{route}" if dynamic else f"{base}/site{route}"
     observations = []
     with launched_chromium() as browser:
-        context = browser.new_context(viewport={"width": width, "height": height}, has_touch=width < 500)
+        context = browser.new_context(
+            viewport={"width": width, "height": height},
+            has_touch=width < 500,
+            reduced_motion="reduce" if reduced_motion else "no-preference",
+        )
         page = context.new_page()
         try:
+            if webgl_unavailable:
+                page.add_init_script(
+                    """(() => {
+                      const original = HTMLCanvasElement.prototype.getContext;
+                      HTMLCanvasElement.prototype.getContext = function(type, ...args) {
+                        if (String(type).toLowerCase().includes('webgl')) return null;
+                        return original.call(this, type, ...args);
+                      };
+                    })()"""
+                )
             page.goto(page_url, wait_until="domcontentloaded", timeout=30_000)
+            page.wait_for_timeout(400)
             if not overlap:
                 page.locator("#near-geo-search-input").wait_for(state="attached", timeout=10_000)
             snapshot = overlap_snapshot(page) if overlap else shell_snapshot(page)
-            retained = performance_samples(page, page_url, overlap=overlap)
+            retained = performance_samples(page, page_url, overlap=overlap) if retain_performance else None
             if not overlap:
-                page.locator("#near-geo-search-input").focus()
+                focus_target = (
+                    page.locator(".near-place-guide > summary")
+                    if route != "/near-you/"
+                    else page.locator("#near-geo-search-input")
+                )
+                focus_target.focus()
+                snapshot["keyboard_focus_start"] = page.evaluate(
+                    "() => document.activeElement?.textContent?.trim() || document.activeElement?.getAttribute('aria-label') || document.activeElement?.id"
+                )
                 page.keyboard.press("Tab")
                 assert page.evaluate("() => document.activeElement !== document.body")
+                snapshot["keyboard_focus_next"] = page.evaluate(
+                    "() => document.activeElement?.textContent?.trim() || document.activeElement?.getAttribute('aria-label') || document.activeElement?.id"
+                )
                 snapshot["keyboard_path"] = "passed"
                 snapshot["drawer"] = "present"
             else:
@@ -214,11 +306,11 @@ def browser_capture(base: str, *, name: str, width: int, height: int, overlap: b
                 "name": name,
                 "route": route,
                 "viewport": {"width": width, "height": height},
-                "assertion": "headless Chromium verified horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus, collapsible drawer behavior, selected labels, exact comparison percentages, and map geometry metrics",
-                "failure_mode": "none",
+                "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
+                "failure_mode": "webgl_unavailable" if webgl_unavailable else "none",
                 "asset_classes": ["server_html", "navigation_shell", "simplified_geography_layers"],
                 "timing_samples": {"dom_content_loaded_ms": page.evaluate("() => performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart")},
-                "performance_samples": retained,
+                **({"performance_samples": retained} if retained else {}),
                 "render_content_sha256": sha256(rendered),
                 "visual_metrics": {
                     **({
@@ -228,13 +320,28 @@ def browser_capture(base: str, *, name: str, width: int, height: int, overlap: b
                         "clipped_or_overlapping_label_count": snapshot.get("clipped_or_overlapping_label_count", 0),
                         "computed_styles": snapshot["computed_styles"],
                         "visible_map_area_css_px": snapshot.get("visible_map_area_css_px", snapshot.get("map_area")),
+                        "initial_viewport_map_height_css_px": snapshot.get("visible_map_height", 0),
+                        "map_top_css_px": snapshot.get("map_top"),
+                        "place_choice_visible": snapshot.get("place_choice_visible", True),
+                        "map_runtime": snapshot.get("map_runtime"),
+                        "map_runtime_reason": snapshot.get("map_runtime_reason"),
+                        "focus_order": snapshot.get("focus_order", []),
                         "control_occlusion": snapshot.get("control_occlusion", False),
                         "nta_codes_in_primary_labels": snapshot["nta_codes_in_primary_labels"],
+                        "zoom_percent": zoom_percent,
+                        "zoom_reflow_basis": "360 CSS px represents a 720 px viewport at 200% browser zoom" if zoom_percent == 200 else "native CSS viewport",
+                        "reduced_motion": reduced_motion,
                     }),
                 },
                 "snapshot": snapshot,
                 "rendered_html": rendered,
             })
+            if dynamic and width in (390, 1440):
+                assert snapshot.get("visible_map_height", height) >= MINIMUM_VISIBLE_MAP_HEIGHT, snapshot
+            if webgl_unavailable:
+                assert snapshot.get("map_runtime") != "maplibre", snapshot
+            if not overlap:
+                assert snapshot.get("focus_order"), snapshot
         finally:
             context.close()
     return observations[0]
@@ -243,22 +350,57 @@ def browser_capture(base: str, *, name: str, width: int, height: int, overlap: b
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--write-evidence", action="store_true")
+    parser.add_argument("--layout-only", action="store_true")
     args = parser.parse_args()
-    server, base = serve()
+    observations = []
+    fixture_html = ""
     fixture_path = ".artifacts/geography-navigation-release/bk1503-overlap.html"
-    try:
-        from tools.capture_geography_navigation import build_overlap_fixture_html
+    if not args.layout_only:
+        server, base = serve()
+        try:
+            from tools.capture_geography_navigation import build_overlap_fixture_html
 
-        fixture_html = normalize_html(build_overlap_fixture_html())
-        fixture_file = ROOT / fixture_path
-        fixture_file.parent.mkdir(parents=True, exist_ok=True)
-        fixture_file.write_text(fixture_html, encoding="utf-8")
-        observations = [browser_capture(base, name="bk1503-desktop", width=1440, height=900, overlap=True, fixture_path=fixture_path)]
-        for name, width, height in VIEWPORTS[1:]:
-            observations.append(browser_capture(base, name=name, width=width, height=height, overlap=False))
+            fixture_html = normalize_html(build_overlap_fixture_html())
+            fixture_file = ROOT / fixture_path
+            fixture_file.parent.mkdir(parents=True, exist_ok=True)
+            fixture_file.write_text(fixture_html, encoding="utf-8")
+            observations.append(browser_capture(base, name="bk1503-desktop", width=1440, height=900, overlap=True, fixture_path=fixture_path))
+            for name, width, height in VIEWPORTS[1:]:
+                observations.append(browser_capture(base, name=name, width=width, height=height, overlap=False))
+        finally:
+            server.shutdown()
+            server.server_close()
+
+    dynamic_server, dynamic_base = serve_near_you()
+    try:
+        for route_name, route in ENTRY_ROUTES:
+            for viewport_name, width, height in VIEWPORTS[:2]:
+                observations.append(browser_capture(
+                    dynamic_base,
+                    name=f"entry-{route_name}-{viewport_name}",
+                    width=width,
+                    height=height,
+                    overlap=False,
+                    route=route,
+                    dynamic=True,
+                    retain_performance=False,
+                ))
+        observations.append(browser_capture(
+            dynamic_base,
+            name="entry-boundary-360-zoom-200",
+            width=360,
+            height=800,
+            overlap=False,
+            route="/near-you/",
+            dynamic=True,
+            retain_performance=False,
+            reduced_motion=True,
+            webgl_unavailable=True,
+            zoom_percent=200,
+        ))
     finally:
-        server.shutdown()
-        server.server_close()
+        dynamic_server.terminate()
+        dynamic_server.wait(timeout=10)
 
     payload = {"captures": observations}
     if args.write_evidence:
@@ -360,6 +502,7 @@ def main() -> int:
                         **capture["performance_samples"],
                     }
                     for capture in observations
+                    if "performance_samples" in capture
                 ],
             },
             "validation": {
