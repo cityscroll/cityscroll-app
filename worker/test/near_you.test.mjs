@@ -2,6 +2,41 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { handleNearYou } from "../src/near_you.mjs";
+import { buildNearYou } from "../../tools/build_worker_route_read_models.mjs";
+
+test("native place searches resolve retained names to canonical geography without losing filters", async () => {
+  const key = "geography:nta2020:MN0102";
+  const activity = {
+    records:{meetings:{m1:{id:"m1", title:"Local hearing"}}},
+    by_level:{borough:{Manhattan:{meetings:1}}},
+    district_items:{by_level:{borough:{Manhattan:{meetings:["m1"]}}}},
+    geography_items:{definitions:{[key]:{key,type:"nta2020",id:"MN0102",label:"Tribeca-Civic Center"}},by_key:{[key]:{meetings:["m1"]}}},
+  };
+  const materialized = buildNearYou(activity, {}, "native-search-test");
+  const values = new Map(materialized.entries.map(({key,value})=>[key,value]));
+  values.set("route-read-model:near-you:manifest:v1", JSON.stringify(materialized.manifest));
+  const response = await handleNearYou(new Request("https://cityscroll.org/near-you/?neighborhood=Tribeca-Civic+Center&lens=meetings&agency=Transportation&q=curb"), {ALERT_STATE:kv(values)});
+  assert.equal(response.status, 303);
+  const target = new URL(response.headers.get("location"));
+  assert.equal(target.searchParams.get("geo"), "nta2020:MN0102");
+  assert.equal(target.searchParams.get("lens"), "meetings");
+  assert.equal(target.searchParams.get("agency"), "Transportation");
+  assert.equal(target.searchParams.get("q"), "curb");
+  assert.equal(target.searchParams.has("neighborhood"), false);
+  const deferred = await handleNearYou(new Request("https://cityscroll.org/near-you/deferred.json?neighborhood=Tribeca-Civic+Center&lens=meetings"), {ALERT_STATE:kv(values)});
+  assert.equal(deferred.status, 303);
+  const deferredTarget = new URL(deferred.headers.get("location"));
+  assert.equal(deferredTarget.pathname, "/near-you/deferred.json");
+  assert.equal(deferredTarget.searchParams.get("geo"), "nta2020:MN0102");
+  const resolved = await handleNearYou(new Request(deferredTarget), {ALERT_STATE:kv(values)});
+  assert.equal(resolved.status, 200);
+  assert.equal((await resolved.json()).schema, "cityscroll.near_you_deferred.v1");
+  const unknown = await handleNearYou(new Request("https://cityscroll.org/near-you/deferred.json?neighborhood=Unknown+Place&lens=meetings"), {ALERT_STATE:kv(values)});
+  assert.equal(unknown.status, 200);
+  const unknownBody = await unknown.json();
+  assert.doesNotMatch(unknownBody.results_html, /data-record-id=/);
+  assert.match(unknownBody.results_html, /unavailable/i);
+});
 
 function kv(values) {
   return { async get(key) { return values.get(key) || null; } };

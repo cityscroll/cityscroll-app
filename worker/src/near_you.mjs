@@ -1,6 +1,8 @@
 import boundaries from "./data/district_boundaries.json" with { type: "json" };
 import communityGeography from "./data/community_board_geography_lookup.json" with { type: "json" };
 import { scopeFromNearYouUrl } from "../../site/near_you_scope_runtime.mjs";
+import { geographyNavigationUrlWithFilters } from "../../site/geography_navigation_state.mjs";
+import { resolveGeographyEntryFromPlaceLabel } from "../../site/geography_navigation_entry.mjs";
 import {
   buildNearYouViewModel,
   renderNearYouDeferredParts,
@@ -94,6 +96,20 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
       status: 503,
       headers: { ...responseHeaders(), "Cache-Control": "no-store" },
     });
+  }
+  if (scope.place.neighborhood && !scope.place.geographies?.length) {
+    const layers = new Map();
+    for (const definition of Object.values(routeReadModel.activity?.geography_items?.definitions || {})) {
+      if (!layers.has(definition.type)) layers.set(definition.type, {type:definition.type, features:[]});
+      layers.get(definition.type).features.push(definition);
+    }
+    const entry = resolveGeographyEntryFromPlaceLabel(scope.place.neighborhood, {layerData:[...layers.values()]});
+    if (entry.ok && entry.selection) {
+      const target = geographyNavigationUrlWithFilters({
+        ...entry.selection, surface:"map", drawer:"open", lens:scope.facets.domains[0],
+      }, {base:url.toString()});
+      return new Response(null, {status:303, headers:{Location:target, "Cache-Control":"no-store"}});
+    }
   }
   const view = buildNearYouViewModel(scope, activityWithConsultations(routeReadModel.activity), boundaries, {
     canonicalBase: CANONICAL_BASE,

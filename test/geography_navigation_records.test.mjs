@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
+import { test as runTest } from "node:test";
 
 import {
   GEOGRAPHY_RECORD_LENSES,
@@ -24,13 +24,26 @@ import {
 } from "../site/near_you_view.mjs";
 import { nearYouRecordInspectionFacts, renderNearYouRecordInspectionBody } from "../site/near_you_record_inspection.mjs";
 import { scopeFromLensState, scopeWithGeographies } from "../site/scope_v0.mjs";
-import { testClockISOString } from "./helpers/test_clock.mjs";
+import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
+
+// Record dates and the legacy view clock share one deterministic instant.
+function test(name, body) {
+  return runTest(name, () => withPinnedClock("2026-09-22T00:00:00.000Z", body));
+}
 
 const KEYS = Object.freeze({
   nta: "geography:nta2020:BK1503",
   community: "geography:community_district:K15",
   council: "geography:council_district:48",
   precinct: "geography:police_precinct:61",
+});
+
+test("unresolved place text never falls through to citywide membership", () => {
+  const activity = { district_items: { by_level: { borough: { Manhattan: { meetings:["unrelated"] } } } } };
+  const result = recordIdsForScope(activity, "meetings", {place:{neighborhood:"Unknown neighborhood"}});
+  assert.equal(result.exact, false);
+  assert.equal(result.count, null);
+  assert.deepEqual(result.ids, []);
 });
 
 const LENS_IDS = Object.freeze({

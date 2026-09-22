@@ -29,6 +29,12 @@ const registry = readJson("site/data/source_contracts.json");
 const units = snapshot.domains.flatMap((domain) => domain.units);
 const unitById = new Map(units.map((unit) => [unit.unit_id, unit]));
 
+test("resident neighborhood boundaries are context, not extra civic records", () => {
+  const row = census.sources.find((source) => source.source_id === "dcp-nta2020-boundaries");
+  assert.equal(row.disposition, "context_only");
+  assert.match(row.reason, /resident Near You map/);
+});
+
 test("the committed artifacts are what the builder produces from committed evidence", () => {
   const rebuilt = buildServedCoverage({ root: ROOT, previousSnapshot: snapshot });
   assert.deepEqual(rebuilt.snapshot, snapshot);

@@ -3,6 +3,7 @@
 import os
 import subprocess
 from pathlib import Path
+from urllib.parse import parse_qs, urljoin, urlparse
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -130,6 +131,31 @@ def main():
                 page.wait_for_function("() => document.querySelector('[data-near-you-root]')?.dataset.nearDeferredState==='ready'")
                 assert page.evaluate('window.__sameDocument === true'), 'hash change reloaded document'
                 assert 'cd=M04' in page.locator('[data-near-you-root]').get_attribute('data-near-deferred-href')
+                # Native links must carry the same filters as intercepted clicks.
+                page.goto(base+'/near-you/?geo=nta2020%3ABK0101&lens=land&agency=Transportation&q=curb',wait_until='domcontentloaded')
+                ready(page,selected=True,allow_unavailable=True)
+                for selector in ['.near-area-list a', '[data-geography-related-district]', '[data-geography-overlap-records]']:
+                    href=page.locator(selector).first.get_attribute('href')
+                    query=parse_qs(urlparse(href).query)
+                    assert query.get('lens')==['land'], (selector,query)
+                    assert query.get('agency')==['Transportation'], (selector,query)
+                    assert query.get('q')==['curb'], (selector,query)
+                href=page.locator('.near-area-list a').filter(has_text='Tribeca-Civic Center').first.get_attribute('href')
+                native=browser.new_page(viewport={'width':width,'height':height})
+                native.add_init_script(INSTRUMENT)
+                native.goto(urljoin(base,href),wait_until='domcontentloaded')
+                ready(native,selected=True,allow_unavailable=True)
+                assert 'geo=nta2020%3AMN0102' in native.url
+                native.close()
+                # Bypass the submit listener, exercising the actual GET form/Worker path.
+                page.locator('.near-place-guide > summary').click()
+                page.locator('[data-geography-search] input[name="neighborhood"]').fill('Tribeca-Civic Center')
+                page.locator('[data-geography-search]').evaluate('(form)=>form.submit()')
+                page.wait_for_url('**geo=nta2020%3AMN0102**')
+                ready(page,selected=True,allow_unavailable=True)
+                query=parse_qs(urlparse(page.url).query)
+                assert query.get('agency')==['Transportation'] and query.get('q')==['curb']
+                assert query.get('lens')==['land'] and 'neighborhood' not in query
                 page.close()
             browser.close()
         print('PASS: desktop/mobile labels, map click, search/list selection, exact records, camera, history, unavailable coverage, district continuation and record inspection')

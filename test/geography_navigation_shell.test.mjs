@@ -20,6 +20,7 @@ import {
   contrastRatio,
   estimateNeighborhoodLabelBudget,
   geographyShellAreasListHtml,
+  geographyShellSearchFormHtml,
   geographyShellLayerSwitcherHtml,
   labelWrapsToAtMostTwoLines,
   navigationAreaEntriesFromLayerDoc,
@@ -41,6 +42,24 @@ import { scopeFromLensState } from "../site/scope_v0.mjs";
 import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
 
 const ROOT = process.cwd();
+
+test("native area links and search controls retain non-place filters", () => {
+  const base = "/near-you/?geo=nta2020%3ABK0101&scope=citywide&lens=land&agency=Transportation&q=curb&lat=40.7";
+  const html = geographyShellAreasListHtml([{type:"nta2020", id:"BK0102", key:"geography:nta2020:BK0102", label:"Williamsburg"}], {base});
+  const href = html.match(/href="([^"]+)"/)[1].replaceAll("&amp;", "&");
+  const params = new URL(href, "https://cityscroll.org").searchParams;
+  assert.equal(params.get("geo"), "nta2020:BK0102");
+  assert.equal(params.get("lens"), "land");
+  assert.equal(params.get("agency"), "Transportation");
+  assert.equal(params.get("q"), "curb");
+  assert.equal(params.has("scope"), false);
+  assert.equal(params.has("lat"), false);
+  const form = geographyShellSearchFormHtml({action:base});
+  assert.match(form, /name="lens" value="land"/);
+  assert.match(form, /name="agency" value="Transportation"/);
+  assert.match(form, /name="q" value="curb"/);
+  assert.doesNotMatch(form, /name="(?:geo|scope|lat)"/);
+});
 const NTA_LAYER = JSON.parse(
   readFileSync(join(ROOT, "site/data/geography/layers/nta2020/26B.json"), "utf8"),
 );

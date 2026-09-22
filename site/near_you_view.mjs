@@ -75,7 +75,7 @@ import {
   GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
   GEOGRAPHY_NAVIGATION_SURFACE_MAP,
   GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
-  geographyNavigationUrlFromState,
+  geographyNavigationUrlWithFilters,
   parseGeographyNavigationState,
 } from "./geography_navigation_state.mjs";
 import {
@@ -527,9 +527,9 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
           : null),
     }
     : null;
-  const overlapBase = `${String(canonicalBase || "/near-you").replace(/\/$/, "")}/`;
+  const overlapBase = nearYouUrlFromScope(scope, {base:canonicalBase});
   const selectedRecordsHref = selectedGeographyKey
-    ? geographyNavigationUrlFromState({
+    ? geographyNavigationUrlWithFilters({
       ok: true,
       geo: `${overlapSelected.type}:${overlapSelected.id}`,
       key: selectedGeographyKey,
@@ -540,7 +540,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       drawer: geographyState?.drawer || GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
       focus: geographyState?.focus || null,
       lens,
-    }, { base: canonicalBase })
+    }, { base: overlapBase })
     : null;
   const crosswalkRowsProvided = Array.isArray(options.crosswalkRows);
   const crosswalkAvailable = crosswalkRowsProvided
@@ -970,7 +970,7 @@ function renderNearYouMapState(view) {
   const navigationAreasHtml = view.navigationAreas?.length
     ? geographyShellAreasListHtml(view.navigationAreas, {
       activeType: view.activeGeographyLayer || "nta2020",
-      base: view.canonicalBase || "/near-you/",
+      base: view.shareHref || view.canonicalBase || "/near-you/",
       surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
       countsByKey: view.navigationAreaCountsByKey,
     })
@@ -1149,7 +1149,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       ${renderLocalConstellationHTML(view.local_constellation, { heading: "Nearby place records", id: "place-local-constellation-heading" })}
     <details class="near-place-guide is-set">
       <summary id="near-place-heading">Change neighborhood or address</summary>
-      ${geographyShellSearchFormHtml({ action: view.canonicalBase })}
+      ${geographyShellSearchFormHtml({ action: view.shareHref || view.canonicalBase })}
       <p>Choose another borough, neighborhood, community district, or council district. Or use your location once to match your district. Your coordinates stay in this browser; CityScroll does not save them.</p>
       <div class="near-place-actions">
         <button type="button" class="js-only near-location-action" data-use-location hidden>Use my location</button>
@@ -1159,7 +1159,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       <p class="near-map-status" data-map-status aria-live="polite"></p>
     </details>` : "";
   const unselectedEntry = view.hasPlace ? "" : renderGeographyShellEntry({
-    canonicalBase: view.canonicalBase || "/near-you/",
+    canonicalBase: view.shareHref || view.canonicalBase || "/near-you/",
     surface: shellSurface,
     activeType: view.activeGeographyLayer || "nta2020",
     searchValue: view.scope.place.neighborhood || "",
@@ -1170,7 +1170,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
   });
   const surfaceSwitch = view.hasPlace
     ? renderGeographyShellSurfaceSwitch({
-      canonicalBase: view.canonicalBase || "/near-you/",
+      canonicalBase: view.shareHref || view.canonicalBase || "/near-you/",
       surface: shellSurface,
       recordsLabel: knownCount(view.results.count) == null ? "Browse records" : "Browse records",
       recordsCount: knownCount(view.results.count),

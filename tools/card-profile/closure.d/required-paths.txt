@@ -540,6 +540,8 @@ site/following_suggestions.mjs
 site/following_view.mjs
 site/franchise_notice.mjs
 site/franchise_phase_spine.mjs
+site/geography_navigation_entry.mjs
+site/geography_navigation_state.mjs
 site/graph_edge_provenance.mjs
 site/hearing_attend_pack.mjs
 site/hearing_location.js

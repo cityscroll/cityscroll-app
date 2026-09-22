@@ -329,6 +329,31 @@ export function geographyNavigationUrlFromState(state = {}, { base = "/near-you/
   return absolute ? url.toString() : `${url.pathname}${url.search}`;
 }
 
+/** Non-place filters carried by every native and enhanced place-selection path. */
+export function geographyNavigationFilterParams(input) {
+  const params = searchParams(input);
+  for (const key of [
+    "geo", "boro", "cd", "council", "level", "id", "parent", "neighborhood", "scope",
+    ...GEOGRAPHY_NAVIGATION_STATE_KEYS.filter((key) => key !== "lens"),
+    ...GEOGRAPHY_NAVIGATION_EPHEMERAL_KEYS,
+  ]) params.delete(key);
+  return params;
+}
+
+/** Replace place/presentation state while retaining topic, agency and time filters. */
+export function geographyNavigationUrlWithFilters(state = {}, { base = "/near-you/" } = {}) {
+  const filters = geographyNavigationFilterParams(base);
+  const url = new URL(geographyNavigationUrlFromState({
+    ...state,
+    lens: state.lens || filters.get("lens"),
+  }, { base }), "https://cityscroll.invalid");
+  for (const [key, value] of filters) {
+    if (key !== "lens") url.searchParams.append(key, value);
+  }
+  url.hash = "";
+  return /^[a-z][a-z\d+.-]*:\/\//i.test(base) ? url.toString() : `${url.pathname}${url.search}`;
+}
+
 /**
  * Round-trip helper used by share/refresh tests: parse then serialize to the
  * canonical enhanced URL form.

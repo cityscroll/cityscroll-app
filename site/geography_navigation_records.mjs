@@ -116,6 +116,10 @@ export function geographyRecordLenses(activity, key) {
 /** Project a selected scope onto the canonical membership index, with a legacy fallback only when no generic index exists. */
 export function recordIdsForScope(activity, lens, scope = {}) {
   const key = geographyKeyForScope(scope);
+  if (!key && scope.place?.neighborhood) {
+    return Object.freeze({schema:GEOGRAPHY_RECORDS_SCHEMA, key:null, lens,
+      state:"unavailable", ids:Object.freeze([]), count:null, exact:false});
+  }
   if (key && activity?.geography_items) {
     const projection = geographyRecordProjection(activity, { key, lens });
     const hasLegacyAxis = scope?.place?.boroughs?.length
