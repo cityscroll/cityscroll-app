@@ -1136,7 +1136,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       ${view.placePresentation.boardHref ? `<p class="near-board-link"><a href="${esc(view.placePresentation.boardHref)}">${esc(view.placePresentation.boardLabel)}</a></p>` : ""}
       <p>${view.isOverview ? "See this place summary. Then choose records to explore." : `${esc(view.lensLabel)} and public records linked to this place.`}</p>
       <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="topic"><span>Topic: ${esc(view.lensLabel)}</span></li>${scopeChips}</ul>
-      <details class="near-map-secondary"><summary>Follow or share this place</summary><nav class="near-actions" aria-label="Map actions">
+      <details class="near-map-secondary"><summary>Follow or share</summary><nav class="near-actions" aria-label="Map actions">
         <a href="${esc(view.browseHref)}">Open as a list</a>
         <a href="${esc(view.watchHref)}">Watch these filters</a>
         <a href="${esc(view.shareHref)}">Share this map</a>
