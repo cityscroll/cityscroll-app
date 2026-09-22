@@ -372,6 +372,144 @@ test("selected Near You document renders overlap drawer for BK1503 council compa
   assert.match(html, /data-geography-overlap-root/);
 });
 
+test("A1: Greenpoint police compare keeps Greenpoint, Precinct 94, and the NTA directory", () => {
+  const { manifest, shards } = loadCommittedShards();
+  const loaded = crosswalkRowsFromCommittedArtifacts({
+    selectedKey: "geography:nta2020:BK0101",
+    compareType: "police_precinct",
+    manifest,
+    shards,
+  });
+  assert.equal(loaded.available, true);
+  const selected = {
+    key: "geography:nta2020:BK0101",
+    type: "nta2020",
+    id: "BK0101",
+    label: "Greenpoint",
+    boundary_vintage: "26B",
+  };
+  const model = buildSelectedGeographyOverlapViewModel({
+    selected,
+    compareType: "police_precinct",
+    crosswalkRows: loaded.rows,
+    crosswalkAvailable: true,
+  });
+  assert.equal(model.selected.label, "Greenpoint");
+  assert.equal(model.selected.key, "geography:nta2020:BK0101");
+  assert.equal(model.compare_type, "police_precinct");
+  assert.deepEqual(model.area_section.rows.map((row) => row.id), ["94"]);
+  assert.match(model.area_section.rows[0].label, /Police Precinct 94/);
+  const drawer = renderSelectedGeographyOverlapDrawerHtml(model);
+  assert.match(drawer, /data-geography-selected-label>Greenpoint</);
+  assert.match(drawer, /Police Precinct 94/);
+  assert.doesNotMatch(drawer, /data-geography-selected-label>BK0101</);
+
+  const layerDoc = {
+    type: "nta2020",
+    vintage: { id: "26B" },
+    features: [
+      { key: "geography:nta2020:BK0101", id: "BK0101", type: "nta2020", label: "Greenpoint", subtype: "residential" },
+      { key: "geography:nta2020:BK0104", id: "BK0104", type: "nta2020", label: "East Williamsburg", subtype: "residential" },
+    ],
+  };
+  const activity = {
+    ...fixtureActivity(),
+    geography_items: {
+      definitions: {
+        "geography:nta2020:BK0101": selected,
+      },
+      by_key: {
+        "geography:nta2020:BK0101": { meetings: ["m-1"] },
+      },
+    },
+  };
+  const scope = scopeWithGeographies(scopeFromLensState("meetings", { agency: "Transportation", q: "curb" }), [
+    "geography:nta2020:BK0101",
+  ]);
+  let latestCompare = "police_precinct";
+  const views = ["community_district", "council_district", "police_precinct"].map((compareType) => {
+    latestCompare = compareType;
+    const compareRows = crosswalkRowsFromCommittedArtifacts({
+      selectedKey: "geography:nta2020:BK0101",
+      compareType,
+      manifest,
+      shards,
+    });
+    return buildNearYouViewModel(scope, activity, {
+      schema: "cityscroll.district_boundaries.v1",
+      boundary_vintage: "2026-05-26",
+      community_districts: [],
+      council_districts: [],
+    }, {
+      geographySearch: `?geo=nta2020:BK0101&compare=${compareType}&surface=map&lens=meetings&agency=Transportation&q=curb`,
+      navigationLayerDoc: layerDoc,
+      navigationLayerType: "nta2020",
+      geographyLabelIndex: { "geography:nta2020:BK0101": "Greenpoint" },
+      crosswalkRows: compareRows.rows,
+      crosswalkAvailable: compareRows.available,
+      shellSurface: "map",
+      canonicalBase: "https://cityscroll.org/near-you",
+    });
+  });
+  for (const view of views) {
+    assert.equal(view.placePresentation.label, "Greenpoint");
+    assert.equal(view.activeGeographyLayer, "nta2020");
+    assert.equal(view.geographyState?.key, "geography:nta2020:BK0101");
+    assert.equal(view.geographyState?.lens, "meetings");
+    assert.ok(view.navigationAreas.some((entry) => entry.id === "BK0101"));
+    assert.ok(view.navigationAreas.every((entry) => entry.type === "nta2020"));
+    const html = renderNearYouDocument(view);
+    assert.match(html, /<h1>Greenpoint<\/h1>/);
+    assert.match(html, /data-geography-areas[^>]*data-geography-layer="nta2020"/);
+    assert.match(html, /data-geography-layer="nta2020"[^>]*aria-pressed="true"/);
+    assert.doesNotMatch(html, /No areas match/);
+    assert.doesNotMatch(html, /<h1>BK0101<\/h1>/);
+  }
+  assert.equal(latestCompare, "police_precinct");
+  assert.equal(views.at(-1).geographyState?.compare, "police_precinct");
+  assert.match(renderNearYouDocument(views.at(-1)), /Police Precinct 94/);
+
+  // Missing crosswalk keeps the primary place and never claims zero areas exist.
+  const unavailable = buildNearYouViewModel(scope, activity, {
+    schema: "cityscroll.district_boundaries.v1",
+    boundary_vintage: "2026-05-26",
+    community_districts: [],
+    council_districts: [],
+  }, {
+    geographySearch: "?geo=nta2020:BK0101&compare=police_precinct&surface=map&lens=meetings",
+    navigationLayerDoc: layerDoc,
+    navigationLayerType: "nta2020",
+    geographyLabelIndex: { "geography:nta2020:BK0101": "Greenpoint" },
+    crosswalkAvailable: false,
+    shellSurface: "map",
+    canonicalBase: "https://cityscroll.org/near-you",
+  });
+  assert.equal(unavailable.placePresentation.label, "Greenpoint");
+  assert.equal(unavailable.activeGeographyLayer, "nta2020");
+  assert.equal(unavailable.overlapModel?.selected?.label, "Greenpoint");
+  assert.equal(unavailable.overlapModel?.area_section?.available, false);
+  const unavailableHtml = renderNearYouDocument(unavailable);
+  assert.match(unavailableHtml, /Comparison details unavailable/);
+  assert.doesNotMatch(unavailableHtml, /No areas match/);
+  assert.match(unavailableHtml, /data-geography-areas[^>]*data-geography-layer="nta2020"/);
+});
+
+test("A2: map island keeps primary layer independent of compare and ignores stale loads", () => {
+  assert.match(VIEW_SOURCE, /geographyState\?\.type/);
+  assert.doesNotMatch(
+    VIEW_SOURCE,
+    /activeGeographyLayer = options\.navigationLayerType\s*\|\|\s*geographyState\?\.compare/,
+  );
+  assert.match(MAP_SOURCE, /selected\?\.type/);
+  assert.doesNotMatch(MAP_SOURCE, /initialType = selected\?\.compare/);
+  assert.match(MAP_SOURCE, /refreshGeographyAreasList\(primaryType, primaryDoc\)/);
+  assert.match(MAP_SOURCE, /setActiveLayerButtons\(primaryType\)/);
+  assert.match(
+    MAP_SOURCE,
+    /if \(\(current\.compare \|\| null\) !== requestedCompare\) return/,
+  );
+});
+
 test("A1/A2: geography owners keep friendly labels and vintage when records are unavailable", () => {
   const layerDoc = {
     type: "nta2020",
