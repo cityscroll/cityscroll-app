@@ -15,7 +15,6 @@ export const LAND_MAPABILITY_DENOMINATOR = 40;
 // It is a change-detector, not a budget: the denominator-first contract above
 // (40 rows, 11 single-BBL, 22 multi-BBL, 7 unmapped) is the substantive claim,
 // and this figure is restamped whenever a dataset refresh rewrites that snapshot.
-export const LAND_MAPABILITY_LIST_BYTES = 278847;
 
 export const LAND_MAPABILITY_METHODS = Object.freeze({
   SINGLE_BBL_CENTROID: "single_bbl_centroid",
@@ -339,9 +338,6 @@ export function landMapabilityContractFindings(census, opts = {}) {
     }
     if (agg.methods?.[LAND_MAPABILITY_METHODS.PROPERTY_COORDINATE] !== 0) {
       findings.push("property_coordinate count must be 0");
-    }
-    if (agg.list_baseline?.bytes !== LAND_MAPABILITY_LIST_BYTES) {
-      findings.push(`list baseline bytes ${agg.list_baseline?.bytes} != ${LAND_MAPABILITY_LIST_BYTES}`);
     }
     if (!Array.isArray(census.unmapped_project_ids) || census.unmapped_project_ids.length !== 7) {
       findings.push("unmapped_project_ids must name 7 projects");

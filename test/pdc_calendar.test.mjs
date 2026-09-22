@@ -7,6 +7,7 @@ import { enrichPdcMeetingWithAgenda, parsePdcAgendaText, parsePdcScheduleHtml } 
 
 const sourceUrl = "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page";
 const html = readFileSync(new URL("./fixtures/pdc_calendar/schedule.html", import.meta.url), "utf8");
+const liveHeadingYearHtml = readFileSync(new URL("./fixtures/pdc_calendar/live-heading-year.html", import.meta.url), "utf8");
 const agendaText = readFileSync(new URL("./fixtures/pdc_calendar/august-17-agenda.txt", import.meta.url), "utf8");
 const observedAt = "2026-09-18T12:00:00Z";
 
@@ -49,4 +50,38 @@ test("PDC keeps a linked agenda date-only when its captured text has no valid cl
   assert.equal(enriched.meeting_id, record.meeting_id);
   assert.equal(enriched.schedule.precision, "date_only");
   assert.equal(enriched.schedule.starts_at, null);
+});
+
+test("PDC applies the single calendar heading year to live-shaped month/day rows", () => {
+  const result = buildPdcCalendar({ html: liveHeadingYearHtml, sourceUrl, observedAt });
+  assert.deepEqual(result.records.map((row) => row.event_date), ["2026-09-22", "2026-10-20"]);
+  assert.deepEqual(result.population, {
+    input_row_count: 3,
+    calendar_record_count: 2,
+    excluded_non_meeting_count: 1,
+    unaccounted_row_count: 0,
+  });
+  assert.deepEqual(result.documents.map((document) => document.document_url), [
+    "https://www.nyc.gov/assets/designcommission/downloads/pdf/agendas/09-22-26-PDC-Public-Agenda.pdf",
+    "https://www.nyc.gov/assets/designcommission/downloads/pdf/agendas/10-20-26-PDC-Public-Agenda.pdf",
+  ]);
+});
+
+test("PDC fails closed when yearless rows have no unambiguous calendar heading", () => {
+  const ambiguous = liveHeadingYearHtml.replace(
+    "<h2>Public Design Commission Calendar 2026</h2>",
+    "<h2>Public Design Commission Calendar 2026</h2><h2>Public Design Commission Calendar 2027</h2>",
+  );
+  assert.throws(
+    () => buildPdcCalendar({ html: ambiguous, sourceUrl, observedAt }),
+    /no calendar records; refusing to replace/,
+  );
+});
+
+test("PDC builder rejects a partial parse when one schedule row changes shape", () => {
+  const partial = liveHeadingYearHtml.replace("Tuesday, October 20", "Date pending");
+  assert.throws(
+    () => buildPdcCalendar({ html: partial, sourceUrl, observedAt }),
+    /left 1 of 3 input rows unaccounted; refusing to replace/,
+  );
 });

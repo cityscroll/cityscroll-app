@@ -71,7 +71,7 @@
       "vintage_field": "sources.city_record.generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 783,
+      "value": 791,
       "reason": null
     },
     {
@@ -633,7 +633,7 @@
           {
             "unit_id": "public-meetings",
             "route": "/browse/meetings/",
-            "served_records": 783,
+            "served_records": 791,
             "evidence_vintage": "2026-09-09T06:52:08.255Z"
           },
           {
@@ -1168,7 +1168,7 @@
             "unit_id": "oath-trial-sessions",
             "route": "/browse/meetings/",
             "served_records": 145,
-            "evidence_vintage": "2026-09-15T12:00:00.000Z"
+            "evidence_vintage": "2026-09-22T03:49:12.395Z"
           }
         ]
       }

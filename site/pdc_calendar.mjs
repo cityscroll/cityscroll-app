@@ -16,19 +16,41 @@ function htmlRows(html) {
     .filter((row) => row.length);
 }
 
+function htmlTables(html) {
+  const tables = [...String(html || "").matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)]
+    .map((match) => htmlRows(match[1]))
+    .filter((rows) => rows.length);
+  return tables.length ? tables : [htmlRows(html)];
+}
+
 function hrefFrom(html) {
   const match = String(html || "").match(/<a\b[^>]*href=["']([^"']+)["'][^>]*>/i);
   return match?.[1] || null;
 }
 
-function dateFrom(value) {
+function dateFrom(value, fallbackYear = null) {
   const text = clean(value, 200);
   const match = text.match(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),?\s+(20\d{2})\b/i)
     || text.match(/\b(20\d{2})[-/]([01]?\d)[-/]([0-3]?\d)\b/);
-  if (!match) return null;
-  if (/^20/.test(match[1])) return `${match[1]}-${String(match[2]).padStart(2, "0")}-${String(match[3]).padStart(2, "0")}`;
-  const month = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].indexOf(match[1].toLowerCase()) + 1;
-  return `${match[3]}-${String(month).padStart(2, "0")}-${String(match[2]).padStart(2, "0")}`;
+  if (match) {
+    if (/^20/.test(match[1])) return `${match[1]}-${String(match[2]).padStart(2, "0")}-${String(match[3]).padStart(2, "0")}`;
+    const month = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].indexOf(match[1].toLowerCase()) + 1;
+    return `${match[3]}-${String(month).padStart(2, "0")}-${String(match[2]).padStart(2, "0")}`;
+  }
+  if (!fallbackYear) return null;
+  const withoutYear = text.match(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})\b/i);
+  if (!withoutYear) return null;
+  const month = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].indexOf(withoutYear[1].toLowerCase()) + 1;
+  return `${fallbackYear}-${String(month).padStart(2, "0")}-${String(withoutYear[2]).padStart(2, "0")}`;
+}
+
+function calendarYearContext(html) {
+  const years = new Set(
+    [...String(html || "").matchAll(/<h[1-6]\b[^>]*>([\s\S]*?)<\/h[1-6]>/gi)]
+      .map((match) => clean(match[1], 300).match(/\bPublic Design Commission Calendar\s+(20\d{2})\b/i)?.[1])
+      .filter(Boolean),
+  );
+  return years.size === 1 ? [...years][0] : null;
 }
 
 function columns(rows) {
@@ -42,16 +64,34 @@ function columns(rows) {
 
 /** Parse only explicit meeting-date cells from the official PDC table. */
 export function parsePdcScheduleHtml(html, { sourceUrl = PDC_CALENDAR_SOURCE_URL, observedAt = null, receipt = null } = {}) {
-  const rows = htmlRows(html);
+  const rows = htmlTables(html).find((candidate) => columns(candidate)?.meeting_date != null) || [];
   const indexes = columns(rows);
-  if (!indexes || indexes.meeting_date == null) return { schema: PDC_CALENDAR_SCHEMA, rows: [], records: [], documents: [], receipt };
+  if (!indexes || indexes.meeting_date == null) return {
+    schema: PDC_CALENDAR_SCHEMA,
+    rows: [],
+    records: [],
+    documents: [],
+    receipt,
+    population: { input_row_count: 0, calendar_record_count: 0, excluded_non_meeting_count: 0, unaccounted_row_count: 0 },
+  };
+  const fallbackYear = calendarYearContext(html);
   const headerIndex = rows.findIndex((row) => row.some((cell) => /meeting date|submission deadline|agenda/i.test(cell.text)));
+  const inputRows = rows.slice(headerIndex + 1).filter((row) => row.some((cell) => cell.text));
   const records = [];
-  for (const row of rows.slice(headerIndex + 1)) {
+  let excludedNonMeetingCount = 0;
+  let unaccountedRowCount = 0;
+  for (const row of inputRows) {
     const meetingCell = row[indexes.meeting_date];
-    const eventDate = dateFrom(meetingCell?.text);
-    if (!eventDate) continue;
-    const agendaCell = indexes.agenda == null ? null : row[indexes.agenda];
+    if (meetingCell && !meetingCell.text) {
+      excludedNonMeetingCount += 1;
+      continue;
+    }
+    const eventDate = dateFrom(meetingCell?.text, fallbackYear);
+    if (!eventDate) {
+      unaccountedRowCount += 1;
+      continue;
+    }
+    const agendaCell = indexes.agenda == null ? meetingCell : row[indexes.agenda];
     const agendaHref = hrefFrom(agendaCell?.html);
     records.push(normalizePdcCalendarMeeting({
       pdc_event_id: `pdc-${eventDate}`,
@@ -63,7 +103,18 @@ export function parsePdcScheduleHtml(html, { sourceUrl = PDC_CALENDAR_SOURCE_URL
       meeting_documents: agendaHref ? [{ role: "agenda", document_id: agendaHref, document_url: new URL(agendaHref, sourceUrl).href, source_url: sourceUrl, meeting_id: `meeting:pdc_calendar:pdc-${eventDate}`, attachment_status: "attached", adapter: PDC_CALENDAR_PARSER }] : [],
     }));
   }
-  return { schema: PDC_CALENDAR_SCHEMA, rows: records, documents: records.flatMap((row) => row.meeting_documents || []), records };
+  return {
+    schema: PDC_CALENDAR_SCHEMA,
+    rows: records,
+    documents: records.flatMap((row) => row.meeting_documents || []),
+    records,
+    population: {
+      input_row_count: inputRows.length,
+      calendar_record_count: records.length,
+      excluded_non_meeting_count: excludedNonMeetingCount,
+      unaccounted_row_count: unaccountedRowCount,
+    },
+  };
 }
 
 /** Extract the agenda's typed sections without promoting consent items to presentations. */

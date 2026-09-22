@@ -9,6 +9,7 @@ import {
   GOVERNMENT_SOURCE_DEFINITIONS,
   buildGovernmentReadback,
   buildGovernmentScheduledReceipt,
+  captureGovernmentSourceBytes,
   guidePolicyReviewState,
   readGovernmentScheduledReceipt,
   refreshGovernmentSource,
@@ -53,6 +54,22 @@ test("successful capture records a source hash and extraction receipt", async ()
   assert.match(result.receipt.source_hash, /^[0-9a-f]{64}$/);
   assert.equal(result.receipt.extraction_receipt.status, "ok");
   assert.equal(result.receipt.etag, "etag-2");
+});
+
+test("raw calendar capture uses the bounded direct endpoint and records byte provenance", async () => {
+  const capture = await captureGovernmentSourceBytes("pdc-calendar", {
+    asOf,
+    fetchImpl: async (url, init) => {
+      assert.equal(url, source.url);
+      assert.equal(init.headers.Accept, "text/html, application/json");
+      return response(200, "<h2>Public Design Commission Calendar 2026</h2>", { etag: "capture-etag" });
+    },
+  });
+  assert.equal(new TextDecoder().decode(capture.bytes), "<h2>Public Design Commission Calendar 2026</h2>");
+  assert.equal(capture.receipt.observed_at, asOf);
+  assert.equal(capture.receipt.capture_url, source.url);
+  assert.equal(capture.receipt.bytes, capture.bytes.byteLength);
+  assert.match(capture.receipt.source_revision, /^[0-9a-f]{64}$/);
 });
 
 test("a scheduled run enforces request and aggregate byte budgets across sources", async () => {

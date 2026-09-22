@@ -165,6 +165,24 @@ export function validateFirstClassRefreshContracts(registry, options = {}) {
     if (!sourceIds.has(artifact?.source_contract_id)) errors.push(`${label}: unknown source_contract_id ${artifact?.source_contract_id}`);
     validateCommand(artifact?.acquisition_command, `${label}: acquisition_command`, root, errors);
     validateCommand(artifact?.builder_command, `${label}: builder_command`, root, errors);
+    if (artifact?.captured_input_path != null) {
+      const capturedInput = String(artifact.captured_input_path);
+      const captureReceipt = String(artifact.capture_receipt_path || "");
+      if (!capturedInput.startsWith(".artifacts/") || !captureReceipt.startsWith(".artifacts/")) {
+        errors.push(`${label}: captured inputs and receipts must use ignored .artifacts scratch paths`);
+      }
+      if (rematerializationIsNotAcquisition(artifact)) {
+        errors.push(`${label}: an input-requiring builder cannot masquerade as its acquisition command`);
+      }
+      if (!artifact?.acquisition_command?.includes(capturedInput)
+        || !artifact?.builder_command?.includes(capturedInput)) {
+        errors.push(`${label}: captured_input_path must connect acquisition output to builder input`);
+      }
+      if (!artifact?.acquisition_command?.includes(captureReceipt)
+        || !artifact?.builder_command?.includes(captureReceipt)) {
+        errors.push(`${label}: capture_receipt_path must connect acquisition evidence to the builder`);
+      }
+    }
     if (typeof artifact?.owning_builder !== "string" || !existsSync(join(root, artifact.owning_builder))) {
       errors.push(`${label}: owning_builder must name an existing repository file`);
     }
@@ -201,6 +219,9 @@ export function validateFirstClassRefreshContracts(registry, options = {}) {
     if (artifact?.production_freshness_gate != null
       && !PRODUCTION_FRESHNESS_GATES.includes(artifact.production_freshness_gate)) {
       errors.push(`${label}: production_freshness_gate must be one of ${PRODUCTION_FRESHNESS_GATES.join(", ")}`);
+    }
+    if (artifact?.hosted_refresh_required != null && typeof artifact.hosted_refresh_required !== "boolean") {
+      errors.push(`${label}: hosted_refresh_required must be boolean`);
     }
     if (!Array.isArray(artifact?.primary_routes) || !artifact.primary_routes.length) {
       errors.push(`${label}: primary_routes must be non-empty`);
@@ -480,12 +501,25 @@ export function runRefreshCommands(registry, options = {}) {
       exit_code: result?.status ?? null,
     });
   }
+  const requiredPaths = new Set(selected
+    .filter((artifact) => artifact.hosted_refresh_required === true)
+    .map((artifact) => artifact.public_artifact_path));
+  const requiredFailure = commands.some((row) => row.status === "failed"
+    && row.artifact_paths.some((path) => requiredPaths.has(path)));
   return {
     schema: FIRST_CLASS_REFRESH_RECEIPT_SCHEMA,
     generated_at: now,
-    status: commands.some((row) => row.status === "failed") ? "partial" : "succeeded",
+    status: requiredFailure ? "failed" : commands.some((row) => row.status === "failed") ? "partial" : "succeeded",
     commands,
   };
+}
+
+export function assertFirstClassRefreshSucceeded(receipt) {
+  if (receipt?.status !== "failed") return;
+  const failures = (receipt.commands || [])
+    .filter((row) => row.status === "failed")
+    .map((row) => row.command.join(" "));
+  throw new Error(`required hosted first-class refresh failed:\n${failures.join("\n")}`);
 }
 
 function option(argv, name, fallback = null) {
@@ -543,6 +577,7 @@ function main(argv = process.argv.slice(2)) {
     const output = resolve(root, option(argv, "--receipt-out", relative(root, RECEIPT_PATH)));
     writeJson(output, refreshReceipt);
     console.log(`wrote ${relative(root, output)} status=${refreshReceipt.status}`);
+    assertFirstClassRefreshSucceeded(refreshReceipt);
   }
   if (argv.includes("--write-report") || argv.includes("--check-production")) {
     const observations = existsSync(join(root, "site/data/source_health_observations.json"))

@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 import test from "node:test";
 
 import {
+  assertFirstClassRefreshSucceeded,
   buildFirstClassFreshnessReport,
   buildScheduledRefreshPlan,
   discoverFirstClassArtifactPaths,
@@ -92,6 +93,14 @@ test("adding a first-class dataPath without cadence, builder, and maximum-age po
   assert.match(validateFirstClassRefreshContracts(overAge, { root: ROOT }).join("\n"), /exceeds the source contract serving limit/);
 });
 
+test("an input-requiring builder cannot be registered as its own acquisition", () => {
+  const registry = canonical();
+  const pdc = registry.first_class_artifacts.find((row) => row.id === "pdc-calendar");
+  pdc.acquisition_command = [...pdc.builder_command];
+  const errors = validateFirstClassRefreshContracts(registry, { root: ROOT });
+  assert.match(errors.join("\n"), /input-requiring builder cannot masquerade as its acquisition command/);
+});
+
 test("scheduled plan groups by cadence and orders acquisition before owning builders and dependents", () => {
   const plan = buildScheduledRefreshPlan(canonical());
   assert.deepEqual(plan.groups.map((group) => group.cadence_hours), [24, 168, 720]);
@@ -173,6 +182,35 @@ test("failed acquisition preserves last-known-good output and does not block unr
   ]);
   assert.equal(receipt.commands.find((row) => row.command[1] === "tools/build.mjs")?.status, "skipped");
   assert.equal(receipt.commands.find((row) => row.command[1] === "tools/materialize.mjs")?.status, "succeeded");
+});
+
+test("required hosted acquisition failures fail the scheduled refresh after preserving last-known-good", () => {
+  const required = { ...artifact("required", "site/data/required.json"), hosted_refresh_required: true };
+  const receipt = runRefreshCommands({ first_class_artifacts: [required] }, {
+    root: "/fixture",
+    now: "2026-09-04T12:00:00.000Z",
+    all: true,
+    stdio: "pipe",
+    spawn() { return { status: 1 }; },
+  });
+  assert.equal(receipt.status, "failed");
+  assert.equal(receipt.commands.find((row) => row.kind === "owning-builder")?.status, "skipped");
+  assert.throws(() => assertFirstClassRefreshSucceeded(receipt), /required hosted first-class refresh failed/);
+});
+
+test("required hosted parsing failures fail the scheduled refresh", () => {
+  const required = { ...artifact("required", "site/data/required.json"), hosted_refresh_required: true };
+  let calls = 0;
+  const receipt = runRefreshCommands({ first_class_artifacts: [required] }, {
+    root: "/fixture",
+    now: "2026-09-04T12:00:00.000Z",
+    all: true,
+    stdio: "pipe",
+    spawn() { calls += 1; return { status: calls === 1 ? 0 : 1 }; },
+  });
+  assert.equal(receipt.status, "failed");
+  assert.equal(receipt.commands.find((row) => row.kind === "owning-builder")?.status, "failed");
+  assert.throws(() => assertFirstClassRefreshSucceeded(receipt), /required hosted first-class refresh failed/);
 });
 
 test("fresh, genuinely empty, degraded LKG, stale, and unavailable remain distinct", async () => {

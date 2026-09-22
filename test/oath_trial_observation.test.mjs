@@ -14,6 +14,7 @@ import {
 import { installOathObserverRequestControls } from "../site/oath_trial_observation.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
 import { meetingPlacementsFromRow } from "../tools/lib/district_activity.mjs";
+import { buildOathTrialCalendar } from "../tools/build_oath_trial_calendar.mjs";
 import { click, mountDocument } from "./helpers/preview_dom.mjs";
 import { testClockISOString, todayISO, withPinnedClock } from "./helpers/test_clock.mjs";
 
@@ -91,6 +92,7 @@ test("captured OATH CSV yields the named trial-session and conference-exclusion 
       trial_session_count: 145,
       excluded_conference_count: 113,
       exact_duplicate_count: 1,
+      unaccounted_row_count: 0,
     });
     assert.equal(result.records.length, 145);
     assert.equal(
@@ -103,6 +105,25 @@ test("captured OATH CSV yields the named trial-session and conference-exclusion 
     assert.doesNotMatch(labeled.meeting_id, /\s/);
     assert.match(labeled.meeting_id, /Scheduled-For-Trial/);
   });
+});
+
+test("OATH builder fails closed when a capture has no trial records", () => {
+  assert.throws(
+    () => buildOathTrialCalendar({ csv: "Index,Date,Start,Type\n1,9/22/2026,10:00 AM,Conference", sourceUrl }),
+    /no trial records; refusing to replace/,
+  );
+});
+
+test("OATH builder rejects a partial parse when a publisher row changes schema", () => {
+  const csv = [
+    "Index,Date,Start,Type,Category",
+    "1,9/22/2026,10:00 AM,Trial,",
+    "2,9/23/2026,11:00 AM,,Scheduled For Trial",
+  ].join("\n");
+  assert.throws(
+    () => buildOathTrialCalendar({ csv, sourceUrl }),
+    /left 1 of 2 input rows unaccounted; refusing to replace/,
+  );
 });
 
 test("every OATH calendar meeting_id is present in the shared meeting read model", () => {
