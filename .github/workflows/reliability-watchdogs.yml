@@ -10,6 +10,22 @@ on:
 permissions: {}
 
 jobs:
+  first-class-refresh-health:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Detect a broken first-class refresh loop
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/first_class_refresh_health.mjs
+
   watchdog:
     runs-on: ubuntu-latest
     steps:

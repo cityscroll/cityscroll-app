@@ -11,7 +11,6 @@ import {
   LAND_MAPABILITY_CENSUS_SCHEMA,
   LAND_MAPABILITY_DENOMINATOR,
   LAND_MAPABILITY_JOIN_VERSION,
-  LAND_MAPABILITY_LIST_BYTES,
   LAND_MAPABILITY_METHODS,
   REJECTED_PLACEMENT_METHODS,
   assertLandMapabilityContract,
@@ -37,7 +36,7 @@ function census(overrides = {}) {
     landDefault,
     zapBbl,
     mapplutoCentroids,
-    listBytes: LAND_MAPABILITY_LIST_BYTES,
+    listBytes: committed.aggregations.list_baseline.bytes,
     artifactHashes: committed.artifacts
       ? {
           land_default: committed.artifacts.land_default.sha256,
@@ -73,7 +72,7 @@ test("aggregations preserve the 40-row denominator and named counts", () => {
   assert.equal(agg.unique_centroid_keys, 226);
   assert.equal(agg.methods.single_bbl_centroid, 11);
   assert.equal(agg.methods.multi_bbl_anchor, 22);
-  assert.equal(agg.list_baseline.bytes, LAND_MAPABILITY_LIST_BYTES);
+  assert.equal(agg.list_baseline.bytes, committed.artifacts.land_default.bytes);
   assert.equal(committed.projects.length, LAND_MAPABILITY_DENOMINATOR);
   assert.equal(committed.new_publisher_work, false);
   assert.equal(committed.runtime_network, false);
@@ -188,6 +187,13 @@ test("dropping unmapped rows is a denominator change and fails the contract", ()
   assert.throws(() => assertLandMapabilityContract(mappedOnly), /denominator/);
 });
 
+test("serialized list byte growth is recorded evidence, not a semantic failure", () => {
+  const changedBytes = structuredClone(committed);
+  changedBytes.aggregations.list_baseline.bytes += 1;
+  changedBytes.artifacts.land_default.bytes += 1;
+  assert.deepEqual(landMapabilityContractFindings(changedBytes), []);
+});
+
 test("census module does not fetch, geocode, or call a live GIS service", () => {
   assert.equal(/\bfetch\s*\(/.test(censusSrc), false);
   assert.equal(/\bgeocode\s*\(/.test(censusSrc), false);
@@ -201,7 +207,7 @@ test("markdown receipt names coverage and the unmapped set", () => {
   assert.match(markdown, /33 of 40 projects \(82\.5 percent\)/);
   assert.match(markdown, /2026K0123/);
   assert.match(markdown, /2020M0385/);
-  assert.match(markdown, new RegExp(String(LAND_MAPABILITY_LIST_BYTES)));
+  assert.match(markdown, new RegExp(String(committed.aggregations.list_baseline.bytes)));
   assert.match(markdown, /node tools\/build_land_mapability_census\.mjs --check/);
   assert.ok(CENSUS_JSON.endsWith("land-map-view-census.json"));
 });

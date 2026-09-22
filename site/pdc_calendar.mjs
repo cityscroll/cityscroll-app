@@ -21,14 +21,29 @@ function hrefFrom(html) {
   return match?.[1] || null;
 }
 
-function dateFrom(value) {
+function dateFrom(value, fallbackYear = null) {
   const text = clean(value, 200);
   const match = text.match(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),?\s+(20\d{2})\b/i)
     || text.match(/\b(20\d{2})[-/]([01]?\d)[-/]([0-3]?\d)\b/);
-  if (!match) return null;
-  if (/^20/.test(match[1])) return `${match[1]}-${String(match[2]).padStart(2, "0")}-${String(match[3]).padStart(2, "0")}`;
-  const month = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].indexOf(match[1].toLowerCase()) + 1;
-  return `${match[3]}-${String(month).padStart(2, "0")}-${String(match[2]).padStart(2, "0")}`;
+  if (match) {
+    if (/^20/.test(match[1])) return `${match[1]}-${String(match[2]).padStart(2, "0")}-${String(match[3]).padStart(2, "0")}`;
+    const month = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].indexOf(match[1].toLowerCase()) + 1;
+    return `${match[3]}-${String(month).padStart(2, "0")}-${String(match[2]).padStart(2, "0")}`;
+  }
+  if (!fallbackYear) return null;
+  const withoutYear = text.match(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})\b/i);
+  if (!withoutYear) return null;
+  const month = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].indexOf(withoutYear[1].toLowerCase()) + 1;
+  return `${fallbackYear}-${String(month).padStart(2, "0")}-${String(withoutYear[2]).padStart(2, "0")}`;
+}
+
+function calendarYearContext(html) {
+  const years = new Set(
+    [...String(html || "").matchAll(/<h[1-6]\b[^>]*>([\s\S]*?)<\/h[1-6]>/gi)]
+      .map((match) => clean(match[1], 300).match(/\bPublic Design Commission Calendar\s+(20\d{2})\b/i)?.[1])
+      .filter(Boolean),
+  );
+  return years.size === 1 ? [...years][0] : null;
 }
 
 function columns(rows) {
@@ -45,11 +60,12 @@ export function parsePdcScheduleHtml(html, { sourceUrl = PDC_CALENDAR_SOURCE_URL
   const rows = htmlRows(html);
   const indexes = columns(rows);
   if (!indexes || indexes.meeting_date == null) return { schema: PDC_CALENDAR_SCHEMA, rows: [], records: [], documents: [], receipt };
+  const fallbackYear = calendarYearContext(html);
   const headerIndex = rows.findIndex((row) => row.some((cell) => /meeting date|submission deadline|agenda/i.test(cell.text)));
   const records = [];
   for (const row of rows.slice(headerIndex + 1)) {
     const meetingCell = row[indexes.meeting_date];
-    const eventDate = dateFrom(meetingCell?.text);
+    const eventDate = dateFrom(meetingCell?.text, fallbackYear);
     if (!eventDate) continue;
     const agendaCell = indexes.agenda == null ? null : row[indexes.agenda];
     const agendaHref = hrefFrom(agendaCell?.html);

@@ -165,6 +165,24 @@ export function validateFirstClassRefreshContracts(registry, options = {}) {
     if (!sourceIds.has(artifact?.source_contract_id)) errors.push(`${label}: unknown source_contract_id ${artifact?.source_contract_id}`);
     validateCommand(artifact?.acquisition_command, `${label}: acquisition_command`, root, errors);
     validateCommand(artifact?.builder_command, `${label}: builder_command`, root, errors);
+    if (artifact?.captured_input_path != null) {
+      const capturedInput = String(artifact.captured_input_path);
+      const captureReceipt = String(artifact.capture_receipt_path || "");
+      if (!capturedInput.startsWith(".artifacts/") || !captureReceipt.startsWith(".artifacts/")) {
+        errors.push(`${label}: captured inputs and receipts must use ignored .artifacts scratch paths`);
+      }
+      if (rematerializationIsNotAcquisition(artifact)) {
+        errors.push(`${label}: an input-requiring builder cannot masquerade as its acquisition command`);
+      }
+      if (!artifact?.acquisition_command?.includes(capturedInput)
+        || !artifact?.builder_command?.includes(capturedInput)) {
+        errors.push(`${label}: captured_input_path must connect acquisition output to builder input`);
+      }
+      if (!artifact?.acquisition_command?.includes(captureReceipt)
+        || !artifact?.builder_command?.includes(captureReceipt)) {
+        errors.push(`${label}: capture_receipt_path must connect acquisition evidence to the builder`);
+      }
+    }
     if (typeof artifact?.owning_builder !== "string" || !existsSync(join(root, artifact.owning_builder))) {
       errors.push(`${label}: owning_builder must name an existing repository file`);
     }

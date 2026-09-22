@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, renameSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { parsePdcAgendaText, parsePdcScheduleHtml, enrichPdcMeetingWithAgenda } from "../site/pdc_calendar.mjs";
 
@@ -24,6 +24,9 @@ function normalizeAgendaCaptures({ agenda, agendas, agendaCaptures, agendaText, 
 
 export function buildPdcCalendar({ html, sourceUrl, observedAt, receipt, agenda, agendas, agendaCaptures, agendaText, agendaDate, agendaDocumentUrl, agendaReceipt } = {}) {
   const parsed = parsePdcScheduleHtml(html, { sourceUrl, observedAt, receipt });
+  if (!Array.isArray(parsed.records) || parsed.records.length === 0) {
+    throw new Error("PDC capture produced no calendar records; refusing to replace the last-known-good artifact");
+  }
   const captures = normalizeAgendaCaptures({ agenda, agendas, agendaCaptures, agendaText, agendaDate, agendaDocumentUrl, agendaReceipt });
   const records = (parsed.records || []).map((record) => {
     const capture = captures.find((candidate) => candidate.meetingDate === record.event_date?.slice(0, 10));
@@ -41,8 +44,15 @@ export function buildPdcCalendar({ html, sourceUrl, observedAt, receipt, agenda,
 if (process.argv[1] === new URL(import.meta.url).pathname) {
   const input = process.argv[2];
   const output = process.argv[3] || join(ROOT, "site/data/pdc_calendar.json");
-  if (!input) throw new Error("usage: build_pdc_calendar.mjs <captured-html> [output]");
-  const agendaInput = process.argv[4] || process.env.PDC_AGENDA_TEXT_FILE;
-  const result = buildPdcCalendar({ html: readFileSync(input, "utf8"), sourceUrl: "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page", observedAt: process.env.PDC_OBSERVED_AT || new Date().toISOString(), ...(agendaInput ? { agendaText: readFileSync(agendaInput, "utf8"), agendaDate: process.env.PDC_AGENDA_DATE || null, agendaDocumentUrl: process.env.PDC_AGENDA_URL || null } : {}) });
-  mkdirSync(dirname(output), { recursive: true }); writeFileSync(output, `${JSON.stringify(result, null, 2)}\n`);
+  const receiptInput = process.argv[4];
+  if (!input) throw new Error("usage: build_pdc_calendar.mjs <captured-html> [output] [capture-receipt]");
+  const captureReceipt = receiptInput ? JSON.parse(readFileSync(receiptInput, "utf8")) : null;
+  const observedAt = captureReceipt?.observed_at || process.env.PDC_OBSERVED_AT || new Date().toISOString();
+  const receipt = captureReceipt ? { ...captureReceipt, parser: "pdc_calendar_acquisition.v1" } : null;
+  const agendaInput = process.env.PDC_AGENDA_TEXT_FILE;
+  const result = buildPdcCalendar({ html: readFileSync(input, "utf8"), sourceUrl: "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page", observedAt, receipt, ...(agendaInput ? { agendaText: readFileSync(agendaInput, "utf8"), agendaDate: process.env.PDC_AGENDA_DATE || null, agendaDocumentUrl: process.env.PDC_AGENDA_URL || null } : {}) });
+  mkdirSync(dirname(output), { recursive: true });
+  const temporary = `${output}.tmp`;
+  writeFileSync(temporary, `${JSON.stringify(result, null, 2)}\n`);
+  renameSync(temporary, output);
 }

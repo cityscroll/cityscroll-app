@@ -7,6 +7,7 @@ import { enrichPdcMeetingWithAgenda, parsePdcAgendaText, parsePdcScheduleHtml } 
 
 const sourceUrl = "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page";
 const html = readFileSync(new URL("./fixtures/pdc_calendar/schedule.html", import.meta.url), "utf8");
+const liveHeadingYearHtml = readFileSync(new URL("./fixtures/pdc_calendar/live-heading-year.html", import.meta.url), "utf8");
 const agendaText = readFileSync(new URL("./fixtures/pdc_calendar/august-17-agenda.txt", import.meta.url), "utf8");
 const observedAt = "2026-09-18T12:00:00Z";
 
@@ -49,4 +50,20 @@ test("PDC keeps a linked agenda date-only when its captured text has no valid cl
   assert.equal(enriched.meeting_id, record.meeting_id);
   assert.equal(enriched.schedule.precision, "date_only");
   assert.equal(enriched.schedule.starts_at, null);
+});
+
+test("PDC applies the single calendar heading year to live-shaped month/day rows", () => {
+  const result = buildPdcCalendar({ html: liveHeadingYearHtml, sourceUrl, observedAt });
+  assert.deepEqual(result.records.map((row) => row.event_date), ["2026-09-22", "2026-10-20"]);
+});
+
+test("PDC fails closed when yearless rows have no unambiguous calendar heading", () => {
+  const ambiguous = liveHeadingYearHtml.replace(
+    "<h2>Public Design Commission Calendar 2026</h2>",
+    "<h2>Public Design Commission Calendar 2026</h2><h2>Public Design Commission Calendar 2027</h2>",
+  );
+  assert.throws(
+    () => buildPdcCalendar({ html: ambiguous, sourceUrl, observedAt }),
+    /no calendar records; refusing to replace/,
+  );
 });

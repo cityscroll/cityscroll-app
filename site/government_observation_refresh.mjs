@@ -40,6 +40,7 @@ const SOURCE_DEFINITIONS = Object.freeze([
     id: "oath-trial-calendar",
     env: "CITYSCROLL_OATH_TRIAL_CALENDAR_REFRESH",
     url: "https://www.nyc.gov/assets/oath/data/daily-calendar.csv",
+    publicUrl: "https://www.nyc.gov/site/oath/trials/trial-calendar.page",
     cadenceHours: 24,
     cursor: true,
   },
@@ -122,6 +123,42 @@ async function fetchSource(source, options) {
     }
   }
   throw lastError || new Error("request failed");
+}
+
+/**
+ * Capture publisher bytes for an owning builder without parsing or publishing
+ * them. The caller writes the returned bytes to ignored scratch space; only a
+ * builder that accepts the captured shape may replace the committed artifact.
+ */
+export async function captureGovernmentSourceBytes(sourceId, options = {}) {
+  const source = SOURCE_DEFINITIONS.find((item) => item.id === sourceId);
+  if (!source) throw new Error(`unknown government observation source: ${sourceId}`);
+  const observedAt = iso(options.asOf || new Date().toISOString());
+  if (!observedAt) throw new Error("capture requires a valid observation timestamp");
+  if (disabled(source, options.env || process.env, options.root || ".")) {
+    throw new Error(`${sourceId} acquisition is disabled`);
+  }
+  const result = await fetchSource(source, options);
+  if (result.kind !== "fetched" || result.bytes.byteLength === 0) {
+    throw new Error(`${sourceId} capture returned no bytes`);
+  }
+  const sourceHash = sha256(result.bytes);
+  return {
+    bytes: result.bytes,
+    receipt: {
+      schema: "cityscroll.meeting_source_receipt.v1",
+      source_id: source.id,
+      source_url: source.publicUrl || source.url,
+      capture_url: source.url,
+      observed_at: observedAt,
+      source_revision: sourceHash,
+      status: "ok",
+      fetch_status: "snapshot",
+      bytes: result.bytes.byteLength,
+      etag: responseHeader(result.response, "etag"),
+      last_modified: responseHeader(result.response, "last-modified"),
+    },
+  };
 }
 
 export function sourceRefreshDisabled(sourceId, { env = process.env, root = "." } = {}) {

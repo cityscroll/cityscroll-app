@@ -92,6 +92,14 @@ test("adding a first-class dataPath without cadence, builder, and maximum-age po
   assert.match(validateFirstClassRefreshContracts(overAge, { root: ROOT }).join("\n"), /exceeds the source contract serving limit/);
 });
 
+test("an input-requiring builder cannot be registered as its own acquisition", () => {
+  const registry = canonical();
+  const pdc = registry.first_class_artifacts.find((row) => row.id === "pdc-calendar");
+  pdc.acquisition_command = [...pdc.builder_command];
+  const errors = validateFirstClassRefreshContracts(registry, { root: ROOT });
+  assert.match(errors.join("\n"), /input-requiring builder cannot masquerade as its acquisition command/);
+});
+
 test("scheduled plan groups by cadence and orders acquisition before owning builders and dependents", () => {
   const plan = buildScheduledRefreshPlan(canonical());
   assert.deepEqual(plan.groups.map((group) => group.cadence_hours), [24, 168, 720]);

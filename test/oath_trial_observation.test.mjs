@@ -14,6 +14,7 @@ import {
 import { installOathObserverRequestControls } from "../site/oath_trial_observation.mjs";
 import { renderMeetingDocument } from "../site/meeting_document.mjs";
 import { meetingPlacementsFromRow } from "../tools/lib/district_activity.mjs";
+import { buildOathTrialCalendar } from "../tools/build_oath_trial_calendar.mjs";
 import { click, mountDocument } from "./helpers/preview_dom.mjs";
 import { testClockISOString, todayISO, withPinnedClock } from "./helpers/test_clock.mjs";
 
@@ -103,6 +104,13 @@ test("captured OATH CSV yields the named trial-session and conference-exclusion 
     assert.doesNotMatch(labeled.meeting_id, /\s/);
     assert.match(labeled.meeting_id, /Scheduled-For-Trial/);
   });
+});
+
+test("OATH builder fails closed when a capture has no trial records", () => {
+  assert.throws(
+    () => buildOathTrialCalendar({ csv: "Index,Date,Start,Type\n1,9/22/2026,10:00 AM,Conference", sourceUrl }),
+    /no trial records; refusing to replace/,
+  );
 });
 
 test("every OATH calendar meeting_id is present in the shared meeting read model", () => {
