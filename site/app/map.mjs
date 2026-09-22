@@ -28,6 +28,7 @@ import {
   GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
   bindGeographyNavigationPopState,
   parseGeographyNavigationState,
+  serializeGeographyNavigationState,
   writeGeographyNavigationHistory,
 } from "../geography_navigation_state.mjs";
 import {
@@ -58,6 +59,9 @@ import { geocodeAddressText } from "../address_geocoder.mjs";
 
 const root = document.querySelector("[data-near-you-root]");
 let geographyMapController = null;
+let geographyMapInitialization = null;
+let geographyMapGeneration = 0;
+let documentAdoptionGeneration = 0;
 let geographyLayerCache = new Map();
 let geographyEntryLayerPromise = null;
 let geographyRegistry = null;
@@ -122,7 +126,7 @@ function setLinked(id, on) {
 
 async function fetchNearYouDocument(href) {
   const response = await fetch(href, { headers: { Accept: "text/html" } });
-  if (!response.ok) throw new Error(`near-you-response-${response.status}`);
+  if (!response.ok && response.status !== 503) throw new Error(`near-you-response-${response.status}`);
   const next = new DOMParser().parseFromString(await response.text(), "text/html");
   const incoming = next.querySelector("[data-near-you-root]");
   if (!incoming) throw new Error("near-you-document-root-missing");
@@ -196,12 +200,23 @@ async function hydrateCurrentNearYouDeferred() {
   }
 }
 
-async function adoptDocument(href, { replaceHistory = false } = {}) {
+async function adoptDocument(href, { replaceHistory = false, restoreHistory = false } = {}) {
+  const generation = ++documentAdoptionGeneration;
   const prepared = await fetchNearYouDocument(href);
   const { incoming, next } = prepared;
   // Resolve optional synchronization dependencies before committing any page state.
   // Keep the last coherent view until the incoming document is ready to adopt.
   const placeContext = await import("./place-context.mjs");
+  await geographyMapInitialization;
+  if (generation !== documentAdoptionGeneration) return false;
+  // The incoming document replaces the map host. Release its renderer before
+  // replacing DOM, then initialize the new host instead of retaining an orphan.
+  geographyMapGeneration += 1;
+  geographyMapController?.destroy();
+  geographyMapController = null;
+  if (parseGeographyNavigationState(location.search).key !== parseGeographyNavigationState(new URL(href, location.href).search).key) {
+    overlapPointBundle = null;
+  }
   const currentMast = document.querySelector(".document-mast");
   const incomingMast = next.querySelector(".document-mast");
   if (currentMast && incomingMast) currentMast.replaceWith(document.importNode(incomingMast, true));
@@ -211,10 +226,16 @@ async function adoptDocument(href, { replaceHistory = false } = {}) {
   const title = next.querySelector("title")?.textContent;
   if (title) document.title = title;
   const updateHistory = replaceHistory ? history.replaceState : history.pushState;
-  updateHistory.call(history, { nearYou: true }, "", href);
+  if (!restoreHistory) updateHistory.call(history, { nearYou: true }, "", href);
   placeContext.sync();
   wireIsland();
-  root.querySelector("#near-results-heading")?.focus?.({ preventScroll: true });
+  if (!restoreHistory) {
+    const mapSurface = parseGeographyNavigationState(location.search).surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP;
+    const target = root.querySelector(mapSurface ? '.near-geo-workspace' : '#near-results-heading');
+    target?.focus?.({ preventScroll: true });
+    target?.scrollIntoView?.({ block: 'start' });
+  }
+  return true;
 }
 async function adoptMapHashRoute() {
   const hash = location.hash;
@@ -236,6 +257,9 @@ async function adoptMapHashRoute() {
 async function followWithinIsland(event, href) {
   if (!href || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
+  if (event.currentTarget?.dataset.geographyKey) {
+    href = geographySelectionHref(parseGeographyNavigationState(new URL(href).search));
+  }
   status(copy("messageUpdating"));
   try {
     await adoptDocument(href);
@@ -359,6 +383,17 @@ function geographyEntryStatusMessage(entry) {
   return entry.recovery?.message || copy("messageLocationUnmatched");
 }
 
+function geographySelectionHref(state) {
+  const target = new URL(location.href);
+  for (const name of ["geo", "boro", "cd", "council", "level", "id", "parent", "neighborhood"]) {
+    target.searchParams.delete(name);
+  }
+  for (const [name, value] of serializeGeographyNavigationState(state, { includeDefaults: true })) {
+    target.searchParams.set(name, value);
+  }
+  return target.toString();
+}
+
 async function adoptGeographyEntrySelection(entry, { ephemeralPoint = null } = {}) {
   if (!entry?.ok || !entry.selection) {
     status(geographyEntryStatusMessage(entry));
@@ -375,7 +410,7 @@ async function adoptGeographyEntrySelection(entry, { ephemeralPoint = null } = {
     drawer: GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
     focus: entry.selection.key,
   };
-  writeGeographyNavigationHistory(history, location, nextState, { mode: "push" });
+  if (!await adoptDocument(geographySelectionHref(nextState))) return false;
   overlapPointBundle = entry.bundle
     ? {
       id: entry.source || "entry",
@@ -624,6 +659,7 @@ function replaceOverlapRailBody(html) {
 async function refreshOverlapDrawer({
   pointBundle = overlapPointBundle,
 } = {}) {
+  const generation = documentAdoptionGeneration;
   const state = parseGeographyNavigationState(location.search);
   if (!state?.key) {
     // Empty-rail copy lives in the shared overlap module (outside site/app scan).
@@ -638,7 +674,27 @@ async function refreshOverlapDrawer({
     crosswalkRows = loaded.rows;
     crosswalkAvailable = loaded.available;
   }
+  let relatedDistricts = [];
+  if (state.type === 'nta2020') {
+    const loaded = await loadCrosswalkRowsForSelection(state.key, 'community_district', { siteRoot: '/' });
+    if (loaded.available) {
+      const districtModel = buildSelectedGeographyOverlapViewModel({
+        selected: {key:state.key, type:state.type, id:state.id},
+        compareType:'community_district', crosswalkRows:loaded.rows, crosswalkAvailable:true,
+        base:`${location.origin}/near-you/`, surface:GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
+      });
+      relatedDistricts = (districtModel.area_section?.rows || []).map((row) => {
+        const href = new URL(row.select_href);
+        href.searchParams.set('lens', 'meetings');
+        return {key:row.key, label:row.label, href:href.toString()};
+      });
+    }
+  }
+  const current = parseGeographyNavigationState(location.search);
+  if (generation !== documentAdoptionGeneration || current.key !== state.key || current.compare !== state.compare) return null;
   const model = buildSelectedGeographyOverlapViewModel({
+    relatedDistricts,
+    recordLenses: JSON.parse(root.querySelector('[data-geography-record-lenses]')?.dataset.geographyRecordLenses || '{}'),
     selected: {
       key: state.key,
       type: state.type,
@@ -730,6 +786,9 @@ function wireOverlapDrawerInteractions() {
   const rail = root.querySelector("[data-geography-overlap-root]");
   if (!rail || wired.has(rail)) return;
   wired.add(rail);
+  rail.querySelectorAll('[data-geography-related-district],[data-geography-record-lens],[data-geography-overlap-records]').forEach((link) => {
+    link.addEventListener('click', (event) => followWithinIsland(event, link.href));
+  });
   rail.querySelectorAll("[data-geography-overlap-highlight]").forEach((button) => {
     const key = button.dataset.geographyOverlapHighlight;
     button.addEventListener("click", () => {
@@ -823,6 +882,7 @@ function refreshGeographyAreasList(type, layerDoc) {
     },
   );
   panel.outerHTML = html;
+  wireMapAndList();
 }
 
 function setActiveLayerButtons(type) {
@@ -889,6 +949,12 @@ async function activateGeographyLayer(type, { asComparison = null } = {}) {
     })),
   };
   geographyMapController.setActiveLayer(type, layerDoc);
+  const selectedFeature = layerDoc.features.find((feature) => feature.key === state.key);
+  if (selectedFeature?.label) {
+    for (const node of root.querySelectorAll('.near-hero>h1,[data-geography-selected-label]')) {
+      node.textContent = selectedFeature.label;
+    }
+  }
   setActiveLayerButtons(type);
   refreshGeographyAreasList(type, layerDoc);
   if (state.key && state.compare) {
@@ -941,15 +1007,25 @@ function waitForGeographyMapHost(container) {
   });
 }
 
-async function wireGeographyNavigationMap() {
+function wireGeographyNavigationMap() {
+  if (geographyMapInitialization) return geographyMapInitialization;
+  geographyMapInitialization = initializeGeographyNavigationMap().finally(() => {
+    geographyMapInitialization = null;
+  });
+  return geographyMapInitialization;
+}
+
+async function initializeGeographyNavigationMap() {
   const container = root.querySelector("#near-map-enhanced");
   if (!container || geographyMapController) return;
+  const generation = ++geographyMapGeneration;
   if (globalThis.__CITYSCROLL_FORCE_GEOGRAPHY_MAP_FAILURE) {
     throw new Error("forced_geography_map_failure");
   }
   try {
     await waitForGeographyMapHost(container);
-    geographyMapController = await createGeographyNavigationMap({
+    if (generation !== geographyMapGeneration || !container.isConnected) return;
+    const controller = await createGeographyNavigationMap({
       container,
       root,
       onSelect: ({ key, originalEvent }) => {
@@ -961,15 +1037,7 @@ async function wireGeographyNavigationMap() {
               ephemeralPoint: entry?.ok ? { lon: lngLat.lng, lat: lngLat.lat } : null,
             }))
             .catch(() => {
-              if (!key) return;
-              const state = {
-                ...parseGeographyNavigationState(location.search),
-                ok: true,
-                geo: String(key).replace(/^geography:/, ""),
-                key,
-                surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
-              };
-              writeGeographyNavigationHistory(history, location, state, { mode: "push" });
+              status(copy("messageLocationLookupFailed"));
             });
           return;
         }
@@ -981,7 +1049,9 @@ async function wireGeographyNavigationMap() {
           key,
           surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
         };
-        writeGeographyNavigationHistory(history, location, state, { mode: "push" });
+        void adoptDocument(geographySelectionHref(state)).catch(() => {
+          status(copy("messageLocationLookupFailed"));
+        });
       },
       onFallback: () => {
         geographyMapController = null;
@@ -990,13 +1060,21 @@ async function wireGeographyNavigationMap() {
         // Basemap is decorative; keep local boundaries and controls.
       },
     });
+    if (generation !== geographyMapGeneration || !container.isConnected) {
+      controller.destroy();
+      return;
+    }
+    geographyMapController = controller;
     const selected = parseGeographyNavigationState(location.search);
     const initialType = selected?.compare
       || selected?.type
       || root.dataset.geographyLayer
       || "nta2020";
     await activateGeographyLayer(initialType);
-    if (selected?.key) geographyMapController.setSelectedKey(selected.key);
+    if (selected?.key) {
+      geographyMapController.setSelectedKey(selected.key);
+      geographyMapController.fitSelection({ padding: 40, maxZoom: 14 });
+    }
     if (selected?.compare) await applyGeographyComparison(selected.compare);
     await refreshOverlapDrawer();
     wireOverlapDrawerInteractions();
@@ -1063,6 +1141,8 @@ if (root) {
   });
   void adoptMapHashRoute();
   bindGeographyNavigationPopState(window, (state) => {
+    // History changes the data scope too, not just the selected outline.
+    void adoptDocument(location.href, { restoreHistory: true }).catch(() => location.reload());
     applySurfaceChrome(state?.surface || GEOGRAPHY_NAVIGATION_SURFACE_MAP);
     if (state?.key && geographyMapController) {
       geographyMapController.setSelectedKey(state.key);

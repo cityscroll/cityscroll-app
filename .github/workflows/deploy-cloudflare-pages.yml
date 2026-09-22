@@ -328,6 +328,20 @@ jobs:
             fi
             sleep 20
           done
+      - name: Verify neighborhood selection and scoped records on production
+        if: needs.deploy.outputs.is_preview != 'true'
+        env:
+          CROL_BASE: https://cityscroll.org
+        run: |
+          for attempt in {1..6}; do
+            if python3 test/functional/54_neighborhood_map_journey.py; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 6 ]; then
+              exit 1
+            fi
+            sleep 20
+          done
       - name: Post-deploy procurement detail parity canary
         if: needs.deploy.outputs.is_preview != 'true'
         env:

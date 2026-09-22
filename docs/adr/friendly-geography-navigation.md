@@ -93,3 +93,24 @@ geography registry.
   independently versioned sources and proves a useful resident destination.
 * Precincts remain searchable and comparable under More boundaries without
   competing with the three ordinary orientation choices.
+
+## Resident journey verification
+
+Selection is a coherent transition of the map, camera, URL, and materialized
+record scope. Both short map tokens (`nta2020:BK0101`) and canonical record keys
+(`geography:nta2020:BK0101`) resolve to the same scope. History updates must not
+assign browser Location properties or discard unrelated record filters.
+
+Map labels use bundled, OFL-licensed Noto Sans glyphs from the application
+origin. The navigator remains available when local record coverage is unavailable;
+an unavailable membership is not a citywide result and an observed empty slice
+is not missing coverage. Overlapping community-district record continuations are
+labelled as broader areas, using the committed direct-intersection crosswalks.
+
+`test/functional/54_neighborhood_map_journey.py` exercises the real MapLibre
+renderer under the route's Content Security Policy at desktop and mobile widths.
+It covers search, canvas clicks, area links, selected camera bounds, record
+geography evidence, history/reload, missing coverage, related-district navigation,
+and record inspection. Local runs use the production slice builder with retained
+data; `CROL_BASE` selects a deployed origin. The production canary makes no
+assumption that a named upstream record or a fixed record count remains present.

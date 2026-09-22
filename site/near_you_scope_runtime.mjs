@@ -5,6 +5,7 @@ import {
   NEAR_YOU_COMMON_LENSES,
   PLACE_ROLES,
   scopeWithGeographies,
+  normalizeGeographyKey,
   scopeFromRouteHash,
 } from "./scope_v0.mjs";
 import { ACTION_LOCATION_FACET_KEYS } from "./action_location_keys.mjs";
@@ -75,7 +76,9 @@ export function scopeFromNearYouUrl(input, { language = "en" } = {}) {
       scope.facets.values.actionBasis = "unknown";
     }
   }
-  return scopeWithGeographies(scope, params.getAll("geo"));
+  return scopeWithGeographies(scope, params.getAll("geo").map((value) =>
+    normalizeGeographyKey(value) || normalizeGeographyKey(`geography:${value}`)
+  ).filter(Boolean));
 }
 
 /** Convert the legacy map hash into the canonical Near-you GET URL. */

@@ -218,10 +218,12 @@ export function renderGeographyShellEntry({
         <button type="button" class="js-only near-location-action" data-use-location hidden>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
         <a href="#near-area-list">Browse the area list</a>
       </div>
-      ${actions}
-      ${followDiscoveryHtml || ""}
+      <details class="near-map-secondary"><summary>Follow or share</summary>
+        ${actions}
+        ${followDiscoveryHtml || ""}
+      </details>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
-      ${geographyShellLayerSwitcherHtml({ activeType, base: canonicalBase, surface })}
+      <details class="near-map-layers"><summary>Boundary layers</summary>${geographyShellLayerSwitcherHtml({ activeType, base: canonicalBase, surface })}</details>
       <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
         <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? " is-active" : ""}" href="${esc(mapHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_MAP}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? ' aria-current="true"' : ""}>Map</a>
         <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? " is-active" : ""}" href="${esc(browseHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_RECORDS}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? ' aria-current="true"' : ""}>${esc(GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL)}</a>

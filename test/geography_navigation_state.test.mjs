@@ -39,6 +39,34 @@ import {
 const ROOT = process.cwd();
 const MODULE_SOURCE = readFileSync(join(ROOT, "site/geography_navigation_state.mjs"), "utf8");
 
+test("history transitions never assign Location and trigger a document navigation", () => {
+  const writes = [];
+  const location = {};
+  for (const [key, value] of Object.entries({
+    pathname: "/near-you/", search: "", href: "https://cityscroll.org/near-you/",
+  })) Object.defineProperty(location, key, {
+    get: () => value, set: () => writes.push(key),
+  });
+  const calls = [];
+  const history = { pushState: (...args) => calls.push(args) };
+  writeGeographyNavigationHistory(history, location,
+    parseGeographyNavigationState("?geo=nta2020:BK0101&surface=map"));
+  assert.equal(calls.length, 1);
+  assert.deepEqual(writes, []);
+});
+
+test("surface history retains record filters but excludes precise-location values", () => {
+  let destination;
+  writeGeographyNavigationHistory({pushState: (_state, _title, url) => { destination = url; }},
+    {href: "https://cityscroll.org/near-you/?agency=Transportation&q=curb&when=month&lat=40.7"},
+    parseGeographyNavigationState("?geo=nta2020:BK0101&surface=records"));
+  const query = new URL(destination, "https://cityscroll.org").searchParams;
+  assert.equal(query.get("agency"), "Transportation");
+  assert.equal(query.get("q"), "curb");
+  assert.equal(query.get("when"), "month");
+  assert.equal(query.has("lat"), false);
+});
+
 function memorySession() {
   const entries = [{ url: "/near-you/", state: null }];
   let index = 0;

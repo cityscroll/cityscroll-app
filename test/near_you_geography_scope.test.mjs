@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { scopeFromNearYouUrl } from "../site/near_you_scope_runtime.mjs";
+import { buildNearYou } from "../tools/build_worker_route_read_models.mjs";
 
 import {
   buildNearYouViewModel,
@@ -16,6 +18,25 @@ const ROOT = new URL("../", import.meta.url);
 const readJson = (path) => JSON.parse(readFileSync(new URL(path, ROOT), "utf8"));
 const activity = readJson("site/data/district_activity.json");
 const boundaries = readJson("site/data/district_boundaries.json");
+
+test("map short-token URLs retain the exact canonical geography in the records scope", () => {
+  const short = scopeFromNearYouUrl("https://cityscroll.org/near-you/?geo=nta2020:BK0101&lens=meetings");
+  const full = scopeFromNearYouUrl("https://cityscroll.org/near-you/?geo=geography:nta2020:BK0101&lens=meetings");
+  assert.deepEqual(short.place.geographies, ["geography:nta2020:BK0101"]);
+  assert.deepEqual(short, full);
+});
+
+test("published slices retain an observed empty membership without inventing unknown coverage", () => {
+  const key = "geography:nta2020:BK0102";
+  const source = {
+    geography_items: { definitions: {[key]: {key, label: "Williamsburg"}}, by_key: {[key]: {meetings: []}} },
+    records: {meetings: {}},
+  };
+  const built = buildNearYou(source, {}, "fixture");
+  const entry = built.entries.find((entry) => entry.key === built.manifest.slices[`${key}:meetings`]);
+  assert.deepEqual(JSON.parse(entry.value).activity.geography_items.by_key[key].meetings, []);
+  assert.equal(built.manifest.slices["geography:nta2020:BK0101:meetings"], undefined);
+});
 
 function populatedKey(type, lens) {
   return Object.values(activity.geography_items.definitions)

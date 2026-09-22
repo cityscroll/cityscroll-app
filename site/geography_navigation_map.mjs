@@ -469,7 +469,7 @@ function buildBaseStyle({ forcedColors = false } = {}) {
     version: 8,
     // MapLibre requires a glyph atlas for symbol layers. The atlas is only for
     // local civic labels; basemap tiles and their labels remain decorative.
-    glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+    glyphs: new URL("./vendor/map-fonts/", import.meta.url).href + "{fontstack}/{range}.pbf",
     sources: {
       [GEOGRAPHY_MAP_SOURCE_IDS.basemap]: {
         type: "raster",

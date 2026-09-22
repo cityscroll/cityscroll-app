@@ -86,7 +86,8 @@ function sliceActivity(activity, id, lens, { includeBasis = true } = {}) {
     .filter(([, record]) => record));
   const geoMembership = Object.fromEntries(Object.entries(activity.geography_items?.by_key || {})
     .map(([key, lenses]) => [key, { [lens]: (lenses?.[lens] || []).filter((member) => allowed.has(String(member))) }])
-    .filter(([, lenses]) => lenses[lens].length));
+    .filter(([key, lenses]) => lenses[lens].length
+      || (key === id && Array.isArray(activity.geography_items?.by_key?.[key]?.[lens]))));
   const geographyItems = {
     ...activity.geography_items,
     definitions: activity.geography_items?.definitions || {},
@@ -133,7 +134,7 @@ export function communityGeographySlice(geography, id) {
   };
 }
 
-function buildNearYou(activity, geography, version) {
+export function buildNearYou(activity, geography, version) {
   const ids = [
     ...BOROUGHS.map((borough) => `borough:${borough}`),
     ...Object.keys(activity.district_items?.by_level?.community_district || {}).map((id) => `community-district:${id}`),

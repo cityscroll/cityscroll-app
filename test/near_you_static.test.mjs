@@ -262,7 +262,7 @@ test("Near-you failure triggers all terminate in the same scoped error state", (
     assert.equal(view.mapState, "error", trigger);
     assert.equal(view.results.count, null, trigger);
     assert.match(html, /data-near-map-state="error"/, trigger);
-    assert.match(html, /Map data is temporarily unavailable/, trigger);
+    assert.match(html, /Local records are temporarily unavailable/, trigger);
     const retryHref = html.match(/<a href="([^"]+)" data-near-recovery="retry">/)?.[1]?.replaceAll("&amp;", "&");
     assert.ok(retryHref, trigger);
     assert.equal(new URL(retryHref).searchParams.get("agency"), "Transportation", trigger);
@@ -366,7 +366,7 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.doesNotMatch(html, /href="https:\/\/api\.cityscroll\.org/);
   assert.doesNotMatch(visible, /\b(?:facet|scope)\b|without JavaScript|server-rendered|static-first/i);
   assert.match(html, /class="document-brand brand-lockup home"/);
-  assert.match(html, /what “near you” means/);
+  assert.match(html, /Change neighborhood or address/);
   assert.match(html, /data-use-location/);
   assert.match(html, /coordinates stay in this browser/i);
   assert.match(html, /name="neighborhood"/);
