@@ -128,8 +128,10 @@ test("the registry exposes NTA and precinct only through Near You while DSNY and
     }
   }
   const contracts = readJson("site/data/source_contracts.json");
-  for (const type of ["nta2020", "police_precinct", "sanitation_district", "business_improvement_district"]) {
+  for (const type of ["police_precinct", "sanitation_district", "business_improvement_district"]) {
     const sourceId = row(type).source.contract_id;
     assert.equal(contracts.contracts.find((contract) => contract.id === sourceId).health_policy.public_visibility, "backstage-only");
   }
+  const ntaSourceId = row("nta2020").source.contract_id;
+  assert.equal(contracts.contracts.find((contract) => contract.id === ntaSourceId).health_policy.public_visibility, "public");
 });
