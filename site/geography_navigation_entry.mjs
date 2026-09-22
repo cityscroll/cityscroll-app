@@ -466,14 +466,36 @@ function numberedPlaceCandidates(query) {
 
 /**
  * Exact / case-insensitive canonical place-label selection across local layer
- * labels and stable ids. Fuzzy ranking is intentionally out of scope here.
+ * labels, stable ids, and retained aliases. Fuzzy ranking stays out of scope;
+ * ambiguous multi-NTA aliases surface as multiple hits rather than a merge.
  */
-export function matchGeographyPlaceLabels(query, { layerData } = {}) {
+export function matchGeographyPlaceLabels(query, { layerData, aliasIndex = null } = {}) {
   const normalized = normalizeLabelText(query);
   if (!normalized) return Object.freeze([]);
 
   const hits = [];
   const seen = new Set();
+  const pushFeature = (layer, feature, method = "canonical_label") => {
+    if (!feature || feature.id == null || !layer) return;
+    const id = String(feature.id);
+    const label = String(feature.label || "");
+    const key = civicGeographyKey(layer.type, id);
+    if (!key || seen.has(key)) return;
+    seen.add(key);
+    hits.push(matchRecord({
+      key,
+      type: layer.type,
+      id,
+      label,
+      boundary_vintage: layer.vintage?.id || null,
+      source_id: layer.source?.contract_id || null,
+      method,
+      relation: "label_match",
+      class: null,
+      subtype: feature.subtype,
+    }, feature));
+  };
+
   for (const layer of Array.isArray(layerData) ? layerData : []) {
     if (!layer || !LAYER_SET.has(layer.type)) continue;
     for (const feature of Array.isArray(layer.features) ? layer.features : []) {
@@ -483,21 +505,7 @@ export function matchGeographyPlaceLabels(query, { layerData } = {}) {
       const labelNorm = normalizeLabelText(label);
       const idNorm = normalizeLabelText(id);
       if (labelNorm !== normalized && idNorm !== normalized) continue;
-      const key = civicGeographyKey(layer.type, id);
-      if (!key || seen.has(key)) continue;
-      seen.add(key);
-      hits.push(matchRecord({
-        key,
-        type: layer.type,
-        id,
-        label,
-        boundary_vintage: layer.vintage?.id || null,
-        source_id: layer.source?.contract_id || null,
-        method: "canonical_label",
-        relation: "label_match",
-        class: null,
-        subtype: feature.subtype,
-      }, feature));
+      pushFeature(layer, feature, "canonical_label");
     }
   }
 
@@ -506,24 +514,59 @@ export function matchGeographyPlaceLabels(query, { layerData } = {}) {
       .find((entry) => entry?.type === candidate.type);
     const feature = layer?.features?.find((row) => String(row.id) === candidate.id);
     if (!feature) continue;
-    const key = civicGeographyKey(candidate.type, candidate.id);
-    if (!key || seen.has(key)) continue;
-    seen.add(key);
-    hits.push(matchRecord({
-      key,
-      type: candidate.type,
-      id: candidate.id,
-      label: feature.label,
-      boundary_vintage: layer.vintage?.id || null,
-      source_id: layer.source?.contract_id || null,
-      method: "canonical_label",
-      relation: "label_match",
-      class: null,
-      subtype: feature.subtype,
-    }, feature));
+    pushFeature(layer, feature, "canonical_label");
+  }
+
+  // Retained aliases only: never invent a single geography for an ambiguous name.
+  if (aliasIndex && typeof aliasIndex === "object") {
+    const ntaLayer = (Array.isArray(layerData) ? layerData : [])
+      .find((entry) => entry?.type === "nta2020");
+    const aliasIds = aliasIndex[normalized]
+      || aliasIndex[query]
+      || null;
+    const ids = Array.isArray(aliasIds) ? aliasIds : (aliasIds ? [aliasIds] : []);
+    for (const rawId of ids) {
+      const id = String(rawId || "").trim();
+      if (!id || !ntaLayer) continue;
+      const feature = ntaLayer.features?.find((row) => String(row.id) === id);
+      if (feature) pushFeature(ntaLayer, feature, "retained_alias");
+    }
   }
 
   return Object.freeze(hits);
+}
+
+/**
+ * Build a normalized alias → NTA id[] index from gazetteer neighborhoods.
+ * Multi-code neighborhoods keep every id so callers can detect ambiguity.
+ */
+export function geographyPlaceAliasIndexFromGazetteer(gazetteer) {
+  const neighborhoods = Array.isArray(gazetteer)
+    ? gazetteer
+    : Array.isArray(gazetteer?.neighborhoods) ? gazetteer.neighborhoods : [];
+  const index = Object.create(null);
+  for (const row of neighborhoods) {
+    const codes = (Array.isArray(row?.nta_codes) ? row.nta_codes : [])
+      .map((code) => String(code || "").trim())
+      .filter(Boolean);
+    if (!codes.length) continue;
+    const names = [
+      row?.name,
+      ...(Array.isArray(row?.aliases) ? row.aliases : []),
+      ...(Array.isArray(row?.official_names) ? row.official_names : []),
+    ];
+    for (const name of names) {
+      const key = normalizeLabelText(name);
+      if (!key) continue;
+      if (!index[key]) index[key] = [];
+      for (const code of codes) {
+        if (!index[key].includes(code)) index[key].push(code);
+      }
+    }
+  }
+  return Object.freeze(Object.fromEntries(
+    Object.entries(index).map(([key, ids]) => [key, Object.freeze(ids)]),
+  ));
 }
 
 function resultFromLabelMatch(hit, { source, layerData }) {
@@ -574,15 +617,20 @@ function resultFromLabelMatch(hit, { source, layerData }) {
 
 export function resolveGeographyEntryFromPlaceLabel(query, {
   layerData,
+  aliasIndex = null,
   source = GEOGRAPHY_ENTRY_SOURCES.PLACE_LABEL,
 } = {}) {
   const text = String(query ?? "").trim();
   if (!text) return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.EMPTY_QUERY, { source });
-  const hits = matchGeographyPlaceLabels(text, { layerData });
+  const hits = matchGeographyPlaceLabels(text, { layerData, aliasIndex });
   if (!hits.length) return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.NO_RESULT, { source });
   if (hits.length > 1) {
     // Same label across layers is still one resident choice when ids align to a
-    // preferred residential NTA; otherwise surface ambiguity without inventing.
+    // preferred residential NTA; multiple retained NTA ids stay ambiguous.
+    const ntaHits = hits.filter((row) => row.type === "nta2020");
+    if (ntaHits.length > 1) {
+      return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.AMBIGUOUS_PLACE_LABEL, { source });
+    }
     const residential = hits.find((row) => row.type === "nta2020" && isResidentialNeighborhoodSubtype(row.subtype));
     if (residential) return resultFromLabelMatch(residential, { source, layerData });
     return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.AMBIGUOUS_PLACE_LABEL, { source });

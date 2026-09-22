@@ -63,10 +63,13 @@ import {
   renderNearYouRecordInspectButton,
 } from "./near_you_record_inspection.mjs";
 import {
+  GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM,
+  aliasesByNtaIdFromGazetteer,
   geographyShellAreasListHtml,
   geographyShellSearchFormHtml,
   geographyShellLayerSwitcherHtml,
   navigationAreaEntriesFromLayerDoc,
+  navigationDirectoryFromLayerDoc,
   renderGeographyShellEntry,
   renderGeographyShellSurfaceSwitch,
   resolveShellSurface,
@@ -81,6 +84,7 @@ import {
 import {
   GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE,
 } from "./geography_navigation_capability.mjs";
+import neighborhoodGazetteer from "./data/neighborhood_gazetteer.json" with { type: "json" };
 import {
   buildSelectedGeographyOverlapViewModel,
   renderSelectedGeographyOverlapDrawerHtml,
@@ -539,11 +543,32 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     || geographyState?.compare
     || geographyState?.type
     || "nta2020";
-  const navigationAreas = options.navigationLayerDoc
-    ? navigationAreaEntriesFromLayerDoc(options.navigationLayerDoc, {
+  const directoryAliases = options.directoryAliasesByNtaId
+    || aliasesByNtaIdFromGazetteer(neighborhoodGazetteer);
+  const directoryQuery = String(
+    options.directoryQuery
+    || (typeof options.geographySearch === "string"
+      ? new URLSearchParams(options.geographySearch.startsWith("?")
+        ? options.geographySearch
+        : `?${options.geographySearch}`).get(GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM)
+      : "")
+    || "",
+  ).trim();
+  const navigationDirectory = options.navigationLayerDoc
+    ? navigationDirectoryFromLayerDoc(options.navigationLayerDoc, {
       layerType: options.navigationLayerType || activeGeographyLayer,
+      aliasesByNtaId: directoryAliases,
+      query: directoryQuery,
     })
-    : [];
+    : null;
+  // Default chooser membership is residential; keep a flat residential list for counts.
+  const navigationAreas = navigationDirectory?.residential
+    || (options.navigationLayerDoc
+      ? navigationAreaEntriesFromLayerDoc(options.navigationLayerDoc, {
+        layerType: options.navigationLayerType || activeGeographyLayer,
+        aliasesByNtaId: directoryAliases,
+      })
+      : []);
   const selectedGeographyKey = geographyState?.key || first(scope.place.geographies) || null;
   const selectedGeographyDefinition = selectedGeographyKey
     ? (activity?.geography_items?.definitions?.[selectedGeographyKey]
@@ -739,6 +764,8 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     results: { ids: resultIds, count: resultCount, records: resultRecords },
     features,
     navigationAreas,
+    navigationDirectory,
+    directoryQuery,
     activeGeographyLayer,
     shellSurface,
     geographyState,
@@ -1074,12 +1101,14 @@ function renderNearYouMapState(view) {
     .sort((a, b) => b.total - a.total || String(a.label).localeCompare(String(b.label)))
     .map((feature) => `<li><a data-map-area="${esc(feature.id)}" data-count="${feature.total}" href="${esc(feature.href)}"><span>${esc(feature.label)}</span><strong>${feature.total}</strong></a></li>`)
     .join("");
-  const navigationAreasHtml = view.navigationAreas?.length
+  const navigationAreasHtml = view.navigationDirectory || view.navigationAreas?.length
     ? geographyShellAreasListHtml(view.navigationAreas, {
       activeType: view.activeGeographyLayer || "nta2020",
       base: view.shareHref || view.canonicalBase || "/near-you/",
       surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
       countsByKey: view.navigationAreaCountsByKey,
+      query: view.directoryQuery || "",
+      directory: view.navigationDirectory,
     })
     : `<div class="near-area-panel" id="near-area-list">
           <h3>Areas</h3>

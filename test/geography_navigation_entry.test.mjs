@@ -22,6 +22,7 @@ import {
   geographyEntryPublicProjection,
   geographyEntryRecoveryCopy,
   geographyEntryUnavailableApiResult,
+  geographyPlaceAliasIndexFromGazetteer,
   matchGeographyPlaceLabels,
   omitGeographyEntryEphemeral,
   projectCompatibilityDistricts,
@@ -33,6 +34,17 @@ import {
   resolveGeographyEntryFromPoint,
   sameGeographyEntrySchema,
 } from "../site/geography_navigation_entry.mjs";
+import neighborhoodGazetteer from "../site/data/neighborhood_gazetteer.json" with { type: "json" };
+
+const DIRECTORY_ACCEPTANCE_CASES = Object.freeze([
+  Object.freeze({ id: "BK0101", label: "Greenpoint" }),
+  Object.freeze({ id: "MN0102", label: "Tribeca-Civic Center" }),
+  Object.freeze({ id: "QN0103", label: "Astoria (Central)" }),
+  Object.freeze({ id: "BX0101", label: "Mott Haven-Port Morris" }),
+  Object.freeze({ id: "SI0101", label: "St. George-New Brighton" }),
+  Object.freeze({ id: "QN8381", label: "John F. Kennedy International Airport" }),
+  Object.freeze({ id: "BK0771", label: "Green-Wood Cemetery" }),
+]);
 import {
   loadCivicGeographyLayer,
   pointRelationToCivicFeature,
@@ -343,6 +355,73 @@ test("A8: residential NTA is the initial selected area; full bundle stays under 
   assert.equal(compatibility.community_district, "K15");
   assert.equal(compatibility.council_district, "48");
   assert.equal(compatibility.borough, "Brooklyn");
+});
+
+test("A3: directory fixtures resolve through retained labels and aliases without inventing geography", () => {
+  const aliasIndex = geographyPlaceAliasIndexFromGazetteer(neighborhoodGazetteer);
+  const nta = LAYER_DATA.find((layer) => layer.type === "nta2020");
+
+  const greenpoint = resolveGeographyEntryFromPlaceLabel("Greenpoint", { layerData: LAYER_DATA, aliasIndex });
+  assert.equal(greenpoint.ok, true);
+  assert.equal(greenpoint.selected.id, "BK0101");
+  assert.equal(greenpoint.selection_policy, "residential_nta");
+
+  const tribeca = resolveGeographyEntryFromPlaceLabel("Tribeca-Civic Center", {
+    layerData: LAYER_DATA,
+    aliasIndex,
+  });
+  assert.equal(tribeca.ok, true);
+  assert.equal(tribeca.selected.id, "MN0102");
+
+  const astoria = resolveGeographyEntryFromPlaceLabel("Astoria Central", {
+    layerData: LAYER_DATA,
+    aliasIndex,
+  });
+  assert.equal(astoria.ok, true);
+  assert.equal(astoria.selected.id, "QN0103");
+
+  const mott = resolveGeographyEntryFromPlaceLabel("Mott Haven", { layerData: LAYER_DATA, aliasIndex });
+  assert.equal(mott.ok, true);
+  assert.equal(mott.selected.id, "BX0101");
+  assert.equal(mott.selected.label, "Mott Haven-Port Morris");
+
+  const stGeorge = resolveGeographyEntryFromPlaceLabel("St George", { layerData: LAYER_DATA, aliasIndex });
+  assert.equal(stGeorge.ok, true);
+  assert.equal(stGeorge.selected.id, "SI0101");
+
+  const jfk = resolveGeographyEntryFromPlaceLabel("John F. Kennedy International Airport", {
+    layerData: LAYER_DATA,
+    aliasIndex,
+  });
+  assert.equal(jfk.ok, true);
+  assert.equal(jfk.selected.id, "QN8381");
+  assert.equal(jfk.selection_policy, "special_use_nta_with_alternatives");
+
+  const cemetery = resolveGeographyEntryFromPlaceLabel("Green-Wood Cemetery", {
+    layerData: LAYER_DATA,
+    aliasIndex,
+  });
+  assert.equal(cemetery.ok, true);
+  assert.equal(cemetery.selected.id, "BK0771");
+  assert.equal(cemetery.selection_policy, "special_use_nta_with_alternatives");
+
+  // Ambiguous retained alias must not collapse multiple NTAs into one place.
+  const bedStuy = resolveGeographyEntryFromPlaceLabel("Bed-Stuy", { layerData: LAYER_DATA, aliasIndex });
+  assert.equal(bedStuy.ok, false);
+  assert.equal(bedStuy.recovery.reason, GEOGRAPHY_ENTRY_RECOVERY.AMBIGUOUS_PLACE_LABEL);
+
+  const noMatch = resolveGeographyEntryFromPlaceLabel("zzz-no-such-place", {
+    layerData: LAYER_DATA,
+    aliasIndex,
+  });
+  assert.equal(noMatch.ok, false);
+  assert.equal(noMatch.recovery.reason, GEOGRAPHY_ENTRY_RECOVERY.NO_RESULT);
+
+  for (const expected of DIRECTORY_ACCEPTANCE_CASES) {
+    const feature = nta.features.find((row) => row.id === expected.id);
+    assert.ok(feature, expected.label);
+    assert.equal(feature.label, expected.label);
+  }
 });
 
 test("A9: suite covers seeded fixtures, ambiguity, special-use, outside-city, provider failure, and privacy negatives", () => {

@@ -19,6 +19,7 @@ import {
   geographyNavigationUrlWithFilters as geographyNavigationUrlFromState,
   geographyNavigationFilterParams,
 } from "./geography_navigation_state.mjs";
+import { normalizeSearchText } from "./neighborhood_search.mjs";
 
 export const RESIDENT_GEOGRAPHY_SHELL_SCHEMA = "cityscroll.resident_geography_shell.v1";
 
@@ -29,6 +30,48 @@ export const GEOGRAPHY_SHELL_USE_LOCATION_LABEL = "Use my location";
 export const GEOGRAPHY_SHELL_SEARCH_LABEL = "Address or place";
 export const GEOGRAPHY_SHELL_SEARCH_PLACEHOLDER = "Neighborhood, district, or address";
 export const GEOGRAPHY_SHELL_AREAS_HEADING = "Areas";
+export const GEOGRAPHY_SHELL_DIRECTORY_FILTER_LABEL = "Filter neighborhoods";
+export const GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM = "area_q";
+export const GEOGRAPHY_SHELL_SPECIAL_USE_SUMMARY = "Special-use areas";
+export const GEOGRAPHY_SHELL_SPECIAL_USE_NOTE =
+  "Airports, parks, cemeteries, and other non-residential statistical areas.";
+export const GEOGRAPHY_SHELL_DIRECTORY_EMPTY =
+  "No neighborhoods match that name. Clear the filter or choose a special-use area below.";
+
+/** Borough order for the residential directory. */
+export const GEOGRAPHY_SHELL_BOROUGH_ORDER = Object.freeze([
+  "Bronx",
+  "Brooklyn",
+  "Manhattan",
+  "Queens",
+  "Staten Island",
+]);
+
+const NTA_PREFIX_TO_BOROUGH = Object.freeze({
+  BX: "Bronx",
+  BK: "Brooklyn",
+  MN: "Manhattan",
+  QN: "Queens",
+  SI: "Staten Island",
+});
+
+const BORO_CODE_TO_BOROUGH = Object.freeze({
+  1: "Manhattan",
+  2: "Bronx",
+  3: "Brooklyn",
+  4: "Queens",
+  5: "Staten Island",
+});
+
+/**
+ * Extra retained short names for directory filtering on special-use NTAs that
+ * are outside the residential gazetteer. Keys are NTA ids.
+ */
+export const GEOGRAPHY_SHELL_DIRECTORY_EXTRA_ALIASES = Object.freeze({
+  QN8381: Object.freeze(["JFK Airport", "Kennedy"]),
+  BK0771: Object.freeze(["Green-Wood"]),
+  MN0102: Object.freeze(["Tribeca"]),
+});
 
 /** Binding viewport budgets for residential neighborhood labels at all-city zoom. */
 export const GEOGRAPHY_SHELL_LABEL_BUDGET = Object.freeze({
@@ -53,37 +96,205 @@ function esc(value) {
     .replaceAll("'", "&#39;");
 }
 
-/** Compact area entries for the native-link Areas list (no geometry). */
-export function navigationAreaEntriesFromLayerDoc(layerDoc, { layerType = null } = {}) {
+/** Borough for an NTA id or feature, from prefix or source BoroCode. */
+export function ntaBoroughForFeature(feature) {
+  const id = String(feature?.id || "").trim().toUpperCase();
+  const prefix = id.slice(0, 2);
+  if (NTA_PREFIX_TO_BOROUGH[prefix]) return NTA_PREFIX_TO_BOROUGH[prefix];
+  const code = String(feature?.source_properties?.BoroCode || "").trim();
+  return BORO_CODE_TO_BOROUGH[code] || null;
+}
+
+function entryAliases(id, label, aliasesByNtaId = null) {
+  const fromIndex = aliasesByNtaId && typeof aliasesByNtaId === "object"
+    ? aliasesByNtaId[id] || aliasesByNtaId[`geography:nta2020:${id}`] || null
+    : null;
+  const aliases = [];
+  if (Array.isArray(fromIndex)) {
+    for (const alias of fromIndex) {
+      const text = String(alias || "").trim();
+      if (text && text !== label) aliases.push(text);
+    }
+  }
+  for (const name of GEOGRAPHY_SHELL_DIRECTORY_EXTRA_ALIASES[id] || []) {
+    const text = String(name || "").trim();
+    if (text && text !== label && !aliases.includes(text)) aliases.push(text);
+  }
+  return Object.freeze(aliases);
+}
+
+function compactAreaEntry(feature, { type, aliasesByNtaId = null } = {}) {
+  const id = String(feature?.id ?? "").trim();
+  const key = String(feature?.key || (type && id ? `geography:${type}:${id}` : "")).trim();
+  const label = String(feature?.label || "").trim();
+  if (!key || !label || !id) return null;
+  const subtype = feature.subtype == null ? null : String(feature.subtype);
+  if (type === "nta2020" && /^[A-Z]{2}\d{4}$/.test(label)) return null;
+  const borough = type === "nta2020" ? ntaBoroughForFeature(feature) : null;
+  const aliases = type === "nta2020" ? entryAliases(id, label, aliasesByNtaId) : Object.freeze([]);
+  return Object.freeze({
+    key,
+    id,
+    type: type || String(feature.type || ""),
+    label,
+    subtype,
+    borough,
+    aliases,
+    is_special_use: type === "nta2020" && !isResidentialNeighborhoodSubtype(subtype),
+  });
+}
+
+/**
+ * Compact area entries for the native-link Areas list (no geometry).
+ * NTA default membership is residential only; map geometry stays separate.
+ */
+export function navigationAreaEntriesFromLayerDoc(layerDoc, {
+  layerType = null,
+  membership = "residential",
+  aliasesByNtaId = null,
+} = {}) {
   const type = String(layerType || layerDoc?.type || "").trim();
   const features = Array.isArray(layerDoc?.features) ? layerDoc.features : [];
   const entries = [];
   for (const feature of features) {
     if (!feature || typeof feature !== "object") continue;
-    const id = String(feature.id ?? "").trim();
-    const key = String(feature.key || (type && id ? `geography:${type}:${id}` : "")).trim();
-    const label = String(feature.label || "").trim();
-    if (!key || !label || !id) continue;
     const subtype = feature.subtype == null ? null : String(feature.subtype);
     if (type === "nta2020") {
+      const residential = isResidentialNeighborhoodSubtype(subtype);
       const policy = ntaResidentLabelPolicy(subtype);
-      // Special-use NTAs stay selectable but are not listed as ordinary neighborhoods.
-      if (!policy.may_label_as_neighborhood && !isResidentialNeighborhoodSubtype(subtype)) {
-        continue;
+      if (membership === "residential") {
+        if (!policy.may_label_as_neighborhood && !residential) continue;
+      } else if (membership === "special_use") {
+        if (residential || policy.may_label_as_neighborhood) continue;
       }
+      // membership === "all" keeps every labeled NTA for map-key comparisons.
     }
-    // Never promote bare codes into primary copy.
-    if (type === "nta2020" && /^[A-Z]{2}\d{4}$/.test(label)) continue;
-    entries.push(Object.freeze({
-      key,
-      id,
-      type: type || String(feature.type || ""),
-      label,
-      subtype,
-    }));
+    const entry = compactAreaEntry(feature, { type, aliasesByNtaId });
+    if (entry) entries.push(entry);
   }
   entries.sort((left, right) => left.label.localeCompare(right.label) || left.id.localeCompare(right.id));
   return Object.freeze(entries);
+}
+
+/** True when an entry's canonical label or retained aliases match a local filter. */
+export function directoryEntryMatchesQuery(entry, query) {
+  const folded = normalizeSearchText(query);
+  if (!folded) return true;
+  const tokens = folded.split(" ").filter(Boolean);
+  if (!tokens.length) return true;
+  const haystack = normalizeSearchText([
+    entry?.label,
+    entry?.id,
+    ...(Array.isArray(entry?.aliases) ? entry.aliases : []),
+  ].filter(Boolean).join(" "));
+  if (!haystack) return false;
+  // Token prefix / inclusion keeps partial typing useful without inventing places.
+  return tokens.every((token) => {
+    if (haystack.includes(token)) return true;
+    return haystack.split(" ").some((word) => word.startsWith(token));
+  });
+}
+
+export function filterDirectoryEntries(entries, query) {
+  return Object.freeze((entries || []).filter((entry) => directoryEntryMatchesQuery(entry, query)));
+}
+
+/** Group residential entries by borough in stable city order. */
+export function groupDirectoryEntriesByBorough(entries) {
+  const buckets = new Map(GEOGRAPHY_SHELL_BOROUGH_ORDER.map((name) => [name, []]));
+  const other = [];
+  for (const entry of entries || []) {
+    const borough = entry?.borough && buckets.has(entry.borough) ? entry.borough : null;
+    if (borough) buckets.get(borough).push(entry);
+    else other.push(entry);
+  }
+  const groups = GEOGRAPHY_SHELL_BOROUGH_ORDER
+    .map((borough) => Object.freeze({
+      borough,
+      entries: Object.freeze(buckets.get(borough)),
+    }))
+    .filter((group) => group.entries.length > 0);
+  if (other.length) {
+    groups.push(Object.freeze({ borough: "Other", entries: Object.freeze(other) }));
+  }
+  return Object.freeze(groups);
+}
+
+/**
+ * Full directory projection: residential default chooser + explicit special-use.
+ * Map geometry membership is not reduced by this projection.
+ */
+export function navigationDirectoryFromLayerDoc(layerDoc, {
+  layerType = null,
+  aliasesByNtaId = null,
+  query = "",
+} = {}) {
+  const type = String(layerType || layerDoc?.type || "").trim();
+  if (type !== "nta2020") {
+    const entries = filterDirectoryEntries(
+      navigationAreaEntriesFromLayerDoc(layerDoc, { layerType: type, membership: "all", aliasesByNtaId }),
+      query,
+    );
+    return Object.freeze({
+      layerType: type,
+      query: String(query || "").trim(),
+      residential: entries,
+      special_use: Object.freeze([]),
+      groups: Object.freeze([{ borough: null, entries }]),
+      residential_total: entries.length,
+      special_use_total: 0,
+      empty: entries.length === 0,
+    });
+  }
+  const residentialAll = navigationAreaEntriesFromLayerDoc(layerDoc, {
+    layerType: type,
+    membership: "residential",
+    aliasesByNtaId,
+  });
+  const specialAll = navigationAreaEntriesFromLayerDoc(layerDoc, {
+    layerType: type,
+    membership: "special_use",
+    aliasesByNtaId,
+  });
+  const residential = filterDirectoryEntries(residentialAll, query);
+  const special_use = filterDirectoryEntries(specialAll, query);
+  return Object.freeze({
+    layerType: type,
+    query: String(query || "").trim(),
+    residential,
+    special_use,
+    groups: groupDirectoryEntriesByBorough(residential),
+    residential_total: residentialAll.length,
+    special_use_total: specialAll.length,
+    empty: residential.length === 0 && special_use.length === 0,
+  });
+}
+
+/** Build alias lookup from the neighborhood gazetteer neighborhoods array. */
+export function aliasesByNtaIdFromGazetteer(gazetteer) {
+  const neighborhoods = Array.isArray(gazetteer)
+    ? gazetteer
+    : Array.isArray(gazetteer?.neighborhoods) ? gazetteer.neighborhoods : [];
+  const byId = Object.create(null);
+  for (const row of neighborhoods) {
+    const codes = Array.isArray(row?.nta_codes) ? row.nta_codes : [];
+    const names = [
+      row?.name,
+      ...(Array.isArray(row?.aliases) ? row.aliases : []),
+      ...(Array.isArray(row?.official_names) ? row.official_names : []),
+    ].map((value) => String(value || "").trim()).filter(Boolean);
+    for (const code of codes) {
+      const id = String(code || "").trim();
+      if (!id) continue;
+      if (!byId[id]) byId[id] = [];
+      for (const name of names) {
+        if (!byId[id].includes(name)) byId[id].push(name);
+      }
+    }
+  }
+  return Object.freeze(Object.fromEntries(
+    Object.entries(byId).map(([id, names]) => [id, Object.freeze(names.sort((a, b) => a.localeCompare(b)))]),
+  ));
 }
 
 export function areaEntryKeys(entries) {
@@ -137,27 +348,111 @@ export function geographyShellLayerSwitcherHtml({
     </div>`;
 }
 
-export function geographyShellAreasListHtml(entries, {
-  activeType = "nta2020",
+function areaEntryLinkHtml(entry, {
   base = "/near-you/",
   surface = GEOGRAPHY_NAVIGATION_SURFACE_MAP,
   countsByKey = null,
 } = {}) {
-  const items = (entries || []).map((entry) => {
-    const href = geographyNavigationUrlFromState({
-      ok: true,
-      geo: `${entry.type}:${entry.id}`,
-      key: entry.key,
-      type: entry.type,
-      id: entry.id,
-      surface,
-    }, { base });
-    const count = countsByKey && Object.prototype.hasOwnProperty.call(countsByKey, entry.key)
-      ? countsByKey[entry.key]
-      : null;
-    const countMarkup = count == null ? "" : `<strong>${esc(count)}</strong>`;
-    return `<li><a data-map-area="${esc(entry.id)}" data-geography-key="${esc(entry.key)}" data-geography-layer="${esc(entry.type)}" href="${esc(href)}"><span>${esc(entry.label)}</span>${countMarkup}</a></li>`;
-  }).join("");
+  const href = geographyNavigationUrlFromState({
+    ok: true,
+    geo: `${entry.type}:${entry.id}`,
+    key: entry.key,
+    type: entry.type,
+    id: entry.id,
+    surface,
+  }, { base });
+  const count = countsByKey && Object.prototype.hasOwnProperty.call(countsByKey, entry.key)
+    ? countsByKey[entry.key]
+    : null;
+  const countMarkup = count == null ? "" : `<strong>${esc(count)}</strong>`;
+  const specialAttr = entry.is_special_use ? ' data-geography-special-use="true"' : "";
+  const boroughAttr = entry.borough ? ` data-geography-borough="${esc(entry.borough)}"` : "";
+  return `<li><a data-map-area="${esc(entry.id)}" data-geography-key="${esc(entry.key)}" data-geography-layer="${esc(entry.type)}"${specialAttr}${boroughAttr} href="${esc(href)}"><span>${esc(entry.label)}</span>${countMarkup}</a></li>`;
+}
+
+export function geographyShellDirectoryFilterHtml({
+  action = "/near-you/",
+  value = "",
+} = {}) {
+  const filters = geographyNavigationFilterParams(action);
+  const target = new URL(action, "https://cityscroll.invalid");
+  target.search = "";
+  target.hash = "";
+  const actionPath = /^[a-z][a-z\d+.-]*:\/\//i.test(action) ? target.toString() : target.pathname;
+  const hidden = [...filters]
+    .filter(([key]) => key !== GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM)
+    .map(([key, filterValue]) => `<input type="hidden" name="${esc(key)}" value="${esc(filterValue)}">`)
+    .join("");
+  return `<form class="near-area-directory-filter" method="get" action="${esc(actionPath)}" data-geography-directory-filter>${hidden}
+      <label for="near-area-directory-filter">${esc(GEOGRAPHY_SHELL_DIRECTORY_FILTER_LABEL)}</label>
+      <div class="near-area-directory-filter-row">
+        <input id="near-area-directory-filter" name="${esc(GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM)}" type="search" value="${esc(value)}" placeholder="e.g. Greenpoint" autocomplete="off" enterkeyhint="search">
+        <button type="submit">Filter</button>
+      </div>
+    </form>`;
+}
+
+/**
+ * Grouped searchable residential directory with an explicit special-use option.
+ * Falls back to a flat list for non-NTA layers.
+ */
+export function geographyShellAreasListHtml(entriesOrDirectory, {
+  activeType = "nta2020",
+  base = "/near-you/",
+  surface = GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+  countsByKey = null,
+  query = "",
+  directory = null,
+} = {}) {
+  const projection = directory || (
+    entriesOrDirectory
+    && typeof entriesOrDirectory === "object"
+    && Array.isArray(entriesOrDirectory.residential)
+      ? entriesOrDirectory
+      : null
+  );
+  const linkOpts = { base, surface, countsByKey };
+
+  if (projection && activeType === "nta2020") {
+    const filterValue = query || projection.query || "";
+    const groupsMarkup = (projection.groups || []).map((group) => {
+      const items = (group.entries || []).map((entry) => areaEntryLinkHtml(entry, linkOpts)).join("");
+      if (!items) return "";
+      const heading = group.borough
+        ? `<h4 class="near-area-borough">${esc(group.borough)}</h4>`
+        : "";
+      return `<section class="near-area-borough-group" data-geography-borough-group="${esc(group.borough || "")}">
+            ${heading}
+            <ol class="near-area-list">${items}</ol>
+          </section>`;
+    }).join("");
+    const specialItems = (projection.special_use || [])
+      .map((entry) => areaEntryLinkHtml(entry, linkOpts))
+      .join("");
+    const specialBlock = `<details class="near-area-special-use" data-geography-special-use-directory>
+            <summary>${esc(GEOGRAPHY_SHELL_SPECIAL_USE_SUMMARY)}</summary>
+            <p class="near-area-special-use-note">${esc(GEOGRAPHY_SHELL_SPECIAL_USE_NOTE)}</p>
+            <ol class="near-area-list near-area-special-use-list">${specialItems || "<li>No special-use areas match this filter.</li>"}</ol>
+          </details>`;
+    const emptyMarkup = projection.empty
+      ? `<p class="near-area-directory-empty" data-geography-directory-empty role="status">${esc(GEOGRAPHY_SHELL_DIRECTORY_EMPTY)}</p>`
+      : "";
+    const matchedResidential = projection.residential?.length ?? 0;
+    const summary = filterValue
+      ? `<p class="near-area-directory-summary" data-geography-directory-summary>Showing ${matchedResidential} of ${projection.residential_total} neighborhoods.</p>`
+      : `<p class="near-area-directory-summary" data-geography-directory-summary>${projection.residential_total} residential neighborhoods by borough.</p>`;
+    return `<div class="near-area-panel near-area-directory" id="near-area-list" data-geography-areas data-geography-directory="residential" data-geography-layer="${esc(activeType)}">
+          <h3>${esc(GEOGRAPHY_SHELL_AREAS_HEADING)}</h3>
+          ${geographyShellDirectoryFilterHtml({ action: base, value: filterValue })}
+          ${summary}
+          ${emptyMarkup}
+          <div class="near-area-directory-groups">${groupsMarkup}</div>
+          ${specialBlock}
+        </div>`;
+  }
+
+  const entries = Array.isArray(entriesOrDirectory) ? entriesOrDirectory : (projection?.residential || []);
+  const items = (entries || []).map((entry) => areaEntryLinkHtml(entry, linkOpts)).join("");
   return `<div class="near-area-panel" id="near-area-list" data-geography-areas data-geography-layer="${esc(activeType)}">
           <h3>${esc(GEOGRAPHY_SHELL_AREAS_HEADING)}</h3>
           <ol class="near-area-list">${items || "<li>No areas match this layer.</li>"}</ol>
@@ -216,11 +511,17 @@ export function renderGeographyShellEntry({
         ${actionLinks}
       </nav>`
     : "";
+  // Surface switch stays outside the secondary disclosure so Browse records is
+  // reachable before the long area-directory tab sequence on mobile.
   return `<section class="near-geo-entry" aria-labelledby="near-geo-heading" data-geography-entry>
       <p class="near-kicker">Local geography</p>
       <h1 id="near-geo-heading">${esc(GEOGRAPHY_SHELL_HEADING)}</h1>
       <p class="near-entry-prompt">Search for a place.</p>
       ${geographyShellSearchFormHtml({ action: shareHref || canonicalBase, value: searchValue })}
+      <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
+        <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? " is-active" : ""}" href="${esc(mapHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_MAP}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? ' aria-current="true"' : ""}>Map</a>
+        <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? " is-active" : ""}" href="${esc(browseHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_RECORDS}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? ' aria-current="true"' : ""}>${esc(GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL)}</a>
+      </nav>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
       <details class="near-entry-secondary">
         <summary>More ways to choose</summary>
@@ -229,10 +530,6 @@ export function renderGeographyShellEntry({
           <a href="#near-area-list">Browse the area list</a>
         </div>
         ${geographyShellLayerSwitcherHtml({ activeType, base: canonicalBase, surface })}
-        <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
-          <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? " is-active" : ""}" href="${esc(mapHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_MAP}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? ' aria-current="true"' : ""}>Map</a>
-          <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? " is-active" : ""}" href="${esc(browseHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_RECORDS}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? ' aria-current="true"' : ""}>${esc(GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL)}</a>
-        </nav>
         <details class="near-map-secondary"><summary>Follow or share</summary>
           ${actions}
           ${followDiscoveryHtml || ""}
