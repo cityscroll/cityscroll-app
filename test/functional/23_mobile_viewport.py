@@ -272,7 +272,8 @@ def run(base: str) -> None:
                 assert "near you" in contract["heading"].lower(), contract
                 assert contract["areaCount"] > 0, contract
                 assert contract["enhanced"] == "true", contract
-                # Enhanced mobile defaults to Map; Records remains one tap away.
+                # Enhanced mobile defaults to Map; secondary views remain available
+                # through the compact entry disclosure.
                 if contract["enhanced"] == "true":
                     assert contract["mapVisible"], contract
                     assert contract["recordsHidden"], contract
@@ -280,6 +281,9 @@ def run(base: str) -> None:
                         page.locator(".near-area-list a").first,
                         label="Near you map area link",
                     )
+                    entry_disclosure = page.locator(".near-entry-secondary > summary")
+                    if entry_disclosure.count() > 0:
+                        entry_disclosure.first.click()
                     records_switch = page.locator("[data-near-surface='records']")
                     assert records_switch.count() > 0, contract
                     records_switch.first.click()

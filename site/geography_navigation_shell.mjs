@@ -219,7 +219,7 @@ export function renderGeographyShellEntry({
   return `<section class="near-geo-entry" aria-labelledby="near-geo-heading" data-geography-entry>
       <p class="near-kicker">Local geography</p>
       <h1 id="near-geo-heading">${esc(GEOGRAPHY_SHELL_HEADING)}</h1>
-      <p class="near-entry-prompt">Choose a neighborhood, district, or address.</p>
+      <p class="near-entry-prompt">Search for a place.</p>
       ${geographyShellSearchFormHtml({ action: shareHref || canonicalBase, value: searchValue })}
       <p class="near-map-status" data-map-status aria-live="polite"></p>
       <details class="near-entry-secondary">
