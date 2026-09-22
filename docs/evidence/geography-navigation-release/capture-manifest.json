@@ -3,7 +3,7 @@
   "surface": "friendly navigator",
   "public_alias": "cee00d62cd519",
   "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-  "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+  "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
   "grounded_at": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
   "deployed_version": {
     "status": "not_taken",
@@ -43,51 +43,59 @@
       "performance_samples": {
         "samples": [
           {
-            "readiness_ms": 23.1,
+            "readiness_ms": 28.5,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.1,
+            "readiness_ms": 28.7,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 17.9,
+            "readiness_ms": 22.7,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 18.2,
+            "readiness_ms": 21,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 17.4,
+            "readiness_ms": 21,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 20,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 20.2,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 21.2,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 19.3,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 18.6,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 19.3,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 19,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 19.8,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 17.9,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 17.4,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 17.6,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 17.8,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 17.7,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 18.2,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 18.2,
+            "readiness_ms": 19.5,
             "wire_bytes": 300
           },
           {
@@ -95,15 +103,11 @@
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.1,
+            "readiness_ms": 19.3,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 20.4,
+            "readiness_ms": 20.3,
             "wire_bytes": 300
           },
           {
@@ -111,24 +115,20 @@
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.4,
+            "readiness_ms": 21.5,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 19.6,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 18.5,
+            "readiness_ms": 20.1,
             "wire_bytes": 300
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 20.4,
+          "readiness_ms": 28.5,
           "wire_bytes": 300
         },
         "route_ceiling": {
-          "readiness_ms": 22,
+          "readiness_ms": 30,
           "wire_bytes": 315
         }
       },
@@ -179,7 +179,7 @@
         "reduced_motion": false
       },
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -207,64 +207,24 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 11
+        "dom_content_loaded_ms": 13
       },
       "performance_samples": {
         "samples": [
           {
-            "readiness_ms": 25.3,
+            "readiness_ms": 29.9,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 23.8,
+            "readiness_ms": 32.2,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25,
+            "readiness_ms": 25.7,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.7,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.2,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.6,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.7,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.3,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.3,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.7,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.6,
+            "readiness_ms": 26.6,
             "wire_bytes": 1200
           },
           {
@@ -272,36 +232,76 @@
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.4,
+            "readiness_ms": 26,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.8,
+            "readiness_ms": 26.3,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 23.9,
+            "readiness_ms": 26.7,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.4,
+            "readiness_ms": 26.1,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.1,
+            "readiness_ms": 30,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 31.1,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 27.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.7,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 28.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 31.2,
             "wire_bytes": 1200
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 25.4,
+          "readiness_ms": 31.2,
           "wire_bytes": 1200
         },
         "route_ceiling": {
-          "readiness_ms": 27,
+          "readiness_ms": 33,
           "wire_bytes": 1260
         }
       },
-      "render_content_sha256": "6da36f6ec4b454a7313aba80ffe627c131f7e0d7759a4cf11be173541b52d1d9",
+      "render_content_sha256": "29c15d0bb5c2c44fed3cb7e5228fdb18e4e814144767616362b6c352a3b1519e",
       "visual_metrics": {
         "viewport": {
           "width": 390,
@@ -373,7 +373,7 @@
         "reduced_motion": false
       },
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -401,101 +401,101 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 10
+        "dom_content_loaded_ms": 11
       },
       "performance_samples": {
         "samples": [
           {
-            "readiness_ms": 25.2,
+            "readiness_ms": 25.1,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 23.9,
+            "readiness_ms": 30,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.8,
+            "readiness_ms": 27.8,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.7,
+            "readiness_ms": 26.9,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.2,
+            "readiness_ms": 26,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.3,
+            "readiness_ms": 30.1,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.5,
+            "readiness_ms": 30.6,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.5,
+            "readiness_ms": 26.4,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.9,
+            "readiness_ms": 27.6,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.9,
+            "readiness_ms": 29.9,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.7,
+            "readiness_ms": 26.9,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.7,
+            "readiness_ms": 27.7,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.3,
+            "readiness_ms": 26,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.5,
+            "readiness_ms": 27.1,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 26.6,
+            "readiness_ms": 30.6,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.5,
+            "readiness_ms": 26.5,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25,
+            "readiness_ms": 26.8,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25,
+            "readiness_ms": 27,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.7,
+            "readiness_ms": 27.3,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.2,
+            "readiness_ms": 26.2,
             "wire_bytes": 1200
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 25.9,
+          "readiness_ms": 30.6,
           "wire_bytes": 1200
         },
         "route_ceiling": {
-          "readiness_ms": 28,
+          "readiness_ms": 33,
           "wire_bytes": 1260
         }
       },
-      "render_content_sha256": "6da36f6ec4b454a7313aba80ffe627c131f7e0d7759a4cf11be173541b52d1d9",
+      "render_content_sha256": "29c15d0bb5c2c44fed3cb7e5228fdb18e4e814144767616362b6c352a3b1519e",
       "visual_metrics": {
         "viewport": {
           "width": 360,
@@ -528,8 +528,8 @@
           "width": 328,
           "height": 397.5
         },
-        "initial_viewport_map_height_css_px": 256.234375,
-        "map_top_css_px": 543.765625,
+        "initial_viewport_map_height_css_px": 281.828125,
+        "map_top_css_px": 518.171875,
         "place_choice_visible": true,
         "map_runtime": "server-svg",
         "map_runtime_reason": null,
@@ -567,7 +567,7 @@
         "reduced_motion": false
       },
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -595,9 +595,9 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 156
+        "dom_content_loaded_ms": 162
       },
-      "render_content_sha256": "861dba85264b666df122072ee61fdfe7300e7c5e72dadf46206632138bbff602",
+      "render_content_sha256": "2febb11e648802b4ae79f2ad86bd41f3083f50b9f11ada0f4fadd2430f6c5944",
       "visual_metrics": {
         "viewport": {
           "width": 1440,
@@ -669,7 +669,7 @@
         "reduced_motion": false
       },
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -697,9 +697,9 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 120
+        "dom_content_loaded_ms": 140
       },
-      "render_content_sha256": "fa844b0b45ac9117cb8d61f52abce587152bfff9e58aba2059dce05e621e0a5c",
+      "render_content_sha256": "6167e30d28a12a341e3c6a1a5fb040d1b4715fabeaee64efca615882e8b8bd3f",
       "visual_metrics": {
         "viewport": {
           "width": 390,
@@ -771,7 +771,7 @@
         "reduced_motion": false
       },
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -799,9 +799,9 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 112
+        "dom_content_loaded_ms": 113
       },
-      "render_content_sha256": "a79460d0dacf8744dcc5c450d77d45b9a2352ec28472b6134249aba19c78f823",
+      "render_content_sha256": "5dc7d385b192ff9a152082d7b1b98da4ba7da464fd6e81063ce727b9acd1152c",
       "visual_metrics": {
         "viewport": {
           "width": 1440,
@@ -873,7 +873,7 @@
         "reduced_motion": false
       },
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -901,9 +901,9 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 104
+        "dom_content_loaded_ms": 113
       },
-      "render_content_sha256": "274b5f12a34ab747d3d1fb6a6c554f9b6dee3d5df1fd597f4bdb70a85f6286e4",
+      "render_content_sha256": "c3f18e6cb9f80ac8b0df5cc6c5049543ca61a6afe71787e3445154d97a026494",
       "visual_metrics": {
         "viewport": {
           "width": 390,
@@ -975,7 +975,7 @@
         "reduced_motion": false
       },
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -1003,9 +1003,9 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 120
+        "dom_content_loaded_ms": 143
       },
-      "render_content_sha256": "74c75964b9b4e70a09de9d452621ec9c9afe4fba7b46393bd761ead209a46c5d",
+      "render_content_sha256": "e02c824e47b559c9281ce3beb9224fbf6c985816a54d0f7553eb0ab797ffba9a",
       "visual_metrics": {
         "viewport": {
           "width": 1440,
@@ -1077,7 +1077,7 @@
         "reduced_motion": false
       },
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -1105,9 +1105,9 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 115
+        "dom_content_loaded_ms": 110
       },
-      "render_content_sha256": "0211decf5e2935897074ae266bed4e953e455a1621079577139a94a4aca0c8b4",
+      "render_content_sha256": "fcb8d74ee8a56e9c2574e1469bb6d65c5fb315924ae4d472b7b32dd27fcbae9a",
       "visual_metrics": {
         "viewport": {
           "width": 390,
@@ -1179,7 +1179,7 @@
         "reduced_motion": false
       },
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -1207,9 +1207,9 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 123
+        "dom_content_loaded_ms": 129
       },
-      "render_content_sha256": "0a7c0bc452dc24be1703841d431b894643ca91d0c96f5281179db52ec07c4d73",
+      "render_content_sha256": "20648a25665d11762c0cef34deec0d031f0ac3d3273fd10f7da5e1cc40cbe53f",
       "visual_metrics": {
         "viewport": {
           "width": 360,
@@ -1242,8 +1242,8 @@
           "width": 328,
           "height": 397.5
         },
-        "initial_viewport_map_height_css_px": 178.234375,
-        "map_top_css_px": 621.765625,
+        "initial_viewport_map_height_css_px": 203.828125,
+        "map_top_css_px": 596.171875,
         "place_choice_visible": true,
         "map_runtime": "failed",
         "map_runtime_reason": "webgl_unsupported",
@@ -1281,7 +1281,7 @@
         "reduced_motion": true
       },
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-      "candidate_revision": "11344170f62140c1d90e59dc552291101cb15989",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "not_taken",
         "reason": "deployment-dependent CROL_BASE read-back"
@@ -1482,51 +1482,59 @@
         },
         "samples": [
           {
-            "readiness_ms": 23.1,
+            "readiness_ms": 28.5,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.1,
+            "readiness_ms": 28.7,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 17.9,
+            "readiness_ms": 22.7,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 18.2,
+            "readiness_ms": 21,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 17.4,
+            "readiness_ms": 21,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 20,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 20.2,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 21.2,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 19.3,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 18.6,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 19.3,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 19,
+            "wire_bytes": 0
+          },
+          {
+            "readiness_ms": 19.8,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 17.9,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 17.4,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 17.6,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 17.8,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 17.7,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 18.2,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 18.2,
+            "readiness_ms": 19.5,
             "wire_bytes": 300
           },
           {
@@ -1534,15 +1542,11 @@
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.1,
+            "readiness_ms": 19.3,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 20.4,
+            "readiness_ms": 20.3,
             "wire_bytes": 300
           },
           {
@@ -1550,24 +1554,20 @@
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 20.4,
+            "readiness_ms": 21.5,
             "wire_bytes": 300
           },
           {
-            "readiness_ms": 19.6,
-            "wire_bytes": 300
-          },
-          {
-            "readiness_ms": 18.5,
+            "readiness_ms": 20.1,
             "wire_bytes": 300
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 20.4,
+          "readiness_ms": 28.5,
           "wire_bytes": 300
         },
         "route_ceiling": {
-          "readiness_ms": 22,
+          "readiness_ms": 30,
           "wire_bytes": 315
         }
       },
@@ -1579,59 +1579,19 @@
         },
         "samples": [
           {
-            "readiness_ms": 25.3,
+            "readiness_ms": 29.9,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 23.8,
+            "readiness_ms": 32.2,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25,
+            "readiness_ms": 25.7,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.7,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.4,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.2,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.6,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.7,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.3,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 25.3,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.7,
-            "wire_bytes": 1200
-          },
-          {
-            "readiness_ms": 24.6,
+            "readiness_ms": 26.6,
             "wire_bytes": 1200
           },
           {
@@ -1639,32 +1599,72 @@
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.4,
+            "readiness_ms": 26,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.8,
+            "readiness_ms": 26.3,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 23.9,
+            "readiness_ms": 26.7,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.4,
+            "readiness_ms": 26.1,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.1,
+            "readiness_ms": 30,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 31.1,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 27.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.7,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 28.3,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 25.9,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.4,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 26.5,
+            "wire_bytes": 1200
+          },
+          {
+            "readiness_ms": 31.2,
             "wire_bytes": 1200
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 25.4,
+          "readiness_ms": 31.2,
           "wire_bytes": 1200
         },
         "route_ceiling": {
-          "readiness_ms": 27,
+          "readiness_ms": 33,
           "wire_bytes": 1260
         }
       },
@@ -1676,92 +1676,92 @@
         },
         "samples": [
           {
-            "readiness_ms": 25.2,
+            "readiness_ms": 25.1,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 23.9,
+            "readiness_ms": 30,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.8,
+            "readiness_ms": 27.8,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.7,
+            "readiness_ms": 26.9,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.2,
+            "readiness_ms": 26,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.3,
+            "readiness_ms": 30.1,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.5,
+            "readiness_ms": 30.6,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.5,
+            "readiness_ms": 26.4,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.9,
+            "readiness_ms": 27.6,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.9,
+            "readiness_ms": 29.9,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.7,
+            "readiness_ms": 26.9,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.7,
+            "readiness_ms": 27.7,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.3,
+            "readiness_ms": 26,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.5,
+            "readiness_ms": 27.1,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 26.6,
+            "readiness_ms": 30.6,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.5,
+            "readiness_ms": 26.5,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25,
+            "readiness_ms": 26.8,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25,
+            "readiness_ms": 27,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 24.7,
+            "readiness_ms": 27.3,
             "wire_bytes": 1200
           },
           {
-            "readiness_ms": 25.2,
+            "readiness_ms": 26.2,
             "wire_bytes": 1200
           }
         ],
         "reviewed_premerge_p95": {
-          "readiness_ms": 25.9,
+          "readiness_ms": 30.6,
           "wire_bytes": 1200
         },
         "route_ceiling": {
-          "readiness_ms": 28,
+          "readiness_ms": 33,
           "wire_bytes": 1260
         }
       }
