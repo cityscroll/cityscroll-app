@@ -65,11 +65,13 @@ async function putJson(kv, name, value) {
 export async function recordDigestShadowReceipt(env, summary, now = new Date()) {
   const redlines = Array.isArray(summary?.redlines) ? summary.redlines : [];
   const codes = [...new Set(redlines.map((item) => trimmed(item?.code, 60)).filter(Boolean))];
+  const complete = summary?.rebuild_complete !== false;
   const receipt = {
     schema: "cityscroll.digest-shadow-ready-receipt.v1",
     day: day(now),
     observed_at: now.toISOString(),
-    status: summary?.ok === true ? "READY" : "DEGRADED",
+    status: complete ? (summary?.ok === true ? "READY" : "DEGRADED") : "PARTIAL",
+    complete,
     redlines: redlines.length,
     redline_codes: codes.slice(0, DIGEST_SHADOW_REASON_CODE_LIMIT),
     reason: trimmed(redlines[0]?.reason, 200) || null,
