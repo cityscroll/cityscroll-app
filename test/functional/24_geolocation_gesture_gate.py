@@ -92,6 +92,7 @@ def main() -> None:
             page = context.new_page()
             install_routes(page)
             page.goto(base + "near-you/", wait_until="networkidle")
+            page.locator(".near-entry-secondary > summary").click()
             page.locator("[data-use-location]").click()
             assert page.evaluate("window.__geoCalls") == 1
             context.close()
