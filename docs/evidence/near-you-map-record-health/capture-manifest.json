@@ -1,0 +1,126 @@
+{
+  "schema": "cityscroll.served_browser_capture_manifest.v1",
+  "feature": "near-you-map-record-health",
+  "public_alias": "c42128caee453",
+  "capture_mode": "headless_playwright_served_route",
+  "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+  "grounded_at": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+  "data_vintage": "nta2020 26B",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed.",
+  "note": "Textual DOM hashes are committed; no image binaries are committed.",
+  "captures": [
+    {
+      "source": "local-rendered-output",
+      "name": "record-failure-BK0101-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "data_vintage": "nta2020 26B",
+      "assertion": "Greenpoint keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail.",
+      "sha256": "bba0e61431a66a169743fbc36a271fb8af40b4dbbd7b649fee9d689494ecdc0f",
+      "file": null,
+      "revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c"
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "record-failure-BK0101-mobile",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "data_vintage": "nta2020 26B",
+      "assertion": "Greenpoint keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail.",
+      "sha256": "bba0e61431a66a169743fbc36a271fb8af40b4dbbd7b649fee9d689494ecdc0f",
+      "file": null,
+      "revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c"
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "record-failure-QN0103-desktop",
+      "route": "/near-you/?geo=nta2020%3AQN0103&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "data_vintage": "nta2020 26B",
+      "assertion": "Astoria (Central) keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail.",
+      "sha256": "b12273442373b7945ad512f3a17e163a0228b1850051aabfe8a3fcbfc9368c6d",
+      "file": null,
+      "revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c"
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "record-failure-QN0103-mobile",
+      "route": "/near-you/?geo=nta2020%3AQN0103&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "data_vintage": "nta2020 26B",
+      "assertion": "Astoria (Central) keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail.",
+      "sha256": "b12273442373b7945ad512f3a17e163a0228b1850051aabfe8a3fcbfc9368c6d",
+      "file": null,
+      "revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c"
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "record-failure-SI0101-desktop",
+      "route": "/near-you/?geo=nta2020%3ASI0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "data_vintage": "nta2020 26B",
+      "assertion": "St. George-New Brighton keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail.",
+      "sha256": "bec9445016dbf1f8d54afa2f535721e884fe088e781c565a593058f53e9731f2",
+      "file": null,
+      "revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c"
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "record-failure-SI0101-mobile",
+      "route": "/near-you/?geo=nta2020%3ASI0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "data_vintage": "nta2020 26B",
+      "assertion": "St. George-New Brighton keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail.",
+      "sha256": "bec9445016dbf1f8d54afa2f535721e884fe088e781c565a593058f53e9731f2",
+      "file": null,
+      "revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c"
+    },
+    {
+      "source": "headless-http-served-route",
+      "name": "served-records-error-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "assertion": "Served Greenpoint selection keeps map identity through deferred record failure and recovers with a scope-preserving retry.",
+      "sha256": "9f54e1c54d8fd12849a87f6d58f3daeb9b54bd997b1cec3bf0ed55f99075ca0d",
+      "file": null,
+      "revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "data_vintage": "nta2020 26B"
+    },
+    {
+      "source": "headless-http-served-route",
+      "name": "served-records-error-mobile",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "assertion": "Served Greenpoint selection recovers from deferred record failure with keyboard Enter while preserving lens, place, comparison, and filters.",
+      "sha256": "9cc132daff00910ff4063ac745b646a3301af1565c684fdbc87e28218ea9a1e4",
+      "file": null,
+      "revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "data_vintage": "nta2020 26B"
+    }
+  ]
+}

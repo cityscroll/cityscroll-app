@@ -189,7 +189,11 @@ async function hydrateCurrentNearYouDeferred() {
       // Retry the URL that failed, not the static document's default recovery href.
       recovery.href = location.href || root.dataset.nearRecoveryHref || "/near-you/";
       recovery.dataset.nearRecovery = "retry";
-      recovery.textContent = globalThis.t("buyer_history_retry");
+      // Prefer Near You owned copy. Never leak a raw translation key when i18n is absent.
+      const retryLabel = copy("messageRetry")
+        || (typeof globalThis.t === "function" ? globalThis.t("buyer_history_retry") : "")
+        || "Try again";
+      recovery.textContent = retryLabel === "buyer_history_retry" ? "Try again" : retryLabel;
       host.replaceChildren(statusNode, recovery);
       host.setAttribute("aria-busy", "false");
       if (host.dataset.nearDeferred === "results") host.removeAttribute("data-results-count");

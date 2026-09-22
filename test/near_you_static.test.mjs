@@ -234,21 +234,34 @@ test("Near-you distinguishes supported empty, populated, unsupported, and pendin
   assert.match(unsupportedHtml, /not mapped here/);
   assert.doesNotMatch(unsupportedHtml, /data-map-(?:id|area)="[^"]+"[^>]+data-count="0"/);
 
-  const pendingView = buildNearYouViewModel(
+  const pendingRecordsView = buildNearYouViewModel(
     emptyScope,
     fixtureActivity(),
     fixtureBoundaries,
     { dataState: "pending" },
   );
-  const pendingHtml = renderNearYouDocument(pendingView);
-  assert.equal(pendingView.mapState, "pending");
-  assert.equal(pendingView.results.count, null);
-  assert.match(pendingHtml, /data-near-data-state="pending"/);
-  assert.match(pendingHtml, /Map data is loading/);
-  assert.doesNotMatch(pendingHtml, /data-count="0"/);
+  const pendingRecordsHtml = renderNearYouDocument(pendingRecordsView);
+  assert.equal(pendingRecordsView.dataState, "pending");
+  assert.equal(pendingRecordsView.geometryState, "ready");
+  assert.equal(pendingRecordsView.mapState, "ready");
+  assert.equal(pendingRecordsView.results.count, null);
+  assert.match(pendingRecordsHtml, /data-near-data-state="pending"/);
+  assert.match(pendingRecordsHtml, /Loading matching records/);
+  assert.doesNotMatch(pendingRecordsHtml, /data-count="0"/);
+
+  const pendingGeometryView = buildNearYouViewModel(
+    emptyScope,
+    fixtureActivity(),
+    fixtureBoundaries,
+    { dataState: "ready", geometryState: "pending" },
+  );
+  const pendingGeometryHtml = renderNearYouDocument(pendingGeometryView);
+  assert.equal(pendingGeometryView.mapState, "pending");
+  assert.match(pendingGeometryHtml, /data-near-map-state="pending"/);
+  assert.match(pendingGeometryHtml, /Map boundaries are still loading/);
 });
 
-test("Near-you failure triggers all terminate in the same scoped error state", () => {
+test("Near-you record failures keep geometry healthy and preserve scoped retry", () => {
   const scope = scopeWithPlace(
     scopeFromLensState("meetings", { agency: "Transportation", q: "curb" }),
     { borough: "Queens" },
@@ -259,10 +272,15 @@ test("Near-you failure triggers all terminate in the same scoped error state", (
       canonicalBase: "https://cityscroll.org/near-you",
     });
     const html = renderNearYouDocument(view);
-    assert.equal(view.mapState, "error", trigger);
+    assert.equal(view.dataState, "error", trigger);
+    assert.equal(view.geometryState, "ready", trigger);
+    assert.equal(view.mapState, "ready", trigger);
     assert.equal(view.results.count, null, trigger);
-    assert.match(html, /data-near-map-state="error"/, trigger);
-    assert.match(html, /Local records are temporarily unavailable/, trigger);
+    assert.match(html, /data-near-data-state="error"/, trigger);
+    assert.match(html, /data-near-geometry-state="ready"/, trigger);
+    assert.match(html, /data-near-map-state="ready"/, trigger);
+    assert.match(html, /Matching records are temporarily unavailable/, trigger);
+    assert.doesNotMatch(html, /buyer_history_retry/, trigger);
     const retryHref = html.match(/<a href="([^"]+)" data-near-recovery="retry">/)?.[1]?.replaceAll("&amp;", "&");
     assert.ok(retryHref, trigger);
     assert.equal(new URL(retryHref).searchParams.get("agency"), "Transportation", trigger);
@@ -434,4 +452,241 @@ test("the Near-you cold wire inventory stays below the 455,000-byte ceiling", ()
   ];
   const bytes = files.reduce((sum, path) => sum + gzipSync(readFileSync(new URL(path, import.meta.url))).length, 0);
   assert.ok(bytes <= 455_000, `Near-you cold transfer ${bytes} exceeds 455,000 bytes`);
+});
+
+const NTA_OWNER_LAYER = Object.freeze({
+  schema: "cityscroll.geography_layer.v1",
+  type: "nta2020",
+  vintage: Object.freeze({
+    id: "26B",
+    published_at: "2026-05-04T00:00:00.000Z",
+    valid_from: null,
+    valid_to: null,
+  }),
+  geometry_fidelity: "simplified",
+  features: Object.freeze([
+    Object.freeze({
+      key: "geography:nta2020:BK0101",
+      type: "nta2020",
+      id: "BK0101",
+      label: "Greenpoint",
+      subtype: "residential",
+    }),
+    Object.freeze({
+      key: "geography:nta2020:QN0103",
+      type: "nta2020",
+      id: "QN0103",
+      label: "Astoria (Central)",
+      subtype: "residential",
+    }),
+    Object.freeze({
+      key: "geography:nta2020:SI0101",
+      type: "nta2020",
+      id: "SI0101",
+      label: "St. George-New Brighton",
+      subtype: "residential",
+    }),
+  ]),
+});
+
+const NTA_LABEL_INDEX = Object.freeze({
+  "geography:nta2020:BK0101": "Greenpoint",
+  "geography:nta2020:QN0103": "Astoria (Central)",
+  "geography:nta2020:SI0101": "St. George-New Brighton",
+});
+
+test("A1: selected neighborhoods keep friendly titles and geometry vintage when records fail", () => {
+  const cases = [
+    { id: "BK0101", label: "Greenpoint" },
+    { id: "QN0103", label: "Astoria (Central)" },
+    { id: "SI0101", label: "St. George-New Brighton" },
+  ];
+  for (const specimen of cases) {
+    const scope = scopeFromNearYouUrl(
+      `https://cityscroll.org/near-you/?geo=nta2020:${specimen.id}&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district`,
+    );
+    const view = buildNearYouViewModel(scope, null, fixtureBoundaries, {
+      dataState: "error",
+      geometryState: "ready",
+      canonicalBase: "https://cityscroll.org/near-you",
+      geographySearch: `?geo=nta2020:${specimen.id}&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district`,
+      navigationLayerDoc: NTA_OWNER_LAYER,
+      navigationLayerType: "nta2020",
+      geographyLabelIndex: NTA_LABEL_INDEX,
+    });
+    const html = renderNearYouDocument(view);
+    assert.equal(view.dataState, "error", specimen.id);
+    assert.equal(view.geometryState, "ready", specimen.id);
+    assert.equal(view.mapState, "ready", specimen.id);
+    assert.equal(view.boundaryVintage, "26B", specimen.id);
+    assert.equal(view.placePresentation.label, specimen.label, specimen.id);
+    assert.match(html, new RegExp(`<h1>${specimen.label.replace(/[()]/g, "\\$&")}</h1>`), specimen.id);
+    assert.match(html, /Map boundaries: 26B/, specimen.id);
+    assert.match(html, /data-near-map-state="ready"/, specimen.id);
+    assert.match(html, /Matching records are temporarily unavailable/, specimen.id);
+    assert.match(html, /data-near-recovery="retry">Try again/, specimen.id);
+    assert.doesNotMatch(html, /buyer_history_retry/, specimen.id);
+    assert.doesNotMatch(html, new RegExp(`<h1>${specimen.id}</h1>`), specimen.id);
+    assert.doesNotMatch(html, /Map boundaries: not published/, specimen.id);
+    const retryHref = html.match(/<a href="([^"]+)" data-near-recovery="retry">/)?.[1]?.replaceAll("&amp;", "&");
+    assert.ok(retryHref, specimen.id);
+    const retryUrl = new URL(retryHref);
+    const retryGeo = retryUrl.searchParams.get("geo");
+    assert.ok(
+      retryGeo === `nta2020:${specimen.id}` || retryGeo === `geography:nta2020:${specimen.id}`,
+      `${specimen.id} retry geo ${retryGeo}`,
+    );
+    assert.equal(retryUrl.searchParams.get("lens"), "meetings", specimen.id);
+    assert.equal(retryUrl.searchParams.get("agency"), "Transportation", specimen.id);
+    assert.equal(retryUrl.searchParams.get("q"), "curb", specimen.id);
+    assert.equal(retryUrl.searchParams.get("compare"), "council_district", specimen.id);
+  }
+});
+
+test("A2: geometry and records health stay independent across truthful states", () => {
+  const baseScope = scopeFromNearYouUrl(
+    "https://cityscroll.org/near-you/?geo=nta2020:BK0101&surface=map&lens=meetings",
+  );
+  const matrix = [
+    {
+      name: "healthy-records",
+      options: {
+        dataState: "ready",
+        geometryState: "ready",
+        navigationLayerDoc: NTA_OWNER_LAYER,
+        geographyLabelIndex: NTA_LABEL_INDEX,
+        geographySearch: "?geo=nta2020:BK0101&surface=map&lens=meetings",
+      },
+      activity: {
+        ...fixtureActivity(),
+        geography_items: {
+          definitions: {
+            "geography:nta2020:BK0101": {
+              key: "geography:nta2020:BK0101",
+              type: "nta2020",
+              id: "BK0101",
+              label: "Greenpoint",
+              boundary_vintage: "26B",
+            },
+          },
+          by_key: { "geography:nta2020:BK0101": { meetings: ["m-queens"] } },
+        },
+      },
+      expect: { dataState: "ready", geometryState: "ready", mapState: "populated", vintage: "26B", label: "Greenpoint" },
+    },
+    {
+      name: "published-zero",
+      options: {
+        dataState: "ready",
+        geometryState: "ready",
+        navigationLayerDoc: NTA_OWNER_LAYER,
+        geographyLabelIndex: NTA_LABEL_INDEX,
+        geographySearch: "?geo=nta2020:BK0101&surface=map&lens=meetings&agency=No%20matching%20agency",
+      },
+      activity: {
+        ...fixtureActivity(),
+        geography_items: {
+          definitions: {
+            "geography:nta2020:BK0101": {
+              key: "geography:nta2020:BK0101",
+              type: "nta2020",
+              id: "BK0101",
+              label: "Greenpoint",
+              boundary_vintage: "26B",
+            },
+          },
+          by_key: { "geography:nta2020:BK0101": { meetings: [] } },
+        },
+      },
+      scope: scopeFromNearYouUrl(
+        "https://cityscroll.org/near-you/?geo=nta2020:BK0101&surface=map&lens=meetings&agency=No%20matching%20agency",
+      ),
+      expect: { dataState: "ready", geometryState: "ready", mapState: "empty", vintage: "26B", label: "Greenpoint", zero: true },
+    },
+    {
+      name: "delayed-geometry",
+      options: {
+        dataState: "ready",
+        geometryState: "pending",
+        geographySearch: "?geo=nta2020:BK0101&surface=map&lens=meetings",
+        geographyLabelIndex: NTA_LABEL_INDEX,
+      },
+      activity: fixtureActivity(),
+      expect: { dataState: "ready", geometryState: "pending", mapState: "pending", vintage: null, label: "Greenpoint" },
+    },
+    {
+      name: "missing-geometry",
+      options: {
+        dataState: "ready",
+        geometryState: "missing",
+        geographySearch: "?geo=nta2020:BK0101&surface=map&lens=meetings",
+        geographyLabelIndex: NTA_LABEL_INDEX,
+      },
+      activity: fixtureActivity(),
+      expect: { dataState: "ready", geometryState: "missing", mapState: "missing", vintage: null, label: "Greenpoint" },
+    },
+    {
+      name: "geometry-error",
+      options: {
+        dataState: "ready",
+        geometryState: "error",
+        geographySearch: "?geo=nta2020:BK0101&surface=map&lens=meetings",
+        geographyLabelIndex: NTA_LABEL_INDEX,
+        navigationLayerDoc: NTA_OWNER_LAYER,
+      },
+      activity: fixtureActivity(),
+      expect: { dataState: "ready", geometryState: "error", mapState: "error", vintage: "26B", label: "Greenpoint" },
+    },
+    {
+      name: "record-only-failure",
+      options: {
+        dataState: "error",
+        geometryState: "ready",
+        navigationLayerDoc: NTA_OWNER_LAYER,
+        geographyLabelIndex: NTA_LABEL_INDEX,
+        geographySearch: "?geo=nta2020:BK0101&surface=map&lens=meetings",
+      },
+      activity: null,
+      expect: { dataState: "error", geometryState: "ready", mapState: "ready", vintage: "26B", label: "Greenpoint" },
+    },
+  ];
+
+  for (const row of matrix) {
+    const view = buildNearYouViewModel(
+      row.scope || baseScope,
+      row.activity,
+      fixtureBoundaries,
+      {
+        canonicalBase: "https://cityscroll.org/near-you",
+        navigationLayerType: "nta2020",
+        ...row.options,
+      },
+    );
+    const html = renderNearYouDocument(view);
+    assert.equal(view.dataState, row.expect.dataState, row.name);
+    assert.equal(view.geometryState, row.expect.geometryState, row.name);
+    assert.equal(view.mapState, row.expect.mapState, row.name);
+    assert.equal(view.boundaryVintage, row.expect.vintage, row.name);
+    assert.equal(view.placePresentation.label, row.expect.label, row.name);
+    assert.match(html, new RegExp(`data-near-data-state="${row.expect.dataState}"`), row.name);
+    assert.match(html, new RegExp(`data-near-geometry-state="${row.expect.geometryState}"`), row.name);
+    assert.match(html, new RegExp(`data-near-map-state="${row.expect.mapState}"`), row.name);
+    if (row.expect.vintage) {
+      assert.match(html, new RegExp(`Map boundaries: ${row.expect.vintage}`), row.name);
+    } else {
+      assert.match(html, /Map boundaries: not published/, row.name);
+    }
+    if (row.name === "missing-geometry") {
+      assert.match(html, /Map boundaries are not published for this place yet/, row.name);
+      assert.doesNotMatch(html, /data-near-map-state="ready"/, row.name);
+    }
+    if (row.expect.zero) {
+      assert.equal(view.results.count, 0, row.name);
+    }
+    if (row.name === "record-only-failure") {
+      assert.match(html, /Matching records are temporarily unavailable/, row.name);
+      assert.doesNotMatch(html, /buyer_history_retry/, row.name);
+      assert.doesNotMatch(html, /The neighborhood map could not load/, row.name);
+    }
+  }
 });

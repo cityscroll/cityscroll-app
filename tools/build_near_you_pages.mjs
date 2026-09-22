@@ -77,6 +77,15 @@ function buildDocuments() {
   const boundaries = json(join(SITE, "data/district_boundaries.json"));
   const communityGeography = json(join(SITE, "data/community_board_geography_lookup.json"));
   const navigationLayerDoc = loadNavigationLayerDoc();
+  const geographyLabelIndex = Object.fromEntries(
+    (navigationLayerDoc?.features || [])
+      .filter((feature) => feature?.key && feature?.label)
+      .flatMap((feature) => [
+        [feature.key, feature.label],
+        [`${feature.type}:${feature.id}`, feature.label],
+        [String(feature.id), feature.label],
+      ]),
+  );
   return commonScopes().map((scope) => {
     const publicPath = commonNearYouPath(scope);
     const urlForScope = (next) => commonNearYouPath(next)
@@ -87,6 +96,7 @@ function buildDocuments() {
       communityGeography,
       navigationLayerDoc,
       navigationLayerType: "nta2020",
+      geographyLabelIndex,
     });
     const deferredParts = renderNearYouDeferredParts(view);
     return {

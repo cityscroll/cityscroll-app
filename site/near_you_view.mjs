@@ -84,6 +84,7 @@ import {
 import {
   buildSelectedGeographyOverlapViewModel,
   renderSelectedGeographyOverlapDrawerHtml,
+  resolveGeographyOwnerPresentation,
 } from "./geography_navigation_overlap_ui.mjs";
 
 const LENS_LABELS = Object.freeze({
@@ -102,6 +103,27 @@ const BAG_LABELS = Object.freeze({
 });
 const BOROUGHS = Object.keys(BOROUGH_META);
 const NEAR_YOU_DATA_STATES = Object.freeze(["ready", "pending", "error"]);
+/** Geometry health is independent of records-loading state. */
+const NEAR_YOU_GEOMETRY_STATES = Object.freeze(["ready", "pending", "missing", "error"]);
+
+function normalizeNearYouGeometryState(value, {
+  navigationLayerDoc = null,
+  boundaries = null,
+} = {}) {
+  if (NEAR_YOU_GEOMETRY_STATES.includes(value)) return value;
+  if (navigationLayerDoc && Array.isArray(navigationLayerDoc.features) && navigationLayerDoc.features.length) {
+    return "ready";
+  }
+  if (boundaries && (
+    (Array.isArray(boundaries.community_districts) && boundaries.community_districts.length)
+    || (Array.isArray(boundaries.council_districts) && boundaries.council_districts.length)
+    || (boundaries.boroughs && typeof boundaries.boroughs === "object" && Object.keys(boundaries.boroughs).length)
+  )) {
+    return "ready";
+  }
+  if (boundaries?.boundary_vintage || navigationLayerDoc?.vintage?.id) return "ready";
+  return "missing";
+}
 
 function esc(value) {
   return String(value ?? "")
@@ -337,6 +359,8 @@ function formatCouncilDistrict(id) {
 function selectedPlacePresentation(scope, communityGeography = {}, {
   geographyState = null,
   geographyDefinitions = null,
+  geographyLabelIndex = null,
+  navigationLayerDoc = null,
 } = {}) {
   const community = first(scope.place.community_districts);
   const council = first(scope.place.council_districts);
@@ -363,9 +387,21 @@ function selectedPlacePresentation(scope, communityGeography = {}, {
       || (GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected.key === geoKey
         ? GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected
         : null);
-    if (definition?.label) return { label: definition.label, geographyKey: geoKey };
-    if (geographyState?.id && geographyState?.type === "nta2020") {
-      return { label: geographyState.id, geographyKey: geoKey };
+    const owner = resolveGeographyOwnerPresentation({
+      type: geographyState?.type || definition?.type || null,
+      id: geographyState?.id || definition?.id || null,
+      key: geoKey,
+      label: definition?.label || null,
+      boundary_vintage: definition?.boundary_vintage || null,
+      labelIndex: geographyLabelIndex,
+      layerDoc: navigationLayerDoc,
+    });
+    if (owner.label) {
+      return {
+        label: owner.label,
+        geographyKey: geoKey,
+        boundary_vintage: owner.boundary_vintage,
+      };
     }
     return { label: geographyState?.id || geoKey, geographyKey: geoKey };
   }
@@ -416,6 +452,10 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   const requestedLens = first(scope.facets.domains) || "meetings";
   const lens = requestedLens;
   const dataState = normalizeNearYouDataState(options.dataState ?? (activity ? "ready" : "error"));
+  const geometryState = normalizeNearYouGeometryState(options.geometryState, {
+    navigationLayerDoc: options.navigationLayerDoc || null,
+    boundaries,
+  });
   const mapped = MAP_LENSES.includes(lens) && lens !== "all";
   const basis = lens === "money"
     && (scope.place.viewport?.basis || scope.facets.values?.basis) === "contract_action_address"
@@ -467,15 +507,20 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     ? intersection(membershipProjection.ids, allowed)
     : [];
   const resultCount = localMembershipAvailable ? resultIds.length : null;
-  const mapState = dataState === "pending"
+  // Records-loading state governs only records. Geometry health owns mapState.
+  const mapState = geometryState === "pending"
     ? "pending"
-    : dataState === "error"
-      ? "error"
-      : !localMembershipAvailable && mapped
-        ? "unsupported"
-        : mapped
-        ? resultCount > 0 ? "populated" : "empty"
-        : "unsupported";
+    : geometryState === "missing"
+      ? "missing"
+      : geometryState === "error"
+        ? "error"
+        : dataState === "ready"
+          ? (!mapped || !localMembershipAvailable
+            ? "unsupported"
+            : resultCount > 0 ? "populated" : "empty")
+          : geometryState === "ready"
+            ? "ready"
+            : "unsupported";
   const hasPlace = !!(scope.place.boroughs.length || scope.place.community_districts.length
     || scope.place.council_districts.length || (scope.place.geographies || []).length || scope.place.neighborhood
     || scope.place.location_scope);
@@ -506,9 +551,8 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
         ? GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected
         : null))
     : null;
-  const overlapSelected = selectedGeographyKey
-    ? {
-      key: selectedGeographyKey,
+  const overlapOwner = selectedGeographyKey
+    ? resolveGeographyOwnerPresentation({
       type: geographyState?.type
         || selectedGeographyDefinition?.type
         || String(selectedGeographyKey).split(":")[1]
@@ -517,16 +561,29 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
         || selectedGeographyDefinition?.id
         || String(selectedGeographyKey).split(":")[2]
         || null,
-      label: selectedGeographyDefinition?.label
-        || (GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected.key === selectedGeographyKey
-          ? GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected.label
-          : null),
-      boundary_vintage: selectedGeographyDefinition?.boundary_vintage
-        || (GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected.key === selectedGeographyKey
-          ? GEOGRAPHY_NAVIGATION_AREA_OVERLAP_EXAMPLE.selected.boundary_vintage
-          : null),
+      key: selectedGeographyKey,
+      label: selectedGeographyDefinition?.label || null,
+      boundary_vintage: selectedGeographyDefinition?.boundary_vintage || null,
+      labelIndex: options.geographyLabelIndex || null,
+      layerDoc: options.navigationLayerDoc || null,
+    })
+    : null;
+  const overlapSelected = overlapOwner
+    ? {
+      key: overlapOwner.key || selectedGeographyKey,
+      type: overlapOwner.type,
+      id: overlapOwner.id,
+      label: overlapOwner.label,
+      boundary_vintage: overlapOwner.boundary_vintage,
     }
     : null;
+  const boundaryVintage = geometryState === "missing"
+    ? null
+    : overlapSelected?.boundary_vintage
+      || options.navigationLayerDoc?.vintage?.id
+      || options.boundaryVintage
+      || (geometryState === "ready" ? (boundaries?.boundary_vintage || null) : null)
+      || null;
   const overlapBase = nearYouUrlFromScope(scope, {base:canonicalBase});
   const selectedRecordsHref = selectedGeographyKey
     ? geographyNavigationUrlWithFilters({
@@ -658,13 +715,17 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     lens,
     mapped,
     dataState,
+    geometryState,
     mapState,
+    boundaryVintage,
     basis,
     basisLabel: basisLayer?.basis_label || "Affected area or place of performance",
     hasPlace,
     placePresentation: selectedPlacePresentation(scope, options.communityGeography || {}, {
       geographyState,
       geographyDefinitions: activity?.geography_items?.definitions || null,
+      geographyLabelIndex: options.geographyLabelIndex || null,
+      navigationLayerDoc: options.navigationLayerDoc || null,
     }),
     isOverview,
     overview,
@@ -701,7 +762,25 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     })),
     watchHref: watchHref(scope, lens, resultCount),
     shareHref: nearYouUrlFromScope(scope, { base: canonicalBase }),
-    recoveryHref: options.recoveryHref || nearYouUrlFromScope(scope, { base: canonicalBase }),
+    recoveryHref: options.recoveryHref || (() => {
+      const scopeUrl = nearYouUrlFromScope(scope, { base: canonicalBase });
+      if (!(geographyState?.geo || geographyState?.key)) return scopeUrl;
+      return geographyNavigationUrlWithFilters({
+        ok: true,
+        geo: geographyState.geo
+          || (geographyState.type && geographyState.id
+            ? `${geographyState.type}:${geographyState.id}`
+            : null),
+        key: geographyState.key || null,
+        type: geographyState.type || null,
+        id: geographyState.id || null,
+        compare: geographyState.compare || null,
+        surface: geographyState.surface || shellSurface,
+        drawer: geographyState.drawer || null,
+        focus: geographyState.focus || null,
+        lens,
+      }, { base: scopeUrl });
+    })(),
     canonicalBase,
     siteBase,
     local_constellation: buildPlaceLocalConstellation(
@@ -875,6 +954,12 @@ export function renderNearYouDeferredBody(view) {
 
 function renderNearYouDeferredShell(view, part, { includeListPanelMarker = false } = {}) {
   if (part === "results") {
+    if (view.dataState === "error") {
+      return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="error"${includeListPanelMarker ? ` data-near-surface-panel="records"` : ""} aria-busy="false">
+      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>
+      ${renderNearYouRecordsRecovery(view)}
+    </section>`;
+    }
     return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending"${includeListPanelMarker ? ` data-near-surface-panel="records"` : ""} aria-busy="true">
       <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>
       <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
@@ -930,6 +1015,15 @@ function renderNearYouOverview(view) {
   </section>`;
 }
 
+function renderNearYouRecordsRecovery(view) {
+  if (view.dataState !== "error") return "";
+  return `<div class="near-coverage near-records-state" data-near-records-state="error" role="alert">
+      <strong>Matching records are temporarily unavailable.</strong>
+      <p>Your place, topic, comparison, and filters stay selected. You can keep exploring the map while records recover.</p>
+      <a href="${esc(view.recoveryHref)}" data-near-recovery="retry">Try again</a>
+    </div>`;
+}
+
 function renderNearYouMapState(view) {
   const state = view.mapState;
   let notice = "";
@@ -946,12 +1040,19 @@ function renderNearYouMapState(view) {
   }
   if (state === "pending") {
     notice = `<div class="near-coverage near-map-state" data-near-map-state="pending" role="status" aria-busy="true">
-      <strong>Map data is loading.</strong><p>Area counts will appear when the data is ready.</p>
+      <strong>Map boundaries are still loading.</strong><p>Neighborhood outlines will appear when the boundary data is ready.</p>
+    </div>`;
+  }
+  if (state === "missing") {
+    notice = `<div class="near-coverage near-map-state" data-near-map-state="missing" role="note">
+      <strong>Map boundaries are not published for this place yet.</strong>
+      <p>Your selected place and filters stay available. This page does not invent a boundary that is not published.</p>
     </div>`;
   }
   if (state === "error") {
     notice = `<div class="near-coverage near-map-state" data-near-map-state="error" role="alert">
-      <strong>Local records are temporarily unavailable.</strong><p>Your filters and place are still selected. You can continue exploring neighborhoods on the map.</p>
+      <strong>The neighborhood map could not load.</strong>
+      <p>Your place and filters stay selected. You can retry the map or keep browsing records when they are available.</p>
       <a href="${esc(view.recoveryHref)}" data-near-recovery="retry">Try again</a>
     </div>`;
   }
@@ -988,7 +1089,7 @@ function renderNearYouMapState(view) {
           </svg>
           <div id="near-map-enhanced" class="near-map-enhanced" hidden></div>
           <p class="map-legend"><span></span> Fewer to more qualifying records</p>
-          <p class="near-vintage">Map boundaries: ${esc(view.activity?.boundary_vintage || "not published")}</p>
+          <p class="near-vintage">Map boundaries: ${esc(view.boundaryVintage || "not published")}</p>
         </div>
         ${navigationAreasHtml}
       </div>`;
@@ -1183,8 +1284,8 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
     : "";
   // Unselected entry already includes the surface switch; selected routes add one here.
   return `<main id="main" data-near-you-root data-geography-shell="map-first" data-near-surface="${esc(shellSurface)}" data-geography-layer="${esc(view.activeGeographyLayer || "nta2020")}" data-lens="${esc(view.lens)}" data-level="${esc(view.level)}"
-    data-near-data-state="${esc(view.dataState)}" data-near-map-state="${esc(view.mapState)}" data-near-recovery-href="${esc(view.recoveryHref)}"
-    data-near-deferred-href="${esc(view.deferredDataHref || "")}" data-near-deferred-state="pending"
+    data-near-data-state="${esc(view.dataState)}" data-near-geometry-state="${esc(view.geometryState || "missing")}" data-near-map-state="${esc(view.mapState)}" data-near-recovery-href="${esc(view.recoveryHref)}"
+    data-near-deferred-href="${esc(view.deferredDataHref || "")}" data-near-deferred-state="${esc(view.dataState === "error" ? "error" : "pending")}"
     data-message-updating="Updating the map…"
     data-message-updated="Map updated. Map and list counts match."
     data-message-location-unavailable="Location is not available in this browser. Choose an area from the list."
@@ -1198,6 +1299,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
     data-message-location-lookup-failed="The location lookup failed. Try again or choose an area from the list."
     data-message-deferred-unavailable="Matching records are temporarily unavailable."
     data-message-bags-unavailable="Other place records are temporarily unavailable."
+    data-message-retry="Try again"
     data-translation-all-boroughs="All boroughs"
     data-translation-borough-label="Borough"
     data-translation-context-strip-label="Context">

@@ -113,8 +113,10 @@ test("a failed Near You read serves an honest error document and scoped retry", 
   assert.equal(response.status, 503);
   assert.match(response.headers.get("content-type") || "", /text\/html/);
   assert.match(html, /data-near-data-state="error"/);
-  assert.match(html, /data-near-map-state="error"/);
-  assert.match(html, /Local records are temporarily unavailable/);
+  assert.match(html, /data-near-geometry-state="ready"/);
+  assert.match(html, /data-near-map-state="ready"/);
+  assert.match(html, /Matching records are temporarily unavailable/);
+  assert.doesNotMatch(html, /buyer_history_retry/);
   const retryHref = html.match(/<a href="([^"]+)" data-near-recovery="retry">/)?.[1]?.replaceAll("&amp;", "&");
   assert.ok(retryHref);
   assert.equal(new URL(retryHref).searchParams.get("agency"), "Transportation");
@@ -148,8 +150,11 @@ test("HTTP, malformed-payload, and bounded-timeout reads share the typed deferre
     const document = await documentResponse.text();
     assert.equal(documentResponse.status, 503, trigger);
     assert.match(document, /data-near-data-state="error"/, trigger);
-    assert.match(document, /data-near-map-state="error"/, trigger);
+    assert.match(document, /data-near-geometry-state="ready"/, trigger);
+    assert.match(document, /data-near-map-state="ready"/, trigger);
+    assert.match(document, /Matching records are temporarily unavailable/, trigger);
     assert.match(document, /data-near-recovery="retry"/, trigger);
+    assert.doesNotMatch(document, /buyer_history_retry/, trigger);
     assert.doesNotMatch(document, /data-count="0"/, trigger);
 
     const deferredResponse = await handleNearYou(new Request(

@@ -2025,6 +2025,7 @@ worker/src/data/community_board_resolution_review_queue.json
 worker/src/data/district_boundaries.json
 worker/src/data/doing_business_warehouse_lookup.json
 worker/src/data/entity_intelligence_lookup.json
+worker/src/data/geography/layers/nta2020/26B.json
 worker/src/data/keyword_search_index_shards/agencies.json.br
 worker/src/data/keyword_search_index_shards/agencies.json.gz
 worker/src/data/keyword_search_index_shards/committees.json.br
