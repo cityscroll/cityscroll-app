@@ -17,6 +17,7 @@ import argparse
 import hashlib
 import json
 import re
+import secrets
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
@@ -45,10 +46,21 @@ def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def uncached_url(origin: str, route: str, token: str | None = None) -> str:
+    separator = "&" if "?" in route else "?"
+    cache_token = token or secrets.token_hex(12)
+    return f"{origin}{route}{separator}_cityscroll_evidence={cache_token}"
+
+
 def fetch(origin: str, route: str) -> tuple[int, bytes, dict[str, Any]]:
     request = urllib.request.Request(
-        f"{origin}{route}",
-        headers={"Accept": "application/json", "User-Agent": USER_AGENT},
+        uncached_url(origin, route),
+        headers={
+            "Accept": "application/json",
+            "Cache-Control": "no-cache, no-store",
+            "Pragma": "no-cache",
+            "User-Agent": USER_AGENT,
+        },
     )
     with urllib.request.urlopen(request, timeout=90) as response:
         body = response.read()
@@ -174,10 +186,21 @@ def capture() -> dict[str, Any]:
 
             viewport_reads: list[dict[str, Any]] = []
             page_hashes: set[str] = set()
+            route_token = secrets.token_hex(12)
             for viewport_name, width, height in VIEWPORTS:
-                context = browser.new_context(viewport={"width": width, "height": height})
+                context = browser.new_context(
+                    viewport={"width": width, "height": height},
+                    extra_http_headers={
+                        "Cache-Control": "no-cache, no-store",
+                        "Pragma": "no-cache",
+                    },
+                )
                 page = context.new_page()
-                response = page.goto(f"{origin}{route}", wait_until="networkidle", timeout=90_000)
+                response = page.goto(
+                    uncached_url(origin, route, route_token),
+                    wait_until="networkidle",
+                    timeout=90_000,
+                )
                 page.wait_for_function(
                     "() => document.readyState === 'complete' && document.querySelectorAll('dt').length > 0",
                     timeout=90_000,
@@ -300,9 +323,7 @@ def capture() -> dict[str, Any]:
     }
 
 
-def check() -> None:
-    receipt = read_json(OUTPUT)
-    fixture = read_json(FIXTURE)
+def validate(receipt: dict[str, Any], fixture: dict[str, Any]) -> None:
     specs = {item["family"]: item for item in contract_specs(fixture)}
     if receipt.get("schema") != SCHEMA:
         raise AssertionError("production read-back schema mismatch")
@@ -327,7 +348,8 @@ def check() -> None:
         spec = specs[read["family"]]
         if read.get("procurement_id") != spec["procurement_id"] or read.get("result") != "pass":
             raise AssertionError(f"{read.get('family')} route identity/result mismatch")
-        if read.get("url") != f"{ORIGIN}{read.get('route', '')}":
+        expected_route = f"/procurements/{urllib.parse.quote(spec['procurement_id'], safe='')}"
+        if read.get("route") != expected_route or read.get("url") != f"{ORIGIN}{expected_route}":
             raise AssertionError(f"{read['family']} is not a canonical production route")
         shard_path = read.get("shard", {}).get("path", "")
         if read.get("shard", {}).get("url") != f"{ORIGIN}/{shard_path}":
@@ -367,12 +389,14 @@ def check() -> None:
         "path": "docs/evidence/passport-retained-families/production-read.json",
         "schema": SCHEMA,
         "result": "pass",
-        "deployment_revision": revision,
-        "observed_at": receipt["observed_at"],
         "route_count": 4,
     }
     if pointer != expected_pointer:
         raise AssertionError("A4 producer pointer does not match the production read-back")
+
+
+def check() -> None:
+    validate(read_json(OUTPUT), read_json(FIXTURE))
 
 
 def main() -> int:
