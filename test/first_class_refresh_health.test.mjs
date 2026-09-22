@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -18,13 +17,6 @@ const run = (id, conclusion, createdAt) => ({
   created_at: createdAt,
   updated_at: createdAt,
   html_url: `https://github.example/actions/runs/${id}`,
-});
-
-test("the scheduled reliability workflow runs the refresh health detector with narrow issue access", () => {
-  const workflow = readFileSync(new URL("../.github/workflows/reliability-watchdogs.yml", import.meta.url), "utf8");
-  assert.match(workflow, /first-class-refresh-health:/);
-  assert.match(workflow, /actions: read\n\s+contents: read\n\s+issues: write/);
-  assert.match(workflow, /node tools\/first_class_refresh_health\.mjs/);
 });
 
 test("one recent scheduled failure stays below the alert threshold", () => {

@@ -220,6 +220,9 @@ export function validateFirstClassRefreshContracts(registry, options = {}) {
       && !PRODUCTION_FRESHNESS_GATES.includes(artifact.production_freshness_gate)) {
       errors.push(`${label}: production_freshness_gate must be one of ${PRODUCTION_FRESHNESS_GATES.join(", ")}`);
     }
+    if (artifact?.hosted_refresh_required != null && typeof artifact.hosted_refresh_required !== "boolean") {
+      errors.push(`${label}: hosted_refresh_required must be boolean`);
+    }
     if (!Array.isArray(artifact?.primary_routes) || !artifact.primary_routes.length) {
       errors.push(`${label}: primary_routes must be non-empty`);
     } else {
@@ -498,12 +501,25 @@ export function runRefreshCommands(registry, options = {}) {
       exit_code: result?.status ?? null,
     });
   }
+  const requiredPaths = new Set(selected
+    .filter((artifact) => artifact.hosted_refresh_required === true)
+    .map((artifact) => artifact.public_artifact_path));
+  const requiredFailure = commands.some((row) => row.status === "failed"
+    && row.artifact_paths.some((path) => requiredPaths.has(path)));
   return {
     schema: FIRST_CLASS_REFRESH_RECEIPT_SCHEMA,
     generated_at: now,
-    status: commands.some((row) => row.status === "failed") ? "partial" : "succeeded",
+    status: requiredFailure ? "failed" : commands.some((row) => row.status === "failed") ? "partial" : "succeeded",
     commands,
   };
+}
+
+export function assertFirstClassRefreshSucceeded(receipt) {
+  if (receipt?.status !== "failed") return;
+  const failures = (receipt.commands || [])
+    .filter((row) => row.status === "failed")
+    .map((row) => row.command.join(" "));
+  throw new Error(`required hosted first-class refresh failed:\n${failures.join("\n")}`);
 }
 
 function option(argv, name, fallback = null) {
@@ -561,6 +577,7 @@ function main(argv = process.argv.slice(2)) {
     const output = resolve(root, option(argv, "--receipt-out", relative(root, RECEIPT_PATH)));
     writeJson(output, refreshReceipt);
     console.log(`wrote ${relative(root, output)} status=${refreshReceipt.status}`);
+    assertFirstClassRefreshSucceeded(refreshReceipt);
   }
   if (argv.includes("--write-report") || argv.includes("--check-production")) {
     const observations = existsSync(join(root, "site/data/source_health_observations.json"))
