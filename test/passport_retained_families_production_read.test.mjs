@@ -16,8 +16,6 @@ test("retained-family production read-back is linked from its A4 producer", () =
     path: "docs/evidence/passport-retained-families/production-read.json",
     schema: "cityscroll.passport_retained_families_production_read.v1",
     result: "pass",
-    deployment_revision: productionRead.deployment.revision,
-    observed_at: productionRead.observed_at,
     route_count: 4,
   });
 });
@@ -43,6 +41,26 @@ test("retained-family production evidence rejects alternate targets", () => {
   }
 });
 
+test("retained-family checker rejects a substituted detail route", () => {
+  const script = `
+from tools.capture_passport_retained_families_production_read import FIXTURE, OUTPUT, read_json, validate
+receipt = read_json(OUTPUT)
+receipt["reads"][0]["route"] = "/"
+receipt["reads"][0]["url"] = "https://cityscroll.org/"
+try:
+    validate(receipt, read_json(FIXTURE))
+except AssertionError as error:
+    if "canonical production route" not in str(error):
+        raise
+else:
+    raise AssertionError("substituted detail route passed validation")
+`;
+  execFileSync("python3", ["-c", script], {
+    cwd: new URL("..", import.meta.url),
+    encoding: "utf8",
+  });
+});
+
 test("retained-family production read-back covers four routes at both viewports", () => {
   assert.equal(productionRead.schema, "cityscroll.passport_retained_families_production_read.v1");
   assert.deepEqual(productionRead.summary, {
@@ -55,7 +73,10 @@ test("retained-family production read-back covers four routes at both viewports"
     ["aha", "bhrags", "firematic", "tameer"],
   );
   for (const read of productionRead.reads) {
+    const expectedRoute = `/procurements/${encodeURIComponent(read.procurement_id)}`;
     assert.equal(read.result, "pass");
+    assert.equal(read.route, expectedRoute);
+    assert.equal(read.url, `https://cityscroll.org${expectedRoute}`);
     assert.equal(read.viewports.length, 2);
     assert.match(read.page_html_sha256, /^[0-9a-f]{64}$/);
     assert.match(read.shard.sha256, /^[0-9a-f]{64}$/);

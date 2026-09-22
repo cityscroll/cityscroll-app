@@ -245,8 +245,6 @@
           "path": "docs/evidence/passport-retained-families/production-read.json",
           "schema": "cityscroll.passport_retained_families_production_read.v1",
           "result": "pass",
-          "deployment_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-          "observed_at": "2026-09-22T14:55:11.424590Z",
           "route_count": 4
         }
       },
