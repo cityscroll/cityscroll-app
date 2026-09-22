@@ -21,6 +21,9 @@
 # model that is built from it. A build-time refresh grew the published copy past
 # the Pages per-file guard, so it stays a repository artifact rather than a
 # published one.
+# data/passport_sources/retained_contract_families.json is a frozen regression
+# corpus consumed only while building that shared model. The resulting detail
+# shards are the public read path; the source corpus is not a public data route.
 #
 # The list below is parsed as consecutive "  - value" lines. A comment inside
 # either list ends it, so keep prose here.
@@ -38,6 +41,7 @@ exclude:
   - PAPERCUTS.md
   - backlog
   - data/ocp_awards_warehouse_lookup.json
+  - data/passport_sources/retained_contract_families.json
   - data/procurement_browse_rows.json
   - data/procurement_browse_rows_population
   - data/procurement_spine_sources.json

@@ -1,0 +1,302 @@
+{
+  "schema": "cityscroll.passport_retained_families_production_read.v1",
+  "observed_at": "2026-09-22T14:55:11.424590Z",
+  "evidence_class": "deployed-production-read-back",
+  "origin": "https://cityscroll.org",
+  "deployment": {
+    "manifest_url": "https://cityscroll.org/artifact-manifest.json",
+    "revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+    "generated_at": "2026-09-22T11:05:08.592Z",
+    "deployment_at": "2026-09-22T11:05:08.592Z",
+    "manifest_sha256": "1552b12f10628b89cb7429b772ae87e681552f39d55607bd7be323ba4d092903"
+  },
+  "shared_model": {
+    "manifest_url": "https://cityscroll.org/data/shared_procurement_read_model.json",
+    "generated_at": "2026-09-22T10:27:25.947Z",
+    "object_count": 20133,
+    "manifest_sha256": "bdec4872e7fca1ed3db19c50bd66431d39b33d184cf618fd3a5d9fb4c8de8385"
+  },
+  "capture": {
+    "tool": "tools/capture_passport_retained_families_production_read.py",
+    "browser": "chromium 151.0.7922.34",
+    "viewports": [
+      {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "screenshot_binaries_committed": false
+  },
+  "reads": [
+    {
+      "family": "firematic",
+      "procurement_id": "procurement:contract:CT185720228800365",
+      "route": "/procurements/procurement%3Acontract%3ACT185720228800365",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185720228800365",
+      "shard": {
+        "path": "data/shared_procurement_read_model/shard-012.json",
+        "url": "https://cityscroll.org/data/shared_procurement_read_model/shard-012.json",
+        "sha256": "4b7138dea3242b9dae1f7bef92ca65be499245f8a953006b4fa1aa60cd74d563"
+      },
+      "served_values": {
+        "original_amount": {
+          "source_observation_ref": "passport_public_contracts:contract:85721B0111001:4561064",
+          "ctr_id": "4561064",
+          "shard_field": "award_amount",
+          "shard_value": 158997.84,
+          "page_label": "Original contract amount",
+          "rendered_value": "$158,997.84"
+        },
+        "current_amount": {
+          "source_observation_ref": "passport_public_contracts:contract:85721B0111001:4561064",
+          "ctr_id": "4561064",
+          "shard_field": "current_amount",
+          "shard_value": 208687.62,
+          "page_label": "Current contract total",
+          "rendered_value": "$208,687.62"
+        },
+        "action_amount": {
+          "source_observation_ref": "passport_public_contracts:contract:85721B0111001A001:4618449",
+          "ctr_id": "4618449",
+          "shard_field": "current_amount",
+          "shard_value": 49689.78,
+          "page_label": "Action amount",
+          "rendered_value": "$49,689.78"
+        }
+      },
+      "page_html_sha256": "597cfe1a1b0c1d5aa2ddd13e1be45db4a76b00649f3d6c67ca396bab3c954180",
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "http_status": 200,
+          "rendered_values": {
+            "original_amount": "$158,997.84",
+            "current_amount": "$208,687.62",
+            "action_amount": "$49,689.78"
+          },
+          "no_horizontal_overflow": true,
+          "screenshot_sha256": "f5ecac602e036224b84fbeb48709e93fdf0b83c8e8785a915006993abdb12f60",
+          "witness_sha256": "7a4591661169866270ea577f0cddb83946a0de7168bd20d99813f63058798805",
+          "result": "pass"
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "http_status": 200,
+          "rendered_values": {
+            "original_amount": "$158,997.84",
+            "current_amount": "$208,687.62",
+            "action_amount": "$49,689.78"
+          },
+          "no_horizontal_overflow": true,
+          "screenshot_sha256": "b34adc8ea7e06a82a1da4f17b77299470053f36462d5ed3006cadb2da70cecd9",
+          "witness_sha256": "36f80e21504d74f0f3d0fab26e5ccb29267ec79e752ebd3b99a307a6017d15aa",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "family": "tameer",
+      "procurement_id": "procurement:contract:CT185020228802305",
+      "route": "/procurements/procurement%3Acontract%3ACT185020228802305",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT185020228802305",
+      "shard": {
+        "path": "data/shared_procurement_read_model/shard-011.json",
+        "url": "https://cityscroll.org/data/shared_procurement_read_model/shard-011.json",
+        "sha256": "2803c3747acde18b66e370e5ee5337e4b0d185ad21b466ed371fe9df3c8e406a"
+      },
+      "served_values": {
+        "original_amount": {
+          "source_observation_ref": "passport_public_contracts:contract:85021B0087001:4579402",
+          "ctr_id": "4579402",
+          "shard_field": "award_amount",
+          "shard_value": 1442820.77,
+          "page_label": "Original contract amount",
+          "rendered_value": "$1,442,820.77"
+        },
+        "current_amount": {
+          "source_observation_ref": "passport_public_contracts:contract:85021B0087001:4579402",
+          "ctr_id": "4579402",
+          "shard_field": "current_amount",
+          "shard_value": 1779343.45,
+          "page_label": "Current contract total",
+          "rendered_value": "$1,779,343.45"
+        },
+        "action_amount": {
+          "source_observation_ref": "passport_public_contracts:contract:85021B0087001C011:5372858",
+          "ctr_id": "5372858",
+          "shard_field": "current_amount",
+          "shard_value": 26112.93,
+          "page_label": "Action amount",
+          "rendered_value": "$26,112.93"
+        }
+      },
+      "page_html_sha256": "2721e78cd54ae47f2926cc04885e667fdf00e9771696e7f74c378eeea4d4ef9e",
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "http_status": 200,
+          "rendered_values": {
+            "original_amount": "$1,442,820.77",
+            "current_amount": "$1,779,343.45",
+            "action_amount": "$26,112.93"
+          },
+          "no_horizontal_overflow": true,
+          "screenshot_sha256": "c2fa6e9b97c200532b6f2cd691e0dcef24ce50e012a42c2c893aa80ace4bc4d0",
+          "witness_sha256": "2e057904101e59f708eed941f09ac7e06708a4a2bc22e6d6a5f1cd72ce8567f6",
+          "result": "pass"
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "http_status": 200,
+          "rendered_values": {
+            "original_amount": "$1,442,820.77",
+            "current_amount": "$1,779,343.45",
+            "action_amount": "$26,112.93"
+          },
+          "no_horizontal_overflow": true,
+          "screenshot_sha256": "fade92c924127864b59bceadf484d9594b9cd5953fddd726b4fb6ee2aeb31cf0",
+          "witness_sha256": "db6f4999d5d3596d14f709709996902fbddbba4639693b35c3639ff94fc7af74",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "family": "aha",
+      "procurement_id": "procurement:contract:CT105720278802113",
+      "route": "/procurements/procurement%3Acontract%3ACT105720278802113",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT105720278802113",
+      "shard": {
+        "path": "data/shared_procurement_read_model/shard-003.json",
+        "url": "https://cityscroll.org/data/shared_procurement_read_model/shard-003.json",
+        "sha256": "ea0030f3499383c4822de2171360579a3d31b5629f7029c942bb8e3d30c47144"
+      },
+      "served_values": {
+        "current_amount": {
+          "source_observation_ref": "passport_public_contracts:contract:05727U0002001:5778239",
+          "ctr_id": "5778239",
+          "shard_field": "current_amount",
+          "shard_value": 46673.32,
+          "page_label": "Current contract total",
+          "rendered_value": "$46,673.32"
+        }
+      },
+      "page_html_sha256": "a977b58b7bed21780f4ef44bd51b419533a232c2c595db034bff7c66e227447d",
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "http_status": 200,
+          "rendered_values": {
+            "current_amount": "$46,673.32"
+          },
+          "no_horizontal_overflow": true,
+          "screenshot_sha256": "933a6f5914d34eec96039db9c4dbb7edacaaf6074683574198f60bfec6f0c42f",
+          "witness_sha256": "bd1d133740ae719280b61a6ce0140a63ff482d17a89aa5a723c64bf4e1c7d555",
+          "result": "pass"
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "http_status": 200,
+          "rendered_values": {
+            "current_amount": "$46,673.32"
+          },
+          "no_horizontal_overflow": true,
+          "screenshot_sha256": "01836d0244def047c7bbe1ef38c38a3c2706f9e3400d432e46489b12d0b39dd3",
+          "witness_sha256": "6f6ae908db916b4802cf403408b5e7db56813a6fedfc9970c84977c4c6306d49",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "family": "bhrags",
+      "procurement_id": "procurement:contract:CT107120258801626",
+      "route": "/procurements/procurement%3Acontract%3ACT107120258801626",
+      "url": "https://cityscroll.org/procurements/procurement%3Acontract%3ACT107120258801626",
+      "shard": {
+        "path": "data/shared_procurement_read_model/shard-005.json",
+        "url": "https://cityscroll.org/data/shared_procurement_read_model/shard-005.json",
+        "sha256": "3fa3abbee4e110302eae00992d0bd84325cacd9ca958e4a0da030431f2b4c500"
+      },
+      "served_values": {
+        "paid_amount": {
+          "source_observation_ref": "passport_public_contracts:contract:07124E0044001:5050251",
+          "ctr_id": "5050251",
+          "shard_field": "paid_amount",
+          "shard_value": 7385672.19,
+          "page_label": "Paid amount",
+          "rendered_value": "$7,385,672.19"
+        },
+        "encumbered_amount": {
+          "source_observation_ref": "passport_public_contracts:contract:07124E0044001:5050251",
+          "ctr_id": "5050251",
+          "shard_field": "encumbered_amount",
+          "shard_value": 7385672.52,
+          "page_label": "Encumbered amount",
+          "rendered_value": "$7,385,672.52"
+        }
+      },
+      "page_html_sha256": "2373d68bdc1692f333f45b24bd5e3df3b22a5124179bc8d7e2addf17c87e9dda",
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "http_status": 200,
+          "rendered_values": {
+            "paid_amount": "$7,385,672.19",
+            "encumbered_amount": "$7,385,672.52"
+          },
+          "no_horizontal_overflow": true,
+          "screenshot_sha256": "065280d32b166ab7d33f2eb3352cca58f494cc978f8f8736be1cce3cf09004b6",
+          "witness_sha256": "861b5b995881053e3ffa122d7b6573780fc6d5ccb056818e0dfe1dc360a8fa11",
+          "result": "pass"
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "http_status": 200,
+          "rendered_values": {
+            "paid_amount": "$7,385,672.19",
+            "encumbered_amount": "$7,385,672.52"
+          },
+          "no_horizontal_overflow": true,
+          "screenshot_sha256": "f0d6a3ad6319d1913f80f829a1579bbb5a5c43bc411851fea3e2f518f0c6bf3b",
+          "witness_sha256": "22e2b6b83b867d291495a971aa5285cf5db78c6c5ae7ba6e23b5c7ea84297f9b",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "freshness_policy": {
+    "kind": "frozen-evidence-corpus",
+    "required_gate": false,
+    "reason": "Validity is content closure plus a dated deployment read-back, not elapsed age over a rolling publisher window."
+  },
+  "summary": {
+    "result": "pass",
+    "routes_observed": 4,
+    "viewport_observations": 8
+  }
+}
