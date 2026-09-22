@@ -170,7 +170,11 @@ function scope({ monitor, failureClass, stillFailing = [] }) {
 export function sourceContractFailureClass(detail) {
   const text = String(detail ?? "");
   if (/stale/i.test(text)) return "source-contract-stale";
-  if (/fetch failed|HTTP 5\d\d|ENOTFOUND|timed out|DNS/i.test(text)) return "source-contract-outage";
+  // Match the live monitor: upstream_unavailable (non-JSON / empty / gateway)
+  // is an outage for the repair rail, not schema drift.
+  if (/upstream_unavailable|fetch failed|HTTP 5\d\d|ENOTFOUND|timed out|DNS/i.test(text)) {
+    return "source-contract-outage";
+  }
   return "source-contract-schema-drift";
 }
 

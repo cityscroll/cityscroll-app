@@ -370,17 +370,70 @@ async function verifyArcgis(contract) {
   return `${Math.max(0, Math.floor(age))}d old`;
 }
 
-async function verifyGeosearch(contract) {
+const GEOSEARCH_UNAVAILABLE_RETRY = 1;
+const GEOSEARCH_UNAVAILABLE_BACKOFF_MS = 400;
+const GEOSEARCH_BODY_EXCERPT_LIMIT = 160;
+
+/** Compact a response body so an unavailable finding stays readable in an issue. */
+export function responseBodyExcerpt(text, limit = GEOSEARCH_BODY_EXCERPT_LIMIT) {
+  const normalized = String(text ?? "").replace(/\s+/g, " ").trim();
+  if (!normalized) return "(empty)";
+  return normalized.length <= limit ? normalized : `${normalized.slice(0, limit)}…`;
+}
+
+function upstreamUnavailableError(contractId, status, bodyText) {
+  return new Error(
+    `${contractId}: upstream_unavailable HTTP ${status} body=${responseBodyExcerpt(bodyText)}`,
+  );
+}
+
+/**
+ * GeoSearch has no publisher vintage; the live probe only checks reachability
+ * and the FeatureCollection shape. A transient HTML/empty/gateway body is an
+ * upstream outage, not schema drift — retry once, then record status + excerpt.
+ */
+export async function verifyGeosearch(contract, options = {}) {
   const url = new URL(contract.endpoint);
   url.searchParams.set("text", "City Hall New York NY");
   url.searchParams.set("size", "1");
-  const response = await labeledFetch(contract.id, "geosearch", url.toString());
-  const body = await responseJson(response, contract.id);
-  if (!response.ok || !Array.isArray(body.features) || !body.features[0]?.properties?.label) {
-    throw new Error(`${contract.id}: response has no feature label`);
+  const retries = Number.isFinite(options.unavailableRetry)
+    ? Math.max(0, options.unavailableRetry)
+    : GEOSEARCH_UNAVAILABLE_RETRY;
+  const backoffMs = Number.isFinite(options.unavailableBackoffMs)
+    ? Math.max(0, options.unavailableBackoffMs)
+    : GEOSEARCH_UNAVAILABLE_BACKOFF_MS;
+
+  let lastUnavailable = null;
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    const response = await labeledFetch(contract.id, "geosearch", url.toString());
+    const text = await response.text();
+    let body;
+    try {
+      body = text.trim() ? JSON.parse(text) : null;
+    } catch {
+      body = undefined;
+    }
+
+    // Empty body, non-JSON (HTML gateway page), or non-2xx: upstream unavailable.
+    if (body == null || typeof body !== "object" || Array.isArray(body) || !response.ok) {
+      lastUnavailable = upstreamUnavailableError(contract.id, response.status, text);
+      if (attempt < retries) {
+        if (backoffMs > 0) await new Promise((resolve) => setTimeout(resolve, backoffMs * (attempt + 1)));
+        continue;
+      }
+      throw lastUnavailable;
+    }
+
+    // JSON arrived: only then is a shape failure schema drift.
+    if (!Array.isArray(body.features) || !body.features[0]?.properties?.label) {
+      throw new Error(`${contract.id}: response has no feature label`);
+    }
+    if (!body.features[0].properties.borough) {
+      throw new Error(`${contract.id}: response has no borough`);
+    }
+    return "availability and schema";
   }
-  if (!body.features[0].properties.borough) throw new Error(`${contract.id}: response has no borough`);
-  return "availability and schema";
+  throw lastUnavailable || new Error(`${contract.id}: upstream_unavailable`);
 }
 
 function jsonHasField(body, field) {
@@ -680,7 +733,7 @@ export async function verifyLiveContract(contract, options = {}) {
   if (contract.kind === "socrata") return verifySocrata(contract, options);
   if (contract.kind === "checkbook") return verifyCheckbook(contract);
   if (contract.kind === "arcgis") return verifyArcgis(contract);
-  if (contract.kind === "geosearch") return verifyGeosearch(contract);
+  if (contract.kind === "geosearch") return verifyGeosearch(contract, options);
   if (contract.kind === "html") return verifyHtml(contract);
   if (contract.kind === "rss") return verifyRss(contract);
   if (contract.kind === "mocs-disabled") return verifyDisabledMocs(contract);

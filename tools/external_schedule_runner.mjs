@@ -183,7 +183,11 @@ function clockLines(finding) {
 
 function classify(detail) {
   if (/stale/i.test(detail)) return "stale";
-  if (/fetch failed|HTTP 5\d\d|ENOTFOUND|timed out|DNS/i.test(detail)) return "outage";
+  // upstream_unavailable covers transient non-JSON / empty / gateway bodies that
+  // are not schema drift (e.g. nyc-geosearch HTML error page).
+  if (/upstream_unavailable|fetch failed|HTTP 5\d\d|ENOTFOUND|timed out|DNS/i.test(detail)) {
+    return "outage";
+  }
   return "schema drift";
 }
 
