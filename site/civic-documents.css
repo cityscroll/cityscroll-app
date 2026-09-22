@@ -3947,7 +3947,15 @@ select {
   font-weight: 600;
 }
 [data-geography-shell][data-near-map-runtime="maplibre"] .near-map-section > .near-section-heading {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 [data-geography-shell] .near-map-secondary > summary {
   cursor: pointer;
