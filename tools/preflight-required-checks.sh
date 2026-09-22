@@ -307,8 +307,9 @@ trap finish_preflight EXIT
 # ---------------------------------------------------------------------------
 family_static_standards() {
   run_banner "Unit tests (site + worker)" "Syntax + i18n + static lint" \
-    "python3 test/standards/{js_syntax,i18n_keys,i18n_refs,i18n_fallback_sync,es_diacritics,i18n_glossary,attribution,link_text,control_labels,outline_guard,form_border_contrast,nyc_copy_lint,reader_register,public_surface_vocab,claim_first_prediction,page_metadata,brand_identity,no_official_marks,canonical_domain,link_targets,heading_punctuation,genai_disclosure,nl_input_clarity,demo_links}.py"
+    "python3 test/standards/{js_syntax,i18n_keys,i18n_refs,i18n_fallback_sync,es_diacritics,i18n_glossary,attribution,link_text,outline_guard,form_border_contrast,nyc_copy_lint,reader_register,public_surface_vocab,claim_first_prediction,page_metadata,brand_identity,no_official_marks,canonical_domain,link_targets,heading_punctuation,genai_disclosure,nl_input_clarity,demo_links}.py"
   run_and_fail python3 test/standards/preflight_unit_family_parity.py
+  run_and_fail node tools/audit-required-check-parity.mjs --check
   run_and_fail node --test test/browse_inspection_conformance.test.mjs
   run_and_fail python3 test/standards/js_syntax.py
   run_and_fail python3 test/standards/i18n_keys.py
@@ -319,7 +320,6 @@ family_static_standards() {
   run_and_fail python3 test/standards/i18n_glossary.py
   run_and_fail python3 test/standards/attribution.py
   run_and_fail python3 test/standards/link_text.py
-  run_and_fail python3 test/standards/control_labels.py
   run_and_fail python3 test/standards/outline_guard.py
   run_and_fail python3 test/standards/form_border_contrast.py
   run_and_fail python3 test/standards/civic_token_contract.py
@@ -383,14 +383,22 @@ family_static_standards() {
   run_and_fail node tools/build_url_migration_map.mjs --check
   run_and_fail node tools/build_money_resident_snapshot.mjs --check
   run_and_fail node tools/build_property_resident_snapshot.mjs --check
-  run_and_fail node tools/build_primary_documents.mjs --check
   run_and_fail node tools/build_exam_documents.mjs --check
-  run_and_fail node tools/build_near_you_pages.mjs --check
   run_and_fail node tools/build_geography_crosswalks.mjs --check
   run_and_fail node tools/build_following_page.mjs --check
   run_and_fail node tools/build_guide_documents.mjs --check
   run_and_fail node tools/build_guide_review.mjs --check
   run_and_fail node tools/build_data_health_page.mjs --check
+  run_and_fail node tools/build_ocp_warehouse_lookup.mjs --check
+  run_and_fail node tools/build_zap_warehouse_lookup.mjs --check
+  run_and_fail node tools/build_zap_bbl_warehouse_lookup.mjs --check
+  run_and_fail node tools/build_e_designation_digest.mjs --check
+  run_and_fail node tools/build_later_housing_activity.mjs --check
+  run_and_fail node tools/build_doing_business_warehouse_lookup.mjs --check
+  run_and_fail node tools/build_city_record_pin_chain_lookup.mjs --check
+  run_and_fail node tools/build_keyword_search_index.mjs --check
+  run_and_fail node tools/build_agency_constellation_documents.mjs --check
+  run_and_fail node tools/determinism_lint.mjs --check --fixture test/fixtures/determinism-lint
   run_and_fail node tools/depot_rederive.mjs --check
   run_and_fail node tools/validate_beta_flags.mjs
   run_banner "Unit tests (site + worker)" "Wall-clock test lint" \
@@ -439,6 +447,7 @@ family_site_node() {
     test/people_organizations_community_boards.test.mjs
   run_and_fail node tools/no_live_external_reads.mjs --check
   run_and_fail node tools/build_geocoder_address_index.mjs --check
+  run_and_fail node tools/check_pages_bundle_node_builtins.mjs
   # CI's site-node family fails test/card_profile.test.mjs when a new site/
   # module is tracked but missing from the committed sparse patterns. derive
   # --check used to verify only requiredPaths (observed / seed-tree / corpus),

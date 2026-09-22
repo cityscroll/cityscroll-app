@@ -19,6 +19,8 @@ MAX_WORDS = 4
 CHECK_LANGS = ("en", "es")
 SOURCE_SUFFIXES = frozenset((".html", ".js", ".mjs"))
 SKIP_PARTS = frozenset(("data", "vendor", "node_modules"))
+GENERATED_ROUTE_DIRS = frozenset(("browse", "now", "observe"))
+GENERATED_DOCUMENT_FAMILIES = frozenset(("agencies", "community-boards"))
 
 CONTROL_RE = re.compile(
     r"<(?P<tag>button|summary|a)\b(?P<attrs>[^>]*)>(?P<inner>.*?)</(?P=tag)>",
@@ -90,6 +92,13 @@ def _source_files(site_root: Path) -> list[Path]:
             continue
         rel = path.relative_to(site_root)
         if any(part in SKIP_PARTS for part in rel.parts):
+            continue
+        # These route documents are ignored build outputs. Hosted CI starts from
+        # a clean checkout and checks the refreshed Pages build; a local checkout
+        # may retain an older ignored materialization beside authored source.
+        if rel.parts and rel.parts[0] in GENERATED_ROUTE_DIRS:
+            continue
+        if len(rel.parts) >= 3 and rel.parts[0] in GENERATED_DOCUMENT_FAMILIES and rel.name == "index.html":
             continue
         if rel.parts[:2] == ("i18n", "lang") or rel.name == "i18n.js":
             continue
