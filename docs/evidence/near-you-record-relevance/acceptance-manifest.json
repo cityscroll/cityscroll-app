@@ -1,0 +1,95 @@
+{
+  "schema": "cityscroll.near_you_record_relevance_acceptance.v1",
+  "record": "cityscroll-engineering/c215a4b79deba",
+  "route": "/near-you/?geo=nta2020%3AMN0102&surface=map&lens=meetings",
+  "revision": "cec1d79ff9fbe3202336614ed4fefccfb5002aa4",
+  "grounded_at": "cec1d79ff9fbe3202336614ed4fefccfb5002aa4",
+  "fixture_vintage": "2026-05-26",
+  "timezone": "America/New_York",
+  "captured_at": "2026-09-22T18:00:00Z",
+  "viewport": [
+    1440,
+    900
+  ],
+  "viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "measurement_policy": "Assertions record deterministic Near You local-relevance fixtures with a frozen clock. Live outcomes record observed place basis, timing status, and handoff presence without requiring a fixed number of current events. Image binaries are not part of this proof.",
+  "image_policy": "No image binaries are committed for this acceptance record.",
+  "journey": {
+    "id": "near-you-record-relevance",
+    "sequence": [
+      "select",
+      "inspect",
+      "open_source_or_action",
+      "return_with_back",
+      "continue"
+    ],
+    "variants": [
+      "desktop",
+      "narrow_touch"
+    ],
+    "rendered_reference": {
+      "route": "/near-you/?geo=nta2020%3AMN0102&surface=map&lens=meetings",
+      "harness": "test/near_you_record_inspection.test.mjs",
+      "assertion": "select a neighborhood record, inspect detail, follow source or action, and restore place, lens, filters, and scroll with Back at 390 and 1440 pixels"
+    }
+  },
+  "live_outcomes": {
+    "require_fixed_event_count": false,
+    "observations": [
+      {
+        "id": "MN0102",
+        "route": "/near-you/?geo=nta2020%3AMN0102&lens=meetings&surface=map",
+        "coverage": "ready",
+        "note": "Positive membership fixture; live count is observed, not fixed"
+      },
+      {
+        "id": "BX0101",
+        "route": "/near-you/?geo=nta2020%3ABX0101&lens=meetings&surface=map",
+        "coverage": "zero",
+        "note": "Published zero remains distinct from unavailable"
+      },
+      {
+        "id": "BK0101",
+        "route": "/near-you/?geo=nta2020%3ABK0101&lens=meetings&surface=map",
+        "coverage": "source_unavailable",
+        "note": "Source coverage limitation is not a fabricated zero"
+      }
+    ]
+  },
+  "assertions": [
+    {
+      "id": "five-borough-place-basis-and-source",
+      "result": "accepted",
+      "assertion": "For MN0102, BK0101, QN0103, BX0101, and SI0101, ready records expose place basis and source detail while zero and unavailable stay distinct",
+      "fixture": "five-borough-nta-relevance"
+    },
+    {
+      "id": "broader-district-labeled",
+      "result": "accepted",
+      "assertion": "Broader district suggestions are labeled broader and never counted as exact neighborhood records",
+      "fixture": "related-district-suggestions"
+    },
+    {
+      "id": "deadline-honesty-frozen-clock",
+      "result": "accepted",
+      "assertion": "Frozen fixtures cover venue-only versus affected-place, citywide, virtual, unlocated, duplicate, past event, closed deadline, and unknown time; expired or unknown deadlines never promise a currently open action",
+      "fixture": "frozen-clock-2026-09-17"
+    },
+    {
+      "id": "two-viewport-inspection-journey",
+      "result": "accepted",
+      "assertion": "At 390 and 1440 pixels, select, inspect, source or action handoff, and Back restore place, lens, filters, and scroll; live outcomes are recorded without a fixed current-event count",
+      "fixture": "near-you-record-relevance-journey"
+    }
+  ],
+  "assertions_sha256": "261ec9d49b718f3b15804fa8afb96f3ad0003e5caa99e1af88b2965f4661af02"
+}

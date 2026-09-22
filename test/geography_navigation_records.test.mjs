@@ -388,3 +388,160 @@ test("selected record lenses expose named, ordered, touch-sized links", () => {
   assert.doesNotMatch(html, /data-geography-record-lens="meetings"[^>]*tabindex/);
   assert.ok(html.indexOf('data-geography-record-lens="meetings"') < html.indexOf('data-geography-record-lens="land"'));
 });
+
+const FIVE_BOROUGH = Object.freeze({
+  MN0102: "geography:nta2020:MN0102",
+  BK0101: "geography:nta2020:BK0101",
+  QN0103: "geography:nta2020:QN0103",
+  BX0101: "geography:nta2020:BX0101",
+  SI0101: "geography:nta2020:SI0101",
+});
+
+function fiveBoroughActivity() {
+  const readyId = "tribeca-meeting-1";
+  const broaderId = "district-meeting-broader";
+  const definitions = Object.fromEntries(Object.entries(FIVE_BOROUGH).map(([id, key]) => [key, {
+    key,
+    type: "nta2020",
+    id,
+    label: id,
+    class: "statistical",
+    subtype: "residential",
+    source_id: "dcp-nta2020-boundaries",
+    boundary_vintage: "2026-05-26",
+  }]));
+  return {
+    schema: "cityscroll.district_activity.v1",
+    built_at: testClockISOString(),
+    boundary_vintage: "2026-05-26",
+    lenses: [...GEOGRAPHY_RECORD_LENSES],
+    records: {
+      meetings: {
+        [readyId]: {
+          id: readyId,
+          title: "Tribeca hearing",
+          route: `/records/${readyId}`,
+          date: testClockISOString(),
+          basis: "Venue / logistics",
+          source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/tribeca-meeting-1",
+          meeting_origin: "city_record_notice",
+          place: {
+            geographies: [{
+              key: FIVE_BOROUGH.MN0102,
+              type: "nta2020",
+              id: "MN0102",
+              label: "Tribeca-Civic Center",
+              location_role: "venue",
+              basis: "Venue / logistics",
+              confidence: "strong",
+              method: "venue_line",
+              source_id: "dcp-nta2020-boundaries",
+              boundary_vintage: "2026-05-26",
+              visibility: "public",
+            }],
+          },
+        },
+        [broaderId]: {
+          id: broaderId,
+          title: "Community district hearing",
+          route: `/records/${broaderId}`,
+          date: testClockISOString(),
+          basis: "Community board district",
+          source_url: "https://example.invalid/broader",
+        },
+      },
+    },
+    district_items: {
+      by_level: {
+        borough: {},
+        community_district: { M01: { meetings: [broaderId] } },
+        council_district: {},
+      },
+      citywide: {},
+      virtual: {},
+      unlocated: {},
+    },
+    by_level: { borough: {}, community_district: {}, council_district: {} },
+    geography_items: {
+      schema: "cityscroll.geography_items.v1",
+      definitions,
+      by_key: {
+        [FIVE_BOROUGH.MN0102]: { meetings: [readyId], land: [], property: [], rules: [], money: [] },
+        [FIVE_BOROUGH.BX0101]: { meetings: [], land: [], property: [], rules: [], money: [] },
+        // BK0101 / QN0103 / SI0101 intentionally omitted → unavailable
+      },
+      coverage: { status: "ready" },
+    },
+  };
+}
+
+test("A1: five-borough neighborhood records expose place basis and source detail", () => {
+  const source = fiveBoroughActivity();
+  const expectations = [
+    [FIVE_BOROUGH.MN0102, "ready"],
+    [FIVE_BOROUGH.BK0101, "unavailable"],
+    [FIVE_BOROUGH.QN0103, "unavailable"],
+    [FIVE_BOROUGH.BX0101, "zero"],
+    [FIVE_BOROUGH.SI0101, "unavailable"],
+  ];
+  for (const [key, state] of expectations) {
+    const projection = geographyRecordProjection(source, { key, lens: "meetings" });
+    assert.equal(projection.state, state, `${key} projection state`);
+    assert.equal(projection.exact, state === "ready" || state === "zero", `${key} exact membership`);
+  }
+
+  const ready = buildNearYouViewModel(scopeFor(FIVE_BOROUGH.MN0102, "meetings"), source, emptyBoundaries);
+  assert.equal(ready.results.count, 1);
+  assert.equal(ready.results.records[0].basis, "Venue / logistics");
+  assert.equal(ready.results.records[0].source_url, "https://a856-cityrecord.nyc.gov/RequestDetail/tribeca-meeting-1");
+  const facts = nearYouRecordInspectionFacts(ready.results.records[0]);
+  assert.equal(facts.basis, "Venue / logistics");
+  assert.equal(facts.geography.source_id, "dcp-nta2020-boundaries");
+  assert.equal(facts.source_url, "https://a856-cityrecord.nyc.gov/RequestDetail/tribeca-meeting-1");
+  const html = renderNearYouRecordInspectionBody(facts);
+  assert.match(html, /Place claim/);
+  assert.match(html, /Venue \/ logistics/);
+  assert.match(html, /Source/);
+  assert.match(html, /Official source|a856-cityrecord/);
+
+  const zero = buildNearYouViewModel(scopeFor(FIVE_BOROUGH.BX0101, "meetings"), source, emptyBoundaries);
+  assert.equal(zero.results.count, 0);
+  assert.doesNotMatch(renderNearYouDeferredParts(zero).resultsHtml, /Community district hearing/);
+});
+
+test("A1: broader district suggestions are labeled broader and stay outside exact neighborhood counts", () => {
+  const source = fiveBoroughActivity();
+  const exact = geographyRecordProjection(source, { key: FIVE_BOROUGH.MN0102, lens: "meetings" });
+  assert.deepEqual(exact.ids, ["tribeca-meeting-1"]);
+  assert.equal(exact.count, 1);
+  assert.equal(exact.ids.includes("district-meeting-broader"), false);
+
+  const model = buildSelectedGeographyOverlapViewModel({
+    selected: {
+      type: "nta2020",
+      id: "MN0102",
+      key: FIVE_BOROUGH.MN0102,
+      label: "Tribeca-Civic Center",
+      selection_noun: "neighborhood",
+      type_explanation: "A residential neighborhood tabulation area.",
+      boundary_vintage: "2026-05-26",
+    },
+    recordLenses: { meetings: exact },
+    relatedDistricts: [{
+      key: "geography:community_district:M01",
+      id: "M01",
+      label: "Manhattan Community District 1",
+      href: "/near-you/?geo=community_district%3AM01&surface=records",
+    }],
+  });
+  assert.equal(model.related_districts.length, 1);
+  assert.equal(model.related_districts[0].scope, "broader");
+  assert.equal(model.related_districts[0].count, null);
+  assert.equal(model.record_lenses[0].count, 1);
+  const html = renderSelectedGeographyOverlapDrawerHtml(model);
+  assert.match(html, /data-geography-broader-suggestions/);
+  assert.match(html, /data-geography-related-scope="broader"/);
+  assert.match(html, /class="near-geo-broader-label">broader</);
+  assert.match(html, /not counted as exact neighborhood records/);
+  assert.doesNotMatch(html, /data-geography-record-lens="meetings"[^>]*>[\s\S]*broader/);
+});

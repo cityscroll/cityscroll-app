@@ -745,7 +745,9 @@ function recordCard(record) {
     ? `<div class="near-record-source" data-meeting-origin="${esc(record.meeting_origin)}">${record.source_url
       ? `<a href="${esc(record.source_url)}" rel="noopener noreferrer">${esc(meetingOriginLabel(record.meeting_origin))}</a>`
       : esc(meetingOriginLabel(record.meeting_origin))}</div>`
-    : "";
+    : record.source_url
+      ? `<div class="near-record-source"><a href="${esc(record.source_url)}" rel="noopener noreferrer" data-near-you-record-source>Official source</a></div>`
+      : "";
   const placement = record.basis || "Local activity";
   const facts = nearYouRecordInspectionFacts(record);
   const inspectButton = facts
@@ -756,6 +758,9 @@ function recordCard(record) {
     : "";
   const uncertainty = facts?.uncertainty
     ? `<p class="near-record-uncertainty">${esc(facts.uncertainty)}</p>`
+    : "";
+  const timing = facts?.timing
+    ? `<p class="near-record-timing" data-record-timing="${esc(facts.timing.state)}" data-action-open="${facts.timing.action_open ? "true" : "false"}">${esc(facts.timing.label)}</p>`
     : "";
   // Static title link remains for no-JS / failed enhancement. After binding, CSS
   // swaps it for the title-sized inspect control and the named full-record link.
@@ -773,6 +778,7 @@ function recordCard(record) {
     </div>
     ${meetingSource}
     <div class="near-record-basis"><strong>${esc(placement)}</strong></div>
+    ${timing}
     ${uncertainty}
     ${fullRecord ? `<p class="near-record-actions">${fullRecord}</p>` : ""}
   </li>`;

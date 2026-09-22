@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/c215a4b79deba",
+  "status": "implemented",
+  "fingerprint": "near-you-local-record-relevance.v1-timing-and-broader",
+  "updated_at": "2026-09-22T18:00:00.000Z",
+  "projections": [
+    {
+      "id": "near-you-record-inspection-module",
+      "path": "site/near_you_record_inspection.mjs"
+    },
+    {
+      "id": "near-you-view-renderer",
+      "path": "site/near_you_view.mjs"
+    },
+    {
+      "id": "resident-geography-overlap-ui",
+      "path": "site/geography_navigation_overlap_ui.mjs"
+    },
+    {
+      "id": "near-you-map-island",
+      "path": "site/app/map.mjs"
+    },
+    {
+      "id": "geography-navigation-records-tests",
+      "path": "test/geography_navigation_records.test.mjs"
+    },
+    {
+      "id": "near-you-record-inspection-tests",
+      "path": "test/near_you_record_inspection.test.mjs"
+    },
+    {
+      "id": "near-you-place-role-tests",
+      "path": "test/near_you_place_role.test.mjs"
+    },
+    {
+      "id": "near-you-record-relevance-acceptance-manifest",
+      "path": "docs/evidence/near-you-record-relevance/acceptance-manifest.json"
+    },
+    {
+      "id": "community-board-proceedings-view-styling",
+      "path": "site/civic-documents.css"
+    }
+  ]
+}
