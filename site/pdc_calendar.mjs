@@ -57,9 +57,9 @@ export function parsePdcScheduleHtml(html, { sourceUrl = PDC_CALENDAR_SOURCE_URL
     const rows = htmlRows(table[0]);
     const indexes = columns(rows);
     // Minutes/certificates tables also contain dates, but are not schedule tables.
-    if (!indexes || indexes.meeting_date == null || (indexes.submission_deadline == null && indexes.agenda == null)) continue;
     const heading = [...source.slice(0, table.index).matchAll(/<h[1-6]\b[^>]*>([\s\S]*?)<\/h[1-6]>/gi)].at(-1)?.[1];
     const tableYear = clean(heading).match(/Public Design Commission Calendar\s+(20\d{2})\b/i)?.[1] || null;
+    if (!tableYear || !indexes || indexes.meeting_date == null || (indexes.submission_deadline == null && indexes.agenda == null)) continue;
     const headerIndex = rows.findIndex((row) => row.some((cell) => /meeting date/i.test(cell.text)));
     for (const row of rows.slice(headerIndex + 1)) {
       const meetingCell = row[indexes.meeting_date];

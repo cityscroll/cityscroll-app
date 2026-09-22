@@ -43,6 +43,11 @@ const CAPTURE_PATH = join(ROOT, ".artifacts/pdc-calendar-source.json");
 const OUTPUT_PATH = join(ROOT, "site/data/pdc_calendar.json");
 const sha256 = (text) => createHash("sha256").update(text).digest("hex");
 
+function requireScheduleSessions(result) {
+  if (!result.records.length) throw new Error("PDC input contains no validated schedule sessions; retaining last-known-good calendar");
+  return result;
+}
+
 export function buildPdcCapture(capture) {
   if (capture?.schema !== "cityscroll.pdc_calendar_capture.v1"
     || capture.source_url !== PDC_CALENDAR_SOURCE_URL
@@ -54,9 +59,7 @@ export function buildPdcCapture(capture) {
     observed_at:capture.observed_at, status:"ok", fetch_status:"200",
     parser:PDC_CALENDAR_PARSER, sha256:capture.sha256,
   };
-  const result = buildPdcCalendar({html:capture.html, sourceUrl:capture.source_url, observedAt:capture.observed_at, receipt});
-  if (!result.records.length) throw new Error("PDC capture contains no validated schedule sessions; retaining last-known-good calendar");
-  return result;
+  return requireScheduleSessions(buildPdcCalendar({html:capture.html, sourceUrl:capture.source_url, observedAt:capture.observed_at, receipt}));
 }
 
 export async function acquirePdcCalendar({fetchImpl = globalThis.fetch, observedAt = new Date().toISOString()} = {}) {
@@ -101,7 +104,7 @@ export async function runPdcCalendar(argv, options = {}) {
   const output = argv[1] || OUTPUT_PATH;
   if (!input) throw new Error("usage: build_pdc_calendar.mjs <captured-html> [output]");
   const agendaInput = argv[2] || process.env.PDC_AGENDA_TEXT_FILE;
-  const result = buildPdcCalendar({ html: readFileSync(input, "utf8"), sourceUrl: "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page", observedAt: process.env.PDC_OBSERVED_AT || new Date().toISOString(), ...(agendaInput ? { agendaText: readFileSync(agendaInput, "utf8"), agendaDate: process.env.PDC_AGENDA_DATE || null, agendaDocumentUrl: process.env.PDC_AGENDA_URL || null } : {}) });
+  const result = requireScheduleSessions(buildPdcCalendar({ html: readFileSync(input, "utf8"), sourceUrl: "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page", observedAt: process.env.PDC_OBSERVED_AT || new Date().toISOString(), ...(agendaInput ? { agendaText: readFileSync(agendaInput, "utf8"), agendaDate: process.env.PDC_AGENDA_DATE || null, agendaDocumentUrl: process.env.PDC_AGENDA_URL || null } : {}) }));
   writeJsonAtomic(output, result);
 }
 

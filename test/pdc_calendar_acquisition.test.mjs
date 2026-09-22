@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, mkdtempSync, rmSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { acquirePdcCalendar, buildPdcCapture, runPdcCalendar } from "../tools/build_pdc_calendar.mjs";
@@ -57,6 +57,10 @@ test("live acquisition validates before publication and preserves last good byte
     assert.equal(data.generated_at, observedAt);
     assert.equal(data.records[0].source_receipt.observed_at, observedAt);
     assert.equal(data.records[0].source_receipt.sha256, JSON.parse(goodCapture).sha256);
+    const malformedInput = join(root, "malformed.html");
+    writeFileSync(malformedInput, "<table><tr><th>Meeting Date</th><th>Agenda</th></tr><tr><td>January 20, 2026</td><td>Agenda</td></tr></table>");
+    await assert.rejects(runPdcCalendar([malformedInput, output]), /no validated schedule sessions/);
+    assert.equal(readFileSync(output, "utf8"), goodOutput);
     for (const response of [new Response("unavailable", {status:503}), new Response("{}", {headers:{"content-type":"application/json"}}), new Response("<html>maintenance</html>", {headers:{"content-type":"text/html"}})]) {
       await assert.rejects(runPdcCalendar(acquireArgs, {...options, fetchImpl:async () => response}));
       assert.equal(readFileSync(capture, "utf8"), goodCapture);
@@ -74,7 +78,7 @@ function schedule() {
 }
 
 function augustRecord() {
-  return parsePdcScheduleHtml("<table><tr><th>Meeting Date</th><th>Agenda</th></tr><tr><td>August 17, 2026</td><td>Agenda</td></tr></table>", { sourceUrl, observedAt }).records[0];
+  return parsePdcScheduleHtml("<h3>Public Design Commission Calendar 2026</h3><table><tr><th>Meeting Date</th><th>Agenda</th></tr><tr><td>August 17, 2026</td><td>Agenda</td></tr></table>", { sourceUrl, observedAt }).records[0];
 }
 
 test("A1: captured schedule and linked agenda enrich one date-only session", () => {
