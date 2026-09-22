@@ -33,11 +33,12 @@ function kv(seed = {}) {
 test("digest watchdog stays quiet with READY and terminal receipts", async () => {
   const ALERT_STATE = kv();
   const now = new Date("2026-08-25T14:10:00Z");
-  await recordDigestShadowReceipt({ ALERT_STATE }, { ok: true }, now);
+  await recordDigestShadowReceipt({ ALERT_STATE }, { ok: true, rebuild_run_id: "run-complete" }, now);
   await recordDigestDeliveryReceipt({ ALERT_STATE }, { sent: 2, enqueued: 0 }, now);
   const result = await digestWatchdogSnapshot({ ALERT_STATE }, { now });
   assert.equal(result.ok, true);
   assert.deepEqual(result.findings, []);
+  assert.equal(result.shadow.rebuild_run_id, "run-complete");
 });
 
 test("digest watchdog fires when the expected receipt is missing", async () => {

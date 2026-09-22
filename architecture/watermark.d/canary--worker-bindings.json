@@ -2,11 +2,11 @@
   "schema": "cityscroll.architecture.watermark-shard.v1",
   "id": "canary:worker-bindings",
   "owner": "canary:worker-bindings",
-  "updated_at": "2026-08-31T11:57:44Z",
-  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "updated_at": "2026-09-21T16:55:17Z",
+  "commit": "738879967cb14a44cf10072db48b1829e07c927c",
   "value": {
     "path": "worker/wrangler.toml",
-    "count": 8,
-    "fingerprint": "c0ea41ec625b26a048e963f0a709f2a39196fa1cc988fecd419ca00dbe8b6c50"
+    "count": 9,
+    "fingerprint": "a534a081012c7ea67a7a02b2d6ee6e2ce6d38c5618e974795e7b48eb59fc4ed5"
   }
 }

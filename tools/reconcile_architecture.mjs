@@ -48,6 +48,7 @@ const RESOURCE_TARGETS = [
   { modelId: "kv_subs", section: "kv_namespaces", binding: "SUBS" },
   { modelId: "kv_feedback", section: "kv_namespaces", binding: "FEEDBACK" },
   { modelId: "digest_queue", section: "queues.producers", binding: "DIGEST_QUEUE" },
+  { modelId: "digest_shadow_queue", section: "queues.producers", binding: "DIGEST_SHADOW_QUEUE" },
   { modelId: "analytics_engine", section: "analytics_engine_datasets", binding: "USAGE_ANALYTICS" },
   { modelId: "rum_analytics", section: "analytics_engine_datasets", binding: "RUM_ANALYTICS" },
   { modelId: "r2_source_vault", section: "r2_buckets", binding: "SOURCE_VAULT" },

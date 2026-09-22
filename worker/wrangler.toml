@@ -151,6 +151,20 @@ max_batch_timeout = 30
 max_retries = 0
 max_concurrency = 1
 
+# Operator-triggered digest-shadow repairs. Expansion discovers the requested
+# digest set; every following message evaluates one digest and checkpoints it
+# in D1 before the next message is acknowledged.
+[[queues.producers]]
+binding = "DIGEST_SHADOW_QUEUE"
+queue = "crol-digest-shadow-rebuild"
+
+[[queues.consumers]]
+queue = "crol-digest-shadow-rebuild"
+max_batch_size = 1
+max_batch_timeout = 5
+max_retries = 3
+max_concurrency = 1
+
 # D1 mirror of City Record notices (Socrata stays the source of truth; the daily cron
 # refreshes it -- see src/ingest.mjs). Created via `wrangler d1 create crol-notices`;
 # apply schema with `npx wrangler d1 migrations apply crol-notices --remote`.

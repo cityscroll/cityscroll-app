@@ -237,6 +237,9 @@ Cron (three daily UTC triggers — 08:00, 10:00 and 13:00; responsibilities and 
   recent notices, and forecasts), then (6) digest
   fan-out — QUEUE_DIGESTS=true enqueues one job per subscription to
   Queue crol-digests (consumer sends with retries, poison → crol-digests-dlq);
+  authenticated post-repair shadow rebuilds use separate Queue crol-digest-shadow-rebuild
+  messages, one digest per invocation, with D1 run/item checkpoints and a final
+  reliability receipt;
   send caps unchanged: MAX_PER_RUN=25 / MAX_SENDS_PER_DAY=50 via Resend
 KV: SUBS · NL_METER · ALERT_STATE (incl. fc: renewal-estimate cache) · FEEDBACK
 D1: crol-notices — mirror of recent City Record notices + ingest cursor

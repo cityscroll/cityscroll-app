@@ -2,12 +2,20 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/digest-shadow-quiet-watermark-monitor",
   "status": "implemented",
-  "fingerprint": "digest-shadow-quiet-watermark-monitor.v2",
-  "updated_at": "2026-09-17T00:00:00.000Z",
+  "fingerprint": "digest-shadow-quiet-watermark-monitor.v3",
+  "updated_at": "2026-09-21T00:00:00.000Z",
   "projections": [
     {
       "id": "digest-shadow-detector",
       "path": "worker/src/digest_shadow.mjs"
+    },
+    {
+      "id": "digest-shadow-rebuild-queue",
+      "path": "worker/src/digest_shadow_rebuild.mjs"
+    },
+    {
+      "id": "digest-shadow-rebuild-checkpoint-schema",
+      "path": "worker/migrations/0034_digest_shadow_rebuild.sql"
     },
     {
       "id": "digest-shadow-monitor-observation",
