@@ -286,6 +286,7 @@ test("Near-you record failures keep geometry healthy and preserve scoped retry",
     assert.equal(new URL(retryHref).searchParams.get("agency"), "Transportation", trigger);
     assert.equal(new URL(retryHref).searchParams.get("boro"), "Queens", trigger);
     assert.equal(new URL(retryHref).searchParams.get("q"), "curb", trigger);
+    assert.ok(html.indexOf('class="near-map-wrap"') < html.indexOf('data-near-recovery="retry"'), trigger);
     assert.doesNotMatch(html, /data-count="0"/, trigger);
   }
 });
@@ -317,6 +318,10 @@ test("Near-you leads with a named community district and keeps exploration secon
   assert.match(html, /<h3>Areas<\/h3>/);
   assert.match(html, /data-remove-filter="agency"/);
   assert.match(html, /name="walk_query"/);
+  assert.ok(html.indexOf("<h1>Brooklyn Community District 15</h1>") < html.indexOf(">Change place</summary>"));
+  assert.ok(html.indexOf(">Change place</summary>") < html.indexOf('class="near-map-wrap"'));
+  assert.ok(html.indexOf('class="near-map-wrap"') < html.indexOf('class="near-selected-context"'));
+  assert.ok(html.indexOf('class="near-selected-context"') < html.indexOf(">Topic: Meetings</span>"));
 });
 
 test("Near-you never presents a council district as a governing community board", () => {
@@ -384,7 +389,8 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.doesNotMatch(html, /href="https:\/\/api\.cityscroll\.org/);
   assert.doesNotMatch(visible, /\b(?:facet|scope)\b|without JavaScript|server-rendered|static-first/i);
   assert.match(html, /class="document-brand brand-lockup home"/);
-  assert.match(html, /Change neighborhood or address/);
+  assert.match(html, /Change place/);
+  assert.match(html, /Other ways to choose/);
   assert.match(html, /data-use-location/);
   assert.match(html, /coordinates stay in this browser/i);
   assert.match(html, /name="neighborhood"/);

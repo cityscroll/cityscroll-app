@@ -65,6 +65,8 @@ const NTA_LAYER = JSON.parse(
 );
 const SHELL_SOURCE = readFileSync(join(ROOT, "site/geography_navigation_shell.mjs"), "utf8");
 const VIEW_SOURCE = readFileSync(join(ROOT, "site/near_you_view.mjs"), "utf8");
+const BRAND_SOURCE = readFileSync(join(ROOT, "site/brand.css"), "utf8");
+const DOCUMENT_CSS_SOURCE = readFileSync(join(ROOT, "site/civic-documents.css"), "utf8");
 const MAP_ISLAND_SOURCE = readFileSync(join(ROOT, "site/app/map.mjs"), "utf8");
 const LAND_RUNTIME_SOURCE = readFileSync(join(ROOT, "site/app/map_runtime.mjs"), "utf8");
 
@@ -208,7 +210,7 @@ test("A1/A6/A8/A10: unselected document leads with map-first shell and keeps no-
   assert.equal((html.match(/id="near-map-enhanced"/g) || []).length, 1);
 });
 
-test("A10: selected-place routes keep place-first heading and overview ahead of map", () => {
+test("A10: selected-place routes keep the heading first and secondary context after the map", () => {
   const scope = scopeWithPlace(scopeFromLensState("meetings"), {
     borough: "Brooklyn",
     communityDistrict: "K15",
@@ -230,6 +232,8 @@ test("A10: selected-place routes keep place-first heading and overview ahead of 
   assert.match(html, /Advanced filters/);
   assert.match(html, /<h3>Areas<\/h3>/);
   assert.match(html, /data-near-surface="records"|data-near-surface="map"/);
+  assert.ok(html.indexOf("<h1>Brooklyn Community District 15</h1>") < html.indexOf('class="near-map-wrap"'));
+  assert.ok(html.indexOf('class="near-map-wrap"') < html.indexOf('class="near-selected-context"'));
 });
 
 test("A12 boundary: Land map runtime stays untouched; shell may mount the adapter", () => {
@@ -249,6 +253,17 @@ test("entry chrome render includes required first-viewport controls", () => {
   assert.match(html, /Use my location/);
   assert.match(html, /Browse records/);
   assert.match(html, /data-near-surface="map"[^>]*aria-current="true"|aria-current="true"[^>]*data-near-surface="map"/);
+  assert.match(html, /<details class="near-entry-secondary">\s*<summary>More ways to choose<\/summary>/);
+  assert.ok(html.indexOf("near-geo-search-input") < html.indexOf("near-entry-secondary"));
+  assert.ok(html.indexOf("near-entry-secondary") < html.indexOf("data-geography-layer-switcher"));
+});
+
+test("first-view geometry uses shared target and map-visibility floors", () => {
+  assert.match(BRAND_SOURCE, /--control-min-size:\s*2\.75rem/);
+  assert.match(BRAND_SOURCE, /--near-map-first-view-min:\s*15rem/);
+  assert.match(DOCUMENT_CSS_SOURCE, /\.near-geo-search input[\s\S]*min-height:\s*var\(--control-min-size\)/);
+  assert.match(DOCUMENT_CSS_SOURCE, /\.near-map-enhanced[\s\S]*min-height:\s*var\(--near-map-first-view-min\)/);
+  assert.match(DOCUMENT_CSS_SOURCE, /\.near-map-state a\[data-near-recovery\][\s\S]*min-height:\s*var\(--control-min-size\)/);
 });
 
 test("A13: all-city label budgets stay inside 12–40 desktop and 6–20 narrow", () => {

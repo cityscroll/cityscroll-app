@@ -90,6 +90,9 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --space-8: 4rem;
+  /* Shared interaction and first-view geometry floors. */
+  --control-min-size: 2.75rem;
+  --near-map-first-view-min: 15rem;
   --measure: 72ch;
   --maxw: 1120px;
   --radius-sm: .375rem;

@@ -2458,6 +2458,11 @@ select {
   align-items: start;
 }
 
+.near-map-grid > .near-map-state {
+  min-width: 0;
+  margin-block: var(--space-2) 0;
+}
+
 .near-map-wrap,
 .near-area-panel,
 .near-results,
@@ -3836,6 +3841,7 @@ select {
 [data-near-you-root] > .near-surface-switch { order: 3; }
 [data-near-you-root] > .near-overview { order: 4; }
 [data-near-you-root] > .near-geo-workspace { order: 5; }
+[data-near-you-root] > .near-selected-context { order: 6; }
 [data-near-you-root] > .near-advanced { order: 6; }
 [data-near-you-root] > .near-records-surface { order: 6; }
 [data-near-you-root] > .near-results,
@@ -3882,6 +3888,9 @@ select {
   margin: var(--space-4) 0 var(--space-2);
   flex-wrap: wrap;
 }
+[data-geography-shell][data-near-surface="map"] > .near-surface-switch {
+  margin-block: var(--space-1);
+}
 .near-surface-link {
   display: inline-flex;
   align-items: center;
@@ -3921,12 +3930,16 @@ select {
   min-width: 0;
   max-width: var(--maxw);
   margin-inline: auto;
-  padding: var(--space-5) clamp(var(--space-4), 4vw, var(--space-7)) var(--space-3);
+  padding: var(--space-3) clamp(var(--space-4), 4vw, var(--space-7)) var(--space-2);
 }
 .near-geo-entry h1 {
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--space-2);
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   line-height: 1.1;
+}
+.near-entry-prompt {
+  margin: 0;
+  color: var(--color-text-soft);
 }
 [data-geography-shell] .near-hero {
   padding-block: var(--space-4) var(--space-3);
@@ -3937,16 +3950,59 @@ select {
 [data-geography-shell][data-near-surface="map"] .near-hero > .near-kicker {
   display: none;
 }
+[data-geography-shell][data-near-surface="map"] > .near-hero {
+  padding-block: var(--space-3) var(--space-2);
+}
+[data-geography-shell][data-near-surface="map"] > .near-hero > p:not(.near-board-link),
+[data-geography-shell][data-near-surface="map"] > .near-hero > .near-scope {
+  display: none;
+}
 [data-geography-shell] .near-place-guide {
   padding-block: var(--space-2);
 }
+[data-geography-shell][data-near-surface="map"] > .near-place-guide {
+  padding-block: 0;
+  border-block: 0;
+  background: transparent;
+}
 [data-geography-shell] .near-place-guide > summary {
   cursor: pointer;
-  min-height: 44px;
+  min-height: var(--control-min-size);
   align-content: center;
   font-weight: 600;
 }
-[data-geography-shell][data-near-map-runtime="maplibre"] .near-map-section > .near-section-heading {
+[data-geography-shell] .near-place-options > summary,
+[data-geography-shell] .near-selected-context > summary {
+  display: flex;
+  min-height: var(--control-min-size);
+  align-items: center;
+  cursor: pointer;
+  color: var(--color-action);
+  font-weight: 600;
+}
+[data-geography-shell] .near-place-options > p,
+[data-geography-shell] .near-selected-context > p {
+  max-width: var(--measure);
+  margin-block: var(--space-2);
+  color: var(--color-text-soft);
+}
+[data-geography-shell] .near-selected-context {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: clamp(var(--space-4), 4vw, var(--space-7));
+  box-sizing: border-box;
+}
+[data-geography-shell][data-near-surface="map"] > .near-place-guide > summary {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-action);
+  border-radius: var(--radius-sm);
+  background: var(--color-action);
+  color: var(--color-surface);
+}
+.near-map-section > .near-section-heading > div:first-child {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -3957,9 +4013,13 @@ select {
   white-space: nowrap;
   border: 0;
 }
+.near-map-section > .near-section-heading {
+  margin: 0;
+}
+[data-geography-shell] .near-entry-secondary > summary,
 [data-geography-shell] .near-map-secondary > summary {
   cursor: pointer;
-  min-height: 44px;
+  min-height: var(--control-min-size);
   align-content: center;
 }
 [data-geography-shell] .near-map-layers > summary {
@@ -3983,7 +4043,7 @@ select {
 .near-geo-search {
   display: grid;
   gap: var(--space-2);
-  margin: var(--space-4) 0;
+  margin: var(--space-2) 0;
 }
 .near-geo-search-row {
   display: flex;
@@ -3994,7 +4054,7 @@ select {
 .near-geo-search input {
   flex: 1 1 16rem;
   min-width: 0;
-  min-height: 44px;
+  min-height: var(--control-min-size);
   padding: 10px 12px;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-sm);
@@ -4006,7 +4066,7 @@ select {
 .near-geo-drawer-toggle,
 .near-geo-layer,
 .near-surface-link {
-  min-height: 44px;
+  min-height: var(--control-min-size);
 }
 .near-geo-search button {
   display: inline-flex;
@@ -4068,7 +4128,7 @@ select {
   min-width: 0;
   max-width: 1440px;
   width: 100%;
-  margin: var(--space-3) auto var(--space-5);
+  margin: var(--space-2) auto var(--space-5);
   padding-inline: clamp(var(--space-4), 4vw, var(--space-7));
   box-sizing: border-box;
 }
@@ -4222,7 +4282,7 @@ select {
 }
 .near-map-enhanced {
   width: 100%;
-  min-height: 320px;
+  min-height: var(--near-map-first-view-min);
   height: min(70vh, 720px);
   border-radius: var(--radius-md);
   background: var(--color-canvas-subtle, #eceef2);
@@ -4237,11 +4297,19 @@ select {
 /* MapLibre's compact attribution control is 24px by default. Keep its
    disclosure target usable when the enhanced map is active on touch screens. */
 .near-map-enhanced .maplibregl-ctrl-attrib-button {
-  width: 44px !important;
-  height: 44px !important;
-  min-width: 44px;
-  min-height: 44px;
+  width: var(--control-min-size) !important;
+  height: var(--control-min-size) !important;
+  min-width: var(--control-min-size);
+  min-height: var(--control-min-size);
   border-radius: 22px;
+}
+.near-map-state a[data-near-recovery],
+.near-deferred-recovery {
+  display: inline-flex;
+  min-width: var(--control-min-size);
+  min-height: var(--control-min-size);
+  align-items: center;
+  padding-inline: var(--space-3);
 }
 .near-map-enhanced .maplibregl-ctrl-attrib a {
   text-decoration: underline;
@@ -4305,6 +4373,18 @@ select {
   }
 }
 @media (max-width: 560px) {
+  [data-geography-shell] .near-geo-entry > .near-kicker {
+    margin-bottom: var(--space-1);
+  }
+  [data-geography-shell] .near-geo-entry h1 {
+    font-size: 1.75rem;
+  }
+  [data-geography-shell] .near-geo-entry .near-geo-search-row {
+    flex-wrap: nowrap;
+  }
+  [data-geography-shell] .near-geo-entry .near-geo-search input {
+    flex-basis: 0;
+  }
   .near-geo-search input {
     font-size: 16px;
   }
