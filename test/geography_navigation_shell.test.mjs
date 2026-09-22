@@ -311,7 +311,7 @@ test("entry chrome render includes required first-viewport controls", () => {
   assert.match(html, /<details class="near-entry-secondary">\s*<summary>More ways to choose<\/summary>/);
   assert.ok(html.indexOf("near-geo-search-input") < html.indexOf("near-entry-secondary"));
   assert.ok(html.indexOf('data-near-surface="records"') < html.indexOf("near-entry-secondary"));
-  assert.ok(html.indexOf("near-entry-secondary") < html.indexOf("data-geography-layer-switcher"));
+  assert.ok(html.indexOf("data-geography-layer-switcher") < html.indexOf("near-entry-secondary"));
 });
 
 test("A1: residential directory groups by borough and keeps special-use behind a labeled option", () => {

@@ -36,7 +36,13 @@ import {
   loadSimplifiedNavigationLayer,
   simplifiedLayerSiteUrl,
 } from "../geography_navigation_map.mjs";
-import { geographyShellAreasListHtml } from "../geography_navigation_shell.mjs";
+import {
+  GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM,
+  aliasesByNtaIdFromGazetteer,
+  geographyShellAreasListHtml,
+  navigationDirectoryFromLayerDoc,
+} from "../geography_navigation_shell.mjs";
+import neighborhoodGazetteer from "../data/neighborhood_gazetteer.json" with { type: "json" };
 import { GEOGRAPHY_NAVIGATION_LAYER_TYPES } from "../geography_navigation_capability.mjs";
 import {
   geographyEntryUnavailableApiResult,
@@ -875,20 +881,32 @@ function refreshGeographyAreasList(type, layerDoc) {
   const panel = root.querySelector("#near-area-list")
     || root.querySelector("[data-geography-areas]");
   if (!panel || !layerDoc) return;
-  const html = geographyShellAreasListHtml(
-    (layerDoc.features || []).map((feature) => ({
-      key: feature.properties?.key || feature.key,
-      id: feature.properties?.id || feature.id,
-      type: feature.properties?.type || type,
-      label: feature.properties?.label || feature.label,
-      subtype: feature.properties?.subtype || feature.subtype,
-    })).filter((entry) => entry.key && entry.label),
-    {
-      activeType: type,
-      base: location.href,
-      surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
-    },
-  );
+  const features = (layerDoc.features || []).map((feature) => ({
+    key: feature.properties?.key || feature.key,
+    id: feature.properties?.id || feature.id,
+    type: feature.properties?.type || type,
+    label: feature.properties?.label || feature.label,
+    subtype: feature.properties?.subtype ?? feature.subtype ?? null,
+    source_properties: feature.properties?.source_properties || feature.source_properties || null,
+  })).filter((entry) => entry.key && entry.label);
+  const directoryQuery = new URLSearchParams(location.search).get(GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM) || "";
+  const directory = type === "nta2020"
+    ? navigationDirectoryFromLayerDoc(
+      { type, features, vintage: layerDoc.vintage || null },
+      {
+        layerType: type,
+        aliasesByNtaId: aliasesByNtaIdFromGazetteer(neighborhoodGazetteer),
+        query: directoryQuery,
+      },
+    )
+    : null;
+  const html = geographyShellAreasListHtml(directory ? directory.residential : features, {
+    activeType: type,
+    base: location.href,
+    surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+    query: directoryQuery,
+    directory,
+  });
   panel.outerHTML = html;
   wireMapAndList();
 }

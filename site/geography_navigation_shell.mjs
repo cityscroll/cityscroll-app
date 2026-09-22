@@ -514,8 +514,9 @@ export function renderGeographyShellEntry({
         ${actionLinks}
       </nav>`
     : "";
-  // Surface switch stays outside the secondary disclosure so Browse records is
-  // reachable before the long area-directory tab sequence on mobile.
+  // Surface switch, layer chrome, and follow/share stay outside the secondary
+  // disclosure so nested summaries are not focused under the map canvas, and
+  // Browse records stays ahead of the long area-directory tab sequence.
   return `<section class="near-geo-entry" aria-labelledby="near-geo-heading" data-geography-entry>
       <p class="near-kicker">Local geography</p>
       <h1 id="near-geo-heading">${esc(GEOGRAPHY_SHELL_HEADING)}</h1>
@@ -525,6 +526,7 @@ export function renderGeographyShellEntry({
         <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? " is-active" : ""}" href="${esc(mapHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_MAP}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? ' aria-current="true"' : ""}>Map</a>
         <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? " is-active" : ""}" href="${esc(browseHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_RECORDS}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? ' aria-current="true"' : ""}>${esc(GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL)}</a>
       </nav>
+      ${geographyShellLayerSwitcherHtml({ activeType, base: canonicalBase, surface })}
       <p class="near-map-status" data-map-status aria-live="polite"></p>
       <details class="near-entry-secondary">
         <summary>More ways to choose</summary>
@@ -532,11 +534,10 @@ export function renderGeographyShellEntry({
           <button type="button" class="js-only near-location-action" data-use-location hidden>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
           <a href="#near-area-list">Browse the area list</a>
         </div>
-        ${geographyShellLayerSwitcherHtml({ activeType, base: canonicalBase, surface })}
-        <details class="near-map-secondary"><summary>Follow or share</summary>
-          ${actions}
-          ${followDiscoveryHtml || ""}
-        </details>
+      </details>
+      <details class="near-map-secondary"><summary>Follow or share</summary>
+        ${actions}
+        ${followDiscoveryHtml || ""}
       </details>
     </section>`;
 }

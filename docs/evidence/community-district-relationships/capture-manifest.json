@@ -2,7 +2,7 @@
   "schema": "cityscroll.render_capture_manifest.v1",
   "capture_mode": "headless_playwright_served_route",
   "route": "/near-you/?v=0&lens=meetings&boro=Brooklyn&cd=K15&level=community_district&id=K15&parent=Brooklyn",
-  "revision": "e1645ccb070ef06672f3aebe91df1d81c9379efa",
+  "revision": "bff7e34bca26caec2615f54003bbd1f0323f014b",
   "data_vintage": "2026-05-26",
   "captures": [
     {
@@ -21,7 +21,7 @@
       ],
       "mode": "keyboard",
       "assertion": "With JavaScript enabled, opening About this place then Tab reaches each K15 reverse-navigation link, Enter activates it, and the fiscal-year, agency, lens, and place scope parameters remain unchanged.",
-      "sha256": "faaadb42358f5666431df2b69ad80b3e53e5e91462712e2edd8969a06249dcbe"
+      "sha256": "c2b3b33c6108eb0564ab8b0d2e3da565800e2b8b32cff4554ee5b2be35dbfb22"
     }
   ]
 }
