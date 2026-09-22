@@ -101,6 +101,12 @@ record scope. Both short map tokens (`nta2020:BK0101`) and canonical record keys
 (`geography:nta2020:BK0101`) resolve to the same scope. History updates must not
 assign browser Location properties or discard unrelated record filters.
 
+Native area links, overlap continuations, surface switches, and search forms
+preserve topic, agency, keyword, and time filters too. Named-place GET searches
+resolve against retained geography definitions and redirect to the canonical
+selection; unresolved text never falls through to citywide record membership.
+Deferred requests preserve their JSON endpoint when canonicalized.
+
 Map labels use bundled, OFL-licensed Noto Sans glyphs from the application
 origin. The navigator remains available when local record coverage is unavailable;
 an unavailable membership is not a citywide result and an observed empty slice
@@ -111,6 +117,6 @@ labelled as broader areas, using the committed direct-intersection crosswalks.
 renderer under the route's Content Security Policy at desktop and mobile widths.
 It covers search, canvas clicks, area links, selected camera bounds, record
 geography evidence, history/reload, missing coverage, related-district navigation,
-and record inspection. Local runs use the production slice builder with retained
+record inspection, new-tab links, and native search submission. Local runs use the production slice builder with retained
 data; `CROL_BASE` selects a deployed origin. The production canary makes no
 assumption that a named upstream record or a fixed record count remains present.

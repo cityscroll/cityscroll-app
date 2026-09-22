@@ -25,7 +25,7 @@ import {
   GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
   GEOGRAPHY_NAVIGATION_SURFACE_MAP,
   GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
-  geographyNavigationUrlFromState,
+  geographyNavigationUrlWithFilters as geographyNavigationUrlFromState,
 } from "./geography_navigation_state.mjs";
 import { BOUNDARIES_AT_LOCATION_HEADING } from "./geography_navigation_entry.mjs";
 import { GEOGRAPHY_RECORD_LENS_LABELS } from "./geography_navigation_records.mjs";

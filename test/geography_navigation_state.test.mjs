@@ -20,6 +20,7 @@ import {
   geographyNavigationStateFromLegacyMapHash,
   geographyNavigationStateFromStaticPath,
   geographyNavigationUrlFromState,
+  geographyNavigationUrlWithFilters,
   isStaticNearYouPath,
   normalizeGeographyNavigationLocation,
   omitGeographyNavigationEphemeral,
@@ -38,6 +39,21 @@ import {
 
 const ROOT = process.cwd();
 const MODULE_SOURCE = readFileSync(join(ROOT, "site/geography_navigation_state.mjs"), "utf8");
+
+test("native place URLs retain repeated filters and replace stale place and presentation state", () => {
+  const base = "https://cityscroll.org/near-you/?scope=citywide&boro=Queens&cd=Q01&neighborhood=old&geo=nta2020:BK0101&surface=records&compare=council&lens=meetings&agency=Transportation&agency=Parks&q=curb&when=month&lat=40.7&address=private#old";
+  const target = new URL(geographyNavigationUrlWithFilters({geo:"nta2020:MN0102", surface:"map", lens:"land"}, {base}));
+  assert.equal(target.searchParams.get("geo"), "nta2020:MN0102");
+  assert.equal(target.searchParams.get("lens"), "land");
+  assert.equal(target.searchParams.get("surface"), "map");
+  assert.deepEqual(target.searchParams.getAll("agency"), ["Transportation", "Parks"]);
+  assert.equal(target.searchParams.get("q"), "curb");
+  assert.equal(target.searchParams.get("when"), "month");
+  for (const key of ["scope", "boro", "cd", "neighborhood", "compare", "lat", "address"]) assert.equal(target.searchParams.has(key), false, key);
+  assert.equal(target.hash, "");
+  const inherited = new URL(geographyNavigationUrlWithFilters({geo:"nta2020:MN0102"}, {base}));
+  assert.equal(inherited.searchParams.get("lens"), "meetings");
+});
 
 test("history transitions never assign Location and trigger a document navigation", () => {
   const writes = [];

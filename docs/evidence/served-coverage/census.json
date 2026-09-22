@@ -14,8 +14,8 @@
   ],
   "disposition_counts": {
     "publicly_represented": 19,
-    "context_only": 29,
-    "not_served": 8,
+    "context_only": 30,
+    "not_served": 7,
     "unresolved": 11
   },
   "served_units": [
@@ -767,8 +767,8 @@
     {
       "source_id": "dcp-nta2020-boundaries",
       "name": "2020 Neighborhood Tabulation Areas",
-      "disposition": "not_served",
-      "reason": "Backstage ingestion and crosswalk quality assurance only; the registry states this is not a resident-facing identity or filter.",
+      "disposition": "context_only",
+      "reason": "Neighborhood boundaries support the resident Near You map, place selection, and exact record scopes; a reference boundary is not an independent served civic record.",
       "evidence": {
         "registry": {
           "status": "build-time",

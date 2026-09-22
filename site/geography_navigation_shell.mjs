@@ -16,7 +16,8 @@ import {
   GEOGRAPHY_NAVIGATION_DEFAULT_SURFACE,
   GEOGRAPHY_NAVIGATION_SURFACE_MAP,
   GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
-  geographyNavigationUrlFromState,
+  geographyNavigationUrlWithFilters as geographyNavigationUrlFromState,
+  geographyNavigationFilterParams,
 } from "./geography_navigation_state.mjs";
 
 export const RESIDENT_GEOGRAPHY_SHELL_SCHEMA = "cityscroll.resident_geography_shell.v1";
@@ -167,7 +168,13 @@ export function geographyShellSearchFormHtml({
   action = "/near-you/",
   value = "",
 } = {}) {
-  return `<form class="near-geo-search" method="get" action="${esc(action)}" data-geography-search>
+  const filters = geographyNavigationFilterParams(action);
+  const target = new URL(action, "https://cityscroll.invalid");
+  target.search = "";
+  target.hash = "";
+  const actionPath = /^[a-z][a-z\d+.-]*:\/\//i.test(action) ? target.toString() : target.pathname;
+  const hidden = [...filters].map(([key, value]) => `<input type="hidden" name="${esc(key)}" value="${esc(value)}">`).join("");
+  return `<form class="near-geo-search" method="get" action="${esc(actionPath)}" data-geography-search>${hidden}
       <label for="near-geo-search-input">${esc(GEOGRAPHY_SHELL_SEARCH_LABEL)}</label>
       <div class="near-geo-search-row">
         <input id="near-geo-search-input" name="neighborhood" type="search" value="${esc(value)}" placeholder="${esc(GEOGRAPHY_SHELL_SEARCH_PLACEHOLDER)}" autocomplete="street-address" enterkeyhint="search">
@@ -213,7 +220,7 @@ export function renderGeographyShellEntry({
       <p class="near-kicker">Local geography</p>
       <h1 id="near-geo-heading">${esc(GEOGRAPHY_SHELL_HEADING)}</h1>
       <p>Pick a place on the map. Then open the records for that place.</p>
-      ${geographyShellSearchFormHtml({ action: canonicalBase, value: searchValue })}
+      ${geographyShellSearchFormHtml({ action: shareHref || canonicalBase, value: searchValue })}
       <div class="near-place-actions near-geo-actions">
         <button type="button" class="js-only near-location-action" data-use-location hidden>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
         <a href="#near-area-list">Browse the area list</a>

@@ -28,7 +28,7 @@ import {
   GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
   bindGeographyNavigationPopState,
   parseGeographyNavigationState,
-  serializeGeographyNavigationState,
+  geographyNavigationUrlWithFilters,
   writeGeographyNavigationHistory,
 } from "../geography_navigation_state.mjs";
 import {
@@ -384,14 +384,7 @@ function geographyEntryStatusMessage(entry) {
 }
 
 function geographySelectionHref(state) {
-  const target = new URL(location.href);
-  for (const name of ["geo", "boro", "cd", "council", "level", "id", "parent", "neighborhood", "scope"]) {
-    target.searchParams.delete(name);
-  }
-  for (const [name, value] of serializeGeographyNavigationState(state, { includeDefaults: true })) {
-    target.searchParams.set(name, value);
-  }
-  return target.toString();
+  return geographyNavigationUrlWithFilters(state, {base:location.href});
 }
 
 async function adoptGeographyEntrySelection(entry, { ephemeralPoint = null } = {}) {
@@ -681,7 +674,7 @@ async function refreshOverlapDrawer({
       const districtModel = buildSelectedGeographyOverlapViewModel({
         selected: {key:state.key, type:state.type, id:state.id},
         compareType:'community_district', crosswalkRows:loaded.rows, crosswalkAvailable:true,
-        base:`${location.origin}/near-you/`, surface:GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
+        base:location.href, surface:GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
       });
       relatedDistricts = (districtModel.area_section?.rows || []).map((row) => {
         const href = new URL(row.select_href);
@@ -704,7 +697,7 @@ async function refreshOverlapDrawer({
     crosswalkRows,
     crosswalkAvailable: state.compare ? crosswalkAvailable : true,
     pointBundle: overlapPointBundle,
-    base: `${location.origin}/near-you/`,
+    base: location.href,
     surface: state.surface || GEOGRAPHY_NAVIGATION_SURFACE_MAP,
     drawer: state.drawer || GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
     focusToken: state.focus || state.key,
@@ -876,7 +869,7 @@ function refreshGeographyAreasList(type, layerDoc) {
     })).filter((entry) => entry.key && entry.label),
     {
       activeType: type,
-      base: `${location.origin}/near-you/`,
+      base: location.href,
       surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
     },
   );

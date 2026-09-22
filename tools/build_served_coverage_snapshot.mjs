@@ -268,7 +268,7 @@ const DECLARED_DISPOSITIONS = Object.freeze({
   "dcas-eligible-list-utilization": ["context_only", "List utilization evidence on exam cards and exam documents; exams are counted once as their own record unit."],
   "dcas-exam-notices": ["context_only", "Application windows, fees and notice links shown on exam cards; exams are counted once as their own record unit."],
   "dcas-vehicle-auction-list": ["unresolved", "Serves the property open-now surface, but its rows are deliberately excluded from parcel chains and map counts and no first-class served-population artifact declares it, so no served count is established."],
-  "dcp-nta2020-boundaries": ["not_served", "Backstage ingestion and crosswalk quality assurance only; the registry states this is not a resident-facing identity or filter."],
+  "dcp-nta2020-boundaries": ["context_only", "Neighborhood boundaries support the resident Near You map, place selection, and exact record scopes; a reference boundary is not an independent served civic record."],
   "dcp-police-precinct-boundaries": ["not_served", "Backstage ingestion and point-resolution canaries only; the registry states no resident-facing scope or filter is enabled."],
   "dob-certificate-of-occupancy": ["context_only", "Certificate evidence inside the observed parcel biography; properties are counted once as their own record unit."],
   "dob-now-job-filings": ["context_only", "Current demolition-filing verification against an already served record; no independent served record population."],

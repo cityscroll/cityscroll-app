@@ -33,6 +33,14 @@ const KEYS = Object.freeze({
   precinct: "geography:police_precinct:61",
 });
 
+test("unresolved place text never falls through to citywide membership", () => {
+  const activity = { district_items: { by_level: { borough: { Manhattan: { meetings:["unrelated"] } } } } };
+  const result = recordIdsForScope(activity, "meetings", {place:{neighborhood:"Unknown neighborhood"}});
+  assert.equal(result.exact, false);
+  assert.equal(result.count, null);
+  assert.deepEqual(result.ids, []);
+});
+
 const LENS_IDS = Object.freeze({
   land: ["land-1", "land-1"],
   property: ["property-1"],
