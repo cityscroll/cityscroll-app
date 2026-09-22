@@ -241,7 +241,12 @@
         "parsed_rows": 16,
         "selected_rows": 16,
         "served_rows": 16,
-        "pages_readback": "deployment-gated"
+        "pages_readback": {
+          "path": "docs/evidence/passport-retained-families/production-read.json",
+          "schema": "cityscroll.passport_retained_families_production_read.v1",
+          "result": "pass",
+          "route_count": 4
+        }
       },
       "artifact": {
         "merge_receipt": "warehouse/receipts/proof/passport_retained_families_latest.json",
@@ -261,6 +266,11 @@
         },
         "focused_test": "test/shared_procurement_read_model.test.mjs (retained-family round-trip)",
         "builder_check": "node tools/build_shared_procurement_read_model.mjs --check",
+        "production_readback": {
+          "path": "docs/evidence/passport-retained-families/production-read.json",
+          "generator": "tools/capture_passport_retained_families_production_read.py",
+          "check": "python3 tools/capture_passport_retained_families_production_read.py --check"
+        },
         "served_artifacts": [
           "site/data/shared_procurement_read_model.json",
           "site/data/shared_procurement_read_model/shard-011.json",

@@ -173,6 +173,17 @@ test("the acquisition spine is a build input, not a published file", () => {
   );
 });
 
+test("the frozen retained-contract corpus is a build input, not a published file", () => {
+  assert.equal(
+    publishedSourceFiles(ROOT).some((file) => (
+      file.relativePath === "data/passport_sources/retained_contract_families.json"
+    )),
+    false,
+    "the retained contract-family corpus feeds the shared procurement model; detail routes read "
+    + "the generated manifest and shards, so the frozen source must not become a public data route",
+  );
+});
+
 test("a population too large for one shard is split, and an unsplittable row is refused", () => {
   const row = (id) => ({ prime_contract_id: id, purpose: "x".repeat(4096) });
   const projection = {

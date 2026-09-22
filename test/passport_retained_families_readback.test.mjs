@@ -51,7 +51,12 @@ test("retained-family read-back keeps the named served facts readable", () => {
   assert.equal(a3.claim.bhrags.paid_amount, 7385672.19);
   assert.equal(a3.claim.bhrags.encumbered_amount, 7385672.52);
   assert.equal(a4.claim.residual_exclusions, 0);
-  assert.equal(a4.claim.pages_readback, "deployment-gated");
+  assert.equal(a4.claim.pages_readback.result, "pass");
+  assert.equal(a4.claim.pages_readback.route_count, 4);
+  assert.equal(
+    a4.claim.pages_readback.path,
+    "docs/evidence/passport-retained-families/production-read.json",
+  );
   for (const path of [
     readback.materialization.retained_rows,
     readback.materialization.selected_spine,
