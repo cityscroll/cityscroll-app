@@ -773,7 +773,7 @@
         "registry": {
           "status": "build-time",
           "delivery_tier": "inline-at-build",
-          "used_for": "Backstage-only NTA 2020 ingestion, point-resolution canaries, and crosswalk QA; it is not a canonical neighborhood identity or resident-facing filter."
+          "used_for": "Resident-facing neighborhood selection and exact NTA record scoping, plus point-resolution canaries and crosswalk QA. NTA identities remain source-qualified rather than a canonical definition of neighborhood."
         }
       }
     },

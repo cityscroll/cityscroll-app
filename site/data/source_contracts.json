@@ -1996,7 +1996,7 @@
       "max_stale_days": 180,
       "publisher_cadence": "Quarterly DCP BYTES release",
       "product_freshness": "Cycle-pinned 26B geometry is retained in independent full and simplified artifacts with an acquisition receipt and layer-specific vintage.",
-      "used_for": "Backstage-only NTA 2020 ingestion, point-resolution canaries, and crosswalk QA; it is not a canonical neighborhood identity or resident-facing filter.",
+      "used_for": "Resident-facing neighborhood selection and exact NTA record scoping, plus point-resolution canaries and crosswalk QA. NTA identities remain source-qualified rather than a canonical definition of neighborhood.",
       "code_references": [
         { "path": "tools/build_civic_geography.mjs", "contains": "nynta2020_26b" },
         { "path": "site/civic_geography_registry.mjs", "contains": "dcp-nta2020-boundaries" }
@@ -2011,7 +2011,7 @@
         "serve_contract_id": null
       },
       "health_policy": {
-        "public_visibility": "backstage-only",
+        "public_visibility": "public",
         "backstage_detail": "receipts-and-errors",
         "relationship_coverage": "separate"
       }
