@@ -117,6 +117,7 @@ labelled as broader areas, using the committed direct-intersection crosswalks.
 renderer under the route's Content Security Policy at desktop and mobile widths.
 It covers search, canvas clicks, area links, selected camera bounds, record
 geography evidence, history/reload, missing coverage, related-district navigation,
-record inspection, new-tab links, and native search submission. Local runs use the production slice builder with retained
-data; `CROL_BASE` selects a deployed origin. The production canary makes no
-assumption that a named upstream record or a fixed record count remains present.
+record inspection, new-tab links, and native search submission. Local runs use
+the production slice builder with retained data; `CROL_BASE` selects a deployed
+origin. The production canary makes no assumption that a named upstream record
+or a fixed record count remains present.
