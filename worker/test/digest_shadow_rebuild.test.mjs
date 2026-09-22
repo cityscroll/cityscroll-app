@@ -142,3 +142,58 @@ test("queue messages checkpoint one digest and complete the run with a receipt",
   assert.equal(status.receipt.status, "READY");
   assert.equal(status.receipt.rebuild_run_id, created.run_id);
 });
+
+test("an interrupted scoped rebuild resumes after its checkpoint without retrying the completed digest", async () => {
+  const DB = new FakeD1();
+  const env = { DB, ALERT_STATE: kv(), DIGEST_SHADOW_QUEUE: { async send() {} } };
+  const created = await createDigestShadowRebuild(env, {
+    affectedDigestIds: ["digest:one", "digest:two", "digest:three"],
+    now: NOW,
+  });
+  const run = DB.runs.get(created.run_id);
+  run.status = "running";
+  run.total_count = 3;
+  for (const digestId of ["digest:one", "digest:two", "digest:three"]) {
+    DB.items.set(`${created.run_id}:${digestId}`, {
+      run_id: created.run_id,
+      digest_id: digestId,
+      job_json: JSON.stringify({ type: "sub", key: `missing:${digestId}` }),
+      status: "queued",
+      attempt_count: 0,
+      result_json: null,
+      error: null,
+      started_at: null,
+      completed_at: null,
+    });
+  }
+
+  // The worker limit ends this invocation after the first per-digest queue item.
+  const interrupted = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, { now: NOW });
+  assert.equal(interrupted.status, "running");
+  assert.equal(interrupted.completed_count, 1);
+  assert.equal(DB.items.get(`${created.run_id}:digest:one`).status, "complete");
+  assert.equal(interrupted.receipt.complete, false);
+  assert.equal(interrupted.receipt.status, "PARTIAL");
+
+  // Re-invoking the same run sees the checkpoint and is idempotent for digest:one.
+  const resumed = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:one",
+  }, { now: NOW });
+  assert.equal(DB.items.get(`${created.run_id}:digest:one`).attempt_count, 1);
+  for (const digestId of ["digest:two"]) {
+    await handleDigestShadowRebuildQueueMessage(env, {
+      type: "digest", run_id: created.run_id, digest_id: digestId,
+    }, { now: NOW });
+  }
+
+  const finished = await handleDigestShadowRebuildQueueMessage(env, {
+    type: "digest", run_id: created.run_id, digest_id: "digest:three",
+  }, { now: NOW });
+  assert.equal(finished.status, "complete");
+  assert.equal(finished.complete, true);
+  assert.equal(finished.completed_count, 3);
+  assert.equal(finished.receipt.complete, true);
+  assert.equal(finished.receipt.status, "READY");
+});

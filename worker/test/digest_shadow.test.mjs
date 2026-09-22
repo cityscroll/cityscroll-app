@@ -565,6 +565,76 @@ test("shadow rebuild status reports checkpoint progress and the resulting receip
   assert.equal(body.items[0].digest_id, "digest:one");
 });
 
+test("interrupted shadow rebuild status and receipt stay explicitly incomplete", async () => {
+  const runRow = {
+    run_id: "run-interrupted",
+    run_day: "2026-08-04",
+    requested_digest_ids_json: JSON.stringify(["digest:one", "digest:two"]),
+    status: "running",
+    total_count: 2,
+    completed_count: 1,
+    failed_count: 0,
+    receipt_json: JSON.stringify({
+      status: "PARTIAL",
+      complete: false,
+      rebuild_run_id: "run-interrupted",
+      completed_count: 1,
+      total_count: 2,
+    }),
+    error: null,
+    created_at: NOW.toISOString(),
+    updated_at: NOW.toISOString(),
+  };
+  const itemRows = [
+    {
+      run_id: "run-interrupted",
+      digest_id: "digest:one",
+      job_json: JSON.stringify({ type: "sub", key: "sub:one" }),
+      status: "complete",
+      attempt_count: 1,
+      result_json: JSON.stringify({ status: "READY" }),
+      error: null,
+      started_at: NOW.toISOString(),
+      completed_at: NOW.toISOString(),
+    },
+    {
+      run_id: "run-interrupted",
+      digest_id: "digest:two",
+      job_json: JSON.stringify({ type: "sub", key: "sub:two" }),
+      status: "queued",
+      attempt_count: 0,
+      result_json: null,
+      error: null,
+      started_at: null,
+      completed_at: null,
+    },
+  ];
+  const DB = {
+    prepare(sql) {
+      const query = { sql, args: [] };
+      query.bind = (...args) => { query.args = args; return query; };
+      query.first = async () => sql.includes("digest_shadow_rebuild_runs") ? runRow : null;
+      query.all = async () => ({ results: sql.includes("digest_shadow_rebuild_items") ? itemRows : [] });
+      return query;
+    },
+  };
+  const response = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow?run_id=run-interrupted", {
+      headers: { authorization: "Bearer secret" },
+    }),
+    { ADMIN_KEY: "secret", DB },
+    { now: NOW },
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.status, "running");
+  assert.equal(body.complete, false);
+  assert.equal(body.receipt.status, "PARTIAL");
+  assert.equal(body.receipt.complete, false);
+  assert.notEqual(body.status, "complete");
+  assert.notEqual(body.receipt.status, "READY");
+});
+
 test("SHADOW_STATUS_KEY cannot substitute for ADMIN_KEY when ADMIN_KEY is the configured secret", async () => {
   const clean = summary([result()]);
   const env = { ADMIN_KEY: "admin-key", DB: readDb(clean) };

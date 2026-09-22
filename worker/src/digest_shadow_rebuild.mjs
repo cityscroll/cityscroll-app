@@ -117,6 +117,7 @@ async function readRun(db, runId) {
   if (!row) return null;
   return {
     ...row,
+    complete: row.status === "complete",
     requested_digest_ids: JSON.parse(row.requested_digest_ids_json || "null"),
     receipt: JSON.parse(row.receipt_json || "null"),
   };
@@ -323,6 +324,11 @@ async function processItem(env, runId, digestId, now) {
     updated.receipt_json = json(finalized.receipt);
   } else {
     updated.status = "running";
+    updated.receipt_json = json(await recordDigestShadowReceipt(env, {
+      ok: false,
+      rebuild_run_id: runId,
+      rebuild_complete: false,
+    }, new Date(now)));
   }
   await updateRun(env.DB, runId, updated);
   return readRun(env.DB, runId);
