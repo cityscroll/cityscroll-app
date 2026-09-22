@@ -48,7 +48,7 @@ function columns(rows) {
   }));
 }
 
-/** Parse only explicit meeting-date cells from the official PDC table. */
+/** Parse only meeting-date cells under an explicit PDC calendar-year heading. */
 export function parsePdcScheduleHtml(html, { sourceUrl = PDC_CALENDAR_SOURCE_URL, observedAt = null, receipt = null } = {}) {
   const records = [];
   const seen = new Set();
