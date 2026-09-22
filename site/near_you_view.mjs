@@ -539,8 +539,9 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     hasExplicitSurface: explicitSurface,
     hasPlace,
   });
+  // Primary browse layer stays the selected geography's type. Comparison is a
+  // secondary URL dimension and must not replace the Areas directory layer.
   const activeGeographyLayer = options.navigationLayerType
-    || geographyState?.compare
     || geographyState?.type
     || "nta2020";
   const directoryAliases = options.directoryAliasesByNtaId

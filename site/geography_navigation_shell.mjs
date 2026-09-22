@@ -322,15 +322,10 @@ export function geographyShellLayerSwitcherHtml({
   surface = GEOGRAPHY_NAVIGATION_DEFAULT_SURFACE,
   selectedGeo = null,
 } = {}) {
+  // Primary layer chrome tracks the selected geography type. Comparison overlays
+  // live in the overlap drawer and must not steal the pressed primary control.
   const primary = geographyNavigationPrimaryLayers().map((layer) => {
     const pressed = layer.type === activeType;
-    const href = geographyNavigationUrlFromState({
-      ok: true,
-      geo: selectedGeo,
-      compare: layer.type === "nta2020" ? null : (selectedGeo ? layer.type : null),
-      surface,
-      // Layer choice for the unselected navigator is presentation; keep URL calm.
-    }, { base });
     return `<button type="button" class="near-geo-layer" data-geography-layer="${esc(layer.type)}" aria-pressed="${pressed ? "true" : "false"}"${pressed ? ' data-geography-layer-active="true"' : ""}>${esc(layer.primary_label)}</button>`;
   }).join("");
 

@@ -1,0 +1,215 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "feature": "geography-navigation-preserve-place",
+  "public_alias": "cc669bf6bea4a",
+  "capture_mode": "local_rendered_transition_receipts",
+  "repository_revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+  "grounded_at": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+  "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed.",
+  "note": "Textual route, revision, viewport, and assertion receipts are committed; no image binaries are committed.",
+  "verifier": "node --test test/geography_navigation_state.test.mjs test/geography_navigation_overlap_ui.test.mjs test/geography_navigation_shell.test.mjs",
+  "captures": [
+    {
+      "source": "local-rendered-output",
+      "name": "greenpoint-police-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK0101&compare=police_precinct&surface=map&lens=meetings",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "Greenpoint stays named; Precinct 94 overlap renders; Areas stay on nta2020 with no empty-directory claim.",
+      "sha256": "4b93a2620a032b4d99e4dacb83ce129e2ddeed3861cdc2d82ed05eab8ddc8726",
+      "file": null,
+      "snapshot": {
+        "selected_label": "Greenpoint",
+        "compare": "police_precinct",
+        "active_layer": "nta2020",
+        "area_count": 197
+      }
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "greenpoint-police-mobile",
+      "route": "/near-you/?geo=nta2020%3ABK0101&compare=police_precinct&surface=map&lens=meetings",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "Greenpoint stays named; Precinct 94 overlap renders; Areas stay on nta2020 with no empty-directory claim.",
+      "sha256": "4b93a2620a032b4d99e4dacb83ce129e2ddeed3861cdc2d82ed05eab8ddc8726",
+      "file": null,
+      "snapshot": {
+        "selected_label": "Greenpoint",
+        "compare": "police_precinct",
+        "active_layer": "nta2020",
+        "area_count": 197
+      }
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "greenpoint-community-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK0101&compare=community_district&surface=map&lens=meetings",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "Switching to community district comparison keeps Greenpoint, meetings lens, and the NTA Areas directory.",
+      "sha256": "52bcf1c9ce3074a32c36980b99455531494ea8a7f41110e015799dfe49276af4",
+      "file": null,
+      "snapshot": {
+        "selected_label": "Greenpoint",
+        "compare": "community_district",
+        "active_layer": "nta2020",
+        "area_count": 197
+      }
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "greenpoint-community-mobile",
+      "route": "/near-you/?geo=nta2020%3ABK0101&compare=community_district&surface=map&lens=meetings",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "Switching to community district comparison keeps Greenpoint, meetings lens, and the NTA Areas directory.",
+      "sha256": "52bcf1c9ce3074a32c36980b99455531494ea8a7f41110e015799dfe49276af4",
+      "file": null,
+      "snapshot": {
+        "selected_label": "Greenpoint",
+        "compare": "community_district",
+        "active_layer": "nta2020",
+        "area_count": 197
+      }
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "greenpoint-council-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK0101&compare=council_district&surface=map&lens=meetings",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "Switching to council district comparison keeps Greenpoint, meetings lens, and the NTA Areas directory.",
+      "sha256": "9e36e716f0f59a5b3f78ebfa58a53c5aab688f63ed33e258c0b638981f6164ae",
+      "file": null,
+      "snapshot": {
+        "selected_label": "Greenpoint",
+        "compare": "council_district",
+        "active_layer": "nta2020",
+        "area_count": 197
+      }
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "greenpoint-council-mobile",
+      "route": "/near-you/?geo=nta2020%3ABK0101&compare=council_district&surface=map&lens=meetings",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "Switching to council district comparison keeps Greenpoint, meetings lens, and the NTA Areas directory.",
+      "sha256": "9e36e716f0f59a5b3f78ebfa58a53c5aab688f63ed33e258c0b638981f6164ae",
+      "file": null,
+      "snapshot": {
+        "selected_label": "Greenpoint",
+        "compare": "council_district",
+        "active_layer": "nta2020",
+        "area_count": 197
+      }
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "sheepshead-council-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&drawer=open",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "BK1503 multi-council fixture keeps the selected neighborhood label and usable council overlap rows.",
+      "sha256": "9149aca0ba12007f127e14fc5049fa15924054ed07cd8301ed0ac20af3260e71",
+      "file": null,
+      "snapshot": {
+        "selected_label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+        "compare": "council_district",
+        "active_layer": "nta2020",
+        "area_count": 197
+      }
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "sheepshead-council-mobile",
+      "route": "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&drawer=open",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "BK1503 multi-council fixture keeps the selected neighborhood label and usable council overlap rows.",
+      "sha256": "9149aca0ba12007f127e14fc5049fa15924054ed07cd8301ed0ac20af3260e71",
+      "file": null,
+      "snapshot": {
+        "selected_label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+        "compare": "council_district",
+        "active_layer": "nta2020",
+        "area_count": 197
+      }
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "greenpoint-unsupported-council-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK0101&compare=council&surface=map&lens=land",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "Unsupported compare=council recovers without clearing Greenpoint or inventing an empty Areas directory.",
+      "sha256": "2c0bcd0a128a8a19e6dc2af2facbca140f6d2f261b589cc6abe1c4a00158c848",
+      "file": null,
+      "snapshot": {
+        "selected_label": "Greenpoint",
+        "compare": null,
+        "active_layer": "nta2020",
+        "area_count": 197
+      }
+    },
+    {
+      "source": "local-rendered-output",
+      "name": "greenpoint-unsupported-council-mobile",
+      "route": "/near-you/?geo=nta2020%3ABK0101&compare=council&surface=map&lens=land",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "82dd28245acfe3fcffb6d8483d1e938b938ae067",
+      "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "Unsupported compare=council recovers without clearing Greenpoint or inventing an empty Areas directory.",
+      "sha256": "2c0bcd0a128a8a19e6dc2af2facbca140f6d2f261b589cc6abe1c4a00158c848",
+      "file": null,
+      "snapshot": {
+        "selected_label": "Greenpoint",
+        "compare": null,
+        "active_layer": "nta2020",
+        "area_count": 197
+      }
+    }
+  ]
+}

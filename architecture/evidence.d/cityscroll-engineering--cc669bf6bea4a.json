@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/cc669bf6bea4a",
+  "status": "implemented",
+  "fingerprint": "near-you-secondary-comparison-keeps-selection.v1",
+  "updated_at": "2026-09-22T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "resident-geography-selection-state",
+      "path": "site/geography_navigation_state.mjs"
+    },
+    {
+      "id": "resident-geography-shell",
+      "path": "site/geography_navigation_shell.mjs"
+    },
+    {
+      "id": "near-you-view-renderer",
+      "path": "site/near_you_view.mjs"
+    },
+    {
+      "id": "near-you-map-island",
+      "path": "site/app/map.mjs"
+    },
+    {
+      "id": "resident-geography-selection-state-tests",
+      "path": "test/geography_navigation_state.test.mjs"
+    },
+    {
+      "id": "resident-geography-overlap-ui-tests",
+      "path": "test/geography_navigation_overlap_ui.test.mjs"
+    },
+    {
+      "id": "resident-geography-shell-tests",
+      "path": "test/geography_navigation_shell.test.mjs"
+    },
+    {
+      "id": "near-you-preserve-place-capture",
+      "path": "docs/evidence/geography-navigation-preserve-place/capture-manifest.json"
+    },
+    {
+      "id": "near-you-preserve-place-capture-tool",
+      "path": "tools/capture_geography_preserve_place.py"
+    }
+  ]
+}

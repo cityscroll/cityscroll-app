@@ -218,8 +218,11 @@ test("A2 invalid type/id pairs cannot reach selection state", () => {
   assert.equal(badId.recovery.reason, GEOGRAPHY_NAVIGATION_RECOVERY_REASONS.INVALID_ID);
 
   const badCompare = parseGeographyNavigationState("geo=nta2020:BK1503&compare=sanitation_district");
-  assert.equal(badCompare.ok, false);
-  assert.equal(badCompare.recovery.reason, GEOGRAPHY_NAVIGATION_RECOVERY_REASONS.UNKNOWN_COMPARE);
+  assert.equal(badCompare.ok, true);
+  assert.equal(badCompare.geo, "nta2020:BK1503");
+  assert.equal(badCompare.key, "geography:nta2020:BK1503");
+  assert.equal(badCompare.compare, null);
+  assert.equal(badCompare.recovery, null);
 
   const scoped = scopeWithGeographyNavigationState(emptyScope(), badId);
   assert.deepEqual(geographyKeysFromScope(scoped), []);
@@ -485,6 +488,87 @@ test("A7 compare equal to the selected layer is omitted rather than duplicated",
   });
   assert.equal(state.compare, null);
   assert.equal(serializeGeographyNavigationState(state).has("compare"), false);
+});
+
+test("A1/A2: unsupported compare recovers without clearing primary selection or lens", () => {
+  const recovered = parseGeographyNavigationState(
+    "geo=nta2020:BK0101&compare=council&surface=map&lens=meetings&drawer=open",
+  );
+  assert.equal(recovered.ok, true);
+  assert.equal(recovered.geo, "nta2020:BK0101");
+  assert.equal(recovered.key, "geography:nta2020:BK0101");
+  assert.equal(recovered.type, "nta2020");
+  assert.equal(recovered.id, "BK0101");
+  assert.equal(recovered.compare, null);
+  assert.equal(recovered.lens, "meetings");
+  assert.equal(recovered.drawer, "open");
+  assert.equal(recovered.recovery, null);
+
+  const session = memorySession();
+  const greenpoint = parseGeographyNavigationState({
+    geo: "nta2020:BK0101",
+    compare: "police_precinct",
+    surface: "map",
+    lens: "meetings",
+    drawer: "open",
+  });
+  writeGeographyNavigationHistory(session.history, session.location, greenpoint, { mode: "replace" });
+
+  const community = parseGeographyNavigationState({
+    geo: "nta2020:BK0101",
+    compare: "community_district",
+    surface: "map",
+    lens: "meetings",
+    drawer: "open",
+  });
+  writeGeographyNavigationHistory(session.history, session.location, community, { mode: "push" });
+
+  const council = parseGeographyNavigationState({
+    geo: "nta2020:BK0101",
+    compare: "council_district",
+    surface: "map",
+    lens: "meetings",
+    drawer: "open",
+  });
+  writeGeographyNavigationHistory(session.history, session.location, council, { mode: "push" });
+
+  // Rapid compare changes keep the same primary key and topic lens.
+  for (const compare of ["police_precinct", "community_district", "council_district", "police_precinct"]) {
+    const next = parseGeographyNavigationState({
+      geo: "nta2020:BK0101",
+      compare,
+      surface: "map",
+      lens: "meetings",
+    });
+    writeGeographyNavigationHistory(session.history, session.location, next, { mode: "push" });
+    assert.equal(next.ok, true);
+    assert.equal(next.key, "geography:nta2020:BK0101");
+    assert.equal(next.compare, compare);
+    assert.equal(next.lens, "meetings");
+  }
+
+  const restored = [];
+  bindGeographyNavigationPopState(session.target, (state) => restored.push(state));
+  session.history.back();
+  session.history.back();
+  assert.ok(restored.length >= 2);
+  for (const state of restored) {
+    assert.equal(state.key, "geography:nta2020:BK0101");
+    assert.equal(state.lens, "meetings");
+    assert.equal(state.ok, true);
+  }
+
+  // Direct load of unsupported compare normalizes away the compare param only.
+  session.location.pathname = "/near-you/";
+  session.location.search = "?geo=nta2020:BK0101&compare=council&surface=map&lens=land";
+  session.location.href = "https://cityscroll.invalid/near-you/?geo=nta2020:BK0101&compare=council&surface=map&lens=land";
+  const direct = normalizeGeographyNavigationLocation(session.history, session.location);
+  assert.equal(direct.state.ok, true);
+  assert.equal(direct.state.geo, "nta2020:BK0101");
+  assert.equal(direct.state.compare, null);
+  assert.equal(direct.state.lens, "land");
+  assert.match(session.location.href, /geo=nta2020%3ABK0101|geo=nta2020:BK0101/);
+  assert.equal(new URL(session.location.href, "https://cityscroll.invalid").searchParams.has("compare"), false);
 });
 
 test("module stays a pure parser/serializer and history adapter", () => {
