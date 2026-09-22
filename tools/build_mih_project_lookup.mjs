@@ -62,6 +62,8 @@ function materialize(mihRows, zapRows) {
   });
   return {
     schema_version: "cityscroll.mih_project_lookup.v1",
+    // Top-level observed_at is the retained-vintage field read by source-contract freshness.
+    observed_at: RETRIEVED_AT,
     materialized_at: RETRIEVED_AT,
     source: { dataset_id: MIH_DATASET, landing_page: `https://data.cityofnewyork.us/d/${MIH_DATASET}` },
     join_measurement: { eligible: mihRows.length, linked: rows.length, rate: rows.length / mihRows.length, gap: rows.length < mihRows.length ? "unmatched_project_ids_excluded" : null },

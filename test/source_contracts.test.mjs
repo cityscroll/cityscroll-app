@@ -106,6 +106,18 @@ test("MIH freshness limit records its metadata-based cadence derivation", () => 
   assert.match(mih.freshness_policy.evidence, /revision endpoint exposes only the current revision/);
 });
 
+test("MIH declares retained vintage that resolves under the 120-day monthly contract", () => {
+  const registry = loadSourceContracts();
+  const mih = registry.contracts.find((entry) => entry.id === "mandatory-inclusionary-housing");
+  assert.equal(mih.max_stale_days, 120);
+  assert.equal(mih.freshness_contract.max_stale_days, 120);
+  assert.equal(mih.freshness_contract.serving_max_age_days, 120);
+  assert.match(mih.publisher_cadence, /Monthly \(Open Data metadata; 31-day working cadence\)/);
+  const vintage = readRetainedVintage(mih.freshness_contract.retained_vintage);
+  assert.equal(vintage.field, "observed_at");
+  assert.equal(vintage.at, "2026-08-05T00:00:00.000Z");
+});
+
 test("recorded fixtures reject missing fields and non-tabular source shapes", () => {
   const registry = loadSourceContracts();
   const missingField = structuredClone(loadSourceContractFixtures());
