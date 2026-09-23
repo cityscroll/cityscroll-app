@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { rmSync } from "node:fs";
 import path from "node:path";
-import { tmpdir } from "node:os";
-import { test } from "node:test";
+import { after, test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import {
@@ -28,6 +28,7 @@ import {
   fullScanLayerMatches,
   loadMembershipLayer,
 } from "../tools/lib/parcel_membership_materialization.mjs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const REAL_REGISTRY = path.join(ROOT, "site", "data", "geography", "layer_registry.json");
@@ -131,13 +132,40 @@ async function makePadIndexFixture(dir, bblByHouse) {
   return dir;
 }
 
+/** Scratch dirs retained across tests (shared anchor fixture); removed in after(). */
+const retainedTempDirs = new Set();
+
+function trackTempDir(dir) {
+  retainedTempDirs.add(dir);
+  return dir;
+}
+
+after(() => {
+  for (const dir of retainedTempDirs) {
+    try {
+      rmSync(dir, { recursive: true, force: true });
+    } catch {
+      // best effort
+    }
+  }
+  retainedTempDirs.clear();
+});
+
+async function allocateReplayBase() {
+  // Retained scratch cleaned in after(): cityscroll-prefixed so a leak is attributable.
+  const { mkdtemp } = await import("node:fs/promises");
+  const { tmpdir } = await import("node:os");
+  const base = await mkdtemp(path.join(tmpdir(), "cityscroll-parcel-membership-"));
+  return trackTempDir(base);
+}
+
 /**
  * Replay the official rows through the production point builder. Extra rows
  * (e.g. a real boundary-edge midpoint) ride along with the same accounting.
+ * The base directory is retained until after() so shared fixtures can reuse it.
  */
-let pointsFixturePromise = null;
 async function replayPointsGeneration(extraRows = []) {
-  const base = await mkdtemp(path.join(tmpdir(), "parcel-membership-"));
+  const base = await allocateReplayBase();
   const padIndex = await makePadIndexFixture(path.join(base, "pad-index"), {
     810: "3066990010",
     1625: "3076200025",
@@ -330,42 +358,42 @@ test("A3: a real BK1403 boundary-edge midpoint retains every boundary match as a
 
 test("A3: a missing Council layer preserves healthy NTA and community results without guessing any council membership", async () => {
   const registry = await realRegistry();
-  const base = await mkdtemp(path.join(tmpdir(), "missing-council-"));
-  const fixtureRegistryPath = path.join(base, "layer_registry.json");
-  const fixture = JSON.parse(JSON.stringify(registry));
-  const councilRow = fixture.layers.find((layer) => layer.type === "council_district");
-  councilRow.artifacts.full.path = "data/geography/layers/council_district/2099-01-01.full.json";
-  await writeFile(fixtureRegistryPath, JSON.stringify(fixture));
+  await withTempDir("missing-council", async (base) => {
+    const fixtureRegistryPath = path.join(base, "layer_registry.json");
+    const fixture = JSON.parse(JSON.stringify(registry));
+    const councilRow = fixture.layers.find((layer) => layer.type === "council_district");
+    councilRow.artifacts.full.path = "data/geography/layers/council_district/2099-01-01.full.json";
+    await writeFile(fixtureRegistryPath, JSON.stringify(fixture));
 
-  const anchors = await replayAnchorsBuild();
-  const outDir = path.join(base, "memberships");
-  const result = await runMembershipBuild({
-    parcelDir: anchors.pointsDir,
-    outDir,
-    registryPath: fixtureRegistryPath,
-    minParcels: 0,
-    allowUnavailableLayers: true,
+    const anchors = await replayAnchorsBuild();
+    const outDir = path.join(base, "memberships");
+    const result = await runMembershipBuild({
+      parcelDir: anchors.pointsDir,
+      outDir,
+      registryPath: fixtureRegistryPath,
+      minParcels: 0,
+      allowUnavailableLayers: true,
+    });
+    const block = result.manifest.membership;
+    assert.equal(block.layers.council_district.status, "source_unavailable");
+    assert.equal(block.layers.nta2020.status, "resolved");
+    assert.equal(block.layers.community_district.status, "resolved");
+
+    for (const row of OFFICIAL_NAMED_ROWS) {
+      const { shard } = await readShard(outDir, row.bbl);
+      const { summary } = membershipSummary(shard, row.bbl);
+      // Healthy layers keep their exact memberships.
+      assert.deepEqual(summary.nta2020.ids, [EXPECTED_MEMBERSHIPS[row.bbl].nta2020]);
+      assert.deepEqual(summary.community_district.ids, [EXPECTED_MEMBERSHIPS[row.bbl].community_district]);
+      assert.deepEqual(summary.police_precinct.ids, [EXPECTED_MEMBERSHIPS[row.bbl].police_precinct]);
+      // The missing layer states its own status; no council id is invented or
+      // guessed from the community district, borough, or NTA result.
+      assert.deepEqual(summary.council_district.ids, []);
+      assert.equal(summary.council_district.status, "source_unavailable");
+      const stored = shard.parcels[row.bbl].memberships.council_district;
+      assert.ok(!("boundary_ids" in stored));
+    }
   });
-  const block = result.manifest.membership;
-  assert.equal(block.layers.council_district.status, "source_unavailable");
-  assert.equal(block.layers.nta2020.status, "resolved");
-  assert.equal(block.layers.community_district.status, "resolved");
-
-  for (const row of OFFICIAL_NAMED_ROWS) {
-    const { shard } = await readShard(outDir, row.bbl);
-    const { summary } = membershipSummary(shard, row.bbl);
-    // Healthy layers keep their exact memberships.
-    assert.deepEqual(summary.nta2020.ids, [EXPECTED_MEMBERSHIPS[row.bbl].nta2020]);
-    assert.deepEqual(summary.community_district.ids, [EXPECTED_MEMBERSHIPS[row.bbl].community_district]);
-    assert.deepEqual(summary.police_precinct.ids, [EXPECTED_MEMBERSHIPS[row.bbl].police_precinct]);
-    // The missing layer states its own status; no council id is invented or
-    // guessed from the community district, borough, or NTA result.
-    assert.deepEqual(summary.council_district.ids, []);
-    assert.equal(summary.council_district.status, "source_unavailable");
-    const stored = shard.parcels[row.bbl].memberships.council_district;
-    assert.ok(!("boundary_ids" in stored));
-  }
-  await rm(base, { recursive: true, force: true });
 });
 
 test("A3/E16: none of the three CB14 parcels is assigned to Kensington BK1203", async () => {
@@ -401,65 +429,65 @@ test("A2: a changed Council-layer digest recomputes only Council and leaves poin
   changed.features = changed.features.filter((feature) => feature.id !== "45");
   changed.coverage.actual_feature_count = changed.features.length;
 
-  const base = await mkdtemp(path.join(tmpdir(), "changed-council-"));
-  const changedPath = path.join(base, "council-changed.full.json");
-  await writeFile(changedPath, JSON.stringify(changed));
-  const fixtureRegistryPath = path.join(base, "layer_registry.json");
-  const fixture = JSON.parse(JSON.stringify(registry));
-  const councilRow = fixture.layers.find((layer) => layer.type === "council_district");
-  councilRow.artifacts.full.path = path.relative(ROOT, changedPath);
-  await writeFile(fixtureRegistryPath, JSON.stringify(fixture));
+  await withTempDir("changed-council", async (base) => {
+    const changedPath = path.join(base, "council-changed.full.json");
+    await writeFile(changedPath, JSON.stringify(changed));
+    const fixtureRegistryPath = path.join(base, "layer_registry.json");
+    const fixture = JSON.parse(JSON.stringify(registry));
+    const councilRow = fixture.layers.find((layer) => layer.type === "council_district");
+    councilRow.artifacts.full.path = path.relative(ROOT, changedPath);
+    await writeFile(fixtureRegistryPath, JSON.stringify(fixture));
 
-  const outDir = path.join(base, "memberships-gen2");
-  const gen2 = await runMembershipBuild({
-    parcelDir: anchors.outDir,
-    outDir,
-    registryPath: fixtureRegistryPath,
-    minParcels: 0,
-  });
-  const gen1Manifest = anchors.result.manifest;
-  const gen2Manifest = gen2.manifest;
+    const outDir = path.join(base, "memberships-gen2");
+    const gen2 = await runMembershipBuild({
+      parcelDir: anchors.outDir,
+      outDir,
+      registryPath: fixtureRegistryPath,
+      minParcels: 0,
+    });
+    const gen1Manifest = anchors.result.manifest;
+    const gen2Manifest = gen2.manifest;
 
-  // Point-side fields are untouched: same source, same coverage, same point
-  // build receipt — membership work never re-geocodes or moves a point.
-  assert.deepEqual(gen2Manifest.coverage, gen1Manifest.coverage);
-  assert.deepEqual(gen2Manifest.source, gen1Manifest.source);
-  assert.deepEqual(gen2Manifest.build, gen1Manifest.build);
-  assert.equal(gen2Manifest.coordinate_vintage, gen1Manifest.coordinate_vintage);
-  assert.equal(gen2Manifest.membership.inputs.points_sha256, gen1Manifest.membership.inputs.points_sha256);
+    // Point-side fields are untouched: same source, same coverage, same point
+    // build receipt — membership work never re-geocodes or moves a point.
+    assert.deepEqual(gen2Manifest.coverage, gen1Manifest.coverage);
+    assert.deepEqual(gen2Manifest.source, gen1Manifest.source);
+    assert.deepEqual(gen2Manifest.build, gen1Manifest.build);
+    assert.equal(gen2Manifest.coordinate_vintage, gen1Manifest.coordinate_vintage);
+    assert.equal(gen2Manifest.membership.inputs.points_sha256, gen1Manifest.membership.inputs.points_sha256);
 
-  // Council recomputed against the changed digest; every other layer reused.
-  assert.equal(gen2Manifest.membership.layers.council_district.computation, "computed");
-  assert.notEqual(
-    gen2Manifest.membership.layers.council_district.sha256,
-    gen1Manifest.membership.layers.council_district.sha256,
-  );
-  for (const type of ["borough", "community_district", "nta2020", "police_precinct"]) {
-    assert.equal(gen2Manifest.membership.layers[type].computation, "reused");
-    assert.equal(
-      gen2Manifest.membership.layers[type].sha256,
-      gen1Manifest.membership.layers[type].sha256,
+    // Council recomputed against the changed digest; every other layer reused.
+    assert.equal(gen2Manifest.membership.layers.council_district.computation, "computed");
+    assert.notEqual(
+      gen2Manifest.membership.layers.council_district.sha256,
+      gen1Manifest.membership.layers.council_district.sha256,
     );
-  }
-
-  for (const row of OFFICIAL_NAMED_ROWS) {
-    const before = (await readShard(anchors.outDir, row.bbl)).shard.parcels[row.bbl];
-    const after = (await readShard(outDir, row.bbl)).shard.parcels[row.bbl];
-    assert.equal(after.lat, before.lat);
-    assert.equal(after.lon, before.lon);
-    // Unchanged membership payloads are carried over byte-identically.
     for (const type of ["borough", "community_district", "nta2020", "police_precinct"]) {
-      assert.deepEqual(after.memberships[type], before.memberships[type]);
+      assert.equal(gen2Manifest.membership.layers[type].computation, "reused");
+      assert.equal(
+        gen2Manifest.membership.layers[type].sha256,
+        gen1Manifest.membership.layers[type].sha256,
+      );
     }
-    // The Council result itself reflects the changed polygons: the parcels in
-    // removed district 45 become not covered, others keep their own result.
-    if (row.bbl === "3066990010" || row.bbl === "3076200025") {
-      assert.deepEqual(after.memberships.council_district, { ids: [], status: "not_covered" });
-    } else {
-      assert.equal(after.memberships.council_district, EXPECTED_MEMBERSHIPS[row.bbl].council_district);
+
+    for (const row of OFFICIAL_NAMED_ROWS) {
+      const before = (await readShard(anchors.outDir, row.bbl)).shard.parcels[row.bbl];
+      const afterShard = (await readShard(outDir, row.bbl)).shard.parcels[row.bbl];
+      assert.equal(afterShard.lat, before.lat);
+      assert.equal(afterShard.lon, before.lon);
+      // Unchanged membership payloads are carried over byte-identically.
+      for (const type of ["borough", "community_district", "nta2020", "police_precinct"]) {
+        assert.deepEqual(afterShard.memberships[type], before.memberships[type]);
+      }
+      // The Council result itself reflects the changed polygons: the parcels in
+      // removed district 45 become not covered, others keep their own result.
+      if (row.bbl === "3066990010" || row.bbl === "3076200025") {
+        assert.deepEqual(afterShard.memberships.council_district, { ids: [], status: "not_covered" });
+      } else {
+        assert.equal(afterShard.memberships.council_district, EXPECTED_MEMBERSHIPS[row.bbl].council_district);
+      }
     }
-  }
-  await rm(base, { recursive: true, force: true });
+  });
 });
 
 test("A4: the indexed resolver equals the full-scan production resolver on anchors, boundary cases, and committed parcels", async () => {
@@ -534,24 +562,24 @@ test("A4: simplified display geometry is refused and never replaces the full pol
   // simplified file refuses activation and leaves the previous generation in
   // place with no staging left behind.
   const anchors = await replayAnchorsBuild();
-  const base = await mkdtemp(path.join(tmpdir(), "substituted-"));
-  const fixtureRegistryPath = path.join(base, "layer_registry.json");
-  const fixture = JSON.parse(JSON.stringify(registry));
-  const row = fixture.layers.find((layer) => layer.type === "nta2020");
-  row.artifacts.full.path = row.artifacts.simplified.site_path;
-  await writeFile(fixtureRegistryPath, JSON.stringify(fixture));
-  const outDir = path.join(base, "memberships");
-  await assert.rejects(
-    () => runMembershipBuild({ parcelDir: anchors.pointsDir, outDir, registryPath: fixtureRegistryPath, minParcels: 0 }),
-    (error) => error instanceof SimplifiedGeometryRefusalError,
-  );
-  const { existsSync } = await import("node:fs");
-  assert.equal(existsSync(path.join(outDir, "manifest.json")), false);
-  assert.equal(existsSync(path.join(outDir, ".staging")), false);
-  // The input generation is untouched by the refusal.
-  const before = await readFile(path.join(anchors.outDir, "manifest.json"));
-  assert.ok(before.byteLength > 0);
-  await rm(base, { recursive: true, force: true });
+  await withTempDir("substituted", async (base) => {
+    const fixtureRegistryPath = path.join(base, "layer_registry.json");
+    const fixture = JSON.parse(JSON.stringify(registry));
+    const row = fixture.layers.find((layer) => layer.type === "nta2020");
+    row.artifacts.full.path = row.artifacts.simplified.site_path;
+    await writeFile(fixtureRegistryPath, JSON.stringify(fixture));
+    const outDir = path.join(base, "memberships");
+    await assert.rejects(
+      () => runMembershipBuild({ parcelDir: anchors.pointsDir, outDir, registryPath: fixtureRegistryPath, minParcels: 0 }),
+      (error) => error instanceof SimplifiedGeometryRefusalError,
+    );
+    const { existsSync } = await import("node:fs");
+    assert.equal(existsSync(path.join(outDir, "manifest.json")), false);
+    assert.equal(existsSync(path.join(outDir, ".staging")), false);
+    // The input generation is untouched by the refusal.
+    const before = await readFile(path.join(anchors.outDir, "manifest.json"));
+    assert.ok(before.byteLength > 0);
+  });
 });
 
 test("A4/D4: identical inputs rebuild byte-identical shards; the reader normalizes every stored shape", async () => {
