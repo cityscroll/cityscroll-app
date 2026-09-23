@@ -1,0 +1,246 @@
+{
+  "schema": "cityscroll.near_you_record_relevance_production_read.v1",
+  "observed_at": "2026-09-23T09:43:38.023686Z",
+  "evidence_class": "deployed-production-read-back",
+  "origin": "https://cityscroll.org",
+  "api_origin": "https://api.cityscroll.org",
+  "deployment": {
+    "manifest_url": "https://cityscroll.org/artifact-manifest.json",
+    "revision": "8777db6246da4f559a0db728377751d99f8c49e7",
+    "generated_at": "2026-09-23T07:46:01.592Z",
+    "deployment_at": "2026-09-23T07:46:01.592Z",
+    "artifact_hash": "3161f5967515e665edf5d2bce93a1893b029ed94dbccb9207dca9079228eb4c5",
+    "manifest_sha256": "b2fbbea96b3718c90533cedd67a3ab31345ed1b8b07205fbdcf1bce7bb022fbb"
+  },
+  "worker": {
+    "health_url": "https://api.cityscroll.org/health",
+    "commit": "0b5aac2143bf96522a9294beac7f5abedbada4a3",
+    "environment": "production"
+  },
+  "capture": {
+    "tool": "tools/capture_near_you_record_relevance_production_read.py",
+    "browser": "chromium 151.0.7922.34",
+    "route": "/near-you/?geo=nta2020%3AMN0102&lens=meetings&surface=records",
+    "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0102&lens=meetings&surface=records",
+    "viewports": [
+      {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "screenshot_binaries_committed": false,
+    "fixed_event_count_required": false
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900,
+      "exact_count": 25,
+      "records": {
+        "records_observed": 25,
+        "timing_state_distribution": {
+          "past": 25
+        },
+        "sample": [
+          {
+            "id": "20260824048",
+            "basis": "Venue / logistics",
+            "timing": {
+              "label": "Past event · Sep 8, 2026",
+              "state": "past",
+              "action_open": "false"
+            }
+          },
+          {
+            "id": "20260811003",
+            "basis": "Venue / logistics",
+            "timing": {
+              "label": "Past event · Sep 1, 2026",
+              "state": "past",
+              "action_open": "false"
+            }
+          },
+          {
+            "id": "20260727031",
+            "basis": "Venue / logistics",
+            "timing": {
+              "label": "Past event · Aug 18, 2026",
+              "state": "past",
+              "action_open": "false"
+            }
+          }
+        ]
+      },
+      "broader_suggestions": {
+        "section_present": true,
+        "districts": [
+          {
+            "scope": "broader",
+            "key": "geography:community_district:M01",
+            "label": "Manhattan Community District 1",
+            "href": "https://cityscroll.org/near-you/?geo=community_district%3AM01&surface=records&drawer=open&lens=meetings&_cityscroll_evidence=520d219da8c21c870c35bba6",
+            "badge": "broader"
+          }
+        ],
+        "excluded_from_exact_count": 25,
+        "disclosure": "not counted as exact neighborhood records"
+      },
+      "journey": {
+        "sequence": [
+          "select",
+          "inspect",
+          "open_source_or_action",
+          "return_with_back",
+          "continue"
+        ],
+        "inspected_record": {
+          "source_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260824048",
+          "action_href": "https://cityscroll.org/notices/20260824048",
+          "action_label": "View the full record",
+          "timing": {
+            "label": "StatusPast event · Sep 8, 2026",
+            "state": "past",
+            "action_open": "false"
+          }
+        },
+        "destination": {
+          "url": "https://cityscroll.org/notices/20260824048",
+          "title": "CityScroll · track RFPs, rezonings, meetings"
+        },
+        "pre_navigation_scroll_y": 1127,
+        "restored": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0102&lens=meetings&surface=records&_cityscroll_evidence=520d219da8c21c870c35bba6",
+          "scrollY": 1127,
+          "count": "25",
+          "broader": true,
+          "deferred": "ready"
+        },
+        "restore_checks": {
+          "url": true,
+          "place_lens_filters": true,
+          "exact_count": true,
+          "broader_suggestions": true,
+          "deferred_ready": true,
+          "scroll": true
+        }
+      },
+      "no_horizontal_overflow": true,
+      "page_html_sha256": "382203d4a5f7b81b017a98fe2ba309fd890ea82b10b000de40d868ef18580fe4",
+      "screenshot_sha256": "fda7ffa2f01ac0cd44ea1b88188576c67333e1848a05ecb581b50b589fcabdc4",
+      "witness_sha256": "5d06d16916b5a9fb8e979e6125a477592a30a37f0c2f88c132e54b6ae02e6a7a",
+      "result": "pass",
+      "http_status": 200
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "exact_count": 25,
+      "records": {
+        "records_observed": 25,
+        "timing_state_distribution": {
+          "past": 25
+        },
+        "sample": [
+          {
+            "id": "20260824048",
+            "basis": "Venue / logistics",
+            "timing": {
+              "label": "Past event · Sep 8, 2026",
+              "state": "past",
+              "action_open": "false"
+            }
+          },
+          {
+            "id": "20260811003",
+            "basis": "Venue / logistics",
+            "timing": {
+              "label": "Past event · Sep 1, 2026",
+              "state": "past",
+              "action_open": "false"
+            }
+          },
+          {
+            "id": "20260727031",
+            "basis": "Venue / logistics",
+            "timing": {
+              "label": "Past event · Aug 18, 2026",
+              "state": "past",
+              "action_open": "false"
+            }
+          }
+        ]
+      },
+      "broader_suggestions": {
+        "section_present": true,
+        "districts": [
+          {
+            "scope": "broader",
+            "key": "geography:community_district:M01",
+            "label": "Manhattan Community District 1",
+            "href": "https://cityscroll.org/near-you/?geo=community_district%3AM01&surface=records&drawer=open&lens=meetings&_cityscroll_evidence=4245ae810361c123c3e41528",
+            "badge": "broader"
+          }
+        ],
+        "excluded_from_exact_count": 25,
+        "disclosure": "not counted as exact neighborhood records"
+      },
+      "journey": {
+        "sequence": [
+          "select",
+          "inspect",
+          "open_source_or_action",
+          "return_with_back",
+          "continue"
+        ],
+        "inspected_record": {
+          "source_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260824048",
+          "action_href": "https://cityscroll.org/notices/20260824048",
+          "action_label": "View the full record",
+          "timing": {
+            "label": "StatusPast event · Sep 8, 2026",
+            "state": "past",
+            "action_open": "false"
+          }
+        },
+        "destination": {
+          "url": "https://cityscroll.org/notices/20260824048",
+          "title": "CityScroll · track RFPs, rezonings, meetings"
+        },
+        "pre_navigation_scroll_y": 1252,
+        "restored": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0102&lens=meetings&surface=records&_cityscroll_evidence=4245ae810361c123c3e41528",
+          "scrollY": 1252,
+          "count": "25",
+          "broader": true,
+          "deferred": "ready"
+        },
+        "restore_checks": {
+          "url": true,
+          "place_lens_filters": true,
+          "exact_count": true,
+          "broader_suggestions": true,
+          "deferred_ready": true,
+          "scroll": true
+        }
+      },
+      "no_horizontal_overflow": true,
+      "page_html_sha256": "30e0bfdc9e88a8f75866fea6195b352cc882e1382209ddd2dc065d8921a9be10",
+      "screenshot_sha256": "aedee30cdd4a5c8e678eb0f1c7536f6188a49bf058ca7a8a00765aa26a3b68a4",
+      "witness_sha256": "7ed27ef50cc30d8d41fc567c5a4f0fe705151977764eca663aeec7bcfc4c41ab",
+      "result": "pass",
+      "http_status": 200
+    }
+  ],
+  "summary": {
+    "result": "pass",
+    "viewport_observations": 2
+  }
+}

@@ -3,7 +3,7 @@
   "id": "cityscroll-engineering/c215a4b79deba",
   "status": "implemented",
   "fingerprint": "near-you-local-record-relevance.v1-timing-and-broader",
-  "updated_at": "2026-09-22T18:00:00.000Z",
+  "updated_at": "2026-09-23T09:43:38.000Z",
   "projections": [
     {
       "id": "near-you-record-inspection-module",
@@ -22,6 +22,10 @@
       "path": "site/app/map.mjs"
     },
     {
+      "id": "document-route-scroll-helper",
+      "path": "site/document_route_scroll.mjs"
+    },
+    {
       "id": "geography-navigation-records-tests",
       "path": "test/geography_navigation_records.test.mjs"
     },
@@ -34,8 +38,24 @@
       "path": "test/near_you_place_role.test.mjs"
     },
     {
+      "id": "document-route-scroll-tests",
+      "path": "test/document_route_scroll.test.mjs"
+    },
+    {
       "id": "near-you-record-relevance-acceptance-manifest",
       "path": "docs/evidence/near-you-record-relevance/acceptance-manifest.json"
+    },
+    {
+      "id": "near-you-record-relevance-production-readback",
+      "path": "docs/evidence/near-you-record-relevance/production-read.json"
+    },
+    {
+      "id": "near-you-record-relevance-production-readback-tool",
+      "path": "tools/capture_near_you_record_relevance_production_read.py"
+    },
+    {
+      "id": "near-you-record-relevance-production-readback-tests",
+      "path": "test/near_you_record_relevance_production_read.test.mjs"
     },
     {
       "id": "community-board-proceedings-view-styling",

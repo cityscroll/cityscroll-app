@@ -44,6 +44,11 @@
   },
   "live_outcomes": {
     "require_fixed_event_count": false,
+    "production_read": {
+      "path": "docs/evidence/near-you-record-relevance/production-read.json",
+      "schema": "cityscroll.near_you_record_relevance_production_read.v1",
+      "result": "pass"
+    },
     "observations": [
       {
         "id": "MN0102",
