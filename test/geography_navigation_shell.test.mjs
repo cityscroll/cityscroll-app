@@ -309,6 +309,8 @@ test("entry chrome render includes required first-viewport controls", () => {
   assert.match(html, /Browse records/);
   assert.match(html, /data-near-surface="map"[^>]*aria-current="true"|aria-current="true"[^>]*data-near-surface="map"/);
   assert.match(html, /<details class="near-entry-secondary">\s*<summary>More ways to choose<\/summary>/);
+  assert.match(html, /<div class="near-map-secondary"[^>]*>\s*<p class="near-map-secondary-label">Follow or share<\/p>/);
+  assert.doesNotMatch(html, /near-entry-secondary[\s\S]*<details class="near-map-secondary">/);
   assert.ok(html.indexOf("near-geo-search-input") < html.indexOf("near-entry-secondary"));
   assert.ok(html.indexOf('data-near-surface="records"') < html.indexOf("near-entry-secondary"));
   assert.ok(html.indexOf("near-entry-secondary") < html.indexOf("data-geography-layer-switcher"));

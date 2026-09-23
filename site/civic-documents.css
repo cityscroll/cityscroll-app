@@ -4084,6 +4084,13 @@ select {
   min-height: var(--control-min-size);
   align-content: center;
 }
+[data-geography-shell] .near-map-secondary {
+  margin-block-start: var(--space-3);
+}
+[data-geography-shell] .near-map-secondary-label {
+  margin: 0 0 var(--space-2);
+  font: 650 .95rem/1.35 var(--font-interface);
+}
 /* Explicit display on children can override closed-details hiding; keep nested
    chrome unreachable until the parent disclosure is open. */
 [data-geography-shell] .near-entry-secondary:not([open]) > :not(summary),

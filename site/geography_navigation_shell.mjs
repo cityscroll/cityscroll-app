@@ -518,8 +518,9 @@ export function renderGeographyShellEntry({
     : "";
   // Browse records stays outside the secondary disclosure for the mobile tab
   // budget. Layer chrome and follow/share stay inside so the map remains in the
-  // first viewport. More-boundaries uses a plain group instead of nested details
-  // so closed-parent summaries are not force-focused under the map canvas.
+  // first viewport. Nested details/summaries are avoided here: focusing a parent
+  // summary can reveal an inner summary under the enhanced map canvas and fail
+  // the focus-not-obscured gate.
   return `<section class="near-geo-entry" aria-labelledby="near-geo-heading" data-geography-entry>
       <p class="near-kicker">Local geography</p>
       <h1 id="near-geo-heading">${esc(GEOGRAPHY_SHELL_HEADING)}</h1>
