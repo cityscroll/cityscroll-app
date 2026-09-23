@@ -7,7 +7,7 @@
     "staffing",
     "meetings"
   ],
-  "maxBytes": 2300000,
+  "maxBytes": 2250000,
   "maxModules": 149,
   "maxSerialRequestStages": 62
 }

@@ -5,11 +5,24 @@
  * assigns an explicit civic role and validity before any spatial resolution:
  * date-shaped text, incidental footer/contact text, and unresolved remote /
  * office conflicts never become physical venue candidates.
+ *
+ * Keep this module free of location_extract.mjs. The retained SPA inline rebuild
+ * concatenates modules into one scope; location_extract's exported BOROUGHS
+ * collides with borough_scope_links.mjs when both land in that rebuild.
  */
 
-import { ADDRESS_RE, normalizeAddress } from "./location_extract.mjs";
-
 export const MEETING_LOCATION_ASSERTION_SCHEMA = "cityscroll.meeting_location_assertion.v1";
+
+// Local street probe — mirrors location_extract.ADDRESS_RE without importing it.
+const MEETING_ADDRESS_RE = /\b\d{1,5}(?:-\d{1,5})?(?!\s*(?:feet|foot|ft\.?|square|sf)\b)\s+[A-Z0-9][A-Z0-9.'’ -]{0,60}?\b(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway)\b/gi;
+
+function normalizeMeetingAddress(value) {
+  return String(value ?? "")
+    .replace(/\s*,\s*/g, ", ")
+    .replace(/[.,;:\s]+$/, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 export const LOCATION_ROLES = Object.freeze({
   VENUE: "venue",
@@ -34,15 +47,15 @@ export const ATTENDANCE_MEANING = Object.freeze({
   NOT_STATED: "not_stated",
 });
 
-const clean = (value, max = 500) => String(value ?? "")
+const mlaClean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ")
   .trim()
   .slice(0, max) || null;
 
-const DATE_SHAPED_VENUE = /^(?:(?:sun|mon|tue|wed|thu|fri|sat)\w*\.?[,]?\s+)?(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{1,2}(?:,?\s+20\d{2})?$/i;
-const REMOTE_SIGNAL = /\b(?:via\s+video\s+conference|video\s+conference|virtual|online|zoom|webex|teams|webinar)\b/i;
-const STREET_TYPE_EXPAND = Object.freeze({
+const MLA_DATE_SHAPED_VENUE = /^(?:(?:sun|mon|tue|wed|thu|fri|sat)\w*\.?[,]?\s+)?(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{1,2}(?:,?\s+20\d{2})?$/i;
+const MLA_REMOTE_SIGNAL = /\b(?:via\s+video\s+conference|video\s+conference|virtual|online|zoom|webex|teams|webinar)\b/i;
+const MLA_STREET_TYPE_EXPAND = Object.freeze({
   ave: "Avenue",
   av: "Avenue",
   st: "Street",
@@ -58,9 +71,9 @@ const STREET_TYPE_EXPAND = Object.freeze({
  * True when publisher location text is a calendar date rather than a street.
  */
 export function isDateShapedVenueText(value) {
-  const text = clean(value, 200);
+  const text = mlaClean(value, 200);
   if (!text) return false;
-  if (DATE_SHAPED_VENUE.test(text)) return true;
+  if (MLA_DATE_SHAPED_VENUE.test(text)) return true;
   if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return true;
   return false;
 }
@@ -70,11 +83,11 @@ export function isDateShapedVenueText(value) {
  * Leaves the original publisher string available separately as original_address.
  */
 export function expandPublishedStreetSpan(value) {
-  const text = clean(value, 300);
+  const text = mlaClean(value, 300);
   if (!text) return null;
   return text.replace(
     /\b([A-Za-z0-9.'’ -]+?)\s+(Ave|Av|St|Rd|Blvd|Pl|Ln|Dr|Pkwy)\b\.?/gi,
-    (_, stem, type) => `${stem.trim()} ${STREET_TYPE_EXPAND[type.toLowerCase()] || type}`,
+    (_, stem, type) => `${stem.trim()} ${MLA_STREET_TYPE_EXPAND[type.toLowerCase()] || type}`,
   );
 }
 
@@ -83,7 +96,7 @@ export function expandPublishedStreetSpan(value) {
  * Preserves the wrapper text separately and never invents a borough.
  */
 export function parseIcsLocationWrapper(value) {
-  const original = clean(value, 500);
+  const original = mlaClean(value, 500);
   if (!original) return null;
   const match = original.match(/^(.*?)\(([^()]*)\)\s*$/);
   if (!match) {
@@ -94,9 +107,9 @@ export function parseIcsLocationWrapper(value) {
       components: null,
     };
   }
-  const venueName = clean(match[1], 300);
-  const inside = clean(match[2], 400);
-  const parts = inside.split(",").map((part) => clean(part, 200)).filter(Boolean);
+  const venueName = mlaClean(match[1], 300);
+  const inside = mlaClean(match[2], 400);
+  const parts = inside.split(",").map((part) => mlaClean(part, 200)).filter(Boolean);
   let street = null;
   let locality = null;
   let postalCode = null;
@@ -105,12 +118,12 @@ export function parseIcsLocationWrapper(value) {
       postalCode = part.slice(0, 5);
       continue;
     }
-    if (!street && ADDRESS_RE.test(part)) {
-      ADDRESS_RE.lastIndex = 0;
+    if (!street && MEETING_ADDRESS_RE.test(part)) {
+      MEETING_ADDRESS_RE.lastIndex = 0;
       street = expandPublishedStreetSpan(part);
       continue;
     }
-    ADDRESS_RE.lastIndex = 0;
+    MEETING_ADDRESS_RE.lastIndex = 0;
     if (!locality) locality = part;
   }
   return {
@@ -131,14 +144,14 @@ export function parseIcsLocationWrapper(value) {
  * Resolve attendance meaning from publisher mode and location text before a
  * physical venue edge is admitted.
  */
-function hasPhysicalStreetEvidence(address = null, components = null) {
-  if (clean(components?.street_address) && !isDateShapedVenueText(components.street_address)) {
+function mlaHasPhysicalStreetEvidence(address = null, components = null) {
+  if (mlaClean(components?.street_address) && !isDateShapedVenueText(components.street_address)) {
     return true;
   }
-  const text = clean(address);
+  const text = mlaClean(address);
   if (!text || isDateShapedVenueText(text)) return false;
-  const matched = ADDRESS_RE.test(text);
-  ADDRESS_RE.lastIndex = 0;
+  const matched = MEETING_ADDRESS_RE.test(text);
+  MEETING_ADDRESS_RE.lastIndex = 0;
   return matched;
 }
 
@@ -149,10 +162,10 @@ export function resolveAttendanceMeaning({
   description = null,
   components = null,
 } = {}) {
-  const blob = [mode, address, venue_name, description].map((part) => clean(part, 500)).filter(Boolean).join(" ");
-  const remote = REMOTE_SIGNAL.test(blob);
-  const physical = hasPhysicalStreetEvidence(address, components);
-  const stated = clean(mode, 40)?.toLowerCase() || null;
+  const blob = [mode, address, venue_name, description].map((part) => mlaClean(part, 500)).filter(Boolean).join(" ");
+  const remote = MLA_REMOTE_SIGNAL.test(blob);
+  const physical = mlaHasPhysicalStreetEvidence(address, components);
+  const stated = mlaClean(mode, 40)?.toLowerCase() || null;
 
   if (remote && physical) {
     if (stated === "hybrid") return ATTENDANCE_MEANING.HYBRID;
@@ -171,20 +184,20 @@ export function resolveAttendanceMeaning({
   return ATTENDANCE_MEANING.NOT_STATED;
 }
 
-function assertionId(meetingId, role, sourceField, ordinal = 1) {
+function mlaAssertionId(meetingId, role, sourceField, ordinal = 1) {
   const base = [meetingId || "meeting:unknown", role, sourceField || "location", String(ordinal)]
     .map((part) => String(part).replace(/\s+/g, "_"))
     .join("::");
   return `location_assertion:${base}`;
 }
 
-function componentsFromStructured(raw = {}) {
+function mlaComponentsFromStructured(raw = {}) {
   if (!raw || typeof raw !== "object") return null;
-  const street = clean(raw.street_address || raw.streetAddress, 300);
-  const locality = clean(raw.address_locality || raw.addressLocality, 120);
-  const region = clean(raw.address_region || raw.addressRegion, 40);
-  const postal = clean(raw.postal_code || raw.postalCode, 20);
-  const borough = clean(raw.address_borough || raw.borough, 40);
+  const street = mlaClean(raw.street_address || raw.streetAddress, 300);
+  const locality = mlaClean(raw.address_locality || raw.addressLocality, 120);
+  const region = mlaClean(raw.address_region || raw.addressRegion, 40);
+  const postal = mlaClean(raw.postal_code || raw.postalCode, 20);
+  const borough = mlaClean(raw.address_borough || raw.borough, 40);
   if (!street && !locality && !region && !postal && !borough) return null;
   return {
     street_address: street ? expandPublishedStreetSpan(street) || street : null,
@@ -195,7 +208,7 @@ function componentsFromStructured(raw = {}) {
   };
 }
 
-function flattenComponents(components) {
+function mlaFlattenComponents(components) {
   if (!components) return null;
   const region = components.address_region === "New York" ? "NY" : components.address_region;
   const cityStateZip = [
@@ -224,11 +237,11 @@ export function buildLocationAssertion({
   description = null,
   ordinal = 1,
 } = {}) {
-  const original = clean(original_address, 500);
-  const structured = componentsFromStructured(components) || null;
+  const original = mlaClean(original_address, 500);
+  const structured = mlaComponentsFromStructured(components) || null;
   const attendance = resolveAttendanceMeaning({
     mode,
-    address: original || flattenComponents(structured),
+    address: original || mlaFlattenComponents(structured),
     venue_name,
     description,
     components: structured,
@@ -245,7 +258,7 @@ export function buildLocationAssertion({
     role === LOCATION_ROLES.VENUE
     && (attendance === ATTENDANCE_MEANING.IN_PERSON || attendance === ATTENDANCE_MEANING.HYBRID)
     && (
-      hasPhysicalStreetEvidence(original, structured)
+      mlaHasPhysicalStreetEvidence(original, structured)
       // Explicit in-person/hybrid publisher mode with a non-date location line
       // keeps the venue as a physical candidate even when the street regex
       // misses forms like "250 Broadway".
@@ -264,18 +277,18 @@ export function buildLocationAssertion({
 
   return {
     schema: MEETING_LOCATION_ASSERTION_SCHEMA,
-    assertion_id: assertionId(meeting_id || record_id, role, source_field, ordinal),
+    assertion_id: mlaAssertionId(meeting_id || record_id, role, source_field, ordinal),
     meeting_id: meeting_id || null,
     record_id: record_id || null,
     role,
     validity,
     attendance_meaning: attendance,
     original_address: original,
-    venue_name: clean(venue_name, 300),
+    venue_name: mlaClean(venue_name, 300),
     components: structured,
-    wrapper: clean(wrapper, 400),
-    source_field: clean(source_field, 120),
-    source_passage: clean(source_passage, 1_000),
+    wrapper: mlaClean(wrapper, 400),
+    source_field: mlaClean(source_field, 120),
+    source_passage: mlaClean(source_passage, 1_000),
     source_receipt: source_receipt && typeof source_receipt === "object" ? source_receipt : null,
   };
 }
@@ -292,8 +305,8 @@ export function isAdmittedPhysicalVenue(assertion) {
  * Build the additive location_assertions list for one normalized meeting row.
  */
 export function buildMeetingLocationAssertions(row = {}, options = {}) {
-  const meetingId = clean(row.meeting_id || options.meeting_id, 500);
-  const recordId = clean(row.record_id || row.source_record_id || options.record_id, 500);
+  const meetingId = mlaClean(row.meeting_id || options.meeting_id, 500);
+  const recordId = mlaClean(row.record_id || row.source_record_id || options.record_id, 500);
   const receipt = row.source_receipt || row.observed_receipt || options.source_receipt || null;
   const venue = row.venue && typeof row.venue === "object" ? row.venue : null;
   const structured = row.location_components || row.address_components || venue?.components || null;
@@ -301,15 +314,15 @@ export function buildMeetingLocationAssertions(row = {}, options = {}) {
     ? parseIcsLocationWrapper(options.ics_location)
     : (row.location_wrapper ? parseIcsLocationWrapper(row.location_wrapper) : null);
 
-  const original = clean(
+  const original = mlaClean(
     wrapperParse?.original_address
     || venue?.address
     || row.address
-    || flattenComponents(structured)
+    || mlaFlattenComponents(structured)
     || null,
     500,
   );
-  const venueName = clean(
+  const venueName = mlaClean(
     wrapperParse?.venue_name
     || venue?.name
     || row.venue_name
@@ -376,7 +389,7 @@ export function projectVenueFromAssertions(assertions = [], fallback = null) {
   if (admitted) {
     const projected = {
       ...(fallback && typeof fallback === "object" ? fallback : null),
-      address: flattenComponents(admitted.components) || admitted.original_address || fallback?.address || null,
+      address: mlaFlattenComponents(admitted.components) || admitted.original_address || fallback?.address || null,
       mode: admitted.attendance_meaning === ATTENDANCE_MEANING.HYBRID
         ? "hybrid"
         : admitted.attendance_meaning === ATTENDANCE_MEANING.REMOTE
@@ -411,5 +424,5 @@ export function projectVenueFromAssertions(assertions = [], fallback = null) {
 }
 
 export function normalizeAddressLine(value) {
-  return normalizeAddress(value);
+  return normalizeMeetingAddress(value);
 }
