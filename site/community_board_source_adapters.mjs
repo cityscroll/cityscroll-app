@@ -9,6 +9,7 @@
 
 import { matchCommunityBoardCommittee } from "./community_board_committees.mjs";
 import {
+  extractAgendaSubjectPlaces,
   isDateShapedVenueText,
   parseIcsLocationWrapper,
   resolveAttendanceMeaning,
@@ -656,6 +657,56 @@ function htmlDocumentRecords(html, source, receipt = {}) {
   return found;
 }
 
+/**
+ * Collect bounded agenda/description subject places for one HTML event page.
+ * Scans the event description and agenda body only — never footer, nav, or
+ * neighboring-event chrome — so incidental contact addresses stay non-subjects.
+ */
+function agendaSubjectPlacesForHtmlEvent(html, description, structuredAddress = null, options = {}) {
+  const venueStreet = structuredAddress?.street_address || null;
+  const context = {
+    venue_address: venueStreet,
+    address_locality: structuredAddress?.address_locality || null,
+    address_region: structuredAddress?.address_region || null,
+    postal_code: structuredAddress?.postal_code || null,
+    address_borough: structuredAddress?.address_borough || null,
+    borough_context: structuredAddress?.address_locality || structuredAddress?.address_borough || null,
+  };
+  const found = [];
+  const seen = new Set();
+  const pushAll = (text, sourceField) => {
+    for (const place of extractAgendaSubjectPlaces(text, { ...context, source_field: sourceField })) {
+      const key = String(place.address || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      found.push(place);
+    }
+  };
+  pushAll(description, "description");
+
+  // Agenda / body regions only. Strip site footer, tribe footer, and nav chrome.
+  const rawHtml = String(html || "");
+  const withoutChrome = rawHtml
+    .replace(/<footer\b[\s\S]*?<\/footer>/gi, " ")
+    .replace(/<div\b[^>]*\bid\s*=\s*["']tribe-events-footer["'][^>]*>[\s\S]*$/i, " ")
+    .replace(/<nav\b[\s\S]*?<\/nav>/gi, " ")
+    .replace(/<header\b[\s\S]*?<\/header>/gi, " ");
+  const agendaChunks = [];
+  const descriptionHtml = withoutChrome.match(/<div\b[^>]*\btribe-events-single-event-description\b[^>]*>([\s\S]*?)(?:<\/div>\s*<\/div>|<\/div>)/i)?.[1] || "";
+  if (descriptionHtml) agendaChunks.push(plain(descriptionHtml, 4_000));
+  for (const match of withoutChrome.matchAll(/<li\b[^>]*>([\s\S]*?)<\/li>/gi)) {
+    const line = plain(match[1], 500);
+    if (/\b(?:application|hearing)\b/i.test(line)) agendaChunks.push(line);
+  }
+  // FAQ / accordion agenda payload when present on the detail page.
+  for (const match of withoutChrome.matchAll(/"name"\s*:\s*"Agenda"[\s\S]{0,40}?"text"\s*:\s*"((?:\\.|[^"\\])*)"/gi)) {
+    const decoded = decode(match[1].replace(/\\"/g, '"').replace(/\\n/g, " ").replace(/\\u([0-9a-f]{4})/gi, (_, hex) => String.fromCharCode(Number.parseInt(hex, 16))));
+    agendaChunks.push(plain(decoded, 4_000));
+  }
+  for (const chunk of agendaChunks) pushAll(chunk, options.agenda_source_field || "agenda_body");
+  return found;
+}
+
 function jsonLdEvents(html, source, receipt = {}) {
   const found = [];
   const scripts = /<script\b[^>]*type\s*=\s*(["'])application\/ld\+json\1[^>]*>([\s\S]*?)<\/script>/gi;
@@ -714,6 +765,12 @@ function jsonLdEvents(html, source, receipt = {}) {
             : attendance === ATTENDANCE_MEANING.UNRESOLVED_CONFLICT
               ? "not-stated"
               : (structuredAddress?.street_address || address ? "in-person" : "not-stated");
+      const agendaSubjectPlaces = agendaSubjectPlacesForHtmlEvent(
+        html,
+        description,
+        structuredAddress,
+        { agenda_source_field: source.event_detail ? "agenda_body" : "description" },
+      );
       found.push(record(source, {
         record_kind: "event",
         record_id: publisherIdentifier,
@@ -731,6 +788,7 @@ function jsonLdEvents(html, source, receipt = {}) {
         venue_name: venueName,
         ...(structuredAddress ? { location_components: structuredAddress } : {}),
         description,
+        ...(agendaSubjectPlaces.length ? { agenda_subject_places: agendaSubjectPlaces } : {}),
         organizer: entry.organizer,
         participation: {
           links: [...pageParticipation.links, ...participationUrls.slice(0, 4).map((url) => ({ label: /zoom|webex|teams|meet\.google|webinar/i.test(url) ? "Join online" : "Meeting information", url }))]
