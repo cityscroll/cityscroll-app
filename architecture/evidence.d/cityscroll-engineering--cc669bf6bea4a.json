@@ -1,9 +1,6 @@
 {
-  "schema": "cityscroll.architecture-evidence-entry.v1",
-  "id": "cityscroll-engineering/cc669bf6bea4a",
-  "status": "implemented",
   "fingerprint": "near-you-secondary-comparison-keeps-selection.v1",
-  "updated_at": "2026-09-22T00:00:00.000Z",
+  "id": "cityscroll-engineering/cc669bf6bea4a",
   "projections": [
     {
       "id": "resident-geography-selection-state",
@@ -38,8 +35,27 @@
       "path": "docs/evidence/geography-navigation-preserve-place/capture-manifest.json"
     },
     {
+      "id": "near-you-preserve-place-production-read",
+      "path": "docs/evidence/geography-navigation-preserve-place/production-read.json"
+    },
+    {
+      "id": "near-you-preserve-place-read-back",
+      "path": "docs/evidence/geography-navigation-preserve-place/read-back.json"
+    },
+    {
       "id": "near-you-preserve-place-capture-tool",
       "path": "tools/capture_geography_preserve_place.py"
+    },
+    {
+      "id": "near-you-preserve-place-production-read-tool",
+      "path": "tools/capture_near_you_map_health_preserve_place_production_read.py"
+    },
+    {
+      "id": "near-you-preserve-place-production-read-tests",
+      "path": "test/geography_navigation_preserve_place_production_read.test.mjs"
     }
-  ]
+  ],
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "status": "implemented",
+  "updated_at": "2026-09-22T00:00:00.000Z"
 }
