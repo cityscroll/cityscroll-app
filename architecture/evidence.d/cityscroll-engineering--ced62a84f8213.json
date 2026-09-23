@@ -3,7 +3,7 @@
   "id": "cityscroll-engineering/ced62a84f8213",
   "status": "implemented",
   "fingerprint": "near-you-map-first-shell.v1",
-  "updated_at": "2026-09-18T00:00:00.000Z",
+  "updated_at": "2026-09-23T00:00:00.000Z",
   "projections": [
     {
       "id": "resident-geography-shell",
@@ -20,6 +20,22 @@
     {
       "id": "geography-navigation-shell-manifest",
       "path": "docs/evidence/geography-navigation-shell/capture-manifest.json"
+    },
+    {
+      "id": "near-you-shell-production-readback",
+      "path": "docs/evidence/near-you-shell-readback/read-back.json"
+    },
+    {
+      "id": "near-you-shell-production-readback-manifest",
+      "path": "docs/evidence/near-you-shell-readback/capture-manifest.json"
+    },
+    {
+      "id": "near-you-shell-production-readback-tool",
+      "path": "tools/capture_near_you_shell_production_read.py"
+    },
+    {
+      "id": "near-you-shell-production-readback-tests",
+      "path": "test/near_you_shell_readback.test.mjs"
     }
   ]
 }

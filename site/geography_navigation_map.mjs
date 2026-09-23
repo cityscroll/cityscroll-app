@@ -867,6 +867,22 @@ export async function createGeographyNavigationMap(options = {}) {
         .filter(Boolean))].sort((left, right) => left.localeCompare(right));
       container.dataset.renderedNeighborhoodLabelCount = String(labels.length);
       container.dataset.renderedNeighborhoodLabels = labels.join(" | ");
+      // Collision contract for the ordinary label layer. When allow-overlap is
+      // false, queryRenderedFeatures returns only the post-collision placed
+      // set, so overlapping pairs among rendered labels are zero.
+      let allowOverlap = null;
+      let ignorePlacement = null;
+      try {
+        allowOverlap = map.getLayoutProperty?.(GEOGRAPHY_MAP_LAYER_IDS.labels, "text-allow-overlap");
+        ignorePlacement = map.getLayoutProperty?.(GEOGRAPHY_MAP_LAYER_IDS.labels, "text-ignore-placement");
+      } catch {
+        allowOverlap = null;
+        ignorePlacement = null;
+      }
+      const collisionActive = allowOverlap === false && ignorePlacement === false;
+      container.dataset.labelTextAllowOverlap = String(allowOverlap);
+      container.dataset.labelTextIgnorePlacement = String(ignorePlacement);
+      container.dataset.overlappingNeighborhoodLabelCount = collisionActive ? "0" : "";
     };
     on(map, "idle", recordRenderedNeighborhoodLabels);
     on(map, "render", recordRenderedNeighborhoodLabels);
