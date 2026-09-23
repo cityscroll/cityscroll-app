@@ -146,13 +146,18 @@ def audit_broader_suggestions(page: Any, viewport_name: str, exact_count: int) -
     if BROADER_COPY_FRAGMENT not in re.sub(r"\s+", " ", copy_text):
         raise AssertionError(f"{viewport_name}: broader suggestions do not disclose exclusion from exact counts")
     rows = page.evaluate(
-        """() => [...document.querySelectorAll('[data-geography-related-district]')].map((row) => ({
-          scope: row.getAttribute('data-geography-related-scope'),
-          key: row.getAttribute('data-geography-key'),
-          label: (row.querySelector('a')?.textContent || '').trim(),
-          href: row.querySelector('a')?.getAttribute('href') || null,
-          badge: (row.querySelector('.near-geo-broader-label')?.textContent || '').trim(),
-        }))"""
+        """() => [...document.querySelectorAll('[data-geography-related-district]')].map((row) => {
+          const host = row.closest('li') || row.parentElement || row;
+          const link = row.tagName === 'A' ? row : (row.querySelector('a') || row);
+          return {
+            scope: row.getAttribute('data-geography-related-scope'),
+            key: row.getAttribute('data-geography-key'),
+            label: (link.textContent || '').replace(/\\s+/g, ' ').trim(),
+            href: link.getAttribute('href') || null,
+            // Badge lives beside the marked link after the related-district marker moved onto <a>.
+            badge: (host.querySelector('.near-geo-broader-label')?.textContent || '').trim(),
+          };
+        })"""
     )
     if not rows:
         raise AssertionError(f"{viewport_name}: broader suggestions section has no districts")
