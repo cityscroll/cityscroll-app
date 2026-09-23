@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""Production read-backs for Near You map/record health and preserve-place A3.
+"""Production read-backs for Near You preserve-place comparison retention.
 
 Hits the live served origin with headless Chromium. Commits textual receipts
 only; optional screenshots stay under the task scratch directory.
+
+Map/record-health A3 recovery evidence is owned by
+tools/capture_near_you_map_record_health_retry_recovery_production_read.py and
+is not rewritten here.
 """
 
 from __future__ import annotations
@@ -17,14 +21,11 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import parse_qsl, urlsplit
 
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRATCH = Path(os.environ.get("FM_TASK_SCRATCH") or "/tmp") / "near-you-map-health-preserve-place-production"
-MAP_MANIFEST = ROOT / "docs/evidence/near-you-map-record-health/capture-manifest.json"
-MAP_PRODUCTION = ROOT / "docs/evidence/near-you-map-record-health/production-read.json"
 PRESERVE_MANIFEST = ROOT / "docs/evidence/geography-navigation-preserve-place/capture-manifest.json"
 PRESERVE_PRODUCTION = ROOT / "docs/evidence/geography-navigation-preserve-place/production-read.json"
 
@@ -36,12 +37,6 @@ DEFAULT_BASE = "https://cityscroll.org/"
 VIEWPORTS = (
     ("desktop", 1440, 900),
     ("mobile", 390, 844),
-)
-
-MAP_SPECIMENS = (
-    ("BK0101", "Greenpoint"),
-    ("QN0103", "Astoria (Central)"),
-    ("SI0101", "St. George-New Brighton"),
 )
 
 PRESERVE_CASES = (
@@ -140,86 +135,6 @@ def dom_hash(page) -> str:
     return sha256_text(markup)
 
 
-def capture_map_record_failure(page, base: str, specimen_id: str, label: str, width: int, height: int, rev: str) -> dict:
-    route = (
-        f"/near-you/?geo=nta2020%3A{specimen_id}&surface=map&lens=meetings"
-        f"&agency=Transportation&q=curb&compare=council_district"
-    )
-    page.set_viewport_size({"width": width, "height": height})
-    page.route(
-        "**/near-you/deferred.json*",
-        lambda r: r.fulfill(
-            status=200,
-            content_type="application/json",
-            body='{"schema":"cityscroll.near_you_deferred.v1","results_html":null}',
-        ),
-    )
-    page.goto(f"{base.rstrip('/')}{route}", wait_until="domcontentloaded", timeout=60000)
-    page.locator("[data-near-you-root]").wait_for(timeout=30000)
-    page.locator('[data-near-deferred-state="error"]').first.wait_for(timeout=20000)
-    root = page.locator("[data-near-you-root]").inner_html()
-    heading = page.locator(".near-hero h1").inner_text().strip()
-    if heading != label:
-        raise AssertionError(f"{specimen_id}: expected heading {label!r}, got {heading!r}")
-    if "buyer_history_retry" in root:
-        raise AssertionError(f"{specimen_id}: leaked buyer_history_retry")
-    if f"<h1>{specimen_id}</h1>" in root:
-        raise AssertionError(f"{specimen_id}: bare NTA code as title")
-    if "26B" not in root and "Map boundaries" not in root:
-        raise AssertionError(f"{specimen_id}: missing geometry vintage")
-    if "Try again" not in root:
-        raise AssertionError(f"{specimen_id}: missing plain-language retry")
-    digest = dom_hash(page)
-    retry = page.locator('[data-near-recovery="retry"]').last
-    page.unroute("**/near-you/deferred.json*")
-    before = urlsplit(page.url)
-    retry.click()
-    page.wait_for_timeout(400)
-    after = urlsplit(page.url)
-    before_q = dict(parse_qsl(before.query, keep_blank_values=True))
-    after_q = dict(parse_qsl(after.query, keep_blank_values=True))
-    for key in ("lens", "agency", "q", "compare"):
-        if after_q.get(key) != before_q.get(key):
-            raise AssertionError(f"{specimen_id}: retry dropped {key}: {before_q.get(key)} -> {after_q.get(key)}")
-    geo = after_q.get("geo")
-    if geo not in {f"nta2020:{specimen_id}", f"geography:nta2020:{specimen_id}"}:
-        raise AssertionError(f"{specimen_id}: retry lost place geo={geo}")
-    SCRATCH.mkdir(parents=True, exist_ok=True)
-    page.screenshot(
-        path=str(SCRATCH / f"map-record-{specimen_id}-{width}x{height}.png"),
-        full_page=True,
-    )
-    return {
-        "source": "headless-playwright-production-served-site",
-        "name": f"production-record-failure-{specimen_id}-{'mobile' if width < 800 else 'desktop'}",
-        "route": route,
-        "viewport": {"width": width, "height": height},
-        "data_vintage": "nta2020 26B",
-        "assertion": (
-            f"{label} keeps friendly title, geometry vintage 26B, working map state, "
-            "and plain-language retry when records fail; retry preserves lens, place, comparison, and filters."
-        ),
-        "sha256": digest,
-        "file": None,
-        "revision": rev,
-        "served_values": {
-            "heading": heading,
-            "deferred_state": "error",
-            "retry_present": True,
-            "buyer_history_retry_leaked": False,
-            "bare_code_title": False,
-            "geometry_vintage_present": True,
-            "retry_preserved": {
-                "lens": after_q.get("lens"),
-                "agency": after_q.get("agency"),
-                "q": after_q.get("q"),
-                "compare": after_q.get("compare"),
-                "geo": geo,
-            },
-        },
-    }
-
-
 def capture_preserve_case(page, base: str, case: dict, width: int, height: int, rev: str) -> dict:
     page.set_viewport_size({"width": width, "height": height})
     page.goto(f"{base.rstrip('/')}{case['route']}", wait_until="domcontentloaded", timeout=60000)
@@ -306,20 +221,12 @@ def main() -> int:
     observed_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     print(f"production base={base} revision={rev} generated_at={generated_at}", flush=True)
 
-    map_captures: list[dict] = []
     preserve_captures: list[dict] = []
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(user_agent="Mozilla/5.0 (compatible; CityScrollCapture/1.0)")
         page = context.new_page()
-
-        for specimen_id, label in MAP_SPECIMENS:
-            for name, width, height in VIEWPORTS:
-                print(f"map-record {specimen_id} {name}", flush=True)
-                map_captures.append(
-                    capture_map_record_failure(page, base, specimen_id, label, width, height, rev)
-                )
 
         for case in PRESERVE_CASES:
             for name, width, height in VIEWPORTS:
@@ -330,55 +237,10 @@ def main() -> int:
 
         browser.close()
 
-    map_manifest = {
-        "schema": "cityscroll.render_capture_manifest.v1",
-        "feature": "near-you-map-record-health",
-        "public_alias": "c42128caee453",
-        "surface": "Near You map and record health",
-        "base": normalize_base(base),
-        "condition": production_condition(base),
-        "capture_mode": "headless-playwright-production-served-site",
-        "revision_format": "served artifact-manifest source_commit_sha",
-        "revision": rev,
-        "repository_revision": rev,
-        "grounded_at": rev,
-        "data_vintage": "nta2020 26B",
-        "image_binaries_committed": False,
-        "image_policy": (
-            "Screenshots may exist under the local task scratch directory; "
-            "only this manifest is committed."
-        ),
-        "note": "Production desktop/mobile record-failure read-backs; textual DOM hashes only.",
-        "captures": map_captures,
-    }
-    write_json(MAP_MANIFEST, map_manifest)
-    write_json(
-        MAP_PRODUCTION,
-        {
-            "schema": "cityscroll.near_you_map_record_health_production_read.v1",
-            "observed_at": observed_at,
-            "evidence_class": "deployed-production-read-back",
-            "origin": normalize_base(base).rstrip("/"),
-            "deployment": {
-                "manifest_url": f"{normalize_base(base).rstrip('/')}{ARTIFACT_MANIFEST_PATH}",
-                "revision": rev,
-                "generated_at": generated_at,
-                "deployment_at": artifact.get("deployment_at") or generated_at,
-                "manifest_sha256": sha256_text(json.dumps(artifact, sort_keys=True)),
-            },
-            "capture": {
-                "tool": "tools/capture_near_you_map_health_preserve_place_production_read.py",
-                "browser": "chromium",
-                "viewports": [{"name": n, "width": w, "height": h} for n, w, h in VIEWPORTS],
-                "screenshot_binaries_committed": False,
-            },
-            "reads": map_captures,
-            "summary": {
-                "specimen_count": len(MAP_SPECIMENS),
-                "capture_count": len(map_captures),
-                "all_passed": True,
-            },
-        },
+    print(
+        "skipping map-record-health writes; owned by "
+        "tools/capture_near_you_map_record_health_retry_recovery_production_read.py",
+        flush=True,
     )
 
     preserve_manifest = {
@@ -437,8 +299,6 @@ def main() -> int:
         },
     )
 
-    print(f"wrote {MAP_MANIFEST} ({len(map_captures)} captures)", flush=True)
-    print(f"wrote {MAP_PRODUCTION}", flush=True)
     print(f"wrote {PRESERVE_MANIFEST} ({len(preserve_captures)} captures)", flush=True)
     print(f"wrote {PRESERVE_PRODUCTION}", flush=True)
     return 0
