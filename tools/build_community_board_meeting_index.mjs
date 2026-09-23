@@ -412,11 +412,15 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
       ? "official_community_board_calendar"
       : "community_board_source_observed",
     board_id: board.id,
-    venue: record.address || record.venue_name ? {
+    venue: record.address || record.venue_name || record.location_components ? {
       name: record.venue_name || null,
       address: record.address || null,
       mode: record.mode || (record.address ? "in-person" : "not-stated"),
+      components: record.location_components || null,
     } : null,
+    location_components: record.location_components || null,
+    location_wrapper: record.location_wrapper || null,
+    incidental_location_addresses: record.incidental_location_addresses || [],
     participation: record.participation,
     committee: committeeFromRecord(record),
     description: record.description,

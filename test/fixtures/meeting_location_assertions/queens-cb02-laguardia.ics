@@ -1,0 +1,12 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CityScroll//Meeting Location Fixtures//EN
+BEGIN:VEVENT
+DTSTART:20261020T140000Z
+DTEND:20261020T170000Z
+UID:1oert8summ11svkntjqumr70au@google.com
+LOCATION:Laguardia Community College E Building (31-10 Thomson Ave\, Long Island City\, 11101)
+SUMMARY:Queens Small Business Resource Fair
+DESCRIPTION:Please register for the event.
+END:VEVENT
+END:VCALENDAR

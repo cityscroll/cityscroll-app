@@ -88,6 +88,7 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/browse_scoped_adapters.mjs",
   "/meeting_process_profile.mjs",
   "/meeting_temporal_evidence.mjs",
+  "/meeting_location_assertions.mjs",
   "/data/legislative_matter_index.json",
   "/land_phase_spine.mjs",
   "/federated_search_client.mjs",

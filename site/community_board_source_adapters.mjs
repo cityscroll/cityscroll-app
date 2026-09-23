@@ -8,6 +8,12 @@
  */
 
 import { matchCommunityBoardCommittee } from "./community_board_committees.mjs";
+import {
+  isDateShapedVenueText,
+  parseIcsLocationWrapper,
+  resolveAttendanceMeaning,
+  ATTENDANCE_MEANING,
+} from "./meeting_location_assertions.mjs";
 
 export const COMMUNITY_BOARD_SOURCE_RECORD_SCHEMA = "cityscroll.community_board_source_record.v1";
 export const COMMUNITY_BOARD_SOURCE_RECEIPT_SCHEMA = "cityscroll.community_board_source_receipt.v1";
@@ -536,6 +542,18 @@ function record(source, fields = {}, receipt = {}) {
   if (endAt) normalized.end_at = endAt;
   if (venueName) normalized.venue_name = venueName;
   if (clean(fields.mode, 40)) normalized.mode = clean(fields.mode, 40);
+  if (fields.location_components && typeof fields.location_components === "object") {
+    normalized.location_components = {
+      street_address: clean(fields.location_components.street_address, 300) || null,
+      address_locality: clean(fields.location_components.address_locality, 120) || null,
+      address_region: clean(fields.location_components.address_region, 40) || null,
+      postal_code: clean(fields.location_components.postal_code, 20) || null,
+      address_borough: clean(fields.location_components.address_borough, 40) || null,
+    };
+  }
+  if (clean(fields.location_wrapper, 500)) {
+    normalized.location_wrapper = clean(fields.location_wrapper, 500);
+  }
   if (description) normalized.description = description;
   if (committee?.name) normalized.committee = committee;
   if (committee?.name || committeeMatch.status === "matched") {
@@ -655,8 +673,16 @@ function jsonLdEvents(html, source, receipt = {}) {
         240,
       ) || recordUrl;
       const location = entry.location && typeof entry.location === "object" ? entry.location : {};
-      const address = location.address && typeof location.address === "object"
-        ? [location.address.streetAddress, location.address.addressLocality, location.address.addressRegion, location.address.postalCode]
+      const structuredAddress = location.address && typeof location.address === "object"
+        ? {
+          street_address: decode(location.address.streetAddress),
+          address_locality: decode(location.address.addressLocality),
+          address_region: decode(location.address.addressRegion),
+          postal_code: decode(location.address.postalCode),
+        }
+        : null;
+      const address = structuredAddress
+        ? [structuredAddress.street_address, structuredAddress.address_locality, structuredAddress.address_region, structuredAddress.postal_code]
           .filter(Boolean).join(", ")
         : location.address;
       const date = dateFromText(entry.startDate || entry.start_date || "");
@@ -671,6 +697,23 @@ function jsonLdEvents(html, source, receipt = {}) {
       const pageParticipation = source.event_detail ? eventPageParticipation(html, recordUrl) : { links: [], remote_join_url: null };
       const remoteJoinUrl = pageParticipation.remote_join_url
         || participationUrls.find((url) => /zoom|webex|teams|meet\.google|webinar/i.test(url)) || null;
+      const venueName = decode(location.name);
+      const attendance = resolveAttendanceMeaning({
+        mode: remoteJoinUrl ? "hybrid" : null,
+        address: decode(address),
+        venue_name: venueName,
+        description,
+        components: structuredAddress,
+      });
+      const mode = attendance === ATTENDANCE_MEANING.HYBRID
+        ? "hybrid"
+        : attendance === ATTENDANCE_MEANING.REMOTE
+          ? "virtual"
+          : attendance === ATTENDANCE_MEANING.IN_PERSON
+            ? "in-person"
+            : attendance === ATTENDANCE_MEANING.UNRESOLVED_CONFLICT
+              ? "not-stated"
+              : (structuredAddress?.street_address || address ? "in-person" : "not-stated");
       found.push(record(source, {
         record_kind: "event",
         record_id: publisherIdentifier,
@@ -680,13 +723,13 @@ function jsonLdEvents(html, source, receipt = {}) {
         date,
         start_at: entry.startDate,
         end_at: entry.endDate || entry.end_date,
-        mode: /online|video conference|zoom|webex|teams|hybrid/i.test(`${description} ${location.name || ""}`)
-          ? "hybrid" : (address ? "in-person" : "not-stated"),
+        mode,
         category: source.role || "upcoming_meetings",
         title: decode(entry.name || entry.headline),
         committee: entry.committee || entry.conveningBody || null,
         address: decode(address),
-        venue_name: decode(location.name),
+        venue_name: venueName,
+        ...(structuredAddress ? { location_components: structuredAddress } : {}),
         description,
         organizer: entry.organizer,
         participation: {
@@ -759,11 +802,16 @@ function htmlLines(value) {
 function calendarVenue(lines = []) {
   const first = lines[0] || "";
   const afterSeparator = first.match(/\s--\s(.+)$/)?.[1];
-  if (afterSeparator) return clean(afterSeparator, 500);
+  if (afterSeparator) {
+    return isDateShapedVenueText(afterSeparator) ? null : clean(afterSeparator, 500);
+  }
   const next = lines[1] || "";
-  return /^(?:limited seating|this is|members of|online|registration|by phone|you must)/i.test(next)
-    ? null
-    : clean(next, 500) || null;
+  if (/^(?:limited seating|this is|members of|online|registration|by phone|you must)/i.test(next)) {
+    return null;
+  }
+  const candidate = clean(next, 500);
+  // A following calendar date is the next meeting day, never a street venue.
+  return candidate && !isDateShapedVenueText(candidate) ? candidate : null;
 }
 
 function calendarRecordId(source, date, title) {
@@ -1133,6 +1181,21 @@ export function parseGoogleCalendarSource(ics, source = {}, options = {}) {
     if (seen.has(instanceId)) return [];
     seen.add(instanceId);
     const bodyId = icsField(block, "X-BOARD-ID") || icsField(block, "X-BODY-ID") || source.board_id || source.body_id;
+    const locationRaw = icsField(block, "LOCATION");
+    const locationParsed = parseIcsLocationWrapper(locationRaw);
+    const street = locationParsed?.components?.street_address || null;
+    const attendance = resolveAttendanceMeaning({
+      address: locationRaw,
+      venue_name: locationParsed?.venue_name,
+      description: icsField(block, "DESCRIPTION"),
+    });
+    const mode = attendance === ATTENDANCE_MEANING.HYBRID
+      ? "hybrid"
+      : attendance === ATTENDANCE_MEANING.REMOTE
+        ? "virtual"
+        : attendance === ATTENDANCE_MEANING.IN_PERSON
+          ? "in-person"
+          : "not-stated";
     return [record(descriptor, {
       record_kind: "event",
       record_id: instanceId,
@@ -1143,7 +1206,14 @@ export function parseGoogleCalendarSource(ics, source = {}, options = {}) {
       start_at: icsStartAt(icsField(block, "DTSTART")),
       category: icsField(block, "CATEGORIES"),
       title: icsField(block, "SUMMARY"),
-      address: icsField(block, "LOCATION"),
+      // Keep the full LOCATION string for repair; structured components ride
+      // alongside so spatial resolution does not need a board borough guess.
+      address: locationRaw,
+      venue_name: locationParsed?.venue_name || null,
+      location_wrapper: locationRaw,
+      ...(locationParsed?.components ? { location_components: locationParsed.components } : {}),
+      ...(street ? { address_street: street } : {}),
+      mode,
       description: icsField(block, "DESCRIPTION"),
       committee: (() => {
         const name = icsField(block, "X-COMMITTEE") || icsField(block, "X-CONVENING-BODY");
@@ -1617,6 +1687,23 @@ export function parseAirtableSource(payload, source = {}, options = {}) {
     const bodyId = clean(fieldValue(fields, map, "board_id") || source.board_id || source.body_id, 100) || null;
     const registerUrl = safeUrl(airtableScalar(fieldValue(fields, map, "register_url")));
     const address = airtableScalar(fieldValue(fields, map, "address"));
+    const venueName = airtableScalar(fieldValue(fields, map, "venue_name")) || address;
+    const description = fieldValue(fields, map, "description");
+    const attendance = resolveAttendanceMeaning({
+      mode: airtableScalar(fieldValue(fields, map, "mode")),
+      address,
+      venue_name: venueName,
+      description,
+    });
+    const mode = attendance === ATTENDANCE_MEANING.HYBRID
+      ? "hybrid"
+      : attendance === ATTENDANCE_MEANING.REMOTE
+        ? "virtual"
+        : attendance === ATTENDANCE_MEANING.IN_PERSON
+          ? "in-person"
+          : attendance === ATTENDANCE_MEANING.UNRESOLVED_CONFLICT
+            ? "not-stated"
+            : (address ? "in-person" : "not-stated");
     const recordUrl = fieldValue(fields, map, "record_url")
       || (shareId ? `https://airtable.com/${shareId}/${id}` : null)
       || source.record_url
@@ -1631,8 +1718,9 @@ export function parseAirtableSource(payload, source = {}, options = {}) {
       category: fieldValue(fields, map, "category"),
       title,
       address,
-      venue_name: airtableScalar(fieldValue(fields, map, "venue_name")) || address,
-      description: fieldValue(fields, map, "description"),
+      venue_name: venueName,
+      mode,
+      description,
       end_at: fieldValue(fields, map, "end_at"),
       committee: fieldValue(fields, map, "committee"),
       publisher_identifier: fieldValue(fields, map, "publisher_identifier") || id,

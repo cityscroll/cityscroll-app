@@ -215,6 +215,15 @@ const communityBoard = [
     alert_use: "place and access context",
     disposition: "rendered",
   }),
+  ...rows(["location_components", "location_wrapper"], {
+    stream: "event",
+    source_seam: "site/community_board_source_adapters.mjs record",
+    materialized_as: "location_assertions.components and location_assertions.wrapper",
+    document_use: "structured venue components for exact address resolution; wrapper retained for ICS repair",
+    search_use: "not free-text",
+    alert_use: "not used",
+    disposition: "materialized_support",
+  }),
   ...rows(["description"], {
     stream: "event",
     source_seam: "site/community_board_source_adapters.mjs record",
