@@ -24,7 +24,7 @@ export function nearYouAuthoredCopy(html) {
     .replace(/<(?:style|script|svg)\b[^>]*>[\s\S]*?<\/(?:style|script|svg)>/gi, " ")
     .replace(/<ol class="near-(?:area-list|records)"[^>]*>[\s\S]*?<\/ol>/gi, " ");
   const prose = [...scrubbed.matchAll(/<(p|footer)\b([^>]*)>([\s\S]*?)<\/\1>/gi)]
-    .filter(([, , attrs]) => !/near-(?:kicker|map-status|vintage)|map-legend/.test(attrs))
+    .filter(([, , attrs]) => !/near-(?:kicker|map-status|vintage|map-secondary-label|geo-more-boundaries-label|area-directory-summary|area-special-use-note|deferred-status)|map-legend/.test(attrs))
     .map(([, , , body]) => body.replace(/<[^>]*>/g, " "))
     .join(" ");
   return decodeHtml(prose)

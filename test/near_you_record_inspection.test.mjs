@@ -726,7 +726,7 @@ test("A2: frozen fixtures cover venue, affected-place, bags, duplicates, and dea
   });
 });
 
-test("A3: select, inspect, source/action, and Back restore place, lens, filters, and scroll", () => {
+test("A3: select, inspect, source/action, and Back restore place, lens, filters, and scroll", async () => {
   const { doc, root, dialog, container } = mountResults("venue");
   root.setAttribute("data-place", FIXTURE_COMMUNITY_DISTRICT);
   root.setAttribute("data-lens", "meetings");
@@ -759,6 +759,38 @@ test("A3: select, inspect, source/action, and Back restore place, lens, filters,
   assert.equal(root.getAttribute("data-filters"), before.filters);
   assert.equal(root.scrollTop, before.scrollTop);
   assert.equal(container.querySelectorAll(".near-record").length >= 1, true);
+
+  // Cross-document Back after a full-record handoff must re-apply the leaving
+  // window offset once deferred/overlap chrome finishes inserting.
+  const {
+    rememberDocumentRouteScroll,
+    restoreDocumentRouteScroll,
+  } = await import("../site/document_route_scroll.mjs");
+  const sessionStorage = new Map();
+  const storage = {
+    getItem: (key) => (sessionStorage.has(key) ? sessionStorage.get(key) : null),
+    setItem: (key, value) => sessionStorage.set(String(key), String(value)),
+    removeItem: (key) => sessionStorage.delete(String(key)),
+  };
+  let windowScrollY = 1127;
+  const win = {
+    location: {
+      pathname: "/near-you/",
+      search: "?geo=nta2020%3AMN0102&lens=meetings&surface=records",
+      hash: "",
+    },
+    sessionStorage: storage,
+    performance: { getEntriesByType: () => [{ type: "back_forward" }] },
+    get scrollX() { return 0; },
+    get scrollY() { return windowScrollY; },
+    scrollTo(_x, y) { windowScrollY = Number(y) || 0; },
+    setTimeout: (fn) => { fn(); return 1; },
+    requestAnimationFrame: (fn) => { fn(); return 1; },
+  };
+  assert.equal(rememberDocumentRouteScroll(win), true);
+  windowScrollY = 1367;
+  assert.equal(restoreDocumentRouteScroll(win, { maxAttempts: 3, intervalMs: 0 }), true);
+  assert.equal(windowScrollY, 1127);
 });
 
 test("A3: relevance acceptance manifest records live outcomes without a fixed event count", () => {

@@ -2,7 +2,7 @@
   "schema": "cityscroll.near_you_place_slices_live_readback.v1",
   "record": "cityscroll-engineering/c76db1a2c9474",
   "grounded_at": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
-  "status": "awaiting_production_readback",
+  "status": "recorded",
   "note": "Local materialization states are committed with the publisher change. Production deferred.json read-back for the five borough fixtures is retained here after Worker publication, with response bodies redacted to schema/state/count fields only.",
   "fixtures": [
     {
@@ -11,7 +11,17 @@
       "route": "/near-you/deferred.json?geo=nta2020%3ABK0101&lens=meetings&surface=map",
       "expected_local_coverage": "source_unavailable",
       "expected_projection_state": "unavailable",
-      "production_readback": null
+      "production_readback": {
+        "observed_at": "2026-09-23T01:36:33.528339Z",
+        "http_status": 200,
+        "schema": "cityscroll.near_you_deferred.v1",
+        "served_state": "unavailable_source_coverage",
+        "count": null,
+        "deferred_response_sha256": "4cf5366ddcee6dac51eae03cfa7d34318ce7345e8339de381a796e031006628f",
+        "deployment_revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+        "worker_commit": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+        "result": "pass"
+      }
     },
     {
       "id": "QN0103",
@@ -19,7 +29,17 @@
       "route": "/near-you/deferred.json?geo=nta2020%3AQN0103&lens=meetings&surface=map",
       "expected_local_coverage": "source_unavailable",
       "expected_projection_state": "unavailable",
-      "production_readback": null
+      "production_readback": {
+        "observed_at": "2026-09-23T01:36:33.528339Z",
+        "http_status": 200,
+        "schema": "cityscroll.near_you_deferred.v1",
+        "served_state": "unavailable_source_coverage",
+        "count": null,
+        "deferred_response_sha256": "7e5610fc451c167876ac4609ee31ea9d6497e888fd7e1b337e32c347953db85a",
+        "deployment_revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+        "worker_commit": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+        "result": "pass"
+      }
     },
     {
       "id": "SI0101",
@@ -27,7 +47,17 @@
       "route": "/near-you/deferred.json?geo=nta2020%3ASI0101&lens=meetings&surface=map",
       "expected_local_coverage": "source_unavailable",
       "expected_projection_state": "unavailable",
-      "production_readback": null
+      "production_readback": {
+        "observed_at": "2026-09-23T01:36:33.528339Z",
+        "http_status": 200,
+        "schema": "cityscroll.near_you_deferred.v1",
+        "served_state": "unavailable_source_coverage",
+        "count": null,
+        "deferred_response_sha256": "91bfad99a05a89b8f5ea8e3c128aa5bd4bb87a2955f410b00fd7653533ae275f",
+        "deployment_revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+        "worker_commit": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+        "result": "pass"
+      }
     },
     {
       "id": "MN0102",
@@ -35,7 +65,17 @@
       "route": "/near-you/deferred.json?geo=nta2020%3AMN0102&lens=meetings&surface=map",
       "expected_local_coverage": "ready",
       "expected_projection_state": "ready",
-      "production_readback": null
+      "production_readback": {
+        "observed_at": "2026-09-23T01:36:33.528339Z",
+        "http_status": 200,
+        "schema": "cityscroll.near_you_deferred.v1",
+        "served_state": "available_records",
+        "count": 25,
+        "deferred_response_sha256": "04e165debd41dd81465f098b1036d69f8af93722e7aae02a63d61ab713a7ce7a",
+        "deployment_revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+        "worker_commit": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+        "result": "pass"
+      }
     },
     {
       "id": "BX0101",
@@ -43,7 +83,17 @@
       "route": "/near-you/deferred.json?geo=nta2020%3ABX0101&lens=meetings&surface=map",
       "expected_local_coverage": "zero",
       "expected_projection_state": "zero",
-      "production_readback": null
+      "production_readback": {
+        "observed_at": "2026-09-23T01:36:33.528339Z",
+        "http_status": 200,
+        "schema": "cityscroll.near_you_deferred.v1",
+        "served_state": "published_zero",
+        "count": 0,
+        "deferred_response_sha256": "912f04c381532a3f024d25c6f7e2ea12d6eeace3ef130d2d84318863a78a8a1f",
+        "deployment_revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+        "worker_commit": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+        "result": "pass"
+      }
     }
   ],
   "assertions": [
@@ -65,8 +115,8 @@
     },
     {
       "id": "production-five-fixture-readback",
-      "result": "pending"
+      "result": "accepted"
     }
   ],
-  "assertions_sha256": "d0ffd4010425e0a43c260843c719da28b6f9aff216c7892f94644786ce9e6b96"
+  "assertions_sha256": "64c9dec6c013890124cfdd2822fdbb348db018f4c02c845112c63dc5ca02f1af"
 }

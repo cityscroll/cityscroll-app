@@ -4084,13 +4084,18 @@ select {
   min-height: var(--control-min-size);
   align-content: center;
 }
+[data-geography-shell] .near-map-secondary {
+  margin-block-start: var(--space-3);
+}
 /* Explicit display on children can override closed-details hiding; keep nested
    chrome unreachable until the parent disclosure is open. */
 [data-geography-shell] .near-entry-secondary:not([open]) > :not(summary),
 [data-geography-shell] .near-selected-context:not([open]) > :not(summary) {
   display: none !important;
 }
-[data-geography-shell] .near-map-secondary-label {
+[data-geography-shell] .near-map-secondary-label,
+[data-geography-shell] .near-geo-more-boundaries-label {
+  display: block;
   margin: 0 0 var(--space-2);
   font: 650 0.95rem/1.3 var(--font-interface);
 }

@@ -16,6 +16,11 @@ import {
   isNearYouDeferredGenerationCurrent,
 } from "../near_you_scope_adoption.mjs";
 import { bindNearYouRecordInspection } from "../near_you_record_inspection.mjs";
+import {
+  bindDocumentRouteScroll,
+  rememberDocumentRouteScroll,
+  restoreDocumentRouteScroll,
+} from "../document_route_scroll.mjs";
 import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
 import {
   nearYouFrameReady,
@@ -1152,6 +1157,34 @@ function wireRecordInspection() {
   bindNearYouRecordInspection(root);
 }
 
+function rememberNearYouDepartureScroll(event) {
+  // Remember only the full-record handoff from inspection; pagehide covers the
+  // same URL key for other same-origin exits from this document.
+  const link = event?.target?.closest?.("[data-near-you-record-inspection-open]");
+  if (!link || !root?.contains?.(link)) return;
+  if (event?.metaKey || event?.ctrlKey || event?.shiftKey || event?.altKey) return;
+  const href = link.getAttribute?.("href");
+  if (!href || href.startsWith("#")) return;
+  let destination;
+  try {
+    destination = new URL(href, location.href);
+  } catch {
+    return;
+  }
+  if (destination.origin !== location.origin) return;
+  if (destination.pathname === location.pathname && destination.search === location.search) return;
+  rememberDocumentRouteScroll(window);
+}
+
+function settleNearYouDocumentRouteScroll() {
+  return Promise.all([
+    hydrateCurrentNearYouDeferred(),
+    wireGeographyNavigationMap(),
+  ]).then(() => {
+    restoreDocumentRouteScroll(window, { maxAttempts: 40, intervalMs: 50 });
+  });
+}
+
 function wireIsland() {
   if (!root) return;
   root.dataset.enhanced = "true";
@@ -1164,11 +1197,12 @@ function wireIsland() {
   wireGeographyDrawer();
   wireGeographyLayerSwitcher();
   wireRecordInspection();
-  void hydrateCurrentNearYouDeferred();
-  void wireGeographyNavigationMap();
+  void settleNearYouDocumentRouteScroll();
 }
 
 if (root) {
+  bindDocumentRouteScroll(window);
+  root.addEventListener("click", rememberNearYouDepartureScroll, true);
   wireIsland();
   addEventListener("hashchange", () => {
     if (location.hash.startsWith("#map")) void adoptMapHashRoute();
