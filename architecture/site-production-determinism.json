@@ -486,6 +486,7 @@
     "site/pages_edge.mjs",
     "site/paper_trail_phase.mjs",
     "site/parcel_biography_ui.mjs",
+    "site/parcel_geography.mjs",
     "site/parcel_scope.mjs",
     "site/parcel_search_producer.mjs",
     "site/participation_action_verbs.mjs",

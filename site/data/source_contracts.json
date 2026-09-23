@@ -1740,7 +1740,7 @@
       "name": "MapPLUTO",
       "owner": "NYC Department of City Planning",
       "status": "build-time",
-      "scope": "source-attribution + bounded BBL centroid materialization for sell-facing Land pins, plus a bounded exact single-BBL parcel-polygon lookup for the Land project-geometry projection",
+      "scope": "source-attribution + bounded BBL centroid materialization for sell-facing Land pins, a bounded exact single-BBL parcel-polygon lookup for the Land project-geometry projection, and the committed citywide parcel-point generation (site/data/parcel-geography) serving address-to-parcel geography beyond the Land cohort",
       "kind": "arcgis",
       "endpoint": "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/MAPPLUTO/FeatureServer/0",
       "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change",
@@ -1751,8 +1751,8 @@
       ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic PLUTO releases",
-      "product_freshness": "Checked by tools/build_bbl_mappluto_centroids.mjs --check (age ≤120d, ≥95% sell-facing BBL coverage, canary 3012660036) and, for the bounded parcel-geometry lookup, tools/build_land_project_geometry_source.mjs --check (age ≤120d, every exact single-BBL candidate present and a valid polygon). Resident Land maps read the committed lookups only — no live ArcGIS on the hot path.",
-      "used_for": "Official attribution for tax-lot map context, retained BBL→centroid pins for Land, and — bounded to the exact single-BBL project subset — a retained BBL→parcel-polygon lookup for the optional Land project-geometry field.",
+      "product_freshness": "Checked by tools/build_bbl_mappluto_centroids.mjs --check (age ≤120d, ≥95% sell-facing BBL coverage, canary 3012660036), by tools/build_land_project_geometry_source.mjs --check for the bounded parcel-geometry lookup (age ≤120d, every exact single-BBL candidate present and a valid polygon), and by tools/build_citywide_parcel_points.mjs --check for the citywide parcel-point generation (every shard digest and count verified, full publisher-row accounting, PAD-only unmatched references reported separately). Resident reads use the committed lookups only — no live ArcGIS on the hot path.",
+      "used_for": "Official attribution for tax-lot map context, retained BBL→centroid pins for Land, a bounded BBL→parcel-polygon lookup for the optional Land project-geometry field, and reusable citywide parcel coordinates (deterministic 256-way BBL shards) for address-entry geography and record location joins.",
       "code_references": [
         {
           "path": "site/app/map_runtime.mjs",
@@ -1772,6 +1772,14 @@
         },
         {
           "path": "tools/build_land_project_geometry_source.mjs",
+          "contains": "MAPPLUTO"
+        },
+        {
+          "path": "site/parcel_geography.mjs",
+          "contains": "parcel-geography"
+        },
+        {
+          "path": "tools/build_citywide_parcel_points.mjs",
           "contains": "MAPPLUTO"
         }
       ],
