@@ -73,6 +73,9 @@ function buildOptions(overrides = {}) {
     inventory: overrides.inventory?.boards ? overrides.inventory : inventory(overrides.inventory),
     registry: registry(),
     committeeRegistry: committeeRegistry(),
+    previousIndex: null,
+    hearingContext: { boards: [] },
+    retainedSnapshots: new Map(),
     ...overrides,
   };
 }
