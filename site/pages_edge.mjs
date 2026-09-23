@@ -23,7 +23,6 @@ import {
 } from "./procurement_payment_place_context.mjs";
 import { procurementShardPathForId } from "./procurement_read_model_shards.mjs";
 import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
-import sharedMeetingSnapshot from "./data/shared_meeting_read_model.json" with { type: "json" };
 import rulesSemanticLaneArtifact from "./data/rules_semantic_lane.json" with { type: "json" };
 import { NOTICE_MODULE_PRELOADS } from "./notice_module_preload.mjs";
 import { noticeEdgeCacheOutcome, noticeEdgeInstant, noticeEdgeTimingHeader } from "./notice_edge_response.mjs";
@@ -476,10 +475,16 @@ async function handleMeetingICS(request, env) {
   const id = new URL(request.url).searchParams.get("id") || "";
   if (!id || id.length > 320 || /[\r\n]/.test(id)) return new Response("invalid meeting id", { status: 400 });
 
-  let snapshot = sharedMeetingSnapshot;
+  // Load the shared meeting projection from published ASSETS only. Bundling the
+  // multi-megabyte JSON into the Pages Function exceeds Cloudflare's 25 MiB
+  // uncompressed Function limit once the retained meeting corpus grows.
   const asset = await staticAsset(env, request, "/data/shared_meeting_read_model.json");
-  if (asset.ok) {
-    try { snapshot = await asset.json(); } catch (_error) { /* use the bundled projection */ }
+  if (!asset.ok) return new Response("meeting projection unavailable", { status: 503 });
+  let snapshot;
+  try {
+    snapshot = await asset.json();
+  } catch (_error) {
+    return new Response("meeting projection unavailable", { status: 503 });
   }
   const record = meetingForCalendar(snapshot, id);
   if (!record) return new Response("meeting not found", { status: 404 });

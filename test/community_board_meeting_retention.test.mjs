@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { parseHtmlPdfSource } from "../site/community_board_source_adapters.mjs";
+import { fetchCommunityBoardSource, parseHtmlPdfSource } from "../site/community_board_source_adapters.mjs";
 import {
   MEETING_TIMING_PAST,
   RETENTION_BASIS_KNOWN_LINKED_EVENT_URL,
@@ -289,6 +289,157 @@ test("A3 omission is not cancellation; footer 810 East 16th never replaces the 1
   const cancelledRow = cancelled.rows.find((row) => /cancelled/i.test(row.title || ""));
   assert.ok(cancelledRow, "explicit publisher cancellation remains a distinct admitted record");
   assert.equal(cancelledRow.detail_retention?.cancellation_inferred || false, false);
+});
+
+test("A3 errored acquisition admits neither occurrence nor cancellation", async () => {
+  const detailDescriptor = {
+    adapter: "html_pdf_v1",
+    role: "event_detail",
+    source_role: "event_detail",
+    event_detail: true,
+    board_id: BOARD_ID,
+    body_name: board.name,
+    url: SEP14_URL,
+    format: "board-owned HTML/event calendar",
+  };
+
+  const errored = await fetchCommunityBoardSource(detailDescriptor, {
+    observedAt: OBSERVED_AT,
+    fetchImpl: async () => new Response("Gateway Timeout", { status: 504 }),
+  });
+  assert.equal(errored.records.length, 0, "an errored fetch yields no adapter records");
+  assert.notEqual(errored.receipt.status, "ok");
+  assert.equal(errored.receipt.reason, "http_error");
+
+  // Replay the real publisher HTML through the adapter while attaching the
+  // errored receipt. Structure may still parse, but admission must refuse it.
+  const poisoned = parseHtmlPdfSource(FIXTURE_HTML.toString("utf8"), detailDescriptor, {
+    observedAt: OBSERVED_AT,
+    receipt: {
+      status: "unknown",
+      reason: "http_error",
+      fetch_status: "504",
+      observed_at: OBSERVED_AT,
+      content_type: "text/html; charset=UTF-8",
+      content_length: FIXTURE_HTML.byteLength,
+      content_sha256: FIXTURE_SHA256,
+    },
+  });
+  assert.ok(poisoned.length >= 1, "the publisher page still parses under an error receipt");
+  assert.notEqual(poisoned[0].observed_receipt.status, "ok");
+  assert.equal(poisoned[0].observed_receipt.reason, "http_error");
+
+  const refused = unionRetainedMeetingDetailRecords({
+    currentRecords: [],
+    knownLinkedRecords: poisoned.map((row) => ({
+      ...row,
+      source_role: "upcoming_meetings",
+      linked_from: "community_board_hearing_context",
+    })),
+    previousRecords: poisoned.map((row) => ({
+      ...row,
+      source_role: "upcoming_meetings",
+    })),
+    asOfDay: AS_OF,
+  });
+  assert.equal(refused.length, 0, "an errored receipt is not an occurrence assertion");
+  assert.equal(
+    refused.some((row) => row.detail_retention?.cancellation_inferred === true),
+    false,
+    "an errored receipt is not a cancellation assertion",
+  );
+
+  const index = await buildCommunityBoardMeetingIndex({
+    inventory: { boards: [board] },
+    registry: { sources: [{ body_type: "community_board", body_id: BOARD_ID, name: board.name }] },
+    committeeRegistry: {},
+    retainedSnapshots: new Map(),
+    // Isolate the errored known-linked fetch from any previously admitted
+    // September 14 row that may already exist in the committed index.
+    previousIndex: { generated_at: OBSERVED_AT, source_records_by_board: { [BOARD_ID]: [] } },
+    hearingContext,
+    fetchImpl: async (url) => {
+      const href = String(url);
+      if (href === board.upcoming.url || href.startsWith(`${board.upcoming.url}?`)) {
+        return new Response(eventJsonLd({
+          url: SEP23_URL,
+          name: "Housing and Land Use Committee Meeting",
+          startDate: "2026-09-23T18:30:00-04:00",
+          location: {
+            name: "Brooklyn CB14 District Office",
+            address: "810 East 16th Street, Brooklyn, NY, 11230",
+          },
+        }), { status: 200, headers: { "content-type": "text/html; charset=UTF-8" } });
+      }
+      if (href === SEP23_URL || href.startsWith(`${SEP23_URL}?`)) {
+        return new Response(eventJsonLd({
+          url: SEP23_URL,
+          name: "Housing and Land Use Committee Meeting",
+          startDate: "2026-09-23T18:30:00-04:00",
+          location: {
+            name: "Brooklyn CB14 District Office",
+            address: "810 East 16th Street, Brooklyn, NY, 11230",
+          },
+        }), { status: 200, headers: { "content-type": "text/html; charset=UTF-8" } });
+      }
+      if (href === SEP14_URL || href.startsWith(`${SEP14_URL}?`)) {
+        return new Response("Gateway Timeout", { status: 504 });
+      }
+      return new Response("not found", { status: 404 });
+    },
+    observedAt: OBSERVED_AT,
+  });
+
+  assert.equal(
+    index.rows.some((row) => row.meeting_id === MEETING_ID),
+    false,
+    "a failed known-linked detail fetch does not invent the September 14 occurrence",
+  );
+  assert.ok(
+    index.rows.every((row) => row.detail_retention?.cancellation_inferred !== true),
+    "a failed acquisition does not mark any retained row cancelled",
+  );
+  assert.ok(
+    index.rows.some((row) => row.meeting_id === `meeting:community_board:${SEP23_URL}`),
+    "the successful calendar item remains admitted on its own ok receipt",
+  );
+});
+
+test("meeting.ics reads the shared projection from ASSETS only", async () => {
+  const [sep14] = parseSep14Detail();
+  const model = {
+    schema: "cityscroll.shared_meeting_read_model.v1",
+    rows: [{
+      meeting_id: MEETING_ID,
+      title: sep14.title || "September 2026 Board Meeting",
+      event_date: "2026-09-14",
+      start_at: sep14.start_at,
+      venue: { address: sep14.address },
+      source_system: "community_board",
+    }],
+  };
+  const withAssets = {
+    ASSETS: {
+      fetch: async () => new Response(JSON.stringify(model), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      }),
+    },
+  };
+  const ok = await edgeWorker.fetch(
+    new Request(`https://cityscroll.org/meeting.ics?id=${encodeURIComponent(MEETING_ID)}`),
+    withAssets,
+  );
+  assert.equal(ok.status, 200);
+  assert.match(ok.headers.get("content-type") || "", /text\/calendar/);
+  assert.match(await ok.text(), /BEGIN:VCALENDAR/);
+
+  const missing = await edgeWorker.fetch(
+    new Request(`https://cityscroll.org/meeting.ics?id=${encodeURIComponent(MEETING_ID)}`),
+    { ASSETS: { fetch: async () => new Response("missing", { status: 404 }) } },
+  );
+  assert.equal(missing.status, 503);
+  assert.match(await missing.text(), /meeting projection unavailable/);
 });
 
 test("A4 two acquisition passes retain the same publisher identity without inventing cancellation", async () => {
