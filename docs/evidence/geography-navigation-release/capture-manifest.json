@@ -6,8 +6,11 @@
   "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
   "grounded_at": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
   "deployed_version": {
-    "status": "not_taken",
-    "reason": "deployment-dependent CROL_BASE read-back"
+    "status": "taken",
+    "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+    "revision_format": "served artifact-manifest source_commit_sha",
+    "base": "https://cityscroll.org/",
+    "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
   },
   "data_vintages": {
     "nta": "26B",
@@ -181,8 +184,11 @@
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
-        "status": "not_taken",
-        "reason": "deployment-dependent CROL_BASE read-back"
+        "status": "taken",
+        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
       },
       "data_vintages": {
         "nta": "26B",
@@ -375,8 +381,11 @@
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
-        "status": "not_taken",
-        "reason": "deployment-dependent CROL_BASE read-back"
+        "status": "taken",
+        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
       },
       "data_vintages": {
         "nta": "26B",
@@ -569,8 +578,11 @@
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
-        "status": "not_taken",
-        "reason": "deployment-dependent CROL_BASE read-back"
+        "status": "taken",
+        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
       },
       "data_vintages": {
         "nta": "26B",
@@ -671,8 +683,11 @@
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
-        "status": "not_taken",
-        "reason": "deployment-dependent CROL_BASE read-back"
+        "status": "taken",
+        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
       },
       "data_vintages": {
         "nta": "26B",
@@ -773,8 +788,11 @@
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
-        "status": "not_taken",
-        "reason": "deployment-dependent CROL_BASE read-back"
+        "status": "taken",
+        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
       },
       "data_vintages": {
         "nta": "26B",
@@ -875,8 +893,11 @@
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
-        "status": "not_taken",
-        "reason": "deployment-dependent CROL_BASE read-back"
+        "status": "taken",
+        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
       },
       "data_vintages": {
         "nta": "26B",
@@ -977,8 +998,11 @@
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
-        "status": "not_taken",
-        "reason": "deployment-dependent CROL_BASE read-back"
+        "status": "taken",
+        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
       },
       "data_vintages": {
         "nta": "26B",
@@ -1079,8 +1103,11 @@
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
-        "status": "not_taken",
-        "reason": "deployment-dependent CROL_BASE read-back"
+        "status": "taken",
+        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
       },
       "data_vintages": {
         "nta": "26B",
@@ -1181,8 +1208,11 @@
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
-        "status": "not_taken",
-        "reason": "deployment-dependent CROL_BASE read-back"
+        "status": "taken",
+        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
       },
       "data_vintages": {
         "nta": "26B",
@@ -1283,8 +1313,11 @@
       "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
-        "status": "not_taken",
-        "reason": "deployment-dependent CROL_BASE read-back"
+        "status": "taken",
+        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
       },
       "data_vintages": {
         "nta": "26B",

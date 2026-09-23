@@ -1,7 +1,9 @@
 """Retained local browser journey for the resident geography navigator.
 
 The journey records rendered HTML and measurements, never screenshot binaries.
-Production ``CROL_BASE`` read-back is intentionally a separate, open step.
+After deployment, ``--fill-deployed-version`` reads the live site's own
+``/artifact-manifest.json`` and fills only ``deployed_version`` on the retained
+manifest. Full production route journeys remain a separate, open step.
 """
 
 from __future__ import annotations
@@ -10,8 +12,13 @@ import argparse
 import hashlib
 import json
 import math
+import os
+import re
 import subprocess
 import sys
+import urllib.error
+import urllib.parse
+import urllib.request
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -23,6 +30,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 EVIDENCE_DIR = ROOT / "docs" / "evidence" / "geography-navigation-release"
+MANIFEST_PATH = EVIDENCE_DIR / "capture-manifest.json"
 ROUTE = "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&drawer=open"
 VIEWPORTS = (("desktop", 1440, 900), ("narrow_touch", 390, 844), ("compact_touch", 360, 800))
 MINIMUM_VISIBLE_MAP_HEIGHT = 240
@@ -31,6 +39,11 @@ ENTRY_ROUTES = (
     ("greenpoint", "/near-you/?geo=nta2020%3ABK0101&surface=map"),
     ("tribeca", "/near-you/?geo=nta2020%3AMN0102&surface=map"),
 )
+PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
+ARTIFACT_MANIFEST_PATH = "/artifact-manifest.json"
+ARTIFACT_MANIFEST_UA = "cityscroll-release-proof-served-revision/1"
+DEFAULT_PRODUCTION_BASE = "https://cityscroll.org/"
+SHA40 = re.compile(r"^[0-9a-f]{40}$")
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -68,6 +81,121 @@ def serve_near_you() -> tuple[subprocess.Popen, str]:
 
 def sha256(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def normalize_base(base: str) -> str:
+    return base.rstrip("/") + "/"
+
+
+def resolve_production_base() -> str:
+    raw = (os.environ.get("CROL_BASE") or DEFAULT_PRODUCTION_BASE).strip()
+    base = normalize_base(raw)
+    host = (urllib.parse.urlparse(base).hostname or "").lower()
+    if host not in PRODUCTION_HOSTS:
+        raise RuntimeError(f"deployed_version fill requires a cityscroll.org base, got {base}")
+    return base
+
+
+def open_artifact_manifest(url: str, timeout: int = 20):
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": ARTIFACT_MANIFEST_UA,
+            "Accept": "application/json",
+        },
+    )
+    return urllib.request.urlopen(request, timeout=timeout)
+
+
+def read_served_artifact_manifest(base: str, *, opener=open_artifact_manifest) -> dict:
+    origin = normalize_base(base).rstrip("/")
+    url = f"{origin}{ARTIFACT_MANIFEST_PATH}"
+    try:
+        with opener(url, timeout=20) as response:
+            payload = json.load(response)
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError) as error:
+        raise RuntimeError(f"deployed build revision unavailable at {url}: {error}") from error
+    if not isinstance(payload, dict):
+        raise RuntimeError(f"deployed artifact-manifest at {url} is not an object")
+    return payload
+
+
+def deployed_build_revision(base: str, *, opener=open_artifact_manifest) -> str:
+    payload = read_served_artifact_manifest(base, opener=opener)
+    sha = payload.get("source_commit_sha")
+    if not isinstance(sha, str) or not SHA40.fullmatch(sha):
+        raise RuntimeError(
+            f"deployed artifact-manifest at {normalize_base(base).rstrip('/')}{ARTIFACT_MANIFEST_PATH} "
+            "lacks a 40-hex source_commit_sha"
+        )
+    return sha
+
+
+def build_deployed_version_record(base: str, source_commit_sha: str) -> dict:
+    origin = normalize_base(base).rstrip("/")
+    return {
+        "status": "taken",
+        "source_commit_sha": source_commit_sha,
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": normalize_base(base),
+        "artifact_manifest": f"{origin}{ARTIFACT_MANIFEST_PATH}",
+    }
+
+
+def iter_capture_rows(manifest: dict):
+    for capture in manifest.get("captures") or []:
+        if isinstance(capture, dict) and isinstance(capture.get("captures"), list):
+            yield from (row for row in capture["captures"] if isinstance(row, dict))
+        elif isinstance(capture, dict):
+            yield capture
+
+
+def fill_deployed_version(*, write: bool) -> dict:
+    base = resolve_production_base()
+    source_commit_sha = deployed_build_revision(base)
+    record = build_deployed_version_record(base, source_commit_sha)
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    before = json.dumps(manifest, sort_keys=True)
+    manifest["deployed_version"] = record
+    for capture in iter_capture_rows(manifest):
+        capture["deployed_version"] = dict(record)
+    after = json.dumps(manifest, sort_keys=True)
+    if write and before != after:
+        MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return {
+        "manifest": str(MANIFEST_PATH.relative_to(ROOT)),
+        "base": normalize_base(base),
+        "deployed_version": record,
+        "capture_count": sum(1 for _ in iter_capture_rows(manifest)),
+        "wrote": bool(write and before != after),
+    }
+
+
+def check_deployed_version() -> dict:
+    base = resolve_production_base()
+    live_sha = deployed_build_revision(base)
+    expected = build_deployed_version_record(base, live_sha)
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    if manifest.get("deployed_version") != expected:
+        raise AssertionError(
+            "top-level deployed_version does not match the live served artifact-manifest "
+            f"(manifest={manifest.get('deployed_version')!r} live={expected!r})"
+        )
+    rows = list(iter_capture_rows(manifest))
+    if not rows:
+        raise AssertionError("release manifest has no capture rows")
+    for capture in rows:
+        if capture.get("deployed_version") != expected:
+            raise AssertionError(
+                f"capture {capture.get('name')!r} deployed_version does not match the live served artifact-manifest"
+            )
+    return {
+        "manifest": str(MANIFEST_PATH.relative_to(ROOT)),
+        "base": normalize_base(base),
+        "deployed_version": expected,
+        "capture_count": len(rows),
+        "ok": True,
+    }
 
 
 def normalize_html(value: str) -> str:
@@ -352,7 +480,25 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--write-evidence", action="store_true")
     parser.add_argument("--layout-only", action="store_true")
+    parser.add_argument(
+        "--fill-deployed-version",
+        action="store_true",
+        help="Read production /artifact-manifest.json and fill only deployed_version on the retained manifest.",
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Verify retained deployed_version matches the live served artifact-manifest.",
+    )
     args = parser.parse_args()
+    if args.fill_deployed_version and args.check:
+        raise SystemExit("use either --fill-deployed-version or --check, not both")
+    if args.fill_deployed_version:
+        print(json.dumps(fill_deployed_version(write=True), indent=2))
+        return 0
+    if args.check:
+        print(json.dumps(check_deployed_version(), indent=2))
+        return 0
     observations = []
     fixture_html = ""
     fixture_path = ".artifacts/geography-navigation-release/bk1503-overlap.html"

@@ -66,16 +66,22 @@ function allCaptureRows() {
   ));
 }
 
+function assertDeployedVersion(value) {
+  assert.equal(value?.status, "taken");
+  assert.match(value?.source_commit_sha || "", /^[0-9a-f]{40}$/);
+  assert.equal(value?.revision_format, "served artifact-manifest source_commit_sha");
+  assert.equal(value?.base, "https://cityscroll.org/");
+  assert.equal(value?.artifact_manifest, "https://cityscroll.org/artifact-manifest.json");
+}
+
 function assertCaptureContract(capture) {
   assert.equal(typeof capture.route, "string");
   assert.ok(capture.viewport?.width >= 320);
   assert.ok(capture.viewport?.height >= 480);
   assert.equal(capture.repository_revision, RELEASE_MANIFEST.repository_revision);
   assert.equal(capture.candidate_revision, RELEASE_MANIFEST.candidate_revision);
-  assert.deepEqual(capture.deployed_version, {
-    status: "not_taken",
-    reason: "deployment-dependent CROL_BASE read-back",
-  });
+  assertDeployedVersion(capture.deployed_version);
+  assert.deepEqual(capture.deployed_version, RELEASE_MANIFEST.deployed_version);
   assert.ok(capture.data_vintages?.nta);
   assert.ok(capture.data_vintages?.community);
   assert.ok(capture.data_vintages?.council);
@@ -198,7 +204,10 @@ test("A9: every retained manifest entry carries route, viewport, vintages, asser
   assert.match(RELEASE_MANIFEST.candidate_revision, /^[0-9a-f]{40}$/);
   assert.match(RELEASE_MANIFEST.grounded_at, /^[0-9a-f]{40}$/);
   assert.equal(RELEASE_MANIFEST.repository_revision, RELEASE_MANIFEST.grounded_at);
-  assert.ok(RELEASE_MANIFEST.deployed_version);
+  assertDeployedVersion(RELEASE_MANIFEST.deployed_version);
+  assert.match(RELEASE_BROWSER_SOURCE, /--fill-deployed-version/);
+  assert.match(RELEASE_BROWSER_SOURCE, /artifact-manifest\.json/);
+  assert.match(RELEASE_BROWSER_SOURCE, /source_commit_sha/);
   for (const capture of allCaptureRows()) assertCaptureContract(capture);
 });
 
