@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/c42128caee453",
   "status": "implemented",
-  "fingerprint": "near-you-map-record-health.v1",
-  "updated_at": "2026-09-22T00:00:00.000Z",
+  "fingerprint": "near-you-map-record-health.v2",
+  "updated_at": "2026-09-23T00:00:00.000Z",
   "projections": [
     {
       "id": "near-you-view-renderer",
@@ -38,8 +38,24 @@
       "path": "docs/evidence/near-you-map-record-health/capture-manifest.json"
     },
     {
+      "id": "near-you-map-record-health-read-back",
+      "path": "docs/evidence/near-you-map-record-health/read-back.json"
+    },
+    {
+      "id": "near-you-map-record-health-production-read",
+      "path": "docs/evidence/near-you-map-record-health/production-read.json"
+    },
+    {
       "id": "near-you-map-record-health-capture-tool",
       "path": "tools/capture_near_you_map_record_health.py"
+    },
+    {
+      "id": "near-you-map-record-health-retry-recovery-capture-tool",
+      "path": "tools/capture_near_you_map_record_health_retry_recovery_production_read.py"
+    },
+    {
+      "id": "near-you-map-record-health-production-read-tests",
+      "path": "test/near_you_map_record_health_production_read.test.mjs"
     }
   ]
 }

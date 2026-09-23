@@ -7,13 +7,20 @@
   "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
   "capture_mode": "headless-playwright-production-served-site",
   "revision_format": "served artifact-manifest source_commit_sha",
-  "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
-  "repository_revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
-  "grounded_at": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+  "revision": "8777db6246da4f559a0db728377751d99f8c49e7",
+  "repository_revision": "8777db6246da4f559a0db728377751d99f8c49e7",
+  "grounded_at": "8777db6246da4f559a0db728377751d99f8c49e7",
   "data_vintage": "nta2020 26B",
   "image_binaries_committed": false,
   "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed.",
-  "note": "Production desktop/mobile record-failure read-backs; textual DOM hashes only.",
+  "note": "Production desktop/mobile record-failure preservation reads plus pressed-retry recovery observations; textual hashes only.",
+  "producer": {
+    "path": "docs/evidence/near-you-map-record-health/read-back.json",
+    "schema": "cityscroll.near_you_map_record_health_production_read.v1",
+    "letters": [
+      "A3"
+    ]
+  },
   "captures": [
     {
       "source": "headless-playwright-production-served-site",
@@ -186,6 +193,100 @@
           "q": "curb",
           "compare": "council_district",
           "geo": "nta2020:SI0101"
+        }
+      }
+    },
+    {
+      "source": "headless-playwright-production-served-site",
+      "name": "production-record-retry-recovery-BK0101-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "data_vintage": "nta2020 26B",
+      "assertion": "Greenpoint recovers from an induced deferred-record failure after pressing Try again; neighborhood identity and boundary context stay intact while deferred content leaves the error state.",
+      "sha256": "0194e6a4bb208da6df21f95696112f5c74e6a8e471977bef309dfcb84815aac7",
+      "file": null,
+      "revision": "8777db6246da4f559a0db728377751d99f8c49e7",
+      "served_values": {
+        "before": {
+          "heading": "Greenpoint",
+          "deferred_state": "error",
+          "retry_present": true,
+          "retry_label": "Try again",
+          "geometry_vintage_present": true
+        },
+        "action": {
+          "control": "data-near-recovery=retry",
+          "retry_pressed": true,
+          "method": "click",
+          "label": "Try again"
+        },
+        "after": {
+          "heading": "Greenpoint",
+          "deferred_state": "ready",
+          "data_state": "ready",
+          "retry_present": false,
+          "results_heading": "Matching Meetings records",
+          "recovered_copy": "This area\u2019s materialized records are unavailable right now.",
+          "results_count": null,
+          "geometry_vintage": "26B"
+        },
+        "neighborhood_context_intact": true,
+        "retry_preserved": {
+          "lens": "meetings",
+          "agency": "Transportation",
+          "q": "curb",
+          "compare": "council_district",
+          "geo": "nta2020:BK0101"
+        }
+      }
+    },
+    {
+      "source": "headless-playwright-production-served-site",
+      "name": "production-record-retry-recovery-BK0101-mobile",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "data_vintage": "nta2020 26B",
+      "assertion": "Greenpoint recovers from an induced deferred-record failure after pressing Try again; neighborhood identity and boundary context stay intact while deferred content leaves the error state.",
+      "sha256": "0194e6a4bb208da6df21f95696112f5c74e6a8e471977bef309dfcb84815aac7",
+      "file": null,
+      "revision": "8777db6246da4f559a0db728377751d99f8c49e7",
+      "served_values": {
+        "before": {
+          "heading": "Greenpoint",
+          "deferred_state": "error",
+          "retry_present": true,
+          "retry_label": "Try again",
+          "geometry_vintage_present": true
+        },
+        "action": {
+          "control": "data-near-recovery=retry",
+          "retry_pressed": true,
+          "method": "click",
+          "label": "Try again"
+        },
+        "after": {
+          "heading": "Greenpoint",
+          "deferred_state": "ready",
+          "data_state": "ready",
+          "retry_present": false,
+          "results_heading": "Matching Meetings records",
+          "recovered_copy": "This area\u2019s materialized records are unavailable right now.",
+          "results_count": null,
+          "geometry_vintage": "26B"
+        },
+        "neighborhood_context_intact": true,
+        "retry_preserved": {
+          "lens": "meetings",
+          "agency": "Transportation",
+          "q": "curb",
+          "compare": "council_district",
+          "geo": "nta2020:BK0101"
         }
       }
     }
