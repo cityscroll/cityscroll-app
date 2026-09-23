@@ -1,0 +1,30 @@
+{
+  "data": {
+    "table": {
+      "columns": [
+        {
+          "id": "fldTitle",
+          "name": "Title"
+        },
+        {
+          "id": "fldDate",
+          "name": "Date"
+        },
+        {
+          "id": "fldAddress",
+          "name": "Location"
+        }
+      ],
+      "rows": [
+        {
+          "cellValuesByColumnId": {
+            "fldAddress": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
+            "fldDate": "2026-09-10",
+            "fldTitle": "Economic Development & Culture"
+          },
+          "id": "recCUxAqawlygvkw5"
+        }
+      ]
+    }
+  }
+}

@@ -9,6 +9,10 @@
 
 import { resolveMeetingFamily } from "./meeting_process_profile.mjs";
 import { projectMeetingSchedule } from "./meeting_temporal_evidence.mjs";
+import {
+  buildMeetingLocationAssertions,
+  projectVenueFromAssertions,
+} from "./meeting_location_assertions.mjs";
 
 export const MEETING_OBJECT_SCHEMA = "cityscroll.meeting_object.v1";
 
@@ -282,7 +286,27 @@ export function normalizeMeetingObject(row = {}) {
   const sourceHref = sourceUrl(row);
   const requestId = source === "city_record" ? key?.value || null : null;
   const boardId = optionalText(row.board_id);
-  const venue = row.venue && typeof row.venue === "object" ? row.venue : null;
+  const incomingVenue = row.venue && typeof row.venue === "object" ? row.venue : null;
+  const locationAssertions = Array.isArray(row.location_assertions) && row.location_assertions.length
+    ? row.location_assertions
+    : buildMeetingLocationAssertions({
+      ...row,
+      meeting_id: meetingId,
+      venue: incomingVenue || (row.address || row.venue_name ? {
+        name: row.venue_name || null,
+        address: row.address || null,
+        mode: row.mode || null,
+        components: row.location_components || null,
+      } : null),
+      location_components: row.location_components || row.address_components || incomingVenue?.components || null,
+      location_wrapper: row.location_wrapper || null,
+    }, {
+      meeting_id: meetingId,
+      record_id: optionalText(row.record_id || row.source_record_id),
+      source_field: row.location_wrapper ? "LOCATION" : (row.location_components ? "location.address" : null),
+      incidental_addresses: row.incidental_location_addresses || [],
+    });
+  const venue = projectVenueFromAssertions(locationAssertions, incomingVenue);
   const fields = {
     title: row.title || row.short_title,
     committee: row.committee,
@@ -321,6 +345,7 @@ export function normalizeMeetingObject(row = {}) {
     observer_access: normalizeObserverAccess(row.observer_access),
     access_steps: normalizeAccessSteps(row.access_steps || row.observer_access?.steps),
     venue,
+    location_assertions: locationAssertions,
     participation: normalizeParticipation(row.participation),
     committee: normalizeCommittee(row.committee),
     agency: optionalText(row.agency_name || row.agency),

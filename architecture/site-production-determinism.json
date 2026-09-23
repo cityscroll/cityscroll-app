@@ -422,6 +422,7 @@
     "site/meeting_capability_projection.mjs",
     "site/meeting_delivery_identity.mjs",
     "site/meeting_document.mjs",
+    "site/meeting_location_assertions.mjs",
     "site/meeting_matter_stamps.mjs",
     "site/meeting_object_contract.mjs",
     "site/meeting_origin.mjs",
