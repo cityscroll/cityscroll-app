@@ -22,11 +22,17 @@ import { buildCommunityBoardMeetingIndexShardArtifacts } from "../site/community
 import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
 import { readRetainedCommunityBoardSnapshots } from "./acquire_community_board_retained_snapshot.mjs";
 import { classifyCommunityBoardConveningBody } from "../site/community_board_full_board_lens.mjs";
+import {
+  knownLinkedEventUrlsFromHearingContext,
+  publisherIdentityOf,
+  unionRetainedMeetingDetailRecords,
+} from "../site/community_board_retained_meeting_details.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 const INVENTORY = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
 const REGISTRY = join(ROOT, "site/data/non_council_outcome_sources/source_registry.json");
 const COMMITTEE_REGISTRY = join(ROOT, "site/data/non_council_outcome_sources/community_board_committees.json");
+const HEARING_CONTEXT = join(ROOT, "site/data/community_board_hearing_context.json");
 const OUTPUT = join(ROOT, "site/data/community_board_meeting_index.json");
 const SHARD_DIR = join(ROOT, "site/data/community_board_meeting_index");
 const INDEX_SCHEMA = "cityscroll.community_board_meeting_index.v1";
@@ -44,6 +50,14 @@ const SOURCE_ROLES = ["upcoming_meetings", "minutes"];
 export const COMMUNITY_BOARD_SOURCE_STATES = SOURCE_STATES;
 
 function readJson(path) { return JSON.parse(readFileSync(path, "utf8")); }
+function readHearingContext(path = HEARING_CONTEXT) {
+  if (!existsSync(path)) return { boards: [] };
+  try {
+    return readJson(path);
+  } catch {
+    return { boards: [] };
+  }
+}
 function writeJson(path, value) { writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`); }
 function currentCodeRevision() {
   try {
@@ -474,6 +488,9 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
       ? record.observed_receipt?.observed_at || null
       : observedAt,
     ...(record.source_refresh ? { source_refresh: record.source_refresh } : {}),
+    ...(record.detail_retention ? { detail_retention: record.detail_retention } : {}),
+    ...(record.collection_visibility ? { collection_visibility: record.collection_visibility } : {}),
+    ...(record.timing_status ? { timing_status: record.timing_status } : {}),
     type_of_notice_description: record.category || "Board meeting",
     section_name: "Community Board Meetings",
     meeting_join: {
@@ -543,6 +560,93 @@ async function enrichEventRecord(record, descriptor, fetchImpl, observedAt) {
   };
 }
 
+function asOfDayFrom(observedAt) {
+  const day = String(observedAt || "").slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : null;
+}
+
+function previousUpcomingEvents(previousIndex, boardId, sourceUrl) {
+  return (previousIndex?.source_records_by_board?.[boardId] || [])
+    .filter((record) => record.board_id === boardId
+      && (record.source_role || "upcoming_meetings") === "upcoming_meetings"
+      && record.record_kind === "event"
+      && record.observed_receipt?.status === "ok"
+      && (!sourceUrl || !record.source_url || record.source_url === sourceUrl));
+}
+
+async function acquireKnownLinkedEventRecords({
+  descriptor,
+  knownLinked,
+  currentIdentities,
+  fetchImpl,
+  observedAt,
+  committeeRegistry,
+}) {
+  const acquired = [];
+  for (const linked of knownLinked) {
+    if (linked.board_id !== descriptor.board_id) continue;
+    if (currentIdentities.has(linked.source_url)) continue;
+    const detail = await fetchCommunityBoardSource({
+      ...descriptor,
+      url: linked.source_url,
+      role: "event_detail",
+      source_role: "event_detail",
+      event_detail: true,
+      meeting_key: linked.source_url,
+      meeting_date: linked.meeting_date,
+    }, { fetchImpl, observedAt, committeeRegistry });
+    const event = detail.records.find((row) => row.record_kind === "event" && row.record_id && row.date);
+    if (!event || detail.receipt?.status !== "ok") continue;
+    const meetingId = `meeting:community_board:${event.publisher_identifier || event.record_id}`;
+    const documents = detail.records
+      .filter((row) => row.record_kind === "document" && /\.(?:pdf|docx?|rtf)(?:$|[?#])/i.test(row.record_url || row.document_id || ""))
+      .map((row) => ({ ...row, meeting_key: meetingId, meeting_id: meetingId }));
+    acquired.push({
+      ...event,
+      source_role: "upcoming_meetings",
+      source_url: descriptor.url || event.source_url || linked.source_url,
+      linked_from: linked.linked_from,
+      meeting_documents: documents,
+      detail_receipt: detail.receipt || null,
+    });
+  }
+  return acquired;
+}
+
+async function retainMeetingDetailsForUpcomingRole({
+  descriptor,
+  records,
+  previousIndex,
+  knownLinked,
+  fetchImpl,
+  observedAt,
+  committeeRegistry,
+  preservePrevious,
+}) {
+  if (descriptor.source_role !== "upcoming_meetings" || preservePrevious) return records;
+  const asOfDay = asOfDayFrom(observedAt);
+  const currentIdentities = new Set(records.map((record) => publisherIdentityOf(record)).filter(Boolean));
+  const knownLinkedRecords = await acquireKnownLinkedEventRecords({
+    descriptor,
+    knownLinked,
+    currentIdentities,
+    fetchImpl,
+    observedAt,
+    committeeRegistry,
+  });
+  for (const record of knownLinkedRecords) {
+    currentIdentities.add(publisherIdentityOf(record));
+  }
+  const previousRecords = previousUpcomingEvents(previousIndex, descriptor.board_id, descriptor.url)
+    .filter((record) => !currentIdentities.has(publisherIdentityOf(record)));
+  return unionRetainedMeetingDetailRecords({
+    currentRecords: records,
+    knownLinkedRecords,
+    previousRecords,
+    asOfDay,
+  });
+}
+
 export async function buildCommunityBoardMeetingIndex({
   fetchImpl = fetch,
   observedAt = new Date().toISOString(),
@@ -551,10 +655,12 @@ export async function buildCommunityBoardMeetingIndex({
   committeeRegistry = readJson(COMMITTEE_REGISTRY),
   retainedSnapshots = readRetainedCommunityBoardSnapshots(),
   previousIndex = existsSync(OUTPUT) ? readCommunityBoardMeetingIndex(OUTPUT) : null,
+  hearingContext = readHearingContext(),
   codeRevision = currentCodeRevision(),
 } = {}) {
   const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
   const descriptors = sourceDescriptors(inventory, registry, retainedSnapshots);
+  const knownLinked = knownLinkedEventUrlsFromHearingContext(hearingContext);
   const byBoard = {};
   const sourceRecordsByBoard = {};
   const receipts = [];
@@ -609,6 +715,18 @@ export async function buildCommunityBoardMeetingIndex({
         enriched.push(next);
       }
       records = enriched;
+      const beforeRetention = records.length;
+      records = await retainMeetingDetailsForUpcomingRole({
+        descriptor,
+        records,
+        previousIndex,
+        knownLinked,
+        fetchImpl,
+        observedAt,
+        committeeRegistry,
+        preservePrevious,
+      });
+      eventDetailsFetched += Math.max(0, records.length - beforeRetention);
     }
     allRecords.push(...records);
     const roleReceipt = sourceRoleReceipt(descriptor, result, records, observedAt);
@@ -752,13 +870,34 @@ export function rematerializeCommunityBoardMeetingIndex({
   committeeRegistry = readJson(COMMITTEE_REGISTRY),
   committed = readCommunityBoardMeetingIndex(OUTPUT),
   retainedSnapshots = readRetainedCommunityBoardSnapshots(),
+  hearingContext = readHearingContext(),
 } = {}) {
   const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
   const descriptors = sourceDescriptors(inventory, registry, retainedSnapshots);
+  const knownLinked = knownLinkedEventUrlsFromHearingContext(hearingContext);
+  const knownLinkedIds = new Set(knownLinked.map((row) => row.source_url));
   const sourceRecordsByBoard = mergeRetainedSourceRecords(
     committed.source_records_by_board || {},
     retainedSnapshots,
   );
+  const asOfDay = asOfDayFrom(committed.generated_at);
+  for (const [boardId, records] of Object.entries(sourceRecordsByBoard)) {
+    const upcoming = records.filter((record) => (record.source_role || "upcoming_meetings") === "upcoming_meetings");
+    const other = records.filter((record) => (record.source_role || "upcoming_meetings") !== "upcoming_meetings");
+    const current = upcoming.filter((record) => !record.detail_retention?.omitted_from_upcoming);
+    const retained = upcoming.filter((record) => record.detail_retention?.omitted_from_upcoming);
+    const knownLinkedRecords = retained.filter((record) => knownLinkedIds.has(publisherIdentityOf(record)));
+    const previousRecords = retained.filter((record) => !knownLinkedIds.has(publisherIdentityOf(record)));
+    sourceRecordsByBoard[boardId] = [
+      ...other,
+      ...unionRetainedMeetingDetailRecords({
+        currentRecords: current,
+        knownLinkedRecords,
+        previousRecords,
+        asOfDay,
+      }),
+    ];
+  }
   const receipts = descriptors.map((descriptor) => {
     const retained = retainedSnapshotResult(descriptor);
     if (retained) return sourceRoleReceipt(descriptor, retained, retained.records, committed.generated_at);

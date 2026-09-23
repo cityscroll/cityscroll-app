@@ -1,0 +1,93 @@
+{
+  "schema": "cityscroll.community_board_meeting_retention_manifest.v1",
+  "grounded_at": "5a9f92c46c6aae5fb5971ace94c8fb9ba19dd307",
+  "as_of_day": "2026-09-23",
+  "verify": "node --test test/community_board_meeting_retention.test.mjs",
+  "source_fixture": {
+    "path": "docs/evidence/community-board-meeting-retention/source-fixture.json",
+    "html_fixture": "test/fixtures/community_board_meeting_retention/september-2026-board-meeting.html",
+    "content_sha256": "0fcab5cd4a67004d7e76513a1ac321efc9bae6f7fe6f1e6ace3928529cd7fff5",
+    "source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
+  },
+  "acquisition_passes": [
+    {
+      "id": "pass-1-seed-known-linked",
+      "observed_at": "2026-09-14T18:00:00.000Z",
+      "calendar_contains": [
+        "https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
+      ],
+      "assertion": "Known linked September 14 event detail is acquired through html_pdf_v1 and admitted by publisher identity."
+    },
+    {
+      "id": "pass-2-upcoming-omits-september-14",
+      "observed_at": "2026-09-23T16:00:00.000Z",
+      "calendar_contains": [
+        "https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/"
+      ],
+      "calendar_omits": [
+        "https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
+      ],
+      "assertion": "Successful upcoming refresh keeps the September 14 detail resolvable, marks timing_status past, suppresses it from the upcoming collection, and does not infer cancellation."
+    }
+  ],
+  "profile_to_detail": {
+    "profile_route": "/community-boards/brooklyn-cb-14/",
+    "detail_route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+    "linked_from": "community_board_hearing_context",
+    "assertions": [
+      "Detail resolves with venue 1625 Ocean Avenue",
+      "Published start 2026-09-14T18:30:00-04:00",
+      "Official source URL preserved",
+      "timing_status past as of 2026-09-23",
+      "Footer 810 East 16th Street is not the venue"
+    ]
+  },
+  "captures": [
+    {
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": "desktop",
+      "width": 1280,
+      "height": 800,
+      "revision": "5a9f92c46c6aae5fb5971ace94c8fb9ba19dd307",
+      "data_vintage": "2026-09-23T05:09:59.711Z",
+      "assertion": "Board hearing-preparation link targets the retained September 14 meeting detail.",
+      "image_policy": "external_retention_only"
+    },
+    {
+      "route": "/community-boards/brooklyn-cb-14/",
+      "viewport": "mobile",
+      "width": 390,
+      "height": 844,
+      "revision": "5a9f92c46c6aae5fb5971ace94c8fb9ba19dd307",
+      "data_vintage": "2026-09-23T05:09:59.711Z",
+      "assertion": "Board hearing-preparation link targets the retained September 14 meeting detail on a narrow viewport.",
+      "image_policy": "external_retention_only"
+    },
+    {
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+      "viewport": "desktop",
+      "width": 1280,
+      "height": 800,
+      "revision": "5a9f92c46c6aae5fb5971ace94c8fb9ba19dd307",
+      "data_vintage": "2026-09-23T05:09:59.711Z",
+      "assertion": "Retained detail shows 1625 Ocean Avenue, 6:30 start, official source, and past timing.",
+      "image_policy": "external_retention_only"
+    },
+    {
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+      "viewport": "mobile",
+      "width": 390,
+      "height": 844,
+      "revision": "5a9f92c46c6aae5fb5971ace94c8fb9ba19dd307",
+      "data_vintage": "2026-09-23T05:09:59.711Z",
+      "assertion": "Retained detail remains readable on a narrow viewport with the same venue and source facts.",
+      "image_policy": "external_retention_only"
+    }
+  ],
+  "acceptance": {
+    "A1": "proved_by_fixture_and_read_model",
+    "A2": "proved_by_verify_test",
+    "A3": "proved_by_verify_test",
+    "A4": "proved_by_source_fixture_and_capture_manifest"
+  }
+}

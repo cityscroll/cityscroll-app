@@ -25,7 +25,7 @@
     "source_urls_checked": 95,
     "event_details_checked": 94,
     "boards_indexed": 27,
-    "records_indexed": 449,
+    "records_indexed": 450,
     "minutes_documents_indexed": 4316,
     "minutes_documents_attached": 0,
     "minutes_documents_unlinked": 4316,
@@ -35,7 +35,7 @@
     "meeting_documents_attached": 88,
     "meeting_documents_unlinked": 4316,
     "minutes_documents_ambiguous": 0,
-    "institution_edges_materialized": 494,
+    "institution_edges_materialized": 495,
     "boards_in_inventory": 59,
     "source_roles_total": 118,
     "source_roles_indexed": 65,
@@ -676,7 +676,7 @@
       "board_name": "Brooklyn Community Board 14",
       "borough": "Brooklyn",
       "community_district": "K14",
-      "meeting_record_count": 1,
+      "meeting_record_count": 2,
       "meetings": {
         "state": "indexed",
         "source_role_state": "indexed",
@@ -11366,6 +11366,79 @@
         "board_id": "queens-cb-02",
         "event_date": "2026-09-14",
         "publisher_identifier": "P3VFSHDK6M2PT5KMSKCT7DT8EM@GOOGLE.COM::2026-09-14",
+        "evidence": [
+          "exact_board_identity",
+          "exact_date",
+          "publisher_identifier"
+        ]
+      },
+      "evidence": [
+        "exact_board_identity",
+        "exact_publisher_identifier",
+        "exact_meeting_date",
+        "retained_source_url",
+        "observed_receipt",
+        "verified_source_join"
+      ],
+      "publication_basis": null
+    },
+    {
+      "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+      "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+      "edge_type": "hosts_meeting",
+      "relation": "hosts_meeting",
+      "status": "promoted",
+      "promoted": true,
+      "reason": null,
+      "from": "community-board:brooklyn-cb-14",
+      "to": "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+      "target_kind": "meeting",
+      "target_id": "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+      "target_name": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028",
+      "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+      "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+      "board_href": "/community-boards/brooklyn-cb-14/",
+      "institution_refs": {
+        "board_ref": "community-board:brooklyn-cb-14"
+      },
+      "source_url": "https://cb14brooklyn.com/meetings/",
+      "source_record_id": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+        "observed_at": "2026-09-23T05:09:59.711Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 345857,
+        "parser": "html_pdf_v1",
+        "reason": null,
+        "content_sha256": "0fcab5cd4a67004d7e76513a1ac321efc9bae6f7fe6f1e6ace3928529cd7fff5"
+      },
+      "source_entry_evidence": null,
+      "provenance": {
+        "source_url": "https://cb14brooklyn.com/meetings/",
+        "source_record_id": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+          "observed_at": "2026-09-23T05:09:59.711Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html; charset=UTF-8",
+          "content_length": 345857,
+          "parser": "html_pdf_v1",
+          "reason": null,
+          "content_sha256": "0fcab5cd4a67004d7e76513a1ac321efc9bae6f7fe6f1e6ace3928529cd7fff5"
+        },
+        "format": "html"
+      },
+      "join": {
+        "matched": true,
+        "method": "exact_board_date_publisher_identifier",
+        "board_id": "brooklyn-cb-14",
+        "event_date": "2026-09-14",
+        "publisher_identifier": "HTTPS://CB14BROOKLYN.COM/MEETING/SEPTEMBER-2026-BOARD-MEETING/",
         "evidence": [
           "exact_board_identity",
           "exact_date",
@@ -48147,7 +48220,7 @@
     {
       "path": "community_board_meeting_index/shard-000.json",
       "kind": "source_records_by_board",
-      "bytes": 11390715,
+      "bytes": 11431865,
       "entry_count": 51
     },
     {
@@ -48159,14 +48232,14 @@
     {
       "path": "community_board_meeting_index/shard-002.json",
       "kind": "by_board",
-      "bytes": 6049961,
+      "bytes": 6101024,
       "entry_count": 27
     },
     {
       "path": "community_board_meeting_index/shard-003.json",
       "kind": "rows",
-      "bytes": 5558902,
-      "entry_count": 449
+      "bytes": 5605293,
+      "entry_count": 450
     }
   ]
 }
