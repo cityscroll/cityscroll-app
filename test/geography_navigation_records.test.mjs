@@ -544,4 +544,10 @@ test("A1: broader district suggestions are labeled broader and stay outside exac
   assert.match(html, /class="near-geo-broader-label">broader</);
   assert.match(html, /not counted as exact neighborhood records/);
   assert.doesNotMatch(html, /data-geography-record-lens="meetings"[^>]*>[\s\S]*broader/);
+  // Empty-case smoke reads href from [data-geography-related-district] itself.
+  assert.match(
+    html,
+    /<a[^>]*data-geography-related-district[^>]*href="\/near-you\/\?geo=community_district%3AM01&amp;surface=records"/,
+  );
+  assert.doesNotMatch(html, /<li[^>]*data-geography-related-district[^>]*>/);
 });

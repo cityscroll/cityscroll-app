@@ -1,20 +1,33 @@
 {
-  "schema": "cityscroll.render_capture_manifest.v1",
-  "feature": "near-you-map-record-health",
-  "public_alias": "c42128caee453",
-  "surface": "Near You map and record health",
-  "base": "https://cityscroll.org/",
-  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
-  "capture_mode": "headless-playwright-production-served-site",
-  "revision_format": "served artifact-manifest source_commit_sha",
-  "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
-  "repository_revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
-  "grounded_at": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
-  "data_vintage": "nta2020 26B",
-  "image_binaries_committed": false,
-  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed.",
-  "note": "Production desktop/mobile record-failure read-backs; textual DOM hashes only.",
-  "captures": [
+  "schema": "cityscroll.near_you_map_record_health_production_read.v1",
+  "observed_at": "2026-09-23T01:13:11.528875Z",
+  "evidence_class": "deployed-production-read-back",
+  "origin": "https://cityscroll.org",
+  "deployment": {
+    "manifest_url": "https://cityscroll.org/artifact-manifest.json",
+    "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+    "generated_at": "2026-09-23T00:13:23.272Z",
+    "deployment_at": "2026-09-23T00:13:23.272Z",
+    "manifest_sha256": "8afc1aedc388b02b9d62b33cb7c7c10ce477ab371d73fc64c0bef8ca3df78cfa"
+  },
+  "capture": {
+    "tool": "tools/capture_near_you_map_health_preserve_place_production_read.py",
+    "browser": "chromium",
+    "viewports": [
+      {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "screenshot_binaries_committed": false
+  },
+  "reads": [
     {
       "source": "headless-playwright-production-served-site",
       "name": "production-record-failure-BK0101-desktop",
@@ -189,5 +202,10 @@
         }
       }
     }
-  ]
+  ],
+  "summary": {
+    "specimen_count": 3,
+    "capture_count": 6,
+    "all_passed": true
+  }
 }
