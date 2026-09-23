@@ -1158,7 +1158,9 @@ function wireRecordInspection() {
 }
 
 function rememberNearYouDepartureScroll(event) {
-  const link = event?.target?.closest?.("[data-near-you-record-inspection-open], a[href]");
+  // Remember only the full-record handoff from inspection; pagehide covers the
+  // same URL key for other same-origin exits from this document.
+  const link = event?.target?.closest?.("[data-near-you-record-inspection-open]");
   if (!link || !root?.contains?.(link)) return;
   if (event?.metaKey || event?.ctrlKey || event?.shiftKey || event?.altKey) return;
   const href = link.getAttribute?.("href");
