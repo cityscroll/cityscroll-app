@@ -1,0 +1,274 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "feature": "residential-directory-readback",
+  "public_alias": "cd5ed919f3be2",
+  "surface": "Near You searchable residential directory",
+  "base": "https://cityscroll.org/",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "capture_mode": "headless-playwright-production-served-site",
+  "revision_format": "served artifact-manifest source_commit_sha",
+  "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+  "repository_revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+  "grounded_at": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+  "data_vintage": "nta2020 26B",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed.",
+  "producer": {
+    "path": "docs/evidence/residential-directory-readback/read-back.json",
+    "schema": "cityscroll.residential_directory_production_read.v1",
+    "letters": [
+      "A1",
+      "A2"
+    ],
+    "offline_fixtures_letter": "A3",
+    "offline_fixture_suites": [
+      "test/geography_navigation_shell.test.mjs",
+      "test/geography_navigation_entry.test.mjs"
+    ]
+  },
+  "captures": [
+    {
+      "name": "a1-default-chooser",
+      "route": "/near-you/",
+      "mode": "served-html-observation",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "data_vintage": "nta2020 26B",
+      "assertion": "Observed borough group order and counts; special-use directory keeps named airport/cemetery entries reachable outside the residential list.",
+      "sha256": "d3b940f9e29fa689e5add2dcd74ff70da35f5a7c9f805e312a57765fa1f1558b",
+      "file": null,
+      "observed": {
+        "borough_group_order": [
+          "Bronx",
+          "Brooklyn",
+          "Manhattan",
+          "Queens",
+          "Staten Island"
+        ],
+        "residential_link_count": 197,
+        "special_use_link_count": 65,
+        "named_special_use": [
+          {
+            "id": "QN8381",
+            "expected_label": "John F. Kennedy International Airport",
+            "in_special_use_directory": true,
+            "in_residential_directory": false,
+            "observed_label": "John F. Kennedy International Airport"
+          },
+          {
+            "id": "BK0771",
+            "expected_label": "Green-Wood Cemetery",
+            "in_special_use_directory": true,
+            "in_residential_directory": false,
+            "observed_label": "Green-Wood Cemetery"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a2-entry-desktop",
+      "route": "/near-you/",
+      "mode": "served-html-script-stripped-no-js",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "data_vintage": "nta2020 26B",
+      "assertion": "After stripping scripts, native area hrefs remain, keyboard reaches directory/browse controls, alias/no-match behave as served, and no location-permission event is observed.",
+      "sha256": "059088de184ef0a79c2d59132592e589ec0a46ff951be4047945d6d1b8c6433d",
+      "file": null,
+      "observed": {
+        "script_tags_after_strip": 0,
+        "native_link_count": 262,
+        "keyboard_reached": {
+          "directory_filter": true,
+          "browse_records": true,
+          "special_use_summary": false,
+          "directory_list_summary": true,
+          "area_link": false
+        },
+        "location_permission_events_observed": [],
+        "alias": null,
+        "no_match": null
+      }
+    },
+    {
+      "name": "a2-entry-mobile",
+      "route": "/near-you/",
+      "mode": "served-html-script-stripped-no-js",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "data_vintage": "nta2020 26B",
+      "assertion": "After stripping scripts, native area hrefs remain, keyboard reaches directory/browse controls, alias/no-match behave as served, and no location-permission event is observed.",
+      "sha256": "154145b6b16a53afc38ed4dd53744fea1cc28dea8269f14013830281304c6ade",
+      "file": null,
+      "observed": {
+        "script_tags_after_strip": 0,
+        "native_link_count": 262,
+        "keyboard_reached": {
+          "directory_filter": true,
+          "browse_records": true,
+          "special_use_summary": false,
+          "directory_list_summary": true,
+          "area_link": false
+        },
+        "location_permission_events_observed": [],
+        "alias": null,
+        "no_match": null
+      }
+    },
+    {
+      "name": "a2-alias-tribeca-desktop",
+      "route": "/near-you/?area_q=Tribeca",
+      "mode": "served-html-script-stripped-no-js",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "data_vintage": "nta2020 26B",
+      "assertion": "After stripping scripts, native area hrefs remain, keyboard reaches directory/browse controls, alias/no-match behave as served, and no location-permission event is observed.",
+      "sha256": "4fbcd92718fa6a8c5d1b5278d6dd89972176b1dc262415527ad5e32b9d7fbcb9",
+      "file": null,
+      "observed": {
+        "script_tags_after_strip": 0,
+        "native_link_count": 1,
+        "keyboard_reached": {
+          "directory_filter": true,
+          "browse_records": true,
+          "special_use_summary": false,
+          "directory_list_summary": true,
+          "area_link": false
+        },
+        "location_permission_events_observed": [],
+        "alias": {
+          "query": "Tribeca",
+          "expected_id": "MN0102",
+          "matched_ids": [
+            "MN0102"
+          ],
+          "residential_ids_observed": [
+            "MN0102"
+          ]
+        },
+        "no_match": null
+      }
+    },
+    {
+      "name": "a2-alias-tribeca-mobile",
+      "route": "/near-you/?area_q=Tribeca",
+      "mode": "served-html-script-stripped-no-js",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "data_vintage": "nta2020 26B",
+      "assertion": "After stripping scripts, native area hrefs remain, keyboard reaches directory/browse controls, alias/no-match behave as served, and no location-permission event is observed.",
+      "sha256": "fef452419178b1f4c9ec67ed9c0cc5a997d8195bbab003c9a25601ac18e41e8d",
+      "file": null,
+      "observed": {
+        "script_tags_after_strip": 0,
+        "native_link_count": 1,
+        "keyboard_reached": {
+          "directory_filter": true,
+          "browse_records": true,
+          "special_use_summary": false,
+          "directory_list_summary": true,
+          "area_link": false
+        },
+        "location_permission_events_observed": [],
+        "alias": {
+          "query": "Tribeca",
+          "expected_id": "MN0102",
+          "matched_ids": [
+            "MN0102"
+          ],
+          "residential_ids_observed": [
+            "MN0102"
+          ]
+        },
+        "no_match": null
+      }
+    },
+    {
+      "name": "a2-no-match-desktop",
+      "route": "/near-you/?area_q=zzz-no-such-neighborhood",
+      "mode": "served-html-script-stripped-no-js",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "data_vintage": "nta2020 26B",
+      "assertion": "After stripping scripts, native area hrefs remain, keyboard reaches directory/browse controls, alias/no-match behave as served, and no location-permission event is observed.",
+      "sha256": "b8b4902afb900217a121cd2df7969a4b9725c023ed80f87ea549be6e7b8f677f",
+      "file": null,
+      "observed": {
+        "script_tags_after_strip": 0,
+        "native_link_count": 0,
+        "keyboard_reached": {
+          "directory_filter": true,
+          "browse_records": true,
+          "special_use_summary": false,
+          "directory_list_summary": true,
+          "area_link": false
+        },
+        "location_permission_events_observed": [],
+        "alias": null,
+        "no_match": {
+          "query": "zzz-no-such-neighborhood",
+          "empty_status_text": "No neighborhoods match that name. Clear the filter or choose a special-use area below.",
+          "residential_link_count": 0,
+          "special_use_directory_present": true,
+          "special_use_summary_label": "Special-use areas",
+          "special_use_link_count_under_filter": 0,
+          "special_use_filter_empty_message_present": true
+        }
+      }
+    },
+    {
+      "name": "a2-no-match-mobile",
+      "route": "/near-you/?area_q=zzz-no-such-neighborhood",
+      "mode": "served-html-script-stripped-no-js",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "data_vintage": "nta2020 26B",
+      "assertion": "After stripping scripts, native area hrefs remain, keyboard reaches directory/browse controls, alias/no-match behave as served, and no location-permission event is observed.",
+      "sha256": "e0b572ede22e3b26f8909a4af5fd7896d9147f46270a848563513535391bc906",
+      "file": null,
+      "observed": {
+        "script_tags_after_strip": 0,
+        "native_link_count": 0,
+        "keyboard_reached": {
+          "directory_filter": true,
+          "browse_records": true,
+          "special_use_summary": false,
+          "directory_list_summary": true,
+          "area_link": false
+        },
+        "location_permission_events_observed": [],
+        "alias": null,
+        "no_match": {
+          "query": "zzz-no-such-neighborhood",
+          "empty_status_text": "No neighborhoods match that name. Clear the filter or choose a special-use area below.",
+          "residential_link_count": 0,
+          "special_use_directory_present": true,
+          "special_use_summary_label": "Special-use areas",
+          "special_use_link_count_under_filter": 0,
+          "special_use_filter_empty_message_present": true
+        }
+      }
+    }
+  ]
+}
