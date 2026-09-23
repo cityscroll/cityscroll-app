@@ -215,13 +215,23 @@ test("shard publication attaches the reverse-index descriptor without inventing 
 });
 
 test("A6: notice-subject reader path uses the bounded lookup and never scans shards or publishers", () => {
-  assert.match(
+  // Pages Function loads the reverse index from published ASSETS at request time so
+  // the multi-megabyte JSON stays out of the Cloudflare Functions bundle.
+  assert.doesNotMatch(
     PAGES_EDGE_SOURCE,
     /import noticeProcurementSubjectsLookup from "\.\/data\/notice_procurement_subjects_lookup\.json"/,
   );
   assert.match(
     PAGES_EDGE_SOURCE,
-    /subjectsLookup:\s*options\.subjectsLookup\s*\|\|\s*noticeProcurementSubjectsLookup/,
+    /NOTICE_PROCUREMENT_SUBJECTS_LOOKUP_PATH/,
+  );
+  assert.match(
+    PAGES_EDGE_SOURCE,
+    /staticAsset\(\s*env,\s*request,\s*`\/\$\{NOTICE_PROCUREMENT_SUBJECTS_LOOKUP_PATH\}`\s*\)/,
+  );
+  assert.match(
+    PAGES_EDGE_SOURCE,
+    /subjectsLookup:\s*options\.subjectsLookup\s*\|\|\s*null/,
   );
   assert.match(
     NOTICE_SUBJECT_CLIENT_SOURCE,
