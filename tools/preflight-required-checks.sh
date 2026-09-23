@@ -448,6 +448,7 @@ family_site_node() {
   run_and_fail node tools/no_live_external_reads.mjs --check
   run_and_fail node tools/build_geocoder_address_index.mjs --check
   run_and_fail node tools/build_citywide_parcel_points.mjs --check
+  run_and_fail node tools/build_parcel_memberships.mjs --check
   run_and_fail node tools/check_pages_bundle_node_builtins.mjs
   # CI's site-node family fails test/card_profile.test.mjs when a new site/
   # module is tracked but missing from the committed sparse patterns. derive
