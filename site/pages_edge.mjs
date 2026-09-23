@@ -28,10 +28,10 @@ import { NOTICE_MODULE_PRELOADS } from "./notice_module_preload.mjs";
 import { noticeEdgeCacheOutcome, noticeEdgeInstant, noticeEdgeTimingHeader } from "./notice_edge_response.mjs";
 import { renderNoticeMandateBacklinksForId } from "./notice_mandate_backlinks.mjs";
 import {
-  NOTICE_PROCUREMENT_SUBJECTS_LOOKUP_PATH,
   projectNoticeSubjectLinks,
   renderNoticeSubjectLinksHtml,
 } from "./notice_subject_projection.mjs";
+import noticeProcurementSubjectsLookup from "./data/notice_procurement_subjects_lookup.json" with { type: "json" };
 import {
   findMandateById,
   noticeEvidenceForMandate,
@@ -683,9 +683,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
   const identity = resolveAgencyIdentity(agency);
   const vendor = String(row?.vendor_name || "").trim();
   const objectProjection = projectNoticeSubjectLinks({ ...row, request_id: id }, {
-    // Prefer an explicit lookup (tests / handleNotice ASSETS load). Never import the
-    // multi-megabyte reverse index into the Pages Function bundle.
-    subjectsLookup: options.subjectsLookup || null,
+    subjectsLookup: options.subjectsLookup || noticeProcurementSubjectsLookup,
   });
   const subjectLinks = Array.isArray(objectProjection.subjects) ? objectProjection.subjects : [];
   const projectedTarget = objectProjection.state === "matched"
@@ -1156,11 +1154,10 @@ async function handleNotice(request, env, id) {
     (result) => { recordSettledAt = noticeEdgeInstant(); return { ok: true, result }; },
     () => { recordSettledAt = noticeEdgeInstant(); return { ok: false, result: null }; },
   );
-  const [asset, meetingSnapshotResponse, mandateBacklinksResponse, subjectsLookupResponse] = await Promise.all([
+  const [asset, meetingSnapshotResponse, mandateBacklinksResponse] = await Promise.all([
     staticAsset(env, request, "/"),
     staticAsset(env, request, "/data/meeting_outcomes_snapshot.json"),
     staticAsset(env, request, "/data/notice_mandate_backlinks_lookup.json"),
-    staticAsset(env, request, `/${NOTICE_PROCUREMENT_SUBJECTS_LOOKUP_PATH}`),
   ]);
   const assetsSettledAt = noticeEdgeInstant();
   let meetingOutcome = null;
@@ -1177,14 +1174,6 @@ async function handleNotice(request, env, id) {
       : null;
   } catch (_error) {
     mandateBacklinksLookup = null;
-  }
-  let subjectsLookup = null;
-  try {
-    subjectsLookup = subjectsLookupResponse.ok
-      ? await subjectsLookupResponse.json()
-      : null;
-  } catch (_error) {
-    subjectsLookup = null;
   }
   const record = await recordRead;
   const row = record.ok ? record.result?.row || null : null;
@@ -1238,7 +1227,6 @@ async function handleNotice(request, env, id) {
           civicTime,
           projectContextMaterialization: procurementProjectContextMaterialization,
           contractLifecycleMaterialization: procurementContractLifecycleMaterialization,
-          subjectsLookup,
         }),
         { html: true },
       );
