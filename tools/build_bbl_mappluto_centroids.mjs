@@ -28,13 +28,12 @@ import {
   sellFacingProjectIds,
 } from "../site/bbl_mappluto_centroids.mjs";
 import { publicPayloadFindings } from "./lib/public_payload_integrity.mjs";
+import { MAPPLUTO_QUERY, fetchArcgisChunk, parseCsvLine } from "./lib/mappluto_acquisition.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_SITE = path.join(ROOT, "site", "data", "bbl_mappluto_centroids_lookup.json");
 const PROJECTS_LOOKUP = path.join(ROOT, "site", "data", "zap_projects_warehouse_lookup.json");
 const BBL_LOOKUP = path.join(ROOT, "site", "data", "zap_bbl_warehouse_lookup.json");
-const MAPPLUTO_QUERY =
-  "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/MAPPLUTO/FeatureServer/0/query";
 const DEFAULT_PLUTO_CANDIDATES = [
   process.env.CROL_PLUTO_CSV,
   path.join(ROOT, "warehouse", "raw", "mappluto", "pluto_latest.csv"),
@@ -80,40 +79,6 @@ function resolvePlutoCsv(explicit) {
   return null;
 }
 
-function parseCsvLine(line) {
-  const out = [];
-  let cur = "";
-  let inQuotes = false;
-  for (let i = 0; i < line.length; i += 1) {
-    const ch = line[i];
-    if (inQuotes) {
-      if (ch === "\"") {
-        if (line[i + 1] === "\"") {
-          cur += "\"";
-          i += 1;
-        } else {
-          inQuotes = false;
-        }
-      } else {
-        cur += ch;
-      }
-      continue;
-    }
-    if (ch === "\"") {
-      inQuotes = true;
-      continue;
-    }
-    if (ch === ",") {
-      out.push(cur);
-      cur = "";
-      continue;
-    }
-    cur += ch;
-  }
-  out.push(cur);
-  return out;
-}
-
 async function extractCentroidsFromPlutoCsv(csvPath, wantedBbls) {
   const wanted = wantedBbls instanceof Set ? wantedBbls : new Set(wantedBbls);
   const byBbl = Object.create(null);
@@ -155,39 +120,6 @@ async function extractCentroidsFromPlutoCsv(csvPath, wantedBbls) {
     },
     mode: "mappluto_pluto_csv",
   };
-}
-
-async function fetchArcgisChunk(bbls) {
-  const where = `BBL IN (${bbls.map((bbl) => String(Number(bbl))).join(",")})`;
-  const url = new URL(MAPPLUTO_QUERY);
-  url.searchParams.set("where", where);
-  url.searchParams.set("outFields", "BBL,Latitude,Longitude");
-  url.searchParams.set("returnGeometry", "false");
-  url.searchParams.set("resultRecordCount", String(Math.max(bbls.length, 1)));
-  url.searchParams.set("f", "json");
-  const response = await fetch(url, {
-    headers: {
-      Accept: "application/json",
-      "User-Agent": "cityscroll-bbl-mappluto-centroids/1.0",
-    },
-  });
-  if (!response.ok) {
-    throw new Error(`MapPLUTO ArcGIS HTTP ${response.status} for ${bbls.length} BBLs`);
-  }
-  const payload = await response.json();
-  if (payload?.error) {
-    throw new Error(`MapPLUTO ArcGIS error: ${JSON.stringify(payload.error)}`);
-  }
-  const byBbl = Object.create(null);
-  for (const feature of payload?.features || []) {
-    const attrs = feature?.attributes || {};
-    const bbl = normalizeBbl(attrs.BBL);
-    const lat = Number(attrs.Latitude);
-    const lon = Number(attrs.Longitude);
-    if (!bbl || !Number.isFinite(lat) || !Number.isFinite(lon)) continue;
-    byBbl[bbl] = { lat, lon };
-  }
-  return byBbl;
 }
 
 async function extractCentroidsFromArcgis(wantedBbls, { limit = null } = {}) {

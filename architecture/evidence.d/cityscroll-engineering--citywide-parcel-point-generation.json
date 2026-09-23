@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/citywide-parcel-point-generation",
+  "status": "implemented",
+  "fingerprint": "citywide-parcel-point-generation.v1",
+  "updated_at": "2026-09-23T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "parcel-geography-generation",
+      "path": "site/data/parcel-geography/manifest.json"
+    },
+    {
+      "id": "parcel-geography-reader",
+      "path": "site/parcel_geography.mjs"
+    },
+    {
+      "id": "parcel-geography-builder",
+      "path": "tools/build_citywide_parcel_points.mjs"
+    },
+    {
+      "id": "parcel-geography-build-lib",
+      "path": "tools/lib/citywide_parcel_points.mjs"
+    },
+    {
+      "id": "mappluto-shared-acquisition",
+      "path": "tools/lib/mappluto_acquisition.mjs"
+    },
+    {
+      "id": "parcel-geography-verify-test",
+      "path": "test/citywide_parcel_points.test.mjs"
+    }
+  ]
+}

@@ -916,7 +916,7 @@
         "registry": {
           "status": "build-time",
           "delivery_tier": "inline-at-build",
-          "used_for": "Official attribution for tax-lot map context, retained BBL→centroid pins for Land, and — bounded to the exact single-BBL project subset — a retained BBL→parcel-polygon lookup for the optional Land project-geometry field."
+          "used_for": "Official attribution for tax-lot map context, retained BBL→centroid pins for Land, a bounded BBL→parcel-polygon lookup for the optional Land project-geometry field, and reusable citywide parcel coordinates (deterministic 256-way BBL shards) for address-entry geography and record location joins."
         }
       }
     },
