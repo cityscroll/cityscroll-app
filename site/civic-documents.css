@@ -4093,7 +4093,9 @@ select {
 [data-geography-shell] .near-selected-context:not([open]) > :not(summary) {
   display: none !important;
 }
-[data-geography-shell] .near-map-secondary-label {
+[data-geography-shell] .near-map-secondary-label,
+[data-geography-shell] .near-geo-more-boundaries-label {
+  display: block;
   margin: 0 0 var(--space-2);
   font: 650 0.95rem/1.3 var(--font-interface);
 }

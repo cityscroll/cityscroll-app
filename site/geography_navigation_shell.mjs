@@ -35,7 +35,7 @@ export const GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM = "area_q";
 export const GEOGRAPHY_SHELL_DIRECTORY_LIST_SUMMARY = "Neighborhood list";
 export const GEOGRAPHY_SHELL_SPECIAL_USE_SUMMARY = "Special-use areas";
 export const GEOGRAPHY_SHELL_SPECIAL_USE_NOTE =
-  "Airports, parks, cemeteries, and other non-residential statistical areas.";
+  "Airports, parks, cemeteries, and other places that are not neighborhoods.";
 export const GEOGRAPHY_SHELL_DIRECTORY_EMPTY =
   "No neighborhoods match that name. Clear the filter or choose a special-use area below.";
 
@@ -340,7 +340,7 @@ export function geographyShellLayerSwitcherHtml({
   return `<div class="near-geo-layers" data-geography-layer-switcher role="group" aria-label="Boundary layers">
       <div class="near-geo-layers-primary">${primary}</div>
       <div class="near-geo-more-boundaries" role="group" aria-label="${esc(GEOGRAPHY_SHELL_MORE_BOUNDARIES_LABEL)}">
-        <p class="near-geo-more-boundaries-label">${esc(GEOGRAPHY_SHELL_MORE_BOUNDARIES_LABEL)}</p>
+        <span class="near-geo-more-boundaries-label">${esc(GEOGRAPHY_SHELL_MORE_BOUNDARIES_LABEL)}</span>
         <div class="near-geo-layers-more">${more}</div>
       </div>
     </div>`;
@@ -438,7 +438,7 @@ export function geographyShellAreasListHtml(entriesOrDirectory, {
     const matchedResidential = projection.residential?.length ?? 0;
     const summary = filterValue
       ? `<p class="near-area-directory-summary" data-geography-directory-summary>Showing ${matchedResidential} of ${projection.residential_total} neighborhoods.</p>`
-      : `<p class="near-area-directory-summary" data-geography-directory-summary>${projection.residential_total} residential neighborhoods by borough.</p>`;
+      : `<p class="near-area-directory-summary" data-geography-directory-summary>${projection.residential_total} neighborhoods, listed by borough.</p>`;
     // Keep the long link list behind a closed disclosure so keyboard users reach
     // Browse records and later page actions without tabbing through every area.
     const openAttr = filterValue && matchedResidential > 0 && matchedResidential <= 12 ? " open" : "";
@@ -539,7 +539,7 @@ export function renderGeographyShellEntry({
         </div>
         ${geographyShellLayerSwitcherHtml({ activeType, base: canonicalBase, surface })}
         <div class="near-map-secondary" role="group" aria-label="Follow or share">
-          <p class="near-map-secondary-label">Follow or share</p>
+          <span class="near-map-secondary-label">Follow or share</span>
           ${actions}
           ${followDiscoveryHtml || ""}
         </div>
