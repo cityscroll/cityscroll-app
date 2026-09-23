@@ -1,0 +1,951 @@
+{
+  "schema": "cityscroll.near_you_shell_production_read.v1",
+  "public_alias": "ced62a84f8213",
+  "observed_at": "2026-09-23T04:25:00.370198Z",
+  "evidence_class": "deployed-production-read-back",
+  "origin": "https://cityscroll.org",
+  "deployment": {
+    "manifest_url": "https://cityscroll.org/artifact-manifest.json",
+    "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+    "generated_at": "2026-09-23T03:45:27.918Z",
+    "deployment_at": "2026-09-23T03:45:27.918Z",
+    "manifest_sha256": "598020bfb06a87be9bb23e4d844ab4dca4d8ea105447bb4170ab996dd9d660c2"
+  },
+  "capture": {
+    "tool": "tools/capture_near_you_shell_production_read.py",
+    "browser": "chromium",
+    "viewports": [
+      {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "screenshot_binaries_committed": false,
+    "map_hook": "Init script wraps window.maplibregl.Map to observe layout collision flags on the live instance."
+  },
+  "producer": {
+    "path": "docs/evidence/near-you-shell-readback/read-back.json",
+    "schema": "cityscroll.near_you_shell_production_read.v1",
+    "letters": [
+      "A9",
+      "A13"
+    ]
+  },
+  "letters": {
+    "A9": {
+      "route": "/near-you/",
+      "reads": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "route": "/near-you/",
+          "focus_order": [
+            {
+              "index": 0,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Skip to content",
+              "in_map_region": false
+            },
+            {
+              "index": 1,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": "CityScroll home",
+              "text": "CityScroll home",
+              "in_map_region": false
+            },
+            {
+              "index": 2,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Now",
+              "in_map_region": false
+            },
+            {
+              "index": 3,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Near you",
+              "in_map_region": false
+            },
+            {
+              "index": 4,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Following",
+              "in_map_region": false
+            },
+            {
+              "index": 5,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Browse",
+              "in_map_region": false
+            },
+            {
+              "index": 6,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Guide",
+              "in_map_region": false
+            },
+            {
+              "index": 7,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Ask with AI",
+              "in_map_region": false
+            },
+            {
+              "index": 8,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": "Back one step",
+              "text": "Back one step",
+              "in_map_region": false
+            },
+            {
+              "index": 9,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": "Restart at origin",
+              "text": "Restart at origin",
+              "in_map_region": false
+            },
+            {
+              "index": 10,
+              "tag": "INPUT",
+              "id": "near-geo-search-input",
+              "ariaLabel": null,
+              "text": "",
+              "in_map_region": false
+            },
+            {
+              "index": 11,
+              "tag": "BUTTON",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Search",
+              "in_map_region": false
+            },
+            {
+              "index": 12,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Map",
+              "in_map_region": false
+            },
+            {
+              "index": 13,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Browse records",
+              "in_map_region": false
+            },
+            {
+              "index": 14,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "More ways to choose",
+              "in_map_region": false
+            },
+            {
+              "index": 15,
+              "tag": "DIV",
+              "id": "near-map-enhanced",
+              "ariaLabel": null,
+              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+              "in_map_region": true
+            },
+            {
+              "index": 16,
+              "tag": "CANVAS",
+              "id": null,
+              "ariaLabel": "Map",
+              "text": "Map",
+              "in_map_region": true
+            },
+            {
+              "index": 17,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": "Toggle attribution",
+              "text": "Toggle attribution",
+              "in_map_region": true
+            },
+            {
+              "index": 18,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "MapLibre",
+              "in_map_region": true
+            },
+            {
+              "index": 19,
+              "tag": "INPUT",
+              "id": "near-area-directory-filter",
+              "ariaLabel": null,
+              "text": "",
+              "in_map_region": false
+            },
+            {
+              "index": 20,
+              "tag": "BUTTON",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Filter",
+              "in_map_region": false
+            },
+            {
+              "index": 21,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Neighborhood list",
+              "in_map_region": false
+            },
+            {
+              "index": 22,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Special-use areas",
+              "in_map_region": false
+            },
+            {
+              "index": 23,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Citywide20",
+              "in_map_region": false
+            },
+            {
+              "index": 24,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Virtual / online only1",
+              "in_map_region": false
+            },
+            {
+              "index": 25,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "No place signal89",
+              "in_map_region": false
+            },
+            {
+              "index": 26,
+              "tag": "BODY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "",
+              "in_map_region": false
+            },
+            {
+              "index": 27,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Skip to content",
+              "in_map_region": false
+            },
+            {
+              "index": 28,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": "CityScroll home",
+              "text": "CityScroll home",
+              "in_map_region": false
+            },
+            {
+              "index": 29,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Now",
+              "in_map_region": false
+            },
+            {
+              "index": 30,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Near you",
+              "in_map_region": false
+            },
+            {
+              "index": 31,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Following",
+              "in_map_region": false
+            }
+          ],
+          "map_region_focus_steps": [
+            {
+              "tag": "DIV",
+              "id": "near-map-enhanced",
+              "ariaLabel": null,
+              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre"
+            },
+            {
+              "tag": "CANVAS",
+              "id": null,
+              "ariaLabel": "Map",
+              "text": "Map"
+            },
+            {
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": "Toggle attribution",
+              "text": "Toggle attribution"
+            },
+            {
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "MapLibre"
+            }
+          ],
+          "first_map_focus_index": 15,
+          "first_map_focus": {
+            "tag": "DIV",
+            "id": "near-map-enhanced",
+            "className": "near-map-enhanced maplibregl-map",
+            "role": null,
+            "ariaLabel": null,
+            "tabIndex": 0,
+            "href": null,
+            "dataMapArea": null,
+            "dataNearSurface": null,
+            "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "in_map_region": true
+          },
+          "exit_map_focus_index": 19,
+          "exit_map_focus": {
+            "tag": "INPUT",
+            "id": "near-area-directory-filter",
+            "className": "",
+            "role": null,
+            "ariaLabel": null,
+            "tabIndex": 0,
+            "href": null,
+            "dataMapArea": null,
+            "dataNearSurface": null,
+            "text": "",
+            "in_map_region": false
+          },
+          "focus_trap_observed": false,
+          "escape_path": {
+            "before": {
+              "tag": "DIV",
+              "id": "near-map-enhanced",
+              "className": "near-map-enhanced maplibregl-map",
+              "role": null,
+              "ariaLabel": null,
+              "tabIndex": 0,
+              "href": null,
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+              "in_map_region": true
+            },
+            "after_escape": {
+              "tag": "DIV",
+              "id": "near-map-enhanced",
+              "className": "near-map-enhanced maplibregl-map",
+              "role": null,
+              "ariaLabel": null,
+              "tabIndex": 0,
+              "href": null,
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+              "in_map_region": true
+            },
+            "after_escape_tab": {
+              "tag": "CANVAS",
+              "id": null,
+              "className": "maplibregl-canvas",
+              "role": "region",
+              "ariaLabel": "Map",
+              "tabIndex": 0,
+              "href": null,
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "text": "Map",
+              "in_map_region": true
+            },
+            "exit_after_escape": {
+              "tag": "INPUT",
+              "id": "near-area-directory-filter",
+              "className": "",
+              "role": null,
+              "ariaLabel": null,
+              "tabIndex": 0,
+              "href": null,
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "text": "",
+              "in_map_region": false
+            },
+            "tabs_from_map_host_to_leave_region": 4,
+            "key_path": "Focus #near-map-enhanced \u2192 Escape (clears hover/focus ring) \u2192 Tab until focus leaves the map region"
+          },
+          "hover_equivalents": {
+            "rendered_label_count": 38,
+            "area_link_count": 262,
+            "area_links_with_href": 262,
+            "rendered_labels_with_directory_link": 38,
+            "title_only_instruction_count": 0,
+            "title_only_instructions": [],
+            "map_host_tab_index": 0,
+            "map_canvas_tab_index": 0,
+            "map_canvas_aria_label": "Map"
+          },
+          "dom_sha256": "94d494fc762082860f5eab77898f5362d841079fcd504c8235839e78b69e2f92",
+          "name": "a9-desktop",
+          "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+          "data_vintage": "nta2020 26B"
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "route": "/near-you/",
+          "focus_order": [
+            {
+              "index": 0,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Skip to content",
+              "in_map_region": false
+            },
+            {
+              "index": 1,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": "CityScroll home",
+              "text": "CityScroll home",
+              "in_map_region": false
+            },
+            {
+              "index": 2,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Now",
+              "in_map_region": false
+            },
+            {
+              "index": 3,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Near you",
+              "in_map_region": false
+            },
+            {
+              "index": 4,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Following",
+              "in_map_region": false
+            },
+            {
+              "index": 5,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Browse",
+              "in_map_region": false
+            },
+            {
+              "index": 6,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Guide",
+              "in_map_region": false
+            },
+            {
+              "index": 7,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Ask with AI",
+              "in_map_region": false
+            },
+            {
+              "index": 8,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": "Back one step",
+              "text": "Back one step",
+              "in_map_region": false
+            },
+            {
+              "index": 9,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": "Restart at origin",
+              "text": "Restart at origin",
+              "in_map_region": false
+            },
+            {
+              "index": 10,
+              "tag": "INPUT",
+              "id": "near-geo-search-input",
+              "ariaLabel": null,
+              "text": "",
+              "in_map_region": false
+            },
+            {
+              "index": 11,
+              "tag": "BUTTON",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Search",
+              "in_map_region": false
+            },
+            {
+              "index": 12,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Map",
+              "in_map_region": false
+            },
+            {
+              "index": 13,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Browse records",
+              "in_map_region": false
+            },
+            {
+              "index": 14,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "More ways to choose",
+              "in_map_region": false
+            },
+            {
+              "index": 15,
+              "tag": "BUTTON",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Map details",
+              "in_map_region": false
+            },
+            {
+              "index": 16,
+              "tag": "DIV",
+              "id": "near-map-enhanced",
+              "ariaLabel": null,
+              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+              "in_map_region": true
+            },
+            {
+              "index": 17,
+              "tag": "CANVAS",
+              "id": null,
+              "ariaLabel": "Map",
+              "text": "Map",
+              "in_map_region": true
+            },
+            {
+              "index": 18,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": "Toggle attribution",
+              "text": "Toggle attribution",
+              "in_map_region": true
+            },
+            {
+              "index": 19,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "MapLibre",
+              "in_map_region": true
+            },
+            {
+              "index": 20,
+              "tag": "INPUT",
+              "id": "near-area-directory-filter",
+              "ariaLabel": null,
+              "text": "",
+              "in_map_region": false
+            },
+            {
+              "index": 21,
+              "tag": "BUTTON",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Filter",
+              "in_map_region": false
+            },
+            {
+              "index": 22,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Neighborhood list",
+              "in_map_region": false
+            },
+            {
+              "index": 23,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Special-use areas",
+              "in_map_region": false
+            },
+            {
+              "index": 24,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Citywide20",
+              "in_map_region": false
+            },
+            {
+              "index": 25,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Virtual / online only1",
+              "in_map_region": false
+            },
+            {
+              "index": 26,
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "No place signal89",
+              "in_map_region": false
+            },
+            {
+              "index": 27,
+              "tag": "BODY",
+              "id": null,
+              "ariaLabel": null,
+              "text": "",
+              "in_map_region": false
+            },
+            {
+              "index": 28,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Skip to content",
+              "in_map_region": false
+            },
+            {
+              "index": 29,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": "CityScroll home",
+              "text": "CityScroll home",
+              "in_map_region": false
+            },
+            {
+              "index": 30,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Now",
+              "in_map_region": false
+            },
+            {
+              "index": 31,
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "Near you",
+              "in_map_region": false
+            }
+          ],
+          "map_region_focus_steps": [
+            {
+              "tag": "DIV",
+              "id": "near-map-enhanced",
+              "ariaLabel": null,
+              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre"
+            },
+            {
+              "tag": "CANVAS",
+              "id": null,
+              "ariaLabel": "Map",
+              "text": "Map"
+            },
+            {
+              "tag": "SUMMARY",
+              "id": null,
+              "ariaLabel": "Toggle attribution",
+              "text": "Toggle attribution"
+            },
+            {
+              "tag": "A",
+              "id": null,
+              "ariaLabel": null,
+              "text": "MapLibre"
+            }
+          ],
+          "first_map_focus_index": 16,
+          "first_map_focus": {
+            "tag": "DIV",
+            "id": "near-map-enhanced",
+            "className": "near-map-enhanced maplibregl-map",
+            "role": null,
+            "ariaLabel": null,
+            "tabIndex": 0,
+            "href": null,
+            "dataMapArea": null,
+            "dataNearSurface": null,
+            "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "in_map_region": true
+          },
+          "exit_map_focus_index": 20,
+          "exit_map_focus": {
+            "tag": "INPUT",
+            "id": "near-area-directory-filter",
+            "className": "",
+            "role": null,
+            "ariaLabel": null,
+            "tabIndex": 0,
+            "href": null,
+            "dataMapArea": null,
+            "dataNearSurface": null,
+            "text": "",
+            "in_map_region": false
+          },
+          "focus_trap_observed": false,
+          "escape_path": {
+            "before": {
+              "tag": "DIV",
+              "id": "near-map-enhanced",
+              "className": "near-map-enhanced maplibregl-map",
+              "role": null,
+              "ariaLabel": null,
+              "tabIndex": 0,
+              "href": null,
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+              "in_map_region": true
+            },
+            "after_escape": {
+              "tag": "DIV",
+              "id": "near-map-enhanced",
+              "className": "near-map-enhanced maplibregl-map",
+              "role": null,
+              "ariaLabel": null,
+              "tabIndex": 0,
+              "href": null,
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+              "in_map_region": true
+            },
+            "after_escape_tab": {
+              "tag": "CANVAS",
+              "id": null,
+              "className": "maplibregl-canvas",
+              "role": "region",
+              "ariaLabel": "Map",
+              "tabIndex": 0,
+              "href": null,
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "text": "Map",
+              "in_map_region": true
+            },
+            "exit_after_escape": {
+              "tag": "INPUT",
+              "id": "near-area-directory-filter",
+              "className": "",
+              "role": null,
+              "ariaLabel": null,
+              "tabIndex": 0,
+              "href": null,
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "text": "",
+              "in_map_region": false
+            },
+            "tabs_from_map_host_to_leave_region": 4,
+            "key_path": "Focus #near-map-enhanced \u2192 Escape (clears hover/focus ring) \u2192 Tab until focus leaves the map region"
+          },
+          "hover_equivalents": {
+            "rendered_label_count": 15,
+            "area_link_count": 262,
+            "area_links_with_href": 262,
+            "rendered_labels_with_directory_link": 15,
+            "title_only_instruction_count": 0,
+            "title_only_instructions": [],
+            "map_host_tab_index": 0,
+            "map_canvas_tab_index": 0,
+            "map_canvas_aria_label": "Map"
+          },
+          "dom_sha256": "569dc6ae0c2b233bd7116d1f8f1e56bc979348f270b1e9dee1095816cb2cf00a",
+          "name": "a9-mobile",
+          "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+          "data_vintage": "nta2020 26B"
+        }
+      ]
+    },
+    "A13": {
+      "route": "/near-you/",
+      "budgets": {
+        "desktop_1440x900": {
+          "min": 12,
+          "max": 40
+        },
+        "mobile_390x844": {
+          "min": 6,
+          "max": 20
+        }
+      },
+      "reads": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "route": "/near-you/",
+          "map_runtime": "maplibre",
+          "map_runtime_reason": null,
+          "heading": "What's near you?",
+          "residential_neighborhood_label_count": 38,
+          "residential_neighborhood_labels": [
+            "Annadale-Huguenot-Prince's Bay-Woodrow",
+            "Baisley Park",
+            "Bath Beach",
+            "Bay Ridge",
+            "Breezy Point-Belle Harbor-Rockaway Park-Broad Channel",
+            "Brooklyn Heights",
+            "Chelsea-Hudson Yards",
+            "Claremont Village-Claremont (East)",
+            "College Point",
+            "Cypress Hills",
+            "Douglaston-Little Neck",
+            "East New York-New Lots",
+            "Far Rockaway-Bayswater",
+            "Flatbush",
+            "Flushing-Willets Point",
+            "Glendale",
+            "Gravesend (South)",
+            "Great Kills-Eltingville",
+            "Greenpoint",
+            "Jamaica Estates-Holliswood",
+            "Madison",
+            "Mariner's Harbor-Arlington-Graniteville",
+            "Mott Haven-Port Morris",
+            "New Dorp-Midland Beach",
+            "Park Slope",
+            "Pelham Bay-Country Club-City Island",
+            "Queensboro Hill",
+            "Rego Park",
+            "Riverdale-Spuyten Duyvil",
+            "South Jamaica",
+            "Springfield Gardens (South)-Brookville",
+            "Sunset Park (West)",
+            "Throgs Neck-Schuylerville",
+            "University Heights (North)-Fordham",
+            "Upper East Side-Yorkville",
+            "Westerleigh-Castleton Corners",
+            "Williamsburg",
+            "Woodside"
+          ],
+          "queried_unique_label_count": 38,
+          "text_allow_overlap": false,
+          "text_ignore_placement": false,
+          "bucket_can_overlap": false,
+          "overlapping_label_pair_count": 0,
+          "collision_measurement": "MapLibre geography-labels with text-allow-overlap=false and text-ignore-placement=false; queryRenderedFeatures returns the post-collision placed set only.",
+          "map_host_size": {
+            "width": 994,
+            "height": 630
+          },
+          "map_instance_hooked": true,
+          "name": "a13-desktop",
+          "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+          "data_vintage": "nta2020 26B"
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "route": "/near-you/",
+          "map_runtime": "maplibre",
+          "map_runtime_reason": null,
+          "heading": "What's near you?",
+          "residential_neighborhood_label_count": 15,
+          "residential_neighborhood_labels": [
+            "Bensonhurst",
+            "Brighton Beach",
+            "East Flushing",
+            "East New York (North)",
+            "Far Rockaway-Bayswater",
+            "Great Kills-Eltingville",
+            "Greenpoint",
+            "Hell's Kitchen",
+            "Jamaica",
+            "Mott Haven-Port Morris",
+            "Mount Hope",
+            "Norwood",
+            "South Williamsburg",
+            "Sunset Park (Central)",
+            "Tottenville-Charleston"
+          ],
+          "queried_unique_label_count": 15,
+          "text_allow_overlap": false,
+          "text_ignore_placement": false,
+          "bucket_can_overlap": false,
+          "overlapping_label_pair_count": 0,
+          "collision_measurement": "MapLibre geography-labels with text-allow-overlap=false and text-ignore-placement=false; queryRenderedFeatures returns the post-collision placed set only.",
+          "map_host_size": {
+            "width": 340,
+            "height": 591
+          },
+          "map_instance_hooked": true,
+          "name": "a13-mobile",
+          "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+          "data_vintage": "nta2020 26B"
+        }
+      ]
+    }
+  }
+}

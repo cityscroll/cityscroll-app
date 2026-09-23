@@ -1,0 +1,223 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "feature": "near-you-shell-readback",
+  "public_alias": "ced62a84f8213",
+  "surface": "Near You map-first shell",
+  "base": "https://cityscroll.org/",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "capture_mode": "headless-playwright-production-served-site",
+  "revision_format": "served artifact-manifest source_commit_sha",
+  "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+  "repository_revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+  "grounded_at": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+  "data_vintage": "nta2020 26B",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed.",
+  "producer": {
+    "path": "docs/evidence/near-you-shell-readback/read-back.json",
+    "schema": "cityscroll.near_you_shell_production_read.v1",
+    "letters": [
+      "A9",
+      "A13"
+    ]
+  },
+  "captures": [
+    {
+      "name": "a13-desktop",
+      "route": "/near-you/",
+      "mode": "headless-playwright-production-enhanced",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+      "data_vintage": "nta2020 26B",
+      "assertion": "Observed 38 residential neighborhood labels at 1440x900 with text-allow-overlap=False and overlapping_label_pair_count=0.",
+      "sha256": "e7798b7e151e72e5492d34ec705b49c27db21010e2a18680ce0fc019da783ac2",
+      "file": null,
+      "observed": {
+        "residential_neighborhood_label_count": 38,
+        "residential_neighborhood_labels": [
+          "Annadale-Huguenot-Prince's Bay-Woodrow",
+          "Baisley Park",
+          "Bath Beach",
+          "Bay Ridge",
+          "Breezy Point-Belle Harbor-Rockaway Park-Broad Channel",
+          "Brooklyn Heights",
+          "Chelsea-Hudson Yards",
+          "Claremont Village-Claremont (East)",
+          "College Point",
+          "Cypress Hills",
+          "Douglaston-Little Neck",
+          "East New York-New Lots",
+          "Far Rockaway-Bayswater",
+          "Flatbush",
+          "Flushing-Willets Point",
+          "Glendale",
+          "Gravesend (South)",
+          "Great Kills-Eltingville",
+          "Greenpoint",
+          "Jamaica Estates-Holliswood",
+          "Madison",
+          "Mariner's Harbor-Arlington-Graniteville",
+          "Mott Haven-Port Morris",
+          "New Dorp-Midland Beach",
+          "Park Slope",
+          "Pelham Bay-Country Club-City Island",
+          "Queensboro Hill",
+          "Rego Park",
+          "Riverdale-Spuyten Duyvil",
+          "South Jamaica",
+          "Springfield Gardens (South)-Brookville",
+          "Sunset Park (West)",
+          "Throgs Neck-Schuylerville",
+          "University Heights (North)-Fordham",
+          "Upper East Side-Yorkville",
+          "Westerleigh-Castleton Corners",
+          "Williamsburg",
+          "Woodside"
+        ],
+        "overlapping_label_pair_count": 0,
+        "text_allow_overlap": false,
+        "text_ignore_placement": false,
+        "map_runtime": "maplibre"
+      }
+    },
+    {
+      "name": "a13-mobile",
+      "route": "/near-you/",
+      "mode": "headless-playwright-production-enhanced",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+      "data_vintage": "nta2020 26B",
+      "assertion": "Observed 15 residential neighborhood labels at 390x844 with text-allow-overlap=False and overlapping_label_pair_count=0.",
+      "sha256": "935a7f945a0dde7677fe022ed9fb7fd25e49ebba7feba3f1f01e54e94643ffcf",
+      "file": null,
+      "observed": {
+        "residential_neighborhood_label_count": 15,
+        "residential_neighborhood_labels": [
+          "Bensonhurst",
+          "Brighton Beach",
+          "East Flushing",
+          "East New York (North)",
+          "Far Rockaway-Bayswater",
+          "Great Kills-Eltingville",
+          "Greenpoint",
+          "Hell's Kitchen",
+          "Jamaica",
+          "Mott Haven-Port Morris",
+          "Mount Hope",
+          "Norwood",
+          "South Williamsburg",
+          "Sunset Park (Central)",
+          "Tottenville-Charleston"
+        ],
+        "overlapping_label_pair_count": 0,
+        "text_allow_overlap": false,
+        "text_ignore_placement": false,
+        "map_runtime": "maplibre"
+      }
+    },
+    {
+      "name": "a9-desktop",
+      "route": "/near-you/",
+      "mode": "headless-playwright-production-keyboard",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+      "data_vintage": "nta2020 26B",
+      "assertion": "Focus reached the map at index 15 and left at index 19; Escape+Tab left the map region in 4 Tab step(s); directory links provide keyboard/tap equivalents for neighborhood names.",
+      "sha256": "94d494fc762082860f5eab77898f5362d841079fcd504c8235839e78b69e2f92",
+      "file": null,
+      "observed": {
+        "first_map_focus_index": 15,
+        "exit_map_focus_index": 19,
+        "focus_trap_observed": false,
+        "map_region_focus_steps": [
+          {
+            "tag": "DIV",
+            "id": "near-map-enhanced",
+            "ariaLabel": null,
+            "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre"
+          },
+          {
+            "tag": "CANVAS",
+            "id": null,
+            "ariaLabel": "Map",
+            "text": "Map"
+          },
+          {
+            "tag": "SUMMARY",
+            "id": null,
+            "ariaLabel": "Toggle attribution",
+            "text": "Toggle attribution"
+          },
+          {
+            "tag": "A",
+            "id": null,
+            "ariaLabel": null,
+            "text": "MapLibre"
+          }
+        ],
+        "escape_path_key": "Focus #near-map-enhanced \u2192 Escape (clears hover/focus ring) \u2192 Tab until focus leaves the map region",
+        "tabs_from_map_host_to_leave_region": 4,
+        "area_links_with_href": 262,
+        "title_only_instruction_count": 0
+      }
+    },
+    {
+      "name": "a9-mobile",
+      "route": "/near-you/",
+      "mode": "headless-playwright-production-keyboard",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+      "data_vintage": "nta2020 26B",
+      "assertion": "Focus reached the map at index 16 and left at index 20; Escape+Tab left the map region in 4 Tab step(s); directory links provide keyboard/tap equivalents for neighborhood names.",
+      "sha256": "569dc6ae0c2b233bd7116d1f8f1e56bc979348f270b1e9dee1095816cb2cf00a",
+      "file": null,
+      "observed": {
+        "first_map_focus_index": 16,
+        "exit_map_focus_index": 20,
+        "focus_trap_observed": false,
+        "map_region_focus_steps": [
+          {
+            "tag": "DIV",
+            "id": "near-map-enhanced",
+            "ariaLabel": null,
+            "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre"
+          },
+          {
+            "tag": "CANVAS",
+            "id": null,
+            "ariaLabel": "Map",
+            "text": "Map"
+          },
+          {
+            "tag": "SUMMARY",
+            "id": null,
+            "ariaLabel": "Toggle attribution",
+            "text": "Toggle attribution"
+          },
+          {
+            "tag": "A",
+            "id": null,
+            "ariaLabel": null,
+            "text": "MapLibre"
+          }
+        ],
+        "escape_path_key": "Focus #near-map-enhanced \u2192 Escape (clears hover/focus ring) \u2192 Tab until focus leaves the map region",
+        "tabs_from_map_host_to_leave_region": 4,
+        "area_links_with_href": 262,
+        "title_only_instruction_count": 0
+      }
+    }
+  ]
+}
