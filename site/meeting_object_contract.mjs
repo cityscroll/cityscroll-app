@@ -305,6 +305,7 @@ export function normalizeMeetingObject(row = {}) {
       record_id: optionalText(row.record_id || row.source_record_id),
       source_field: row.location_wrapper ? "LOCATION" : (row.location_components ? "location.address" : null),
       incidental_addresses: row.incidental_location_addresses || [],
+      agenda_subject_places: row.agenda_subject_places || [],
     });
   const venue = projectVenueFromAssertions(locationAssertions, incomingVenue);
   const fields = {

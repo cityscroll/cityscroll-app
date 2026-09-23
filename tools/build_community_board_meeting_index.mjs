@@ -435,6 +435,7 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
     location_components: record.location_components || null,
     location_wrapper: record.location_wrapper || null,
     incidental_location_addresses: record.incidental_location_addresses || [],
+    agenda_subject_places: record.agenda_subject_places || [],
     participation: record.participation,
     committee: committeeFromRecord(record),
     description: record.description,

@@ -224,6 +224,15 @@ const communityBoard = [
     alert_use: "not used",
     disposition: "materialized_support",
   }),
+  ...rows(["agenda_subject_places"], {
+    stream: "event",
+    source_seam: "site/community_board_source_adapters.mjs agendaSubjectPlacesForHtmlEvent",
+    materialized_as: "location_assertions with role subject_property, passage locator, and passage text hash",
+    document_use: "agenda subject-property address retained separately from the meeting venue",
+    search_use: "not free-text until a later subject-property journey projects it",
+    alert_use: "not used",
+    disposition: "materialized_support",
+  }),
   ...rows(["description"], {
     stream: "event",
     source_seam: "site/community_board_source_adapters.mjs record",
