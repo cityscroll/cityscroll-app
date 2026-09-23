@@ -388,7 +388,16 @@ export async function verifyParcelGeographyGeneration(dir, opts = {}) {
       assert.equal(parcelShardKey(bbl), key, `BBL ${bbl} is not in its deterministic shard`);
       const entry = parcelPointEntry(bbl, shard.parcels[bbl]);
       assert.ok(entry, `BBL ${bbl} carries a non-usable point in ${key}`);
-      assert.deepEqual(entry, shard.parcels[bbl], `BBL ${bbl} point shape drifted in ${key}`);
+      const stored = shard.parcels[bbl];
+      assert.deepEqual(entry, { lat: stored.lat, lon: stored.lon }, `BBL ${bbl} point drifted in ${key}`);
+      for (const field of Object.keys(stored)) {
+        // The membership build stage attaches typed memberships additively;
+        // no other field may ride along on a parcel entry.
+        assert.ok(
+          field === "lat" || field === "lon" || field === "memberships",
+          `BBL ${bbl} carries unexpected parcel field ${field} in ${key}`,
+        );
+      }
       assert.ok(!seenPadOnly.has(bbl), `BBL ${bbl} is both retained and pad-only unmatched`);
     }
     totalParcels += bbls.length;

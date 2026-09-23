@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/parcel-membership-materialization",
+  "status": "implemented",
+  "fingerprint": "parcel-membership-materialization.v1",
+  "updated_at": "2026-09-23T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "parcel-membership-builder",
+      "path": "tools/build_parcel_memberships.mjs"
+    },
+    {
+      "id": "parcel-membership-build-lib",
+      "path": "tools/lib/parcel_membership_materialization.mjs"
+    },
+    {
+      "id": "parcel-membership-verify-test",
+      "path": "test/parcel_geography_materialization.test.mjs"
+    }
+  ]
+}
