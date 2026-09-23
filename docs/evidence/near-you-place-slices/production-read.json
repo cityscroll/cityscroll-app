@@ -1,0 +1,271 @@
+{
+  "schema": "cityscroll.near_you_place_slices_production_read.v1",
+  "observed_at": "2026-09-23T01:36:33.528339Z",
+  "evidence_class": "deployed-production-read-back",
+  "origin": "https://cityscroll.org",
+  "api_origin": "https://api.cityscroll.org",
+  "deployment": {
+    "manifest_url": "https://cityscroll.org/artifact-manifest.json",
+    "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+    "generated_at": "2026-09-23T00:13:23.272Z",
+    "deployment_at": "2026-09-23T00:13:23.272Z",
+    "artifact_hash": "31ca96a3a8b245a6a694c5240b1d053fd1e94c48e816fe34d6979dd2d377bc1c",
+    "manifest_sha256": "eaa6e34c23cbfb22a5f43a934b464284ea668b1f3b13506fd2fdca090e64725d"
+  },
+  "worker": {
+    "health_url": "https://api.cityscroll.org/health",
+    "commit": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+    "environment": "production"
+  },
+  "capture": {
+    "tool": "tools/capture_near_you_place_slices_production_read.py",
+    "browser": "chromium 151.0.7922.34",
+    "viewports": [
+      {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "screenshot_binaries_committed": false
+  },
+  "redaction": "Deferred response bodies are reduced to schema, typed state, count, and a body hash; no record fields are retained.",
+  "typed_states": [
+    "available_records",
+    "published_zero",
+    "unavailable_source_coverage",
+    "transient_publication_failure"
+  ],
+  "reads": [
+    {
+      "fixture": "BK0101",
+      "label": "Greenpoint",
+      "route": "/near-you/deferred.json?geo=nta2020%3ABK0101&lens=meetings&surface=map",
+      "url": "https://cityscroll.org/near-you/deferred.json?geo=nta2020%3ABK0101&lens=meetings&surface=map",
+      "http_status": 200,
+      "schema": "cityscroll.near_you_deferred.v1",
+      "served_state": "unavailable_source_coverage",
+      "count": null,
+      "typed_copy": "This area’s materialized records are unavailable right now.",
+      "deferred_response_sha256": "4cf5366ddcee6dac51eae03cfa7d34318ce7345e8339de381a796e031006628f",
+      "page_route": "/near-you/?geo=nta2020%3ABK0101&lens=meetings&surface=records",
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "http_status": 200,
+          "rendered_state": "unavailable_source_coverage",
+          "rendered_record_count": 0,
+          "rendered_copy": "This area’s materialized records are unavailable right now.",
+          "no_horizontal_overflow": true,
+          "page_html_sha256": "d8f9bc26d3bc61d789d9fe39753e7f78f2ea10f0c83bcd879e609dd6c9205411",
+          "screenshot_sha256": "616875bd07622275dfcf093f404d84bc79877226343f3f159045fdac74c8d8a6",
+          "witness_sha256": "da686035c9687d2a33cc209f903f77600c5c769e099af99860c151e0f001c7c9",
+          "result": "pass"
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "http_status": 200,
+          "rendered_state": "unavailable_source_coverage",
+          "rendered_record_count": 0,
+          "rendered_copy": "This area’s materialized records are unavailable right now.",
+          "no_horizontal_overflow": true,
+          "page_html_sha256": "53201a7ccb289a57d2a3a7629cab3496d435bb1d1c9e05a7935402689f1f3599",
+          "screenshot_sha256": "9189bfbe3680ddaa305b9d5d4309c5fadf4a6c291fce0f82cc08362107f8702b",
+          "witness_sha256": "6aaa79d4abc76f0beed54dd1e721a28fc1eb97bcb5053b6b7754b309404e1a43",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "fixture": "QN0103",
+      "label": "Astoria (Central)",
+      "route": "/near-you/deferred.json?geo=nta2020%3AQN0103&lens=meetings&surface=map",
+      "url": "https://cityscroll.org/near-you/deferred.json?geo=nta2020%3AQN0103&lens=meetings&surface=map",
+      "http_status": 200,
+      "schema": "cityscroll.near_you_deferred.v1",
+      "served_state": "unavailable_source_coverage",
+      "count": null,
+      "typed_copy": "This area’s materialized records are unavailable right now.",
+      "deferred_response_sha256": "7e5610fc451c167876ac4609ee31ea9d6497e888fd7e1b337e32c347953db85a",
+      "page_route": "/near-you/?geo=nta2020%3AQN0103&lens=meetings&surface=records",
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "http_status": 200,
+          "rendered_state": "unavailable_source_coverage",
+          "rendered_record_count": 0,
+          "rendered_copy": "This area’s materialized records are unavailable right now.",
+          "no_horizontal_overflow": true,
+          "page_html_sha256": "380919413e87a123f72f2d1ca5a08602fb07fc76a4bc462d85af637b504b902f",
+          "screenshot_sha256": "6d2613b80462f396992d9deef1f7261099b97a28465f3a2e6c65b2dfd86431ce",
+          "witness_sha256": "7c864d2493bef3f89f59e557267ae0c9d40cee8c3681d827d599e4e367c668f1",
+          "result": "pass"
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "http_status": 200,
+          "rendered_state": "unavailable_source_coverage",
+          "rendered_record_count": 0,
+          "rendered_copy": "This area’s materialized records are unavailable right now.",
+          "no_horizontal_overflow": true,
+          "page_html_sha256": "380919413e87a123f72f2d1ca5a08602fb07fc76a4bc462d85af637b504b902f",
+          "screenshot_sha256": "5ca27fc9d7ed7cd1877f0b7a7de4b00c37050ac0b6c7074df857cdd4b1096f3a",
+          "witness_sha256": "4cd35b5c86abc5f3968dbc4ef8639d0b789f01a631bf81dedcc02e58b0f8f6b4",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "fixture": "SI0101",
+      "label": "St. George-New Brighton",
+      "route": "/near-you/deferred.json?geo=nta2020%3ASI0101&lens=meetings&surface=map",
+      "url": "https://cityscroll.org/near-you/deferred.json?geo=nta2020%3ASI0101&lens=meetings&surface=map",
+      "http_status": 200,
+      "schema": "cityscroll.near_you_deferred.v1",
+      "served_state": "unavailable_source_coverage",
+      "count": null,
+      "typed_copy": "This area’s materialized records are unavailable right now.",
+      "deferred_response_sha256": "91bfad99a05a89b8f5ea8e3c128aa5bd4bb87a2955f410b00fd7653533ae275f",
+      "page_route": "/near-you/?geo=nta2020%3ASI0101&lens=meetings&surface=records",
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "http_status": 200,
+          "rendered_state": "unavailable_source_coverage",
+          "rendered_record_count": 0,
+          "rendered_copy": "This area’s materialized records are unavailable right now.",
+          "no_horizontal_overflow": true,
+          "page_html_sha256": "0e5c858d4f988227a12f508e30b19f08a8024dadeb2955b76d5ffdec06e81dcd",
+          "screenshot_sha256": "bbc8ce23f8eff3cb29ce04972808067cfcb106f9d5cd4d13d79f79f5da951208",
+          "witness_sha256": "9f158d7aaa29c71687e4d0b0d3644a632bfa3feb292859d50182a5842ef6921a",
+          "result": "pass"
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "http_status": 200,
+          "rendered_state": "unavailable_source_coverage",
+          "rendered_record_count": 0,
+          "rendered_copy": "This area’s materialized records are unavailable right now.",
+          "no_horizontal_overflow": true,
+          "page_html_sha256": "0e5c858d4f988227a12f508e30b19f08a8024dadeb2955b76d5ffdec06e81dcd",
+          "screenshot_sha256": "b5b004029a479c51f1b148e532db09551901c7b3df95eeec6ee9f15f71b4bd7d",
+          "witness_sha256": "f326ed74b044b50477a584729097eb6de33de9f57912aad0c47c05c682397894",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "fixture": "MN0102",
+      "label": "Tribeca-Civic Center",
+      "route": "/near-you/deferred.json?geo=nta2020%3AMN0102&lens=meetings&surface=map",
+      "url": "https://cityscroll.org/near-you/deferred.json?geo=nta2020%3AMN0102&lens=meetings&surface=map",
+      "http_status": 200,
+      "schema": "cityscroll.near_you_deferred.v1",
+      "served_state": "available_records",
+      "count": 25,
+      "typed_copy": null,
+      "deferred_response_sha256": "04e165debd41dd81465f098b1036d69f8af93722e7aae02a63d61ab713a7ce7a",
+      "page_route": "/near-you/?geo=nta2020%3AMN0102&lens=meetings&surface=records",
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "http_status": 200,
+          "rendered_state": "available_records",
+          "rendered_record_count": 25,
+          "rendered_copy": "9-8-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting9-8-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting City Council Public Hearings Sep 8, 2026 City Record notice Venue / logistics Past event · Sep 8, 2026 View the full record",
+          "no_horizontal_overflow": true,
+          "page_html_sha256": "312b8a48f3bfdf96897cf5e767bef300a17961ae9d36770b78c75936b3725a82",
+          "screenshot_sha256": "fda7ffa2f01ac0cd44ea1b88188576c67333e1848a05ecb581b50b589fcabdc4",
+          "witness_sha256": "1e87cdab271f4a512c8fa31033e9a62be25ca68ee72b2d3ba9f847eaa8b2f05f",
+          "result": "pass"
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "http_status": 200,
+          "rendered_state": "available_records",
+          "rendered_record_count": 25,
+          "rendered_copy": "9-8-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting9-8-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting City Council Public Hearings Sep 8, 2026 City Record notice Venue / logistics Past event · Sep 8, 2026 View the full record",
+          "no_horizontal_overflow": true,
+          "page_html_sha256": "312b8a48f3bfdf96897cf5e767bef300a17961ae9d36770b78c75936b3725a82",
+          "screenshot_sha256": "aedee30cdd4a5c8e678eb0f1c7536f6188a49bf058ca7a8a00765aa26a3b68a4",
+          "witness_sha256": "1006cf5d6d73fa30592bce3c89e2203adf3c9fbf7ad7cf426d7de350700aae6a",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "fixture": "BX0101",
+      "label": "Mott Haven-Port Morris",
+      "route": "/near-you/deferred.json?geo=nta2020%3ABX0101&lens=meetings&surface=map",
+      "url": "https://cityscroll.org/near-you/deferred.json?geo=nta2020%3ABX0101&lens=meetings&surface=map",
+      "http_status": 200,
+      "schema": "cityscroll.near_you_deferred.v1",
+      "served_state": "published_zero",
+      "count": 0,
+      "typed_copy": "No records match these filters.",
+      "deferred_response_sha256": "912f04c381532a3f024d25c6f7e2ea12d6eeace3ef130d2d84318863a78a8a1f",
+      "page_route": "/near-you/?geo=nta2020%3ABX0101&lens=meetings&surface=records",
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900,
+          "http_status": 200,
+          "rendered_state": "published_zero",
+          "rendered_record_count": 0,
+          "rendered_copy": "No records match these filters.",
+          "no_horizontal_overflow": true,
+          "page_html_sha256": "facda526e2e7713a1717427cb7e148f90793b6a757c7388749495f4d092bef73",
+          "screenshot_sha256": "a8d5c22c1ee85f1496a03475080cf2b9ea4fb5e241f8c30341c39cfc3cdaa7a6",
+          "witness_sha256": "f7f86a21d154a7b0a168920c45872e0e274f83da28dab4f01f0127ad29536d6b",
+          "result": "pass"
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844,
+          "http_status": 200,
+          "rendered_state": "published_zero",
+          "rendered_record_count": 0,
+          "rendered_copy": "No records match these filters.",
+          "no_horizontal_overflow": true,
+          "page_html_sha256": "e19fd06fd4d990235d3bc2f9ac5878ea2d2b89feb4771a8e47a3eae00d5f5476",
+          "screenshot_sha256": "745d9d1778e2d2ff50de4df1f34648ea8efe6e6c6e93d00be59618d8b765749a",
+          "witness_sha256": "a4a91e485df78f761288eaac3a19fd620a09946ebbffac3856e9b0b5bbf3779b",
+          "result": "pass"
+        }
+      ],
+      "result": "pass"
+    }
+  ],
+  "summary": {
+    "result": "pass",
+    "fixtures_observed": 5,
+    "viewport_observations": 10
+  }
+}

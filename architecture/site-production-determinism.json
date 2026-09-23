@@ -263,6 +263,7 @@
     "site/district_scope_facets.mjs",
     "site/district_topic_index.mjs",
     "site/district_weekly_digest.mjs",
+    "site/document_route_scroll.mjs",
     "site/e_designation_digest_view.mjs",
     "site/edge_summary.mjs",
     "site/emmons_shelter_monitor_pack.mjs",
