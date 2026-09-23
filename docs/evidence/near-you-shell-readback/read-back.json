@@ -1,852 +1,88 @@
 {
-  "schema": "cityscroll.near_you_shell_production_read.v1",
-  "public_alias": "ced62a84f8213",
-  "observed_at": "2026-09-23T04:25:00.370198Z",
-  "evidence_class": "deployed-production-read-back",
-  "origin": "https://cityscroll.org",
-  "deployment": {
-    "manifest_url": "https://cityscroll.org/artifact-manifest.json",
-    "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
-    "generated_at": "2026-09-23T03:45:27.918Z",
-    "deployment_at": "2026-09-23T03:45:27.918Z",
-    "manifest_sha256": "598020bfb06a87be9bb23e4d844ab4dca4d8ea105447bb4170ab996dd9d660c2"
-  },
   "capture": {
-    "tool": "tools/capture_near_you_shell_production_read.py",
     "browser": "chromium",
+    "map_hook": "Init script wraps window.maplibregl.Map; A13 geometry reads CollisionIndex grid bboxes via getBoundingClientRect.",
+    "screenshot_binaries_committed": false,
+    "tool": "tools/capture_near_you_shell_production_read.py",
     "viewports": [
       {
+        "height": 900,
         "name": "desktop",
-        "width": 1440,
-        "height": 900
+        "width": 1440
       },
       {
+        "height": 844,
         "name": "mobile",
-        "width": 390,
-        "height": 844
+        "width": 390
+      },
+      {
+        "height": 900,
+        "name": "selected-desktop",
+        "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+        "width": 1440
       }
-    ],
-    "screenshot_binaries_committed": false,
-    "map_hook": "Init script wraps window.maplibregl.Map to observe layout collision flags on the live instance."
-  },
-  "producer": {
-    "path": "docs/evidence/near-you-shell-readback/read-back.json",
-    "schema": "cityscroll.near_you_shell_production_read.v1",
-    "letters": [
-      "A9",
-      "A13"
     ]
   },
+  "deployment": {
+    "deployment_at": "2026-09-23T13:07:23.611Z",
+    "generated_at": "2026-09-23T13:07:23.611Z",
+    "manifest_sha256": "63c25ffa10af26af80c4033d39bb9a55436153dea8388d28b95fa042e47ce4e7",
+    "manifest_url": "https://cityscroll.org/artifact-manifest.json",
+    "revision": "217cde9ffa827500f06bcd6bca337491551a5740"
+  },
+  "evidence_class": "deployed-production-read-back",
   "letters": {
-    "A9": {
-      "route": "/near-you/",
-      "reads": [
-        {
-          "viewport": {
-            "width": 1440,
-            "height": 900
-          },
-          "route": "/near-you/",
-          "focus_order": [
-            {
-              "index": 0,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Skip to content",
-              "in_map_region": false
-            },
-            {
-              "index": 1,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": "CityScroll home",
-              "text": "CityScroll home",
-              "in_map_region": false
-            },
-            {
-              "index": 2,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Now",
-              "in_map_region": false
-            },
-            {
-              "index": 3,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Near you",
-              "in_map_region": false
-            },
-            {
-              "index": 4,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Following",
-              "in_map_region": false
-            },
-            {
-              "index": 5,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Browse",
-              "in_map_region": false
-            },
-            {
-              "index": 6,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Guide",
-              "in_map_region": false
-            },
-            {
-              "index": 7,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Ask with AI",
-              "in_map_region": false
-            },
-            {
-              "index": 8,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": "Back one step",
-              "text": "Back one step",
-              "in_map_region": false
-            },
-            {
-              "index": 9,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": "Restart at origin",
-              "text": "Restart at origin",
-              "in_map_region": false
-            },
-            {
-              "index": 10,
-              "tag": "INPUT",
-              "id": "near-geo-search-input",
-              "ariaLabel": null,
-              "text": "",
-              "in_map_region": false
-            },
-            {
-              "index": 11,
-              "tag": "BUTTON",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Search",
-              "in_map_region": false
-            },
-            {
-              "index": 12,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Map",
-              "in_map_region": false
-            },
-            {
-              "index": 13,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Browse records",
-              "in_map_region": false
-            },
-            {
-              "index": 14,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "More ways to choose",
-              "in_map_region": false
-            },
-            {
-              "index": 15,
-              "tag": "DIV",
-              "id": "near-map-enhanced",
-              "ariaLabel": null,
-              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
-              "in_map_region": true
-            },
-            {
-              "index": 16,
-              "tag": "CANVAS",
-              "id": null,
-              "ariaLabel": "Map",
-              "text": "Map",
-              "in_map_region": true
-            },
-            {
-              "index": 17,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": "Toggle attribution",
-              "text": "Toggle attribution",
-              "in_map_region": true
-            },
-            {
-              "index": 18,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "MapLibre",
-              "in_map_region": true
-            },
-            {
-              "index": 19,
-              "tag": "INPUT",
-              "id": "near-area-directory-filter",
-              "ariaLabel": null,
-              "text": "",
-              "in_map_region": false
-            },
-            {
-              "index": 20,
-              "tag": "BUTTON",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Filter",
-              "in_map_region": false
-            },
-            {
-              "index": 21,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Neighborhood list",
-              "in_map_region": false
-            },
-            {
-              "index": 22,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Special-use areas",
-              "in_map_region": false
-            },
-            {
-              "index": 23,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Citywide20",
-              "in_map_region": false
-            },
-            {
-              "index": 24,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Virtual / online only1",
-              "in_map_region": false
-            },
-            {
-              "index": 25,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "No place signal89",
-              "in_map_region": false
-            },
-            {
-              "index": 26,
-              "tag": "BODY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "",
-              "in_map_region": false
-            },
-            {
-              "index": 27,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Skip to content",
-              "in_map_region": false
-            },
-            {
-              "index": 28,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": "CityScroll home",
-              "text": "CityScroll home",
-              "in_map_region": false
-            },
-            {
-              "index": 29,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Now",
-              "in_map_region": false
-            },
-            {
-              "index": 30,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Near you",
-              "in_map_region": false
-            },
-            {
-              "index": 31,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Following",
-              "in_map_region": false
-            }
-          ],
-          "map_region_focus_steps": [
-            {
-              "tag": "DIV",
-              "id": "near-map-enhanced",
-              "ariaLabel": null,
-              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre"
-            },
-            {
-              "tag": "CANVAS",
-              "id": null,
-              "ariaLabel": "Map",
-              "text": "Map"
-            },
-            {
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": "Toggle attribution",
-              "text": "Toggle attribution"
-            },
-            {
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "MapLibre"
-            }
-          ],
-          "first_map_focus_index": 15,
-          "first_map_focus": {
-            "tag": "DIV",
-            "id": "near-map-enhanced",
-            "className": "near-map-enhanced maplibregl-map",
-            "role": null,
-            "ariaLabel": null,
-            "tabIndex": 0,
-            "href": null,
-            "dataMapArea": null,
-            "dataNearSurface": null,
-            "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
-            "in_map_region": true
-          },
-          "exit_map_focus_index": 19,
-          "exit_map_focus": {
-            "tag": "INPUT",
-            "id": "near-area-directory-filter",
-            "className": "",
-            "role": null,
-            "ariaLabel": null,
-            "tabIndex": 0,
-            "href": null,
-            "dataMapArea": null,
-            "dataNearSurface": null,
-            "text": "",
-            "in_map_region": false
-          },
-          "focus_trap_observed": false,
-          "escape_path": {
-            "before": {
-              "tag": "DIV",
-              "id": "near-map-enhanced",
-              "className": "near-map-enhanced maplibregl-map",
-              "role": null,
-              "ariaLabel": null,
-              "tabIndex": 0,
-              "href": null,
-              "dataMapArea": null,
-              "dataNearSurface": null,
-              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
-              "in_map_region": true
-            },
-            "after_escape": {
-              "tag": "DIV",
-              "id": "near-map-enhanced",
-              "className": "near-map-enhanced maplibregl-map",
-              "role": null,
-              "ariaLabel": null,
-              "tabIndex": 0,
-              "href": null,
-              "dataMapArea": null,
-              "dataNearSurface": null,
-              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
-              "in_map_region": true
-            },
-            "after_escape_tab": {
-              "tag": "CANVAS",
-              "id": null,
-              "className": "maplibregl-canvas",
-              "role": "region",
-              "ariaLabel": "Map",
-              "tabIndex": 0,
-              "href": null,
-              "dataMapArea": null,
-              "dataNearSurface": null,
-              "text": "Map",
-              "in_map_region": true
-            },
-            "exit_after_escape": {
-              "tag": "INPUT",
-              "id": "near-area-directory-filter",
-              "className": "",
-              "role": null,
-              "ariaLabel": null,
-              "tabIndex": 0,
-              "href": null,
-              "dataMapArea": null,
-              "dataNearSurface": null,
-              "text": "",
-              "in_map_region": false
-            },
-            "tabs_from_map_host_to_leave_region": 4,
-            "key_path": "Focus #near-map-enhanced \u2192 Escape (clears hover/focus ring) \u2192 Tab until focus leaves the map region"
-          },
-          "hover_equivalents": {
-            "rendered_label_count": 38,
-            "area_link_count": 262,
-            "area_links_with_href": 262,
-            "rendered_labels_with_directory_link": 38,
-            "title_only_instruction_count": 0,
-            "title_only_instructions": [],
-            "map_host_tab_index": 0,
-            "map_canvas_tab_index": 0,
-            "map_canvas_aria_label": "Map"
-          },
-          "dom_sha256": "94d494fc762082860f5eab77898f5362d841079fcd504c8235839e78b69e2f92",
-          "name": "a9-desktop",
-          "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
-          "data_vintage": "nta2020 26B"
-        },
-        {
-          "viewport": {
-            "width": 390,
-            "height": 844
-          },
-          "route": "/near-you/",
-          "focus_order": [
-            {
-              "index": 0,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Skip to content",
-              "in_map_region": false
-            },
-            {
-              "index": 1,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": "CityScroll home",
-              "text": "CityScroll home",
-              "in_map_region": false
-            },
-            {
-              "index": 2,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Now",
-              "in_map_region": false
-            },
-            {
-              "index": 3,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Near you",
-              "in_map_region": false
-            },
-            {
-              "index": 4,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Following",
-              "in_map_region": false
-            },
-            {
-              "index": 5,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Browse",
-              "in_map_region": false
-            },
-            {
-              "index": 6,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Guide",
-              "in_map_region": false
-            },
-            {
-              "index": 7,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Ask with AI",
-              "in_map_region": false
-            },
-            {
-              "index": 8,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": "Back one step",
-              "text": "Back one step",
-              "in_map_region": false
-            },
-            {
-              "index": 9,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": "Restart at origin",
-              "text": "Restart at origin",
-              "in_map_region": false
-            },
-            {
-              "index": 10,
-              "tag": "INPUT",
-              "id": "near-geo-search-input",
-              "ariaLabel": null,
-              "text": "",
-              "in_map_region": false
-            },
-            {
-              "index": 11,
-              "tag": "BUTTON",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Search",
-              "in_map_region": false
-            },
-            {
-              "index": 12,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Map",
-              "in_map_region": false
-            },
-            {
-              "index": 13,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Browse records",
-              "in_map_region": false
-            },
-            {
-              "index": 14,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "More ways to choose",
-              "in_map_region": false
-            },
-            {
-              "index": 15,
-              "tag": "BUTTON",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Map details",
-              "in_map_region": false
-            },
-            {
-              "index": 16,
-              "tag": "DIV",
-              "id": "near-map-enhanced",
-              "ariaLabel": null,
-              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
-              "in_map_region": true
-            },
-            {
-              "index": 17,
-              "tag": "CANVAS",
-              "id": null,
-              "ariaLabel": "Map",
-              "text": "Map",
-              "in_map_region": true
-            },
-            {
-              "index": 18,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": "Toggle attribution",
-              "text": "Toggle attribution",
-              "in_map_region": true
-            },
-            {
-              "index": 19,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "MapLibre",
-              "in_map_region": true
-            },
-            {
-              "index": 20,
-              "tag": "INPUT",
-              "id": "near-area-directory-filter",
-              "ariaLabel": null,
-              "text": "",
-              "in_map_region": false
-            },
-            {
-              "index": 21,
-              "tag": "BUTTON",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Filter",
-              "in_map_region": false
-            },
-            {
-              "index": 22,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Neighborhood list",
-              "in_map_region": false
-            },
-            {
-              "index": 23,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Special-use areas",
-              "in_map_region": false
-            },
-            {
-              "index": 24,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Citywide20",
-              "in_map_region": false
-            },
-            {
-              "index": 25,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Virtual / online only1",
-              "in_map_region": false
-            },
-            {
-              "index": 26,
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "No place signal89",
-              "in_map_region": false
-            },
-            {
-              "index": 27,
-              "tag": "BODY",
-              "id": null,
-              "ariaLabel": null,
-              "text": "",
-              "in_map_region": false
-            },
-            {
-              "index": 28,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Skip to content",
-              "in_map_region": false
-            },
-            {
-              "index": 29,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": "CityScroll home",
-              "text": "CityScroll home",
-              "in_map_region": false
-            },
-            {
-              "index": 30,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Now",
-              "in_map_region": false
-            },
-            {
-              "index": 31,
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "Near you",
-              "in_map_region": false
-            }
-          ],
-          "map_region_focus_steps": [
-            {
-              "tag": "DIV",
-              "id": "near-map-enhanced",
-              "ariaLabel": null,
-              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre"
-            },
-            {
-              "tag": "CANVAS",
-              "id": null,
-              "ariaLabel": "Map",
-              "text": "Map"
-            },
-            {
-              "tag": "SUMMARY",
-              "id": null,
-              "ariaLabel": "Toggle attribution",
-              "text": "Toggle attribution"
-            },
-            {
-              "tag": "A",
-              "id": null,
-              "ariaLabel": null,
-              "text": "MapLibre"
-            }
-          ],
-          "first_map_focus_index": 16,
-          "first_map_focus": {
-            "tag": "DIV",
-            "id": "near-map-enhanced",
-            "className": "near-map-enhanced maplibregl-map",
-            "role": null,
-            "ariaLabel": null,
-            "tabIndex": 0,
-            "href": null,
-            "dataMapArea": null,
-            "dataNearSurface": null,
-            "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
-            "in_map_region": true
-          },
-          "exit_map_focus_index": 20,
-          "exit_map_focus": {
-            "tag": "INPUT",
-            "id": "near-area-directory-filter",
-            "className": "",
-            "role": null,
-            "ariaLabel": null,
-            "tabIndex": 0,
-            "href": null,
-            "dataMapArea": null,
-            "dataNearSurface": null,
-            "text": "",
-            "in_map_region": false
-          },
-          "focus_trap_observed": false,
-          "escape_path": {
-            "before": {
-              "tag": "DIV",
-              "id": "near-map-enhanced",
-              "className": "near-map-enhanced maplibregl-map",
-              "role": null,
-              "ariaLabel": null,
-              "tabIndex": 0,
-              "href": null,
-              "dataMapArea": null,
-              "dataNearSurface": null,
-              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
-              "in_map_region": true
-            },
-            "after_escape": {
-              "tag": "DIV",
-              "id": "near-map-enhanced",
-              "className": "near-map-enhanced maplibregl-map",
-              "role": null,
-              "ariaLabel": null,
-              "tabIndex": 0,
-              "href": null,
-              "dataMapArea": null,
-              "dataNearSurface": null,
-              "text": "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
-              "in_map_region": true
-            },
-            "after_escape_tab": {
-              "tag": "CANVAS",
-              "id": null,
-              "className": "maplibregl-canvas",
-              "role": "region",
-              "ariaLabel": "Map",
-              "tabIndex": 0,
-              "href": null,
-              "dataMapArea": null,
-              "dataNearSurface": null,
-              "text": "Map",
-              "in_map_region": true
-            },
-            "exit_after_escape": {
-              "tag": "INPUT",
-              "id": "near-area-directory-filter",
-              "className": "",
-              "role": null,
-              "ariaLabel": null,
-              "tabIndex": 0,
-              "href": null,
-              "dataMapArea": null,
-              "dataNearSurface": null,
-              "text": "",
-              "in_map_region": false
-            },
-            "tabs_from_map_host_to_leave_region": 4,
-            "key_path": "Focus #near-map-enhanced \u2192 Escape (clears hover/focus ring) \u2192 Tab until focus leaves the map region"
-          },
-          "hover_equivalents": {
-            "rendered_label_count": 15,
-            "area_link_count": 262,
-            "area_links_with_href": 262,
-            "rendered_labels_with_directory_link": 15,
-            "title_only_instruction_count": 0,
-            "title_only_instructions": [],
-            "map_host_tab_index": 0,
-            "map_canvas_tab_index": 0,
-            "map_canvas_aria_label": "Map"
-          },
-          "dom_sha256": "569dc6ae0c2b233bd7116d1f8f1e56bc979348f270b1e9dee1095816cb2cf00a",
-          "name": "a9-mobile",
-          "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
-          "data_vintage": "nta2020 26B"
-        }
-      ]
-    },
     "A13": {
-      "route": "/near-you/",
       "budgets": {
         "desktop_1440x900": {
-          "min": 12,
-          "max": 40
+          "max": 40,
+          "min": 12
         },
         "mobile_390x844": {
-          "min": 6,
-          "max": 20
+          "max": 20,
+          "min": 6
         }
       },
       "reads": [
         {
-          "viewport": {
-            "width": 1440,
-            "height": 900
+          "bucket_can_overlap": false,
+          "collision_measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
+          "data_vintage": "nta2020 26B",
+          "geometry": {
+            "browser_fold_label_count": 24,
+            "clip_bounds": {
+              "bottom": 1139.3125,
+              "left": 381,
+              "right": 1375,
+              "top": 509.3125
+            },
+            "clip_surface": "map_host_canvas_and_overflow_hidden_ancestors",
+            "clipped_label_count": 3,
+            "clipped_labels_sample": [
+              null,
+              null,
+              null
+            ],
+            "dataset_overlap_flag_ignored": "0",
+            "measured_label_box_count": 38,
+            "measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
+            "obscured_by_primary_control_count": 0,
+            "obscured_sample": [],
+            "overlapping_label_pair_count": 0,
+            "overlapping_pairs_sample": [],
+            "primary_control_box_count": 1
           },
-          "route": "/near-you/",
+          "heading": "What's near you?",
+          "map_host_size": {
+            "height": 630,
+            "width": 994
+          },
+          "map_instance_hooked": true,
           "map_runtime": "maplibre",
           "map_runtime_reason": null,
-          "heading": "What's near you?",
+          "name": "a13-desktop",
+          "overlapping_label_pair_count": 0,
+          "queried_unique_label_count": 38,
           "residential_neighborhood_label_count": 38,
           "residential_neighborhood_labels": [
             "Annadale-Huguenot-Prince's Bay-Woodrow",
@@ -888,30 +124,57 @@
             "Williamsburg",
             "Woodside"
           ],
-          "queried_unique_label_count": 38,
+          "revision": "217cde9ffa827500f06bcd6bca337491551a5740",
+          "route": "/near-you/",
           "text_allow_overlap": false,
           "text_ignore_placement": false,
-          "bucket_can_overlap": false,
-          "overlapping_label_pair_count": 0,
-          "collision_measurement": "MapLibre geography-labels with text-allow-overlap=false and text-ignore-placement=false; queryRenderedFeatures returns the post-collision placed set only.",
-          "map_host_size": {
-            "width": 994,
-            "height": 630
-          },
-          "map_instance_hooked": true,
-          "name": "a13-desktop",
-          "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
-          "data_vintage": "nta2020 26B"
+          "viewport": {
+            "height": 900,
+            "width": 1440
+          }
         },
         {
-          "viewport": {
-            "width": 390,
-            "height": 844
+          "bucket_can_overlap": false,
+          "collision_measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
+          "data_vintage": "nta2020 26B",
+          "geometry": {
+            "browser_fold_label_count": 15,
+            "clip_bounds": {
+              "bottom": 1160.171875,
+              "left": 25,
+              "right": 365,
+              "top": 569.171875
+            },
+            "clip_surface": "map_host_canvas_and_overflow_hidden_ancestors",
+            "clipped_label_count": 6,
+            "clipped_labels_sample": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "dataset_overlap_flag_ignored": "0",
+            "measured_label_box_count": 15,
+            "measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
+            "obscured_by_primary_control_count": 0,
+            "obscured_sample": [],
+            "overlapping_label_pair_count": 0,
+            "overlapping_pairs_sample": [],
+            "primary_control_box_count": 1
           },
-          "route": "/near-you/",
+          "heading": "What's near you?",
+          "map_host_size": {
+            "height": 591,
+            "width": 340
+          },
+          "map_instance_hooked": true,
           "map_runtime": "maplibre",
           "map_runtime_reason": null,
-          "heading": "What's near you?",
+          "name": "a13-mobile",
+          "overlapping_label_pair_count": 0,
+          "queried_unique_label_count": 15,
           "residential_neighborhood_label_count": 15,
           "residential_neighborhood_labels": [
             "Bensonhurst",
@@ -930,22 +193,901 @@
             "Sunset Park (Central)",
             "Tottenville-Charleston"
           ],
-          "queried_unique_label_count": 15,
+          "revision": "217cde9ffa827500f06bcd6bca337491551a5740",
+          "route": "/near-you/",
           "text_allow_overlap": false,
           "text_ignore_placement": false,
+          "viewport": {
+            "height": 844,
+            "width": 390
+          }
+        },
+        {
           "bucket_can_overlap": false,
-          "overlapping_label_pair_count": 0,
-          "collision_measurement": "MapLibre geography-labels with text-allow-overlap=false and text-ignore-placement=false; queryRenderedFeatures returns the post-collision placed set only.",
+          "collision_measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
+          "data_vintage": "nta2020 26B",
+          "geometry": {
+            "browser_fold_label_count": 3,
+            "clip_bounds": {
+              "bottom": 980.5,
+              "left": 381,
+              "right": 1375,
+              "top": 350.5
+            },
+            "clip_surface": "map_host_canvas_and_overflow_hidden_ancestors",
+            "clipped_label_count": 5,
+            "clipped_labels_sample": [
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "dataset_overlap_flag_ignored": "0",
+            "measured_label_box_count": 7,
+            "measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
+            "obscured_by_primary_control_count": 0,
+            "obscured_sample": [],
+            "overlapping_label_pair_count": 0,
+            "overlapping_pairs_sample": [],
+            "primary_control_box_count": 1
+          },
+          "heading": "Greenpoint",
+          "host_present": true,
           "map_host_size": {
-            "width": 340,
-            "height": 591
+            "height": 630,
+            "width": 994
           },
           "map_instance_hooked": true,
-          "name": "a13-mobile",
-          "revision": "f0d24335c7605d0a935cb3a6902a168a0d412595",
-          "data_vintage": "nta2020 26B"
+          "map_runtime": "maplibre",
+          "map_runtime_reason": null,
+          "name": "a13-selected-desktop",
+          "overlapping_label_pair_count": 0,
+          "queried_unique_label_count": 4,
+          "residential_neighborhood_label_count": 4,
+          "residential_neighborhood_labels": [
+            "East Village",
+            "Greenpoint",
+            "Murray Hill-Kips Bay",
+            "Sunnyside"
+          ],
+          "revision": "217cde9ffa827500f06bcd6bca337491551a5740",
+          "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+          "selected_heading": "Greenpoint",
+          "selected_layer_rendered_label_count": 1,
+          "selected_layer_rendered_labels": [
+            "Greenpoint"
+          ],
+          "selected_name_box": {
+            "box": {
+              "bottom": 638.296875,
+              "height": 15.59375,
+              "left": 704.3671875,
+              "right": 777.6328125,
+              "top": 622.703125,
+              "width": 73.265625
+            },
+            "hit": {
+              "x": 360,
+              "y": 280
+            },
+            "label": "Greenpoint"
+          },
+          "selected_neighborhood_label": "Greenpoint",
+          "selected_ui_label": "Greenpoint",
+          "text_allow_overlap": false,
+          "text_ignore_placement": false,
+          "viewport": {
+            "height": 900,
+            "width": 1440
+          }
         }
-      ]
+      ],
+      "route": "/near-you/",
+      "selected_specimen": {
+        "geo": "nta2020:BK0101",
+        "label": "Greenpoint",
+        "route": "/near-you/?geo=nta2020%3ABK0101&surface=map"
+      }
+    },
+    "A9": {
+      "reads": [
+        {
+          "data_vintage": "nta2020 26B",
+          "dom_sha256": "94d494fc762082860f5eab77898f5362d841079fcd504c8235839e78b69e2f92",
+          "escape_path": {
+            "after_escape": {
+              "ariaLabel": null,
+              "className": "near-map-enhanced maplibregl-map",
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "href": null,
+              "id": "near-map-enhanced",
+              "in_map_region": true,
+              "role": null,
+              "tabIndex": 0,
+              "tag": "DIV",
+              "text": "© OpenStreetMap © CARTO | MapLibre"
+            },
+            "after_escape_tab": {
+              "ariaLabel": "Map",
+              "className": "maplibregl-canvas",
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "href": null,
+              "id": null,
+              "in_map_region": true,
+              "role": "region",
+              "tabIndex": 0,
+              "tag": "CANVAS",
+              "text": "Map"
+            },
+            "before": {
+              "ariaLabel": null,
+              "className": "near-map-enhanced maplibregl-map",
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "href": null,
+              "id": "near-map-enhanced",
+              "in_map_region": true,
+              "role": null,
+              "tabIndex": 0,
+              "tag": "DIV",
+              "text": "© OpenStreetMap © CARTO | MapLibre"
+            },
+            "exit_after_escape": {
+              "ariaLabel": null,
+              "className": "",
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "href": null,
+              "id": "near-area-directory-filter",
+              "in_map_region": false,
+              "role": null,
+              "tabIndex": 0,
+              "tag": "INPUT",
+              "text": ""
+            },
+            "key_path": "Focus #near-map-enhanced → Escape (clears hover/focus ring) → Tab until focus leaves the map region",
+            "tabs_from_map_host_to_leave_region": 4
+          },
+          "exit_map_focus": {
+            "ariaLabel": null,
+            "className": "",
+            "dataMapArea": null,
+            "dataNearSurface": null,
+            "href": null,
+            "id": "near-area-directory-filter",
+            "in_map_region": false,
+            "role": null,
+            "tabIndex": 0,
+            "tag": "INPUT",
+            "text": ""
+          },
+          "exit_map_focus_index": 19,
+          "first_map_focus": {
+            "ariaLabel": null,
+            "className": "near-map-enhanced maplibregl-map",
+            "dataMapArea": null,
+            "dataNearSurface": null,
+            "href": null,
+            "id": "near-map-enhanced",
+            "in_map_region": true,
+            "role": null,
+            "tabIndex": 0,
+            "tag": "DIV",
+            "text": "© OpenStreetMap © CARTO | MapLibre"
+          },
+          "first_map_focus_index": 15,
+          "focus_order": [
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 0,
+              "tag": "A",
+              "text": "Skip to content"
+            },
+            {
+              "ariaLabel": "CityScroll home",
+              "id": null,
+              "in_map_region": false,
+              "index": 1,
+              "tag": "A",
+              "text": "CityScroll home"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 2,
+              "tag": "A",
+              "text": "Now"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 3,
+              "tag": "A",
+              "text": "Near you"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 4,
+              "tag": "A",
+              "text": "Following"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 5,
+              "tag": "A",
+              "text": "Browse"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 6,
+              "tag": "A",
+              "text": "Guide"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 7,
+              "tag": "A",
+              "text": "Ask with AI"
+            },
+            {
+              "ariaLabel": "Back one step",
+              "id": null,
+              "in_map_region": false,
+              "index": 8,
+              "tag": "A",
+              "text": "Back one step"
+            },
+            {
+              "ariaLabel": "Restart at origin",
+              "id": null,
+              "in_map_region": false,
+              "index": 9,
+              "tag": "A",
+              "text": "Restart at origin"
+            },
+            {
+              "ariaLabel": null,
+              "id": "near-geo-search-input",
+              "in_map_region": false,
+              "index": 10,
+              "tag": "INPUT",
+              "text": ""
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 11,
+              "tag": "BUTTON",
+              "text": "Search"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 12,
+              "tag": "A",
+              "text": "Map"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 13,
+              "tag": "A",
+              "text": "Browse records"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 14,
+              "tag": "SUMMARY",
+              "text": "More ways to choose"
+            },
+            {
+              "ariaLabel": null,
+              "id": "near-map-enhanced",
+              "in_map_region": true,
+              "index": 15,
+              "tag": "DIV",
+              "text": "© OpenStreetMap © CARTO | MapLibre"
+            },
+            {
+              "ariaLabel": "Map",
+              "id": null,
+              "in_map_region": true,
+              "index": 16,
+              "tag": "CANVAS",
+              "text": "Map"
+            },
+            {
+              "ariaLabel": "Toggle attribution",
+              "id": null,
+              "in_map_region": true,
+              "index": 17,
+              "tag": "SUMMARY",
+              "text": "Toggle attribution"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": true,
+              "index": 18,
+              "tag": "A",
+              "text": "MapLibre"
+            },
+            {
+              "ariaLabel": null,
+              "id": "near-area-directory-filter",
+              "in_map_region": false,
+              "index": 19,
+              "tag": "INPUT",
+              "text": ""
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 20,
+              "tag": "BUTTON",
+              "text": "Filter"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 21,
+              "tag": "SUMMARY",
+              "text": "Neighborhood list"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 22,
+              "tag": "SUMMARY",
+              "text": "Special-use areas"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 23,
+              "tag": "SUMMARY",
+              "text": "Citywide20"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 24,
+              "tag": "SUMMARY",
+              "text": "Virtual / online only1"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 25,
+              "tag": "SUMMARY",
+              "text": "No place signal89"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 26,
+              "tag": "BODY",
+              "text": ""
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 27,
+              "tag": "A",
+              "text": "Skip to content"
+            },
+            {
+              "ariaLabel": "CityScroll home",
+              "id": null,
+              "in_map_region": false,
+              "index": 28,
+              "tag": "A",
+              "text": "CityScroll home"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 29,
+              "tag": "A",
+              "text": "Now"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 30,
+              "tag": "A",
+              "text": "Near you"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 31,
+              "tag": "A",
+              "text": "Following"
+            }
+          ],
+          "focus_trap_observed": false,
+          "hover_equivalents": {
+            "area_link_count": 262,
+            "area_links_with_href": 262,
+            "map_canvas_aria_label": "Map",
+            "map_canvas_tab_index": 0,
+            "map_host_tab_index": 0,
+            "rendered_label_count": 38,
+            "rendered_labels_with_directory_link": 38,
+            "title_only_instruction_count": 0,
+            "title_only_instructions": []
+          },
+          "map_region_focus_steps": [
+            {
+              "ariaLabel": null,
+              "id": "near-map-enhanced",
+              "tag": "DIV",
+              "text": "© OpenStreetMap © CARTO | MapLibre"
+            },
+            {
+              "ariaLabel": "Map",
+              "id": null,
+              "tag": "CANVAS",
+              "text": "Map"
+            },
+            {
+              "ariaLabel": "Toggle attribution",
+              "id": null,
+              "tag": "SUMMARY",
+              "text": "Toggle attribution"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "tag": "A",
+              "text": "MapLibre"
+            }
+          ],
+          "name": "a9-desktop",
+          "revision": "217cde9ffa827500f06bcd6bca337491551a5740",
+          "route": "/near-you/",
+          "viewport": {
+            "height": 900,
+            "width": 1440
+          }
+        },
+        {
+          "data_vintage": "nta2020 26B",
+          "dom_sha256": "569dc6ae0c2b233bd7116d1f8f1e56bc979348f270b1e9dee1095816cb2cf00a",
+          "escape_path": {
+            "after_escape": {
+              "ariaLabel": null,
+              "className": "near-map-enhanced maplibregl-map",
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "href": null,
+              "id": "near-map-enhanced",
+              "in_map_region": true,
+              "role": null,
+              "tabIndex": 0,
+              "tag": "DIV",
+              "text": "© OpenStreetMap © CARTO | MapLibre"
+            },
+            "after_escape_tab": {
+              "ariaLabel": "Map",
+              "className": "maplibregl-canvas",
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "href": null,
+              "id": null,
+              "in_map_region": true,
+              "role": "region",
+              "tabIndex": 0,
+              "tag": "CANVAS",
+              "text": "Map"
+            },
+            "before": {
+              "ariaLabel": null,
+              "className": "near-map-enhanced maplibregl-map",
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "href": null,
+              "id": "near-map-enhanced",
+              "in_map_region": true,
+              "role": null,
+              "tabIndex": 0,
+              "tag": "DIV",
+              "text": "© OpenStreetMap © CARTO | MapLibre"
+            },
+            "exit_after_escape": {
+              "ariaLabel": null,
+              "className": "",
+              "dataMapArea": null,
+              "dataNearSurface": null,
+              "href": null,
+              "id": "near-area-directory-filter",
+              "in_map_region": false,
+              "role": null,
+              "tabIndex": 0,
+              "tag": "INPUT",
+              "text": ""
+            },
+            "key_path": "Focus #near-map-enhanced → Escape (clears hover/focus ring) → Tab until focus leaves the map region",
+            "tabs_from_map_host_to_leave_region": 4
+          },
+          "exit_map_focus": {
+            "ariaLabel": null,
+            "className": "",
+            "dataMapArea": null,
+            "dataNearSurface": null,
+            "href": null,
+            "id": "near-area-directory-filter",
+            "in_map_region": false,
+            "role": null,
+            "tabIndex": 0,
+            "tag": "INPUT",
+            "text": ""
+          },
+          "exit_map_focus_index": 20,
+          "first_map_focus": {
+            "ariaLabel": null,
+            "className": "near-map-enhanced maplibregl-map",
+            "dataMapArea": null,
+            "dataNearSurface": null,
+            "href": null,
+            "id": "near-map-enhanced",
+            "in_map_region": true,
+            "role": null,
+            "tabIndex": 0,
+            "tag": "DIV",
+            "text": "© OpenStreetMap © CARTO | MapLibre"
+          },
+          "first_map_focus_index": 16,
+          "focus_order": [
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 0,
+              "tag": "A",
+              "text": "Skip to content"
+            },
+            {
+              "ariaLabel": "CityScroll home",
+              "id": null,
+              "in_map_region": false,
+              "index": 1,
+              "tag": "A",
+              "text": "CityScroll home"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 2,
+              "tag": "A",
+              "text": "Now"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 3,
+              "tag": "A",
+              "text": "Near you"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 4,
+              "tag": "A",
+              "text": "Following"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 5,
+              "tag": "A",
+              "text": "Browse"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 6,
+              "tag": "A",
+              "text": "Guide"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 7,
+              "tag": "A",
+              "text": "Ask with AI"
+            },
+            {
+              "ariaLabel": "Back one step",
+              "id": null,
+              "in_map_region": false,
+              "index": 8,
+              "tag": "A",
+              "text": "Back one step"
+            },
+            {
+              "ariaLabel": "Restart at origin",
+              "id": null,
+              "in_map_region": false,
+              "index": 9,
+              "tag": "A",
+              "text": "Restart at origin"
+            },
+            {
+              "ariaLabel": null,
+              "id": "near-geo-search-input",
+              "in_map_region": false,
+              "index": 10,
+              "tag": "INPUT",
+              "text": ""
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 11,
+              "tag": "BUTTON",
+              "text": "Search"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 12,
+              "tag": "A",
+              "text": "Map"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 13,
+              "tag": "A",
+              "text": "Browse records"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 14,
+              "tag": "SUMMARY",
+              "text": "More ways to choose"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 15,
+              "tag": "BUTTON",
+              "text": "Map details"
+            },
+            {
+              "ariaLabel": null,
+              "id": "near-map-enhanced",
+              "in_map_region": true,
+              "index": 16,
+              "tag": "DIV",
+              "text": "© OpenStreetMap © CARTO | MapLibre"
+            },
+            {
+              "ariaLabel": "Map",
+              "id": null,
+              "in_map_region": true,
+              "index": 17,
+              "tag": "CANVAS",
+              "text": "Map"
+            },
+            {
+              "ariaLabel": "Toggle attribution",
+              "id": null,
+              "in_map_region": true,
+              "index": 18,
+              "tag": "SUMMARY",
+              "text": "Toggle attribution"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": true,
+              "index": 19,
+              "tag": "A",
+              "text": "MapLibre"
+            },
+            {
+              "ariaLabel": null,
+              "id": "near-area-directory-filter",
+              "in_map_region": false,
+              "index": 20,
+              "tag": "INPUT",
+              "text": ""
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 21,
+              "tag": "BUTTON",
+              "text": "Filter"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 22,
+              "tag": "SUMMARY",
+              "text": "Neighborhood list"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 23,
+              "tag": "SUMMARY",
+              "text": "Special-use areas"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 24,
+              "tag": "SUMMARY",
+              "text": "Citywide20"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 25,
+              "tag": "SUMMARY",
+              "text": "Virtual / online only1"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 26,
+              "tag": "SUMMARY",
+              "text": "No place signal89"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 27,
+              "tag": "BODY",
+              "text": ""
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 28,
+              "tag": "A",
+              "text": "Skip to content"
+            },
+            {
+              "ariaLabel": "CityScroll home",
+              "id": null,
+              "in_map_region": false,
+              "index": 29,
+              "tag": "A",
+              "text": "CityScroll home"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 30,
+              "tag": "A",
+              "text": "Now"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "in_map_region": false,
+              "index": 31,
+              "tag": "A",
+              "text": "Near you"
+            }
+          ],
+          "focus_trap_observed": false,
+          "hover_equivalents": {
+            "area_link_count": 262,
+            "area_links_with_href": 262,
+            "map_canvas_aria_label": "Map",
+            "map_canvas_tab_index": 0,
+            "map_host_tab_index": 0,
+            "rendered_label_count": 15,
+            "rendered_labels_with_directory_link": 15,
+            "title_only_instruction_count": 0,
+            "title_only_instructions": []
+          },
+          "map_region_focus_steps": [
+            {
+              "ariaLabel": null,
+              "id": "near-map-enhanced",
+              "tag": "DIV",
+              "text": "© OpenStreetMap © CARTO | MapLibre"
+            },
+            {
+              "ariaLabel": "Map",
+              "id": null,
+              "tag": "CANVAS",
+              "text": "Map"
+            },
+            {
+              "ariaLabel": "Toggle attribution",
+              "id": null,
+              "tag": "SUMMARY",
+              "text": "Toggle attribution"
+            },
+            {
+              "ariaLabel": null,
+              "id": null,
+              "tag": "A",
+              "text": "MapLibre"
+            }
+          ],
+          "name": "a9-mobile",
+          "revision": "217cde9ffa827500f06bcd6bca337491551a5740",
+          "route": "/near-you/",
+          "viewport": {
+            "height": 844,
+            "width": 390
+          }
+        }
+      ],
+      "route": "/near-you/"
     }
-  }
+  },
+  "observed_at": "2026-09-23T13:53:27.407298Z",
+  "origin": "https://cityscroll.org",
+  "producer": {
+    "letters": [
+      "A9",
+      "A13"
+    ],
+    "path": "docs/evidence/near-you-shell-readback/read-back.json",
+    "schema": "cityscroll.near_you_shell_production_read.v1"
+  },
+  "public_alias": "ced62a84f8213",
+  "schema": "cityscroll.near_you_shell_production_read.v1"
 }

@@ -9,9 +9,13 @@ Deployment-identity-stamped observations for the Near You map-first shell
   links; focusable map host), and Tab leaves the map region after Escape clears
   hover/focus state (no focus trap).
 - **A13** — at the initial all-city view, observed residential neighborhood
-  label counts stay inside 12–40 at 1440×900 and 6–20 at 390×844, with MapLibre
-  collision handling (`text-allow-overlap=false`) and a measured overlapping
-  pair count of zero.
+  label counts stay inside 12–40 at 1440×900 and 6–20 at 390×844. Label-box
+  geometry is measured from MapLibre `CollisionIndex` grid boxes materialized
+  into the DOM and read with `getBoundingClientRect` (overlap pairs, map-frame
+  clipping, primary-control obscuring). A selected-neighborhood route records
+  that the selected name renders on the `geography-selected-label` layer and in
+  the UI. The resident `dataset.overlappingNeighborhoodLabelCount` flag is a
+  derived style signal and is never treated as the overlap measurement.
 
 ## Artifacts
 

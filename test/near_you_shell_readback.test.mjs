@@ -25,11 +25,17 @@ test("retained Near You shell production read-back carries observed A9/A13 value
     "docs/evidence/near-you-shell-readback/read-back.json",
   );
   assert.deepEqual(receipt.producer.letters, ["A9", "A13"]);
+  for (const banned of ["result", "pass", "passed", "verdict"]) {
+    assert.equal(Object.hasOwn(receipt, banned), false);
+  }
 
   const a13 = receipt.letters.A13.reads;
-  assert.equal(a13.length, 2);
-  const desktop = a13.find((row) => row.viewport.width === 1440);
-  const mobile = a13.find((row) => row.viewport.width === 390);
+  const allCity = a13.filter((row) => !row.selected_neighborhood_label);
+  const selected = a13.filter((row) => row.selected_neighborhood_label);
+  assert.equal(allCity.length, 2);
+  assert.ok(selected.length >= 1);
+  const desktop = allCity.find((row) => row.viewport.width === 1440);
+  const mobile = allCity.find((row) => row.viewport.width === 390);
   assert.ok(desktop);
   assert.ok(mobile);
   assert.equal(desktop.viewport.height, 900);
@@ -44,14 +50,46 @@ test("retained Near You shell production read-back carries observed A9/A13 value
       && mobile.residential_neighborhood_label_count <= 20,
     `mobile count ${mobile.residential_neighborhood_label_count}`,
   );
-  for (const row of a13) {
+  for (const row of allCity) {
     assert.equal(row.map_runtime, "maplibre");
     assert.equal(row.text_allow_overlap, false);
     assert.equal(row.text_ignore_placement, false);
     assert.equal(row.overlapping_label_pair_count, 0);
     assert.equal(row.residential_neighborhood_labels.length, row.residential_neighborhood_label_count);
     assert.ok(row.residential_neighborhood_label_count > 0);
+    const geometry = row.geometry;
+    assert.ok(geometry);
+    assert.equal(
+      geometry.measurement,
+      "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
+    );
+    assert.equal(typeof geometry.measured_label_box_count, "number");
+    assert.ok(geometry.measured_label_box_count >= 1);
+    assert.equal(geometry.overlapping_label_pair_count, 0);
+    assert.equal(geometry.overlapping_label_pair_count, row.overlapping_label_pair_count);
+    assert.equal(typeof geometry.clipped_label_count, "number");
+    assert.equal(typeof geometry.obscured_by_primary_control_count, "number");
+    assert.equal(geometry.obscured_by_primary_control_count, 0);
+    assert.match(geometry.clip_surface, /map_host_canvas/);
+    // Derived dataset flag must remain ignored, never the geometry source.
+    assert.ok(Object.hasOwn(geometry, "dataset_overlap_flag_ignored"));
+    for (const banned of ["result", "pass", "passed", "verdict"]) {
+      assert.equal(Object.hasOwn(row, banned), false);
+      assert.equal(Object.hasOwn(geometry, banned), false);
+    }
   }
+
+  const selectedRow = selected[0];
+  assert.equal(selectedRow.selected_neighborhood_label, "Greenpoint");
+  assert.ok(
+    (selectedRow.selected_layer_rendered_labels || []).includes("Greenpoint"),
+  );
+  assert.ok(selectedRow.selected_layer_rendered_label_count >= 1);
+  assert.ok(
+    selectedRow.selected_ui_label === "Greenpoint"
+      || selectedRow.selected_heading === "Greenpoint",
+  );
+  assert.match(selectedRow.route, /geo=nta2020%3ABK0101/);
 
   const a9 = receipt.letters.A9.reads;
   assert.equal(a9.length, 2);
@@ -78,13 +116,23 @@ test("capture-manifest stays aligned with the Near You shell production read-bac
   assert.equal(manifest.revision, receipt.deployment.revision);
   assert.equal(manifest.repository_revision, receipt.deployment.revision);
   assert.equal(manifest.image_binaries_committed, false);
-  assert.ok(manifest.captures.length >= 4);
+  assert.ok(manifest.captures.length >= 5);
   assert.equal(
     manifest.producer.path,
     "docs/evidence/near-you-shell-readback/read-back.json",
   );
   assert.deepEqual(manifest.producer.letters, ["A9", "A13"]);
   assert.match(manifest.condition, /Production base https:\/\/cityscroll\.org/);
+  const selectedCapture = manifest.captures.find((row) => row.name === "a13-selected-desktop");
+  assert.ok(selectedCapture);
+  assert.match(selectedCapture.route, /geo=nta2020%3ABK0101/);
+  assert.equal(selectedCapture.observed.selected_neighborhood_label, "Greenpoint");
+  const desktopGeometry = manifest.captures.find((row) => row.name === "a13-desktop");
+  assert.ok(desktopGeometry?.observed?.geometry);
+  assert.equal(
+    desktopGeometry.observed.geometry.measurement,
+    "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
+  );
 });
 
 test("map host records collision observation fields for shell label capture", () => {
