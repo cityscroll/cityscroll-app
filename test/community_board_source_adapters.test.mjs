@@ -848,3 +848,38 @@ test("named board acquisition receipts must pass both presence and population", 
     /population=false/,
   );
 });
+
+test("named board gate keeps last-known-good when a live fetch fails presence", () => {
+  const receipts = BOARD_MEETING_ACQUISITION_PRESENCE_POPULATION_BOARDS.map((boardId) => ({
+    board_id: boardId,
+    role: "upcoming_meetings",
+    materialized_record_count: 1,
+    retained_previous_records: 0,
+    acquisition_invariants: evaluateBoardSourceAcquisitionInvariants({
+      receipt: { status: "ok", fetch_status: "200", reason: null },
+      records: [{ record_kind: "event", record_id: `${boardId}-1`, date: "2026-09-16" }],
+      role: "upcoming_meetings",
+    }),
+  }));
+  receipts[0].retained_previous_records = 3;
+  receipts[0].acquisition_invariants = evaluateBoardSourceAcquisitionInvariants({
+    receipt: { status: "unknown", fetch_status: "403", reason: "http_error" },
+    records: [
+      { record_kind: "event", record_id: "kept-1", date: "2026-09-16" },
+      { record_kind: "event", record_id: "kept-2", date: "2026-09-23" },
+      { record_kind: "event", record_id: "kept-3", date: "2026-10-01" },
+    ],
+    role: "upcoming_meetings",
+  });
+  assert.deepEqual(assertBoardSourceAcquisitionInvariants(receipts), {
+    ok: true,
+    checked: BOARD_MEETING_ACQUISITION_PRESENCE_POPULATION_BOARDS.length,
+  });
+
+  // Without retained rows, a refused fetch still fails closed for the named set.
+  delete receipts[0].retained_previous_records;
+  assert.throws(
+    () => assertBoardSourceAcquisitionInvariants(receipts),
+    /presence=false/,
+  );
+});

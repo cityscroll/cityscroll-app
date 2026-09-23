@@ -94,12 +94,27 @@ def main():
                 page.wait_for_url('**geo=nta2020%3AMN0101**')
                 ready(page,selected=True)
                 page.evaluate('window.__sameDocument=true')
-                area=page.locator('.near-area-list a').filter(has_text='Williamsburg').first
+                # Residential directory keeps the long borough list behind a closed
+                # disclosure so keyboard users skip past it; open it before clicking.
+                def open_area_directory():
+                    directory=page.locator('details.near-area-directory-list')
+                    if directory.count() == 0:
+                        return
+                    if not directory.first.evaluate('node => node.open'):
+                        directory.first.locator('summary').click()
+                        page.wait_for_function(
+                            "() => document.querySelector('details.near-area-directory-list')?.open === true"
+                        )
+                open_area_directory()
+                area=page.locator('#near-area-list').get_by_role('link', name='Williamsburg', exact=True)
+                area.scroll_into_view_if_needed()
                 area.click()
-                page.wait_for_function("() => new URL(location.href).searchParams.get('geo') !== 'nta2020:MN0102'")
+                page.wait_for_url('**geo=nta2020%3ABK0102**')
                 ready(page,selected=True)
                 assert page.evaluate('window.__sameDocument === true'), 'area list reloaded document'
-                page.locator('.near-area-list a').filter(has_text='Greenpoint').first.click()
+                open_area_directory()
+                page.locator('#near-area-list').get_by_role('link', name='Greenpoint', exact=True).scroll_into_view_if_needed()
+                page.locator('#near-area-list').get_by_role('link', name='Greenpoint', exact=True).click()
                 page.wait_for_url('**geo=nta2020%3ABK0101**')
                 ready(page,selected=True,allow_unavailable=True)
                 assert page.locator('.near-hero h1').inner_text()=='Greenpoint'
@@ -147,10 +162,12 @@ def main():
                 ready(native,selected=True,allow_unavailable=True)
                 assert 'geo=nta2020%3AMN0102' in native.url
                 native.close()
-                # Bypass the submit listener, exercising the actual GET form/Worker path.
+                # Prefer the resident Search control over HTMLFormElement.submit():
+                # the static Pages origin resolves place labels in the submit
+                # listener, and a raw form.submit() skips that path.
                 page.locator('.near-place-guide > summary').click()
                 page.locator('[data-geography-search] input[name="neighborhood"]').fill('Tribeca-Civic Center')
-                page.locator('[data-geography-search]').evaluate('(form)=>form.submit()')
+                page.locator('[data-geography-search] button[type="submit"]').click()
                 page.wait_for_url('**geo=nta2020%3AMN0102**')
                 ready(page,selected=True,allow_unavailable=True)
                 query=parse_qs(urlparse(page.url).query)

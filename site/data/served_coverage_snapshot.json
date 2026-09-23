@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-09-22T03:49:12.395Z"
+    "newest": "2026-09-23T05:09:59.711Z"
   },
   "domains": [
     {
@@ -187,7 +187,7 @@
           "source_id": "city-record",
           "source_name": "City Record Online",
           "state": "measured",
-          "value": 791,
+          "value": 790,
           "evidence_vintage": "2026-09-09T06:52:08.255Z",
           "vintage_field": "sources.city_record.generated_at",
           "vintage_basis": "single"
@@ -215,8 +215,8 @@
           "source_id": "non-council-board-minutes",
           "source_name": "Community board and borough president minutes",
           "state": "measured",
-          "value": 450,
-          "evidence_vintage": "2026-09-13T21:44:56.142Z",
+          "value": 449,
+          "evidence_vintage": "2026-09-23T05:09:59.711Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         },

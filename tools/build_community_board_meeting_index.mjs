@@ -207,6 +207,12 @@ export const BOARD_MEETING_ACQUISITION_PRESENCE_POPULATION_BOARDS = Object.freez
  * Assert presence and population for named board sources on an acquisition pass.
  * Every receipt still carries both readings; this gate fails closed for the
  * boards whose silent-empty responses previously hid the largest shortfall.
+ *
+ * A transport failure that retains last-known-good meetings is not that failure
+ * mode: presence records the failed attempt, population records the retained
+ * rows, and the index already discloses source_refresh=unavailable. Blocking
+ * the whole refresh on that honest pair freezes production freshness while the
+ * resident surface still has meetings to show.
  */
 export function assertBoardSourceAcquisitionInvariants(receipts = [], {
   requiredBoardIds = BOARD_MEETING_ACQUISITION_PRESENCE_POPULATION_BOARDS,
@@ -224,6 +230,11 @@ export function assertBoardSourceAcquisitionInvariants(receipts = [], {
         : [],
       role: receipt.role || role,
     });
+    const retainedPrevious = Number(receipt.retained_previous_records || 0) > 0;
+    const honestRetain = !invariants.presence?.ok
+      && invariants.population?.ok
+      && retainedPrevious;
+    if (honestRetain) continue;
     if (!invariants.presence?.ok || !invariants.population?.ok) {
       findings.push({
         board_id: receipt.board_id,
