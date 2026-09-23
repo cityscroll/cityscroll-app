@@ -732,7 +732,7 @@ export function renderSelectedGeographyOverlapDrawerHtml(model, {
       ${(model.related_districts || []).length ? `<section class="near-geo-record-lenses near-geo-broader-suggestions" data-geography-broader-suggestions aria-label="Broader district suggestions">
         <h3>Events and actions in overlapping districts</h3>
         <p>These community districts overlap this neighborhood. Their records cover a broader area and are not counted as exact neighborhood records.</p>
-        <ul>${model.related_districts.map((row) => `<li data-geography-related-district data-geography-related-scope="broader" data-geography-key="${esc(row.key)}"><a href="${esc(row.href)}">${esc(row.label)}</a> <span class="near-geo-broader-label">broader</span></li>`).join("")}</ul>
+        <ul>${model.related_districts.map((row) => `<li><a data-geography-related-district data-geography-related-scope="broader" data-geography-key="${esc(row.key)}" href="${esc(row.href)}">${esc(row.label)}</a> <span class="near-geo-broader-label">broader</span></li>`).join("")}</ul>
       </section>` : ""}
       <div class="near-geo-overlap-compare" data-geography-compare-controls role="group" aria-label="Compare with">
         <p class="near-geo-overlap-compare-label">Compare with</p>

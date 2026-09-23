@@ -1289,13 +1289,15 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
       <summary>About this place</summary>
       <p>${view.isOverview ? "See this place summary. Then choose records to explore." : `${esc(view.lensLabel)} and public records linked to this place.`}</p>
       <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="topic"><span>Topic: ${esc(view.lensLabel)}</span></li>${scopeChips}</ul>
-      <details class="near-map-secondary"><summary>Follow or share</summary><nav class="near-actions" aria-label="Map actions">
+      <div class="near-map-secondary" role="group" aria-label="Follow or share">
+      <p class="near-map-secondary-label">Follow or share</p>
+      <nav class="near-actions" aria-label="Map actions">
         <a href="${esc(view.browseHref)}">Open as a list</a>
         <a href="${esc(view.watchHref)}">Watch these filters</a>
         <a href="${esc(view.shareHref)}">Share this map</a>
       </nav>
       ${renderFollowDiscoveryForNearYou(view)}
-      </details>
+      </div>
       ${renderNearYouOverview(view)}
       <details class="near-explore"><summary>Explore related records</summary>${walkEntry}</details>
       ${renderLocalConstellationHTML(view.local_constellation, { heading: "Nearby place records", id: "place-local-constellation-heading" })}

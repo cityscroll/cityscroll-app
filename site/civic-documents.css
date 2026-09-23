@@ -4079,10 +4079,20 @@ select {
   margin: 0;
 }
 [data-geography-shell] .near-entry-secondary > summary,
-[data-geography-shell] .near-map-secondary > summary {
+[data-geography-shell] .near-selected-context > summary {
   cursor: pointer;
   min-height: var(--control-min-size);
   align-content: center;
+}
+/* Explicit display on children can override closed-details hiding; keep nested
+   chrome unreachable until the parent disclosure is open. */
+[data-geography-shell] .near-entry-secondary:not([open]) > :not(summary),
+[data-geography-shell] .near-selected-context:not([open]) > :not(summary) {
+  display: none !important;
+}
+[data-geography-shell] .near-map-secondary-label {
+  margin: 0 0 var(--space-2);
+  font: 650 0.95rem/1.3 var(--font-interface);
 }
 [data-geography-shell] .near-map-layers > summary {
   cursor: pointer;
