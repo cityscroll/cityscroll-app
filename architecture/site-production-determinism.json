@@ -588,6 +588,7 @@
     "site/public_input_explainer.mjs",
     "site/qr_share.js",
     "site/reader_surface_labels.mjs",
+    "site/record_address_resolution_cache.mjs",
     "site/regulatory_agenda_document.mjs",
     "site/regulatory_agenda.mjs",
     "site/rendered_copy_lint.mjs",
