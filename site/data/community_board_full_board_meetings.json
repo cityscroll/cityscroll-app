@@ -24,8 +24,8 @@
   },
   "counts": {
     "boards": 59,
-    "full_board_meeting": 13,
-    "no_full_board_meeting_recorded": 39,
+    "full_board_meeting": 14,
+    "no_full_board_meeting_recorded": 38,
     "board_source_unreadable": 3,
     "board_not_covered": 4,
     "board_query_unresolved": 0,
@@ -1179,7 +1179,40 @@
         "borough": "Brooklyn",
         "community_district": "K14"
       },
-      "meeting": null,
+      "meeting": {
+        "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+        "title": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028",
+        "event_date": "2026-09-14T18:30:00-04:00",
+        "meeting_day": "2026-09-14",
+        "board_id": "brooklyn-cb-14",
+        "board_name": "Brooklyn Community Board 14",
+        "convening_body": "full_board",
+        "convening_body_basis": "publisher_meeting_title",
+        "venue": {
+          "name": "East Midwood Jewish Center",
+          "address": "1625 Ocean Avenue, Brooklyn, New York, 11230",
+          "mode": "in-person"
+        },
+        "source": {
+          "source_system": "community_board",
+          "publisher": "Brooklyn Community Board 14",
+          "source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+          "publisher_identifier": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+          "observed_at": "2026-09-23T05:09:59.711Z",
+          "observation_state": "observed",
+          "observation_age_days": 0,
+          "retained_snapshot": null
+        },
+        "minutes": {
+          "status": "not_held",
+          "document_count": 0,
+          "documents": [],
+          "source_url": "https://cb14brooklyn.com/board-meeting-minutes/",
+          "observed_at": "2026-09-23T05:09:59.711Z",
+          "reason": "minutes_source_read_and_publishes_no_minutes",
+          "statement": "The minutes corpus was read for this board and it publishes no minutes there."
+        }
+      },
       "coverage": {
         "meetings": {
           "state": "indexed",
@@ -1200,9 +1233,9 @@
           "retained_snapshot": null
         }
       },
-      "status": "no_full_board_meeting_recorded",
-      "reason": "meeting_source_read_without_a_full_board_meeting",
-      "statement": "Brooklyn Community Board 14's meeting source was read on 2026-09-23 and the meetings it publishes are committee and task-force meetings, not full board meetings, so when the board last met in full session is not recorded here."
+      "status": "full_board_meeting",
+      "reason": null,
+      "statement": "Brooklyn Community Board 14 last met in full session on 2026-09-14 according to Brooklyn Community Board 14, observed 2026-09-23. The minutes corpus was read for this board and it publishes no minutes there."
     },
     {
       "schema": "cityscroll.community_board_full_board_meeting_answer.v1",

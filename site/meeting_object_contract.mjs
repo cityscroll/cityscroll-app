@@ -407,6 +407,12 @@ export function normalizeMeetingObject(row = {}) {
     ...(optionalText(row.collection_visibility)
       ? { collection_visibility: optionalText(row.collection_visibility) }
       : {}),
+    ...(optionalText(row.timing_status)
+      ? { timing_status: optionalText(row.timing_status) }
+      : {}),
+    ...(row.detail_retention && typeof row.detail_retention === "object"
+      ? { detail_retention: row.detail_retention }
+      : {}),
   };
 }
 

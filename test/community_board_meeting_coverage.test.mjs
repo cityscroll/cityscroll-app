@@ -84,6 +84,8 @@ test("the coverage builder accounts for both roles across all 59 boards", async 
   const requested = [];
   const index = await buildCommunityBoardMeetingIndex({
     observedAt: "2026-08-14T12:00:00Z",
+    previousIndex: null,
+    hearingContext: { boards: [] },
     fetchImpl: async (url) => {
       requested.push(String(url));
       return responseFor(url);
@@ -200,6 +202,8 @@ test("duplicate publisher identifiers within a board fail the build", async () =
   await assert.rejects(
     buildCommunityBoardMeetingIndex({
       observedAt: "2026-08-14T12:00:00Z",
+      previousIndex: null,
+      hearingContext: { boards: [] },
       fetchImpl: async (url) => responseFor(url, { duplicate: true }),
     }),
     /duplicate publisher identifier within board/,

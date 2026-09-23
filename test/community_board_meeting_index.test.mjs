@@ -87,17 +87,21 @@ test("a successful publisher recovery replaces retained records and clears the f
   assert.equal(recovered.receipts[0].retained_previous_records, undefined);
 });
 
-test("successful empty reads replace prior records; failed reads never borrow another source or role", async () => {
+test("successful empty reads retain prior admitted detail without inventing cancellation; failed reads never borrow another source or role", async () => {
   const empty = await buildCommunityBoardMeetingIndex({
     ...recoveryOptions, previousIndex, observedAt: recovery.provenance.failed_read_at,
+    hearingContext: { boards: [] },
     fetchImpl: async () => new Response("<html><body>No published events</body></html>"),
   });
-  assert.equal(empty.rows.length, 0);
-  assert.equal(empty.receipts[0].state, "checked-empty");
-  assert.equal(empty.receipts[0].retained_previous_records || 0, 0);
+  assert.equal(empty.rows.length, 1, "omission from a successful upcoming feed keeps the prior admitted detail");
+  assert.equal(empty.rows[0].meeting_id, `meeting:community_board:${recovery.source_record.record_id}`);
+  assert.equal(empty.rows[0].detail_retention?.omitted_from_upcoming, true);
+  assert.equal(empty.rows[0].detail_retention?.cancellation_inferred, false);
+  assert.equal(empty.receipts[0].state, "indexed");
   for (const change of [ { source_url: "https://example.gov/other-calendar" }, { source_role: "minutes" }, { board_id: "bronx-cb-07" } ]) {
     const result = await buildCommunityBoardMeetingIndex({
       ...recoveryOptions, observedAt: recovery.provenance.failed_read_at,
+      hearingContext: { boards: [] },
       previousIndex: { ...previousIndex, source_records_by_board: { [recovery.board.id]: [{ ...recovery.source_record, ...change }] } },
       fetchImpl: async () => new Response("Forbidden", { status: 403 }),
     });

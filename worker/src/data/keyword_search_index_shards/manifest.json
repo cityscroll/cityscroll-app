@@ -6,10 +6,10 @@
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "ff147c8306f61db1fe64df3a47694e6cc152d010b6a953e022be8feecb276e91",
-    "bytes": 81793794,
+    "sha256": "9b39e4f22be61f7c7db122887c99d98905382df825c32636114fcb71f204e799",
+    "bytes": 81796957,
     "family_count": 12,
-    "document_count": 22180
+    "document_count": 22181
   },
   "build_receipt": {
     "source_artifacts": {
@@ -109,13 +109,13 @@
       "path": "community_boards.json.br",
       "gzip_path": "community_boards.json.gz",
       "document_count": 59,
-      "uncompressed_bytes": 79167,
+      "uncompressed_bytes": 79137,
       "gzip_bytes": 3556,
-      "brotli_bytes": 2630,
-      "sha256": "5c6a22ae4dcddacc05804d3d0aa5bc647f22a6b3b183e95ff7ed15a1056ea05b",
-      "gzip_sha256": "353e61f2da653241c562e3269372aa6e5ae5f45dc909f7ec83d03ccaf9f703d1",
-      "brotli_sha256": "9638d8e73c6f565a6509742a4364aa50b77ed641227d87f43faaada50b9a16b8",
-      "receipt_sha256": "66784efbc25a60f85d7fd4cd93c8feb7b300cef24ff2e26441a7d00eb8c10d98"
+      "brotli_bytes": 2621,
+      "sha256": "2e09a4360595e22291b460644cfbae9ea3d55cca6f2fb1f5574b61c68ae045e1",
+      "gzip_sha256": "635ac2d81ef411700aab14d3c991a66d39d8333daa2bf40e14ea0937b9ecfcf4",
+      "brotli_sha256": "54113a37fdd8ee9a8e7841f1f10e4614467e4f65f515b7c67cf24f7725b9d0bf",
+      "receipt_sha256": "04c65c0cf759b3b3f7e73b07fb7931d79c794d862fa277024e148814d13b0fa7"
     },
     {
       "family": "land",
@@ -134,14 +134,14 @@
       "family": "meetings",
       "path": "meetings.json.br",
       "gzip_path": "meetings.json.gz",
-      "document_count": 841,
-      "uncompressed_bytes": 1670395,
-      "gzip_bytes": 115164,
-      "brotli_bytes": 77378,
-      "sha256": "1abfc8c64a1525a2cc8a0d04b978e418b8d6efa4b88fc9bf94e8930f0db8a115",
-      "gzip_sha256": "dbad326a4a7ca32f1e35e979c4b3a445ebbfcf51913ac03278fa019044e473bf",
-      "brotli_sha256": "120175af5416935430b21ab8ba8b9b6ada4c2a6c508bb3b0246bbc08134f5bed",
-      "receipt_sha256": "df03320c90126f53b5d0f5de7e9ddd813e656c3f1bc7c925a50d1c0be94df2d1"
+      "document_count": 842,
+      "uncompressed_bytes": 1673464,
+      "gzip_bytes": 115484,
+      "brotli_bytes": 77488,
+      "sha256": "3a319b1c45723054dba6c7b7592ad3535e77df569cd2d9e45f65c979ba829dac",
+      "gzip_sha256": "cdce46d5cd230ec2fd5d51cd65c92f4ae66ed244bbb72378d001be8ddbc5a999",
+      "brotli_sha256": "c99556c700ad249cc3d22a61e1af4b9bf51d42406b5576aae654b2417121c456",
+      "receipt_sha256": "4f756a31ab111913b4fb2b509b99b9a37006755b4d639bb64c60633b62d454f0"
     },
     {
       "family": "exams",
