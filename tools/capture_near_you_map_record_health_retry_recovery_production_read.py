@@ -100,7 +100,13 @@ def deployed_revision(manifest: dict) -> str:
 
 def write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    # Sorted keys + literal Unicode keep the committed receipt byte-stable and
+    # preserve observed copy characters (for example curly apostrophes) without
+    # host-dependent \\u escapes.
+    path.write_text(
+        json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
 
 
 def load_json(path: Path) -> dict:
@@ -427,9 +433,18 @@ def validate(receipt: dict) -> None:
             raise AssertionError("A3 recovered values must not carry a pass verdict")
 
 
+def assert_canonical_json(path: Path) -> None:
+    raw = path.read_text(encoding="utf-8")
+    data = json.loads(raw)
+    canonical = json.dumps(data, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+    if raw != canonical:
+        raise AssertionError(f"{path.relative_to(ROOT)} is not canonical sorted-key JSON")
+
+
 def check() -> None:
     receipt = load_json(READBACK)
     validate(receipt)
+    assert_canonical_json(READBACK)
     production = load_json(PRODUCTION)
     if production.get("schema") != SCHEMA:
         raise AssertionError("production-read schema mismatch")
@@ -437,11 +452,13 @@ def check() -> None:
         raise AssertionError("production-read producer letters mismatch")
     if not ((production.get("letters") or {}).get("A3") or {}).get("reads"):
         raise AssertionError("production-read missing A3 recovery reads")
+    assert_canonical_json(PRODUCTION)
     manifest = load_json(MANIFEST)
     if manifest.get("public_alias") != PUBLIC_ALIAS:
         raise AssertionError("capture-manifest public_alias mismatch")
     if manifest.get("producer", {}).get("letters") != ["A3"]:
         raise AssertionError("capture-manifest producer letters mismatch")
+    assert_canonical_json(MANIFEST)
     recovery_names = {row["name"] for row in receipt["letters"]["A3"]["reads"]}
     manifest_names = {row.get("name") for row in manifest.get("captures") or []}
     if not recovery_names.issubset(manifest_names):

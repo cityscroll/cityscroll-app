@@ -1,593 +1,593 @@
 {
-  "schema": "cityscroll.near_you_map_record_health_production_read.v1",
-  "public_alias": "c42128caee453",
-  "observed_at": "2026-09-23T10:09:04.645060Z",
-  "evidence_class": "deployed-production-read-back",
-  "origin": "https://cityscroll.org",
-  "deployment": {
-    "manifest_url": "https://cityscroll.org/artifact-manifest.json",
-    "revision": "8777db6246da4f559a0db728377751d99f8c49e7",
-    "generated_at": "2026-09-23T07:46:01.592Z",
-    "deployment_at": "2026-09-23T07:46:01.592Z",
-    "manifest_sha256": "014febbcd8d00ca0d94a23e8ede25a67b9f0fd601ddda27c65e110a53afd94aa"
-  },
   "capture": {
-    "tool": "tools/capture_near_you_map_record_health_retry_recovery_production_read.py",
     "browser": "chromium",
+    "recovery_method": "Fulfill deferred.json with results_html null to induce a recoverable record-read failure, unroute, press data-near-recovery=retry, and wait for data-near-deferred-state=ready on the live deferred response.",
+    "screenshot_binaries_committed": false,
+    "tool": "tools/capture_near_you_map_record_health_retry_recovery_production_read.py",
     "viewports": [
       {
+        "height": 900,
         "name": "desktop",
-        "width": 1440,
-        "height": 900
+        "width": 1440
       },
       {
+        "height": 844,
         "name": "mobile",
-        "width": 390,
-        "height": 844
+        "width": 390
       }
-    ],
-    "screenshot_binaries_committed": false,
-    "recovery_method": "Fulfill deferred.json with results_html null to induce a recoverable record-read failure, unroute, press data-near-recovery=retry, and wait for data-near-deferred-state=ready on the live deferred response."
-  },
-  "producer": {
-    "path": "docs/evidence/near-you-map-record-health/read-back.json",
-    "schema": "cityscroll.near_you_map_record_health_production_read.v1",
-    "letters": [
-      "A3"
     ]
   },
+  "deployment": {
+    "deployment_at": "2026-09-23T07:46:01.592Z",
+    "generated_at": "2026-09-23T07:46:01.592Z",
+    "manifest_sha256": "014febbcd8d00ca0d94a23e8ede25a67b9f0fd601ddda27c65e110a53afd94aa",
+    "manifest_url": "https://cityscroll.org/artifact-manifest.json",
+    "revision": "8777db6246da4f559a0db728377751d99f8c49e7"
+  },
+  "evidence_class": "deployed-production-read-back",
   "letters": {
     "A3": {
       "clause": "retry_succeeds_after_recoverable_read_failure",
-      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "reads": [
         {
-          "source": "headless-playwright-production-served-site",
-          "name": "production-record-retry-recovery-BK0101-desktop",
-          "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-          "viewport": {
-            "width": 1440,
-            "height": 900
-          },
-          "data_vintage": "nta2020 26B",
           "assertion": "Greenpoint recovers from an induced deferred-record failure after pressing Try again; neighborhood identity and boundary context stay intact while deferred content leaves the error state.",
-          "sha256": "0194e6a4bb208da6df21f95696112f5c74e6a8e471977bef309dfcb84815aac7",
+          "data_vintage": "nta2020 26B",
           "file": null,
+          "name": "production-record-retry-recovery-BK0101-desktop",
           "revision": "8777db6246da4f559a0db728377751d99f8c49e7",
+          "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
           "served_values": {
-            "before": {
-              "heading": "Greenpoint",
-              "deferred_state": "error",
-              "retry_present": true,
-              "retry_label": "Try again",
-              "geometry_vintage_present": true
-            },
             "action": {
               "control": "data-near-recovery=retry",
-              "retry_pressed": true,
+              "label": "Try again",
               "method": "click",
-              "label": "Try again"
+              "retry_pressed": true
             },
             "after": {
-              "heading": "Greenpoint",
-              "deferred_state": "ready",
               "data_state": "ready",
-              "retry_present": false,
-              "results_heading": "Matching Meetings records",
-              "recovered_copy": "This area\u2019s materialized records are unavailable right now.",
+              "deferred_state": "ready",
+              "geometry_vintage": "26B",
+              "heading": "Greenpoint",
+              "recovered_copy": "This area’s materialized records are unavailable right now.",
               "results_count": null,
-              "geometry_vintage": "26B"
+              "results_heading": "Matching Meetings records",
+              "retry_present": false
+            },
+            "before": {
+              "deferred_state": "error",
+              "geometry_vintage_present": true,
+              "heading": "Greenpoint",
+              "retry_label": "Try again",
+              "retry_present": true
             },
             "neighborhood_context_intact": true,
             "retry_preserved": {
-              "lens": "meetings",
               "agency": "Transportation",
-              "q": "curb",
               "compare": "council_district",
-              "geo": "nta2020:BK0101"
+              "geo": "nta2020:BK0101",
+              "lens": "meetings",
+              "q": "curb"
             }
+          },
+          "sha256": "0194e6a4bb208da6df21f95696112f5c74e6a8e471977bef309dfcb84815aac7",
+          "source": "headless-playwright-production-served-site",
+          "viewport": {
+            "height": 900,
+            "width": 1440
           }
         },
         {
-          "source": "headless-playwright-production-served-site",
-          "name": "production-record-retry-recovery-BK0101-mobile",
-          "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-          "viewport": {
-            "width": 390,
-            "height": 844
-          },
-          "data_vintage": "nta2020 26B",
           "assertion": "Greenpoint recovers from an induced deferred-record failure after pressing Try again; neighborhood identity and boundary context stay intact while deferred content leaves the error state.",
-          "sha256": "0194e6a4bb208da6df21f95696112f5c74e6a8e471977bef309dfcb84815aac7",
+          "data_vintage": "nta2020 26B",
           "file": null,
+          "name": "production-record-retry-recovery-BK0101-mobile",
           "revision": "8777db6246da4f559a0db728377751d99f8c49e7",
+          "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
           "served_values": {
-            "before": {
-              "heading": "Greenpoint",
-              "deferred_state": "error",
-              "retry_present": true,
-              "retry_label": "Try again",
-              "geometry_vintage_present": true
-            },
             "action": {
               "control": "data-near-recovery=retry",
-              "retry_pressed": true,
+              "label": "Try again",
               "method": "click",
-              "label": "Try again"
+              "retry_pressed": true
             },
             "after": {
-              "heading": "Greenpoint",
-              "deferred_state": "ready",
               "data_state": "ready",
-              "retry_present": false,
-              "results_heading": "Matching Meetings records",
-              "recovered_copy": "This area\u2019s materialized records are unavailable right now.",
+              "deferred_state": "ready",
+              "geometry_vintage": "26B",
+              "heading": "Greenpoint",
+              "recovered_copy": "This area’s materialized records are unavailable right now.",
               "results_count": null,
-              "geometry_vintage": "26B"
+              "results_heading": "Matching Meetings records",
+              "retry_present": false
+            },
+            "before": {
+              "deferred_state": "error",
+              "geometry_vintage_present": true,
+              "heading": "Greenpoint",
+              "retry_label": "Try again",
+              "retry_present": true
             },
             "neighborhood_context_intact": true,
             "retry_preserved": {
-              "lens": "meetings",
               "agency": "Transportation",
-              "q": "curb",
               "compare": "council_district",
-              "geo": "nta2020:BK0101"
+              "geo": "nta2020:BK0101",
+              "lens": "meetings",
+              "q": "curb"
             }
+          },
+          "sha256": "0194e6a4bb208da6df21f95696112f5c74e6a8e471977bef309dfcb84815aac7",
+          "source": "headless-playwright-production-served-site",
+          "viewport": {
+            "height": 844,
+            "width": 390
           }
         }
-      ]
+      ],
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district"
     }
   },
+  "observed_at": "2026-09-23T10:09:04.645060Z",
+  "origin": "https://cityscroll.org",
   "preservation_reads": [
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "Greenpoint keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-failure-BK0101-desktop",
-      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "Greenpoint keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "e797046b36f9b65bf76cec6887aaecbbacbeeada6bb57ac540af145ed80ffb1b",
-      "file": null,
       "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "served_values": {
-        "heading": "Greenpoint",
-        "deferred_state": "error",
-        "retry_present": true,
-        "buyer_history_retry_leaked": false,
         "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
         "geometry_vintage_present": true,
+        "heading": "Greenpoint",
+        "retry_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:BK0101"
+          "geo": "nta2020:BK0101",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "e797046b36f9b65bf76cec6887aaecbbacbeeada6bb57ac540af145ed80ffb1b",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 900,
+        "width": 1440
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "Greenpoint keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-failure-BK0101-mobile",
+      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
       "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "Greenpoint keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "e797046b36f9b65bf76cec6887aaecbbacbeeada6bb57ac540af145ed80ffb1b",
-      "file": null,
-      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
       "served_values": {
+        "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
+        "geometry_vintage_present": true,
         "heading": "Greenpoint",
-        "deferred_state": "error",
         "retry_present": true,
-        "buyer_history_retry_leaked": false,
-        "bare_code_title": false,
-        "geometry_vintage_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:BK0101"
+          "geo": "nta2020:BK0101",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "e797046b36f9b65bf76cec6887aaecbbacbeeada6bb57ac540af145ed80ffb1b",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 844,
+        "width": 390
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "Astoria (Central) keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-failure-QN0103-desktop",
-      "route": "/near-you/?geo=nta2020%3AQN0103&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "Astoria (Central) keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "142b439ee5fcbec1ef2eefed8f93157df334abcf35627983dd182704b87b9835",
-      "file": null,
       "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "route": "/near-you/?geo=nta2020%3AQN0103&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "served_values": {
-        "heading": "Astoria (Central)",
-        "deferred_state": "error",
-        "retry_present": true,
-        "buyer_history_retry_leaked": false,
         "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
         "geometry_vintage_present": true,
+        "heading": "Astoria (Central)",
+        "retry_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:QN0103"
+          "geo": "nta2020:QN0103",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "142b439ee5fcbec1ef2eefed8f93157df334abcf35627983dd182704b87b9835",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 900,
+        "width": 1440
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "Astoria (Central) keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-failure-QN0103-mobile",
+      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
       "route": "/near-you/?geo=nta2020%3AQN0103&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "Astoria (Central) keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "142b439ee5fcbec1ef2eefed8f93157df334abcf35627983dd182704b87b9835",
-      "file": null,
-      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
       "served_values": {
+        "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
+        "geometry_vintage_present": true,
         "heading": "Astoria (Central)",
-        "deferred_state": "error",
         "retry_present": true,
-        "buyer_history_retry_leaked": false,
-        "bare_code_title": false,
-        "geometry_vintage_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:QN0103"
+          "geo": "nta2020:QN0103",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "142b439ee5fcbec1ef2eefed8f93157df334abcf35627983dd182704b87b9835",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 844,
+        "width": 390
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "St. George-New Brighton keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-failure-SI0101-desktop",
-      "route": "/near-you/?geo=nta2020%3ASI0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "St. George-New Brighton keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "b750b59a003a070af85a269d3477857b5939d21507837750eb268bfb0ca0fcc8",
-      "file": null,
       "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "route": "/near-you/?geo=nta2020%3ASI0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "served_values": {
-        "heading": "St. George-New Brighton",
-        "deferred_state": "error",
-        "retry_present": true,
-        "buyer_history_retry_leaked": false,
         "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
         "geometry_vintage_present": true,
+        "heading": "St. George-New Brighton",
+        "retry_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:SI0101"
+          "geo": "nta2020:SI0101",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "b750b59a003a070af85a269d3477857b5939d21507837750eb268bfb0ca0fcc8",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 900,
+        "width": 1440
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
-      "name": "production-record-failure-SI0101-mobile",
-      "route": "/near-you/?geo=nta2020%3ASI0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "data_vintage": "nta2020 26B",
       "assertion": "St. George-New Brighton keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "b750b59a003a070af85a269d3477857b5939d21507837750eb268bfb0ca0fcc8",
+      "data_vintage": "nta2020 26B",
       "file": null,
+      "name": "production-record-failure-SI0101-mobile",
       "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "route": "/near-you/?geo=nta2020%3ASI0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "served_values": {
-        "heading": "St. George-New Brighton",
-        "deferred_state": "error",
-        "retry_present": true,
-        "buyer_history_retry_leaked": false,
         "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
         "geometry_vintage_present": true,
+        "heading": "St. George-New Brighton",
+        "retry_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:SI0101"
+          "geo": "nta2020:SI0101",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "b750b59a003a070af85a269d3477857b5939d21507837750eb268bfb0ca0fcc8",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 844,
+        "width": 390
       }
     }
   ],
+  "producer": {
+    "letters": [
+      "A3"
+    ],
+    "path": "docs/evidence/near-you-map-record-health/read-back.json",
+    "schema": "cityscroll.near_you_map_record_health_production_read.v1"
+  },
+  "public_alias": "c42128caee453",
   "reads": [
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "Greenpoint keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-failure-BK0101-desktop",
-      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "Greenpoint keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "e797046b36f9b65bf76cec6887aaecbbacbeeada6bb57ac540af145ed80ffb1b",
-      "file": null,
       "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "served_values": {
-        "heading": "Greenpoint",
-        "deferred_state": "error",
-        "retry_present": true,
-        "buyer_history_retry_leaked": false,
         "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
         "geometry_vintage_present": true,
+        "heading": "Greenpoint",
+        "retry_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:BK0101"
+          "geo": "nta2020:BK0101",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "e797046b36f9b65bf76cec6887aaecbbacbeeada6bb57ac540af145ed80ffb1b",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 900,
+        "width": 1440
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "Greenpoint keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-failure-BK0101-mobile",
-      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "Greenpoint keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "e797046b36f9b65bf76cec6887aaecbbacbeeada6bb57ac540af145ed80ffb1b",
-      "file": null,
       "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "served_values": {
+        "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
+        "geometry_vintage_present": true,
         "heading": "Greenpoint",
-        "deferred_state": "error",
         "retry_present": true,
-        "buyer_history_retry_leaked": false,
-        "bare_code_title": false,
-        "geometry_vintage_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:BK0101"
+          "geo": "nta2020:BK0101",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "e797046b36f9b65bf76cec6887aaecbbacbeeada6bb57ac540af145ed80ffb1b",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 844,
+        "width": 390
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "Astoria (Central) keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-failure-QN0103-desktop",
-      "route": "/near-you/?geo=nta2020%3AQN0103&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "Astoria (Central) keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "142b439ee5fcbec1ef2eefed8f93157df334abcf35627983dd182704b87b9835",
-      "file": null,
       "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "route": "/near-you/?geo=nta2020%3AQN0103&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "served_values": {
-        "heading": "Astoria (Central)",
-        "deferred_state": "error",
-        "retry_present": true,
-        "buyer_history_retry_leaked": false,
         "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
         "geometry_vintage_present": true,
+        "heading": "Astoria (Central)",
+        "retry_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:QN0103"
+          "geo": "nta2020:QN0103",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "142b439ee5fcbec1ef2eefed8f93157df334abcf35627983dd182704b87b9835",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 900,
+        "width": 1440
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "Astoria (Central) keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-failure-QN0103-mobile",
+      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
       "route": "/near-you/?geo=nta2020%3AQN0103&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "Astoria (Central) keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "142b439ee5fcbec1ef2eefed8f93157df334abcf35627983dd182704b87b9835",
-      "file": null,
-      "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
       "served_values": {
+        "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
+        "geometry_vintage_present": true,
         "heading": "Astoria (Central)",
-        "deferred_state": "error",
         "retry_present": true,
-        "buyer_history_retry_leaked": false,
-        "bare_code_title": false,
-        "geometry_vintage_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:QN0103"
+          "geo": "nta2020:QN0103",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "142b439ee5fcbec1ef2eefed8f93157df334abcf35627983dd182704b87b9835",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 844,
+        "width": 390
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "St. George-New Brighton keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-failure-SI0101-desktop",
-      "route": "/near-you/?geo=nta2020%3ASI0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "St. George-New Brighton keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "b750b59a003a070af85a269d3477857b5939d21507837750eb268bfb0ca0fcc8",
-      "file": null,
       "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "route": "/near-you/?geo=nta2020%3ASI0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "served_values": {
-        "heading": "St. George-New Brighton",
-        "deferred_state": "error",
-        "retry_present": true,
-        "buyer_history_retry_leaked": false,
         "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
         "geometry_vintage_present": true,
+        "heading": "St. George-New Brighton",
+        "retry_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:SI0101"
+          "geo": "nta2020:SI0101",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "b750b59a003a070af85a269d3477857b5939d21507837750eb268bfb0ca0fcc8",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 900,
+        "width": 1440
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "St. George-New Brighton keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-failure-SI0101-mobile",
-      "route": "/near-you/?geo=nta2020%3ASI0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "St. George-New Brighton keeps friendly title, geometry vintage 26B, working map state, and plain-language retry when records fail; retry preserves lens, place, comparison, and filters.",
-      "sha256": "b750b59a003a070af85a269d3477857b5939d21507837750eb268bfb0ca0fcc8",
-      "file": null,
       "revision": "4cc81f5d63dcf6b3c739bc29974ec7a61c30b91b",
+      "route": "/near-you/?geo=nta2020%3ASI0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "served_values": {
-        "heading": "St. George-New Brighton",
-        "deferred_state": "error",
-        "retry_present": true,
-        "buyer_history_retry_leaked": false,
         "bare_code_title": false,
+        "buyer_history_retry_leaked": false,
+        "deferred_state": "error",
         "geometry_vintage_present": true,
+        "heading": "St. George-New Brighton",
+        "retry_present": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:SI0101"
+          "geo": "nta2020:SI0101",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "b750b59a003a070af85a269d3477857b5939d21507837750eb268bfb0ca0fcc8",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 844,
+        "width": 390
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
+      "assertion": "Greenpoint recovers from an induced deferred-record failure after pressing Try again; neighborhood identity and boundary context stay intact while deferred content leaves the error state.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
       "name": "production-record-retry-recovery-BK0101-desktop",
-      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "data_vintage": "nta2020 26B",
-      "assertion": "Greenpoint recovers from an induced deferred-record failure after pressing Try again; neighborhood identity and boundary context stay intact while deferred content leaves the error state.",
-      "sha256": "0194e6a4bb208da6df21f95696112f5c74e6a8e471977bef309dfcb84815aac7",
-      "file": null,
       "revision": "8777db6246da4f559a0db728377751d99f8c49e7",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "served_values": {
-        "before": {
-          "heading": "Greenpoint",
-          "deferred_state": "error",
-          "retry_present": true,
-          "retry_label": "Try again",
-          "geometry_vintage_present": true
-        },
         "action": {
           "control": "data-near-recovery=retry",
-          "retry_pressed": true,
+          "label": "Try again",
           "method": "click",
-          "label": "Try again"
+          "retry_pressed": true
         },
         "after": {
-          "heading": "Greenpoint",
-          "deferred_state": "ready",
           "data_state": "ready",
-          "retry_present": false,
-          "results_heading": "Matching Meetings records",
-          "recovered_copy": "This area\u2019s materialized records are unavailable right now.",
+          "deferred_state": "ready",
+          "geometry_vintage": "26B",
+          "heading": "Greenpoint",
+          "recovered_copy": "This area’s materialized records are unavailable right now.",
           "results_count": null,
-          "geometry_vintage": "26B"
+          "results_heading": "Matching Meetings records",
+          "retry_present": false
+        },
+        "before": {
+          "deferred_state": "error",
+          "geometry_vintage_present": true,
+          "heading": "Greenpoint",
+          "retry_label": "Try again",
+          "retry_present": true
         },
         "neighborhood_context_intact": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:BK0101"
+          "geo": "nta2020:BK0101",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "0194e6a4bb208da6df21f95696112f5c74e6a8e471977bef309dfcb84815aac7",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 900,
+        "width": 1440
       }
     },
     {
-      "source": "headless-playwright-production-served-site",
-      "name": "production-record-retry-recovery-BK0101-mobile",
-      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "data_vintage": "nta2020 26B",
       "assertion": "Greenpoint recovers from an induced deferred-record failure after pressing Try again; neighborhood identity and boundary context stay intact while deferred content leaves the error state.",
-      "sha256": "0194e6a4bb208da6df21f95696112f5c74e6a8e471977bef309dfcb84815aac7",
+      "data_vintage": "nta2020 26B",
       "file": null,
+      "name": "production-record-retry-recovery-BK0101-mobile",
       "revision": "8777db6246da4f559a0db728377751d99f8c49e7",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map&lens=meetings&agency=Transportation&q=curb&compare=council_district",
       "served_values": {
-        "before": {
-          "heading": "Greenpoint",
-          "deferred_state": "error",
-          "retry_present": true,
-          "retry_label": "Try again",
-          "geometry_vintage_present": true
-        },
         "action": {
           "control": "data-near-recovery=retry",
-          "retry_pressed": true,
+          "label": "Try again",
           "method": "click",
-          "label": "Try again"
+          "retry_pressed": true
         },
         "after": {
-          "heading": "Greenpoint",
-          "deferred_state": "ready",
           "data_state": "ready",
-          "retry_present": false,
-          "results_heading": "Matching Meetings records",
-          "recovered_copy": "This area\u2019s materialized records are unavailable right now.",
+          "deferred_state": "ready",
+          "geometry_vintage": "26B",
+          "heading": "Greenpoint",
+          "recovered_copy": "This area’s materialized records are unavailable right now.",
           "results_count": null,
-          "geometry_vintage": "26B"
+          "results_heading": "Matching Meetings records",
+          "retry_present": false
+        },
+        "before": {
+          "deferred_state": "error",
+          "geometry_vintage_present": true,
+          "heading": "Greenpoint",
+          "retry_label": "Try again",
+          "retry_present": true
         },
         "neighborhood_context_intact": true,
         "retry_preserved": {
-          "lens": "meetings",
           "agency": "Transportation",
-          "q": "curb",
           "compare": "council_district",
-          "geo": "nta2020:BK0101"
+          "geo": "nta2020:BK0101",
+          "lens": "meetings",
+          "q": "curb"
         }
+      },
+      "sha256": "0194e6a4bb208da6df21f95696112f5c74e6a8e471977bef309dfcb84815aac7",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 844,
+        "width": 390
       }
     }
   ],
+  "schema": "cityscroll.near_you_map_record_health_production_read.v1",
   "summary": {
-    "preservation_specimen_count": 3,
+    "capture_count": 8,
     "preservation_capture_count": 6,
-    "recovery_capture_count": 2,
-    "capture_count": 8
+    "preservation_specimen_count": 3,
+    "recovery_capture_count": 2
   }
 }

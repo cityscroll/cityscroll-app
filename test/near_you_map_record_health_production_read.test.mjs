@@ -14,7 +14,29 @@ function loadJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
+function assertCanonicalSortedJson(path) {
+  const raw = readFileSync(path, "utf8");
+  // Node JSON.stringify preserves insertion order from parse; rebuild via sorted keys.
+  const sorted = `${JSON.stringify(sortKeysDeep(JSON.parse(raw)), null, 2)}\n`;
+  assert.equal(raw, sorted, `${path} must be committed as sorted-key JSON`);
+}
+
+function sortKeysDeep(value) {
+  if (Array.isArray(value)) return value.map(sortKeysDeep);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.keys(value)
+        .sort()
+        .map((key) => [key, sortKeysDeep(value[key])]),
+    );
+  }
+  return value;
+}
+
 test("map-record-health read-back records A3 pressed-retry recovery values", () => {
+  assertCanonicalSortedJson(READBACK);
+  assertCanonicalSortedJson(PRODUCTION);
+  assertCanonicalSortedJson(MANIFEST);
   const receipt = loadJson(READBACK);
   assert.equal(receipt.schema, "cityscroll.near_you_map_record_health_production_read.v1");
   assert.equal(receipt.public_alias, "c42128caee453");
