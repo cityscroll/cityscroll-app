@@ -30,6 +30,9 @@ import {
   COMMUNITY_BOARD_VOTE_STAGES,
   buildCommunityBoardResolutionPilot,
   communityBoardDecisionAddressConflict,
+  communityBoardDecisionAnchorId,
+  communityBoardDecisionFrozenAliasIds,
+  communityBoardDecisionHref,
   communityBoardResolutionReviewQueue,
   communityBoardResolutionSearchTopics,
   communityBoardResolutionViewForBoard,
@@ -52,10 +55,11 @@ const PUBLIC = read("site/data/community_board_resolution_pilot.json");
 const QUEUE = read("worker/src/data/community_board_resolution_review_queue.json");
 const BOARD_LOOKUP = read("site/data/community_board_constellation_lookup.json");
 
-// The two reviewed decisions, addressed by their own identifiers so a failure
-// names the record that moved rather than an index that shifted.
+// Reviewed decisions, addressed by their own identifiers so a failure names
+// the record that moved rather than an index that shifted.
 const BIKE_LANE = "manhattan-cb-03:2026-05-26:transportation-2";
 const BSA_CASE = "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii";
+const SANITATION_OPT_IN = "brooklyn-cb-15:2026-05-26:candidate-01";
 const NOODLE = "manhattan-cb-03:2026-05-26:sla-2";
 const MANHATTAN = "manhattan-cb-03";
 const BROOKLYN = "brooklyn-cb-15";
@@ -99,9 +103,10 @@ test("every candidate is retained as either a published decision or a held one",
   for (const row of pilot.held_candidates) {
     assert.ok(row.held_reason, `${row.candidate_id} states why it was held`);
   }
-  // The two reviewed examples are published; nothing is published without a review.
+  // Reviewed examples are published; nothing is published without a review.
   assert.ok(decisionOf(BIKE_LANE), "the bicycle lane decision is published");
   assert.ok(decisionOf(BSA_CASE), "the board of standards case is published");
+  assert.ok(decisionOf(SANITATION_OPT_IN), "the Saturday sanitation opt-in is published");
   for (const decision of pilot.decisions) {
     assert.equal(reviewedCandidate(decision.candidate_id).admission, "published",
       `${decision.candidate_id} was published only because the review said so`);
@@ -348,19 +353,28 @@ test("the section renders on the resident route with source-open actions that su
   const html = renderCommunityBoardDecisionsSection(view, { lang: "en" });
   assert.match(html, new RegExp(`id="${COMMUNITY_BOARD_DECISIONS_ANCHOR}"`));
 
-  // Inspection is same-page and addressed by a fragment, so the browser's own
-  // Back restores the expansion and the scroll offset with it.
-  assert.match(html, /href="#board-decisions-1-passage"/);
-  assert.match(html, /href="#board-decisions-1-other"/);
-  assert.match(html, /href="#board-decisions-1"/);
+  const decision = decisionOf(BIKE_LANE);
+  const anchor = communityBoardDecisionAnchorId(BIKE_LANE);
+  const href = communityBoardDecisionHref(MANHATTAN, BIKE_LANE);
+  assert.equal(communityBoardDecisionFrozenAliasIds(MANHATTAN, BIKE_LANE)[0], "board-decisions-1");
+
+  // Inspection is same-page and addressed by the stable fragment, so the
+  // browser's own Back restores the expansion and the scroll offset with it.
+  assert.match(html, new RegExp(`id="${anchor}"`));
+  assert.match(html, new RegExp(`href="#${anchor}-passage"`));
+  assert.match(html, new RegExp(`href="#${anchor}-other"`));
+  assert.match(html, new RegExp(`href="#${anchor}"`));
+  assert.match(html, /id="board-decisions-1"/, "the frozen positional alias remains");
+  assert.match(html, new RegExp(`href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
   assert.doesNotMatch(html, /<details/, "the expansion lives in the URL, not in element state");
   assert.doesNotMatch(html, /target="_blank"/, "no control opens a new tab");
   assert.doesNotMatch(html, /onclick=/, "no control depends on script");
-  assert.doesNotMatch(html, /<button/, "no destination is a scripted control");
+  // Destinations stay plain links; the copy control is progressive enhancement.
+  assert.match(html, /data-object-card-copy="https:\/\/cityscroll\.org\/community-boards\/manhattan-cb-03\/#board-decision-/);
+  assert.match(html, /class="board-decision-destination"/);
 
   // With no stylesheet and no script, the passage and the excluded tallies are
   // both already in the document.
-  const decision = decisionOf(BIKE_LANE);
   assert.ok(html.includes(decision.document.document_url), "the published document is a real destination");
   for (const excluded of decision.excluded_votes) {
     assert.ok(html.includes(`${excluded.yes}-${excluded.no}-${excluded.abstain}`),
@@ -417,6 +431,8 @@ test("the decisions are reachable by the issue a resident would search for", () 
   const brooklyn = communityBoardResolutionSearchTopics(PUBLIC, BROOKLYN);
   assert.ok(brooklyn.includes("730 Avenue S"));
   assert.ok(brooklyn.includes("154-90-BZII"));
+  assert.ok(brooklyn.includes("Saturday collections"));
+  assert.ok(brooklyn.includes("Friday set out"));
   // A board outside the pilot gains no issue words at all.
   assert.deepEqual(communityBoardResolutionSearchTopics(PUBLIC, "queens-cb-01"), []);
 

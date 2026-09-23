@@ -27,7 +27,7 @@ section.
 The reading is bounded to four documents that were opened one at a time:
 Manhattan Community Board 3's May 2026 full-board minutes and its July 2026 vote
 sheet, and Brooklyn Community Board 15's May 26 and June 30 2026 general board
-minutes. Every candidate found in them is retained. Two are published.
+minutes. Every candidate found in them is retained. Three are published.
 
 - **A bicycle lane on St. Marks Place.** Manhattan Community Board 3 supported a
   continuous five-foot lane from Third Avenue to Avenue A and the removal of a
@@ -37,6 +37,11 @@ minutes. Every candidate found in them is retained. Two are published.
   another item that failed 3–28–2, an amendment to another item that passed
   32–2–1, and an omnibus vote that passed 35–0–0 *excluding* items 2, 3 and 4.
   The page shows all five beside the decision and says why none of them is it.
+- **Saturday sanitation collection opt-in.** Brooklyn Community Board 15 voted
+  39–1–1 to send a resolution opting the district into an earlier Friday set-out
+  time for Saturday collections. The motion and tally cross a page boundary in
+  the May 26 minutes; both stay attached to this one decision.
+
 - **A Board of Standards and Appeals case at 730 Avenue S.** Brooklyn Community
   Board 15's zoning committee voted 10–0–0 and the full board voted 29–0–0 on
   case 154-90-BZII, a lobby enclosure added to an existing variance. Both stages
@@ -45,7 +50,7 @@ minutes. Every candidate found in them is retained. Two are published.
   question about impact glass, answered by saying the material was not yet chosen,
   is retained as discussion and never rendered as an adopted condition.
 
-Twenty-three candidates are held, each with the reason. Nine come from the July
+Twenty-two candidates are held, each with the reason. Nine come from the July
 vote sheet, which states a month and no meeting day: nothing from it is published,
 because no event identity is guessed for a document that does not carry one. One
 is held because the board's own agenda and its own resolution spell the address
@@ -90,3 +95,7 @@ outside this reading that carry no decisions section. It comes from the money
 card's `dl.community-board-money-metrics` and predates this work. The manifest
 keeps it, attributed, rather than filtering it out of sight; the capture gates
 only on violations inside the decisions section.
+
+## Stable destinations
+
+Identity-based fragments and frozen positional aliases are retained in [`../community-board-stable-decision-destinations/`](../community-board-stable-decision-destinations/).

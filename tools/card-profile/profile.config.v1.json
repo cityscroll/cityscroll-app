@@ -72,6 +72,7 @@
     "Makefile",
     "package.json",
     "pnpm-lock.yaml",
+    "site/data/community_board_resolution_sources/board_resolution_pilot_review.v1.json",
     "warehouse/lib/shared_payment_input.mjs"
   ],
   "gate_classes": [

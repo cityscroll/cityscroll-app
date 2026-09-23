@@ -764,36 +764,6 @@
         "property_match_withheld": false
       },
       "held_reason": "document_states_no_meeting_date"
-    },
-    {
-      "candidate_id": "brooklyn-cb-15:2026-05-26:candidate-01",
-      "board_id": "brooklyn-cb-15",
-      "document_id": "brooklyn-cb-15:2026-05-26:general-board-minutes",
-      "title": "Resolution to opt in to an earlier Friday set out time for Saturday collections",
-      "position": "approves",
-      "admission": "held",
-      "document": {
-        "document_id": "brooklyn-cb-15:2026-05-26:general-board-minutes",
-        "board_id": "brooklyn-cb-15",
-        "publisher": "Brooklyn Community Board 15",
-        "document_role": "minutes",
-        "published_label": "Monthly Board Meeting - Minutes, General Board Meeting",
-        "document_url": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-May-26-2026.pdf",
-        "document_sha256": "d2b4428cfb2495fcf738ce88ee37fa774a2437def44b1e288d0b33e5dcd78525",
-        "meeting_date": "2026-05-26",
-        "meeting_date_state": "stated_in_document",
-        "extracted_text_sha256": "3c83736ad7353fc0f4fa845bff007cf271fca7daae366afa38cdd42c37432c65",
-        "candidate_blocks_observed": 1,
-        "observed_on": "2026-09-07"
-      },
-      "votes": [],
-      "excluded_votes": [],
-      "address": {
-        "assertions": [],
-        "conflicting": false,
-        "property_match_withheld": false
-      },
-      "held_reason": "not_reviewed_in_this_pilot"
     }
   ],
   "coverage": {
@@ -801,12 +771,12 @@
     "boards": 2,
     "candidate_blocks_observed": 25,
     "candidates_reviewed": 25,
-    "decisions_published": 2,
-    "candidates_held": 23,
+    "decisions_published": 3,
+    "candidates_held": 22,
     "held_reasons": {
       "conflicting_address_assertions": 1,
       "document_states_no_meeting_date": 9,
-      "not_reviewed_in_this_pilot": 12,
+      "not_reviewed_in_this_pilot": 11,
       "passage_predates_recorded_amendment": 1
     }
   }

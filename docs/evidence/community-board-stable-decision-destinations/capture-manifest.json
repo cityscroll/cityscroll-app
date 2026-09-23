@@ -1,0 +1,185 @@
+{
+  "schema": "cityscroll.community_board_stable_decision_destinations_manifest.v1",
+  "evidence_class": "isolated-consumer-render",
+  "capture_mode": "headless-playwright-loopback-decision-routes",
+  "captured_at": "2026-09-23T22:54:36Z",
+  "revision": "32e321564f10788db46fb915c15c1db26ded4e2f",
+  "data_vintage": "2026-09-07",
+  "test_clock": "2026-09-23T22:54:36Z",
+  "image_directory": ".artifacts/community-board-stable-decision-destinations",
+  "image_policy": "Capture images remain ignored and are not committed. Their SHA-256 values bind this textual manifest to the reviewed render.",
+  "source_versions": {
+    "documents": [
+      {
+        "document_id": "manhattan-cb-03:2026-05:full-board-minutes",
+        "document_sha256": "9a16cd0b65eaadf619ce72c59edbaaff8ea2169e0de9cdfabf162fb232d19f96",
+        "extracted_text_sha256": "8f900f0ccc9f2acf09e6e930733f4459e6438bd4373d5e2edcf39d236b6797a4"
+      },
+      {
+        "document_id": "manhattan-cb-03:2026-07:vote-sheet",
+        "document_sha256": "5ffb916275265d4c7b48e4ca1c81e534f59d5f9f426cf55ae84598071a0d1e07",
+        "extracted_text_sha256": "4e3c8f06578eda1ea623aaaa5348f2b6d87e87a99cfa73c580e9e95d0ce5cefd"
+      },
+      {
+        "document_id": "brooklyn-cb-15:2026-05-26:general-board-minutes",
+        "document_sha256": "d2b4428cfb2495fcf738ce88ee37fa774a2437def44b1e288d0b33e5dcd78525",
+        "extracted_text_sha256": "3c83736ad7353fc0f4fa845bff007cf271fca7daae366afa38cdd42c37432c65"
+      },
+      {
+        "document_id": "brooklyn-cb-15:2026-06-30:general-board-minutes",
+        "document_sha256": "e4b983e6cadf159d43ee52b77d62fd23c74a50e81c878a74296027b00c7b8b4c",
+        "extracted_text_sha256": "f2bdd9de839f4c4424176ad9c238bb4a389de28eed0a82f342eb115a8f5bcc62"
+      }
+    ],
+    "coverage": {
+      "documents": 4,
+      "boards": 2,
+      "candidate_blocks_observed": 25,
+      "decisions_published": 3,
+      "candidates_held": 22
+    }
+  },
+  "decision_urls": [
+    {
+      "candidate_id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+      "url": "https://cityscroll.org/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+      "path_with_fragment": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+      "votes": [
+        {
+          "stage": "committee",
+          "yes": 10,
+          "no": 0,
+          "abstain": 0
+        },
+        {
+          "stage": "full_board",
+          "yes": 29,
+          "no": 0,
+          "abstain": 0
+        }
+      ]
+    },
+    {
+      "candidate_id": "brooklyn-cb-15:2026-05-26:candidate-01",
+      "url": "https://cityscroll.org/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNS0yNjpjYW5kaWRhdGUtMDE",
+      "path_with_fragment": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNS0yNjpjYW5kaWRhdGUtMDE",
+      "votes": [
+        {
+          "stage": "full_board",
+          "yes": 39,
+          "no": 1,
+          "abstain": 1
+        }
+      ]
+    },
+    {
+      "candidate_id": "manhattan-cb-03:2026-05-26:transportation-2",
+      "url": "https://cityscroll.org/community-boards/manhattan-cb-03/#board-decision-bWFuaGF0dGFuLWNiLTAzOjIwMjYtMDUtMjY6dHJhbnNwb3J0YXRpb24tMg",
+      "path_with_fragment": "/community-boards/manhattan-cb-03/#board-decision-bWFuaGF0dGFuLWNiLTAzOjIwMjYtMDUtMjY6dHJhbnNwb3J0YXRpb24tMg",
+      "votes": [
+        {
+          "stage": "full_board",
+          "yes": 34,
+          "no": 1,
+          "abstain": 0
+        }
+      ]
+    }
+  ],
+  "reorder_comparison": {
+    "mutation": "synthetic_reverse_brooklyn_decision_collection",
+    "labeled_synthetic": true,
+    "before_order": [
+      "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+      "brooklyn-cb-15:2026-05-26:candidate-01"
+    ],
+    "after_order": [
+      "brooklyn-cb-15:2026-05-26:candidate-01",
+      "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii"
+    ],
+    "canonical_hrefs_unchanged": {
+      "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+      "brooklyn-cb-15:2026-05-26:candidate-01": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNS0yNjpjYW5kaWRhdGUtMDE",
+      "manhattan-cb-03:2026-05-26:transportation-2": "/community-boards/manhattan-cb-03/#board-decision-bWFuaGF0dGFuLWNiLTAzOjIwMjYtMDUtMjY6dHJhbnNwb3J0YXRpb24tMg"
+    },
+    "assertion": "Inserting or reversing the decision collection leaves every canonical href unchanged."
+  },
+  "captures": [
+    {
+      "name": "nojs-brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+      "route": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "32e321564f10788db46fb915c15c1db26ded4e2f",
+      "data_vintage": "2026-09-07",
+      "scripting": false,
+      "assertion": "Encoded identity opens the decision without JavaScript; frozen alias remains when applicable.",
+      "observed": {
+        "anchor_present": true,
+        "frozen_alias_present": true,
+        "copy_target": "https://cityscroll.org/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk"
+      },
+      "image": ".artifacts/community-board-stable-decision-destinations/nojs-brooklyn-cb-15_2026-06-30_bsa-154-90-bzii.png",
+      "image_sha256": "68e01b898a279ef06220afae3510e31dfa6ce3ef2a477531482ae32b37414713"
+    },
+    {
+      "name": "nojs-brooklyn-cb-15:2026-05-26:candidate-01",
+      "route": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNS0yNjpjYW5kaWRhdGUtMDE",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "32e321564f10788db46fb915c15c1db26ded4e2f",
+      "data_vintage": "2026-09-07",
+      "scripting": false,
+      "assertion": "Encoded identity opens the decision without JavaScript; frozen alias remains when applicable.",
+      "observed": {
+        "anchor_present": true,
+        "frozen_alias_present": true,
+        "copy_target": "https://cityscroll.org/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNS0yNjpjYW5kaWRhdGUtMDE"
+      },
+      "image": ".artifacts/community-board-stable-decision-destinations/nojs-brooklyn-cb-15_2026-05-26_candidate-01.png",
+      "image_sha256": "038a54c9e7abe0a0c4de008a04094db614587a6a2819fbd8e12f0036a082e5c8"
+    },
+    {
+      "name": "nojs-manhattan-cb-03:2026-05-26:transportation-2",
+      "route": "/community-boards/manhattan-cb-03/#board-decision-bWFuaGF0dGFuLWNiLTAzOjIwMjYtMDUtMjY6dHJhbnNwb3J0YXRpb24tMg",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "32e321564f10788db46fb915c15c1db26ded4e2f",
+      "data_vintage": "2026-09-07",
+      "scripting": false,
+      "assertion": "Encoded identity opens the decision without JavaScript; frozen alias remains when applicable.",
+      "observed": {
+        "anchor_present": true,
+        "frozen_alias_present": true,
+        "copy_target": "https://cityscroll.org/community-boards/manhattan-cb-03/#board-decision-bWFuaGF0dGFuLWNiLTAzOjIwMjYtMDUtMjY6dHJhbnNwb3J0YXRpb24tMg"
+      },
+      "image": ".artifacts/community-board-stable-decision-destinations/nojs-manhattan-cb-03_2026-05-26_transportation-2.png",
+      "image_sha256": "12a00129acbc26214827c8d4a472e5f37dcaa439e634109481f759a088dad102"
+    },
+    {
+      "name": "mobile-keyboard-copy-d1",
+      "route": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+      "viewport": [
+        390,
+        844
+      ],
+      "revision": "32e321564f10788db46fb915c15c1db26ded4e2f",
+      "data_vintage": "2026-09-07",
+      "scripting": true,
+      "assertion": "Narrow-screen keyboard activation copies the absolute stable destination.",
+      "observed": {
+        "copied": "https://cityscroll.org/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+        "expected": "https://cityscroll.org/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+        "button_text": "Copied \u2713"
+      },
+      "image": ".artifacts/community-board-stable-decision-destinations/mobile-copy-d1.png",
+      "image_sha256": "381305f532be55e755a9e7bbb4988f468d643ecb2fb92f369d5c9fa808116dfe"
+    }
+  ]
+}
