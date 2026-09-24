@@ -1,0 +1,77 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "feature": "address-entry-parcel-geography",
+  "public_alias": "c45f798fb2440",
+  "capture_mode": "headless-playwright-local-site-network-blocked",
+  "repository_revision": "dbff688d105aad13ffc3c5c20786048b1c377b25",
+  "grounded_at": "dbff688d105aad13ffc3c5c20786048b1c377b25",
+  "data_vintage": "PAD 26b; parcel-geography pluto_25v4 (mappluto_published_latitude_longitude); nta2020 26B; community/council 2026-05-26; precincts 26B",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed.",
+  "condition": "Local site/ served; external network aborted; production geocodeAddressText + resolveGeographyAddressEntry against retained PAD and parcel-geography shards.",
+  "route": "/__capture/address-entry.html",
+  "query": "810 East 16th Street Brooklyn",
+  "map_wiring": "site/app/map.mjs \u2192 resolveGeographyAddressEntry",
+  "captures": [
+    {
+      "name": "midwood-address-desktop",
+      "route": "/__capture/address-entry.html",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "dbff688d105aad13ffc3c5c20786048b1c377b25",
+      "data_vintage": "PAD 26b; parcel-geography pluto_25v4 (mappluto_published_latitude_longitude); nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "Browser-wired PAD helper plus one retained parcel-geography shard selects Midwood (BK1403) with K14, Council 45, and precinct 70; entered address stays out of the URL; external network blocked.",
+      "sha256": "0bd15fef571ffc43cccbdcd737c8fff84856213ce37e3cb1aa36e9fcf219562b",
+      "file": null,
+      "source": "headless-playwright-local-site-network-blocked",
+      "served_values": {
+        "selected_id": "BK1403",
+        "selected_label": "Midwood",
+        "selection_geo": "nta2020:BK1403",
+        "community_district": "K14",
+        "council_district": "45",
+        "police_precinct": "70",
+        "method": "parcel_membership",
+        "pad_bbl": "3066990010",
+        "parcel_shard_fetches": [
+          "d1.json"
+        ],
+        "address_present_in_url": false,
+        "external_requests_blocked": 0
+      },
+      "content_sha256": "1a6946141a0d270999bc76cd51f1bff527ad1febea10b18233962c63b8ba8db2"
+    },
+    {
+      "name": "midwood-address-phone",
+      "route": "/__capture/address-entry.html",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "dbff688d105aad13ffc3c5c20786048b1c377b25",
+      "data_vintage": "PAD 26b; parcel-geography pluto_25v4 (mappluto_published_latitude_longitude); nta2020 26B; community/council 2026-05-26; precincts 26B",
+      "assertion": "Browser-wired PAD helper plus one retained parcel-geography shard selects Midwood (BK1403) with K14, Council 45, and precinct 70; entered address stays out of the URL; external network blocked.",
+      "sha256": "c20ce6668195730c8ade57f5974245857ab2ee4eb5c182ae6d7630cd73373800",
+      "file": null,
+      "source": "headless-playwright-local-site-network-blocked",
+      "served_values": {
+        "selected_id": "BK1403",
+        "selected_label": "Midwood",
+        "selection_geo": "nta2020:BK1403",
+        "community_district": "K14",
+        "council_district": "45",
+        "police_precinct": "70",
+        "method": "parcel_membership",
+        "pad_bbl": "3066990010",
+        "parcel_shard_fetches": [
+          "d1.json"
+        ],
+        "address_present_in_url": false,
+        "external_requests_blocked": 0
+      },
+      "content_sha256": "1a6946141a0d270999bc76cd51f1bff527ad1febea10b18233962c63b8ba8db2"
+    }
+  ]
+}
