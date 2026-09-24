@@ -1,0 +1,114 @@
+/* Browser-local Passed/Pursuing note UI on procurement and notice detail pages. */
+
+.pursuit-controls {
+  margin: 1rem 0 1.25rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #c9d2d6;
+  border-radius: 10px;
+  background: #f7fafb;
+  max-width: 42rem;
+}
+
+.pursuit-controls-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.85rem;
+  margin-bottom: 0.65rem;
+}
+
+.pursuit-controls-heading {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.pursuit-controls-storage-label {
+  margin: 0;
+  color: #4d5b63;
+  font-size: 0.92rem;
+}
+
+.pursuit-controls-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.pursuit-controls-actions .act[aria-pressed="true"] {
+  outline: 2px solid #166b70;
+  outline-offset: 1px;
+}
+
+.pursuit-controls-fields {
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 0.65rem;
+}
+
+.pursuit-controls-field-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #4d5b63;
+  margin-bottom: 0.2rem;
+}
+
+.pursuit-controls-fields select,
+.pursuit-controls-fields textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid #b7c2c7;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.pursuit-controls-current:empty,
+.pursuit-controls-status:empty {
+  display: none;
+}
+
+.pursuit-controls-current .pursuit-state-note {
+  margin: 0.35rem 0 0;
+}
+
+.pursuit-controls-status {
+  margin: 0.35rem 0 0;
+  color: #244048;
+  font-size: 0.95rem;
+}
+
+.pursuit-controls-error {
+  margin: 0.55rem 0 0;
+  padding: 0.55rem 0.65rem;
+  border-radius: 6px;
+  background: #fff4f0;
+  border: 1px solid #e2b4a4;
+  color: #6b2b1a;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+}
+
+.pursuit-controls-error[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .pursuit-controls {
+    padding: 0.8rem 0.75rem;
+  }
+
+  .pursuit-controls-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pursuit-controls-actions .act {
+    width: 100%;
+  }
+}

@@ -47,6 +47,14 @@ import { extractSolicitationProcurementMethod } from "./solicitation_procurement
 import { buildSolicitationMwbeView } from "./mwbe_goal_surface.mjs";
 import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "./procurement_pursuit_snapshot.mjs";
 import { buyerHistoryComparisonFromSolicitation } from "./buyer_history_pursuit_comparison.mjs";
+import {
+  pursuitControlsAssetTags,
+  renderPursuitControlsHtml,
+} from "./procurement_pursuit_controls.mjs";
+import {
+  buildPursuitSourceAliasIndex,
+  resolvePursuitMatterRef,
+} from "./procurement_pursuit_identity.mjs";
 import { buildRelatedProcurementContext, renderRelatedProcurementContextHtml } from "./procurement_related_context.mjs";
 import {
   buildProjectContextView,
@@ -671,6 +679,26 @@ export function renderProcurementDocument(object = {}, observations = [], {
   // existing calendar and window sections already follow.
   const pursuitSnapshot = pursuitSnapshotFor(object, observations, facts, opportunityWindow, occurrences, preferenceMatch);
   const pursuitSnapshotHtml = renderPursuitSnapshotHtml(pursuitSnapshot);
+  // Local Passed/Pursuing controls always ship on the production document path.
+  // Identity resolves through the shared adapter so a proven source alias and
+  // the canonical route share one browser-local key.
+  const pursuitCanonicalHref = procurementCanonicalHref(object);
+  const pursuitAliasMap = buildPursuitSourceAliasIndex([object]);
+  const pursuitIdentity = resolvePursuitMatterRef({
+    procurement_id: id,
+    pathname: pursuitCanonicalHref,
+    solicitation_id: object?.identity_keys?.solicitation_ids?.[0] || null,
+    contract_reporter_number: object?.identity_keys?.contract_reporter_numbers?.[0] || null,
+  }, {
+    sourceAliasIndex: pursuitAliasMap,
+  });
+  const pursuitControlsHtml = renderPursuitControlsHtml({
+    matterRef: pursuitIdentity?.matter_ref || id,
+    aliasBasis: pursuitIdentity?.alias_basis || "procurement_id",
+  });
+  const pursuitAliasMapHtml = Object.keys(pursuitAliasMap).length
+    ? `<script type="application/json" data-pursuit-alias-map>${procurementJsonScriptPayload(pursuitAliasMap)}</script>`
+    : "";
   const relatedContext = relatedProcurementContextFor(object, facts, pursuitSnapshot, {
     relatedContextCandidates,
     relatedContextPopulationAmounts,
@@ -761,12 +789,14 @@ export function renderProcurementDocument(object = {}, observations = [], {
     : "";
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}${opportunityMonth ? renderCalendarEventPreviewScript("/") : ""}${pursuitSnapshotHtml ? '<link rel="stylesheet" href="/procurement_pursuit_snapshot.css" data-route-style="procurement_pursuit_snapshot.css">' : ""}${relatedContextHtml ? '<link rel="stylesheet" href="/procurement_related_context.css" data-route-style="procurement_related_context.css">' : ""}${projectContextHtml ? '<link rel="stylesheet" href="/procurement_project_context.css" data-route-style="procurement_project_context.css">' : ""}${contractSubstanceHtml ? '<link rel="stylesheet" href="/procurement_contract_substance.css" data-route-style="procurement_contract_substance.css">' : ""}${coverageReader ? '<link rel="stylesheet" href="/coverage_reader_projection.css" data-route-style="coverage_reader_projection.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
+<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}${opportunityMonth ? '<link rel="stylesheet" href="/compact_calendar.css" data-route-style="compact_calendar.css">' : ""}${opportunityMonth ? renderCalendarEventPreviewScript("/") : ""}${pursuitSnapshotHtml ? '<link rel="stylesheet" href="/procurement_pursuit_snapshot.css" data-route-style="procurement_pursuit_snapshot.css">' : ""}${pursuitControlsHtml ? pursuitControlsAssetTags("/") : ""}${relatedContextHtml ? '<link rel="stylesheet" href="/procurement_related_context.css" data-route-style="procurement_related_context.css">' : ""}${projectContextHtml ? '<link rel="stylesheet" href="/procurement_project_context.css" data-route-style="procurement_project_context.css">' : ""}${contractSubstanceHtml ? '<link rel="stylesheet" href="/procurement_contract_substance.css" data-route-style="procurement_contract_substance.css">' : ""}${coverageReader ? '<link rel="stylesheet" href="/coverage_reader_projection.css" data-route-style="coverage_reader_projection.css">' : ""}<script type="module" src="/report_issue.mjs"></script></head>
 <body>${renderCivicDocumentMast({ current: "browse" })}<main class="node-document" data-civic-object-kind="procurement" data-procurement-id="${esc(id)}">
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
 ${relatedMonitorPackHtml}
 ${pursuitSnapshotHtml}
+${pursuitControlsHtml}
+${pursuitAliasMapHtml}
 ${projectContextHtml}
 ${siteLifecycleContextHtml}
 ${relatedContextHtml}

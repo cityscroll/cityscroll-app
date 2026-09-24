@@ -2,7 +2,7 @@
   "schema": "cityscroll.render_evidence_manifest.v1",
   "workstream": "procurement",
   "card": "c02210922fbae",
-  "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+  "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
   "data_vintage": "2026-09-09",
   "capture_clock": "2026-09-15T00:00:00Z",
   "capture_policy": "Textual render hashes only; no image binaries are committed.",
@@ -10,98 +10,98 @@
     {
       "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
       "viewport": "desktop",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "7a1ee1fb1aa4cd1afe726351e2ada84f8fc9ac563314ed06f3579aff4b8dbff3"
+      "sha256": "c12bc55c9b9c55d20fe287b0397a39f5f48496e5b93dbaea5dab5a1310395d01"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT110220271400991/",
       "viewport": "mobile",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "7a1ee1fb1aa4cd1afe726351e2ada84f8fc9ac563314ed06f3579aff4b8dbff3"
+      "sha256": "c12bc55c9b9c55d20fe287b0397a39f5f48496e5b93dbaea5dab5a1310395d01"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
       "viewport": "desktop",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "9f5504db333248e7f68849b169dc65737ef368291218abe7e6f3ee93da9d7b92"
+      "sha256": "2939f8ab44f195a8bcfa2fb308cc04f5cac0d9dbcc62685ce286a3f9f851c3aa"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT105720278802113/",
       "viewport": "mobile",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "9f5504db333248e7f68849b169dc65737ef368291218abe7e6f3ee93da9d7b92"
+      "sha256": "2939f8ab44f195a8bcfa2fb308cc04f5cac0d9dbcc62685ce286a3f9f851c3aa"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
       "viewport": "desktop",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "9e4ba57e27eeb578f9b22c6b65782f072f0c4c18c6392a18d29f387eae7d2448"
+      "sha256": "83e746b606e3c8350b30cc58770cc6f9cdeed82f97a064b2e294789f7550b67b"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT104020273009333/",
       "viewport": "mobile",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "9e4ba57e27eeb578f9b22c6b65782f072f0c4c18c6392a18d29f387eae7d2448"
+      "sha256": "83e746b606e3c8350b30cc58770cc6f9cdeed82f97a064b2e294789f7550b67b"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT185720228800365/",
       "viewport": "desktop",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "63d57579201f2bdb56b01132d2925cc3331ef913244dd5e742db951dc70d09fa"
+      "sha256": "06c836185739c797df5cfae07a84a16e6b9dfd31ea92f21ae77836797a4de1e6"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT185720228800365/",
       "viewport": "mobile",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "63d57579201f2bdb56b01132d2925cc3331ef913244dd5e742db951dc70d09fa"
+      "sha256": "06c836185739c797df5cfae07a84a16e6b9dfd31ea92f21ae77836797a4de1e6"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT185020228802305/",
       "viewport": "desktop",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "93cd19b7f81d9bab0e8aee41183fe414d61ba9dce1434446bfb8fcd7b24e7116"
+      "sha256": "2f8d6cdf2be61e78a1cb4b0f30ba45fe8d9802f7986dd49dbb2af35db4c5ed31"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT185020228802305/",
       "viewport": "mobile",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "93cd19b7f81d9bab0e8aee41183fe414d61ba9dce1434446bfb8fcd7b24e7116"
+      "sha256": "2f8d6cdf2be61e78a1cb4b0f30ba45fe8d9802f7986dd49dbb2af35db4c5ed31"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
       "viewport": "desktop",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "desktop server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "2c74a6be5f984cbf51304b2ef78f5798f81d01c8627389222fe064716736bed8"
+      "sha256": "1446f5dc764c8d39bbc50c4b43e8058f3dff46ef5566805e3a11a1704a72c73e"
     },
     {
       "route": "/procurements/procurement%3Acontract%3ACT107120258801626/",
       "viewport": "mobile",
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "data_vintage": "2026-09-09",
       "assertion": "mobile server-rendered contract page is keyboard-linkable and free of empty headings",
-      "sha256": "2c74a6be5f984cbf51304b2ef78f5798f81d01c8627389222fe064716736bed8"
+      "sha256": "1446f5dc764c8d39bbc50c4b43e8058f3dff46ef5566805e3a11a1704a72c73e"
     }
   ]
 }

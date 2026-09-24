@@ -269,10 +269,96 @@ export function pursuitStateFor(store, matterRef) {
 /** Forget one matter's recorded decision immediately. Returns the resulting
  * record list. */
 export function clearPursuitDecision(store, matterRef) {
+  return tryClearPursuitDecision(store, matterRef).records;
+}
+
+/**
+ * Clear one matter with an explicit success flag. A storage denial or quota
+ * failure leaves the prior record in place and reports `ok: false` so the UI
+ * never claims the decision was cleared.
+ */
+export function tryClearPursuitDecision(store, matterRef) {
   const key = cleanText(matterRef, MAX_MATTER_REF_LENGTH);
-  if (!key) return readAllRecords(store);
-  const next = readAllRecords(store).filter((entry) => entry.matter_ref !== key);
-  return writeAllRecords(store, next) ? next : readAllRecords(store);
+  const current = readAllRecords(store);
+  if (!key) return { ok: true, records: current };
+  const next = current.filter((entry) => entry.matter_ref !== key);
+  if (next.length === current.length) return { ok: true, records: current };
+  const written = writeAllRecords(store, next);
+  return { ok: written, records: written ? next : current };
+}
+
+/**
+ * Rewrite unambiguous legacy matter_ref keys onto their canonical ids once.
+ *
+ * `aliasMap` maps a legacy key → canonical procurement id. Migration happens
+ * only when:
+ *   - the legacy key is present
+ *   - it maps to exactly one canonical id
+ *   - that canonical id is absent, or already carries the same decision payload
+ *
+ * Conflicting legacy/canonical pairs stay untouched and are returned in
+ * `conflicts` so a caller can keep both recoverable without silently picking a
+ * winner. The rewrite is idempotent: a second call with the same store is a
+ * no-op.
+ */
+export function migrateUnambiguousPursuitKeys(store, aliasMap = {}) {
+  const map = aliasMap && typeof aliasMap === "object" ? aliasMap : {};
+  const records = readAllRecords(store);
+  const byRef = new Map(records.map((entry) => [entry.matter_ref, entry]));
+  const conflicts = [];
+  const next = [];
+  const seenCanonical = new Set();
+  let changed = false;
+
+  for (const record of records) {
+    const canonical = cleanText(map[record.matter_ref], MAX_MATTER_REF_LENGTH);
+    if (!canonical || canonical === record.matter_ref) {
+      next.push(record);
+      continue;
+    }
+    const existing = byRef.get(canonical);
+    if (existing) {
+      const sameDecision = existing.decision === record.decision
+        && (existing.reason_code || null) === (record.reason_code || null)
+        && (existing.note || null) === (record.note || null);
+      if (sameDecision) {
+        // Drop the redundant legacy twin; the canonical record already holds it.
+        changed = true;
+        continue;
+      }
+      conflicts.push({
+        legacy_key: record.matter_ref,
+        canonical_key: canonical,
+        legacy_record: record,
+        canonical_record: existing,
+      });
+      next.push(record);
+      continue;
+    }
+    if (seenCanonical.has(canonical)) {
+      conflicts.push({
+        legacy_key: record.matter_ref,
+        canonical_key: canonical,
+        legacy_record: record,
+        canonical_record: null,
+      });
+      next.push(record);
+      continue;
+    }
+    next.push({ ...record, matter_ref: canonical });
+    seenCanonical.add(canonical);
+    changed = true;
+  }
+
+  if (!changed) {
+    return { migrated: false, conflicts, records };
+  }
+  const written = writeAllRecords(store, next);
+  return {
+    migrated: written,
+    conflicts,
+    records: written ? readAllRecords(store) : records,
+  };
 }
 
 const DECISION_LABEL = Object.freeze({
@@ -332,11 +418,16 @@ export function pursuitBadge(record) {
  * `pursuit_state` key is added), so a caller can never mistake "key absent"
  * for a signal and this function can never be mistaken for one that reorders
  * or drops rows.
+ *
+ * When `resolveMatterRef` is supplied (the shared pursuit identity adapter),
+ * a proven notice alias and its canonical procurement id share one annotation
+ * key. Unjoined notices keep their own identity.
  */
-export function resurfacePursuitState(rows, store) {
+export function resurfacePursuitState(rows, store, { resolveMatterRef = null } = {}) {
   const list = Array.isArray(rows) ? rows : [];
   return list.map((row) => {
-    const matterRef = matterRefFromRow(row);
+    const resolved = typeof resolveMatterRef === "function" ? resolveMatterRef(row) : null;
+    const matterRef = cleanText(resolved?.matter_ref, MAX_MATTER_REF_LENGTH) || matterRefFromRow(row);
     if (!matterRef) return row;
     const badge = pursuitBadge(pursuitStateFor(store, matterRef));
     if (!badge) return row;
