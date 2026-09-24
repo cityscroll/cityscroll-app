@@ -75,6 +75,26 @@ export function mergeCompiledRows(q, rows) {
   return typeof q?.mergeRows === "function" ? q.mergeRows(rows) : rows;
 }
 
+function digestSnapshotRow(procurementId) {
+  const id = typeof procurementId === "string" ? procurementId.trim() : "";
+  if (!id) return null;
+  const rows = Array.isArray(digestSnapshot?.rows) ? digestSnapshot.rows : [];
+  return rows.find((row) => row?.procurement_id === id) || null;
+}
+
+/** Delivery kind for an exact procurement follow from its retained stage. */
+function exactProcurementQueryKind(filter = {}, procurementId) {
+  if (filter.noticeType === "solicitation") return "rfp";
+  if (filter.noticeType === "award") return "award";
+  const row = digestSnapshotRow(procurementId);
+  const stages = [
+    ...(Array.isArray(row?.procurement_stages) ? row.procurement_stages : []),
+    row?.primary_stage,
+  ].map((stage) => String(stage || "").toLowerCase()).filter(Boolean);
+  if (stages.includes("solicitation")) return "rfp";
+  return "award";
+}
+
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";  // Zoning Application Portal
 export const STAFFING_EXAMS = "https://cityscroll.org/data/staffing_exams.json";
@@ -597,11 +617,14 @@ export function compileSub(sub, todayISO) {
       // procurement snapshot. Do not emit a SODA $q — that path is not a
       // faithful v1 predicate (legacy keyword watches still use it).
       const wantsAward = f.noticeType === "award" || (!f.noticeType && (f.minAmount || f.maxAmount) && !f.closingWeek);
+      const kind = procurementId
+        ? exactProcurementQueryKind(f, procurementId)
+        : (wantsAward ? "award" : "rfp");
       return {
         url: null,
         params: {},
         idField: "digest_id",
-        kind: procurementId || wantsAward ? "award" : "rfp",
+        kind,
         readRows: () => mergeRows([]),
         mergeRows,
         textQuery: f.text_query,
@@ -614,7 +637,7 @@ export function compileSub(sub, todayISO) {
         url: null,
         params: {},
         idField: "digest_id",
-        kind: "award",
+        kind: exactProcurementQueryKind(f, procurementId),
         readRows: () => mergeRows([]),
         mergeRows,
       };
