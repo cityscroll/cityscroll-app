@@ -828,17 +828,67 @@
       "board_id": "brooklyn-cb-15",
       "ordinal": 1,
       "source_line": 44,
-      "admission": "held",
-      "held_reason": "not_reviewed_in_this_pilot",
-      "agenda_item_label": null,
-      "agenda_item_text": null,
+      "admission": "published",
+      "agenda_item_label": "Department of Sanitation earlier Friday set out for Saturday collections",
+      "agenda_item_text": "NYC Department of Sanitation’s Bureau of Public Affairs presentation on an earlier Friday Setout Time for garbage for Saturday collections",
       "title": "Resolution to opt in to an earlier Friday set out time for Saturday collections",
       "position": "approves",
-      "subject_topics": [],
-      "passages": [],
-      "votes": [],
+      "subject_topics": [
+        "Saturday collections",
+        "Friday set out",
+        "sanitation",
+        "Department of Sanitation",
+        "opt-in",
+        "containerization"
+      ],
+      "passages": [
+        {
+          "role": "application",
+          "source_lines": [
+            25,
+            41
+          ],
+          "text": "Chair Scavo called upon Marissa Yanni, Community Affairs Liaison for the NYC Department of Sanitation’s Bureau of Public Affairs, who was presenting to the Board a new Legislative initiative for an earlier Friday Setout Time for garbage. She explained to the Board Members, that the Board may opt into this Board-wide initiative by voting to approve a Resolution to be included. This will allow for an earlier Friday set out time for those with Saturday collections, beginning at 3:00pm. She cautioned this Law doesn’t waive any containerization requirements. Residents are still required to use an authorized sanitation bin. She added residents now have till Labor Day to comply with acquiring the new mandated bin, without being penalized. Once the Board opts into this set out change there is no mechanism to opt out and it is Board-wide, so all blocks in the district are included, no partial areas. She also cautioned earlier times may cause a rise in rodents because garbage is put out and stays out at longer intervals. Someone asked about the containerization requirements applying to larger buildings. She stated as of now anything over 10 residential units, such as a large apartment building are exempt from having to use the authorized bins. She concluded that whatever the Board decided regarding the Resolution, they were welcome to share with her directly."
+        },
+        {
+          "role": "motion",
+          "source_lines": [
+            43,
+            56
+          ],
+          "text": "Chair Scavo made a motion with a quorum present to move into Executive Session to take a Full Board Vote and it was seconded by Ronnie Tawil. A motion to approve the sanitation resolution to opt-in was made by Ronnie Tawil and Seconded by Moses Massry. A vote was taken by a show of hands with 39 yes, 1 no and 1 abstention. The motion passed to send a Resolution to opt in."
+        }
+      ],
+      "passage_boundary": {
+        "ends_before_source_line": 58,
+        "next_block_first_line": "Chair Scavo opened the floor for Public Session speakers:",
+        "rule": "the reviewed passage stops when the chair opens the ordinary public-session speakers after the sanitation vote; the motion and 39-1-1 tally cross the page break inside this block"
+      },
+      "votes": [
+        {
+          "stage": "full_board",
+          "subject_wording": "sanitation resolution to opt-in",
+          "yes": 39,
+          "no": 1,
+          "abstain": 1,
+          "present_not_voting": null,
+          "result": "passed",
+          "text": "A vote was taken by a show of hands with 39 yes, 1 no and 1 abstention. The motion passed to send a Resolution to opt in.",
+          "motion_ownership": "sole_motion_in_this_section",
+          "source_lines": [
+            55,
+            56
+          ]
+        }
+      ],
       "excluded_votes": [],
-      "authority": null,
+      "authority": {
+        "authority_name": "New York City Department of Sanitation",
+        "relation": "proposal_from",
+        "review_regime": "agency_sanitation_setout_opt_in",
+        "case_number": null,
+        "is_ulurp": false
+      },
       "address_assertions": [],
       "non_adopted_notes": []
     }

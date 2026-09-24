@@ -183,6 +183,93 @@
           "East 8th Street",
           "Avenue S"
         ]
+      },
+      {
+        "candidate_id": "brooklyn-cb-15:2026-05-26:candidate-01",
+        "board_id": "brooklyn-cb-15",
+        "document_id": "brooklyn-cb-15:2026-05-26:general-board-minutes",
+        "title": "Resolution to opt in to an earlier Friday set out time for Saturday collections",
+        "position": "approves",
+        "admission": "published",
+        "document": {
+          "document_id": "brooklyn-cb-15:2026-05-26:general-board-minutes",
+          "board_id": "brooklyn-cb-15",
+          "publisher": "Brooklyn Community Board 15",
+          "document_role": "minutes",
+          "published_label": "Monthly Board Meeting - Minutes, General Board Meeting",
+          "document_url": "https://www.nyc.gov/assets/brooklyncb15/downloads/pdf/Board-Meeting-Minutes-May-26-2026.pdf",
+          "document_sha256": "d2b4428cfb2495fcf738ce88ee37fa774a2437def44b1e288d0b33e5dcd78525",
+          "meeting_date": "2026-05-26",
+          "meeting_date_state": "stated_in_document",
+          "extracted_text_sha256": "3c83736ad7353fc0f4fa845bff007cf271fca7daae366afa38cdd42c37432c65",
+          "candidate_blocks_observed": 1,
+          "observed_on": "2026-09-07"
+        },
+        "agenda_item_label": "Department of Sanitation earlier Friday set out for Saturday collections",
+        "agenda_item_text": "NYC Department of Sanitation’s Bureau of Public Affairs presentation on an earlier Friday Setout Time for garbage for Saturday collections",
+        "passages": [
+          {
+            "role": "application",
+            "text": "Chair Scavo called upon Marissa Yanni, Community Affairs Liaison for the NYC Department of Sanitation’s Bureau of Public Affairs, who was presenting to the Board a new Legislative initiative for an earlier Friday Setout Time for garbage. She explained to the Board Members, that the Board may opt into this Board-wide initiative by voting to approve a Resolution to be included. This will allow for an earlier Friday set out time for those with Saturday collections, beginning at 3:00pm. She cautioned this Law doesn’t waive any containerization requirements. Residents are still required to use an authorized sanitation bin. She added residents now have till Labor Day to comply with acquiring the new mandated bin, without being penalized. Once the Board opts into this set out change there is no mechanism to opt out and it is Board-wide, so all blocks in the district are included, no partial areas. She also cautioned earlier times may cause a rise in rodents because garbage is put out and stays out at longer intervals. Someone asked about the containerization requirements applying to larger buildings. She stated as of now anything over 10 residential units, such as a large apartment building are exempt from having to use the authorized bins. She concluded that whatever the Board decided regarding the Resolution, they were welcome to share with her directly.",
+            "source_lines": [
+              25,
+              41
+            ]
+          },
+          {
+            "role": "motion",
+            "text": "Chair Scavo made a motion with a quorum present to move into Executive Session to take a Full Board Vote and it was seconded by Ronnie Tawil. A motion to approve the sanitation resolution to opt-in was made by Ronnie Tawil and Seconded by Moses Massry. A vote was taken by a show of hands with 39 yes, 1 no and 1 abstention. The motion passed to send a Resolution to opt in.",
+            "source_lines": [
+              43,
+              56
+            ]
+          }
+        ],
+        "passage_boundary": {
+          "ends_before_source_line": 58,
+          "next_block_first_line": "Chair Scavo opened the floor for Public Session speakers:"
+        },
+        "votes": [
+          {
+            "yes": 39,
+            "no": 1,
+            "abstain": 1,
+            "present_not_voting": null,
+            "result": "passed",
+            "subject_wording": "sanitation resolution to opt-in",
+            "text": "A vote was taken by a show of hands with 39 yes, 1 no and 1 abstention. The motion passed to send a Resolution to opt in.",
+            "source_lines": [
+              55,
+              56
+            ],
+            "stage": "full_board",
+            "motion_ownership": "sole_motion_in_this_section"
+          }
+        ],
+        "excluded_votes": [],
+        "has_committee_vote": false,
+        "has_full_board_vote": true,
+        "authority": {
+          "authority_name": "New York City Department of Sanitation",
+          "relation": "proposal_from",
+          "review_regime": "agency_sanitation_setout_opt_in",
+          "case_number": null,
+          "is_ulurp": false
+        },
+        "address": {
+          "assertions": [],
+          "conflicting": false,
+          "property_match_withheld": false
+        },
+        "non_adopted_notes": [],
+        "subject_topics": [
+          "Saturday collections",
+          "Friday set out",
+          "sanitation",
+          "Department of Sanitation",
+          "opt-in",
+          "containerization"
+        ]
       }
     ],
     "manhattan-cb-03": [
@@ -351,7 +438,7 @@
     "documents": 4,
     "boards": 2,
     "candidate_blocks_observed": 25,
-    "decisions_published": 2,
-    "candidates_held": 23
+    "decisions_published": 3,
+    "candidates_held": 22
   }
 }

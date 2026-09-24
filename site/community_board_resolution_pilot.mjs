@@ -1,5 +1,6 @@
 /**
- * Accepted community-board decisions, read from four published documents.
+ * Accepted community-board decisions, read from four published documents
+ * and projected into stable, identity-based destinations.
  *
  * A resident can already find that a board publishes minutes. What the minutes
  * do not give them is the decision: the board's own words, and the one tally
@@ -34,6 +35,77 @@ export const COMMUNITY_BOARD_RESOLUTION_REVIEW_QUEUE_SCHEMA = "cityscroll.commun
 export const COMMUNITY_BOARD_RESOLUTION_VIEW_SCHEMA = "cityscroll.community_board_resolution_pilot_view.v1";
 
 export const COMMUNITY_BOARD_DECISIONS_ANCHOR = "board-decisions";
+export const COMMUNITY_BOARD_DECISION_ANCHOR_PREFIX = "board-decision-";
+export const COMMUNITY_BOARD_DECISION_PUBLIC_ORIGIN = "https://cityscroll.org";
+
+/**
+ * The two positional fragments that already shipped. Each stays bound to the
+ * decision it originally addressed; later inserts never steal them.
+ */
+export const COMMUNITY_BOARD_FROZEN_POSITIONAL_DECISION_ALIASES = Object.freeze({
+  "brooklyn-cb-15": Object.freeze({
+    1: "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+  }),
+  "manhattan-cb-03": Object.freeze({
+    1: "manhattan-cb-03:2026-05-26:transportation-2",
+  }),
+});
+
+/**
+ * DOM-safe injective encoding of an admitted candidate_id.
+ *
+ * Base64url of the UTF-8 identity is one-to-one and stays inside
+ * [A-Za-z0-9_-], so the fragment does not depend on list order, a title slug,
+ * or a truncated hash.
+ */
+export function communityBoardDecisionAnchorId(candidateId) {
+  const id = clean(candidateId, 300);
+  if (!id) return null;
+  return `${COMMUNITY_BOARD_DECISION_ANCHOR_PREFIX}${Buffer.from(id, "utf8").toString("base64url")}`;
+}
+
+/** Decode a stable decision fragment back to its candidate_id, or null. */
+export function communityBoardDecisionCandidateIdFromAnchor(anchor) {
+  const value = clean(anchor, 500);
+  if (!value.startsWith(COMMUNITY_BOARD_DECISION_ANCHOR_PREFIX)) return null;
+  const encoded = value.slice(COMMUNITY_BOARD_DECISION_ANCHOR_PREFIX.length);
+  if (!encoded || /[^A-Za-z0-9_-]/.test(encoded)) return null;
+  try {
+    const decoded = Buffer.from(encoded, "base64url").toString("utf8");
+    return clean(decoded, 300) || null;
+  } catch {
+    return null;
+  }
+}
+
+/** Frozen positional alias ids that must keep pointing at this candidate. */
+export function communityBoardDecisionFrozenAliasIds(boardId, candidateId) {
+  const board = clean(boardId, 80).toLowerCase();
+  const id = clean(candidateId, 300);
+  const aliases = COMMUNITY_BOARD_FROZEN_POSITIONAL_DECISION_ALIASES[board];
+  if (!aliases || !id) return Object.freeze([]);
+  return Object.freeze(Object.entries(aliases)
+    .filter(([, bound]) => bound === id)
+    .map(([position]) => `${COMMUNITY_BOARD_DECISIONS_ANCHOR}-${position}`));
+}
+
+/** Board-page path plus stable fragment for one admitted decision. */
+export function communityBoardDecisionHref(boardId, candidateId) {
+  const board = clean(boardId, 80).toLowerCase();
+  const anchor = communityBoardDecisionAnchorId(candidateId);
+  if (!BODY_ID.test(board) || !anchor) return null;
+  return `/community-boards/${board}/#${anchor}`;
+}
+
+/** Absolute copy target published beside the decision. */
+export function communityBoardDecisionCopyTarget(boardId, candidateId, {
+  origin = COMMUNITY_BOARD_DECISION_PUBLIC_ORIGIN,
+} = {}) {
+  const href = communityBoardDecisionHref(boardId, candidateId);
+  if (!href) return null;
+  const base = clean(origin, 200).replace(/\/$/, "") || COMMUNITY_BOARD_DECISION_PUBLIC_ORIGIN;
+  return `${base}${href}`;
+}
 
 /**
  * A tally belongs to a decision when the document's own wording says it does.
@@ -545,6 +617,10 @@ const STRINGS = {
     cbrp_passage_heading: "From the published document",
     cbrp_source: "{publisher}, {label}.",
     cbrp_source_link: "Open the published document",
+    cbrp_destination_link: "Link to this decision",
+    cbrp_copy_link: "Copy link",
+    cbrp_withdrawn: "This decision was withdrawn after it was published here.",
+    cbrp_withdrawn_default: "The board withdrew this decision. The published source remains available.",
     cbrp_read_note: "Quoted from the published document exactly as it appears there.",
   },
   es: {
@@ -585,6 +661,10 @@ const STRINGS = {
     cbrp_passage_heading: "Del documento publicado",
     cbrp_source: "{publisher}, {label}.",
     cbrp_source_link: "Abrir el documento publicado",
+    cbrp_destination_link: "Enlace a esta decisión",
+    cbrp_copy_link: "Copiar enlace",
+    cbrp_withdrawn: "Esta decisión se retiró después de publicarse aquí.",
+    cbrp_withdrawn_default: "La junta retiró esta decisión. La fuente publicada sigue disponible.",
     cbrp_read_note: "Citado del documento publicado exactamente como aparece allí.",
   },
   "zh-Hans": {
@@ -665,6 +745,10 @@ const STRINGS = {
     cbrp_passage_heading: "Из опубликованного документа",
     cbrp_source: "{publisher}, {label}.",
     cbrp_source_link: "Открыть опубликованный документ",
+    cbrp_destination_link: "Ссылка на это решение",
+    cbrp_copy_link: "Копировать ссылку",
+    cbrp_withdrawn: "Это решение было отозвано после публикации здесь.",
+    cbrp_withdrawn_default: "Совет отозвал это решение. Опубликованный источник по-прежнему доступен.",
     cbrp_read_note: "Цитируется из опубликованного документа в точности так, как там напечатано.",
   },
   bn: {
@@ -705,6 +789,10 @@ const STRINGS = {
     cbrp_passage_heading: "প্রকাশিত নথি থেকে",
     cbrp_source: "{publisher}, {label}।",
     cbrp_source_link: "প্রকাশিত নথি খুলুন",
+    cbrp_destination_link: "এই সিদ্ধান্তের লিঙ্ক",
+    cbrp_copy_link: "লিঙ্ক অনুলিপি করুন",
+    cbrp_withdrawn: "এখানে প্রকাশের পর এই সিদ্ধান্ত প্রত্যাহার করা হয়েছে।",
+    cbrp_withdrawn_default: "বোর্ড এই সিদ্ধান্ত প্রত্যাহার করেছে। প্রকাশিত উৎস এখনও উপলব্ধ।",
     cbrp_read_note: "প্রকাশিত নথিতে যেভাবে আছে ঠিক সেভাবেই উদ্ধৃত।",
   },
   ht: {
@@ -745,6 +833,10 @@ const STRINGS = {
     cbrp_passage_heading: "Nan dokiman pibliye a",
     cbrp_source: "{publisher}, {label}.",
     cbrp_source_link: "Louvri dokiman pibliye a",
+    cbrp_destination_link: "Lyen pou desizyon sa a",
+    cbrp_copy_link: "Kopye lyen",
+    cbrp_withdrawn: "Desizyon sa a te retire apre yo te pibliye l isit la.",
+    cbrp_withdrawn_default: "Konsèy la te retire desizyon sa a. Sous ki pibliye a toujou disponib.",
     cbrp_read_note: "Site nan dokiman pibliye a egzakteman jan li parèt la.",
   },
   ko: {
@@ -785,6 +877,10 @@ const STRINGS = {
     cbrp_passage_heading: "공개된 문서에서",
     cbrp_source: "{publisher}, {label}.",
     cbrp_source_link: "공개된 문서 열기",
+    cbrp_destination_link: "이 결정으로 가는 링크",
+    cbrp_copy_link: "링크 복사",
+    cbrp_withdrawn: "이 결정은 여기에 게시된 뒤 철회되었습니다.",
+    cbrp_withdrawn_default: "위원회가 이 결정을 철회했습니다. 공개된 출처는 계속 확인할 수 있습니다.",
     cbrp_read_note: "공개된 문서에 나온 그대로 인용했습니다.",
   },
   fr: {
@@ -825,6 +921,10 @@ const STRINGS = {
     cbrp_passage_heading: "Extrait du document publié",
     cbrp_source: "{publisher}, {label}.",
     cbrp_source_link: "Ouvrir le document publié",
+    cbrp_destination_link: "Lien vers cette décision",
+    cbrp_copy_link: "Copier le lien",
+    cbrp_withdrawn: "Cette décision a été retirée après sa publication ici.",
+    cbrp_withdrawn_default: "Le conseil a retiré cette décision. La source publiée reste disponible.",
     cbrp_read_note: "Cité du document publié exactement tel qu'il y figure.",
   },
   pl: {
@@ -865,6 +965,10 @@ const STRINGS = {
     cbrp_passage_heading: "Z opublikowanego dokumentu",
     cbrp_source: "{publisher}, {label}.",
     cbrp_source_link: "Otwórz opublikowany dokument",
+    cbrp_destination_link: "Link do tej decyzji",
+    cbrp_copy_link: "Kopiuj link",
+    cbrp_withdrawn: "Ta decyzja została wycofana po opublikowaniu tutaj.",
+    cbrp_withdrawn_default: "Rada wycofała tę decyzję. Opublikowane źródło pozostaje dostępne.",
     cbrp_read_note: "Cytowane z opublikowanego dokumentu dokładnie tak, jak tam widnieje.",
   },
   ar: {
@@ -905,6 +1009,10 @@ const STRINGS = {
     cbrp_passage_heading: "من الوثيقة المنشورة",
     cbrp_source: "{publisher}، {label}.",
     cbrp_source_link: "فتح الوثيقة المنشورة",
+    cbrp_destination_link: "رابط إلى هذا القرار",
+    cbrp_copy_link: "نسخ الرابط",
+    cbrp_withdrawn: "سُحب هذا القرار بعد نشره هنا.",
+    cbrp_withdrawn_default: "سحب المجلس هذا القرار. المصدر المنشور ما زال متاحًا.",
     cbrp_read_note: "مقتبس من الوثيقة المنشورة كما ورد فيها تمامًا.",
   },
   ur: {
@@ -945,6 +1053,10 @@ const STRINGS = {
     cbrp_passage_heading: "شائع شدہ دستاویز سے",
     cbrp_source: "{publisher}، {label}۔",
     cbrp_source_link: "شائع شدہ دستاویز کھولیں",
+    cbrp_destination_link: "اس فیصلے کا لنک",
+    cbrp_copy_link: "لنک کاپی کریں",
+    cbrp_withdrawn: "یہ فیصلہ یہاں شائع ہونے کے بعد واپس لے لیا گیا۔",
+    cbrp_withdrawn_default: "بورڈ نے یہ فیصلہ واپس لے لیا۔ شائع شدہ ماخذ اب بھی دستیاب ہے۔",
     cbrp_read_note: "شائع شدہ دستاویز سے بعینہٖ اسی طرح نقل کیا گیا جیسے وہاں درج ہے۔",
   },
 };
@@ -1025,18 +1137,47 @@ function excludedVoteMarkup(vote, t, lang) {
 /**
  * One decision.
  *
- * The passage and the excluded tallies are addressed by their own fragments
- * rather than held in `<details>` elements. A browser restores a history
- * entry's URL and scroll offset, not an element's open state, so putting the
- * expansion in the URL is what lets a reader open a passage, follow the link to
- * the published document, and come back to the list exactly as they left it.
- * Each control stays a plain same-page link: no script, no new tab. With no
- * stylesheet at all everything simply renders, which is the right failure.
+ * The destination is the injective encoding of candidate_id. Frozen positional
+ * aliases remain as extra fragment targets on the same decision so older shared
+ * links keep their meaning. Passage and excluded tallies use fragments derived
+ * from that stable id, so a browser restores expansion and scroll on Back.
+ * Copying uses the shared object-card control; the destination itself stays a
+ * plain fragment that works with no script.
  */
-function decisionMarkup(decision, index, t, lang) {
-  const anchor = `${COMMUNITY_BOARD_DECISIONS_ANCHOR}-${index + 1}`;
-  const operative = decision.passages.filter((row) => row.role !== "title");
-  const meeting = formatDay(decision.document.meeting_date, lang);
+function decisionMarkup(decision, t, lang) {
+  const anchor = communityBoardDecisionAnchorId(decision.candidate_id);
+  if (!anchor) return "";
+  const aliasMarkup = communityBoardDecisionFrozenAliasIds(decision.board_id, decision.candidate_id)
+    .map((aliasId) => `<span class="board-decision-alias" id="${esc(aliasId)}" hidden></span>`)
+    .join("");
+  const href = communityBoardDecisionHref(decision.board_id, decision.candidate_id);
+  const copyTarget = communityBoardDecisionCopyTarget(decision.board_id, decision.candidate_id);
+  const withdrawn = decision.withdrawn === true || decision.admission === "withdrawn";
+
+  if (withdrawn) {
+    const explanation = clean(decision.withdrawal_explanation || decision.held_reason, 500)
+      || t("cbrp_withdrawn_default");
+    const source = decision.document?.document_url
+      ? `<p class="board-decision-source">`
+        + `<a class="ui-constellation-link board-decision-source-link" href="${esc(decision.document.document_url)}">${esc(t("cbrp_source_link"))}</a> `
+        + `<span class="muted node-muted">${esc(t("cbrp_source", { publisher: VALUE_SENTINEL, label: SECOND_SENTINEL }))
+          .replace(VALUE_SENTINEL, sourceText(decision.document.publisher))
+          .replace(SECOND_SENTINEL, sourceText(decision.document.published_label || decision.document.document_id))}</span></p>`
+      : "";
+    return `<li class="node-record board-decision board-decision-withdrawn" id="${esc(anchor)}"`
+      + ` data-board-decision="${esc(decision.candidate_id)}"`
+      + ` data-decision-withdrawn="1">`
+      + aliasMarkup
+      + `<div class="node-record-main"><strong lang="en" dir="ltr">${esc(decision.title || decision.candidate_id)}</strong></div>`
+      + `<p class="board-decision-plain">${esc(t("cbrp_withdrawn"))}</p>`
+      + `<p class="muted node-muted board-decision-withdrawal">${esc(explanation)}</p>`
+      + (href ? `<p class="board-decision-share"><a class="board-decision-destination" href="${esc(href)}">${esc(t("cbrp_destination_link"))}</a></p>` : "")
+      + source
+      + `</li>`;
+  }
+
+  const operative = (decision.passages || []).filter((row) => row.role !== "title");
+  const meeting = formatDay(decision.document?.meeting_date, lang);
   const facts = [];
   if (meeting) facts.push(esc(t("cbrp_meeting", { date: meeting })));
   if (decision.authority?.authority_name) {
@@ -1053,14 +1194,14 @@ function decisionMarkup(decision, index, t, lang) {
 
   const boundary = [];
   if (decision.authority && decision.authority.is_ulurp === false) boundary.push(esc(t("cbrp_not_ulurp")));
-  if (decision.non_adopted_notes.length) boundary.push(esc(t("cbrp_not_condition")));
+  if ((decision.non_adopted_notes || []).length) boundary.push(esc(t("cbrp_not_condition")));
 
   const passageBody = operative
     .map((row) => `<blockquote class="board-decision-quote" lang="en" dir="ltr"`
-      + `${decision.document.document_url ? ` cite="${esc(decision.document.document_url)}"` : ""}`
+      + `${decision.document?.document_url ? ` cite="${esc(decision.document.document_url)}"` : ""}`
       + ` data-source-lines="${esc(row.source_lines.join("-"))}"><p>${esc(row.text)}</p></blockquote>`)
     .join("");
-  const notesBody = decision.non_adopted_notes
+  const notesBody = (decision.non_adopted_notes || [])
     .map((row) => `<blockquote class="board-decision-quote board-decision-note" lang="en" dir="ltr"`
       + ` data-note-classification="${esc(row.classification)}"><p>${esc(row.text)}</p></blockquote>`)
     .join("");
@@ -1071,7 +1212,8 @@ function decisionMarkup(decision, index, t, lang) {
     + `<p class="muted node-muted">${esc(t("cbrp_read_note"))}</p></div>`
     + `<a class="board-decision-less" href="#${esc(anchor)}">${esc(t("cbrp_passage_close"))}</a></div>`;
 
-  const excludedCount = decision.excluded_votes.length;
+  const excludedVotes = decision.excluded_votes || [];
+  const excludedCount = excludedVotes.length;
   const excluded = excludedCount
     ? `<div class="board-decision-excluded" id="${esc(anchor)}-other" data-excluded-votes="${esc(String(excludedCount))}">`
       + `<a class="board-decision-more" href="#${esc(anchor)}-other">${esc(t("cbrp_excluded_open"))}</a>`
@@ -1079,12 +1221,12 @@ function decisionMarkup(decision, index, t, lang) {
         ? t("cbrp_excluded_one")
         : t("cbrp_excluded", { count: formatCount(excludedCount, lang) }))}</p>`
       + `<ul class="board-decision-excluded-list">`
-      + decision.excluded_votes.map((vote) => excludedVoteMarkup(vote, t, lang)).join("")
+      + excludedVotes.map((vote) => excludedVoteMarkup(vote, t, lang)).join("")
       + `</ul></div>`
       + `<a class="board-decision-less" href="#${esc(anchor)}">${esc(t("cbrp_excluded_close"))}</a></div>`
     : "";
 
-  const source = decision.document.document_url
+  const source = decision.document?.document_url
     ? `<p class="board-decision-source">`
       + `<a class="ui-constellation-link board-decision-source-link" href="${esc(decision.document.document_url)}">${esc(t("cbrp_source_link"))}</a> `
       + `<span class="muted node-muted">${esc(t("cbrp_source", { publisher: VALUE_SENTINEL, label: SECOND_SENTINEL }))
@@ -1092,19 +1234,30 @@ function decisionMarkup(decision, index, t, lang) {
         .replace(SECOND_SENTINEL, sourceText(decision.document.published_label))}</span></p>`
     : "";
 
+  const share = href
+    ? `<p class="board-decision-share">`
+      + `<a class="board-decision-destination" href="${esc(href)}">${esc(t("cbrp_destination_link"))}</a>`
+      + (copyTarget
+        ? ` <button type="button" class="ui-object-card-copy board-decision-copy" data-object-card-copy="${esc(copyTarget)}" aria-live="polite">${esc(t("cbrp_copy_link"))}</button>`
+        : "")
+      + `</p>`
+    : "";
+
   return `<li class="node-record board-decision" id="${esc(anchor)}"`
     + ` data-board-decision="${esc(decision.candidate_id)}"`
     + ` data-decision-position="${esc(decision.position)}">`
+    + aliasMarkup
     + `<div class="node-record-main"><strong lang="en" dir="ltr">${esc(decision.title)}</strong></div>`
     + `<p class="board-decision-plain">${esc(t(POSITION_KEYS[decision.position] || "cbrp_position_unclassified"))}</p>`
     + (facts.length ? `<p class="muted node-muted board-decision-facts">${facts.join(" &#183; ")}</p>` : "")
-    + `<ul class="board-decision-votes">${decision.votes.map((vote) => voteMarkup(vote, t, lang)).join("")}</ul>`
+    + `<ul class="board-decision-votes">${(decision.votes || []).map((vote) => voteMarkup(vote, t, lang)).join("")}</ul>`
     + (decision.has_committee_vote && decision.has_full_board_vote
       ? `<p class="muted node-muted board-decision-two-stage">${esc(t("cbrp_vote_two_stage"))}</p>`
       : "")
     + excluded
     + passage
     + (boundary.length ? `<p class="muted node-muted board-decision-boundary">${boundary.join(" ")}</p>` : "")
+    + share
     + source
     + `</li>`;
 }
@@ -1138,7 +1291,7 @@ export function renderCommunityBoardDecisionsSection(view, options = {}) {
     body: `<p class="node-lede">${esc(lede)}</p>`
       + `<p class="muted node-muted board-decisions-boundary">${esc(t("cbrp_boundary"))}</p>`
       + `<ul class="node-record-list board-decisions-list">`
-      + view.decisions.map((decision, index) => decisionMarkup(decision, index, t, lang)).join("")
+      + view.decisions.map((decision) => decisionMarkup(decision, t, lang)).join("")
       + `</ul>`,
   });
 }

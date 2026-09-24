@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/community-board-decision-pilot",
   "status": "implemented",
-  "fingerprint": "community-board-decision-pilot.v1",
-  "updated_at": "2026-09-07T00:00:00.000Z",
+  "fingerprint": "community-board-decision-pilot.v2",
+  "updated_at": "2026-09-23T00:00:00.000Z",
   "projections": [
     {
       "id": "community-board-decision-pilot-read-model",
@@ -22,12 +22,24 @@
       "path": "test/community_board_resolution_pilot.test.mjs"
     },
     {
+      "id": "community-board-stable-decision-destinations-capability",
+      "path": "test/friction_b1_capability.test.mjs"
+    },
+    {
       "id": "community-board-decision-pilot-capture",
       "path": "tools/capture_community_board_decisions_evidence.py"
     },
     {
+      "id": "community-board-stable-decision-destinations-capture",
+      "path": "tools/capture_community_board_stable_decision_destinations.py"
+    },
+    {
       "id": "community-board-decision-pilot-served-evidence",
       "path": "docs/evidence/community-board-decisions/README.md"
+    },
+    {
+      "id": "community-board-stable-decision-destinations-evidence",
+      "path": "docs/evidence/community-board-stable-decision-destinations/capture-manifest.json"
     }
   ]
 }

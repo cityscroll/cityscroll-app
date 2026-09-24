@@ -2,7 +2,7 @@
   "schema": "cityscroll.card-profile.closure.v1",
   "profile": "card-work",
   "generated_by": "node tools/derive_card_profile.mjs",
-  "config_sha256": "f54e9351368a95c8f35a61f1371fd1769a1b4839c71ee0816095cf2c98ebd3ce",
+  "config_sha256": "6728d533413458a29b5b8427ca320a82965c88d3ea33de8d836e933c73b68461",
   "inventories": {
     "description": "Derived path inventories, one sorted repository path per line, stored beside this contract so concurrent changes extend different lines instead of rewriting a shared aggregate. Read them through tools/card_profile_closure.mjs, which sorts and deduplicates, never positionally.",
     "directory": "tools/card-profile/closure.d",

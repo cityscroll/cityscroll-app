@@ -4,6 +4,8 @@
  * This is a composition layer, not a new source or identity system. Only
  * records already accepted by the board read models enter the stream.
  */
+import { communityBoardDecisionHref } from "./community_board_resolution_pilot.mjs";
+
 export const COMMUNITY_BOARD_ACTIVITY_SCHEMA = "cityscroll.community_board_activity.v1";
 export const COMMUNITY_BOARD_ACTIVITY_LIMIT = 24;
 export const COMMUNITY_BOARD_ACTIVITY_TYPES = Object.freeze([
@@ -47,7 +49,9 @@ function decisionRows(view, boardId, defaults) {
   return decisions.filter((row) => row?.admission !== "held" && row?.document)
     .flatMap((row) => {
       const type = row.position && row.passages?.some((passage) => passage.role === "operative") ? "resolution" : "decision";
-      return [base(type, row, boardId, { ...defaults, canonical_href: `${defaults.board_href}#decision-${encodeURIComponent(row.candidate_id || row.id || "record")}` })].filter(Boolean);
+      const decisionHref = communityBoardDecisionHref(boardId, row.candidate_id || row.id)
+        || `${defaults.board_href}#${encodeURIComponent(row.candidate_id || row.id || "record")}`;
+      return [base(type, row, boardId, { ...defaults, canonical_href: decisionHref })].filter(Boolean);
     });
 }
 
