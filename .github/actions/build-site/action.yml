@@ -105,6 +105,9 @@ runs:
         fi
         node "$SOURCE_DIR/tools/inject_carto_basemap_key.mjs" "${carto_args[@]}"
         node "$SOURCE_DIR/tools/check_pages_bundle_sizes.mjs" --site-dir "$SITE_DIR"
+        # Fail closed on a Pages Function graph that would trip Cloudflare's 25 MiB
+        # uncompressed Function ceiling (code 8000101) before pages deploy retries.
+        (cd "$SOURCE_DIR" && node tools/measure_pages_functions_bundle.mjs)
         node "$SOURCE_DIR/tools/artifact_manifest.mjs" \
           --site-dir "$SITE_DIR" \
           --source-receipt "$SOURCE_DIR/site/data/source_health_observations.json" \

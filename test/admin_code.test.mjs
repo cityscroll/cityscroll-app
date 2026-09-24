@@ -4,12 +4,14 @@ import test from "node:test";
 
 import {
   ADMIN_CODE_MANIFEST,
+  ADMIN_CODE_SEARCH_INDEX_PATH,
   adminCodeSearchDocuments,
   lookupAdminCodeCitation,
   normalizeAdminCodeCitation,
   renderAdminCodeProvisionDocument,
   searchAdminCodeDocuments,
 } from "../site/admin_code.mjs";
+import searchIndex from "../site/data/legal_code/search.json" with { type: "json" };
 import pagesEdge, { edgeRequestKind } from "../site/pages_edge.mjs";
 import { admitSearchDocument } from "../site/search_document_contract.mjs";
 
@@ -52,15 +54,16 @@ test("the materialization retains corpus identity, hierarchy, source provenance,
 });
 
 test("legal-code search is bounded, typed, and admits exact citation documents", () => {
-  assert.equal(adminCodeSearchDocuments().length, ADMIN_CODE_MANIFEST.counts.provisions);
-  const exact = searchAdminCodeDocuments("16 120", { limit: 8 });
+  assert.equal(ADMIN_CODE_SEARCH_INDEX_PATH, "data/legal_code/search.json");
+  assert.equal(adminCodeSearchDocuments(searchIndex).length, ADMIN_CODE_MANIFEST.counts.provisions);
+  const exact = searchAdminCodeDocuments("16 120", { limit: 8, index: searchIndex });
   assert.equal(exact[0].object_ref, "nyc-administrative-code:16-120");
   const admitted = admitSearchDocument(exact[0]);
   assert.equal(admitted.outcome, "indexed");
   assert.equal(admitted.document.object_type, "legal_code");
   assert.equal(admitted.document.domain, "legal");
-  assert.ok(searchAdminCodeDocuments("receptacles", { limit: 3 }).length <= 3);
-  assert.equal(searchAdminCodeDocuments("not-a-real-code-term").length, 0);
+  assert.ok(searchAdminCodeDocuments("receptacles", { limit: 3, index: searchIndex }).length <= 3);
+  assert.equal(searchAdminCodeDocuments("not-a-real-code-term", { index: searchIndex }).length, 0);
 });
 
 test("provision detail page is source-labeled and does not claim modeled history", () => {

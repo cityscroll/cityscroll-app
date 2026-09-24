@@ -1,5 +1,4 @@
 import manifest from "./data/legal_code/manifest.json" with { type: "json" };
-import searchIndex from "./data/legal_code/search.json" with { type: "json" };
 import {
   adminCodeHref,
   adminCodeProvisionId,
@@ -21,6 +20,8 @@ import { renderProvisionBackfillCoverage } from "./code_history_backfill.mjs";
 
 export const ADMIN_CODE_CORPUS_ID = "nyc-administrative-code";
 export const ADMIN_CODE_SEARCH_LENS = "legal_code";
+/** Published search index path. Loaded from ASSETS / Worker fetch — never bundled into the Pages Function. */
+export const ADMIN_CODE_SEARCH_INDEX_PATH = "data/legal_code/search.json";
 
 export function lookupAdminCodeCitation(value, sourceManifest = manifest) {
   const citation = normalizeAdminCodeCitation(value);
@@ -37,12 +38,12 @@ export function lookupAdminCodeCitation(value, sourceManifest = manifest) {
 
 export { adminCodeHref, adminCodeProvisionId, normalizeAdminCodeCitation };
 
-export function adminCodeSearchDocuments(index = searchIndex) {
+export function adminCodeSearchDocuments(index) {
   return searchDocumentsFromIndex(index);
 }
 
 export function searchAdminCodeDocuments(query, options = {}) {
-  return searchDocumentsForQuery(query, { ...options, index: options.index || searchIndex });
+  return searchDocumentsForQuery(query, { ...options, index: options.index });
 }
 
 function escapeHtml(value) {
@@ -135,4 +136,4 @@ export function renderAdminCodeProvisionDocument(row, { currentHref = null, chan
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Administrative Code ${escapeHtml(row.citation)} · CityScroll</title><meta name="description" content="Current NYC Administrative Code ${escapeHtml(row.citation)}."><link rel="canonical" href="${escapeHtml(canonical)}"><style>body{font-family:system-ui,sans-serif;max-width:860px;margin:0 auto;padding:2rem;line-height:1.55;color:#202124}.skip{position:absolute;left:-9999px;top:0;padding:.5rem .75rem;background:#fff;color:#202124}.skip:focus{left:1rem;z-index:1}.eyebrow{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:#6b4f32}h1{font-size:2rem;margin:.25rem 0}.admin-code-hierarchy{color:#666}.admin-code-text{font-family:Georgia,serif;font-size:1.05rem}.admin-code-text p{margin:0 0 1rem}.meta{border-top:1px solid #ddd;margin-top:2rem;padding-top:1rem}.meta dt{font-weight:700}.meta dd{margin:0 0 .6rem}.history{border-top:1px solid #ddd;margin-top:2rem;padding-top:1rem}.legal-change-list{padding-left:1.3rem}.legal-change-list p{color:#555}.code-change-text,.code-change-diff pre{white-space:pre-wrap;background:#f6f6f3;padding:.75rem;border-left:3px solid #bbb}.code-change-after{border-left-color:#27734d}.code-change-diff pre{border-left-color:#6b4f32}.admin-code-as-of{margin:1rem 0}.code-change-formerly{font-style:italic}.admin-code-backfill-counts{display:grid;grid-template-columns:auto auto;gap:.15rem 1rem;justify-content:start;margin:.75rem 0}.admin-code-backfill-counts dt{font-weight:700}.admin-code-backfill-counts dd{margin:0}main:focus{outline:3px solid #005fcc;outline-offset:4px}</style></head><body data-civic-object-kind="legal-code-provision"><a class="skip" href="#main">Skip to content</a><main id="main" tabindex="-1"><p class="eyebrow">NYC Administrative Code</p><h1>${escapeHtml(row.citation)}</h1><h2>${escapeHtml(row.heading || "Untitled provision")}</h2>${hierarchy}${asOfForm}${followMarkup}${currentText}<section class="meta" aria-labelledby="source"><h3 id="source">Source</h3><dl><dt>Publisher</dt><dd>American Legal Publishing</dd><dt>Last observed</dt><dd>${escapeHtml(row.source?.observed_at || "Unknown")}</dd><dt>Content hash</dt><dd>${escapeHtml(row.source?.content_hash || "Unknown")}</dd><dt>Official source</dt><dd><a href="${escapeHtml(sourceUrl)}" rel="noopener noreferrer">View at American Legal Publishing</a></dd></dl></section><p class="node-meta">Status: ${escapeHtml(renderedRow.status || "unknown")}</p>${mandateMarkup}${citedMarkup}${changesMarkup}${backfillMarkup}</main></body></html>`;
 }
 
-export { manifest as ADMIN_CODE_MANIFEST, searchIndex as ADMIN_CODE_SEARCH_INDEX };
+export { manifest as ADMIN_CODE_MANIFEST };
