@@ -19,7 +19,7 @@ import {
 } from "../site/procurement_digest_compile.mjs";
 import { testClockISOString } from "./helpers/test_clock.mjs";
 import { compileSub, mergeCompiledRows, useProcurementDigestSnapshot } from "../worker/src/lib/compile.mjs";
-import { compileSub_d1 } from "../worker/src/lib/compile_d1.mjs";
+import { compileSub_d1, toDigestRow } from "../worker/src/lib/compile_d1.mjs";
 import { sanitize } from "../worker/src/lib/filter.mjs";
 
 const CLOCK = "2026-09-11";
@@ -67,6 +67,37 @@ function idsOf(rows) {
 
 function nativeIds(rows) {
   return rows.map((row) => row.procurement_id).filter(Boolean).sort();
+}
+
+/**
+ * Row → D1 notices column names that `toDigestRow` reads.
+ * `request_id` is the City Record notice id when present; authority-native
+ * controls have none, so the shared merge still admits them from the digest.
+ */
+function asD1NoticeColumns(row, { requestId = null } = {}) {
+  const amount = row?.contract_amount;
+  const hasAmount = amount != null && Number.isFinite(Number(amount));
+  return {
+    request_id: requestId,
+    start_date: row?.start_date ?? null,
+    agency: row?.agency_name ?? null,
+    short_title: row?.short_title ?? null,
+    pin: row?.pin ?? null,
+    contract_amount: hasAmount ? Number(amount) : null,
+    contract_amount_valid: hasAmount ? 1 : 0,
+    vendor_name: row?.vendor_name ?? null,
+    due_date: row?.due_date ?? null,
+    section: "Procurement",
+    type_of_notice: row?.type_of_notice_description || "Solicitation",
+    selection_method: null,
+    event_date: null,
+    event_addr1: null,
+    description: null,
+  };
+}
+
+function digestRowByProcurementId(procurementId) {
+  return (digest.rows || []).find((row) => row?.procurement_id === procurementId) || null;
 }
 
 test("A1 agency-matching solicitation watches admit both retained native solicitations before lead-time", () => {
@@ -173,8 +204,19 @@ test("A4 D1, fallback, and text-query branches share lifecycle eligibility and d
     assert.match(String(fallback.params?.$where || ""), /Solicitation/);
     assert.equal(typeof fallback.mergeRows, "function");
 
+    // Alerts compile the same subscription for D1, map mirror rows through
+    // toDigestRow, apply d1.postFilter when set, then mergeCompiledRows against
+    // the fallback compilation (shared merge surface).
     const d1 = compileSub_d1(sub, CLOCK);
     assert.equal(d1?.opts?.noticeType, "Solicitation");
+    assert.equal(d1?.opts?.agency, "MTA Construction & Development");
+    // Agency money watches do not set postFilter; vendor and exact-institution
+    // watches do. Recording undefined here is a fact about this watch.
+    assert.equal(
+      d1.postFilter,
+      undefined,
+      "agency solicitation watch leaves D1 postFilter undefined (vendor/exact-institution set one)",
+    );
 
     const textQuery = compileSub({
       lens: "money",
@@ -186,19 +228,48 @@ test("A4 D1, fallback, and text-query branches share lifecycle eligibility and d
     assert.equal(textQuery.kind, "rfp");
     assert.equal(typeof textQuery.mergeRows, "function");
 
+    const nativeA = digestRowByProcurementId(NATIVE_A);
+    const nativeB = digestRowByProcurementId(NATIVE_B);
+    assert.ok(nativeA, "retained native control 2138505");
+    assert.ok(nativeB, "retained native control S48020");
+
+    // Hand the native controls in D1 column shape through the production mapper.
+    let mappedNatives = [nativeA, nativeB].map((row) => asD1NoticeColumns(row)).map(toDigestRow);
+    if (typeof d1.postFilter === "function") {
+      mappedNatives = mappedNatives.filter(d1.postFilter);
+    }
+    assert.equal(mappedNatives.length, 2);
+    assert.equal(mappedNatives[0].agency_name, nativeA.agency_name);
+    assert.equal(mappedNatives[1].agency_name, nativeB.agency_name);
+    assert.equal(mappedNatives[0].short_title, nativeA.short_title);
+    assert.equal(mappedNatives[1].short_title, nativeB.short_title);
+    // Authority-native rows are not City Record notices; after toDigestRow they
+    // carry no request_id, so digest identity stays with the shared merge path.
+    assert.equal(digestIdentity(stampDigestIdentity(mappedNatives[0])), null);
+    assert.equal(digestIdentity(stampDigestIdentity(mappedNatives[1])), null);
+
     const cityRecordControls = [CITY_RECORD_SOLICITATION, CITY_RECORD_DUPLICATE_PIN];
+    let mappedCity = cityRecordControls
+      .map((row) => asD1NoticeColumns(row, { requestId: row.request_id }))
+      .map(toDigestRow);
+    if (typeof d1.postFilter === "function") {
+      mappedCity = mappedCity.filter(d1.postFilter);
+    }
+
     const viaFallback = mergeCompiledRows(fallback, cityRecordControls);
-    const viaD1 = mergeCompiledRows(fallback, cityRecordControls); // same mergeRows contract as alerts D1 path
+    const viaD1 = mergeCompiledRows(fallback, [...mappedNatives, ...mappedCity]);
     const viaText = textQuery.mergeRows([]);
     const viaMatch = matchProcurementDigestRows(digest, filter, { lens: "money", todayISO: CLOCK });
     const viaMerge = mergeProcurementDigestMatches(sub, cityRecordControls, digest, CLOCK);
 
-    assert.deepEqual(nativeIds(viaFallback), nativeIds(viaD1));
-    assert.deepEqual(nativeIds(viaFallback.filter((row) => row.procurement_id)), [NATIVE_B]);
+    assert.deepEqual(idsOf(viaD1), idsOf(viaFallback));
+    assert.deepEqual(nativeIds(viaD1), nativeIds(viaFallback));
+    assert.deepEqual(nativeIds(viaFallback), [NATIVE_B]);
     assert.ok(idsOf(viaFallback).includes(CITY_RECORD_SOLICITATION.request_id));
     assert.ok(idsOf(viaFallback).includes(CITY_RECORD_DUPLICATE_PIN.request_id));
     assert.ok(idsOf(viaFallback).includes(NATIVE_B));
     assert.equal(idsOf(viaFallback).length, new Set(idsOf(viaFallback)).size);
+    assert.equal(idsOf(viaD1).length, new Set(idsOf(viaD1)).size);
 
     assert.deepEqual(nativeIds(viaMatch), [NATIVE_B]);
     assert.deepEqual(nativeIds(viaMerge.filter((row) => row.procurement_id)), [NATIVE_B]);
@@ -206,12 +277,16 @@ test("A4 D1, fallback, and text-query branches share lifecycle eligibility and d
 
     // Positive native control through the text-query owned materialization path.
     assert.ok(nativeIds(viaText).includes(NATIVE_B));
-    assert.equal(nativeIds(viaText).includes(BID_RESULT), false);
-    assert.equal(nativeIds(viaText).includes(AWARD_A), false);
+    for (const rows of [viaFallback, viaD1, viaText]) {
+      assert.equal(nativeIds(rows).includes(BID_RESULT), false);
+      assert.equal(nativeIds(rows).includes(AWARD_A), false);
+      assert.equal(nativeIds(rows).includes(AWARD_B), false);
+    }
 
     // Positive City Record control: a solicitation notice identity survives merge
     // beside the native row without collapsing on title/PIN similarity.
     assert.ok(idsOf(viaFallback).includes("20260707026"));
+    assert.ok(idsOf(viaD1).includes("20260707026"));
   } finally {
     restore();
   }
