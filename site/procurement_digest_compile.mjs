@@ -2,8 +2,10 @@
  * Digest compile for observation-fed procurement objects.
  *
  * City Record-backed objects keep request_id delivery identity. CROL-negative
- * PASSPort/Checkbook rows compile as procurement_id rows and must not pretend
- * to be notices.
+ * PASSPort/Checkbook/authority-native rows compile as procurement_id rows and
+ * must not pretend to be notices. Money watches merge those rows by canonical
+ * lifecycle (solicitation vs award) and explicit watch intent, then dedupe on
+ * digest identity before any optional lead-time preference applies.
  */
 
 import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
@@ -17,7 +19,41 @@ export const PROCUREMENT_DIGEST_SNAPSHOT_SCHEMA = "cityscroll.procurement_digest
 export const PROCUREMENT_DIGEST_LIMIT = 25;
 
 const CITY_RECORD_REF = /^(?:city_record|city_record_procurement|crol):/i;
+const SOLICITATION_STAGES = new Set(["solicitation"]);
 const AWARD_STAGES = new Set(["award", "pending", "registered", "payment", "contract"]);
+
+/**
+ * Lifecycle family a money watch applies to native (CROL-negative) digest rows.
+ * Exact-id and process-state watches keep their prior predicates; solicitation
+ * and award families select by canonical procurement stage rather than source.
+ */
+function nativeMoneyLifecycle(filter = {}) {
+  if (filter.procurement_id) return "exact";
+  if (text(filter.processState, 80)) return "process";
+  if (filter.noticeType === "solicitation") return "solicitation";
+  if (filter.noticeType === "award") return "award";
+  // Amount bounds alone still imply the award family (legacy saved watches).
+  if (filter.minAmount || filter.maxAmount) return "award";
+  // Unspecified money watches compile as open solicitations for City Record;
+  // admit the same solicitation-stage native rows through this shared path.
+  if (!filter.noticeType) return "solicitation";
+  return null;
+}
+
+function rowMatchesNativeLifecycle(row, lifecycle) {
+  if (lifecycle === "exact" || lifecycle === "process") return true;
+  const stages = stagesFor(row).map((stage) => String(stage).toLowerCase());
+  const primary = text(row?.primary_stage, 80)?.toLowerCase();
+  const haystack = stages.length ? stages : (primary ? [primary] : []);
+  if (!haystack.length) return false;
+  if (lifecycle === "solicitation") {
+    return haystack.some((stage) => SOLICITATION_STAGES.has(stage));
+  }
+  if (lifecycle === "award") {
+    return haystack.some((stage) => AWARD_STAGES.has(stage));
+  }
+  return false;
+}
 
 function text(value, max = 500) {
   const result = String(value ?? "")
@@ -196,16 +232,6 @@ function snapshotRows(source) {
   return [];
 }
 
-function wantsAwardFilter(filter = {}) {
-  if (filter.procurement_id) return true;
-  // A source-backed process state is itself a procurement-object predicate, so it
-  // selects the canonical projection without a dollar amount or notice type.
-  if (text(filter.processState, 80)) return true;
-  if (filter.noticeType === "solicitation") return false;
-  if (filter.noticeType === "award") return true;
-  return Boolean(filter.minAmount || filter.maxAmount);
-}
-
 /**
  * Only an exact known publisher-observed state narrows a watch. An unknown or
  * unobserved value matches nothing rather than silently widening the watch.
@@ -251,11 +277,9 @@ function rowMatchesFilter(row, filter = {}, lens = "money") {
   if (filter.maxAmount != null && (row.contract_amount == null || Number(row.contract_amount) > Number(filter.maxAmount))) {
     return false;
   }
-  if (!wantsAwardFilter(filter)) return false;
-  const stages = stagesFor(row);
-  if (!text(filter.processState, 80)
-    && stages.length
-    && !stages.some((stage) => AWARD_STAGES.has(String(stage).toLowerCase()))) return false;
+  const lifecycle = nativeMoneyLifecycle(filter);
+  if (!lifecycle) return false;
+  if (!rowMatchesNativeLifecycle(row, lifecycle)) return false;
   if (filter.text_query != null) return true;
   const keywords = Array.isArray(filter.keywords) ? filter.keywords.map((value) => String(value || "").trim().toLowerCase()).filter(Boolean) : [];
   if (keywords.length) {
