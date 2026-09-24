@@ -240,7 +240,7 @@ function compactRecordBasis(lens, slots) {
     return { basis: "Citywide", confidence, method: method || "citywide" };
   }
   if (preferred.location_role === "venue"
-    || ["venue_line", "venue_column", "civic_address_pip", "parcel_membership"].includes(method)) {
+    || ["venue_line", "venue_column", "civic_address_pip", "parcel_membership", "accepted_exact_parcel_membership"].includes(method)) {
     if (lens === "meetings") {
       return { basis: "Venue / logistics", confidence, method };
     }
@@ -276,6 +276,7 @@ function isVirtualPlacement(slot) {
 
 const WEAK_GEOGRAPHY_METHODS = new Set(["agency_hq", "vendor_address", "vendor_place"]);
 export const PUBLIC_GEOGRAPHY_PLACEMENT_METHODS = Object.freeze([
+  "accepted_exact_parcel_membership",
   "agency_borough",
   "agency_community_board",
   "agency_service_area",
@@ -286,6 +287,7 @@ export const PUBLIC_GEOGRAPHY_PLACEMENT_METHODS = Object.freeze([
   "community_board_ontology",
   "coordinates_pip",
   "hearing_matter",
+  "host_jurisdiction_relation",
   "matter_address",
   "matter_body_borough",
   "matter_title_place",
@@ -790,6 +792,50 @@ const GEOGRAPHY_BOROUGH_NAMES = Object.freeze({
 });
 
 /**
+ * Collapse record-location projection edges (one geography layer per edge) into
+ * compact role memberships the placement pass can consume.
+ */
+export function membershipsFromLocationProjectionEdges(edges = [], recordId = null) {
+  const list = Array.isArray(edges) ? edges : [];
+  const filtered = recordId
+    ? list.filter((edge) => !edge?.record_id || edge.record_id === recordId)
+    : list;
+  const byRole = new Map();
+  for (const edge of filtered) {
+    if (!edge || typeof edge !== "object") continue;
+    const role = String(edge.role || "").trim() || "venue";
+    const assertionId = edge.assertion_id || `${edge.record_id || ""}#${role}`;
+    const key = `${edge.record_id || ""}|${assertionId}|${role}`;
+    if (!byRole.has(key)) {
+      byRole.set(key, {
+        record_id: edge.record_id || recordId || null,
+        assertion_id: assertionId,
+        role,
+        bbl: edge.bbl || null,
+        memberships: {},
+        point: edge.point || null,
+        confidence: edge.confidence ?? 1,
+        confidence_tier: edge.confidence_tier || "strong",
+        provenance: {
+          source_method: edge.provenance?.method || edge.method || "admitted_record_location_membership",
+          ...(edge.source_path ? { source_path: edge.source_path } : {}),
+          ...(edge.bbl ? { parcel_bbl: edge.bbl } : {}),
+        },
+      });
+    }
+    const membership = byRole.get(key);
+    const type = String(edge.geography_type || "").trim();
+    const geographyId = edge.geography_id != null ? String(edge.geography_id) : null;
+    if (type && geographyId) {
+      membership.memberships[type] = geographyId;
+    }
+    if (!membership.point && edge.point) membership.point = edge.point;
+    if (!membership.bbl && edge.bbl) membership.bbl = edge.bbl;
+  }
+  return [...byRole.values()];
+}
+
+/**
  * Admitted record-location memberships (venue / subject / host) keyed for one
  * meeting row. Produced by the record-location join projection; consumed here
  * before geographic list projection so board jurisdiction never suppresses them.
@@ -802,18 +848,33 @@ export function locationMembershipsForMeetingRow(row, opts = {}) {
   if (Array.isArray(row?.location_memberships) && row.location_memberships.length) {
     return [...row.location_memberships];
   }
+
+  const projection = opts.recordLocationProjection || null;
+  if (projection && Array.isArray(projection.edges)) {
+    return membershipsFromLocationProjectionEdges(projection.edges, id);
+  }
+
   const all = opts.recordLocationMemberships;
   if (!all) return [];
   if (Array.isArray(all)) {
+    // Accept either compact memberships or raw projection edges.
+    if (all.some((entry) => entry && entry.geography_key && entry.geography_type)) {
+      return membershipsFromLocationProjectionEdges(all, id);
+    }
     return all.filter((entry) => !entry?.record_id || entry.record_id === id);
   }
   if (all instanceof Map) {
     const hit = all.get(id);
     return Array.isArray(hit) ? [...hit] : (hit ? [hit] : []);
   }
-  if (typeof all === "object" && id && all[id]) {
-    const hit = all[id];
-    return Array.isArray(hit) ? [...hit] : [hit];
+  if (typeof all === "object") {
+    if (Array.isArray(all.edges)) {
+      return membershipsFromLocationProjectionEdges(all.edges, id);
+    }
+    if (id && all[id]) {
+      const hit = all[id];
+      return Array.isArray(hit) ? [...hit] : [hit];
+    }
   }
   return [];
 }
@@ -873,6 +934,15 @@ function placementSlotFromLocationMembership(membership) {
     ? { lat: Number(membership.point.lat), lon: Number(membership.point.lon) }
     : null;
 
+  const method = [
+    "accepted_exact_parcel_membership",
+    "host_jurisdiction_relation",
+    "parcel_membership",
+    "civic_address_pip",
+  ].includes(String(membership.provenance?.source_method || ""))
+    ? String(membership.provenance.source_method)
+    : "parcel_membership";
+
   return {
     borough,
     community,
@@ -880,7 +950,7 @@ function placementSlotFromLocationMembership(membership) {
     ...(layers.nta2020 ? { nta2020: String(layers.nta2020) } : {}),
     ...(layers.police_precinct ? { police_precinct: String(layers.police_precinct) } : {}),
     ...(point ? { point } : {}),
-    method: "parcel_membership",
+    method,
     source_method: sourceMethod,
     location_role: locationRole,
     confidence: membership.confidence ?? 1,
@@ -1892,6 +1962,7 @@ export function buildDistrictActivity(opts = {}) {
   const placeOpts = {
     communityBoardGeography: opts.communityBoardGeography || null,
     recordLocationMemberships: opts.recordLocationMemberships || null,
+    recordLocationProjection: opts.recordLocationProjection || null,
     locationMembershipsForRow: opts.locationMembershipsForRow || null,
   };
 

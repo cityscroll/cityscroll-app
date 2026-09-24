@@ -250,6 +250,57 @@ test("A3 virtual board meeting stays district-relevant without office-as-venue; 
   );
 });
 
+test("record-location projection edges collapse into venue memberships for placement", () => {
+  const row = cb14September23Row();
+  const projection = {
+    schema: "cityscroll.record_location_membership_projection.v1",
+    edges: [
+      {
+        record_id: CB14_SEPT23_ID,
+        assertion_id: `${CB14_SEPT23_ID}#venue`,
+        role: "venue",
+        bbl: VENUE_PARCEL.bbl,
+        geography_key: "geography:nta2020:BK1403",
+        geography_type: "nta2020",
+        geography_id: "BK1403",
+        point: { ...VENUE_PARCEL.point },
+        provenance: { method: "accepted_exact_parcel_membership" },
+        source_path: { source_field: "location.address" },
+      },
+      {
+        record_id: CB14_SEPT23_ID,
+        assertion_id: `${CB14_SEPT23_ID}#venue`,
+        role: "venue",
+        bbl: VENUE_PARCEL.bbl,
+        geography_key: "geography:community_district:K14",
+        geography_type: "community_district",
+        geography_id: "K14",
+        provenance: { method: "accepted_exact_parcel_membership" },
+      },
+      {
+        record_id: CB14_SEPT23_ID,
+        assertion_id: `${CB14_SEPT23_ID}#venue`,
+        role: "venue",
+        bbl: VENUE_PARCEL.bbl,
+        geography_key: "geography:council_district:45",
+        geography_type: "council_district",
+        geography_id: "45",
+        provenance: { method: "accepted_exact_parcel_membership" },
+      },
+    ],
+  };
+  const slots = meetingPlacementsFromRow(row, boundaries, {
+    communityBoardGeography,
+    recordLocationProjection: projection,
+  });
+  assert.ok(slots.some((slot) => slot.source_method === "board_covers_district" && slot.community === "K14"));
+  assert.ok(slots.some((slot) =>
+    slot.location_role === "venue"
+      && slot.community === "K14"
+      && slot.council === "45"
+      && slot.nta2020 === "BK1403"));
+});
+
 test("A4 replay: exact place keys and separate role evidence through placements + activity index", () => {
   const row = cb14September23Row();
   const memberships = [venueMembership()];
