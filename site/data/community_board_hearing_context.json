@@ -2,7 +2,7 @@
   "schema": "cityscroll.community_board_hearing_context.v1",
   "method": "published_agenda_with_optional_previous_cycle_context_v1",
   "negative_rule": "A previous-cycle request and its published answer are the record of an earlier fiscal year. Neither is an item on the coming agenda, a commitment that the board will raise it again, funding, or delivery. A document retained here without usable extracted text has not been read, and a recorded vote to send a letter is not evidence of what the letter says. An agenda-only reading carries no previous-cycle claim.",
-  "observed_at": "2026-09-24T12:00:00.000Z",
+  "observed_at": "2026-09-23T05:09:59.711Z",
   "boards": [
     {
       "meeting_key": "m1",
@@ -1314,7 +1314,7 @@
       "board_id": "brooklyn-cb-14",
       "board_name": "Brooklyn Community Board 14",
       "publisher": "Brooklyn Community Board 14",
-      "observed_at": "2026-09-24T12:00:00.000Z",
+      "observed_at": "2026-09-23T05:09:59.711Z",
       "hearing": {
         "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
         "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
@@ -1365,7 +1365,7 @@
       "board_id": "brooklyn-cb-14",
       "board_name": "Brooklyn Community Board 14",
       "publisher": "Brooklyn Community Board 14",
-      "observed_at": "2026-09-24T12:30:00.000Z",
+      "observed_at": "2026-09-23T05:09:59.711Z",
       "hearing": {
         "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
         "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",

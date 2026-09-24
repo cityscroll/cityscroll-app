@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-09-15T10:18:58.000Z",
+  "generated_at": "2026-09-23T05:09:59.711Z",
   "available": true,
   "source_count": 64,
   "sources": [
@@ -1488,12 +1488,12 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-09-14T14:24:52.445Z",
+            "at": "2026-09-21T14:33:19.328Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-09-14T14:24:52.594Z",
+            "at": "2026-09-21T14:33:19.497Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -2007,7 +2007,7 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-09-07T18:12:14.249Z",
+            "at": "2026-09-23T05:09:59.711Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
@@ -2147,8 +2147,10 @@
       "expected_cadence": "Updated as meetings, agenda items, and votes change",
       "mode": "continuous",
       "health": {
-        "status": "Healthy",
-        "reason_codes": [],
+        "status": "Delayed",
+        "reason_codes": [
+          "acquisition-clock-stale"
+        ],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -2751,8 +2753,10 @@
       "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/contractData.js)",
       "mode": "continuous",
       "health": {
-        "status": "Healthy",
-        "reason_codes": [],
+        "status": "Delayed",
+        "reason_codes": [
+          "acquisition-clock-stale"
+        ],
         "clocks": {
           "publisher_updated": {
             "at": "2026-09-13T05:37:25.000Z",
@@ -2800,8 +2804,10 @@
       "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/rfxData.js)",
       "mode": "continuous",
       "health": {
-        "status": "Healthy",
-        "reason_codes": [],
+        "status": "Delayed",
+        "reason_codes": [
+          "acquisition-clock-stale"
+        ],
         "clocks": {
           "publisher_updated": {
             "at": "2026-09-13T05:37:26.000Z",
@@ -2967,9 +2973,9 @@
             "basis": null
           },
           "cityscroll_serving": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2025-09-17T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
           }
         }
       },

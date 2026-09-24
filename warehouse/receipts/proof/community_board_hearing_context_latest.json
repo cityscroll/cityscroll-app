@@ -2,8 +2,8 @@
   "schema": "cityscroll.source_acquisition_receipt.v1",
   "source_contract_id": "non-council-board-minutes",
   "status": "succeeded",
-  "started_at": "2026-09-24T12:00:00.000Z",
-  "observed_at": "2026-09-24T12:00:00.000Z",
+  "started_at": "2026-09-23T05:09:59.711Z",
+  "observed_at": "2026-09-23T05:09:59.711Z",
   "boards": [
     "m1",
     "m2",

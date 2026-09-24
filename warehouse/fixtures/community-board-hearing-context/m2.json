@@ -4,7 +4,7 @@
   "board_id": "brooklyn-cb-14",
   "board_name": "Brooklyn Community Board 14",
   "publisher": "Brooklyn Community Board 14",
-  "observed_at": "2026-09-24T12:00:00.000Z",
+  "observed_at": "2026-09-23T05:09:59.711Z",
   "hearing": {
     "meeting_date": "2026-09-09",
     "time_zone": "America/New_York",
@@ -15,7 +15,7 @@
       "content_type": "text/html",
       "content_length": 1223,
       "content_sha256": "456a5e2c6e72c896a8303be7734fc472537f1886e224b7b821ad10d53a3ea182",
-      "observed_at": "2026-09-24T12:00:00.000Z",
+      "observed_at": "2026-09-23T05:09:59.711Z",
       "acquisition_mode": "retained_slim_page"
     },
     "segments": [
