@@ -90,12 +90,15 @@ function stableStringify(value) {
   return `{${keys.map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`).join(",")}}`;
 }
 
-function atomicWriteFile(filePath, contents) {
+function atomicWriteFile(filePath, contents, { nowMs = null } = {}) {
   const dir = path.dirname(filePath);
   mkdirSync(dir, { recursive: true });
+  // determinism-lint: allow clock temp-file uniqueness for atomic rename; the
+  // written payload itself stays a pure function of the caller-supplied contents.
+  const stamp = Number.isFinite(nowMs) ? nowMs : Date.now();
   const tempPath = path.join(
     dir,
-    `.${path.basename(filePath)}.${process.pid}.${Date.now()}.tmp`,
+    `.${path.basename(filePath)}.${process.pid}.${stamp}.tmp`,
   );
   writeFileSync(tempPath, contents);
   renameSync(tempPath, filePath);
@@ -334,7 +337,7 @@ export function createMeetingGeographyBackfill({
   membershipProjection,
   communityBoardGeography = null,
   lookupParcelPoint = null,
-  now = () => new Date().toISOString(),
+  now = () => new Date().toISOString(), // determinism-lint: allow clock caller-supplied observation clock; CLI/harnesses pass built_at
 } = {}) {
   if (!addressCache || typeof addressCache.resolveAddress !== "function") {
     throw new Error("meeting geography backfill requires addressCache.resolveAddress");
@@ -490,7 +493,9 @@ export function createMeetingGeographyBackfill({
     observedAt = null,
   } = {}) {
     const list = Array.isArray(rows) ? rows : [];
-    const gen = generation || `meeting-geography-backfill:${fnv1aHex(String(list.length))}:${Date.now()}`;
+    const observed = observedAt || now();
+    const gen = generation
+      || `meeting-geography-backfill:${fnv1aHex(String(list.length))}:${fnv1aHex(observed)}`;
     const sourceHash = sourceGenerationHash
       || sha256Hex(list.map((row) => row?.meeting_id || "").join("\n"));
     let state = checkpoint
@@ -639,22 +644,40 @@ export function createMeetingGeographyBackfill({
 
 /**
  * Apply backfill outcomes onto shared meeting rows without changing identities.
+ *
+ * Host-jurisdiction memberships stay in the backfill outcomes only: district
+ * activity already adds board covers from the ontology, and stamping host rows
+ * here would reclassify every board meeting as parcel_membership. Shared-model
+ * stamps keep venue/subject memberships plus a compact outcome receipt so the
+ * published meeting slices stay under the Pages size headroom.
  */
 export function stampMeetingRowsWithGeography(rows = [], outcomes = []) {
   const byId = new Map((Array.isArray(outcomes) ? outcomes : []).map((outcome) => [outcome.meeting_id, outcome]));
   return (Array.isArray(rows) ? rows : []).map((row) => {
     const outcome = byId.get(row?.meeting_id);
     if (!outcome) return row;
-    return {
+    const memberships = (outcome.memberships || []).filter((membership) => (
+      membership?.role === LOCATION_ROLES.VENUE
+      || membership?.role === LOCATION_ROLES.SUBJECT_PROPERTY
+    ));
+    const stampAssertions = outcome.outcome === BACKFILL_OUTCOME.PHYSICAL_VENUE
+      || outcome.outcome === BACKFILL_OUTCOME.SUBJECT;
+    const next = {
       ...row,
-      location_assertions: outcome.assertions || row.location_assertions || [],
-      location_memberships: outcome.memberships || [],
       geography_backfill: {
         outcome: outcome.outcome,
         input_hash: outcome.input_hash,
         processed_at: outcome.processed_at || null,
       },
     };
+    if (memberships.length) next.location_memberships = memberships;
+    if (stampAssertions && Array.isArray(outcome.assertions) && outcome.assertions.length) {
+      next.location_assertions = outcome.assertions.filter((assertion) => (
+        assertion?.role === LOCATION_ROLES.VENUE
+        || assertion?.role === LOCATION_ROLES.SUBJECT_PROPERTY
+      ));
+    }
+    return next;
   });
 }
 
@@ -712,9 +735,14 @@ export function activateMeetingGeographyBackfill({
     const pointer = {
       schema: MEETING_GEOGRAPHY_BACKFILL_MANIFEST_SCHEMA,
       active_generation: generation,
-      activated_at: manifest?.built_at || new Date().toISOString(),
+      activated_at: manifest?.built_at
+        || outcomesDocument?.built_at
+        || null,
       previous_generation: previousActive?.active_generation || null,
     };
+    if (!pointer.activated_at) {
+      throw new Error("activateMeetingGeographyBackfill requires manifest.built_at or outcomesDocument.built_at");
+    }
     atomicWriteFile(
       path.join(publicDir, ACTIVE_POINTER),
       `${JSON.stringify(pointer, null, 2)}\n`,

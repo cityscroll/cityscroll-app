@@ -92,8 +92,14 @@ function loadInputs() {
     .map((row) => [String(row.request_id), row.affected_area || null]));
   const membershipByMeetingId = new Map();
   for (const outcome of meetingGeographyBackfill?.outcomes || []) {
-    if (outcome?.meeting_id && Array.isArray(outcome.memberships) && outcome.memberships.length) {
-      membershipByMeetingId.set(String(outcome.meeting_id), outcome.memberships);
+    if (!outcome?.meeting_id || !Array.isArray(outcome.memberships)) continue;
+    // Venue/subject only. Host jurisdiction stays on the ontology path so board
+    // meetings keep community_board_ontology accounting.
+    const memberships = outcome.memberships.filter((membership) => (
+      membership?.role === "venue" || membership?.role === "subject_property"
+    ));
+    if (memberships.length) {
+      membershipByMeetingId.set(String(outcome.meeting_id), memberships);
     }
   }
   const meetingRows = (meetings?.rows || []).map((row) => {
@@ -119,7 +125,10 @@ function loadInputs() {
     propertyRows: Array.isArray(property?.property_rows) ? property.property_rows : [],
     meetingsRows: meetingRows,
     communityBoardGeography,
-    recordLocationMemberships: meetingGeographyBackfill?.projection || null,
+    // Do not pass the full backfill projection here: host-jurisdiction edges
+    // would reclassify board meetings away from community_board_ontology. Venue
+    // and subject memberships are already merged onto meetingRows above.
+    recordLocationMemberships: null,
     rulesRows: Array.isArray(rules?.rows) ? rules.rows : [],
     moneyRows: Array.isArray(money?.rows) ? money.rows : [],
     contractActionRows: Array.isArray(contractActions?.rows) ? contractActions.rows : [],

@@ -287,6 +287,7 @@ test("A2 [G1] September 23 lands in BK1403 venue membership; replay is idempoten
       manifest: {
         schema: "cityscroll.meeting_geography_backfill_manifest.v1",
         generation,
+        built_at: "2026-09-24T12:00:00.000Z",
         counts: first.counts,
       },
       outcomesDocument,
@@ -378,8 +379,17 @@ test("A3 [boundary] date-shaped and remote-office stay non-physical; OATH unloca
     activateMeetingGeographyBackfill({
       publicDir: dir,
       generation: generationOld,
-      manifest: { schema: "cityscroll.meeting_geography_backfill_manifest.v1", generation: generationOld },
-      outcomesDocument: { schema: "cityscroll.meeting_geography_backfill_outcomes.v1", generation: generationOld, outcomes: [] },
+      manifest: {
+        schema: "cityscroll.meeting_geography_backfill_manifest.v1",
+        generation: generationOld,
+        built_at: "2026-09-24T11:00:00.000Z",
+      },
+      outcomesDocument: {
+        schema: "cityscroll.meeting_geography_backfill_outcomes.v1",
+        generation: generationOld,
+        built_at: "2026-09-24T11:00:00.000Z",
+        outcomes: [],
+      },
     });
     const before = loadActiveMeetingGeographyBackfill(dir);
     assert.equal(before.pointer.active_generation, generationOld);
@@ -387,8 +397,17 @@ test("A3 [boundary] date-shaped and remote-office stay non-physical; OATH unloca
     assert.throws(() => activateMeetingGeographyBackfill({
       publicDir: dir,
       generation: "gen-new-failed",
-      manifest: { schema: "cityscroll.meeting_geography_backfill_manifest.v1", generation: "gen-new-failed" },
-      outcomesDocument: { schema: "cityscroll.meeting_geography_backfill_outcomes.v1", generation: "gen-new-failed", outcomes: result.outcomes },
+      manifest: {
+        schema: "cityscroll.meeting_geography_backfill_manifest.v1",
+        generation: "gen-new-failed",
+        built_at: "2026-09-24T12:00:00.000Z",
+      },
+      outcomesDocument: {
+        schema: "cityscroll.meeting_geography_backfill_outcomes.v1",
+        generation: "gen-new-failed",
+        built_at: "2026-09-24T12:00:00.000Z",
+        outcomes: result.outcomes,
+      },
       failBeforeActivate: true,
     }), /forced failure before activation/);
 
@@ -464,6 +483,7 @@ test("A4 [verification] retained-corpus interrupt/resume and exact per-id outcom
       manifest: {
         schema: "cityscroll.meeting_geography_backfill_manifest.v1",
         generation,
+        built_at: "2026-09-24T12:30:00.000Z",
         counts: completed.counts,
         candidate_input: outcomesDocument.candidate_input,
         positive_record: outcomesDocument.positive_record,

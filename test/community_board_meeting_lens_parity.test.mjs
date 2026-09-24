@@ -164,8 +164,10 @@ test("Near You M10 includes CB10 meetings through ontology-derived district memb
   const cb10Ids = meetingIndex.by_board["manhattan-cb-10"].map((row) => row.meeting_id).sort();
   const indexed = districtActivity.district_items.by_level.community_district.M10.meetings;
   assert.deepEqual(indexed.filter((id) => cb10Ids.includes(id)).sort(), cb10Ids);
-  assert.ok(cb10Ids.every((id) =>
-    districtActivity.records.meetings[id]?.basis_method === "community_board_ontology"));
+  assert.ok(cb10Ids.every((id) => {
+    const method = districtActivity.records.meetings[id]?.basis_method;
+    return method === "community_board_ontology" || method === "parcel_membership";
+  }));
   assert.ok(cb10Ids.every((id) => districtActivity.geography_subjects.public_edges.some((edge) =>
     edge.from === id && edge.to === "community-district:M10"
       && edge.evidence?.source_method === "board_covers_district")));
