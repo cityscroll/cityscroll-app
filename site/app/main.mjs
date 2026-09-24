@@ -80,6 +80,10 @@ function ensureRouteModule(name){
     // CBICS-03: notice detail (incl. rule case files) loads via "property"; the
     // shared compact month component's CSS rides along the same gate.
     ensureRouteStylesheet("compact_calendar.css");
+    ensureRouteStylesheet("procurement_pursuit_controls.css");
+  }
+  if(name === "money"){
+    ensureRouteStylesheet("procurement_pursuit_controls.css");
   }
   if(!routeModulePromises.has(name)){
     routeModulePromises.set(name,(name === "property" ? ensureRouteModule("rules") : Promise.resolve()).then(()=>loader()).then(module=>{

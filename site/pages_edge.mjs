@@ -33,6 +33,14 @@ import {
 } from "./notice_subject_projection.mjs";
 import noticeProcurementSubjectsLookup from "./data/notice_procurement_subjects_lookup.json" with { type: "json" };
 import {
+  noticeSupportsPursuitControls,
+  resolvePursuitMatterRef,
+} from "./procurement_pursuit_identity.mjs";
+import {
+  pursuitControlsAssetTags,
+  renderPursuitControlsHtml,
+} from "./procurement_pursuit_controls.mjs";
+import {
   findMandateById,
   noticeEvidenceForMandate,
   relatedCivicEdgesForMandate,
@@ -714,6 +722,17 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       provenance: null,
     }] : [];
   const noticeSubjectLinksHTML = renderNoticeSubjectLinksHtml(subjectLinks, { escape: esc });
+  const subjectsLookup = options.subjectsLookup || noticeProcurementSubjectsLookup;
+  const pursuitIdentity = row && noticeSupportsPursuitControls(row, subjectLinks)
+    ? resolvePursuitMatterRef({ ...row, request_id: id }, { subjectsLookup })
+    : null;
+  const pursuitControlsHtml = pursuitIdentity?.matter_ref
+    ? `${pursuitControlsAssetTags("/")}${renderPursuitControlsHtml({
+      matterRef: pursuitIdentity.matter_ref,
+      noticeId: pursuitIdentity.notice_id || id,
+      aliasBasis: pursuitIdentity.alias_basis,
+    })}`
+    : "";
   const projectIdForNeighbors = String(row?.project_id || row?.project || row?.ulurp_number || "").trim();
   const projectNeighbor = /^[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(projectIdForNeighbors)
     ? {
@@ -923,6 +942,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       <p class="ftype">${typeLine}</p>
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
       ${noticeSubjectLinksHTML}
+      ${pursuitControlsHtml}
       ${projectPivot}
       ${boardPivot}
       <dl class="glance" data-notice-primary-facts="1"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}${agencyReport ? ` ${agencyReport}` : ""}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}${vendorReport ? ` ${vendorReport}` : ""}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
