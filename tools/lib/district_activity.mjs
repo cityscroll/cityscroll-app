@@ -38,6 +38,7 @@ import {
 import {
   placeFromDerivations,
   compactDerivationStamp,
+  isVirtualOnlyText,
 } from "../../site/location_derivation.mjs";
 import {
   meetingSourceUrl,
@@ -106,8 +107,9 @@ function locationRoleForRecord(lens, basis) {
 
 function localityForSlot(lens, slot) {
   const place = compactRecordBasis(lens, [slot]);
+  const locationRole = slot.location_role || locationRoleForRecord(lens, place.basis);
   return {
-    location_role: locationRoleForRecord(lens, place.basis),
+    location_role: locationRole,
     basis: place.basis,
     method: place.method || slot.geography_method || slot.method || "structured_bag",
     confidence: place.confidence,
@@ -188,6 +190,12 @@ function geographiesForSlots(lens, slots, geographyLayers) {
     add(genericMatchFromSlot("borough", boroughId, slot, layerByType, locality));
     add(genericMatchFromSlot("community_district", slot.community, slot, layerByType, locality));
     add(genericMatchFromSlot("council_district", slot.council, slot, layerByType, locality));
+    if (slot.nta2020) {
+      add(genericMatchFromSlot("nta2020", slot.nta2020, slot, layerByType, locality));
+    }
+    if (slot.police_precinct) {
+      add(genericMatchFromSlot("police_precinct", slot.police_precinct, slot, layerByType, locality));
+    }
   }
   return {
     ...place,
@@ -211,16 +219,31 @@ function compactRecordBasis(lens, slots) {
   if (!Array.isArray(slots) || !slots.length) {
     return { basis: "No place signal", confidence: "unknown", method: null };
   }
-  const first = slots[0] || {};
-  const method = first.method || null;
+  // Prefer an admitted venue / matter slot for the compact record basis when dual
+  // board-jurisdiction + venue placements coexist; board coverage stays on its own edge.
+  const preferred = slots.find((slot) => slot.location_role === "venue")
+    || slots.find((slot) => slot.location_role === "matter")
+    || slots[0]
+    || {};
+  const method = preferred.method || null;
   // Single canonical classification (PS-04): the same threshold/method rules every other
   // location-evidence caller uses, not a copy local to this map-assembly step.
-  const confidence = classifyLocationEvidence({ method, confidence: first.confidence, confidence_tier: first.confidence_tier });
+  const confidence = classifyLocationEvidence({
+    method,
+    confidence: preferred.confidence,
+    confidence_tier: preferred.confidence_tier,
+  });
   if (slots.some((slot) => isVirtualPlacement(slot))) {
     return { basis: "Virtual", confidence, method: method || "virtual_only" };
   }
   if (slots.some((slot) => isCitywidePlacement(slot))) {
     return { basis: "Citywide", confidence, method: method || "citywide" };
+  }
+  if (preferred.location_role === "venue"
+    || ["venue_line", "venue_column", "civic_address_pip", "parcel_membership", "accepted_exact_parcel_membership"].includes(method)) {
+    if (lens === "meetings") {
+      return { basis: "Venue / logistics", confidence, method };
+    }
   }
   if (method === "community_board_ontology") {
     return { basis: "Community board district", confidence, method };
@@ -253,6 +276,7 @@ function isVirtualPlacement(slot) {
 
 const WEAK_GEOGRAPHY_METHODS = new Set(["agency_hq", "vendor_address", "vendor_place"]);
 export const PUBLIC_GEOGRAPHY_PLACEMENT_METHODS = Object.freeze([
+  "accepted_exact_parcel_membership",
   "agency_borough",
   "agency_community_board",
   "agency_service_area",
@@ -263,10 +287,12 @@ export const PUBLIC_GEOGRAPHY_PLACEMENT_METHODS = Object.freeze([
   "community_board_ontology",
   "coordinates_pip",
   "hearing_matter",
+  "host_jurisdiction_relation",
   "matter_address",
   "matter_body_borough",
   "matter_title_place",
   "neighborhood_place",
+  "parcel_membership",
   "publisher_council",
   "publisher_district",
   "rule-scope",
@@ -757,14 +783,215 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
   return slots;
 }
 
+const GEOGRAPHY_BOROUGH_NAMES = Object.freeze({
+  1: "Manhattan",
+  2: "Bronx",
+  3: "Brooklyn",
+  4: "Queens",
+  5: "Staten Island",
+});
+
+/**
+ * Collapse record-location projection edges (one geography layer per edge) into
+ * compact role memberships the placement pass can consume.
+ */
+export function membershipsFromLocationProjectionEdges(edges = [], recordId = null) {
+  const list = Array.isArray(edges) ? edges : [];
+  const filtered = recordId
+    ? list.filter((edge) => !edge?.record_id || edge.record_id === recordId)
+    : list;
+  const byRole = new Map();
+  for (const edge of filtered) {
+    if (!edge || typeof edge !== "object") continue;
+    const role = String(edge.role || "").trim() || "venue";
+    const assertionId = edge.assertion_id || `${edge.record_id || ""}#${role}`;
+    const key = `${edge.record_id || ""}|${assertionId}|${role}`;
+    if (!byRole.has(key)) {
+      byRole.set(key, {
+        record_id: edge.record_id || recordId || null,
+        assertion_id: assertionId,
+        role,
+        bbl: edge.bbl || null,
+        memberships: {},
+        point: edge.point || null,
+        confidence: edge.confidence ?? 1,
+        confidence_tier: edge.confidence_tier || "strong",
+        provenance: {
+          source_method: edge.provenance?.method || edge.method || "admitted_record_location_membership",
+          ...(edge.source_path ? { source_path: edge.source_path } : {}),
+          ...(edge.bbl ? { parcel_bbl: edge.bbl } : {}),
+        },
+      });
+    }
+    const membership = byRole.get(key);
+    const type = String(edge.geography_type || "").trim();
+    const geographyId = edge.geography_id != null ? String(edge.geography_id) : null;
+    if (type && geographyId) {
+      membership.memberships[type] = geographyId;
+    }
+    if (!membership.point && edge.point) membership.point = edge.point;
+    if (!membership.bbl && edge.bbl) membership.bbl = edge.bbl;
+  }
+  return [...byRole.values()];
+}
+
+/**
+ * Admitted record-location memberships (venue / subject / host) keyed for one
+ * meeting row. Produced by the record-location join projection; consumed here
+ * before geographic list projection so board jurisdiction never suppresses them.
+ */
+export function locationMembershipsForMeetingRow(row, opts = {}) {
+  const id = row?.meeting_id || row?.request_id || row?.id || null;
+  if (typeof opts.locationMembershipsForRow === "function") {
+    return [...(opts.locationMembershipsForRow(row) || [])];
+  }
+  if (Array.isArray(row?.location_memberships) && row.location_memberships.length) {
+    return [...row.location_memberships];
+  }
+
+  const projection = opts.recordLocationProjection || null;
+  if (projection && Array.isArray(projection.edges)) {
+    return membershipsFromLocationProjectionEdges(projection.edges, id);
+  }
+
+  const all = opts.recordLocationMemberships;
+  if (!all) return [];
+  if (Array.isArray(all)) {
+    // Accept either compact memberships or raw projection edges.
+    if (all.some((entry) => entry && entry.geography_key && entry.geography_type)) {
+      return membershipsFromLocationProjectionEdges(all, id);
+    }
+    return all.filter((entry) => !entry?.record_id || entry.record_id === id);
+  }
+  if (all instanceof Map) {
+    const hit = all.get(id);
+    return Array.isArray(hit) ? [...hit] : (hit ? [hit] : []);
+  }
+  if (typeof all === "object") {
+    if (Array.isArray(all.edges)) {
+      return membershipsFromLocationProjectionEdges(all.edges, id);
+    }
+    if (id && all[id]) {
+      const hit = all[id];
+      return Array.isArray(hit) ? [...hit] : [hit];
+    }
+  }
+  return [];
+}
+
+/** Remote / virtual attendance must not promote a board office into a physical venue. */
+export function meetingRejectsPhysicalVenue(row = {}) {
+  const mode = String(row?.venue?.mode || row?.attendance_mode || "").trim().toLowerCase();
+  if (["remote", "virtual", "online", "zoom", "video"].includes(mode)) return true;
+  const assertions = Array.isArray(row?.location_assertions) ? row.location_assertions : [];
+  if (assertions.some((assertion) => assertion?.role === "venue"
+    && assertion?.validity === "admitted_physical_venue")) {
+    return false;
+  }
+  if (assertions.some((assertion) => assertion?.role === "venue"
+    && (assertion?.attendance_meaning === "remote"
+      || assertion?.validity === "unlocated"
+      || assertion?.validity === "unresolved_attendance_conflict"))) {
+    return true;
+  }
+  const body = [
+    row?.additional_description_1,
+    row?.description,
+    row?.short_title,
+    row?.title,
+  ].filter(Boolean).join(" ");
+  if (body && isVirtualOnlyText(body, row?.venue?.address || null)) return true;
+  return false;
+}
+
+function placementSlotFromLocationMembership(membership) {
+  if (!membership || typeof membership !== "object") return null;
+  const layers = membership.memberships || {};
+  const community = normalizeCommunityDistrictId(layers.community_district);
+  const council = normalizeCouncilDistrictId(layers.council_district);
+  const boroughCode = layers.borough != null ? String(layers.borough).trim() : null;
+  const borough = GEOGRAPHY_BOROUGH_NAMES[boroughCode]
+    || (community ? boroughFromCommunityId(community) : null);
+  if (!community && !council && !borough && !membership.point) return null;
+
+  const roleRaw = String(membership.role || "").trim();
+  let locationRole = "subject_affected_area";
+  let sourceMethod = membership.provenance?.source_method || "admitted_record_location_membership";
+  if (roleRaw === "venue") {
+    locationRole = "venue";
+    sourceMethod = membership.provenance?.source_method || "admitted_venue_membership";
+  } else if (roleRaw === "subject_property" || roleRaw === "matter") {
+    locationRole = "matter";
+    sourceMethod = membership.provenance?.source_method || "admitted_subject_membership";
+  } else if (roleRaw === "host_jurisdiction") {
+    locationRole = "subject_affected_area";
+    sourceMethod = membership.provenance?.source_method || "board_covers_district";
+  }
+
+  const point = membership.point
+    && Number.isFinite(Number(membership.point.lat))
+    && Number.isFinite(Number(membership.point.lon))
+    ? { lat: Number(membership.point.lat), lon: Number(membership.point.lon) }
+    : null;
+
+  const method = [
+    "accepted_exact_parcel_membership",
+    "host_jurisdiction_relation",
+    "parcel_membership",
+    "civic_address_pip",
+  ].includes(String(membership.provenance?.source_method || ""))
+    ? String(membership.provenance.source_method)
+    : "parcel_membership";
+
+  return {
+    borough,
+    community,
+    council,
+    ...(layers.nta2020 ? { nta2020: String(layers.nta2020) } : {}),
+    ...(layers.police_precinct ? { police_precinct: String(layers.police_precinct) } : {}),
+    ...(point ? { point } : {}),
+    method,
+    source_method: sourceMethod,
+    location_role: locationRole,
+    confidence: membership.confidence ?? 1,
+    confidence_tier: membership.confidence_tier || "strong",
+    ...(membership.bbl ? { bbl: String(membership.bbl) } : {}),
+    ...(membership.assertion_id ? { assertion_id: String(membership.assertion_id) } : {}),
+  };
+}
+
+function mergeMeetingPlacementSlots(slots) {
+  const seen = new Set();
+  const out = [];
+  for (const slot of slots) {
+    if (!slot) continue;
+    const key = [
+      slot.borough || "",
+      slot.community || "",
+      slot.council || "",
+      slot.nta2020 || "",
+      slot.location_role || "",
+      slot.source_method || "",
+      slot.method || "",
+    ].join("|");
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(slot);
+  }
+  return out;
+}
+
 /**
  * Resolve meetings placement from stamped affected_area or the human-derivation chain
  * (matter → venue → agency HQ). Venue addresses geocode offline to CD + council.
  * Slots carry method + confidence when known. Virtual-only → explicit virtual bucket.
  *
+ * Board host-jurisdiction is additive with admitted venue/subject memberships: the
+ * board district is retained without discarding a physical venue placement.
+ *
  * @param {object} row
  * @param {object} boundaries
- * @param {{ communityBoardGeography?: object|null }} [opts]
+ * @param {{ communityBoardGeography?: object|null, recordLocationMemberships?: object|array|Map }} [opts]
  */
 export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
   // The OATH calendar publishes case-party names but no hearing location.
@@ -782,16 +1009,36 @@ export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
     boardId,
     opts.communityBoardGeography,
   );
+  const additive = [];
   if (boardDistrict) {
-    return [{
+    additive.push({
       borough: boroughFromCommunityId(boardDistrict),
       community: boardDistrict,
       council: null,
       method: "community_board_ontology",
       source_method: "board_covers_district",
+      location_role: "subject_affected_area",
       confidence: 1,
       confidence_tier: "strong",
-    }];
+    });
+  }
+
+  const rejectPhysicalVenue = meetingRejectsPhysicalVenue(row);
+  for (const membership of locationMembershipsForMeetingRow(row, opts)) {
+    if (rejectPhysicalVenue && membership?.role === "venue") continue;
+    const slot = placementSlotFromLocationMembership(membership);
+    if (slot) additive.push(slot);
+  }
+
+  // Board meetings keep jurisdiction even when venue membership is absent.
+  // Do not fall through into classic venue geocode for board rows: that path
+  // would invent office/footer pins the membership gate intentionally withheld.
+  if (boardDistrict) {
+    const slots = mergeMeetingPlacementSlots(additive);
+    if (!slots.length) {
+      slots.unlocated_reason = "no_place_signal";
+    }
+    return slots;
   }
 
   const stamped = row?.affected_area || row?.place || row?._location || null;
@@ -920,6 +1167,10 @@ export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
     slots.unlocated_reason = meta.unlocated_reason
       || area?.unlocated_reason
       || "no_place_signal";
+  }
+  // Non-board rows may still carry admitted memberships alongside derivation slots.
+  if (additive.length) {
+    return mergeMeetingPlacementSlots([...additive, ...slots]);
   }
   return slots;
 }
@@ -1434,7 +1685,10 @@ export function buildDistrictActivity(opts = {}) {
       basis: locality.basis,
       provenance: locality.provenance,
     };
-    const key = `${lens}|${from}|${to}`;
+    // Role-specific edges share a geography key but keep separate evidence so a
+    // venue membership and board jurisdiction over the same district both survive.
+    const roleKey = locality.location_role || candidate.location_role || "";
+    const key = `${lens}|${from}|${to}|${roleKey}`;
     const previous = geographyMemberships.get(key);
     if (!previous || (previous.decision === "evidence_only" && candidate.decision === "public")) {
       geographyMemberships.set(key, candidate);
@@ -1707,6 +1961,9 @@ export function buildDistrictActivity(opts = {}) {
 
   const placeOpts = {
     communityBoardGeography: opts.communityBoardGeography || null,
+    recordLocationMemberships: opts.recordLocationMemberships || null,
+    recordLocationProjection: opts.recordLocationProjection || null,
+    locationMembershipsForRow: opts.locationMembershipsForRow || null,
   };
 
   // Meetings — venue geocode + boundary PIP / CD resolve; virtual → Virtual bag.
@@ -1878,6 +2135,9 @@ export function buildDistrictActivity(opts = {}) {
       .flatMap((levelBag) => Object.values(levelBag))
       .reduce((sum, bag) => sum + (bag?.[lens]?.length || 0), 0);
     const lensEdges = geographyEdges.filter((edge) => edge.evidence.lens === lens);
+    const uniquePolygonPairs = new Set(
+      lensEdges.map((edge) => `${edge.from}|${edge.to}`),
+    ).size;
     const byMethod = Object.create(null);
     for (const edge of lensEdges) {
       const method = edge.evidence.placement_method;
@@ -1889,9 +2149,12 @@ export function buildDistrictActivity(opts = {}) {
     const evidenceOnlyEdges = lensEdges.length - publicEdges;
     return [lens, {
       polygon_memberships: polygonMemberships,
+      unique_geography_pairs: uniquePolygonPairs,
       public_edges: publicEdges,
       evidence_only_edges: evidenceOnlyEdges,
-      reconciled: polygonMemberships === lensEdges.length,
+      // Distinct record×geography pairs match polygon bags; multiple roles may
+      // share one pair and therefore produce more edges than memberships.
+      reconciled: polygonMemberships === uniquePolygonPairs,
       by_method: byMethod,
       // PS-04 AC8: coverage by the one canonical evidence tier, this lens only.
       by_tier: summarizeLocationEvidenceTiers(lensEdges.map((edge) => ({
@@ -1902,6 +2165,8 @@ export function buildDistrictActivity(opts = {}) {
   }));
   const polygonMemberships = Object.values(geographyAuditByLens)
     .reduce((sum, row) => sum + row.polygon_memberships, 0);
+  const uniqueGeographyPairs = Object.values(geographyAuditByLens)
+    .reduce((sum, row) => sum + row.unique_geography_pairs, 0);
   // PS-04 AC8: local_matches_by_evidence_tier, citywide and by domain (lens).
   const evidenceTierTotals = summarizeLocationEvidenceTiers(
     geographyEdges.map((edge) => ({
@@ -1921,17 +2186,18 @@ export function buildDistrictActivity(opts = {}) {
     audit: {
       schema: "cityscroll.geography_located_in_audit.v1",
       polygon_memberships: polygonMemberships,
+      unique_geography_pairs: uniqueGeographyPairs,
       public_edges: publicGeographyEdges.length,
       evidence_only_edges: evidenceOnlyGeographyEdges.length,
       reconciled: Object.values(geographyAuditByLens).every((row) => row.reconciled)
-        && polygonMemberships === geographyEdges.length,
+        && polygonMemberships === uniqueGeographyPairs,
       by_lens: geographyAuditByLens,
       non_polygon: {
         citywide: { ...citywideBag },
         virtual: { ...virtualBag },
         unlocated: { ...unlocated },
       },
-      note: "Each polygon membership has exactly one routed located_in candidate. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
+      note: "Each polygon membership has at least one routed located_in candidate; distinct record×geography pairs reconcile to membership bags while separate venue and jurisdiction roles may share a pair. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
     },
   };
 
