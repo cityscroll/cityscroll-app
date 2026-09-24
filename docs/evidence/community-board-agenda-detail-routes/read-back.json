@@ -1,0 +1,87 @@
+{
+  "schema": "cityscroll.community_board_agenda_detail_route_read_back.v1",
+  "alias": "c13ef9aaec82b",
+  "observed_at": "2026-09-24T16:10:00.000Z",
+  "method": "pages_edge.handleMeeting with hearing-context attach-at-load",
+  "assertion": "M1, M2, and M3 meeting-detail routes load through the real Pages edge path and render their materialized agenda segment titles.",
+  "routes": [
+    {
+      "meeting_key": "m1",
+      "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F/",
+      "status": 200,
+      "rendered_agenda_segments": [
+        {
+          "order": 1,
+          "start_time": "18:30",
+          "kind": "public_hearing",
+          "title": "Public Hearing on Retail Cannabis Application: 461 Coney Island Avenue"
+        },
+        {
+          "order": 2,
+          "start_time": "18:45",
+          "kind": "public_hearing",
+          "title": "Public Hearing on Community Budget Recommendations for NYC Capital and Expense Budgets for Fiscal Year 2028"
+        },
+        {
+          "order": 3,
+          "start_time": "19:00",
+          "kind": "regular_meeting",
+          "title": "Regular Monthly Meeting of Brooklyn Community Board 14"
+        }
+      ]
+    },
+    {
+      "meeting_key": "m2",
+      "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F/",
+      "status": 200,
+      "rendered_agenda_segments": [
+        {
+          "order": 1,
+          "start_time": "18:30",
+          "kind": "public_hearing",
+          "title": "Public Hearing on 1584 Flatbush Avenue Rezoning"
+        },
+        {
+          "order": 2,
+          "start_time": "19:00",
+          "kind": "other",
+          "title": "Executive Committee Meeting"
+        }
+      ]
+    },
+    {
+      "meeting_key": "m3",
+      "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F/",
+      "status": 200,
+      "rendered_agenda_segments": [
+        {
+          "order": 1,
+          "start_time": null,
+          "kind": "other",
+          "title": "Report on Summer Presentations"
+        },
+        {
+          "order": 2,
+          "start_time": null,
+          "kind": "other",
+          "title": "Report on Department of City Planning’s South of Prospect Neighborhood Plan Kick-Off Event"
+        },
+        {
+          "order": 3,
+          "start_time": null,
+          "kind": "other",
+          "title": "Neighborhood Plan Strategy Session for all CB14 Committees"
+        },
+        {
+          "order": 4,
+          "start_time": null,
+          "kind": "other",
+          "title": "Other Business"
+        }
+      ]
+    }
+  ]
+}

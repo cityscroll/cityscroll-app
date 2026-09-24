@@ -1,0 +1,21 @@
+{
+  "fingerprint": "community-board-agenda-materialization.v1",
+  "id": "cityscroll-engineering/c13ef9aaec82b",
+  "projections": [
+    {
+      "id": "community-board-agenda-detail-route-read-back",
+      "path": "docs/evidence/community-board-agenda-detail-routes/read-back.json"
+    },
+    {
+      "id": "community-board-agenda-m3-data-only-admission-receipt",
+      "path": "warehouse/receipts/proof/community_board_agenda_m3_data_only_admission.json"
+    },
+    {
+      "id": "community-board-agenda-materialization-capability-tests",
+      "path": "test/friction_r3_capability.test.mjs"
+    }
+  ],
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "status": "implemented",
+  "updated_at": "2026-09-24T16:10:00.000Z"
+}

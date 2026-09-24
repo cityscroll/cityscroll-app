@@ -377,6 +377,45 @@ async function handleAssertion(request, env, selector) {
     : new Response(html, { status: 200, headers });
 }
 
+async function loadHearingContextAgendaArtifact(env, request) {
+  const response = await staticAsset(env, request, "/data/community_board_hearing_context.json");
+  if (!response.ok) return null;
+  try {
+    return await response.json();
+  } catch (_error) {
+    return null;
+  }
+}
+
+/**
+ * Attach already-materialized board agenda segments at meeting-detail load
+ * time. Segments stay off the shared meeting catalog payload; the hearing-
+ * context artifact remains the source of truth.
+ */
+export function attachHearingContextAgendaSegments(record, hearingContext) {
+  if (!record || !hearingContext || !Array.isArray(hearingContext.boards)) return record;
+  const match = hearingContext.boards.find((entry) => {
+    const segments = entry?.hearing?.segments;
+    if (!Array.isArray(segments) || !segments.length) return false;
+    const sourceUrl = entry?.hearing?.source_url || null;
+    const meetingId = sourceUrl ? `meeting:community_board:${sourceUrl}` : null;
+    return (
+      (meetingId && meetingId === record.meeting_id)
+      || (sourceUrl && (
+        sourceUrl === record.source_url
+        || sourceUrl === record.publisher_identifier
+        || sourceUrl === record.record_url
+      ))
+    );
+  });
+  if (!match) return record;
+  return {
+    ...record,
+    agenda_segments: match.hearing.segments,
+    agenda_parse_status: "parsed",
+  };
+}
+
 async function handleMeeting(request, env, meetingId) {
   let decoded;
   try { decoded = decodeURIComponent(meetingId); } catch (_error) {
@@ -396,6 +435,10 @@ async function handleMeeting(request, env, meetingId) {
     }
   }
   if (record) {
+    record = attachHearingContextAgendaSegments(
+      record,
+      await loadHearingContextAgendaArtifact(env, snapshotRequest),
+    );
     const html = renderMeetingDocument(record, payload, { currentHref: request.url });
     if (isMeetingDocumentHtml(html, decoded)) {
       const headers = new Headers({
