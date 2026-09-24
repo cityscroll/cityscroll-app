@@ -5,7 +5,7 @@
   "fingerprint": "typed-source-deadlines.v1",
   "updated_at": "2026-09-23T00:00:00.000Z",
   "projections": [
-    { "id": "typed-source-deadline-resolver", "path": "site/typed_source_deadline.mjs" },
+    { "id": "typed-source-deadline-resolver", "path": "warehouse/lib/typed_source_deadline.mjs" },
     { "id": "mta-opportunity-adapter", "path": "warehouse/lib/mta_opportunities.mjs" },
     { "id": "typed-source-deadline-fixtures", "path": "warehouse/fixtures/authority-native-procurement/typed-source-deadlines.v1.json" },
     { "id": "typed-source-deadline-capability-test", "path": "test/friction_r1_capability.test.mjs" }

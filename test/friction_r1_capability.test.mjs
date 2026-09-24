@@ -16,7 +16,7 @@ import {
   DEADLINE_RESOLUTION_STATUS,
   DEADLINE_SEMANTIC_KIND,
   resolveTypedSourceDeadlines,
-} from "../site/typed_source_deadline.mjs";
+} from "../warehouse/lib/typed_source_deadline.mjs";
 import {
   recordsFromMtaOpportunityFixtures,
   validateMtaOpportunityFixtures,

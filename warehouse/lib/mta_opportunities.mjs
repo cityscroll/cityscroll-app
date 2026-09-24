@@ -4,7 +4,7 @@ import {
   openingDateFromResolution,
   resolveMtaOpportunityDeadlines,
   responseDueDateFromResolution,
-} from "../../site/typed_source_deadline.mjs";
+} from "./typed_source_deadline.mjs";
 
 export const MTA_OPPORTUNITY_ADAPTER_SCHEMA = "cityscroll.mta_opportunity_adapter.v1";
 export const MTA_PARENT_INSTITUTION_ID = "metropolitan-transportation-authority";
