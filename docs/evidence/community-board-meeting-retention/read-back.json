@@ -17,11 +17,11 @@
     ]
   },
   "deployment": {
-    "deployment_at": "2026-09-24T00:41:28.790Z",
-    "generated_at": "2026-09-24T00:41:28.790Z",
-    "manifest_sha256": "fc9127cafea438f98804f34467bb75f31c2ac30779aa3dfef2c13cf655c93d67",
+    "deployment_at": "2026-09-24T02:00:08.379Z",
+    "generated_at": "2026-09-24T02:00:08.379Z",
+    "manifest_sha256": "d5673c498e59448ab0f64b0171868a3391986893003404906a50f44450b8b992",
     "manifest_url": "https://cityscroll.org/artifact-manifest.json",
-    "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df"
+    "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827"
   },
   "evidence_class": "deployed-production-read-back",
   "letters": {
@@ -33,12 +33,36 @@
           "data_vintage": null,
           "file": null,
           "name": "cb14-detail-desktop",
-          "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+          "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
           "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
           "served_values": {
             "cancelled_marker": false,
             "footer_address_used_as_venue": false,
             "http_path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+            "layout": {
+              "document_client_width": 1440,
+              "document_scroll_height": 2316,
+              "document_scroll_width": 1440,
+              "focus_bounding_box": {
+                "height": 44,
+                "visible": true,
+                "width": 130.3,
+                "x": 360,
+                "y": 613.9
+              },
+              "focus_selector": "[data-meeting-venue], [itemprop=\"location\"], .meeting-venue, [data-field=\"venue\"], [data-field=\"address\"], a[href=\"https://cb14brooklyn.com/meeting/september-2026-board-meeting/\"], a[href*=\"cb14brooklyn.com/meeting/september-2026\"]",
+              "horizontal_overflow_px": 0,
+              "title_bounding_box": {
+                "height": 297.9,
+                "visible": true,
+                "width": 1024,
+                "x": 208,
+                "y": 184.4
+              },
+              "title_wrapped": true,
+              "viewport_inner_height": 900,
+              "viewport_inner_width": 1440
+            },
             "official_source_shown": true,
             "official_source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
             "scheduled_date": "2026-09-14",
@@ -48,7 +72,7 @@
             "venue_address": "1625 Ocean Avenue",
             "venue_shown": true
           },
-          "sha256": "25bbe942fbcd7c69e0d743b5c55a9470f298093e5d9bbf79cf2110624fa7cc8d",
+          "sha256": "830a5d0c1646622c9922e44ba3614633a185acc23b89540142a095563edf4f9e",
           "source": "headless-playwright-production-served-site",
           "viewport": {
             "height": 900,
@@ -60,12 +84,36 @@
           "data_vintage": null,
           "file": null,
           "name": "cb14-detail-mobile",
-          "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+          "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
           "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
           "served_values": {
             "cancelled_marker": false,
             "footer_address_used_as_venue": false,
             "http_path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+            "layout": {
+              "document_client_width": 390,
+              "document_scroll_height": 2478,
+              "document_scroll_width": 390,
+              "focus_bounding_box": {
+                "height": 44,
+                "visible": true,
+                "width": 358,
+                "x": 16,
+                "y": 626.8
+              },
+              "focus_selector": "[data-meeting-venue], [itemprop=\"location\"], .meeting-venue, [data-field=\"venue\"], [data-field=\"address\"], a[href=\"https://cb14brooklyn.com/meeting/september-2026-board-meeting/\"], a[href*=\"cb14brooklyn.com/meeting/september-2026\"]",
+              "horizontal_overflow_px": 0,
+              "title_bounding_box": {
+                "height": 176.3,
+                "visible": true,
+                "width": 358,
+                "x": 16,
+                "y": 262.8
+              },
+              "title_wrapped": true,
+              "viewport_inner_height": 844,
+              "viewport_inner_width": 390
+            },
             "official_source_shown": true,
             "official_source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
             "scheduled_date": "2026-09-14",
@@ -75,7 +123,7 @@
             "venue_address": "1625 Ocean Avenue",
             "venue_shown": true
           },
-          "sha256": "25bbe942fbcd7c69e0d743b5c55a9470f298093e5d9bbf79cf2110624fa7cc8d",
+          "sha256": "1d5bf1cf4e06a798bdc47678bba6bb87e322699e1cea9a843983c6ee2afa0823",
           "source": "headless-playwright-production-served-site",
           "viewport": {
             "height": 844,
@@ -90,7 +138,7 @@
           "data_vintage": null,
           "file": null,
           "name": "cb14-profile-desktop",
-          "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+          "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
           "route": "/community-boards/brooklyn-cb-14/",
           "served_values": {
             "board_id": "brooklyn-cb-14",
@@ -105,6 +153,30 @@
             "constellation_recent_retained_row_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028 Community Board · 2026-09-14 · Published event Source details",
             "detail_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
             "hearing_preparation_visible": true,
+            "layout": {
+              "document_client_width": 1440,
+              "document_scroll_height": 18691,
+              "document_scroll_width": 1440,
+              "focus_bounding_box": {
+                "height": 57.8,
+                "visible": true,
+                "width": 530.5,
+                "x": 252,
+                "y": 670.2
+              },
+              "focus_selector": "a[href=\"/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F\"], a[href*=\"september-2026-board-meeting\"]",
+              "horizontal_overflow_px": 0,
+              "title_bounding_box": {
+                "height": 74.5,
+                "visible": true,
+                "width": 1024,
+                "x": 208,
+                "y": 184.4
+              },
+              "title_wrapped": false,
+              "viewport_inner_height": 900,
+              "viewport_inner_width": 1440
+            },
             "profile_mentions_september_14": true,
             "upcoming_collection_cancellation_inferred": false,
             "upcoming_collection_omitted_from_upcoming": true,
@@ -114,7 +186,7 @@
             "upcoming_collection_timing_status": "past",
             "upcoming_collection_visibility": "suppressed"
           },
-          "sha256": "dff9e054fc143757dfc8fc6ea44bb6a312ec526282a80497c4fcae0536c81b1c",
+          "sha256": "8b0c8fbf1dd4626ee0acd4099a9248eaee13d1c28c1a671efd5315f941cb70f8",
           "source": "headless-playwright-production-served-site",
           "viewport": {
             "height": 900,
@@ -126,7 +198,7 @@
           "data_vintage": null,
           "file": null,
           "name": "cb14-profile-mobile",
-          "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+          "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
           "route": "/community-boards/brooklyn-cb-14/",
           "served_values": {
             "board_id": "brooklyn-cb-14",
@@ -141,6 +213,30 @@
             "constellation_recent_retained_row_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028 Community Board · 2026-09-14 · Published event Source details",
             "detail_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
             "hearing_preparation_visible": true,
+            "layout": {
+              "document_client_width": 390,
+              "document_scroll_height": 24968,
+              "document_scroll_width": 390,
+              "focus_bounding_box": {
+                "height": 112.8,
+                "visible": true,
+                "width": 258.5,
+                "x": 60,
+                "y": 843.5
+              },
+              "focus_selector": "a[href=\"/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F\"], a[href*=\"september-2026-board-meeting\"]",
+              "horizontal_overflow_px": 0,
+              "title_bounding_box": {
+                "height": 70.5,
+                "visible": true,
+                "width": 358,
+                "x": 16,
+                "y": 274.4
+              },
+              "title_wrapped": true,
+              "viewport_inner_height": 844,
+              "viewport_inner_width": 390
+            },
             "profile_mentions_september_14": true,
             "upcoming_collection_cancellation_inferred": false,
             "upcoming_collection_omitted_from_upcoming": true,
@@ -150,7 +246,7 @@
             "upcoming_collection_timing_status": "past",
             "upcoming_collection_visibility": "suppressed"
           },
-          "sha256": "dff9e054fc143757dfc8fc6ea44bb6a312ec526282a80497c4fcae0536c81b1c",
+          "sha256": "040d4e064362478c940d9f4706aa14f0985f75457bfdc5add70f84790b7c1bd4",
           "source": "headless-playwright-production-served-site",
           "viewport": {
             "height": 844,
@@ -165,7 +261,7 @@
           "data_vintage": null,
           "file": null,
           "name": "cb14-profile-desktop",
-          "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+          "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
           "route": "/community-boards/brooklyn-cb-14/",
           "served_values": {
             "board_id": "brooklyn-cb-14",
@@ -180,6 +276,30 @@
             "constellation_recent_retained_row_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028 Community Board · 2026-09-14 · Published event Source details",
             "detail_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
             "hearing_preparation_visible": true,
+            "layout": {
+              "document_client_width": 1440,
+              "document_scroll_height": 18691,
+              "document_scroll_width": 1440,
+              "focus_bounding_box": {
+                "height": 57.8,
+                "visible": true,
+                "width": 530.5,
+                "x": 252,
+                "y": 670.2
+              },
+              "focus_selector": "a[href=\"/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F\"], a[href*=\"september-2026-board-meeting\"]",
+              "horizontal_overflow_px": 0,
+              "title_bounding_box": {
+                "height": 74.5,
+                "visible": true,
+                "width": 1024,
+                "x": 208,
+                "y": 184.4
+              },
+              "title_wrapped": false,
+              "viewport_inner_height": 900,
+              "viewport_inner_width": 1440
+            },
             "profile_mentions_september_14": true,
             "upcoming_collection_cancellation_inferred": false,
             "upcoming_collection_omitted_from_upcoming": true,
@@ -189,7 +309,7 @@
             "upcoming_collection_timing_status": "past",
             "upcoming_collection_visibility": "suppressed"
           },
-          "sha256": "dff9e054fc143757dfc8fc6ea44bb6a312ec526282a80497c4fcae0536c81b1c",
+          "sha256": "8b0c8fbf1dd4626ee0acd4099a9248eaee13d1c28c1a671efd5315f941cb70f8",
           "source": "headless-playwright-production-served-site",
           "viewport": {
             "height": 900,
@@ -201,12 +321,36 @@
           "data_vintage": null,
           "file": null,
           "name": "cb14-detail-desktop",
-          "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+          "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
           "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
           "served_values": {
             "cancelled_marker": false,
             "footer_address_used_as_venue": false,
             "http_path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+            "layout": {
+              "document_client_width": 1440,
+              "document_scroll_height": 2316,
+              "document_scroll_width": 1440,
+              "focus_bounding_box": {
+                "height": 44,
+                "visible": true,
+                "width": 130.3,
+                "x": 360,
+                "y": 613.9
+              },
+              "focus_selector": "[data-meeting-venue], [itemprop=\"location\"], .meeting-venue, [data-field=\"venue\"], [data-field=\"address\"], a[href=\"https://cb14brooklyn.com/meeting/september-2026-board-meeting/\"], a[href*=\"cb14brooklyn.com/meeting/september-2026\"]",
+              "horizontal_overflow_px": 0,
+              "title_bounding_box": {
+                "height": 297.9,
+                "visible": true,
+                "width": 1024,
+                "x": 208,
+                "y": 184.4
+              },
+              "title_wrapped": true,
+              "viewport_inner_height": 900,
+              "viewport_inner_width": 1440
+            },
             "official_source_shown": true,
             "official_source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
             "scheduled_date": "2026-09-14",
@@ -216,7 +360,7 @@
             "venue_address": "1625 Ocean Avenue",
             "venue_shown": true
           },
-          "sha256": "25bbe942fbcd7c69e0d743b5c55a9470f298093e5d9bbf79cf2110624fa7cc8d",
+          "sha256": "830a5d0c1646622c9922e44ba3614633a185acc23b89540142a095563edf4f9e",
           "source": "headless-playwright-production-served-site",
           "viewport": {
             "height": 900,
@@ -228,7 +372,7 @@
           "data_vintage": null,
           "file": null,
           "name": "cb14-profile-mobile",
-          "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+          "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
           "route": "/community-boards/brooklyn-cb-14/",
           "served_values": {
             "board_id": "brooklyn-cb-14",
@@ -243,6 +387,30 @@
             "constellation_recent_retained_row_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028 Community Board · 2026-09-14 · Published event Source details",
             "detail_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
             "hearing_preparation_visible": true,
+            "layout": {
+              "document_client_width": 390,
+              "document_scroll_height": 24968,
+              "document_scroll_width": 390,
+              "focus_bounding_box": {
+                "height": 112.8,
+                "visible": true,
+                "width": 258.5,
+                "x": 60,
+                "y": 843.5
+              },
+              "focus_selector": "a[href=\"/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F\"], a[href*=\"september-2026-board-meeting\"]",
+              "horizontal_overflow_px": 0,
+              "title_bounding_box": {
+                "height": 70.5,
+                "visible": true,
+                "width": 358,
+                "x": 16,
+                "y": 274.4
+              },
+              "title_wrapped": true,
+              "viewport_inner_height": 844,
+              "viewport_inner_width": 390
+            },
             "profile_mentions_september_14": true,
             "upcoming_collection_cancellation_inferred": false,
             "upcoming_collection_omitted_from_upcoming": true,
@@ -252,7 +420,7 @@
             "upcoming_collection_timing_status": "past",
             "upcoming_collection_visibility": "suppressed"
           },
-          "sha256": "dff9e054fc143757dfc8fc6ea44bb6a312ec526282a80497c4fcae0536c81b1c",
+          "sha256": "040d4e064362478c940d9f4706aa14f0985f75457bfdc5add70f84790b7c1bd4",
           "source": "headless-playwright-production-served-site",
           "viewport": {
             "height": 844,
@@ -264,12 +432,36 @@
           "data_vintage": null,
           "file": null,
           "name": "cb14-detail-mobile",
-          "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+          "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
           "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
           "served_values": {
             "cancelled_marker": false,
             "footer_address_used_as_venue": false,
             "http_path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+            "layout": {
+              "document_client_width": 390,
+              "document_scroll_height": 2478,
+              "document_scroll_width": 390,
+              "focus_bounding_box": {
+                "height": 44,
+                "visible": true,
+                "width": 358,
+                "x": 16,
+                "y": 626.8
+              },
+              "focus_selector": "[data-meeting-venue], [itemprop=\"location\"], .meeting-venue, [data-field=\"venue\"], [data-field=\"address\"], a[href=\"https://cb14brooklyn.com/meeting/september-2026-board-meeting/\"], a[href*=\"cb14brooklyn.com/meeting/september-2026\"]",
+              "horizontal_overflow_px": 0,
+              "title_bounding_box": {
+                "height": 176.3,
+                "visible": true,
+                "width": 358,
+                "x": 16,
+                "y": 262.8
+              },
+              "title_wrapped": true,
+              "viewport_inner_height": 844,
+              "viewport_inner_width": 390
+            },
             "official_source_shown": true,
             "official_source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
             "scheduled_date": "2026-09-14",
@@ -279,7 +471,7 @@
             "venue_address": "1625 Ocean Avenue",
             "venue_shown": true
           },
-          "sha256": "25bbe942fbcd7c69e0d743b5c55a9470f298093e5d9bbf79cf2110624fa7cc8d",
+          "sha256": "1d5bf1cf4e06a798bdc47678bba6bb87e322699e1cea9a843983c6ee2afa0823",
           "source": "headless-playwright-production-served-site",
           "viewport": {
             "height": 844,
@@ -289,7 +481,7 @@
       ]
     }
   },
-  "observed_at": "2026-09-24T01:35:24.301066Z",
+  "observed_at": "2026-09-24T02:38:30.946489Z",
   "origin": "https://cityscroll.org",
   "producer": {
     "letters": [
@@ -305,7 +497,7 @@
       "data_vintage": null,
       "file": null,
       "name": "cb14-profile-desktop",
-      "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "route": "/community-boards/brooklyn-cb-14/",
       "served_values": {
         "board_id": "brooklyn-cb-14",
@@ -320,6 +512,30 @@
         "constellation_recent_retained_row_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028 Community Board · 2026-09-14 · Published event Source details",
         "detail_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
         "hearing_preparation_visible": true,
+        "layout": {
+          "document_client_width": 1440,
+          "document_scroll_height": 18691,
+          "document_scroll_width": 1440,
+          "focus_bounding_box": {
+            "height": 57.8,
+            "visible": true,
+            "width": 530.5,
+            "x": 252,
+            "y": 670.2
+          },
+          "focus_selector": "a[href=\"/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F\"], a[href*=\"september-2026-board-meeting\"]",
+          "horizontal_overflow_px": 0,
+          "title_bounding_box": {
+            "height": 74.5,
+            "visible": true,
+            "width": 1024,
+            "x": 208,
+            "y": 184.4
+          },
+          "title_wrapped": false,
+          "viewport_inner_height": 900,
+          "viewport_inner_width": 1440
+        },
         "profile_mentions_september_14": true,
         "upcoming_collection_cancellation_inferred": false,
         "upcoming_collection_omitted_from_upcoming": true,
@@ -329,7 +545,7 @@
         "upcoming_collection_timing_status": "past",
         "upcoming_collection_visibility": "suppressed"
       },
-      "sha256": "dff9e054fc143757dfc8fc6ea44bb6a312ec526282a80497c4fcae0536c81b1c",
+      "sha256": "8b0c8fbf1dd4626ee0acd4099a9248eaee13d1c28c1a671efd5315f941cb70f8",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -341,12 +557,36 @@
       "data_vintage": null,
       "file": null,
       "name": "cb14-detail-desktop",
-      "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
       "served_values": {
         "cancelled_marker": false,
         "footer_address_used_as_venue": false,
         "http_path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+        "layout": {
+          "document_client_width": 1440,
+          "document_scroll_height": 2316,
+          "document_scroll_width": 1440,
+          "focus_bounding_box": {
+            "height": 44,
+            "visible": true,
+            "width": 130.3,
+            "x": 360,
+            "y": 613.9
+          },
+          "focus_selector": "[data-meeting-venue], [itemprop=\"location\"], .meeting-venue, [data-field=\"venue\"], [data-field=\"address\"], a[href=\"https://cb14brooklyn.com/meeting/september-2026-board-meeting/\"], a[href*=\"cb14brooklyn.com/meeting/september-2026\"]",
+          "horizontal_overflow_px": 0,
+          "title_bounding_box": {
+            "height": 297.9,
+            "visible": true,
+            "width": 1024,
+            "x": 208,
+            "y": 184.4
+          },
+          "title_wrapped": true,
+          "viewport_inner_height": 900,
+          "viewport_inner_width": 1440
+        },
         "official_source_shown": true,
         "official_source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
         "scheduled_date": "2026-09-14",
@@ -356,7 +596,7 @@
         "venue_address": "1625 Ocean Avenue",
         "venue_shown": true
       },
-      "sha256": "25bbe942fbcd7c69e0d743b5c55a9470f298093e5d9bbf79cf2110624fa7cc8d",
+      "sha256": "830a5d0c1646622c9922e44ba3614633a185acc23b89540142a095563edf4f9e",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -368,7 +608,7 @@
       "data_vintage": null,
       "file": null,
       "name": "cb14-profile-mobile",
-      "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "route": "/community-boards/brooklyn-cb-14/",
       "served_values": {
         "board_id": "brooklyn-cb-14",
@@ -383,6 +623,30 @@
         "constellation_recent_retained_row_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028 Community Board · 2026-09-14 · Published event Source details",
         "detail_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
         "hearing_preparation_visible": true,
+        "layout": {
+          "document_client_width": 390,
+          "document_scroll_height": 24968,
+          "document_scroll_width": 390,
+          "focus_bounding_box": {
+            "height": 112.8,
+            "visible": true,
+            "width": 258.5,
+            "x": 60,
+            "y": 843.5
+          },
+          "focus_selector": "a[href=\"/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F\"], a[href*=\"september-2026-board-meeting\"]",
+          "horizontal_overflow_px": 0,
+          "title_bounding_box": {
+            "height": 70.5,
+            "visible": true,
+            "width": 358,
+            "x": 16,
+            "y": 274.4
+          },
+          "title_wrapped": true,
+          "viewport_inner_height": 844,
+          "viewport_inner_width": 390
+        },
         "profile_mentions_september_14": true,
         "upcoming_collection_cancellation_inferred": false,
         "upcoming_collection_omitted_from_upcoming": true,
@@ -392,7 +656,7 @@
         "upcoming_collection_timing_status": "past",
         "upcoming_collection_visibility": "suppressed"
       },
-      "sha256": "dff9e054fc143757dfc8fc6ea44bb6a312ec526282a80497c4fcae0536c81b1c",
+      "sha256": "040d4e064362478c940d9f4706aa14f0985f75457bfdc5add70f84790b7c1bd4",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -404,12 +668,36 @@
       "data_vintage": null,
       "file": null,
       "name": "cb14-detail-mobile",
-      "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+      "revision": "2fb778a3a7d8c11ec1d4953eda5def1a57283827",
       "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
       "served_values": {
         "cancelled_marker": false,
         "footer_address_used_as_venue": false,
         "http_path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+        "layout": {
+          "document_client_width": 390,
+          "document_scroll_height": 2478,
+          "document_scroll_width": 390,
+          "focus_bounding_box": {
+            "height": 44,
+            "visible": true,
+            "width": 358,
+            "x": 16,
+            "y": 626.8
+          },
+          "focus_selector": "[data-meeting-venue], [itemprop=\"location\"], .meeting-venue, [data-field=\"venue\"], [data-field=\"address\"], a[href=\"https://cb14brooklyn.com/meeting/september-2026-board-meeting/\"], a[href*=\"cb14brooklyn.com/meeting/september-2026\"]",
+          "horizontal_overflow_px": 0,
+          "title_bounding_box": {
+            "height": 176.3,
+            "visible": true,
+            "width": 358,
+            "x": 16,
+            "y": 262.8
+          },
+          "title_wrapped": true,
+          "viewport_inner_height": 844,
+          "viewport_inner_width": 390
+        },
         "official_source_shown": true,
         "official_source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
         "scheduled_date": "2026-09-14",
@@ -419,7 +707,7 @@
         "venue_address": "1625 Ocean Avenue",
         "venue_shown": true
       },
-      "sha256": "25bbe942fbcd7c69e0d743b5c55a9470f298093e5d9bbf79cf2110624fa7cc8d",
+      "sha256": "1d5bf1cf4e06a798bdc47678bba6bb87e322699e1cea9a843983c6ee2afa0823",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
