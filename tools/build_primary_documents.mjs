@@ -318,11 +318,32 @@ function buildSharedMeetingArtifacts() {
   return { sharedMeetings };
 }
 
+/**
+ * Strip per-row location_assertions from the published shared meeting catalog.
+ * Those fields are large and redundant with venue/search text for the static
+ * Pages payload; keeping them pushes the file past the 18 MiB refresh headroom
+ * mark after ordinary meeting admissions.
+ */
+export function slimSharedMeetingReadModel(model) {
+  if (!model || typeof model !== "object") return model;
+  const slimRow = (row) => {
+    if (!row || typeof row !== "object") return row;
+    const { location_assertions, ...rest } = row;
+    return rest;
+  };
+  return {
+    ...model,
+    rows: Array.isArray(model.rows) ? model.rows.map(slimRow) : model.rows,
+    hearings: Array.isArray(model.hearings) ? model.hearings.map(slimRow) : model.hearings,
+  };
+}
+
 export function sharedMeetingOutputs() {
   const { sharedMeetings } = buildSharedMeetingArtifacts();
+  const published = slimSharedMeetingReadModel(sharedMeetings);
   return [[
     join(SITE, "data/shared_meeting_read_model.json"),
-    `${JSON.stringify(sharedMeetings, null, 2)}\n`,
+    `${JSON.stringify(published, null, 2)}\n`,
   ]];
 }
 

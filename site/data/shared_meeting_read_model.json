@@ -32,13 +32,13 @@
       "available": true,
       "generated_at": "2026-09-23T05:09:59.711Z",
       "max_age_ms": 129600000,
-      "row_count": 450,
+      "row_count": 451,
       "reason": null,
       "coverage": {
         "source_urls_checked": 95,
         "event_details_checked": 94,
         "boards_indexed": 27,
-        "records_indexed": 450,
+        "records_indexed": 451,
         "minutes_documents_indexed": 4316,
         "minutes_documents_attached": 0,
         "minutes_documents_unlinked": 4316,
@@ -48,7 +48,7 @@
         "meeting_documents_attached": 88,
         "meeting_documents_unlinked": 4316,
         "minutes_documents_ambiguous": 0,
-        "institution_edges_materialized": 495,
+        "institution_edges_materialized": 505,
         "boards_in_inventory": 59,
         "source_roles_total": 118,
         "source_roles_indexed": 65,
@@ -1613,7 +1613,7 @@
     "attached_meeting_documents": 88,
     "pdc_calendar": 12,
     "nyc_legistar_events": 65,
-    "collection": 790,
+    "collection": 791,
     "suppressed": 1,
     "same_proceeding": 0
   },
@@ -18956,7 +18956,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -20128,7 +20129,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -20410,7 +20412,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -20685,7 +20688,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -20960,7 +20964,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -21506,7 +21511,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -22920,7 +22926,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -23737,7 +23744,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -24290,7 +24298,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -24565,7 +24574,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -24840,7 +24850,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -25115,7 +25126,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -28023,7 +28035,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -28576,7 +28589,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -28851,7 +28865,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -29126,7 +29141,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -29401,7 +29417,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -30302,7 +30319,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -30577,7 +30595,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -31943,7 +31962,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -32489,7 +32509,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -33042,7 +33063,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -33317,7 +33339,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -33592,7 +33615,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -33867,7 +33891,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -35907,7 +35932,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -36724,7 +36750,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -37277,7 +37304,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -37559,7 +37587,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -37834,7 +37863,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -38109,7 +38139,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -38384,7 +38415,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -40426,7 +40458,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -41243,7 +41276,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -41796,7 +41830,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -42071,7 +42106,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -42346,7 +42382,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -42892,7 +42929,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -44373,7 +44411,9 @@
       "wall_time": "2026-12-17T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -45430,7 +45470,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -46247,7 +46288,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -47138,7 +47180,9 @@
       "wall_time": "2026-12-03T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -47285,7 +47329,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -47560,7 +47605,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -47835,7 +47881,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -48392,7 +48439,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -49738,7 +49786,9 @@
       "wall_time": "2026-11-19T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -51262,7 +51312,8 @@
       "venue": {
         "name": "via Video Conference, 1220 Fifth Avenue, New York, NY 10029",
         "address": "via Video Conference, 1220 Fifth Avenue, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -52489,7 +52540,9 @@
       "wall_time": "2026-11-12T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -52907,7 +52960,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -53444,7 +53498,9 @@
       "wall_time": "2026-11-10T12:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -53567,7 +53623,9 @@
       "wall_time": "2026-11-10T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Zoning and Franchises",
@@ -54283,7 +54341,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -54558,7 +54617,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -55727,7 +55787,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -56570,7 +56631,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -56845,7 +56907,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -58298,7 +58361,9 @@
       "wall_time": "2026-10-22T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -58986,7 +59051,9 @@
       "wall_time": "2026-10-21T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -59121,7 +59188,9 @@
       "wall_time": "2026-10-21T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Public Safety",
@@ -60939,7 +61008,9 @@
       "wall_time": "2026-10-20T12:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Environmental Protection and Waterfronts",
@@ -61165,7 +61236,9 @@
       "wall_time": "2026-10-20T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Zoning and Franchises",
@@ -61300,7 +61373,9 @@
       "wall_time": "2026-10-20T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
@@ -62085,7 +62160,9 @@
       "wall_time": "2026-10-19T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Cultural Affairs, Libraries and International Relations",
@@ -62250,7 +62327,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -63934,7 +64012,9 @@
       "wall_time": "2026-10-15T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Higher Education",
@@ -64086,7 +64166,9 @@
       "wall_time": "2026-10-15T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Education",
@@ -64238,7 +64320,9 @@
       "wall_time": "2026-10-15T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Workforce Development",
@@ -65564,7 +65648,9 @@
       "wall_time": "2026-10-14T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Health",
@@ -70727,7 +70813,9 @@
       "wall_time": "2026-10-08T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -71442,7 +71530,8 @@
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -71774,7 +71863,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -72180,7 +72270,9 @@
       "wall_time": "2026-10-07T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -73285,7 +73377,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -73560,7 +73653,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -73822,7 +73916,9 @@
       "wall_time": "2026-10-06T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Zoning and Franchises",
@@ -73957,7 +74053,9 @@
       "wall_time": "2026-10-06T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Fire and Emergency Management",
@@ -74109,7 +74207,9 @@
       "wall_time": "2026-10-06T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Hospitals",
@@ -75687,7 +75787,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -77031,7 +77132,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -78043,7 +78145,9 @@
       "wall_time": "2026-10-01T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -79640,7 +79744,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -79902,7 +80007,9 @@
       "wall_time": "2026-09-30T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Economic Development",
@@ -80054,7 +80161,9 @@
       "wall_time": "2026-09-30T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Small Business",
@@ -80206,7 +80315,9 @@
       "wall_time": "2026-09-30T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Environmental Protection and Waterfronts",
@@ -80398,7 +80509,9 @@
       "wall_time": "2026-09-30T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Technology",
@@ -81140,7 +81253,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Transportation and Infrastructure",
@@ -81615,7 +81730,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Consumer and Worker Protection",
@@ -82090,7 +82207,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Fire and Emergency Management",
@@ -82231,7 +82350,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Women and Gender Equity",
@@ -82389,7 +82510,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Public Safety",
@@ -82864,7 +82987,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Parks and Recreation",
@@ -84204,7 +84329,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St # 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -85522,7 +85648,9 @@
       "wall_time": "2026-09-29T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Environmental Protection and Waterfronts",
@@ -85697,7 +85825,9 @@
       "wall_time": "2026-09-29T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Higher Education",
@@ -85838,7 +85968,9 @@
       "wall_time": "2026-09-29T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Early Childhood Education",
@@ -87088,7 +87220,8 @@
       "wall_time": "2026-09-28T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "The New York Public Library at 515 Malcolm X Boulevard, New York, NY 10037 (135th Street and Malcolm X Boulevard)"
+        "address": "The New York Public Library at 515 Malcolm X Boulevard, New York, NY 10037 (135th Street and Malcolm X Boulevard)",
+        "mode": "in-person"
       },
       "committee": {
         "name": "Committee on Cultural Affairs, Libraries and International Relations",
@@ -89532,7 +89665,9 @@
       "wall_time": "2026-09-24T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -91511,7 +91646,7 @@
       "venue": {
         "name": null,
         "address": "Community Board 3 Office - 59 East 4th Street",
-        "mode": "not-stated"
+        "mode": "in-person"
       },
       "participation": {
         "links": [],
@@ -91805,7 +91940,7 @@
       "venue": {
         "name": null,
         "address": "Community Board 3 Office - 59 East 4th Street",
-        "mode": "not-stated"
+        "mode": "in-person"
       },
       "participation": {
         "links": [],
@@ -92625,7 +92760,9 @@
       "wall_time": "2026-09-23T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -92760,7 +92897,9 @@
       "wall_time": "2026-09-23T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Mental Health and Substance Use",
@@ -92952,7 +93091,9 @@
       "wall_time": "2026-09-23T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Hospitals",
@@ -93144,7 +93285,9 @@
       "wall_time": "2026-09-23T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Women and Gender Equity",
@@ -93978,7 +94121,9 @@
       "wall_time": "2026-09-23T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Zoning and Franchises",
@@ -94113,7 +94258,9 @@
       "wall_time": "2026-09-23T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Criminal Justice",
@@ -94305,7 +94452,9 @@
       "wall_time": "2026-09-23T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Contracts",
@@ -95638,7 +95787,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -98163,7 +98313,9 @@
       "wall_time": "2026-09-22T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on General Welfare",
@@ -98372,7 +98524,9 @@
       "wall_time": "2026-09-22T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Education",
@@ -98513,7 +98667,9 @@
       "wall_time": "2026-09-22T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Public Housing",
@@ -98654,7 +98810,9 @@
       "wall_time": "2026-09-22T11:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Committee Room - City Hall"
+        "address": "Committee Room - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Zoning and Franchises",
@@ -98899,7 +99057,9 @@
       "wall_time": "2026-09-22T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Governmental Operations, State & Federal Legislation",
@@ -99108,7 +99268,9 @@
       "wall_time": "2026-09-22T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Civil Service and Labor",
@@ -99249,7 +99411,9 @@
       "wall_time": "2026-09-22T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Immigration",
@@ -101888,11 +102052,7 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": {
-        "name": null,
-        "address": "October 20, 2026",
-        "mode": "not-stated"
-      },
+      "venue": null,
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -101904,7 +102064,7 @@
       "agency": null,
       "board_name": "Queens Community Board 1",
       "description": null,
-      "search_text": "Full Board / Public Hearing Meetings October 20, 2026 Full Board / Public Hearing Meetings upcoming_meetings Community Board Meetings Queens Community Board 1 October 20, 2026 Queens Q01",
+      "search_text": "Full Board / Public Hearing Meetings October 20, 2026 Full Board / Public Hearing Meetings upcoming_meetings Community Board Meetings Queens Community Board 1 Queens Q01",
       "affected_area": {
         "scope": "local",
         "boroughs": [
@@ -102185,7 +102345,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -104415,7 +104576,9 @@
       "wall_time": "2026-09-18T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Veterans",
@@ -104573,7 +104736,9 @@
       "wall_time": "2026-09-18T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Mental Health and Substance Use",
@@ -104731,7 +104896,9 @@
       "wall_time": "2026-09-18T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Aging",
@@ -105121,7 +105288,9 @@
       "wall_time": "2026-09-18T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Disabilities",
@@ -105511,7 +105680,9 @@
       "wall_time": "2026-09-18T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Finance",
@@ -106715,7 +106886,9 @@
       "wall_time": "2026-09-17T11:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -107308,7 +107481,9 @@
       "wall_time": "2026-09-17T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
@@ -108625,7 +108800,8 @@
       "venue": {
         "name": null,
         "address": "Queens Borough Hall, 120-55 Queens Blvd, Kew Gardens, NY 11424, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -110573,7 +110749,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Public Safety",
@@ -110714,7 +110892,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Economic Development",
@@ -110866,7 +111046,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Small Business",
@@ -111018,7 +111200,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Early Childhood Education",
@@ -111159,7 +111343,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Children and Youth",
@@ -111300,7 +111486,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Small Business",
@@ -114300,7 +114488,7 @@
       "venue": {
         "name": null,
         "address": "Essex Street Market Kitchen - 88 Essex Street",
-        "mode": "not-stated"
+        "mode": "in-person"
       },
       "participation": {
         "links": [],
@@ -114872,7 +115060,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -118239,7 +118428,8 @@
       "venue": {
         "name": "via Video Conference, 2017 First Avenue, New York, NY 10029",
         "address": "via Video Conference, 2017 First Avenue, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -120449,7 +120639,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -120731,7 +120922,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -127823,7 +128015,8 @@
       "venue": {
         "name": "Northwell Greenwich Village Hospital, 6th Floor Conference Room",
         "address": "200 West 13th Street, New York, NY, 10011",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -130337,7 +130530,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -134965,6 +135159,298 @@
     {
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+        }
+      ],
+      "publisher_identifier": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+      "event_date": "2026-09-09",
+      "event_end": "2026-09-23T20:30:00-04:00",
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-09-23T18:30:00-04:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "observed_at": "2026-09-23T05:09:59.711Z",
+        "raw_date": "2026-09-23",
+        "raw_time": "18:30:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": "Brooklyn CB14 District Office",
+        "address": "810 East 16th Street, Brooklyn, NY, 11230",
+        "mode": "in-person"
+      },
+      "participation": {
+        "links": [
+          {
+            "label": "Meeting information",
+            "url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+          }
+        ],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [
+          "718-859-6357"
+        ],
+        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+      },
+      "committee": {
+        "name": "Executive Committee",
+        "href": null
+      },
+      "agency": null,
+      "board_name": "Brooklyn Community Board 14",
+      "description": "A public hearing will be held on the ULURP application for 1584 Flatbush Avenue. The Executive Committee will then review CB14 meeting practices and conduct the District Manager’s performance review.",
+      "search_text": "Public Hearing on ULURP Application and Executive Committee Meeting A public hearing will be held on the ULURP application for 1584 Flatbush Avenue. The Executive Committee will then review CB14 meeting practices and conduct the District Manager’s performance review. 810 East 16th Street, Brooklyn, NY, 11230 Public Hearing on ULURP Application and Executive Committee Meeting A public hearing will be held on the ULURP application for 1584 Flatbush Avenue. The Executive Committee will then review CB14 meeting practices and conduct the District Manager’s performance review. upcoming_meetings Community Board Meetings Executive Committee Brooklyn Community Board 14 Brooklyn CB14 District Office 810 East 16th Street, Brooklyn, NY, 11230 Brooklyn K14",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-14"
+        ],
+        "community_districts": [
+          "K14"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "source_system": "community_board",
+      "meeting_origin": "community_board_source_observed",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://cb14brooklyn.com/meetings/",
+        "observed_at": "2026-09-23T05:09:59.711Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 347631,
+        "parser": "html_pdf_v1",
+        "reason": null,
+        "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-14"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+      },
+      "request_id": null,
+      "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "board_id": "brooklyn-cb-14",
+      "record_kind": "event",
+      "record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "record_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "date": "2026-09-09",
+      "start_at": "2026-09-23T18:30:00-04:00",
+      "end_at": "2026-09-23T20:30:00-04:00",
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [
+        "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+      ],
+      "source_entry_evidence": null,
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://cb14brooklyn.com/meetings/",
+        "observed_at": "2026-09-23T05:09:59.711Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 347631,
+        "parser": "html_pdf_v1",
+        "reason": null,
+        "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+      },
+      "short_title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+      "start_date": "2026-09-23T05:09:59.711Z",
+      "collection_visibility": "visible",
+      "timing_status": "current",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-14",
+        "meeting_date": "2026-09-23",
+        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "source_index_url": "https://cb14brooklyn.com/meetings/",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb14brooklyn.com/meetings/",
+            "observed_at": "2026-09-23T05:09:59.711Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 347631,
+            "parser": "html_pdf_v1",
+            "reason": null,
+            "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+          },
+          "adapter": "html_pdf_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "source_index_url": "https://cb14brooklyn.com/meetings/",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://cb14brooklyn.com/meetings/",
+          "observed_at": "2026-09-23T05:09:59.711Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html; charset=UTF-8",
+          "content_length": 347631,
+          "parser": "html_pdf_v1",
+          "reason": null,
+          "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+        },
+        "adapter": "html_pdf_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-14",
+        "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-14",
+          "to": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "target_name": "Public Hearing on ULURP Application and Executive Committee Meeting",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+          "board_href": "/community-boards/brooklyn-cb-14/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-14"
+          },
+          "source_url": "https://cb14brooklyn.com/meetings/",
+          "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb14brooklyn.com/meetings/",
+            "observed_at": "2026-09-23T05:09:59.711Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 347631,
+            "parser": "html_pdf_v1",
+            "reason": null,
+            "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+          },
+          "source_entry_evidence": null,
+          "provenance": {
+            "source_url": "https://cb14brooklyn.com/meetings/",
+            "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://cb14brooklyn.com/meetings/",
+              "observed_at": "2026-09-23T05:09:59.711Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 347631,
+              "parser": "html_pdf_v1",
+              "reason": null,
+              "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+            },
+            "format": "html"
+          },
+          "join": {
+            "matched": true,
+            "method": "exact_board_date_publisher_identifier",
+            "board_id": "brooklyn-cb-14",
+            "event_date": "2026-09-09",
+            "publisher_identifier": "HTTPS://CB14BROOKLYN.COM/MEETING/PUBLIC-HEARING-ON-ULURP-APPLICATION-AND-EXECUTIVE-COMMITTEE-MEETING-SEPTEMBER-2026/",
+            "evidence": [
+              "exact_board_identity",
+              "exact_date",
+              "publisher_identifier"
+            ]
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_publisher_identifier",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "verified_source_join"
+          ],
+          "publication_basis": null,
+          "meeting_id": null
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://cb14brooklyn.com/meetings/",
+          "observed_at": "2026-09-23T05:09:59.711Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html; charset=UTF-8",
+          "content_length": 347631,
+          "parser": "html_pdf_v1",
+          "reason": null,
+          "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+        },
+        "board_id": "brooklyn-cb-14",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-09-23T05:09:59.711Z"
+      }
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
       "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/youth-education-committee-meeting-6/2026-09-09/",
       "source_keys": [
         {
@@ -135284,7 +135770,8 @@
       "venue": {
         "name": "Northwell Greenwich Village Hospital, 6th Floor Conference Room",
         "address": "200 West 13th Street, New York, NY, 10011",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -136750,7 +137237,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -138723,7 +139211,8 @@
       "venue": {
         "name": "Northwell Greenwich Village Hospital, 6th Floor Conference Room",
         "address": "200 West 13th Street, New York, NY, 10011",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -140905,7 +141394,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -145462,7 +145952,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -147838,7 +148329,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -148124,7 +148616,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -150227,7 +150720,8 @@
       "venue": {
         "name": "7 East 116th Street, New York, NY 10029, via Video Conference",
         "address": "7 East 116th Street, New York, NY 10029, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -150513,7 +151007,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -160577,7 +161072,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -162867,7 +163363,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -163688,7 +164185,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -170380,7 +170878,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -185083,295 +185582,6 @@
       "same_proceeding": null,
       "collection_visibility": "visible",
       "collection_role": "representative",
-      "minutes_freshness": {
-        "status": "not_published",
-        "latest_date": null,
-        "checked_at": "2026-09-23T05:09:59.711Z"
-      }
-    },
-    {
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "source_keys": [
-        {
-          "source_system": "community_board",
-          "key_type": "publisher_event_id",
-          "value": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-        }
-      ],
-      "publisher_identifier": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "title": "Public Hearing on ULURP Application and Executive Committee Meeting",
-      "event_date": "2026-09-09",
-      "event_end": "2026-09-23T20:30:00-04:00",
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-09-23T18:30:00-04:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "observed_at": "2026-09-23T05:09:59.711Z",
-        "raw_date": "2026-09-23",
-        "raw_time": "18:30:00",
-        "status": "resolved"
-      },
-      "meeting_family": "community_board_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": {
-        "name": "Brooklyn CB14 District Office",
-        "address": "810 East 16th Street, Brooklyn, NY, 11230",
-        "mode": "in-person"
-      },
-      "participation": {
-        "links": [
-          {
-            "label": "Meeting information",
-            "url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-          }
-        ],
-        "remote_join_url": null,
-        "emails": [],
-        "phones": [
-          "718-859-6357"
-        ],
-        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-      },
-      "committee": null,
-      "agency": null,
-      "board_name": "Brooklyn Community Board 14",
-      "description": "A public hearing will be held on the ULURP application for 1584 Flatbush Avenue. The Executive Committee will then review CB14 meeting practices and conduct the District Manager’s performance review.",
-      "search_text": "Public Hearing on ULURP Application and Executive Committee Meeting The committee will review summer presentations and report on the Department of City Planning’s South of Prospect Neighborhood Plan Kick-Off Event. The meeting will also include a strategy session on the Neighborhood Plan for all CB14 committees. \\n 810 East 16th Street, Brooklyn, NY, 11230 Brooklyn CB14 District Office Public Hearing on ULURP Application and Executive Committee Meeting The committee will review summer presentations and report on the Department of City Planning’s South of Prospect Neighborhood Plan Kick-Off Event. The meeting will also include a strategy session on the Neighborhood Plan for all CB14 committees. \\n upcoming_meetings Community Board Meetings Brooklyn Community Board 14 Brooklyn CB14 District Office 810 East 16th Street, Brooklyn, NY, 11230 Brooklyn K14",
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Brooklyn"
-        ],
-        "community_boards": [
-          "brooklyn-cb-14"
-        ],
-        "community_districts": [
-          "K14"
-        ],
-        "neighborhoods": [],
-        "addresses": []
-      },
-      "meeting_documents": [],
-      "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "source_system": "community_board",
-      "meeting_origin": "community_board_source_observed",
-      "source_receipt": {
-        "schema": "cityscroll.community_board_source_receipt.v1",
-        "source_url": "https://cb14brooklyn.com/meetings/",
-        "observed_at": "2026-09-23T05:09:59.711Z",
-        "status": "ok",
-        "fetch_status": "200",
-        "content_type": "text/html; charset=UTF-8",
-        "content_length": 347631,
-        "parser": "html_pdf_v1",
-        "reason": null,
-        "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-      },
-      "join_status": "unknown",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": "community-board:brooklyn-cb-14"
-      },
-      "compatibility": {
-        "legacy_notice_href": null,
-        "legacy_fragment_href": null,
-        "publisher_href": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-      },
-      "request_id": null,
-      "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "board_id": "brooklyn-cb-14",
-      "record_kind": "event",
-      "record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "record_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "date": "2026-09-09",
-      "start_at": "2026-09-23T18:30:00-04:00",
-      "end_at": "2026-09-23T20:30:00-04:00",
-      "category": "upcoming_meetings",
-      "format": "html",
-      "publisher_identifiers": [
-        "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-      ],
-      "source_entry_evidence": null,
-      "source_role": "upcoming_meetings",
-      "observed_receipt": {
-        "schema": "cityscroll.community_board_source_receipt.v1",
-        "source_url": "https://cb14brooklyn.com/meetings/",
-        "observed_at": "2026-09-23T05:09:59.711Z",
-        "status": "ok",
-        "fetch_status": "200",
-        "content_type": "text/html; charset=UTF-8",
-        "content_length": 347631,
-        "parser": "html_pdf_v1",
-        "reason": null,
-        "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-      },
-      "short_title": "Public Hearing on ULURP Application and Executive Committee Meeting",
-      "start_date": "2026-09-23T05:09:59.711Z",
-      "collection_visibility": "visible",
-      "timing_status": "current",
-      "type_of_notice_description": "upcoming_meetings",
-      "section_name": "Community Board Meetings",
-      "meeting_join": {
-        "schema": "cityscroll.community_board_source_join.v1",
-        "status": "unknown",
-        "official": false,
-        "reason": "no_city_record_notice",
-        "board_id": "brooklyn-cb-14",
-        "meeting_date": "2026-09-23",
-        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "join": {
-          "matched": false,
-          "method": "exact_board_date_publisher_identifier",
-          "reason": "no_city_record_notice"
-        },
-        "provenance": {
-          "schema": "cityscroll.community_board_meeting_provenance.v1",
-          "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-          "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-          "source_index_url": "https://cb14brooklyn.com/meetings/",
-          "observed_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cb14brooklyn.com/meetings/",
-            "observed_at": "2026-09-23T05:09:59.711Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 347631,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-          },
-          "adapter": "html_pdf_v1"
-        }
-      },
-      "source_provenance": {
-        "schema": "cityscroll.community_board_meeting_provenance.v1",
-        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "source_index_url": "https://cb14brooklyn.com/meetings/",
-        "observed_receipt": {
-          "schema": "cityscroll.community_board_source_receipt.v1",
-          "source_url": "https://cb14brooklyn.com/meetings/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "status": "ok",
-          "fetch_status": "200",
-          "content_type": "text/html; charset=UTF-8",
-          "content_length": 347631,
-          "parser": "html_pdf_v1",
-          "reason": null,
-          "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-        },
-        "adapter": "html_pdf_v1"
-      },
-      "entity_refs_all": [
-        "community-board:brooklyn-cb-14",
-        "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-      ],
-      "institution_edges": [
-        {
-          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
-          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
-          "edge_type": "hosts_meeting",
-          "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
-          "from": "community-board:brooklyn-cb-14",
-          "to": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-          "target_kind": "meeting",
-          "target_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-          "target_name": "Public Hearing on ULURP Application and Executive Committee Meeting",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
-          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
-          "board_href": "/community-boards/brooklyn-cb-14/",
-          "institution_refs": {
-            "board_ref": "community-board:brooklyn-cb-14"
-          },
-          "source_url": "https://cb14brooklyn.com/meetings/",
-          "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cb14brooklyn.com/meetings/",
-            "observed_at": "2026-09-23T05:09:59.711Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 347631,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-          },
-          "source_entry_evidence": null,
-          "provenance": {
-            "source_url": "https://cb14brooklyn.com/meetings/",
-            "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-            "observed_receipt": {
-              "schema": "cityscroll.community_board_source_receipt.v1",
-              "source_url": "https://cb14brooklyn.com/meetings/",
-              "observed_at": "2026-09-23T05:09:59.711Z",
-              "status": "ok",
-              "fetch_status": "200",
-              "content_type": "text/html; charset=UTF-8",
-              "content_length": 347631,
-              "parser": "html_pdf_v1",
-              "reason": null,
-              "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-            },
-            "format": "html"
-          },
-          "join": {
-            "matched": true,
-            "method": "exact_board_date_publisher_identifier",
-            "board_id": "brooklyn-cb-14",
-            "event_date": "2026-09-09",
-            "publisher_identifier": "HTTPS://CB14BROOKLYN.COM/MEETING/PUBLIC-HEARING-ON-ULURP-APPLICATION-AND-EXECUTIVE-COMMITTEE-MEETING-SEPTEMBER-2026/",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
-          },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ],
-          "publication_basis": null,
-          "meeting_id": null
-        }
-      ],
-      "source_record": {
-        "source_system": "community_board",
-        "identifier": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "receipt": {
-          "schema": "cityscroll.community_board_source_receipt.v1",
-          "source_url": "https://cb14brooklyn.com/meetings/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "status": "ok",
-          "fetch_status": "200",
-          "content_type": "text/html; charset=UTF-8",
-          "content_length": 347631,
-          "parser": "html_pdf_v1",
-          "reason": null,
-          "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-        },
-        "board_id": "brooklyn-cb-14",
-        "role": "upcoming_meetings"
-      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -202717,7 +202927,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -203889,7 +204100,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -204171,7 +204383,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -204446,7 +204659,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -204721,7 +204935,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -205267,7 +205482,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -206681,7 +206897,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -207498,7 +207715,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -208051,7 +208269,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -208326,7 +208545,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -208601,7 +208821,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -208876,7 +209097,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -211784,7 +212006,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -212337,7 +212560,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -212612,7 +212836,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -212887,7 +213112,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -213162,7 +213388,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -214063,7 +214290,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -214338,7 +214566,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -215704,7 +215933,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -216250,7 +216480,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -216803,7 +217034,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -217078,7 +217310,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -217353,7 +217586,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -217628,7 +217862,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -219668,7 +219903,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -220485,7 +220721,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -221038,7 +221275,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -221320,7 +221558,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -221595,7 +221834,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -221870,7 +222110,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -222145,7 +222386,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -224187,7 +224429,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -225004,7 +225247,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -225557,7 +225801,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -225832,7 +226077,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -226107,7 +226353,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -226653,7 +226900,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -228134,7 +228382,9 @@
       "wall_time": "2026-12-17T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -229191,7 +229441,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -230008,7 +230259,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -230899,7 +231151,9 @@
       "wall_time": "2026-12-03T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -231046,7 +231300,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -231321,7 +231576,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -231596,7 +231852,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -232153,7 +232410,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -233499,7 +233757,9 @@
       "wall_time": "2026-11-19T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -235023,7 +235283,8 @@
       "venue": {
         "name": "via Video Conference, 1220 Fifth Avenue, New York, NY 10029",
         "address": "via Video Conference, 1220 Fifth Avenue, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -236250,7 +236511,9 @@
       "wall_time": "2026-11-12T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -236668,7 +236931,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -237205,7 +237469,9 @@
       "wall_time": "2026-11-10T12:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -237328,7 +237594,9 @@
       "wall_time": "2026-11-10T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Zoning and Franchises",
@@ -238044,7 +238312,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -238319,7 +238588,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -239488,7 +239758,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -240331,7 +240602,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -240606,7 +240878,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -242059,7 +242332,9 @@
       "wall_time": "2026-10-22T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -242747,7 +243022,9 @@
       "wall_time": "2026-10-21T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -242882,7 +243159,9 @@
       "wall_time": "2026-10-21T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Public Safety",
@@ -244700,7 +244979,9 @@
       "wall_time": "2026-10-20T12:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Environmental Protection and Waterfronts",
@@ -244926,7 +245207,9 @@
       "wall_time": "2026-10-20T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Zoning and Franchises",
@@ -245061,7 +245344,9 @@
       "wall_time": "2026-10-20T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
@@ -245846,7 +246131,9 @@
       "wall_time": "2026-10-19T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Cultural Affairs, Libraries and International Relations",
@@ -246011,7 +246298,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -247695,7 +247983,9 @@
       "wall_time": "2026-10-15T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Higher Education",
@@ -247847,7 +248137,9 @@
       "wall_time": "2026-10-15T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Education",
@@ -247999,7 +248291,9 @@
       "wall_time": "2026-10-15T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Workforce Development",
@@ -249325,7 +249619,9 @@
       "wall_time": "2026-10-14T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Health",
@@ -254488,7 +254784,9 @@
       "wall_time": "2026-10-08T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -255203,7 +255501,8 @@
       "venue": {
         "name": "Manhattan Community Board 10",
         "address": "215 West 125th Street, 4th Fl., New York, NY, 10027",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -255535,7 +255834,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -255941,7 +256241,9 @@
       "wall_time": "2026-10-07T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -257046,7 +257348,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": null,
       "committee": null,
@@ -257321,7 +257624,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -257583,7 +257887,9 @@
       "wall_time": "2026-10-06T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Zoning and Franchises",
@@ -257718,7 +258024,9 @@
       "wall_time": "2026-10-06T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Fire and Emergency Management",
@@ -257870,7 +258178,9 @@
       "wall_time": "2026-10-06T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Hospitals",
@@ -259448,7 +259758,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -260792,7 +261103,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St Apt 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -261804,7 +262116,9 @@
       "wall_time": "2026-10-01T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -263401,7 +263715,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -263663,7 +263978,9 @@
       "wall_time": "2026-09-30T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Economic Development",
@@ -263815,7 +264132,9 @@
       "wall_time": "2026-09-30T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Small Business",
@@ -263967,7 +264286,9 @@
       "wall_time": "2026-09-30T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Environmental Protection and Waterfronts",
@@ -264159,7 +264480,9 @@
       "wall_time": "2026-09-30T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Technology",
@@ -264901,7 +265224,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Transportation and Infrastructure",
@@ -265376,7 +265701,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Consumer and Worker Protection",
@@ -265851,7 +266178,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Fire and Emergency Management",
@@ -265992,7 +266321,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Women and Gender Equity",
@@ -266150,7 +266481,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Public Safety",
@@ -266625,7 +266958,9 @@
       "wall_time": "2026-09-30T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Parks and Recreation",
@@ -267965,7 +268300,8 @@
       "venue": {
         "name": null,
         "address": "Manhattan Community Board 7, 250 W 87th St # 2, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -269283,7 +269619,9 @@
       "wall_time": "2026-09-29T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Environmental Protection and Waterfronts",
@@ -269458,7 +269796,9 @@
       "wall_time": "2026-09-29T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Higher Education",
@@ -269599,7 +269939,9 @@
       "wall_time": "2026-09-29T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Early Childhood Education",
@@ -270849,7 +271191,8 @@
       "wall_time": "2026-09-28T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "The New York Public Library at 515 Malcolm X Boulevard, New York, NY 10037 (135th Street and Malcolm X Boulevard)"
+        "address": "The New York Public Library at 515 Malcolm X Boulevard, New York, NY 10037 (135th Street and Malcolm X Boulevard)",
+        "mode": "in-person"
       },
       "committee": {
         "name": "Committee on Cultural Affairs, Libraries and International Relations",
@@ -273293,7 +273636,9 @@
       "wall_time": "2026-09-24T13:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "City Council",
@@ -275272,7 +275617,7 @@
       "venue": {
         "name": null,
         "address": "Community Board 3 Office - 59 East 4th Street",
-        "mode": "not-stated"
+        "mode": "in-person"
       },
       "participation": {
         "links": [],
@@ -275566,7 +275911,7 @@
       "venue": {
         "name": null,
         "address": "Community Board 3 Office - 59 East 4th Street",
-        "mode": "not-stated"
+        "mode": "in-person"
       },
       "participation": {
         "links": [],
@@ -276386,7 +276731,9 @@
       "wall_time": "2026-09-23T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -276521,7 +276868,9 @@
       "wall_time": "2026-09-23T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Mental Health and Substance Use",
@@ -276713,7 +277062,9 @@
       "wall_time": "2026-09-23T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Hospitals",
@@ -276905,7 +277256,9 @@
       "wall_time": "2026-09-23T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Women and Gender Equity",
@@ -277739,7 +278092,9 @@
       "wall_time": "2026-09-23T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Zoning and Franchises",
@@ -277874,7 +278229,9 @@
       "wall_time": "2026-09-23T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Criminal Justice",
@@ -278066,7 +278423,9 @@
       "wall_time": "2026-09-23T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Contracts",
@@ -279399,7 +279758,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -281924,7 +282284,9 @@
       "wall_time": "2026-09-22T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on General Welfare",
@@ -282133,7 +282495,9 @@
       "wall_time": "2026-09-22T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Education",
@@ -282274,7 +282638,9 @@
       "wall_time": "2026-09-22T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Public Housing",
@@ -282415,7 +282781,9 @@
       "wall_time": "2026-09-22T11:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Committee Room - City Hall"
+        "address": "Committee Room - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Zoning and Franchises",
@@ -282660,7 +283028,9 @@
       "wall_time": "2026-09-22T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Governmental Operations, State & Federal Legislation",
@@ -282869,7 +283239,9 @@
       "wall_time": "2026-09-22T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Civil Service and Labor",
@@ -283010,7 +283382,9 @@
       "wall_time": "2026-09-22T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Immigration",
@@ -285649,11 +286023,7 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": {
-        "name": null,
-        "address": "October 20, 2026",
-        "mode": "not-stated"
-      },
+      "venue": null,
       "participation": {
         "links": [],
         "remote_join_url": null,
@@ -285665,7 +286035,7 @@
       "agency": null,
       "board_name": "Queens Community Board 1",
       "description": null,
-      "search_text": "Full Board / Public Hearing Meetings October 20, 2026 Full Board / Public Hearing Meetings upcoming_meetings Community Board Meetings Queens Community Board 1 October 20, 2026 Queens Q01",
+      "search_text": "Full Board / Public Hearing Meetings October 20, 2026 Full Board / Public Hearing Meetings upcoming_meetings Community Board Meetings Queens Community Board 1 Queens Q01",
       "affected_area": {
         "scope": "local",
         "boroughs": [
@@ -285946,7 +286316,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -288176,7 +288547,9 @@
       "wall_time": "2026-09-18T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Veterans",
@@ -288334,7 +288707,9 @@
       "wall_time": "2026-09-18T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Mental Health and Substance Use",
@@ -288492,7 +288867,9 @@
       "wall_time": "2026-09-18T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Aging",
@@ -288882,7 +289259,9 @@
       "wall_time": "2026-09-18T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Disabilities",
@@ -289272,7 +289651,9 @@
       "wall_time": "2026-09-18T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Finance",
@@ -290476,7 +290857,9 @@
       "wall_time": "2026-09-17T11:30:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Land Use",
@@ -291069,7 +291452,9 @@
       "wall_time": "2026-09-17T11:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
@@ -292386,7 +292771,8 @@
       "venue": {
         "name": null,
         "address": "Queens Borough Hall, 120-55 Queens Blvd, Kew Gardens, NY 11424, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -294334,7 +294720,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "Council Chambers - City Hall"
+        "address": "Council Chambers - City Hall",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Public Safety",
@@ -294475,7 +294863,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Economic Development",
@@ -294627,7 +295017,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Small Business",
@@ -294779,7 +295171,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Subcommittee on Early Childhood Education",
@@ -294920,7 +295314,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 2",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Children and Youth",
@@ -295061,7 +295457,9 @@
       "wall_time": "2026-09-16T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+        "address": "250 Broadway - 8th Floor - Hearing Room 3",
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "committee": {
         "name": "Committee on Small Business",
@@ -298061,7 +298459,7 @@
       "venue": {
         "name": null,
         "address": "Essex Street Market Kitchen - 88 Essex Street",
-        "mode": "not-stated"
+        "mode": "in-person"
       },
       "participation": {
         "links": [],
@@ -298633,7 +299031,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -302000,7 +302399,8 @@
       "venue": {
         "name": "via Video Conference, 2017 First Avenue, New York, NY 10029",
         "address": "via Video Conference, 2017 First Avenue, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -304210,7 +304610,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -304492,7 +304893,8 @@
       "venue": {
         "name": null,
         "address": "250 W 87th St, New York, NY 10024, USA",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [],
@@ -311584,7 +311986,8 @@
       "venue": {
         "name": "Northwell Greenwich Village Hospital, 6th Floor Conference Room",
         "address": "200 West 13th Street, New York, NY, 10011",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -314098,7 +314501,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -318726,6 +319130,298 @@
     {
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+        }
+      ],
+      "publisher_identifier": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+      "event_date": "2026-09-09",
+      "event_end": "2026-09-23T20:30:00-04:00",
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-09-23T18:30:00-04:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "observed_at": "2026-09-23T05:09:59.711Z",
+        "raw_date": "2026-09-23",
+        "raw_time": "18:30:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": "Brooklyn CB14 District Office",
+        "address": "810 East 16th Street, Brooklyn, NY, 11230",
+        "mode": "in-person"
+      },
+      "participation": {
+        "links": [
+          {
+            "label": "Meeting information",
+            "url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+          }
+        ],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [
+          "718-859-6357"
+        ],
+        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+      },
+      "committee": {
+        "name": "Executive Committee",
+        "href": null
+      },
+      "agency": null,
+      "board_name": "Brooklyn Community Board 14",
+      "description": "A public hearing will be held on the ULURP application for 1584 Flatbush Avenue. The Executive Committee will then review CB14 meeting practices and conduct the District Manager’s performance review.",
+      "search_text": "Public Hearing on ULURP Application and Executive Committee Meeting A public hearing will be held on the ULURP application for 1584 Flatbush Avenue. The Executive Committee will then review CB14 meeting practices and conduct the District Manager’s performance review. 810 East 16th Street, Brooklyn, NY, 11230 Public Hearing on ULURP Application and Executive Committee Meeting A public hearing will be held on the ULURP application for 1584 Flatbush Avenue. The Executive Committee will then review CB14 meeting practices and conduct the District Manager’s performance review. upcoming_meetings Community Board Meetings Executive Committee Brooklyn Community Board 14 Brooklyn CB14 District Office 810 East 16th Street, Brooklyn, NY, 11230 Brooklyn K14",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_boards": [
+          "brooklyn-cb-14"
+        ],
+        "community_districts": [
+          "K14"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "source_system": "community_board",
+      "meeting_origin": "community_board_source_observed",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://cb14brooklyn.com/meetings/",
+        "observed_at": "2026-09-23T05:09:59.711Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 347631,
+        "parser": "html_pdf_v1",
+        "reason": null,
+        "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:brooklyn-cb-14"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+      },
+      "request_id": null,
+      "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "board_id": "brooklyn-cb-14",
+      "record_kind": "event",
+      "record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "record_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "date": "2026-09-09",
+      "start_at": "2026-09-23T18:30:00-04:00",
+      "end_at": "2026-09-23T20:30:00-04:00",
+      "category": "upcoming_meetings",
+      "format": "html",
+      "publisher_identifiers": [
+        "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+      ],
+      "source_entry_evidence": null,
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://cb14brooklyn.com/meetings/",
+        "observed_at": "2026-09-23T05:09:59.711Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 347631,
+        "parser": "html_pdf_v1",
+        "reason": null,
+        "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+      },
+      "short_title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+      "start_date": "2026-09-23T05:09:59.711Z",
+      "collection_visibility": "visible",
+      "timing_status": "current",
+      "type_of_notice_description": "upcoming_meetings",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "brooklyn-cb-14",
+        "meeting_date": "2026-09-23",
+        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "source_index_url": "https://cb14brooklyn.com/meetings/",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb14brooklyn.com/meetings/",
+            "observed_at": "2026-09-23T05:09:59.711Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 347631,
+            "parser": "html_pdf_v1",
+            "reason": null,
+            "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+          },
+          "adapter": "html_pdf_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "source_index_url": "https://cb14brooklyn.com/meetings/",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://cb14brooklyn.com/meetings/",
+          "observed_at": "2026-09-23T05:09:59.711Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html; charset=UTF-8",
+          "content_length": 347631,
+          "parser": "html_pdf_v1",
+          "reason": null,
+          "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+        },
+        "adapter": "html_pdf_v1"
+      },
+      "entity_refs_all": [
+        "community-board:brooklyn-cb-14",
+        "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:brooklyn-cb-14",
+          "to": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "target_name": "Public Hearing on ULURP Application and Executive Committee Meeting",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+          "board_href": "/community-boards/brooklyn-cb-14/",
+          "institution_refs": {
+            "board_ref": "community-board:brooklyn-cb-14"
+          },
+          "source_url": "https://cb14brooklyn.com/meetings/",
+          "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb14brooklyn.com/meetings/",
+            "observed_at": "2026-09-23T05:09:59.711Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 347631,
+            "parser": "html_pdf_v1",
+            "reason": null,
+            "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+          },
+          "source_entry_evidence": null,
+          "provenance": {
+            "source_url": "https://cb14brooklyn.com/meetings/",
+            "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://cb14brooklyn.com/meetings/",
+              "observed_at": "2026-09-23T05:09:59.711Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 347631,
+              "parser": "html_pdf_v1",
+              "reason": null,
+              "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+            },
+            "format": "html"
+          },
+          "join": {
+            "matched": true,
+            "method": "exact_board_date_publisher_identifier",
+            "board_id": "brooklyn-cb-14",
+            "event_date": "2026-09-09",
+            "publisher_identifier": "HTTPS://CB14BROOKLYN.COM/MEETING/PUBLIC-HEARING-ON-ULURP-APPLICATION-AND-EXECUTIVE-COMMITTEE-MEETING-SEPTEMBER-2026/",
+            "evidence": [
+              "exact_board_identity",
+              "exact_date",
+              "publisher_identifier"
+            ]
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_publisher_identifier",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "verified_source_join"
+          ],
+          "publication_basis": null,
+          "meeting_id": null
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://cb14brooklyn.com/meetings/",
+          "observed_at": "2026-09-23T05:09:59.711Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html; charset=UTF-8",
+          "content_length": 347631,
+          "parser": "html_pdf_v1",
+          "reason": null,
+          "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+        },
+        "board_id": "brooklyn-cb-14",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-09-23T05:09:59.711Z"
+      }
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
       "meeting_id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb17/event/youth-education-committee-meeting-6/2026-09-09/",
       "source_keys": [
         {
@@ -319045,7 +319741,8 @@
       "venue": {
         "name": "Northwell Greenwich Village Hospital, 6th Floor Conference Room",
         "address": "200 West 13th Street, New York, NY, 10011",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -320511,7 +321208,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -322484,7 +323182,8 @@
       "venue": {
         "name": "Northwell Greenwich Village Hospital, 6th Floor Conference Room",
         "address": "200 West 13th Street, New York, NY, 10011",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -324666,7 +325365,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -329223,7 +329923,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -331599,7 +332300,8 @@
       "venue": {
         "name": "1664 Park Avenue, New York, NY 10035, via Video Conference",
         "address": "1664 Park Avenue, New York, NY 10035, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -331885,7 +332587,8 @@
       "venue": {
         "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
         "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -333988,7 +334691,8 @@
       "venue": {
         "name": "7 East 116th Street, New York, NY 10029, via Video Conference",
         "address": "7 East 116th Street, New York, NY 10029, via Video Conference",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -334274,7 +334978,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -344338,7 +345043,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -346628,7 +347334,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -347449,7 +348156,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -354141,7 +354849,8 @@
       "venue": {
         "name": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
         "address": "via Video Conference, 1664 Park Avenue, New York, NY 10035",
-        "mode": "in-person"
+        "mode": "not-stated",
+        "attendance_conflict": true
       },
       "participation": {
         "links": [
@@ -368844,295 +369553,6 @@
       "same_proceeding": null,
       "collection_visibility": "visible",
       "collection_role": "representative",
-      "minutes_freshness": {
-        "status": "not_published",
-        "latest_date": null,
-        "checked_at": "2026-09-23T05:09:59.711Z"
-      }
-    },
-    {
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "source_keys": [
-        {
-          "source_system": "community_board",
-          "key_type": "publisher_event_id",
-          "value": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-        }
-      ],
-      "publisher_identifier": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "title": "Public Hearing on ULURP Application and Executive Committee Meeting",
-      "event_date": "2026-09-09",
-      "event_end": "2026-09-23T20:30:00-04:00",
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-09-23T18:30:00-04:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "observed_at": "2026-09-23T05:09:59.711Z",
-        "raw_date": "2026-09-23",
-        "raw_time": "18:30:00",
-        "status": "resolved"
-      },
-      "meeting_family": "community_board_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": {
-        "name": "Brooklyn CB14 District Office",
-        "address": "810 East 16th Street, Brooklyn, NY, 11230",
-        "mode": "in-person"
-      },
-      "participation": {
-        "links": [
-          {
-            "label": "Meeting information",
-            "url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-          }
-        ],
-        "remote_join_url": null,
-        "emails": [],
-        "phones": [
-          "718-859-6357"
-        ],
-        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-      },
-      "committee": null,
-      "agency": null,
-      "board_name": "Brooklyn Community Board 14",
-      "description": "A public hearing will be held on the ULURP application for 1584 Flatbush Avenue. The Executive Committee will then review CB14 meeting practices and conduct the District Manager’s performance review.",
-      "search_text": "Public Hearing on ULURP Application and Executive Committee Meeting The committee will review summer presentations and report on the Department of City Planning’s South of Prospect Neighborhood Plan Kick-Off Event. The meeting will also include a strategy session on the Neighborhood Plan for all CB14 committees. \\n 810 East 16th Street, Brooklyn, NY, 11230 Brooklyn CB14 District Office Public Hearing on ULURP Application and Executive Committee Meeting The committee will review summer presentations and report on the Department of City Planning’s South of Prospect Neighborhood Plan Kick-Off Event. The meeting will also include a strategy session on the Neighborhood Plan for all CB14 committees. \\n upcoming_meetings Community Board Meetings Brooklyn Community Board 14 Brooklyn CB14 District Office 810 East 16th Street, Brooklyn, NY, 11230 Brooklyn K14",
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Brooklyn"
-        ],
-        "community_boards": [
-          "brooklyn-cb-14"
-        ],
-        "community_districts": [
-          "K14"
-        ],
-        "neighborhoods": [],
-        "addresses": []
-      },
-      "meeting_documents": [],
-      "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "source_system": "community_board",
-      "meeting_origin": "community_board_source_observed",
-      "source_receipt": {
-        "schema": "cityscroll.community_board_source_receipt.v1",
-        "source_url": "https://cb14brooklyn.com/meetings/",
-        "observed_at": "2026-09-23T05:09:59.711Z",
-        "status": "ok",
-        "fetch_status": "200",
-        "content_type": "text/html; charset=UTF-8",
-        "content_length": 347631,
-        "parser": "html_pdf_v1",
-        "reason": null,
-        "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-      },
-      "join_status": "unknown",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": "community-board:brooklyn-cb-14"
-      },
-      "compatibility": {
-        "legacy_notice_href": null,
-        "legacy_fragment_href": null,
-        "publisher_href": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-      },
-      "request_id": null,
-      "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "board_id": "brooklyn-cb-14",
-      "record_kind": "event",
-      "record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "record_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-      "date": "2026-09-09",
-      "start_at": "2026-09-23T18:30:00-04:00",
-      "end_at": "2026-09-23T20:30:00-04:00",
-      "category": "upcoming_meetings",
-      "format": "html",
-      "publisher_identifiers": [
-        "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-      ],
-      "source_entry_evidence": null,
-      "source_role": "upcoming_meetings",
-      "observed_receipt": {
-        "schema": "cityscroll.community_board_source_receipt.v1",
-        "source_url": "https://cb14brooklyn.com/meetings/",
-        "observed_at": "2026-09-23T05:09:59.711Z",
-        "status": "ok",
-        "fetch_status": "200",
-        "content_type": "text/html; charset=UTF-8",
-        "content_length": 347631,
-        "parser": "html_pdf_v1",
-        "reason": null,
-        "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-      },
-      "short_title": "Public Hearing on ULURP Application and Executive Committee Meeting",
-      "start_date": "2026-09-23T05:09:59.711Z",
-      "collection_visibility": "visible",
-      "timing_status": "current",
-      "type_of_notice_description": "upcoming_meetings",
-      "section_name": "Community Board Meetings",
-      "meeting_join": {
-        "schema": "cityscroll.community_board_source_join.v1",
-        "status": "unknown",
-        "official": false,
-        "reason": "no_city_record_notice",
-        "board_id": "brooklyn-cb-14",
-        "meeting_date": "2026-09-23",
-        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "join": {
-          "matched": false,
-          "method": "exact_board_date_publisher_identifier",
-          "reason": "no_city_record_notice"
-        },
-        "provenance": {
-          "schema": "cityscroll.community_board_meeting_provenance.v1",
-          "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-          "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-          "source_index_url": "https://cb14brooklyn.com/meetings/",
-          "observed_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cb14brooklyn.com/meetings/",
-            "observed_at": "2026-09-23T05:09:59.711Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 347631,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-          },
-          "adapter": "html_pdf_v1"
-        }
-      },
-      "source_provenance": {
-        "schema": "cityscroll.community_board_meeting_provenance.v1",
-        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "source_index_url": "https://cb14brooklyn.com/meetings/",
-        "observed_receipt": {
-          "schema": "cityscroll.community_board_source_receipt.v1",
-          "source_url": "https://cb14brooklyn.com/meetings/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "status": "ok",
-          "fetch_status": "200",
-          "content_type": "text/html; charset=UTF-8",
-          "content_length": 347631,
-          "parser": "html_pdf_v1",
-          "reason": null,
-          "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-        },
-        "adapter": "html_pdf_v1"
-      },
-      "entity_refs_all": [
-        "community-board:brooklyn-cb-14",
-        "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
-      ],
-      "institution_edges": [
-        {
-          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
-          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
-          "edge_type": "hosts_meeting",
-          "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
-          "from": "community-board:brooklyn-cb-14",
-          "to": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-          "target_kind": "meeting",
-          "target_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-          "target_name": "Public Hearing on ULURP Application and Executive Committee Meeting",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
-          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
-          "board_href": "/community-boards/brooklyn-cb-14/",
-          "institution_refs": {
-            "board_ref": "community-board:brooklyn-cb-14"
-          },
-          "source_url": "https://cb14brooklyn.com/meetings/",
-          "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cb14brooklyn.com/meetings/",
-            "observed_at": "2026-09-23T05:09:59.711Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 347631,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-          },
-          "source_entry_evidence": null,
-          "provenance": {
-            "source_url": "https://cb14brooklyn.com/meetings/",
-            "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-            "observed_receipt": {
-              "schema": "cityscroll.community_board_source_receipt.v1",
-              "source_url": "https://cb14brooklyn.com/meetings/",
-              "observed_at": "2026-09-23T05:09:59.711Z",
-              "status": "ok",
-              "fetch_status": "200",
-              "content_type": "text/html; charset=UTF-8",
-              "content_length": 347631,
-              "parser": "html_pdf_v1",
-              "reason": null,
-              "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-            },
-            "format": "html"
-          },
-          "join": {
-            "matched": true,
-            "method": "exact_board_date_publisher_identifier",
-            "board_id": "brooklyn-cb-14",
-            "event_date": "2026-09-09",
-            "publisher_identifier": "HTTPS://CB14BROOKLYN.COM/MEETING/PUBLIC-HEARING-ON-ULURP-APPLICATION-AND-EXECUTIVE-COMMITTEE-MEETING-SEPTEMBER-2026/",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
-          },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ],
-          "publication_basis": null,
-          "meeting_id": null
-        }
-      ],
-      "source_record": {
-        "source_system": "community_board",
-        "identifier": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
-        "receipt": {
-          "schema": "cityscroll.community_board_source_receipt.v1",
-          "source_url": "https://cb14brooklyn.com/meetings/",
-          "observed_at": "2026-09-23T05:09:59.711Z",
-          "status": "ok",
-          "fetch_status": "200",
-          "content_type": "text/html; charset=UTF-8",
-          "content_length": 347631,
-          "parser": "html_pdf_v1",
-          "reason": null,
-          "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
-        },
-        "board_id": "brooklyn-cb-14",
-        "role": "upcoming_meetings"
-      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,

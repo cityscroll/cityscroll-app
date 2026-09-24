@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-09-15T10:18:58.000Z",
+  "generated_at": "2026-09-23T05:09:59.711Z",
   "contract_count": 67,
   "observations": [
     {
@@ -980,10 +980,10 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-14T14:24:52.445Z",
+        "retrieved_at": "2026-09-21T14:33:19.328Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "doing-business-entities:2026-09-14T14:24:52.445Z"
+        "run_id": "doing-business-entities:2026-09-21T14:33:19.328Z"
       },
       "expected_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
       "expected_lag_tolerance_days": 400,
@@ -1007,14 +1007,14 @@
       },
       "publisher_vintage": null,
       "publisher_vintage_basis": null,
-      "publisher_last_updated_at": "2026-09-15T10:18:58.000Z",
+      "publisher_last_updated_at": "2026-09-16T10:06:14.000Z",
       "publisher_last_update_basis": "geography_source_receipt",
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-15T10:18:58.000Z",
+        "retrieved_at": "2026-09-16T10:06:14.000Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "sanitation_district:2026-09-15"
+        "run_id": "sanitation_district:2026-09-16"
       },
       "expected_cadence": "Publisher-managed. Socrata metadata declares a monthly automated update; sanitation-district geometry changes only when a district is redrawn",
       "expected_lag_tolerance_days": 730,
@@ -1331,7 +1331,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-09-07T18:12:14.249Z",
+        "retrieved_at": "2026-09-23T05:09:59.711Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/community_board_hearing_context_latest.json"

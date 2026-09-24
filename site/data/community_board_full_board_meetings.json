@@ -2080,7 +2080,8 @@
         "venue": {
           "name": "via Video Conference, 2017 First Avenue, New York, NY 10029",
           "address": "via Video Conference, 2017 First Avenue, New York, NY 10029",
-          "mode": "in-person"
+          "mode": "not-stated",
+          "attendance_conflict": true
         },
         "source": {
           "source_system": "community_board",
@@ -2180,11 +2181,7 @@
         "board_name": "Queens Community Board 1",
         "convening_body": "full_board",
         "convening_body_basis": "publisher_meeting_title",
-        "venue": {
-          "name": null,
-          "address": "October 20, 2026",
-          "mode": "not-stated"
-        },
+        "venue": null,
         "source": {
           "source_system": "community_board",
           "publisher": "Queens Community Board 1",
@@ -2420,7 +2417,8 @@
         "venue": {
           "name": null,
           "address": "Queens Borough Hall, 120-55 Queens Blvd, Kew Gardens, NY 11424, USA",
-          "mode": "in-person"
+          "mode": "not-stated",
+          "attendance_conflict": true
         },
         "source": {
           "source_system": "community_board",
