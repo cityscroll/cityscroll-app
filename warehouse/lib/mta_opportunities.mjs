@@ -1,5 +1,11 @@
 import { createHash } from "node:crypto";
 
+import {
+  openingDateFromResolution,
+  resolveMtaOpportunityDeadlines,
+  responseDueDateFromResolution,
+} from "../../site/typed_source_deadline.mjs";
+
 export const MTA_OPPORTUNITY_ADAPTER_SCHEMA = "cityscroll.mta_opportunity_adapter.v1";
 export const MTA_PARENT_INSTITUTION_ID = "metropolitan-transportation-authority";
 
@@ -20,6 +26,11 @@ function hash(value) {
 
 function normalizedRow(fixture) {
   const row = fixture?.source_row || {};
+  const typedDeadlines = resolveMtaOpportunityDeadlines(fixture);
+  // Response deadlines come only from an explicit sourced due field. Opening
+  // and document-availability dates stay on their own fields.
+  const dueDate = responseDueDateFromResolution(typedDeadlines);
+  const openingDate = openingDateFromResolution(typedDeadlines) || text(row.opening_date);
   return {
     source_system: fixture.source_system,
     source_dataset: fixture.source_dataset,
@@ -38,8 +49,9 @@ function normalizedRow(fixture) {
     amount: row.estimated_value || row.bid_amount || null,
     currency: row.currency || "USD",
     issue_date: row.issue_date || row.document_availability_date || null,
-    due_date: row.due_date || row.opening_date || null,
-    opening_date: row.opening_date || null,
+    due_date: dueDate,
+    opening_date: openingDate,
+    typed_deadlines: typedDeadlines,
     category: row.category || null,
     ad_type: row.ad_type || null,
     location: row.location || null,
