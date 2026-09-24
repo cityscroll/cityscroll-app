@@ -14574,6 +14574,271 @@
               "publication_basis": null
             }
           ]
+        },
+        {
+          "object_type": "meeting",
+          "schema": "cityscroll.meeting_object.v1",
+          "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "source_keys": [
+            {
+              "source_system": "community_board",
+              "key_type": "publisher_event_id",
+              "value": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+            }
+          ],
+          "publisher_identifier": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+          "event_date": "2026-09-09",
+          "event_end": "2026-09-23T20:30:00-04:00",
+          "schedule": {
+            "schema": "cityscroll.meeting_schedule.v1",
+            "starts_at": "2026-09-23T18:30:00-04:00",
+            "timezone": "America/New_York",
+            "precision": "exact_time",
+            "basis": "publisher_field",
+            "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+            "observed_at": "2026-09-23T05:09:59.711Z",
+            "raw_date": "2026-09-23",
+            "raw_time": "18:30:00",
+            "status": "resolved"
+          },
+          "meeting_family": "community_board_meeting_v0",
+          "activity": null,
+          "attendance_mode": null,
+          "speaking_rights": "unknown",
+          "observer_access": null,
+          "access_steps": [],
+          "venue": {
+            "name": "Brooklyn CB14 District Office",
+            "address": "810 East 16th Street, Brooklyn, NY, 11230",
+            "mode": "in-person"
+          },
+          "participation": {
+            "links": [
+              {
+                "label": "Meeting information",
+                "url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+              }
+            ],
+            "remote_join_url": null,
+            "emails": [],
+            "phones": [
+              "718-859-6357"
+            ],
+            "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+          },
+          "committee": null,
+          "agency": null,
+          "board_name": "Brooklyn Community Board 14",
+          "description": "A public hearing will be held on the ULURP application for 1584 Flatbush Avenue. The Executive Committee will then review CB14 meeting practices and conduct the District Manager’s performance review.",
+          "search_text": "Public Hearing on ULURP Application and Executive Committee Meeting A public hearing will be held on the ULURP application for 1584 Flatbush Avenue. The Executive Committee will then review CB14 meeting practices and conduct the District Manager’s performance review. 810 East 16th Street, Brooklyn, NY, 11230",
+          "affected_area": {
+            "scope": "local",
+            "boroughs": [
+              "Brooklyn"
+            ],
+            "community_boards": [
+              "brooklyn-cb-14"
+            ],
+            "community_districts": [
+              "K14"
+            ],
+            "neighborhoods": [],
+            "addresses": []
+          },
+          "meeting_documents": [],
+          "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "source_system": "community_board",
+          "meeting_origin": "community_board_source_observed",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb14brooklyn.com/meetings/",
+            "observed_at": "2026-09-23T05:09:59.711Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 347631,
+            "parser": "html_pdf_v1",
+            "reason": null,
+            "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+          },
+          "join_status": "unknown",
+          "institution_refs": {
+            "agency_ref": null,
+            "board_ref": "community-board:brooklyn-cb-14"
+          },
+          "compatibility": {
+            "legacy_notice_href": null,
+            "legacy_fragment_href": null,
+            "publisher_href": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+          },
+          "request_id": null,
+          "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "board_id": "brooklyn-cb-14",
+          "record_kind": "event",
+          "record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "record_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "date": "2026-09-09",
+          "start_at": "2026-09-23T18:30:00-04:00",
+          "end_at": "2026-09-23T20:30:00-04:00",
+          "category": "upcoming_meetings",
+          "format": "html",
+          "publisher_identifiers": [
+            "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+          ],
+          "source_entry_evidence": null,
+          "source_role": "upcoming_meetings",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://cb14brooklyn.com/meetings/",
+            "observed_at": "2026-09-23T05:09:59.711Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 347631,
+            "parser": "html_pdf_v1",
+            "reason": null,
+            "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+          },
+          "short_title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+          "start_date": "2026-09-23T05:09:59.711Z",
+          "collection_visibility": "visible",
+          "timing_status": "current",
+          "type_of_notice_description": "upcoming_meetings",
+          "section_name": "Community Board Meetings",
+          "meeting_join": {
+            "schema": "cityscroll.community_board_source_join.v1",
+            "status": "unknown",
+            "official": false,
+            "reason": "no_city_record_notice",
+            "board_id": "brooklyn-cb-14",
+            "meeting_date": "2026-09-23",
+            "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+            "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+            "join": {
+              "matched": false,
+              "method": "exact_board_date_publisher_identifier",
+              "reason": "no_city_record_notice"
+            },
+            "provenance": {
+              "schema": "cityscroll.community_board_meeting_provenance.v1",
+              "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+              "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+              "source_index_url": "https://cb14brooklyn.com/meetings/",
+              "observed_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb14brooklyn.com/meetings/",
+                "observed_at": "2026-09-23T05:09:59.711Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 347631,
+                "parser": "html_pdf_v1",
+                "reason": null,
+                "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+              },
+              "adapter": "html_pdf_v1"
+            }
+          },
+          "source_provenance": {
+            "schema": "cityscroll.community_board_meeting_provenance.v1",
+            "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+            "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+            "source_index_url": "https://cb14brooklyn.com/meetings/",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://cb14brooklyn.com/meetings/",
+              "observed_at": "2026-09-23T05:09:59.711Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 347631,
+              "parser": "html_pdf_v1",
+              "reason": null,
+              "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+            },
+            "adapter": "html_pdf_v1"
+          },
+          "entity_refs_all": [
+            "community-board:brooklyn-cb-14",
+            "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+          ],
+          "institution_edges": [
+            {
+              "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+              "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+              "edge_type": "hosts_meeting",
+              "relation": "hosts_meeting",
+              "status": "promoted",
+              "promoted": true,
+              "reason": null,
+              "from": "community-board:brooklyn-cb-14",
+              "to": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+              "target_kind": "meeting",
+              "target_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+              "target_name": "Public Hearing on ULURP Application and Executive Committee Meeting",
+              "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+              "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+              "board_href": "/community-boards/brooklyn-cb-14/",
+              "institution_refs": {
+                "board_ref": "community-board:brooklyn-cb-14"
+              },
+              "source_url": "https://cb14brooklyn.com/meetings/",
+              "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+              "source_receipt": {
+                "schema": "cityscroll.community_board_source_receipt.v1",
+                "source_url": "https://cb14brooklyn.com/meetings/",
+                "observed_at": "2026-09-23T05:09:59.711Z",
+                "status": "ok",
+                "fetch_status": "200",
+                "content_type": "text/html; charset=UTF-8",
+                "content_length": 347631,
+                "parser": "html_pdf_v1",
+                "reason": null,
+                "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+              },
+              "source_entry_evidence": null,
+              "provenance": {
+                "source_url": "https://cb14brooklyn.com/meetings/",
+                "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+                "observed_receipt": {
+                  "schema": "cityscroll.community_board_source_receipt.v1",
+                  "source_url": "https://cb14brooklyn.com/meetings/",
+                  "observed_at": "2026-09-23T05:09:59.711Z",
+                  "status": "ok",
+                  "fetch_status": "200",
+                  "content_type": "text/html; charset=UTF-8",
+                  "content_length": 347631,
+                  "parser": "html_pdf_v1",
+                  "reason": null,
+                  "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+                },
+                "format": "html"
+              },
+              "join": {
+                "matched": true,
+                "method": "exact_board_date_publisher_identifier",
+                "board_id": "brooklyn-cb-14",
+                "event_date": "2026-09-09",
+                "publisher_identifier": "HTTPS://CB14BROOKLYN.COM/MEETING/PUBLIC-HEARING-ON-ULURP-APPLICATION-AND-EXECUTIVE-COMMITTEE-MEETING-SEPTEMBER-2026/",
+                "evidence": [
+                  "exact_board_identity",
+                  "exact_date",
+                  "publisher_identifier"
+                ]
+              },
+              "evidence": [
+                "exact_board_identity",
+                "exact_publisher_identifier",
+                "exact_meeting_date",
+                "retained_source_url",
+                "observed_receipt",
+                "verified_source_join"
+              ],
+              "publication_basis": null,
+              "meeting_id": null
+            }
+          ]
         }
       ]
     ],

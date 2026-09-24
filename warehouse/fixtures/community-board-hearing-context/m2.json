@@ -1,0 +1,56 @@
+{
+  "schema": "cityscroll.community_board_hearing_context_observation.v1",
+  "meeting_key": "m2",
+  "board_id": "brooklyn-cb-14",
+  "board_name": "Brooklyn Community Board 14",
+  "publisher": "Brooklyn Community Board 14",
+  "observed_at": "2026-09-23T05:09:59.711Z",
+  "hearing": {
+    "meeting_date": "2026-09-09",
+    "time_zone": "America/New_York",
+    "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+    "receipt": {
+      "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "fetch_status": "200",
+      "content_type": "text/html",
+      "content_length": 1223,
+      "content_sha256": "456a5e2c6e72c896a8303be7734fc472537f1886e224b7b821ad10d53a3ea182",
+      "observed_at": "2026-09-23T05:09:59.711Z",
+      "acquisition_mode": "retained_slim_page"
+    },
+    "segments": [
+      {
+        "order": 1,
+        "start_time": "18:30",
+        "kind": "public_hearing",
+        "title": "Public Hearing on 1584 Flatbush Avenue Rezoning",
+        "fiscal_year": null,
+        "budget_classes": [],
+        "detail": [
+          "ULURP No. C260315ZMK and N260316ZRK. A Zoning Map Amendment from C4-4A to C6-3 and a Zoning Text Amendment to Appendix F to map an MIH Area to facilitate a new 16-story plus cellar, 105,027 sq. ft. (9.95 FAR) mixed-use development including 9,544 sq. ft. of commercial use, 330 sq. ft. of community facility use, and 112 dwelling units (28 permanently income-restricted units pursuant to MIH Option 1) is being sought by 1584 Flatbush Avenue Partners LLC at 1584 Flatbush Avenue in the Flatbush neighborhood, Community District 14, Brooklyn. Representative: Richard Lobel, Esq., (212) 725-2727."
+        ]
+      },
+      {
+        "order": 2,
+        "start_time": "19:00",
+        "kind": "other",
+        "title": "Executive Committee Meeting",
+        "fiscal_year": null,
+        "budget_classes": [],
+        "detail": [
+          "CB14 Meeting Practices Review",
+          "Performance Review for District Manager",
+          "Other Business"
+        ]
+      }
+    ],
+    "participation": {
+      "speaking_registration_url": null,
+      "speaking_registration_heading": null,
+      "speaking_passages": [],
+      "written_testimony_passage": null,
+      "watch_urls": [],
+      "watch_heading": null
+    }
+  }
+}

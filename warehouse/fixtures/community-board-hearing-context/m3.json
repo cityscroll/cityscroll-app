@@ -1,0 +1,68 @@
+{
+  "schema": "cityscroll.community_board_hearing_context_observation.v1",
+  "meeting_key": "m3",
+  "board_id": "brooklyn-cb-14",
+  "board_name": "Brooklyn Community Board 14",
+  "publisher": "Brooklyn Community Board 14",
+  "observed_at": "2026-09-23T05:09:59.711Z",
+  "hearing": {
+    "meeting_date": "2026-09-23",
+    "time_zone": "America/New_York",
+    "source_url": "https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+    "receipt": {
+      "source_url": "https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+      "fetch_status": "200",
+      "content_type": "text/html",
+      "content_length": 455,
+      "content_sha256": "24ffd42ca1e113ef5d7e3825991e1c6359002212e0a19e54e2d108cfbb8a3e79",
+      "observed_at": "2026-09-23T05:09:59.711Z",
+      "acquisition_mode": "retained_slim_page"
+    },
+    "segments": [
+      {
+        "order": 1,
+        "start_time": null,
+        "kind": "other",
+        "title": "Report on Summer Presentations",
+        "fiscal_year": null,
+        "budget_classes": [],
+        "detail": []
+      },
+      {
+        "order": 2,
+        "start_time": null,
+        "kind": "other",
+        "title": "Report on Department of City Planning’s South of Prospect Neighborhood Plan Kick-Off Event",
+        "fiscal_year": null,
+        "budget_classes": [],
+        "detail": []
+      },
+      {
+        "order": 3,
+        "start_time": null,
+        "kind": "other",
+        "title": "Neighborhood Plan Strategy Session for all CB14 Committees",
+        "fiscal_year": null,
+        "budget_classes": [],
+        "detail": []
+      },
+      {
+        "order": 4,
+        "start_time": null,
+        "kind": "other",
+        "title": "Other Business",
+        "fiscal_year": null,
+        "budget_classes": [],
+        "detail": []
+      }
+    ],
+    "participation": {
+      "speaking_registration_url": null,
+      "speaking_registration_heading": null,
+      "speaking_passages": [],
+      "written_testimony_passage": null,
+      "watch_urls": [],
+      "watch_heading": null
+    }
+  }
+}

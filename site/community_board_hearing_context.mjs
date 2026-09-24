@@ -272,8 +272,11 @@ export function communityBoardHearingContextForBoard(artifact, bodyId, { budgetR
   if (!HEARING_CONTEXT_BODY_ID.test(board)) return null;
 
   const failed = artifact?.error || artifact?.unavailable_reason;
-  const entry = (Array.isArray(artifact?.boards) ? artifact.boards : [])
-    .find((row) => hearingContextClean(row?.board_id, 80) === board);
+  const entries = (Array.isArray(artifact?.boards) ? artifact.boards : [])
+    .filter((row) => hearingContextClean(row?.board_id, 80) === board);
+  // Prefer the budget-backed reading when several meetings share a board id so
+  // the constellation section keeps previous-cycle context on the same path.
+  const entry = entries.find((row) => row?.previous_cycle) || entries[0] || null;
   if (!entry && !failed) return null;
 
   const base = {

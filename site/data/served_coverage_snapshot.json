@@ -187,7 +187,7 @@
           "source_id": "city-record",
           "source_name": "City Record Online",
           "state": "measured",
-          "value": 791,
+          "value": 792,
           "evidence_vintage": "2026-09-09T06:52:08.255Z",
           "vintage_field": "sources.city_record.generated_at",
           "vintage_basis": "single"
@@ -215,7 +215,7 @@
           "source_id": "non-council-board-minutes",
           "source_name": "Community board and borough president minutes",
           "state": "measured",
-          "value": 450,
+          "value": 451,
           "evidence_vintage": "2026-09-23T05:09:59.711Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"

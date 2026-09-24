@@ -495,8 +495,8 @@ test("a board this reading does not cover carries no section, and a failure says
 });
 
 test("the retained observation is what the artifact was built from", () => {
-  const entry = FIXTURE_MANIFEST.boards.find((row) => row.board_id === BROOKLYN_CB14);
-  assert.ok(entry, "the manifest names this board's fixture");
+  const entry = FIXTURE_MANIFEST.boards.find((row) => row.meeting_key === "m1" || (row.board_id === BROOKLYN_CB14 && row.has_previous_cycle !== false && row.document_count > 0));
+  assert.ok(entry, "the manifest names this board's budget-backed fixture");
   assert.equal(entry.segment_count, OBSERVATION.hearing.segments.length);
   assert.equal(entry.document_count, OBSERVATION.previous_cycle.documents.length);
   assert.equal(entry.hearing_date, OBSERVATION.hearing.meeting_date);
@@ -524,6 +524,23 @@ test("the parsers read published structure, and refuse to guess", () => {
   assert.equal(agenda[0].start_time, "18:45");
   assert.equal(agenda[0].fiscal_year, 2028);
   assert.deepEqual(agenda[0].detail, ["A detail."]);
+
+  // Untimed top-level agenda-ol items use the same parser when no timed
+  // schedule-ul segments exist. Nested agenda-ol under a timed heading stays
+  // detail of that heading (covered above), not a second parser branch.
+  const untimed = parseHearingAgendaSegments(
+    "<h3>Agenda</h3>"
+    + '<ol class="wp-block-list agenda-ol">'
+    + "<li>First untimed item</li>"
+    + "<li>Second untimed item</li>"
+    + "<li>Third untimed item</li>"
+    + "<li>Other Business</li>"
+    + "</ol>",
+  );
+  assert.equal(untimed.length, 4);
+  assert.equal(untimed[0].start_time, null);
+  assert.equal(untimed[0].title, "First untimed item");
+  assert.equal(untimed[3].title, "Other Business");
 
   assert.equal(hearingParseClockTime("noon"), null);
   assert.equal(hearingParseClockTime("12:00 AM"), "00:00");

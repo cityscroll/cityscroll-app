@@ -25,7 +25,7 @@
     "source_urls_checked": 95,
     "event_details_checked": 94,
     "boards_indexed": 27,
-    "records_indexed": 450,
+    "records_indexed": 451,
     "minutes_documents_indexed": 4316,
     "minutes_documents_attached": 0,
     "minutes_documents_unlinked": 4316,
@@ -35,7 +35,7 @@
     "meeting_documents_attached": 88,
     "meeting_documents_unlinked": 4316,
     "minutes_documents_ambiguous": 0,
-    "institution_edges_materialized": 495,
+    "institution_edges_materialized": 505,
     "boards_in_inventory": 59,
     "source_roles_total": 118,
     "source_roles_indexed": 65,
@@ -38624,6 +38624,80 @@
       "committee_ref": "community-board-committee:manhattan-cb-06:transportation",
       "committee_id": "transportation",
       "committee_name": "Transportation Committee"
+    },
+    {
+      "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+      "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+      "edge_type": "hosts_meeting",
+      "relation": "hosts_meeting",
+      "status": "promoted",
+      "promoted": true,
+      "reason": null,
+      "from": "community-board:brooklyn-cb-14",
+      "to": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "target_kind": "meeting",
+      "target_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "target_name": "Public Hearing on ULURP Application and Executive Committee Meeting",
+      "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+      "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+      "board_href": "/community-boards/brooklyn-cb-14/",
+      "institution_refs": {
+        "board_ref": "community-board:brooklyn-cb-14"
+      },
+      "source_url": "https://cb14brooklyn.com/meetings/",
+      "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://cb14brooklyn.com/meetings/",
+        "observed_at": "2026-09-23T05:09:59.711Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 347631,
+        "parser": "html_pdf_v1",
+        "reason": null,
+        "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+      },
+      "source_entry_evidence": null,
+      "provenance": {
+        "source_url": "https://cb14brooklyn.com/meetings/",
+        "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://cb14brooklyn.com/meetings/",
+          "observed_at": "2026-09-23T05:09:59.711Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html; charset=UTF-8",
+          "content_length": 347631,
+          "parser": "html_pdf_v1",
+          "reason": null,
+          "content_sha256": "1220f2071b712d94e9877d80859bc1fa907a33e7280f794b8a7e29ec0c40406e"
+        },
+        "format": "html"
+      },
+      "join": {
+        "matched": true,
+        "method": "exact_board_date_publisher_identifier",
+        "board_id": "brooklyn-cb-14",
+        "event_date": "2026-09-09",
+        "publisher_identifier": "HTTPS://CB14BROOKLYN.COM/MEETING/PUBLIC-HEARING-ON-ULURP-APPLICATION-AND-EXECUTIVE-COMMITTEE-MEETING-SEPTEMBER-2026/",
+        "evidence": [
+          "exact_board_identity",
+          "exact_date",
+          "publisher_identifier"
+        ]
+      },
+      "evidence": [
+        "exact_board_identity",
+        "exact_publisher_identifier",
+        "exact_meeting_date",
+        "retained_source_url",
+        "observed_receipt",
+        "verified_source_join"
+      ],
+      "publication_basis": null,
+      "meeting_id": null
     }
   ],
   "receipts": [
@@ -48220,7 +48294,7 @@
     {
       "path": "community_board_meeting_index/shard-000.json",
       "kind": "source_records_by_board",
-      "bytes": 11431865,
+      "bytes": 11437203,
       "entry_count": 51
     },
     {
@@ -48232,14 +48306,14 @@
     {
       "path": "community_board_meeting_index/shard-002.json",
       "kind": "by_board",
-      "bytes": 6101024,
+      "bytes": 6114444,
       "entry_count": 27
     },
     {
       "path": "community_board_meeting_index/shard-003.json",
       "kind": "rows",
-      "bytes": 5605293,
-      "entry_count": 450
+      "bytes": 5617805,
+      "entry_count": 451
     }
   ]
 }

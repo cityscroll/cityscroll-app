@@ -31,14 +31,14 @@
     "board_dimension_slots": 649,
     "status_counts": {
       "already modeled": 66,
-      "already present in source but discarded": 29,
+      "already present in source but discarded": 30,
       "requires another official source": 369,
-      "not reliably available": 185
+      "not reliably available": 184
     },
     "grounded_slots_already_modeled": 66,
-    "source_present_but_discarded_slots": 29,
-    "unresolved_slots": 554,
-    "headline": "66 of 649 board-dimension slots are already modeled; 29 have explicit source signals that are not typed; 554 remain unresolved or require another official source."
+    "source_present_but_discarded_slots": 30,
+    "unresolved_slots": 553,
+    "headline": "66 of 649 board-dimension slots are already modeled; 30 have explicit source signals that are not typed; 553 remain unresolved or require another official source."
   },
   "dimension_summary": {
     "official_committee_directory": {
@@ -135,23 +135,23 @@
       "board_count": 59,
       "counts": {
         "already modeled": 0,
-        "already present in source but discarded": 7,
+        "already present in source but discarded": 8,
         "requires another official source": 0,
-        "not reliably available": 52
+        "not reliably available": 51
       }
     }
   },
   "meeting_measurements": {
-    "record_count": 450,
+    "record_count": 451,
     "boards_with_records": 27,
-    "records_explicitly_identifying_committee": 181,
-    "records_with_structured_committee_field": 54,
+    "records_explicitly_identifying_committee": 182,
+    "records_with_structured_committee_field": 55,
     "records_whose_title_exactly_matches_known_local_committee": 0,
     "full_board_records": 85,
-    "explicit_public_hearing_records": 9,
+    "explicit_public_hearing_records": 10,
     "joint_committee_records": 5,
-    "records_without_typed_institution_host": 450,
-    "committee_records_with_unresolved_host_body": 181,
+    "records_without_typed_institution_host": 451,
+    "committee_records_with_unresolved_host_body": 182,
     "known_local_committee_registry": {
       "path": "not present in Card 1; reviewed board-local registry is a later card deliverable",
       "known_committee_count": 0,
@@ -2995,7 +2995,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 2
+          "current_record_count": 3
         },
         "minutes": {
           "url": "https://cb14brooklyn.com/board-meeting-minutes/",
@@ -3019,7 +3019,7 @@
         "committee_identity_in_calendar_or_source_data": {
           "status": "already present in source but discarded",
           "basis": "meeting_title_explicit_committee_signal",
-          "evidence_count": 1,
+          "evidence_count": 2,
           "note": "The publisher title names a committee, but the current materialized row has no typed committee identity."
         },
         "board_roster": {
@@ -3049,7 +3049,7 @@
         "upcoming_meetings": {
           "status": "already modeled",
           "basis": "indexed_meeting_records",
-          "evidence_count": 2,
+          "evidence_count": 3,
           "note": null
         },
         "minutes": {
@@ -3071,24 +3071,25 @@
           "note": "Minutes metadata alone does not establish a recommendation, resolution, or its publisher identity."
         },
         "public_hearings": {
-          "status": "not reliably available",
-          "basis": "meeting_title_explicit_public_hearing_signal_not_observed",
-          "evidence_count": 0,
-          "note": "The current committed source data does not establish this fact."
+          "status": "already present in source but discarded",
+          "basis": "meeting_title_explicit_public_hearing_signal",
+          "evidence_count": 1,
+          "note": "The publisher title says public hearing, but the current row has no orthogonal typed proceeding field."
         }
       },
       "meeting_measurements": {
-        "record_count": 2,
-        "records_explicitly_identifying_committee": 1,
-        "records_with_structured_committee_field": 0,
+        "record_count": 3,
+        "records_explicitly_identifying_committee": 2,
+        "records_with_structured_committee_field": 1,
         "records_whose_title_exactly_matches_known_local_committee": 0,
         "full_board_records": 1,
-        "explicit_public_hearing_records": 0,
+        "explicit_public_hearing_records": 1,
         "joint_committee_records": 0,
-        "records_without_typed_institution_host": 2,
-        "committee_records_with_unresolved_host_body": 1,
+        "records_without_typed_institution_host": 3,
+        "committee_records_with_unresolved_host_body": 2,
         "explicit_committee_title_samples": [
-          "Housing and Land Use Committee Meeting"
+          "Housing and Land Use Committee Meeting",
+          "Public Hearing on ULURP Application and Executive Committee Meeting"
         ]
       }
     },
