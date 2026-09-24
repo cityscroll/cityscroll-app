@@ -600,6 +600,57 @@ function agendaItemsSection(record) {
   return `<section class="node-section civic-object-section meeting-section meeting-agenda-items" data-agenda-items="${record.agenda_items.length}"><h2>Cases on this day</h2><ol>${items}</ol></section>`;
 }
 
+function agendaSegmentKindLabel(kind) {
+  if (kind === "public_hearing") return "Public hearing";
+  if (kind === "regular_meeting") return "Regular meeting";
+  return "Agenda item";
+}
+
+function agendaSegmentStartLabel(startTime) {
+  const match = String(startTime || "").trim().match(/^([01]\d|2[0-3]):([0-5]\d)$/);
+  if (!match) return null;
+  const hour = Number(match[1]);
+  const minute = match[2];
+  const suffix = hour >= 12 ? "p.m." : "a.m.";
+  const twelve = hour % 12 || 12;
+  return `${twelve}:${minute} ${suffix}`;
+}
+
+/**
+ * Render board agenda segments attached at meeting-detail load time.
+ * Timed and untimed items share one list; missing start times stay omitted.
+ */
+function communityBoardAgendaSegmentsSection(record) {
+  if (record.source_system !== "community_board") return "";
+  const segments = Array.isArray(record.agenda_segments) ? record.agenda_segments : [];
+  if (!segments.length) return "";
+  const rows = segments
+    .slice()
+    .sort((left, right) => (Number(left.order) || 0) - (Number(right.order) || 0))
+    .map((segment) => {
+      const title = readerText(segment?.title, 400);
+      if (!title) return "";
+      const order = Number.isInteger(segment?.order) ? segment.order : "";
+      const start = agendaSegmentStartLabel(segment?.start_time);
+      const startAttr = String(segment?.start_time || "").trim();
+      const kind = ["public_hearing", "regular_meeting", "other"].includes(segment?.kind)
+        ? segment.kind
+        : "other";
+      const timeHtml = start
+        ? `<strong class="meeting-agenda-segment-time"><time datetime="${esc(startAttr)}">${esc(start)}</time></strong> `
+        : "";
+      return `<li class="meeting-agenda-segment" data-agenda-segment="${esc(String(order))}" data-agenda-segment-kind="${esc(kind)}"${startAttr ? ` data-agenda-segment-start="${esc(startAttr)}"` : ""}>`
+        + `<div class="meeting-agenda-segment-main">${timeHtml}`
+        + `<span class="meeting-agenda-segment-label">${esc(agendaSegmentKindLabel(kind))}</span></div>`
+        + `<p class="meeting-agenda-segment-title">${esc(title)}</p>`
+        + `</li>`;
+    })
+    .filter(Boolean)
+    .join("");
+  if (!rows) return "";
+  return `<section class="node-section civic-object-section meeting-section meeting-agenda-segments" data-meeting-agenda-segments="${segments.length}" data-agenda-parse-status="${esc(record.agenda_parse_status || "parsed")}"><h2>Agenda</h2><ol class="meeting-agenda-segment-list">${rows}</ol></section>`;
+}
+
 function oathObserverRequestSection(record) {
   if (record.source_system !== "oath_trial_calendar") return "";
   const request = observerRequestForTrial(record);
@@ -857,6 +908,7 @@ export function renderMeetingDocument(record = {}, readModel = {}, options = {})
   ${locationSection}
   ${descriptionSection}
   ${noticeDetailsSection}
+  ${communityBoardAgendaSegmentsSection(record)}
   ${agendaItemsSection(record)}
   ${contactSection}
   ${relatedLinksSection}

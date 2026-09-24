@@ -3,7 +3,25 @@
   "admission": "data_config_only",
   "meeting_key": "m3",
   "untimed_support_origin": "m3_brief",
-  "note": "Untimed agenda-ol handling was introduced in the prior generalization commit because this brief needs it. This commit only admits the M3 observation through fixture/manifest/materialized data so the addition property is data/configuration-only, not a blind hold-out for the parser.",
+  "note": "Untimed agenda-ol handling was introduced in the prior generalization commit because this held-out meeting needs it. The admission commit adds only fixture, manifest, page, and regenerated hearing-context materialization so the addition property is data/configuration-only, not a blind hold-out for the parser.",
+  "pre_admission_revision": {
+    "sha": "0ffa4b220e054d3b80bd3f58ef867999c1374ada",
+    "subject": "Generalize hearing-context agendas without requiring a budget example"
+  },
+  "admission_revision": {
+    "sha": "b68323332c12ded48f4f69985025020861145cf4",
+    "subject": "Admit the held-out committee agenda by data and configuration only",
+    "verification": "git show --stat b68323332c12",
+    "files": [
+      "site/data/community_board_hearing_context.json",
+      "warehouse/fixtures/community-board-hearing-context/m3.json",
+      "warehouse/fixtures/community-board-hearing-context/manifest.json",
+      "warehouse/fixtures/community-board-hearing-context/pages/m3-housing-land-use-september-2026.html",
+      "warehouse/receipts/proof/community_board_agenda_m3_data_only_admission.json",
+      "warehouse/receipts/proof/community_board_hearing_context_latest.json"
+    ],
+    "parser_renderer_adapter_paths_touched": []
+  },
   "code_paths_unchanged_by_m3_admission": [
     "warehouse/lib/community_board_hearing_context.mjs",
     "tools/acquire_community_board_hearing_context.mjs",
@@ -11,5 +29,5 @@
     "site/community_board_hearing_context.mjs"
   ],
   "fixture": "warehouse/fixtures/community-board-hearing-context/m3.json",
-  "observed_at": "2026-09-23T05:09:59.711Z"
+  "observed_at": "2026-09-24T16:00:00.000Z"
 }
