@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/lightweight-pursuit-state",
   "status": "implemented",
-  "fingerprint": "lightweight-pursuit-state.v2",
-  "updated_at": "2026-09-23T00:00:00.000Z",
+  "fingerprint": "lightweight-pursuit-state.v3",
+  "updated_at": "2026-09-24T00:00:00.000Z",
   "projections": [
     {
       "id": "procurement-pursuit-state-contract",
@@ -32,6 +32,22 @@
     {
       "id": "procurement-pursuit-controls-capability-tests",
       "path": "test/friction_p1_capability.test.mjs"
+    },
+    {
+      "id": "procurement-pursuit-controls-production-read-tool",
+      "path": "tools/capture_local_pursuit_controls_production_read.py"
+    },
+    {
+      "id": "procurement-pursuit-controls-production-readback",
+      "path": "docs/evidence/local-pursuit-controls/read-back.json"
+    },
+    {
+      "id": "procurement-pursuit-controls-production-read",
+      "path": "docs/evidence/local-pursuit-controls/production-read.json"
+    },
+    {
+      "id": "procurement-pursuit-controls-capture-manifest",
+      "path": "docs/evidence/local-pursuit-controls/capture-manifest.json"
     }
   ]
 }
