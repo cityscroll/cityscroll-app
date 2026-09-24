@@ -1,0 +1,185 @@
+{
+  "schema": "cityscroll.typed_source_deadline_fixtures.v1",
+  "retrieved_at": "2026-09-23T16:00:00.000Z",
+  "notes": [
+    "DOB Records Remediation (request_id 20260707026 / EPIN 81026B0003).",
+    "Current City Record page inspected 2026-09-23: due 8/25/2026 1:00 PM; bid opening August 25, 2026 at 2:00 pm.",
+    "The older PASSPort join_cases due_date 8/18/2026 1:00:00 PM is retained only as stale conflicting test evidence — not an official amendment history."
+  ],
+  "fixtures": [
+    {
+      "id": "dob-20260707026-current",
+      "request_id": "20260707026",
+      "pin": "81026B0003",
+      "agency_name": "Buildings",
+      "short_title": "81026B0003-Records Remediation Project",
+      "official_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707026",
+      "retrieved_at": "2026-09-23T16:00:00.000Z",
+      "assertions": [
+        {
+          "assertion_id": "city-record:20260707026:due_date:8/25/2026 1:00 PM",
+          "field": "due_date",
+          "semantic_kind": "response_deadline",
+          "value_raw": "8/25/2026 1:00 PM",
+          "source_system": "city_record",
+          "source_record_id": "20260707026",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707026",
+          "source_revision": "city-record:20260707026:observed:2026-09-23",
+          "observed_at": "2026-09-23T16:00:00.000Z",
+          "publisher_timezone_semantics": "america_new_york",
+          "evidence_class": "authoritative"
+        },
+        {
+          "assertion_id": "city-record:20260707026:bid_opening:August 25, 2026 at 2:00 pm",
+          "field": "bid_opening",
+          "semantic_kind": "bid_opening",
+          "value_raw": "August 25, 2026 at 2:00 pm",
+          "source_system": "city_record",
+          "source_record_id": "20260707026",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707026",
+          "source_revision": "city-record:20260707026:observed:2026-09-23",
+          "observed_at": "2026-09-23T16:00:00.000Z",
+          "publisher_timezone_semantics": "america_new_york",
+          "evidence_class": "authoritative"
+        },
+        {
+          "assertion_id": "passport-rfx:36426:due_date:8/25/2026 1:00:00 PM",
+          "field": "due_date",
+          "semantic_kind": "response_deadline",
+          "value_raw": "8/25/2026 1:00:00 PM",
+          "source_system": "passport_public_rfx",
+          "source_record_id": "passport-rfx:36426",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707026",
+          "source_revision": "passport-rfx:36426:due:2026-08-25T13:00",
+          "observed_at": "2026-09-23T16:00:00.000Z",
+          "publisher_timezone_semantics": "america_new_york",
+          "evidence_class": "authoritative"
+        }
+      ]
+    },
+    {
+      "id": "dob-20260707026-stale-passport-join-cases",
+      "request_id": "20260707026",
+      "pin": "81026B0003",
+      "retrieved_at": "2026-07-30T00:00:00.000Z",
+      "assertions": [
+        {
+          "assertion_id": "passport-rfx:36426:due_date:8/18/2026 1:00:00 PM:stale-fixture",
+          "field": "due_date",
+          "semantic_kind": "response_deadline",
+          "value_raw": "8/18/2026 1:00:00 PM",
+          "source_system": "passport_public_rfx",
+          "source_record_id": "passport-rfx:36426",
+          "source_revision": "test/fixtures/passport/join_cases.json:joined_solicitation",
+          "observed_at": "2026-07-30T00:00:00.000Z",
+          "publisher_timezone_semantics": "america_new_york",
+          "evidence_class": "stale_conflicting_test_evidence",
+          "note": "Older retained test fixture value. Flagged as stale conflicting test evidence; not an official amendment history."
+        }
+      ]
+    },
+    {
+      "id": "synthetic-response-deadline-supersession",
+      "synthetic_mutation": true,
+      "assertions": [
+        {
+          "assertion_id": "synthetic:record-1:due_date:v1",
+          "field": "due_date",
+          "semantic_kind": "response_deadline",
+          "value_raw": "9/1/2026 3:00:00 PM",
+          "source_system": "synthetic_publisher",
+          "source_record_id": "synthetic:record-1",
+          "source_revision": "synthetic:record-1:v1",
+          "observed_at": "2026-08-01T12:00:00.000Z",
+          "publisher_timezone_semantics": "america_new_york",
+          "evidence_class": "synthetic_mutation",
+          "synthetic_mutation": true
+        },
+        {
+          "assertion_id": "synthetic:record-1:due_date:v2",
+          "field": "due_date",
+          "semantic_kind": "response_deadline",
+          "value_raw": "9/8/2026 3:00:00 PM",
+          "source_system": "synthetic_publisher",
+          "source_record_id": "synthetic:record-1",
+          "source_revision": "synthetic:record-1:v2",
+          "observed_at": "2026-08-15T12:00:00.000Z",
+          "publisher_timezone_semantics": "america_new_york",
+          "evidence_class": "synthetic_mutation",
+          "synthetic_mutation": true,
+          "supersedes_assertion_id": "synthetic:record-1:due_date:v1"
+        }
+      ]
+    },
+    {
+      "id": "synthetic-competing-current-assertions",
+      "synthetic_mutation": true,
+      "assertions": [
+        {
+          "assertion_id": "synthetic:record-2:city-record:due",
+          "field": "due_date",
+          "semantic_kind": "response_deadline",
+          "value_raw": "9/10/2026 1:00:00 PM",
+          "source_system": "city_record",
+          "source_record_id": "synthetic:record-2",
+          "source_revision": "synthetic:record-2:city-record",
+          "publisher_timezone_semantics": "america_new_york",
+          "evidence_class": "synthetic_mutation",
+          "synthetic_mutation": true
+        },
+        {
+          "assertion_id": "synthetic:record-2:passport:due",
+          "field": "due_date",
+          "semantic_kind": "response_deadline",
+          "value_raw": "9/12/2026 1:00:00 PM",
+          "source_system": "passport_public_rfx",
+          "source_record_id": "synthetic:record-2",
+          "source_revision": "synthetic:record-2:passport",
+          "publisher_timezone_semantics": "america_new_york",
+          "evidence_class": "synthetic_mutation",
+          "synthetic_mutation": true
+        }
+      ]
+    },
+    {
+      "id": "synthetic-invalid-and-unknown-timezone",
+      "synthetic_mutation": true,
+      "assertions": [
+        {
+          "assertion_id": "synthetic:record-3:invalid-due",
+          "field": "due_date",
+          "semantic_kind": "response_deadline",
+          "value_raw": "not-a-date",
+          "source_system": "synthetic_publisher",
+          "source_record_id": "synthetic:record-3",
+          "source_revision": "synthetic:record-3:invalid",
+          "evidence_class": "synthetic_mutation",
+          "synthetic_mutation": true
+        },
+        {
+          "assertion_id": "synthetic:record-4:unknown-tz-due",
+          "field": "due_date",
+          "semantic_kind": "response_deadline",
+          "value_raw": "9/20/2026 4:30:00 PM",
+          "source_system": "synthetic_publisher",
+          "source_record_id": "synthetic:record-4",
+          "source_revision": "synthetic:record-4:unknown-tz",
+          "publisher_timezone_semantics": null,
+          "evidence_class": "synthetic_mutation",
+          "synthetic_mutation": true
+        },
+        {
+          "assertion_id": "synthetic:record-5:normalized-only",
+          "field": "due_date",
+          "semantic_kind": "response_deadline",
+          "value_raw": "9/21/2026",
+          "source_system": "legacy_normalized",
+          "source_record_id": "synthetic:record-5",
+          "source_revision": null,
+          "evidence_class": "normalized_only_unproven",
+          "synthetic_mutation": true
+        }
+      ]
+    }
+  ]
+}

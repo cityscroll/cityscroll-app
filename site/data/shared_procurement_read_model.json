@@ -192821,7 +192821,7 @@
     },
     {
       "path": "shared_procurement_read_model/shard-014.json",
-      "bytes": 13641492,
+      "bytes": 13697424,
       "row_count": 796,
       "observation_count": 1630
     }
