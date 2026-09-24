@@ -38645,7 +38645,7 @@
         "board_ref": "community-board:brooklyn-cb-14"
       },
       "source_url": "https://cb14brooklyn.com/meetings/",
-      "source_record_id": "https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+      "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
       "source_receipt": {
         "schema": "cityscroll.community_board_source_receipt.v1",
         "source_url": "https://cb14brooklyn.com/meetings/",
@@ -38661,7 +38661,7 @@
       "source_entry_evidence": null,
       "provenance": {
         "source_url": "https://cb14brooklyn.com/meetings/",
-        "source_record_id": "https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+        "source_record_id": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
         "observed_receipt": {
           "schema": "cityscroll.community_board_source_receipt.v1",
           "source_url": "https://cb14brooklyn.com/meetings/",
@@ -38680,8 +38680,8 @@
         "matched": true,
         "method": "exact_board_date_publisher_identifier",
         "board_id": "brooklyn-cb-14",
-        "event_date": "2026-09-23",
-        "publisher_identifier": "HTTPS://CB14BROOKLYN.COM/MEETING/HOUSING-AND-LAND-USE-COMMITTEE-MEETING-SEPTEMBER-2026/",
+        "event_date": "2026-09-09",
+        "publisher_identifier": "HTTPS://CB14BROOKLYN.COM/MEETING/PUBLIC-HEARING-ON-ULURP-APPLICATION-AND-EXECUTIVE-COMMITTEE-MEETING-SEPTEMBER-2026/",
         "evidence": [
           "exact_board_identity",
           "exact_date",
@@ -38696,7 +38696,8 @@
         "observed_receipt",
         "verified_source_join"
       ],
-      "publication_basis": null
+      "publication_basis": null,
+      "meeting_id": null
     }
   ],
   "receipts": [
