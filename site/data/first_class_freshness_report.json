@@ -506,7 +506,7 @@
       "production_evidence_field": "first_class.pdc_calendar",
       "production_freshness_gate": "block",
       "source_health_status": "Source-unavailable",
-      "disclosure": "Retain the last valid PDC schedule and disclose unavailable agenda acquisition."
+      "disclosure": "Retain the last valid PDC schedule and disclose that agenda acquisition could not be completed."
     },
     {
       "id": "people-organizations",

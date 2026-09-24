@@ -4258,7 +4258,7 @@
       "hard_maximum_age_hours": 168,
       "vintage_fields": ["generated_at", "source_receipt.observed_at"],
       "population_fields": ["records", "documents"],
-      "last_known_good_behavior": "Retain the last valid PDC schedule and disclose unavailable agenda acquisition.",
+      "last_known_good_behavior": "Retain the last valid PDC schedule and disclose that agenda acquisition could not be completed.",
       "resident_stale_behavior": "Do not describe PDC schedule coverage as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show PDC schedule coverage as unavailable; never infer that no meetings exist.",
       "production_evidence_field": "first_class.pdc_calendar"
