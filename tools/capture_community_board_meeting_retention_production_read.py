@@ -51,6 +51,11 @@ DETAIL_ROUTE = (
     "https%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F"
 )
 OFFICIAL_SOURCE = "https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
+RETAINED_MEETING_ID = (
+    "meeting:community_board:https://cb14brooklyn.com/meeting/"
+    "september-2026-board-meeting/"
+)
+MEETING_INDEX_PATH = "/data/community_board_meeting_index.json"
 MEETING_DATE = "2026-09-14"
 VENUE_NEEDLE = "1625 Ocean Avenue"
 FOOTER_TRAP = "810 East 16th"
@@ -102,6 +107,117 @@ def deployed_revision(manifest: dict) -> str:
     return sha
 
 
+def fetch_json(url: str) -> dict | list:
+    request = urllib.request.Request(
+        url,
+        headers={"User-Agent": ARTIFACT_UA, "Accept": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=120) as response:
+            payload = json.load(response)
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError) as error:
+        raise RuntimeError(f"served JSON unavailable at {url}: {error}") from error
+    return payload
+
+
+def absolute_origin_url(base: str, path: str) -> str:
+    origin = normalize_base(base).rstrip("/")
+    if path.startswith("http://") or path.startswith("https://"):
+        return path
+    return f"{origin}/{path.lstrip('/')}"
+
+
+def meeting_row_from_shard_payload(payload: dict | list) -> dict | None:
+    entries: list = []
+    if isinstance(payload, list):
+        entries = payload
+    elif isinstance(payload, dict):
+        if isinstance(payload.get("entries"), list):
+            entries = payload["entries"]
+        elif isinstance(payload.get("rows"), list):
+            entries = payload["rows"]
+        else:
+            entries = [payload]
+
+    for entry in entries:
+        row = entry
+        if isinstance(entry, list) and len(entry) >= 2 and isinstance(entry[1], dict):
+            row = entry[1]
+        if not isinstance(row, dict):
+            continue
+        if row.get("meeting_id") == RETAINED_MEETING_ID:
+            return row
+    return None
+
+
+def shard_url_for(base: str, path: str) -> str:
+    value = str(path or "")
+    if value.startswith("http://") or value.startswith("https://"):
+        return value
+    if value.startswith("/"):
+        return absolute_origin_url(base, value)
+    return absolute_origin_url(base, f"data/{value}")
+
+
+def read_served_upcoming_signal(base: str) -> dict:
+    """Read the served upcoming-collection signal for the retained meeting.
+
+    Authority is the published meeting-index row (`omitted_from_upcoming` /
+    `collection_visibility`), not the constellation "recent proceedings" list.
+    """
+    index_url = absolute_origin_url(base, MEETING_INDEX_PATH)
+    index = fetch_json(index_url)
+    if not isinstance(index, dict):
+        raise RuntimeError(f"meeting index at {index_url} is not an object")
+
+    shards = [shard for shard in (index.get("shards") or []) if isinstance(shard, dict)]
+    ordered = sorted(
+        shards,
+        key=lambda shard: 0 if shard.get("kind") == "rows" else 1,
+    )
+
+    row = None
+    shard_url = None
+    for shard in ordered:
+        path = shard.get("path")
+        if not path:
+            continue
+        candidate_url = shard_url_for(base, path)
+        payload = fetch_json(candidate_url)
+        found = meeting_row_from_shard_payload(payload)
+        if found is not None:
+            row = found
+            shard_url = candidate_url
+            break
+
+    if row is None:
+        raise RuntimeError(
+            f"served meeting index does not carry {RETAINED_MEETING_ID}"
+        )
+
+    retention = row.get("detail_retention") or {}
+    omitted = retention.get("omitted_from_upcoming")
+    if omitted is not True:
+        raise AssertionError(
+            "served upcoming signal missing omitted_from_upcoming=true for "
+            f"retained September 14 meeting (got {omitted!r})"
+        )
+    return {
+        "meeting_id": row.get("meeting_id"),
+        "board_id": row.get("board_id"),
+        "timing_status": row.get("timing_status"),
+        "collection_visibility": row.get("collection_visibility"),
+        "omitted_from_upcoming": True,
+        "retention_basis": retention.get("basis"),
+        "retention_as_of_day": retention.get("as_of_day"),
+        "cancellation_inferred": retention.get("cancellation_inferred"),
+        "scheduled_date": row.get("date") or row.get("event_date") or row.get("meeting_date"),
+        "source_url": shard_url or index_url,
+        "index_generated_at": index.get("generated_at"),
+        "index_code_revision": index.get("code_revision"),
+    }
+
+
 def write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
@@ -134,7 +250,14 @@ def data_vintage_from_board(page) -> str | None:
     return None
 
 
-def capture_profile(page, base: str, width: int, height: int, rev: str) -> dict:
+def capture_profile(
+    page,
+    base: str,
+    width: int,
+    height: int,
+    rev: str,
+    upcoming_signal: dict,
+) -> dict:
     page.set_viewport_size({"width": width, "height": height})
     page.goto(f"{base.rstrip('/')}{PROFILE_ROUTE}", wait_until="domcontentloaded", timeout=60000)
     page.wait_for_timeout(800)
@@ -152,43 +275,65 @@ def capture_profile(page, base: str, width: int, height: int, rev: str) -> dict:
     hearing = page.locator("#board-hearing-preparation-heading, [data-hearing-segment-kind]")
     hearing_visible = hearing.count() > 0
 
-    # Upcoming collection: require the retained September 14 CityScroll detail
-    # path not to appear among upcoming/recent proceeding cards once past.
-    upcoming = page.evaluate(
-        """() => {
+    # Constellation "Upcoming & recent proceedings" may still show a recently
+    # past retained meeting under the recent half of that surface. Record that
+    # presence and the displayed date honestly; upcoming-collection exclusion
+    # is asserted from the served meeting-index row instead.
+    constellation = page.evaluate(
+        """(retainedMeetingId) => {
           const headings = Array.from(document.querySelectorAll('h2,h3'));
           const hit = headings.find((node) =>
             /upcoming\\s*&\\s*recent proceedings/i.test(
               (node.textContent || '').replace(/\\s+/g, ' ')
             )
           );
-          if (!hit) return { html: '', meeting_ids: [] };
+          if (!hit) {
+            return {
+              heading: null,
+              block_present: false,
+              meeting_ids: [],
+              retained_present: false,
+              retained_displayed_date: null,
+              retained_row_text: null,
+            };
+          }
           const list = hit.parentElement?.querySelector('ul.node-record-list')
             || (hit.nextElementSibling && hit.nextElementSibling.matches('ul')
               ? hit.nextElementSibling
               : null);
-          const html = list ? (list.outerHTML || '') : '';
-          const meeting_ids = list
+          const items = list
             ? Array.from(
                 list.querySelectorAll(
                   'li.node-record[data-semantic-object="meeting"][data-meeting-id]'
                 )
-              ).map((node) => node.getAttribute('data-meeting-id') || '')
+              )
             : [];
-          return { html, meeting_ids };
-        }"""
+          const meeting_ids = items.map(
+            (node) => node.getAttribute('data-meeting-id') || ''
+          );
+          const retained = items.find(
+            (node) => node.getAttribute('data-meeting-id') === retainedMeetingId
+          );
+          let retained_displayed_date = null;
+          let retained_row_text = null;
+          if (retained) {
+            retained_row_text = (retained.innerText || '')
+              .replace(/\\s+/g, ' ')
+              .trim();
+            const iso = retained_row_text.match(/\\b(20\\d{2}-\\d{2}-\\d{2})\\b/);
+            retained_displayed_date = iso ? iso[1] : null;
+          }
+          return {
+            heading: (hit.textContent || '').replace(/\\s+/g, ' ').trim(),
+            block_present: Boolean(list),
+            meeting_ids,
+            retained_present: Boolean(retained),
+            retained_displayed_date,
+            retained_row_text,
+          };
+        }""",
+        RETAINED_MEETING_ID,
     )
-    upcoming_html = upcoming.get("html") or ""
-    upcoming_meeting_ids = list(upcoming.get("meeting_ids") or [])
-    retained_meeting_id = (
-        "meeting:community_board:https://cb14brooklyn.com/meeting/"
-        "september-2026-board-meeting/"
-    )
-    upcoming_excludes_detail = (
-        DETAIL_ROUTE not in upcoming_html
-        and "september-2026-board-meeting" not in upcoming_html
-    )
-    upcoming_list_excludes_retained_id = retained_meeting_id not in set(upcoming_meeting_ids)
 
     body_text = normalize_ws(page.locator("body").inner_text())
     digest = sha256_text(page.content())
@@ -199,25 +344,52 @@ def capture_profile(page, base: str, width: int, height: int, rev: str) -> dict:
         full_page=True,
     )
 
+    constellation_present = bool(constellation.get("retained_present"))
+    constellation_date = constellation.get("retained_displayed_date")
+    if constellation_present and constellation_date != MEETING_DATE:
+        raise AssertionError(
+            "constellation recent row for retained September 14 meeting does not "
+            f"display date {MEETING_DATE} (got {constellation_date!r})"
+        )
+
     served_values = {
         "board_id": BOARD_ID,
         "detail_href": detail_href,
         "hearing_preparation_visible": hearing_visible,
-        "profile_mentions_september_14": "September 14" in body_text or "2026-09-14" in body_text,
-        "upcoming_excludes_retained_detail_href": upcoming_excludes_detail,
-        "upcoming_list_excludes_retained_meeting_id": upcoming_list_excludes_retained_id,
-        "upcoming_meeting_ids": sorted(set(upcoming_meeting_ids)),
-        "upcoming_block_present": bool(upcoming_html),
+        "profile_mentions_september_14": (
+            "September 14" in body_text or "2026-09-14" in body_text
+        ),
+        # Upcoming-collection exclusion (authoritative served signal).
+        "upcoming_collection_omitted_from_upcoming": True,
+        "upcoming_collection_visibility": upcoming_signal.get("collection_visibility"),
+        "upcoming_collection_timing_status": upcoming_signal.get("timing_status"),
+        "upcoming_collection_cancellation_inferred": upcoming_signal.get(
+            "cancellation_inferred"
+        ),
+        "upcoming_collection_retention_basis": upcoming_signal.get("retention_basis"),
+        "upcoming_collection_retention_as_of_day": upcoming_signal.get(
+            "retention_as_of_day"
+        ),
+        "upcoming_collection_signal_source_url": upcoming_signal.get("source_url"),
+        # Constellation recent surface (observed; not the upcoming-collection gate).
+        "constellation_recent_block_present": bool(constellation.get("block_present")),
+        "constellation_recent_heading": constellation.get("heading"),
+        "constellation_recent_meeting_ids": sorted(
+            set(constellation.get("meeting_ids") or [])
+        ),
+        "constellation_recent_includes_retained_meeting": constellation_present,
+        "constellation_recent_retained_meeting_date": constellation_date,
+        "constellation_recent_retained_row_text": constellation.get("retained_row_text"),
     }
     if "result" in served_values or "pass" in served_values:
         raise AssertionError("served_values must not carry a pass verdict")
-    if not served_values["upcoming_excludes_retained_detail_href"]:
+    if upcoming_signal.get("omitted_from_upcoming") is not True:
         raise AssertionError(
-            "upcoming collection still embeds the retained September 14 detail href"
+            "served upcoming collection does not omit the retained September 14 meeting"
         )
-    if not served_values["upcoming_list_excludes_retained_meeting_id"]:
+    if served_values["upcoming_collection_cancellation_inferred"] is not False:
         raise AssertionError(
-            "upcoming meeting list still includes the retained September 14 meeting id"
+            "served upcoming signal must keep cancellation_inferred explicitly false"
         )
 
     return {
@@ -229,7 +401,7 @@ def capture_profile(page, base: str, width: int, height: int, rev: str) -> dict:
         "data_vintage": data_vintage_from_board(page),
         "assertion": (
             "Board profile keeps a navigable September 14 meeting detail link after "
-            "the upcoming collection has moved on."
+            "the served upcoming collection omits that retained past meeting."
         ),
         "sha256": digest,
         "file": None,
@@ -456,10 +628,27 @@ def validate(receipt: dict) -> None:
             raise AssertionError("A4 served_values must not carry a pass verdict")
     for row in profile_reads:
         values = row.get("served_values") or {}
-        if not values.get("upcoming_excludes_retained_detail_href"):
+        if values.get("upcoming_collection_omitted_from_upcoming") is not True:
             raise AssertionError(
-                f"{row.get('name')}: upcoming still embeds retained detail href"
+                f"{row.get('name')}: served upcoming signal missing "
+                "omitted_from_upcoming=true"
             )
+        if values.get("upcoming_collection_cancellation_inferred") is not False:
+            raise AssertionError(
+                f"{row.get('name')}: cancellation_inferred must be explicitly false"
+            )
+        if "constellation_recent_includes_retained_meeting" not in values:
+            raise AssertionError(
+                f"{row.get('name')}: constellation recent presence must be recorded"
+            )
+        if values.get("constellation_recent_includes_retained_meeting") is True:
+            if values.get("constellation_recent_retained_meeting_date") != MEETING_DATE:
+                raise AssertionError(
+                    f"{row.get('name')}: constellation recent row must display "
+                    f"{MEETING_DATE}"
+                )
+        if "result" in values or "pass" in values:
+            raise AssertionError("A4 served_values must not carry a pass verdict")
 
 
 def assert_canonical_json(path: Path) -> None:
@@ -513,6 +702,15 @@ def capture() -> dict:
     rev = deployed_revision(artifact)
     observed_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     print(f"production base={base} revision={rev}", flush=True)
+    print("reading served upcoming-collection signal", flush=True)
+    upcoming_signal = read_served_upcoming_signal(base)
+    print(
+        "upcoming signal: "
+        f"omitted_from_upcoming={upcoming_signal.get('omitted_from_upcoming')} "
+        f"visibility={upcoming_signal.get('collection_visibility')} "
+        f"timing={upcoming_signal.get('timing_status')}",
+        flush=True,
+    )
 
     reads: list[dict] = []
     with sync_playwright() as playwright:
@@ -523,7 +721,9 @@ def capture() -> dict:
         page = context.new_page()
         for name, width, height in VIEWPORTS:
             print(f"retention A4 profile {name}", flush=True)
-            reads.append(capture_profile(page, base, width, height, rev))
+            reads.append(
+                capture_profile(page, base, width, height, rev, upcoming_signal)
+            )
             print(f"retention A4 detail {name}", flush=True)
             reads.append(capture_detail(page, base, width, height, rev))
         browser.close()

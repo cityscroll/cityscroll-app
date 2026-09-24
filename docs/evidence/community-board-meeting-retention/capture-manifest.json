@@ -1,0 +1,153 @@
+{
+  "base": "https://cityscroll.org/",
+  "capture_mode": "headless-playwright-production-served-site",
+  "captures": [
+    {
+      "assertion": "Board profile keeps a navigable September 14 meeting detail link after the served upcoming collection omits that retained past meeting.",
+      "data_vintage": null,
+      "file": null,
+      "name": "cb14-profile-desktop",
+      "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "served_values": {
+        "board_id": "brooklyn-cb-14",
+        "constellation_recent_block_present": true,
+        "constellation_recent_heading": "Upcoming & recent proceedings (Available: 2 records)",
+        "constellation_recent_includes_retained_meeting": true,
+        "constellation_recent_meeting_ids": [
+          "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
+        ],
+        "constellation_recent_retained_meeting_date": "2026-09-14",
+        "constellation_recent_retained_row_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028 Community Board · 2026-09-14 · Published event Source details",
+        "detail_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+        "hearing_preparation_visible": true,
+        "profile_mentions_september_14": true,
+        "upcoming_collection_cancellation_inferred": false,
+        "upcoming_collection_omitted_from_upcoming": true,
+        "upcoming_collection_retention_as_of_day": "2026-09-24",
+        "upcoming_collection_retention_basis": "known_linked_event_url",
+        "upcoming_collection_signal_source_url": "https://cityscroll.org/data/community_board_meeting_index/shard-003.json",
+        "upcoming_collection_timing_status": "past",
+        "upcoming_collection_visibility": "suppressed"
+      },
+      "sha256": "dff9e054fc143757dfc8fc6ea44bb6a312ec526282a80497c4fcae0536c81b1c",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Retained September 14 detail opens with venue 1625 Ocean Avenue, the published start, and the official source after the calendar moved on.",
+      "data_vintage": null,
+      "file": null,
+      "name": "cb14-detail-desktop",
+      "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+      "served_values": {
+        "cancelled_marker": false,
+        "footer_address_used_as_venue": false,
+        "http_path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+        "official_source_shown": true,
+        "official_source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+        "scheduled_date": "2026-09-14",
+        "scheduled_date_shown": true,
+        "start_shown": true,
+        "title": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028 · CityScroll",
+        "venue_address": "1625 Ocean Avenue",
+        "venue_shown": true
+      },
+      "sha256": "25bbe942fbcd7c69e0d743b5c55a9470f298093e5d9bbf79cf2110624fa7cc8d",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Board profile keeps a navigable September 14 meeting detail link after the served upcoming collection omits that retained past meeting.",
+      "data_vintage": null,
+      "file": null,
+      "name": "cb14-profile-mobile",
+      "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+      "route": "/community-boards/brooklyn-cb-14/",
+      "served_values": {
+        "board_id": "brooklyn-cb-14",
+        "constellation_recent_block_present": true,
+        "constellation_recent_heading": "Upcoming & recent proceedings (Available: 2 records)",
+        "constellation_recent_includes_retained_meeting": true,
+        "constellation_recent_meeting_ids": [
+          "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
+        ],
+        "constellation_recent_retained_meeting_date": "2026-09-14",
+        "constellation_recent_retained_row_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028 Community Board · 2026-09-14 · Published event Source details",
+        "detail_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+        "hearing_preparation_visible": true,
+        "profile_mentions_september_14": true,
+        "upcoming_collection_cancellation_inferred": false,
+        "upcoming_collection_omitted_from_upcoming": true,
+        "upcoming_collection_retention_as_of_day": "2026-09-24",
+        "upcoming_collection_retention_basis": "known_linked_event_url",
+        "upcoming_collection_signal_source_url": "https://cityscroll.org/data/community_board_meeting_index/shard-003.json",
+        "upcoming_collection_timing_status": "past",
+        "upcoming_collection_visibility": "suppressed"
+      },
+      "sha256": "dff9e054fc143757dfc8fc6ea44bb6a312ec526282a80497c4fcae0536c81b1c",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Retained September 14 detail opens with venue 1625 Ocean Avenue, the published start, and the official source after the calendar moved on.",
+      "data_vintage": null,
+      "file": null,
+      "name": "cb14-detail-mobile",
+      "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+      "served_values": {
+        "cancelled_marker": false,
+        "footer_address_used_as_venue": false,
+        "http_path": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+        "official_source_shown": true,
+        "official_source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+        "scheduled_date": "2026-09-14",
+        "scheduled_date_shown": true,
+        "start_shown": true,
+        "title": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028 · CityScroll",
+        "venue_address": "1625 Ocean Avenue",
+        "venue_shown": true
+      },
+      "sha256": "25bbe942fbcd7c69e0d743b5c55a9470f298093e5d9bbf79cf2110624fa7cc8d",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    }
+  ],
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "data_vintage": "2026-09-14",
+  "feature": "community-board-meeting-retention",
+  "grounded_at": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed.",
+  "note": "Production desktop/mobile receipts for the Brooklyn CB14 September 14 retained meeting detail after the upcoming calendar moved on.",
+  "producer": {
+    "letters": [
+      "A4"
+    ],
+    "path": "docs/evidence/community-board-meeting-retention/read-back.json",
+    "schema": "cityscroll.community_board_meeting_retention_production_read.v1"
+  },
+  "public_alias": "c10f6cab88867",
+  "repository_revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+  "revision": "a3b37cc7f3672ba19af010413cee8b656f5ea9df",
+  "revision_format": "served artifact-manifest source_commit_sha",
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "Retained community board meeting detail after calendar refresh",
+  "verifier": "node --test test/community_board_meeting_retention_production_read.test.mjs"
+}

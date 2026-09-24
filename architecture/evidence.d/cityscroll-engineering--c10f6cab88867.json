@@ -1,0 +1,41 @@
+{
+  "fingerprint": "community-board-meeting-retention.v1",
+  "id": "cityscroll-engineering/c10f6cab88867",
+  "projections": [
+    {
+      "id": "community-board-meeting-retention-capture-manifest",
+      "path": "docs/evidence/community-board-meeting-retention/capture-manifest.json"
+    },
+    {
+      "id": "community-board-meeting-retention-packet-manifest",
+      "path": "docs/evidence/community-board-meeting-retention/manifest.json"
+    },
+    {
+      "id": "community-board-meeting-retention-production-read",
+      "path": "docs/evidence/community-board-meeting-retention/production-read.json"
+    },
+    {
+      "id": "community-board-meeting-retention-production-readback",
+      "path": "docs/evidence/community-board-meeting-retention/read-back.json"
+    },
+    {
+      "id": "community-board-meeting-retention-production-readback-tests",
+      "path": "test/community_board_meeting_retention_production_read.test.mjs"
+    },
+    {
+      "id": "community-board-meeting-retention-production-readback-tool",
+      "path": "tools/capture_community_board_meeting_retention_production_read.py"
+    },
+    {
+      "id": "community-board-meeting-retention-source-fixture",
+      "path": "docs/evidence/community-board-meeting-retention/source-fixture.json"
+    },
+    {
+      "id": "retained-meeting-detail-helper",
+      "path": "site/community_board_retained_meeting_details.mjs"
+    }
+  ],
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "status": "implemented",
+  "updated_at": "2026-09-24T00:00:00.000Z"
+}
