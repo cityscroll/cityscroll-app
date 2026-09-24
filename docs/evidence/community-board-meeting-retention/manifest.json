@@ -88,6 +88,6 @@
     "A1": "proved_by_fixture_and_read_model",
     "A2": "proved_by_verify_test",
     "A3": "proved_by_verify_test",
-    "A4": "proved_by_source_fixture_and_capture_manifest"
+    "A4": "proved_by_source_fixture_and_deployed_read_back"
   }
 }
