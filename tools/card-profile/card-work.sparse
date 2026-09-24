@@ -802,6 +802,7 @@
 /site/reader_surface_labels.mjs
 /site/reading-level-baseline.json
 /site/record_address_resolution_cache.mjs
+/site/record_location_memberships.mjs
 /site/regulatory_agenda.mjs
 /site/regulatory_agenda_document.mjs
 /site/rendered_copy_lint.mjs

@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/record-location-membership-projection",
+  "status": "implemented",
+  "fingerprint": "record-location-membership-projection.v1",
+  "updated_at": "2026-09-24T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "record-location-membership-projection",
+      "path": "site/record_location_memberships.mjs"
+    },
+    {
+      "id": "record-location-membership-verify-test",
+      "path": "test/record_location_memberships.test.mjs"
+    }
+  ]
+}

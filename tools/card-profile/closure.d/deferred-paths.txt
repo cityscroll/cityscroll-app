@@ -253,6 +253,7 @@ warehouse/fixtures/zap-projects/sample.csv
 warehouse/lib/attachment_tables_extract.py
 warehouse/lib/attachment_text_extract.py
 warehouse/lib/procurement_parcel_relations.mjs
+warehouse/lib/typed_source_deadline.mjs
 warehouse/receipts/proof/analytics_registered_contracts_population_latest.json
 warehouse/receipts/proof/att01_attachment_metadata_latest.json
 warehouse/receipts/proof/att_t1_attachment_text_latest.json
