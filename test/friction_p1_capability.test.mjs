@@ -309,7 +309,17 @@ test("A4 unambiguous legacy keys migrate once; conflicts stay recoverable; stora
   click(clearPage.host.querySelector("[data-pursuit-clear]"));
   assert.equal(pursuitStateFor(clearStore, NATIVE_S48020.procurement_id).decision, "passed");
   assert.equal(clearPage.host.querySelector("[data-pursuit-error]").hidden, false);
-  assert.equal(PURSUIT_CONTROLS_UNSAVED_MESSAGE.includes("Try again") || true, true);
+  assert.equal(
+    clearPage.host.querySelector("[data-pursuit-error-text]").textContent,
+    PURSUIT_CONTROLS_UNSAVED_MESSAGE,
+  );
+  assert.match(PURSUIT_CONTROLS_UNSAVED_MESSAGE, /Try again/i);
+  assert.doesNotMatch(
+    clearPage.host.querySelector("[data-pursuit-status]")?.textContent || "",
+    /Saved in this browser/i,
+  );
+  assert.ok(clearPage.host.querySelector("[data-pursuit-retry]"), "retry control stays available");
+  assert.equal(decisionButton(clearPage.host, "passed").getAttribute("aria-pressed"), "true");
   assert.equal(tryClearPursuitDecision(clearStore, NATIVE_S48020.procurement_id).ok, false);
 });
 
@@ -366,4 +376,39 @@ test("A5 keyboard, narrow layout, clear/reload, cross-entry, and list membership
   );
   assert.ok(noticeSupportsPursuitControls(NOTICE_20260707026, []));
   assert.ok(noticeSupportsPursuitControls(NOTICE_20260727019, []));
+
+  // Retained production capture closes A5 against served routes.
+  const receipt = JSON.parse(
+    readFileSync(new URL("../docs/evidence/local-pursuit-controls/read-back.json", import.meta.url), "utf8"),
+  );
+  assert.equal(receipt.schema, "cityscroll.local_pursuit_controls_production_read.v1");
+  assert.equal(receipt.public_alias, "c041aaf5e0e7c");
+  assert.equal(receipt.evidence_class, "deployed-production-read-back");
+  assert.match(receipt.deployment.revision, /^[0-9a-f]{40}$/);
+  assert.equal(
+    receipt.deployment.required_ancestor,
+    "24ba5fde4fbf6552299dd297f6c5b6c36e59f0e3",
+  );
+  assert.equal(receipt.deployment.required_ancestor_contained, true);
+  assert.deepEqual(receipt.producer.letters, ["A5"]);
+  const reads = receipt.letters?.A5?.reads || [];
+  assert.ok(reads.length >= 2, "A5 retains desktop and mobile served reads");
+  for (const row of reads) {
+    const values = row.served_values;
+    assert.equal(typeof values, "object");
+    assert.equal(values.fresh_route_a_decision, "passed");
+    assert.equal(values.fresh_route_b_decision, "pursuing");
+    assert.equal(values.reload_a_passed_pressed, "true");
+    assert.equal(values.reload_b_pursuing_pressed, "true");
+    assert.equal(values.prepopulated_a_pursuing_pressed, "true");
+    assert.equal(values.prepopulated_b_passed_pressed, "true");
+    assert.equal(values.list_membership_unchanged_on_route_a, true);
+    assert.equal(values.list_membership_unchanged_on_route_b, true);
+    assert.equal(values.keyboard_focused_decision, "passed");
+    assert.equal(values.cross_entry_storage_has_notice, true);
+    assert.ok(!("result" in values) && !("pass" in values));
+    if (values.viewport_name === "mobile") {
+      assert.equal(values.actions_flex_direction, "column");
+    }
+  }
 });
