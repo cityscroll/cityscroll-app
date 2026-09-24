@@ -212,16 +212,6 @@ import { renderObjectCardTitle } from "../affordance_grammar.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "../report_issue.mjs";
 import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "../procurement_pursuit_snapshot.mjs";
 import { buyerHistoryComparisonFromSolicitation } from "../buyer_history_pursuit_comparison.mjs";
-import {
-  noticeSupportsPursuitControls,
-  resolvePursuitMatterRef,
-} from "../procurement_pursuit_identity.mjs";
-import {
-  bindPursuitControls,
-  renderPursuitControlsHtml,
-} from "../procurement_pursuit_controls.mjs";
-import { noticeProcurementSubjectsForId } from "../notice_subject_projection.mjs";
-import noticeProcurementSubjectsLookup from "../data/notice_procurement_subjects_lookup.json" with { type: "json" };
 import { pinBase } from "../procurement_pin.mjs";
 import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { agencyEvidencePath, renderEligibleRecordTools } from "../research_discovery.mjs";
@@ -1076,20 +1066,6 @@ function pursuitSnapshotHTML(r){
   }));
 }
 
-function pursuitControlsHTML(r){
-  if (!r?.request_id) return "";
-  const subjects = noticeProcurementSubjectsForId(noticeProcurementSubjectsLookup, r.request_id);
-  if (!noticeSupportsPursuitControls(r, subjects)) return "";
-  const resolved = resolvePursuitMatterRef(r, { subjectsLookup: noticeProcurementSubjectsLookup });
-  if (!resolved?.matter_ref) return "";
-  return renderPursuitControlsHtml({
-    matterRef: resolved.matter_ref,
-    noticeId: resolved.notice_id || r.request_id,
-    aliasBasis: resolved.alias_basis,
-  });
-}
-
-
 function renderDetail(r, chain, stats, loadContext = true){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
   const responseContextReady = solicitationResponseContextReady(r);
@@ -1110,7 +1086,10 @@ function renderDetail(r, chain, stats, loadContext = true){
   html += `<div data-ai-context-notice-mount="1" data-request-id="${escUiHtml(r.request_id||"")}"></div>`;
   html += solicitationContextHeadingHTML(r);
   html += pursuitSnapshotHTML(r);
-  html += pursuitControlsHTML(r);
+  // Pursuit-note controls load after paint through a dynamic import so the
+  // money module's classic-script reconstruction never flattens those helpers
+  // (they declare shared local names such as clean) into #task/can-i-bid.
+  html += `<div data-pursuit-controls-mount="1" data-request-id="${escUiHtml(r.request_id||"")}" data-procurement-id="${escUiHtml(r.procurement_id||"")}"></div>`;
   html += `<div id="dcontext" data-export-class="notice_context"></div><div id="dactions" data-export-class="actions"></div>`;
   // Lead with the response path for solicitations (deadline / contact) before lifecycle
   // context; primary CTAs stay on the action rail. Awards keep the glance strip first.
@@ -1134,17 +1113,35 @@ function renderDetail(r, chain, stats, loadContext = true){
   // visually subordinated (smaller figures) so notice-specific facts read first.
   if(!pending) html += noticeAgencyBar(stats, r.agency_name, "agencybar sub");
   $("#detail").innerHTML = html;
-  const pursuitHost = $("#detail")?.querySelector?.("[data-pursuit-controls]");
-  if (pursuitHost) {
-    const stylesheetPath = "procurement_pursuit_controls.css";
-    if (typeof document !== "undefined" && !document.querySelector(`link[data-route-style="${stylesheetPath}"]`)) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = stylesheetPath;
-      link.dataset.routeStyle = stylesheetPath;
-      document.head.appendChild(link);
-    }
-    bindPursuitControls(pursuitHost);
+  const pursuitMount = $("#detail")?.querySelector?.("[data-pursuit-controls-mount]");
+  if (pursuitMount && r.request_id) {
+    import("../procurement_pursuit_controls.mjs").then(async (controls) => {
+      if (!pursuitMount.isConnected) return;
+      const { noticeSupportsPursuitControls, resolvePursuitMatterRef } = await import("../procurement_pursuit_identity.mjs");
+      if (!pursuitMount.isConnected) return;
+      if (!noticeSupportsPursuitControls(r, [])) return;
+      const resolved = resolvePursuitMatterRef({
+        request_id: r.request_id,
+        procurement_id: r.procurement_id || null,
+        matter_ref: r.matter_ref || null,
+      });
+      if (!resolved?.matter_ref) return;
+      const stylesheetPath = "procurement_pursuit_controls.css";
+      if (!document.querySelector(`link[data-route-style="${stylesheetPath}"]`)) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = stylesheetPath;
+        link.dataset.routeStyle = stylesheetPath;
+        document.head.appendChild(link);
+      }
+      pursuitMount.outerHTML = controls.renderPursuitControlsHtml({
+        matterRef: resolved.matter_ref,
+        noticeId: resolved.notice_id || r.request_id,
+        aliasBasis: resolved.alias_basis,
+      });
+      const host = $("#detail")?.querySelector?.("[data-pursuit-controls]");
+      if (host) controls.bindPursuitControls(host);
+    }).catch(() => {});
   }
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
   const detailProjection=globalThis.contractResultInteractionProjection?.(r);
