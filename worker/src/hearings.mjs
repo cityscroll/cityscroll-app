@@ -58,19 +58,29 @@ export const CITY_RECORD_MEETING_SOURCE_FIELDS = Object.freeze([
 ]);
 
 /**
- * The daily materialized view this provider reads first is rebuilt by the
- * digest cron, from whichever route read model was published when that cron
- * ran. A deployment that ships new meeting coverage republishes the versioned
- * route slices immediately, so between the deploy and the next cron the view is
- * missing meetings the deployment already serves — and it stays missing for as
- * long as the cron does not run. Reading those versioned slices by exact id
- * closes the window: it is the fallback /meeting.ics already relies on, so an
- * exact, published identity is never answered "not yet public" while another
- * route on the same deployment can serve it.
+ * Exact-id meeting reads prefer the versioned route slices republished with
+ * every Worker deploy. Those slices are already one meeting (or one month) of
+ * precomputed shared-meeting rows, so the request path never has to rebuild
+ * agenda, place-membership, or geography joins.
+ *
+ * The daily `hearings:location:v1` view is rebuilt by the digest cron and can
+ * hold the whole shared meeting corpus (historically with duplicated row
+ * arrays). Parsing that blob on every `get_meeting` exceeds the Worker memory
+ * budget (Cloudflare Error 1102). Keep it as a same-day fallback only when the
+ * published slice has not caught the id yet.
  */
 async function publishedMeetingModel(env, input) {
   try {
     return await loadMeetingReadModelForId(env, input.meetingId.trim());
+  } catch {
+    return null;
+  }
+}
+
+async function dailyHearingViewModel(env) {
+  try {
+    const raw = env?.ALERT_STATE ? await env.ALERT_STATE.get(HEARINGS_KV_KEY) : null;
+    return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
   }
@@ -82,21 +92,22 @@ export function workerMeetingGet(env, modelOverride = null) {
     capabilityReference: MEETING_GET_CAPABILITY_REFERENCE,
     providerId: MEETING_GET_PROVIDER_ID,
     async execute(input) {
-      let model = modelOverride;
-      if (!model) {
-        try {
-          const raw = env?.ALERT_STATE ? await env.ALERT_STATE.get(HEARINGS_KV_KEY) : null;
-          model = raw ? JSON.parse(raw) : null;
-        } catch {
-          model = null;
-        }
+      if (modelOverride) {
+        const fromOverride = meetingGetFromModel(modelOverride, input);
+        if (fromOverride.availability === "available") return fromOverride;
+        const publishedFromOverride = await publishedMeetingModel(env, input);
+        if (!publishedFromOverride) return fromOverride;
+        const fromPublishedOverride = meetingGetFromModel(publishedFromOverride, input);
+        return fromPublishedOverride.availability === "available" ? fromPublishedOverride : fromOverride;
       }
-      const result = meetingGetFromModel(model, input);
-      if (result.availability === "available") return result;
+
       const published = await publishedMeetingModel(env, input);
-      if (!published) return result;
-      const fromPublished = meetingGetFromModel(published, input);
-      return fromPublished.availability === "available" ? fromPublished : result;
+      if (published) {
+        const fromPublished = meetingGetFromModel(published, input);
+        if (fromPublished.availability === "available") return fromPublished;
+      }
+
+      return meetingGetFromModel(await dailyHearingViewModel(env), input);
     },
   });
 }
@@ -383,14 +394,15 @@ export async function handleMeetingICS(request, env) {
   const id = new URL(request.url).searchParams.get("id") || "";
   if (!id || id.length > 320 || /[\r\n]/.test(id)) return new Response("invalid meeting id", { status: 400 });
 
-  let parsed = null;
-  try {
-    const raw = env?.ALERT_STATE ? await env.ALERT_STATE.get(HEARINGS_KV_KEY) : null;
-    parsed = raw ? JSON.parse(raw) : null;
-  } catch { parsed = null; }
-  let record = materializedMeetingForId(materializedRows(parsed), id);
+  let record = null;
+  try { record = await loadMeetingRecord(env, id); } catch { record = null; }
   if (!record) {
-    try { record = await loadMeetingRecord(env, id); } catch { record = null; }
+    let parsed = null;
+    try {
+      const raw = env?.ALERT_STATE ? await env.ALERT_STATE.get(HEARINGS_KV_KEY) : null;
+      parsed = raw ? JSON.parse(raw) : null;
+    } catch { parsed = null; }
+    record = materializedMeetingForId(materializedRows(parsed), id);
   }
   if (!record) return new Response("meeting not found", { status: 404 });
   const ics = meetingCalendarICS({

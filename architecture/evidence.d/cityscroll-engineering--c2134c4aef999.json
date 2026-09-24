@@ -1,0 +1,17 @@
+{
+  "fingerprint": "meeting-get-published-slice-first.v1",
+  "id": "cityscroll-engineering/c2134c4aef999",
+  "projections": [
+    {
+      "id": "meeting-get-published-slice-first-tests",
+      "path": "test/meeting_get_published_slice_first.test.mjs"
+    },
+    {
+      "id": "meeting-get-published-slice-first-cost-receipt",
+      "path": "docs/evidence/meeting-get-published-slice-first/request-path-cost.json"
+    }
+  ],
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "status": "implemented",
+  "updated_at": "2026-09-24T19:40:00.000Z"
+}

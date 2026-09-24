@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.meeting_get_request_path_cost.v1",
+  "measured_at": "2026-09-24T19:40:00.000Z",
+  "grounded_at": "c61afa433",
+  "canary_meeting_id": "meeting:community_board:cs10-static-read-meeting",
+  "method": "Local median of five warm JSON.parse + meetingGetFromModel runs against the committed shared meeting read model shaped as the daily hearings view (rows duplicated onto read_model and hearings) versus the published one-month route slice for the live MCP static-read meeting id.",
+  "before": {
+    "path": "parse hearings:location-shaped blob then meetingGetFromModel",
+    "input_bytes": 26303295,
+    "median_ms": 35.73
+  },
+  "after": {
+    "path": "parse published meetings route slice then meetingGetFromModel",
+    "input_bytes": 12554,
+    "median_ms": 0.03
+  },
+  "reduction": {
+    "input_bytes_ratio": 2095.2,
+    "median_ms_ratio": 1191.0
+  }
+}
