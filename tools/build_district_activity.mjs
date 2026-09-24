@@ -32,6 +32,7 @@ const PATHS = {
   property: join(ROOT, "site/data/property_domain_observations.json"),
   meetings: join(ROOT, "site/data/shared_meeting_read_model.json"),
   meetingLocations: join(ROOT, "site/data/meetings_domain_observations.json"),
+  meetingGeographyBackfill: join(ROOT, "site/data/meeting-geography-backfill"),
   communityBoardGeography: join(ROOT, "site/data/community_board_geography_lookup.json"),
   rules: join(ROOT, "site/data/rules_domain_observations.json"),
   // Prefer densified money domain observations (OCP awards + open RFPs with
@@ -45,6 +46,21 @@ const PATHS = {
 function loadJson(path) {
   if (!existsSync(path)) return null;
   return JSON.parse(readFileSync(path, "utf8"));
+}
+
+function loadMeetingGeographyBackfill(publicDir) {
+  if (!publicDir || !existsSync(publicDir)) return null;
+  const pointer = loadJson(join(publicDir, "ACTIVE"));
+  const outcomes = loadJson(join(publicDir, "per-id-outcomes.json"));
+  const generation = pointer?.active_generation || null;
+  const projection = generation
+    ? loadJson(join(publicDir, generation, "projection.json"))
+    : null;
+  return {
+    pointer,
+    outcomes: Array.isArray(outcomes?.outcomes) ? outcomes.outcomes : [],
+    projection,
+  };
 }
 
 function loadInputs() {
@@ -69,17 +85,31 @@ function loadInputs() {
   const money = loadJson(PATHS.money) || loadJson(PATHS.moneyFallback);
   const contractActions = loadJson(PATHS.contractActions);
   const mandateBacklinksLookup = loadJson(PATHS.mandateBacklinks);
+  const meetingGeographyBackfill = loadMeetingGeographyBackfill(PATHS.meetingGeographyBackfill);
 
   const locationByRequestId = new Map((meetingLocations?.rows || [])
     .filter((row) => row?.request_id)
     .map((row) => [String(row.request_id), row.affected_area || null]));
+  const membershipByMeetingId = new Map();
+  for (const outcome of meetingGeographyBackfill?.outcomes || []) {
+    if (outcome?.meeting_id && Array.isArray(outcome.memberships) && outcome.memberships.length) {
+      membershipByMeetingId.set(String(outcome.meeting_id), outcome.memberships);
+    }
+  }
   const meetingRows = (meetings?.rows || []).map((row) => {
     const fallback = locationByRequestId.get(String(row?.request_id || ""));
     const current = row?.affected_area;
-    if (current?.scope !== "unlocated" || current?.unlocated_reason || !fallback?.unlocated_reason) {
-      return row;
+    let next = row;
+    if (current?.scope === "unlocated" && !current?.unlocated_reason && fallback?.unlocated_reason) {
+      next = { ...row, affected_area: { ...current, unlocated_reason: fallback.unlocated_reason } };
     }
-    return { ...row, affected_area: { ...current, unlocated_reason: fallback.unlocated_reason } };
+    // Prefer row-stamped memberships; fall back to the activated backfill
+    // projection so district activity stays precomputed without per-request work.
+    if (!(Array.isArray(next?.location_memberships) && next.location_memberships.length)) {
+      const memberships = membershipByMeetingId.get(String(next?.meeting_id || ""));
+      if (memberships) next = { ...next, location_memberships: memberships };
+    }
+    return next;
   });
 
   return {
@@ -89,6 +119,7 @@ function loadInputs() {
     propertyRows: Array.isArray(property?.property_rows) ? property.property_rows : [],
     meetingsRows: meetingRows,
     communityBoardGeography,
+    recordLocationMemberships: meetingGeographyBackfill?.projection || null,
     rulesRows: Array.isArray(rules?.rows) ? rules.rows : [],
     moneyRows: Array.isArray(money?.rows) ? money.rows : [],
     contractActionRows: Array.isArray(contractActions?.rows) ? contractActions.rows : [],

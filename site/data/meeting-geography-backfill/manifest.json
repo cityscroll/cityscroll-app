@@ -1,0 +1,35 @@
+{
+  "schema": "cityscroll.meeting_geography_backfill_manifest.v1",
+  "generation": "gen-cfcb6c2fbc90-2026-09-24",
+  "built_at": "2026-09-24T21:32:26.114Z",
+  "source_generation_hash": "cfcb6c2fbc90e17beaefe2e6041ef8173ccbcd96d8444e35086642278f5477df",
+  "shared_meeting_schema": "cityscroll.shared_meeting_read_model.v1",
+  "shared_meeting_generated_at": "2026-09-09T06:52:08.255Z",
+  "candidate_input": {
+    "canonical_meeting_count": 792,
+    "address_bearing_rows": 329,
+    "distinct_address_strings": 137
+  },
+  "counts": {
+    "input_rows": 792,
+    "processed_rows": 792,
+    "newly_processed": 792,
+    "resumed_unchanged": 0,
+    "address_bearing_rows": 329,
+    "distinct_address_strings": 137,
+    "by_outcome": {
+      "physical_venue": 31,
+      "subject": 1,
+      "broad_jurisdiction": 281,
+      "virtual": 63,
+      "no_source_address": 203,
+      "unresolved_evidence": 213
+    }
+  },
+  "positive_record": {
+    "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+    "expected_nta2020": "BK1403",
+    "expected_role": "venue"
+  },
+  "active_generation": "gen-cfcb6c2fbc90-2026-09-24"
+}
