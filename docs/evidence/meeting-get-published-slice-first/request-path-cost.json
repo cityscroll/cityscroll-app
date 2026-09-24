@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.meeting_get_request_path_cost.v1",
   "measured_at": "2026-09-24T19:40:00.000Z",
-  "grounded_at": "c61afa433",
+  "grounded_at": "01db2c4aa",
   "canary_meeting_id": "meeting:community_board:cs10-static-read-meeting",
   "method": "Local median of five warm JSON.parse + meetingGetFromModel runs against the committed shared meeting read model shaped as the daily hearings view (rows duplicated onto read_model and hearings) versus the published one-month route slice for the live MCP static-read meeting id.",
   "before": {
