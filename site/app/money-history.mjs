@@ -1136,11 +1136,12 @@ function renderDetail(r, chain, stats, loadContext = true){
   $("#detail").innerHTML = html;
   const pursuitHost = $("#detail")?.querySelector?.("[data-pursuit-controls]");
   if (pursuitHost) {
-    if (typeof document !== "undefined" && !document.querySelector('link[data-route-style="procurement_pursuit_controls.css"]')) {
+    const stylesheetPath = "procurement_pursuit_controls.css";
+    if (typeof document !== "undefined" && !document.querySelector(`link[data-route-style="${stylesheetPath}"]`)) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = "procurement_pursuit_controls.css";
-      link.dataset.routeStyle = "procurement_pursuit_controls.css";
+      link.href = stylesheetPath;
+      link.dataset.routeStyle = stylesheetPath;
       document.head.appendChild(link);
     }
     bindPursuitControls(pursuitHost);
