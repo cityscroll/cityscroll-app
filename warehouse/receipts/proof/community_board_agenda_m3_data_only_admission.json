@@ -1,0 +1,15 @@
+{
+  "schema": "cityscroll.community_board_agenda_m3_data_only_admission.v1",
+  "admission": "data_config_only",
+  "meeting_key": "m3",
+  "untimed_support_origin": "m3_brief",
+  "note": "Untimed agenda-ol handling was introduced in the prior generalization commit because this brief needs it. This commit only admits the M3 observation through fixture/manifest/materialized data so the addition property is data/configuration-only, not a blind hold-out for the parser.",
+  "code_paths_unchanged_by_m3_admission": [
+    "warehouse/lib/community_board_hearing_context.mjs",
+    "tools/acquire_community_board_hearing_context.mjs",
+    "tools/build_community_board_hearing_context.mjs",
+    "site/community_board_hearing_context.mjs"
+  ],
+  "fixture": "warehouse/fixtures/community-board-hearing-context/m3.json",
+  "observed_at": "2026-09-24T12:30:00.000Z"
+}

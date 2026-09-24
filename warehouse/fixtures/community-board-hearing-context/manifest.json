@@ -23,6 +23,17 @@
       "segment_count": 2,
       "document_count": 0,
       "has_previous_cycle": false
+    },
+    {
+      "meeting_key": "m3",
+      "board_id": "brooklyn-cb-14",
+      "fixture": "m3.json",
+      "sha256": "04625980c0ec147d7051d946e656a7d042728809fe970f15079618698744a117",
+      "observed_at": "2026-09-24T12:30:00.000Z",
+      "hearing_date": "2026-09-23",
+      "segment_count": 4,
+      "document_count": 0,
+      "has_previous_cycle": false
     }
   ]
 }
