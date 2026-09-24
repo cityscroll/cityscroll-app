@@ -493,6 +493,7 @@
 /site/following_view.mjs
 /site/franchise_notice.mjs
 /site/franchise_phase_spine.mjs
+/site/geography_address_entry.mjs
 /site/geography_crosswalk_artifacts.mjs
 /site/geography_navigation_capability.mjs
 /site/geography_navigation_entry.mjs
