@@ -44,32 +44,41 @@ function model(rows = [meeting]) {
   };
 }
 
-function publishedKv(sharedModel, extra = {}) {
+function publishedStore(sharedModel, { includeDailyView = false, forceSliceMiss = false } = {}) {
   const built = buildMeetings(sharedModel, "test-published-slice-first");
   const values = new Map(built.entries.map((entry) => [entry.key, entry.value]));
-  values.set(MEETING_MANIFEST_KEY, JSON.stringify(built.manifest));
-  for (const [key, value] of Object.entries(extra)) values.set(key, value);
+  const manifest = forceSliceMiss
+    ? { ...built.manifest, slices: {}, id_to_slice: {} }
+    : built.manifest;
+  values.set(MEETING_MANIFEST_KEY, JSON.stringify(manifest));
+  if (includeDailyView) values.set(HEARINGS_KV_KEY, JSON.stringify(sharedModel));
+  const expectedSliceKey = built.manifest.id_to_slice?.[meeting.meeting_id] || null;
+  return { values, expectedSliceKey, manifest: built.manifest };
+}
+
+function instrumentedEnv(values, { forbidDailyView = false } = {}) {
+  const got = [];
   return {
-    ALERT_STATE: {
-      get: async (key) => values.get(key) ?? null,
+    got,
+    env: {
+      ALERT_STATE: {
+        get: async (key) => {
+          got.push(key);
+          if (forbidDailyView && key === HEARINGS_KV_KEY) {
+            throw new Error("daily hearings blob must not be read when the published slice answers");
+          }
+          return values.get(key) ?? null;
+        },
+      },
     },
   };
 }
 
 test("exact get_meeting reads the published per-id slice and skips the daily hearings blob", async () => {
-  const built = publishedKv(model());
-  const got = [];
-  const env = {
-    ALERT_STATE: {
-      get: async (key) => {
-        got.push(key);
-        if (key === HEARINGS_KV_KEY) {
-          throw new Error("daily hearings blob must not be read when the published slice answers");
-        }
-        return built.ALERT_STATE.get(key);
-      },
-    },
-  };
+  const shared = model();
+  const { values, expectedSliceKey } = publishedStore(shared, { includeDailyView: true });
+  assert.ok(expectedSliceKey, "fixture must publish a per-id slice key");
+  const { got, env } = instrumentedEnv(values, { forbidDailyView: true });
   const started = performance.now();
   const result = await workerMeetingGet(env).execute({ meetingId: meeting.meeting_id });
   const elapsedMs = performance.now() - started;
@@ -82,6 +91,63 @@ test("exact get_meeting reads the published per-id slice and skips the daily hea
     `published meeting slice must be consulted (got ${JSON.stringify(got)})`,
   );
   assert.ok(elapsedMs < 50, `published-slice get_meeting took ${elapsedMs.toFixed(1)}ms`);
+});
+
+test("happy-path get_meeting is bounded to the published manifest and one per-id slice", async () => {
+  // Structural read bound: with the daily hearings blob present in KV, the
+  // request may touch only the meetings manifest and the single slice that
+  // owns the requested id. Reintroducing a full daily-view parse fails this.
+  const shared = model();
+  const { values, expectedSliceKey } = publishedStore(shared, { includeDailyView: true });
+  assert.equal(typeof expectedSliceKey, "string");
+  assert.match(expectedSliceKey, /^meetings:v1:/);
+  assert.ok(values.has(HEARINGS_KV_KEY), "daily view must be present so a regression can touch it");
+
+  const { got, env } = instrumentedEnv(values, { forbidDailyView: true });
+  const result = await workerMeetingGet(env).execute({ meetingId: meeting.meeting_id });
+  assert.equal(result.availability, "available");
+  assert.equal(result.meeting.meeting_id, meeting.meeting_id);
+
+  const uniqueKeys = [...new Set(got)];
+  assert.deepEqual(
+    uniqueKeys.sort(),
+    [MEETING_MANIFEST_KEY, expectedSliceKey].sort(),
+    `happy-path get_meeting must read only the meetings manifest and one per-id slice (got ${JSON.stringify(got)})`,
+  );
+  assert.equal(got.filter((key) => key === expectedSliceKey).length, 1);
+  assert.equal(got.includes(HEARINGS_KV_KEY), false);
+});
+
+test("slice-path and fallback-path envelopes match for the same meeting", async () => {
+  const shared = model();
+  const sliceStore = publishedStore(shared, { includeDailyView: true, forceSliceMiss: false });
+  const fallbackStore = publishedStore(shared, { includeDailyView: true, forceSliceMiss: true });
+
+  const sliceProbe = instrumentedEnv(sliceStore.values, { forbidDailyView: true });
+  const fallbackProbe = instrumentedEnv(fallbackStore.values);
+
+  const fromSlice = await workerMeetingGet(sliceProbe.env).execute({ meetingId: meeting.meeting_id });
+  const fromFallback = await workerMeetingGet(fallbackProbe.env).execute({ meetingId: meeting.meeting_id });
+
+  assert.equal(fromSlice.availability, "available");
+  assert.equal(fromFallback.availability, "available");
+  assert.equal(sliceProbe.got.includes(HEARINGS_KV_KEY), false);
+  assert.equal(fallbackProbe.got.includes(HEARINGS_KV_KEY), true);
+  assert.ok(
+    sliceProbe.got.some((key) => key.startsWith("meetings:v1:")),
+    "slice path must read a published meetings slice",
+  );
+  assert.equal(
+    fallbackProbe.got.some((key) => key.startsWith("meetings:v1:")),
+    false,
+    "forced slice miss must not invent a meetings slice read",
+  );
+
+  assert.deepEqual(
+    fromSlice,
+    fromFallback,
+    "published-slice get_meeting must preserve the fallback envelope for the same meeting",
+  );
 });
 
 test("get_meeting still falls back to the daily hearings view when no published slice exists", async () => {
