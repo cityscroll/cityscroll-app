@@ -79,6 +79,21 @@ test("meeting-retention read-back records A4 observed venue, date, source, and u
   assert.ok(profileReads.length >= 2);
   assert.ok(detailReads.length >= 2);
 
+  function assertLayoutObservation(row) {
+    const layout = row.served_values?.layout;
+    assert.ok(layout && typeof layout === "object", `${row.name} must retain layout`);
+    assert.equal(layout.viewport_inner_width, row.viewport.width);
+    assert.equal(typeof layout.document_client_width, "number");
+    assert.equal(typeof layout.document_scroll_width, "number");
+    assert.equal(typeof layout.document_scroll_height, "number");
+    assert.equal(typeof layout.horizontal_overflow_px, "number");
+    assert.ok(layout.focus_bounding_box && typeof layout.focus_bounding_box === "object");
+    for (const key of ["x", "y", "width", "height", "visible"]) {
+      assert.ok(key in layout.focus_bounding_box, `${row.name} focus box missing ${key}`);
+    }
+    assert.ok(layout.title_bounding_box && typeof layout.title_bounding_box === "object");
+  }
+
   for (const row of profileReads) {
     const values = row.served_values;
     assert.ok(values && typeof values === "object", `${row.name} must carry served_values`);
@@ -88,6 +103,7 @@ test("meeting-retention read-back records A4 observed venue, date, source, and u
     if (values.constellation_recent_includes_retained_meeting === true) {
       assert.equal(values.constellation_recent_retained_meeting_date, MEETING_DATE);
     }
+    assertLayoutObservation(row);
     assert.equal("result" in values, false);
     assert.equal("pass" in values, false);
   }
@@ -104,9 +120,38 @@ test("meeting-retention read-back records A4 observed venue, date, source, and u
     assert.equal(values.official_source_url, OFFICIAL_SOURCE);
     assert.equal(values.official_source_shown, true);
     assert.equal(values.cancelled_marker, false);
+    assertLayoutObservation(row);
     assert.equal("result" in values, false);
     assert.equal("pass" in values, false);
   }
+
+  const detailDesktop = detailReads.find((row) => row.viewport?.width === 1440);
+  const detailMobile = detailReads.find((row) => row.viewport?.width === 390);
+  assert.ok(detailDesktop && detailMobile, "detail reads must cover 1440 and 390");
+  assert.notDeepEqual(
+    detailDesktop.served_values.layout,
+    detailMobile.served_values.layout,
+    "detail layout observations must differ across widths",
+  );
+  assert.notEqual(
+    detailDesktop.sha256,
+    detailMobile.sha256,
+    "detail digests must differ across widths",
+  );
+
+  const profileDesktop = profileReads.find((row) => row.viewport?.width === 1440);
+  const profileMobile = profileReads.find((row) => row.viewport?.width === 390);
+  assert.ok(profileDesktop && profileMobile, "profile reads must cover 1440 and 390");
+  assert.notDeepEqual(
+    profileDesktop.served_values.layout,
+    profileMobile.served_values.layout,
+    "profile layout observations must differ across widths",
+  );
+  assert.notEqual(
+    profileDesktop.sha256,
+    profileMobile.sha256,
+    "profile digests must differ across widths",
+  );
 });
 
 test("meeting-retention production-read stays aligned with the A4 read-back", () => {

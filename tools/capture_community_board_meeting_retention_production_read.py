@@ -6,8 +6,12 @@ served text for the Brooklyn CB14 September 14 meeting detail after the
 upcoming calendar has moved past it — observed values only, never a pass
 verdict.
 
-Commits textual receipts under docs/evidence/community-board-meeting-retention/.
-Optional screenshots stay under the task scratch directory.
+At each viewport (1440x900 and 390x844) the capture also retains width-
+dependent layout geometry (viewport metrics and key-element bounding boxes)
+so desktop and mobile rows differ as checkable textual observations. Digests
+cover that layout evidence. Image binaries stay under the task scratch
+directory; only textual receipts are committed under
+docs/evidence/community-board-meeting-retention/.
 """
 
 from __future__ import annotations
@@ -234,6 +238,77 @@ def normalize_ws(value: str) -> str:
     return re.sub(r"\s+", " ", (value or "").strip())
 
 
+def observe_width_dependent_layout(page, *, focus_selector: str) -> dict:
+    """Measure viewport-dependent geometry retained in the committed packet.
+
+    HTML digests alone are width-independent for this static page. Record
+    bounding boxes and scroll metrics so desktop and mobile rows differ as
+    observed facts (no pass/fail verdict).
+    """
+    layout = page.evaluate(
+        """(focusSelector) => {
+          const doc = document.documentElement;
+          const boxOf = (el) => {
+            if (!el) return null;
+            const r = el.getBoundingClientRect();
+            return {
+              x: Math.round(r.x * 10) / 10,
+              y: Math.round(r.y * 10) / 10,
+              width: Math.round(r.width * 10) / 10,
+              height: Math.round(r.height * 10) / 10,
+              visible: r.width > 0 && r.height > 0
+                && r.bottom > 0
+                && r.right > 0
+                && r.top < window.innerHeight
+                && r.left < window.innerWidth,
+            };
+          };
+          const focus = document.querySelector(focusSelector);
+          const title = document.querySelector('main h1, h1');
+          let title_wrapped = null;
+          if (title) {
+            const cs = window.getComputedStyle(title);
+            const parsedLine = Number.parseFloat(cs.lineHeight);
+            const lineHeight = Number.isFinite(parsedLine)
+              ? parsedLine
+              : (Number.parseFloat(cs.fontSize) || 16) * 1.2;
+            title_wrapped = title.getBoundingClientRect().height > lineHeight * 1.5;
+          }
+          return {
+            viewport_inner_width: window.innerWidth,
+            viewport_inner_height: window.innerHeight,
+            document_client_width: doc.clientWidth,
+            document_scroll_width: doc.scrollWidth,
+            document_scroll_height: doc.scrollHeight,
+            horizontal_overflow_px: Math.max(0, doc.scrollWidth - window.innerWidth),
+            focus_selector: focusSelector,
+            focus_bounding_box: boxOf(focus),
+            title_bounding_box: boxOf(title),
+            title_wrapped: title_wrapped,
+          };
+        }""",
+        focus_selector,
+    )
+    if not isinstance(layout, dict):
+        raise AssertionError("width-dependent layout probe returned a non-object")
+    if layout.get("viewport_inner_width") is None:
+        raise AssertionError("width-dependent layout missing viewport_inner_width")
+    if not isinstance(layout.get("focus_bounding_box"), dict):
+        raise AssertionError(
+            f"width-dependent layout missing focus box for {focus_selector!r}"
+        )
+    return layout
+
+
+def digest_width_dependent_observation(layout: dict, html: str) -> str:
+    """Digest retained width-dependent evidence so both-width rows are checkable."""
+    payload = {
+        "html_sha256": sha256_text(html),
+        "layout": layout,
+    }
+    return sha256_text(json.dumps(payload, sort_keys=True, ensure_ascii=False))
+
+
 def data_vintage_from_board(page) -> str | None:
     for attr in (
         "data-generated-at",
@@ -336,7 +411,15 @@ def capture_profile(
     )
 
     body_text = normalize_ws(page.locator("body").inner_text())
-    digest = sha256_text(page.content())
+    html = page.content()
+    # Geometry of the retained September 14 detail link at this viewport.
+    layout = observe_width_dependent_layout(
+        page,
+        focus_selector=(
+            f'a[href="{DETAIL_ROUTE}"], a[href*="september-2026-board-meeting"]'
+        ),
+    )
+    digest = digest_width_dependent_observation(layout, html)
 
     SCRATCH.mkdir(parents=True, exist_ok=True)
     page.screenshot(
@@ -380,6 +463,8 @@ def capture_profile(
         "constellation_recent_includes_retained_meeting": constellation_present,
         "constellation_recent_retained_meeting_date": constellation_date,
         "constellation_recent_retained_row_text": constellation.get("retained_row_text"),
+        # Width-dependent layout observation retained in the packet.
+        "layout": layout,
     }
     if "result" in served_values or "pass" in served_values:
         raise AssertionError("served_values must not carry a pass verdict")
@@ -444,7 +529,14 @@ def capture_detail(page, base: str, width: int, height: int, rev: str) -> dict:
     date_shown = MEETING_DATE in html or "September 14" in body_text or "Sep 14" in body_text
     cancelled_marker = 'data-meeting-cancelled="1"' in html
 
-    digest = sha256_text(html)
+    # Prefer a key on-page fact element for geometry (venue, else official source).
+    focus_selector = (
+        '[data-meeting-venue], [itemprop="location"], .meeting-venue, '
+        '[data-field="venue"], [data-field="address"], '
+        f'a[href="{OFFICIAL_SOURCE}"], a[href*="cb14brooklyn.com/meeting/september-2026"]'
+    )
+    layout = observe_width_dependent_layout(page, focus_selector=focus_selector)
+    digest = digest_width_dependent_observation(layout, html)
     SCRATCH.mkdir(parents=True, exist_ok=True)
     page.screenshot(
         path=str(SCRATCH / f"cb14-detail-{width}x{height}.png"),
@@ -463,6 +555,8 @@ def capture_detail(page, base: str, width: int, height: int, rev: str) -> dict:
         "official_source_shown": official_source_shown,
         "cancelled_marker": bool(cancelled_marker),
         "http_path": DETAIL_ROUTE,
+        # Width-dependent layout observation retained in the packet.
+        "layout": layout,
     }
     if not venue_shown:
         raise AssertionError("served detail does not show 1625 Ocean Avenue")
@@ -573,11 +667,13 @@ def build_manifest(receipt: dict) -> dict:
         "image_binaries_committed": False,
         "image_policy": (
             "Screenshots may exist under the local task scratch directory; "
-            "only this manifest is committed."
+            "image binaries are not committed. Width-dependent layout geometry "
+            "is retained as textual observations on each capture row."
         ),
         "note": (
             "Production desktop/mobile receipts for the Brooklyn CB14 September 14 "
-            "retained meeting detail after the upcoming calendar moved on."
+            "retained meeting detail after the upcoming calendar moved on, including "
+            "per-viewport layout geometry so both widths are independently checkable."
         ),
         "verifier": (
             "node --test test/community_board_meeting_retention_production_read.test.mjs"
@@ -612,6 +708,41 @@ def validate(receipt: dict) -> None:
     detail_reads = [row for row in reads if row.get("route") == DETAIL_ROUTE]
     if len(profile_reads) < 2 or len(detail_reads) < 2:
         raise AssertionError("A4 requires profile and detail reads at both widths")
+    def require_layout(row: dict) -> dict:
+        values = row.get("served_values") or {}
+        layout = values.get("layout")
+        if not isinstance(layout, dict):
+            raise AssertionError(
+                f"{row.get('name')}: missing retained width-dependent layout observation"
+            )
+        for key in (
+            "viewport_inner_width",
+            "viewport_inner_height",
+            "document_client_width",
+            "document_scroll_width",
+            "document_scroll_height",
+            "horizontal_overflow_px",
+            "focus_selector",
+            "focus_bounding_box",
+            "title_bounding_box",
+        ):
+            if key not in layout:
+                raise AssertionError(f"{row.get('name')}: layout missing {key}")
+        box = layout.get("focus_bounding_box")
+        if not isinstance(box, dict) or not all(
+            k in box for k in ("x", "y", "width", "height", "visible")
+        ):
+            raise AssertionError(
+                f"{row.get('name')}: focus_bounding_box must record x/y/width/height/visible"
+            )
+        expected_width = (row.get("viewport") or {}).get("width")
+        if layout.get("viewport_inner_width") != expected_width:
+            raise AssertionError(
+                f"{row.get('name')}: layout viewport_inner_width "
+                f"{layout.get('viewport_inner_width')!r} != capture width {expected_width!r}"
+            )
+        return layout
+
     for row in detail_reads:
         values = row.get("served_values") or {}
         if not values.get("venue_shown"):
@@ -624,6 +755,7 @@ def validate(receipt: dict) -> None:
             raise AssertionError(f"{row.get('name')}: scheduled date missing")
         if values.get("cancelled_marker"):
             raise AssertionError(f"{row.get('name')}: cancelled marker present")
+        require_layout(row)
         if "result" in values or "pass" in values:
             raise AssertionError("A4 served_values must not carry a pass verdict")
     for row in profile_reads:
@@ -647,8 +779,31 @@ def validate(receipt: dict) -> None:
                     f"{row.get('name')}: constellation recent row must display "
                     f"{MEETING_DATE}"
                 )
+        require_layout(row)
         if "result" in values or "pass" in values:
             raise AssertionError("A4 served_values must not carry a pass verdict")
+
+    def by_width(rows: list[dict], width: int) -> dict | None:
+        for row in rows:
+            if (row.get("viewport") or {}).get("width") == width:
+                return row
+        return None
+
+    for label, rows in (("detail", detail_reads), ("profile", profile_reads)):
+        desktop = by_width(rows, 1440)
+        mobile = by_width(rows, 390)
+        if desktop is None or mobile is None:
+            raise AssertionError(f"A4 requires {label} reads at 1440 and 390")
+        desktop_layout = (desktop.get("served_values") or {}).get("layout")
+        mobile_layout = (mobile.get("served_values") or {}).get("layout")
+        if desktop_layout == mobile_layout:
+            raise AssertionError(
+                f"A4 {label} layout observations must differ across desktop and mobile"
+            )
+        if desktop.get("sha256") == mobile.get("sha256"):
+            raise AssertionError(
+                f"A4 {label} capture digests must differ across desktop and mobile"
+            )
 
 
 def assert_canonical_json(path: Path) -> None:
