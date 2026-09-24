@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/address-entry-parcel-geography",
+  "status": "implemented",
+  "fingerprint": "address-entry-parcel-geography.v1",
+  "updated_at": "2026-09-24T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "geography-address-entry-adapter",
+      "path": "site/geography_address_entry.mjs"
+    },
+    {
+      "id": "address-entry-parcel-geography-verify-test",
+      "path": "test/address_entry_parcel_geography.test.mjs"
+    },
+    {
+      "id": "address-entry-parcel-geography-capture",
+      "path": "docs/evidence/address-entry-parcel-geography/capture-manifest.json"
+    },
+    {
+      "id": "address-entry-parcel-geography-capture-tool",
+      "path": "tools/capture_address_entry_parcel_geography.py"
+    }
+  ]
+}

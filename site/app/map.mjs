@@ -51,12 +51,12 @@ import neighborhoodGazetteer from "../data/neighborhood_gazetteer.json" with { t
 import { GEOGRAPHY_NAVIGATION_LAYER_TYPES } from "../geography_navigation_capability.mjs";
 import {
   geographyEntryUnavailableApiResult,
-  resolveGeographyEntryFromAddressAsync,
   resolveGeographyEntryFromGeolocation,
   resolveGeographyEntryFromGeolocationError,
   resolveGeographyEntryFromMapClick,
   resolveGeographyEntryFromPlaceLabel,
 } from "../geography_navigation_entry.mjs";
+import { resolveGeographyAddressEntry } from "../geography_address_entry.mjs";
 import {
   buildSelectedGeographyOverlapViewModel,
   loadCrosswalkRowsForSelection,
@@ -66,7 +66,6 @@ import {
   restoreOverlapInvokerFocus,
 } from "../geography_navigation_overlap_ui.mjs";
 import { loadCivicGeographyLayer } from "../civic_geography.mjs";
-import { geocodeAddressText } from "../address_geocoder.mjs";
 
 const root = document.querySelector("[data-near-you-root]");
 let geographyMapController = null;
@@ -394,7 +393,13 @@ function geographyEntryStatusMessage(entry) {
   if (reason === "geolocation_timeout") return copy("messageLocationTimeout") || entry.recovery.message;
   if (reason === "outside_covered_land") return copy("messageLocationOutside") || entry.recovery.message;
   if (reason === "lookup_failure") return copy("messageLocationLookupFailed") || entry.recovery.message;
-  if (reason === "no_result" || reason === "empty_query" || reason === "ambiguous_place_label") {
+  if (
+    reason === "no_result"
+    || reason === "empty_query"
+    || reason === "ambiguous_place_label"
+    || reason === "ambiguous_address"
+    || reason === "parcel_geography_unavailable"
+  ) {
     return entry.recovery?.message || copy("messageLocationUnmatched");
   }
   return entry.recovery?.message || copy("messageLocationUnmatched");
@@ -531,14 +536,16 @@ function wireForms() {
         try {
           const layerData = await loadGeographyEntryLayers();
           let entry = resolveGeographyEntryFromPlaceLabel(query, { layerData });
+          let ephemeralPoint = null;
           if (!entry.ok) {
-            entry = await resolveGeographyEntryFromAddressAsync(query, {
-              layerData,
-              geocode: geocodeAddressText,
-            });
+            // PAD BBL + one parcel-geography shard → shared entry result.
+            // Coordinates stay beside the entry for an optional marker only.
+            const resolved = await resolveGeographyAddressEntry(query, { layerData });
+            entry = resolved.entry;
+            ephemeralPoint = resolved.ephemeralPoint || null;
           }
           if (entry.ok) {
-            await adoptGeographyEntrySelection(entry);
+            await adoptGeographyEntrySelection(entry, { ephemeralPoint });
             return;
           }
           status(geographyEntryStatusMessage(entry));

@@ -45,6 +45,13 @@ export const GEOGRAPHY_ENTRY_RECOVERY = Object.freeze({
   LOOKUP_FAILURE: "lookup_failure",
   EMPTY_QUERY: "empty_query",
   AMBIGUOUS_PLACE_LABEL: "ambiguous_place_label",
+  /** Exact house/street matched more than one borough or ZIP; ask for refinement. */
+  AMBIGUOUS_ADDRESS: "ambiguous_address",
+  /**
+   * PAD found a parcel, but stored coordinate/membership data is missing.
+   * Offer place selection rather than inventing a neighborhood.
+   */
+  PARCEL_GEOGRAPHY_UNAVAILABLE: "parcel_geography_unavailable",
 });
 
 /**
@@ -68,6 +75,10 @@ export const GEOGRAPHY_ENTRY_RECOVERY_COPY = Object.freeze({
     "Enter an address or place name to search.",
   [GEOGRAPHY_ENTRY_RECOVERY.AMBIGUOUS_PLACE_LABEL]:
     "Several places share that name. Choose the matching area from the list.",
+  [GEOGRAPHY_ENTRY_RECOVERY.AMBIGUOUS_ADDRESS]:
+    "That address appears in more than one area. Add a borough or ZIP, or choose an area from the list.",
+  [GEOGRAPHY_ENTRY_RECOVERY.PARCEL_GEOGRAPHY_UNAVAILABLE]:
+    "That address was found, but its neighborhood map is not available yet. Choose an area from the list.",
 });
 
 const LAYER_SET = new Set(GEOGRAPHY_NAVIGATION_LAYER_TYPES);
@@ -100,7 +111,7 @@ export function geographyEntryRecoveryCopy(reason) {
   return GEOGRAPHY_ENTRY_RECOVERY_COPY[key] || GEOGRAPHY_ENTRY_RECOVERY_COPY[GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE];
 }
 
-function recoveryResult(reason, { source = GEOGRAPHY_ENTRY_SOURCES.POINT } = {}) {
+export function geographyEntryRecoveryResult(reason, { source = GEOGRAPHY_ENTRY_SOURCES.POINT } = {}) {
   const message = geographyEntryRecoveryCopy(reason);
   return freezeDeep({
     schema: RESIDENT_GEOGRAPHY_ENTRY_SCHEMA,
@@ -124,6 +135,10 @@ function recoveryResult(reason, { source = GEOGRAPHY_ENTRY_SOURCES.POINT } = {})
       special_use_note: null,
     }),
   });
+}
+
+function recoveryResult(reason, options = {}) {
+  return geographyEntryRecoveryResult(reason, options);
 }
 
 function matchRecord(match, feature = null) {
@@ -636,6 +651,106 @@ export function resolveGeographyEntryFromPlaceLabel(query, {
     return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.AMBIGUOUS_PLACE_LABEL, { source });
   }
   return resultFromLabelMatch(hits[0], { source, layerData });
+}
+
+/**
+ * Convert a stored parcel-geography membership bundle into the shared entry
+ * result. Uses precomputed full-polygon memberships only — never re-runs
+ * point-in-polygon against display polygons. Coordinates stay off the result.
+ *
+ * @param {{ bbl?: string, memberships?: Record<string, { ids: string[], status: string, boundaryIds?: string[], vintage?: string|null }> }} membershipBundle
+ * @param {{ layerData?: object[], source?: string, pointMethod?: string|null }} [options]
+ */
+export function resolveGeographyEntryFromParcelMemberships(membershipBundle, {
+  layerData = [],
+  source = GEOGRAPHY_ENTRY_SOURCES.ADDRESS,
+  pointMethod = null,
+} = {}) {
+  if (!membershipBundle?.memberships || typeof membershipBundle.memberships !== "object") {
+    return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.PARCEL_GEOGRAPHY_UNAVAILABLE, { source });
+  }
+
+  const index = featureIndex(layerData);
+  const byType = Object.create(null);
+  for (const type of GEOGRAPHY_NAVIGATION_LAYER_TYPES) byType[type] = [];
+
+  const layerRows = [];
+  const ambiguousTypes = [];
+  const method = "parcel_membership";
+  const relation = "parcel_membership";
+
+  for (const type of GEOGRAPHY_NAVIGATION_LAYER_TYPES) {
+    const membership = membershipBundle.memberships[type];
+    if (!membership || typeof membership !== "object") continue;
+    const status = String(membership.status || "");
+    const ids = Array.isArray(membership.ids) ? membership.ids.map(String) : [];
+    const boundaryIds = new Set(
+      Array.isArray(membership.boundaryIds)
+        ? membership.boundaryIds.map(String)
+        : Array.isArray(membership.boundary_ids)
+          ? membership.boundary_ids.map(String)
+          : [],
+    );
+    const vintage = membership.vintage ?? null;
+
+    if (status === "matched" || status === "ambiguous_boundary") {
+      for (const id of ids) {
+        const feature = index.get(type)?.get(id) || null;
+        byType[type].push(matchRecord({
+          type,
+          id,
+          label: feature?.label || id,
+          class: feature?.class || null,
+          method: boundaryIds.has(id) ? "point_on_polygon_boundary" : method,
+          relation,
+          boundary_vintage: vintage,
+          source_id: feature?.source_id || null,
+          subtype: feature?.subtype ?? null,
+        }, feature));
+      }
+    }
+
+    layerRows.push(Object.freeze({
+      type,
+      status: status || "not_covered",
+      vintage,
+      match_count: byType[type].length,
+      point_method: pointMethod || null,
+    }));
+
+    if (
+      byType[type].length > 1
+      || status === "ambiguous_boundary"
+      || byType[type].some((row) => row.method === "point_on_polygon_boundary")
+    ) {
+      if (byType[type].length > 0) ambiguousTypes.push(type);
+    }
+    byType[type] = Object.freeze(byType[type]);
+  }
+
+  const bundle = freezeDeep({
+    by_type: byType,
+    layers: Object.freeze(layerRows),
+    ambiguous_types: Object.freeze(ambiguousTypes),
+    has_ambiguity: ambiguousTypes.length > 0,
+  });
+
+  if (!totalMatchCount(bundle)) {
+    return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.PARCEL_GEOGRAPHY_UNAVAILABLE, { source });
+  }
+
+  const choice = chooseSelected(bundle);
+  if (!choice.selected) {
+    return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.PARCEL_GEOGRAPHY_UNAVAILABLE, { source });
+  }
+
+  return successResult({
+    source,
+    bundle,
+    selected: choice.selected,
+    selectionPolicy: choice.selection_policy,
+    alternatives: choice.alternatives,
+  });
 }
 
 /**
