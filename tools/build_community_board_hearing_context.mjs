@@ -67,28 +67,20 @@ export function meetingForSource({ boardId, sourceUrl, index }) {
 }
 
 /**
- * One board's reading, joined to the register requests the passages name.
+ * One meeting's reading, joined to a published meeting identity.
  *
- * A passage or a disagreement whose tracking code is not in the retained
- * register is dropped rather than published: the surface it renders on lists
- * the requests from that same register, so a code with nothing behind it would
- * point a reader at a record the page cannot show them.
+ * Previous-cycle budget material is optional. When the observation carries
+ * none, the published agenda still joins; when it carries a worked example,
+ * that example must resolve in the retained register so the page never points
+ * at a request it cannot show.
  */
 export function buildBoard(observation, { registerDocument, meetingIndex }) {
   const boardId = observation.board_id;
-  const codes = new Set((registerDocument?.requests || []).map((request) => request.tracking_code));
   const meeting = meetingForSource({ boardId, sourceUrl: observation.hearing.source_url, index: meetingIndex });
   if (!meeting) throw new Error(`no published meeting for ${boardId} at ${observation.hearing.source_url}`);
-  if (!codes.has(observation.previous_cycle.worked_example_tracking_code)) {
-    throw new Error(`the worked example ${observation.previous_cycle.worked_example_tracking_code} is not in ${boardId}'s retained register`);
-  }
 
-  const previous = observation.previous_cycle;
-  const passages = previous.statement_passages.filter((passage) => codes.has(passage.tracking_code));
-  const disagreements = previous.response_source_disagreements.filter((row) => codes.has(row.tracking_code));
-  const documentsById = new Map(previous.documents.map((document) => [document.id, document]));
-
-  return {
+  const base = {
+    meeting_key: observation.meeting_key || null,
     board_id: boardId,
     board_name: observation.board_name,
     publisher: observation.publisher,
@@ -102,6 +94,22 @@ export function buildBoard(observation, { registerDocument, meetingIndex }) {
       segments: observation.hearing.segments,
       participation: observation.hearing.participation,
     },
+  };
+
+  const previous = observation.previous_cycle;
+  if (!previous) return base;
+
+  const codes = new Set((registerDocument?.requests || []).map((request) => request.tracking_code));
+  if (!codes.has(previous.worked_example_tracking_code)) {
+    throw new Error(`the worked example ${previous.worked_example_tracking_code} is not in ${boardId}'s retained register`);
+  }
+
+  const passages = previous.statement_passages.filter((passage) => codes.has(passage.tracking_code));
+  const disagreements = previous.response_source_disagreements.filter((row) => codes.has(row.tracking_code));
+  const documentsById = new Map(previous.documents.map((document) => [document.id, document]));
+
+  return {
+    ...base,
     previous_cycle: {
       fiscal_year: previous.fiscal_year,
       worked_example_tracking_code: previous.worked_example_tracking_code,
@@ -159,8 +167,8 @@ export function buildArtifact({ root = ROOT } = {}) {
   });
   return {
     schema: HEARING_CONTEXT_SCHEMA,
-    method: "published_agenda_with_previous_cycle_context_v1",
-    negative_rule: "A previous-cycle request and its published answer are the record of an earlier fiscal year. Neither is an item on the coming agenda, a commitment that the board will raise it again, funding, or delivery. A document retained here without usable extracted text has not been read, and a recorded vote to send a letter is not evidence of what the letter says.",
+    method: "published_agenda_with_optional_previous_cycle_context_v1",
+    negative_rule: "A previous-cycle request and its published answer are the record of an earlier fiscal year. Neither is an item on the coming agenda, a commitment that the board will raise it again, funding, or delivery. A document retained here without usable extracted text has not been read, and a recorded vote to send a letter is not evidence of what the letter says. An agenda-only reading carries no previous-cycle claim.",
     observed_at: manifest.observed_at,
     boards,
   };
@@ -170,7 +178,7 @@ export function writeCommunityBoardHearingContext({ check = false } = {}) {
   const artifact = buildArtifact();
   const text = serialize(artifact);
   const summary = artifact.boards
-    .map((board) => `${board.board_id}: ${board.hearing.segments.length} segment(s), ${board.previous_cycle.documents.length} document(s)`)
+    .map((board) => `${board.meeting_key || board.board_id}: ${board.hearing.segments.length} segment(s), ${board.previous_cycle?.documents?.length || 0} document(s)`)
     .join("; ");
 
   if (check) {

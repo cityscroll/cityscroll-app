@@ -1,10 +1,11 @@
 {
   "schema": "cityscroll.community_board_hearing_context.v1",
-  "method": "published_agenda_with_previous_cycle_context_v1",
-  "negative_rule": "A previous-cycle request and its published answer are the record of an earlier fiscal year. Neither is an item on the coming agenda, a commitment that the board will raise it again, funding, or delivery. A document retained here without usable extracted text has not been read, and a recorded vote to send a letter is not evidence of what the letter says.",
-  "observed_at": "2026-09-07T18:12:14.249Z",
+  "method": "published_agenda_with_optional_previous_cycle_context_v1",
+  "negative_rule": "A previous-cycle request and its published answer are the record of an earlier fiscal year. Neither is an item on the coming agenda, a commitment that the board will raise it again, funding, or delivery. A document retained here without usable extracted text has not been read, and a recorded vote to send a letter is not evidence of what the letter says. An agenda-only reading carries no previous-cycle claim.",
+  "observed_at": "2026-09-24T12:00:00.000Z",
   "boards": [
     {
+      "meeting_key": "m1",
       "board_id": "brooklyn-cb-14",
       "board_name": "Brooklyn Community Board 14",
       "publisher": "Brooklyn Community Board 14",
@@ -1305,6 +1306,57 @@
           "document_title": "Ratified minutes of the March 9, 2026 board meeting",
           "document_url": "https://cb14brooklyn.com/wp-content/uploads/2026/02/2026-03-09_Board-Meeting-Minutes_Addendum-ratified.pdf",
           "meeting_date": "2026-03-09"
+        }
+      }
+    },
+    {
+      "meeting_key": "m2",
+      "board_id": "brooklyn-cb-14",
+      "board_name": "Brooklyn Community Board 14",
+      "publisher": "Brooklyn Community Board 14",
+      "observed_at": "2026-09-24T12:00:00.000Z",
+      "hearing": {
+        "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+        "title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+        "promoted": true,
+        "meeting_date": "2026-09-09",
+        "time_zone": "America/New_York",
+        "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+        "source_sha256": "456a5e2c6e72c896a8303be7734fc472537f1886e224b7b821ad10d53a3ea182",
+        "segments": [
+          {
+            "order": 1,
+            "start_time": "18:30",
+            "kind": "public_hearing",
+            "title": "Public Hearing on 1584 Flatbush Avenue Rezoning",
+            "fiscal_year": null,
+            "budget_classes": [],
+            "detail": [
+              "ULURP No. C260315ZMK and N260316ZRK. A Zoning Map Amendment from C4-4A to C6-3 and a Zoning Text Amendment to Appendix F to map an MIH Area to facilitate a new 16-story plus cellar, 105,027 sq. ft. (9.95 FAR) mixed-use development including 9,544 sq. ft. of commercial use, 330 sq. ft. of community facility use, and 112 dwelling units (28 permanently income-restricted units pursuant to MIH Option 1) is being sought by 1584 Flatbush Avenue Partners LLC at 1584 Flatbush Avenue in the Flatbush neighborhood, Community District 14, Brooklyn. Representative: Richard Lobel, Esq., (212) 725-2727."
+            ]
+          },
+          {
+            "order": 2,
+            "start_time": "19:00",
+            "kind": "other",
+            "title": "Executive Committee Meeting",
+            "fiscal_year": null,
+            "budget_classes": [],
+            "detail": [
+              "CB14 Meeting Practices Review",
+              "Performance Review for District Manager",
+              "Other Business"
+            ]
+          }
+        ],
+        "participation": {
+          "speaking_registration_url": null,
+          "speaking_registration_heading": null,
+          "speaking_passages": [],
+          "written_testimony_passage": null,
+          "watch_urls": [],
+          "watch_heading": null
         }
       }
     }

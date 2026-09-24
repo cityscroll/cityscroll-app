@@ -1,15 +1,28 @@
 {
   "schema": "cityscroll.community_board_hearing_context_fixtures.v1",
-  "observed_at": "2026-09-07T18:12:14.249Z",
+  "observed_at": "2026-09-24T12:00:00.000Z",
   "boards": [
     {
+      "meeting_key": "m1",
       "board_id": "brooklyn-cb-14",
       "fixture": "brooklyn-cb-14.json",
-      "sha256": "e0cc32fa9e3768a3cdfa06fdad7d894a9a5feebf9d1ed981dcadd1d2f5d4bcc0",
+      "sha256": "08759c84e03814145611f0c8bebbe8a321a3197feb4cfa60246da82e80cc76f7",
       "observed_at": "2026-09-07T18:12:14.250Z",
       "hearing_date": "2026-09-14",
       "segment_count": 3,
-      "document_count": 5
+      "document_count": 5,
+      "has_previous_cycle": true
+    },
+    {
+      "meeting_key": "m2",
+      "board_id": "brooklyn-cb-14",
+      "fixture": "m2.json",
+      "sha256": "6bcc8f25cbdeca559611e97dd9378989a34b2dcb8058bb2e0437592d7254c627",
+      "observed_at": "2026-09-24T12:00:00.000Z",
+      "hearing_date": "2026-09-09",
+      "segment_count": 2,
+      "document_count": 0,
+      "has_previous_cycle": false
     }
   ]
 }

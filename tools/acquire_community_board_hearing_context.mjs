@@ -61,9 +61,10 @@ const serialize = (value) => `${JSON.stringify(value, null, 2)}\n`;
  *
  * The plan is deliberately explicit and small. A hearing preparation reading
  * is only worth publishing where someone has confirmed that the board prints
- * an agenda with times, publishes its budget documents, and ratifies minutes —
- * and confirming that is a person's judgement about a publisher, not something
- * to infer from a URL shape. Adding a board is adding an entry here.
+ * a parseable agenda — and confirming that is a person's judgement about a
+ * publisher, not something to infer from a URL shape. Adding a meeting is
+ * adding an entry here. Previous-cycle budget documents are optional: an
+ * agenda-only entry materializes segments without a worked budget example.
  *
  * Each document names the index page it must be linked from and the pattern
  * its address must match on that page. Both have to hold: the pattern alone
@@ -72,6 +73,7 @@ const serialize = (value) => `${JSON.stringify(value, null, 2)}\n`;
  */
 export const HEARING_CONTEXT_PLAN = Object.freeze([
   Object.freeze({
+    meeting_key: "m1",
     board_id: "brooklyn-cb-14",
     board_name: "Brooklyn Community Board 14",
     publisher: "Brooklyn Community Board 14",
@@ -150,6 +152,17 @@ export const HEARING_CONTEXT_PLAN = Object.freeze([
           meeting_date: "2026-03-09",
         }),
       ]),
+    }),
+  }),
+  Object.freeze({
+    meeting_key: "m2",
+    board_id: "brooklyn-cb-14",
+    board_name: "Brooklyn Community Board 14",
+    publisher: "Brooklyn Community Board 14",
+    time_zone: "America/New_York",
+    hearing: Object.freeze({
+      meeting_date: "2026-09-09",
+      source_url: "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
     }),
   }),
 ]);
@@ -276,18 +289,17 @@ function registerRequests(boardId, root = ROOT) {
   });
 }
 
-export async function acquireBoard(plan, context = acquisitionContext()) {
-  const observedAt = context.now().toISOString();
+function fixtureNameFor(plan) {
+  // Keep the original M1 filename stable so existing budget-backed evidence
+  // paths and reviews continue to resolve without a rename-only churn.
+  if (plan.meeting_key === "m1") return "brooklyn-cb-14.json";
+  return `${plan.meeting_key || plan.board_id}.json`;
+}
+
+async function acquirePreviousCycle(plan, context, observedAt) {
+  if (!plan.previous_cycle) return null;
   const requests = registerRequests(plan.board_id);
   const failures = [];
-
-  const meeting = await fetchDocument(plan.hearing.source_url, context);
-  if (!meeting.ok) throw new Error(`hearing page could not be read: ${meeting.error}`);
-  const meetingHtml = meeting.bytes.toString("utf8");
-  const segments = parseHearingAgendaSegments(meetingHtml);
-  if (!segments.length) throw new Error("the hearing page carries no agenda this reading can parse");
-  const participation = parseHearingParticipation(meetingHtml, plan.hearing.source_url);
-
   const indexes = new Map();
   for (const [name, url] of Object.entries(plan.previous_cycle.index_urls)) {
     const page = await fetchDocument(url, context);
@@ -374,7 +386,36 @@ export async function acquireBoard(plan, context = acquisitionContext()) {
     .sort((left, right) => left.tracking_code.localeCompare(right.tracking_code));
 
   return {
+    fiscal_year: plan.previous_cycle.fiscal_year,
+    worked_example_tracking_code: workedExampleCode,
+    register_request_count: requests.length,
+    documents,
+    document_failures: failures,
+    statement_passages: attached.sort((left, right) => left.tracking_code.localeCompare(right.tracking_code)),
+    statement_passages_unattached: unattached,
+    board_document_responses: Object.fromEntries(
+      [...new Set(registerResponses.map((row) => row.document_id))]
+        .map((id) => [id, registerResponses.filter((row) => row.document_id === id).length]),
+    ),
+    responses_compared: compared.length,
+    response_source_disagreements: disagreements,
+    ratified_resolution: ratifiedResolution,
+  };
+}
+
+export async function acquireBoard(plan, context = acquisitionContext()) {
+  const observedAt = context.now().toISOString();
+  const meeting = await fetchDocument(plan.hearing.source_url, context);
+  if (!meeting.ok) throw new Error(`hearing page could not be read: ${meeting.error}`);
+  const meetingHtml = meeting.bytes.toString("utf8");
+  const segments = parseHearingAgendaSegments(meetingHtml);
+  if (!segments.length) throw new Error("the hearing page carries no agenda this reading can parse");
+  const participation = parseHearingParticipation(meetingHtml, plan.hearing.source_url);
+  const previousCycle = await acquirePreviousCycle(plan, context, observedAt);
+
+  return {
     schema: HEARING_CONTEXT_OBSERVATION_SCHEMA,
+    meeting_key: plan.meeting_key || plan.board_id,
     board_id: plan.board_id,
     board_name: plan.board_name,
     publisher: plan.publisher,
@@ -387,27 +428,15 @@ export async function acquireBoard(plan, context = acquisitionContext()) {
       segments,
       participation,
     },
-    previous_cycle: {
-      fiscal_year: plan.previous_cycle.fiscal_year,
-      worked_example_tracking_code: workedExampleCode,
-      register_request_count: requests.length,
-      documents,
-      document_failures: failures,
-      statement_passages: attached.sort((left, right) => left.tracking_code.localeCompare(right.tracking_code)),
-      statement_passages_unattached: unattached,
-      board_document_responses: Object.fromEntries(
-        [...new Set(registerResponses.map((row) => row.document_id))]
-          .map((id) => [id, registerResponses.filter((row) => row.document_id === id).length]),
-      ),
-      responses_compared: compared.length,
-      response_source_disagreements: disagreements,
-      ratified_resolution: ratifiedResolution,
-    },
+    ...(previousCycle ? { previous_cycle: previousCycle } : {}),
   };
 }
 
-function fixturePath(boardId, context) {
-  return join(context.directory, `${boardId}.json`);
+function fixturePath(planOrObservation, context) {
+  const name = planOrObservation.meeting_key
+    ? `${planOrObservation.meeting_key}.json`
+    : `${planOrObservation.board_id}.json`;
+  return join(context.directory, name);
 }
 
 export async function acquireHearingContext(context = acquisitionContext()) {
@@ -420,16 +449,19 @@ export async function acquireHearingContext(context = acquisitionContext()) {
     const boards = [];
     for (const observation of observations) {
       const text = serialize(observation);
-      writeFileSync(fixturePath(observation.board_id, context), text);
-      written.push(observation.board_id);
+      const fixture = fixtureNameFor(observation);
+      writeFileSync(join(context.directory, fixture), text);
+      written.push(observation.meeting_key || observation.board_id);
       boards.push({
+        meeting_key: observation.meeting_key || observation.board_id,
         board_id: observation.board_id,
-        fixture: `${observation.board_id}.json`,
+        fixture,
         sha256: sha256(text),
         observed_at: observation.observed_at,
         hearing_date: observation.hearing.meeting_date,
         segment_count: observation.hearing.segments.length,
-        document_count: observation.previous_cycle.documents.length,
+        document_count: observation.previous_cycle?.documents?.length || 0,
+        has_previous_cycle: Boolean(observation.previous_cycle),
       });
     }
     const manifest = {
@@ -469,7 +501,7 @@ export async function acquireHearingContext(context = acquisitionContext()) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const { manifest } = await acquireHearingContext();
   for (const board of manifest.boards) {
-    console.log(`${board.board_id}: ${board.segment_count} agenda segment(s), ${board.document_count} document(s)`);
+    console.log(`${board.meeting_key || board.board_id}: ${board.segment_count} agenda segment(s), ${board.document_count} document(s)`);
   }
   console.log(`Retained under ${relative(ROOT, FIXTURE_DIRECTORY)}`);
 }

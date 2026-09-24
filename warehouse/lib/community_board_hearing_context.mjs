@@ -191,49 +191,117 @@ export function hearingParseBudgetClasses(value) {
 }
 
 /**
+ * Inner HTML of the first balanced `<ul class="… className …">` on the page.
+ *
+ * A non-greedy match to the first `</ul>` stops inside nested detail lists
+ * (for example `ul.agenda-text` under a timed heading). Counting open/close
+ * tags keeps the outer schedule list intact so later timed headings remain
+ * visible to the same parser path.
+ */
+function extractBalancedUlInner(page, className) {
+  const open = page.match(new RegExp(`<ul\\b[^>]*class="[^"]*\\b${className}\\b[^"]*"[^>]*>`, "i"));
+  if (!open) return null;
+  const start = open.index + open[0].length;
+  let depth = 1;
+  const rest = page.slice(start);
+  const tagRe = /<\/?ul\b[^>]*>/gi;
+  let match;
+  while ((match = tagRe.exec(rest))) {
+    if (/^<\/ul/i.test(match[0])) {
+      depth -= 1;
+      if (depth === 0) return rest.slice(0, match.index);
+    } else {
+      depth += 1;
+    }
+  }
+  return null;
+}
+
+/**
+ * Top-level `ol.agenda-ol` items when the page has no timed schedule-ul segments.
+ *
+ * Nested `agenda-ol` lists under a timed schedule heading are detail of that
+ * heading, not separate top-level segments. This path only runs when the timed
+ * schedule produced nothing, so an untimed board agenda still materializes
+ * through the same function rather than a second parser.
+ */
+function parseUntimedAgendaOlSegments(page) {
+  const open = page.match(/<ol\b[^>]*class="[^"]*\bagenda-ol\b[^"]*"[^>]*>/i);
+  if (!open) return [];
+  const start = open.index + open[0].length;
+  const close = page.slice(start).search(/<\/ol>/i);
+  if (close < 0) return [];
+  const inner = page.slice(start, start + close);
+  const segments = [];
+  for (const match of inner.matchAll(/<li\b[^>]*>([\s\S]*?)<\/li>/gi)) {
+    const title = hearingStripTags(match[1], 400);
+    if (!title) continue;
+    segments.push({
+      order: segments.length + 1,
+      start_time: null,
+      kind: segmentKind(title),
+      title,
+      fiscal_year: hearingParseFiscalYear(title),
+      budget_classes: hearingParseBudgetClasses(title),
+      detail: [],
+    });
+  }
+  return segments;
+}
+
+/**
  * The agenda segments a board published for one meeting.
  *
  * The board's agenda is an explicit list on the published page, so this reads
  * that list and nothing else. It does not infer a schedule from a meeting's
  * start and end time, and it does not split a title on prose it happens to
- * find elsewhere on the page: a segment exists here only because the publisher
- * wrote it as a segment, with a start time and a title on one line.
+ * find elsewhere on the page.
+ *
+ * Timed `schedule-ul` headings (clock time + title) are preferred. When that
+ * list yields no timed segments, top-level `agenda-ol` items are kept as
+ * untimed segments (`start_time` null). A schedule heading with no published
+ * time is still skipped rather than invented.
  */
 export function parseHearingAgendaSegments(html) {
   const page = stripScriptAndStyle(html);
-  const list = page.match(/<ul\b[^>]*class="[^"]*\bschedule-ul\b[^"]*"[^>]*>([\s\S]*?)<\/ul>\s*(?:<\/div>|<p\b)/i);
-  if (!list) return [];
+  const scheduleInner = extractBalancedUlInner(page, "schedule-ul");
   const segments = [];
-  // Each segment opens with the only emphasised run in its list item, so the
-  // emphasised runs are the segment boundaries. Splitting on list items
-  // instead would cut a segment away from its own sub-list, which is where
-  // the publisher writes the detail that belongs to it.
-  const headings = [...list[1].matchAll(/<strong\b[^>]*>([\s\S]*?)<\/strong>/gi)];
-  const items = headings.map((match, index) => ({
-    strong: match,
-    body: list[1].slice(match.index + match[0].length, index + 1 < headings.length ? headings[index + 1].index : list[1].length),
-  }));
-  for (const item of items) {
-    const heading = hearingStripTags(item.strong[1], 400);
-    const split = heading.match(/^(\d{1,2}(?::\d{2})?\s*[AaPp]\.?[Mm]\.?)\s*[–—-]\s*(.+)$/);
-    if (!split) continue;
-    const startTime = hearingParseClockTime(split[1]);
-    const title = hearingClean(split[2], 400);
-    if (!startTime || !title) continue;
-    const detail = [...item.body.matchAll(/<li\b[^>]*class="[^"]*\bagenda-text\b[^"]*"[^>]*>([\s\S]*?)<\/li>/gi)]
-      .map((match) => hearingStripTags(match[1], 1_200))
-      .filter(Boolean);
-    segments.push({
-      order: segments.length + 1,
-      start_time: startTime,
-      kind: segmentKind(title),
-      title,
-      fiscal_year: hearingParseFiscalYear(title),
-      budget_classes: hearingParseBudgetClasses(title),
-      detail,
-    });
+  if (scheduleInner) {
+    // Each segment opens with the only emphasised run in its list item, so the
+    // emphasised runs are the segment boundaries. Splitting on list items
+    // instead would cut a segment away from its own sub-list, which is where
+    // the publisher writes the detail that belongs to it.
+    const headings = [...scheduleInner.matchAll(/<strong\b[^>]*>([\s\S]*?)<\/strong>/gi)];
+    const items = headings.map((match, index) => ({
+      strong: match,
+      body: scheduleInner.slice(
+        match.index + match[0].length,
+        index + 1 < headings.length ? headings[index + 1].index : scheduleInner.length,
+      ),
+    }));
+    for (const item of items) {
+      const heading = hearingStripTags(item.strong[1], 400);
+      const split = heading.match(/^(\d{1,2}(?::\d{2})?\s*[AaPp]\.?[Mm]\.?)\s*[–—-]\s*(.+)$/);
+      if (!split) continue;
+      const startTime = hearingParseClockTime(split[1]);
+      const title = hearingClean(split[2], 400);
+      if (!startTime || !title) continue;
+      const detail = [...item.body.matchAll(/<li\b[^>]*(?:class="[^"]*\bagenda-text\b[^"]*")?[^>]*>([\s\S]*?)<\/li>/gi)]
+        .map((match) => hearingStripTags(match[1], 1_200))
+        .filter(Boolean);
+      segments.push({
+        order: segments.length + 1,
+        start_time: startTime,
+        kind: segmentKind(title),
+        title,
+        fiscal_year: hearingParseFiscalYear(title),
+        budget_classes: hearingParseBudgetClasses(title),
+        detail,
+      });
+    }
   }
-  return segments;
+  if (segments.length) return segments;
+  return parseUntimedAgendaOlSegments(page);
 }
 
 const SPEAKING_HEADING = /pre-?register to speak|register to speak/i;
