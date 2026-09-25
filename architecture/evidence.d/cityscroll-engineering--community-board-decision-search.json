@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/community-board-decision-search",
+  "status": "implemented",
+  "fingerprint": "community-board-decision-search.v1",
+  "updated_at": "2026-09-24T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "community-board-decision-search-producer",
+      "path": "site/community_board_decision_search_producer.mjs"
+    },
+    {
+      "id": "community-board-decision-search-index-builder",
+      "path": "tools/build_keyword_search_index.mjs"
+    },
+    {
+      "id": "community-board-decision-search-capability",
+      "path": "test/friction_b2_capability.test.mjs"
+    },
+    {
+      "id": "community-board-decision-search-capture",
+      "path": "tools/capture_community_board_decision_search.py"
+    },
+    {
+      "id": "community-board-decision-search-evidence",
+      "path": "docs/evidence/community-board-decision-search/capture-manifest.json"
+    }
+  ]
+}

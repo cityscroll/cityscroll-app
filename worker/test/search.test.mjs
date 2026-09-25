@@ -394,8 +394,10 @@ test("Community boards uses its dedicated production provider for recall and ind
   }, {
     participated: true,
     state: "matched",
-    indexed_count: 59,
+    // 59 borough-qualified boards plus one SearchDocument per admitted decision.
+    indexed_count: KEYWORD_INDEX.families.community_boards.indexed_count,
   });
+  assert.ok(KEYWORD_INDEX.families.community_boards.indexed_count >= 62);
 
   const communityBoardCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
     .find((lens) => lens.lens === "community_boards");

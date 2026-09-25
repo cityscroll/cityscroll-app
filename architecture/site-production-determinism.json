@@ -190,6 +190,7 @@
     "site/community_board_bylaws.mjs",
     "site/community_board_committees.mjs",
     "site/community_board_constellation.mjs",
+    "site/community_board_decision_search_producer.mjs",
     "site/community_board_district_projects.mjs",
     "site/community_board_document_topic_slices.mjs",
     "site/community_board_financial_identity.mjs",

@@ -30,6 +30,7 @@ const TYPE_LABELS = Object.freeze({
   "community-board-committee": "Community Board committee",
   "community-board-person": "Community Board person",
   community_board: "Community board",
+  community_board_decision: "Board decision",
   civil_service_exam: "Civil-service exam",
   consultation: "Public consultation",
   parcel: "Property",

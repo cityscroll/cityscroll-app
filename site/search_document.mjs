@@ -177,6 +177,19 @@ function applyScopeLaneVisibility(root, scope) {
   }
 }
 
+function remembersSearchReturnDestination(destination) {
+  if (destination.pathname.startsWith("/consultations/")) return true;
+  // Board-decision destinations keep the fragment so Back can restore focus
+  // on the same result after the reader opens the exact decision.
+  if (
+    destination.pathname.startsWith("/community-boards/")
+    && /#board-decision-[A-Za-z0-9_-]+/.test(destination.hash || "")
+  ) {
+    return true;
+  }
+  return false;
+}
+
 function rememberSearchReturnState(root) {
   if (!root || root.dataset.searchReturnStateBound === "true") return;
   root.dataset.searchReturnStateBound = "true";
@@ -184,7 +197,7 @@ function rememberSearchReturnState(root) {
     const link = event.target.closest?.("a[href]");
     if (!link) return;
     const destination = new URL(link.href, location.href);
-    if (!destination.pathname.startsWith("/consultations/")) return;
+    if (!remembersSearchReturnDestination(destination)) return;
     try {
       sessionStorage.setItem(SEARCH_RETURN_STATE_KEY, JSON.stringify({
         route: `${location.pathname}${location.search}`,
@@ -397,7 +410,19 @@ function renderResults(root, plan) {
       if (family?.status === "unknown") {
         elements.status.textContent = tr("topic_search_unavailable_status", null, "Unavailable");
         elements.body.classList.add("is-error");
-        elements.body.textContent = "This source could not be checked right now.";
+        const note = document.createElement("p");
+        note.textContent = "This source could not be checked right now.";
+        elements.body.append(note);
+        const query = clean(new URLSearchParams(location.search).get("q"), MAX_QUERY_LENGTH);
+        if (query) {
+          const recovery = document.createElement("p");
+          recovery.className = "topic-search-retry";
+          const retry = document.createElement("a");
+          retry.href = `/search/?q=${encodeURIComponent(query)}`;
+          retry.textContent = tr("buyer_history_retry", null, "Try again");
+          recovery.append(retry);
+          elements.body.append(recovery);
+        }
       } else if (family?.status === "not_covered") {
         elements.status.textContent = "Not covered";
         elements.body.textContent = "Keyword search is not available for this family yet.";
@@ -636,12 +661,37 @@ function renderCombinedResults(root, plan) {
         ? tr("results_count", { n: count }, "{n} results")
         : tr("topic_search_no_matches_status", null, "No matches");
     if (!count) {
-      elements.body.textContent = tr(
-        "topic_search_bounded_empty",
-        null,
-        "No matches in this bounded source set.",
-      );
-      appendFamilyReceipt(elements.body, families.get(group.id));
+      const family = families.get(group.id);
+      const incomplete = (plan.incomplete_families || []).includes(group.id)
+        || family?.status === "unknown";
+      if (incomplete) {
+        elements.status.textContent = tr("topic_search_unavailable_status", null, "Unavailable");
+        elements.body.classList.add("is-error");
+        const note = document.createElement("p");
+        note.textContent = tr(
+          "could_not_reach",
+          null,
+          "The latest CityScroll snapshot is unavailable. Retry.",
+        );
+        elements.body.append(note);
+        const query = clean(new URLSearchParams(location.search).get("q"), MAX_QUERY_LENGTH);
+        if (query) {
+          const recovery = document.createElement("p");
+          recovery.className = "topic-search-retry";
+          const retry = document.createElement("a");
+          retry.href = `/search/?q=${encodeURIComponent(query)}`;
+          retry.textContent = tr("buyer_history_retry", null, "Try again");
+          recovery.append(retry);
+          elements.body.append(recovery);
+        }
+      } else {
+        elements.body.textContent = tr(
+          "topic_search_bounded_empty",
+          null,
+          "No matches in this bounded source set.",
+        );
+      }
+      appendFamilyReceipt(elements.body, family);
       continue;
     }
     // The federated/keyword result is the one canonical result authority.
@@ -688,6 +738,7 @@ function renderLegacyResults(root, plan) {
 
 function renderUnavailableState(root) {
   renderCoverage(root, null);
+  const query = clean(new URLSearchParams(location.search).get("q"), MAX_QUERY_LENGTH);
   for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
     setSemanticLaneState(
       root,
@@ -697,6 +748,17 @@ function renderUnavailableState(root) {
       "is-error",
     );
   }
+  if (!query) return;
+  const lanes = root.querySelector("[data-semantic-lanes], [data-keyword-lanes]");
+  if (!lanes || lanes.querySelector(".topic-search-retry")) return;
+  const recovery = document.createElement("p");
+  recovery.className = "topic-search-retry";
+  recovery.dataset.searchOutcome = "unavailable";
+  const retry = document.createElement("a");
+  retry.href = `/search/?q=${encodeURIComponent(query)}`;
+  retry.textContent = tr("buyer_history_retry", null, "Try again");
+  recovery.append(retry);
+  lanes.prepend(recovery);
 }
 
 /** Paint the settled execution. Every mode paints from the same render plan. */
