@@ -848,7 +848,7 @@ export function renderMeetingDocument(record = {}, readModel = {}, options = {})
   const historical = isHistoricalMeeting(record);
   const historicalDay = meetingEventDay(record);
   const historicalNotice = historical && historicalDay
-    ? `<p class="meeting-historical-notice" role="status">This meeting was held on <time datetime="${esc(historicalDay)}">${esc(formatMeetingWhen(historicalDay) || historicalDay)}</time>. Participation links below are the instructions the publisher posted for that date, not a current invitation.</p>`
+    ? `<p class="meeting-historical-notice" role="status">This meeting was held on <time datetime="${esc(historicalDay)}">${esc(formatMeetingWhen(historicalDay) || historicalDay)}</time>. Participation links below are the publisher’s posted instructions from that date, kept here for the historical record.</p>`
     : "";
   const participationRows = participationDetails(record);
   const evidencedActionRows = evidencedParticipationActionRows(record, { historical });
