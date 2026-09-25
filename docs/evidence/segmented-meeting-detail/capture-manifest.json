@@ -3,8 +3,8 @@
   "public_alias": "cb0c04802e711",
   "feature": "segmented-meeting-detail",
   "captured_at": "2026-09-25T13:58:48.020Z",
-  "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
-  "grounded_at": "8006e2c891b2de97ce441bfcd752843127df8f35",
+  "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+  "grounded_at": "37377c890fcecc218352586379fa52b4ba2d24a1",
   "data_vintage": {
     "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
     "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -23,7 +23,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -57,7 +57,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -90,7 +90,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -124,7 +124,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -157,7 +157,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -190,7 +190,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -222,7 +222,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -255,7 +255,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -287,7 +287,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -322,7 +322,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -356,7 +356,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -391,7 +391,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -425,7 +425,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -451,7 +451,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "8006e2c891b2de97ce441bfcd752843127df8f35",
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
         "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
@@ -468,5 +468,6 @@
       },
       "screenshot": null
     }
-  ]
+  ],
+  "repository_revision": "37377c890fcecc218352586379fa52b4ba2d24a1"
 }

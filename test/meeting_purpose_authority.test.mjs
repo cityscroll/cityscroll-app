@@ -170,13 +170,19 @@ test("A4/A5: a testimony session renders its testify action while a listen-only 
     request_id: "phc02-testify",
     additional_description_1: "Register to testify at https://testimony.example.test/phc02-signup",
   }));
-  assert.match(testimonyHtml, />Register to testify<\/a>/);
+  // Past meetings keep the testify mode with historical wording; current ones
+  // keep the live Register verb. Either form must remain distinct from listen-only.
+  assert.match(
+    testimonyHtml,
+    /data-participation-mode="register_to_testify"[\s\S]*?(?:Register to testify|Registration form published for this meeting)/,
+  );
 
   const listenOnlyHtml = renderMeetingDocument(fullCouncilHearingRecord({
     meeting_id: "meeting:city_record:phc02-listen",
     request_id: "phc02-listen",
     additional_description_1: "",
   }));
+  assert.doesNotMatch(listenOnlyHtml, /data-participation-mode="register_to_testify"/);
   assert.doesNotMatch(listenOnlyHtml, /Register to testify/);
   assert.doesNotMatch(listenOnlyHtml, /Submit written testimony/);
   // The new consequence block itself never mentions testimony — it states
