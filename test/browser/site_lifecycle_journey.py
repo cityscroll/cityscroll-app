@@ -79,6 +79,35 @@ LAND_PROJECTS = {
     ],
 }
 LAND_DEFAULT = {"generated_at": "2026-09-16T12:00:00.000Z", "outcomes": {"by_project": {}}, "rows": []}
+LAND_CATALOG = {
+    "schema": "cityscroll.land_project_catalog.v1",
+    "project_count": len(LAND_PROJECTS["rows"]),
+    "projects": LAND_PROJECTS["rows"],
+    "materialized_at": LAND_PROJECTS["materialized_at"],
+    "generated_at": LAND_DEFAULT["generated_at"],
+    "source_dates": {
+        "warehouse_materialized_at": LAND_PROJECTS["materialized_at"],
+        "defaults_generated_at": LAND_DEFAULT["generated_at"],
+    },
+    "sources": {
+        "warehouse": {
+            "path": "site/data/zap_projects_warehouse_lookup.json",
+            "materialized_at": LAND_PROJECTS["materialized_at"],
+            "row_count": len(LAND_PROJECTS["rows"]),
+            "sha256": None,
+        },
+        "defaults": {
+            "path": "site/data/land_default_ulurp.json",
+            "generated_at": LAND_DEFAULT["generated_at"],
+            "row_count": 0,
+            "sha256": None,
+        },
+    },
+    "generation": {
+        "derivation": "fixture",
+        "content_id": "fnv1a32:fixture:site-lifecycle",
+    },
+}
 EMPTY_ROWS = {"rows": []}
 
 
@@ -156,6 +185,7 @@ def install_routes(page: Page, *, lifecycle_failure: dict[str, bool]) -> None:
                 route.fulfill(status=200, content_type="application/json", body=json_body(LIFECYCLE_REVERSE))
             return
         payloads = {
+            "/data/land_project_catalog.json": LAND_CATALOG,
             "/data/zap_projects_warehouse_lookup.json": LAND_PROJECTS,
             "/data/land_default_ulurp.json": LAND_DEFAULT,
             "/data/zap_bbl_warehouse_lookup.json": EMPTY_ROWS,

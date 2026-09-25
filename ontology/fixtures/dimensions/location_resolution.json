@@ -33,13 +33,13 @@
     "path": "site/data/district_activity.json",
     "sources": {
       "land": {
-        "corpus": "zap_projects_warehouse_lookup",
-        "counted": 238,
-        "located": 238,
+        "corpus": "land_project_catalog",
+        "counted": 244,
+        "located": 244,
         "located_rate": 1,
         "by_method": {
           "publisher_council": 217,
-          "publisher_district": 16,
+          "publisher_district": 22,
           "citywide": 3,
           "unknown": 2
         }

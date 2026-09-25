@@ -10,6 +10,18 @@
     "outcome_point"
   ],
   "inputs": {
+    "land_project_catalog": {
+      "path": "site/data/land_project_catalog.json",
+      "count": 244,
+      "vintage": {
+        "schema": "cityscroll.land_project_catalog.v1",
+        "project_count": 244,
+        "warehouse_materialized_at": "2026-09-09T06:54:36.054Z",
+        "defaults_generated_at": "2026-09-09T06:46:42.537Z",
+        "content_id": "fnv1a32:06425590:244"
+      },
+      "sha256": "9a623c6dbfb7b2154d1986e3365552891dd6c3eeea8406ee39476202100482b8"
+    },
     "land_default": {
       "path": "site/data/land_default_ulurp.json",
       "count": 40,

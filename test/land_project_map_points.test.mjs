@@ -258,6 +258,10 @@ test("committed receipt keeps 2025M0252 and the six exact-BBL misses out of the 
   assert.equal(receipt.counts.universe, 40);
   assert.equal(receipt.counts.mapped + receipt.counts.source_missing + receipt.counts.unmapped + receipt.counts.rejected, 40);
   assert.equal(Object.keys(payload.points).length, receipt.counts.mapped);
+  assert.ok(receipt.inputs.land_project_catalog, "map points bind to the admitted catalog generation");
+  assert.equal(receipt.inputs.land_project_catalog.count, 244);
+  assert.equal(receipt.inputs.land_project_catalog.vintage.warehouse_materialized_at, "2026-09-09T06:54:36.054Z");
+  assert.equal(receipt.inputs.land_project_catalog.vintage.content_id.startsWith("fnv1a32:"), true);
 });
 
 test("resident payload stays bounded and does not copy the WH-06 corpus", () => {

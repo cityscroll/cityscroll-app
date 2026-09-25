@@ -1670,7 +1670,12 @@ export function buildDistrictActivity(opts = {}) {
     money: Object.create(null),
   };
   const sources = {
-    land: { corpus: "zap_projects_warehouse_lookup", counted: 0, located: 0, by_method: Object.create(null) },
+    land: {
+      corpus: opts.districtCorpora?.land?.corpus || "land_project_catalog",
+      counted: 0,
+      located: 0,
+      by_method: Object.create(null),
+    },
     property: { corpus: "property_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
     meetings: {
       corpus: opts.districtCorpora?.meetings?.corpus || "meetings_domain_observations",
