@@ -1,23 +1,33 @@
 /**
  * Transport and reader projection for source-qualified procurement deadlines.
  *
- * Carries the typed deadline contract through digest rows, pursuit snapshots,
- * preview atoms, and email preparation. An opening never becomes a due date.
- * Conflicting current assertions surface as deadline-unconfirmed for action,
- * without adapter diagnostic field names in reader copy.
+ * Browser-safe: stays inside site/ so the Pages client module graph can publish
+ * every import. Typed resolution still lives in warehouse/lib for adapters; this
+ * module reads already-resolved typed_deadlines / due fields and renders them.
  */
 
-import {
-  DEADLINE_PRECISION,
-  DEADLINE_RESOLUTION_STATUS,
-  DEADLINE_SEMANTIC_KIND,
-  NYC_PUBLISHER_TIMEZONE,
-  parseDeadlineValue,
-  resolveTypedSourceDeadlines,
-} from "../warehouse/lib/typed_source_deadline.mjs";
 import { shortDate } from "./digest_item_awareness.mjs";
 
 export const PROCUREMENT_DEADLINE_PROJECTION_SCHEMA = "cityscroll.procurement_deadline_projection.v1";
+
+export const DEADLINE_PRECISION = Object.freeze({
+  DATE_ONLY: "date_only",
+  EXACT_TIME: "exact_time",
+});
+
+export const DEADLINE_RESOLUTION_STATUS = Object.freeze({
+  RESOLVED: "resolved",
+  ABSENT: "absent",
+  UNRESOLVED_CONFLICT: "unresolved_conflict",
+});
+
+export const DEADLINE_SEMANTIC_KIND = Object.freeze({
+  RESPONSE_DEADLINE: "response_deadline",
+  BID_OPENING: "bid_opening",
+  DOCUMENT_AVAILABILITY: "document_availability",
+});
+
+export const NYC_PUBLISHER_TIMEZONE = "America/New_York";
 
 export const DEADLINE_TRANSPORT_STATUS = Object.freeze({
   RESOLVED: "resolved",
@@ -31,10 +41,18 @@ export const DEADLINE_ATOM_STATUS = Object.freeze({
   DEADLINE_UNCONFIRMED: "deadline_unconfirmed",
 });
 
+const MONTHS = Object.freeze({
+  january: 1, february: 2, march: 3, april: 4, may: 5, june: 6,
+  july: 7, august: 8, september: 9, october: 10, november: 11, december: 12,
+});
 const MONTH_LONG = Object.freeze([
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ]);
+const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
+const ISO_DATE_TIME = /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(Z|[+-]\d{2}:?\d{2})?$/;
+const US_DATE_TIME = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?)?$/i;
+const ENGLISH_DATE_TIME = /^(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{1,2}),\s*(\d{4})(?:\s*(?:at\s+)?(\d{1,2}):(\d{2})\s*(am|pm))?$/i;
 
 function text(value) {
   const result = String(value ?? "").trim();
@@ -49,6 +67,134 @@ function freezeDeep(value) {
   }
   for (const entry of Object.values(value)) freezeDeep(entry);
   return Object.freeze(value);
+}
+
+function validIsoDate(year, month, day) {
+  const y = Number(year);
+  const m = Number(month);
+  const d = Number(day);
+  if (!Number.isInteger(y) || !Number.isInteger(m) || !Number.isInteger(d)) return null;
+  const stamp = `${String(y).padStart(4, "0")}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+  const ms = Date.parse(`${stamp}T00:00:00Z`);
+  if (!Number.isFinite(ms)) return null;
+  const roundTrip = new Date(ms);
+  return roundTrip.getUTCFullYear() === y
+    && roundTrip.getUTCMonth() + 1 === m
+    && roundTrip.getUTCDate() === d
+    ? stamp
+    : null;
+}
+
+function normalizeClock(hourRaw, minuteRaw, secondRaw, suffixRaw) {
+  let hour = Number(hourRaw);
+  const minute = Number(minuteRaw);
+  const second = Number(secondRaw || 0);
+  const suffix = String(suffixRaw || "").toUpperCase();
+  if (!Number.isInteger(hour) || !Number.isInteger(minute) || !Number.isInteger(second)) return null;
+  if (suffix) {
+    if (hour < 1 || hour > 12) return null;
+    if (suffix === "AM" && hour === 12) hour = 0;
+    if (suffix === "PM" && hour < 12) hour += 12;
+  }
+  if (hour > 23 || minute > 59 || second > 59) return null;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:${String(second).padStart(2, "0")}`;
+}
+
+/** Browser-safe publisher deadline parser (mirrors warehouse parseDeadlineValue). */
+export function parseDeadlineValue(raw) {
+  const sourceText = text(raw);
+  if (!sourceText) return null;
+
+  const isoDt = sourceText.match(ISO_DATE_TIME);
+  if (isoDt) {
+    const date = validIsoDate(isoDt[1], isoDt[2], isoDt[3]);
+    if (!date) return { ok: false, reason: "invalid_date", source_text: sourceText };
+    const clock = `${isoDt[4]}:${isoDt[5]}:${String(isoDt[6] || "00").padStart(2, "0")}`;
+    const offset = isoDt[7] || null;
+    return {
+      ok: true,
+      source_text: sourceText,
+      date,
+      wall_time: clock,
+      precision: DEADLINE_PRECISION.EXACT_TIME,
+      offset,
+      instant: offset ? `${date}T${clock}${offset === "Z" ? "Z" : offset}` : null,
+    };
+  }
+
+  const iso = sourceText.match(ISO_DATE);
+  if (iso) {
+    const date = validIsoDate(iso[1], iso[2], iso[3]);
+    if (!date) return { ok: false, reason: "invalid_date", source_text: sourceText };
+    return {
+      ok: true,
+      source_text: sourceText,
+      date,
+      wall_time: null,
+      precision: DEADLINE_PRECISION.DATE_ONLY,
+      offset: null,
+      instant: null,
+    };
+  }
+
+  const us = sourceText.match(US_DATE_TIME);
+  if (us) {
+    const date = validIsoDate(us[3], us[1], us[2]);
+    if (!date) return { ok: false, reason: "invalid_date", source_text: sourceText };
+    if (us[4] == null) {
+      return {
+        ok: true,
+        source_text: sourceText,
+        date,
+        wall_time: null,
+        precision: DEADLINE_PRECISION.DATE_ONLY,
+        offset: null,
+        instant: null,
+      };
+    }
+    const clock = normalizeClock(us[4], us[5], us[6], us[7]);
+    if (!clock) return { ok: false, reason: "invalid_time", source_text: sourceText };
+    return {
+      ok: true,
+      source_text: sourceText,
+      date,
+      wall_time: clock,
+      precision: DEADLINE_PRECISION.EXACT_TIME,
+      offset: null,
+      instant: null,
+    };
+  }
+
+  const english = sourceText.match(ENGLISH_DATE_TIME);
+  if (english) {
+    const month = MONTHS[english[1].toLowerCase()];
+    const date = validIsoDate(english[3], month, english[2]);
+    if (!date) return { ok: false, reason: "invalid_date", source_text: sourceText };
+    if (english[4] == null) {
+      return {
+        ok: true,
+        source_text: sourceText,
+        date,
+        wall_time: null,
+        precision: DEADLINE_PRECISION.DATE_ONLY,
+        offset: null,
+        instant: null,
+      };
+    }
+    const clock = normalizeClock(english[4], english[5], null, english[6]);
+    if (!clock) return { ok: false, reason: "invalid_time", source_text: sourceText };
+    return {
+      ok: true,
+      source_text: sourceText,
+      date,
+      wall_time: clock,
+      precision: DEADLINE_PRECISION.EXACT_TIME,
+      offset: null,
+      instant: null,
+    };
+  }
+
+  return { ok: false, reason: "unparseable", source_text: sourceText };
 }
 
 function formatWallClock(wallTime) {
@@ -87,10 +233,6 @@ function longDate(date) {
   return `${month} ${Number(match[3])}, ${match[1]}`;
 }
 
-/**
- * Reader-facing date label. Date-only values stay dates; timed values include
- * wall clock and timezone when the publisher established one.
- */
 export function formatDeadlineReaderLabel({
   date = null,
   wall_time = null,
@@ -110,8 +252,6 @@ export function formatDeadlineReaderLabel({
       ? `${long} at ${clock}${zone ? ` ${zone}` : ""}`
       : (source_text || long);
   } else {
-    // Date-only values stay compact calendar dates (same shortDate shape the
-    // alert atom and pursuit snapshot already used).
     label = short;
   }
   if (kind === "bid_opening") return `Bid opening ${label}`;
@@ -187,9 +327,6 @@ function kindBucket(resolution, kind) {
   return resolution.response_deadline || resolution.by_kind?.response_deadline || null;
 }
 
-/**
- * Project one semantic kind from a typed deadline resolution.
- */
 export function projectDeadlineKind(resolution, kind = "response", {
   source_observation_ref = null,
 } = {}) {
@@ -211,57 +348,66 @@ export function projectDeadlineKind(resolution, kind = "response", {
   });
 }
 
-/**
- * Prefer an existing typed_deadlines block on a snapshot; otherwise build one
- * from explicit due/opening fields without inventing missing semantics.
- */
+function chosenFromParsed(parsed, {
+  source_system = null,
+  source_record_id = null,
+  source_url = null,
+  observed_at = null,
+  publisher_timezone_semantics = null,
+} = {}) {
+  if (!parsed?.ok) return null;
+  const timezone = parsed.precision === DEADLINE_PRECISION.EXACT_TIME
+    && (publisher_timezone_semantics === "america_new_york"
+      || publisher_timezone_semantics === NYC_PUBLISHER_TIMEZONE)
+    ? NYC_PUBLISHER_TIMEZONE
+    : null;
+  return {
+    date: parsed.date,
+    wall_time: parsed.wall_time,
+    precision: parsed.precision,
+    timezone,
+    source_text: parsed.source_text,
+    source_locator: {
+      source_system,
+      source_record_id,
+      source_url,
+    },
+    observed_at,
+  };
+}
+
+function resolutionFromSnapshotFields(snapshot = {}) {
+  const due = text(snapshot?.due_date ?? snapshot?.source_values?.due_date);
+  const opening = text(snapshot?.opening_date ?? snapshot?.source_values?.opening_date);
+  const meta = {
+    source_system: text(snapshot?.source_system),
+    source_record_id: text(snapshot?.source_record_id || snapshot?.source_system_id),
+    source_url: text(snapshot?.official_url || snapshot?.source_receipt?.url),
+    observed_at: text(snapshot?.observed_at || snapshot?.retrieved_at),
+    publisher_timezone_semantics: text(snapshot?.publisher_timezone_semantics),
+  };
+  const responseChosen = due ? chosenFromParsed(parseDeadlineValue(due), meta) : null;
+  const openingChosen = opening ? chosenFromParsed(parseDeadlineValue(opening), meta) : null;
+  return {
+    response_deadline: responseChosen
+      ? { status: DEADLINE_RESOLUTION_STATUS.RESOLVED, chosen: responseChosen }
+      : { status: DEADLINE_RESOLUTION_STATUS.ABSENT, chosen: null },
+    bid_opening: openingChosen
+      ? { status: DEADLINE_RESOLUTION_STATUS.RESOLVED, chosen: openingChosen }
+      : { status: DEADLINE_RESOLUTION_STATUS.ABSENT, chosen: null },
+  };
+}
+
 export function typedDeadlinesFromSnapshot(snapshot = {}) {
   if (snapshot?.typed_deadlines && typeof snapshot.typed_deadlines === "object") {
     return snapshot.typed_deadlines;
   }
-  const assertions = [];
   const due = text(snapshot?.due_date ?? snapshot?.source_values?.due_date);
   const opening = text(snapshot?.opening_date ?? snapshot?.source_values?.opening_date);
-  const sourceSystem = text(snapshot?.source_system);
-  const sourceRecordId = text(snapshot?.source_record_id || snapshot?.source_system_id);
-  const sourceUrl = text(snapshot?.official_url || snapshot?.source_receipt?.url);
-  const observedAt = text(snapshot?.observed_at || snapshot?.retrieved_at);
-  if (due) {
-    assertions.push({
-      assertion_id: `${sourceSystem || "source"}:${sourceRecordId || "record"}:due_date:${due}`,
-      field: "due_date",
-      semantic_kind: DEADLINE_SEMANTIC_KIND.RESPONSE_DEADLINE,
-      value_raw: due,
-      source_system: sourceSystem,
-      source_record_id: sourceRecordId,
-      source_url: sourceUrl,
-      observed_at: observedAt,
-      publisher_timezone_semantics: text(snapshot?.publisher_timezone_semantics),
-      evidence_class: "authoritative",
-    });
-  }
-  if (opening) {
-    assertions.push({
-      assertion_id: `${sourceSystem || "source"}:${sourceRecordId || "record"}:opening_date:${opening}`,
-      field: "opening_date",
-      semantic_kind: DEADLINE_SEMANTIC_KIND.BID_OPENING,
-      value_raw: opening,
-      source_system: sourceSystem,
-      source_record_id: sourceRecordId,
-      source_url: sourceUrl,
-      observed_at: observedAt,
-      publisher_timezone_semantics: text(snapshot?.publisher_timezone_semantics),
-      evidence_class: "authoritative",
-    });
-  }
-  if (!assertions.length) return null;
-  return resolveTypedSourceDeadlines(assertions);
+  if (!due && !opening) return null;
+  return resolutionFromSnapshotFields(snapshot);
 }
 
-/**
- * Project response + opening deadlines from observation snapshots for a
- * procurement object. Never fills due_date from an opening.
- */
 export function projectDeadlinesFromSnapshots(snapshots = [], {
   source_observation_refs = null,
 } = {}) {
@@ -308,20 +454,22 @@ export function projectDeadlinesFromSnapshots(snapshots = [], {
 }
 
 /**
- * Project deadlines from a City Record / PASSPort notice-shaped row.
+ * Project deadlines from a notice-shaped row.
+ * Pass `resolution` when the caller already ran the warehouse typed resolver
+ * (for example competing assertions). This module never imports warehouse/.
  */
 export function projectDeadlinesFromNoticeRow(row = {}, {
-  assertions = null,
+  resolution = null,
   source_url = null,
   publisher_timezone_semantics = "america_new_york",
 } = {}) {
-  if (Array.isArray(assertions) && assertions.length) {
-    const resolution = resolveTypedSourceDeadlines(assertions);
+  if (resolution && typeof resolution === "object") {
+    const response = projectDeadlineKind(resolution, "response");
     return freezeDeep({
       schema: PROCUREMENT_DEADLINE_PROJECTION_SCHEMA,
-      response_deadline: projectDeadlineKind(resolution, "response"),
+      response_deadline: response,
       bid_opening: projectDeadlineKind(resolution, "bid_opening"),
-      due_date: projectDeadlineKind(resolution, "response")?.date || null,
+      due_date: response?.date || null,
     });
   }
 
@@ -331,78 +479,32 @@ export function projectDeadlinesFromNoticeRow(row = {}, {
   const officialUrl = text(source_url)
     || text(row?.official_notice_url)
     || (requestId ? `https://a856-cityrecord.nyc.gov/RequestDetail/${requestId}` : null);
-  const built = [];
-  if (dueRaw) {
-    built.push({
-      assertion_id: `city_record:${requestId || "notice"}:due_date:${dueRaw}`,
-      field: "due_date",
-      semantic_kind: DEADLINE_SEMANTIC_KIND.RESPONSE_DEADLINE,
-      value_raw: dueRaw,
-      source_system: "city_record",
-      source_record_id: requestId,
-      source_url: officialUrl,
-      publisher_timezone_semantics,
-      evidence_class: "authoritative",
-    });
-  }
-  if (openingRaw) {
-    built.push({
-      assertion_id: `city_record:${requestId || "notice"}:opening_date:${openingRaw}`,
-      field: "opening_date",
-      semantic_kind: DEADLINE_SEMANTIC_KIND.BID_OPENING,
-      value_raw: openingRaw,
-      source_system: "city_record",
-      source_record_id: requestId,
-      source_url: officialUrl,
-      publisher_timezone_semantics,
-      evidence_class: "authoritative",
-    });
-  }
-  if (!built.length && dueRaw) {
-    const parsed = parseDeadlineValue(dueRaw);
-    if (parsed?.ok) {
-      const projected = compactFromChosen({
-        date: parsed.date,
-        wall_time: parsed.wall_time,
-        precision: parsed.precision,
-        timezone: parsed.precision === DEADLINE_PRECISION.EXACT_TIME ? NYC_PUBLISHER_TIMEZONE : null,
-        source_text: parsed.source_text,
-        source_locator: {
-          source_system: "city_record",
-          source_record_id: requestId,
-          source_url: officialUrl,
-        },
-        observed_at: null,
-      }, { kind: "response" });
-      return freezeDeep({
-        schema: PROCUREMENT_DEADLINE_PROJECTION_SCHEMA,
-        response_deadline: projected,
-        bid_opening: null,
-        due_date: projected?.date || null,
-      });
-    }
-  }
-  if (!built.length) {
-    return freezeDeep({
-      schema: PROCUREMENT_DEADLINE_PROJECTION_SCHEMA,
-      response_deadline: null,
-      bid_opening: null,
-      due_date: null,
-    });
-  }
-  const resolution = resolveTypedSourceDeadlines(built);
-  const response = projectDeadlineKind(resolution, "response");
+  const meta = {
+    source_system: "city_record",
+    source_record_id: requestId,
+    source_url: officialUrl,
+    observed_at: null,
+    publisher_timezone_semantics,
+  };
+  const responseChosen = dueRaw ? chosenFromParsed(parseDeadlineValue(dueRaw), meta) : null;
+  const openingChosen = openingRaw ? chosenFromParsed(parseDeadlineValue(openingRaw), meta) : null;
+  const synthesized = {
+    response_deadline: responseChosen
+      ? { status: DEADLINE_RESOLUTION_STATUS.RESOLVED, chosen: responseChosen }
+      : { status: DEADLINE_RESOLUTION_STATUS.ABSENT, chosen: null },
+    bid_opening: openingChosen
+      ? { status: DEADLINE_RESOLUTION_STATUS.RESOLVED, chosen: openingChosen }
+      : { status: DEADLINE_RESOLUTION_STATUS.ABSENT, chosen: null },
+  };
+  const response = projectDeadlineKind(synthesized, "response");
   return freezeDeep({
     schema: PROCUREMENT_DEADLINE_PROJECTION_SCHEMA,
     response_deadline: response,
-    bid_opening: projectDeadlineKind(resolution, "bid_opening"),
+    bid_opening: projectDeadlineKind(synthesized, "bid_opening"),
     due_date: response?.date || null,
   });
 }
 
-/**
- * Additive digest fields from a projection. Absent deadlines stay absent.
- */
 export function digestDeadlineFields(projection = {}) {
   const fields = {};
   if (projection?.due_date) fields.due_date = projection.due_date;
@@ -411,9 +513,6 @@ export function digestDeadlineFields(projection = {}) {
   return fields;
 }
 
-/**
- * Atom deadline part used by preview subjects and pursuit snapshots.
- */
 export function atomDeadlineFromProjection(projection = {}) {
   const response = projection?.response_deadline || (
     projection?.status ? projection : null
@@ -442,9 +541,6 @@ export function atomDeadlineFromProjection(projection = {}) {
   return { value: null, label: null, status: DEADLINE_ATOM_STATUS.NOT_OBSERVED };
 }
 
-/**
- * Email / digest meta line fragment. Openings stay labeled as openings.
- */
 export function digestDeadlineMetaLabel(row = {}) {
   const response = row?.response_deadline;
   if (response?.status === DEADLINE_TRANSPORT_STATUS.DEADLINE_UNCONFIRMED) {
@@ -466,9 +562,6 @@ export function digestDeadlineMetaLabel(row = {}) {
   return `due ${label}`;
 }
 
-/**
- * Compatibility due_date for pursuit rows: resolved response date only.
- */
 export function pursuitDueDateValue(projection = {}, fallbackDueDate = null) {
   const response = projection?.response_deadline;
   if (response?.status === DEADLINE_TRANSPORT_STATUS.DEADLINE_UNCONFIRMED) return null;

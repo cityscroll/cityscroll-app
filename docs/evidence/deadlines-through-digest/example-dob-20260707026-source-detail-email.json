@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.deadlines_through_digest_example.v1",
   "record": "20260707026",
-  "clock": "2026-09-25T01:47:33.725Z",
+  "clock": "2026-11-09T03:19:35.635Z",
   "precision": "exact_time",
   "source": {
     "due_date": "8/25/2026 1:00 PM",

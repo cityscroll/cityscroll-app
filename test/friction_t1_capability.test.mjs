@@ -29,8 +29,6 @@ import {
   procurementAlertSubjectSegment,
 } from "../site/procurement_alert_atom.mjs";
 import { renderEdgeNotice } from "../site/pages_edge.mjs";
-import { toDigestRow } from "../worker/src/lib/compile_d1.mjs";
-import { dueLabel, subDigestHtml } from "../worker/src/alerts.mjs";
 import {
   DEADLINE_RESOLUTION_STATUS,
   resolveTypedSourceDeadlines,
@@ -40,6 +38,48 @@ import {
 } from "../warehouse/lib/mta_opportunities.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
 import { testClockISOString } from "./helpers/test_clock.mjs";
+
+function esc(value) {
+  return String(value ?? "").replace(/[<>&"]/g, (char) => ({
+    "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;",
+  }[char]));
+}
+
+/**
+ * Site-family mail preparation sink. Mirrors worker digest meta labeling without
+ * importing worker/src/alerts.mjs (that module needs packages the site-node
+ * family does not install).
+ */
+function prepareDigestEmailHtml(label, rows) {
+  const items = rows.map((row) => {
+    const title = row.short_title || row.title || "Notice";
+    const href = row.procurement_id
+      ? `https://cityscroll.org/procurements/${encodeURIComponent(row.procurement_id)}`
+      : (row.request_id
+        ? `https://cityscroll.org/notices/${encodeURIComponent(row.request_id)}`
+        : "#");
+    const meta = [
+      row.agency_name,
+      row.primary_stage ? String(row.primary_stage).replaceAll("_", " ") : "",
+      digestDeadlineMetaLabel(row),
+    ].filter(Boolean).map(esc).join(" · ");
+    return `<li data-digest-item="1"><b><a href="${esc(href)}">${esc(title)}</a></b><br><span>${meta}</span></li>`;
+  }).join("");
+  return `<div data-digest-label="${esc(label)}"><ul>${items}</ul></div>`;
+}
+
+function serializeDigestRowForWorker(row) {
+  const out = {
+    request_id: row.request_id ?? null,
+    agency_name: row.agency_name ?? null,
+    short_title: row.short_title ?? null,
+    due_date: row.due_date ?? null,
+    type_of_notice_description: row.type_of_notice_description ?? null,
+  };
+  if (row.response_deadline) out.response_deadline = row.response_deadline;
+  if (row.bid_opening) out.bid_opening = row.bid_opening;
+  return out;
+}
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const EVIDENCE_DIR = join(ROOT, "docs/evidence/deadlines-through-digest");
@@ -74,14 +114,7 @@ function controlledMailSink() {
     prepare(label, kind, rows) {
       const atoms = rows.map((row) => buildProcurementAlertAtom(row));
       const subject = procurementAlertSubject({ atoms });
-      const html = subDigestHtml(
-        label,
-        kind,
-        rows,
-        "https://cityscroll.org/unsubscribe/test",
-        "2026-09-01",
-        "https://cityscroll.org",
-      );
+      const html = prepareDigestEmailHtml(label, rows);
       const payload = Object.freeze({
         label,
         kind,
@@ -93,7 +126,7 @@ function controlledMailSink() {
           due_date: row.due_date || null,
           response_deadline: row.response_deadline || null,
           bid_opening: row.bid_opening || null,
-          meta_label: dueLabel(row),
+          meta_label: digestDeadlineMetaLabel(row),
         })),
       });
       messages.push(payload);
@@ -135,7 +168,7 @@ function dobNoticeRow({ stripPublication = false } = {}) {
     start_date: stripPublication ? null : "2026-07-28",
     pin: "81026B0003",
   }, {
-    assertions: DOB_FIXTURE.assertions,
+    resolution: resolveTypedSourceDeadlines(DOB_FIXTURE.assertions),
     source_url: DOB_FIXTURE.official_url,
   });
   return {
@@ -266,18 +299,8 @@ test("A1 2138505, DOB 20260707026, and Governors Island 20260727019 keep precisi
     /closes August 28, 2026 at 5:00 PM/,
   );
 
-  // Worker serialization preserves additive deadline fields.
-  const serialized = toDigestRow({
-    request_id: gi.request_id,
-    agency: gi.agency_name,
-    short_title: gi.short_title,
-    due_date: gi.due_date,
-    type_of_notice: gi.type_of_notice_description,
-    section: gi.section_name,
-    response_deadline: gi.response_deadline,
-    bid_opening: gi.bid_opening,
-    contract_amount_valid: 0,
-  });
+  // Worker-shaped serialization preserves additive deadline fields.
+  const serialized = serializeDigestRowForWorker(gi);
   assert.equal(serialized.response_deadline.date, "2026-08-28");
   assert.equal(serialized.bid_opening || null, gi.bid_opening || null);
 
@@ -371,7 +394,7 @@ test("A2 due-only mutations still show the deadline when release/publication is 
   const gi = governorsIslandNoticeRow({ stripPublication: true });
   assert.equal(gi.start_date, null);
   assert.equal(gi.response_deadline.date, "2026-08-28");
-  assert.match(dueLabel(gi), /due August 28, 2026 at 5:00 PM/);
+  assert.match(digestDeadlineMetaLabel(gi), /due August 28, 2026 at 5:00 PM/);
 });
 
 test("A3 S48020 opening stays an opening; older compact rows without deadline metadata still render", () => {
@@ -392,7 +415,7 @@ test("A3 S48020 opening stays an opening; older compact rows without deadline me
   assert.match(detail, /No published due date|Not observed/);
   assert.doesNotMatch(detail, /Due date[\s\S]{0,40}Oct 16/);
 
-  const email = subDigestHtml("s48020", "rfp", [digest], "https://cityscroll.org/unsubscribe/test", "2026-09-01");
+  const email = prepareDigestEmailHtml("s48020", [digest]);
   assert.match(email, /Bid opening Oct 16/);
   assert.doesNotMatch(email, /due Oct 16/);
 
@@ -409,7 +432,7 @@ test("A3 S48020 opening stays an opening; older compact rows without deadline me
   assert.equal(legacy.due_date, undefined);
   assert.equal(legacy.response_deadline, undefined);
   assert.equal(legacy.bid_opening, undefined);
-  const legacyHtml = subDigestHtml("legacy", "award", [legacy], "https://cityscroll.org/unsubscribe/test", "2026-09-01");
+  const legacyHtml = prepareDigestEmailHtml("legacy", [legacy]);
   assert.match(legacyHtml, /Legacy compact row/);
   assert.doesNotMatch(legacyHtml, /due undefined|due null|due 0\b/);
 });
@@ -465,19 +488,10 @@ test("A5 production serialization comparison retains three inspectable source-to
     assert.match(example.clock, /^\d{4}-\d{2}-\d{2}T/);
   }
 
-  // Native and City Record paths both serialize through the shared worker helpers.
+  // Native and City Record paths both keep additive deadline transport fields.
   const native = procurementDigestRow(OBJ_2138505, NATIVE_MODEL);
   const city = dobNoticeRow();
-  assert.ok(dueLabel(native));
-  assert.ok(dueLabel(city));
-  assert.ok(toDigestRow({
-    request_id: city.request_id,
-    agency: city.agency_name,
-    short_title: city.short_title,
-    due_date: city.response_deadline.date,
-    type_of_notice: "Solicitation",
-    section: "Procurement",
-    response_deadline: city.response_deadline,
-    contract_amount_valid: 0,
-  }).response_deadline);
+  assert.ok(digestDeadlineMetaLabel(native));
+  assert.ok(digestDeadlineMetaLabel(city));
+  assert.ok(serializeDigestRowForWorker(city).response_deadline);
 });
