@@ -18,6 +18,10 @@
       "path": "test/friction_t3_capability.test.mjs"
     },
     {
+      "id": "minimum-lead-time-prep-delivery-test",
+      "path": "worker/test/friction_t3_delivery.test.mjs"
+    },
+    {
       "id": "minimum-lead-time-evidence",
       "path": "docs/evidence/minimum-lead-time/example-21-day-watch-round-trip.json"
     },

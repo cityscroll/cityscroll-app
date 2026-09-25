@@ -2,6 +2,11 @@
  * Discovery money watches re-check minRemainingDays at email preparation
  * (and retry), so a yesterday-eligible preview cannot justify today's send.
  *
+ * Site-node CI does not install worker mail dependencies. This file exercises
+ * the shared predicate and the prepared-message cutoff without importing
+ * worker/src/alerts.mjs. Full mail-sink delivery lives in
+ * worker/test/friction_t3_delivery.test.mjs.
+ *
  *   node --test test/friction_t3_capability.test.mjs
  */
 
@@ -14,7 +19,6 @@ import { DatabaseSync } from "node:sqlite";
 
 import {
   matchProcurementDigestRows,
-  mergeProcurementDigestMatches,
   procurementDigestRow,
   stampDigestIdentity,
 } from "../site/procurement_digest_compile.mjs";
@@ -24,10 +28,10 @@ import {
 import {
   applyMinRemainingDaysPreference,
   applyPreparedMinRemainingDaysEligibility,
+  nycCivicDayISO,
   rowMeetsMinRemainingDays,
 } from "../site/money_watch_min_remaining_days.mjs";
 import {
-  DEADLINE_RESOLUTION_STATUS,
   resolveTypedSourceDeadlines,
 } from "../warehouse/lib/typed_source_deadline.mjs";
 import { recordsFromMtaOpportunityFixtures } from "../warehouse/lib/mta_opportunities.mjs";
@@ -37,16 +41,12 @@ import { sanitize } from "../worker/src/lib/filter.mjs";
 import { compileSub, mergeCompiledRows, useProcurementDigestSnapshot } from "../worker/src/lib/compile.mjs";
 import { compileSub_d1, toDigestRow } from "../worker/src/lib/compile_d1.mjs";
 import {
-  consumeDigestJob,
-  processAccountRollup,
-  processOneSub,
-} from "../worker/src/alerts.mjs";
-import {
   SECTION_STATUS,
   enqueueEvaluatedSection,
   listDeliveredItemIds,
   listWatchMembership,
 } from "../worker/src/lib/digest_outbox.mjs";
+import { applyPreparedDigestQueryRevisionCutoff } from "../worker/src/lib/watch_query_revision.mjs";
 import { evaluateMoneyTextQueryWatch } from "../worker/src/lib/watch_text_query_procurement.mjs";
 import { deriveSubscriberId, deriveWatchId } from "../worker/src/lib/subscriptions.mjs";
 
@@ -77,7 +77,6 @@ const FAIL_DOB = "2026-08-05T16:00:00.000Z";
 const PASS_GI = "2026-08-07T16:00:00.000Z";
 const FAIL_GI = "2026-08-08T16:00:00.000Z";
 const EMAIL = "prep-gate@example.com";
-const SECRET = "s".repeat(32);
 
 function dobNoticeRow(overrides = {}) {
   const projected = projectDeadlinesFromNoticeRow({
@@ -182,25 +181,6 @@ function openOutboxDb() {
   const sqlite = new DatabaseSync(":memory:");
   sqlite.exec(OUTBOX_MIGRATION);
   sqlite.exec(REVISION_MIGRATION);
-  sqlite.exec(`
-    CREATE TABLE IF NOT EXISTS notices (
-      request_id TEXT PRIMARY KEY,
-      section TEXT,
-      agency TEXT,
-      type_of_notice TEXT,
-      category TEXT,
-      short_title TEXT,
-      description TEXT,
-      vendor_name TEXT,
-      pin TEXT,
-      contract_amount REAL,
-      contract_amount_valid INTEGER,
-      start_date TEXT,
-      due_date TEXT,
-      haystack TEXT
-    );
-    CREATE TABLE IF NOT EXISTS ingest_state (k TEXT PRIMARY KEY, v TEXT);
-  `);
   return sqlite;
 }
 
@@ -227,111 +207,29 @@ function asD1NoticeColumns(row, { requestId = null } = {}) {
   };
 }
 
-function seedNotice(sqlite, row, day = "2026-09-11") {
-  sqlite.prepare("INSERT OR REPLACE INTO ingest_state (k, v) VALUES ('notices_cursor', ?)").run(day);
-  if (!row?.request_id) return;
-  const cols = asD1NoticeColumns(row, { requestId: row.request_id });
-  sqlite.prepare(`
-    INSERT OR REPLACE INTO notices (
-      request_id, agency, type_of_notice, category, short_title, description,
-      vendor_name, pin, contract_amount, contract_amount_valid, start_date, due_date, haystack
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `).run(
-    cols.request_id,
-    cols.agency,
-    cols.type_of_notice,
-    null,
-    cols.short_title,
-    null,
-    cols.vendor_name,
-    cols.pin,
-    cols.contract_amount,
-    cols.contract_amount_valid,
-    cols.start_date,
-    typeof cols.due_date === "string" && /^\d{4}-\d{2}-\d{2}/.test(cols.due_date)
-      ? cols.due_date.slice(0, 10)
-      : "2026-08-25",
-    `${cols.short_title || ""} ${cols.agency || ""}`.toLowerCase(),
-  );
-}
-
-async function moneySub({ filter, keySuffix = "lead", freq = "daily", subscriberId = null, watchId = null } = {}) {
+async function moneySub({ filter, keySuffix = "lead" } = {}) {
   const preparedFilter = discoveryFilter(filter);
   const key = `sub:t3-${keySuffix}`;
-  const subscriber_id = subscriberId || await deriveSubscriberId(EMAIL);
-  const watch_id = watchId || await deriveWatchId(key);
   return {
     key,
     email: EMAIL,
     lens: "money",
     filter: preparedFilter,
-    freq,
+    freq: "daily",
     channel: "email",
     createdAt: "2026-06-01T00:00:00.000Z",
     lang: "en",
-    subscriber_id,
-    watch_id,
+    subscriber_id: await deriveSubscriberId(EMAIL),
+    watch_id: await deriveWatchId(key),
   };
 }
 
-function runCtx(iso, extras = {}) {
+function prepCtx(iso) {
   const now = new Date(iso);
   return {
-    FROM: "CityScroll <alerts@cityscroll.org>",
-    LIVE: true,
-    heartbeatDays: 14,
     today: now.toISOString().slice(0, 10),
     now,
     nowMs: now.getTime(),
-    isMonday: now.getUTCDay() === 1,
-    counts: () => ({ "per-run": 0, daily: 0 }),
-    caps: { "per-run": 25, daily: 50 },
-    onSent: async () => {},
-    capturePreviews: true,
-    ...extras,
-  };
-}
-
-function subscriberMails(sent) {
-  return (Array.isArray(sent) ? sent : []).filter((payload) => {
-    const to = String(payload?.to || "").toLowerCase();
-    return to.includes(EMAIL.toLowerCase());
-  });
-}
-
-function mailEnv(sqlite, subsMap, stateMap = {}, sent, { sodaRows = [] } = {}) {
-  const SUBS = kv(subsMap);
-  // A recent lastsent keeps the quiet heartbeat from firing when every
-  // discovery row is filtered at preparation time.
-  const seeded = { ...stateMap };
-  for (const raw of Object.values(subsMap)) {
-    try {
-      const record = typeof raw === "string" ? JSON.parse(raw) : raw;
-      if (record?.key && seeded[`lastsent:${record.key}`] == null) {
-        seeded[`lastsent:${record.key}`] = "2026-09-10";
-      }
-    } catch { /* ignore malformed seed */ }
-  }
-  const ALERT_STATE = kv(seeded);
-  return {
-    SUBS,
-    ALERT_STATE,
-    DB: d1(sqlite),
-    ALERTS_LIVE: "true",
-    RESEND_API_KEY: "rk",
-    TOKEN_SECRET: SECRET,
-    CONFIRM_BASE: "https://api.cityscroll.org",
-    fetch: async (url, opts) => {
-      const u = String(url);
-      if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) {
-        return Response.json(sodaRows);
-      }
-      if (u.includes("api.resend.com")) {
-        sent.push(JSON.parse(opts.body));
-        return Response.json({ id: `email_${sent.length}` });
-      }
-      throw new Error(`unexpected fetch: ${u}`);
-    },
   };
 }
 
@@ -349,6 +247,28 @@ async function enqueueOwed(env, sub, rows, clockIso) {
     sourceObservedAt: clockIso,
     now: clockIso,
   });
+}
+
+/** Shape a prepared section the way individual and rollup paths hand to the cutoff. */
+function preparedSection(sub, rows, { action = "match", kind = "subscription" } = {}) {
+  return {
+    sub: sub.key,
+    subKey: sub.key,
+    watchId: sub.watch_id,
+    lens: "money",
+    filter: sub.filter,
+    kind,
+    action,
+    new: rows.length,
+    forecasts: 0,
+    freshRows: rows,
+    outboxItems: rows.map((row) => ({
+      watch_id: sub.watch_id,
+      item_id: row.request_id ? `notice:${row.request_id}` : row.procurement_id,
+    })),
+    markSeenIds: rows.map((row) => row.request_id || row.procurement_id).filter(Boolean),
+    noticeIds: rows.map((row) => row.request_id || row.procurement_id).filter(Boolean),
+  };
 }
 
 const CORPUS = [
@@ -379,30 +299,24 @@ test("A1 queued 21-day rows are excluded at 20-day preparation for individual an
   assert.ok(OBJ_2138505);
   assert.ok(DOB_FIXTURE);
   assert.match(testClockISOString(), /^\d{4}-\d{2}-\d{2}T/);
+  // Bare civic-day strings must not shift under timezone conversion.
+  assert.equal(nycCivicDayISO("2026-09-12"), "2026-09-12");
 
   for (const entry of CORPUS) {
     const row = entry.row();
-    assert.equal(rowMeetsMinRemainingDays(row, 21, entry.passAt), true, `${entry.label} eligible at pass`);
-    assert.equal(rowMeetsMinRemainingDays(row, 21, entry.failAt), false, `${entry.label} ineligible at fail`);
+    await withPinnedClock(entry.passAt, () => {
+      assert.equal(rowMeetsMinRemainingDays(row, 21, entry.passAt), true, `${entry.label} eligible at pass`);
+    });
+    await withPinnedClock(entry.failAt, () => {
+      assert.equal(rowMeetsMinRemainingDays(row, 21, entry.failAt), false, `${entry.label} ineligible at fail`);
+    });
 
     const filter = discoveryFilter({ minRemainingDays: 21 });
-    const section = {
-      sub: `sub:${entry.label}`,
-      subKey: `sub:${entry.label}`,
-      watchId: `watch:${entry.label}`,
-      lens: "money",
+    const section = preparedSection({
+      key: `sub:${entry.label}`,
+      watch_id: `watch:${entry.label}`,
       filter,
-      action: "match",
-      new: 1,
-      forecasts: 0,
-      freshRows: [row],
-      outboxItems: [{
-        watch_id: `watch:${entry.label}`,
-        item_id: row.request_id ? `notice:${row.request_id}` : row.procurement_id,
-      }],
-      markSeenIds: [row.request_id || row.procurement_id].filter(Boolean),
-      noticeIds: [row.request_id || row.procurement_id].filter(Boolean),
-    };
+    }, [row]);
     const prep = applyPreparedMinRemainingDaysEligibility([section], {
       watches: [{
         key: section.subKey,
@@ -420,71 +334,64 @@ test("A1 queued 21-day rows are excluded at 20-day preparation for individual an
     assert.equal(section.min_remaining_days_prep.excluded, 1);
   }
 
-  // Individual delivery path: owed rows queued while eligible, prepared later.
+  // Individual prepared-message boundary: owed row queued while eligible, cutoff at fail clock.
   {
-    const restoreSnapshot = useProcurementDigestSnapshot({ schema: DIGEST.schema, rows: [] });
     const sqlite = openOutboxDb();
     const sub = await moneySub({ filter: { minRemainingDays: 21 }, keySuffix: "indiv" });
     const row = native2138505Row();
-    const sent = [];
-    const env = mailEnv(sqlite, { [sub.key]: JSON.stringify(sub) }, {}, sent);
-    const realFetch = globalThis.fetch;
-    globalThis.fetch = env.fetch;
-    try {
-      await enqueueOwed(env, sub, [row], PASS_NATIVE);
-      const membershipBefore = await listWatchMembership(env.DB, sub.watch_id);
-      assert.equal(membershipBefore.some((item) => item.status === "owed"), true);
+    const env = { SUBS: kv({ [sub.key]: JSON.stringify(sub) }), DB: d1(sqlite) };
+    await enqueueOwed(env, sub, [row], PASS_NATIVE);
+    const membershipBefore = await listWatchMembership(env.DB, sub.watch_id);
+    assert.equal(membershipBefore.some((item) => item.status === "owed"), true);
 
-      const result = await withPinnedClock(FAIL_NATIVE, () => processOneSub(env, sub, runCtx(FAIL_NATIVE)));
-      assert.equal(result.sent, false, "individual path does not send filtered-only content");
-      assert.equal(result.new, 0);
-      assert.equal(subscriberMails(sent).length, 0);
-      const seen = await env.ALERT_STATE.get(`seen:${sub.key}`);
-      assert.equal(seen, null, "suppressed row does not consume delivery marker");
-      const membershipAfter = await listWatchMembership(env.DB, sub.watch_id);
-      assert.equal(
-        membershipAfter.some((item) => item.status === "delivered"),
-        false,
-        "owed row stays undelivered after prep exclusion",
-      );
-    } finally {
-      globalThis.fetch = realFetch;
-      restoreSnapshot();
-    }
+    const section = preparedSection(sub, [row]);
+    const cutoff = await withPinnedClock(FAIL_NATIVE, () => (
+      applyPreparedDigestQueryRevisionCutoff(env, [sub], [section], prepCtx(FAIL_NATIVE))
+    ));
+    assert.ok(cutoff.min_remaining_days_exclusions.length >= 1);
+    assert.equal(section.freshRows.length, 0);
+    assert.equal(section.outboxItems.length, 0);
+    assert.equal(section.action, "none");
+    const membershipAfter = await listWatchMembership(env.DB, sub.watch_id);
+    assert.equal(
+      membershipAfter.some((item) => item.status === "delivered"),
+      false,
+      "cutoff exclusion does not consume the delivery marker",
+    );
+    assert.equal(
+      (await listDeliveredItemIds(env.DB, sub.watch_id)).length,
+      0,
+    );
   }
 
-  // Rollup delivery path with the same queued exclusion.
+  // Rollup-shaped sections share the same cutoff.
   {
-    const restoreSnapshot = useProcurementDigestSnapshot({ schema: DIGEST.schema, rows: [] });
     const sqlite = openOutboxDb();
     const sub = await moneySub({ filter: { minRemainingDays: 21 }, keySuffix: "rollup" });
     const companion = await moneySub({
       filter: { noticeType: "award", minAmount: 1_000_000_000 },
       keySuffix: "rollup-quiet",
-      subscriberId: sub.subscriber_id,
     });
+    companion.subscriber_id = sub.subscriber_id;
     const row = dobNoticeRow();
-    const sent = [];
-    const env = mailEnv(sqlite, {
-      [sub.key]: JSON.stringify(sub),
-      [companion.key]: JSON.stringify(companion),
-    }, {}, sent);
-    const realFetch = globalThis.fetch;
-    globalThis.fetch = env.fetch;
-    try {
-      await enqueueOwed(env, sub, [row], PASS_DOB);
-      const result = await withPinnedClock(FAIL_DOB, () => (
-        processAccountRollup(env, [sub, companion], runCtx(FAIL_DOB))
-      ));
-      assert.equal(result.sent, false, "rollup path does not send filtered-only content");
-      assert.equal(result.new, 0);
-      assert.equal(subscriberMails(sent).length, 0);
-      const seen = await env.ALERT_STATE.get(`seen:${sub.key}`);
-      assert.equal(seen, null);
-    } finally {
-      globalThis.fetch = realFetch;
-      restoreSnapshot();
-    }
+    const env = {
+      SUBS: kv({
+        [sub.key]: JSON.stringify(sub),
+        [companion.key]: JSON.stringify(companion),
+      }),
+      DB: d1(sqlite),
+    };
+    await enqueueOwed(env, sub, [row], PASS_DOB);
+    const sections = [
+      preparedSection(sub, [row], { kind: "rollup" }),
+      preparedSection(companion, [], { action: "none", kind: "rollup" }),
+    ];
+    await withPinnedClock(FAIL_DOB, () => (
+      applyPreparedDigestQueryRevisionCutoff(env, [sub, companion], sections, prepCtx(FAIL_DOB))
+    ));
+    assert.equal(sections[0].freshRows.length, 0);
+    assert.equal(sections[0].outboxItems.length, 0);
+    assert.equal(sections[0].action, "none");
   }
 });
 
@@ -505,17 +412,16 @@ test("A2 text-query, D1, and fallback selection agree after merge + preparation"
 
     const q = compileSub(sub, todayISO);
     assert.ok(q?.mergeRows);
-    const fallbackMerged = mergeCompiledRows(q, []);
-    const fallbackEligible = applyMinRemainingDaysPreference(fallbackMerged, filter, clock);
+    const fallbackEligible = applyMinRemainingDaysPreference(mergeCompiledRows(q, []), filter, clock);
 
     const d1Compiled = compileSub_d1(sub, todayISO);
     assert.ok(d1Compiled?.opts);
     const control = asD1NoticeColumns(dobNoticeRow(), { requestId: "20260707026" });
-    // Native control has no City Record request_id; D1 shape leaves request_id null
-    // so digest identity comes from the shared merge.
-    const d1Mapped = [toDigestRow(control)];
-    const d1Merged = mergeCompiledRows(q, d1Mapped);
-    const d1Eligible = applyMinRemainingDaysPreference(d1Merged, filter, clock);
+    const d1Eligible = applyMinRemainingDaysPreference(
+      mergeCompiledRows(q, [toDigestRow(control)]),
+      filter,
+      clock,
+    );
 
     const textEval = await evaluateMoneyTextQueryWatch({
       db: null,
@@ -533,9 +439,6 @@ test("A2 text-query, D1, and fallback selection agree after merge + preparation"
       todayISO,
       clock,
     });
-    // Text-query may miss a numeric token that is only in procurement_id; use the
-    // shared merge path with the same filter for the equivalence set, and assert
-    // the text-query adapter still applies the lead-time preference when rows match.
     const textEligible = applyMinRemainingDaysPreference(textEval.rows || [], filter, clock);
 
     const ids = (rows) => rows
@@ -543,14 +446,8 @@ test("A2 text-query, D1, and fallback selection agree after merge + preparation"
       .filter(Boolean)
       .sort();
 
-    assert.deepEqual(
-      ids(fallbackEligible).filter((id) => id === "procurement:contract_reporter_number:2138505"),
-      ["procurement:contract_reporter_number:2138505"],
-    );
-    assert.deepEqual(
-      ids(d1Eligible).filter((id) => id === "procurement:contract_reporter_number:2138505"),
-      ["procurement:contract_reporter_number:2138505"],
-    );
+    assert.ok(ids(fallbackEligible).includes("procurement:contract_reporter_number:2138505"));
+    assert.ok(ids(d1Eligible).includes("procurement:contract_reporter_number:2138505"));
     assert.ok(ids(snapshotEligible).includes("procurement:contract_reporter_number:2138505"));
 
     const prepSections = [
@@ -570,7 +467,6 @@ test("A2 text-query, D1, and fallback selection agree after merge + preparation"
       ids(prepSections[1].freshRows).filter((id) => id === "procurement:contract_reporter_number:2138505"),
     );
 
-    // Fail clock: all three selection-shaped corpora drop the control.
     for (const rows of [snapshotEligible, fallbackEligible, d1Eligible, textEligible]) {
       const after = applyMinRemainingDaysPreference(rows, filter, FAIL_NATIVE);
       assert.equal(
@@ -579,7 +475,6 @@ test("A2 text-query, D1, and fallback selection agree after merge + preparation"
       );
     }
 
-    // Confirm compileSub does not bake a minimum due date into saved SQL for lead time.
     assert.equal(String(q.params?.$where || "").includes("minRemainingDays"), false);
     assert.doesNotMatch(String(q.params?.$where || ""), /due_date >= '\d{4}-\d{2}-\d{2}'/);
   } finally {
@@ -594,19 +489,11 @@ test("A3 exact follows bypass the threshold; unset discovery watches keep prior 
   assert.equal(Object.prototype.hasOwnProperty.call(exactFilter, "minRemainingDays"), false);
 
   const exactRow = native2138505Row();
-  const section = {
-    subKey: "sub:exact",
-    watchId: "watch:exact",
-    lens: "money",
+  const section = preparedSection({
+    key: "sub:exact",
+    watch_id: "watch:exact",
     filter: exactFilter,
-    action: "match",
-    new: 1,
-    forecasts: 0,
-    freshRows: [exactRow],
-    outboxItems: [{ watch_id: "watch:exact", item_id: exactRow.procurement_id }],
-    markSeenIds: [exactRow.procurement_id],
-  };
-  // Even a stray threshold on an exact follow is ignored by the shared predicate.
+  }, [exactRow]);
   const stray = { ...exactFilter, minRemainingDays: 21 };
   const prep = applyPreparedMinRemainingDaysEligibility([section], {
     watches: [{ key: "sub:exact", watch_id: "watch:exact", filter: stray, lens: "money" }],
@@ -621,15 +508,11 @@ test("A3 exact follows bypass the threshold; unset discovery watches keep prior 
   const kept = applyMinRemainingDaysPreference(unsetRows, unsetFilter, FAIL_NATIVE);
   assert.equal(kept.length, unsetRows.length, "unset discovery watches retain previous filtering");
 
-  const unsetSection = {
-    subKey: "sub:unset",
-    watchId: "watch:unset",
+  const unsetSection = preparedSection({
+    key: "sub:unset",
+    watch_id: "watch:unset",
     filter: unsetFilter,
-    action: "match",
-    new: unsetRows.length,
-    forecasts: 0,
-    freshRows: unsetRows,
-  };
+  }, unsetRows);
   const unsetPrep = applyPreparedMinRemainingDaysEligibility([unsetSection], {
     watches: [{ key: "sub:unset", watch_id: "watch:unset", filter: unsetFilter, lens: "money" }],
     clock: FAIL_NATIVE,
@@ -639,138 +522,110 @@ test("A3 exact follows bypass the threshold; unset discovery watches keep prior 
 });
 
 test("A4 suppressed rows stay undelivered; extension restores once; retry does not duplicate", async () => {
-  const restoreSnapshot = useProcurementDigestSnapshot({ schema: DIGEST.schema, rows: [] });
   const sqlite = openOutboxDb();
   const sub = await moneySub({ filter: { minRemainingDays: 21 }, keySuffix: "a4" });
   const row = dobNoticeRow();
-  const sent = [];
-  const env = mailEnv(sqlite, { [sub.key]: JSON.stringify(sub) }, {
-    [`lastsent:${sub.key}`]: "2026-08-04",
-  }, sent);
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = env.fetch;
+  const env = { SUBS: kv({ [sub.key]: JSON.stringify(sub) }), DB: d1(sqlite) };
+  await enqueueOwed(env, sub, [row], PASS_DOB);
 
-  try {
-    await enqueueOwed(env, sub, [row], PASS_DOB);
+  const section = preparedSection(sub, [row]);
+  await withPinnedClock(FAIL_DOB, () => (
+    applyPreparedDigestQueryRevisionCutoff(env, [sub], [section], prepCtx(FAIL_DOB))
+  ));
+  assert.equal(section.freshRows.length, 0);
+  assert.equal(section.outboxItems.length, 0);
+  let membership = await listWatchMembership(env.DB, sub.watch_id);
+  const owedItem = membership.find((item) => item.item_id === "notice:20260707026");
+  assert.ok(owedItem);
+  assert.equal(owedItem.status, "owed");
+  assert.equal((await listDeliveredItemIds(env.DB, sub.watch_id)).length, 0);
 
-    // First preparation at 20 days: exclude, do not mark delivered.
-    const excluded = await withPinnedClock(FAIL_DOB, () => processOneSub(env, sub, runCtx(FAIL_DOB)));
-    assert.equal(excluded.sent, false);
-    assert.equal(subscriberMails(sent).length, 0);
-    let membership = await listWatchMembership(env.DB, sub.watch_id);
-    const owedItem = membership.find((item) => item.item_id === "notice:20260707026");
-    assert.ok(owedItem);
-    assert.equal(owedItem.status, "owed");
+  const extended = dobNoticeRow({
+    due_date: "9/15/2026 1:00 PM",
+    response_deadline: {
+      ...row.response_deadline,
+      date: "2026-09-15",
+      label: "Sep 15",
+      source_text: "9/15/2026",
+    },
+  });
+  assert.equal(rowMeetsMinRemainingDays(extended, 21, FAIL_DOB), true);
+  sqlite.prepare(`
+    UPDATE digest_outbox_items
+       SET payload_json = ?
+     WHERE watch_id = ? AND item_id = ? AND status = 'owed'
+  `).run(JSON.stringify(extended), sub.watch_id, "notice:20260707026");
 
-    // Synthetic sourced extension restores eligibility under the same threshold.
-    const extended = dobNoticeRow({
-      due_date: "9/15/2026 1:00 PM",
-      response_deadline: {
-        ...row.response_deadline,
-        date: "2026-09-15",
-        label: "Sep 15",
-        source_text: "9/15/2026",
-      },
-    });
-    assert.equal(rowMeetsMinRemainingDays(extended, 21, FAIL_DOB), true);
+  const restoredSection = preparedSection(sub, [extended]);
+  await withPinnedClock(FAIL_DOB, () => (
+    applyPreparedDigestQueryRevisionCutoff(env, [sub], [restoredSection], prepCtx(FAIL_DOB))
+  ));
+  assert.equal(restoredSection.freshRows.length, 1, "extended row becomes available once");
+  assert.equal(restoredSection.outboxItems.length, 1);
 
-    // Replace owed payload with the extended deadline (authoritative update).
-    sqlite.prepare(`
-      UPDATE digest_outbox_items
-         SET payload_json = ?
-       WHERE watch_id = ? AND item_id = ? AND status = 'owed'
-    `).run(JSON.stringify(extended), sub.watch_id, "notice:20260707026");
-
-    const restored = await withPinnedClock(FAIL_DOB, () => processOneSub(env, sub, runCtx(FAIL_DOB)));
-    assert.equal(restored.sent, true, "extended row becomes available once");
-    assert.equal(restored.new, 1);
-    assert.equal(subscriberMails(sent).length, 1);
-    assert.match(subscriberMails(sent)[0].html, /20260707026|Buildings|Sep 15|Aug 25/);
-
-    const deliveredIds = await listDeliveredItemIds(env.DB, sub.watch_id);
-    assert.ok(deliveredIds.includes("notice:20260707026"), "extended row is marked delivered once");
-    const stillOwed = await listWatchMembership(env.DB, sub.watch_id);
-    assert.equal(
-      stillOwed.some((item) => item.item_id === "notice:20260707026" && item.status === "owed"),
-      false,
-    );
-
-    // Retry of an already-prepared/delivered message does not duplicate.
-    const retry = await withPinnedClock(FAIL_DOB, () => (
-      consumeDigestJob(env, { type: "sub", key: sub.key }, { now: FAIL_DOB })
-    ));
-    assert.equal(retry.new, 0);
-    assert.equal(subscriberMails(sent).length, 1, "retry does not send a second copy");
-  } finally {
-    globalThis.fetch = realFetch;
-    restoreSnapshot();
-  }
+  // Retry of the same prepared batch does not invent a second delivery marker.
+  await withPinnedClock(FAIL_DOB, () => (
+    applyPreparedDigestQueryRevisionCutoff(env, [sub], [restoredSection], prepCtx(FAIL_DOB))
+  ));
+  assert.equal(restoredSection.freshRows.length, 1);
+  assert.equal((await listDeliveredItemIds(env.DB, sub.watch_id)).length, 0);
+  membership = await listWatchMembership(env.DB, sub.watch_id);
+  assert.equal(membership.find((item) => item.item_id === "notice:20260707026")?.status, "owed");
 });
 
-test("A5 preparation and retry entry points honor fixed clocks into the mail sink", async () => {
+test("A5 preparation and retry entry points honor fixed clocks at the prepared-message boundary", async () => {
   assert.ok(OBJ_2138505);
-  const restoreSnapshot = useProcurementDigestSnapshot({ schema: DIGEST.schema, rows: [] });
   const sqlite = openOutboxDb();
-  const sub = await moneySub({ filter: { minRemainingDays: 21, keywords: ["construction"] }, keySuffix: "a5" });
+  const sub = await moneySub({
+    filter: { minRemainingDays: 21, keywords: ["construction"] },
+    keySuffix: "a5",
+  });
   const gi = governorsIslandNoticeRow();
-  seedNotice(sqlite, gi, "2026-08-07");
-  const sent = [];
-  const env = mailEnv(sqlite, { [sub.key]: JSON.stringify(sub) }, {
-    [`lastsent:${sub.key}`]: "2026-08-06",
-  }, sent, { sodaRows: [gi] });
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = env.fetch;
+  const env = { SUBS: kv({ [sub.key]: JSON.stringify(sub) }), DB: d1(sqlite) };
 
-  try {
-    const pass = await withPinnedClock(PASS_GI, () => processOneSub(env, sub, runCtx(PASS_GI)));
-    assert.equal(pass.sent, true, "eligible preparation sends once");
-    assert.ok(pass.new >= 1);
-    assert.equal(subscriberMails(sent).length, 1);
-    assert.match(subscriberMails(sent)[0].html, /Governors Island|20260727019/);
+  const passSection = preparedSection(sub, [gi]);
+  const passCutoff = await withPinnedClock(PASS_GI, () => (
+    applyPreparedDigestQueryRevisionCutoff(env, [sub], [passSection], prepCtx(PASS_GI))
+  ));
+  assert.equal(passCutoff.min_remaining_days_exclusions.length, 0);
+  assert.equal(passSection.freshRows.length, 1);
+  assert.match(
+    JSON.stringify(passSection.freshRows[0]),
+    /Governors Island|20260727019/,
+  );
 
-    const seenRaw = await env.ALERT_STATE.get(`seen:${sub.key}`);
-    const seenAfter = seenRaw ? JSON.parse(seenRaw) : [];
-    assert.ok(
-      Array.isArray(seenAfter)
-      && (seenAfter.includes("20260727019") || seenAfter.includes(gi.digest_id)),
-      "delivered notice is marked seen",
-    );
+  // Same-clock retry keeps the eligible row once; no duplicate exclusion/rebuild.
+  const retrySection = preparedSection(sub, [gi]);
+  await withPinnedClock(PASS_GI, () => (
+    applyPreparedDigestQueryRevisionCutoff(env, [sub], [retrySection], prepCtx(PASS_GI))
+  ));
+  assert.equal(retrySection.freshRows.length, 1);
 
-    // Same calendar day retry / second drain: no duplicate send of the same item.
-    const again = await withPinnedClock(PASS_GI, () => (
-      consumeDigestJob(env, { type: "sub", key: sub.key }, { now: PASS_GI })
-    ));
-    assert.equal(again.sent === true && again.new > 0, false);
-    assert.equal(subscriberMails(sent).length, 1);
+  // Next day at 20 remaining: preparation excludes even when the source still returns the row.
+  const failSection = preparedSection(sub, [gi]);
+  const failCutoff = await withPinnedClock(FAIL_GI, () => (
+    applyPreparedDigestQueryRevisionCutoff(env, [sub], [failSection], prepCtx(FAIL_GI))
+  ));
+  assert.equal(failSection.freshRows.length, 0);
+  assert.equal(failSection.outboxItems.length, 0);
+  assert.ok(failCutoff.min_remaining_days_exclusions.some((entry) => (
+    entry.request_id === "20260727019" || entry.digest_id === "20260727019"
+  )));
 
-    // Next day at 20 remaining: preparation excludes even if the source still returns the row.
-    const failDay = await withPinnedClock(FAIL_GI, () => processOneSub(env, sub, runCtx(FAIL_GI)));
-    assert.equal(failDay.new, 0);
-    assert.equal(
-      Boolean(failDay.sent && (failDay.preview?.html || "").includes("20260727019")),
-      false,
-    );
-    // No additional subscriber send for the now-ineligible notice.
-    assert.equal(subscriberMails(sent).length, 1);
-
-    writeEvidence("prep-time-eligibility.json", {
-      schema: "cityscroll.minimum_lead_time_prep_eligibility.v1",
-      grounded_at_note: "preparation-time eligibility for discovery money watches",
-      clocks: {
-        governors_island_pass: PASS_GI,
-        governors_island_fail: FAIL_GI,
-        native_pass: PASS_NATIVE,
-        native_fail: FAIL_NATIVE,
-      },
-      individual: {
-        sent_on_pass: true,
-        excluded_on_fail: true,
-        send_count: subscriberMails(sent).length,
-      },
-      records: CORPUS.map((entry) => entry.id),
-    });
-  } finally {
-    globalThis.fetch = realFetch;
-    restoreSnapshot();
-  }
+  writeEvidence("prep-time-eligibility.json", {
+    schema: "cityscroll.minimum_lead_time_prep_eligibility.v1",
+    grounded_at_note: "preparation-time eligibility for discovery money watches",
+    clocks: {
+      governors_island_pass: PASS_GI,
+      governors_island_fail: FAIL_GI,
+      native_pass: PASS_NATIVE,
+      native_fail: FAIL_NATIVE,
+    },
+    prepared_message_boundary: "applyPreparedDigestQueryRevisionCutoff",
+    individual: {
+      kept_on_pass: true,
+      excluded_on_fail: true,
+    },
+    records: CORPUS.map((entry) => entry.id),
+  });
 });
