@@ -16,6 +16,8 @@ const PATHS = {
   geography: join(ROOT, "site/data/community_board_geography_lookup.json"),
   communityDigest: join(ROOT, "site/data/community_district_digests.json"),
   ntaLayer: join(ROOT, "site/data/geography/layers/nta2020/26B.json"),
+  parcelManifest: join(ROOT, "site/data/parcel-geography/manifest.json"),
+  meetingGeographyActive: join(ROOT, "site/data/meeting-geography-backfill/ACTIVE"),
 };
 export const LENSES = Object.freeze(["land", "property", "rules", "meetings", "money"]);
 export const NEAR_YOU_PLACE_COVERAGE_STATES = Object.freeze([
@@ -42,7 +44,7 @@ function resolveActivityPath() {
   return PATHS.activity;
 }
 
-function hashInputs() {
+function hashInputs(dependencies = null) {
   const hash = createHash("sha256");
   // The generated projection is absent from source-only test fixtures. Hash
   // it when materialized while preserving the existing required inputs.
@@ -52,12 +54,17 @@ function hashInputs() {
     PATHS.geography,
     PATHS.communityDigest,
     PATHS.ntaLayer,
+    PATHS.parcelManifest,
+    PATHS.meetingGeographyActive,
   ];
   for (const path of inputs) {
-    if ((path === PATHS.communityDigest || path === PATHS.ntaLayer) && !existsSync(path)) continue;
+    if ((path === PATHS.communityDigest || path === PATHS.ntaLayer
+      || path === PATHS.parcelManifest || path === PATHS.meetingGeographyActive)
+      && !existsSync(path)) continue;
     if (path === PATHS.activitySite && path !== resolveActivityPath()) continue;
     hash.update(readFileSync(path));
   }
+  if (dependencies) hash.update(JSON.stringify(dependencies));
   return `v1-${hash.digest("hex").slice(0, 16)}`;
 }
 
@@ -182,6 +189,253 @@ export function decideNearYouManifestActivation({
     reason: "complete",
     missing: [],
     activeManifest: candidateManifest,
+  };
+}
+
+/**
+ * Parcel membership, record-assertion, and shared meeting source generations
+ * that a local/meeting publication must name. Absent generations refuse
+ * activation — readers never follow a generation that cannot prove its inputs.
+ */
+export function localGeographyPublicationDependencies({
+  parcelManifest = null,
+  meetingGeographyPointer = null,
+  sharedMeetingModel = null,
+} = {}) {
+  return {
+    parcel_membership_generation: parcelManifest?.membership?.generated_at
+      || parcelManifest?.memberships?.generated_at
+      || null,
+    parcel_coordinate_vintage: parcelManifest?.coordinate_vintage || null,
+    assertion_generation: meetingGeographyPointer?.active_generation || null,
+    source_generation: sharedMeetingModel?.generated_at || null,
+  };
+}
+
+export function loadLocalGeographyPublicationDependencies(root = ROOT) {
+  const parcelPath = join(root, "site/data/parcel-geography/manifest.json");
+  const activePath = join(root, "site/data/meeting-geography-backfill/ACTIVE");
+  const meetingsPath = join(root, "site/data/shared_meeting_read_model.json");
+  return localGeographyPublicationDependencies({
+    parcelManifest: existsSync(parcelPath) ? readJson(parcelPath) : null,
+    meetingGeographyPointer: existsSync(activePath) ? readJson(activePath) : null,
+    sharedMeetingModel: existsSync(meetingsPath) ? readJson(meetingsPath) : null,
+  });
+}
+
+export function validateLocalGeographyPublicationDependencies(dependencies = {}) {
+  const missing = [];
+  if (!dependencies?.parcel_membership_generation) missing.push("parcel_membership_generation");
+  if (!dependencies?.parcel_coordinate_vintage) missing.push("parcel_coordinate_vintage");
+  if (!dependencies?.assertion_generation) missing.push("assertion_generation");
+  if (!dependencies?.source_generation) missing.push("source_generation");
+  return { ok: missing.length === 0, missing };
+}
+
+/**
+ * Near You list rows that open a canonical /meetings/ detail carry the full
+ * meeting: identity (or an encoded /meetings/ route). Notice-hash destinations
+ * are not meeting-detail completeness subjects.
+ */
+export function canonicalMeetingDetailIdFromNearYouRecord(record) {
+  if (!record || typeof record !== "object" || Array.isArray(record)) return null;
+  const id = String(record.id || record.meeting_id || "").trim();
+  if (id.startsWith("meeting:")) return id;
+  const route = String(record.route || "");
+  const match = route.match(/^\/meetings\/([^/?#]+)/);
+  if (!match) return null;
+  try {
+    const decoded = decodeURIComponent(match[1]);
+    return decoded.startsWith("meeting:") ? decoded : null;
+  } catch {
+    return null;
+  }
+}
+
+export function collectEmittedMeetingDetailIds(nearYou) {
+  const ids = new Set();
+  const entriesByKey = new Map((nearYou?.entries || []).map((entry) => [entry.key, entry.value]));
+  for (const [sliceId, key] of Object.entries(nearYou?.manifest?.slices || {})) {
+    if (!String(sliceId).endsWith(":meetings")) continue;
+    const raw = entriesByKey.get(key);
+    if (!raw) continue;
+    const slice = typeof raw === "string" ? JSON.parse(raw) : raw;
+    for (const record of Object.values(slice?.activity?.records?.meetings || {})) {
+      const meetingId = canonicalMeetingDetailIdFromNearYouRecord(record);
+      if (meetingId) ids.add(meetingId);
+    }
+  }
+  return [...ids].sort();
+}
+
+/**
+ * Every emitted meeting-detail destination must exist in the staged meetings
+ * id_to_slice map and in that slice's row population (E17).
+ */
+export function validateMeetingDetailCompleteness({ nearYou = null, meetings = null } = {}) {
+  const emitted = collectEmittedMeetingDetailIds(nearYou);
+  const idToSlice = meetings?.manifest?.id_to_slice || {};
+  const entriesByKey = new Map((meetings?.entries || []).map((entry) => [entry.key, entry.value]));
+  const missing = [];
+  for (const meetingId of emitted) {
+    const key = idToSlice[meetingId];
+    if (!key) {
+      missing.push(meetingId);
+      continue;
+    }
+    const raw = entriesByKey.get(key);
+    if (!raw) {
+      missing.push(meetingId);
+      continue;
+    }
+    const slice = typeof raw === "string" ? JSON.parse(raw) : raw;
+    const present = (slice?.rows || []).some((row) => row?.meeting_id === meetingId);
+    if (!present) missing.push(meetingId);
+  }
+  return {
+    ok: missing.length === 0,
+    emitted: emitted.length,
+    missing,
+  };
+}
+
+function withPublicationDependencies(manifest, dependencies) {
+  return {
+    ...manifest,
+    publication_dependencies: {
+      parcel_membership_generation: dependencies?.parcel_membership_generation || null,
+      parcel_coordinate_vintage: dependencies?.parcel_coordinate_vintage || null,
+      assertion_generation: dependencies?.assertion_generation || null,
+      source_generation: dependencies?.source_generation || null,
+    },
+  };
+}
+
+/**
+ * Activate Near You and meeting manifests together. Incomplete meeting details,
+ * missing geography dependencies, or partial shard publication leave the prior
+ * generation active (atomic activation).
+ */
+export function decideLocalGeographyPublicationActivation({
+  previous = null,
+  candidate = null,
+  residentialPlaces = [],
+  lenses = LENSES,
+  dependencies = null,
+  publishedSliceKeys = null,
+} = {}) {
+  const previousActive = {
+    nearYouManifest: previous?.nearYouManifest || null,
+    meetingsManifest: previous?.meetingsManifest || null,
+  };
+  const refuse = (reason, missing = []) => ({
+    activate: false,
+    reason,
+    missing,
+    active: previousActive,
+  });
+
+  if (!candidate?.nearYouManifest || !candidate?.meetingsManifest) {
+    return refuse("stale_or_invalid_manifest");
+  }
+
+  const dependencyCheck = validateLocalGeographyPublicationDependencies(
+    dependencies || candidate.nearYouManifest.publication_dependencies,
+  );
+  if (!dependencyCheck.ok) {
+    return refuse("missing_publication_dependencies", dependencyCheck.missing);
+  }
+
+  const nearDecision = decideNearYouManifestActivation({
+    previousManifest: previousActive.nearYouManifest,
+    candidateManifest: candidate.nearYouManifest,
+    residentialPlaces,
+    lenses,
+    publishedSliceKeys,
+  });
+  if (!nearDecision.activate) {
+    return refuse(nearDecision.reason, nearDecision.missing || []);
+  }
+
+  const meetingsManifest = candidate.meetingsManifest;
+  if (Number(meetingsManifest.schema_version) !== 1 || meetingsManifest.kind !== "meetings"
+    || !meetingsManifest.version || !meetingsManifest.id_to_slice) {
+    return refuse("stale_or_invalid_manifest");
+  }
+
+  const detailCompleteness = validateMeetingDetailCompleteness({
+    nearYou: {
+      manifest: candidate.nearYouManifest,
+      entries: candidate.nearYouEntries || [],
+    },
+    meetings: {
+      manifest: meetingsManifest,
+      entries: candidate.meetingsEntries || [],
+    },
+  });
+  if (!detailCompleteness.ok) {
+    return refuse("incomplete_meeting_details", detailCompleteness.missing);
+  }
+
+  if (publishedSliceKeys) {
+    const keys = publishedSliceKeys instanceof Set ? publishedSliceKeys : new Set(publishedSliceKeys);
+    const unpublishedMeetings = Object.values(meetingsManifest.id_to_slice || {})
+      .filter((key) => key && !keys.has(key));
+    if (unpublishedMeetings.length) {
+      return refuse("partial_publication", unpublishedMeetings.slice(0, 20));
+    }
+  }
+
+  return {
+    activate: true,
+    reason: "complete",
+    missing: [],
+    active: {
+      nearYouManifest: candidate.nearYouManifest,
+      meetingsManifest,
+    },
+  };
+}
+
+/**
+ * Build Near You + meeting slices for one version, stamp shared publication
+ * dependencies, and decide atomic activation against an optional previous pair.
+ */
+export function buildLocalGeographyPublication({
+  activity,
+  geography = {},
+  meetings,
+  version,
+  residentialPlaces = [],
+  dependencies = null,
+  previous = null,
+  publishedSliceKeys = null,
+} = {}) {
+  const deps = dependencies || localGeographyPublicationDependencies({
+    sharedMeetingModel: meetings,
+  });
+  const nearYou = buildNearYou(activity, geography, version, { residentialPlaces });
+  const meetingBuilt = buildMeetings(meetings, version);
+  nearYou.manifest = withPublicationDependencies(nearYou.manifest, deps);
+  meetingBuilt.manifest = withPublicationDependencies(meetingBuilt.manifest, deps);
+  const activation = decideLocalGeographyPublicationActivation({
+    previous,
+    candidate: {
+      nearYouManifest: nearYou.manifest,
+      meetingsManifest: meetingBuilt.manifest,
+      nearYouEntries: nearYou.entries,
+      meetingsEntries: meetingBuilt.entries,
+    },
+    residentialPlaces,
+    dependencies: deps,
+    publishedSliceKeys,
+  });
+  return {
+    version,
+    dependencies: deps,
+    nearYou,
+    meetings: meetingBuilt,
+    activation,
   };
 }
 
@@ -508,7 +762,8 @@ function writeBulkChunks(out, prefix, entries, maxBytes = 8 * 1024 * 1024) {
 function main() {
   const out = arg("--output-dir", DEFAULT_OUT);
   const check = process.argv.includes("--check");
-  const version = arg("--version", null) || hashInputs();
+  const dependencies = loadLocalGeographyPublicationDependencies(ROOT);
+  const version = arg("--version", null) || hashInputs(dependencies);
   if (existsSync(out)) rmSync(out, { recursive: true, force: true });
   mkdirSync(out, { recursive: true });
   const activity = readJson(resolveActivityPath());
@@ -522,17 +777,23 @@ function main() {
   if (!residentialPlaces.length) {
     throw new Error("canonical residential NTA registry is empty");
   }
-  const near = buildNearYou(activity, geography, version, { residentialPlaces });
-  const activation = decideNearYouManifestActivation({
-    previousManifest: null,
-    candidateManifest: near.manifest,
+  const publication = buildLocalGeographyPublication({
+    activity,
+    geography,
+    meetings,
+    version,
     residentialPlaces,
+    dependencies,
   });
-  if (!activation.activate) {
-    throw new Error(`Near You manifest refused activation (${activation.reason})`);
+  if (!publication.activation.activate) {
+    throw new Error(
+      `local geography publication refused activation (${publication.activation.reason}`
+      + `${publication.activation.missing?.length ? `: ${publication.activation.missing.slice(0, 5).join(", ")}` : ""})`,
+    );
   }
+  const near = publication.nearYou;
+  const meeting = publication.meetings;
   const community = buildCommunityDistrictDigests(communityDigest, version);
-  const meeting = buildMeetings(meetings, version);
   writeFileSync(join(out, "near-you.bulk.json"), JSON.stringify(near.entries));
   writeFileSync(join(out, "community-district-digest.bulk.json"), JSON.stringify(community.entries));
   writeFileSync(join(out, "meetings.bulk.json"), JSON.stringify(meeting.entries));
@@ -548,6 +809,7 @@ function main() {
     meeting_slice_count: meeting.entries.length,
     residential_place_count: residentialPlaces.length,
     coverage_census: near.manifest.coverage_census,
+    publication_dependencies: dependencies,
   }, null, 2));
   assertCanaries(out, residentialPlaces);
   if (check) console.log(`route read-model canaries passed (${version})`);

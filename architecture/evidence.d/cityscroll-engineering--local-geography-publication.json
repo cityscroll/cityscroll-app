@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/local-geography-publication",
+  "status": "implemented",
+  "fingerprint": "local-geography-publication.v1",
+  "updated_at": "2026-09-25T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "route-read-model-builder",
+      "path": "tools/build_worker_route_read_models.mjs"
+    },
+    {
+      "id": "local-geography-publication-verify-test",
+      "path": "test/local_geography_publication.test.mjs"
+    },
+    {
+      "id": "route-read-model-kv",
+      "path": "worker/src/lib/route_read_model_kv.mjs"
+    }
+  ]
+}
