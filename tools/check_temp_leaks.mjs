@@ -28,6 +28,10 @@ import { dirname } from "node:path";
 //     manager enables it during the worker dependency install, so it appears
 //     inside the unit window on any host whose $TMPDIR is fresh, and it is
 //     Node's to manage rather than a suite's scratch to clean up.
+//   - systemd-private-*: Ubuntu runners create PrivateTmp mounts for services
+//     such as man-db during a job window; those directories are the OS's, not
+//     suite scratch. Anchored so a suite directory that merely mentions
+//     systemd remains attributable.
 //   - dotfiles and platform bookkeeping entries (`.com.apple.*`, `.Trash`, etc.).
 // A shared machine may also host unrelated tools' scratch; extend this list with
 // an anchored prefix pattern rather than widening a check meant to catch new growth.
@@ -35,6 +39,7 @@ const IGNORE_PATTERNS = [
   /^node-compile-cache$/,
   /^playwright/,
   /^playwright_chromiumdev_profile/,
+  /^systemd-private-/,
   /^\./,
   /^com\.apple/,
 ];
