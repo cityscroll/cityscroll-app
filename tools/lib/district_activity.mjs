@@ -428,6 +428,16 @@ export function compactDistrictRecord(lens, row = {}, slots = []) {
         ? row.affected_area.derivation.methods : []),
       ...slots.flatMap((slot) => [slot.source_method, slot.method]),
     ].filter(Boolean))];
+    // Lean venue identity for local list cards; point method/vintage stay optional.
+    const venueAddress = compactText(
+      row.venue?.address
+        || row.location_memberships?.find?.((m) => m?.role === "venue")?.provenance?.source_path?.original_address
+        || "",
+      240,
+    );
+    const venueName = compactText(row.venue?.name || "", 160);
+    if (venueAddress) record.venue_address = venueAddress;
+    if (venueName) record.venue_name = venueName;
   }
   return record;
 }
