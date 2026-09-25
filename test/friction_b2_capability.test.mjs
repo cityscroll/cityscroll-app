@@ -27,7 +27,9 @@ import {
 import { readKeywordSearchIndexFromShards } from "../site/keyword_search_index_shards.mjs";
 import { buildSearchRenderPlan } from "../site/search_render_plan.mjs";
 import { searchFamilyForResult } from "../site/search_lens_handoff.mjs";
-import worker from "../worker/src/worker.mjs";
+// Import the search handler directly so site-node time-travel does not need the
+// Worker package graph (subscribe → optin-token) that worker.mjs pulls in.
+import { handleSearch } from "../worker/src/search.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
@@ -120,8 +122,10 @@ function searchEnv(index) {
 }
 
 async function publicSearch(query, env) {
-  const response = await worker.fetch(
-    new Request(`https://api.cityscroll.org/search?q=${encodeURIComponent(query)}`),
+  const response = await handleSearch(
+    new Request(`https://api.cityscroll.org/search?q=${encodeURIComponent(query)}`, {
+      headers: { Origin: "https://cityscroll.org", Accept: "application/json" },
+    }),
     env,
   );
   assert.equal(response.status, 200, `search HTTP ${response.status} for ${query}`);
