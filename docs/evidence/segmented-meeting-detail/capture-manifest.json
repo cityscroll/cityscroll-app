@@ -2,18 +2,25 @@
   "schema": "cityscroll.segmented_meeting_detail_capture_manifest.v1",
   "public_alias": "cb0c04802e711",
   "feature": "segmented-meeting-detail",
-  "captured_at": "2026-09-25T13:58:48.020Z",
-  "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
-  "grounded_at": "37377c890fcecc218352586379fa52b4ba2d24a1",
+  "capture_mode": "headless-playwright-production-served-site",
+  "base": "https://cityscroll.org/",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "captured_at": "2026-09-25T20:07:57Z",
+  "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
+  "grounded_at": "1ff60f293dc5f348cc6d08e1953232b4159235da",
+  "repository_revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
+  "revision_format": "served artifact-manifest source_commit_sha",
   "data_vintage": {
     "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-    "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-    "crol_build_day": "2026-09-25"
+    "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+    "crol_build_day": null
   },
+  "required_ancestor": "1ff60f293dc5f348cc6d08e1953232b4159235da",
+  "required_ancestor_contained": true,
   "image_binaries_committed": false,
-  "image_directory": ".artifacts/segmented-meeting-detail",
-  "image_policy": "Screenshots and HTML fixtures remain under .artifacts/ and are not committed. This manifest binds route, viewport, revision, vintage, assertion, and sha256.",
-  "capture_mode": "pages-edge-render-hash",
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed. Externally retained https screenshot_url values are required when a screenshot_sha256 is retained; otherwise screenshot hashes are omitted.",
+  "local_image_dir_ignored": "/private/tmp/fm/fms-9307f1e9-f1a49646/segmented-meeting-detail-screenshots",
+  "verifier": "node --test test/friction_c1_capability.test.mjs",
   "captures": [
     {
       "name": "m1-desktop-enabled",
@@ -23,31 +30,53 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "enabled",
       "scripting": true,
       "assertion": "M1 shows cannabis, budget, and regular-meeting segments with stable anchors, venue, and historical participation instructions.",
-      "sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
-      "render_sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "sha256": "c9ba24912befcee31742125662e3a2f738d95a17ba4466fcac9a415a4f12f6f0",
+      "screenshot_sha256": "925bbd3ae36e236bb5f25bc5a7abf35bc926bd3b49ee041bfe216ae32d4c2c85",
+      "screenshot_url": "https://files.catbox.moe/1cxlhg.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 1440,
+        "segment_section_width": 681,
         "segment_count": 3,
         "segment_ids": [
           "agenda-segment-13926109",
           "agenda-segment-3ed5ddaf",
           "agenda-segment-886aef32"
         ],
+        "segment_titles": [
+          "Public Hearing on Retail Cannabis Application: 461 Coney Island Avenue",
+          "Public Hearing on Community Budget Recommendations for NYC Capital and Expense Budgets for Fiscal Year 2028",
+          "Regular Monthly Meeting of Brooklyn Community Board 14"
+        ],
+        "segment_anchor_count": 3,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-13926109",
+          "#agenda-segment-3ed5ddaf",
+          "#agenda-segment-886aef32"
+        ],
+        "keyboard_focusable_count": 22,
         "historical": true,
+        "historical_participation": true,
         "register_mode": true,
-        "written_mode": true
-      },
-      "screenshot": ".artifacts/segmented-meeting-detail/m1-desktop.png",
-      "screenshot_sha256": "de11f58910d44afba1d14b89b2d322caa71f27533946a34446e54931033da0f4"
+        "written_mode": true,
+        "page_scripts_marker_present": false,
+        "title_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028",
+        "scripting_enabled": true,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "m1-desktop-no-js",
@@ -57,30 +86,53 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "disabled",
       "scripting": false,
       "assertion": "M1 shows cannabis, budget, and regular-meeting segments with stable anchors, venue, and historical participation instructions.",
-      "sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
-      "render_sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "sha256": "204d35f8746003ec7ecd7507eac8adfd58386381bc10791c74a404e75c2ee1e3",
+      "screenshot_sha256": "925bbd3ae36e236bb5f25bc5a7abf35bc926bd3b49ee041bfe216ae32d4c2c85",
+      "screenshot_url": "https://files.catbox.moe/1cxlhg.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 1440,
+        "segment_section_width": 681,
         "segment_count": 3,
         "segment_ids": [
           "agenda-segment-13926109",
           "agenda-segment-3ed5ddaf",
           "agenda-segment-886aef32"
         ],
+        "segment_titles": [
+          "Public Hearing on Retail Cannabis Application: 461 Coney Island Avenue",
+          "Public Hearing on Community Budget Recommendations for NYC Capital and Expense Budgets for Fiscal Year 2028",
+          "Regular Monthly Meeting of Brooklyn Community Board 14"
+        ],
+        "segment_anchor_count": 3,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-13926109",
+          "#agenda-segment-3ed5ddaf",
+          "#agenda-segment-886aef32"
+        ],
+        "keyboard_focusable_count": 22,
         "historical": true,
+        "historical_participation": true,
         "register_mode": true,
-        "written_mode": true
-      },
-      "screenshot": null
+        "written_mode": true,
+        "page_scripts_marker_present": false,
+        "title_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028",
+        "scripting_enabled": false,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "m1-narrow-touch-enabled",
@@ -90,31 +142,53 @@
         "width": 390,
         "height": 844
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "enabled",
       "scripting": true,
       "assertion": "M1 shows cannabis, budget, and regular-meeting segments with stable anchors, venue, and historical participation instructions.",
-      "sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
-      "render_sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "sha256": "13fccefe88aecac0f7832d389a0863855e5268bc0b204a2515fb153aabfbd351",
+      "screenshot_sha256": "17d0a5ebd1c2869414b4a93146602a2d5a41fdd42f951963e0686e543a152fae",
+      "screenshot_url": "https://files.catbox.moe/p9xzql.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 390,
+        "segment_section_width": 358,
         "segment_count": 3,
         "segment_ids": [
           "agenda-segment-13926109",
           "agenda-segment-3ed5ddaf",
           "agenda-segment-886aef32"
         ],
+        "segment_titles": [
+          "Public Hearing on Retail Cannabis Application: 461 Coney Island Avenue",
+          "Public Hearing on Community Budget Recommendations for NYC Capital and Expense Budgets for Fiscal Year 2028",
+          "Regular Monthly Meeting of Brooklyn Community Board 14"
+        ],
+        "segment_anchor_count": 3,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-13926109",
+          "#agenda-segment-3ed5ddaf",
+          "#agenda-segment-886aef32"
+        ],
+        "keyboard_focusable_count": 22,
         "historical": true,
+        "historical_participation": true,
         "register_mode": true,
-        "written_mode": true
-      },
-      "screenshot": ".artifacts/segmented-meeting-detail/m1-narrow.png",
-      "screenshot_sha256": "091a7d44ca27f35c60128a8bda4066e94e3c05c659f609980f4f425660b87b50"
+        "written_mode": true,
+        "page_scripts_marker_present": false,
+        "title_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028",
+        "scripting_enabled": true,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "m1-narrow-touch-no-js",
@@ -124,30 +198,53 @@
         "width": 390,
         "height": 844
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "disabled",
       "scripting": false,
       "assertion": "M1 shows cannabis, budget, and regular-meeting segments with stable anchors, venue, and historical participation instructions.",
-      "sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
-      "render_sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "sha256": "9ebfab68ade8fbb4f4330dfc80199eb6bf85ec22c7f79b2307e0b267691bb5a0",
+      "screenshot_sha256": "17d0a5ebd1c2869414b4a93146602a2d5a41fdd42f951963e0686e543a152fae",
+      "screenshot_url": "https://files.catbox.moe/p9xzql.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 390,
+        "segment_section_width": 358,
         "segment_count": 3,
         "segment_ids": [
           "agenda-segment-13926109",
           "agenda-segment-3ed5ddaf",
           "agenda-segment-886aef32"
         ],
+        "segment_titles": [
+          "Public Hearing on Retail Cannabis Application: 461 Coney Island Avenue",
+          "Public Hearing on Community Budget Recommendations for NYC Capital and Expense Budgets for Fiscal Year 2028",
+          "Regular Monthly Meeting of Brooklyn Community Board 14"
+        ],
+        "segment_anchor_count": 3,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-13926109",
+          "#agenda-segment-3ed5ddaf",
+          "#agenda-segment-886aef32"
+        ],
+        "keyboard_focusable_count": 22,
         "historical": true,
+        "historical_participation": true,
         "register_mode": true,
-        "written_mode": true
-      },
-      "screenshot": null
+        "written_mode": true,
+        "page_scripts_marker_present": false,
+        "title_text": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028",
+        "scripting_enabled": false,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "m2-desktop-enabled",
@@ -157,30 +254,50 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "enabled",
       "scripting": true,
       "assertion": "M2 distinguishes the 6:30 hearing from the 7:00 executive session with distinct stable segment links.",
-      "sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
-      "render_sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "sha256": "afd3cf6dc8ef4c112ad929b2141bf9eea68a80283e19ae097e4ba5bb37f98fa8",
+      "screenshot_sha256": "d79136bc5fbec4a9e87734cc3db5543bc0853885f7e268465eab9b4148fa64c1",
+      "screenshot_url": "https://files.catbox.moe/ri8ldv.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 1440,
+        "segment_section_width": 681,
         "segment_count": 2,
         "segment_ids": [
           "agenda-segment-2ca33be6",
           "agenda-segment-203c4ec3"
         ],
+        "segment_titles": [
+          "Public Hearing on 1584 Flatbush Avenue Rezoning",
+          "Executive Committee Meeting"
+        ],
+        "segment_anchor_count": 2,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-2ca33be6",
+          "#agenda-segment-203c4ec3"
+        ],
+        "keyboard_focusable_count": 19,
         "historical": true,
+        "historical_participation": true,
         "register_mode": false,
-        "written_mode": false
-      },
-      "screenshot": ".artifacts/segmented-meeting-detail/m2-desktop.png",
-      "screenshot_sha256": "c00f3459fba55092762cbba7566195028606ff6f064303f2708bafe5e6edd729"
+        "written_mode": false,
+        "page_scripts_marker_present": false,
+        "title_text": "Public Hearing on ULURP Application and Executive Committee Meeting",
+        "scripting_enabled": true,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "m2-desktop-no-js",
@@ -190,29 +307,50 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "disabled",
       "scripting": false,
       "assertion": "M2 distinguishes the 6:30 hearing from the 7:00 executive session with distinct stable segment links.",
-      "sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
-      "render_sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "sha256": "b77eeee271fca029a2620545b74f478ab92db8ec0ac1903e69bb98a0d202ee46",
+      "screenshot_sha256": "d79136bc5fbec4a9e87734cc3db5543bc0853885f7e268465eab9b4148fa64c1",
+      "screenshot_url": "https://files.catbox.moe/ri8ldv.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 1440,
+        "segment_section_width": 681,
         "segment_count": 2,
         "segment_ids": [
           "agenda-segment-2ca33be6",
           "agenda-segment-203c4ec3"
         ],
+        "segment_titles": [
+          "Public Hearing on 1584 Flatbush Avenue Rezoning",
+          "Executive Committee Meeting"
+        ],
+        "segment_anchor_count": 2,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-2ca33be6",
+          "#agenda-segment-203c4ec3"
+        ],
+        "keyboard_focusable_count": 19,
         "historical": true,
+        "historical_participation": true,
         "register_mode": false,
-        "written_mode": false
-      },
-      "screenshot": null
+        "written_mode": false,
+        "page_scripts_marker_present": false,
+        "title_text": "Public Hearing on ULURP Application and Executive Committee Meeting",
+        "scripting_enabled": false,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "m2-narrow-touch-enabled",
@@ -222,30 +360,50 @@
         "width": 390,
         "height": 844
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "enabled",
       "scripting": true,
       "assertion": "M2 distinguishes the 6:30 hearing from the 7:00 executive session with distinct stable segment links.",
-      "sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
-      "render_sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "sha256": "4447d242272ae4a14b65fabd2110e2e4de23cc3f58a813f2dc5f7d16f105fa17",
+      "screenshot_sha256": "f4f0c3eab70193341d21f63bfdbb04167859b8d45494b5e0316b51814844fd4c",
+      "screenshot_url": "https://files.catbox.moe/2npn76.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 390,
+        "segment_section_width": 358,
         "segment_count": 2,
         "segment_ids": [
           "agenda-segment-2ca33be6",
           "agenda-segment-203c4ec3"
         ],
+        "segment_titles": [
+          "Public Hearing on 1584 Flatbush Avenue Rezoning",
+          "Executive Committee Meeting"
+        ],
+        "segment_anchor_count": 2,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-2ca33be6",
+          "#agenda-segment-203c4ec3"
+        ],
+        "keyboard_focusable_count": 19,
         "historical": true,
+        "historical_participation": true,
         "register_mode": false,
-        "written_mode": false
-      },
-      "screenshot": ".artifacts/segmented-meeting-detail/m2-narrow.png",
-      "screenshot_sha256": "136e50918a5abf2608c79d47981f94e8ce0dd8af1fbccff36f89c0b7da385158"
+        "written_mode": false,
+        "page_scripts_marker_present": false,
+        "title_text": "Public Hearing on ULURP Application and Executive Committee Meeting",
+        "scripting_enabled": true,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "m2-narrow-touch-no-js",
@@ -255,29 +413,50 @@
         "width": 390,
         "height": 844
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "disabled",
       "scripting": false,
       "assertion": "M2 distinguishes the 6:30 hearing from the 7:00 executive session with distinct stable segment links.",
-      "sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
-      "render_sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "sha256": "6528e7ff4e3ec72d505013486541634a19d1cf690a9c2e61c93768bab52a2005",
+      "screenshot_sha256": "f4f0c3eab70193341d21f63bfdbb04167859b8d45494b5e0316b51814844fd4c",
+      "screenshot_url": "https://files.catbox.moe/2npn76.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 390,
+        "segment_section_width": 358,
         "segment_count": 2,
         "segment_ids": [
           "agenda-segment-2ca33be6",
           "agenda-segment-203c4ec3"
         ],
+        "segment_titles": [
+          "Public Hearing on 1584 Flatbush Avenue Rezoning",
+          "Executive Committee Meeting"
+        ],
+        "segment_anchor_count": 2,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-2ca33be6",
+          "#agenda-segment-203c4ec3"
+        ],
+        "keyboard_focusable_count": 19,
         "historical": true,
+        "historical_participation": true,
         "register_mode": false,
-        "written_mode": false
-      },
-      "screenshot": null
+        "written_mode": false,
+        "page_scripts_marker_present": false,
+        "title_text": "Public Hearing on ULURP Application and Executive Committee Meeting",
+        "scripting_enabled": false,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "m3-desktop-enabled",
@@ -287,19 +466,24 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "enabled",
       "scripting": true,
       "assertion": "M3 lists ordered untimed agenda items under the parent 6:30 meeting time without inventing per-item starts or written-testimony actions.",
-      "sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
-      "render_sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "sha256": "d940183e4b203d8d0ee5834eae1fdc10a9cfcf5e61475c7631befb21ae53a5ee",
+      "screenshot_sha256": "6d035088ed9b4ead645763f0629b4838c31974291304518aa20d8e285e5efc79",
+      "screenshot_url": "https://files.catbox.moe/snzlc1.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 1440,
+        "segment_section_width": 681,
         "segment_count": 4,
         "segment_ids": [
           "agenda-segment-70bb3798",
@@ -307,12 +491,31 @@
           "agenda-segment-2fe0f4ef",
           "agenda-segment-0054eb99"
         ],
+        "segment_titles": [
+          "Report on Summer Presentations",
+          "Report on Department of City Planning\u2019s South of Prospect Neighborhood Plan Kick-Off Event",
+          "Neighborhood Plan Strategy Session for all CB14 Committees",
+          "Other Business"
+        ],
+        "segment_anchor_count": 4,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-70bb3798",
+          "#agenda-segment-dbf2fcd0",
+          "#agenda-segment-2fe0f4ef",
+          "#agenda-segment-0054eb99"
+        ],
+        "keyboard_focusable_count": 21,
         "historical": true,
+        "historical_participation": true,
         "register_mode": false,
-        "written_mode": false
-      },
-      "screenshot": ".artifacts/segmented-meeting-detail/m3-desktop.png",
-      "screenshot_sha256": "7c308031994782f37bd68b5b9b9206bb8ea7dfc0483a731d7274fff06aa0d476"
+        "written_mode": false,
+        "page_scripts_marker_present": false,
+        "title_text": "Housing and Land Use Committee Meeting",
+        "scripting_enabled": true,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "m3-desktop-no-js",
@@ -322,19 +525,24 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "disabled",
       "scripting": false,
       "assertion": "M3 lists ordered untimed agenda items under the parent 6:30 meeting time without inventing per-item starts or written-testimony actions.",
-      "sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
-      "render_sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "sha256": "343d6e066efffe5f40fc079eae09791101bef18a5bf658d6c1cd35a1053d7304",
+      "screenshot_sha256": "6d035088ed9b4ead645763f0629b4838c31974291304518aa20d8e285e5efc79",
+      "screenshot_url": "https://files.catbox.moe/snzlc1.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 1440,
+        "segment_section_width": 681,
         "segment_count": 4,
         "segment_ids": [
           "agenda-segment-70bb3798",
@@ -342,11 +550,31 @@
           "agenda-segment-2fe0f4ef",
           "agenda-segment-0054eb99"
         ],
+        "segment_titles": [
+          "Report on Summer Presentations",
+          "Report on Department of City Planning\u2019s South of Prospect Neighborhood Plan Kick-Off Event",
+          "Neighborhood Plan Strategy Session for all CB14 Committees",
+          "Other Business"
+        ],
+        "segment_anchor_count": 4,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-70bb3798",
+          "#agenda-segment-dbf2fcd0",
+          "#agenda-segment-2fe0f4ef",
+          "#agenda-segment-0054eb99"
+        ],
+        "keyboard_focusable_count": 21,
         "historical": true,
+        "historical_participation": true,
         "register_mode": false,
-        "written_mode": false
-      },
-      "screenshot": null
+        "written_mode": false,
+        "page_scripts_marker_present": false,
+        "title_text": "Housing and Land Use Committee Meeting",
+        "scripting_enabled": false,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "m3-narrow-touch-enabled",
@@ -356,19 +584,24 @@
         "width": 390,
         "height": 844
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "enabled",
       "scripting": true,
       "assertion": "M3 lists ordered untimed agenda items under the parent 6:30 meeting time without inventing per-item starts or written-testimony actions.",
-      "sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
-      "render_sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "sha256": "3189bbd6d12bd734cf68fc4343f64ebfc5902bd725ceb3bd5797ab40d69e1763",
+      "screenshot_sha256": "4dc7eb09ab3186dd646261d098c4c586d92458a0bca090d71248e49eda5af1a1",
+      "screenshot_url": "https://files.catbox.moe/gqjqnm.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 390,
+        "segment_section_width": 358,
         "segment_count": 4,
         "segment_ids": [
           "agenda-segment-70bb3798",
@@ -376,12 +609,31 @@
           "agenda-segment-2fe0f4ef",
           "agenda-segment-0054eb99"
         ],
+        "segment_titles": [
+          "Report on Summer Presentations",
+          "Report on Department of City Planning\u2019s South of Prospect Neighborhood Plan Kick-Off Event",
+          "Neighborhood Plan Strategy Session for all CB14 Committees",
+          "Other Business"
+        ],
+        "segment_anchor_count": 4,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-70bb3798",
+          "#agenda-segment-dbf2fcd0",
+          "#agenda-segment-2fe0f4ef",
+          "#agenda-segment-0054eb99"
+        ],
+        "keyboard_focusable_count": 21,
         "historical": true,
+        "historical_participation": true,
         "register_mode": false,
-        "written_mode": false
-      },
-      "screenshot": ".artifacts/segmented-meeting-detail/m3-narrow.png",
-      "screenshot_sha256": "cbf477af7056390151db1f68632c55d0e9885e716baa260a1399d40b6110d5b5"
+        "written_mode": false,
+        "page_scripts_marker_present": false,
+        "title_text": "Housing and Land Use Committee Meeting",
+        "scripting_enabled": true,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "m3-narrow-touch-no-js",
@@ -391,19 +643,24 @@
         "width": 390,
         "height": 844
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "disabled",
       "scripting": false,
       "assertion": "M3 lists ordered untimed agenda items under the parent 6:30 meeting time without inventing per-item starts or written-testimony actions.",
-      "sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
-      "render_sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "sha256": "65c984f67a1005bc0c42c99f4fdb73442ea84e75de3d68f8b2124e8aae4748f3",
+      "screenshot_sha256": "4dc7eb09ab3186dd646261d098c4c586d92458a0bca090d71248e49eda5af1a1",
+      "screenshot_url": "https://files.catbox.moe/gqjqnm.png",
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "status": 200,
+        "inner_width": 390,
+        "segment_section_width": 358,
         "segment_count": 4,
         "segment_ids": [
           "agenda-segment-70bb3798",
@@ -411,11 +668,31 @@
           "agenda-segment-2fe0f4ef",
           "agenda-segment-0054eb99"
         ],
+        "segment_titles": [
+          "Report on Summer Presentations",
+          "Report on Department of City Planning\u2019s South of Prospect Neighborhood Plan Kick-Off Event",
+          "Neighborhood Plan Strategy Session for all CB14 Committees",
+          "Other Business"
+        ],
+        "segment_anchor_count": 4,
+        "segment_anchor_hrefs": [
+          "#agenda-segment-70bb3798",
+          "#agenda-segment-dbf2fcd0",
+          "#agenda-segment-2fe0f4ef",
+          "#agenda-segment-0054eb99"
+        ],
+        "keyboard_focusable_count": 21,
         "historical": true,
+        "historical_participation": true,
         "register_mode": false,
-        "written_mode": false
-      },
-      "screenshot": null
+        "written_mode": false,
+        "page_scripts_marker_present": false,
+        "title_text": "Housing and Land Use Committee Meeting",
+        "scripting_enabled": false,
+        "status": 200,
+        "historical_copy_present": true,
+        "agenda_section_present": true
+      }
     },
     {
       "name": "calendar-detail-back-journey",
@@ -425,49 +702,64 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "enabled",
       "scripting": true,
       "assertion": "Calendar inspect opens meeting detail with a stable segment deep link; Back preserves the observe return.",
-      "sha256": "dde8d385facc3e3ded62f7ca31e77b0d189d6726ae7a16041c3baf29fab70755",
-      "render_sha256": "dde8d385facc3e3ded62f7ca31e77b0d189d6726ae7a16041c3baf29fab70755",
+      "sha256": "54feeff067954244ce40085c9b8f06960eddfccd19f22aab249fc462151d191c",
+      "screenshot_sha256": null,
+      "screenshot_url": null,
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
         "observe_return": "preserved",
         "segment_deep_link": "agenda-segment-13926109",
-        "back_href": "/observe/?scope=brooklyn-cb-14&view=calendar"
-      },
-      "screenshot": null
+        "back_href": "/observe/?scope=brooklyn-cb-14&view=calendar",
+        "hash": "#agenda-segment-13926109",
+        "scripting_enabled": true,
+        "inner_width": 1440
+      }
     },
     {
-      "name": "keyboard-main-landmark",
+      "name": "keyboard-segment-anchor-traversal",
       "meeting_key": "m1",
       "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F/",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "revision": "1ff60f293dc5f348cc6d08e1953232b4159235da",
       "data_vintage": {
         "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
-        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
-        "crol_build_day": "2026-09-25"
+        "shared_meeting_read_model_generated_at": "2026-09-25T17:39:30.151Z",
+        "crol_build_day": null
       },
       "javascript": "enabled",
       "scripting": true,
-      "assertion": "Meeting detail exposes a keyboard-focusable main landmark and segment anchor links without requiring script.",
-      "sha256": "dde8d385facc3e3ded62f7ca31e77b0d189d6726ae7a16041c3baf29fab70755",
-      "render_sha256": "dde8d385facc3e3ded62f7ca31e77b0d189d6726ae7a16041c3baf29fab70755",
+      "assertion": "Meeting detail keyboard traversal reaches a segment anchor link and lands focus on it.",
+      "sha256": "dfa7c20b04e5efd0647ca974eb35da8ac0029b2752815b07f5df93546dac44e5",
+      "screenshot_sha256": null,
+      "screenshot_url": null,
+      "file": null,
+      "screenshot": null,
+      "source": "headless-playwright-production-served-site",
       "observed": {
-        "main_tabindex": true,
+        "keyboard_traversal_steps": 10,
+        "focused_segment_anchor": true,
+        "focused_href": "#agenda-segment-13926109",
+        "focused_id": null,
+        "focused_class": "meeting-agenda-segment-anchor",
+        "method": "tab-until-segment-anchor-focus",
+        "scripting_enabled": true,
+        "inner_width": 1440,
         "segment_anchor_count": 3
-      },
-      "screenshot": null
+      }
     }
-  ],
-  "repository_revision": "37377c890fcecc218352586379fa52b4ba2d24a1"
+  ]
 }
