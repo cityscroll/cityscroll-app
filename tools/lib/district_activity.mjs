@@ -101,8 +101,18 @@ function locationRoleForRecord(lens, basis) {
   if (lens === "property") return "property_affected";
   if (lens === "money") return "place_of_performance";
   if (lens === "meetings" && basis === "Venue / logistics") return "venue";
-  if (lens === "meetings" && basis === "Matter place") return "matter";
+  // Subject-property resident copy ("About 461 Coney Island Avenue") keeps the
+  // matter role; do not collapse it into board jurisdiction.
+  if (lens === "meetings" && (basis === "Matter place" || /^About\s/i.test(String(basis || "")))) {
+    return "matter";
+  }
   return "subject_affected_area";
+}
+
+/** Resident appearance label for an admitted subject-property address. */
+export function aboutSubjectPropertyLabel(address) {
+  const text = compactText(address, 160);
+  return text ? `About ${text}` : null;
 }
 
 function localityForSlot(lens, slot) {
@@ -152,12 +162,19 @@ function genericMatchFromSlot(type, id, slot, layerByType, place) {
 /** Project one domain placement into registry-declared geography identities. */
 function geographiesForSlots(lens, slots, geographyLayers) {
   const placeBasis = compactRecordBasis(lens, slots);
+  const preferredSlot = (slots || []).find((slot) => slot?.location_role === "venue")
+    || (slots || []).find((slot) => slot?.location_role === "matter")
+    || (slots || [])[0]
+    || {};
   const place = {
     ...localityForSlot(lens, slots[0] || {}),
     ...placeBasis,
     method: placeBasis.method || localityForSlot(lens, slots[0] || {}).method,
   };
-  place.location_role = locationRoleForRecord(lens, place.basis);
+  // Keep the admitting role from the preferred slot; basis text alone must not
+  // rewrite a subject-property edge into venue or board jurisdiction.
+  place.location_role = preferredSlot.location_role
+    || locationRoleForRecord(lens, place.basis);
   const layerByType = new Map((geographyLayers || []).map((layer) => [layer?.type, layer]));
   const matches = new Map();
   for (const slot of slots || []) {
@@ -239,8 +256,18 @@ function compactRecordBasis(lens, slots) {
   if (slots.some((slot) => isCitywidePlacement(slot))) {
     return { basis: "Citywide", confidence, method: method || "citywide" };
   }
+  // Subject-property memberships share the parcel_membership method with venues;
+  // role decides the resident basis so a matter edge never reads as venue logistics.
+  if (preferred.location_role === "matter" && lens === "meetings") {
+    return {
+      basis: aboutSubjectPropertyLabel(preferred.original_address) || "Matter place",
+      confidence,
+      method,
+    };
+  }
   if (preferred.location_role === "venue"
-    || ["venue_line", "venue_column", "civic_address_pip", "parcel_membership", "accepted_exact_parcel_membership"].includes(method)) {
+    || (preferred.location_role !== "matter"
+      && ["venue_line", "venue_column", "civic_address_pip", "parcel_membership", "accepted_exact_parcel_membership"].includes(method))) {
     if (lens === "meetings") {
       return { basis: "Venue / logistics", confidence, method };
     }
@@ -257,7 +284,11 @@ function compactRecordBasis(lens, slots) {
     return { basis: "Venue / logistics", confidence, method };
   }
   if (lens === "meetings" && /^matter_/.test(method || "")) {
-    return { basis: "Matter place", confidence, method };
+    return {
+      basis: aboutSubjectPropertyLabel(preferred.original_address) || "Matter place",
+      confidence,
+      method,
+    };
   }
   return { basis: "Affected area", confidence, method };
 }
@@ -438,6 +469,16 @@ export function compactDistrictRecord(lens, row = {}, slots = []) {
     const venueName = compactText(row.venue?.name || "", 160);
     if (venueAddress) record.venue_address = venueAddress;
     if (venueName) record.venue_name = venueName;
+    // Subject-property address is separate from the venue: same cache/membership
+    // pipeline, distinct display basis and search text.
+    const subjectAddress = compactText(
+      row.location_memberships?.find?.((m) => m?.role === "subject_property")?.provenance?.source_path?.original_address
+        || row.location_assertions?.find?.((a) => a?.role === "subject_property")?.original_address
+        || row.agenda_subject_places?.[0]?.original_address
+        || "",
+      240,
+    );
+    if (subjectAddress) record.subject_address = subjectAddress;
   }
   return record;
 }
@@ -953,6 +994,13 @@ function placementSlotFromLocationMembership(membership) {
     ? String(membership.provenance.source_method)
     : "parcel_membership";
 
+  const originalAddress = compactText(
+    membership.provenance?.source_path?.original_address
+      || membership.original_address
+      || "",
+    240,
+  );
+
   return {
     borough,
     community,
@@ -965,6 +1013,7 @@ function placementSlotFromLocationMembership(membership) {
     location_role: locationRole,
     confidence: membership.confidence ?? 1,
     confidence_tier: membership.confidence_tier || "strong",
+    ...(originalAddress ? { original_address: originalAddress } : {}),
     ...(membership.bbl ? { bbl: String(membership.bbl) } : {}),
     ...(membership.assertion_id ? { assertion_id: String(membership.assertion_id) } : {}),
   };

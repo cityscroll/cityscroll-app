@@ -92,6 +92,27 @@ function observerSearchFields(row) {
   };
 }
 
+function subjectPropertySearchFields(row = {}) {
+  const fromAssertions = (Array.isArray(row.location_assertions) ? row.location_assertions : [])
+    .filter((entry) => entry?.role === "subject_property" && String(entry.original_address || "").trim())
+    .map((entry) => String(entry.original_address).trim());
+  const fromPlaces = (Array.isArray(row.agenda_subject_places) ? row.agenda_subject_places : [])
+    .map((entry) => String(entry?.original_address || entry?.address || "").trim())
+    .filter(Boolean);
+  const addresses = [...new Set([...fromAssertions, ...fromPlaces])];
+  if (!addresses.length) return { subject_search_text: null, search_aliases: [] };
+  // Separate subject search text from venue wording so address search can
+  // reach the agenda-subject anchor without inventing a second meeting id.
+  const subjectSearchText = compactText(
+    addresses.map((address) => `About ${address}`),
+    500,
+  );
+  return {
+    subject_search_text: subjectSearchText,
+    search_aliases: addresses,
+  };
+}
+
 /** Project one canonical shared-model row into an admitted SearchDocument. */
 export function materializeMeetingSearchDocument(row = {}) {
   const identity = sourceIdentity(row);
@@ -99,18 +120,24 @@ export function materializeMeetingSearchDocument(row = {}) {
 
   const title = compactText([row.title || "Meeting"], 500);
   const summary = summaryFor(row);
+  const subjectFields = subjectPropertySearchFields(row);
   const searchText = compactText([
     row.search_text,
     title,
     summary,
+    subjectFields.subject_search_text,
   ], SEARCH_TEXT_MAX_LENGTH) || title;
   const process = meetingProcessProjection(row);
+  const href = meetingCanonicalHref(row);
+  const canonicalHref = subjectFields.search_aliases.length && href && !String(href).includes("#")
+    ? `${href}#agenda-subject`
+    : href;
   const admitted = admitSearchDocument({
     schema: SEARCH_DOCUMENT_SCHEMA,
     object_ref: row.meeting_id,
     object_type: "meeting",
     domain: "meetings",
-    canonical_href: meetingCanonicalHref(row),
+    canonical_href: canonicalHref,
     title,
     summary,
     search_text: searchText,
@@ -131,6 +158,12 @@ export function materializeMeetingSearchDocument(row = {}) {
       source_receipt: row.source_receipt || row.source_record?.receipt || null,
       meeting_family: process.meeting_family,
       process_profile: process.process_profile,
+      ...(subjectFields.search_aliases.length
+        ? { search_aliases: subjectFields.search_aliases }
+        : {}),
+      ...(subjectFields.subject_search_text
+        ? { subject_search_text: subjectFields.subject_search_text }
+        : {}),
     },
   });
   if (!admitted.document) return null;

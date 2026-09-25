@@ -38,6 +38,7 @@ const DETAIL_RETRY_LABEL = "Try again";
 const WEAK_UNCERTAINTY = "Place match is approximate";
 const EXPLICIT_AREA_ROLES = new Set(["subject_affected_area", "affected_area", "property_affected", "project_geometry"]);
 const VENUE_PLACE_ROLES = new Set(["venue"]);
+const MATTER_PLACE_ROLES = new Set(["matter"]);
 
 export const NEAR_YOU_RECORD_TIMING_STATES = Object.freeze([
   "upcoming",
@@ -95,6 +96,55 @@ export function nearYouPlaceRoleDetailLabel(role) {
 export function nearYouHeldInLabel(placeLabel) {
   const label = inspectText(placeLabel, 160);
   return label ? `Held in ${label}` : null;
+}
+
+/**
+ * Plain resident reason for a subject-property match ("About 461 Coney Island Avenue").
+ * Keeps the publisher's address wording; neighborhood labels stay on geography details.
+ */
+export function nearYouAboutLabel(address) {
+  const text = inspectText(address, 160);
+  return text ? `About ${text}` : null;
+}
+
+/**
+ * Card / inspection appearance reason from geography evidence and lean record fields.
+ * Venue matches stay "Held in …"; subject-property matches stay "About …".
+ */
+export function nearYouAppearanceReason(record = {}) {
+  const evidence = record?.geography_evidence;
+  const placeRole = inspectText(record?.matched_place_role, 80)
+    || inspectText(evidence?.location_role, 80)
+    || inspectText(record?.place?.location_role, 80);
+  const subjectAddress = inspectText(
+    record?.subject_address
+      || record?.place?.subject_address
+      || (MATTER_PLACE_ROLES.has(placeRole) && /^About\s/i.test(String(evidence?.basis || ""))
+        ? String(evidence.basis).replace(/^About\s+/i, "")
+        : null),
+    160,
+  );
+  if (VENUE_PLACE_ROLES.has(placeRole) && evidence?.label) {
+    return inspectText(evidence.resident_label, 180) || nearYouHeldInLabel(evidence.label);
+  }
+  if (record?.place?.location_role === "venue") {
+    const venueGeo = (record.place.geographies || []).find((row) =>
+      row?.visibility === "public" && row.location_role === "venue" && row.label);
+    if (venueGeo?.label) {
+      return nearYouHeldInLabel(venueGeo.label) || venueGeo.label;
+    }
+  }
+  if (MATTER_PLACE_ROLES.has(placeRole)) {
+    if (evidence?.resident_label && /^About\s/i.test(evidence.resident_label)) {
+      return inspectText(evidence.resident_label, 180);
+    }
+    if (evidence?.basis && /^About\s/i.test(evidence.basis)) {
+      return inspectText(evidence.basis, 180);
+    }
+    const about = nearYouAboutLabel(subjectAddress);
+    if (about) return about;
+  }
+  return inspectText(record?.basis, 160) || "Local activity";
 }
 
 function dateLabel(value) {
@@ -258,7 +308,17 @@ function geographyFacts(evidence) {
   const heldIn = VENUE_PLACE_ROLES.has(placeRole)
     ? (inspectText(evidence.resident_label, 180) || nearYouHeldInLabel(label))
     : null;
+  const aboutMatter = MATTER_PLACE_ROLES.has(placeRole)
+    ? (
+      (inspectText(evidence.resident_label, 180) && /^About\s/i.test(evidence.resident_label)
+        ? inspectText(evidence.resident_label, 180)
+        : null)
+      || (/^About\s/i.test(basis || "") ? basis : null)
+      || nearYouAboutLabel(evidence.subject_address || evidence.original_address)
+    )
+    : null;
   const residentLabel = heldIn
+    || aboutMatter
     || inspectText(evidence.resident_label, 180)
     || (tier !== "weak" && EXPLICIT_AREA_ROLES.has(placeRole)
       ? "About or affecting this area"
@@ -343,19 +403,27 @@ export function nearYouRecordInspectionFacts(record = {}, options = {}) {
     record.venue_name || record.venue?.name || record.place?.venue_name,
     160,
   );
+  const subjectAddress = inspectText(
+    record.subject_address || record.place?.subject_address,
+    240,
+  );
   const eventInstant = record.date || record.event_date || null;
-  const appearanceReason = geography?.resident_label
-    || (VENUE_PLACE_ROLES.has(placeRole) && geography?.label
-      ? nearYouHeldInLabel(geography.label)
-      : null)
-    || inspectText(record.basis, 160)
-    || "Local activity";
+  const appearanceReason = nearYouAppearanceReason({
+    ...record,
+    matched_place_role: placeRole,
+    geography_evidence: record.geography_evidence,
+    subject_address: subjectAddress,
+  });
+  const hrefWithSubjectAnchor = subjectAddress && MATTER_PLACE_ROLES.has(placeRole)
+    && href && !href.includes("#")
+    ? `${href}#agenda-subject`
+    : href;
   return Object.freeze({
     schema: NEAR_YOU_RECORD_INSPECTION_SCHEMA,
     version: NEAR_YOU_RECORD_INSPECTION_VERSION,
     uid,
     title,
-    href,
+    href: hrefWithSubjectAnchor,
     agency: inspectText(record.agency, 200),
     type: inspectText(record.type, 120),
     date_label: dateLabel(eventInstant || record.deadline || record.due_date),
@@ -365,6 +433,7 @@ export function nearYouRecordInspectionFacts(record = {}, options = {}) {
     basis: appearanceReason,
     venue_address: venueAddress,
     venue_name: venueName,
+    subject_address: subjectAddress,
     source_url: sourceUrl,
     source_label: sourceUrl ? (inspectText(record.source_label, 120) || "Official source") : null,
     timing,
@@ -424,6 +493,7 @@ export function parseNearYouRecordInspection(value) {
       basis: inspectText(parsed.basis, 160) || "Local activity",
       venue_address: inspectText(parsed.venue_address, 240),
       venue_name: inspectText(parsed.venue_name, 160),
+      subject_address: inspectText(parsed.subject_address, 240),
       source_url: sourceUrl,
       source_label: sourceUrl
         ? (inspectText(parsed.source_label, 120) || "Official source")
@@ -531,9 +601,13 @@ export function renderNearYouRecordInspectionBody(facts, options = {}) {
     ? `<div class="near-you-record-inspection-row"><dt>Source</dt><dd><a class="near-you-record-inspection-source-link" href="${esc(facts.source_url)}" rel="noopener noreferrer" data-near-you-record-source>${esc(facts.source_label || "Official source")}</a></dd></div>`
     : "";
   const venueLabel = [facts.venue_name, facts.venue_address].filter(Boolean).join(" · ");
+  const subjectLabel = facts.subject_address
+    ? (nearYouAboutLabel(facts.subject_address) || facts.subject_address)
+    : null;
   const rows = [
     facts.place_role_label ? definitionRow("Place role", facts.place_role_label, esc) : "",
     definitionRow("Place claim", facts.basis, esc),
+    subjectLabel ? definitionRow("Subject property", subjectLabel, esc) : "",
     venueLabel ? definitionRow("Venue", venueLabel, esc) : "",
     facts.agency ? definitionRow("Agency", facts.agency, esc) : "",
     facts.type ? definitionRow("Type", facts.type, esc) : "",
