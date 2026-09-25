@@ -58,6 +58,8 @@ import {
 } from "./land_regulatory_effect.mjs";
 import {
   NEAR_YOU_RECORD_TITLE_LINK_CLASS,
+  nearYouEventTimeLabel,
+  nearYouHeldInLabel,
   nearYouRecordInspectionFacts,
   renderNearYouRecordFullRecordLink,
   renderNearYouRecordInspectButton,
@@ -829,7 +831,29 @@ function dateLabel(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
   // determinism-lint: allow timezone a published date is rendered in the reader's own zone, matching every other date on the Near You surface.
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date);
+  const day = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date);
+  const time = nearYouEventTimeLabel(value);
+  return time ? `${day} · ${time}` : day;
+}
+
+function appearanceReason(record) {
+  const evidence = record?.geography_evidence;
+  if (evidence?.location_role === "venue" && evidence?.label) {
+    return nearYouHeldInLabel(evidence.label) || evidence.label;
+  }
+  if (record?.place?.location_role === "venue") {
+    const venueGeo = (record.place.geographies || []).find((row) =>
+      row?.visibility === "public" && row.location_role === "venue" && row.label);
+    if (venueGeo?.label) return nearYouHeldInLabel(venueGeo.label) || venueGeo.label;
+  }
+  return record?.basis || "Local activity";
+}
+
+function venueAddressLabel(record) {
+  return record?.venue_address
+    || record?.venue?.address
+    || record?.place?.venue_address
+    || null;
 }
 
 // Plain-language names for the shared place-role predicate (site/scope_v0.mjs PLACE_ROLES).
@@ -855,7 +879,8 @@ function recordCard(record) {
     : record.source_url
       ? `<div class="near-record-source"><a href="${esc(record.source_url)}" rel="noopener noreferrer" data-near-you-record-source>Official source</a></div>`
       : "";
-  const placement = record.basis || "Local activity";
+  const placement = appearanceReason(record);
+  const venueAddress = venueAddressLabel(record);
   const facts = nearYouRecordInspectionFacts(record);
   const inspectButton = facts
     ? renderNearYouRecordInspectButton(facts, { escape: esc })
@@ -884,7 +909,8 @@ function recordCard(record) {
       <span>${esc(dateLabel(record.date))}</span>
     </div>
     ${meetingSource}
-    <div class="near-record-basis"><strong>${esc(placement)}</strong></div>
+    <div class="near-record-basis" data-appearance-reason="1"><strong>${esc(placement)}</strong></div>
+    ${venueAddress ? `<div class="near-record-venue" data-venue-address="1">${esc(venueAddress)}</div>` : ""}
     ${timing}
     ${uncertainty}
     ${fullRecord ? `<p class="near-record-actions">${fullRecord}</p>` : ""}

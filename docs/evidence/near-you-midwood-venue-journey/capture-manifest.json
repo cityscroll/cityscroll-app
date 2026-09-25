@@ -1,0 +1,117 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "feature": "near-you-midwood-venue-journey",
+  "public_alias": "ca937c81ff665",
+  "capture_mode": "headless-playwright-production-served-site",
+  "base": "https://cityscroll.org/",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "repository_revision": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+  "grounded_at": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+  "revision": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+  "revision_format": "served artifact-manifest source_commit_sha",
+  "data_vintage": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed. Externally retained https screenshot_url values are required.",
+  "surface": "Near You Midwood venue journey",
+  "verifier": "node --test test/near_you_midwood_venue_journey.test.mjs",
+  "captured_at": "2026-09-25T12:30:50Z",
+  "local_image_dir_ignored": "/private/tmp/fm/fms-9307f1e9-eaaa21d2/near-you-midwood-venue-journey-screenshots",
+  "captures": [
+    {
+      "name": "midwood-meetings-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+      "data_vintage": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+      "assertion": "Deployed Midwood meetings list shows the September 23 Housing and Land Use row",
+      "sha256": "a0f778a68378e775f72f7c6b75ebaab754355c32996983b0057532a4719021b6",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/d7i9at.png",
+      "source": "headless-playwright-production-served-site",
+      "served_values": {
+        "named_row_present": true,
+        "venue_address_present": false,
+        "held_in_midwood_present": false,
+        "title_present": true,
+        "no_javascript_title_link": true,
+        "keyboard_focusable_count": 361,
+        "selected_label": true,
+        "results_count": "2"
+      }
+    },
+    {
+      "name": "midwood-meetings-mobile",
+      "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+      "data_vintage": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+      "assertion": "Deployed Midwood meetings list shows the September 23 Housing and Land Use row",
+      "sha256": "bedddaef9aef4295943938f0d0f7080d040f4a80f6d657d139390fb5b372d98b",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/gytoke.png",
+      "source": "headless-playwright-production-served-site",
+      "served_values": {
+        "named_row_present": true,
+        "venue_address_present": false,
+        "held_in_midwood_present": false,
+        "title_present": true,
+        "no_javascript_title_link": true,
+        "keyboard_focusable_count": 362,
+        "selected_label": true,
+        "results_count": "2"
+      }
+    },
+    {
+      "name": "midwood-detail-desktop",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+      "data_vintage": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+      "assertion": "Deployed meeting detail shows the September 23 title and 810 East 16th Street venue",
+      "sha256": "19e4bec29017fb5ea4be90aca3e51474d0d13d636af266109d1c4fbc7386e211",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/9lb1zc.png",
+      "source": "headless-playwright-production-served-site",
+      "served_values": {
+        "detail_title_present": true,
+        "venue_address_present": true,
+        "named_row_present": false,
+        "keyboard_focusable_count": 17,
+        "no_javascript_title_link": true,
+        "source_link_present": true
+      }
+    },
+    {
+      "name": "midwood-detail-mobile",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+      "data_vintage": "97ba6ceb03429b8dbe269e6f284b373e47845b5b",
+      "assertion": "Deployed meeting detail shows the September 23 title and 810 East 16th Street venue",
+      "sha256": "9405105461a5a6559dd49004396c783d745f82fe88bdac99121bb81e0dbea15d",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/vxc98j.png",
+      "source": "headless-playwright-production-served-site",
+      "served_values": {
+        "detail_title_present": true,
+        "venue_address_present": true,
+        "named_row_present": false,
+        "keyboard_focusable_count": 17,
+        "no_javascript_title_link": true,
+        "source_link_present": true
+      }
+    }
+  ]
+}

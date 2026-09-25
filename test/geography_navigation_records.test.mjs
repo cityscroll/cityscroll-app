@@ -495,12 +495,13 @@ test("A1: five-borough neighborhood records expose place basis and source detail
   assert.equal(ready.results.records[0].basis, "Venue / logistics");
   assert.equal(ready.results.records[0].source_url, "https://a856-cityrecord.nyc.gov/RequestDetail/tribeca-meeting-1");
   const facts = nearYouRecordInspectionFacts(ready.results.records[0]);
-  assert.equal(facts.basis, "Venue / logistics");
+  assert.equal(facts.basis, "Held in Tribeca-Civic Center");
   assert.equal(facts.geography.source_id, "dcp-nta2020-boundaries");
+  assert.equal(facts.geography.resident_label, "Held in Tribeca-Civic Center");
   assert.equal(facts.source_url, "https://a856-cityrecord.nyc.gov/RequestDetail/tribeca-meeting-1");
   const html = renderNearYouRecordInspectionBody(facts);
   assert.match(html, /Place claim/);
-  assert.match(html, /Venue \/ logistics/);
+  assert.match(html, /Held in Tribeca-Civic Center/);
   assert.match(html, /Source/);
   assert.match(html, /Official source|a856-cityrecord/);
 

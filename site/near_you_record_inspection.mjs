@@ -16,6 +16,7 @@ import {
   AFFORDANCE_ACTION_ROLES,
   affordanceHandoffPresentation,
 } from "./affordance_grammar.mjs";
+import { readerLabel } from "./reader_surface_labels.mjs";
 
 export const NEAR_YOU_RECORD_INSPECTION_SCHEMA = "cityscroll.near_you_record_inspection.v1";
 export const NEAR_YOU_RECORD_INSPECTION_VERSION = 1;
@@ -33,8 +34,10 @@ const FULL_RECORD_LABEL = "Open the full record";
 const VIEW_RECORD_LABEL = "View the full record";
 const VIEW_PUBLISHED_LABEL = "View the published record";
 const DETAIL_FAILURE_STATUS = "Further detail did not load. The full record link below is unaffected.";
+const DETAIL_RETRY_LABEL = "Try again";
 const WEAK_UNCERTAINTY = "Place match is approximate";
 const EXPLICIT_AREA_ROLES = new Set(["subject_affected_area", "affected_area", "property_affected", "project_geometry"]);
+const VENUE_PLACE_ROLES = new Set(["venue"]);
 
 export const NEAR_YOU_RECORD_TIMING_STATES = Object.freeze([
   "upcoming",
@@ -85,12 +88,35 @@ export function nearYouPlaceRoleDetailLabel(role) {
   return null;
 }
 
+/**
+ * Plain resident reason for a venue match in a named place ("Held in Midwood").
+ * Point method and publisher vintage stay in optional geography details.
+ */
+export function nearYouHeldInLabel(placeLabel) {
+  const label = inspectText(placeLabel, 160);
+  return label ? `Held in ${label}` : null;
+}
+
 function dateLabel(value) {
   if (!value) return null;
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return inspectText(value, 40);
   // determinism-lint: allow timezone — published dates render in the reader's zone.
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date);
+}
+
+/** Clock time (HH:mm, America/New_York) when the source value carries a time. */
+export function nearYouEventTimeLabel(value) {
+  if (!value || !/[T ]\d{1,2}:\d{2}/.test(String(value))) return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  // determinism-lint: allow timezone — event clocks publish in New York civil time.
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: "America/New_York",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(date);
 }
 
 function isoDay(value) {
@@ -222,22 +248,40 @@ function geographyFacts(evidence) {
   if (!evidence) return null;
   const label = inspectText(evidence.label, 160);
   const basis = inspectText(evidence.basis, 160);
-  const placeRole = inspectText(evidence.location_role, 80);
+  // Accept location_role from live evidence and place_role from serialized facts.
+  const placeRole = inspectText(evidence.location_role, 80)
+    || inspectText(evidence.place_role, 80);
   if (!label || !basis || !placeRole) return null;
   const tier = evidence.tier === "strong" || evidence.tier === "derived" || evidence.tier === "weak"
     ? evidence.tier
     : null;
+  const heldIn = VENUE_PLACE_ROLES.has(placeRole)
+    ? (inspectText(evidence.resident_label, 180) || nearYouHeldInLabel(label))
+    : null;
+  const residentLabel = heldIn
+    || inspectText(evidence.resident_label, 180)
+    || (tier !== "weak" && EXPLICIT_AREA_ROLES.has(placeRole)
+      ? "About or affecting this area"
+      : "Located in this area");
   return Object.freeze({
     key: inspectText(evidence.key, 180),
     source_id: inspectText(evidence.source_id, 180),
     place_role: placeRole,
-    place_role_label: nearYouPlaceRoleDetailLabel(placeRole) || "Place",
+    place_role_label: nearYouPlaceRoleDetailLabel(placeRole)
+      || inspectText(evidence.place_role_label, 80)
+      || "Place",
     label,
     basis,
     tier,
-    resident_label: tier !== "weak" && EXPLICIT_AREA_ROLES.has(placeRole)
-      ? "About or affecting this area"
-      : "Located in this area",
+    // Humanized only — raw adapter enums must not enter the resident payload.
+    method: (() => {
+      const raw = inspectText(evidence.method, 100);
+      if (!raw) return null;
+      const label = readerLabel(raw);
+      if (!label || label.includes("_")) return null;
+      return label;
+    })(),
+    resident_label: residentLabel,
     boundary_vintage: inspectText(evidence.boundary_vintage, 80),
   });
 }
@@ -281,7 +325,9 @@ export function nearYouRecordInspectionFacts(record = {}, options = {}) {
   const title = inspectText(record.title, 500);
   const href = inspectText(record.route, 600);
   if (!uid || !title || !href) return null;
-  const placeRole = inspectText(record.matched_place_role, 80);
+  const placeRole = inspectText(record.matched_place_role, 80)
+    || inspectText(record.geography_evidence?.location_role, 80)
+    || inspectText(record.place?.location_role, 80);
   const geography = geographyFacts(record.geography_evidence);
   const whyHere = whyHereFacts(record.why_here);
   const weak = geography?.tier === "weak" || whyHere?.tier === "weak";
@@ -289,6 +335,21 @@ export function nearYouRecordInspectionFacts(record = {}, options = {}) {
   const sourceUrl = /^https?:\/\//i.test(String(record.source_url || "").trim())
     ? inspectText(record.source_url, 500)
     : null;
+  const venueAddress = inspectText(
+    record.venue_address || record.venue?.address || record.place?.venue_address,
+    240,
+  );
+  const venueName = inspectText(
+    record.venue_name || record.venue?.name || record.place?.venue_name,
+    160,
+  );
+  const eventInstant = record.date || record.event_date || null;
+  const appearanceReason = geography?.resident_label
+    || (VENUE_PLACE_ROLES.has(placeRole) && geography?.label
+      ? nearYouHeldInLabel(geography.label)
+      : null)
+    || inspectText(record.basis, 160)
+    || "Local activity";
   return Object.freeze({
     schema: NEAR_YOU_RECORD_INSPECTION_SCHEMA,
     version: NEAR_YOU_RECORD_INSPECTION_VERSION,
@@ -297,10 +358,13 @@ export function nearYouRecordInspectionFacts(record = {}, options = {}) {
     href,
     agency: inspectText(record.agency, 200),
     type: inspectText(record.type, 120),
-    date_label: dateLabel(record.date || record.deadline || record.due_date || record.event_date),
+    date_label: dateLabel(eventInstant || record.deadline || record.due_date),
+    time_label: nearYouEventTimeLabel(eventInstant),
     place_role: placeRole,
     place_role_label: nearYouPlaceRoleUserLabel(placeRole),
-    basis: inspectText(record.basis, 160) || "Local activity",
+    basis: appearanceReason,
+    venue_address: venueAddress,
+    venue_name: venueName,
     source_url: sourceUrl,
     source_label: sourceUrl ? (inspectText(record.source_label, 120) || "Official source") : null,
     timing,
@@ -354,9 +418,12 @@ export function parseNearYouRecordInspection(value) {
       agency: inspectText(parsed.agency, 200),
       type: inspectText(parsed.type, 120),
       date_label: inspectText(parsed.date_label, 40),
+      time_label: inspectText(parsed.time_label, 16),
       place_role: placeRole,
       place_role_label: nearYouPlaceRoleUserLabel(placeRole) || inspectText(parsed.place_role_label, 80),
       basis: inspectText(parsed.basis, 160) || "Local activity",
+      venue_address: inspectText(parsed.venue_address, 240),
+      venue_name: inspectText(parsed.venue_name, 160),
       source_url: sourceUrl,
       source_label: sourceUrl
         ? (inspectText(parsed.source_label, 120) || "Official source")
@@ -413,6 +480,10 @@ function renderGeographyDisclosure(facts, esc) {
   const uncertainty = geography.tier === "weak"
     ? `<span class="near-you-record-inspection-uncertainty">${esc(WEAK_UNCERTAINTY)}</span>`
     : "";
+  const methodLabel = geography.method ? readerLabel(geography.method) : null;
+  const method = methodLabel
+    ? `<span class="near-you-record-inspection-source">Point method ${esc(methodLabel)}</span>`
+    : "";
   const vintage = geography.boundary_vintage
     ? `<span class="near-you-record-inspection-source">Publisher boundary ${esc(geography.boundary_vintage)}</span>`
     : "";
@@ -430,6 +501,7 @@ function renderGeographyDisclosure(facts, esc) {
     `<span class="near-you-record-inspection-separator" aria-hidden="true">·</span>` +
     `<span class="near-you-record-inspection-step">${esc(geography.basis)}</span>` +
     uncertainty +
+    method +
     source +
     key +
     vintage +
@@ -458,12 +530,15 @@ export function renderNearYouRecordInspectionBody(facts, options = {}) {
   const sourceRow = facts.source_url
     ? `<div class="near-you-record-inspection-row"><dt>Source</dt><dd><a class="near-you-record-inspection-source-link" href="${esc(facts.source_url)}" rel="noopener noreferrer" data-near-you-record-source>${esc(facts.source_label || "Official source")}</a></dd></div>`
     : "";
+  const venueLabel = [facts.venue_name, facts.venue_address].filter(Boolean).join(" · ");
   const rows = [
     facts.place_role_label ? definitionRow("Place role", facts.place_role_label, esc) : "",
     definitionRow("Place claim", facts.basis, esc),
+    venueLabel ? definitionRow("Venue", venueLabel, esc) : "",
     facts.agency ? definitionRow("Agency", facts.agency, esc) : "",
     facts.type ? definitionRow("Type", facts.type, esc) : "",
     facts.date_label ? definitionRow("Date", facts.date_label, esc) : "",
+    facts.time_label ? definitionRow("Time", facts.time_label, esc) : "",
     timing ? `<div class="near-you-record-inspection-row" data-record-timing="${esc(timing.state)}" data-action-open="${actionOpen ? "true" : "false"}"><dt>Status</dt><dd>${esc(timing.label)}</dd></div>` : "",
     sourceRow,
     facts.uncertainty ? definitionRow("Certainty", facts.uncertainty, esc) : "",
@@ -473,8 +548,12 @@ export function renderNearYouRecordInspectionBody(facts, options = {}) {
     ? `<p class="near-you-record-inspection-detail">${esc(detail)}</p>`
     : "";
   const detailStatus = inspectText(options.detailStatus);
+  const detailRetry = options.detailRetry === true;
   const detailStatusHTML = detailStatus
-    ? `<p class="near-you-record-inspection-detail-status">${esc(detailStatus)}</p>`
+    ? `<p class="near-you-record-inspection-detail-status" data-near-you-record-detail-status="failed">${esc(detailStatus)}</p>` +
+      (detailRetry
+        ? `<p class="near-you-record-inspection-detail-retry"><button class="near-you-record-inspection-retry" type="button" data-near-you-record-inspection-retry>${esc(DETAIL_RETRY_LABEL)}</button></p>`
+        : "")
     : "";
   const evidence = `${renderGeographyDisclosure(facts, esc)}${renderWhyHereDisclosure(facts, esc)}`;
   const openPresentation = affordanceHandoffPresentation({ href: facts.href, escape: esc });
@@ -579,12 +658,30 @@ export function bindNearYouRecordInspection(root, options = {}) {
     else dialog.removeAttribute("open");
   };
 
+  let openFacts = null;
+
+  const requestDetail = (facts, sequence) => {
+    if (typeof options.loadDetail !== "function") return;
+    Promise.resolve()
+      .then(() => options.loadDetail(facts))
+      .then((detail) => {
+        if (sequence !== openToken || !dialog.open) return;
+        const text = inspectText(typeof detail === "string" ? detail : detail?.summary);
+        if (text) setBody(facts, { detail: text });
+      })
+      .catch(() => {
+        if (sequence !== openToken || !dialog.open) return;
+        setBody(facts, { detailStatus: DETAIL_FAILURE_STATUS, detailRetry: true });
+      });
+  };
+
   const open = (facts, control) => {
     if (!facts) return null;
     openToken += 1;
     const sequence = openToken;
     invoker = control || null;
     openUid = facts.uid;
+    openFacts = facts;
     dialog.setAttribute(DIALOG_OWNER_ATTRIBUTE, bindingId);
     dialog.setAttribute("data-browse-return-uid", facts.uid);
     setBody(facts);
@@ -598,19 +695,7 @@ export function bindNearYouRecordInspection(root, options = {}) {
     }
     const first = dialog.querySelector("[data-near-you-record-inspection-close]");
     if (first && typeof first.focus === "function") first.focus();
-    if (typeof options.loadDetail === "function") {
-      Promise.resolve()
-        .then(() => options.loadDetail(facts))
-        .then((detail) => {
-          if (sequence !== openToken || !dialog.open) return;
-          const text = inspectText(typeof detail === "string" ? detail : detail?.summary);
-          if (text) setBody(facts, { detail: text });
-        })
-        .catch(() => {
-          if (sequence !== openToken || !dialog.open) return;
-          setBody(facts, { detailStatus: DETAIL_FAILURE_STATUS });
-        });
-    }
+    requestDetail(facts, sequence);
     return dialog;
   };
 
@@ -619,6 +704,15 @@ export function bindNearYouRecordInspection(root, options = {}) {
     if (closeControl) {
       event.preventDefault();
       close();
+      return;
+    }
+    const retryControl = event.target.closest?.("[data-near-you-record-inspection-retry]");
+    if (retryControl && dialog.open && openFacts) {
+      event.preventDefault();
+      openToken += 1;
+      const sequence = openToken;
+      setBody(openFacts);
+      requestDetail(openFacts, sequence);
       return;
     }
     const control = event.target.closest?.(`[${NEAR_YOU_RECORD_INSPECTION_ATTRIBUTE}]`);
@@ -661,6 +755,7 @@ export function bindNearYouRecordInspection(root, options = {}) {
     dialog.removeAttribute(DIALOG_OWNER_ATTRIBUTE);
     invoker = null;
     openUid = null;
+    openFacts = null;
   };
 
   scope.addEventListener("click", onClick);

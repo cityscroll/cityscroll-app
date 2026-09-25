@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/near-you-midwood-venue-journey",
+  "status": "implemented",
+  "fingerprint": "near-you-midwood-venue-journey.v1",
+  "updated_at": "2026-09-25T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "midwood-venue-journey-verify-test",
+      "path": "test/near_you_midwood_venue_journey.test.mjs"
+    },
+    {
+      "id": "midwood-venue-journey-capture",
+      "path": "tools/capture_near_you_midwood_venue_journey.py"
+    },
+    {
+      "id": "midwood-venue-journey-manifest",
+      "path": "docs/evidence/near-you-midwood-venue-journey/capture-manifest.json"
+    }
+  ]
+}
