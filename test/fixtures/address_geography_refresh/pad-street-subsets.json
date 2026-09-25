@@ -1,0 +1,65 @@
+{
+  "schema": "cityscroll.address-index-shard.v1",
+  "key": "pad-street-subsets",
+  "provenance": {
+    "statement": "Real PAD address ranges copied from the committed citywide address-index shards for the named house numbers. Values are publisher PAD fields, not invented geography.",
+    "source_dataset": "NYC Department of City Planning Property Address Directory",
+    "source_version": "26b",
+    "source_sha256": "016a29968b4bed9e8dde10b9c27b68132aba994baf1dc3e2543a861eadfdf4bd",
+    "committed_manifest_generated_at": "2026-08-17T11:24:50.716Z"
+  },
+  "streets": {
+    "BROADWAY": [
+      [
+        250000,
+        250000,
+        0,
+        "1001241101",
+        "10007"
+      ],
+      [
+        248000,
+        252000,
+        2,
+        "3021400017",
+        "11211"
+      ]
+    ],
+    "CONEY ISLAND AVE": [
+      [
+        459000,
+        467000,
+        1,
+        "3050700035",
+        "11218"
+      ]
+    ],
+    "E 16 ST": [
+      [
+        810000,
+        810000,
+        2,
+        "3066990010",
+        "11230"
+      ]
+    ],
+    "EMMONS AVE": [
+      [
+        3208000,
+        3218000,
+        2,
+        "3088150590",
+        "11235"
+      ]
+    ],
+    "OCEAN AVE": [
+      [
+        1625000,
+        1625000,
+        1,
+        "3076200025",
+        "11230"
+      ]
+    ]
+  }
+}

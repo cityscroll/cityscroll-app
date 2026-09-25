@@ -248,6 +248,21 @@
       ]
     },
     {
+      "id": "address-geography-refresh",
+      "generator": "tools/address_geography_refresh.mjs",
+      "source_paths": [
+        "site/data/address-index/manifest.json",
+        "site/data/parcel-geography/manifest.json",
+        "site/data/geography/layer_registry.json",
+        "site/data/shared_meeting_read_model.json"
+      ],
+      "output_paths": [
+        "site/data/meeting-geography-backfill",
+        "site/data/shared_meeting_read_model.json"
+      ],
+      "note": "Incremental PAD/coordinate/boundary/record-join refresh that keeps meeting-geography memberships current inside one publication generation."
+    },
+    {
       "id": "geography",
       "generator": "tools/build_district_activity.mjs",
       "source_paths": [
