@@ -53,6 +53,7 @@ export function stampAgendaSegmentIds(segments) {
 export function meetingDetailAsOfDay(env = typeof process !== "undefined" ? process.env : {}) {
   const pinned = String(env?.CROL_BUILD_DAY || "").trim();
   if (/^\d{4}-\d{2}-\d{2}$/.test(pinned)) return pinned;
+  // determinism-lint: allow clock historical labeling compares the meeting date to the served calendar day when no build day is pinned
   return new Date().toISOString().slice(0, 10);
 }
 
