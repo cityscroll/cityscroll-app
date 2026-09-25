@@ -73,8 +73,14 @@ function indexBblsByProject(zapBbl) {
   return byProject;
 }
 
-function projectUniverse(landDefault) {
-  const projects = Array.isArray(landDefault?.projects) ? landDefault.projects : [];
+function projectRowsFromPopulation(population) {
+  if (Array.isArray(population?.projects)) return population.projects;
+  if (Array.isArray(population?.rows)) return population.rows;
+  return [];
+}
+
+function projectUniverse(population) {
+  const projects = projectRowsFromPopulation(population);
   const seen = new Set();
   const out = [];
   for (const project of projects) {
@@ -200,21 +206,35 @@ function inputRecord({ path, countField, vintage, sha256 }) {
  * resolver rejects them.
  *
  * @param {object} inputs
- * @param {object} inputs.landDefault
+ * @param {object} [inputs.catalog] — admitted Land catalog (preferred population)
+ * @param {object} [inputs.landDefault] — compatibility seed when catalog is absent
  * @param {object} inputs.zapBbl
  * @param {object} inputs.mapplutoCentroids
- * @param {{ land_default?: string, zap_bbl?: string, mappluto_centroids?: string }} [inputs.artifactHashes]
+ * @param {{ land_default?: string, land_project_catalog?: string, zap_bbl?: string, mappluto_centroids?: string }} [inputs.artifactHashes]
  * @param {object} [inputs.publisherPoints]
  * @param {object} [inputs.propertyPoints]
  * @param {object} [inputs.geometryPoints]
  */
 export function materializeLandProjectMapPoints(inputs = {}) {
+  const catalog = inputs.catalog == null ? null : asObject(inputs.catalog);
   const landDefault = asObject(inputs.landDefault);
   const zapBbl = asObject(inputs.zapBbl);
   const centroidsDoc = asObject(inputs.mapplutoCentroids);
   const byBbl = asObject(centroidsDoc.by_bbl);
   const hashes = asObject(inputs.artifactHashes);
+  // Population for projected points stays the default snapshot until the
+  // compact full-catalog map projection lands. When a catalog is supplied,
+  // its generation/source dates are recorded on the receipt and default IDs
+  // must already be admitted.
   const universe = projectUniverse(landDefault);
+  if (catalog) {
+    const admitted = new Set(projectRowsFromPopulation(catalog).map((row) => trimId(row?.project_id)).filter(Boolean));
+    for (const item of universe) {
+      if (!admitted.has(item.project_id)) {
+        throw new Error(`land_project_map_points default id ${item.project_id} missing from admitted catalog`);
+      }
+    }
+  }
   const bblsByProject = indexBblsByProject(zapBbl);
   const geometryByProject = geometryByProjectMap(inputs.geometryByProject);
 
@@ -276,15 +296,31 @@ export function materializeLandProjectMapPoints(inputs = {}) {
     points: Object.fromEntries(sortedKeys(points).map((id) => [id, points[id]])),
   };
 
+  const catalogVintage = catalog
+    ? {
+      ...artifactVintage(catalog, ["schema", "project_count"]),
+      ...(catalog.source_dates || {}),
+      content_id: catalog.generation?.content_id || null,
+    }
+    : null;
+
   const receipt = {
     schema: LAND_PROJECT_MAP_POINTS_RECEIPT_SCHEMA,
     resolver_version: LAND_PROJECT_MAP_POINTS_RESOLVER_VERSION,
     join_version: LAND_PROJECT_MAP_POINTS_JOIN_VERSION,
     rejected_placement_methods: [...REJECTED_KNOWN_LAND_POINT_METHODS],
     inputs: {
+      ...(catalog ? {
+        land_project_catalog: inputRecord({
+          path: "site/data/land_project_catalog.json",
+          countField: Number(catalog.project_count ?? universe.length),
+          vintage: catalogVintage,
+          sha256: hashes.land_project_catalog,
+        }),
+      } : {}),
       land_default: inputRecord({
         path: "site/data/land_default_ulurp.json",
-        countField: Number(landDefault.count ?? universe.length),
+        countField: Number(landDefault.count ?? (catalog ? projectRowsFromPopulation(landDefault).length : universe.length)),
         vintage: artifactVintage(landDefault, ["generated_at", "schema_version", "delivery_tier"]),
         sha256: hashes.land_default,
       }),

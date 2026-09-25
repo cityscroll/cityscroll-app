@@ -117,6 +117,25 @@ def main() -> None:
                     body=json.dumps({"schema_version": 1, "rows": []}),
                 ),
             )
+            page.route(
+                "**/data/land_project_catalog.json",
+                lambda route: route.fulfill(
+                    status=200,
+                    content_type="application/json",
+                    body=json.dumps({
+                        "schema": "cityscroll.land_project_catalog.v1",
+                        "project_count": 0,
+                        "projects": [],
+                        "materialized_at": None,
+                        "generated_at": None,
+                        "source_dates": {
+                            "warehouse_materialized_at": None,
+                            "defaults_generated_at": None,
+                        },
+                        "generation": {"content_id": "fnv1a32:fixture:empty", "derivation": "fixture"},
+                    }),
+                ),
+            )
             page.goto(base + "browse/zoning/?boro=Queens", wait_until="domcontentloaded")
             empty = page.locator(".land-empty-state")
             empty.wait_for(state="visible")

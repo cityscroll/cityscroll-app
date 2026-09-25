@@ -347,6 +347,37 @@ LAND_DEFAULT_SNAPSHOT = {
     "projects": [{k: r[k] for k in _LAND_LIST_FIELDS if k in r} for r in ZAP_ROWS],
 }
 
+# Admitted Land catalog consumed by Land browse after the shared-catalog cutover.
+LAND_PROJECT_CATALOG = {
+    "schema": "cityscroll.land_project_catalog.v1",
+    "project_count": len(LAND_DEFAULT_SNAPSHOT["projects"]),
+    "projects": LAND_DEFAULT_SNAPSHOT["projects"],
+    "materialized_at": _iso(0),
+    "generated_at": _iso(0),
+    "source_dates": {
+        "warehouse_materialized_at": _iso(0),
+        "defaults_generated_at": _iso(0),
+    },
+    "sources": {
+        "warehouse": {
+            "path": "site/data/zap_projects_warehouse_lookup.json",
+            "materialized_at": _iso(0),
+            "row_count": len(ZAP_ROWS),
+            "sha256": None,
+        },
+        "defaults": {
+            "path": "site/data/land_default_ulurp.json",
+            "generated_at": _iso(0),
+            "row_count": len(LAND_DEFAULT_SNAPSHOT["projects"]),
+            "sha256": None,
+        },
+    },
+    "generation": {
+        "derivation": "fixture",
+        "content_id": "fnv1a32:fixture:i18n-land",
+    },
+}
+
 # Default Money tab first paint (site/data/money_default_open.json) renders the committed
 # open-solicitations snapshot filtered by due_date > today, so the committed artifact goes
 # dark once its last due date passes the wall clock. Hermetic routes serve the committed
@@ -1155,4 +1186,6 @@ def install_routes(page):
     page.route("**/data/title_crosswalk.json", fixed(TITLE_CROSSWALK))
     # Wave-2 batch-precompute first paint: align land default snapshot with ZAP_ROWS so
     # #land auto-select still yields "Example Street Rezoning" in hermetic demo/a11y gates.
+    # Land browse now reads the admitted catalog for its project population.
     page.route("**/data/land_default_ulurp.json", fixed(LAND_DEFAULT_SNAPSHOT))
+    page.route("**/data/land_project_catalog.json", fixed(LAND_PROJECT_CATALOG))
