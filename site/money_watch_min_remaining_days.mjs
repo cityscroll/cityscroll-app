@@ -40,6 +40,9 @@ function object(value) {
 
 /** NYC civil calendar day for an injected clock (Date, epoch ms, or ISO string). */
 export function nycCivicDayISO(clock = Date.now(), timezone = NYC_PUBLISHER_TIMEZONE) {
+  // A bare YYYY-MM-DD is already a civic day — do not reinterpret it as UTC
+  // midnight (which falls on the previous NYC evening during EDT).
+  if (typeof clock === "string" && ISO_DAY.test(clock.trim())) return clock.trim();
   const instant = clock instanceof Date ? clock : new Date(clock);
   if (!Number.isFinite(instant.getTime())) return null;
   try {
@@ -283,6 +286,112 @@ export function applyMinRemainingDaysPreference(rows, filter = {}, clock = Date.
   if (!validation.present) return list;
   if (!validation.ok) return [];
   return list.filter((row) => rowMeetsMinRemainingDays(row, validation.value, clock));
+}
+
+function rowDeliveryKeys(row) {
+  const keys = [];
+  const requestId = text(row?.request_id);
+  const procurementId = text(row?.procurement_id);
+  const digestId = text(row?.digest_id);
+  if (requestId) {
+    keys.push(requestId, `notice:${requestId}`);
+  }
+  if (procurementId) keys.push(procurementId);
+  if (digestId) keys.push(digestId);
+  return keys;
+}
+
+/**
+ * Prepared-message boundary: re-check discovery lead-time eligibility with the
+ * injected clock before HTML is composed or a delivery marker is consumed.
+ * Exact follows and unset preferences are unchanged. Mutates sections in place.
+ */
+export function applyPreparedMinRemainingDaysEligibility(sections, {
+  watches = [],
+  clock = Date.now(),
+} = {}) {
+  const list = Array.isArray(sections) ? sections : [];
+  const byWatchId = new Map();
+  const byKey = new Map();
+  for (const watch of Array.isArray(watches) ? watches : []) {
+    if (watch?.watch_id) byWatchId.set(watch.watch_id, watch);
+    if (watch?.key) byKey.set(watch.key, watch);
+  }
+  const exclusions = [];
+  let rebuilt = false;
+
+  for (const section of list) {
+    if (!section || typeof section !== "object") continue;
+    const watch = byWatchId.get(section.watchId || section.watch_id)
+      || byKey.get(section.subKey || section.sub)
+      || null;
+    const filter = object(watch?.filter) || object(section.filter) || {};
+    // Exact follows about deadlines / awards / cancellations bypass discovery
+    // threshold filtering even if a stray field is present.
+    if (text(filter.procurement_id)) continue;
+    const validation = validateMinRemainingDays(filter[MIN_REMAINING_DAYS_FIELD]);
+    if (!validation.present) continue;
+
+    const before = Array.isArray(section.freshRows) ? section.freshRows : [];
+    const kept = applyMinRemainingDaysPreference(before, filter, clock);
+    if (kept.length === before.length) {
+      section.min_remaining_days_prep = {
+        applied: true,
+        threshold: validation.ok ? validation.value : null,
+        excluded: 0,
+        clock: nycCivicDayISO(clock) || null,
+      };
+      continue;
+    }
+
+    rebuilt = true;
+    const keptKeySet = new Set(kept.flatMap(rowDeliveryKeys));
+    const dropped = before.filter((row) => !rowDeliveryKeys(row).some((key) => keptKeySet.has(key)));
+    section.freshRows = kept;
+    section.new = kept.length;
+    section.noticeIds = [...new Set(kept.map((row) => row.request_id || row.procurement_id).filter(Boolean))].slice(0, 100);
+    if (Array.isArray(section.outboxItems)) {
+      section.outboxItems = section.outboxItems.filter((item) => {
+        const itemId = text(item?.item_id);
+        if (!itemId) return false;
+        if (keptKeySet.has(itemId)) return true;
+        if (itemId.startsWith("notice:") && keptKeySet.has(itemId.slice("notice:".length))) return true;
+        return false;
+      });
+    }
+    if (Array.isArray(section.markSeenIds)) {
+      section.markSeenIds = section.markSeenIds.filter((id) => {
+        const value = text(id);
+        return value && keptKeySet.has(value);
+      });
+    }
+    if (kept.length === 0 && (Number(section.forecasts) || 0) === 0 && section.action === "match") {
+      section.action = "none";
+    }
+    const droppedMeta = dropped.map((row) => ({
+      request_id: text(row?.request_id),
+      procurement_id: text(row?.procurement_id),
+      digest_id: text(row?.digest_id),
+      reason: "min-remaining-days-below-threshold",
+      threshold: validation.ok ? validation.value : null,
+    }));
+    section.min_remaining_days_prep = {
+      applied: true,
+      threshold: validation.ok ? validation.value : null,
+      excluded: dropped.length,
+      clock: nycCivicDayISO(clock) || null,
+      exclusions: droppedMeta,
+    };
+    for (const entry of droppedMeta) {
+      exclusions.push({
+        watch_id: watch?.watch_id || section.watchId || null,
+        sub: section.subKey || section.sub || null,
+        ...entry,
+      });
+    }
+  }
+
+  return { rebuilt, exclusions, clock: nycCivicDayISO(clock) || null };
 }
 
 export function minRemainingDaysCalendarUnavailableMessage() {

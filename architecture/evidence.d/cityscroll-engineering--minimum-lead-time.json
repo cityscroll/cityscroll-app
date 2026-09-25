@@ -2,7 +2,7 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/minimum-lead-time",
   "status": "implemented",
-  "fingerprint": "minimum-lead-time.v1",
+  "fingerprint": "minimum-lead-time.v2-prep-eligibility",
   "updated_at": "2026-09-25T00:00:00.000Z",
   "projections": [
     {
@@ -14,8 +14,16 @@
       "path": "test/friction_t2_capability.test.mjs"
     },
     {
+      "id": "minimum-lead-time-prep-capability-test",
+      "path": "test/friction_t3_capability.test.mjs"
+    },
+    {
       "id": "minimum-lead-time-evidence",
       "path": "docs/evidence/minimum-lead-time/example-21-day-watch-round-trip.json"
+    },
+    {
+      "id": "minimum-lead-time-prep-evidence",
+      "path": "docs/evidence/minimum-lead-time/prep-time-eligibility.json"
     }
   ]
 }
