@@ -39,7 +39,7 @@ jobs:
           # geography memberships when PAD content changed. Unchanged input
           # hashes are reused; a failed stage retains the last activated
           # meeting-geography generation.
-          node tools/address_geography_refresh.mjs
+          node tools/address_geography_refresh.mjs --from-live
           node tools/address_geography_refresh.mjs --check
       - name: Guard generated changes
         id: generated

@@ -83,7 +83,11 @@ function parseArgs(argv) {
     parcelDir: DEFAULT_PARCEL_DIR,
     layerRegistry: DEFAULT_LAYER_REGISTRY,
     communityBoardGeographyPath: DEFAULT_COMMUNITY_BOARD_GEOGRAPHY,
-    skipLiveMetadata: false,
+    // Live publisher metadata is opt-in. The derived-json cold build and other
+    // materialization-only paths must not contact ArcGIS / Socrata; the PAD
+    // workflow passes --from-live for the scheduled metadata check.
+    fromLive: false,
+    skipLiveMetadata: true,
     injectFailure: null,
     help: false,
   };
@@ -91,8 +95,13 @@ function parseArgs(argv) {
     const token = argv[index];
     if (token === "--check") args.check = true;
     else if (token === "--force") args.force = true;
-    else if (token === "--skip-live-metadata") args.skipLiveMetadata = true;
-    else if (token === "--fixture-dir") args.fixtureDir = path.resolve(argv[++index]);
+    else if (token === "--from-live") {
+      args.fromLive = true;
+      args.skipLiveMetadata = false;
+    } else if (token === "--skip-live-metadata") {
+      args.skipLiveMetadata = true;
+      args.fromLive = false;
+    } else if (token === "--fixture-dir") args.fixtureDir = path.resolve(argv[++index]);
     else if (token === "--public-dir") args.publicDir = path.resolve(argv[++index]);
     else if (token === "--shared-meeting") args.sharedMeetingPath = path.resolve(argv[++index]);
     else if (token === "--address-dir") args.addressDir = path.resolve(argv[++index]);
@@ -224,18 +233,22 @@ export function buildAddressGeographyRefreshAdapters(options = {}) {
     communityBoardGeographyPath:
       options.communityBoardGeographyPath || DEFAULT_COMMUNITY_BOARD_GEOGRAPHY,
     fixtureDir: options.fixtureDir || null,
-    skipLiveMetadata: Boolean(options.skipLiveMetadata),
+    fromLive: Boolean(options.fromLive),
+    skipLiveMetadata: options.skipLiveMetadata !== undefined
+      ? Boolean(options.skipLiveMetadata)
+      : !Boolean(options.fromLive),
     padMetadataPath: options.padMetadataPath || null,
     mapplutoMetadataPath: options.mapplutoMetadataPath || null,
     fetchImpl: options.fetchImpl || fetch,
     polygonComputationCounter: options.polygonComputationCounter || { value: 0 },
+    bootstrapCommitted: options.bootstrapCommitted !== false && !Boolean(options.fromLive),
   });
 
   const addressResolutionsCounter = options.addressResolutionsCounter || { value: 0 };
   const polygonComputationCounter = args.polygonComputationCounter;
 
   async function readPublisherMetadata() {
-    if (args.padMetadataPath || args.mapplutoMetadataPath || args.skipLiveMetadata) {
+    if (args.padMetadataPath || args.mapplutoMetadataPath || args.skipLiveMetadata || !args.fromLive) {
       const padMeta = args.padMetadataPath && existsSync(args.padMetadataPath)
         ? loadJson(args.padMetadataPath)
         : { equalityKey: null };
@@ -255,11 +268,21 @@ export function buildAddressGeographyRefreshAdapters(options = {}) {
         },
       };
     }
-    const [pad, coordinates] = await Promise.all([
-      fetchPadMetadata(args.fetchImpl),
-      fetchMapplutoMetadata(args.fetchImpl),
-    ]);
-    return { pad, coordinates };
+    try {
+      const [pad, coordinates] = await Promise.all([
+        fetchPadMetadata(args.fetchImpl),
+        fetchMapplutoMetadata(args.fetchImpl),
+      ]);
+      return { pad, coordinates };
+    } catch (error) {
+      // Soft-fail: treat as metadata that cannot establish equality so the
+      // weekly forced-verification rule applies, and never abort the build.
+      return {
+        pad: { version: null, updatedAt: null, equalityKey: null },
+        coordinates: { name: null, lastEditDate: null, equalityKey: null },
+        metadata_error: String(error?.message || error),
+      };
+    }
   }
 
   return {
@@ -580,16 +603,22 @@ export async function runAddressGeographyRefresh(cliArgs = {}) {
     parcelDir: DEFAULT_PARCEL_DIR,
     layerRegistry: DEFAULT_LAYER_REGISTRY,
     communityBoardGeographyPath: DEFAULT_COMMUNITY_BOARD_GEOGRAPHY,
-    skipLiveMetadata: false,
+    fromLive: false,
+    skipLiveMetadata: true,
     injectFailure: null,
   };
   const args = applyFixtureDir({ ...defaults, ...cliArgs });
+  // Fixture publisher metadata files still win even when from-live is off.
+  if (args.padMetadataPath || args.mapplutoMetadataPath) {
+    args.skipLiveMetadata = true;
+  }
   const adapters = buildAddressGeographyRefreshAdapters(args);
   const refresh = createAddressGeographyRefresh(adapters);
   return refresh.run({
     force: Boolean(args.force),
     injectFailure: args.injectFailure || null,
     now: args.now || new Date().toISOString(),
+    bootstrapCommitted: Boolean(args.bootstrapCommitted ?? (!args.fromLive && !args.force)),
   });
 }
 
@@ -599,12 +628,13 @@ async function main() {
     console.log(`Usage: node tools/address_geography_refresh.mjs [options]
   --check                 Validate the last refresh receipt shape
   --force                 Run every stage
+  --from-live             Contact PAD/MapPLUTO metadata endpoints (scheduled refresh)
   --fixture-dir DIR       Controlled publisher inputs for rehearsal
   --public-dir DIR        Meeting-geography public generation directory
   --shared-meeting PATH   Shared meeting read model path
   --address-dir DIR       PAD address-index directory
   --parcel-dir DIR        Parcel-geography directory
-  --skip-live-metadata    Do not contact publisher metadata endpoints
+  --skip-live-metadata    Do not contact publisher metadata endpoints (default)
   --inject-failure KIND   Rehearse timeout|partial_coordinates|incomplete_boundaries`);
     return;
   }

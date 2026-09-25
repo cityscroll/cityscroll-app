@@ -4814,12 +4814,14 @@
       "source_contract_id": "nyc-property-address-directory",
       "acquisition_command": [
         "node",
-        "tools/address_geography_refresh.mjs"
+        "tools/address_geography_refresh.mjs",
+        "--from-live"
       ],
       "owning_builder": "tools/address_geography_refresh.mjs",
       "builder_command": [
         "node",
-        "tools/address_geography_refresh.mjs"
+        "tools/address_geography_refresh.mjs",
+        "--from-live"
       ],
       "dependent_materializers": [
         "tools/build_district_activity.mjs",
@@ -4831,13 +4833,13 @@
       "warning_age_hours": 72,
       "hard_maximum_age_hours": 336,
       "vintage_fields": [
-        "activated_at",
-        "fingerprints.pad_content_identity",
-        "fingerprints.coordinate_identity"
+        "built_at",
+        "generation",
+        "active_generation"
       ],
       "population_fields": [
-        "counters.records_reprojected",
-        "active_generation"
+        "counts.processed_rows",
+        "counts.address_bearing_rows"
       ],
       "last_known_good_behavior": "Retain the last activated meeting-geography generation and disclose the failed refresh in the operator receipt.",
       "resident_stale_behavior": "Do not describe neighborhood meeting memberships as current after the hard maximum age.",

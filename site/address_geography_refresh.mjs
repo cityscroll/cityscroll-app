@@ -320,6 +320,7 @@ export function createAddressGeographyRefresh(adapters = {}) {
     previousReceipt = null,
     injectFailure = null,
     weeklyForceMs = WEEKLY_FORCE_VERIFICATION_MS,
+    bootstrapCommitted = false,
   } = {}) {
     const prior = previousReceipt
       || (typeof loadPreviousReceipt === "function" ? loadPreviousReceipt() : null)
@@ -331,6 +332,44 @@ export function createAddressGeographyRefresh(adapters = {}) {
     const fingerprintBundle = await loadFingerprints({ previousReceipt: prior });
     const currentFingerprints = fingerprintBundle.fingerprints
       || computeAddressGeographyFingerprints(fingerprintBundle);
+
+    // Materialization-only cold builds (derived-json boundary) must not force a
+    // full corpus reprocess or contact publishers. Seed a receipt from the
+    // current fingerprints when possible; scheduled --from-live runs skip this.
+    if (!prior && !force && bootstrapCommitted) {
+      const receipt = {
+        schema: ADDRESS_GEOGRAPHY_REFRESH_RECEIPT_SCHEMA,
+        started_at: now,
+        completed_at: now,
+        activated_at: activeBefore ? now : null,
+        status: "unchanged",
+        plan: {
+          schema: ADDRESS_GEOGRAPHY_REFRESH_PLAN_SCHEMA,
+          stages: Object.fromEntries(REFRESH_STAGES.map((stage) => [stage, "skip"])),
+          reasons: [activeBefore ? "bootstrap_committed_inputs" : "bootstrap_idle_no_active_generation"],
+          changed_layers: [],
+          changed_meeting_ids: [],
+          work_required: false,
+        },
+        fingerprints: currentFingerprints,
+        counters: emptyCounters(),
+        active_generation: activeBefore,
+        previous_active_generation: activeBefore,
+        message: activeBefore
+          ? "seeded refresh receipt from committed inputs; no stage ran"
+          : "no activated meeting-geography generation yet; idle under committed-inputs mode",
+      };
+      if (typeof saveReceipt === "function") saveReceipt(receipt);
+      return {
+        ok: true,
+        status: "unchanged",
+        plan: receipt.plan,
+        counters: receipt.counters,
+        receipt,
+        active_generation: activeBefore,
+      };
+    }
+
     const plan = planAddressGeographyRefresh({
       previousFingerprints: prior?.fingerprints || null,
       currentFingerprints,
