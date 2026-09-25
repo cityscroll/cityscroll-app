@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/near-you-kensington-wider-district",
+  "status": "implemented",
+  "fingerprint": "near-you-kensington-wider-district.v1",
+  "updated_at": "2026-09-25T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "kensington-wider-district-verify-test",
+      "path": "test/kensington_wider_district_journey.test.mjs"
+    },
+    {
+      "id": "kensington-wider-district-module",
+      "path": "site/near_you_broader_districts.mjs"
+    },
+    {
+      "id": "kensington-wider-district-capture",
+      "path": "tools/capture_kensington_wider_district_journey.py"
+    }
+  ]
+}

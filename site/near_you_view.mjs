@@ -41,6 +41,11 @@ import {
   buildPlaceLocalConstellation,
   councilDistrictsIntersectingCommunity,
 } from "./community_board_geography.mjs";
+import {
+  BROADER_DISTRICT_PREVIEW_LIMIT,
+  buildNearYouBroaderDistrictSection,
+  renderNearYouBroaderDistrictsHtml,
+} from "./near_you_broader_districts.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 import { renderWalkEntry, walkEntryHref, walkEntryPlaceLabel } from "./walk_entry.mjs";
@@ -737,6 +742,71 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       href: urlForScope(scopeWithPlace(scope, { locationScope: kind })),
     }];
   }));
+  // Wider-district previews are meetings-only enrichment from the overlapping
+  // districts' own published slices. They stay a separate labeled section and
+  // never enter the exact membership projection, exact ids, or exact count.
+  let broaderDistrictSection = null;
+  if (lens === "meetings" && dataState === "ready" && options.broaderDistricts?.relations?.length) {
+    const exactIdSet = new Set(resultIds.map(String));
+    const relationsWithRecords = [];
+    for (const relation of options.broaderDistricts.relations) {
+      if (!relation?.id) continue;
+      const slice = options.broaderDistricts.slices?.[relation.key]
+        || options.broaderDistricts.slices?.[`community-district:${relation.id}`]
+        || null;
+      const lensRecords = slice?.records?.meetings || null;
+      // A district slice without real records must not yield a working-looking
+      // preview group (same invalid-generation rule as local result links).
+      if (!lensRecords) continue;
+      const memberIds = slice.district_items?.by_level?.community_district?.[relation.id]?.meetings;
+      const candidateIds = Array.isArray(memberIds) && memberIds.length
+        ? memberIds
+        : Object.keys(lensRecords);
+      const rows = candidateIds
+        .map((id) => lensRecords[id])
+        .filter(Boolean)
+        .filter((record) => recordMatches(record, scope, activityRoot?.built_at))
+        .sort(recordSort)
+        .slice(0, BROADER_DISTRICT_PREVIEW_LIMIT)
+        .map((record) => {
+          // Broader previews are not exact for the selected neighborhood, so
+          // attach the record's own neighborhood venue evidence when present.
+          const linked = linkedRecord(record, { explain: false });
+          if (!linked.geography_evidence) {
+            const venueNta = (record.place?.geographies || []).find((row) =>
+              row?.visibility === "public"
+              && row.location_role === "venue"
+              && row.type === "nta2020"
+              && row.key);
+            if (venueNta?.key) {
+              linked.geography_evidence = selectNearYouGeographyEvidence(record, {
+                place: { geographies: [venueNta.key] },
+              });
+            }
+          }
+          return linked;
+        });
+      if (!rows.length) continue;
+      relationsWithRecords.push({
+        ...relation,
+        label: relation.label || formatCommunityDistrict(relation.id),
+        href: geographyNavigationUrlWithFilters({
+          ok: true,
+          geo: `community_district:${relation.id}`,
+          key: relation.key || `geography:community_district:${relation.id}`,
+          type: "community_district",
+          id: relation.id,
+          surface: GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
+          lens,
+        }, { base: overlapBase }),
+        records: rows,
+      });
+    }
+    broaderDistrictSection = buildNearYouBroaderDistrictSection({
+      relations: relationsWithRecords,
+      exactIds: [...exactIdSet],
+    });
+  }
   return {
     schema: "cityscroll.near_you_view.v1",
     scope,
@@ -765,6 +835,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       .filter((definition) => (activity?.geography_items?.by_key?.[definition.key]?.[lens] || []).length > 0)
       .sort((left, right) => left.type.localeCompare(right.type) || left.label.localeCompare(right.label)),
     results: { ids: resultIds, count: resultCount, records: resultRecords },
+    broader_districts: broaderDistrictSection,
     features,
     navigationAreas,
     navigationDirectory,
@@ -991,8 +1062,11 @@ export function renderNearYouDeferredParts(view) {
   const moreResults = view.results.records.length > INITIAL_RECORD_LIMIT && resultCount != null
     ? `<p class="near-results-more"><a href="${esc(view.browseHref)}">Open all ${resultCount} matching records</a></p>`
     : "";
-  const resultsHtml = `<section class="near-results" aria-labelledby="near-results-heading"${resultCount == null ? "" : ` data-results-count="${resultCount}"`} data-near-surface-panel="records">
-      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${resultCount == null ? `Matching ${esc(view.lensLabel)} records` : `${resultCount} ${esc(view.lensLabel)} records for these filters`}</h2></div></div>
+  // The wider-district block renders first so its scope label is read before
+  // any exact result, including the honest unavailable exact-coverage copy.
+  const broaderHtml = renderNearYouBroaderDistrictsHtml(view.broader_districts);
+  const resultsHtml = `<section class="near-results" aria-labelledby="${broaderHtml ? "near-broader-districts-heading" : "near-results-heading"}"${resultCount == null ? "" : ` data-results-count="${resultCount}"`} data-near-surface-panel="records">
+      ${broaderHtml}<div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${resultCount == null ? `Matching ${esc(view.lensLabel)} records` : `${resultCount} ${esc(view.lensLabel)} records for these filters`}</h2></div></div>
       ${recordList(visibleResults, noResultsCopy || (view.mapState === "unsupported"
         ? `${esc(view.lensLabel)} records are not mapped here.`
         : resultCount == null ? "Matching records are not available right now." : undefined))}

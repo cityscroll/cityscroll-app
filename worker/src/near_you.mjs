@@ -11,7 +11,7 @@ import {
 } from "../../site/near_you_view.mjs";
 import { consultationMaterializationRecords } from "../../site/consultation_documents.mjs";
 import { mergeConsultationActivity } from "../../site/consultation_place_time.mjs";
-import { loadNearYouActivity, RouteReadModelUnavailable } from "./lib/route_read_model_kv.mjs";
+import { loadBroaderDistrictActivity, loadNearYouActivity, RouteReadModelUnavailable } from "./lib/route_read_model_kv.mjs";
 
 function activityWithConsultations(activity) {
   if (!activity) return activity;
@@ -138,9 +138,22 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
       return new Response(null, {status:303, headers:{Location:target, "Cache-Control":"no-store"}});
     }
   }
+  // Wider-district previews are optional enrichment: a load failure omits the
+  // section and never interferes with the exact results below.
+  let broaderDistricts = null;
+  try {
+    broaderDistricts = await loadBroaderDistrictActivity(
+      env,
+      scope.place.geographies?.[0] || null,
+      scope.facets.domains[0] || "meetings",
+    );
+  } catch {
+    broaderDistricts = null;
+  }
   const view = buildNearYouViewModel(scope, activityWithConsultations(routeReadModel.activity), boundaries, {
     canonicalBase: CANONICAL_BASE,
     siteBase: SITE_BASE,
+    broaderDistricts,
     communityGeography: routeReadModel.communityGeography?.public_edges?.length
       ? routeReadModel.communityGeography
       : communityGeography,

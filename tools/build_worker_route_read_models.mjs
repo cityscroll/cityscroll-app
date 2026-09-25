@@ -7,6 +7,8 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { isMaterialForNavigation } from "../site/geography_crosswalk_artifacts.mjs";
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT = join(ROOT, "worker/.route-read-models");
 const PATHS = {
@@ -18,6 +20,7 @@ const PATHS = {
   ntaLayer: join(ROOT, "site/data/geography/layers/nta2020/26B.json"),
   parcelManifest: join(ROOT, "site/data/parcel-geography/manifest.json"),
   meetingGeographyActive: join(ROOT, "site/data/meeting-geography-backfill/ACTIVE"),
+  crosswalkManifest: join(ROOT, "site/data/geography/crosswalks/manifest.json"),
 };
 export const LENSES = Object.freeze(["land", "property", "rules", "meetings", "money"]);
 export const NEAR_YOU_PLACE_COVERAGE_STATES = Object.freeze([
@@ -56,10 +59,12 @@ function hashInputs(dependencies = null) {
     PATHS.ntaLayer,
     PATHS.parcelManifest,
     PATHS.meetingGeographyActive,
+    PATHS.crosswalkManifest,
   ];
   for (const path of inputs) {
     if ((path === PATHS.communityDigest || path === PATHS.ntaLayer
-      || path === PATHS.parcelManifest || path === PATHS.meetingGeographyActive)
+      || path === PATHS.parcelManifest || path === PATHS.meetingGeographyActive
+      || path === PATHS.crosswalkManifest)
       && !existsSync(path)) continue;
     if (path === PATHS.activitySite && path !== resolveActivityPath()) continue;
     hash.update(readFileSync(path));
@@ -99,6 +104,51 @@ export function residentialPlacesFromNtaLayer(layerDoc = {}) {
 
 export function requiredNearYouSliceIds(residentialPlaces = [], lenses = LENSES) {
   return residentialPlaces.flatMap((place) => lenses.map((lens) => `${place.key}:${lens}`));
+}
+
+/**
+ * Broader-district relations keyed by selected NTA, from the committed
+ * nta2020→community_district crosswalk shard. Only rows already flagged
+ * material_for_navigation produce a relation; a zero-area `touches` row never
+ * does. The runtime never re-derives materiality or parses polygons.
+ */
+export function broaderDistrictsFromCrosswalkShard(shard) {
+  const rows = Array.isArray(shard?.rows) ? shard.rows : [];
+  const bySelectedKey = {};
+  for (const row of rows) {
+    const fromKey = String(row?.from_key || "");
+    if (!fromKey.startsWith("geography:nta2020:")) continue;
+    const toKey = String(row?.to_key || "");
+    if (!toKey.startsWith("geography:community_district:")) continue;
+    const material = row.material_for_navigation == null
+      ? isMaterialForNavigation(Number(row.pct_from))
+      : Boolean(row.material_for_navigation);
+    if (!material) continue;
+    const id = toKey.replace(/^geography:community_district:/, "");
+    if (!id) continue;
+    (bySelectedKey[fromKey] ||= []).push({
+      key: toKey,
+      id,
+      pct_from: Number.isFinite(Number(row.pct_from)) ? Number(row.pct_from) : null,
+    });
+  }
+  for (const relations of Object.values(bySelectedKey)) {
+    relations.sort((left, right) => (right.pct_from ?? 0) - (left.pct_from ?? 0)
+      || left.id.localeCompare(right.id, "en"));
+  }
+  return bySelectedKey;
+}
+
+/** Committed broader-district relations, or an empty map when unpublished. */
+export function broaderDistrictsFromCommittedArtifacts(root = ROOT) {
+  const manifestPath = join(root, "site/data/geography/crosswalks/manifest.json");
+  if (!existsSync(manifestPath)) return {};
+  const manifest = readJson(manifestPath);
+  const shardMeta = (manifest.shards || []).find((entry) => entry.pair_id === "nta2020__community_district");
+  if (!shardMeta?.path) return {};
+  const shardPath = join(root, String(shardMeta.path));
+  if (!existsSync(shardPath)) return {};
+  return broaderDistrictsFromCrosswalkShard(readJson(shardPath));
 }
 
 /**
@@ -410,11 +460,17 @@ export function buildLocalGeographyPublication({
   dependencies = null,
   previous = null,
   publishedSliceKeys = null,
+  broaderDistricts = null,
 } = {}) {
   const deps = dependencies || localGeographyPublicationDependencies({
     sharedMeetingModel: meetings,
   });
-  const nearYou = buildNearYou(activity, geography, version, { residentialPlaces });
+  const nearYou = buildNearYou(activity, geography, version, {
+    residentialPlaces,
+    broaderDistricts: broaderDistricts == null
+      ? broaderDistrictsFromCommittedArtifacts(ROOT)
+      : broaderDistricts,
+  });
   const meetingBuilt = buildMeetings(meetings, version);
   nearYou.manifest = withPublicationDependencies(nearYou.manifest, deps);
   meetingBuilt.manifest = withPublicationDependencies(meetingBuilt.manifest, deps);
@@ -573,6 +629,7 @@ export function communityGeographySlice(geography, id) {
 
 export function buildNearYou(activity, geography, version, {
   residentialPlaces = [],
+  broaderDistricts = null,
 } = {}) {
   const sourceActivity = activityWithResidentialDefinitions(activity, residentialPlaces);
   const ids = [
@@ -619,6 +676,7 @@ export function buildNearYou(activity, geography, version, {
       source_schema: activity.schema,
       slices,
       residential_place_count: residentialPlaces.length,
+      broader_districts: broaderDistricts || {},
       coverage_census: {
         ready: Object.values(coverageBySlice).filter((state) => state === "ready").length,
         zero: Object.values(coverageBySlice).filter((state) => state === "zero").length,
@@ -737,6 +795,13 @@ function assertCanaries(out, residentialPlaces = []) {
     if (slice.coverage.state === "zero") {
       throw new Error(`Near You residential fixture fabricated a zero: ${fixture}`);
     }
+  }
+  // Broader-district canary (committed crosswalk relations): Kensington
+  // overlaps K12 and K14 materially, while K07 only touches and must stay out.
+  const kensington = (near.broader_districts || {})["geography:nta2020:BK1203"] || [];
+  const kensingtonIds = kensington.map((relation) => relation.id);
+  if (!kensingtonIds.includes("K12") || !kensingtonIds.includes("K14") || kensingtonIds.includes("K07")) {
+    throw new Error(`broader-district canary failed for geography:nta2020:BK1203: ${JSON.stringify(kensingtonIds)}`);
   }
 }
 
