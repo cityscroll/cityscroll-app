@@ -8,6 +8,7 @@ import { buildCommitteeSearchDocuments } from "../site/committee_search_producer
 import { buildExamSearchDocuments } from "../site/exam_search_producer.mjs";
 import { buildLandSearchDocuments } from "../site/land_search_producer.mjs";
 import { buildBoardSearchDocuments } from "../site/board_search_producer.mjs";
+import { buildCommunityBoardDecisionSearchDocuments } from "../site/community_board_decision_search_producer.mjs";
 import { buildMeetingSearchDocuments } from "../site/meeting_search_producer.mjs";
 import { buildCouncilMatterSearchDocuments } from "../site/council_matter_search_producer.mjs";
 import { buildParcelSearchDocuments } from "../site/parcel_search_producer.mjs";
@@ -66,6 +67,17 @@ function compactDocument(document) {
       institution_context: provenance.institution_context || null,
     }
     : null;
+  const decisionContext = document?.object_type === "community_board_decision"
+    ? {
+      candidate_id: provenance.candidate_id || null,
+      meeting_date: provenance.meeting_date || null,
+      case_number: provenance.case_number || null,
+      authority_name: provenance.authority_name || null,
+      subject_topics: Array.isArray(provenance.subject_topics) ? provenance.subject_topics : [],
+      address_phrases: Array.isArray(provenance.address_phrases) ? provenance.address_phrases : [],
+      kind_label: provenance.kind_label || "Board decision",
+    }
+    : null;
   return {
     schema: document.schema,
     object_ref: document.object_ref,
@@ -95,6 +107,7 @@ function compactDocument(document) {
       ...(provenance.identifier_values?.length ? { identifier_values: provenance.identifier_values } : {}),
       ...(provenance.site_history ? { site_history: provenance.site_history } : {}),
       ...(communityBoardContext ? { community_board_context: communityBoardContext } : {}),
+      ...(decisionContext ? decisionContext : {}),
     },
     outcome: document.outcome || "indexed",
     coverage_state: document.coverage_state || "matched",
@@ -168,6 +181,10 @@ const communityBoardResolutionPilot = json("site/data/community_board_resolution
 const communityBoardCorpus = buildBoardSearchDocuments(communityBoards, {
   resolutionPilot: communityBoardResolutionPilot,
 });
+const communityBoardDecisionCorpus = buildCommunityBoardDecisionSearchDocuments(
+  communityBoardResolutionPilot,
+  { boardLookup: communityBoards },
+);
 const communityBoardPeopleCorpus = buildCommunityBoardPersonSearchDocuments(communityBoardPeople, {
   boardLookup: communityBoards,
   committeeRegistry: communityBoardCommittees,
@@ -218,9 +235,9 @@ const output = {
       [eligibleVendorCorpus],
     ),
     community_boards: family(
-      "NYC Community Board institutions",
-      communityBoards.generated_at,
-      [communityBoardCorpus],
+      "NYC Community Board institutions and admitted board decisions",
+      latestClock(communityBoards.generated_at, communityBoardResolutionPilot.reviewed_on),
+      [communityBoardCorpus, communityBoardDecisionCorpus],
     ),
     land: family(
       "NYC Open Data Zoning Application Portal projects",

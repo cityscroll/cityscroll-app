@@ -43,6 +43,7 @@ const TYPE_WEIGHTS = Object.freeze({
   "community-board-committee": 1,
   "community-board-person": 1,
   community_board: 1,
+  community_board_decision: 1,
   civil_service_exam: 1,
   parcel: 1,
   // Legal-code search is intentionally capped by its provider and carries a
