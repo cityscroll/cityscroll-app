@@ -159,7 +159,14 @@ def main() -> int:
                 scrollY: Math.round(window.scrollY),
                 focus: document.activeElement?.getAttribute('href') || null,
             })""")
-            assert after == before, {"before": before, "after": after}
+            # Route/query/scope/focus must match exactly. Allow ±1px on scrollY:
+            # Math.round(window.scrollY) can land on adjacent integers after
+            # history restoration without losing the returned place in the list.
+            assert after["route"] == before["route"], {"before": before, "after": after}
+            assert after["query"] == before["query"], {"before": before, "after": after}
+            assert after["scope"] == before["scope"], {"before": before, "after": after}
+            assert after["focus"] == before["focus"], {"before": before, "after": after}
+            assert abs(after["scrollY"] - before["scrollY"]) <= 1, {"before": before, "after": after}
             page.close()
     finally:
         server.shutdown()

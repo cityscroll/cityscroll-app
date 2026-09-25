@@ -25,6 +25,12 @@
 import { digestMatterKind, shortDate, isRollingDeadline } from "./digest_item_awareness.mjs";
 import { AGENCY_GROUPS, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { deriveProcurementOpportunityWindow } from "./procurement_opportunity_window.mjs";
+import {
+  DEADLINE_ATOM_STATUS,
+  DEADLINE_TRANSPORT_STATUS,
+  atomDeadlineFromProjection,
+  projectDeadlinesFromNoticeRow,
+} from "./procurement_deadline_projection.mjs";
 
 /** Recognizable-title segment budget (chars) before the "X Line, Y Line" collapse or ellipsis kicks in. */
 export const PROCUREMENT_ALERT_TITLE_BUDGET = 42;
@@ -125,10 +131,31 @@ function resolveAmount(row, opts) {
 
 function resolveDeadline(row, opts) {
   if (opts?.deadline && typeof opts.deadline === "object") return opts.deadline;
-  const day = isoDay(row?.due_date);
+  const day = isoDay(row?.due_date || row?.response_deadline?.date);
   // A rolling-year sentinel (>= ROLLING_YEAR, digest_item_awareness.mjs's
   // convention) means "no fixed deadline" — never a real closing date.
-  if (day && !isRollingDeadline(day)) return { value: day, label: shortDate(day), status: "observed" };
+  if (day && isRollingDeadline(day)) {
+    const status = row?.deadline_status || opts?.deadlineStatus || "not_observed";
+    return { value: null, label: null, status };
+  }
+  if (row?.response_deadline && typeof row.response_deadline === "object") {
+    return atomDeadlineFromProjection({ response_deadline: row.response_deadline });
+  }
+  if (Array.isArray(opts?.deadline_assertions) && opts.deadline_assertions.length) {
+    return atomDeadlineFromProjection(projectDeadlinesFromNoticeRow(row, {
+      assertions: opts.deadline_assertions,
+      source_url: opts.official_url || null,
+    }));
+  }
+  const projected = projectDeadlinesFromNoticeRow(row);
+  if (projected.response_deadline) {
+    if (projected.response_deadline.date && isRollingDeadline(projected.response_deadline.date)) {
+      const status = row?.deadline_status || opts?.deadlineStatus || "not_observed";
+      return { value: null, label: null, status };
+    }
+    return atomDeadlineFromProjection(projected);
+  }
+  if (day) return { value: day, label: shortDate(day), status: "observed" };
   const status = row?.deadline_status || opts?.deadlineStatus || "not_observed";
   return { value: null, label: null, status };
 }
@@ -183,6 +210,10 @@ function defaultOfficialUrl(row) {
  */
 export function buildProcurementAlertAtom(row, opts = {}) {
   const r = row || {};
+  const stage = String(r.primary_stage || "").toLowerCase();
+  const kindHint = opts.kind
+    || (stage === "solicitation" ? "rfp" : null)
+    || (stage === "award" || stage === "pending" || stage === "registered" || stage === "payment" || stage === "contract" ? "award" : null);
   return {
     procurement_id: r.procurement_id || null,
     request_id: r.request_id || null,
@@ -197,7 +228,7 @@ export function buildProcurementAlertAtom(row, opts = {}) {
     important_dates: Array.isArray(r.important_dates) ? r.important_dates.slice() : [],
     cityscroll_url: opts.cityscroll_url || defaultCityscrollUrl(r),
     official_url: opts.official_url || defaultOfficialUrl(r),
-    matter_kind: digestMatterKind(r, opts.kind || null),
+    matter_kind: digestMatterKind(r, kindHint),
   };
 }
 
@@ -248,11 +279,14 @@ export function procurementAlertSubjectSegment(atom) {
     parts.push(formatAmountForSubject(atom.amount.value));
   }
   if (atom.matter_kind === "solicitation") {
-    parts.push(
-      atom.deadline?.status === "observed" && atom.deadline.value
-        ? `closes ${atom.deadline.label || shortDate(atom.deadline.value)}`
-        : "deadline not published",
-    );
+    if (atom.deadline?.status === DEADLINE_ATOM_STATUS.DEADLINE_UNCONFIRMED
+      || atom.deadline?.status === DEADLINE_TRANSPORT_STATUS.DEADLINE_UNCONFIRMED) {
+      parts.push("deadline unconfirmed");
+    } else if (atom.deadline?.status === "observed" && atom.deadline.value) {
+      parts.push(`closes ${atom.deadline.label || shortDate(atom.deadline.value)}`);
+    } else {
+      parts.push("deadline not published");
+    }
   }
   return parts.join(" · ");
 }

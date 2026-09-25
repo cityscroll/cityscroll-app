@@ -89,6 +89,13 @@ function amountFact(atom) {
 }
 
 function deadlineFact(deadlinePart) {
+  if (deadlinePart?.status === "deadline_unconfirmed") {
+    return {
+      value: null,
+      label: deadlinePart.label || "Deadline unconfirmed",
+      status: PURSUIT_FIELD_STATUS.UNAVAILABLE,
+    };
+  }
   const observed = deadlinePart?.status === "observed" && deadlinePart.value;
   return {
     value: observed ? deadlinePart.value : null,
@@ -309,7 +316,9 @@ function decisionFactsSectionHtml(facts) {
     : esc(noPublished("amount"));
   const dueHtml = facts.due_date.status === PURSUIT_FIELD_STATUS.OBSERVED
     ? esc(facts.due_date.label || facts.due_date.value)
-    : esc(noPublished("due date"));
+    : facts.due_date.status === PURSUIT_FIELD_STATUS.UNAVAILABLE && facts.due_date.label
+      ? esc(facts.due_date.label)
+      : esc(noPublished("due date"));
   const preBidHtml = facts.pre_bid_conference.status === PURSUIT_FIELD_STATUS.OBSERVED
     ? esc(facts.pre_bid_conference.label || facts.pre_bid_conference.value)
     : esc(NONE_PUBLISHED);

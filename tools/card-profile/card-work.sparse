@@ -730,6 +730,7 @@
 /site/procurement_contract_substance_role_corpus.mjs
 /site/procurement_contract_substance_ui.mjs
 /site/procurement_coverage_labels.mjs
+/site/procurement_deadline_projection.mjs
 /site/procurement_detail_index.mjs
 /site/procurement_digest_compile.mjs
 /site/procurement_document.mjs
