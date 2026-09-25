@@ -2,3 +2,9 @@ warehouse/fixtures/community-board-budget-register/publication-20260512.jsonl
 warehouse/fixtures/community-board-budget-register/publication-20260630.jsonl
 warehouse/fixtures/community-board-budget-register/publication-20270217.jsonl
 site/data/community_board_budget_register/*.json
+# Google Calendar publisher UIDs look like mailbox addresses (L020) but are
+# meeting identities already published in site/data/shared_meeting_read_model.json.
+docs/evidence/meeting-geography-backfill/per-id-outcomes.json
+site/data/meeting-geography-backfill/per-id-outcomes.json
+site/data/meeting-geography-backfill/**/per-id-outcomes.json
+site/data/meeting-geography-backfill/**/projection.json

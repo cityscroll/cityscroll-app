@@ -18,8 +18,12 @@
       "path": "test/meeting_geography_backfill.test.mjs"
     },
     {
+      "id": "meeting-geography-backfill-summary",
+      "path": "docs/evidence/meeting-geography-backfill/summary.json"
+    },
+    {
       "id": "meeting-geography-backfill-outcomes",
-      "path": "docs/evidence/meeting-geography-backfill/per-id-outcomes.json"
+      "path": "site/data/meeting-geography-backfill/per-id-outcomes.json"
     }
   ]
 }

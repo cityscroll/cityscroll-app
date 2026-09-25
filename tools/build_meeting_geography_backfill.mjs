@@ -232,7 +232,9 @@ export function runMeetingGeographyBackfill({
       input_hash: outcome.input_hash,
       outcome: outcome.outcome,
       address_candidate_count: outcome.address_candidate_count,
-      address_candidates: outcome.address_candidates,
+      // Candidate strings stay off the committed public receipt: calendar UIDs
+      // shaped like mailbox addresses are publisher identifiers, not emails to
+      // publish in evidence. Counts remain for A1 reconciliation.
       assertion_ids: outcome.assertion_ids,
       memberships: outcome.memberships,
       edge_count: outcome.edge_count,

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.meeting_geography_backfill_manifest.v1",
-  "generation": "gen-cfcb6c2fbc90-2026-09-24",
-  "built_at": "2026-09-24T23:20:10.624Z",
+  "generation": "gen-cfcb6c2fbc90-2026-09-25",
+  "built_at": "2026-09-25T00:41:29.176Z",
   "source_generation_hash": "cfcb6c2fbc90e17beaefe2e6041ef8173ccbcd96d8444e35086642278f5477df",
   "shared_meeting_schema": "cityscroll.shared_meeting_read_model.v1",
   "shared_meeting_generated_at": "2026-09-09T06:52:08.255Z",
@@ -31,5 +31,5 @@
     "expected_nta2020": "BK1403",
     "expected_role": "venue"
   },
-  "active_generation": "gen-cfcb6c2fbc90-2026-09-24"
+  "active_generation": "gen-cfcb6c2fbc90-2026-09-25"
 }

@@ -1,0 +1,97 @@
+{
+  "schema": "cityscroll.meeting_geography_backfill_evidence.v1",
+  "generation": "gen-cfcb6c2fbc90-2026-09-25",
+  "built_at": "2026-09-25T00:41:29.176Z",
+  "source_generation_hash": "cfcb6c2fbc90e17beaefe2e6041ef8173ccbcd96d8444e35086642278f5477df",
+  "candidate_input": {
+    "canonical_meeting_count": 792,
+    "address_bearing_rows": 329,
+    "distinct_address_strings": 137
+  },
+  "counts": {
+    "input_rows": 792,
+    "processed_rows": 792,
+    "newly_processed": 792,
+    "resumed_unchanged": 0,
+    "address_bearing_rows": 329,
+    "distinct_address_strings": 137,
+    "by_outcome": {
+      "physical_venue": 31,
+      "subject": 1,
+      "broad_jurisdiction": 281,
+      "virtual": 63,
+      "no_source_address": 203,
+      "unresolved_evidence": 213
+    }
+  },
+  "positive_record": {
+    "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+    "expected_nta2020": "BK1403",
+    "expected_role": "venue"
+  },
+  "positive_outcome": {
+    "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+    "outcome": "physical_venue",
+    "input_hash": "dfe40e2472aa81623449a3ef1dab69152ea7e3e0e9aeae2928b404b36836ef1b",
+    "memberships": [
+      {
+        "record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+        "assertion_id": "location_assertion:meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/::venue::venue.address::1",
+        "role": "venue",
+        "bbl": "3066990010",
+        "memberships": {
+          "borough": "3",
+          "community_district": "K14",
+          "council_district": "45",
+          "nta2020": "BK1403",
+          "police_precinct": "70"
+        },
+        "point": {
+          "lat": 40.6297346,
+          "lon": -73.9615272
+        },
+        "confidence": 1,
+        "confidence_tier": "strong",
+        "provenance": {
+          "source_method": "admitted_venue_membership",
+          "source_path": {
+            "source_field": "venue.address",
+            "source_passage": null,
+            "passage_locator": null,
+            "passage_text_sha256": null,
+            "original_address": "810 East 16th Street, Brooklyn, NY, 11230",
+            "venue_name": "Brooklyn CB14 District Office",
+            "components": null
+          },
+          "parcel_bbl": "3066990010"
+        }
+      },
+      {
+        "record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+        "assertion_id": "location_assertion:meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/::host_jurisdiction::board_id::1",
+        "role": "host_jurisdiction",
+        "bbl": null,
+        "memberships": {
+          "community_district": "K14"
+        },
+        "point": null,
+        "confidence": 1,
+        "confidence_tier": "strong",
+        "provenance": {
+          "source_method": "board_covers_district",
+          "source_path": {
+            "source_field": "board_id",
+            "source_passage": null,
+            "passage_locator": null,
+            "passage_text_sha256": null,
+            "original_address": null,
+            "venue_name": null,
+            "components": null
+          }
+        }
+      }
+    ],
+    "edge_count": 6
+  },
+  "full_outcomes_path": "site/data/meeting-geography-backfill/per-id-outcomes.json"
+}
