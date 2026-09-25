@@ -16,6 +16,18 @@
     {
       "id": "kensington-wider-district-capture",
       "path": "tools/capture_kensington_wider_district_journey.py"
+    },
+    {
+      "id": "kensington-wider-district-delivery",
+      "path": "docs/evidence/near-you-kensington-wider-district/delivery.json"
+    },
+    {
+      "id": "deployed-capture-ancestor-helper",
+      "path": "tools/deployed_capture_ancestor.py"
+    },
+    {
+      "id": "deployed-capture-ancestor-test",
+      "path": "test/deployed_capture_ancestor.test.mjs"
     }
   ]
 }

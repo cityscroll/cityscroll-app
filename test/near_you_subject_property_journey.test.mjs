@@ -50,9 +50,10 @@ const ROOT = process.cwd();
 const EVIDENCE_DIR = join(ROOT, "docs/evidence/near-you-subject-property-journey");
 const MANIFEST_PATH = join(EVIDENCE_DIR, "capture-manifest.json");
 const CAPTURE_TOOL = join(ROOT, "tools/capture_near_you_subject_property_journey.py");
-const GROUNDED_AT = "20df28b565f7c3da6a0203a5483319237ee81fe6";
-// Updated to the delivery commit once production serves this card's tip.
-const REQUIRED_SERVED_ANCESTOR = "20df28b565f7c3da6a0203a5483319237ee81fe6";
+const GROUNDED_AT = "cb878a22f23b88908b7f4173c97fec71569367bc";
+// Landed squash-merge on the default branch (recorded in delivery.json).
+const REQUIRED_SERVED_ANCESTOR = "cb878a22f23b88908b7f4173c97fec71569367bc";
+const DELIVERY_PATH = join(EVIDENCE_DIR, "delivery.json");
 
 const SEPT14_ID =
   "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/";
@@ -319,10 +320,14 @@ test("A4 [verification] capture tool guards served revision; local detail shows 
   assert.ok(existsSync(CAPTURE_TOOL), "capture tool must exist");
   const captureTool = readFileSync(CAPTURE_TOOL, "utf8");
   assert.match(captureTool, /def revision_contains_required_ancestor/);
-  assert.match(captureTool, /does not contain required ancestor/);
+  assert.match(captureTool, /require_served_page_revision_contains_delivery|does not contain required ancestor/);
+  assert.match(captureTool, /load_recorded_delivery|delivery\.json/);
   assert.match(captureTool, /ce239e01504c8/);
   assert.match(captureTool, /About 461 Coney Island Avenue|461 Coney Island/);
   assert.match(captureTool, /1625 Ocean/);
+  const delivery = JSON.parse(readFileSync(DELIVERY_PATH, "utf8"));
+  assert.equal(delivery.landed_commit, REQUIRED_SERVED_ANCESTOR);
+  assert.equal(delivery.surface, "pages");
 
   const detailHtml = renderMeetingDocument(sept14Shared, {
     schema: sharedMeetings.schema,
@@ -378,10 +383,9 @@ test("A4 [verification] capture tool guards served revision; local detail shows 
   assert.equal(reads.includes("hearings:location:v1"), false);
 });
 
-test("A4 [verification] production capture manifest records hosted desktop/mobile screenshots when present", () => {
+test("A4 [verification] production capture manifest records hosted desktop/mobile screenshots when present", (t) => {
   if (!existsSync(MANIFEST_PATH)) {
-    // Capture runs after a served build contains the delivery commit.
-    assert.ok(existsSync(CAPTURE_TOOL));
+    t.skip("production capture pending after delivery deploys with subject-property About labels");
     return;
   }
   const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));

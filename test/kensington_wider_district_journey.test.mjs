@@ -57,10 +57,10 @@ const ROOT = process.cwd();
 const EVIDENCE_DIR = join(ROOT, "docs/evidence/near-you-kensington-wider-district");
 const MANIFEST_PATH = join(EVIDENCE_DIR, "capture-manifest.json");
 const GROUNDED_AT = "1ff60f293dc5f348cc6d08e1953232b4159235da";
-// Delivery commit that first publishes wider-district meeting previews for
-// overlapping community districts on the selected Kensington page. Capture
-// refuses until the served artifact-manifest contains this ancestor.
-const REQUIRED_SERVED_ANCESTOR = "3da4739199ec09002249e623adc49f4831438622";
+// Landed squash-merge on the default branch (recorded in delivery.json). Capture
+// refuses until the served Pages artifact-manifest contains this ancestor.
+const REQUIRED_SERVED_ANCESTOR = "c66960422d9c70a12db4f9e1a79651f35153adc7";
+const DELIVERY_PATH = join(EVIDENCE_DIR, "delivery.json");
 
 const SEPT23_ID =
   "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/";
@@ -383,11 +383,15 @@ test("A4 capture tool refuses stale served builds and records ancestor guard", (
     "utf8",
   );
   assert.match(captureTool, /def revision_contains_required_ancestor/);
-  assert.match(captureTool, /does not contain required ancestor/);
+  assert.match(captureTool, /require_served_page_revision_contains_delivery|does not contain required ancestor/);
   assert.match(captureTool, /REQUIRED_ANCESTOR/);
+  assert.match(captureTool, /load_recorded_delivery|delivery\.json/);
   assert.match(captureTool, /near-you-kensington-wider-district/);
   assert.match(captureTool, /Wider district activity|data-broader-district/);
   assert.match(captureTool, /810 East 16th/);
+  const delivery = JSON.parse(readFileSync(DELIVERY_PATH, "utf8"));
+  assert.equal(delivery.landed_commit, REQUIRED_SERVED_ANCESTOR);
+  assert.equal(delivery.surface, "pages");
 });
 
 test("A4 [verification] production capture manifest records hosted desktop/mobile screenshots", (t) => {
