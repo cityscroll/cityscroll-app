@@ -1301,6 +1301,7 @@ function applyHash(){
           if($("#aagency")) $("#aagency").value = "";
           if($("#amoneymin")) $("#amoneymin").value = "";
           if($("#amoneymonths")) $("#amoneymonths").value = "";
+          if($("#amoneylead")) $("#amoneylead").value = "";
           alertEntryMatchCount = null;
           if($("#apreviewbox") && typeof t === "function"){
             $("#apreviewbox").innerHTML = `<div class="empty">${t("empty_preview")}</div>`;

@@ -23,6 +23,7 @@ import {
   TEXT_QUERY_UI,
   watchFilterFromTextQueryControls,
 } from "../watch_text_query_ui.mjs";
+import { validateMinRemainingDays } from "../money_watch_min_remaining_days.mjs";
 import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
 import {
   createFollowingRumInstrumentation,
@@ -206,6 +207,26 @@ function syncAvailabilityControls(form, filter = {}) {
   return filter;
 }
 
+function syncMoneyLeadTimeControls(form, filter = {}) {
+  const field = form?.querySelector("[data-following-lead-time]");
+  const lens = form?.elements?.lens?.value || "money";
+  if (!field || lens !== "money" || filter.procurement_id) {
+    delete filter.minRemainingDays;
+    if (field) field.hidden = true;
+    return filter;
+  }
+  field.hidden = false;
+  const raw = String(form.elements.minRemainingDays?.value || "").trim();
+  if (!raw) {
+    delete filter.minRemainingDays;
+    return filter;
+  }
+  const validation = validateMinRemainingDays(raw);
+  if (validation.ok && validation.present) filter.minRemainingDays = validation.value;
+  else delete filter.minRemainingDays;
+  return filter;
+}
+
 function readRefineFilter() {
   const form = root?.querySelector("[data-following-preview-form]");
   if (!form) return { lens: root?.dataset.followingLens || "money", filter: {}, frequency: "daily" };
@@ -254,6 +275,7 @@ function readRefineFilter() {
       delete filter.boro;
     }
   }
+  syncMoneyLeadTimeControls(form, filter);
   const freqInput = form.querySelector('input[name="freq"]:checked');
   const frequency = freqInput?.value === "weekly" ? "weekly" : "daily";
   const hiddenFilter = form.elements.filter;

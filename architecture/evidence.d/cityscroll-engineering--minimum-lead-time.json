@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/minimum-lead-time",
+  "status": "implemented",
+  "fingerprint": "minimum-lead-time.v1",
+  "updated_at": "2026-09-25T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "money-watch-min-remaining-days",
+      "path": "site/money_watch_min_remaining_days.mjs"
+    },
+    {
+      "id": "minimum-lead-time-capability-test",
+      "path": "test/friction_t2_capability.test.mjs"
+    },
+    {
+      "id": "minimum-lead-time-evidence",
+      "path": "docs/evidence/minimum-lead-time/example-21-day-watch-round-trip.json"
+    }
+  ]
+}

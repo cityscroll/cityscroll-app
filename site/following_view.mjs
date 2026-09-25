@@ -52,6 +52,12 @@ import {
   MEETING_AVAILABILITY_SCHEMA,
   canonicalMeetingAvailability,
 } from "./meeting_availability_filter.mjs";
+import {
+  MIN_REMAINING_DAYS_MAX,
+  MIN_REMAINING_DAYS_MIN,
+  minRemainingDaysControlCopy,
+  validateMinRemainingDays,
+} from "./money_watch_min_remaining_days.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
@@ -154,6 +160,27 @@ export function meetingAvailabilitySummary(value) {
     : "No weekdays";
   const weekendText = weekendWindow ? "weekends all day" : "no weekends";
   return `${weekdayText}; ${weekendText}; ${canonical.timezone}; unknown starts ${canonical.unknown_start === "include" ? "included" : "excluded"}`;
+}
+
+/**
+ * Rolling lead-time control for discovery money watches. Exact follows omit it.
+ */
+export function moneyLeadTimeControlsHtml(view = {}) {
+  const lens = canonicalFollowingLens(view.lens || "money");
+  if (lens !== "money") return "";
+  const filter = view.filter && typeof view.filter === "object" ? view.filter : {};
+  if (filter.procurement_id) return "";
+  const copy = minRemainingDaysControlCopy();
+  const validation = validateMinRemainingDays(filter.minRemainingDays);
+  const value = validation.ok && validation.present ? String(validation.value) : "";
+  return `<fieldset class="following-lead-time" data-following-lead-time>
+    <legend>${esc(copy.label)}</legend>
+    <label class="following-lead-time-field">
+      <span>Minimum calendar days remaining</span>
+      <input type="number" name="minRemainingDays" min="${MIN_REMAINING_DAYS_MIN}" max="${MIN_REMAINING_DAYS_MAX}" step="1" inputmode="numeric" value="${esc(value)}" placeholder="21" data-following-refine="min-remaining-days" data-following-lead-time-input aria-describedby="following-lead-time-help">
+    </label>
+    <p id="following-lead-time-help" class="following-lead-time-help">${esc(copy.help)}</p>
+  </fieldset>`;
 }
 
 export function meetingAvailabilityControlsHtml(view) {
@@ -656,6 +683,10 @@ function refinementClauses(f) {
   }
   if (filter.stage || filter.process) {
     clauses.push(`in ${filter.stage || filter.process}`);
+  }
+  const leadTime = validateMinRemainingDays(filter.minRemainingDays);
+  if (leadTime.ok && leadTime.present) {
+    clauses.push(`with at least ${leadTime.value} calendar days remaining`);
   }
   return clauses;
 }
@@ -1415,6 +1446,7 @@ function controlsHtml(view) {
         </div>
       </div>
       ${textQueryControlsHtml({ lens: view.lens, filter: view.filter })}
+      ${moneyLeadTimeControlsHtml(view)}
     </details>`}
     ${meetingAvailabilityControlsHtml(view)}
     ${view.requested ? cadenceCardsHtml(view) : ""}

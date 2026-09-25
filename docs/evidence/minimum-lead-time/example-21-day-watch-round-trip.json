@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.minimum_lead_time_example.v1",
+  "grounded_records": [
+    "procurement:contract_reporter_number:2138505",
+    "20260707026",
+    "20260727019"
+  ],
+  "filter": {
+    "keywords": [],
+    "agency": null,
+    "minAmount": null,
+    "maxAmount": null,
+    "category": null,
+    "months": null,
+    "noticeType": "solicitation",
+    "excludeSpecial": false,
+    "closingWeek": false,
+    "minRemainingDays": 21,
+    "route": null,
+    "name": null,
+    "tab": null,
+    "entity_refs_all": [],
+    "connection_relation": null
+  },
+  "calendar": {
+    "unsupported_fields": [
+      "minRemainingDays"
+    ],
+    "ics": null,
+    "message": "Calendar export is unavailable while this watch requires a minimum lead time; calendar parity for that filter is not ready yet."
+  },
+  "clocks": {
+    "native_pass": "2026-09-11",
+    "dob_pass": "2026-08-04",
+    "governors_island_pass": "2026-08-07"
+  }
+}

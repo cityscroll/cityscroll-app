@@ -6,6 +6,7 @@ import {
   normalizeCommunityBoardRef,
 } from "../community_board_watch.mjs";
 import { geocodeAddressText } from "../address_geocoder.mjs";
+import { validateMinRemainingDays } from "../money_watch_min_remaining_days.mjs";
 
 /* ===================== ALERTS ===================== */
 const AKEY = "crd_alerts_v1";
@@ -64,13 +65,15 @@ let noticeWatchSeed = null; // { row, digKind, lens, filter }
 // confirms the preview represents the list without becoming another source of query state.
 let alertEntryMatchCount = null;
 function syncAlertConditionalFields(){
-  const moneyFields=$("#amoneyfields"), minBox=$("#amoneyminbox"), monthsBox=$("#amoneymonthsbox");
+  const moneyFields=$("#amoneyfields"), minBox=$("#amoneyminbox"), monthsBox=$("#amoneymonthsbox"), leadBox=$("#amoneyleadbox");
   if(!moneyFields || !minBox || !monthsBox) return;
   const isMoneyDescription=$("#awatch").value==="moneynl";
   const noticeType=moneynlExtra.noticeType||null;
   moneyFields.hidden=!isMoneyDescription;
   minBox.hidden=!isMoneyDescription || noticeType==="solicitation";
   monthsBox.hidden=!isMoneyDescription || noticeType==="award";
+  // Discovery lead-time is for solicitations / unspecified money watches only.
+  if(leadBox) leadBox.hidden=!isMoneyDescription || noticeType==="award";
 }
 // skipQuizSync: true only for the two bookkeeping call sites (page-init, language re-render)
 // that run before/without any real user choice -- those must NOT manufacture a "topic
@@ -86,6 +89,7 @@ function aWatchChange(skipQuizSync){
   if(lastWatch !== null && lastWatch !== w){
     $("#aparam").value=""; $("#aagency").value="";
     $("#quiznarrow").value=""; $("#amoneymin").value=""; $("#amoneymonths").value="";
+    if($("#amoneylead")) $("#amoneylead").value="";
     moneynlExtra = {};
     meetingWatchExtra = {};
     propertyWatchExtra = {};
@@ -833,7 +837,11 @@ function aLensFilter(){
   if(w==="moneynl"){
     const kw=$("#quiznarrow").value.trim(), minAmt=Number($("#amoneymin").value)||null, months=Number($("#amoneymonths").value)||null;
     const {agency=null, category=null, maxAmount=null, noticeType=null} = moneynlExtra;
-    return {lens:"money", filter:{keywords:kw?[kw]:[], minAmount:minAmt, months, agency, category, maxAmount, noticeType}};
+    const leadRaw=$("#amoneylead")?.value?.trim?.() || "";
+    const lead=validateMinRemainingDays(leadRaw);
+    const filter={keywords:kw?[kw]:[], minAmount:minAmt, months, agency, category, maxAmount, noticeType};
+    if(lead.ok && lead.present && noticeType!=="award") filter.minRemainingDays=lead.value;
+    return {lens:"money", filter};
   }
   if(w==="entityvendor") return {lens:"entity", filter:{kind:"vendor", name:$("#aparam").value.trim()||null}};
   if(w==="entityagency") return {lens:"entity", filter:{kind:"agency", name:$("#aparam").value.trim()||null}};

@@ -2879,6 +2879,11 @@
           <label for="amoneymonths" data-i18n="param_label_moneynl_months">Due within months (optional)</label>
           <input type="number" id="amoneymonths" min="1" max="60" placeholder="3" data-i18n-placeholder="param_placeholder_moneynl_months">
         </div>
+        <div class="afield" id="amoneyleadbox" hidden>
+          <label for="amoneylead">At least N calendar days remaining (optional)</label>
+          <input type="number" id="amoneylead" min="0" max="365" step="1" placeholder="21" aria-describedby="amoneyleadhelp">
+          <p id="amoneyleadhelp" class="muted" style="font:12.5px/1.45 ui-sans-serif,system-ui,sans-serif;margin:6px 0 0">Only opportunities with a confirmed deadline</p>
+        </div>
       </div>
 
       <!-- Progressive disclosure: less-common watch types + examples — not a second subscribe form. -->

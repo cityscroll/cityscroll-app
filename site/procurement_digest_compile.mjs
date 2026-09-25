@@ -18,6 +18,7 @@ import {
 import { vendorStem } from "./vendor_stem.mjs";
 import { matchesTextQuery } from "./watch_text_query.mjs";
 import { projectProcurementObjectFields } from "./watch_text_query_eval.mjs";
+import { applyMinRemainingDaysPreference } from "./money_watch_min_remaining_days.mjs";
 
 export const PROCUREMENT_DIGEST_SNAPSHOT_SCHEMA = "cityscroll.procurement_digest_snapshot.v1";
 export const PROCUREMENT_DIGEST_LIMIT = 25;
@@ -310,6 +311,7 @@ export function matchProcurementDigestRows(source, filter = {}, options = {}) {
   if (lens !== "money" && lens !== "entity") return [];
   const exactId = text(filter.procurement_id, 320);
   const limit = Number.isInteger(options.limit) ? options.limit : (exactId ? 1 : PROCUREMENT_DIGEST_LIMIT);
+  const clock = options.clock || options.todayISO || null;
   const matched = snapshotRows(source)
     .map((row) => (row?.object_type === "procurement" ? procurementDigestRow(row, source) : compactRowFromDigest(row)))
     .filter(Boolean)
@@ -319,8 +321,10 @@ export function matchProcurementDigestRows(source, filter = {}, options = {}) {
       if (byDate) return byDate;
       return String(left.procurement_id || "").localeCompare(String(right.procurement_id || ""));
     });
+  // Lifecycle + text match first; optional lead-time preference applies after.
+  const eligible = applyMinRemainingDaysPreference(matched, filter, clock || undefined);
   // Filter (including text_query) already ran; only then apply the display limit.
-  return matched.slice(0, Math.max(0, limit)).map((row) => Object.freeze(stampDigestIdentity(row)));
+  return eligible.slice(0, Math.max(0, limit)).map((row) => Object.freeze(stampDigestIdentity(row)));
 }
 
 export function unionMoneyDigestRows(noticeRows = [], procurementRows = []) {
@@ -342,6 +346,12 @@ export function mergeProcurementDigestMatches(sub, rows, source, todayISO = null
   const current = Array.isArray(rows) ? rows.map(stampDigestIdentity) : [];
   if (lens !== "money" && lens !== "entity") return current;
   if (lens === "money" && (filter.route === "agency" || filter.route === "vendor")) return current;
-  const extra = matchProcurementDigestRows(source, filter, { lens, todayISO });
-  return unionMoneyDigestRows(current, extra);
+  const extra = matchProcurementDigestRows(source, filter, { lens, todayISO, clock: todayISO });
+  // City Record rows arrive already fetched; apply the same lead-time gate after
+  // digest identity merge so the preference never silently broadens.
+  return applyMinRemainingDaysPreference(
+    unionMoneyDigestRows(current, extra),
+    filter,
+    todayISO || undefined,
+  );
 }
