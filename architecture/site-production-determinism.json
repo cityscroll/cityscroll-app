@@ -450,6 +450,7 @@
     "site/money_watch_min_remaining_days.mjs",
     "site/money-freshness.mjs",
     "site/mwbe_goal_surface.mjs",
+    "site/near_you_broader_districts.mjs",
     "site/near_you_explanation_path.mjs",
     "site/near_you_record_inspection.mjs",
     "site/near_you_scope_adoption.mjs",

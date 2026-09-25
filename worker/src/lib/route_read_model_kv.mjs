@@ -139,6 +139,52 @@ function missingBinding(env) {
   return !env?.ALERT_STATE || typeof env.ALERT_STATE.get !== "function";
 }
 
+/**
+ * Broader-district meeting inputs for one selected NTA, from the material
+ * crosswalk relations stamped on the near-you manifest at build time. Reads the
+ * overlapping community districts' own published slices and nothing else; a
+ * district whose slice cannot be read is skipped, and any failure resolves to
+ * null so broader enrichment never replaces or blocks the exact result list.
+ */
+export async function loadBroaderDistrictActivity(env, selectedKey, lens = "meetings") {
+  if (missingBinding(env)) return null;
+  if (!String(selectedKey || "").startsWith("geography:nta2020:")) return null;
+  if (String(lens) !== "meetings") return null;
+  const kv = env.ALERT_STATE;
+  const configuredTimeout = Number(env.NEAR_YOU_READ_MODEL_TIMEOUT_MS);
+  const timeoutMs = Number.isFinite(configuredTimeout) && configuredTimeout > 0
+    ? configuredTimeout
+    : ROUTE_READ_MODEL_TIMEOUT_MS;
+  const manifest = await manifestFor(kv, "near-you", timeoutMs);
+  const relations = manifest.broader_districts?.[selectedKey];
+  if (!Array.isArray(relations) || !relations.length) return null;
+  const state = stateFor(kv);
+  const loadedRelations = [];
+  const slices = {};
+  for (const relation of relations.slice(0, 3)) {
+    const id = String(relation?.id || "");
+    if (!id) continue;
+    const sliceId = `community-district:${id}`;
+    const key = sliceKey(manifest, sliceId, "meetings");
+    if (!key) continue;
+    try {
+      const slice = await getJson(kv, key, state, timeoutMs);
+      // E17 guard: no real records in the published slice, no preview group.
+      if (!slice?.activity?.records?.meetings) continue;
+      slices[sliceId] = slice.activity;
+      loadedRelations.push({
+        key: `geography:community_district:${id}`,
+        id,
+        pct_from: Number.isFinite(Number(relation.pct_from)) ? Number(relation.pct_from) : null,
+      });
+    } catch {
+      // Broader-load failure must not fail the page or the exact list.
+    }
+  }
+  if (!loadedRelations.length) return null;
+  return { relations: loadedRelations, slices };
+}
+
 export function clearRouteReadModelCache() {
   // WeakMap entries are intentionally isolate-scoped and cannot be enumerated;
   // tests use fresh KV objects, matching a new isolate's cache.

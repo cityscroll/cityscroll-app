@@ -114,6 +114,7 @@ site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json
 site/data/first_class_freshness_report.json
 site/data/franchise_concession_sources/verification_receipts/franchise_mocs_plans_2026-08-04.json
 site/data/gap_taxonomy.json
+site/data/geography/crosswalks/manifest.json
 site/data/governing_body_proceedings.json
 site/data/land_authority_summary.json
 site/data/land_authority_summary_receipt.json
