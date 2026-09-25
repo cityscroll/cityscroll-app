@@ -37,6 +37,7 @@ import { itemAwarenessHtml } from "./lib/digest_item_awareness.mjs";
 import { emptyFunnel, mergeFunnels, normalizeFunnel } from "./lib/digest_funnel.mjs";
 import { TRANSIENT_UPSTREAM_STATUSES, markUpstreamFailure, upstreamResultFields } from "./lib/upstream_failure.mjs";
 import { buildProcurementAlertAtom, procurementAlertSubject } from "./lib/procurement_alert_atom.mjs";
+import { digestDeadlineMetaLabel } from "../../site/procurement_deadline_projection.mjs";
 import {
   groupDigestRowsByActionBand,
   rulesActionBandLabel,
@@ -2406,7 +2407,18 @@ async function saveSubHealth(env, s, health) {
 
 // Honest deadline label: due dates in year >= 2090 are rolling placeholders (EDA:
 // pre-qualified-list entries), not real deadlines — never render them as dates.
-export function dueLabel(dueDate) {
+// Prefer a row's transported response_deadline / bid_opening projection when
+// present so timed precision and unconfirmed conflicts survive email prep.
+export function dueLabel(dueDateOrRow, maybeRow = null) {
+  const row = maybeRow && typeof maybeRow === "object"
+    ? maybeRow
+    : (dueDateOrRow && typeof dueDateOrRow === "object" && !Array.isArray(dueDateOrRow)
+      ? dueDateOrRow
+      : null);
+  if (row && (row.response_deadline || row.bid_opening)) {
+    return digestDeadlineMetaLabel(row) || "";
+  }
+  const dueDate = row ? row.due_date : dueDateOrRow;
   if (!dueDate) return "";
   const s = String(dueDate);
   const year = Number(s.slice(0, 4));
@@ -2578,7 +2590,7 @@ function digestHtml(w, rows) {
       if (r.email) acts.push(`<a href="mailto:${esc(r.email)}">✉ Email</a>`);
       if (r.contact_phone) acts.push(`<a href="tel:${esc(String(r.contact_phone).replace(/[^0-9+]/g, ""))}">☎ Call</a>`);
       acts.push(`<a href="${REQ_URL(r.request_id)}">↗ View in City Record</a>`);
-      const sub = [r.agency_name, r.pin ? "PIN " + r.pin : "", money(r.contract_amount), dueLabel(r.due_date)]
+      const sub = [r.agency_name, r.pin ? "PIN " + r.pin : "", money(r.contract_amount), dueLabel(r)]
         .filter(Boolean).map(esc).join(" · ");
       return `<li data-digest-item="1" style="margin:0 0 14px"><b><a href="${REQ_URL(r.request_id)}">${titleHtml(titleText, ev, esc)}</a></b>
         ${evidenceLineHtml(ev, esc, "en")}
@@ -2961,7 +2973,13 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     if (r.procurement_id && !r.request_id) {
       const link = `https://cityscroll.org/procurements/${encodeURIComponent(r.procurement_id)}`;
       const stage = r.primary_stage || (Array.isArray(r.procurement_stages) ? r.procurement_stages.at(-1) : "");
-      const meta = [r.agency_name, r.vendor_name, usd(r.contract_amount), stage ? String(stage).replaceAll("_", " ") : ""]
+      const meta = [
+        r.agency_name,
+        r.vendor_name,
+        usd(r.contract_amount),
+        stage ? String(stage).replaceAll("_", " ") : "",
+        dueLabel(r),
+      ]
         .filter(Boolean).map(esc).join(" · ");
       return `<li data-digest-item="1" data-procurement-id="${esc(r.procurement_id)}"${itemClass} style="margin:0 0 14px"><b><a href="${link}">${esc(r.short_title || "Contract")}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
@@ -3002,7 +3020,7 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     const meta = [r.agency_name,
       itemKind === "award" && r.vendor_name ? r.vendor_name : "",
       usd(r.contract_amount),
-      dueLabel(r.due_date),
+      dueLabel(r),
       r.event_date ? "event " + String(r.event_date).slice(0, 10) : ""]
       .filter(Boolean).map(esc).join(" · ");
     const propertyStage = itemKind === "property" && r.property_watch
@@ -3273,7 +3291,13 @@ export function rollupDigestHtml({
       if (r.procurement_id && !r.request_id) {
         const link = `https://cityscroll.org/procurements/${encodeURIComponent(r.procurement_id)}`;
         const stage = r.primary_stage || (Array.isArray(r.procurement_stages) ? r.procurement_stages.at(-1) : "");
-        const meta = [r.agency_name, r.vendor_name, usd(r.contract_amount), stage ? String(stage).replaceAll("_", " ") : ""]
+        const meta = [
+          r.agency_name,
+          r.vendor_name,
+          usd(r.contract_amount),
+          stage ? String(stage).replaceAll("_", " ") : "",
+          dueLabel(r),
+        ]
           .filter(Boolean).map(esc).join(" · ");
         return `<li data-digest-item="1" data-procurement-id="${esc(r.procurement_id)}"${itemClass} style="margin:0 0 12px"><b><a href="${link}">${esc(r.short_title || "Contract")}</a></b><br>
           <span style="color:#555;font-size:13px">${meta}</span><br>
@@ -3293,7 +3317,7 @@ export function rollupDigestHtml({
       const meta = [r.agency_name,
         rowKind === "award" && r.vendor_name ? r.vendor_name : "",
         usd(r.contract_amount),
-        dueLabel(r.due_date)].filter(Boolean).map(esc).join(" · ");
+        dueLabel(r)].filter(Boolean).map(esc).join(" · ");
       const propertyStage = itemKind === "property" && r.property_watch
         ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
         : "";

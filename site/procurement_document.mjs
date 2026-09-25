@@ -43,6 +43,11 @@ import {
   opportunityWindowDisplayLine,
   procurementOpportunityWindow,
 } from "./procurement_opportunity_window.mjs";
+import {
+  atomDeadlineFromProjection,
+  projectDeadlinesFromSnapshots,
+  pursuitDueDateValue,
+} from "./procurement_deadline_projection.mjs";
 import { extractSolicitationProcurementMethod } from "./solicitation_procurement_method.mjs";
 import { buildSolicitationMwbeView } from "./mwbe_goal_surface.mjs";
 import { buildPursuitSnapshot, renderPursuitSnapshotHtml } from "./procurement_pursuit_snapshot.mjs";
@@ -516,11 +521,21 @@ function pursuitSnapshotFor(object, observations, facts, window, occurrences, pr
   const sourceStatusLabel = rfxRow?.rfx_status || cityRecordRow?.type_of_notice_description
     || nativeRow?.source_values?.status || nativeRow?.status || null;
 
+  // A due-only assertion still reaches the pursuit snapshot even when no
+  // release/publication pair can support an opportunity-window duration.
+  const deadlineProjection = projectDeadlinesFromSnapshots(
+    rows.map((entry) => entry.snapshot).filter(Boolean),
+    { source_observation_refs: rows.map((entry) => entry.source_observation_ref || null) },
+  );
+  const dueDate = pursuitDueDateValue(deadlineProjection, window?.due_date || nativeRow?.due_date || cityRecordRow?.due_date || rfxRow?.due_date || null);
+
   const pursuitRow = {
     short_title: facts.title,
     agency_name: facts.agency,
     type_of_notice_description: stage.solicitation ? "Solicitation" : undefined,
-    due_date: window?.due_date || null,
+    due_date: dueDate,
+    response_deadline: deadlineProjection.response_deadline || null,
+    bid_opening: deadlineProjection.bid_opening || null,
     contact_name: cityRecordRow?.contact_name || null,
     contact_phone: cityRecordRow?.contact_phone || null,
     email: cityRecordRow?.email || null,
@@ -533,6 +548,7 @@ function pursuitSnapshotFor(object, observations, facts, window, occurrences, pr
   return buildPursuitSnapshot(pursuitRow, {
     nativeSolicitationStage: stage.nativeSparse && !stage.solicitation,
     amount: amountOpt,
+    deadline: atomDeadlineFromProjection(deadlineProjection),
     opportunity_window: window,
     important_dates: importantDates,
     procurement_method: method,

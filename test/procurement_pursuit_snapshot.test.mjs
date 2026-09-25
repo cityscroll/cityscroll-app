@@ -272,7 +272,7 @@ test("the pursuit snapshot never renders a cannot-verify absence list or an empt
   assert.match(html, /data-pursuit-section="decision-facts"/);
   assert.match(html, /Computer-Assisted Mass Appraisal/);
   assert.match(html, /Finance/);
-  assert.match(html, /Aug 17/);
+  assert.match(html, /August 17, 2026 at 2:00 PM EDT|Aug 17/);
   assert.doesNotMatch(html, /data-pursuit-section="cannot-verify"/);
   assert.doesNotMatch(html, /pursuit-cannot-verify/);
   assert.doesNotMatch(html, /What CityScroll cannot verify/);

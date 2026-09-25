@@ -1,0 +1,43 @@
+{
+  "schema": "cityscroll.deadlines_through_digest_example.v1",
+  "record": "20260727019",
+  "clock": "2026-09-25T01:47:33.725Z",
+  "precision": "exact_time",
+  "source": {
+    "due_date": "8/28/2026 5:00 PM",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727019"
+  },
+  "digest": {
+    "due_date": "2026-08-28",
+    "response_deadline": {
+      "schema": "cityscroll.procurement_deadline_projection.v1",
+      "status": "resolved",
+      "semantic_kind": "response_deadline",
+      "date": "2026-08-28",
+      "wall_time": "17:00:00",
+      "precision": "exact_time",
+      "timezone": "America/New_York",
+      "label": "August 28, 2026 at 5:00 PM EDT",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727019",
+      "source_system": "city_record",
+      "source_record_id": "20260727019",
+      "observed_at": null,
+      "source_observation_ref": null,
+      "source_text": "8/28/2026 5:00 PM"
+    }
+  },
+  "detail_excerpt": "Responses due · 8/28/2026 5:00 PM",
+  "preview": {
+    "value": "2026-08-28",
+    "label": "August 28, 2026 at 5:00 PM EDT",
+    "status": "observed",
+    "wall_time": "17:00:00",
+    "precision": "exact_time",
+    "timezone": "America/New_York",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727019"
+  },
+  "email": {
+    "subject": "Trust for Governors Island · Governors Island Building 324… · closes August…",
+    "meta_label": "due August 28, 2026 at 5:00 PM EDT"
+  }
+}

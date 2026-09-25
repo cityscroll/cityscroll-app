@@ -1,0 +1,43 @@
+{
+  "schema": "cityscroll.deadlines_through_digest_example.v1",
+  "record": "20260707026",
+  "clock": "2026-09-25T01:47:33.725Z",
+  "precision": "exact_time",
+  "source": {
+    "due_date": "8/25/2026 1:00 PM",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707026"
+  },
+  "digest": {
+    "due_date": "8/25/2026 1:00 PM",
+    "response_deadline": {
+      "schema": "cityscroll.procurement_deadline_projection.v1",
+      "status": "resolved",
+      "semantic_kind": "response_deadline",
+      "date": "2026-08-25",
+      "wall_time": "13:00:00",
+      "precision": "exact_time",
+      "timezone": "America/New_York",
+      "label": "August 25, 2026 at 1:00 PM EDT",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707026",
+      "source_system": "passport_public_rfx",
+      "source_record_id": "passport-rfx:36426",
+      "observed_at": "2026-09-23T16:00:00.000Z",
+      "source_observation_ref": null,
+      "source_text": "8/25/2026 1:00:00 PM"
+    }
+  },
+  "detail_excerpt": "Responses due · 8/25/2026 1:00 PM",
+  "preview": {
+    "value": "2026-08-25",
+    "label": "August 25, 2026 at 1:00 PM EDT",
+    "status": "observed",
+    "wall_time": "13:00:00",
+    "precision": "exact_time",
+    "timezone": "America/New_York",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707026"
+  },
+  "email": {
+    "subject": "Buildings · 81026B0003-Records Remediation Project · closes August 25, 2026…",
+    "meta_label": "due August 25, 2026 at 1:00 PM EDT"
+  }
+}

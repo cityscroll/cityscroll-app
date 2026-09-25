@@ -251517,6 +251517,23 @@
       "source_systems": [
         "nys_contract_reporter"
       ],
+      "due_date": "2026-10-02",
+      "response_deadline": {
+        "schema": "cityscroll.procurement_deadline_projection.v1",
+        "status": "resolved",
+        "semantic_kind": "response_deadline",
+        "date": "2026-10-02",
+        "wall_time": null,
+        "precision": "date_only",
+        "timezone": null,
+        "label": "Oct 2",
+        "source_url": "https://www.nyscr.ny.gov/Ads/Search?Keyword=2138505&Status=Open",
+        "source_system": "nys_contract_reporter",
+        "source_record_id": "contract-reporter:2138505",
+        "observed_at": "2026-08-28T14:00:00.000Z",
+        "source_observation_ref": "nys_contract_reporter:contract-reporter:2138505",
+        "source_text": "10/2/2026"
+      },
       "type_of_notice_description": null
     },
     {
@@ -251537,6 +251554,22 @@
       "source_systems": [
         "mta_bid_results"
       ],
+      "bid_opening": {
+        "schema": "cityscroll.procurement_deadline_projection.v1",
+        "status": "resolved",
+        "semantic_kind": "bid_opening",
+        "date": "2026-08-12",
+        "wall_time": "14:00:00",
+        "precision": "exact_time",
+        "timezone": null,
+        "label": "Bid opening August 12, 2026 at 2:00 PM",
+        "source_url": "https://www.mta.info/agency/construction-and-development/contracting/bid-results",
+        "source_system": "mta_bid_results",
+        "source_record_id": "mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
+        "observed_at": "2026-08-28T14:00:00.000Z",
+        "source_observation_ref": "mta_bid_results:mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
+        "source_text": "2026-08-12T14:00:00.000000-0400"
+      },
       "type_of_notice_description": null
     },
     {
@@ -251557,6 +251590,22 @@
       "source_systems": [
         "mta_current_opportunities"
       ],
+      "bid_opening": {
+        "schema": "cityscroll.procurement_deadline_projection.v1",
+        "status": "resolved",
+        "semantic_kind": "bid_opening",
+        "date": "2026-10-16",
+        "wall_time": null,
+        "precision": "date_only",
+        "timezone": null,
+        "label": "Bid opening Oct 16",
+        "source_url": "https://www.mta.info/agency/construction-and-development/contracting/current-opportunities",
+        "source_system": "mta_current_opportunities",
+        "source_record_id": "mta-current:S48020:0000541781",
+        "observed_at": "2026-08-28T14:00:00.000Z",
+        "source_observation_ref": "mta_current_opportunities:mta-current:S48020:0000541781",
+        "source_text": "10/16/2026"
+      },
       "type_of_notice_description": null
     }
   ]

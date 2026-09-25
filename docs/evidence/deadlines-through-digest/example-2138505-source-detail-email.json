@@ -1,0 +1,43 @@
+{
+  "schema": "cityscroll.deadlines_through_digest_example.v1",
+  "record": "procurement:contract_reporter_number:2138505",
+  "clock": "2026-09-25T01:47:33.725Z",
+  "precision": "date_only",
+  "source": {
+    "due_date": "10/2/2026",
+    "source_url": "https://www.nyscr.ny.gov/Ads/Search?Keyword=2138505&Status=Open"
+  },
+  "digest": {
+    "due_date": "2026-10-02",
+    "response_deadline": {
+      "schema": "cityscroll.procurement_deadline_projection.v1",
+      "status": "resolved",
+      "semantic_kind": "response_deadline",
+      "date": "2026-10-02",
+      "wall_time": null,
+      "precision": "date_only",
+      "timezone": null,
+      "label": "Oct 2",
+      "source_url": "https://www.nyscr.ny.gov/Ads/Search?Keyword=2138505&Status=Open",
+      "source_system": "nys_contract_reporter",
+      "source_record_id": "contract-reporter:2138505",
+      "observed_at": "2026-08-28T14:00:00.000Z",
+      "source_observation_ref": "nys_contract_reporter:contract-reporter:2138505",
+      "source_text": "10/2/2026"
+    }
+  },
+  "detail_excerpt": "Due date</dt><dd>Oct 2<span class=\"pursuit-status pursuit-status-observed\">Published</span></dd></div><div class=\"pursuit-fact\"><dt>Published contact</dt><dd>None publi",
+  "preview": {
+    "value": "2026-10-02",
+    "label": "Oct 2",
+    "status": "observed",
+    "wall_time": null,
+    "precision": "date_only",
+    "timezone": null,
+    "source_url": "https://www.nyscr.ny.gov/Ads/Search?Keyword=2138505&Status=Open"
+  },
+  "email": {
+    "subject": "MTA - NYC Transit (NYCT) · MPM-360: Bridge Preservation at the… · closes Oct 2",
+    "meta_label": "due Oct 2"
+  }
+}
