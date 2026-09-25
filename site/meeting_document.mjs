@@ -525,6 +525,52 @@ function locationDetails(record) {
   return rows;
 }
 
+/** Admitted subject-property assertions retained separately from the venue. */
+export function meetingAgendaSubjectPlaces(record = {}) {
+  const fromAssertions = (Array.isArray(record.location_assertions) ? record.location_assertions : [])
+    .filter((row) => row?.role === "subject_property" && clean(row.original_address, 240));
+  if (fromAssertions.length) {
+    return fromAssertions.map((row) => ({
+      original_address: clean(row.original_address, 240),
+      source_passage: clean(row.source_passage, 500),
+      passage_locator: clean(row.passage_locator, 240),
+      assertion_id: clean(row.assertion_id, 320),
+    }));
+  }
+  return (Array.isArray(record.agenda_subject_places) ? record.agenda_subject_places : [])
+    .map((row) => ({
+      original_address: clean(row?.original_address || row?.address, 240),
+      source_passage: clean(row?.source_passage, 500),
+      passage_locator: clean(row?.passage_locator, 240),
+      assertion_id: clean(row?.assertion_id, 320),
+    }))
+    .filter((row) => row.original_address);
+}
+
+/**
+ * Stable agenda-subject anchor block for the canonical meeting detail.
+ * Keeps publisher wording; never invents a subject from the venue address.
+ */
+export function renderMeetingAgendaSubjectSection(record = {}) {
+  const subjects = meetingAgendaSubjectPlaces(record);
+  if (!subjects.length) return "";
+  const items = subjects.map((subject) => {
+    const passage = subject.source_passage
+      ? `<p class="meeting-agenda-subject-passage">${esc(subject.source_passage)}</p>`
+      : "";
+    return `<li class="meeting-agenda-subject" data-agenda-subject-address="${esc(subject.original_address)}"`
+      + `${subject.assertion_id ? ` data-assertion-id="${esc(subject.assertion_id)}"` : ""}>`
+      + `<p class="meeting-agenda-subject-label">About ${esc(subject.original_address)}</p>`
+      + passage
+      + `</li>`;
+  }).join("");
+  return `<section class="node-section civic-object-section meeting-section meeting-agenda-subjects"`
+    + ` id="agenda-subject" data-meeting-agenda-subjects="${subjects.length}">`
+    + `<h2>Subject property</h2>`
+    + `<ul class="meeting-agenda-subject-list">${items}</ul>`
+    + `</section>`;
+}
+
 function participationDetails(record) {
   const participation = record.participation || {};
   const links = [];
@@ -843,8 +889,9 @@ export function renderMeetingDocument(record = {}, readModel = {}, options = {})
     : "";
   const locationRows = locationDetails(record);
   const locationSection = locationRows.length
-    ? `<section class="node-section civic-object-section meeting-section meeting-location"><h2>Where</h2><ul>${locationRows.map((row) => `<li>${row}</li>`).join("")}</ul></section>`
+    ? `<section class="node-section civic-object-section meeting-section meeting-location" data-meeting-venue="1"><h2>Where</h2><ul>${locationRows.map((row) => `<li>${row}</li>`).join("")}</ul></section>`
     : "";
+  const agendaSubjectSection = renderMeetingAgendaSubjectSection(record);
   const historical = isHistoricalMeeting(record);
   const historicalDay = meetingEventDay(record);
   const historicalNotice = historical && historicalDay
@@ -959,6 +1006,7 @@ export function renderMeetingDocument(record = {}, readModel = {}, options = {})
   ${moreTools}
   ${institutionSection}
   ${locationSection}
+  ${agendaSubjectSection}
   ${descriptionSection}
   ${noticeDetailsSection}
   ${communityBoardAgendaSegmentsSection(record)}

@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/near-you-subject-property-journey",
+  "status": "implemented",
+  "fingerprint": "near-you-subject-property-journey.v1",
+  "updated_at": "2026-09-25T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "subject-property-journey-verify-test",
+      "path": "test/near_you_subject_property_journey.test.mjs"
+    },
+    {
+      "id": "subject-property-journey-capture",
+      "path": "tools/capture_near_you_subject_property_journey.py"
+    }
+  ]
+}
