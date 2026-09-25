@@ -11,6 +11,10 @@
 import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
 import { procurementProcessStates } from "./procurement_process_state_vocabulary.mjs";
 import { compactProcurementProcessEvents } from "./procurement_process_watch.mjs";
+import {
+  digestDeadlineFields,
+  projectDeadlinesFromSnapshots,
+} from "./procurement_deadline_projection.mjs";
 import { vendorStem } from "./vendor_stem.mjs";
 import { matchesTextQuery } from "./watch_text_query.mjs";
 import { projectProcurementObjectFields } from "./watch_text_query_eval.mjs";
@@ -156,6 +160,9 @@ export function procurementDigestRow(object = {}, model = {}, index = null) {
   ], 40));
   const href = object.canonical_href || object.compatibility?.canonical_href || procurementCanonicalHref(id);
   const processEvents = compactProcurementProcessEvents(object.process_events);
+  const deadlineProjection = projectDeadlinesFromSnapshots(snapshots, {
+    source_observation_refs: object?.source_observation_refs || null,
+  });
   return Object.freeze({
     procurement_id: id,
     digest_id: id,
@@ -170,6 +177,7 @@ export function procurementDigestRow(object = {}, model = {}, index = null) {
     procurement_stages: Object.freeze(stages),
     primary_stage: stages.at(-1) || null,
     source_systems: Object.freeze(sourceSystemsFor(object, model, observations)),
+    ...digestDeadlineFields(deadlineProjection),
     ...(processEvents.length
       ? {
         process_states: Object.freeze(procurementProcessStates(processEvents)),
@@ -180,7 +188,7 @@ export function procurementDigestRow(object = {}, model = {}, index = null) {
   });
 }
 
-function compactRowFromDigest(row) {
+export function compactRowFromDigest(row) {
   if (!row?.procurement_id) return null;
   const processEvents = compactProcurementProcessEvents(row.process_events);
   return {
@@ -197,6 +205,11 @@ function compactRowFromDigest(row) {
     procurement_stages: Array.isArray(row.procurement_stages) ? [...row.procurement_stages] : [],
     primary_stage: row.primary_stage || null,
     source_systems: Array.isArray(row.source_systems) ? [...row.source_systems] : [],
+    ...digestDeadlineFields({
+      due_date: row.due_date || null,
+      response_deadline: row.response_deadline || null,
+      bid_opening: row.bid_opening || null,
+    }),
     ...(processEvents.length
       ? { process_states: procurementProcessStates(processEvents), process_events: processEvents }
       : {}),

@@ -1,0 +1,23 @@
+{
+  "schema": "cityscroll.address-index-manifest.v1",
+  "generated_at": "2026-08-17T11:24:50.716Z",
+  "delivery_tier": "daily-precomputed-citywide-snapshot",
+  "source": {
+    "name": "NYC Department of City Planning Property Address Directory",
+    "dataset_id": "bc8t-ecyu",
+    "version": "26b",
+    "download_url": "https://data.cityofnewyork.us/download/bc8t-ecyu/application%2Fzip",
+    "sha256": "016a29968b4bed9e8dde10b9c27b68132aba994baf1dc3e2543a861eadfdf4bd"
+  },
+  "shard_count": 1,
+  "coverage": {
+    "statement": "Fixture covers real PAD ranges for the named Brooklyn and Broadway addresses only."
+  },
+  "shards": {
+    "00": {
+      "file": "./pad-street-subsets.json",
+      "records": 6,
+      "streets": 5
+    }
+  }
+}

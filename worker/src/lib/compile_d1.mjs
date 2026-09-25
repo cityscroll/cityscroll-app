@@ -168,7 +168,7 @@ export function compileSub_d1(sub, todayISO) {
 // Contact fields (contact_name, contact_phone, email) are absent from the D1 mirror;
 // they are null here — the HTML renderer already guards against null contacts.
 export function toDigestRow(r) {
-  return {
+  const row = {
     request_id:      r.request_id           ?? null,
     start_date:      r.start_date           ?? null,
     agency_name:     r.agency               ?? null,  // D1 "agency" → SODA "agency_name"
@@ -195,6 +195,11 @@ export function toDigestRow(r) {
     additional_description_1: r.description ?? null,
     structured_facts: r.structured_facts ?? null,
   };
+  // Additive deadline transport: preserve projected metadata when a caller
+  // already attached it (native digest merge / tests). Absent stays absent.
+  if (r.response_deadline) row.response_deadline = r.response_deadline;
+  if (r.bid_opening) row.bid_opening = r.bid_opening;
+  return row;
 }
 
 // Helper: subtract N calendar days from a YYYY-MM-DD string (UTC, no DST jitter).
