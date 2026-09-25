@@ -41,18 +41,21 @@ export const DEADLINE_ATOM_STATUS = Object.freeze({
   DEADLINE_UNCONFIRMED: "deadline_unconfirmed",
 });
 
-const MONTHS = Object.freeze({
+// Prefix private top-level bindings: classic-script module-dom flatten merges
+// parent imports into one scope, and bare ISO_DATE/MONTHS collide with other
+// site helpers (#task/can-i-bid readiness fails with "already been declared").
+const DEADLINE_PROJECTION_MONTHS = Object.freeze({
   january: 1, february: 2, march: 3, april: 4, may: 5, june: 6,
   july: 7, august: 8, september: 9, october: 10, november: 11, december: 12,
 });
-const MONTH_LONG = Object.freeze([
+const DEADLINE_PROJECTION_MONTH_LONG = Object.freeze([
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ]);
-const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
-const ISO_DATE_TIME = /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(Z|[+-]\d{2}:?\d{2})?$/;
-const US_DATE_TIME = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?)?$/i;
-const ENGLISH_DATE_TIME = /^(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{1,2}),\s*(\d{4})(?:\s*(?:at\s+)?(\d{1,2}):(\d{2})\s*(am|pm))?$/i;
+const DEADLINE_PROJECTION_ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
+const DEADLINE_PROJECTION_ISO_DATE_TIME = /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(Z|[+-]\d{2}:?\d{2})?$/;
+const DEADLINE_PROJECTION_US_DATE_TIME = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?)?$/i;
+const DEADLINE_PROJECTION_ENGLISH_DATE_TIME = /^(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{1,2}),\s*(\d{4})(?:\s*(?:at\s+)?(\d{1,2}):(\d{2})\s*(am|pm))?$/i;
 
 function text(value) {
   const result = String(value ?? "").trim();
@@ -105,7 +108,7 @@ export function parseDeadlineValue(raw) {
   const sourceText = text(raw);
   if (!sourceText) return null;
 
-  const isoDt = sourceText.match(ISO_DATE_TIME);
+  const isoDt = sourceText.match(DEADLINE_PROJECTION_ISO_DATE_TIME);
   if (isoDt) {
     const date = validIsoDate(isoDt[1], isoDt[2], isoDt[3]);
     if (!date) return { ok: false, reason: "invalid_date", source_text: sourceText };
@@ -122,7 +125,7 @@ export function parseDeadlineValue(raw) {
     };
   }
 
-  const iso = sourceText.match(ISO_DATE);
+  const iso = sourceText.match(DEADLINE_PROJECTION_ISO_DATE);
   if (iso) {
     const date = validIsoDate(iso[1], iso[2], iso[3]);
     if (!date) return { ok: false, reason: "invalid_date", source_text: sourceText };
@@ -137,7 +140,7 @@ export function parseDeadlineValue(raw) {
     };
   }
 
-  const us = sourceText.match(US_DATE_TIME);
+  const us = sourceText.match(DEADLINE_PROJECTION_US_DATE_TIME);
   if (us) {
     const date = validIsoDate(us[3], us[1], us[2]);
     if (!date) return { ok: false, reason: "invalid_date", source_text: sourceText };
@@ -165,9 +168,9 @@ export function parseDeadlineValue(raw) {
     };
   }
 
-  const english = sourceText.match(ENGLISH_DATE_TIME);
+  const english = sourceText.match(DEADLINE_PROJECTION_ENGLISH_DATE_TIME);
   if (english) {
-    const month = MONTHS[english[1].toLowerCase()];
+    const month = DEADLINE_PROJECTION_MONTHS[english[1].toLowerCase()];
     const date = validIsoDate(english[3], month, english[2]);
     if (!date) return { ok: false, reason: "invalid_date", source_text: sourceText };
     if (english[4] == null) {
@@ -228,7 +231,7 @@ function timezoneAbbreviation(date, wallTime, timezone) {
 function longDate(date) {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(date || ""));
   if (!match) return null;
-  const month = MONTH_LONG[Number(match[2]) - 1];
+  const month = DEADLINE_PROJECTION_MONTH_LONG[Number(match[2]) - 1];
   if (!month) return null;
   return `${month} ${Number(match[3])}, ${match[1]}`;
 }
