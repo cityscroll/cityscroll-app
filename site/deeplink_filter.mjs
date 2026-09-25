@@ -17,7 +17,7 @@ import { canonicalMeetingAvailability } from "./meeting_availability_filter.mjs"
 // rather than break rendering.
 const DEEPLINK_LENSES = {
   // Keep field-for-field parity with worker/src/lib/filter.mjs LENSES (deeplink_watch.test).
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "place_role", "procurement_id", "processState"],
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "minRemainingDays", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "place_role", "procurement_id", "processState"],
   people:   ["keywords", "lookupType", "view", "interest", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
@@ -28,7 +28,7 @@ const DEEPLINK_LENSES = {
   mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
   obligations: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
   legal_code: ["provision_id"],
-  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
+  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "minRemainingDays", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   award:    ["requestId", "agency"],
 };
 const DEEPLINK_CATEGORIES = ["Goods", "Goods and Services", "Services (other than human services)",
@@ -88,6 +88,13 @@ function deeplinkClampField(name, v){
     case "maxAmount": return typeof v==="number" && v>=1000 ? Math.round(v) : null;
     case "category": return DEEPLINK_CATEGORIES.includes(v) ? v : null;
     case "months": return typeof v==="number" && v>0 && v<=60 ? Math.round(v) : null;
+    case "minRemainingDays": {
+      if (typeof v === "boolean" || Array.isArray(v) || (v && typeof v === "object")) return null;
+      if (typeof v === "string" && !/^-?\d+$/.test(v.trim())) return null;
+      const n = typeof v === "number" ? v : (typeof v === "string" && v.trim() ? Number(v.trim()) : NaN);
+      if (!Number.isFinite(n) || !Number.isInteger(n) || n < 0 || n > 365) return null;
+      return n;
+    }
     case "noticeType": return v==="award" ? "award" : v==="solicitation" ? "solicitation" : null;
     case "excludeSpecial": return !!v;
     case "boro": { const s = typeof v==="string" ? v.trim().toLowerCase() : ""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s) || null; }
@@ -184,6 +191,7 @@ function sanitizeDeepLinkFilter(lens, input){
   if(!out.provision_id) delete out.provision_id;
   if(!out.matter_ref) delete out.matter_ref;
   if(!out.matter_scope_version) delete out.matter_scope_version;
+  if(out.minRemainingDays == null) delete out.minRemainingDays;
   if(f.text_query?.version===1) out.text_query=f.text_query;
   return out;
 }
