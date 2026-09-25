@@ -2873,6 +2873,7 @@
     nl_placeholder_alerts:   "p. ex. contrats d'éducation de plus de 200 000 $ échéant sous 3 mois, ou attributions de plus de 1 M$",
     nl_chip_exam_guide: "guide des examens",
     nl_chip_closing_this_week: "clôture cette semaine",
+    nl_chip_min_remaining_days: "au moins {n} jours restants",
 
     // People panel
     roles_heading:       "Postes",

@@ -21,6 +21,7 @@ import {
   CALENDAR_SUBSCRIPTION_LABEL,
 } from "./calendar_subscription.mjs";
 import { renderGuideHelpLink } from "./guide_contextual_links.mjs";
+import { minRemainingDaysCalendarUnavailableMessage } from "./money_watch_min_remaining_days.mjs";
 
 const FOLLOWING_BASE = "https://cityscroll.org/following";
 
@@ -148,9 +149,12 @@ export function projectFollowDiscovery({
       ...calendarFeedUnsupportedFilterFields(watch || { lens: targetLens, filter: {} }),
     ];
     if (!dated || unsupported.length || !calendarFeedUrlForScope(scope)) {
+      const leadTimeBlocked = unsupported.includes("minRemainingDays");
       notes.push(Object.freeze({
         kind: "calendar_unavailable",
-        message: LABEL.unsupported_calendar,
+        message: leadTimeBlocked
+          ? minRemainingDaysCalendarUnavailableMessage()
+          : LABEL.unsupported_calendar,
         unsupported_fields: Object.freeze(unsupported),
       }));
     }

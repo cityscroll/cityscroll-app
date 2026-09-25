@@ -75,6 +75,7 @@ export const TEXT_QUERY_STRUCTURED_SCOPE_FIELDS = Object.freeze([
   "minAmount",
   "maxAmount",
   "noticeType",
+  "minRemainingDays",
   "geographies",
   "procurement_id",
   "boro",
