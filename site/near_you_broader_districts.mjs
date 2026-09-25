@@ -135,6 +135,7 @@ function previewDateLabel(value) {
   if (!value) return "Date not published";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return String(value);
+  // determinism-lint: allow timezone — published dates render in the reader's zone.
   const day = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date);
   const time = nearYouEventTimeLabel(value);
   return time ? `${day} · ${time}` : day;
