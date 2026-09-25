@@ -43,6 +43,15 @@ function sha256(text) {
 }
 
 function revision() {
+  const grounded = String(process.env.GROUNDED_AT || process.env.CROL_GROUNDED_AT || "").trim();
+  if (/^[0-9a-f]{40}$/i.test(grounded)) return grounded.toLowerCase();
+  // Prefer origin/main so retained evidence revisions stay reachable before the
+  // branch lands; fall back to HEAD only when origin/main is unavailable.
+  const origin = spawnSync("git", ["rev-parse", "origin/main"], { cwd: ROOT, encoding: "utf8" });
+  if (origin.status === 0) {
+    const sha = origin.stdout.trim();
+    if (/^[0-9a-f]{40}$/i.test(sha)) return sha.toLowerCase();
+  }
   const result = spawnSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" });
   if (result.status !== 0) throw new Error(result.stderr || "git rev-parse failed");
   return result.stdout.trim();
