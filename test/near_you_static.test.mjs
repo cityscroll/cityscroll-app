@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { gzipSync } from "node:zlib";
 import test from "node:test";
 
@@ -697,5 +698,28 @@ test("A2: geometry and records health stay independent across truthful states", 
       assert.doesNotMatch(html, /buyer_history_retry/, row.name);
       assert.doesNotMatch(html, /The neighborhood map could not load/, row.name);
     }
+  }
+});
+
+test("A3: production journey retained for Midwood without claiming field vitals", () => {
+  const root = process.cwd();
+  const harness = readFileSync(join(root, "test/browser/geography_navigation_release.py"), "utf8");
+  const manifest = JSON.parse(
+    readFileSync(join(root, "docs/evidence/geography-navigation-release/capture-manifest.json"), "utf8"),
+  );
+  assert.match(harness, /--write-production-journey/);
+  assert.match(harness, /PRODUCTION_JOURNEY_ROUTES/);
+  assert.equal(manifest.production_journey?.status, "taken");
+  assert.match(manifest.production_journey?.served_revision || "", /^[0-9a-f]{40}$/);
+  assert.equal(manifest.not_taken.includes("production CROL_BASE journey"), false);
+  assert.ok(manifest.not_taken.includes("production field-vital measurement"));
+  assert.equal(manifest.performance.production_field_vitals.status, "not_taken");
+  const midwood = manifest.production_journey.captures.filter((row) => row.name.startsWith("production-midwood-"));
+  assert.equal(midwood.length, 2);
+  for (const row of midwood) {
+    assert.equal(row.http_status, 200, row.name);
+    assert.ok(row.visual_metrics.results_count >= 1, row.name);
+    assert.equal(row.visual_metrics.results_populated, true, row.name);
+    assert.ok(Array.isArray(row.visual_metrics.focus_order) && row.visual_metrics.focus_order.length > 0, row.name);
   }
 });
