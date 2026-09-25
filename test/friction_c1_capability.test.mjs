@@ -295,9 +295,21 @@ test("A5 capture manifest covers M1–M3 routes across viewports with revision, 
   assert.equal(manifest.schema, "cityscroll.segmented_meeting_detail_capture_manifest.v1");
   assert.equal(manifest.public_alias, "cb0c04802e711");
   assert.equal(manifest.image_binaries_committed, false);
-  assert.ok(Array.isArray(manifest.captures) && manifest.captures.length >= 12);
+  assert.equal(manifest.capture_mode, "headless-playwright-production-served-site");
+  assert.equal(manifest.revision_format, "served artifact-manifest source_commit_sha");
+  assert.equal(manifest.required_ancestor, "1ff60f293dc5f348cc6d08e1953232b4159235da");
+  assert.equal(manifest.required_ancestor_contained, true);
+  assert.match(String(manifest.revision || ""), /^[0-9a-f]{40}$/);
+  assert.ok(Array.isArray(manifest.captures) && manifest.captures.length >= 14);
 
-  const routes = new Set(manifest.captures.map((capture) => capture.route));
+  const captureTool = readFileSync(join(ROOT, "tools/capture_segmented_meeting_detail.py"), "utf8");
+  assert.match(captureTool, /def revision_contains_required_ancestor/);
+  assert.match(captureTool, /REQUIRED_ANCESTOR = "1ff60f293dc5f348cc6d08e1953232b4159235da"/);
+  assert.match(captureTool, /does not contain required ancestor/);
+  assert.match(captureTool, /java_script_enabled/);
+  assert.match(captureTool, /tab-until-segment-anchor-focus|traverse_to_segment_anchor/);
+
+  const routes = new Set(manifest.captures.map((capture) => capture.route.split("?")[0]));
   for (const url of [M1, M2, M3]) {
     const route = `/meetings/${encodeURIComponent(meetingIdForSource(url))}/`;
     assert.ok(routes.has(route), `manifest covers ${route}`);
@@ -319,23 +331,78 @@ test("A5 capture manifest covers M1–M3 routes across viewports with revision, 
     "no-JavaScript captures present",
   );
 
+  const matrixByMeeting = new Map();
   for (const capture of manifest.captures) {
     assert.ok(capture.route, "capture names route");
     assert.ok(capture.viewport?.width > 0 && capture.viewport?.height > 0, "capture names viewport");
-    assert.match(String(capture.revision || ""), /^[0-9a-f]{7,}$/);
+    assert.match(String(capture.revision || ""), /^[0-9a-f]{40}$/);
     assert.ok(capture.data_vintage, "capture names data vintage");
     assert.ok(String(capture.assertion || "").length > 12, "capture names assertion");
     assert.match(String(capture.sha256 || capture.render_sha256 || ""), /^[0-9a-f]{64}$/);
+    // Non-durable local screenshot paths must not leave dangling hashes.
     if (capture.screenshot) {
-      assert.match(capture.screenshot, /^\.artifacts\//);
-      assert.doesNotMatch(capture.screenshot, /^docs\//);
+      assert.doesNotMatch(String(capture.screenshot), /^docs\//);
+      assert.doesNotMatch(String(capture.screenshot), /^\.artifacts\//);
     }
+    if (capture.screenshot_sha256) {
+      assert.match(String(capture.screenshot_url || ""), /^https:\/\//);
+    }
+    if (/^m[123]-(desktop|narrow-touch)-(enabled|no-js)$/.test(capture.name)) {
+      const values = capture.observed || {};
+      assert.ok(Number(values.segment_count) > 0, `${capture.name} observes segments`);
+      assert.ok(Array.isArray(values.segment_ids) && values.segment_ids.length > 0, `${capture.name} segment ids`);
+      assert.equal(values.historical, true, `${capture.name} historical marker`);
+      assert.ok(Number(values.segment_section_width) > 0, `${capture.name} layout width`);
+      assert.equal(typeof values.scripting_enabled, "boolean", `${capture.name} scripting probe`);
+      assert.equal(Number(values.inner_width), capture.viewport.width, `${capture.name} inner width`);
+      const bucket = matrixByMeeting.get(capture.meeting_key) || [];
+      bucket.push(capture);
+      matrixByMeeting.set(capture.meeting_key, bucket);
+    }
+  }
+
+  for (const [meetingKey, rows] of matrixByMeeting) {
+    assert.equal(rows.length, 4, `${meetingKey} has four viewport/scripting rows`);
+    const hashes = new Set(rows.map((row) => row.sha256));
+    assert.ok(hashes.size >= 2, `${meetingKey} matrix rows must be falsifiably distinct`);
+    const desktopWidths = rows
+      .filter((row) => row.viewport.width === 1440)
+      .map((row) => Number(row.observed.segment_section_width));
+    const narrowWidths = rows
+      .filter((row) => row.viewport.width === 390)
+      .map((row) => Number(row.observed.segment_section_width));
+    assert.ok(
+      Math.min(...desktopWidths) > Math.max(...narrowWidths),
+      `${meetingKey} desktop layout width exceeds narrow layout width`,
+    );
+    const scriptingFlags = new Set(rows.map((row) => row.observed.scripting_enabled));
+    assert.deepEqual([...scriptingFlags].sort(), [false, true], `${meetingKey} scripting on/off present`);
+  }
+
+  for (const row of matrixByMeeting.get("m1") || []) {
+    assert.equal(row.observed.register_mode, true, `${row.name} register mode`);
+    assert.equal(row.observed.written_mode, true, `${row.name} written mode`);
+  }
+  for (const row of matrixByMeeting.get("m2") || []) {
+    assert.equal(row.observed.register_mode, false, `${row.name} has no register mode`);
+  }
+  for (const row of matrixByMeeting.get("m3") || []) {
+    assert.equal(row.observed.written_mode, false, `${row.name} has no written mode`);
   }
 
   // Journey capture: calendar → detail → Back preserves observe return.
   const journey = manifest.captures.find((capture) => capture.name === "calendar-detail-back-journey");
   assert.ok(journey, "calendar→detail→Back journey capture is retained");
   assert.match(String(journey.assertion || ""), /Back|return|observe/i);
+  assert.ok(journey.observed?.segment_deep_link);
+  assert.match(String(journey.observed?.back_href || ""), /\/observe\//);
+
+  // Keyboard capture must record actual Tab traversal onto a segment anchor.
+  const keyboard = manifest.captures.find((capture) => capture.name === "keyboard-segment-anchor-traversal");
+  assert.ok(keyboard, "keyboard segment-anchor traversal capture is retained");
+  assert.equal(keyboard.observed?.focused_segment_anchor, true);
+  assert.ok(Number(keyboard.observed?.keyboard_traversal_steps) >= 1);
+  assert.match(String(keyboard.observed?.focused_href || ""), /^#agenda-segment-/);
 });
 
 test("lean detail path attaches bounded hearing-context slices and never imports the hearings corpus", () => {
