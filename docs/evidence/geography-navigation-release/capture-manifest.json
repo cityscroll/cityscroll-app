@@ -7,7 +7,7 @@
   "grounded_at": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
   "deployed_version": {
     "status": "taken",
-    "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+    "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
     "revision_format": "served artifact-manifest source_commit_sha",
     "base": "https://cityscroll.org/",
     "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
@@ -21,7 +21,6 @@
   "image_binaries_committed": false,
   "capture_policy": "Hashes record normalized HTML observed by headless Chromium; no image capture was taken or committed.",
   "not_taken": [
-    "production CROL_BASE journey",
     "production field-vital measurement",
     "production screenshot binaries"
   ],
@@ -185,7 +184,7 @@
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "taken",
-        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
         "revision_format": "served artifact-manifest source_commit_sha",
         "base": "https://cityscroll.org/",
         "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
@@ -382,7 +381,7 @@
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "taken",
-        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
         "revision_format": "served artifact-manifest source_commit_sha",
         "base": "https://cityscroll.org/",
         "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
@@ -579,7 +578,7 @@
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "taken",
-        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
         "revision_format": "served artifact-manifest source_commit_sha",
         "base": "https://cityscroll.org/",
         "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
@@ -684,7 +683,7 @@
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "taken",
-        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
         "revision_format": "served artifact-manifest source_commit_sha",
         "base": "https://cityscroll.org/",
         "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
@@ -789,7 +788,7 @@
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "taken",
-        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
         "revision_format": "served artifact-manifest source_commit_sha",
         "base": "https://cityscroll.org/",
         "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
@@ -894,7 +893,7 @@
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "taken",
-        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
         "revision_format": "served artifact-manifest source_commit_sha",
         "base": "https://cityscroll.org/",
         "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
@@ -999,7 +998,7 @@
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "taken",
-        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
         "revision_format": "served artifact-manifest source_commit_sha",
         "base": "https://cityscroll.org/",
         "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
@@ -1104,7 +1103,7 @@
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "taken",
-        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
         "revision_format": "served artifact-manifest source_commit_sha",
         "base": "https://cityscroll.org/",
         "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
@@ -1209,7 +1208,7 @@
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "taken",
-        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
         "revision_format": "served artifact-manifest source_commit_sha",
         "base": "https://cityscroll.org/",
         "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
@@ -1314,7 +1313,7 @@
       "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
       "deployed_version": {
         "status": "taken",
-        "source_commit_sha": "f0d24335c7605d0a935cb3a6902a168a0d412595",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
         "revision_format": "served artifact-manifest source_commit_sha",
         "base": "https://cityscroll.org/",
         "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
@@ -1860,9 +1859,10 @@
       }
     },
     "deployed_crol_base": {
-      "command": "CROL_BASE=https://cityscroll.org/ python3 test/functional/geography_navigation.py --case release",
-      "result": "not_taken",
-      "reason": "deployment-dependent read-back"
+      "command": "CROL_BASE=https://cityscroll.org/ python3 test/browser/geography_navigation_release.py --write-production-journey",
+      "result": "passed",
+      "served_revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+      "captured_at": "2026-09-25T05:30:40Z"
     }
   },
   "closure_evidence": [
@@ -1950,5 +1950,712 @@
       "artifact": "test/geography_navigation_release.test.mjs",
       "assertion": "Named A14 assertion and retained manifest evidence."
     }
-  ]
+  ],
+  "production_journey": {
+    "status": "taken",
+    "capture_mode": "headless-playwright-production-served-site",
+    "base": "https://cityscroll.org/",
+    "data_vintage": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+    "served_revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+    "required_ancestor_commits": [
+      "a8d61b1b10b2c60aacef55c31275e5d62dc91f0c",
+      "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c"
+    ],
+    "image_binaries_committed": false,
+    "capture_policy": "Textual metrics are the committed evidence. Optional local screenshots stay under an ignored path; only sha256 digests are retained when images are taken.",
+    "routes": [
+      "/near-you/",
+      "/near-you/?geo=nta2020%3ABK0101&surface=map",
+      "/near-you/?geo=nta2020%3AMN0102&surface=map",
+      "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings"
+    ],
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "midwood_results_count_observed": [
+      2,
+      2
+    ],
+    "captures": [
+      {
+        "name": "production-default-desktop",
+        "route": "/near-you/",
+        "http_status": 200,
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "failure_mode": "none",
+        "asset_classes": [
+          "production_html",
+          "navigation_shell",
+          "simplified_geography_layers"
+        ],
+        "capture_mode": "headless-playwright-production-served-site",
+        "data_vintage": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+        "deployed_version": {
+          "status": "taken",
+          "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+          "revision_format": "served artifact-manifest source_commit_sha",
+          "base": "https://cityscroll.org/",
+          "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
+        },
+        "data_vintages": {
+          "nta": "26B",
+          "community": "2026-05-26",
+          "council": "2026-05-26",
+          "precinct": "26B",
+          "served_revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708"
+        },
+        "timing_samples": {
+          "dom_content_loaded_ms": 324
+        },
+        "render_content_sha256": "f6b5449e2ce878015cf470cbb184ac35644ca2715e7dca6b15c382babe5f7bf3",
+        "visual_metrics": {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "http_status": 200,
+          "initial_viewport_map_height_css_px": 407.6875,
+          "place_choice_visible": true,
+          "control_occlusion": false,
+          "selected_label_present": false,
+          "selected_label": null,
+          "focus_order": [
+            "Skip to content",
+            "CityScroll home",
+            "Now",
+            "Near you",
+            "Following",
+            "Browse",
+            "Guide",
+            "Ask with AI",
+            "Back one step",
+            "Restart at origin",
+            "neighborhood",
+            "Search",
+            "Map",
+            "Browse records",
+            "More ways to choose",
+            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "Map",
+            "Toggle attribution",
+            "MapLibre",
+            "area_q",
+            "Filter",
+            "Neighborhood list",
+            "Special-use areas",
+            "Citywide20"
+          ],
+          "focusable_count": 26,
+          "horizontal_overflow_px": 0,
+          "visible_map_area_css_px": {
+            "width": 1028,
+            "height": 717.25
+          },
+          "results_count": null,
+          "results_populated": false
+        },
+        "artifact": "capture-manifest.json#production-journey-default-desktop",
+        "image_sha256": "cbdc98ca4d115eb7570bc5e7d07de258f14e5f290bdcdbaff4c6b941e7bc0d9c"
+      },
+      {
+        "name": "production-default-narrow_touch",
+        "route": "/near-you/",
+        "http_status": 200,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "failure_mode": "none",
+        "asset_classes": [
+          "production_html",
+          "navigation_shell",
+          "simplified_geography_layers"
+        ],
+        "capture_mode": "headless-playwright-production-served-site",
+        "data_vintage": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+        "deployed_version": {
+          "status": "taken",
+          "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+          "revision_format": "served artifact-manifest source_commit_sha",
+          "base": "https://cityscroll.org/",
+          "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
+        },
+        "data_vintages": {
+          "nta": "26B",
+          "community": "2026-05-26",
+          "council": "2026-05-26",
+          "precinct": "26B",
+          "served_revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708"
+        },
+        "timing_samples": {
+          "dom_content_loaded_ms": 324
+        },
+        "render_content_sha256": "4822314c154a38a5ecdad55063bd0c293ac496e41c725ea8fe65baeeafe016ab",
+        "visual_metrics": {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "http_status": 200,
+          "initial_viewport_map_height_css_px": 283.828125,
+          "place_choice_visible": true,
+          "control_occlusion": false,
+          "selected_label_present": false,
+          "selected_label": null,
+          "focus_order": [
+            "Skip to content",
+            "CityScroll home",
+            "Now",
+            "Near you",
+            "Following",
+            "Browse",
+            "Guide",
+            "Ask with AI",
+            "Back one step",
+            "Restart at origin",
+            "neighborhood",
+            "Search",
+            "Map",
+            "Browse records",
+            "More ways to choose",
+            "Map details",
+            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "Map",
+            "Toggle attribution",
+            "MapLibre",
+            "area_q",
+            "Filter",
+            "Neighborhood list",
+            "Special-use areas"
+          ],
+          "focusable_count": 27,
+          "horizontal_overflow_px": 0,
+          "visible_map_area_css_px": {
+            "width": 358,
+            "height": 662.046875
+          },
+          "results_count": 525,
+          "results_populated": true
+        },
+        "artifact": "capture-manifest.json#production-journey-default-narrow_touch",
+        "image_sha256": "2849a1807c6bd43216028bc98a743651dd3ec5e8cfae6c8429833641dd45b31f"
+      },
+      {
+        "name": "production-greenpoint-desktop",
+        "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+        "http_status": 200,
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "failure_mode": "none",
+        "asset_classes": [
+          "production_html",
+          "navigation_shell",
+          "simplified_geography_layers"
+        ],
+        "capture_mode": "headless-playwright-production-served-site",
+        "data_vintage": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+        "deployed_version": {
+          "status": "taken",
+          "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+          "revision_format": "served artifact-manifest source_commit_sha",
+          "base": "https://cityscroll.org/",
+          "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
+        },
+        "data_vintages": {
+          "nta": "26B",
+          "community": "2026-05-26",
+          "council": "2026-05-26",
+          "precinct": "26B",
+          "served_revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708"
+        },
+        "timing_samples": {
+          "dom_content_loaded_ms": 320
+        },
+        "render_content_sha256": "9246c1f2870f30d85e75215beee2001f02e2a42eb7b65d7eae5226de75f2f666",
+        "visual_metrics": {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "http_status": 200,
+          "initial_viewport_map_height_css_px": 566.5,
+          "place_choice_visible": true,
+          "control_occlusion": false,
+          "selected_label_present": true,
+          "selected_label": "Greenpoint",
+          "focus_order": [
+            "Skip to content",
+            "CityScroll home",
+            "Now",
+            "Near you",
+            "Following",
+            "Browse",
+            "Guide",
+            "Ask with AI",
+            "Back one step",
+            "Restart at origin",
+            "Change place",
+            "Map",
+            "Browse records",
+            "Community districts",
+            "Council districts",
+            "Precincts",
+            "Source and exact figures",
+            "See records in this neighborhood",
+            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "Map",
+            "Toggle attribution",
+            "MapLibre",
+            "area_q",
+            "Filter"
+          ],
+          "focusable_count": 31,
+          "horizontal_overflow_px": 0,
+          "visible_map_area_css_px": {
+            "width": 1028,
+            "height": 717.25
+          },
+          "results_count": null,
+          "results_populated": false
+        },
+        "artifact": "capture-manifest.json#production-journey-greenpoint-desktop",
+        "image_sha256": "087fd960e852aae912eec2b4e1cc8e3266a4e8bfa24b8f705b06ffd3f82dc902"
+      },
+      {
+        "name": "production-greenpoint-narrow_touch",
+        "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+        "http_status": 200,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "failure_mode": "none",
+        "asset_classes": [
+          "production_html",
+          "navigation_shell",
+          "simplified_geography_layers"
+        ],
+        "capture_mode": "headless-playwright-production-served-site",
+        "data_vintage": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+        "deployed_version": {
+          "status": "taken",
+          "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+          "revision_format": "served artifact-manifest source_commit_sha",
+          "base": "https://cityscroll.org/",
+          "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
+        },
+        "data_vintages": {
+          "nta": "26B",
+          "community": "2026-05-26",
+          "council": "2026-05-26",
+          "precinct": "26B",
+          "served_revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708"
+        },
+        "timing_samples": {
+          "dom_content_loaded_ms": 1116
+        },
+        "render_content_sha256": "9586849b3eef9c1968452ca49b00a74f584b13bb0fd72ecf4742824f114dd97d",
+        "visual_metrics": {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "http_status": 200,
+          "initial_viewport_map_height_css_px": 432.65625,
+          "place_choice_visible": true,
+          "control_occlusion": false,
+          "selected_label_present": true,
+          "selected_label": "Greenpoint",
+          "focus_order": [
+            "Skip to content",
+            "CityScroll home",
+            "Now",
+            "Near you",
+            "Following",
+            "Browse",
+            "Guide",
+            "Ask with AI",
+            "Back one step",
+            "Restart at origin",
+            "Change place",
+            "Map",
+            "Browse records",
+            "Map details",
+            "Brooklyn Community District 1",
+            "Community districts",
+            "Council districts",
+            "Precincts",
+            "Source and exact figures",
+            "See records in this neighborhood",
+            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "Map",
+            "Toggle attribution",
+            "MapLibre"
+          ],
+          "focusable_count": 33,
+          "horizontal_overflow_px": 0,
+          "visible_map_area_css_px": {
+            "width": 358,
+            "height": 662.046875
+          },
+          "results_count": null,
+          "results_populated": false
+        },
+        "artifact": "capture-manifest.json#production-journey-greenpoint-narrow_touch",
+        "image_sha256": "4eb64c783abcbe4351162acbb3b0acf592691353f24bd343048bfb26c5b2e276"
+      },
+      {
+        "name": "production-tribeca-desktop",
+        "route": "/near-you/?geo=nta2020%3AMN0102&surface=map",
+        "http_status": 200,
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "failure_mode": "none",
+        "asset_classes": [
+          "production_html",
+          "navigation_shell",
+          "simplified_geography_layers"
+        ],
+        "capture_mode": "headless-playwright-production-served-site",
+        "data_vintage": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+        "deployed_version": {
+          "status": "taken",
+          "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+          "revision_format": "served artifact-manifest source_commit_sha",
+          "base": "https://cityscroll.org/",
+          "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
+        },
+        "data_vintages": {
+          "nta": "26B",
+          "community": "2026-05-26",
+          "council": "2026-05-26",
+          "precinct": "26B",
+          "served_revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708"
+        },
+        "timing_samples": {
+          "dom_content_loaded_ms": 1581
+        },
+        "render_content_sha256": "0a8fd456ae3e24c59b7e88654a6f4d4d86276436fd1a9faab5570e9a5704e2c3",
+        "visual_metrics": {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "http_status": 200,
+          "initial_viewport_map_height_css_px": 566.5,
+          "place_choice_visible": true,
+          "control_occlusion": false,
+          "selected_label_present": true,
+          "selected_label": "Tribeca-Civic Center",
+          "focus_order": [
+            "Skip to content",
+            "CityScroll home",
+            "Now",
+            "Near you",
+            "Following",
+            "Browse",
+            "Guide",
+            "Ask with AI",
+            "Back one step",
+            "Restart at origin",
+            "Change place",
+            "Map",
+            "Browse records (26)",
+            "Community districts",
+            "Council districts",
+            "Precincts",
+            "Source and exact figures",
+            "Meetings: 26 records in this neighborhood",
+            "See records in this neighborhood",
+            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "Map",
+            "Toggle attribution",
+            "MapLibre",
+            "area_q"
+          ],
+          "focusable_count": 32,
+          "horizontal_overflow_px": 0,
+          "visible_map_area_css_px": {
+            "width": 1028,
+            "height": 717.25
+          },
+          "results_count": 26,
+          "results_populated": true
+        },
+        "artifact": "capture-manifest.json#production-journey-tribeca-desktop",
+        "image_sha256": "91b1e3c2d6e9bf568761400f0da8d3e4a75b0b0ef14f19f34ed7d87830e4b59a"
+      },
+      {
+        "name": "production-tribeca-narrow_touch",
+        "route": "/near-you/?geo=nta2020%3AMN0102&surface=map",
+        "http_status": 200,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px",
+        "failure_mode": "none",
+        "asset_classes": [
+          "production_html",
+          "navigation_shell",
+          "simplified_geography_layers"
+        ],
+        "capture_mode": "headless-playwright-production-served-site",
+        "data_vintage": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+        "deployed_version": {
+          "status": "taken",
+          "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+          "revision_format": "served artifact-manifest source_commit_sha",
+          "base": "https://cityscroll.org/",
+          "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
+        },
+        "data_vintages": {
+          "nta": "26B",
+          "community": "2026-05-26",
+          "council": "2026-05-26",
+          "precinct": "26B",
+          "served_revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708"
+        },
+        "timing_samples": {
+          "dom_content_loaded_ms": 1045
+        },
+        "render_content_sha256": "918936dbdcf98b4d20a95a388bab7770e81314b54a71ae8ffa25dbfc4e491fd2",
+        "visual_metrics": {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "http_status": 200,
+          "initial_viewport_map_height_css_px": 432.65625,
+          "place_choice_visible": true,
+          "control_occlusion": false,
+          "selected_label_present": true,
+          "selected_label": "Tribeca-Civic Center",
+          "focus_order": [
+            "Skip to content",
+            "CityScroll home",
+            "Now",
+            "Near you",
+            "Following",
+            "Browse",
+            "Guide",
+            "Ask with AI",
+            "Back one step",
+            "Restart at origin",
+            "Change place",
+            "Map",
+            "Browse records (26)",
+            "Map details",
+            "Manhattan Community District 1",
+            "Community districts",
+            "Council districts",
+            "Precincts",
+            "Source and exact figures",
+            "Meetings: 26 records in this neighborhood",
+            "See records in this neighborhood",
+            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "Map",
+            "Toggle attribution"
+          ],
+          "focusable_count": 34,
+          "horizontal_overflow_px": 0,
+          "visible_map_area_css_px": {
+            "width": 358,
+            "height": 662.046875
+          },
+          "results_count": null,
+          "results_populated": false
+        },
+        "artifact": "capture-manifest.json#production-journey-tribeca-narrow_touch",
+        "image_sha256": "dc8bd1c26853e0e5f7fa95b3d0fa4098c0eff1986b9ba99b78386741c5d6b252"
+      },
+      {
+        "name": "production-midwood-desktop",
+        "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+        "http_status": 200,
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px; Midwood deferred results populated with observed count recorded as a value",
+        "failure_mode": "none",
+        "asset_classes": [
+          "production_html",
+          "navigation_shell",
+          "simplified_geography_layers"
+        ],
+        "capture_mode": "headless-playwright-production-served-site",
+        "data_vintage": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+        "deployed_version": {
+          "status": "taken",
+          "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+          "revision_format": "served artifact-manifest source_commit_sha",
+          "base": "https://cityscroll.org/",
+          "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
+        },
+        "data_vintages": {
+          "nta": "26B",
+          "community": "2026-05-26",
+          "council": "2026-05-26",
+          "precinct": "26B",
+          "served_revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708"
+        },
+        "timing_samples": {
+          "dom_content_loaded_ms": 268
+        },
+        "render_content_sha256": "e98d978162d9c8279c830a31140ccab6f9e33d3ab0be2718f6abd667bea2b69a",
+        "visual_metrics": {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "http_status": 200,
+          "initial_viewport_map_height_css_px": 566.5,
+          "place_choice_visible": true,
+          "control_occlusion": false,
+          "selected_label_present": true,
+          "selected_label": "Midwood",
+          "focus_order": [
+            "Skip to content",
+            "CityScroll home",
+            "Now",
+            "Near you",
+            "Following",
+            "Browse",
+            "Guide",
+            "Ask with AI",
+            "Back one step",
+            "Restart at origin",
+            "Change place",
+            "Map",
+            "Browse records (2)",
+            "Brooklyn Community District 14",
+            "Brooklyn Community District 18",
+            "Brooklyn Community District 15",
+            "Community districts",
+            "Council districts",
+            "Precincts",
+            "Source and exact figures",
+            "Meetings: 2 records in this neighborhood",
+            "See records in this neighborhood",
+            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre",
+            "Map"
+          ],
+          "focusable_count": 35,
+          "horizontal_overflow_px": 0,
+          "visible_map_area_css_px": {
+            "width": 1028,
+            "height": 717.25
+          },
+          "results_count": 2,
+          "results_populated": true
+        },
+        "artifact": "capture-manifest.json#production-journey-midwood-desktop",
+        "image_sha256": "f8e35457f5c126cb6e9346efe086165f663001818fca756e13ccaf69d5815254"
+      },
+      {
+        "name": "production-midwood-narrow_touch",
+        "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+        "http_status": 200,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "assertion": "production CROL_BASE journey verified HTTP 200, \u2265240px initial-viewport map geometry, visible place choice, no selected-label control occlusion, non-empty keyboard focus order, and horizontal overflow \u2264 1px; Midwood deferred results populated with observed count recorded as a value",
+        "failure_mode": "none",
+        "asset_classes": [
+          "production_html",
+          "navigation_shell",
+          "simplified_geography_layers"
+        ],
+        "capture_mode": "headless-playwright-production-served-site",
+        "data_vintage": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+        "deployed_version": {
+          "status": "taken",
+          "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+          "revision_format": "served artifact-manifest source_commit_sha",
+          "base": "https://cityscroll.org/",
+          "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
+        },
+        "data_vintages": {
+          "nta": "26B",
+          "community": "2026-05-26",
+          "council": "2026-05-26",
+          "precinct": "26B",
+          "served_revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708"
+        },
+        "timing_samples": {
+          "dom_content_loaded_ms": 325
+        },
+        "render_content_sha256": "4cb599edbfeaa8cdb85b6d29f3b44db68e9fe76bd0bc6decdeeb93f4f80cc664",
+        "visual_metrics": {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "http_status": 200,
+          "initial_viewport_map_height_css_px": 432.65625,
+          "place_choice_visible": true,
+          "control_occlusion": false,
+          "selected_label_present": true,
+          "selected_label": "Midwood",
+          "focus_order": [
+            "Skip to content",
+            "CityScroll home",
+            "Now",
+            "Near you",
+            "Following",
+            "Browse",
+            "Guide",
+            "Ask with AI",
+            "Back one step",
+            "Restart at origin",
+            "Change place",
+            "Map",
+            "Browse records (2)",
+            "Map details",
+            "Brooklyn Community District 14",
+            "Brooklyn Community District 18",
+            "Brooklyn Community District 15",
+            "Community districts",
+            "Council districts",
+            "Precincts",
+            "Source and exact figures",
+            "Meetings: 2 records in this neighborhood",
+            "See records in this neighborhood",
+            "\u00a9 OpenStreetMap \u00a9 CARTO | MapLibre"
+          ],
+          "focusable_count": 36,
+          "horizontal_overflow_px": 0,
+          "visible_map_area_css_px": {
+            "width": 358,
+            "height": 662.046875
+          },
+          "results_count": 2,
+          "results_populated": true
+        },
+        "artifact": "capture-manifest.json#production-journey-midwood-narrow_touch",
+        "image_sha256": "edba1a0af295742b45cddd5d74d59727374c5719c96cf76f9176592dbe71adb4"
+      }
+    ]
+  }
 }

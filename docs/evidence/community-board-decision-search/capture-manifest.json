@@ -1,0 +1,183 @@
+{
+  "schema": "cityscroll.community_board_decision_search_manifest.v1",
+  "evidence_class": "isolated-consumer-render",
+  "capture_mode": "headless-playwright-loopback-decision-search",
+  "captured_at": "2026-09-25T01:45:27Z",
+  "revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+  "data_vintage": "2026-09-07",
+  "test_clock": "2026-09-25T01:45:27Z",
+  "image_directory": ".artifacts/community-board-decision-search",
+  "image_binaries_committed": false,
+  "image_policy": "Capture images remain ignored and are not committed. Their SHA-256 values bind this textual manifest to the reviewed render.",
+  "served_index": "worker/src/data/keyword_search_index_shards/manifest.json",
+  "query_destinations": [
+    {
+      "query": "730 Avenue S",
+      "candidate_id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+      "decision_href": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+      "query_url": "https://cityscroll.org/search/?q=730 Avenue S"
+    },
+    {
+      "query": "St Marks Place bike lane",
+      "candidate_id": "manhattan-cb-03:2026-05-26:transportation-2",
+      "decision_href": "/community-boards/manhattan-cb-03/#board-decision-bWFuaGF0dGFuLWNiLTAzOjIwMjYtMDUtMjY6dHJhbnNwb3J0YXRpb24tMg",
+      "query_url": "https://cityscroll.org/search/?q=St Marks Place bike lane"
+    },
+    {
+      "query": "Saturday sanitation set out",
+      "candidate_id": "brooklyn-cb-15:2026-05-26:candidate-01",
+      "decision_href": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNS0yNjpjYW5kaWRhdGUtMDE",
+      "query_url": "https://cityscroll.org/search/?q=Saturday sanitation set out"
+    }
+  ],
+  "captures": [
+    {
+      "case": "decision-search-730-avenue-s",
+      "route": "/search/?q=730 Avenue S",
+      "query_url": "https://cityscroll.org/search/?q=730 Avenue S",
+      "query": "730 Avenue S",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+      "data_vintage": "2026-09-07",
+      "assertion": "Query \u201c730 Avenue S\u201d returns decision brooklyn-cb-15:2026-06-30:bsa-154-90-bzii whose ordinary link is /community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+      "decision_href": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+      "candidate_id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+      "sha256": "1e81a898877aabe47812600f7ebefe54856c77e94f48e1a89c56fd86bd5895f0",
+      "image": ".artifacts/community-board-decision-search/decision-search-730-avenue-s.png"
+    },
+    {
+      "case": "decision-search-st-marks-bike-lane",
+      "route": "/search/?q=St Marks Place bike lane",
+      "query_url": "https://cityscroll.org/search/?q=St Marks Place bike lane",
+      "query": "St Marks Place bike lane",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+      "data_vintage": "2026-09-07",
+      "assertion": "Query \u201cSt Marks Place bike lane\u201d returns decision manhattan-cb-03:2026-05-26:transportation-2 whose ordinary link is /community-boards/manhattan-cb-03/#board-decision-bWFuaGF0dGFuLWNiLTAzOjIwMjYtMDUtMjY6dHJhbnNwb3J0YXRpb24tMg",
+      "decision_href": "/community-boards/manhattan-cb-03/#board-decision-bWFuaGF0dGFuLWNiLTAzOjIwMjYtMDUtMjY6dHJhbnNwb3J0YXRpb24tMg",
+      "candidate_id": "manhattan-cb-03:2026-05-26:transportation-2",
+      "sha256": "2bb5598cfdf76701ccb40627a7ee54e90e264dd07963510e2cee9d730bb9631f",
+      "image": ".artifacts/community-board-decision-search/decision-search-st-marks-bike-lane.png"
+    },
+    {
+      "case": "decision-search-saturday-sanitation",
+      "route": "/search/?q=Saturday sanitation set out",
+      "query_url": "https://cityscroll.org/search/?q=Saturday sanitation set out",
+      "query": "Saturday sanitation set out",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+      "data_vintage": "2026-09-07",
+      "assertion": "Query \u201cSaturday sanitation set out\u201d returns decision brooklyn-cb-15:2026-05-26:candidate-01 whose ordinary link is /community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNS0yNjpjYW5kaWRhdGUtMDE",
+      "decision_href": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNS0yNjpjYW5kaWRhdGUtMDE",
+      "candidate_id": "brooklyn-cb-15:2026-05-26:candidate-01",
+      "sha256": "14324416cd0d5a8e6f856ecd581c316d08d598f82ae852c1e1cbdfc9cfc24e5f",
+      "image": ".artifacts/community-board-decision-search/decision-search-saturday-sanitation.png"
+    },
+    {
+      "case": "decision-search-open-and-back",
+      "route": "/search/?q=730 Avenue S \u2192 /community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk \u2192 Back",
+      "query_url": "https://cityscroll.org/search/?q=730 Avenue S",
+      "query": "730 Avenue S",
+      "viewports": [
+        {
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "width": 390,
+          "height": 844
+        },
+        {
+          "width": 1280,
+          "height": 800
+        }
+      ],
+      "modes": [
+        "desktop",
+        "touch",
+        "keyboard"
+      ],
+      "revision": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+      "data_vintage": "2026-09-07",
+      "assertion": "Opening the decision from search and using browser Back preserves the query, result link, and restored focus across desktop, touch, and keyboard",
+      "preserves_search_state": true,
+      "decision_href": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+      "candidate_id": "brooklyn-cb-15:2026-06-30:bsa-154-90-bzii",
+      "observations": [
+        {
+          "mode": "desktop",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "query_preserved": true,
+          "decision_link_present": true,
+          "return_state": {
+            "route": "/search/index-730-avenue-s.html?q=730%20Avenue%20S",
+            "focus_href": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+            "focused": true
+          },
+          "search_path": "/search/index-730-avenue-s.html?q=730%20Avenue%20S"
+        },
+        {
+          "mode": "touch",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "query_preserved": true,
+          "decision_link_present": true,
+          "return_state": {
+            "route": "/search/index-730-avenue-s.html?q=730%20Avenue%20S",
+            "focus_href": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+            "focused": true
+          },
+          "search_path": "/search/index-730-avenue-s.html?q=730%20Avenue%20S"
+        },
+        {
+          "mode": "keyboard",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "query_preserved": true,
+          "decision_link_present": true,
+          "return_state": {
+            "route": "/search/index-730-avenue-s.html?q=730%20Avenue%20S",
+            "focus_href": "/community-boards/brooklyn-cb-15/#board-decision-YnJvb2tseW4tY2ItMTU6MjAyNi0wNi0zMDpic2EtMTU0LTkwLWJ6aWk",
+            "focused": true
+          },
+          "search_path": "/search/index-730-avenue-s.html?q=730%20Avenue%20S"
+        }
+      ],
+      "sha256": "afec637130a9bc266281f1b8b965443aaf802cb08e306d49e6d0842f00e8278d",
+      "recording_sha256": "72e246b34c88adb2b1df71422a9c094be31ed818c4438ae19f27639b435e3891",
+      "images": [
+        {
+          "mode": "desktop",
+          "sha256": "afec637130a9bc266281f1b8b965443aaf802cb08e306d49e6d0842f00e8278d",
+          "image": ".artifacts/community-board-decision-search/decision-search-open-and-back-desktop.png"
+        },
+        {
+          "mode": "touch",
+          "sha256": "a0296415c48f993a13cf4a1354b883055252de519c2caab33438cc115b02ddde",
+          "image": ".artifacts/community-board-decision-search/decision-search-open-and-back-touch.png"
+        },
+        {
+          "mode": "keyboard",
+          "sha256": "38ce50c8538d4c16bec899fbb52647874eb063819ad083f370b4583bc5c7aaaf",
+          "image": ".artifacts/community-board-decision-search/decision-search-open-and-back-keyboard.png"
+        }
+      ]
+    }
+  ]
+}

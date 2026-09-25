@@ -66,6 +66,17 @@ function allCaptureRows() {
   ));
 }
 
+function productionJourneyRows() {
+  const journey = RELEASE_MANIFEST.production_journey;
+  assert.equal(journey?.status, "taken");
+  assert.equal(journey?.capture_mode, "headless-playwright-production-served-site");
+  assert.match(journey?.served_revision || "", /^[0-9a-f]{40}$/);
+  assert.equal(journey?.data_vintage, journey?.served_revision);
+  assert.equal(journey?.image_binaries_committed, false);
+  assert.ok(Array.isArray(journey?.captures));
+  return journey.captures;
+}
+
 function assertDeployedVersion(value) {
   assert.equal(value?.status, "taken");
   assert.match(value?.source_commit_sha || "", /^[0-9a-f]{40}$/);
@@ -206,6 +217,7 @@ test("A9: every retained manifest entry carries route, viewport, vintages, asser
   assert.equal(RELEASE_MANIFEST.repository_revision, RELEASE_MANIFEST.grounded_at);
   assertDeployedVersion(RELEASE_MANIFEST.deployed_version);
   assert.match(RELEASE_BROWSER_SOURCE, /--fill-deployed-version/);
+  assert.match(RELEASE_BROWSER_SOURCE, /--write-production-journey/);
   assert.match(RELEASE_BROWSER_SOURCE, /artifact-manifest\.json/);
   assert.match(RELEASE_BROWSER_SOURCE, /source_commit_sha/);
   for (const capture of allCaptureRows()) assertCaptureContract(capture);
@@ -218,6 +230,8 @@ test("A10: manifests contain no address or raw coordinate and no screenshot bina
   assert.equal(RELEASE_MANIFEST.image_binaries_committed, false);
   assert.match(RELEASE_MANIFEST.capture_policy, /no image capture was taken/i);
   assert.ok(RELEASE_MANIFEST.not_taken.includes("production screenshot binaries"));
+  assert.equal(RELEASE_MANIFEST.not_taken.includes("production CROL_BASE journey"), false);
+  assert.equal(RELEASE_MANIFEST.production_journey?.image_binaries_committed, false);
 });
 
 test("A11: the existing geography suites retain explicit full-checkout verification ownership", () => {
@@ -230,14 +244,19 @@ test("A11: the existing geography suites retain explicit full-checkout verificat
   }
 });
 
-test("A12: pre-deployment verification is green and the deployed journey remains explicitly open", () => {
+test("A12: pre-deployment verification is green and the production CROL_BASE journey is taken", () => {
   assert.equal(RELEASE_MANIFEST.validation.predeployment.full_verify.result, "passed");
   assert.equal(RELEASE_MANIFEST.validation.predeployment.make_a11y.result, "not_taken");
   assert.match(RELEASE_MANIFEST.validation.predeployment.make_a11y.reason, /full-checkout-only/i);
   assert.equal(RELEASE_MANIFEST.validation.predeployment.make_prepush.result, "not_taken");
   assert.match(RELEASE_MANIFEST.validation.predeployment.make_prepush.reason, /full-checkout-only/i);
-  assert.equal(RELEASE_MANIFEST.validation.deployed_crol_base.result, "not_taken");
-  assert.match(RELEASE_MANIFEST.validation.deployed_crol_base.reason, /deployment-dependent/i);
+  assert.equal(RELEASE_MANIFEST.validation.deployed_crol_base.result, "passed");
+  assert.match(
+    RELEASE_MANIFEST.validation.deployed_crol_base.command || "",
+    /--write-production-journey/,
+  );
+  assert.match(RELEASE_MANIFEST.validation.deployed_crol_base.served_revision || "", /^[0-9a-f]{40}$/);
+  assert.equal(RELEASE_MANIFEST.performance.production_field_vitals.status, "not_taken");
 });
 
 test("A13: closure evidence maps every letter to a named test or manifest assertion", () => {
@@ -311,4 +330,62 @@ test("Near You A2: 360px boundary capture combines 200% zoom, reduced motion, an
   assert.match(capture.assertion, /horizontal overflow ≤ 1px/);
   assert.match(capture.assertion, /≥44px targets/);
   assert.match(capture.assertion, /keyboard focus order/);
+});
+
+test("Near You A3: production CROL_BASE journey records geometry, focus order, and Midwood population", () => {
+  const rows = productionJourneyRows();
+  assert.equal(rows.length, 8);
+  assert.deepEqual(
+    RELEASE_MANIFEST.production_journey.required_ancestor_commits,
+    [
+      "a8d61b1b10b2c60aacef55c31275e5d62dc91f0c",
+      "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+    ],
+  );
+  assert.equal(
+    RELEASE_MANIFEST.deployed_version.source_commit_sha,
+    RELEASE_MANIFEST.production_journey.served_revision,
+  );
+  assert.match(RELEASE_BROWSER_SOURCE, /PRODUCTION_JOURNEY_ROUTES/);
+  assert.match(RELEASE_BROWSER_SOURCE, /BK1403/);
+  assert.match(RELEASE_BROWSER_SOURCE, /--check-production-journey/);
+
+  for (const place of ["default", "greenpoint", "tribeca", "midwood"]) {
+    const placeRows = rows.filter((capture) => capture.name.startsWith(`production-${place}-`));
+    assert.deepEqual(
+      placeRows.map((capture) => capture.viewport.width).sort((a, b) => a - b),
+      [390, 1440],
+    );
+    for (const capture of placeRows) {
+      assert.equal(capture.http_status, 200, capture.name);
+      assert.equal(capture.data_vintage, RELEASE_MANIFEST.production_journey.data_vintage, capture.name);
+      assertDeployedVersion(capture.deployed_version);
+      assert.deepEqual(capture.deployed_version, RELEASE_MANIFEST.deployed_version);
+      assert.ok(capture.visual_metrics.initial_viewport_map_height_css_px >= 240, capture.name);
+      assert.equal(capture.visual_metrics.place_choice_visible, true, capture.name);
+      assert.equal(capture.visual_metrics.control_occlusion, false, capture.name);
+      assert.ok(Array.isArray(capture.visual_metrics.focus_order) && capture.visual_metrics.focus_order.length > 0, capture.name);
+      assert.ok(capture.visual_metrics.horizontal_overflow_px <= 1, capture.name);
+      if (place === "default") {
+        assert.equal(typeof capture.visual_metrics.selected_label_present, "boolean", capture.name);
+      } else {
+        assert.equal(capture.visual_metrics.selected_label_present, true, capture.name);
+      }
+      if (place === "midwood") {
+        assert.equal(typeof capture.visual_metrics.results_count, "number", capture.name);
+        assert.ok(capture.visual_metrics.results_count >= 1, capture.name);
+        assert.equal(capture.visual_metrics.results_populated, true, capture.name);
+      }
+      if (capture.image_sha256) {
+        assert.match(capture.image_sha256, /^[0-9a-f]{64}$/);
+      }
+      assert.equal(Object.hasOwn(capture, "image_path_ignored"), false, capture.name);
+    }
+  }
+
+  const midwoodCounts = rows
+    .filter((capture) => capture.name.startsWith("production-midwood-"))
+    .map((capture) => capture.visual_metrics.results_count);
+  assert.deepEqual(RELEASE_MANIFEST.production_journey.midwood_results_count_observed, midwoodCounts);
+  assert.ok(midwoodCounts.every((count) => Number.isInteger(count) && count >= 1));
 });

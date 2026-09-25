@@ -524,3 +524,19 @@ test("A14: quiet fills, two-line wrap, label/halo contrast, and no NTA codes as 
   assert.doesNotMatch(MAP_ISLAND_SOURCE, /map_runtime\.mjs/);
   assert.match(MAP_ISLAND_SOURCE, /createGeographyNavigationMap/);
 });
+
+test("A3 production journey harness covers Midwood on the served origin", () => {
+  const releaseHarness = readFileSync(join(ROOT, "test/browser/geography_navigation_release.py"), "utf8");
+  const manifest = JSON.parse(readFileSync(join(ROOT, "docs/evidence/geography-navigation-release/capture-manifest.json"), "utf8"));
+  assert.match(releaseHarness, /--write-production-journey/);
+  assert.match(releaseHarness, /BK1403/);
+  assert.equal(manifest.production_journey?.status, "taken");
+  assert.equal(manifest.not_taken?.includes("production CROL_BASE journey"), false);
+  assert.equal(manifest.performance?.production_field_vitals?.status, "not_taken");
+  const midwood = (manifest.production_journey?.captures || []).filter((row) => String(row.name || "").startsWith("production-midwood-"));
+  assert.equal(midwood.length, 2);
+  for (const row of midwood) {
+    assert.ok(row.visual_metrics?.results_count >= 1, row.name);
+    assert.equal(row.visual_metrics?.results_populated, true, row.name);
+  }
+});

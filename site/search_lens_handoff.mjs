@@ -65,6 +65,7 @@ const OBJECT_DESTINATIONS = Object.freeze({
   "community-board-committee": DESTINATIONS["people-organizations"],
   "community-board-person": DESTINATIONS["people-organizations"],
   community_board: DESTINATIONS["people-organizations"],
+  community_board_decision: DESTINATIONS["people-organizations"],
   land_use_project: DESTINATIONS.zoning,
   parcel: DESTINATIONS.property,
   civil_service_exam: DESTINATIONS.exams,
@@ -93,6 +94,7 @@ const PEOPLE_TYPES = Object.freeze({
   "community-board-committee": "community-board-committee",
   "community-board-person": "community-board-person",
   community_board: "community-board",
+  community_board_decision: "community-board-decision",
 });
 
 const FALLBACK_COPY = Object.freeze({
