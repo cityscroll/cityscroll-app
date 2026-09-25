@@ -3,7 +3,9 @@
 The journey records rendered HTML and measurements, never screenshot binaries.
 After deployment, ``--fill-deployed-version`` reads the live site's own
 ``/artifact-manifest.json`` and fills only ``deployed_version`` on the retained
-manifest. Full production route journeys remain a separate, open step.
+manifest. ``--write-production-journey`` runs the same Near You entry routes
+(plus Midwood) against the served production origin and records a textual
+production journey under the retained manifest.
 """
 
 from __future__ import annotations
@@ -19,6 +21,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import datetime, timezone
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -33,17 +36,39 @@ EVIDENCE_DIR = ROOT / "docs" / "evidence" / "geography-navigation-release"
 MANIFEST_PATH = EVIDENCE_DIR / "capture-manifest.json"
 ROUTE = "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&drawer=open"
 VIEWPORTS = (("desktop", 1440, 900), ("narrow_touch", 390, 844), ("compact_touch", 360, 800))
+PRODUCTION_VIEWPORTS = (("desktop", 1440, 900), ("narrow_touch", 390, 844))
 MINIMUM_VISIBLE_MAP_HEIGHT = 240
 ENTRY_ROUTES = (
     ("default", "/near-you/"),
     ("greenpoint", "/near-you/?geo=nta2020%3ABK0101&surface=map"),
     ("tribeca", "/near-you/?geo=nta2020%3AMN0102&surface=map"),
 )
+PRODUCTION_JOURNEY_ROUTES = (
+    ("default", "/near-you/", {"expect_selected_label": False, "expect_results_populated": False}),
+    ("greenpoint", "/near-you/?geo=nta2020%3ABK0101&surface=map", {"expect_selected_label": True, "expect_results_populated": False}),
+    ("tribeca", "/near-you/?geo=nta2020%3AMN0102&surface=map", {"expect_selected_label": True, "expect_results_populated": False}),
+    (
+        "midwood",
+        "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+        {"expect_selected_label": True, "expect_results_populated": True},
+    ),
+)
+REQUIRED_SERVED_ANCESTORS = (
+    "a8d61b1b10b2c60aacef55c31275e5d62dc91f0c",
+    "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+)
+ZERO_COPY = "No records match these filters."
+UNAVAILABLE_COPY = "This area’s materialized records are unavailable right now."
+GENERIC_UNAVAILABLE_COPY = "Matching records are not available right now."
+TEMPORARY_UNAVAILABLE_COPY = "Matching records are temporarily unavailable."
 PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
 ARTIFACT_MANIFEST_PATH = "/artifact-manifest.json"
 ARTIFACT_MANIFEST_UA = "cityscroll-release-proof-served-revision/1"
 DEFAULT_PRODUCTION_BASE = "https://cityscroll.org/"
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
+PRODUCTION_IMAGE_DIR = Path(
+    os.environ.get("FM_TASK_SCRATCH") or (ROOT / ".artifacts")
+) / "geography-navigation-release" / "production-images"
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -182,9 +207,11 @@ def check_deployed_version() -> dict:
             f"(manifest={manifest.get('deployed_version')!r} live={expected!r})"
         )
     rows = list(iter_capture_rows(manifest))
-    if not rows:
+    journey = manifest.get("production_journey") if isinstance(manifest.get("production_journey"), dict) else {}
+    journey_rows = [row for row in (journey.get("captures") or []) if isinstance(row, dict)]
+    if not rows and not journey_rows:
         raise AssertionError("release manifest has no capture rows")
-    for capture in rows:
+    for capture in [*rows, *journey_rows]:
         if capture.get("deployed_version") != expected:
             raise AssertionError(
                 f"capture {capture.get('name')!r} deployed_version does not match the live served artifact-manifest"
@@ -193,6 +220,360 @@ def check_deployed_version() -> dict:
         "manifest": str(MANIFEST_PATH.relative_to(ROOT)),
         "base": normalize_base(base),
         "deployed_version": expected,
+        "capture_count": len(rows) + len(journey_rows),
+        "ok": True,
+    }
+
+
+def git_is_ancestor(ancestor: str, commit: str) -> bool:
+    completed = subprocess.run(
+        ["git", "-C", str(ROOT), "merge-base", "--is-ancestor", ancestor, commit],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return completed.returncode == 0
+
+
+def assert_served_revision_ready(served_sha: str) -> list[str]:
+    if not SHA40.fullmatch(served_sha):
+        raise AssertionError(f"served revision is not a 40-hex sha: {served_sha!r}")
+    missing = [sha for sha in REQUIRED_SERVED_ANCESTORS if not git_is_ancestor(sha, served_sha)]
+    if missing:
+        raise AssertionError(
+            "served artifact-manifest source_commit_sha is missing required ancestors "
+            f"{missing}: served={served_sha}"
+        )
+    return list(REQUIRED_SERVED_ANCESTORS)
+
+
+def sha256_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def production_shell_metrics(page) -> dict:
+    snapshot = page.evaluate(
+        """() => {
+          const visible = (node) => {
+            if (!node || node.hidden) return false;
+            const closed = node.closest('details:not([open])');
+            if (closed) {
+              const summary = closed.querySelector(':scope > summary');
+              if (node !== summary && !summary?.contains(node)) return false;
+            }
+            const style = getComputedStyle(node);
+            const rect = node.getBoundingClientRect();
+            return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+          };
+          const selectedLabel = document.querySelector('[data-geography-selected-label]');
+          const selectedLabelRect = visible(selectedLabel) ? selectedLabel.getBoundingClientRect() : null;
+          const controlRects = [...document.querySelectorAll('.maplibregl-ctrl, .map-controls button')]
+            .filter(visible)
+            .map((node) => node.getBoundingClientRect());
+          const overlaps = (left, right) => Boolean(left && right
+            && left.left < right.right && left.right > right.left
+            && left.top < right.bottom && left.bottom > right.top);
+          const focusOrder = [...document.querySelectorAll('a[href], button, input, summary, [tabindex]')]
+            .filter((node) => visible(node) && !node.disabled && node.getAttribute('tabindex') !== '-1')
+            .map((node) => (node.getAttribute('aria-label') || node.textContent || node.name || node.id || node.tagName).trim().replace(/\\s+/g, ' ').slice(0, 80));
+          const placeChoice = document.querySelector('.near-hero h1, #near-geo-heading');
+          const map = document.querySelector('.near-map-wrap, #near-map-enhanced, #nearMapSvg');
+          const mapRect = map?.getBoundingClientRect();
+          const results = document.querySelector('[data-results-count]');
+          const resultsCountRaw = results?.getAttribute('data-results-count');
+          const resultsCount = resultsCountRaw == null || resultsCountRaw === ''
+            ? null
+            : Number.parseInt(resultsCountRaw, 10);
+          const bodyText = document.body.innerText || '';
+          return {
+            body_text: bodyText,
+            horizontal_overflow_px: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
+            place_choice_visible: visible(placeChoice),
+            selected_label_present: Boolean(selectedLabel),
+            selected_label: selectedLabel ? (selectedLabel.textContent || '').trim() : null,
+            control_occlusion: controlRects.some((rect) => overlaps(rect, selectedLabelRect)),
+            focus_order: focusOrder.slice(0, 24),
+            focusable_count: focusOrder.length,
+            initial_viewport_map_height_css_px: mapRect
+              ? Math.max(0, Math.min(innerHeight, mapRect.bottom) - Math.max(0, mapRect.top))
+              : 0,
+            visible_map_area_css_px: mapRect
+              ? { width: mapRect.width, height: mapRect.height }
+              : { width: 0, height: 0 },
+            results_count: Number.isFinite(resultsCount) ? resultsCount : null,
+            results_count_attr_present: resultsCountRaw != null,
+          };
+        }"""
+    )
+    return snapshot
+
+
+def capture_production_route(
+    base: str,
+    *,
+    route_name: str,
+    route: str,
+    width: int,
+    height: int,
+    expect_selected_label: bool,
+    expect_results_populated: bool,
+    served_sha: str,
+    deployed_version: dict,
+    take_image: bool,
+) -> dict:
+    page_url = f"{normalize_base(base).rstrip('/')}{route}"
+    with launched_chromium() as browser:
+        context = browser.new_context(
+            viewport={"width": width, "height": height},
+            has_touch=width < 500,
+            user_agent="cityscroll-release-proof-production-journey/1",
+        )
+        page = context.new_page()
+        try:
+            response = page.goto(page_url, wait_until="domcontentloaded", timeout=60_000)
+            status = response.status if response is not None else None
+            assert status == 200, f"{route_name} @{width}x{height} expected HTTP 200, got {status}"
+            page.locator("#near-geo-search-input").wait_for(state="attached", timeout=20_000)
+            page.wait_for_timeout(600)
+            if expect_results_populated:
+                page.locator("[data-results-count]").wait_for(state="attached", timeout=30_000)
+                page.wait_for_timeout(400)
+            metrics = production_shell_metrics(page)
+            assert metrics["place_choice_visible"] is True, metrics
+            assert metrics["control_occlusion"] is False, metrics
+            assert metrics["initial_viewport_map_height_css_px"] >= MINIMUM_VISIBLE_MAP_HEIGHT, metrics
+            assert metrics["horizontal_overflow_px"] <= 1, metrics
+            assert isinstance(metrics["focus_order"], list) and metrics["focus_order"], metrics
+            if expect_selected_label:
+                assert metrics["selected_label_present"] is True, metrics
+            body = metrics.get("body_text") or ""
+            results_count = metrics.get("results_count")
+            if expect_results_populated:
+                assert isinstance(results_count, int) and results_count >= 1, metrics
+                for needle in (ZERO_COPY, UNAVAILABLE_COPY, GENERIC_UNAVAILABLE_COPY, TEMPORARY_UNAVAILABLE_COPY):
+                    assert needle not in body, f"{route_name} carried unavailable/zero copy {needle!r}"
+            image_digest = None
+            image_path = None
+            if take_image:
+                PRODUCTION_IMAGE_DIR.mkdir(parents=True, exist_ok=True)
+                image_path = PRODUCTION_IMAGE_DIR / f"{route_name}-{width}x{height}.png"
+                page.screenshot(path=str(image_path), full_page=False)
+                image_digest = sha256_bytes(image_path.read_bytes())
+            viewport_name = "desktop" if width >= 1000 else "narrow_touch"
+            capture = {
+                "name": f"production-{route_name}-{viewport_name}",
+                "route": route,
+                "http_status": status,
+                "viewport": {"width": width, "height": height},
+                "assertion": (
+                    "production CROL_BASE journey verified HTTP 200, ≥240px initial-viewport map geometry, "
+                    "visible place choice, no selected-label control occlusion, non-empty keyboard focus order, "
+                    "and horizontal overflow ≤ 1px"
+                    + (
+                        "; Midwood deferred results populated with observed count recorded as a value"
+                        if expect_results_populated
+                        else ""
+                    )
+                ),
+                "failure_mode": "none",
+                "asset_classes": ["production_html", "navigation_shell", "simplified_geography_layers"],
+                "capture_mode": "headless-playwright-production-served-site",
+                "data_vintage": served_sha,
+                "deployed_version": dict(deployed_version),
+                "data_vintages": {
+                    "nta": "26B",
+                    "community": "2026-05-26",
+                    "council": "2026-05-26",
+                    "precinct": "26B",
+                    "served_revision": served_sha,
+                },
+                "timing_samples": {
+                    "dom_content_loaded_ms": page.evaluate(
+                        "() => performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart"
+                    )
+                },
+                "render_content_sha256": sha256(normalize_html(page.content())),
+                "visual_metrics": {
+                    "viewport": {"width": width, "height": height},
+                    "http_status": status,
+                    "initial_viewport_map_height_css_px": metrics["initial_viewport_map_height_css_px"],
+                    "place_choice_visible": metrics["place_choice_visible"],
+                    "control_occlusion": metrics["control_occlusion"],
+                    "selected_label_present": metrics["selected_label_present"],
+                    "selected_label": metrics.get("selected_label"),
+                    "focus_order": metrics["focus_order"],
+                    "focusable_count": metrics["focusable_count"],
+                    "horizontal_overflow_px": metrics["horizontal_overflow_px"],
+                    "visible_map_area_css_px": metrics["visible_map_area_css_px"],
+                    "results_count": results_count,
+                    "results_populated": bool(
+                        isinstance(results_count, int) and results_count >= 1
+                        and ZERO_COPY not in body
+                        and UNAVAILABLE_COPY not in body
+                        and GENERIC_UNAVAILABLE_COPY not in body
+                        and TEMPORARY_UNAVAILABLE_COPY not in body
+                    ),
+                },
+                "artifact": f"capture-manifest.json#production-journey-{route_name}-{viewport_name}",
+            }
+            if image_digest:
+                # Digests are committed; image binaries stay under an ignored local path.
+                capture["image_sha256"] = image_digest
+            return capture
+        finally:
+            context.close()
+
+
+def write_production_journey(*, write: bool, take_images: bool = True) -> dict:
+    base = resolve_production_base()
+    served_sha = deployed_build_revision(base)
+    ancestors = assert_served_revision_ready(served_sha)
+    deployed_version = build_deployed_version_record(base, served_sha)
+    observations = []
+    for route_name, route, flags in PRODUCTION_JOURNEY_ROUTES:
+        for _viewport_name, width, height in PRODUCTION_VIEWPORTS:
+            observations.append(
+                capture_production_route(
+                    base,
+                    route_name=route_name,
+                    route=route,
+                    width=width,
+                    height=height,
+                    expect_selected_label=bool(flags["expect_selected_label"]),
+                    expect_results_populated=bool(flags["expect_results_populated"]),
+                    served_sha=served_sha,
+                    deployed_version=deployed_version,
+                    take_image=take_images,
+                )
+            )
+    midwood_counts = [
+        row["visual_metrics"]["results_count"]
+        for row in observations
+        if row["name"].startswith("production-midwood-")
+    ]
+    if not midwood_counts or any(not isinstance(count, int) or count < 1 for count in midwood_counts):
+        raise AssertionError(f"Midwood production rows must record a populated results_count, got {midwood_counts!r}")
+
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    before = json.dumps(manifest, sort_keys=True)
+    manifest["deployed_version"] = deployed_version
+    for capture in iter_capture_rows(manifest):
+        capture["deployed_version"] = dict(deployed_version)
+    not_taken = [
+        item
+        for item in (manifest.get("not_taken") or [])
+        if item != "production CROL_BASE journey"
+    ]
+    if "production field-vital measurement" not in not_taken:
+        not_taken.append("production field-vital measurement")
+    if "production screenshot binaries" not in not_taken:
+        not_taken.append("production screenshot binaries")
+    manifest["not_taken"] = not_taken
+    performance = manifest.setdefault("performance", {})
+    performance["production_field_vitals"] = {
+        "status": "not_taken",
+        "reason": "deployment-dependent production measurement",
+    }
+    validation = manifest.setdefault("validation", {})
+    validation["deployed_crol_base"] = {
+        "command": (
+            "CROL_BASE=https://cityscroll.org/ "
+            "python3 test/browser/geography_navigation_release.py --write-production-journey"
+        ),
+        "result": "passed",
+        "served_revision": served_sha,
+        "captured_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+    manifest["production_journey"] = {
+        "status": "taken",
+        "capture_mode": "headless-playwright-production-served-site",
+        "base": normalize_base(base),
+        "data_vintage": served_sha,
+        "served_revision": served_sha,
+        "required_ancestor_commits": ancestors,
+        "image_binaries_committed": False,
+        "capture_policy": (
+            "Textual metrics are the committed evidence. Optional local screenshots stay under an "
+            "ignored path; only sha256 digests are retained when images are taken."
+        ),
+        "routes": [route for _name, route, _flags in PRODUCTION_JOURNEY_ROUTES],
+        "viewports": [{"width": width, "height": height} for _name, width, height in PRODUCTION_VIEWPORTS],
+        "midwood_results_count_observed": midwood_counts,
+        "captures": observations,
+    }
+    after = json.dumps(manifest, sort_keys=True)
+    if write and before != after:
+        MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return {
+        "manifest": str(MANIFEST_PATH.relative_to(ROOT)),
+        "base": normalize_base(base),
+        "served_revision": served_sha,
+        "capture_count": len(observations),
+        "midwood_results_count_observed": midwood_counts,
+        "wrote": bool(write and before != after),
+    }
+
+
+def check_production_journey() -> dict:
+    base = resolve_production_base()
+    live_sha = deployed_build_revision(base)
+    assert_served_revision_ready(live_sha)
+    expected = build_deployed_version_record(base, live_sha)
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    journey = manifest.get("production_journey")
+    if not isinstance(journey, dict) or journey.get("status") != "taken":
+        raise AssertionError("production_journey is not taken on the retained manifest")
+    if journey.get("served_revision") != live_sha or journey.get("data_vintage") != live_sha:
+        raise AssertionError(
+            "production_journey served revision does not match the live artifact-manifest "
+            f"(manifest={journey.get('served_revision')!r} live={live_sha!r})"
+        )
+    if manifest.get("deployed_version") != expected:
+        raise AssertionError("top-level deployed_version does not match the live served artifact-manifest")
+    if "production CROL_BASE journey" in (manifest.get("not_taken") or []):
+        raise AssertionError("not_taken still lists production CROL_BASE journey")
+    if manifest.get("performance", {}).get("production_field_vitals", {}).get("status") != "not_taken":
+        raise AssertionError("production_field_vitals must remain not_taken")
+    rows = [row for row in (journey.get("captures") or []) if isinstance(row, dict)]
+    expected_names = {
+        f"production-{route_name}-{viewport_name}"
+        for route_name, _route, _flags in PRODUCTION_JOURNEY_ROUTES
+        for viewport_name, _width, _height in PRODUCTION_VIEWPORTS
+    }
+    got_names = {row.get("name") for row in rows}
+    if got_names != expected_names:
+        raise AssertionError(f"production journey capture names mismatch: {sorted(got_names)} vs {sorted(expected_names)}")
+    for row in rows:
+        metrics = row.get("visual_metrics") or {}
+        if row.get("http_status") != 200 and metrics.get("http_status") != 200:
+            raise AssertionError(f"{row.get('name')} missing HTTP 200")
+        if metrics.get("initial_viewport_map_height_css_px", 0) < MINIMUM_VISIBLE_MAP_HEIGHT:
+            raise AssertionError(f"{row.get('name')} map height below floor")
+        if metrics.get("place_choice_visible") is not True:
+            raise AssertionError(f"{row.get('name')} place_choice_visible is not true")
+        if metrics.get("control_occlusion") is not False:
+            raise AssertionError(f"{row.get('name')} control_occlusion is not false")
+        if not isinstance(metrics.get("focus_order"), list) or not metrics.get("focus_order"):
+            raise AssertionError(f"{row.get('name')} focus_order must be a non-empty ordered list")
+        if metrics.get("horizontal_overflow_px", 99) > 1:
+            raise AssertionError(f"{row.get('name')} horizontal overflow exceeds 1px")
+        if row["name"].startswith("production-midwood-"):
+            count = metrics.get("results_count")
+            if not isinstance(count, int) or count < 1 or metrics.get("results_populated") is not True:
+                raise AssertionError(f"{row.get('name')} Midwood results are not populated: {metrics!r}")
+        elif row["name"].startswith("production-default-"):
+            pass
+        else:
+            if metrics.get("selected_label_present") is not True:
+                raise AssertionError(f"{row.get('name')} selected_label_present is not true")
+        if row.get("deployed_version") != expected:
+            raise AssertionError(f"{row.get('name')} deployed_version drift")
+        if row.get("data_vintage") != live_sha:
+            raise AssertionError(f"{row.get('name')} data_vintage drift")
+    return {
+        "manifest": str(MANIFEST_PATH.relative_to(ROOT)),
+        "base": normalize_base(base),
+        "served_revision": live_sha,
         "capture_count": len(rows),
         "ok": True,
     }
@@ -486,18 +867,48 @@ def main() -> int:
         help="Read production /artifact-manifest.json and fill only deployed_version on the retained manifest.",
     )
     parser.add_argument(
+        "--write-production-journey",
+        action="store_true",
+        help="Run the Near You entry journey against the served production origin and record textual metrics.",
+    )
+    parser.add_argument(
         "--check",
         action="store_true",
         help="Verify retained deployed_version matches the live served artifact-manifest.",
     )
+    parser.add_argument(
+        "--check-production-journey",
+        action="store_true",
+        help="Verify the retained production journey matches the live served artifact-manifest and acceptance metrics.",
+    )
+    parser.add_argument(
+        "--no-images",
+        action="store_true",
+        help="Skip optional local screenshot digests when writing the production journey.",
+    )
     args = parser.parse_args()
-    if args.fill_deployed_version and args.check:
-        raise SystemExit("use either --fill-deployed-version or --check, not both")
+    exclusive = [
+        args.fill_deployed_version,
+        args.write_production_journey,
+        args.check,
+        args.check_production_journey,
+    ]
+    if sum(1 for flag in exclusive if flag) > 1:
+        raise SystemExit(
+            "use only one of --fill-deployed-version, --write-production-journey, "
+            "--check, or --check-production-journey"
+        )
     if args.fill_deployed_version:
         print(json.dumps(fill_deployed_version(write=True), indent=2))
         return 0
+    if args.write_production_journey:
+        print(json.dumps(write_production_journey(write=True, take_images=not args.no_images), indent=2))
+        return 0
     if args.check:
         print(json.dumps(check_deployed_version(), indent=2))
+        return 0
+    if args.check_production_journey:
+        print(json.dumps(check_production_journey(), indent=2))
         return 0
     observations = []
     fixture_html = ""
