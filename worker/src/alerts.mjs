@@ -834,6 +834,9 @@ async function finalizeOutboxDelivery(env, reservation, subscriberId, ctx, items
 }
 
 async function loadWatchRows(env, s, ctx, q, { sodaLimit = null, warnLabel = "alerts" } = {}) {
+  // Prefer the run's injected instant so calendar-day eligibility matches
+  // preparation; fall back to the civic day string when no instant is set.
+  const selectionClock = ctx.now || ctx.nowMs || ctx.today;
   if (s.filter?.text_query && textQueryEvaluationSupported(s.lens)) {
     const evaluation = await evaluateAdmittedTextQueryWatch({
       db: env.DB || null,
@@ -842,7 +845,7 @@ async function loadWatchRows(env, s, ctx, q, { sodaLimit = null, warnLabel = "al
       sub: s,
       todayISO: ctx.today,
       limit: Number(sodaLimit) || 25,
-      clock: ctx.today,
+      clock: selectionClock,
     });
     return {
       rows: evaluation.rows || [],

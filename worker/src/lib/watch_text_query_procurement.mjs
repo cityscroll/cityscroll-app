@@ -29,6 +29,7 @@ import {
   textQueryCandidateTermGroups,
   textQueryEvaluationSupported,
 } from "../../../site/watch_text_query.mjs";
+import { applyMinRemainingDaysPreference } from "../../../site/money_watch_min_remaining_days.mjs";
 
 export const PRECISE_PROCUREMENT_ADAPTER = Object.freeze({
   notices: "d1-notices-like",
@@ -235,6 +236,8 @@ export async function evaluateMoneyTextQueryWatch({
     ? matchProcurementDigestRows(snapshot, sub.filter, {
       lens: sub.lens || "money",
       limit,
+      todayISO,
+      clock: clock || todayISO || null,
     }).map((row) => {
       const decision = decideProcurementTextQuery(row, expression, projectProcurementObjectFields);
       return stampDigestIdentity({ ...row, text_query_evidence: decision.evidence });
@@ -243,6 +246,14 @@ export async function evaluateMoneyTextQueryWatch({
 
   const noticeRows = noticeEval?.rows || [];
   const merged = unionMoneyDigestRows(noticeRows, snapshotRows);
+  // Shared lead-time gate after text-query merge — same predicate the D1 and
+  // SODA branches apply via mergeProcurementDigestMatches. Never bake the
+  // threshold into permanently saved SQL.
+  const eligible = applyMinRemainingDaysPreference(
+    merged,
+    sub?.filter || {},
+    clock || todayISO || undefined,
+  );
 
   if (!db && !snapshotHasRows) {
     return {
@@ -273,10 +284,10 @@ export async function evaluateMoneyTextQueryWatch({
     reason: incomplete ? "scan_budget" : null,
     adapter,
     retrieval: noticeEval?.retrieval || "snapshot",
-    rows: merged,
+    rows: eligible,
     scanned: noticeEval?.scanned || snapshotRows.length,
     continuation: noticeEval?.continuation || null,
-    markSeenIds: merged.map((row) => row.digest_id || row.request_id || row.procurement_id).filter(Boolean),
+    markSeenIds: eligible.map((row) => row.digest_id || row.request_id || row.procurement_id).filter(Boolean),
     clock,
     soda: false,
     fts: false,

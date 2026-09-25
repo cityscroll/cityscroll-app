@@ -1912,6 +1912,8 @@ tools/worker_trigger_coverage.mjs
 warehouse/datasets.v0.json
 warehouse/experiments/semantic-layer-trial/build_corpus.mjs
 warehouse/experiments/semantic-layer-trial/source_passage_map.json
+warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json
+warehouse/fixtures/authority-native-procurement/typed-source-deadlines.v1.json
 warehouse/fixtures/citywide-payroll/product_seed.json
 warehouse/fixtures/procurement-project-context/city-record-ddc-notices.json
 warehouse/lib/attachment_embeddings.mjs
@@ -1945,6 +1947,7 @@ warehouse/lib/semantic_civic_object_groups.mjs
 warehouse/lib/serve_publish_contract.mjs
 warehouse/lib/shared_payment_input.mjs
 warehouse/lib/source_passage_map.mjs
+warehouse/lib/typed_source_deadline.mjs
 warehouse/lib/ulurp_recommendation_rows_source_records.mjs
 warehouse/lib/ulurp_recommendation_source_records.mjs
 warehouse/lib/vector_shadow_signal.mjs

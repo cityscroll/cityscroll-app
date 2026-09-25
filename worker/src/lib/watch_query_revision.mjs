@@ -37,6 +37,7 @@ import {
   projectProcurementNoticeFields,
   projectProcurementObjectFields,
 } from "../../../site/watch_text_query_eval.mjs";
+import { applyPreparedMinRemainingDaysEligibility } from "../../../site/money_watch_min_remaining_days.mjs";
 import {
   QUERY_REVISION_CANCEL_REASON,
   cancelOwedItemForQueryRevision,
@@ -269,6 +270,10 @@ async function reloadWatch(env, watch) {
  * Provider-submit cutoff: re-read current revisions, reconcile unsent
  * membership, and strip stale attached rows before the batch is reserved
  * or submitted. Callers rebuild subject/HTML from the mutated sections.
+ *
+ * After revision membership settles, discovery watches re-check the shared
+ * minRemainingDays predicate against the injected preparation clock so a
+ * yesterday-eligible queue cannot justify today's send.
  */
 export async function applyPreparedDigestQueryRevisionCutoff(env, watches, sections, ctx = {}) {
   if (typeof ctx.onBeforeQueryRevisionCutoff === "function") {
@@ -284,6 +289,7 @@ export async function applyPreparedDigestQueryRevisionCutoff(env, watches, secti
     cancelled: [],
     restored: [],
     deleted: [],
+    min_remaining_days_exclusions: [],
   };
   const db = env?.DB || null;
   const byWatchId = new Map();
@@ -351,5 +357,13 @@ export async function applyPreparedDigestQueryRevisionCutoff(env, watches, secti
     applyMembershipToSection(section, { cancelled: drop }, restoredRows);
     section.queryRevision = recon.query_revision;
   }
+
+  const prepClock = ctx.now || ctx.nowMs || ctx.today || null;
+  const leadTime = applyPreparedMinRemainingDaysEligibility(sections, {
+    watches: current,
+    clock: prepClock == null ? undefined : prepClock,
+  });
+  if (leadTime.rebuilt) summary.rebuilt = true;
+  summary.min_remaining_days_exclusions = leadTime.exclusions;
   return { watches: current, sections, ...summary };
 }
