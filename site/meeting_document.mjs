@@ -889,7 +889,7 @@ export function renderMeetingDocument(record = {}, readModel = {}, options = {})
     : "";
   const locationRows = locationDetails(record);
   const locationSection = locationRows.length
-    ? `<section class="node-section civic-object-section meeting-section meeting-location" data-meeting-venue="1"><h2>Where</h2><ul>${locationRows.map((row) => `<li>${row}</li>`).join("")}</ul></section>`
+    ? `<section class="node-section civic-object-section meeting-section meeting-location"><h2>Where</h2><ul>${locationRows.map((row) => `<li>${row}</li>`).join("")}</ul></section>`
     : "";
   const agendaSubjectSection = renderMeetingAgendaSubjectSection(record);
   const historical = isHistoricalMeeting(record);
