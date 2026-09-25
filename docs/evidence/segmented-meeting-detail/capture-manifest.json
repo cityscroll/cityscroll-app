@@ -1,0 +1,473 @@
+{
+  "schema": "cityscroll.segmented_meeting_detail_capture_manifest.v1",
+  "public_alias": "cb0c04802e711",
+  "feature": "segmented-meeting-detail",
+  "captured_at": "2026-09-25T13:58:48.020Z",
+  "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+  "grounded_at": "37377c890fcecc218352586379fa52b4ba2d24a1",
+  "data_vintage": {
+    "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+    "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+    "crol_build_day": "2026-09-25"
+  },
+  "image_binaries_committed": false,
+  "image_directory": ".artifacts/segmented-meeting-detail",
+  "image_policy": "Screenshots and HTML fixtures remain under .artifacts/ and are not committed. This manifest binds route, viewport, revision, vintage, assertion, and sha256.",
+  "capture_mode": "pages-edge-render-hash",
+  "captures": [
+    {
+      "name": "m1-desktop-enabled",
+      "meeting_key": "m1",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "enabled",
+      "scripting": true,
+      "assertion": "M1 shows cannabis, budget, and regular-meeting segments with stable anchors, venue, and historical participation instructions.",
+      "sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "render_sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "observed": {
+        "status": 200,
+        "segment_count": 3,
+        "segment_ids": [
+          "agenda-segment-13926109",
+          "agenda-segment-3ed5ddaf",
+          "agenda-segment-886aef32"
+        ],
+        "historical": true,
+        "register_mode": true,
+        "written_mode": true
+      },
+      "screenshot": ".artifacts/segmented-meeting-detail/m1-desktop.png",
+      "screenshot_sha256": "de11f58910d44afba1d14b89b2d322caa71f27533946a34446e54931033da0f4"
+    },
+    {
+      "name": "m1-desktop-no-js",
+      "meeting_key": "m1",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "disabled",
+      "scripting": false,
+      "assertion": "M1 shows cannabis, budget, and regular-meeting segments with stable anchors, venue, and historical participation instructions.",
+      "sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "render_sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "observed": {
+        "status": 200,
+        "segment_count": 3,
+        "segment_ids": [
+          "agenda-segment-13926109",
+          "agenda-segment-3ed5ddaf",
+          "agenda-segment-886aef32"
+        ],
+        "historical": true,
+        "register_mode": true,
+        "written_mode": true
+      },
+      "screenshot": null
+    },
+    {
+      "name": "m1-narrow-touch-enabled",
+      "meeting_key": "m1",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "enabled",
+      "scripting": true,
+      "assertion": "M1 shows cannabis, budget, and regular-meeting segments with stable anchors, venue, and historical participation instructions.",
+      "sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "render_sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "observed": {
+        "status": 200,
+        "segment_count": 3,
+        "segment_ids": [
+          "agenda-segment-13926109",
+          "agenda-segment-3ed5ddaf",
+          "agenda-segment-886aef32"
+        ],
+        "historical": true,
+        "register_mode": true,
+        "written_mode": true
+      },
+      "screenshot": ".artifacts/segmented-meeting-detail/m1-narrow.png",
+      "screenshot_sha256": "091a7d44ca27f35c60128a8bda4066e94e3c05c659f609980f4f425660b87b50"
+    },
+    {
+      "name": "m1-narrow-touch-no-js",
+      "meeting_key": "m1",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "disabled",
+      "scripting": false,
+      "assertion": "M1 shows cannabis, budget, and regular-meeting segments with stable anchors, venue, and historical participation instructions.",
+      "sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "render_sha256": "ba3c77d84773fa280d99a55608b16f0716ef51e8cc658b5ed7faa922aca4982e",
+      "observed": {
+        "status": 200,
+        "segment_count": 3,
+        "segment_ids": [
+          "agenda-segment-13926109",
+          "agenda-segment-3ed5ddaf",
+          "agenda-segment-886aef32"
+        ],
+        "historical": true,
+        "register_mode": true,
+        "written_mode": true
+      },
+      "screenshot": null
+    },
+    {
+      "name": "m2-desktop-enabled",
+      "meeting_key": "m2",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "enabled",
+      "scripting": true,
+      "assertion": "M2 distinguishes the 6:30 hearing from the 7:00 executive session with distinct stable segment links.",
+      "sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "render_sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "observed": {
+        "status": 200,
+        "segment_count": 2,
+        "segment_ids": [
+          "agenda-segment-2ca33be6",
+          "agenda-segment-203c4ec3"
+        ],
+        "historical": true,
+        "register_mode": false,
+        "written_mode": false
+      },
+      "screenshot": ".artifacts/segmented-meeting-detail/m2-desktop.png",
+      "screenshot_sha256": "c00f3459fba55092762cbba7566195028606ff6f064303f2708bafe5e6edd729"
+    },
+    {
+      "name": "m2-desktop-no-js",
+      "meeting_key": "m2",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "disabled",
+      "scripting": false,
+      "assertion": "M2 distinguishes the 6:30 hearing from the 7:00 executive session with distinct stable segment links.",
+      "sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "render_sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "observed": {
+        "status": 200,
+        "segment_count": 2,
+        "segment_ids": [
+          "agenda-segment-2ca33be6",
+          "agenda-segment-203c4ec3"
+        ],
+        "historical": true,
+        "register_mode": false,
+        "written_mode": false
+      },
+      "screenshot": null
+    },
+    {
+      "name": "m2-narrow-touch-enabled",
+      "meeting_key": "m2",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "enabled",
+      "scripting": true,
+      "assertion": "M2 distinguishes the 6:30 hearing from the 7:00 executive session with distinct stable segment links.",
+      "sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "render_sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "observed": {
+        "status": 200,
+        "segment_count": 2,
+        "segment_ids": [
+          "agenda-segment-2ca33be6",
+          "agenda-segment-203c4ec3"
+        ],
+        "historical": true,
+        "register_mode": false,
+        "written_mode": false
+      },
+      "screenshot": ".artifacts/segmented-meeting-detail/m2-narrow.png",
+      "screenshot_sha256": "136e50918a5abf2608c79d47981f94e8ce0dd8af1fbccff36f89c0b7da385158"
+    },
+    {
+      "name": "m2-narrow-touch-no-js",
+      "meeting_key": "m2",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "disabled",
+      "scripting": false,
+      "assertion": "M2 distinguishes the 6:30 hearing from the 7:00 executive session with distinct stable segment links.",
+      "sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "render_sha256": "2e40759998dc79415ff236b3f05d0c907b3bbb2d9e517887939b79383256f241",
+      "observed": {
+        "status": 200,
+        "segment_count": 2,
+        "segment_ids": [
+          "agenda-segment-2ca33be6",
+          "agenda-segment-203c4ec3"
+        ],
+        "historical": true,
+        "register_mode": false,
+        "written_mode": false
+      },
+      "screenshot": null
+    },
+    {
+      "name": "m3-desktop-enabled",
+      "meeting_key": "m3",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "enabled",
+      "scripting": true,
+      "assertion": "M3 lists ordered untimed agenda items under the parent 6:30 meeting time without inventing per-item starts or written-testimony actions.",
+      "sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "render_sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "observed": {
+        "status": 200,
+        "segment_count": 4,
+        "segment_ids": [
+          "agenda-segment-70bb3798",
+          "agenda-segment-dbf2fcd0",
+          "agenda-segment-2fe0f4ef",
+          "agenda-segment-0054eb99"
+        ],
+        "historical": true,
+        "register_mode": false,
+        "written_mode": false
+      },
+      "screenshot": ".artifacts/segmented-meeting-detail/m3-desktop.png",
+      "screenshot_sha256": "7c308031994782f37bd68b5b9b9206bb8ea7dfc0483a731d7274fff06aa0d476"
+    },
+    {
+      "name": "m3-desktop-no-js",
+      "meeting_key": "m3",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "disabled",
+      "scripting": false,
+      "assertion": "M3 lists ordered untimed agenda items under the parent 6:30 meeting time without inventing per-item starts or written-testimony actions.",
+      "sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "render_sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "observed": {
+        "status": 200,
+        "segment_count": 4,
+        "segment_ids": [
+          "agenda-segment-70bb3798",
+          "agenda-segment-dbf2fcd0",
+          "agenda-segment-2fe0f4ef",
+          "agenda-segment-0054eb99"
+        ],
+        "historical": true,
+        "register_mode": false,
+        "written_mode": false
+      },
+      "screenshot": null
+    },
+    {
+      "name": "m3-narrow-touch-enabled",
+      "meeting_key": "m3",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "enabled",
+      "scripting": true,
+      "assertion": "M3 lists ordered untimed agenda items under the parent 6:30 meeting time without inventing per-item starts or written-testimony actions.",
+      "sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "render_sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "observed": {
+        "status": 200,
+        "segment_count": 4,
+        "segment_ids": [
+          "agenda-segment-70bb3798",
+          "agenda-segment-dbf2fcd0",
+          "agenda-segment-2fe0f4ef",
+          "agenda-segment-0054eb99"
+        ],
+        "historical": true,
+        "register_mode": false,
+        "written_mode": false
+      },
+      "screenshot": ".artifacts/segmented-meeting-detail/m3-narrow.png",
+      "screenshot_sha256": "cbf477af7056390151db1f68632c55d0e9885e716baa260a1399d40b6110d5b5"
+    },
+    {
+      "name": "m3-narrow-touch-no-js",
+      "meeting_key": "m3",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "disabled",
+      "scripting": false,
+      "assertion": "M3 lists ordered untimed agenda items under the parent 6:30 meeting time without inventing per-item starts or written-testimony actions.",
+      "sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "render_sha256": "6a705521d9f22f2b7893f077a26f8e015565a9e15a3bca873bdeb70f6d4bb780",
+      "observed": {
+        "status": 200,
+        "segment_count": 4,
+        "segment_ids": [
+          "agenda-segment-70bb3798",
+          "agenda-segment-dbf2fcd0",
+          "agenda-segment-2fe0f4ef",
+          "agenda-segment-0054eb99"
+        ],
+        "historical": true,
+        "register_mode": false,
+        "written_mode": false
+      },
+      "screenshot": null
+    },
+    {
+      "name": "calendar-detail-back-journey",
+      "meeting_key": "m1",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F/?return_to=%2Fobserve%2F%3Fscope%3Dbrooklyn-cb-14%26view%3Dcalendar#agenda-segment-13926109",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "enabled",
+      "scripting": true,
+      "assertion": "Calendar inspect opens meeting detail with a stable segment deep link; Back preserves the observe return.",
+      "sha256": "dde8d385facc3e3ded62f7ca31e77b0d189d6726ae7a16041c3baf29fab70755",
+      "render_sha256": "dde8d385facc3e3ded62f7ca31e77b0d189d6726ae7a16041c3baf29fab70755",
+      "observed": {
+        "observe_return": "preserved",
+        "segment_deep_link": "agenda-segment-13926109",
+        "back_href": "/observe/?scope=brooklyn-cb-14&view=calendar"
+      },
+      "screenshot": null
+    },
+    {
+      "name": "keyboard-main-landmark",
+      "meeting_key": "m1",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "37377c890fcecc218352586379fa52b4ba2d24a1",
+      "data_vintage": {
+        "community_board_hearing_context_observed_at": "2026-09-23T05:09:59.711Z",
+        "shared_meeting_read_model_generated_at": "2026-09-09T06:52:08.255Z",
+        "crol_build_day": "2026-09-25"
+      },
+      "javascript": "enabled",
+      "scripting": true,
+      "assertion": "Meeting detail exposes a keyboard-focusable main landmark and segment anchor links without requiring script.",
+      "sha256": "dde8d385facc3e3ded62f7ca31e77b0d189d6726ae7a16041c3baf29fab70755",
+      "render_sha256": "dde8d385facc3e3ded62f7ca31e77b0d189d6726ae7a16041c3baf29fab70755",
+      "observed": {
+        "main_tabindex": true,
+        "segment_anchor_count": 3
+      },
+      "screenshot": null
+    }
+  ],
+  "repository_revision": "37377c890fcecc218352586379fa52b4ba2d24a1"
+}

@@ -533,6 +533,40 @@ export function meetingConsequence(record = {}) {
   const { modes, evidence: participationEvidence } = participationSignals({ logistics, sourceUrl });
   evidence.push(...participationEvidence);
 
+  // Hearing-context participation is meeting-scoped and attached at detail load
+  // from the published board hearing-context artifact. Each mode still needs
+  // its own publisher field — registration never invents written testimony.
+  const hearingParticipation = record.hearing_participation;
+  if (hearingParticipation && typeof hearingParticipation === "object") {
+    const speakingUrl = httpsUrl(hearingParticipation.speaking_registration_url);
+    if (speakingUrl && !modes.includes("register_to_testify")) {
+      modes.push("register_to_testify");
+      evidence.push({
+        field: "participation_modes:register_to_testify",
+        source_url: speakingUrl,
+        basis: "published_testimony_signup",
+      });
+    }
+    if (hearingParticipation.written_testimony_passage && !modes.includes("submit_written")) {
+      modes.push("submit_written");
+      evidence.push({
+        field: "participation_modes:submit_written",
+        source_url: speakingUrl || sourceUrl,
+        basis: speakingUrl ? "open_comment_submission_channel" : "published_testimony_email",
+      });
+    }
+    for (const watch of Array.isArray(hearingParticipation.watch_urls) ? hearingParticipation.watch_urls : []) {
+      const watchUrl = httpsUrl(watch);
+      if (!watchUrl || modes.includes("watch")) continue;
+      modes.push("watch");
+      evidence.push({
+        field: "participation_modes:watch",
+        source_url: watchUrl,
+        basis: "published_livestream_url",
+      });
+    }
+  }
+
   let record_destination = null;
   if (record.minutes_freshness?.status === "published") {
     record_destination = "minutes";
