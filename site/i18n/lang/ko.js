@@ -2842,6 +2842,7 @@
     nl_placeholder_alerts: "예: 20만 달러 이상, 3개월 이내 마감되는 교육 계약, 또는 100만 달러 이상의 낙찰",
     nl_chip_exam_guide: "시험 안내",
     nl_chip_closing_this_week: "이번 주 마감",
+    nl_chip_min_remaining_days: "최소 {n}일 남음",
     roles_heading: "직위",
     people_heading: "인력",
     listing_heading: "목록",

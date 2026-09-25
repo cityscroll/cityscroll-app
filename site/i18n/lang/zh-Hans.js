@@ -2842,6 +2842,7 @@
     nl_placeholder_alerts: "例如：教育合同，金额超过 $200K，3 个月内到期；或 $1M 以上的中标（授予合同）",
     nl_chip_exam_guide: "考试指南",
     nl_chip_closing_this_week: "本周截止",
+    nl_chip_min_remaining_days: "至少还剩 {n} 天",
     roles_heading: "职位",
     people_heading: "人员",
     listing_heading: "列表",

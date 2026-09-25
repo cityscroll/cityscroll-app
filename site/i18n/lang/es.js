@@ -2063,6 +2063,7 @@
     nl_placeholder_alerts: "por ejemplo, contratos de educación superiores a $200K que vencen en 3 meses, o adjudicaciones sobre $1M",
     nl_chip_exam_guide: "guía de exámenes",
     nl_chip_closing_this_week: "cierra esta semana",
+    nl_chip_min_remaining_days: "al menos {n} días restantes",
     roles_heading: "Cargos",
     people_heading: "Personas",
     listing_heading: "Listado",

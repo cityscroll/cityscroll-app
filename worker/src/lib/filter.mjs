@@ -19,6 +19,10 @@ import {
   textQueryAdmissionSupported,
   validateTextQuery,
 } from "../../../site/watch_text_query.mjs";
+import {
+  admitMinRemainingDays,
+  validateMinRemainingDays,
+} from "../../../site/money_watch_min_remaining_days.mjs";
 
 export const MAX_INPUT = 600;          // characters of NL we accept (a paragraph, not a novel)
 export const MAX_CALLS_PER_DAY = 300;  // denial-of-wallet ceiling
@@ -55,7 +59,7 @@ export const LENSES = {
   // Discovery parity (2026-08): district/process/deadline/entity fields are first-class so
   // NL can route to the same deep links the UI already supports (council/cd, process rails,
   // closing-this-week, agency forecast tab) — not only keyword lists.
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "place_role", "procurement_id", "processState"],
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "minRemainingDays", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "place_role", "procurement_id", "processState"],
   people:   ["keywords", "lookupType", "view", "interest", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
@@ -79,7 +83,7 @@ export const LENSES = {
   // amount/notice-type/deadline keeps all of them, not just whichever one field a fixed enum
   // happened to pick. watchType/place survive only to mark the one genuinely different
   // shape: a rezoning watch, which has a place instead of a dollar amount or a due date.
-  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
+  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "minRemainingDays", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   // award: "tell me when THIS notice's award registers" — the delivery wrapper the same
   // (email,lens,filter) idempotent-subscribe key already gives every other lens for free, just
   // scoped to one notice instead of a standing query. See alerts.mjs's processAwardSub() for
@@ -258,6 +262,13 @@ function clampField(name, v) {
     }
     case "closingWeek":
       return !!v;
+    case "minRemainingDays": {
+      // Clamp only admits a valid integer. Save/edit paths must call
+      // prepareWatchFilter / admitMinRemainingDays first so invalid or
+      // exact-follow combinations refuse explicitly instead of vanishing.
+      const validation = validateMinRemainingDays(v);
+      return validation.ok && validation.present ? validation.value : null;
+    }
     case "route":
       return v === "agency" || v === "vendor" ? v : null;
     case "tab":
@@ -350,6 +361,7 @@ export function sanitize(lens, input) {
   if (!out.interest) delete out.interest;
   if (!out.matter_ref) delete out.matter_ref;
   if (!out.matter_scope_version) delete out.matter_scope_version;
+  if (out.minRemainingDays == null) delete out.minRemainingDays;
   // text_query (precise-watch expression, watch_text_query.v1) is additive the
   // same way: omitted entirely when absent so legacy identities are
   // byte-stable, and carried only in its canonical form. IMPORTANT: sanitize is
@@ -413,6 +425,10 @@ export function prepareWatchFilter(lens, filter) {
   if (!admission.ok) {
     return { ok: false, reason: `text-query-${admission.code}`, lens: null, filter: {} };
   }
+  const leadTime = admitMinRemainingDays(lens, filter);
+  if (!leadTime.ok) {
+    return { ok: false, reason: leadTime.code, lens: null, filter: {} };
+  }
   const exact = exactCouncilMatterWatch({ lens, filter });
   if (exact.attempted) {
     if (exact.status !== "ok") {
@@ -428,6 +444,8 @@ export function prepareWatchFilter(lens, filter) {
   else delete sanitized.text_query;
   if (availability.canonical) sanitized.availability = availability.canonical;
   else delete sanitized.availability;
+  if (leadTime.present) sanitized.minRemainingDays = leadTime.value;
+  else delete sanitized.minRemainingDays;
   return { ok: true, lens: resolveLens(lens), filter: sanitized, exact };
 }
 

@@ -2846,6 +2846,7 @@
     nl_placeholder_alerts: "مثال کے طور پر، $200K سے زیادہ کے تعلیمی ٹھیکے جن کی مہلت 3 مہینوں میں ختم ہو، یا $1M سے زیادہ کے ایوارڈز",
     nl_chip_exam_guide: "امتحان گائیڈ",
     nl_chip_closing_this_week: "اس ہفتے بند",
+    nl_chip_min_remaining_days: "کم از کم {n} دن باقی",
     roles_heading: "عہدے",
     people_heading: "افراد",
     listing_heading: "فہرست",
