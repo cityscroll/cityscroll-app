@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/address-geography-refresh",
+  "status": "implemented",
+  "fingerprint": "address-geography-refresh.v1",
+  "updated_at": "2026-09-24T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "address-geography-refresh",
+      "path": "site/address_geography_refresh.mjs"
+    },
+    {
+      "id": "address-geography-refresh-builder",
+      "path": "tools/address_geography_refresh.mjs"
+    },
+    {
+      "id": "address-geography-refresh-verify-test",
+      "path": "test/address_geography_refresh.test.mjs"
+    },
+    {
+      "id": "address-geography-refresh-pad-workflow",
+      "path": ".github/workflows/geocoder-address-index.yml"
+    },
+    {
+      "id": "address-geography-refresh-fixtures",
+      "path": "test/fixtures/address_geography_refresh/pad-manifest.json"
+    }
+  ]
+}

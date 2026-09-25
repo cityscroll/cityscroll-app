@@ -10,14 +10,33 @@
       "scope": "warehouse",
       "kind": "html",
       "landing_page": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
-      "required_fields": ["meeting_date", "source_url", "source_receipt"],
+      "required_fields": [
+        "meeting_date",
+        "source_url",
+        "source_receipt"
+      ],
       "publisher_cadence": "Meeting schedule and agenda publication cadence",
       "product_freshness": "A bounded native HTML schedule is materialized before agendas appear; agenda PDFs are attached only through explicit publisher links and retained receipts.",
       "used_for": "Public Design Commission dated sessions and agenda context.",
-      "code_references": [{"path": "site/pdc_calendar.mjs", "contains": "parsePdcScheduleHtml"}],
+      "code_references": [
+        {
+          "path": "site/pdc_calendar.mjs",
+          "contains": "parsePdcScheduleHtml"
+        }
+      ],
       "delivery_tier": "inline-at-build",
-      "freshness_contract": {"mode": "periodic", "max_stale_days": 7, "clock_basis": "checked_acquired", "serving_max_age_days": 30, "serve_contract_id": null},
-      "health_policy": {"public_visibility": "public", "backstage_detail": "receipts-and-errors", "relationship_coverage": "separate"}
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 7,
+        "clock_basis": "checked_acquired",
+        "serving_max_age_days": 30,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
     },
     {
       "id": "oath-trial-calendar",
@@ -27,15 +46,34 @@
       "scope": "warehouse",
       "kind": "html",
       "landing_page": "https://www.nyc.gov/site/oath/trials/trial-calendar.page",
-      "required_fields": ["index", "date", "start", "type", "source_url", "source_receipt"],
+      "required_fields": [
+        "index",
+        "date",
+        "start",
+        "type",
+        "source_url",
+        "source_receipt"
+      ],
       "publisher_cadence": "Calendar postings two to three weeks in advance",
       "product_freshness": "The retained calendar admits only explicit Trial rows, preserves raw values and source revisions, and does not infer cancellation, location, end time, or reschedule relations.",
       "used_for": "Discoverable OATH trial sessions and user-sent observer access requests.",
       "code_references": [
-        {"path": "site/oath_trial_calendar.mjs", "contains": "parseOathTrialCsv"},
-        {"path": "tools/build_oath_trial_calendar.mjs", "contains": "buildOathTrialCalendar"},
-        {"path": "site/shared_meeting_read_model.mjs", "contains": "oathTrialCalendarIndex"},
-        {"path": "test/oath_trial_observation.test.mjs", "contains": "OATH parser"}
+        {
+          "path": "site/oath_trial_calendar.mjs",
+          "contains": "parseOathTrialCsv"
+        },
+        {
+          "path": "tools/build_oath_trial_calendar.mjs",
+          "contains": "buildOathTrialCalendar"
+        },
+        {
+          "path": "site/shared_meeting_read_model.mjs",
+          "contains": "oathTrialCalendarIndex"
+        },
+        {
+          "path": "test/oath_trial_observation.test.mjs",
+          "contains": "OATH parser"
+        }
       ],
       "delivery_tier": "inline-at-build",
       "freshness_contract": {
@@ -61,7 +99,7 @@
       "kind": "html",
       "landing_page": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
       "publisher_cadence": "Annual fiscal-history workbook releases",
-      "product_freshness": "The checkpointed IBO fiscal-history family contains FY1980–FY2022 only. Its source-vintage observation records the measured frontier separately from retrieval health; no later fiscal year is inferred.",
+      "product_freshness": "The checkpointed IBO fiscal-history family contains FY1980\u2013FY2022 only. Its source-vintage observation records the measured frontier separately from retrieval health; no later fiscal year is inferred.",
       "used_for": "Authoritative IBO agency-expenditure and fiscal-year-end staffing context in the agency fiscal context projection.",
       "code_references": [
         {
@@ -118,14 +156,31 @@
       "domain": "https://codelibrary.amlegal.com",
       "landing_page": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-1",
       "bulk_url": "https://files.amlegal.com/pdffiles/NewYorkCity/Admin/XML.zip",
-      "required_fields": ["section", "heading", "text", "hierarchy", "source_ref", "observed_at", "content_hash"],
+      "required_fields": [
+        "section",
+        "heading",
+        "text",
+        "hierarchy",
+        "source_ref",
+        "observed_at",
+        "content_hash"
+      ],
       "publisher_cadence": "Publisher supplement cadence; refreshed at build time",
       "product_freshness": "A scheduled/build-time acquisition records the official bulk XML bytes, observed-at timestamp, and SHA-256 hash. Public routes serve only committed shards and never fetch the publisher.",
       "used_for": "Addressable current NYC Administrative Code provisions, deterministic citation lookup, legal-code search, and provision detail pages.",
       "code_references": [
-        {"path": "tools/build_admin_code.mjs", "contains": "american_legal_publishing"},
-        {"path": "warehouse/scripts/admin_code_acquisition.mjs", "contains": "XML.zip"},
-        {"path": "site/admin_code.mjs", "contains": "nyc-administrative-code"}
+        {
+          "path": "tools/build_admin_code.mjs",
+          "contains": "american_legal_publishing"
+        },
+        {
+          "path": "warehouse/scripts/admin_code_acquisition.mjs",
+          "contains": "XML.zip"
+        },
+        {
+          "path": "site/admin_code.mjs",
+          "contains": "nyc-administrative-code"
+        }
       ],
       "landing_probe": "skip",
       "freshness_contract": {
@@ -377,18 +432,46 @@
       "scope": "warehouse",
       "kind": "html",
       "landing_page": "https://www.nyscr.ny.gov/Ads/Search",
-      "required_fields": ["cr_number", "agency", "title", "issue_date", "due_date", "category", "ad_type", "location"],
+      "required_fields": [
+        "cr_number",
+        "agency",
+        "title",
+        "issue_date",
+        "due_date",
+        "category",
+        "ad_type",
+        "location"
+      ],
       "publisher_cadence": "Daily advertised procurement opportunities",
       "product_freshness": "Retained Contract Reporter observations carry the publisher URL, retrieval timestamp, and raw-response hash. Source values remain separate from normalized procurement fields.",
       "used_for": "Source-qualified admission of advertised MTA opportunities into the shared procurement search and follow surfaces.",
       "code_references": [
-        {"path": "warehouse/lib/mta_opportunities.mjs", "contains": "nys_contract_reporter"},
-        {"path": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json", "contains": "2138505"},
-        {"path": "test/mta_opportunities.test.mjs", "contains": "Contract Reporter"}
+        {
+          "path": "warehouse/lib/mta_opportunities.mjs",
+          "contains": "nys_contract_reporter"
+        },
+        {
+          "path": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json",
+          "contains": "2138505"
+        },
+        {
+          "path": "test/mta_opportunities.test.mjs",
+          "contains": "Contract Reporter"
+        }
       ],
       "delivery_tier": "edge-materialized",
-      "freshness_contract": {"mode": "periodic", "max_stale_days": 7, "clock_basis": "checked_acquired", "serving_max_age_days": 7, "serve_contract_id": null},
-      "health_policy": {"public_visibility": "public", "backstage_detail": "receipts-and-errors", "relationship_coverage": "separate"}
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 7,
+        "clock_basis": "checked_acquired",
+        "serving_max_age_days": 7,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
     },
     {
       "id": "mta-current-opportunities",
@@ -398,17 +481,39 @@
       "scope": "warehouse",
       "kind": "html",
       "landing_page": "https://www.mta.info/agency/construction-and-development/contracting/current-opportunities",
-      "required_fields": ["solicitation_number", "event_number", "agency", "title", "opening_date"],
+      "required_fields": [
+        "solicitation_number",
+        "event_number",
+        "agency",
+        "title",
+        "opening_date"
+      ],
       "publisher_cadence": "As opportunities and addenda change",
       "product_freshness": "Retained MTA opportunity observations carry the official page URL, retrieval timestamp, and raw-response hash; source identifiers are exact-only join keys.",
       "used_for": "MTA Construction & Development solicitation admission and inspectable current-opportunity facts.",
       "code_references": [
-        {"path": "warehouse/lib/mta_opportunities.mjs", "contains": "mta_current_opportunities"},
-        {"path": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json", "contains": "S48020"}
+        {
+          "path": "warehouse/lib/mta_opportunities.mjs",
+          "contains": "mta_current_opportunities"
+        },
+        {
+          "path": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json",
+          "contains": "S48020"
+        }
       ],
       "delivery_tier": "edge-materialized",
-      "freshness_contract": {"mode": "periodic", "max_stale_days": 7, "clock_basis": "checked_acquired", "serving_max_age_days": 7, "serve_contract_id": null},
-      "health_policy": {"public_visibility": "public", "backstage_detail": "receipts-and-errors", "relationship_coverage": "separate"}
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 7,
+        "clock_basis": "checked_acquired",
+        "serving_max_age_days": 7,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
     },
     {
       "id": "mta-bid-results",
@@ -418,18 +523,43 @@
       "scope": "warehouse",
       "kind": "html",
       "landing_page": "https://www.mta.info/agency/construction-and-development/contracting/bid-results",
-      "required_fields": ["auc_id", "auc_name", "opening_date", "bidder", "bid_amount"],
+      "required_fields": [
+        "auc_id",
+        "auc_name",
+        "opening_date",
+        "bidder",
+        "bid_amount"
+      ],
       "publisher_cadence": "As bid openings are published",
       "product_freshness": "Bid-result observations retain bidder and bid amount as opening evidence only. They never populate award or winning-vendor fields without a separate exact award observation.",
       "used_for": "Distinct MTA bid-opening-result stage evidence in procurement documents and search.",
       "code_references": [
-        {"path": "warehouse/lib/mta_opportunities.mjs", "contains": "mta_bid_results"},
-        {"path": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json", "contains": "AW-9Y"},
-        {"path": "test/mta_opportunities.test.mjs", "contains": "bid_opening_result"}
+        {
+          "path": "warehouse/lib/mta_opportunities.mjs",
+          "contains": "mta_bid_results"
+        },
+        {
+          "path": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json",
+          "contains": "AW-9Y"
+        },
+        {
+          "path": "test/mta_opportunities.test.mjs",
+          "contains": "bid_opening_result"
+        }
       ],
       "delivery_tier": "edge-materialized",
-      "freshness_contract": {"mode": "periodic", "max_stale_days": 7, "clock_basis": "checked_acquired", "serving_max_age_days": 7, "serve_contract_id": null},
-      "health_policy": {"public_visibility": "public", "backstage_detail": "receipts-and-errors", "relationship_coverage": "separate"}
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 7,
+        "clock_basis": "checked_acquired",
+        "serving_max_age_days": 7,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
     },
     {
       "id": "checkbook-contracts",
@@ -474,7 +604,10 @@
         "clock_basis": "checked_acquired",
         "retained_vintage": {
           "artifact_path": "site/data/analytics_registered_contracts.json",
-          "vintage_fields": ["snapshot_date", "generated_at"]
+          "vintage_fields": [
+            "snapshot_date",
+            "generated_at"
+          ]
         },
         "serving_max_age_days": 45,
         "serve_contract_id": null
@@ -1216,7 +1349,9 @@
         "publisher_vintage_field": "data_current_as_of",
         "retained_vintage": {
           "artifact_path": "site/data/staffing_exams.json",
-          "vintage_fields": ["sources_retrieved_as_of"]
+          "vintage_fields": [
+            "sources_retrieved_as_of"
+          ]
         },
         "serving_max_age_days": 95,
         "serve_contract_id": null
@@ -1440,7 +1575,9 @@
         "clock_basis": "publisher_updated",
         "retained_vintage": {
           "artifact_path": "site/data/mih_project_lookup.json",
-          "vintage_fields": ["observed_at"]
+          "vintage_fields": [
+            "observed_at"
+          ]
         },
         "serving_max_age_days": 120,
         "serve_contract_id": null
@@ -1615,7 +1752,9 @@
         "clock_basis": "publisher_updated",
         "retained_vintage": {
           "artifact_path": "site/data/property_ll48_lookup.json",
-          "vintage_fields": ["observed_at"]
+          "vintage_fields": [
+            "observed_at"
+          ]
         },
         "serving_max_age_days": 730,
         "serve_contract_id": null
@@ -1751,8 +1890,8 @@
       ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic PLUTO releases",
-      "product_freshness": "Checked by tools/build_bbl_mappluto_centroids.mjs --check (age ≤120d, ≥95% sell-facing BBL coverage, canary 3012660036), by tools/build_land_project_geometry_source.mjs --check for the bounded parcel-geometry lookup (age ≤120d, every exact single-BBL candidate present and a valid polygon), and by tools/build_citywide_parcel_points.mjs --check for the citywide parcel-point generation (every shard digest and count verified, full publisher-row accounting, PAD-only unmatched references reported separately). Resident reads use the committed lookups only — no live ArcGIS on the hot path.",
-      "used_for": "Official attribution for tax-lot map context, retained BBL→centroid pins for Land, a bounded BBL→parcel-polygon lookup for the optional Land project-geometry field, and reusable citywide parcel coordinates (deterministic 256-way BBL shards) for address-entry geography and record location joins.",
+      "product_freshness": "Checked by tools/build_bbl_mappluto_centroids.mjs --check (age \u2264120d, \u226595% sell-facing BBL coverage, canary 3012660036), by tools/build_land_project_geometry_source.mjs --check for the bounded parcel-geometry lookup (age \u2264120d, every exact single-BBL candidate present and a valid polygon), and by tools/build_citywide_parcel_points.mjs --check for the citywide parcel-point generation (every shard digest and count verified, full publisher-row accounting, PAD-only unmatched references reported separately). Resident reads use the committed lookups only \u2014 no live ArcGIS on the hot path.",
+      "used_for": "Official attribution for tax-lot map context, retained BBL\u2192centroid pins for Land, a bounded BBL\u2192parcel-polygon lookup for the optional Land project-geometry field, and reusable citywide parcel coordinates (deterministic 256-way BBL shards) for address-entry geography and record location joins.",
       "code_references": [
         {
           "path": "site/app/map_runtime.mjs",
@@ -1781,6 +1920,14 @@
         {
           "path": "tools/build_citywide_parcel_points.mjs",
           "contains": "MAPPLUTO"
+        },
+        {
+          "path": "tools/address_geography_refresh.mjs",
+          "contains": "MapPLUTO"
+        },
+        {
+          "path": "site/address_geography_refresh.mjs",
+          "contains": "ADDRESS_GEOGRAPHY_REFRESH"
         }
       ],
       "delivery_tier": "inline-at-build",
@@ -1816,6 +1963,14 @@
         {
           "path": "site/precomputed_address_geocoder.mjs",
           "contains": "nyc_dcp_pad_snapshot"
+        },
+        {
+          "path": "tools/address_geography_refresh.mjs",
+          "contains": "address_geography_refresh"
+        },
+        {
+          "path": "site/address_geography_refresh.mjs",
+          "contains": "ADDRESS_GEOGRAPHY_REFRESH"
         }
       ],
       "delivery_tier": "inline-at-build",
@@ -1984,14 +2139,24 @@
       "dataset_id": "nynta2020_26b",
       "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/neighborhood-tabulation",
       "download_url": "https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/neighborhood-tabulation-areas/nynta2020_26b.zip",
-      "required_fields": ["NTA2020", "NTAName", "NTAType"],
+      "required_fields": [
+        "NTA2020",
+        "NTAName",
+        "NTAType"
+      ],
       "max_stale_days": 180,
       "publisher_cadence": "Quarterly DCP BYTES release",
       "product_freshness": "Cycle-pinned 26B geometry is retained in independent full and simplified artifacts with an acquisition receipt and layer-specific vintage.",
       "used_for": "Resident-facing neighborhood selection and exact NTA record scoping, plus point-resolution canaries and crosswalk QA. NTA identities remain source-qualified rather than a canonical definition of neighborhood.",
       "code_references": [
-        { "path": "tools/build_civic_geography.mjs", "contains": "nynta2020_26b" },
-        { "path": "site/civic_geography_registry.mjs", "contains": "dcp-nta2020-boundaries" }
+        {
+          "path": "tools/build_civic_geography.mjs",
+          "contains": "nynta2020_26b"
+        },
+        {
+          "path": "site/civic_geography_registry.mjs",
+          "contains": "dcp-nta2020-boundaries"
+        }
       ],
       "delivery_tier": "inline-at-build",
       "landing_probe": "tolerate_bot_block",
@@ -2019,14 +2184,22 @@
       "dataset_id": "nypp_26b",
       "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/police-precincts",
       "download_url": "https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/police-precincts/nypp_26b.zip",
-      "required_fields": ["Precinct"],
+      "required_fields": [
+        "Precinct"
+      ],
       "max_stale_days": 180,
       "publisher_cadence": "Quarterly DCP BYTES release",
       "product_freshness": "Cycle-pinned 26B geometry is retained in independent full and simplified artifacts with an acquisition receipt and layer-specific vintage.",
       "used_for": "Backstage-only police-precinct ingestion, native-key QA, and point-resolution canaries; no resident-facing scope or filter is enabled.",
       "code_references": [
-        { "path": "tools/build_civic_geography.mjs", "contains": "nypp_26b" },
-        { "path": "site/civic_geography_registry.mjs", "contains": "dcp-police-precinct-boundaries" }
+        {
+          "path": "tools/build_civic_geography.mjs",
+          "contains": "nypp_26b"
+        },
+        {
+          "path": "site/civic_geography_registry.mjs",
+          "contains": "dcp-police-precinct-boundaries"
+        }
       ],
       "delivery_tier": "inline-at-build",
       "landing_probe": "tolerate_bot_block",
@@ -2053,14 +2226,25 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "i6mn-amj2",
       "landing_page": "https://data.cityofnewyork.us/d/i6mn-amj2",
-      "required_fields": ["district", "districtcode", "objectid", "multipolygon"],
+      "required_fields": [
+        "district",
+        "districtcode",
+        "objectid",
+        "multipolygon"
+      ],
       "max_stale_days": 730,
       "publisher_cadence": "Publisher-managed. Socrata metadata declares a monthly automated update; sanitation-district geometry changes only when a district is redrawn",
       "product_freshness": "The 2026-09-16 geometry clock is retained independently from DCP Community Districts and checked as an equivalence/drift canary.",
       "used_for": "Backstage-only sanitation-district ingestion, MapPLUTO QA, and DSNY-to-Community-District congruence drift measurement.",
       "code_references": [
-        { "path": "tools/build_civic_geography.mjs", "contains": "i6mn-amj2" },
-        { "path": "site/civic_geography_registry.mjs", "contains": "dsny-district-boundaries" }
+        {
+          "path": "tools/build_civic_geography.mjs",
+          "contains": "i6mn-amj2"
+        },
+        {
+          "path": "site/civic_geography_registry.mjs",
+          "contains": "dsny-district-boundaries"
+        }
       ],
       "delivery_tier": "inline-at-build",
       "freshness_contract": {
@@ -2098,14 +2282,25 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "7jdm-inj8",
       "landing_page": "https://data.cityofnewyork.us/d/7jdm-inj8",
-      "required_fields": ["the_geom", "objectid_2", "f_all_bids", "f_all_bi_2"],
+      "required_fields": [
+        "the_geom",
+        "objectid_2",
+        "f_all_bids",
+        "f_all_bi_2"
+      ],
       "max_stale_days": 730,
       "publisher_cadence": "Publisher-managed; no fixed cadence is declared",
       "product_freshness": "The 2024-10-08 geometry clock is retained with reviewed slug bindings; rows with zero/duplicate source identity are rejected and receipted.",
       "used_for": "Backstage-only BID ingestion and sparse/overlap QA. No resident-facing filter or institutional relationship is published.",
       "code_references": [
-        { "path": "tools/build_civic_geography.mjs", "contains": "7jdm-inj8" },
-        { "path": "ontology/geography/bid_reviewed_ids.json", "contains": "reviewed_bid_identity_registry" }
+        {
+          "path": "tools/build_civic_geography.mjs",
+          "contains": "7jdm-inj8"
+        },
+        {
+          "path": "ontology/geography/bid_reviewed_ids.json",
+          "contains": "reviewed_bid_identity_registry"
+        }
       ],
       "delivery_tier": "inline-at-build",
       "freshness_contract": {
@@ -3041,7 +3236,9 @@
         "clock_basis": "publisher_updated",
         "retained_vintage": {
           "artifact_path": "site/data/person_hub_lookup.json",
-          "vintage_fields": ["retrieved_at"]
+          "vintage_fields": [
+            "retrieved_at"
+          ]
         },
         "serving_max_age_days": 90,
         "serve_contract_id": null
@@ -3202,7 +3399,9 @@
         "clock_basis": "publisher_updated",
         "retained_vintage": {
           "artifact_path": "site/data/official_cfb_influence_lookup.json",
-          "vintage_fields": ["retrieved_at"]
+          "vintage_fields": [
+            "retrieved_at"
+          ]
         },
         "serving_max_age_days": 30,
         "serve_contract_id": null
@@ -4154,7 +4353,16 @@
       "scope": "site",
       "kind": "html",
       "landing_page": "https://www.nyc.gov/",
-      "required_fields": ["id", "title", "organizer", "purpose", "geography", "deadline", "channels", "sources"],
+      "required_fields": [
+        "id",
+        "title",
+        "organizer",
+        "purpose",
+        "geography",
+        "deadline",
+        "channels",
+        "sources"
+      ],
       "max_stale_days": 7,
       "publisher_cadence": "Daily verification of retained public consultation invitations",
       "product_freshness": "Consultations are retained in a build-time materialization from reviewed organizer sources; resident reads never contact a publisher.",
@@ -4243,21 +4451,45 @@
     {
       "id": "pdc-calendar",
       "public_artifact_path": "site/data/pdc_calendar.json",
-      "primary_routes": ["/browse/meetings/", "/now/"],
+      "primary_routes": [
+        "/browse/meetings/",
+        "/now/"
+      ],
       "source_contract_id": "pdc-calendar",
-      "acquisition_command": ["node", "tools/acquire_first_class_calendar.mjs", "pdc-calendar", ".artifacts/first-class-inputs/pdc-calendar.html", ".artifacts/first-class-inputs/pdc-calendar.receipt.json"],
+      "acquisition_command": [
+        "node",
+        "tools/acquire_first_class_calendar.mjs",
+        "pdc-calendar",
+        ".artifacts/first-class-inputs/pdc-calendar.html",
+        ".artifacts/first-class-inputs/pdc-calendar.receipt.json"
+      ],
       "captured_input_path": ".artifacts/first-class-inputs/pdc-calendar.html",
       "capture_receipt_path": ".artifacts/first-class-inputs/pdc-calendar.receipt.json",
       "hosted_refresh_required": true,
       "owning_builder": "tools/build_pdc_calendar.mjs",
-      "builder_command": ["node", "tools/build_pdc_calendar.mjs", ".artifacts/first-class-inputs/pdc-calendar.html", "site/data/pdc_calendar.json", ".artifacts/first-class-inputs/pdc-calendar.receipt.json"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_pdc_calendar.mjs",
+        ".artifacts/first-class-inputs/pdc-calendar.html",
+        "site/data/pdc_calendar.json",
+        ".artifacts/first-class-inputs/pdc-calendar.receipt.json"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_keyword_search_index.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "cadence_justification": "The publisher posts a bounded meeting schedule and agenda links; daily materialization preserves the latest schedule.",
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at", "source_receipt.observed_at"],
-      "population_fields": ["records", "documents"],
+      "vintage_fields": [
+        "generated_at",
+        "source_receipt.observed_at"
+      ],
+      "population_fields": [
+        "records",
+        "documents"
+      ],
       "last_known_good_behavior": "Retain the last valid PDC schedule and disclose that agenda acquisition could not be completed.",
       "resident_stale_behavior": "Do not describe PDC schedule coverage as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show PDC schedule coverage as unavailable; never infer that no meetings exist.",
@@ -4266,21 +4498,47 @@
     {
       "id": "oath-trial-calendar",
       "public_artifact_path": "site/data/oath_trial_calendar.json",
-      "primary_routes": ["/browse/meetings/", "/now/", "/meetings/"],
+      "primary_routes": [
+        "/browse/meetings/",
+        "/now/",
+        "/meetings/"
+      ],
       "source_contract_id": "oath-trial-calendar",
-      "acquisition_command": ["node", "tools/acquire_first_class_calendar.mjs", "oath-trial-calendar", ".artifacts/first-class-inputs/oath-trial-calendar.csv", ".artifacts/first-class-inputs/oath-trial-calendar.receipt.json"],
+      "acquisition_command": [
+        "node",
+        "tools/acquire_first_class_calendar.mjs",
+        "oath-trial-calendar",
+        ".artifacts/first-class-inputs/oath-trial-calendar.csv",
+        ".artifacts/first-class-inputs/oath-trial-calendar.receipt.json"
+      ],
       "captured_input_path": ".artifacts/first-class-inputs/oath-trial-calendar.csv",
       "capture_receipt_path": ".artifacts/first-class-inputs/oath-trial-calendar.receipt.json",
       "hosted_refresh_required": true,
       "owning_builder": "tools/build_oath_trial_calendar.mjs",
-      "builder_command": ["node", "tools/build_oath_trial_calendar.mjs", ".artifacts/first-class-inputs/oath-trial-calendar.csv", "site/data/oath_trial_calendar.json", ".artifacts/first-class-inputs/oath-trial-calendar.receipt.json"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_oath_trial_calendar.mjs",
+        ".artifacts/first-class-inputs/oath-trial-calendar.csv",
+        "site/data/oath_trial_calendar.json",
+        ".artifacts/first-class-inputs/oath-trial-calendar.receipt.json"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_keyword_search_index.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "cadence_justification": "The publisher posts calendars two to three weeks ahead; daily materialization preserves the latest bounded snapshot.",
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at", "source_revision", "rows[].source_receipt.observed_at"],
-      "population_fields": ["records", "rows"],
+      "vintage_fields": [
+        "generated_at",
+        "source_revision",
+        "rows[].source_receipt.observed_at"
+      ],
+      "population_fields": [
+        "records",
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last verified OATH trial rows and their source revision.",
       "resident_stale_behavior": "Do not describe retained OATH trials as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show OATH trial coverage as unavailable; never infer that no trials exist.",
@@ -4289,18 +4547,35 @@
     {
       "id": "agency-constellation",
       "public_artifact_path": "site/data/agency_constellation_lookup.json",
-      "primary_routes": ["/browse/", "/browse/people/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/people/"
+      ],
       "source_contract_id": "nyc-agencies",
-      "acquisition_command": ["node", "tools/build_agency_crosswalk.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_agency_crosswalk.mjs"
+      ],
       "owning_builder": "tools/build_agency_constellation_documents.mjs",
-      "builder_command": ["node", "tools/build_agency_constellation_documents.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs", "tools/build_agency_source_identity_snapshot.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_agency_constellation_documents.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_keyword_search_index.mjs",
+        "tools/build_agency_source_identity_snapshot.mjs"
+      ],
       "normal_refresh_cadence_hours": 720,
       "cadence_justification": "The publisher describes this as slow-changing organizational data; the monthly acquisition still precedes every dependent rebuild when due.",
       "warning_age_hours": 2160,
       "hard_maximum_age_hours": 2880,
-      "vintage_fields": ["generated_at"],
-      "population_fields": ["agency_count"],
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "agency_count"
+      ],
       "last_known_good_behavior": "Retain the last verified agency directory within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe the agency directory as current after its hard maximum age.",
       "resident_unavailable_behavior": "Show agency information as unavailable; never claim that no agencies exist.",
@@ -4309,18 +4584,36 @@
     {
       "id": "agency-obligations",
       "public_artifact_path": "site/data/agency_obligations_lookup.json",
-      "primary_routes": ["/browse/"],
+      "primary_routes": [
+        "/browse/"
+      ],
       "source_contract_id": "nyc-administrative-code",
-      "acquisition_command": ["node", "tools/build_agency_obligations.mjs", "--check"],
+      "acquisition_command": [
+        "node",
+        "tools/build_agency_obligations.mjs",
+        "--check"
+      ],
       "owning_builder": "tools/build_agency_obligations.mjs",
-      "builder_command": ["node", "tools/build_agency_obligations.mjs", "--check"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_process_conformance.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_agency_obligations.mjs",
+        "--check"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_process_conformance.mjs"
+      ],
       "normal_refresh_cadence_hours": 720,
       "cadence_justification": "The source is a versioned bulk legal-code release; a monthly verification is tighter than its declared 60-day source contract.",
       "warning_age_hours": 1080,
       "hard_maximum_age_hours": 1440,
-      "vintage_fields": ["as_of", "generated_at"],
-      "population_fields": ["summary.obligation_count"],
+      "vintage_fields": [
+        "as_of",
+        "generated_at"
+      ],
+      "population_fields": [
+        "summary.obligation_count"
+      ],
       "last_known_good_behavior": "Retain the last verified obligations projection within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Withhold current-obligation claims when the projection exceeds its hard age.",
       "resident_unavailable_behavior": "Show statutory-obligation coverage as unavailable; never report zero obligations from missing data.",
@@ -4329,17 +4622,38 @@
     {
       "id": "contracts-registered",
       "public_artifact_path": "site/data/analytics_registered_contracts.json",
-      "primary_routes": ["/browse/contracts/"],
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
       "source_contract_id": "checkbook-contracts",
-      "acquisition_command": ["node", "warehouse/scripts/checkbook_contracts.mjs", "--refresh", "--publish"],
+      "acquisition_command": [
+        "node",
+        "warehouse/scripts/checkbook_contracts.mjs",
+        "--refresh",
+        "--publish"
+      ],
       "owning_builder": "tools/build_analytical_registered_contracts.mjs",
-      "builder_command": ["node", "tools/build_analytical_registered_contracts.mjs"],
-      "dependent_materializers": ["tools/build_analytical_performance_evidence.mjs", "tools/build_primary_documents.mjs", "tools/check_institution_source_census.mjs", "tools/build_shared_procurement_read_model.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_analytical_registered_contracts.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_analytical_performance_evidence.mjs",
+        "tools/build_primary_documents.mjs",
+        "tools/check_institution_source_census.mjs",
+        "tools/build_shared_procurement_read_model.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 720,
       "hard_maximum_age_hours": 1080,
-      "vintage_fields": ["snapshot_date", "generated_at"],
-      "population_fields": ["row_count", "rows"],
+      "vintage_fields": [
+        "snapshot_date",
+        "generated_at"
+      ],
+      "population_fields": [
+        "row_count",
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last verified registered-contract population within its hard age and label the panel degraded.",
       "resident_stale_behavior": "Do not present registered-contract totals as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show the registered-contract panel as unavailable; never translate a missing population into zero contracts.",
@@ -4348,17 +4662,33 @@
     {
       "id": "contracts-payments",
       "public_artifact_path": "site/data/analytics_payments.json",
-      "primary_routes": ["/browse/contracts/"],
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
       "source_contract_id": "checkbook-spending",
-      "acquisition_command": ["node", "warehouse/scripts/checkbook_payment_population.mjs"],
+      "acquisition_command": [
+        "node",
+        "warehouse/scripts/checkbook_payment_population.mjs"
+      ],
       "owning_builder": "tools/build_analytical_payments.mjs",
-      "builder_command": ["node", "tools/build_analytical_payments.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_shared_procurement_read_model.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_analytical_payments.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_shared_procurement_read_model.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 720,
       "hard_maximum_age_hours": 1080,
-      "vintage_fields": ["snapshot_date", "generated_at"],
-      "population_fields": ["rows"],
+      "vintage_fields": [
+        "snapshot_date",
+        "generated_at"
+      ],
+      "population_fields": [
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last reconciled payment population within its hard age and label the panel degraded.",
       "resident_stale_behavior": "Do not present payment totals as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show payment evidence as unavailable; never describe a missing payment population as no payments.",
@@ -4367,17 +4697,34 @@
     {
       "id": "contracts-performance-evidence",
       "public_artifact_path": "site/data/analytics_performance_evidence.json",
-      "primary_routes": ["/browse/contracts/"],
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
       "source_contract_id": "checkbook-contracts",
-      "acquisition_command": ["node", "warehouse/scripts/checkbook_contracts.mjs", "--refresh", "--publish"],
+      "acquisition_command": [
+        "node",
+        "warehouse/scripts/checkbook_contracts.mjs",
+        "--refresh",
+        "--publish"
+      ],
       "owning_builder": "tools/build_analytical_performance_evidence.mjs",
-      "builder_command": ["node", "tools/build_analytical_performance_evidence.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_analytical_performance_evidence.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 720,
       "hard_maximum_age_hours": 1080,
-      "vintage_fields": ["snapshot_date", "generated_at"],
-      "population_fields": ["rows"],
+      "vintage_fields": [
+        "snapshot_date",
+        "generated_at"
+      ],
+      "population_fields": [
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last verified public performance-evidence coverage within its hard age and label the panel degraded.",
       "resident_stale_behavior": "Do not characterize performance-evidence coverage as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show performance-evidence coverage as unavailable; never equate unavailable evidence with no evidence.",
@@ -4386,17 +4733,35 @@
     {
       "id": "committee-graph",
       "public_artifact_path": "site/data/committee_graph_lookup.json",
-      "primary_routes": ["/browse/", "/browse/people/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/people/"
+      ],
       "source_contract_id": "nyc-council-legistar",
-      "acquisition_command": ["node", "tools/build_committee_graph.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_committee_graph.mjs"
+      ],
       "owning_builder": "tools/build_committee_graph.mjs",
-      "builder_command": ["node", "tools/build_committee_graph.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_committee_graph.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_keyword_search_index.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["retrieved_at", "generated_at", "gate.observed_at"],
-      "population_fields": ["public_edges"],
+      "vintage_fields": [
+        "retrieved_at",
+        "generated_at",
+        "gate.observed_at"
+      ],
+      "population_fields": [
+        "public_edges"
+      ],
       "last_known_good_behavior": "Retain the last reviewed committee graph within its hard age and disclose the held or degraded join state.",
       "resident_stale_behavior": "Withhold current committee-membership claims when the graph exceeds its hard age.",
       "resident_unavailable_behavior": "Show committee relationships as unavailable; never imply that committees have no members.",
@@ -4405,37 +4770,114 @@
     {
       "id": "community-board-geography",
       "public_artifact_path": "site/data/community_board_geography_lookup.json",
-      "primary_routes": ["/browse/"],
+      "primary_routes": [
+        "/browse/"
+      ],
       "source_contract_id": "community-district-boundaries",
-      "acquisition_command": ["node", "tools/build_district_boundaries.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_district_boundaries.mjs"
+      ],
       "owning_builder": "tools/build_community_board_geography.mjs",
-      "builder_command": ["node", "tools/build_community_board_geography.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_district_activity.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_community_board_geography.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_district_activity.mjs"
+      ],
       "normal_refresh_cadence_hours": 720,
       "cadence_justification": "Community-district geometry changes only on redistricting or publisher corrections; a monthly check is substantially tighter than the biennial source limit.",
       "warning_age_hours": 8760,
       "hard_maximum_age_hours": 17520,
-      "vintage_fields": ["boundary_vintage", "generated_at"],
-      "population_fields": ["inventory.boards_inventoried", "nodes"],
+      "vintage_fields": [
+        "boundary_vintage",
+        "generated_at"
+      ],
+      "population_fields": [
+        "inventory.boards_inventoried",
+        "nodes"
+      ],
       "last_known_good_behavior": "Retain the last verified geography within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not label district relationships current after the hard maximum age.",
       "resident_unavailable_behavior": "Show district relationships as unavailable; never infer an empty city geography.",
       "production_evidence_field": "first_class.community_board_geography"
     },
     {
+      "id": "address-geography-refresh",
+      "public_artifact_path": "site/data/meeting-geography-backfill/manifest.json",
+      "primary_routes": [
+        "/meetings/",
+        "/near-you/"
+      ],
+      "source_contract_id": "nyc-property-address-directory",
+      "acquisition_command": [
+        "node",
+        "tools/address_geography_refresh.mjs",
+        "--from-live"
+      ],
+      "owning_builder": "tools/address_geography_refresh.mjs",
+      "builder_command": [
+        "node",
+        "tools/address_geography_refresh.mjs",
+        "--from-live"
+      ],
+      "dependent_materializers": [
+        "tools/build_district_activity.mjs",
+        "tools/build_worker_route_read_models.mjs",
+        "tools/build_near_you_pages.mjs"
+      ],
+      "normal_refresh_cadence_hours": 24,
+      "cadence_justification": "PAD and MapPLUTO publisher metadata are checked daily; unchanged input hashes are reused and a weekly forced verification covers metadata that cannot establish equality.",
+      "warning_age_hours": 72,
+      "hard_maximum_age_hours": 336,
+      "vintage_fields": [
+        "built_at",
+        "generation",
+        "active_generation"
+      ],
+      "population_fields": [
+        "counts.processed_rows",
+        "counts.address_bearing_rows"
+      ],
+      "last_known_good_behavior": "Retain the last activated meeting-geography generation and disclose the failed refresh in the operator receipt.",
+      "resident_stale_behavior": "Do not describe neighborhood meeting memberships as current after the hard maximum age.",
+      "resident_unavailable_behavior": "Keep the last activated neighborhood memberships; never publish a successful empty neighborhood from a failed refresh.",
+      "production_evidence_field": "first_class.address_geography_refresh",
+      "production_freshness_gate": "report_only"
+    },
+    {
       "id": "community-board-meetings",
       "public_artifact_path": "site/data/community_board_meeting_index.json",
-      "primary_routes": ["/browse/", "/browse/meetings/", "/now/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/meetings/",
+        "/now/"
+      ],
       "source_contract_id": "non-council-board-minutes",
-      "acquisition_command": ["node", "tools/build_community_board_meeting_index.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_community_board_meeting_index.mjs"
+      ],
       "owning_builder": "tools/build_community_board_meeting_index.mjs",
-      "builder_command": ["node", "tools/build_community_board_meeting_index.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_community_board_constellation_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_community_board_meeting_index.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_community_board_constellation_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at"],
-      "population_fields": ["coverage.records_indexed"],
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "coverage.records_indexed"
+      ],
       "last_known_good_behavior": "Retain the last verified board meeting index within its hard age and disclose source-level degradation.",
       "resident_stale_behavior": "Do not describe board calendars as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show board meeting coverage as unavailable; never say no meetings exist because sources failed.",
@@ -4444,18 +4886,34 @@
     {
       "id": "community-board-people",
       "public_artifact_path": "site/data/community_board_people.json",
-      "primary_routes": ["/browse/", "/browse/people/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/people/"
+      ],
       "source_contract_id": "non-council-board-minutes",
-      "acquisition_command": ["node", "tools/build_community_board_meeting_index.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_community_board_meeting_index.mjs"
+      ],
       "owning_builder": "tools/build_community_board_meeting_index.mjs",
-      "builder_command": ["node", "tools/build_community_board_meeting_index.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_community_board_meeting_index.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_keyword_search_index.mjs"
+      ],
       "normal_refresh_cadence_hours": 168,
       "cadence_justification": "Community-board rosters are published irregularly; the weekly source pass rechecks the official board pages and retains dated role evidence.",
       "warning_age_hours": 720,
       "hard_maximum_age_hours": 1080,
-      "vintage_fields": ["observed_on"],
-      "population_fields": ["boards"],
+      "vintage_fields": [
+        "observed_on"
+      ],
+      "population_fields": [
+        "boards"
+      ],
       "last_known_good_behavior": "Retain dated board roles within their hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe board roles as current after their hard maximum age.",
       "resident_unavailable_behavior": "Show board roles as unavailable; never imply a board has no people because its source failed.",
@@ -4464,18 +4922,34 @@
     {
       "id": "community-board-committees",
       "public_artifact_path": "site/data/non_council_outcome_sources/community_board_committees.json",
-      "primary_routes": ["/browse/", "/browse/people/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/people/"
+      ],
       "source_contract_id": "non-council-board-minutes",
-      "acquisition_command": ["node", "tools/build_community_board_meeting_index.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_community_board_meeting_index.mjs"
+      ],
       "owning_builder": "tools/build_community_board_meeting_index.mjs",
-      "builder_command": ["node", "tools/build_community_board_meeting_index.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_community_board_constellation_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_community_board_meeting_index.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_community_board_constellation_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 168,
       "cadence_justification": "Community-board committee rosters change irregularly; the weekly official-source pass is paired with dated registry evidence.",
       "warning_age_hours": 720,
       "hard_maximum_age_hours": 1080,
-      "vintage_fields": ["observed_on"],
-      "population_fields": ["committees"],
+      "vintage_fields": [
+        "observed_on"
+      ],
+      "population_fields": [
+        "committees"
+      ],
       "last_known_good_behavior": "Retain dated committee records within their hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe committee rosters as current after their hard maximum age.",
       "resident_unavailable_behavior": "Show committee coverage as unavailable; never infer that no committees exist.",
@@ -4484,17 +4958,36 @@
     {
       "id": "land-default",
       "public_artifact_path": "site/data/land_default_ulurp.json",
-      "primary_routes": ["/browse/", "/browse/zoning/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/zoning/"
+      ],
       "source_contract_id": "zap-projects",
-      "acquisition_command": ["node", "tools/build_batch_precompute_snapshots.mjs", "--land-only"],
+      "acquisition_command": [
+        "node",
+        "tools/build_batch_precompute_snapshots.mjs",
+        "--land-only"
+      ],
       "owning_builder": "tools/build_batch_precompute_snapshots.mjs",
-      "builder_command": ["node", "tools/build_batch_precompute_snapshots.mjs", "--land-only"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_land_project_map_points.mjs", "worker/scripts/build_remote_mcp_evidence.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_batch_precompute_snapshots.mjs",
+        "--land-only"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_land_project_map_points.mjs",
+        "worker/scripts/build_remote_mcp_evidence.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at"],
-      "population_fields": ["projects"],
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "projects"
+      ],
       "last_known_good_behavior": "Retain the last verified project snapshot within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe the project set as active or current after the hard maximum age.",
       "resident_unavailable_behavior": "Show land projects as unavailable; never convert source failure into no active projects.",
@@ -4503,17 +4996,35 @@
     {
       "id": "land-upcoming-hearings",
       "public_artifact_path": "site/data/land_upcoming_hearings.json",
-      "primary_routes": ["/browse/zoning/", "/now/"],
+      "primary_routes": [
+        "/browse/zoning/",
+        "/now/"
+      ],
       "source_contract_id": "zap-api-outcomes",
-      "acquisition_command": ["node", "tools/build_land_upcoming_hearings.mjs", "--live"],
+      "acquisition_command": [
+        "node",
+        "tools/build_land_upcoming_hearings.mjs",
+        "--live"
+      ],
       "owning_builder": "tools/build_land_upcoming_hearings.mjs",
-      "builder_command": ["node", "tools/build_land_upcoming_hearings.mjs", "--live"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_land_authority_summary.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_land_upcoming_hearings.mjs",
+        "--live"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_land_authority_summary.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at"],
-      "population_fields": ["hearings"],
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "hearings"
+      ],
       "last_known_good_behavior": "Retain upcoming hearings within the short last-known-good window and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe hearings as upcoming after the hard maximum age.",
       "resident_unavailable_behavior": "Show the hearing lane as unavailable; never claim that no hearings exist after a failed refresh.",
@@ -4522,17 +5033,34 @@
     {
       "id": "meeting-notices",
       "public_artifact_path": "site/data/meeting_notice_materialization.json",
-      "primary_routes": ["/browse/meetings/", "/now/"],
+      "primary_routes": [
+        "/browse/meetings/",
+        "/now/"
+      ],
       "source_contract_id": "city-record",
-      "acquisition_command": ["node", "tools/build_meeting_notice_materialization.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_meeting_notice_materialization.mjs"
+      ],
       "owning_builder": "tools/build_meeting_notice_materialization.mjs",
-      "builder_command": ["node", "tools/build_meeting_notice_materialization.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_meeting_notice_materialization.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["as_of", "generated_at"],
-      "population_fields": ["row_count", "rows"],
+      "vintage_fields": [
+        "as_of",
+        "generated_at"
+      ],
+      "population_fields": [
+        "row_count",
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last verified meeting notices within the short fallback window and disclose degradation.",
       "resident_stale_behavior": "Do not describe meeting notices as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show meeting notices as unavailable; never report that no meetings exist because acquisition failed.",
@@ -4541,17 +5069,35 @@
     {
       "id": "upcoming-council-meetings",
       "public_artifact_path": "site/data/upcoming_council_meetings.json",
-      "primary_routes": ["/browse/meetings/", "/now/", "/search/"],
+      "primary_routes": [
+        "/browse/meetings/",
+        "/now/",
+        "/search/"
+      ],
       "source_contract_id": "nyc-council-legistar",
-      "acquisition_command": ["node", "tools/acquire_upcoming_council_meetings.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/acquire_upcoming_council_meetings.mjs"
+      ],
       "owning_builder": "tools/build_upcoming_council_meetings_snapshot.mjs",
-      "builder_command": ["node", "tools/build_upcoming_council_meetings_snapshot.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_upcoming_council_meetings_snapshot.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_keyword_search_index.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at"],
-      "population_fields": ["counts.meetings", "meetings"],
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "counts.meetings",
+        "meetings"
+      ],
       "last_known_good_behavior": "Retain the last verified upcoming Council calendar snapshot within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe Council calendar hearings as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show Council calendar coverage as unavailable; never report that no Council hearings exist because acquisition failed.",
@@ -4561,17 +5107,33 @@
     {
       "id": "meeting-outcomes",
       "public_artifact_path": "site/data/meeting_outcomes_snapshot.json",
-      "primary_routes": ["/browse/", "/browse/meetings/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/meetings/"
+      ],
       "source_contract_id": "nyc-council-legistar",
-      "acquisition_command": ["node", "tools/build_meeting_outcomes_snapshot.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_meeting_outcomes_snapshot.mjs"
+      ],
       "owning_builder": "tools/build_meeting_outcomes_snapshot.mjs",
-      "builder_command": ["node", "tools/build_meeting_outcomes_snapshot.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_rules_meetings_domain_observations.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_meeting_outcomes_snapshot.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_rules_meetings_domain_observations.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at"],
-      "population_fields": ["record_count"],
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "record_count"
+      ],
       "last_known_good_behavior": "Retain the last verified outcome snapshot within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe decisions or outcomes as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show outcomes as unavailable; never interpret a failed outcome refresh as no decisions.",
@@ -4580,17 +5142,38 @@
     {
       "id": "meetings-domain",
       "public_artifact_path": "site/data/meetings_domain_observations.json",
-      "primary_routes": ["/browse/", "/browse/meetings/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/meetings/"
+      ],
       "source_contract_id": "city-record",
-      "acquisition_command": ["node", "tools/build_rules_meetings_domain_observations.mjs", "--skip-people"],
+      "acquisition_command": [
+        "node",
+        "tools/build_rules_meetings_domain_observations.mjs",
+        "--skip-people"
+      ],
       "owning_builder": "tools/build_rules_meetings_domain_observations.mjs",
-      "builder_command": ["node", "tools/build_rules_meetings_domain_observations.mjs", "--skip-people"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_district_activity.mjs", "tools/build_entity_intelligence.mjs", "tools/build_project_agency_vendor_evidence.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_rules_meetings_domain_observations.mjs",
+        "--skip-people"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_district_activity.mjs",
+        "tools/build_entity_intelligence.mjs",
+        "tools/build_project_agency_vendor_evidence.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["retrieved_at"],
-      "population_fields": ["row_count", "rows"],
+      "vintage_fields": [
+        "retrieved_at"
+      ],
+      "population_fields": [
+        "row_count",
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last verified meeting corpus within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not characterize the corpus as recent after the hard maximum age.",
       "resident_unavailable_behavior": "Show meeting coverage as unavailable; never turn a failed source into an empty meeting list.",
@@ -4599,17 +5182,38 @@
     {
       "id": "contracts-open",
       "public_artifact_path": "site/data/money_default_open.json",
-      "primary_routes": ["/browse/", "/browse/contracts/", "/now/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/contracts/",
+        "/now/"
+      ],
       "source_contract_id": "city-record",
-      "acquisition_command": ["node", "tools/build_batch_precompute_snapshots.mjs", "--money-only"],
+      "acquisition_command": [
+        "node",
+        "tools/build_batch_precompute_snapshots.mjs",
+        "--money-only"
+      ],
       "owning_builder": "tools/build_batch_precompute_snapshots.mjs",
-      "builder_command": ["node", "tools/build_batch_precompute_snapshots.mjs", "--money-only"],
-      "dependent_materializers": ["tools/build_money_resident_snapshot.mjs", "tools/build_primary_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_batch_precompute_snapshots.mjs",
+        "--money-only"
+      ],
+      "dependent_materializers": [
+        "tools/build_money_resident_snapshot.mjs",
+        "tools/build_primary_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 24,
       "hard_maximum_age_hours": 36,
-      "vintage_fields": ["open_as_of", "generated_at"],
-      "population_fields": ["count", "notices"],
+      "vintage_fields": [
+        "open_as_of",
+        "generated_at"
+      ],
+      "population_fields": [
+        "count",
+        "notices"
+      ],
       "last_known_good_behavior": "Retain future-dated rows only within the hard age and disclose that the complete open population is degraded.",
       "resident_stale_behavior": "Do not describe the snapshot as the current open-contract population after the hard maximum age.",
       "resident_unavailable_behavior": "Show open-contract data as unavailable; never replace it with a generic no-contracts state.",
@@ -4618,17 +5222,34 @@
     {
       "id": "contracts-agency-filter",
       "public_artifact_path": "site/data/money_procurement_agencies.json",
-      "primary_routes": ["/browse/contracts/"],
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
       "source_contract_id": "city-record",
-      "acquisition_command": ["node", "tools/build_batch_precompute_snapshots.mjs", "--money-only"],
+      "acquisition_command": [
+        "node",
+        "tools/build_batch_precompute_snapshots.mjs",
+        "--money-only"
+      ],
       "owning_builder": "tools/build_batch_precompute_snapshots.mjs",
-      "builder_command": ["node", "tools/build_batch_precompute_snapshots.mjs", "--money-only"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_batch_precompute_snapshots.mjs",
+        "--money-only"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 24,
       "hard_maximum_age_hours": 36,
-      "vintage_fields": ["generated_at"],
-      "population_fields": ["agencies", "count"],
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "agencies",
+        "count"
+      ],
       "last_known_good_behavior": "Retain the last verified procurement-agency filter within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe the agency filter as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show agency filtering as unavailable; never infer that no procurement agencies exist.",
@@ -4637,17 +5258,34 @@
     {
       "id": "contracts-resident-snapshot",
       "public_artifact_path": "site/data/money_resident_snapshot.json",
-      "primary_routes": ["/browse/contracts/"],
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
       "source_contract_id": "ocp-recent-contract-awards",
-      "acquisition_command": ["node", "tools/build_ocp_warehouse_lookup.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_ocp_warehouse_lookup.mjs"
+      ],
       "owning_builder": "tools/build_money_resident_snapshot.mjs",
-      "builder_command": ["node", "tools/build_money_resident_snapshot.mjs"],
-      "dependent_materializers": ["tools/build_notice_context_lookup.mjs", "tools/build_primary_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_money_resident_snapshot.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_notice_context_lookup.mjs",
+        "tools/build_primary_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 336,
       "hard_maximum_age_hours": 720,
-      "vintage_fields": ["source_vintages.award_warehouse", "generated_at"],
-      "population_fields": ["rows", "records"],
+      "vintage_fields": [
+        "source_vintages.award_warehouse",
+        "generated_at"
+      ],
+      "population_fields": [
+        "rows",
+        "records"
+      ],
       "last_known_good_behavior": "Retain the last verified resident contract snapshot within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe the resident contract population as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show contract details as unavailable; never translate an unavailable snapshot into no contracts.",
@@ -4656,17 +5294,35 @@
     {
       "id": "contracts-procurement-rows",
       "public_artifact_path": "site/data/procurement_browse_rows.json",
-      "primary_routes": ["/browse/contracts/"],
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
       "source_contract_id": "ocp-recent-contract-awards",
-      "acquisition_command": ["node", "tools/build_ocp_warehouse_lookup.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_ocp_warehouse_lookup.mjs"
+      ],
       "owning_builder": "tools/build_shared_procurement_read_model.mjs",
-      "builder_command": ["node", "tools/build_shared_procurement_read_model.mjs"],
-      "dependent_materializers": ["tools/build_money_resident_snapshot.mjs", "tools/build_primary_documents.mjs", "tools/check_institution_source_census.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_shared_procurement_read_model.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_money_resident_snapshot.mjs",
+        "tools/build_primary_documents.mjs",
+        "tools/check_institution_source_census.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 336,
       "hard_maximum_age_hours": 720,
-      "vintage_fields": ["generated_at", "materialized_at"],
-      "population_fields": ["rows", "row_count"],
+      "vintage_fields": [
+        "generated_at",
+        "materialized_at"
+      ],
+      "population_fields": [
+        "rows",
+        "row_count"
+      ],
       "last_known_good_behavior": "Retain the last verified procurement rows within their hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe recent-award rows as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show recent awards as unavailable; never infer that no awards exist.",
@@ -4675,17 +5331,33 @@
     {
       "id": "contracts-procurement-query",
       "public_artifact_path": "site/data/procurement_browse_query.json",
-      "primary_routes": ["/browse/contracts/"],
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
       "source_contract_id": "ocp-recent-contract-awards",
-      "acquisition_command": ["node", "tools/build_ocp_warehouse_lookup.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_ocp_warehouse_lookup.mjs"
+      ],
       "owning_builder": "tools/build_shared_procurement_read_model.mjs",
-      "builder_command": ["node", "tools/build_shared_procurement_read_model.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_shared_procurement_read_model.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 336,
       "hard_maximum_age_hours": 720,
-      "vintage_fields": ["generated_at", "materialized_at"],
-      "population_fields": ["row_count", "shards"],
+      "vintage_fields": [
+        "generated_at",
+        "materialized_at"
+      ],
+      "population_fields": [
+        "row_count",
+        "shards"
+      ],
       "last_known_good_behavior": "Retain the last verified procurement query manifest within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe the procurement query population as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show procurement search as unavailable; never render a missing query manifest as no results.",
@@ -4694,17 +5366,35 @@
     {
       "id": "ocp-awards",
       "public_artifact_path": "site/data/ocp_awards_warehouse_lookup.json",
-      "primary_routes": ["/browse/", "/browse/contracts/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/contracts/"
+      ],
       "source_contract_id": "ocp-recent-contract-awards",
-      "acquisition_command": ["node", "tools/build_ocp_warehouse_lookup.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_ocp_warehouse_lookup.mjs"
+      ],
       "owning_builder": "tools/build_ocp_warehouse_lookup.mjs",
-      "builder_command": ["node", "tools/build_ocp_warehouse_lookup.mjs"],
-      "dependent_materializers": ["tools/build_shared_procurement_read_model.mjs", "tools/build_primary_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_ocp_warehouse_lookup.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_shared_procurement_read_model.mjs",
+        "tools/build_primary_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 336,
       "hard_maximum_age_hours": 720,
-      "vintage_fields": ["source_snapshot.snapshot_date", "materialized_at"],
-      "population_fields": ["row_count", "rows"],
+      "vintage_fields": [
+        "source_snapshot.snapshot_date",
+        "materialized_at"
+      ],
+      "population_fields": [
+        "row_count",
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last verified awards population within its source contract age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe award totals as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show award coverage as unavailable; never infer that no awards exist.",
@@ -4713,17 +5403,32 @@
     {
       "id": "people-organizations",
       "public_artifact_path": "site/data/people_organizations_read_model.json",
-      "primary_routes": ["/browse/", "/browse/people/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/people/"
+      ],
       "source_contract_id": "nyc-council-members",
-      "acquisition_command": ["node", "tools/build_person_hub.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_person_hub.mjs"
+      ],
       "owning_builder": "tools/build_primary_documents.mjs",
-      "builder_command": ["node", "tools/build_primary_documents.mjs"],
-      "dependent_materializers": ["tools/build_keyword_search_index.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_primary_documents.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_keyword_search_index.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 720,
       "hard_maximum_age_hours": 2160,
-      "vintage_fields": ["generated_at"],
-      "population_fields": ["rows"],
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last verified people and organizations model within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe people or roles as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show the directory as unavailable; never imply that no people or organizations exist.",
@@ -4732,17 +5437,33 @@
     {
       "id": "person-hub",
       "public_artifact_path": "site/data/person_hub_lookup.json",
-      "primary_routes": ["/browse/", "/browse/people/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/people/"
+      ],
       "source_contract_id": "nyc-council-members",
-      "acquisition_command": ["node", "tools/build_person_hub.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_person_hub.mjs"
+      ],
       "owning_builder": "tools/build_person_hub.mjs",
-      "builder_command": ["node", "tools/build_person_hub.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_person_hub.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_keyword_search_index.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 720,
       "hard_maximum_age_hours": 2160,
-      "vintage_fields": ["retrieved_at"],
-      "population_fields": ["person_count"],
+      "vintage_fields": [
+        "retrieved_at"
+      ],
+      "population_fields": [
+        "person_count"
+      ],
       "last_known_good_behavior": "Retain the last verified official-person identities within their hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe official roles as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show official identity data as unavailable; never infer an empty roster.",
@@ -4751,17 +5472,41 @@
     {
       "id": "property-domain",
       "public_artifact_path": "site/data/property_domain_observations.json",
-      "primary_routes": ["/browse/", "/browse/property/", "/now/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/property/",
+        "/now/"
+      ],
       "source_contract_id": "city-record",
-      "acquisition_command": ["node", "tools/build_property_cross_domain.mjs", "--from-live"],
+      "acquisition_command": [
+        "node",
+        "tools/build_property_cross_domain.mjs",
+        "--from-live"
+      ],
       "owning_builder": "tools/build_property_cross_domain.mjs",
-      "builder_command": ["node", "tools/build_property_cross_domain.mjs", "--from-live"],
-      "dependent_materializers": ["tools/build_property_resident_snapshot.mjs", "tools/build_primary_documents.mjs", "tools/build_agency_source_identity_snapshot.mjs", "tools/build_entity_intelligence.mjs", "tools/build_project_agency_vendor_evidence.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_property_cross_domain.mjs",
+        "--from-live"
+      ],
+      "dependent_materializers": [
+        "tools/build_property_resident_snapshot.mjs",
+        "tools/build_primary_documents.mjs",
+        "tools/build_agency_source_identity_snapshot.mjs",
+        "tools/build_entity_intelligence.mjs",
+        "tools/build_project_agency_vendor_evidence.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["source_generated_at", "generated_at"],
-      "population_fields": ["property_count", "property_rows"],
+      "vintage_fields": [
+        "source_generated_at",
+        "generated_at"
+      ],
+      "population_fields": [
+        "property_count",
+        "property_rows"
+      ],
       "last_known_good_behavior": "Retain the last verified property observations within their hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not characterize property observations as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show property coverage as unavailable; never translate a source failure into no property records.",
@@ -4770,17 +5515,34 @@
     {
       "id": "property-resident",
       "public_artifact_path": "site/data/property_resident_snapshot.json",
-      "primary_routes": ["/browse/property/", "/now/"],
+      "primary_routes": [
+        "/browse/property/",
+        "/now/"
+      ],
       "source_contract_id": "city-record",
-      "acquisition_command": ["node", "tools/build_property_cross_domain.mjs", "--from-live"],
+      "acquisition_command": [
+        "node",
+        "tools/build_property_cross_domain.mjs",
+        "--from-live"
+      ],
       "owning_builder": "tools/build_property_resident_snapshot.mjs",
-      "builder_command": ["node", "tools/build_property_resident_snapshot.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_property_resident_snapshot.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_keyword_search_index.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at"],
-      "population_fields": ["properties"],
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "properties"
+      ],
       "last_known_good_behavior": "Retain the last verified resident property projection within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe the property projection as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show resident property data as unavailable; never render a false empty population.",
@@ -4789,17 +5551,39 @@
     {
       "id": "rules-domain",
       "public_artifact_path": "site/data/rules_domain_observations.json",
-      "primary_routes": ["/browse/", "/browse/rules/", "/now/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/rules/",
+        "/now/"
+      ],
       "source_contract_id": "city-record",
-      "acquisition_command": ["node", "tools/build_rules_meetings_domain_observations.mjs", "--rules-only"],
+      "acquisition_command": [
+        "node",
+        "tools/build_rules_meetings_domain_observations.mjs",
+        "--rules-only"
+      ],
       "owning_builder": "tools/build_rules_meetings_domain_observations.mjs",
-      "builder_command": ["node", "tools/build_rules_meetings_domain_observations.mjs", "--rules-only"],
-      "dependent_materializers": ["tools/build_rules_semantic_lane.mjs", "tools/build_primary_documents.mjs", "tools/build_entity_intelligence.mjs", "tools/build_project_agency_vendor_evidence.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_rules_meetings_domain_observations.mjs",
+        "--rules-only"
+      ],
+      "dependent_materializers": [
+        "tools/build_rules_semantic_lane.mjs",
+        "tools/build_primary_documents.mjs",
+        "tools/build_entity_intelligence.mjs",
+        "tools/build_project_agency_vendor_evidence.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["retrieved_at"],
-      "population_fields": ["row_count", "rows"],
+      "vintage_fields": [
+        "retrieved_at"
+      ],
+      "population_fields": [
+        "row_count",
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last verified rules corpus within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not characterize the rules corpus as recent after the hard maximum age.",
       "resident_unavailable_behavior": "Show rules coverage as unavailable; never turn a failed source into no rules.",
@@ -4808,17 +5592,33 @@
     {
       "id": "rules-semantic-lane",
       "public_artifact_path": "site/data/rules_semantic_lane.json",
-      "primary_routes": ["/browse/rules/"],
+      "primary_routes": [
+        "/browse/rules/"
+      ],
       "source_contract_id": "city-record",
-      "acquisition_command": ["node", "tools/build_rules_meetings_domain_observations.mjs", "--rules-only"],
+      "acquisition_command": [
+        "node",
+        "tools/build_rules_meetings_domain_observations.mjs",
+        "--rules-only"
+      ],
       "owning_builder": "tools/build_rules_semantic_lane.mjs",
-      "builder_command": ["node", "tools/build_rules_semantic_lane.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_rules_semantic_lane.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["rules_snapshot_observed_at"],
-      "population_fields": ["candidate_count", "candidates"],
+      "vintage_fields": [
+        "rules_snapshot_observed_at"
+      ],
+      "population_fields": [
+        "candidate_count",
+        "candidates"
+      ],
       "last_known_good_behavior": "Retain the last verified semantic projection within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not present semantic rule coverage as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show semantic rule evidence as unavailable; never equate unavailable analysis with no candidates.",
@@ -4827,18 +5627,34 @@
     {
       "id": "bsa-calendar",
       "public_artifact_path": "site/data/bsa_calendar.json",
-      "primary_routes": ["/browse/meetings/", "/now/"],
+      "primary_routes": [
+        "/browse/meetings/",
+        "/now/"
+      ],
       "source_contract_id": "city-record",
-      "acquisition_command": ["node", "tools/build_bsa_calendar.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_bsa_calendar.mjs"
+      ],
       "owning_builder": "tools/build_bsa_calendar.mjs",
-      "builder_command": ["node", "tools/build_bsa_calendar.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_keyword_search_index.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_bsa_calendar.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_keyword_search_index.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "cadence_justification": "BSA publishes a rolling upcoming agenda and day-specific registration links; refresh daily.",
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at"],
-      "population_fields": ["rows"],
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last verified BSA session snapshot within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe BSA sessions as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show BSA session coverage as unavailable; never replace a failed agenda refresh with an empty schedule.",
@@ -4848,18 +5664,37 @@
     {
       "id": "shared-meetings",
       "public_artifact_path": "site/data/shared_meeting_read_model.json",
-      "primary_routes": ["/browse/meetings/", "/now/"],
+      "primary_routes": [
+        "/browse/meetings/",
+        "/now/"
+      ],
       "source_contract_id": "city-record",
-      "acquisition_command": ["node", "tools/build_meeting_notice_materialization.mjs"],
+      "acquisition_command": [
+        "node",
+        "tools/build_meeting_notice_materialization.mjs"
+      ],
       "owning_builder": "tools/build_primary_documents.mjs",
-      "builder_command": ["node", "tools/build_primary_documents.mjs"],
-      "depends_on": ["upcoming-council-meetings"],
-      "dependent_materializers": ["tools/build_keyword_search_index.mjs", "tools/build_district_activity.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_primary_documents.mjs"
+      ],
+      "depends_on": [
+        "upcoming-council-meetings"
+      ],
+      "dependent_materializers": [
+        "tools/build_keyword_search_index.mjs",
+        "tools/build_district_activity.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["sources.city_record.generated_at", "generated_at"],
-      "population_fields": ["rows"],
+      "vintage_fields": [
+        "sources.city_record.generated_at",
+        "generated_at"
+      ],
+      "population_fields": [
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last verified shared meeting model within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe the meeting model as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show meetings as unavailable; never render source failure as an empty meeting population.",
@@ -4868,17 +5703,35 @@
     {
       "id": "staffing-hires",
       "public_artifact_path": "site/data/staffing_default_hires.json",
-      "primary_routes": ["/browse/", "/browse/staffing/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/staffing/"
+      ],
       "source_contract_id": "city-record",
-      "acquisition_command": ["node", "tools/build_batch_precompute_snapshots.mjs", "--staffing-only"],
+      "acquisition_command": [
+        "node",
+        "tools/build_batch_precompute_snapshots.mjs",
+        "--staffing-only"
+      ],
       "owning_builder": "tools/build_batch_precompute_snapshots.mjs",
-      "builder_command": ["node", "tools/build_batch_precompute_snapshots.mjs", "--staffing-only"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_batch_precompute_snapshots.mjs",
+        "--staffing-only"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["generated_at"],
-      "population_fields": ["count", "notices"],
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "count",
+        "notices"
+      ],
       "last_known_good_behavior": "Retain the last verified appointments snapshot within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe appointments as recent after the hard maximum age.",
       "resident_unavailable_behavior": "Show staffing appointments as unavailable; never claim there were no appointments because acquisition failed.",
@@ -4887,17 +5740,35 @@
     {
       "id": "staffing-exams",
       "public_artifact_path": "site/data/staffing_exams.json",
-      "primary_routes": ["/browse/", "/browse/exams/", "/now/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/exams/",
+        "/now/"
+      ],
       "source_contract_id": "annual-examination-schedule",
-      "acquisition_command": ["node", "tools/build_staffing_exams.mjs", "--refresh"],
+      "acquisition_command": [
+        "node",
+        "tools/build_staffing_exams.mjs",
+        "--refresh"
+      ],
       "owning_builder": "tools/build_staffing_exams.mjs",
-      "builder_command": ["node", "tools/build_staffing_exams.mjs"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_exam_documents.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_staffing_exams.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_exam_documents.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 72,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["sources_retrieved_as_of"],
-      "population_fields": ["exams"],
+      "vintage_fields": [
+        "sources_retrieved_as_of"
+      ],
+      "population_fields": [
+        "exams"
+      ],
       "last_known_good_behavior": "Retain the last verified exam schedule within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe application windows or eligible lists as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show exams as unavailable; never convert failed acquisition into no exams.",
@@ -4906,17 +5777,37 @@
     {
       "id": "zap-projects",
       "public_artifact_path": "site/data/zap_projects_warehouse_lookup.json",
-      "primary_routes": ["/browse/", "/browse/zoning/"],
+      "primary_routes": [
+        "/browse/",
+        "/browse/zoning/"
+      ],
       "source_contract_id": "zap-projects",
-      "acquisition_command": ["node", "tools/build_zap_warehouse_lookup.mjs", "--from-soda"],
+      "acquisition_command": [
+        "node",
+        "tools/build_zap_warehouse_lookup.mjs",
+        "--from-soda"
+      ],
       "owning_builder": "tools/build_zap_warehouse_lookup.mjs",
-      "builder_command": ["node", "tools/build_zap_warehouse_lookup.mjs", "--from-soda"],
-      "dependent_materializers": ["tools/build_primary_documents.mjs", "tools/build_land_project_map_points.mjs"],
+      "builder_command": [
+        "node",
+        "tools/build_zap_warehouse_lookup.mjs",
+        "--from-soda"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs",
+        "tools/build_land_project_map_points.mjs"
+      ],
       "normal_refresh_cadence_hours": 24,
       "warning_age_hours": 48,
       "hard_maximum_age_hours": 168,
-      "vintage_fields": ["materialized_at", "generated_at"],
-      "population_fields": ["row_count", "rows"],
+      "vintage_fields": [
+        "materialized_at",
+        "generated_at"
+      ],
+      "population_fields": [
+        "row_count",
+        "rows"
+      ],
       "last_known_good_behavior": "Retain the last verified ZAP project lookup within its hard age and disclose degraded freshness.",
       "resident_stale_behavior": "Do not describe ZAP project coverage as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show ZAP project coverage as unavailable; never infer that no projects exist.",

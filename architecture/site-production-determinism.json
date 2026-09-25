@@ -9,6 +9,7 @@
     "site/action_path_v0.mjs",
     "site/action_registry.js",
     "site/address_geocoder.mjs",
+    "site/address_geography_refresh.mjs",
     "site/admin_code_search.mjs",
     "site/admin_code.mjs",
     "site/affordable_eligibility_facts.mjs",
