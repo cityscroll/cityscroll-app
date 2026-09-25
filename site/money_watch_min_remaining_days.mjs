@@ -291,7 +291,7 @@ export function minRemainingDaysCalendarUnavailableMessage() {
 
 export function minRemainingDaysControlCopy() {
   return Object.freeze({
-    label: "At least N calendar days remaining",
-    help: "Only opportunities with a confirmed deadline",
+    label: "At least N days left",
+    help: "Only listings with a known due date",
   });
 }
