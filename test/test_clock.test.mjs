@@ -68,4 +68,6 @@ test("the local runner and CI workflow use the shared preload with bounded concu
   assert.equal((WORKFLOW.match(/--test-concurrency=2/g) || []).length, 3);
   assert.match(WORKFLOW, /test_clock_preload\.mjs/);
   assert.match(WORKFLOW, /intentionally non-required/);
+  assert.match(WORKFLOW, /Refuse tracked working-tree residue/);
+  assert.match(WORKFLOW, /tools\/assert_tracked_working_tree_clean\.mjs/);
 });

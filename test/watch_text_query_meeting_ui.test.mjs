@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -191,8 +190,7 @@ test("A4/A6: failed load, keyboard recovery, translations, and hashed capture", 
     }],
   }, templates));
   const sha = createHash("sha256").update(html).digest("hex");
-  const manifestDir = new URL("../docs/evidence/watch-text-query-meeting-controls/", import.meta.url);
-  mkdirSync(fileURLToPath(manifestDir), { recursive: true });
+  const manifestPath = new URL("../docs/evidence/watch-text-query-meeting-controls/capture-manifest.json", import.meta.url);
   const fixtureSha = createHash("sha256")
     .update(readFileSync(new URL("../site/data/meeting_notice_materialization.json", import.meta.url)))
     .digest("hex");
@@ -224,9 +222,28 @@ test("A4/A6: failed load, keyboard recovery, translations, and hashed capture", 
       },
     ],
   };
-  writeFileSync(fileURLToPath(new URL("capture-manifest.json", manifestDir)), `${JSON.stringify(manifest, null, 2)}\n`);
-  const written = JSON.parse(readFileSync(new URL("capture-manifest.json", manifestDir), "utf8"));
-  assert.equal(written.captures.length, 2);
-  assert.equal(written.captures[0].sha256.length, 64);
-  assert.doesNotMatch(JSON.stringify(written), /\.png|\.jpg|image binary/i);
+  // Keep committed evidence read-only. Assert the live capture shape in memory
+  // and compare stable fields against the tracked fixture.
+  assert.equal(manifest.captures.length, 2);
+  assert.equal(manifest.captures[0].sha256.length, 64);
+  assert.doesNotMatch(JSON.stringify(manifest), /\.png|\.jpg|image binary/i);
+  const committed = JSON.parse(readFileSync(manifestPath, "utf8"));
+  assert.equal(committed.schema, manifest.schema);
+  assert.equal(committed.route, manifest.route);
+  assert.equal(committed.surface, manifest.surface);
+  assert.equal(committed.revision, manifest.revision);
+  assert.equal(committed.runner, manifest.runner);
+  assert.deepEqual(
+    committed.captures.map(({ assertion, population, viewport, route }) => ({
+      assertion, population, viewport, route,
+    })),
+    manifest.captures.map(({ assertion, population, viewport, route }) => ({
+      assertion, population, viewport, route,
+    })),
+  );
+  assert.equal(committed.inputs[0].path, manifest.inputs[0].path);
+  assert.equal(committed.inputs[0].sha256, fixtureSha);
+  for (const capture of committed.captures) {
+    assert.equal(capture.sha256.length, 64);
+  }
 });
