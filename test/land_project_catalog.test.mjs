@@ -167,7 +167,7 @@ describe("land_project_catalog", () => {
     assert.equal(committed.generated_at, committed.source_dates.defaults_generated_at);
 
     assert.match(LAND_APP, /land_project_catalog\.json/);
-    assert.match(LAND_APP, /bindLandProjectCatalogCache|landProjectsForCatalogGeneration|source_dates/);
+    assert.match(LAND_APP, /source_dates/);
     assert.match(MAP_BUILDER, /land_project_catalog/);
     assert.match(MAP_POINTS_MODULE, /catalog/);
     assert.match(DISTRICT_BUILDER, /land_project_catalog/);
