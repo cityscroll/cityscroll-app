@@ -50,9 +50,9 @@ const ROOT = process.cwd();
 const EVIDENCE_DIR = join(ROOT, "docs/evidence/near-you-subject-property-journey");
 const MANIFEST_PATH = join(EVIDENCE_DIR, "capture-manifest.json");
 const CAPTURE_TOOL = join(ROOT, "tools/capture_near_you_subject_property_journey.py");
-const GROUNDED_AT = "1ff60f293dc5f348cc6d08e1953232b4159235da";
+const GROUNDED_AT = "20df28b565f7c3da6a0203a5483319237ee81fe6";
 // Updated to the delivery commit once production serves this card's tip.
-const REQUIRED_SERVED_ANCESTOR = "1ff60f293dc5f348cc6d08e1953232b4159235da";
+const REQUIRED_SERVED_ANCESTOR = "20df28b565f7c3da6a0203a5483319237ee81fe6";
 
 const SEPT14_ID =
   "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/";

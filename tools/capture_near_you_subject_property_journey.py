@@ -35,7 +35,7 @@ PUBLIC_ALIAS = "ce239e01504c8"
 DEFAULT_BASE = "https://cityscroll.org/"
 ARTIFACT_MANIFEST = "/artifact-manifest.json"
 # Updated to the delivery commit once production serves this card's tip.
-REQUIRED_ANCESTOR = "1ff60f293dc5f348cc6d08e1953232b4159235da"
+REQUIRED_ANCESTOR = "20df28b565f7c3da6a0203a5483319237ee81fe6"
 SUBJECT_LIST = "/near-you/?geo=nta2020%3ABK1402&surface=map&lens=meetings"
 SUBJECT_DETAIL = (
     "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com"
