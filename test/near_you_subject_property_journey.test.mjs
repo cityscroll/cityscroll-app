@@ -188,11 +188,20 @@ test("A1 [outcome] BK1402 meetings list shows September 14 about 461 Coney Islan
   assert.ok(openLink?.getAttribute("href")?.includes("september-2026-board-meeting"));
   assert.match(openLink.getAttribute("href") || "", /#agenda-subject/);
 
-  const detailHtml = await withPinnedClock("2026-09-15T14:00:00.000Z", () =>
-    renderMeetingDocument(sept14Shared, {
+  const previousBuildDay = process.env.CROL_BUILD_DAY;
+  let detailHtml;
+  try {
+    // Meeting-detail historical labeling prefers CROL_BUILD_DAY over the
+    // pinned Date clock; use a post-event build day for retained-past copy.
+    process.env.CROL_BUILD_DAY = "2026-09-15";
+    detailHtml = renderMeetingDocument(sept14Shared, {
       schema: sharedMeetings.schema,
       rows: [sept14Shared],
-    }));
+    });
+  } finally {
+    if (previousBuildDay === undefined) delete process.env.CROL_BUILD_DAY;
+    else process.env.CROL_BUILD_DAY = previousBuildDay;
+  }
   assert.match(detailHtml, /id="agenda-subject"/);
   assert.match(detailHtml, /About 461 Coney Island Avenue/);
   assert.match(detailHtml, /1625 Ocean Avenue/);
