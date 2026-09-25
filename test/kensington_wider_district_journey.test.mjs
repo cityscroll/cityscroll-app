@@ -60,7 +60,7 @@ const GROUNDED_AT = "1ff60f293dc5f348cc6d08e1953232b4159235da";
 // Delivery commit that first publishes wider-district meeting previews for
 // overlapping community districts on the selected Kensington page. Capture
 // refuses until the served artifact-manifest contains this ancestor.
-const REQUIRED_SERVED_ANCESTOR = "PENDING_DELIVERY_COMMIT";
+const REQUIRED_SERVED_ANCESTOR = "3da4739199ec09002249e623adc49f4831438622";
 
 const SEPT23_ID =
   "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/";

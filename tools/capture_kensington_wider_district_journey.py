@@ -34,7 +34,7 @@ DEFAULT_BASE = "https://cityscroll.org/"
 ARTIFACT_MANIFEST = "/artifact-manifest.json"
 # Set to the delivery commit SHA after that commit lands; capture refuses until
 # the served artifact-manifest contains this ancestor.
-REQUIRED_ANCESTOR = "PENDING_DELIVERY_COMMIT"
+REQUIRED_ANCESTOR = "3da4739199ec09002249e623adc49f4831438622"
 KENSINGTON_LIST = "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings"
 KENSINGTON_DETAIL = (
     "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com"
