@@ -16,9 +16,11 @@ import { landPhaseLabelText } from "../land_phase_label.mjs";
 import {
   bblsForProject,
   filterLandSnapshot,
-  mergeLandProjects,
   projectIdsForBlock,
 } from "../resident_snapshot_queries.mjs";
+import {
+  bindLandProjectCatalogCache,
+} from "../land_project_catalog.mjs";
 import { loadJsonPreferWorker } from "../json_prefer_worker.mjs";
 import {
   DEFAULT_LAND_FAMILY,
@@ -161,6 +163,7 @@ function zapCouncilWhere(councilDistrict){
 // Retained Land projections. Search and details filter these artifacts in-browser.
 const LAND_DEFAULT_SNAPSHOT_URL="data/land_default_ulurp.json";
 const LAND_UPCOMING_HEARINGS_URL="data/land_upcoming_hearings.json";
+const LAND_PROJECT_CATALOG_URL="data/land_project_catalog.json";
 const LAND_PROJECTS_SNAPSHOT_URL="data/zap_projects_warehouse_lookup.json";
 const LAND_BBLS_SNAPSHOT_URL="data/zap_bbl_warehouse_lookup.json";
 const LAND_BBL_CENTROIDS_SNAPSHOT_URL="data/bbl_mappluto_centroids_lookup.json";
@@ -169,6 +172,7 @@ const LAND_PROPERTY_SNAPSHOT_URL="data/property_domain_observations.json";
 let landDefaultSnapshotPromise=null;
 let landUpcomingHearingsPromise=null;
 let landProjectsSnapshotVintage=null;
+let landProjectsCatalogCache=null;
 let landProjectsSnapshotPromise=null,landBblSnapshotPromise=null,landBblCentroidSnapshotPromise=null,landMeetingsSnapshotPromise=null,landPropertySnapshotPromise=null;
 function loadLandDefaultSnapshot(){
   if(!landDefaultSnapshotPromise){
@@ -188,10 +192,17 @@ function loadLandProjectsSnapshot(){
   if(!landProjectsSnapshotPromise){
     landProjectsSnapshotPromise=Promise.all([
       loadLandDefaultSnapshot(),
-      loadJsonPreferWorker("/zap-projects-lookup",LAND_PROJECTS_SNAPSHOT_URL,d=>d?.rows?.length),
-    ]).then(([defaults,warehouse])=>{
-      landProjectsSnapshotVintage=warehouse?.materialized_at||null;
-      return mergeLandProjects(warehouse,defaults);
+      fetch(LAND_PROJECT_CATALOG_URL,{cache:"no-store",credentials:"omit"})
+        .then(r=>r.ok?r.json():null)
+        .catch(()=>null),
+    ]).then(([defaults,catalog])=>{
+      // Defaults still seed outcomes/auth; the admitted population is the shared catalog.
+      void defaults;
+      landProjectsCatalogCache=bindLandProjectCatalogCache(landProjectsCatalogCache,catalog);
+      landProjectsSnapshotVintage=catalog?.source_dates?.warehouse_materialized_at
+        || catalog?.sources?.warehouse?.materialized_at
+        || null;
+      return landProjectsCatalogCache.projects;
     });
   }
   return landProjectsSnapshotPromise;

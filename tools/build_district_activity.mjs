@@ -28,6 +28,7 @@ const GEOGRAPHY_AUDIT_OUT = join(ROOT, "docs/evidence/geography-subjects/located
 const PATHS = {
   boundaries: join(ROOT, "site/data/district_boundaries.json"),
   geographyRegistry: join(ROOT, "site/data/geography/layer_registry.json"),
+  landCatalog: join(ROOT, "site/data/land_project_catalog.json"),
   zap: join(ROOT, "site/data/zap_projects_warehouse_lookup.json"),
   property: join(ROOT, "site/data/property_domain_observations.json"),
   meetings: join(ROOT, "site/data/shared_meeting_read_model.json"),
@@ -68,7 +69,11 @@ function loadInputs() {
   if (!boundaries?.boundary_vintage) {
     throw new Error("missing site/data/district_boundaries.json with boundary_vintage");
   }
+  const landCatalog = loadJson(PATHS.landCatalog);
   const zap = loadJson(PATHS.zap);
+  if (!landCatalog?.projects) {
+    throw new Error("missing site/data/land_project_catalog.json; run node tools/build_land_project_catalog.mjs");
+  }
   const geographyRegistry = loadJson(PATHS.geographyRegistry);
   const geographyLayers = (geographyRegistry?.layers || [])
     .filter((row) => NEAR_YOU_PUBLIC_GEOGRAPHY_TYPES.includes(row?.type))
@@ -121,7 +126,9 @@ function loadInputs() {
   return {
     boundaries,
     geographyLayers,
-    zapRows: Array.isArray(zap?.rows) ? zap.rows : [],
+    // Admitted catalog population (warehouse ∪ defaults). Source dates come from
+    // the catalog document, never from this builder's wall clock.
+    zapRows: Array.isArray(landCatalog.projects) ? landCatalog.projects : [],
     propertyRows: Array.isArray(property?.property_rows) ? property.property_rows : [],
     meetingsRows: meetingRows,
     communityBoardGeography,
@@ -135,10 +142,16 @@ function loadInputs() {
     mandateBacklinksLookup,
     districtCorpora: {
       land: {
-        path: "data/zap_projects_warehouse_lookup.json",
-        collection: "rows",
+        corpus: "land_project_catalog",
+        path: "data/land_project_catalog.json",
+        collection: "projects",
         stamp_field: "materialized_at",
-        stamp_value: zap?.materialized_at || null,
+        stamp_value: landCatalog?.materialized_at
+          || landCatalog?.source_dates?.warehouse_materialized_at
+          || landCatalog?.sources?.warehouse?.materialized_at
+          || null,
+        source_dates: landCatalog?.source_dates || null,
+        content_id: landCatalog?.generation?.content_id || null,
       },
       property: {
         path: "data/property_domain_observations.json",

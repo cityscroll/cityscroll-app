@@ -32,6 +32,8 @@ import {
 } from "./land_filing_evidence_facet.mjs";
 import { dueClosesThisWeek } from "./closing_this_week.mjs";
 
+export { mergeLandProjects } from "./land_project_catalog.mjs";
+
 const residentSnapshotClean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 const residentSnapshotLower = (value) => residentSnapshotClean(value).toLowerCase();
 
@@ -337,19 +339,6 @@ export function moneyLineageRows(rows, target) {
     const candidate = residentSnapshotClean(row?.pin);
     return base !== pin ? candidate.startsWith(base) : candidate === pin;
   }).sort((left, right) => String(left?.start_date || "").localeCompare(String(right?.start_date || "")));
-}
-
-export function mergeLandProjects(...payloads) {
-  const byId = new Map();
-  for (const payload of payloads) {
-    const rows = Array.isArray(payload) ? payload : payload?.projects || payload?.rows || [];
-    for (const row of rows) {
-      const id = residentSnapshotClean(row?.project_id);
-      if (!id) continue;
-      byId.set(id, { ...(byId.get(id) || {}), ...row });
-    }
-  }
-  return [...byId.values()];
 }
 
 export function projectIdsForBlock(bblRows, block) {

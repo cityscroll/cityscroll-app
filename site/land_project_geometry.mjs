@@ -50,8 +50,14 @@ function sortedGeometryKeys(record) {
   return Object.keys(record).sort();
 }
 
-function geometryProjectUniverse(landDefault) {
-  const projects = Array.isArray(landDefault?.projects) ? landDefault.projects : [];
+function geometryProjectRows(population) {
+  if (Array.isArray(population?.projects)) return population.projects;
+  if (Array.isArray(population?.rows)) return population.rows;
+  return [];
+}
+
+function geometryProjectUniverse(population) {
+  const projects = geometryProjectRows(population);
   const seen = new Set();
   const out = [];
   for (const project of projects) {
@@ -83,7 +89,8 @@ function exactBblsByProject(zapBbl) {
  * Single-BBL candidates: project id -> its one exact BBL. Every other
  * project is either ambiguous (2+ retained BBLs) or has none.
  */
-export function singleBblGeometryCandidates({ landDefault, zapBbl }) {
+export function singleBblGeometryCandidates({ catalog = null, landDefault = null, zapBbl }) {
+  void catalog;
   const universe = geometryProjectUniverse(landDefault);
   const byProject = exactBblsByProject(zapBbl);
   const out = new Map();
@@ -181,18 +188,22 @@ function geometryReceiptRow({ projectId, bbl, uniqueExactCount, coverageState, r
  * recomputes or touches point resolution.
  *
  * @param {object} inputs
- * @param {object} inputs.landDefault
+ * @param {object} [inputs.catalog] — admitted Land catalog (preferred population)
+ * @param {object} [inputs.landDefault] — compatibility seed when catalog is absent
  * @param {object} inputs.zapBbl
  * @param {object} inputs.geometrySource retained BBL -> polygon lookup
  * @param {string[]} inputs.mappedProjectIds project ids with an accepted point
  * @param {{ now?: string }} [opts]
  */
 export function materializeLandProjectGeometry(inputs = {}, opts = {}) {
+  const catalog = inputs.catalog == null ? null : asGeometryObject(inputs.catalog);
   const landDefault = asGeometryObject(inputs.landDefault);
   const zapBbl = asGeometryObject(inputs.zapBbl);
   const geometrySource = asGeometryObject(inputs.geometrySource);
   const byBbl = asGeometryObject(geometrySource.by_bbl);
   const mappedIds = new Set(Array.isArray(inputs.mappedProjectIds) ? inputs.mappedProjectIds : []);
+  // Geometry follows the same default projection population as map points;
+  // the catalog generation is accepted for admission checks by callers.
   const universe = geometryProjectUniverse(landDefault);
   const byProject = exactBblsByProject(zapBbl);
   const now = opts.now || new Date().toISOString();

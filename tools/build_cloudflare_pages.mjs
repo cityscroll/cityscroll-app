@@ -89,6 +89,7 @@ writeTimingReceipt();
 runNode(sourceDir, "no_live_external_reads.mjs", ["--check"]);
 runNode(sourceDir, "build_geocoder_address_index.mjs", ["--check"]);
 runNode(sourceDir, "build_bbl_mappluto_centroids.mjs", ["--check"]);
+runNode(sourceDir, "build_land_project_catalog.mjs", ["--check"]);
 runNode(sourceDir, "build_land_project_map_points.mjs", ["--check"]);
 runNode(sourceDir, "build_land_authority_summary.mjs", ["--check"]);
 
