@@ -45,7 +45,8 @@ import {
 const ROOT = process.cwd();
 const EVIDENCE_DIR = join(ROOT, "docs/evidence/near-you-midwood-venue-journey");
 const MANIFEST_PATH = join(EVIDENCE_DIR, "capture-manifest.json");
-const GROUNDED_AT = "1c5350346862ebe66a5bab71002d7af9b72e2b14";
+const GROUNDED_AT = "37377c890fcecc218352586379fa52b4ba2d24a1";
+const REQUIRED_SERVED_ANCESTOR = "37377c890fcecc218352586379fa52b4ba2d24a1";
 
 const SEPT23_ID =
   "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/";
@@ -258,8 +259,18 @@ test("A4 [verification] production capture manifest records hosted desktop/mobil
   assert.equal(manifest.capture_mode, "headless-playwright-production-served-site");
   assert.equal(manifest.revision_format, "served artifact-manifest source_commit_sha");
   assert.match(manifest.revision || "", /^[0-9a-f]{40}$/);
+  assert.equal(manifest.required_ancestor, REQUIRED_SERVED_ANCESTOR);
+  assert.equal(manifest.required_ancestor_contained, true);
   assert.ok(Array.isArray(manifest.captures));
   assert.ok(manifest.captures.length >= 4, "desktop/mobile for list and detail");
+
+  const captureTool = readFileSync(
+    join(ROOT, "tools/capture_near_you_midwood_venue_journey.py"),
+    "utf8",
+  );
+  assert.match(captureTool, /def revision_contains_required_ancestor/);
+  assert.match(captureTool, /REQUIRED_ANCESTOR = "37377c890fcecc218352586379fa52b4ba2d24a1"/);
+  assert.match(captureTool, /does not contain required ancestor/);
 
   const byName = Object.fromEntries(manifest.captures.map((row) => [row.name, row]));
   for (const name of [
@@ -290,7 +301,19 @@ test("A4 [verification] production capture manifest records hosted desktop/mobil
   assert.match(byName["midwood-detail-desktop"].route, /housing-and-land-use-committee-meeting-september-2026/);
   assert.equal(byName["midwood-meetings-desktop"].served_values.keyboard_focusable_count > 0, true);
   assert.equal(byName["midwood-meetings-desktop"].served_values.no_javascript_title_link, true);
-  assert.equal(byName["midwood-detail-desktop"].served_values.venue_address_present, true);
+
+  // Observed content must be present so a stale-build capture fails loudly.
+  for (const name of ["midwood-meetings-desktop", "midwood-meetings-mobile"]) {
+    const values = byName[name].served_values;
+    assert.equal(values.named_row_present, true, `${name} named row`);
+    assert.equal(values.held_in_midwood_present, true, `${name} Held in Midwood`);
+    assert.equal(values.venue_address_present, true, `${name} venue address`);
+  }
+  for (const name of ["midwood-detail-desktop", "midwood-detail-mobile"]) {
+    const values = byName[name].served_values;
+    assert.equal(values.detail_title_present, true, `${name} detail title`);
+    assert.equal(values.venue_address_present, true, `${name} venue address`);
+  }
 
   // Lean-read guard: publication still activates with precomputed Midwood venue evidence.
   const publication = buildLocalGeographyPublication({

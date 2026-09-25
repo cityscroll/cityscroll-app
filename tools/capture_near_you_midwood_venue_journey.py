@@ -4,6 +4,9 @@
 Records textual served values plus sha256 digests. Screenshot binaries stay
 under the local task scratch directory; the committed manifest may reference
 an externally retained https screenshot URL.
+
+The capture refuses to run until the served artifact-manifest revision
+contains the Midwood venue-journey delivery commit as a git ancestor.
 """
 
 from __future__ import annotations
@@ -29,6 +32,8 @@ SCREENSHOT_DIR = Path(os.environ.get("FM_TASK_SCRATCH") or "/tmp") / "near-you-m
 PUBLIC_ALIAS = "ca937c81ff665"
 DEFAULT_BASE = "https://cityscroll.org/"
 ARTIFACT_MANIFEST = "/artifact-manifest.json"
+# Delivery merge that first served Held-in Midwood + venue address on Near You.
+REQUIRED_ANCESTOR = "37377c890fcecc218352586379fa52b4ba2d24a1"
 MIDWOOD_LIST = "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings"
 MIDWOOD_DETAIL = (
     "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com"
@@ -55,6 +60,30 @@ def served_revision(base: str) -> str:
     if not re.fullmatch(r"[0-9a-f]{40}", sha):
         raise SystemExit(f"served artifact-manifest missing source_commit_sha: {manifest!r}")
     return sha
+
+
+def revision_contains_required_ancestor(rev: str) -> bool:
+    """True when served revision is the delivery commit or a descendant of it."""
+    if rev == REQUIRED_ANCESTOR:
+        return True
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "merge-base", "--is-ancestor", REQUIRED_ANCESTOR, rev],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return result.returncode == 0
+
+
+def require_served_revision_contains_delivery(base: str) -> str:
+    """Refuse capture when the served build lacks the Midwood delivery ancestor."""
+    revision = served_revision(base)
+    if not revision_contains_required_ancestor(revision):
+        raise SystemExit(
+            f"served revision {revision} does not contain required ancestor "
+            f"{REQUIRED_ANCESTOR}; wait for Pages deploy before capturing"
+        )
+    return revision
 
 
 def sha256_file(path: Path) -> str:
@@ -136,7 +165,8 @@ def observe_detail(page) -> dict:
 
 
 def capture(base: str, host: bool) -> dict:
-    revision = served_revision(base)
+    revision = require_served_revision_contains_delivery(base)
+    print(f"production base={base} revision={revision}", flush=True)
     SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
     captures = []
     local_files: list[Path] = []
@@ -215,6 +245,8 @@ def capture(base: str, host: bool) -> dict:
         "revision": revision,
         "revision_format": "served artifact-manifest source_commit_sha",
         "data_vintage": revision,
+        "required_ancestor": REQUIRED_ANCESTOR,
+        "required_ancestor_contained": True,
         "image_binaries_committed": False,
         "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed. Externally retained https screenshot_url values are required.",
         "surface": "Near You Midwood venue journey",
@@ -239,10 +271,18 @@ def main() -> int:
         manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
         assert manifest["schema"] == "cityscroll.render_capture_manifest.v1"
         assert manifest["image_binaries_committed"] is False
+        assert manifest.get("required_ancestor") == REQUIRED_ANCESTOR
+        assert manifest.get("required_ancestor_contained") is True
         assert len(manifest["captures"]) >= 4
         for row in manifest["captures"]:
             assert row.get("screenshot_url", "").startswith("https://")
             assert re.fullmatch(r"[0-9a-f]{64}", row.get("sha256") or "")
+            values = row.get("served_values") or {}
+            if row["name"].startswith("midwood-meetings-"):
+                assert values.get("held_in_midwood_present") is True
+                assert values.get("venue_address_present") is True
+            if row["name"].startswith("midwood-detail-"):
+                assert values.get("venue_address_present") is True
         print("ok")
         return 0
     capture(args.base.rstrip("/") + "/", host=args.host)
@@ -250,5 +290,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    # Fix false literal for older Python path above — rewrite cleanly on write.
     raise SystemExit(main())
