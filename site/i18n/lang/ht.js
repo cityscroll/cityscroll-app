@@ -2841,7 +2841,7 @@
     nl_placeholder_alerts: "pa egzanp, kontra edikasyon plis pase $200K ki gen delè 3 mwa, oswa akòdman plis pase $1M",
     nl_chip_exam_guide: "gid egzamen",
     nl_chip_closing_this_week: "fèmen semèn sa a",
-    nl_chip_min_remaining_days: "omwen {n} jou kalandriye ki rete",
+    nl_chip_min_remaining_days: "omwen {n} jou ki rete",
     roles_heading: "Pòs",
     people_heading: "Moun",
     listing_heading: "Lis",

@@ -176,7 +176,7 @@ export function moneyLeadTimeControlsHtml(view = {}) {
   return `<fieldset class="following-lead-time" data-following-lead-time>
     <legend>${esc(copy.label)}</legend>
     <label class="following-lead-time-field">
-      <span>Minimum calendar days remaining</span>
+      <span>Minimum days left</span>
       <input type="number" name="minRemainingDays" min="${MIN_REMAINING_DAYS_MIN}" max="${MIN_REMAINING_DAYS_MAX}" step="1" inputmode="numeric" value="${esc(value)}" placeholder="21" data-following-refine="min-remaining-days" data-following-lead-time-input aria-describedby="following-lead-time-help">
     </label>
     <p id="following-lead-time-help" class="following-lead-time-help">${esc(copy.help)}</p>
@@ -686,7 +686,7 @@ function refinementClauses(f) {
   }
   const leadTime = validateMinRemainingDays(filter.minRemainingDays);
   if (leadTime.ok && leadTime.present) {
-    clauses.push(`with at least ${leadTime.value} calendar days remaining`);
+    clauses.push(`with at least ${leadTime.value} days left`);
   }
   return clauses;
 }

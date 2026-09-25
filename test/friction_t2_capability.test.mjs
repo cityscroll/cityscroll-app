@@ -218,7 +218,7 @@ test("A2 editor → save → stored filter → reload → edit → preview retai
   assert.equal(edited.filter.agency, prepared.filter.agency);
 
   const sentence = composeWatchRuleSentence("money", edited.filter);
-  assert.match(sentence, /30 calendar days remaining/i);
+  assert.match(sentence, /30 days left/i);
 
   const href = followingUrlFromWatch({ lens: "money", filter: edited.filter, frequency: "daily" });
   assert.match(href, /minRemainingDays%22%3A30|minRemainingDays":30|minRemainingDays%22%3A%2030/);
@@ -229,7 +229,7 @@ test("A2 editor → save → stored filter → reload → edit → preview retai
     requested: true,
   });
   assert.match(controls, /minRemainingDays|min-remaining|At least/);
-  assert.match(controls, /confirmed deadline/i);
+  assert.match(controls, /known due date/i);
   assert.match(controls, /value="30"/);
 });
 
@@ -281,7 +281,7 @@ test("A3 unset watches keep behavior; invalid values and exact follows refuse ex
   );
 
   const copy = minRemainingDaysControlCopy();
-  assert.match(copy.help, /confirmed deadline/i);
+  assert.match(copy.help, /known due date/i);
 });
 
 test("A4 S48020 fails without a response deadline; calendar days ignore 24h buckets and DST", async () => {
@@ -357,14 +357,14 @@ test("A5 production editor + server admission with the three positive records; c
     filter: prepared.filter,
     requested: true,
   });
-  assert.match(controls, /Only opportunities with a confirmed deadline/);
+  assert.match(controls, /Only listings with a known due date/);
   assert.doesNotMatch(
     moneyLeadTimeControlsHtml({
       lens: "money",
       filter: { procurement_id: "procurement:solicitation:S48020" },
       requested: true,
     }),
-    /minRemainingDays|At least N calendar/,
+    /minRemainingDays|At least N days left/,
   );
 
   await withPinnedClock("2026-09-11T16:00:00.000Z", () => {

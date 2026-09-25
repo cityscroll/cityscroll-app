@@ -2848,7 +2848,7 @@
     nl_placeholder_alerts: "напр., контракты в сфере образования на сумму свыше $200K со сроком 3 месяца, или присуждения свыше $1 млн",
     nl_chip_exam_guide: "гид по экзаменам",
     nl_chip_closing_this_week: "закрывается на этой неделе",
-    nl_chip_min_remaining_days: "не менее {n} календарных дней осталось",
+    nl_chip_min_remaining_days: "не менее {n} дней осталось",
     roles_heading: "Должности",
     people_heading: "Люди",
     listing_heading: "Объявление",

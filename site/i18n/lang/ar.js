@@ -2846,7 +2846,7 @@
     nl_placeholder_alerts: "مثال: عقود تعليمية تفوق 200 ألف دولار خلال 3 أشهر، أو ترسيات تفوق مليون دولار",
     nl_chip_exam_guide: "دليل الامتحانات",
     nl_chip_closing_this_week: "يغلق هذا الأسبوع",
-    nl_chip_min_remaining_days: "ما لا يقل عن {n} أيام تقويمية متبقية",
+    nl_chip_min_remaining_days: "ما لا يقل عن {n} أيام متبقية",
     roles_heading: "الوظائف",
     people_heading: "الأشخاص",
     listing_heading: "القائمة",
