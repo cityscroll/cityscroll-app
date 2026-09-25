@@ -93,8 +93,12 @@ test("district activity retains residual accounting while adding ontology-placed
     activity.sources.meetings.located + activity.unlocated.meetings,
     activity.sources.meetings.indexed,
   );
+  // Board meetings keep ontology placement; admitted venue memberships may
+  // become the compact record basis (parcel_membership) while the board edge
+  // remains. Together they still cover every community-board row.
   assert.equal(
-    activity.sources.meetings.by_method.community_board_ontology,
+    (activity.sources.meetings.by_method.community_board_ontology || 0)
+      + (activity.sources.meetings.by_method.parcel_membership || 0),
     sharedMeetings.counts.community_board,
   );
   assert.equal(activity.virtual.meetings, 1);

@@ -35,9 +35,32 @@ const COMMITTEE_REGISTRY = join(ROOT, "site/data/non_council_outcome_sources/com
 const HEARING_CONTEXT = join(ROOT, "site/data/community_board_hearing_context.json");
 const OUTPUT = join(ROOT, "site/data/community_board_meeting_index.json");
 const SHARD_DIR = join(ROOT, "site/data/community_board_meeting_index");
+const MEETING_GEOGRAPHY_BACKFILL_DIR = join(ROOT, "site/data/meeting-geography-backfill");
 const INDEX_SCHEMA = "cityscroll.community_board_meeting_index.v1";
 const JOIN_SCHEMA = "cityscroll.community_board_source_join.v1";
 const JOIN_METHOD = "exact_board_date_publisher_identifier";
+
+/**
+ * Load compact memberships stamped by the meeting-geography backfill so newly
+ * acquired board rows reuse the same precomputed parcel joins.
+ */
+export function loadMeetingGeographyMembershipIndex(publicDir = MEETING_GEOGRAPHY_BACKFILL_DIR) {
+  const outcomesPath = join(publicDir, "per-id-outcomes.json");
+  if (!existsSync(outcomesPath)) return new Map();
+  try {
+    const document = JSON.parse(readFileSync(outcomesPath, "utf8"));
+    const map = new Map();
+    for (const outcome of document?.outcomes || []) {
+      if (!outcome?.meeting_id || !Array.isArray(outcome.memberships) || !outcome.memberships.length) {
+        continue;
+      }
+      map.set(String(outcome.meeting_id), outcome.memberships);
+    }
+    return map;
+  } catch {
+    return new Map();
+  }
+}
 const SOURCE_STATES = Object.freeze([
   "indexed",
   "checked-empty",
@@ -465,6 +488,9 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
   const institutionRefs = committeeHost
     ? { ...meeting.institution_refs, committee_ref: committeeHost.institution_refs.committee_ref }
     : meeting.institution_refs;
+  const geographyMemberships = options.meetingGeographyMemberships instanceof Map
+    ? options.meetingGeographyMemberships.get(meeting.meeting_id)
+    : null;
   return {
     ...meeting,
     record_kind: record.record_kind,
@@ -496,6 +522,9 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
     ...(record.detail_retention ? { detail_retention: record.detail_retention } : {}),
     ...(record.collection_visibility ? { collection_visibility: record.collection_visibility } : {}),
     ...(record.timing_status ? { timing_status: record.timing_status } : {}),
+    ...(Array.isArray(geographyMemberships) && geographyMemberships.length
+      ? { location_memberships: geographyMemberships }
+      : {}),
     type_of_notice_description: record.category || "Board meeting",
     section_name: "Community Board Meetings",
     meeting_join: {
@@ -662,6 +691,7 @@ export async function buildCommunityBoardMeetingIndex({
   previousIndex = existsSync(OUTPUT) ? readCommunityBoardMeetingIndex(OUTPUT) : null,
   hearingContext = readHearingContext(),
   codeRevision = currentCodeRevision(),
+  meetingGeographyMemberships = loadMeetingGeographyMembershipIndex(),
 } = {}) {
   const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
   const descriptors = sourceDescriptors(inventory, registry, retainedSnapshots);
@@ -750,6 +780,7 @@ export async function buildCommunityBoardMeetingIndex({
         sourceDescriptor: descriptor,
         registered: true,
         conflictingRecords: records,
+        meetingGeographyMemberships,
       }));
     if (meetingRows.length) byBoard[descriptor.board_id] = [...(byBoard[descriptor.board_id] || []), ...meetingRows];
   }
@@ -876,6 +907,7 @@ export function rematerializeCommunityBoardMeetingIndex({
   committed = readCommunityBoardMeetingIndex(OUTPUT),
   retainedSnapshots = readRetainedCommunityBoardSnapshots(),
   hearingContext = readHearingContext(),
+  meetingGeographyMemberships = loadMeetingGeographyMembershipIndex(),
 } = {}) {
   const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
   const descriptors = sourceDescriptors(inventory, registry, retainedSnapshots);
@@ -931,6 +963,7 @@ export function rematerializeCommunityBoardMeetingIndex({
           && descriptor.source_role === (record.source_role || "upcoming_meetings")),
         registered: true,
         conflictingRecords: records,
+        meetingGeographyMemberships,
       }));
     if (meetingRows.length) byBoard[boardId] = meetingRows;
   }

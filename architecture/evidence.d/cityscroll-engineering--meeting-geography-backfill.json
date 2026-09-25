@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/meeting-geography-backfill",
+  "status": "implemented",
+  "fingerprint": "meeting-geography-backfill.v1",
+  "updated_at": "2026-09-24T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "meeting-geography-backfill",
+      "path": "site/meeting_geography_backfill.mjs"
+    },
+    {
+      "id": "meeting-geography-backfill-builder",
+      "path": "tools/build_meeting_geography_backfill.mjs"
+    },
+    {
+      "id": "meeting-geography-backfill-verify-test",
+      "path": "test/meeting_geography_backfill.test.mjs"
+    },
+    {
+      "id": "meeting-geography-backfill-summary",
+      "path": "docs/evidence/meeting-geography-backfill/summary.json"
+    },
+    {
+      "id": "meeting-geography-backfill-outcomes",
+      "path": "site/data/meeting-geography-backfill/per-id-outcomes.json"
+    }
+  ]
+}
