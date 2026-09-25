@@ -15,6 +15,12 @@ import { buildCouncilHearingActionPath } from "./council_hearing_action_path.mjs
 import { buildConsequenceProjection } from "./consequence_projection.mjs";
 import { attendanceDomainForRecord } from "./meetings_attendance.mjs";
 import { participationActionVerbs } from "./participation_action_verbs.mjs";
+import {
+  isHistoricalMeeting,
+  meetingEventDay,
+  stableAgendaSegmentId,
+  stampAgendaSegmentIds,
+} from "./meeting_agenda_segments.mjs";
 import { meetingPurposeAuthority } from "./meeting_purpose_authority.mjs";
 import { renderCouncilHearingMatterContinuation } from "./council_hearing_matter_continuation.mjs";
 import { renderLegislativeHearingConsequence } from "./legislative_hearing_consequence.mjs";
@@ -546,21 +552,47 @@ function participationDetails(record) {
 
 // PHC-03: watch, register-to-testify, and submit-written-testimony are not
 // otherwise rendered anywhere on this page — participationDetails() above
-// only recognizes join and registration links. This surfaces those three
-// modes from PHC-00's evidence-gated consequence_projection.mjs, one action
-// per mode it actually evidenced. join_remote and attend_in_person are left
-// to the existing participationDetails()/locationDetails() rendering above,
-// so a real recognized join link is never rendered twice under two labels.
+// only recognizes join and registration links. This surfaces those modes from
+// PHC-00's evidence-gated consequence_projection.mjs. When hearing-context
+// agenda participation is attached, attend_in_person is also listed here so
+// ordinary attendance stays visibly distinct from registration to speak.
 const EXPOSED_EVIDENCED_MODES = Object.freeze(["watch", "register_to_testify", "submit_written"]);
+const SEGMENTED_EXPOSED_MODES = Object.freeze([
+  "attend_in_person",
+  "watch",
+  "register_to_testify",
+  "submit_written",
+]);
 
-function evidencedParticipationActionRows(record) {
+const HISTORICAL_PARTICIPATION_LABELS = Object.freeze({
+  attend_in_person: "In-person attendance instructions published for this meeting",
+  watch: "Watch link published for this meeting",
+  register_to_testify: "Registration form published for this meeting",
+  submit_written: "Written testimony instructions published for this meeting",
+  join_remote: "Remote join link published for this meeting",
+});
+
+function evidencedParticipationActionRows(record, { historical = false } = {}) {
   const domain = attendanceDomainForRecord(record);
   const projection = buildConsequenceProjection(domain, record, {});
+  const segmented = Array.isArray(record.agenda_segments) && record.agenda_segments.length > 0
+    || Boolean(record.hearing_participation);
+  const allowed = segmented ? SEGMENTED_EXPOSED_MODES : EXPOSED_EVIDENCED_MODES;
   return participationActionVerbs(projection)
-    .filter((action) => EXPOSED_EVIDENCED_MODES.includes(action.mode))
-    .map((action) => (action.linkable && safeHref(action.href)
-      ? `<li><a href="${esc(safeHref(action.href))}" rel="noopener noreferrer">${esc(action.verb)}</a></li>`
-      : `<li>${esc(action.verb)}</li>`));
+    .filter((action) => allowed.includes(action.mode))
+    .map((action) => {
+      const label = historical
+        ? (HISTORICAL_PARTICIPATION_LABELS[action.mode] || action.verb)
+        : action.verb;
+      const invitation = historical ? "historical" : "current";
+      const href = action.linkable && safeHref(action.href) ? safeHref(action.href) : null;
+      // Historical pages keep the publisher URL as a reference and never use
+      // live Register/Submit invitation verbs.
+      if (href) {
+        return `<li data-participation-mode="${esc(action.mode)}" data-participation-invitation="${esc(invitation)}"><a href="${esc(href)}" rel="noopener noreferrer">${esc(label)}</a></li>`;
+      }
+      return `<li data-participation-mode="${esc(action.mode)}" data-participation-invitation="${esc(invitation)}">${esc(label)}</li>`;
+    });
 }
 
 function observerAccessSection(record) {
@@ -619,10 +651,13 @@ function agendaSegmentStartLabel(startTime) {
 /**
  * Render board agenda segments attached at meeting-detail load time.
  * Timed and untimed items share one list; missing start times stay omitted.
+ * Anchors are content-stable segment ids, never display index alone.
  */
 function communityBoardAgendaSegmentsSection(record) {
   if (record.source_system !== "community_board") return "";
-  const segments = Array.isArray(record.agenda_segments) ? record.agenda_segments : [];
+  const segments = stampAgendaSegmentIds(
+    Array.isArray(record.agenda_segments) ? record.agenda_segments : [],
+  );
   if (!segments.length) return "";
   const rows = segments
     .slice()
@@ -636,13 +671,26 @@ function communityBoardAgendaSegmentsSection(record) {
       const kind = ["public_hearing", "regular_meeting", "other"].includes(segment?.kind)
         ? segment.kind
         : "other";
+      const segmentId = stableAgendaSegmentId(segment);
       const timeHtml = start
         ? `<strong class="meeting-agenda-segment-time"><time datetime="${esc(startAttr)}">${esc(start)}</time></strong> `
         : "";
-      return `<li class="meeting-agenda-segment" data-agenda-segment="${esc(String(order))}" data-agenda-segment-kind="${esc(kind)}"${startAttr ? ` data-agenda-segment-start="${esc(startAttr)}"` : ""}>`
+      const details = Array.isArray(segment?.detail)
+        ? segment.detail.map((line) => readerText(line, 1_200)).filter(Boolean)
+        : [];
+      const detailHtml = details.length
+        ? `<ul class="meeting-agenda-segment-detail">${details.map((line) => `<li>${esc(line)}</li>`).join("")}</ul>`
+        : "";
+      const budgetNote = Array.isArray(segment?.budget_classes) && segment.budget_classes.length
+        ? `<p class="muted node-muted meeting-agenda-segment-budget-note">These are budget recommendations under consideration.</p>`
+        : "";
+      return `<li class="meeting-agenda-segment" id="${esc(segmentId)}" data-agenda-segment-id="${esc(segmentId)}" data-agenda-segment="${esc(String(order))}" data-agenda-segment-kind="${esc(kind)}"${startAttr ? ` data-agenda-segment-start="${esc(startAttr)}"` : ""}>`
         + `<div class="meeting-agenda-segment-main">${timeHtml}`
-        + `<span class="meeting-agenda-segment-label">${esc(agendaSegmentKindLabel(kind))}</span></div>`
+        + `<span class="meeting-agenda-segment-label">${esc(agendaSegmentKindLabel(kind))}</span>`
+        + ` <a class="meeting-agenda-segment-anchor" href="#${esc(segmentId)}">Link to this segment</a></div>`
         + `<p class="meeting-agenda-segment-title">${esc(title)}</p>`
+        + detailHtml
+        + budgetNote
         + `</li>`;
     })
     .filter(Boolean)
@@ -797,8 +845,13 @@ export function renderMeetingDocument(record = {}, readModel = {}, options = {})
   const locationSection = locationRows.length
     ? `<section class="node-section civic-object-section meeting-section meeting-location"><h2>Where</h2><ul>${locationRows.map((row) => `<li>${row}</li>`).join("")}</ul></section>`
     : "";
+  const historical = isHistoricalMeeting(record);
+  const historicalDay = meetingEventDay(record);
+  const historicalNotice = historical && historicalDay
+    ? `<p class="meeting-historical-notice" role="status">This meeting was held on <time datetime="${esc(historicalDay)}">${esc(formatMeetingWhen(historicalDay) || historicalDay)}</time>. Participation links below are the instructions the publisher posted for that date, not a current invitation.</p>`
+    : "";
   const participationRows = participationDetails(record);
-  const evidencedActionRows = evidencedParticipationActionRows(record);
+  const evidencedActionRows = evidencedParticipationActionRows(record, { historical });
   const meetingMode = readerEnum(record.venue?.mode, {
     "in_person": "In person",
     "in-person": "In person",
@@ -806,7 +859,7 @@ export function renderMeetingDocument(record = {}, readModel = {}, options = {})
     "virtual": "Virtual",
   });
   const participationSection = participationRows.length || evidencedActionRows.length || meetingMode
-    ? `<section class="node-section civic-object-section meeting-section meeting-participation"><h2>How to participate</h2>${meetingMode ? `<p>Format: ${esc(meetingMode)}.</p>` : ""}${evidencedActionRows.length ? `<ul class="meeting-participation-actions">${evidencedActionRows.join("")}</ul>` : ""}${participationRows.length ? `<ul>${participationRows.join("")}</ul>` : ""}</section>`
+    ? `<section class="node-section civic-object-section meeting-section meeting-participation"${historical ? ` data-meeting-participation-historical="1"` : ""}><h2>How to participate</h2>${historicalNotice}${meetingMode ? `<p>Format: ${esc(meetingMode)}.</p>` : ""}${evidencedActionRows.length ? `<ul class="meeting-participation-actions">${evidencedActionRows.join("")}</ul>` : ""}${participationRows.length ? `<ul>${participationRows.join("")}</ul>` : ""}</section>`
     : "";
   const councilMatterPath = record.source_system === "city_record"
     ? buildCouncilHearingActionPath(record)
@@ -901,7 +954,7 @@ export function renderMeetingDocument(record = {}, readModel = {}, options = {})
 <main id="main" class="civic-document node-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}" data-capability-reference="meeting.get@1" tabindex="-1">
   <p class="node-back"><a href="${esc(returnHref)}" data-observe-return="${returnHref.startsWith("/observe/") ? "preserved" : "fallback"}">${returnHref.startsWith("/observe/") ? "Back to observations" : "Browse meetings and hearings"}</a></p>
   ${guideReturn}
-  <section class="node-hero civic-object-hero meeting-hero" ${record.status === "cancelled" || record.lifecycle === "cancelled" ? `data-meeting-status="cancelled"` : ""}><p class="node-kicker civic-object-kicker">${esc(sourceLabel)}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(formatMeetingWhen(record.event_date) || record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(formatMeetingWhen(record.event_end) || record.event_end)}</time></p>` : ""}${record.status === "cancelled" || record.lifecycle === "cancelled" ? `<p class="meeting-status-notice" role="status">This event is cancelled.${record.cancellation_notice ? ` ${esc(String(record.cancellation_notice))}` : ""}</p>` : ""}</section>
+  <section class="node-hero civic-object-hero meeting-hero"${historical ? ` data-meeting-historical="1"` : ""}${record.status === "cancelled" || record.lifecycle === "cancelled" ? ` data-meeting-status="cancelled"` : ""}><p class="node-kicker civic-object-kicker">${esc(sourceLabel)}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(formatMeetingWhen(record.event_date) || record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(formatMeetingWhen(record.event_end) || record.event_end)}</time></p>` : ""}${historical && historicalDay ? `<p class="meeting-historical-lede" role="status">Historical meeting record for <time datetime="${esc(historicalDay)}">${esc(formatMeetingWhen(historicalDay) || historicalDay)}</time>.</p>` : ""}${record.status === "cancelled" || record.lifecycle === "cancelled" ? `<p class="meeting-status-notice" role="status">This event is cancelled.${record.cancellation_notice ? ` ${esc(String(record.cancellation_notice))}` : ""}</p>` : ""}</section>
   ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}
   ${moreTools}
   ${institutionSection}

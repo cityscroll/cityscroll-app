@@ -1,0 +1,21 @@
+{
+  "fingerprint": "segmented-meeting-detail.v1",
+  "id": "cityscroll-engineering/cb0c04802e711",
+  "projections": [
+    {
+      "id": "segmented-meeting-detail-capability-tests",
+      "path": "test/friction_c1_capability.test.mjs"
+    },
+    {
+      "id": "segmented-meeting-detail-capture-manifest",
+      "path": "docs/evidence/segmented-meeting-detail/capture-manifest.json"
+    },
+    {
+      "id": "segmented-meeting-detail-agenda-helpers",
+      "path": "site/meeting_agenda_segments.mjs"
+    }
+  ],
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "status": "implemented",
+  "updated_at": "2026-09-25T00:00:00.000Z"
+}

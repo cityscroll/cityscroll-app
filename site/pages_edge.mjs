@@ -12,6 +12,7 @@ import {
 } from "./civic_institution_profile_navigation.mjs";
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { renderMeetingDocument } from "./meeting_document.mjs";
+import { stampAgendaSegmentIds } from "./meeting_agenda_segments.mjs";
 import { renderProcurementDocument } from "./procurement_document.mjs";
 import { buildProjectContextView, renderProjectContextHtml } from "./procurement_project_context.mjs";
 import procurementProjectContextMaterialization from "./data/procurement_project_context.json" with { type: "json" };
@@ -390,7 +391,8 @@ async function loadHearingContextAgendaArtifact(env, request) {
 /**
  * Attach already-materialized board agenda segments at meeting-detail load
  * time. Segments stay off the shared meeting catalog payload; the hearing-
- * context artifact remains the source of truth.
+ * context artifact remains the source of truth. Participation is copied only
+ * from the matched meeting entry so one board's forms never bleed onto another.
  */
 export function attachHearingContextAgendaSegments(record, hearingContext) {
   if (!record || !hearingContext || !Array.isArray(hearingContext.boards)) return record;
@@ -411,8 +413,9 @@ export function attachHearingContextAgendaSegments(record, hearingContext) {
   if (!match) return record;
   return {
     ...record,
-    agenda_segments: match.hearing.segments,
+    agenda_segments: stampAgendaSegmentIds(match.hearing.segments),
     agenda_parse_status: "parsed",
+    hearing_participation: match.hearing.participation || null,
   };
 }
 
@@ -451,8 +454,18 @@ async function handleMeeting(request, env, meetingId) {
         : new Response(html, { status: 200, headers });
     }
   }
+  const retryHref = `/meetings/${encodeURIComponent(decoded)}/`;
+  let officialSource = "";
+  if (decoded.startsWith("meeting:community_board:https://")) {
+    officialSource = decoded.slice("meeting:community_board:".length);
+  } else if (decoded.startsWith("meeting:community_board:http://")) {
+    officialSource = decoded.slice("meeting:community_board:".length);
+  }
+  const officialLink = officialSource.startsWith("https://") || officialSource.startsWith("http://")
+    ? `<p><a href="${officialSource.replace(/&/g, "&amp;").replace(/"/g, "&quot;")}" rel="noopener noreferrer">Open the official source</a></p>`
+    : "";
   return new Response(
-    `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Meeting · CityScroll</title></head><body><main><h1>Meeting</h1><p>This meeting is not in the current Meetings view.</p><p><a href="/browse/meetings/">Browse meetings</a></p></main></body></html>`,
+    `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meeting · CityScroll</title></head><body><main><h1>Meeting</h1><p>This meeting is not in the current Meetings view.</p><p><a href="${retryHref.replace(/&/g, "&amp;").replace(/"/g, "&quot;")}">Try again</a></p>${officialLink}<p><a href="/browse/meetings/">Browse meetings</a></p></main></body></html>`,
     { status: 404, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" } },
   );
 }
