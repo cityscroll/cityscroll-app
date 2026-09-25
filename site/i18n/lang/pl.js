@@ -2856,6 +2856,7 @@
     nl_placeholder_alerts: "np. kontrakty edukacyjne powyżej 200 tys. USD z terminem 3 miesięcy, lub przyznania powyżej 1 mln USD",
     nl_chip_exam_guide: "przewodnik po egzaminach",
     nl_chip_closing_this_week: "zamyka się w tym tygodniu",
+    nl_chip_min_remaining_days: "co najmniej {n} dni kalendarzowych pozostało",
     roles_heading: "Stanowiska",
     people_heading: "Ludzie",
     listing_heading: "Ogłoszenie",

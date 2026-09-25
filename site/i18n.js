@@ -2369,6 +2369,7 @@ const STRINGS = {
     nl_placeholder_meetings: "for example, hearings this week, landmarks, city council",
     nl_placeholder_alerts:   "for example, education contracts over $200K due in 3 months, or awards over $1M",
     nl_chip_closing_this_week: "closing this week",
+    nl_chip_min_remaining_days: "at least {n} calendar days remaining",
     nl_chip_exam_guide: "exam guide",
 
     // People panel

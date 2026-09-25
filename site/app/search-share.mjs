@@ -736,7 +736,7 @@ const NL = {
       if(f.maxAmount) chips.push(`<span class="qchip">amount ≤ <b>${money(f.maxAmount)}</b></span>`);
       if(f.closingWeek) chips.push(`<span class="qchip"><b>${t("nl_chip_closing_this_week")}</b></span>`);
       if(f.months) chips.push(`<span class="qchip">due within <b>${f.months} mo</b></span>`);
-      if(f.minRemainingDays!=null) chips.push(`<span class="qchip">at least <b>${f.minRemainingDays}</b> calendar days remaining</span>`);
+      if(f.minRemainingDays!=null) chips.push(`<span class="qchip"><b>${t("nl_chip_min_remaining_days",{n:f.minRemainingDays})}</b></span>`);
       return chips;
     },
     apply:(f,opts)=>{

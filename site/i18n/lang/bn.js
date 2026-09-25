@@ -2843,6 +2843,7 @@
     nl_placeholder_alerts: "যেমন, $200K-এর বেশি শিক্ষা সংক্রান্ত চুক্তি যার মেয়াদ ৩ মাসের মধ্যে শেষ, অথবা $1M-এর বেশি প্রদান",
     nl_chip_exam_guide: "পরীক্ষা নির্দেশিকা",
     nl_chip_closing_this_week: "এই সপ্তাহে বন্ধ",
+    nl_chip_min_remaining_days: "অন্তত {n} ক্যালেন্ডার দিন বাকি",
     roles_heading: "পদসমূহ",
     people_heading: "মানুষ",
     listing_heading: "তালিকা",
