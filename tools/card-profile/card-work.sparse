@@ -552,6 +552,7 @@
 /site/land_authority_summary.mjs
 /site/land_authority_summary_view.mjs
 /site/land_decision_path.mjs
+/site/land_detail_boundary_layers.mjs
 /site/land_detail_coherence.mjs
 /site/land_detail_place_links.mjs
 /site/land_filing_evidence.mjs

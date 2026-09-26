@@ -225,7 +225,33 @@ function wireLandPanControls(map){
     button.addEventListener("click",()=>map.panBy(offsets[button.dataset.mapPan],{animate:false}));
   });
 }
-async function landShowMap(lat, lon, label, selection, precision="approximate"){
+async function attachLandDetailBoundaryLayers(projectId, selection){
+  const id = String(projectId || "").trim();
+  if(!id || !globalThis.landMap) return null;
+  const detailRoot = document.getElementById("ldetail");
+  if(!detailRoot) return null;
+  try{
+    const mod = await import("../land_detail_boundary_layers.mjs");
+    if(selection!==undefined && selection!==globalThis.landSelectionSeq) return null;
+    if(globalThis.__landDetailBoundaryController?.dispose){
+      try{ globalThis.__landDetailBoundaryController.dispose(); }catch(_e){}
+    }
+    const controller = await mod.mountLandDetailBoundaryLayers({
+      map: globalThis.landMap,
+      detailRoot,
+      projectId: id,
+      selection,
+      selectionSeq: () => globalThis.landSelectionSeq,
+      leaflet: globalThis.L,
+    });
+    globalThis.__landDetailBoundaryController = controller;
+    return controller;
+  }catch(_error){
+    return null;
+  }
+}
+
+async function landShowMap(lat, lon, label, selection, precision="approximate", options = {}){
   const el=$("#landmap"); if(!el) return; el.style.display="none";
   const note = precision==="exact" ? "" : t("map_approx_note_html",{label});
   if($("#landmapnote")) $("#landmapnote").innerHTML=note;
@@ -244,9 +270,11 @@ async function landShowMap(lat, lon, label, selection, precision="approximate"){
   globalThis.landMarker=L.marker([lat,lon],{alt:label||t("map_marker_alt")}).addTo(globalThis.landMap);
   if(label) globalThis.landMarker.bindPopup(label).openPopup();
   setTimeout(()=>{ if(globalThis.landMap) globalThis.landMap.invalidateSize(); },150);
+  // Optional NTA/CD outlines stay behind activation and never change the project camera.
+  if(options?.projectId) await attachLandDetailBoundaryLayers(options.projectId, selection);
 }
 
-async function landShowLots(gj, n, selection){
+async function landShowLots(gj, n, selection, options = {}){
   const el=$("#landmap"); if(!el) return; el.style.display="none";
   $("#landmapnote").innerHTML=t("showing_lots_note_html",{n, s:n===1?"":"s"});
   try{ await loadLeaflet(); }catch(e){}
@@ -262,6 +290,7 @@ async function landShowLots(gj, n, selection){
   const layer=L.geoJSON(gj,{style:{color:'#1a44e0',weight:2,fillColor:'#1b3a8f',fillOpacity:.35}}).addTo(globalThis.landMap);
   try{ globalThis.landMap.fitBounds(layer.getBounds(),{padding:[20,20],maxZoom:17}); }catch(e){ globalThis.landMap.setView([40.71,-73.96],12); }
   setTimeout(()=>{ if(globalThis.landMap) globalThis.landMap.invalidateSize(); },160);
+  if(options?.projectId) await attachLandDetailBoundaryLayers(options.projectId, selection);
 }
 
 /* ===================== BROWSE MAP SHELL (route-lazy) =====================
@@ -1115,6 +1144,7 @@ const landBrowseMapRenderer = Object.freeze({
 globalThis.CROL_LAND_MAP_RENDERER = landBrowseMapRenderer;
 
 export {
+  attachLandDetailBoundaryLayers,
   landShowLots,
   landShowMap,
   loadLeaflet,
@@ -1128,4 +1158,5 @@ globalThis.landShowMap = landShowMap;
 globalThis.loadLeaflet = loadLeaflet;
 globalThis.resolveLandMapLocation = resolveLandMapLocation;
 globalThis.wireLandPanControls = wireLandPanControls;
+globalThis.attachLandDetailBoundaryLayers = attachLandDetailBoundaryLayers;
 Object.defineProperty(globalThis, "leafletP", { configurable: true, get: () => leafletP, set: value => { leafletP = value; } });

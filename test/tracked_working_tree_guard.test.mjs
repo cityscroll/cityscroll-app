@@ -17,6 +17,7 @@ const ASSERT_TOOL = fileURLToPath(new URL("../tools/assert_tracked_working_tree_
 const FRICTION = readFileSync(new URL("./friction_t1_capability.test.mjs", import.meta.url), "utf8");
 const MEETING_UI = readFileSync(new URL("./watch_text_query_meeting_ui.test.mjs", import.meta.url), "utf8");
 const READER_UI = readFileSync(new URL("./watch_text_query_ui.test.mjs", import.meta.url), "utf8");
+const LAND_DETAIL_BOUNDARY = readFileSync(new URL("./land_detail_boundary_layers.test.mjs", import.meta.url), "utf8");
 const STALE_NAME_GUARD = readFileSync(new URL("./stale_name_guard.test.mjs", import.meta.url), "utf8");
 
 function git(cwd, args) {
@@ -88,6 +89,7 @@ test("deadline and watch-text evidence tests keep docs/evidence read-only", () =
     ["friction_t1_capability.test.mjs", FRICTION],
     ["watch_text_query_meeting_ui.test.mjs", MEETING_UI],
     ["watch_text_query_ui.test.mjs", READER_UI],
+    ["land_detail_boundary_layers.test.mjs", LAND_DETAIL_BOUNDARY],
   ]) {
     assert.doesNotMatch(
       source,
@@ -103,6 +105,7 @@ test("deadline and watch-text evidence tests keep docs/evidence read-only", () =
   assert.ok(FRICTION.includes("assertEvidenceExample"));
   assert.match(MEETING_UI, /Keep committed evidence read-only/);
   assert.match(READER_UI, /Keep committed evidence read-only/);
+  assert.match(LAND_DETAIL_BOUNDARY, /Keep committed evidence read-only/);
   // Silence unused-root lint style expectations in some runners.
   assert.ok(ROOT.length > 0);
 });

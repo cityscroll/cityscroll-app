@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-detail-boundary-layers",
+  "status": "implemented",
+  "fingerprint": "land-detail-boundary-layers.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-detail-boundary-layers-module",
+      "path": "site/land_detail_boundary_layers.mjs"
+    },
+    {
+      "id": "land-detail-boundary-layers-verify-test",
+      "path": "test/land_detail_boundary_layers.test.mjs"
+    },
+    {
+      "id": "land-detail-boundary-layers-evidence",
+      "path": "docs/evidence/land-detail-boundary-layers/capture-manifest.json"
+    }
+  ]
+}

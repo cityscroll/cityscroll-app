@@ -18,11 +18,25 @@ export const LAND_VIEW_STATE_SCHEMA = "cityscroll.land_view_state.v1";
 /** The sibling presentation parameter carried beside the Land filter keys. */
 export const LAND_VIEW_PARAM = "view";
 
+/**
+ * Optional Land-detail outline toggles. Presentation only: enabling a boundary
+ * layer never changes Land query membership, result counts, or watch identity.
+ */
+export const LAND_BOUNDARIES_PARAM = "boundaries";
+
 export const LAND_VIEW_LIST = "list";
 export const LAND_VIEW_MAP = "map";
 
 /** The only two values that may change Land presentation. */
 export const LAND_VIEWS = Object.freeze([LAND_VIEW_LIST, LAND_VIEW_MAP]);
+
+/** Tokens carried by `boundaries=` on a Land detail route. */
+export const LAND_BOUNDARY_LAYER_NTA = "nta";
+export const LAND_BOUNDARY_LAYER_CD = "cd";
+export const LAND_BOUNDARY_LAYERS = Object.freeze([
+  LAND_BOUNDARY_LAYER_NTA,
+  LAND_BOUNDARY_LAYER_CD,
+]);
 
 /**
  * List is the default for progressive enhancement and zero map cost: an absent
@@ -36,8 +50,10 @@ export const LAND_VIEWS = Object.freeze([LAND_VIEW_LIST, LAND_VIEW_MAP]);
 export const LAND_DEFAULT_VIEW = LAND_VIEW_LIST;
 
 /** Route keys that are presentation only and must never reach watch identity. */
-export const LAND_PRESENTATION_STATE_KEYS = Object.freeze([LAND_VIEW_PARAM]);
-
+export const LAND_PRESENTATION_STATE_KEYS = Object.freeze([
+  LAND_VIEW_PARAM,
+  LAND_BOUNDARIES_PARAM,
+]);
 /** Why a requested Map presentation resolved back to List. */
 export const LAND_VIEW_FALLBACK_REASONS = Object.freeze({
   UNKNOWN_VIEW: "unknown_view",
@@ -60,6 +76,7 @@ export const LAND_VIEW_DEFAULT_QUESTION = Object.freeze({
 });
 
 const VIEW_SET = new Set(LAND_VIEWS);
+const BOUNDARY_SET = new Set(LAND_BOUNDARY_LAYERS);
 
 /**
  * Normalize one candidate value to a known view.
@@ -125,6 +142,71 @@ function splitRouteHash(hash) {
  */
 export function landViewFromRouteHash(hash) {
   return landViewFromSearchParams(splitRouteHash(hash).query);
+}
+
+/**
+ * Normalize a `boundaries` parameter into the stable enabled-token list.
+ * Unknown tokens are dropped; order follows LAND_BOUNDARY_LAYERS.
+ *
+ * @param {unknown} value
+ * @returns {readonly string[]}
+ */
+export function normalizeLandDetailBoundaries(value) {
+  const raw = Array.isArray(value)
+    ? value.map((entry) => String(entry ?? "").trim().toLowerCase())
+    : String(value ?? "")
+      .split(/[+,]/)
+      .map((entry) => entry.trim().toLowerCase())
+      .filter(Boolean);
+  return Object.freeze(LAND_BOUNDARY_LAYERS.filter((token) => raw.includes(token)));
+}
+
+/**
+ * Read enabled outline tokens from a parameter bag.
+ *
+ * @param {URLSearchParams|Record<string, unknown>|string} input
+ * @returns {readonly string[]}
+ */
+export function landDetailBoundariesFromSearchParams(input) {
+  return normalizeLandDetailBoundaries(searchParams(input).get(LAND_BOUNDARIES_PARAM));
+}
+
+/**
+ * Read enabled outline tokens from a Land route hash.
+ *
+ * @param {string} hash
+ * @returns {readonly string[]}
+ */
+export function landDetailBoundariesFromRouteHash(hash) {
+  return landDetailBoundariesFromSearchParams(splitRouteHash(hash).query);
+}
+
+/**
+ * Serialize outline toggles additively onto a Land route hash.
+ * Default (both off) omits the parameter entirely.
+ *
+ * @param {string} hash
+ * @param {unknown} enabled
+ * @returns {string}
+ */
+export function routeHashWithLandDetailBoundaries(hash, enabled) {
+  const resolved = normalizeLandDetailBoundaries(enabled);
+  const { route, query } = splitRouteHash(hash);
+  const params = new URLSearchParams(query);
+  const carried = params.has(LAND_BOUNDARIES_PARAM);
+  if (!resolved.length) {
+    if (!carried) return String(hash ?? "");
+    params.delete(LAND_BOUNDARIES_PARAM);
+    return rebuildRouteHash(route, params);
+  }
+  params.delete(LAND_BOUNDARIES_PARAM);
+  params.append(LAND_BOUNDARIES_PARAM, resolved.join(","));
+  return rebuildRouteHash(route, params);
+}
+
+/** True when the value is exactly one known boundary token. */
+export function isKnownLandBoundaryLayer(value) {
+  return BOUNDARY_SET.has(String(value ?? "").trim().toLowerCase());
 }
 
 function rebuildRouteHash(route, params) {

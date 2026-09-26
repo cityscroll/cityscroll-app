@@ -1,0 +1,49 @@
+{
+  "schema": "cityscroll.land-detail-boundary-layers-receipt.v1",
+  "alias": "cb56f9abf36a5",
+  "revision": "ffef813500fbab17e8ff1c40d4492734daa84ef4",
+  "artifact_vintages": {
+    "nta2020": "26B",
+    "community_district": "2026-05-26"
+  },
+  "viewports": [
+    {
+      "requested": {
+        "width": 390,
+        "height": 844
+      },
+      "measured_inner_width": 390,
+      "measured_inner_height": 844,
+      "toggle_width": 358,
+      "toggle_height": 44,
+      "keyboard_activated": true,
+      "labels": [
+        "Neighborhood boundaries",
+        "Community district boundaries"
+      ]
+    },
+    {
+      "requested": {
+        "width": 1440,
+        "height": 900
+      },
+      "measured_inner_width": 1440,
+      "measured_inner_height": 900,
+      "toggle_width": 190.765625,
+      "toggle_height": 44,
+      "keyboard_activated": true,
+      "labels": [
+        "Neighborhood boundaries",
+        "Community district boundaries"
+      ]
+    }
+  ],
+  "assertions": [
+    "Requested viewport widths 390 and 1440 were applied with page.set_viewport_size and measured via window.innerWidth.",
+    "Control labels remain Neighborhood boundaries and Community district boundaries.",
+    "Enter activates the focused outline control.",
+    "Mobile control width exceeds desktop control width under the stacked layout."
+  ],
+  "render_hash": "2eda4169fc1ee4f0887b4045382eec98beb2ce5123fe4948315e99447be0cc8f",
+  "captured_at": "2026-09-26T00:00:00.000Z"
+}

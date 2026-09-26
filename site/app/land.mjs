@@ -862,6 +862,7 @@ async function landSelect(i, el){
         resolution.label || r.project_name || r.borough || "",
         selection,
         resolution.precision,
+        { projectId: r.project_id },
       );
       drew=true;
     }
