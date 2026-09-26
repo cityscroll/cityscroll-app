@@ -8,7 +8,14 @@ import {
   followingWatchScopeLinksHtml,
   watchFromFollowingParams,
 } from "../../site/following_view.mjs";
-import { compileSub, ensureProcurementDigestSnapshot, getProcurementDigestSnapshot, rowsForCompiledQuery } from "./lib/compile.mjs";
+import {
+  compileSub,
+  ensureLandProjectCatalogRows,
+  ensureProcurementDigestSnapshot,
+  getProcurementDigestSnapshot,
+  landProjectCatalogRows,
+  rowsForCompiledQuery,
+} from "./lib/compile.mjs";
 import { evaluateMeetingAvailabilityRows } from "../../site/meeting_availability_filter.mjs";
 import { feedItems } from "./lib/feed.mjs";
 import { prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
@@ -22,6 +29,8 @@ import { corsHeaders } from "./lib/cors.mjs";
 import { emailFromRequest } from "./session.mjs";
 import { issuePrefsCredential, listWatchesForEmail } from "./prefs.mjs";
 import { followingPersonalIslandHtml } from "../../site/following_personal_state.mjs";
+import { landNtaWatchMatchingIds } from "../../site/land_nta_watch_scope.mjs";
+import { normalizeGeographyKey } from "../../site/scope_v0.mjs";
 
 const SITE_ORIGIN = "https://cityscroll.org";
 const LEGACY_DOCUMENT_HOSTS = new Set(["api.cityscroll.org", "api.crol-list.org"]);
@@ -29,6 +38,96 @@ function esc(value) {
   return String(value ?? "").replace(/[<>&"']/g, (char) => ({
     "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
   }[char]));
+}
+
+function landGeographyKeysFromFilter(filter = {}) {
+  return [...new Set(
+    (Array.isArray(filter.geographies) ? filter.geographies : [filter.geography])
+      .map(normalizeGeographyKey)
+      .filter(Boolean),
+  )].sort();
+}
+
+let landPlaceMembershipCache = null;
+let landPlaceMembershipPromise = null;
+
+/** Load the committed public place-membership index (lazy; off Worker startup). */
+export async function ensureLandPlaceMembershipForPreview(override) {
+  if (override !== undefined) return override;
+  if (landPlaceMembershipCache) return landPlaceMembershipCache;
+  if (!landPlaceMembershipPromise) {
+    landPlaceMembershipPromise = import("../../site/data/land_place_membership.json", { with: { type: "json" } })
+      .then((module) => {
+        landPlaceMembershipCache = module.default;
+        return landPlaceMembershipCache;
+      })
+      .catch((error) => {
+        landPlaceMembershipPromise = null;
+        throw error;
+      });
+  }
+  return landPlaceMembershipPromise;
+}
+
+/** Test-only: clear the lazy membership cache so the next ensure reloads. */
+export function resetLandPlaceMembershipForPreviewForTests() {
+  landPlaceMembershipCache = null;
+  landPlaceMembershipPromise = null;
+}
+
+/**
+ * Land geography Following previews read the public place-membership index and
+ * admitted project catalog. Delivery still uses the Near You activity artifact
+ * and stays fail-closed when that artifact is missing.
+ */
+async function previewLandGeographyWatch(watch, todayISO, options = {}) {
+  try {
+    await ensureLandProjectCatalogRows();
+    const catalogRows = landProjectCatalogRows() || [];
+    const placeMembership = await ensureLandPlaceMembershipForPreview(options.placeMembership);
+    const match = landNtaWatchMatchingIds({
+      filter: watch.filter || {},
+      catalogRows,
+      placeMembership,
+      source: "browse",
+      today: todayISO,
+    });
+    if (match.status === "unavailable") {
+      return {
+        items: [],
+        count: null,
+        error: "The public data source is unavailable right now. The saved criteria are still shown.",
+        status: "unavailable",
+        availabilityCounts: null,
+      };
+    }
+    if (match.status !== "ready") {
+      return {
+        items: [],
+        count: null,
+        error: "This scope cannot be previewed yet. You can still manage existing watches below.",
+        status: null,
+        availabilityCounts: null,
+      };
+    }
+    const byId = new Map(catalogRows.map((row) => [row.project_id, row]));
+    const rows = match.ids.map((id) => byId.get(id)).filter(Boolean);
+    return {
+      items: feedItems("rezone", rows).slice(0, 5),
+      count: rows.length,
+      error: null,
+      status: "complete",
+      availabilityCounts: null,
+    };
+  } catch {
+    return {
+      items: [],
+      count: null,
+      error: "The public data source is unavailable right now. The saved criteria are still shown.",
+      status: "unavailable",
+      availabilityCounts: null,
+    };
+  }
 }
 
 function publicHeaders() {
@@ -55,6 +154,12 @@ async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().
   // first use (off the Worker startup path — error 10021) before compiling or
   // evaluating. Other lenses never trigger the ~11MB parse into the request heap.
   if (watch?.lens === "money" || watch?.lens === "entity") await ensureProcurementDigestSnapshot();
+  // Land geography previews use the public place-membership index so signed-out
+  // visitors see the same project identifiers as signed-in visitors. Digest
+  // delivery keeps the Near You activity path and its fail-closed skip.
+  if (watch?.lens === "land" && landGeographyKeysFromFilter(watch.filter).length) {
+    return previewLandGeographyWatch(watch, todayISO, options);
+  }
   if (watch?.filter?.text_query && textQueryEvaluationSupported(watch.lens)) {
     try {
       const evaluated = await evaluateAdmittedTextQueryWatch({
@@ -299,6 +404,9 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
     ? await previewFor(watch, options.fetchImpl || fetch, options.todayISO, env, {
       cursor,
       sourceRows: options.sourceRows || null,
+      placeMembership: Object.prototype.hasOwnProperty.call(options, "placeMembership")
+        ? options.placeMembership
+        : undefined,
     })
     : { items: [], count: null, error: null, status: null, excludedItems: [] };
   const view = buildFollowingViewModel({
