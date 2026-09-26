@@ -38,6 +38,7 @@ import {
   buildMeetingAiContextHandoff,
   renderMoreToolsRegion,
 } from "./ai_context_handoff.mjs";
+import { meetingIntentSurfaceHtmlFromOptions } from "./procurement_intent_public_surfaces.mjs";
 
 export const MEETING_DOCUMENT_SCHEMA = "cityscroll.meeting_document.v1";
 export const MEETING_DOCUMENT_ROLES = Object.freeze([
@@ -969,6 +970,9 @@ export function renderMeetingDocument(record = {}, readModel = {}, options = {})
   const moreTools = meetingHandoff.status === "ok"
     ? renderMoreToolsRegion({ handoff: meetingHandoff })
     : "";
+  // Optional intent lifecycle enrichment. Absent or held signals render
+  // nothing, so the ordinary meeting record stays usable on its own.
+  const procurementIntentLifecycleHtml = meetingIntentSurfaceHtmlFromOptions(options, record);
   const sourceLabel = record.source_system === "community_board"
     ? "Community board meeting"
     : record.source_system === "nyc_legistar_events"
@@ -1004,6 +1008,7 @@ export function renderMeetingDocument(record = {}, readModel = {}, options = {})
   <section class="node-hero civic-object-hero meeting-hero"${historical ? ` data-meeting-historical="1"` : ""}${record.status === "cancelled" || record.lifecycle === "cancelled" ? ` data-meeting-status="cancelled"` : ""}><p class="node-kicker civic-object-kicker">${esc(sourceLabel)}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(formatMeetingWhen(record.event_date) || record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(formatMeetingWhen(record.event_end) || record.event_end)}</time></p>` : ""}${historical && historicalDay ? `<p class="meeting-historical-lede" role="status">Historical meeting record for <time datetime="${esc(historicalDay)}">${esc(formatMeetingWhen(historicalDay) || historicalDay)}</time>.</p>` : ""}${record.status === "cancelled" || record.lifecycle === "cancelled" ? `<p class="meeting-status-notice" role="status">This event is cancelled.${record.cancellation_notice ? ` ${esc(String(record.cancellation_notice))}` : ""}</p>` : ""}</section>
   ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}
   ${moreTools}
+  ${procurementIntentLifecycleHtml}
   ${institutionSection}
   ${locationSection}
   ${agendaSubjectSection}
