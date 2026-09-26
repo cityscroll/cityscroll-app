@@ -393,6 +393,7 @@ test("A4 capture tool refuses stale served builds and records ancestor guard", (
   assert.match(captureTool, /capture_run_id/);
   assert.match(captureTool, /reused_from/);
   assert.match(captureTool, /capture_image_provenance|refuse_silent_image_reuse/);
+  assert.match(captureTool, /refuse_reuse_claiming_interaction/);
   assert.match(captureTool, /click_named_row_into_detail|clicked-from-list/);
   assert.match(captureTool, /replacing prior packet|Fresh packet only/);
   const delivery = JSON.parse(readFileSync(DELIVERY_PATH, "utf8"));
@@ -458,18 +459,27 @@ test("A4 [verification] production capture manifest records hosted desktop/mobil
     assert.equal(values.broader_district_k07_present, false, `${name} K07 absent`);
   }
   for (const name of ["kensington-detail-desktop", "kensington-detail-mobile"]) {
-    const values = byName[name].served_values;
-    const reused = byName[name].reused_from;
-    assert.equal(typeof reused, "object", `${name} must name reused_from while detail pixels match another packet`);
-    assert.equal(reused.feature, "segmented-meeting-detail");
-    assert.match(String(reused.revision || ""), /^[0-9a-f]{40}$/);
-    assert.ok(reused.capture_run_id || reused.captured_at, `${name} reused_from needs run or captured_at`);
+    const row = byName[name];
+    const values = row.served_values;
+    // The card requires a genuinely CLICKED detail at both widths. Each detail
+    // row is fresh to this run and asserts the click that reached it - never
+    // reuse metadata. The deployed meeting-detail page is deterministic, so the
+    // re-captured bytes match a sibling packet; that coincidence is disclosed in
+    // a coincident_hash field, not laundered as reuse.
+    assert.equal(row.reused_from, undefined, `${name} clicked detail must be fresh, not reused`);
+    assert.equal(row.navigation, "clicked-from-list", `${name} reached by clicking the broader row`);
+    assert.equal(values.opened_from_list_click, true, `${name} records the observed click`);
     assert.equal(values.detail_title_present, true, `${name} detail title`);
     assert.equal(values.venue_address_present, true, `${name} venue address`);
+    const coincident = row.coincident_hash;
+    assert.equal(typeof coincident, "object", `${name} discloses its deterministic byte-coincidence`);
+    assert.equal(coincident.feature, "segmented-meeting-detail", `${name} names the sibling packet`);
+    assert.match(String(coincident.revision || ""), /^[0-9a-f]{40}$/, `${name} names the sibling revision`);
+    assert.equal(coincident.independently_recaptured, true, `${name} affirms an in-run re-capture`);
   }
 });
 
-test("A4 capture provenance refuses silent cross-packet image reuse", (t) => {
+test("A4 capture provenance: fresh rows, no reuse, list unique, detail collisions disclosed", (t) => {
   if (!existsSync(MANIFEST_PATH)) {
     t.skip("production capture pending after delivery deploys with wider-district previews");
     return;
@@ -481,24 +491,84 @@ test("A4 capture provenance refuses silent cross-packet image reuse", (t) => {
       `import json, sys
 from pathlib import Path
 sys.path.insert(0, "tools")
-from capture_image_provenance import refuse_silent_image_reuse
+from capture_image_provenance import (
+    assert_digests_absent_elsewhere,
+    refuse_reuse_claiming_interaction,
+    refuse_silent_image_reuse,
+)
 root = Path(${JSON.stringify(ROOT)})
 path = root / "docs/evidence/near-you-kensington-wider-district/capture-manifest.json"
 manifest = json.loads(path.read_text())
+# The guard accepts this packet: no silent reuse, no reused-row interaction claim.
 refuse_silent_image_reuse(
     manifest,
     evidence_root=root / "docs/evidence",
     manifest_path=path,
     cwd=root,
 )
-# Detail rows must name the segmented-meeting-detail source while their digests
-# remain shared; list rows must stay free of silent foreign reuse.
+refuse_reuse_claiming_interaction(manifest)
+# No row carries reuse metadata; every digest is unique within the packet.
+digests = [row["sha256"] for row in manifest["captures"]]
+assert all(row.get("reused_from") in (None, {}) for row in manifest["captures"]), "no reused_from"
+assert len(digests) == len(set(digests)), "packet digests must be unique"
+# List rows are direct captures whose bytes appear nowhere else in the tree.
+list_digests = [r["sha256"] for r in manifest["captures"] if r["name"].startswith("kensington-meetings-")]
+assert_digests_absent_elsewhere(
+    list_digests,
+    evidence_root=root / "docs/evidence",
+    exclude_manifest=path,
+)
+# Detail rows are clicked and fresh, but the deterministic meeting-detail page
+# renders byte-identically to the segmented-meeting-detail packet; each such row
+# discloses the coincidence explicitly instead of copying the image silently.
 for row in manifest["captures"]:
-    name = row["name"]
-    if name.startswith("kensington-detail-"):
-        assert isinstance(row.get("reused_from"), dict), name
-    elif name.startswith("kensington-meetings-"):
-        assert row.get("reused_from") in (None, {}), name
+    if not row["name"].startswith("kensington-detail-"):
+        continue
+    assert row.get("reused_from") in (None, {}), row["name"]
+    assert row.get("navigation") == "clicked-from-list", row["name"]
+    assert row["served_values"].get("opened_from_list_click") is True, row["name"]
+    coincident = row.get("coincident_hash")
+    assert isinstance(coincident, dict), row["name"]
+    assert coincident.get("feature") == "segmented-meeting-detail", row["name"]
+    assert coincident.get("independently_recaptured") is True, row["name"]
+print("ok")
+`,
+    ],
+    { cwd: ROOT, encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(result.stdout.trim(), "ok");
+});
+
+test("A4 capture guard refuses a reused row that also claims a click", () => {
+  // Positive control: disclosure can never satisfy a clicked-detail clause, so
+  // a row carrying reused_from must be refused the moment it claims an
+  // interaction (navigation or an opened_from_list_click served value).
+  const result = spawnSync(
+    "python3",
+    [
+      "-c",
+      `import sys
+from pathlib import Path
+sys.path.insert(0, "tools")
+from capture_image_provenance import refuse_reuse_claiming_interaction
+
+def refused(manifest):
+    try:
+        refuse_reuse_claiming_interaction(manifest)
+        return False
+    except SystemExit:
+        return True
+
+reused_from = {"feature": "segmented-meeting-detail", "revision": "a" * 40, "captured_at": "2026-09-25T20:07:57Z"}
+# A reused row claiming a click via navigation is refused.
+assert refused({"captures": [{"name": "d1", "reused_from": reused_from, "navigation": "clicked-from-list"}]})
+# A reused row claiming a click via a served value is refused.
+assert refused({"captures": [{"name": "d2", "reused_from": reused_from, "navigation": "direct", "served_values": {"opened_from_list_click": True}}]})
+# A reused row that claims no interaction is permitted by this guard.
+assert not refused({"captures": [{"name": "d3", "reused_from": reused_from, "navigation": "direct", "served_values": {"opened_from_list_click": False}}]})
+# A fresh row (no reuse) that claims a click is permitted; the click stands.
+assert not refused({"captures": [{"name": "d4", "navigation": "clicked-from-list", "served_values": {"opened_from_list_click": True}}]})
 print("ok")
 `,
     ],

@@ -44,7 +44,10 @@ from deployed_capture_ancestor import (  # noqa: E402
     revision_contains_ancestor,
 )
 from capture_image_provenance import (  # noqa: E402
+    collect_retained_image_digests,
+    refuse_reuse_claiming_interaction,
     refuse_silent_image_reuse,
+    row_claims_journey_interaction,
 )
 from near_you_detail_observer import (  # noqa: E402
     fetch_document_html,
@@ -94,12 +97,24 @@ def require_served_revision_contains_delivery(base: str) -> str:
         raise SystemExit(str(error)) from error
 
 
+EVIDENCE_ROOT = ROOT / "docs" / "evidence"
+
+
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def sibling_manifest_revision(manifest_rel_path: str) -> str:
+    """Return the recorded revision of a sibling capture manifest under evidence."""
+    try:
+        data = json.loads((EVIDENCE_ROOT / manifest_rel_path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return "unknown"
+    return str(data.get("revision") or data.get("repository_revision") or "unknown")
 
 
 def host_screenshots(paths: list[Path]) -> dict[str, str]:
@@ -297,10 +312,20 @@ def validate_manifest(manifest: dict) -> None:
         if str(row.get("name") or "").startswith("kensington-detail-"):
             assert values.get("venue_address_present") is True
             assert values.get("detail_title_present") is True
-            if not row.get("reused_from"):
-                assert values.get("opened_from_list_click") is True
-                assert row.get("navigation") == "clicked-from-list"
+            # The card requires a genuinely CLICKED detail at both widths.
+            # Disclosure can never satisfy a "clicked detail" clause, so a
+            # detail row must assert the click and must not carry reuse
+            # metadata; the general interaction guard below also refuses any
+            # reused row that claims an interaction.
+            if row.get("reused_from"):
+                raise SystemExit(
+                    f"{row.get('name')}: a clicked-detail row must not carry reused_from; "
+                    "disclosure cannot satisfy the clicked-detail requirement"
+                )
+            assert values.get("opened_from_list_click") is True
+            assert row.get("navigation") == "clicked-from-list"
 
+    refuse_reuse_claiming_interaction(manifest)
     refuse_silent_image_reuse(
         manifest,
         evidence_root=ROOT / "docs" / "evidence",
@@ -418,6 +443,29 @@ def capture(base: str, host: bool) -> dict:
             )
             context.close()
 
+    # Disclose any deterministic byte-coincidence with a sibling packet. A
+    # clicked detail page renders identically no matter how it was reached, so a
+    # genuinely re-captured detail image can be byte-identical to one another
+    # card already captured. Name the sibling and its revision and affirm the
+    # independent in-run re-capture rather than reuse the image silently.
+    foreign_index = collect_retained_image_digests(
+        EVIDENCE_ROOT,
+        exclude_manifest=MANIFEST_PATH,
+    )
+    for row in captures:
+        hits = foreign_index.get(row["sha256"]) or []
+        if hits and row_claims_journey_interaction(row):
+            sibling = hits[0]
+            row["coincident_hash"] = {
+                "feature": sibling.feature,
+                "revision": sibling_manifest_revision(sibling.manifest_path),
+                "independently_recaptured": True,
+                "note": (
+                    "Deterministic meeting-detail page re-captured in this run after clicking "
+                    "the wider-district row; byte-identical to the named sibling packet."
+                ),
+            }
+
     if host:
         hosted = host_screenshots(local_files)
         for row in captures:
@@ -447,8 +495,13 @@ def capture(base: str, host: bool) -> dict:
         "image_policy": (
             "Screenshots may exist under the local task scratch directory; only this manifest is committed. "
             "Externally retained https screenshot_url values are required. "
-            "All captures in this packet share capture_run_id; silent reuse of another packet's image "
-            "or of this manifest's previous committed digests is forbidden without reused_from."
+            "All captures in this packet share capture_run_id and were captured in this run. "
+            "Every row is fresh: the clicked-detail rows were reached by clicking the wider-district row. "
+            "The deployed meeting-detail page is deterministic, so a re-captured detail image can be "
+            "byte-identical to a sibling packet; such a row discloses that coincidence in a coincident_hash "
+            "field naming the sibling feature and revision and affirming the independent in-run re-capture. "
+            "A digest that appears in another packet is forbidden unless the row carries reused_from "
+            "(with no interaction claim) or a coincident_hash declaration backed by an observed click."
         ),
         "surface": "Near You Kensington wider-district journey",
         "verifier": "node --test test/kensington_wider_district_journey.test.mjs",
