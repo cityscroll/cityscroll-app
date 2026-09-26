@@ -307,12 +307,14 @@ describe("land NTA geography filter parity", () => {
   });
 
   it("A3 empty geography-filtered results expose a clear-area control in the Land empty state", () => {
-    const source = readFileSync(join(ROOT, "site/app/land.mjs"), "utf8");
-    assert.match(source, /data-land-clear-area/);
-    assert.match(source, /land_clear_area/);
-    assert.match(source, /clearLandAreaFilter/);
-    assert.match(source, /!landHasExplicitGeography\(\)/);
-    assert.match(source, /landNearby/);
+    const landSource = readFileSync(join(ROOT, "site/app/land.mjs"), "utf8");
+    const runtimeSource = readFileSync(join(ROOT, "site/land_nta_geography_runtime.mjs"), "utf8");
+    assert.match(runtimeSource, /data-land-clear-area/);
+    assert.match(runtimeSource, /land_clear_area/);
+    assert.match(landSource, /clearLandAreaFilter/);
+    assert.match(landSource, /LG\.landShouldBroadenDistrict/);
+    assert.match(landSource, /landNearby/);
+    assert.match(runtimeSource, /landShouldBroadenDistrict/);
   });
 
   it("A4 invalid geography keys stay invalid and never widen to all-city", () => {
@@ -354,10 +356,12 @@ describe("land NTA geography filter parity", () => {
     });
     assert.deepEqual(landCanonicalIds(rows), []);
 
-    const source = readFileSync(join(ROOT, "site/app/land.mjs"), "utf8");
-    assert.match(source, /land_place_index_unavailable/);
-    assert.match(source, /data-land-retry-place/);
-    assert.match(source, /constraint\.status==="unavailable"/);
+    const landSource = readFileSync(join(ROOT, "site/app/land.mjs"), "utf8");
+    const runtimeSource = readFileSync(join(ROOT, "site/land_nta_geography_runtime.mjs"), "utf8");
+    assert.match(runtimeSource, /land_place_index_unavailable/);
+    assert.match(runtimeSource, /data-land-retry-place/);
+    assert.match(runtimeSource, /constraint\.status === "unavailable"/);
+    assert.match(landSource, /LG\.showLandPlaceIndexUnavailable/);
   });
 
   it("A4 checker reports coherent constraints and a positive-control corruption", () => {
