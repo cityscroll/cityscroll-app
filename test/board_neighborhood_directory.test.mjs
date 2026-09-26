@@ -5,9 +5,11 @@
  */
 
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
+import { pathToFileURL } from "node:url";
 
 import {
   associationsFromBoardNeighborhoodSource,
@@ -20,9 +22,49 @@ import {
   resolveBoardNeighborhoodSelection,
   visibleBoardIdsForSelection,
 } from "../site/board_neighborhood_directory.mjs";
-import { FakeEvent, keydown, mountDocument } from "./helpers/preview_dom.mjs";
+import { withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
+import { keydown, mountDocument } from "./helpers/preview_dom.mjs";
 
 const ROOT = process.cwd();
+const WIDTHS_PROBE = join("test", "functional", "board_neighborhood_directory_widths.py");
+
+function pythonPlaywrightChromiumAvailable() {
+  const probe = spawnSync(
+    "python3",
+    [
+      "-c",
+      "from playwright.sync_api import sync_playwright\n"
+      + "with sync_playwright() as p:\n"
+      + "    browser = p.chromium.launch(headless=True)\n"
+      + "    browser.close()\n",
+    ],
+    { encoding: "utf8", timeout: 60_000, env: process.env },
+  );
+  return probe.status === 0;
+}
+
+function directoryWidthsDocumentHtml() {
+  const associations = loadAssociations();
+  const neighborhoodHtml = renderBoardNeighborhoodDirectoryHtml(associations, {
+    selectedGeo: "nta2020:BK1203",
+  });
+  const brandHref = pathToFileURL(join(ROOT, "site", "brand.css")).href;
+  const scorecardHref = pathToFileURL(join(ROOT, "site", "community-board-scorecard.css")).href;
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="${brandHref}">
+<link rel="stylesheet" href="${scorecardHref}">
+</head>
+<body>
+<main class="scorecard" data-community-board-root>
+${neighborhoodHtml}
+</main>
+</body>
+</html>`;
+}
 
 function readJson(relative) {
   return JSON.parse(readFileSync(join(ROOT, relative), "utf8"));
@@ -212,7 +254,7 @@ test("A3: special-district overlaps stay out of board cards; failed loads keep d
   assert.equal(binder.getSelection().recovery?.reason, "association_load_failed");
 });
 
-test("A4: labeled controls, keyboard selection, no-JS links, and multi-board copy at 390 and 1440", () => {
+test("A4: labeled controls, keyboard selection, no-JS links, and multi-board copy stay in markup", () => {
   const associations = loadAssociations();
   const html = renderBoardNeighborhoodDirectoryHtml(associations, {
     selectedGeo: "nta2020:BK1203",
@@ -230,38 +272,94 @@ test("A4: labeled controls, keyboard selection, no-JS links, and multi-board cop
   assert.match(html, /neighborhood area/);
 
   const shell = scorecardShell(html);
-  for (const width of [390, 1440]) {
-    const location = makeLocation("https://cityscroll.org/community-boards/");
-    const { doc, container } = mountDocument(shell, { containerClass: "scorecard-host" });
-    const root = container.querySelector("[data-community-board-root]");
-    root.style = root.style || {};
-    root.dataset.viewportWidth = String(width);
-    const binder = mountBoardNeighborhoodDirectory(root, {
-      associations,
-      location,
-      history: makeHistory(location),
-    });
-    const select = root.querySelector("[data-board-neighborhood-select]");
-    assert.ok(select, `chooser present at ${width}`);
-    assert.equal(select.getAttribute("id"), "scorecard-neighborhood-select");
-    select.value = "nta2020:BK0101";
-    keydown(select, "Enter");
-    assert.equal(binder.getSelection().nta_id, "BK0101");
-    assert.match(root.querySelector("[data-board-neighborhood-results-heading]").textContent, /Board overlapping Greenpoint/);
-    assert.equal(root.querySelector('[data-board-id="brooklyn-cb-01"]').hidden, false);
-    assert.equal(root.querySelector('[data-board-id="brooklyn-cb-12"]').hidden, true);
+  const location = makeLocation("https://cityscroll.org/community-boards/");
+  const { container } = mountDocument(shell, { containerClass: "scorecard-host" });
+  const root = container.querySelector("[data-community-board-root]");
+  const binder = mountBoardNeighborhoodDirectory(root, {
+    associations,
+    location,
+    history: makeHistory(location),
+  });
+  const select = root.querySelector("[data-board-neighborhood-select]");
+  assert.ok(select);
+  assert.equal(select.getAttribute("id"), "scorecard-neighborhood-select");
+  select.value = "nta2020:BK0101";
+  keydown(select, "Enter");
+  assert.equal(binder.getSelection().nta_id, "BK0101");
+  assert.match(root.querySelector("[data-board-neighborhood-results-heading]").textContent, /Board overlapping Greenpoint/);
+  assert.equal(root.querySelector('[data-board-id="brooklyn-cb-01"]').hidden, false);
+  assert.equal(root.querySelector('[data-board-id="brooklyn-cb-12"]').hidden, true);
 
-    // Multi-board copy and address action return for Kensington.
-    binder.selectGeo("nta2020:BK1203");
-    assert.match(root.querySelector("[data-board-neighborhood-results-heading]").textContent, /Boards overlapping Kensington/);
-    assert.ok(root.querySelector("[data-board-address-action]"));
+  binder.selectGeo("nta2020:BK1203");
+  assert.match(root.querySelector("[data-board-neighborhood-results-heading]").textContent, /Boards overlapping Kensington/);
+  assert.ok(root.querySelector("[data-board-address-action]"));
 
-    // No-JS association links remain in the document for both widths.
-    const noJsLink = root.querySelector('[data-board-neighborhood-link="BK1503"]');
-    assert.ok(noJsLink);
-    assert.match(noJsLink.getAttribute("href"), /geo=nta2020%3ABK1503/);
-    assert.equal(width === 390 || width === 1440, true);
-  }
+  const noJsLink = root.querySelector('[data-board-neighborhood-link="BK1503"]');
+  assert.ok(noJsLink);
+  assert.match(noJsLink.getAttribute("href"), /geo=nta2020%3ABK1503/);
 
   assert.equal(boardDisplayNameFromId("brooklyn-cb-15"), "Brooklyn Community Board 15");
+});
+
+test("A4: browser measures neighborhood chooser and cards at 390 and 1440", async (t) => {
+  assert.equal(existsSync(join(ROOT, WIDTHS_PROBE)), true);
+  if (!pythonPlaywrightChromiumAvailable()) {
+    t.skip("Python playwright Chromium is not launchable in this lane");
+    return;
+  }
+
+  withTempDirSync("board-neighborhood-directory-widths", (dir) => {
+    const documentPath = join(dir, "index.html");
+    writeFileSync(documentPath, directoryWidthsDocumentHtml());
+    const result = spawnSync("python3", [join(ROOT, WIDTHS_PROBE), documentPath], {
+      cwd: ROOT,
+      encoding: "utf8",
+      timeout: 120_000,
+      env: process.env,
+    });
+    assert.equal(result.status, 0, result.stderr || result.stdout);
+    const payload = JSON.parse(result.stdout);
+    assert.equal(payload.schema, "cityscroll.board_neighborhood_directory_widths.v1");
+    assert.equal(payload.capture_mode, "headless-playwright-fixture-document");
+    assert.deepEqual(payload.viewports, [[390, 844], [1440, 900]]);
+    assert.equal(payload.observations.length, 2);
+
+    const byId = Object.fromEntries(payload.observations.map((row) => [row.id, row]));
+    const narrow = byId.narrow_touch;
+    const desktop = byId.desktop;
+    assert.ok(narrow && desktop);
+
+    for (const row of [narrow, desktop]) {
+      const seen = row.observed;
+      assert.equal(seen.inner_width, row.viewport.width, `${row.id} window width must match viewport`);
+      assert.ok(seen.entry?.width > 0, `${row.id} entry width`);
+      assert.ok(seen.chooser?.width > 0, `${row.id} chooser width`);
+      assert.equal(seen.chooser_id, "scorecard-neighborhood-select");
+      assert.equal(seen.label_text, "Neighborhood");
+      assert.match(seen.heading_text || "", /Boards overlapping Kensington/);
+      assert.equal(seen.choice_count, 2, `${row.id} Kensington board cards`);
+      assert.equal(seen.choice_widths.length, 2);
+      assert.ok(seen.choice_widths.every((width) => width > 0), `${row.id} card widths`);
+      assert.equal(seen.address_action_present, true);
+      assert.match(seen.nojs_link_href || "", /geo=nta2020%3ABK1503/);
+      assert.equal(seen.focused_neighborhood_select, true);
+      assert.ok(Number(seen.keyboard_traversal_steps) >= 1, `${row.id} Tab traversal`);
+      assert.equal(seen.focused_id, "scorecard-neighborhood-select");
+    }
+
+    // Positive controls: the two named widths must produce distinct measured layout.
+    assert.notEqual(
+      narrow.observed.entry.width,
+      desktop.observed.entry.width,
+      "entry width must differ between 390 and 1440",
+    );
+    assert.ok(
+      desktop.observed.entry.width > narrow.observed.entry.width,
+      "desktop entry width must exceed narrow entry width",
+    );
+    assert.ok(
+      Math.max(...desktop.observed.choice_widths) > Math.max(...narrow.observed.choice_widths),
+      "desktop board-card width must exceed narrow board-card width",
+    );
+  });
 });
