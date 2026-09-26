@@ -1,0 +1,360 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "39",
+  "association_kind": "published_project_lot",
+  "project_count": 2,
+  "projects": {
+    "2021Q0439": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "4016410001",
+        "4016410044",
+        "4016410045"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "4016410001": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q03"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "21"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN0302"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "115"
+              ]
+            }
+          }
+        },
+        "4016410044": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q03"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "21"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN0302"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "115"
+              ]
+            }
+          }
+        },
+        "4016410045": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q03"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "21"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN0302"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "115"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "4": [
+            "4016410001",
+            "4016410044",
+            "4016410045"
+          ]
+        },
+        "community_district": {
+          "Q03": [
+            "4016410001",
+            "4016410044",
+            "4016410045"
+          ]
+        },
+        "council_district": {
+          "21": [
+            "4016410001",
+            "4016410044",
+            "4016410045"
+          ]
+        },
+        "nta2020": {
+          "QN0302": [
+            "4016410001",
+            "4016410044",
+            "4016410045"
+          ]
+        },
+        "police_precinct": {
+          "115": [
+            "4016410001",
+            "4016410044",
+            "4016410045"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q03",
+        "council_district": "21"
+      }
+    },
+    "2024X0132": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "2038020001",
+        "2038020006",
+        "2038020013",
+        "2038020080"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "2038020001": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X09"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "18"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX0903"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            }
+          }
+        },
+        "2038020006": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X09"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "18"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX0903"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            }
+          }
+        },
+        "2038020013": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X09"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "18"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX0903"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            }
+          }
+        },
+        "2038020080": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X09"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "18"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX0903"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "2": [
+            "2038020001",
+            "2038020006",
+            "2038020013",
+            "2038020080"
+          ]
+        },
+        "community_district": {
+          "X09": [
+            "2038020001",
+            "2038020006",
+            "2038020013",
+            "2038020080"
+          ]
+        },
+        "council_district": {
+          "18": [
+            "2038020001",
+            "2038020006",
+            "2038020013",
+            "2038020080"
+          ]
+        },
+        "nta2020": {
+          "BX0903": [
+            "2038020001",
+            "2038020006",
+            "2038020013",
+            "2038020080"
+          ]
+        },
+        "police_precinct": {
+          "43": [
+            "2038020001",
+            "2038020006",
+            "2038020013",
+            "2038020080"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X09",
+        "council_district": "18"
+      }
+    }
+  }
+}

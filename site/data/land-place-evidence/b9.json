@@ -1,0 +1,84 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "b9",
+  "association_kind": "published_project_lot",
+  "project_count": 1,
+  "projects": {
+    "2025K0284": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "3061090001"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "3061090001": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K10"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "47"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK1001"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "68"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "3": [
+            "3061090001"
+          ]
+        },
+        "community_district": {
+          "K10": [
+            "3061090001"
+          ]
+        },
+        "council_district": {
+          "47": [
+            "3061090001"
+          ]
+        },
+        "nta2020": {
+          "BK1001": [
+            "3061090001"
+          ]
+        },
+        "police_precinct": {
+          "68": [
+            "3061090001"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K10",
+        "council_district": "47"
+      }
+    }
+  }
+}

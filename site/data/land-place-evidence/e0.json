@@ -1,0 +1,104 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "e0",
+  "association_kind": "published_project_lot",
+  "project_count": 1,
+  "projects": {
+    "2025K0306": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "3069430163",
+        "3069430242",
+        "3069430427"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "3069430163": {
+          "layers": {
+            "borough": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "community_district": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "council_district": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "nta2020": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "police_precinct": {
+              "status": "uncovered",
+              "ids": []
+            }
+          }
+        },
+        "3069430242": {
+          "layers": {
+            "borough": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "community_district": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "council_district": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "nta2020": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "police_precinct": {
+              "status": "uncovered",
+              "ids": []
+            }
+          }
+        },
+        "3069430427": {
+          "layers": {
+            "borough": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "community_district": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "council_district": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "nta2020": {
+              "status": "uncovered",
+              "ids": []
+            },
+            "police_precinct": {
+              "status": "uncovered",
+              "ids": []
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {},
+        "community_district": {},
+        "council_district": {},
+        "nta2020": {},
+        "police_precinct": {}
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K11",
+        "council_district": "47"
+      }
+    }
+  }
+}

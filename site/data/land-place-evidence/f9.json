@@ -1,0 +1,84 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "f9",
+  "association_kind": "published_project_lot",
+  "project_count": 1,
+  "projects": {
+    "2021X0247": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "2055597501"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "2055597501": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X10"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "13"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX0903"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "45"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "2": [
+            "2055597501"
+          ]
+        },
+        "community_district": {
+          "X10": [
+            "2055597501"
+          ]
+        },
+        "council_district": {
+          "13": [
+            "2055597501"
+          ]
+        },
+        "nta2020": {
+          "BX0903": [
+            "2055597501"
+          ]
+        },
+        "police_precinct": {
+          "45": [
+            "2055597501"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X10",
+        "council_district": "13"
+      }
+    }
+  }
+}

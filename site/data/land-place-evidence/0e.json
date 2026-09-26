@@ -1,0 +1,124 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "0e",
+  "association_kind": "published_project_lot",
+  "project_count": 1,
+  "projects": {
+    "2024Q0356": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "4073090001",
+        "4073090003"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "4073090001": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q11"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "19"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN1102"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "111"
+              ]
+            }
+          }
+        },
+        "4073090003": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q11"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "19"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN1102"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "111"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "4": [
+            "4073090001",
+            "4073090003"
+          ]
+        },
+        "community_district": {
+          "Q11": [
+            "4073090001",
+            "4073090003"
+          ]
+        },
+        "council_district": {
+          "19": [
+            "4073090001",
+            "4073090003"
+          ]
+        },
+        "nta2020": {
+          "QN1102": [
+            "4073090001",
+            "4073090003"
+          ]
+        },
+        "police_precinct": {
+          "111": [
+            "4073090001",
+            "4073090003"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q11",
+        "council_district": "19"
+      }
+    }
+  }
+}

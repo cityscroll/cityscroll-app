@@ -1,0 +1,680 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "96",
+  "association_kind": "published_project_lot",
+  "project_count": 3,
+  "projects": {
+    "2020Q0240": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "4103040007",
+        "4103040025",
+        "4103430005",
+        "4103430165"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "4103040007": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "27"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN1205"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "113"
+              ]
+            }
+          }
+        },
+        "4103040025": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "27"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN1205"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "113"
+              ]
+            }
+          }
+        },
+        "4103430005": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "27"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN1201"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "103"
+              ]
+            }
+          }
+        },
+        "4103430165": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "27"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN1201"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "103"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "4": [
+            "4103040007",
+            "4103040025",
+            "4103430005",
+            "4103430165"
+          ]
+        },
+        "community_district": {
+          "Q12": [
+            "4103040007",
+            "4103040025",
+            "4103430005",
+            "4103430165"
+          ]
+        },
+        "council_district": {
+          "27": [
+            "4103040007",
+            "4103040025",
+            "4103430005",
+            "4103430165"
+          ]
+        },
+        "nta2020": {
+          "QN1201": [
+            "4103430005",
+            "4103430165"
+          ],
+          "QN1205": [
+            "4103040007",
+            "4103040025"
+          ]
+        },
+        "police_precinct": {
+          "103": [
+            "4103430005",
+            "4103430165"
+          ],
+          "113": [
+            "4103040007",
+            "4103040025"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q12",
+        "council_district": "27"
+      }
+    },
+    "2024Q0297": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "4063910001",
+        "4063910024"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "4063910001": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q07"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "20"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN0706"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "109"
+              ]
+            }
+          }
+        },
+        "4063910024": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q07"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "20"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN0706"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "109"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "4": [
+            "4063910001",
+            "4063910024"
+          ]
+        },
+        "community_district": {
+          "Q07": [
+            "4063910001",
+            "4063910024"
+          ]
+        },
+        "council_district": {
+          "20": [
+            "4063910001",
+            "4063910024"
+          ]
+        },
+        "nta2020": {
+          "QN0706": [
+            "4063910001",
+            "4063910024"
+          ]
+        },
+        "police_precinct": {
+          "109": [
+            "4063910001",
+            "4063910024"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q07",
+        "council_district": "20"
+      }
+    },
+    "2025X0116": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "2048240001",
+        "2048240007",
+        "2048240073",
+        "2048240075",
+        "2048240077",
+        "2048240078",
+        "2048240079",
+        "2048240082"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "2048240001": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "12"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX1201"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "47"
+              ]
+            }
+          }
+        },
+        "2048240007": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "12"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX1201"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "47"
+              ]
+            }
+          }
+        },
+        "2048240073": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "12"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX1201"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "47"
+              ]
+            }
+          }
+        },
+        "2048240075": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "12"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX1201"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "47"
+              ]
+            }
+          }
+        },
+        "2048240077": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "12"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX1201"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "47"
+              ]
+            }
+          }
+        },
+        "2048240078": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "12"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX1201"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "47"
+              ]
+            }
+          }
+        },
+        "2048240079": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "12"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX1201"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "47"
+              ]
+            }
+          }
+        },
+        "2048240082": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X12"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "12"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX1201"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "47"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "2": [
+            "2048240001",
+            "2048240007",
+            "2048240073",
+            "2048240075",
+            "2048240077",
+            "2048240078",
+            "2048240079",
+            "2048240082"
+          ]
+        },
+        "community_district": {
+          "X12": [
+            "2048240001",
+            "2048240007",
+            "2048240073",
+            "2048240075",
+            "2048240077",
+            "2048240078",
+            "2048240079",
+            "2048240082"
+          ]
+        },
+        "council_district": {
+          "12": [
+            "2048240001",
+            "2048240007",
+            "2048240073",
+            "2048240075",
+            "2048240077",
+            "2048240078",
+            "2048240079",
+            "2048240082"
+          ]
+        },
+        "nta2020": {
+          "BX1201": [
+            "2048240001",
+            "2048240007",
+            "2048240073",
+            "2048240075",
+            "2048240077",
+            "2048240078",
+            "2048240079",
+            "2048240082"
+          ]
+        },
+        "police_precinct": {
+          "47": [
+            "2048240001",
+            "2048240007",
+            "2048240073",
+            "2048240075",
+            "2048240077",
+            "2048240078",
+            "2048240079",
+            "2048240082"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X12",
+        "council_district": "12"
+      }
+    }
+  }
+}

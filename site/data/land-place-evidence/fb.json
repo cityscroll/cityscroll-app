@@ -1,0 +1,84 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "fb",
+  "association_kind": "published_project_lot",
+  "project_count": 1,
+  "projects": {
+    "2024M0104": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "1009627502"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "1009627502": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "1"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "M06"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "MN0603"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "13"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "1": [
+            "1009627502"
+          ]
+        },
+        "community_district": {
+          "M06": [
+            "1009627502"
+          ]
+        },
+        "council_district": {
+          "4": [
+            "1009627502"
+          ]
+        },
+        "nta2020": {
+          "MN0603": [
+            "1009627502"
+          ]
+        },
+        "police_precinct": {
+          "13": [
+            "1009627502"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M06",
+        "council_district": "4"
+      }
+    }
+  }
+}

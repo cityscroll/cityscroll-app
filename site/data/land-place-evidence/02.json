@@ -1,0 +1,520 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "02",
+  "association_kind": "published_project_lot",
+  "project_count": 2,
+  "projects": {
+    "2022K0121": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "3055380004",
+        "3055380007",
+        "3055380032",
+        "3055380036",
+        "3055380040",
+        "3055380132"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "3055380004": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K11"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK1101"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "62"
+              ]
+            }
+          }
+        },
+        "3055380007": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K11"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK1101"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "62"
+              ]
+            }
+          }
+        },
+        "3055380032": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K11"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK1101"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "62"
+              ]
+            }
+          }
+        },
+        "3055380036": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K11"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK1101"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "62"
+              ]
+            }
+          }
+        },
+        "3055380040": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K11"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK1101"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "62"
+              ]
+            }
+          }
+        },
+        "3055380132": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K11"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK1101"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "62"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "3": [
+            "3055380004",
+            "3055380007",
+            "3055380032",
+            "3055380036",
+            "3055380040",
+            "3055380132"
+          ]
+        },
+        "community_district": {
+          "K11": [
+            "3055380004",
+            "3055380007",
+            "3055380032",
+            "3055380036",
+            "3055380040",
+            "3055380132"
+          ]
+        },
+        "council_district": {
+          "43": [
+            "3055380004",
+            "3055380007",
+            "3055380032",
+            "3055380036",
+            "3055380040",
+            "3055380132"
+          ]
+        },
+        "nta2020": {
+          "BK1101": [
+            "3055380004",
+            "3055380007",
+            "3055380032",
+            "3055380036",
+            "3055380040",
+            "3055380132"
+          ]
+        },
+        "police_precinct": {
+          "62": [
+            "3055380004",
+            "3055380007",
+            "3055380032",
+            "3055380036",
+            "3055380040",
+            "3055380132"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K11",
+        "council_district": "43"
+      }
+    },
+    "2024K0196": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "3031620019",
+        "3031620020",
+        "3031620021",
+        "3031620022",
+        "3031620023"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "3031620019": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K04"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "34"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK0401"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "83"
+              ]
+            }
+          }
+        },
+        "3031620020": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K04"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "34"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK0401"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "83"
+              ]
+            }
+          }
+        },
+        "3031620021": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K04"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "34"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK0401"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "83"
+              ]
+            }
+          }
+        },
+        "3031620022": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K04"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "34"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK0401"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "83"
+              ]
+            }
+          }
+        },
+        "3031620023": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "K04"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "34"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BK0401"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "83"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "3": [
+            "3031620019",
+            "3031620020",
+            "3031620021",
+            "3031620022",
+            "3031620023"
+          ]
+        },
+        "community_district": {
+          "K04": [
+            "3031620019",
+            "3031620020",
+            "3031620021",
+            "3031620022",
+            "3031620023"
+          ]
+        },
+        "council_district": {
+          "34": [
+            "3031620019",
+            "3031620020",
+            "3031620021",
+            "3031620022",
+            "3031620023"
+          ]
+        },
+        "nta2020": {
+          "BK0401": [
+            "3031620019",
+            "3031620020",
+            "3031620021",
+            "3031620022",
+            "3031620023"
+          ]
+        },
+        "police_precinct": {
+          "83": [
+            "3031620019",
+            "3031620020",
+            "3031620021",
+            "3031620022",
+            "3031620023"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K04",
+        "council_district": "34"
+      }
+    }
+  }
+}
