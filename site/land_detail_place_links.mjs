@@ -364,17 +364,18 @@ export function renderLandDetailPlaceLinksSection(view, { escape = esc } = {}) {
   const vintageBits = [];
   const boundary = view.source_dates?.boundary_vintages;
   if (boundary && typeof boundary === "object") {
-    if (boundary.nta2020) vintageBits.push(`NTA ${boundary.nta2020}`);
-    if (boundary.community_district) vintageBits.push(`community district ${boundary.community_district}`);
+    if (boundary.nta2020) vintageBits.push("neighborhood boundaries");
+    if (boundary.community_district) vintageBits.push("community district boundaries");
   }
   if (view.source_dates?.parcel_coordinate_vintage) {
-    vintageBits.push(`parcel points ${view.source_dates.parcel_coordinate_vintage}`);
+    vintageBits.push("published lot points");
   }
   const evidence = `<details class="land-detail-place-evidence">`
     + `<summary>Lot-point evidence</summary>`
-    + `<p class="muted">Association kind: ${escape(view.association_kind)}. `
-    + (view.evidence_shard ? `Evidence shard ${escape(view.evidence_shard)}. ` : "")
-    + (vintageBits.length ? `Source vintages: ${escape(vintageBits.join("; "))}.` : "Source vintages follow the membership generation.")
+    + `<p class="muted">These places come from published project-lot points joined to city geography layers. `
+    + (vintageBits.length
+      ? `Source layers used: ${escape(vintageBits.join("; "))}.`
+      : "Source layers follow the membership generation.")
     + `</p>`
     + `<p class="muted">${escape(view.publisher_note)}</p>`
     + `</details>`;

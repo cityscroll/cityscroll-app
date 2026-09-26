@@ -297,6 +297,9 @@ describe("land_detail_place_links", () => {
     assert.equal(view.publisher_geography.borough, "Staten Island");
     assert.match(html, /Publisher-reported districts stay in Where above/);
     assert.doesNotMatch(html, /data-land-record-place=/);
+    // Resident HTML must not leak implementation schema tokens into disclosure.
+    assert.doesNotMatch(html, /published_project_lot/);
+    assert.doesNotMatch(html, /pluto_25v4/);
 
     // Complete coverage omits the partial-coverage sentence.
     assert.equal(view.coverage.copy, null);
