@@ -1,0 +1,160 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "79",
+  "association_kind": "published_project_lot",
+  "project_count": 2,
+  "projects": {
+    "2023M0271": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "1010130042"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "1010130042": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "1"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "M05"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "MN0502"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "14"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "1": [
+            "1010130042"
+          ]
+        },
+        "community_district": {
+          "M05": [
+            "1010130042"
+          ]
+        },
+        "council_district": {
+          "3": [
+            "1010130042"
+          ]
+        },
+        "nta2020": {
+          "MN0502": [
+            "1010130042"
+          ]
+        },
+        "police_precinct": {
+          "14": [
+            "1010130042"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M05",
+        "council_district": "3"
+      }
+    },
+    "2026X0282": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "2059240600"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "2059240600": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X08"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "11"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX0803"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "50"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "2": [
+            "2059240600"
+          ]
+        },
+        "community_district": {
+          "X08": [
+            "2059240600"
+          ]
+        },
+        "council_district": {
+          "11": [
+            "2059240600"
+          ]
+        },
+        "nta2020": {
+          "BX0803": [
+            "2059240600"
+          ]
+        },
+        "police_precinct": {
+          "50": [
+            "2059240600"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X08",
+        "council_district": "11"
+      }
+    }
+  }
+}

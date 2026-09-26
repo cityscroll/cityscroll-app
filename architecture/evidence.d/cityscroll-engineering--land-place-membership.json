@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-place-membership",
+  "status": "implemented",
+  "fingerprint": "land-place-membership.v1",
+  "updated_at": "2026-09-25T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-place-membership-module",
+      "path": "site/land_place_membership.mjs"
+    },
+    {
+      "id": "land-place-membership-builder",
+      "path": "tools/build_land_place_membership.mjs"
+    },
+    {
+      "id": "land-place-membership-index",
+      "path": "site/data/land_place_membership.json"
+    },
+    {
+      "id": "land-place-membership-verify-test",
+      "path": "test/land_place_membership.test.mjs"
+    }
+  ]
+}

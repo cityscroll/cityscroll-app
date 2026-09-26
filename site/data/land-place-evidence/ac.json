@@ -1,0 +1,124 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "ac",
+  "association_kind": "published_project_lot",
+  "project_count": 1,
+  "projects": {
+    "2023X0347": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "2034870034",
+        "2035130001"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "2034870034": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X09"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "18"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX0903"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            }
+          }
+        },
+        "2035130001": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "X09"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "18"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "BX0903"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "43"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "2": [
+            "2034870034",
+            "2035130001"
+          ]
+        },
+        "community_district": {
+          "X09": [
+            "2034870034",
+            "2035130001"
+          ]
+        },
+        "council_district": {
+          "18": [
+            "2034870034",
+            "2035130001"
+          ]
+        },
+        "nta2020": {
+          "BX0903": [
+            "2034870034",
+            "2035130001"
+          ]
+        },
+        "police_precinct": {
+          "43": [
+            "2034870034",
+            "2035130001"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X09",
+        "council_district": null
+      }
+    }
+  }
+}

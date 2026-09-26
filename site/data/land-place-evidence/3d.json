@@ -1,0 +1,84 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "3d",
+  "association_kind": "published_project_lot",
+  "project_count": 1,
+  "projects": {
+    "2023Q0125": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "4000760011"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "4000760011": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q02"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "26"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN0201"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "108"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "4": [
+            "4000760011"
+          ]
+        },
+        "community_district": {
+          "Q02": [
+            "4000760011"
+          ]
+        },
+        "council_district": {
+          "26": [
+            "4000760011"
+          ]
+        },
+        "nta2020": {
+          "QN0201": [
+            "4000760011"
+          ]
+        },
+        "police_precinct": {
+          "108": [
+            "4000760011"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q02",
+        "council_district": "26"
+      }
+    }
+  }
+}

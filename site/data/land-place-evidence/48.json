@@ -1,0 +1,84 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "48",
+  "association_kind": "published_project_lot",
+  "project_count": 1,
+  "projects": {
+    "2024R0137": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "5000970030"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "5000970030": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "5"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "R01"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "49"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "SI0104"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "120"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "5": [
+            "5000970030"
+          ]
+        },
+        "community_district": {
+          "R01": [
+            "5000970030"
+          ]
+        },
+        "council_district": {
+          "49": [
+            "5000970030"
+          ]
+        },
+        "nta2020": {
+          "SI0104": [
+            "5000970030"
+          ]
+        },
+        "police_precinct": {
+          "120": [
+            "5000970030"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Staten Island",
+        "community_district": "R01",
+        "council_district": "49"
+      }
+    }
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "d2",
+  "association_kind": "published_project_lot",
+  "project_count": 2,
+  "projects": {
+    "2023R0329": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "4061640028",
+        "5061640030"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "4061640028": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q11"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "19"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN1102"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "111"
+              ]
+            }
+          }
+        },
+        "5061640030": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "5"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "R03"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "51"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "SI0303"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "123"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "4": [
+            "4061640028"
+          ],
+          "5": [
+            "5061640030"
+          ]
+        },
+        "community_district": {
+          "Q11": [
+            "4061640028"
+          ],
+          "R03": [
+            "5061640030"
+          ]
+        },
+        "council_district": {
+          "19": [
+            "4061640028"
+          ],
+          "51": [
+            "5061640030"
+          ]
+        },
+        "nta2020": {
+          "QN1102": [
+            "4061640028"
+          ],
+          "SI0303": [
+            "5061640030"
+          ]
+        },
+        "police_precinct": {
+          "111": [
+            "4061640028"
+          ],
+          "123": [
+            "5061640030"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Staten Island",
+        "community_district": "R03",
+        "council_district": "51"
+      }
+    },
+    "2026R0195": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "5006180107"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "5006180107": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "5"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "R01"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "49"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "SI0104"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "120"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "5": [
+            "5006180107"
+          ]
+        },
+        "community_district": {
+          "R01": [
+            "5006180107"
+          ]
+        },
+        "council_district": {
+          "49": [
+            "5006180107"
+          ]
+        },
+        "nta2020": {
+          "SI0104": [
+            "5006180107"
+          ]
+        },
+        "police_precinct": {
+          "120": [
+            "5006180107"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Staten Island",
+        "community_district": "R01",
+        "council_district": "49"
+      }
+    }
+  }
+}

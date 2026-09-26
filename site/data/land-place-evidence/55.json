@@ -1,0 +1,103 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "55",
+  "association_kind": "published_project_lot",
+  "project_count": 2,
+  "projects": {
+    "2022Y0395": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbls": [],
+      "invalid_bbls": [],
+      "bbls": {},
+      "places": {
+        "borough": {},
+        "community_district": {},
+        "council_district": {},
+        "nta2020": {},
+        "police_precinct": {}
+      },
+      "publisher_geography": {
+        "borough": "Citywide",
+        "community_district": null,
+        "council_district": null
+      }
+    },
+    "P2014M0309": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "1010690001"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "1010690001": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "1"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "M04"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "3"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "MN0401"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "10"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "1": [
+            "1010690001"
+          ]
+        },
+        "community_district": {
+          "M04": [
+            "1010690001"
+          ]
+        },
+        "council_district": {
+          "3": [
+            "1010690001"
+          ]
+        },
+        "nta2020": {
+          "MN0401": [
+            "1010690001"
+          ]
+        },
+        "police_precinct": {
+          "10": [
+            "1010690001"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M04",
+        "council_district": "3"
+      }
+    }
+  }
+}

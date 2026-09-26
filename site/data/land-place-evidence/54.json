@@ -1,0 +1,356 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "54",
+  "association_kind": "published_project_lot",
+  "project_count": 3,
+  "projects": {
+    "2023M0117": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "1001420025"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "1001420025": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "1"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "M01"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "1"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "MN0102"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "1"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "1": [
+            "1001420025"
+          ]
+        },
+        "community_district": {
+          "M01": [
+            "1001420025"
+          ]
+        },
+        "council_district": {
+          "1": [
+            "1001420025"
+          ]
+        },
+        "nta2020": {
+          "MN0102": [
+            "1001420025"
+          ]
+        },
+        "police_precinct": {
+          "1": [
+            "1001420025"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M01",
+        "council_district": "1"
+      }
+    },
+    "2023M0399": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "1009230001"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "1009230001": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "1"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "M06"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "2"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "MN0602"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "13"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "1": [
+            "1009230001"
+          ]
+        },
+        "community_district": {
+          "M06": [
+            "1009230001"
+          ]
+        },
+        "council_district": {
+          "2": [
+            "1009230001"
+          ]
+        },
+        "nta2020": {
+          "MN0602": [
+            "1009230001"
+          ]
+        },
+        "police_precinct": {
+          "13": [
+            "1009230001"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M06",
+        "council_district": "2"
+      }
+    },
+    "2025Q0124": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "4006720013",
+        "4006720018",
+        "4006720019",
+        "4006720025"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "4006720013": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q01"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "22"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN0104"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "114"
+              ]
+            }
+          }
+        },
+        "4006720018": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q01"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "22"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN0104"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "114"
+              ]
+            }
+          }
+        },
+        "4006720019": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q01"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "22"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN0104"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "114"
+              ]
+            }
+          }
+        },
+        "4006720025": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q01"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "22"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN0104"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "114"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "4": [
+            "4006720013",
+            "4006720018",
+            "4006720019",
+            "4006720025"
+          ]
+        },
+        "community_district": {
+          "Q01": [
+            "4006720013",
+            "4006720018",
+            "4006720019",
+            "4006720025"
+          ]
+        },
+        "council_district": {
+          "22": [
+            "4006720013",
+            "4006720018",
+            "4006720019",
+            "4006720025"
+          ]
+        },
+        "nta2020": {
+          "QN0104": [
+            "4006720013",
+            "4006720018",
+            "4006720019",
+            "4006720025"
+          ]
+        },
+        "police_precinct": {
+          "114": [
+            "4006720013",
+            "4006720018",
+            "4006720019",
+            "4006720025"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q01",
+        "council_district": "22"
+      }
+    }
+  }
+}

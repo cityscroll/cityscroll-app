@@ -1,0 +1,160 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "7f",
+  "association_kind": "published_project_lot",
+  "project_count": 2,
+  "projects": {
+    "2023R0281": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "5022900009"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "5022900009": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "5"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "R02"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "50"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "SI0203"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "122"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "5": [
+            "5022900009"
+          ]
+        },
+        "community_district": {
+          "R02": [
+            "5022900009"
+          ]
+        },
+        "council_district": {
+          "50": [
+            "5022900009"
+          ]
+        },
+        "nta2020": {
+          "SI0203": [
+            "5022900009"
+          ]
+        },
+        "police_precinct": {
+          "122": [
+            "5022900009"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Staten Island",
+        "community_district": "R02",
+        "council_district": "50"
+      }
+    },
+    "P2012Q0110": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbls": [
+        "4027350112"
+      ],
+      "invalid_bbls": [],
+      "bbls": {
+        "4027350112": {
+          "layers": {
+            "borough": {
+              "status": "matched",
+              "ids": [
+                "4"
+              ]
+            },
+            "community_district": {
+              "status": "matched",
+              "ids": [
+                "Q05"
+              ]
+            },
+            "council_district": {
+              "status": "matched",
+              "ids": [
+                "30"
+              ]
+            },
+            "nta2020": {
+              "status": "matched",
+              "ids": [
+                "QN0501"
+              ]
+            },
+            "police_precinct": {
+              "status": "matched",
+              "ids": [
+                "104"
+              ]
+            }
+          }
+        }
+      },
+      "places": {
+        "borough": {
+          "4": [
+            "4027350112"
+          ]
+        },
+        "community_district": {
+          "Q05": [
+            "4027350112"
+          ]
+        },
+        "council_district": {
+          "30": [
+            "4027350112"
+          ]
+        },
+        "nta2020": {
+          "QN0501": [
+            "4027350112"
+          ]
+        },
+        "police_precinct": {
+          "104": [
+            "4027350112"
+          ]
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q05",
+        "council_district": "30"
+      }
+    }
+  }
+}
