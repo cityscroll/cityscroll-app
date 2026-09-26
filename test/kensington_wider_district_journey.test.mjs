@@ -389,6 +389,10 @@ test("A4 capture tool refuses stale served builds and records ancestor guard", (
   assert.match(captureTool, /near-you-kensington-wider-district/);
   assert.match(captureTool, /Wider district activity|data-broader-district/);
   assert.match(captureTool, /810 East 16th/);
+  assert.match(captureTool, /capture_run_id/);
+  assert.match(captureTool, /reused_from/);
+  assert.match(captureTool, /click_named_row_into_detail|clicked-from-list/);
+  assert.match(captureTool, /replacing prior packet|Fresh packet only/);
   const delivery = JSON.parse(readFileSync(DELIVERY_PATH, "utf8"));
   assert.equal(delivery.landed_commit, REQUIRED_SERVED_ANCESTOR);
   assert.equal(delivery.surface, "pages");
@@ -408,10 +412,12 @@ test("A4 [verification] production capture manifest records hosted desktop/mobil
   assert.equal(manifest.revision_format, "served artifact-manifest source_commit_sha");
   assert.match(manifest.revision || "", /^[0-9a-f]{40}$/);
   assert.equal(manifest.required_ancestor_contained, true);
+  assert.match(String(manifest.capture_run_id || ""), /\S/);
   assert.ok(Array.isArray(manifest.captures));
   assert.ok(manifest.captures.length >= 4, "desktop/mobile for list and detail");
 
   const byName = Object.fromEntries(manifest.captures.map((row) => [row.name, row]));
+  const digests = new Set();
   for (const name of [
     "kensington-meetings-desktop",
     "kensington-meetings-mobile",
@@ -429,6 +435,10 @@ test("A4 [verification] production capture manifest records hosted desktop/mobil
     assert.match(row.sha256 || "", /^[0-9a-f]{64}$/);
     assert.match(row.screenshot_url || "", /^https:\/\//);
     assert.equal(row.file, null);
+    assert.equal(row.capture_run_id, manifest.capture_run_id);
+    assert.equal(row.reused_from, undefined);
+    assert.equal(digests.has(row.sha256), false, `${name} must be unique to this capture run`);
+    digests.add(row.sha256);
     assert.ok(row.served_values?.named_row_present || row.served_values?.detail_title_present);
   }
 
@@ -449,6 +459,8 @@ test("A4 [verification] production capture manifest records hosted desktop/mobil
     const values = byName[name].served_values;
     assert.equal(values.detail_title_present, true, `${name} detail title`);
     assert.equal(values.venue_address_present, true, `${name} venue address`);
+    assert.equal(values.opened_from_list_click, true, `${name} opened from list click`);
+    assert.equal(byName[name].navigation, "clicked-from-list");
   }
 });
 

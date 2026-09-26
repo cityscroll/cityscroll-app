@@ -3,21 +3,22 @@
   "feature": "near-you-kensington-wider-district",
   "public_alias": "ce70cec48d558",
   "capture_mode": "headless-playwright-production-served-site",
+  "capture_run_id": "833d559a-95b7-4dc1-96c9-67965e5749d1",
   "base": "https://cityscroll.org/",
   "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
-  "repository_revision": "c66960422d9c70a12db4f9e1a79651f35153adc7",
-  "grounded_at": "c66960422d9c70a12db4f9e1a79651f35153adc7",
-  "revision": "c66960422d9c70a12db4f9e1a79651f35153adc7",
+  "repository_revision": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
+  "grounded_at": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
+  "revision": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
   "revision_format": "served artifact-manifest source_commit_sha",
-  "data_vintage": "c66960422d9c70a12db4f9e1a79651f35153adc7",
+  "data_vintage": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
   "required_ancestor": "c66960422d9c70a12db4f9e1a79651f35153adc7",
   "required_ancestor_contained": true,
   "image_binaries_committed": false,
-  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed. Externally retained https screenshot_url values are required.",
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed. Externally retained https screenshot_url values are required. All captures in this packet share capture_run_id; silent reuse of another packet's image is forbidden.",
   "surface": "Near You Kensington wider-district journey",
   "verifier": "node --test test/kensington_wider_district_journey.test.mjs",
-  "captured_at": "2026-09-26T01:03:32Z",
-  "local_image_dir_ignored": "/private/tmp/fm/fms-9307f1e9-cc7fd525/near-you-kensington-wider-district-screenshots",
+  "captured_at": "2026-09-26T03:25:40Z",
+  "local_image_dir_ignored": "near-you-kensington-wider-district-screenshots (local ignored dir under task scratch)",
   "captures": [
     {
       "name": "kensington-meetings-desktop",
@@ -26,13 +27,15 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c66960422d9c70a12db4f9e1a79651f35153adc7",
-      "data_vintage": "c66960422d9c70a12db4f9e1a79651f35153adc7",
+      "revision": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
+      "data_vintage": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
       "assertion": "Deployed Kensington meetings list shows the September 23 CB14 row under wider-district activity",
       "sha256": "b525e2db454c3a3531672fc307cbd2f749560678fb188fe42e9174fa266e822c",
       "file": null,
       "screenshot_url": "https://files.catbox.moe/odna8r.png",
       "source": "headless-playwright-production-served-site",
+      "capture_run_id": "833d559a-95b7-4dc1-96c9-67965e5749d1",
+      "navigation": "direct",
       "served_values": {
         "named_row_present": true,
         "wider_district_present": true,
@@ -47,19 +50,50 @@
       }
     },
     {
+      "name": "kensington-detail-desktop",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
+      "data_vintage": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
+      "assertion": "Deployed meeting detail opened from the Kensington wider-district row shows the September 23 title and 810 East 16th Street venue",
+      "sha256": "6d035088ed9b4ead645763f0629b4838c31974291304518aa20d8e285e5efc79",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/snzlc1.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "833d559a-95b7-4dc1-96c9-67965e5749d1",
+      "navigation": "clicked-from-list",
+      "served_values": {
+        "detail_title_present": true,
+        "venue_address_present": true,
+        "named_row_present": false,
+        "wider_district_present": false,
+        "broader_district_k14_present": false,
+        "broader_district_k07_present": false,
+        "keyboard_focusable_count": 21,
+        "no_javascript_title_link": true,
+        "source_link_present": true,
+        "opened_from_list_click": true
+      }
+    },
+    {
       "name": "kensington-meetings-mobile",
       "route": "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "revision": "c66960422d9c70a12db4f9e1a79651f35153adc7",
-      "data_vintage": "c66960422d9c70a12db4f9e1a79651f35153adc7",
+      "revision": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
+      "data_vintage": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
       "assertion": "Deployed Kensington meetings list shows the September 23 CB14 row under wider-district activity",
       "sha256": "a39c7f208e3a063a7a42c8e508d1859e25871ffb3e0bc4f4f7c9d58b6ea5fca3",
       "file": null,
       "screenshot_url": "https://files.catbox.moe/akzv81.png",
       "source": "headless-playwright-production-served-site",
+      "capture_run_id": "833d559a-95b7-4dc1-96c9-67965e5749d1",
+      "navigation": "direct",
       "served_values": {
         "named_row_present": true,
         "wider_district_present": true,
@@ -74,45 +108,21 @@
       }
     },
     {
-      "name": "kensington-detail-desktop",
-      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "revision": "c66960422d9c70a12db4f9e1a79651f35153adc7",
-      "data_vintage": "c66960422d9c70a12db4f9e1a79651f35153adc7",
-      "assertion": "Deployed meeting detail shows the September 23 title and 810 East 16th Street venue",
-      "sha256": "6d035088ed9b4ead645763f0629b4838c31974291304518aa20d8e285e5efc79",
-      "file": null,
-      "screenshot_url": "https://files.catbox.moe/snzlc1.png",
-      "source": "headless-playwright-production-served-site",
-      "served_values": {
-        "detail_title_present": true,
-        "venue_address_present": true,
-        "named_row_present": false,
-        "wider_district_present": false,
-        "broader_district_k14_present": false,
-        "broader_district_k07_present": false,
-        "keyboard_focusable_count": 21,
-        "no_javascript_title_link": true,
-        "source_link_present": true
-      }
-    },
-    {
       "name": "kensington-detail-mobile",
       "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "revision": "c66960422d9c70a12db4f9e1a79651f35153adc7",
-      "data_vintage": "c66960422d9c70a12db4f9e1a79651f35153adc7",
-      "assertion": "Deployed meeting detail shows the September 23 title and 810 East 16th Street venue",
+      "revision": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
+      "data_vintage": "435fb382c2b3321ee614073f6fc760a3f9e55ea6",
+      "assertion": "Deployed meeting detail opened from the Kensington wider-district row shows the September 23 title and 810 East 16th Street venue",
       "sha256": "4dc7eb09ab3186dd646261d098c4c586d92458a0bca090d71248e49eda5af1a1",
       "file": null,
       "screenshot_url": "https://files.catbox.moe/gqjqnm.png",
       "source": "headless-playwright-production-served-site",
+      "capture_run_id": "833d559a-95b7-4dc1-96c9-67965e5749d1",
+      "navigation": "clicked-from-list",
       "served_values": {
         "detail_title_present": true,
         "venue_address_present": true,
@@ -122,7 +132,8 @@
         "broader_district_k07_present": false,
         "keyboard_focusable_count": 21,
         "no_javascript_title_link": true,
-        "source_link_present": true
+        "source_link_present": true,
+        "opened_from_list_click": true
       }
     }
   ]
