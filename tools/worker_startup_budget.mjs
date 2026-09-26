@@ -31,7 +31,15 @@ export const STARTUP_JSON_PER_FILE_LIMIT_BYTES = 512 * 1024; // 0.5 MiB
 // Aggregate backstop over the whole startup-evaluated JSON footprint. Set with
 // headroom above the current baseline so ordinary data-refresh growth of the
 // grandfathered datasets does not block deploys, while a gross regression does.
-export const STARTUP_JSON_AGGREGATE_LIMIT_BYTES = 44 * 1024 * 1024; // 44 MiB
+//
+// After the ~11MB procurement digest snapshot and ~10MB exam certification
+// constellation were moved off the startup graph (loaded lazily on first use),
+// measured startup-evaluated JSON dropped from 39.85 MB to 18.29 MB. The limit
+// is tightened accordingly to ~24 MiB: comfortable headroom for refresh growth
+// of the remaining grandfathered datasets, but tight enough that re-adding any
+// single multi-MB dataset to the startup graph fails the deploy guard rather
+// than silently eroding the Cloudflare startup CPU margin (error 10021) again.
+export const STARTUP_JSON_AGGREGATE_LIMIT_BYTES = 24 * 1024 * 1024; // 24 MiB
 
 // Large JSON already evaluated at startup when this guard was introduced
 // (repo-relative paths). These predate the guard and are accepted as-is.
@@ -40,9 +48,13 @@ export const STARTUP_JSON_AGGREGATE_LIMIT_BYTES = 44 * 1024 * 1024; // 44 MiB
 // lazily instead (dynamic import() or a KV read) so its parse runs on first
 // request, not during startup. Growing an existing entry is allowed; the
 // aggregate backstop above still applies to the whole footprint.
+// Note: site/data/procurement_digest_snapshot.json (~11MB) and
+// site/data/exam_certification_constellation.json (~10MB) were removed from this
+// allowlist once they moved to lazy dynamic import() — they are no longer on the
+// startup graph. They are intentionally NOT listed, so if a future change
+// statically imports either again, the per-file guard fails rather than treating
+// the regression as a grandfathered baseline.
 export const STARTUP_JSON_BASELINE_ALLOWLIST = new Set([
-  "site/data/procurement_digest_snapshot.json",
-  "site/data/exam_certification_constellation.json",
   "worker/src/data/zap_bbl_warehouse_lookup.json",
   "worker/src/data/zap_projects_warehouse_lookup.json",
   "worker/src/data/doing_business_warehouse_lookup.json",

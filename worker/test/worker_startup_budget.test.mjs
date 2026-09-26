@@ -70,24 +70,47 @@ test("a grandfathered baseline dataset on the startup graph is allowed", () => {
     inputs: {
       "src/worker.mjs": {
         bytes: 1000,
+        imports: [{ path: "src/data/zap_bbl_warehouse_lookup.json", kind: "import-statement" }],
+      },
+      "src/data/zap_bbl_warehouse_lookup.json": { bytes: BIG, imports: [] },
+    },
+    outputs: { "worker.js": { entryPoint: "src/worker.mjs" } },
+  };
+  const { findings, largeStartupJson } = assessWorkerStartupBudget(metafile);
+  assert.deepEqual(findings, []);
+  assert.equal(largeStartupJson[0].path, "worker/src/data/zap_bbl_warehouse_lookup.json");
+});
+
+test("a de-listed dataset (moved to lazy import) is flagged if it re-enters the startup graph", () => {
+  // procurement_digest_snapshot.json and exam_certification_constellation.json
+  // were removed from the allowlist once they became dynamic imports. A static
+  // import of either again is a regression the per-file guard must catch.
+  const metafile = {
+    inputs: {
+      "src/worker.mjs": {
+        bytes: 1000,
         imports: [{ path: "../site/data/procurement_digest_snapshot.json", kind: "import-statement" }],
       },
       "../site/data/procurement_digest_snapshot.json": { bytes: BIG, imports: [] },
     },
     outputs: { "worker.js": { entryPoint: "src/worker.mjs" } },
   };
-  const { findings, largeStartupJson } = assessWorkerStartupBudget(metafile);
-  assert.deepEqual(findings, []);
-  assert.equal(largeStartupJson[0].path, "site/data/procurement_digest_snapshot.json");
+  const { findings } = assessWorkerStartupBudget(metafile);
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].kind, "unlisted-large-startup-json");
+  assert.equal(findings[0].path, "site/data/procurement_digest_snapshot.json");
 });
 
 test("aggregate backstop fails when startup JSON exceeds the total budget", () => {
   const metafile = { inputs: { "src/worker.mjs": { bytes: 100, imports: [] } }, outputs: { "worker.js": { entryPoint: "src/worker.mjs" } } };
-  // Import many allowlisted-shaped small JSONs is awkward; instead assert with a tiny budget.
-  metafile.inputs["src/worker.mjs"].imports = [{ path: "../site/data/procurement_digest_snapshot.json", kind: "import-statement" }];
-  metafile.inputs["../site/data/procurement_digest_snapshot.json"] = { bytes: BIG, imports: [] };
+  // Importing many allowlisted-shaped small JSONs is awkward; instead assert with a
+  // tiny budget against a single allowlisted (per-file-clean) dataset so only the
+  // aggregate finding can fire.
+  metafile.inputs["src/worker.mjs"].imports = [{ path: "src/data/zap_bbl_warehouse_lookup.json", kind: "import-statement" }];
+  metafile.inputs["src/data/zap_bbl_warehouse_lookup.json"] = { bytes: BIG, imports: [] };
   const { findings } = assessWorkerStartupBudget(metafile, { aggregateLimitBytes: BIG - 1 });
   assert.ok(findings.some((f) => f.kind === "aggregate-startup-json-over-budget"));
+  assert.ok(!findings.some((f) => f.kind === "unlisted-large-startup-json"));
 });
 
 test("startupEvaluatedInputs excludes modules reached only via dynamic import", () => {

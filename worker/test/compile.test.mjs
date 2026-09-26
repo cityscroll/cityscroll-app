@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { compileSub, examOpenWindowBand, rowsForCompiledQuery } from "../src/lib/compile.mjs";
+import { compileSub, ensureExamCertificationConstellation, examOpenWindowBand, rowsForCompiledQuery } from "../src/lib/compile.mjs";
 
 test("money + minAmount → City Record award query (request_id diff)", () => {
   const q = compileSub({ lens: "money", filter: { minAmount: 1000000 } }, "2026-06-30");
@@ -193,7 +193,12 @@ test("exam interest-area watch replays the staffing artifact and keys NOE-posted
   assert.equal(examOpenWindowBand({application_start:"2026-10-01",application_end:"2026-10-15"},"2026-08-03"),"approaching");
 });
 
-test("agency-scoped exam watch returns certified exams only", () => {
+test("agency-scoped exam watch returns certified exams only", async () => {
+  // compileSub() now imports the exam certification constellation lazily so its
+  // parse stays off the Worker startup CPU path. rowsForCompiledQuery() primes
+  // the cache in production before the synchronous transform; prime it here so
+  // the direct transformRows() call below sees the same certification data.
+  await ensureExamCertificationConstellation();
   const q = compileSub({
     lens: "people",
     filter: { view: "guide", agency: "Parks and Recreation" },

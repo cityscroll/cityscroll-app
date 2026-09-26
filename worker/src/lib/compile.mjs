@@ -43,7 +43,6 @@ import {
   mergeSolicitationCoverageRows,
   solicitationRecentParams,
 } from "./solicitation_coverage.mjs";
-import examCertification from "../../../site/data/exam_certification_constellation.json" with { type: "json" };
 import { loadStaffingExams } from "./staffing_exams_kv.mjs";
 import { loadLandUpcomingHearingsSnapshot } from "./land_upcoming_hearings_kv.mjs";
 import { MEETING_FLOOR_ROWS, NEAR_YOU_FLOOR } from "../data/route_read_model_floor.mjs";
@@ -71,6 +70,47 @@ export function useProcurementDigestSnapshot(snapshot) {
 
 export function getProcurementDigestSnapshot() {
   return digestSnapshot;
+}
+
+// The CROL-negative procurement digest snapshot (~11MB) is merged into money and
+// entity watch deliveries. It used to be installed at Worker startup by a static
+// `import ... with { type: "json" }` (worker/src/lib/install_procurement_digest_snapshot.mjs),
+// so the whole object literal was built during top-level evaluation — charged against
+// Cloudflare's startup CPU budget (validation error 10021) and resident in the request
+// heap of every route, including routes that never read it (memory pressure behind the
+// runtime 1102). Import it lazily instead and install it on the first money/entity read.
+let procurementDigestPromise = null;
+
+/**
+ * Load and install the procurement digest snapshot off the startup path, once per
+ * isolate. A no-op when a snapshot is already installed — so a test fixture set with
+ * useProcurementDigestSnapshot() is preserved rather than overwritten by the file.
+ * Only money/entity delivery paths need this; call it before reading the snapshot.
+ */
+export async function ensureProcurementDigestSnapshot() {
+  if (digestSnapshot !== EMPTY_PROCUREMENT_DIGEST) return digestSnapshot;
+  // In Node (unit tests, tools) the snapshot is never auto-installed. Before this
+  // change it was installed only by the Worker entry point's side-effect import
+  // (worker/src/lib/install_procurement_digest_snapshot.mjs) — a module the unit
+  // tests do not load — so a money/entity unit path defaulted to the empty
+  // snapshot unless a test installed a fixture with useProcurementDigestSnapshot().
+  // Preserve that: only the deployed Worker (no `process` global, the same runtime
+  // discriminator rowsForCompiledQuery already uses) loads the file lazily on
+  // first use. Tests that need snapshot data install a fixture, exactly as before.
+  if (typeof process !== "undefined") return digestSnapshot;
+  if (!procurementDigestPromise) {
+    procurementDigestPromise = import("../../../site/data/procurement_digest_snapshot.json", { with: { type: "json" } })
+      .then((module) => {
+        // Only install the file if nothing was installed while the import was in flight.
+        if (digestSnapshot === EMPTY_PROCUREMENT_DIGEST) useProcurementDigestSnapshot(module.default);
+        return digestSnapshot;
+      })
+      .catch((error) => {
+        procurementDigestPromise = null; // let a later request retry the load
+        throw error;
+      });
+  }
+  return procurementDigestPromise;
 }
 
 export function mergeCompiledRows(q, rows) {
@@ -117,6 +157,46 @@ function requireLandProjectCatalogRows() {
     throw new Error("land project catalog not loaded; await ensureLandProjectCatalogRows() before transformRows()");
   }
   return landProjectCatalogRowsCache;
+}
+
+// The exam certification constellation (~10MB) maps agencies to the exam
+// numbers whose eligible lists staff them. Only an agency-scoped People "guide"
+// watch reads it, so — like the Land project catalog above — it is imported
+// lazily and memoized rather than parsed at Worker startup (a static
+// `import ... with { type: "json" }` would build the whole object literal during
+// module evaluation and count against the Cloudflare startup CPU budget,
+// validation error 10021). rowsForCompiledQuery() awaits
+// ensureExamCertificationConstellation() before the synchronous exam
+// transformRows() computes its agency-certified exam-number set.
+let examCertificationCache = null;
+let examCertificationPromise = null;
+
+/** Load and memoize the exam certification constellation off the startup path. */
+export async function ensureExamCertificationConstellation() {
+  if (examCertificationCache) return examCertificationCache;
+  if (!examCertificationPromise) {
+    examCertificationPromise = import("../../../site/data/exam_certification_constellation.json", { with: { type: "json" } })
+      .then((module) => {
+        examCertificationCache = module.default;
+        return examCertificationCache;
+      })
+      .catch((error) => {
+        examCertificationPromise = null; // let a later request retry the load
+        throw error;
+      });
+  }
+  return examCertificationPromise;
+}
+
+// An agency-scoped exam transform runs synchronously (its callers, including the
+// compile unit tests, invoke transformRows() without awaiting). Fail closed
+// rather than silently widen an agency watch to every exam if the constellation
+// was never primed.
+function requireExamCertificationConstellation() {
+  if (!examCertificationCache) {
+    throw new Error("exam certification constellation not loaded; await ensureExamCertificationConstellation() before transformRows()");
+  }
+  return examCertificationCache;
 }
 
 function digestSnapshotRow(procurementId) {
@@ -324,6 +404,12 @@ function examGuideRows(payload, filter, todayISO, examNumbers = null) {
 // postFilter (when present) refines fetched rows — the caller applies it after fetching.
 export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
   if (!q) return [];
+  // Money and entity deliveries are the only compiled queries that carry a
+  // mergeRows closure, and it reads the procurement digest snapshot. Prime that
+  // snapshot (once per isolate, a no-op once installed) before any row read so the
+  // merge sees it. Other lenses never trigger the ~11MB parse, keeping it out of
+  // their request heap (the memory pressure behind runtime error 1102).
+  if (typeof q.mergeRows === "function") await ensureProcurementDigestSnapshot();
   let rows;
   if (q.routeReadModel?.kind === "meetings") {
     let sourceRows;
@@ -412,6 +498,10 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
   } else if (typeof q.readRows === "function") rows = await Promise.resolve(q.readRows());
   else if (q.url === STAFFING_EXAMS) {
     const { record } = await loadStaffingExams(env);
+    // Prime the lazily-imported exam certification constellation before the
+    // synchronous transform reads it (kept off the Worker startup CPU path —
+    // error 10021). Only an agency-scoped guide watch needs it.
+    if (q.needsExamCertification) await ensureExamCertificationConstellation();
     rows = typeof q.transformRows === "function" ? q.transformRows(record) : (record.exams || []);
   } else {
     const r = await fetchImpl(`${q.url}?${new URLSearchParams(q.params || {}).toString()}`);
@@ -657,13 +747,24 @@ export function compileSub(sub, todayISO) {
       ? f.subject_refs_all.filter((candidate) => /^exam:\d{4}$/.test(String(candidate || "").trim()))
       : [];
     if (f.subject_refs_all?.length && refs.length === 0) return null;
-    const examNumbers = f.agency ? examNumbersForAgency(examCertification, f.agency) : null;
+    // Only an agency-scoped guide watch consults the certification constellation.
+    // Compute its exam-number set inside transformRows() from the lazily-primed
+    // cache (see ensureExamCertificationConstellation) rather than parsing ~10MB
+    // of JSON at Worker startup; needsExamCertification tells rowsForCompiledQuery
+    // to prime that cache before the synchronous transform runs.
+    const examAgency = f.agency ? f.agency : null;
     return {
       url: STAFFING_EXAMS,
       params: {},
       idField: "alert_id",
       kind: "exam",
-      transformRows: (payload) => examGuideRows(payload, { ...f, subject_refs_all: refs }, todayISO, examNumbers),
+      needsExamCertification: Boolean(examAgency),
+      transformRows: (payload) => examGuideRows(
+        payload,
+        { ...f, subject_refs_all: refs },
+        todayISO,
+        examAgency ? examNumbersForAgency(requireExamCertificationConstellation(), examAgency) : null,
+      ),
     };
   }
 

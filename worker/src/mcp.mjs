@@ -108,7 +108,7 @@ export {
 } from "../../capabilities/mcp_tool_declarations.mjs";
 import { parseLensFilter } from "./nl.mjs";
 import { prepareWatchFilter } from "./lib/filter.mjs";
-import { compileSub, getProcurementDigestSnapshot, rowsForCompiledQuery } from "./lib/compile.mjs";
+import { compileSub, ensureProcurementDigestSnapshot, getProcurementDigestSnapshot, rowsForCompiledQuery } from "./lib/compile.mjs";
 import { evaluateAdmittedTextQueryWatch } from "./lib/evaluate_watch_text_query.mjs";
 import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
@@ -327,6 +327,10 @@ async function runPreview(env, lens, request, { filter: explicitFilter } = {}) {
     filter = parsed.filter;
   }
   const sub = { lens, filter };
+  // Money/entity previews read the procurement digest snapshot; load it lazily on
+  // first use (off the Worker startup path — error 10021) before compiling or
+  // evaluating. Other lenses (e.g. get_meeting) never trigger the ~11MB parse.
+  if (lens === "money" || lens === "entity") await ensureProcurementDigestSnapshot();
   if (filter?.text_query && textQueryEvaluationSupported(lens)) {
     const evaluation = await evaluateAdmittedTextQueryWatch({
       db: env.DB || null,

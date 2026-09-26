@@ -1914,6 +1914,7 @@ tools/verify_source_contracts.mjs
 tools/verify_source_vintage_registry.mjs
 tools/wait_for_digest_cron_window.mjs
 tools/worker_deploy_guard.mjs
+tools/worker_startup_budget.mjs
 tools/worker_trigger_coverage.mjs
 warehouse/datasets.v0.json
 warehouse/experiments/semantic-layer-trial/build_corpus.mjs
@@ -2159,7 +2160,6 @@ worker/src/lib/forecast_score.mjs
 worker/src/lib/franchise_concession_spine.mjs
 worker/src/lib/hearings.mjs
 worker/src/lib/i18n.mjs
-worker/src/lib/install_procurement_digest_snapshot.mjs
 worker/src/lib/inv.mjs
 worker/src/lib/land_phase_spine.mjs
 worker/src/lib/land_prediction_actor_resolution.mjs

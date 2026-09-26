@@ -251,9 +251,22 @@ export async function buildHearingView(fetchImpl = fetch, now = new Date(), opti
     generatedAt: now.toISOString(),
     now: now.toISOString(),
   });
+  // `hearings:location:v1` is parsed whole on the get_meeting fallback path (see
+  // publishedMeetingModel/dailyHearingViewModel). Spreading `...readModel` already
+  // puts the row array at both `rows` and `readModel`'s own `hearings` alias, and
+  // the `hearings: readModel.rows` line below re-publishes it under the name the
+  // alerts and handleHearings readers use. A former `read_model: readModel` field
+  // nested the ENTIRE model a third and fourth time (its own `rows` + `hearings`),
+  // so the same row array serialized four times — inflating the blob past
+  // Cloudflare KV's 25 MiB per-value ceiling and, more importantly, making the
+  // fallback JSON.parse the dominant per-request cost behind runtime error 1102.
+  // The only reader of `read_model` (the admin council-discovery health probe)
+  // already falls back to the top-level model (`shared?.read_model || shared`),
+  // which carries the same rows, so dropping the nested copy halves the blob with
+  // no behavior change. The top-level `rows`/`hearings` pair is retained for its
+  // existing consumers.
   return {
     ...readModel,
-    read_model: readModel,
     schema_version: 1,
     source_extraction_version: HEARINGS_SOURCE_EXTRACTION_VERSION,
     generated_at: readModel.generated_at || now.toISOString(),

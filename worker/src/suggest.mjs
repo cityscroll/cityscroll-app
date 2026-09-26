@@ -33,7 +33,7 @@ import {
   toPresetFallbackPayload,
 } from "./lib/preset_fallback_kv.mjs";
 import { computeLineageSignal, lineageChainKey, lineageDedupeKey, lineageBatchClauses } from "./lib/lineage.mjs";
-import { vendorStem } from "./lib/compile.mjs";
+import { ensureProcurementDigestSnapshot, vendorStem } from "./lib/compile.mjs";
 import { parseLensFilter } from "./nl.mjs";
 import { checkAdminKey } from "./admin.mjs";
 import { handleSearch } from "./search.mjs";
@@ -131,6 +131,10 @@ async function validateCandidate(env, candidate, todayISO, {
 } = {}) {
   const resolved = await parseLensFilter(env, candidate.lens, candidate.text);
   if (resolved.degraded) return null;
+  // A money/entity candidate's fruitfulness check reads the procurement digest
+  // snapshot (via compileSub().readRows); load it lazily on first use, off the
+  // Worker startup path (error 10021). Other candidate lenses never load it.
+  if (candidate.lens === "money" || candidate.lens === "entity") await ensureProcurementDigestSnapshot();
   if (candidate.lens === "money") {
     if (resolved.filter?.route) return null; // no exact resident-list destination adapter
     const destination = await moneyDestination(env, resolved.filter, todayISO);
