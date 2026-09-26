@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-nta-watch-parity",
+  "status": "implemented",
+  "fingerprint": "land-nta-watch-parity.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-nta-watch-scope",
+      "path": "site/land_nta_watch_scope.mjs"
+    },
+    {
+      "id": "land-nta-watch-scope-contract",
+      "path": "test/land_nta_watch_scope.test.mjs"
+    },
+    {
+      "id": "land-nta-watch-parity-contract",
+      "path": "worker/test/land_nta_watch_parity.test.mjs"
+    }
+  ]
+}

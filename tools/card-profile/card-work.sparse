@@ -424,7 +424,9 @@
 /site/data/geography/layers/nta2020/
 /site/data/institution_petition_procedures.json
 /site/data/land_default_ulurp.json
+/site/data/land_place_membership.json
 /site/data/land_procedure_profiles.json
+/site/data/land_project_catalog.json
 /site/data/land_upcoming_hearings.json
 /site/data/legal_code/manifest.json
 /site/data/legal_code/search.json
@@ -568,6 +570,7 @@
 /site/land_map_selection.mjs
 /site/land_next_decision_watch.mjs
 /site/land_nta_geography_runtime.mjs
+/site/land_nta_watch_scope.mjs
 /site/land_outcomes_matrix.mjs
 /site/land_phase_label.mjs
 /site/land_phase_spine.mjs

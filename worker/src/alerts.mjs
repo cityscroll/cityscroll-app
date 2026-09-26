@@ -24,6 +24,7 @@ import { compileSub, getProcurementDigestSnapshot, mergeCompiledRows, rowsForCom
 import { mergeSolicitationCoverageRows, SOLICITATION_COVERAGE_CAP } from "./lib/solicitation_coverage.mjs";
 import { evaluateAdmittedTextQueryWatch, TEXT_QUERY_EVAL_STATUS } from "./lib/evaluate_watch_text_query.mjs";
 import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
+import { LAND_GEOGRAPHY_ARTIFACT_UNAVAILABLE } from "../../site/land_nta_watch_scope.mjs";
 import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.mjs";
 import {
   d1DispatchExactCouncilMatter,
@@ -891,7 +892,24 @@ async function loadWatchRows(env, s, ctx, q, { sodaLimit = null, warnLabel = "al
       recentParams: q.recentParams ? { ...q.recentParams, "$limit": String(sodaLimit) } : q.recentParams,
       coverageCap: Number(sodaLimit) * 2,
     } : q;
-    rows = await rowsForCompiledQuery(compiled, env);
+    try {
+      rows = await rowsForCompiledQuery(compiled, env);
+    } catch (error) {
+      if (error?.code === LAND_GEOGRAPHY_ARTIFACT_UNAVAILABLE
+        || error?.name === "RouteReadModelUnavailable"
+        || /land geography artifact unavailable/i.test(String(error?.message || error))) {
+        return {
+          rows: [],
+          usedD1: false,
+          evaluation: {
+            status: "unavailable",
+            code: LAND_GEOGRAPHY_ARTIFACT_UNAVAILABLE,
+            reason: String(error?.message || error),
+          },
+        };
+      }
+      throw error;
+    }
     if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
   }
   return { rows, usedD1, evaluation: null };
@@ -941,6 +959,15 @@ export async function processOneSub(env, s, ctx) {
         skipped: "text-query-unavailable",
         kind: "subscription",
         textQueryEvaluation: loaded.evaluation,
+      };
+    }
+    if (loaded.evaluation?.code === LAND_GEOGRAPHY_ARTIFACT_UNAVAILABLE
+      || (loaded.evaluation?.status === "unavailable" && q.landGeographyWatch)) {
+      return {
+        sub: s.key,
+        skipped: "land-geography-artifact-unavailable",
+        kind: "subscription",
+        evaluation: loaded.evaluation,
       };
     }
     if (loaded.evaluation?.status === TEXT_QUERY_EVAL_STATUS.incomplete && !(loaded.rows || []).length) {
@@ -1516,6 +1543,15 @@ async function evaluateSubSection(env, s, ctx) {
     if (loaded.evaluation?.status === TEXT_QUERY_EVAL_STATUS.unavailable) {
       return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "text-query-unavailable", textQueryEvaluation: loaded.evaluation };
     }
+    if (loaded.evaluation?.code === LAND_GEOGRAPHY_ARTIFACT_UNAVAILABLE
+      || (loaded.evaluation?.status === "unavailable" && q.landGeographyWatch)) {
+      return {
+        ...base,
+        status: SECTION_STATUS.SKIPPED,
+        skipped: "land-geography-artifact-unavailable",
+        evaluation: loaded.evaluation,
+      };
+    }
     if (loaded.evaluation?.status === TEXT_QUERY_EVAL_STATUS.incomplete && !(loaded.rows || []).length) {
       return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "text-query-incomplete", textQueryEvaluation: loaded.evaluation };
     }
@@ -2011,6 +2047,18 @@ async function evaluateCatchUpSub(env, s, ctx) {
           new: 0,
           found: 0,
           textQueryEvaluation: loaded.evaluation,
+        };
+      }
+      if (loaded.evaluation?.code === LAND_GEOGRAPHY_ARTIFACT_UNAVAILABLE
+        || (loaded.evaluation?.status === "unavailable" && q.landGeographyWatch)) {
+        return {
+          ...base,
+          status: SECTION_STATUS.SKIPPED,
+          skipped: "land-geography-artifact-unavailable",
+          zeroMatch: true,
+          new: 0,
+          found: 0,
+          evaluation: loaded.evaluation,
         };
       }
       rows = loaded.rows;
