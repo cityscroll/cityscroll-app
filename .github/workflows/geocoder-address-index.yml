@@ -34,13 +34,12 @@ jobs:
           node tools/build_geocoder_address_index.mjs --check
       - name: Refresh dependent address geography outputs
         run: |
-          # Same publication generation as the PAD snapshot: recompute only
-          # changed coordinate/boundary/record joins and rebuild meeting
-          # geography memberships when PAD content changed. Unchanged input
-          # hashes are reused; a failed stage retains the last activated
-          # meeting-geography generation.
-          node tools/address_geography_refresh.mjs --from-live
-          node tools/address_geography_refresh.mjs --check
+          # PAD content changes invalidate parcel memberships and every
+          # committed --check artifact that declares those refreshed inputs
+          # (today: Land place-membership generation). The registry owns the
+          # ordered rebuild so a new dependent gate cannot be left out.
+          node ops/address-index-refresh/rebuild-dependent-geography.mjs --check-registry
+          node ops/address-index-refresh/rebuild-dependent-geography.mjs
       - name: Guard generated changes
         id: generated
         run: |
@@ -57,6 +56,9 @@ jobs:
               site/data/meeting-geography-backfill|site/data/meeting-geography-backfill/*) ;;
               site/data/shared_meeting_read_model.json) ;;
               site/data/parcel-geography|site/data/parcel-geography/*) ;;
+              site/data/land_place_membership.json) ;;
+              site/data/land-place-evidence|site/data/land-place-evidence/*) ;;
+              site/data/land-place-generations|site/data/land-place-generations/*) ;;
               *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
             esac
           done <<< "$changed"
@@ -73,16 +75,22 @@ jobs:
           commit-message: Refresh citywide address index and dependent geography
           title: Refresh citywide address index and dependent geography
           body: |
-            Automated refresh of the NYC Department of City Planning Property Address Directory snapshot and the dependent address-geography membership outputs.
+            Automated refresh of the NYC Department of City Planning Property Address Directory snapshot and the dependent address-geography membership outputs, including Land place-membership generation when parcel geography changes.
 
             Validation:
             - `node tools/build_geocoder_address_index.mjs --check`
+            - `node ops/address-index-refresh/rebuild-dependent-geography.mjs --check-registry`
             - `node tools/address_geography_refresh.mjs --check`
+            - `node tools/land_place_refresh.mjs --check`
+            - `node tools/build_land_place_membership.mjs --check`
           add-paths: |
             site/data/address-index/*.json
             site/data/meeting-geography-backfill/**
             site/data/shared_meeting_read_model.json
             site/data/parcel-geography/**
+            site/data/land_place_membership.json
+            site/data/land-place-evidence/**
+            site/data/land-place-generations/**
       - name: Run required checks for the refresh pull request
         if: steps.refresh-pr.outputs.pull-request-number != ''
         env:

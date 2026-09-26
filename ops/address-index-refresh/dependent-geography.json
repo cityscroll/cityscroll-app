@@ -1,0 +1,93 @@
+{
+  "schema": "cityscroll.address_index_dependent_geography.v1",
+  "purpose": "Bind the scheduled citywide address-index refresh to every committed derived artifact that declares the refreshed geography inputs and is re-checked with a --check drift gate. The rebuild sequence runs after the PAD snapshot, in dependency order, and published_paths is the only list the workflow may stage.",
+  "workflow": ".github/workflows/geocoder-address-index.yml",
+  "workflow_step_name": "Refresh dependent address geography outputs",
+  "producer_generators": [
+    "tools/build_geocoder_address_index.mjs",
+    "tools/address_geography_refresh.mjs",
+    "tools/build_citywide_parcel_points.mjs",
+    "tools/build_parcel_memberships.mjs"
+  ],
+  "refreshed_input_paths": [
+    "site/data/address-index/manifest.json",
+    "site/data/address-index",
+    "site/data/parcel-geography/manifest.json",
+    "site/data/parcel-geography"
+  ],
+  "early_check_sources": [
+    "tools/build_cloudflare_pages.mjs",
+    "tools/preflight-required-checks.sh"
+  ],
+  "derived_manifest": "warehouse/derived_json_build_manifest.json",
+  "published_paths": [
+    {
+      "path": "site/data/address-index",
+      "reason": "Official PAD snapshot shards and manifest produced by the address-index builder."
+    },
+    {
+      "path": "site/data/meeting-geography-backfill",
+      "reason": "Meeting-geography generation activated by the address-geography refresh."
+    },
+    {
+      "path": "site/data/shared_meeting_read_model.json",
+      "reason": "Resident meeting read model restamped when meeting-geography memberships change."
+    },
+    {
+      "path": "site/data/parcel-geography",
+      "reason": "Parcel-point and membership shards recomputed when PAD content or boundaries change."
+    },
+    {
+      "path": "site/data/land_place_membership.json",
+      "reason": "Active Land project-lot geography membership index invalidated when parcel memberships change."
+    },
+    {
+      "path": "site/data/land-place-evidence",
+      "reason": "Per-project Land place evidence shards that travel with the active membership index."
+    },
+    {
+      "path": "site/data/land-place-generations",
+      "reason": "Immutable Land place generation tree, ACTIVE pointer, and refresh receipt published with the membership rebuild."
+    }
+  ],
+  "rebuild_sequence": [
+    {
+      "id": "address-geography-refresh",
+      "command": [
+        "tools/address_geography_refresh.mjs",
+        "--from-live"
+      ],
+      "verify": [
+        "tools/address_geography_refresh.mjs",
+        "--check"
+      ],
+      "covers": [
+        "tools/address_geography_refresh.mjs"
+      ],
+      "after": []
+    },
+    {
+      "id": "land-place-refresh",
+      "command": [
+        "tools/land_place_refresh.mjs"
+      ],
+      "verify": [
+        "tools/land_place_refresh.mjs",
+        "--check"
+      ],
+      "post_verify": [
+        "tools/build_land_place_membership.mjs",
+        "--check"
+      ],
+      "covers": [
+        "tools/land_place_refresh.mjs",
+        "tools/build_land_place_membership.mjs"
+      ],
+      "after": [
+        "address-geography-refresh"
+      ],
+      "note": "Parcel membership changes invalidate Land project-lot joins. The refresh publishes one coherent generation and mirrors it into the active membership index and evidence shards that build_land_place_membership.mjs --check re-derives."
+    }
+  ],
+  "not_rebuilt": []
+}

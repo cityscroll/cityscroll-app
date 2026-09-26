@@ -19,6 +19,10 @@ import {
 } from "./land_filter_parity.mjs";
 import { landProjectPath } from "./land_project_route.mjs";
 import { nextLandMapSelection } from "./land_map_selection.mjs";
+import {
+  placeNavigationLandDetailHref,
+  placeNavigationStateFromParts,
+} from "./place_navigation_continuity.mjs";
 import { filterLandSnapshot } from "./resident_snapshot_queries.mjs";
 import {
   geographyKeysFromScope,
@@ -124,9 +128,30 @@ export function nearYouLandResultsHref(input = {}, { base = NEAR_YOU_LAND_RESULT
   return landBrowseHrefFromState(state, { base });
 }
 
-/** Canonical full-record destination for one project id. */
-export function nearYouLandRecordHref(projectId) {
-  return landProjectPath(projectId);
+/**
+ * Full-record destination for one project id.
+ *
+ * When a Near You / Land filter state (or scope) is supplied, the href carries
+ * allowlisted geography and facet query params beside `#land/{id}` so Back and
+ * copied links restore the same place context.
+ */
+export function nearYouLandRecordHref(projectId, input = null) {
+  const bare = landProjectPath(projectId);
+  if (!bare) return null;
+  if (!input || typeof input !== "object") return bare;
+  const filter = input.landFilter
+    || input.state
+    || (input.scope ? landFilterStateFromNearYouScope(input.scope) : null);
+  if (!filter && !input.geographies && input.view == null && !input.boundaries) return bare;
+  const continuity = placeNavigationStateFromParts({
+    landFilter: filter || landFilterStateFromRouteParams(new URLSearchParams()),
+    geographies: input.geographies || null,
+    projectId,
+    view: input.view ?? filter?.view ?? null,
+    boundaries: input.boundaries || null,
+    surface: "land",
+  });
+  return placeNavigationLandDetailHref(continuity) || bare;
 }
 
 /** Near You return path for the same geography and land lens. */
@@ -187,12 +212,13 @@ export function resolveNearYouLandSelection({
     population: population == null ? ids.length : population,
   });
   const returnHref = nearYouLandReturnHref(scope || {});
+  const resultsHref = nearYouLandResultsHref(scope || {});
   if (selected) {
     return freezeDeep({
       status: "selected",
       project_id: selected,
-      record_href: nearYouLandRecordHref(selected),
-      results_href: nearYouLandResultsHref(scope || {}),
+      record_href: nearYouLandRecordHref(selected, { scope }),
+      results_href: resultsHref,
       return_href: returnHref,
     });
   }
@@ -200,7 +226,7 @@ export function resolveNearYouLandSelection({
     status: "cleared",
     project_id: null,
     record_href: null,
-    results_href: nearYouLandResultsHref(scope || {}),
+    results_href: resultsHref,
     return_href: returnHref,
     reason: id ? "project_out_of_scope" : "no_project",
   });
@@ -236,7 +262,9 @@ export function buildNearYouLandHandoff({
   });
   const recordHref = selection.status === "selected"
     ? selection.record_href
-    : (PROJECT_ID_RE.test(clean(projectId, 32)) ? nearYouLandRecordHref(projectId) : null);
+    : (PROJECT_ID_RE.test(clean(projectId, 32))
+      ? nearYouLandRecordHref(projectId, { state, scope })
+      : null);
 
   return freezeDeep({
     schema: NEAR_YOU_LAND_HANDOFF_SCHEMA,
@@ -315,7 +343,7 @@ export function nearYouLandHandoffFindings(input = {}) {
   }
 
   if (recordHref) {
-    const match = String(recordHref).match(/\/browse\/zoning\/#land\/([^/?#]+)$/);
+    const match = String(recordHref).match(/\/browse\/zoning\/(?:\?[^#]*)?#land\/([^/?#]+)/);
     if (!match) {
       findings.push("record_href_not_land_project");
     } else {
@@ -327,6 +355,19 @@ export function nearYouLandHandoffFindings(input = {}) {
         projectId = "";
       }
       if (projectId && !landProjectPath(projectId)) findings.push("record_href_invalid_project");
+    }
+    // Continuity-aware record links (document query + hash) must keep NTA geography.
+    if (String(recordHref).includes("?")) {
+      const expected = Array.isArray(ntaKeys) && ntaKeys.length
+        ? ntaKeys
+        : (Array.isArray(state?.geographies) ? state.geographies : []);
+      if (expected.length) {
+        const url = new URL(String(recordHref), "https://cityscroll.org");
+        const encoded = url.searchParams.getAll("geo");
+        for (const key of expected) {
+          if (!encoded.includes(key)) findings.push(`record_geo_not_encoded:${key}`);
+        }
+      }
     }
   }
 
