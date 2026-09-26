@@ -33,6 +33,12 @@ with (ROOT / "docs" / "url-migration-map.csv").open(newline="") as migration_fil
         if row["link_class"].startswith("public demo: ")
     }
 BASE = os.environ.get("CROL_BASE", "")
+
+
+def spa_entry(base: str = "") -> str:
+    """Topic SPA document. Site root `/` is the Near You shell."""
+    root = (base or BASE or "http://127.0.0.1/").rstrip("/")
+    return f"{root}/index.html"
 REQUESTED_ENTRY_IDS = {
     value
     for value in re.split(r"[\s,]+", os.environ.get("CROL_DEMO_LINK_IDS", "").strip())
@@ -677,7 +683,14 @@ class DemoLinkContract(unittest.TestCase):
         expectations = entry["expectations"]
         wait_ms = entry_wait_ms(entry)
         self.page_errors.clear()
-        page.goto(f"{BASE.rstrip('/')}/{entry['url'].lstrip('/')}", wait_until="domcontentloaded", timeout=entry_goto_ms(entry))
+        target = entry["url"].lstrip("/")
+        if target.startswith("#"):
+            href = f"{spa_entry()}{target}"
+        elif not target or target == "index.html":
+            href = spa_entry()
+        else:
+            href = f"{BASE.rstrip('/')}/{target}"
+        page.goto(href, wait_until="domcontentloaded", timeout=entry_goto_ms(entry))
         # The document's marker is set only after the full app graph and the
         # initial route application have completed. This prevents assertions
         # from observing the static shell during an empty-then-populated render.

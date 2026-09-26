@@ -332,8 +332,10 @@ def run_index_states(pw, lang, viewport, failures):
         f"localStorage.setItem('crd_invs_v1', JSON.stringify({json.dumps(workspace_seed())}))")
     page = ctx.new_page()
     install_routes(page)
-    page.goto(SPA_ENTRY, wait_until="domcontentloaded", timeout=30000)
+    # Hash-boot the topic SPA so language switching has setLang before axe states.
+    page.goto(SPA_ENTRY + "#money", wait_until="domcontentloaded", timeout=30000)
     _wait_for_home(page)
+    wait_for_app_ready(page)
     page.add_script_tag(path=AXE)
 
     if lang != "en":

@@ -20,7 +20,8 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from i18n_fixtures import install_routes  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
-PAGES = ["", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html", "near-you/index.html", "following/index.html"]  # Source: public site/ pages.
+# Site root `/` is the Near You shell; the topic SPA (civic-object tabs) is index.html.
+PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html", "near-you/index.html", "following/index.html"]  # Source: public site/ pages.
 TABS = [
     ("people", '.tabbtn[data-tab="people"]'),
     ("land", '.tabbtn[data-tab="land"]'),
@@ -74,7 +75,7 @@ def main():
             name = path or "index.html"
             check_state(page, name, failures)
 
-            if not path:
+            if path in ("", "index.html"):
                 for tab, selector in TABS:
                     page.click(selector)
                     page.wait_for_selector("main h1, h1", timeout=10000)
