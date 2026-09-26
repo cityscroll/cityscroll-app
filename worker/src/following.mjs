@@ -8,7 +8,7 @@ import {
   followingWatchScopeLinksHtml,
   watchFromFollowingParams,
 } from "../../site/following_view.mjs";
-import { compileSub, getProcurementDigestSnapshot, rowsForCompiledQuery } from "./lib/compile.mjs";
+import { compileSub, ensureProcurementDigestSnapshot, getProcurementDigestSnapshot, rowsForCompiledQuery } from "./lib/compile.mjs";
 import { evaluateMeetingAvailabilityRows } from "../../site/meeting_availability_filter.mjs";
 import { feedItems } from "./lib/feed.mjs";
 import { prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
@@ -51,6 +51,10 @@ function previewItemFromRow(row) {
 }
 
 async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().slice(0, 10), env = {}, options = {}) {
+  // Money/entity previews read the procurement digest snapshot; load it lazily on
+  // first use (off the Worker startup path — error 10021) before compiling or
+  // evaluating. Other lenses never trigger the ~11MB parse into the request heap.
+  if (watch?.lens === "money" || watch?.lens === "entity") await ensureProcurementDigestSnapshot();
   if (watch?.filter?.text_query && textQueryEvaluationSupported(watch.lens)) {
     try {
       const evaluated = await evaluateAdmittedTextQueryWatch({

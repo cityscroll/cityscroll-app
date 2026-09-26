@@ -5,7 +5,7 @@
 // so repeated pulls of a popular feed cost one SODA query per window.
 
 import { prepareWatchFilter, sanitize } from "./lib/filter.mjs";
-import { compileSub, getProcurementDigestSnapshot, rowsForCompiledQuery } from "./lib/compile.mjs";
+import { compileSub, ensureProcurementDigestSnapshot, getProcurementDigestSnapshot, rowsForCompiledQuery } from "./lib/compile.mjs";
 import { bumpStat } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
@@ -65,6 +65,10 @@ export async function handleFeed(request, env, ctx) {
   }
 
   const todayISO = new Date().toISOString().slice(0, 10);
+  // Money/entity feeds read the procurement digest snapshot; load it lazily on
+  // first use (off the Worker startup path — error 10021) before compiling or
+  // evaluating. Other lenses never trigger the ~11MB parse into the request heap.
+  if (sub.lens === "money" || sub.lens === "entity") await ensureProcurementDigestSnapshot();
   const q = compileSub(sub, todayISO);
   if (!q) return plain("lens not feedable", 400);
 

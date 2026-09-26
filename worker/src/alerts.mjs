@@ -20,7 +20,7 @@ import cfg from "../alerts.config.json" with { type: "json" };
 import { capDecision } from "@jimdc/sendcap";
 import { signToken, listUnsubscribe } from "optin-token";
 import { issueEmailSessionToken } from "./session.mjs";
-import { compileSub, getProcurementDigestSnapshot, mergeCompiledRows, rowsForCompiledQuery, vendorStem } from "./lib/compile.mjs";
+import { compileSub, ensureProcurementDigestSnapshot, getProcurementDigestSnapshot, mergeCompiledRows, rowsForCompiledQuery, vendorStem } from "./lib/compile.mjs";
 import { mergeSolicitationCoverageRows, SOLICITATION_COVERAGE_CAP } from "./lib/solicitation_coverage.mjs";
 import { evaluateAdmittedTextQueryWatch, TEXT_QUERY_EVAL_STATUS } from "./lib/evaluate_watch_text_query.mjs";
 import { textQueryEvaluationSupported } from "../../site/watch_text_query.mjs";
@@ -938,6 +938,10 @@ export async function processOneSub(env, s, ctx) {
     // logic (a "still nothing" ping would contradict the whole point of a silent watch). See
     // processAwardSub() below.
     if (s.lens === "award") return processAwardSub(env, s, ctx);
+    // Money/entity deliveries merge the procurement digest snapshot; load it
+    // lazily (off the Worker startup path — error 10021) before compileSub reads
+    // it. Other lenses never trigger the ~11MB parse into the request heap.
+    if (s.lens === "money" || s.lens === "entity") await ensureProcurementDigestSnapshot();
     const q = compileSub(s, ctx.today);
     if (!q) return { sub: s.key, skipped: `lens:${s.lens}` };
     const matterDispatch = d1DispatchExactCouncilMatter(s);
@@ -1528,6 +1532,10 @@ async function evaluateSubSection(env, s, ctx) {
     if (s.lens === "award") {
       return evaluateAwardSection(env, s, ctx, base);
     }
+    // Money/entity deliveries merge the procurement digest snapshot; load it
+    // lazily (off the Worker startup path — error 10021) before compileSub reads
+    // it. Other lenses never trigger the ~11MB parse into the request heap.
+    if (s.lens === "money" || s.lens === "entity") await ensureProcurementDigestSnapshot();
     const q = compileSub(s, ctx.today);
     if (!q) return { ...base, status: SECTION_STATUS.SKIPPED, skipped: `lens:${s.lens}` };
     const matterDispatch = d1DispatchExactCouncilMatter(s);
@@ -2026,6 +2034,10 @@ async function evaluateCatchUpSub(env, s, ctx) {
       return { ...section, ...outbox, enqueued: outbox.enqueued };
     }
 
+    // Money/entity deliveries merge the procurement digest snapshot; load it
+    // lazily (off the Worker startup path — error 10021) before compileSub reads
+    // it. Other lenses never trigger the ~11MB parse into the request heap.
+    if (s.lens === "money" || s.lens === "entity") await ensureProcurementDigestSnapshot();
     const q = compileSub(s, ctx.today);
     if (!q) return { ...base, status: SECTION_STATUS.SKIPPED, skipped: `lens:${s.lens}`, zeroMatch: true, new: 0, found: 0 };
     const matterDispatch = d1DispatchExactCouncilMatter(s);

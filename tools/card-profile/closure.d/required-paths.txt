@@ -2160,7 +2160,6 @@ worker/src/lib/forecast_score.mjs
 worker/src/lib/franchise_concession_spine.mjs
 worker/src/lib/hearings.mjs
 worker/src/lib/i18n.mjs
-worker/src/lib/install_procurement_digest_snapshot.mjs
 worker/src/lib/inv.mjs
 worker/src/lib/land_phase_spine.mjs
 worker/src/lib/land_prediction_actor_resolution.mjs
