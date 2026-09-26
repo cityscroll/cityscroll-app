@@ -30,7 +30,6 @@ import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 import { transformLandGeographyWatchRows } from "../../../site/land_nta_watch_scope.mjs";
 import { landProjectRowsFromPayload } from "../../../site/land_project_catalog.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
-import landProjectCatalog from "../../../site/data/land_project_catalog.json" with { type: "json" };
 import {
   exactInstitutionNoticeMatches,
   interpretStoredInstitutionFollow,
@@ -76,6 +75,48 @@ export function getProcurementDigestSnapshot() {
 
 export function mergeCompiledRows(q, rows) {
   return typeof q?.mergeRows === "function" ? q.mergeRows(rows) : rows;
+}
+
+// The admitted Land project catalog (~2.4MB) is parsed on first Land geography
+// delivery, not at Worker startup. A static `import ... with { type: "json" }`
+// builds the whole object literal during module evaluation, which counts against
+// the Cloudflare startup CPU budget (validation error 10021). A dynamic import
+// defers that parse to the first request that needs it. rowsForCompiledQuery()
+// awaits ensureLandProjectCatalogRows() before invoking a Land geography
+// transform, so the synchronous transformRows() can read the cached rows.
+let landProjectCatalogRowsCache = null;
+let landProjectCatalogRowsPromise = null;
+
+/** Load and memoize the Land project catalog rows off the startup path. */
+export async function ensureLandProjectCatalogRows() {
+  if (landProjectCatalogRowsCache) return landProjectCatalogRowsCache;
+  if (!landProjectCatalogRowsPromise) {
+    landProjectCatalogRowsPromise = import("../../../site/data/land_project_catalog.json", { with: { type: "json" } })
+      .then((module) => {
+        landProjectCatalogRowsCache = landProjectRowsFromPayload(module.default);
+        return landProjectCatalogRowsCache;
+      })
+      .catch((error) => {
+        landProjectCatalogRowsPromise = null; // let a later request retry the load
+        throw error;
+      });
+  }
+  return landProjectCatalogRowsPromise;
+}
+
+/** Cached rows, or null until ensureLandProjectCatalogRows() has resolved once. */
+export function landProjectCatalogRows() {
+  return landProjectCatalogRowsCache;
+}
+
+// A Land geography transform runs synchronously (its callers, including the L07
+// parity tests, invoke transformRows() without awaiting). Fail closed rather
+// than deliver an empty digest if the catalog was never primed.
+function requireLandProjectCatalogRows() {
+  if (!landProjectCatalogRowsCache) {
+    throw new Error("land project catalog not loaded; await ensureLandProjectCatalogRows() before transformRows()");
+  }
+  return landProjectCatalogRowsCache;
 }
 
 function digestSnapshotRow(procurementId) {
@@ -321,6 +362,9 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
         payload.meeting_rows = MEETING_FLOOR_ROWS;
       }
     }
+    // Prime the lazily-imported Land project catalog before the synchronous
+    // transform reads it (kept off the Worker startup CPU path — error 10021).
+    if (q.landGeographyWatch) await ensureLandProjectCatalogRows();
     rows = typeof q.transformRows === "function" ? q.transformRows(payload) : payload;
   } else if (q.routeReadModel?.kind === "land-hearings") {
     const loaded = await loadLandUpcomingHearingsSnapshot(env);
@@ -470,9 +514,6 @@ export function compileSub(sub, todayISO) {
 
   if (["land", "property", "rules", "meetings", "money"].includes(sub.lens)
       && geographyKeys.length) {
-    const landCatalogRows = sub.lens === "land"
-      ? landProjectRowsFromPayload(landProjectCatalog)
-      : null;
     return {
       url: DISTRICT_ACTIVITY,
       params: {},
@@ -492,7 +533,7 @@ export function compileSub(sub, todayISO) {
         // facets against the admitted catalog, matching browse pre-limit IDs.
         if (sub.lens === "land") {
           return transformLandGeographyWatchRows(payload, { ...f, geographies: geographyKeys }, {
-            catalogRows: landCatalogRows,
+            catalogRows: requireLandProjectCatalogRows(),
             today: todayISO,
           });
         }

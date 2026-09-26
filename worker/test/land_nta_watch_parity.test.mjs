@@ -10,7 +10,7 @@ import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { compileSub } from "../src/lib/compile.mjs";
+import { compileSub, ensureLandProjectCatalogRows } from "../src/lib/compile.mjs";
 import { prepareWatchFilter, sanitize } from "../src/lib/filter.mjs";
 import {
   LAND_GEOGRAPHY_ARTIFACT_UNAVAILABLE,
@@ -40,6 +40,12 @@ const activity = readJson("site/data/district_activity.json");
 const catalog = readJson("site/data/land_project_catalog.json");
 const membership = readJson("site/data/land_place_membership.json");
 const catalogRows = landProjectRowsFromPayload(catalog);
+
+// compileSub() now imports the Land project catalog lazily so its parse stays
+// off the Worker startup CPU path. The synchronous transformRows() calls below
+// read the catalog from that cache, which rowsForCompiledQuery() primes in
+// production; prime it once here so the direct transform calls see the same rows.
+await ensureLandProjectCatalogRows();
 
 const NTA = Object.freeze({
   SI0105: "geography:nta2020:SI0105",
