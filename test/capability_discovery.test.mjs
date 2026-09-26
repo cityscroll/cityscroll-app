@@ -124,10 +124,11 @@ function witnessDigest(capture) {
 
 function assertionHolds(route, html) {
   if (route === "/") {
-    assert.match(html, /home-topic-form/);
+    assert.match(html, /data-near-you-root/);
     assert.match(html, /use-with-ai\//);
     assert.match(html, /Ask with AI/);
-    assert.ok(html.indexOf("home-topic-form") < html.indexOf("Ask with AI"), "Ask with AI stays after primary search");
+    assert.match(html, /href="\/browse\/"/);
+    assert.match(html, /href="\/following\/"/);
     return;
   }
   if (route === "/use-with-ai/") {
