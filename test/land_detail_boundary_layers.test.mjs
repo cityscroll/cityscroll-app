@@ -486,14 +486,11 @@ document.querySelectorAll('.land-detail-boundary-toggle').forEach((button) => {
 });
 </script></body></html>`;
 
-    const htmlPath = join(process.env.FM_TASK_SCRATCH || "/tmp", "land-detail-boundary-layers-measure.html");
-    writeFileSync(htmlPath, pageHtml);
-
+    // Pass HTML in-process so the suite leaves no /tmp scratch for check_temp_leaks.
     const script = `
 from playwright.sync_api import sync_playwright
 import json
-from pathlib import Path
-html = Path(${JSON.stringify(htmlPath)}).read_text(encoding="utf-8")
+html = ${JSON.stringify(pageHtml)}
 readings = []
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
