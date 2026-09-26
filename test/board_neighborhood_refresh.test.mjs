@@ -435,7 +435,7 @@ test("derived manifest registers board-neighborhood-refresh before constellation
   assert.ok(family.output_paths.includes("site/data/board-neighborhood-generations"));
   const constellation = manifest.generated_families[constellationAt];
   assert.ok(constellation.source_paths.includes("site/data/board_neighborhood_index.json"));
-  assert.ok(constellation.source_paths.includes("site/data/board-neighborhood-generations"));
+  assert.ok(constellation.source_paths.includes("site/data/board-neighborhood-generations/ACTIVE"));
 });
 
 test("production refresh command backfills and --check validates active consumers", () => {
