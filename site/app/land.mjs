@@ -18,6 +18,8 @@ import {
   filterLandSnapshot,
   projectIdsForBlock,
 } from "../resident_snapshot_queries.mjs";
+import { landGeo } from "../land_nta_geography_runtime.mjs";
+landGeo.install();
 import { loadJsonPreferWorker } from "../json_prefer_worker.mjs";
 import {
   DEFAULT_LAND_FAMILY,
@@ -370,13 +372,16 @@ function setLandResultCount(count){
 }
 function landHasAppliedFilters(){
   return !!($("#lkw")?.value.trim() || landBorough || landCommunityDistrict
-    || landCouncilDistrict || landResolvedArea || landStageFilterIsApplied()
+    || landCouncilDistrict || landResolvedArea || Array.isArray(landGeo.get()) || landStageFilterIsApplied()
     || normalizeLandFutureAction($("#lfuture")?.value)!=="any"
     || normalizeLandProcedure($("#lprocedure")?.value)!==DEFAULT_LAND_PROCEDURE
     || normalizeLandFamily($("#lfamily")?.value)!==DEFAULT_LAND_FAMILY
     || normalizeLandRegulatoryEffect($("#leffect")?.value)!=="any"
     || landFilingEvidenceFilterFromControls()!=="any"
     || landAttendance || landClosingWeek);
+}
+function clearLandAreaFilter(){
+  landGeo.set(null); landResolvedArea=null; $("#nltrans-land").innerHTML=""; landSearch();
 }
 function resetLandFilters(){
   landResolvedArea=null;
@@ -385,6 +390,7 @@ function resetLandFilters(){
   landClosingWeek=false;
   landCommunityDistrict="";
   landCouncilDistrict="";
+  landGeo.set(null);
   $("#lkw").value="";
   $("#lstatus").value="all";
   $("#lstage").value="any";
@@ -397,16 +403,11 @@ function resetLandFilters(){
   landSearch();
 }
 function landEmptyStateHTML(kind="projects"){
-  const filtered=landHasAppliedFilters();
-  const heading=kind==="hearings"?t("land_empty_hearings_heading"):t("land_empty_projects_heading");
-  const detail=filtered?t("land_empty_filtered_detail"):t("land_empty_unfiltered_detail");
-  return `<section class="land-empty-state" role="status" aria-labelledby="land-empty-heading">
-    <h3 id="land-empty-heading">${heading}</h3><p>${detail}</p>
-    <button type="button" class="act" data-land-widen>${t("land_empty_widen")}</button>
-  </section>`;
+  return landGeo.empty({kind,filtered:landHasAppliedFilters(),geographies:landGeo.get(),translate:t});
 }
 function wireLandEmptyState(){
   $("#llist")?.querySelector("[data-land-widen]")?.addEventListener("click",resetLandFilters);
+  $("#llist")?.querySelector("[data-land-clear-area]")?.addEventListener("click",clearLandAreaFilter);
 }
 function filterLandHearingRows(rows, {boro, mode, kw, today, closingWeek=false}={}){
   const day=String(today||(typeof todayISO==="function"?todayISO():new Date().toISOString().slice(0,10))).slice(0,10);
@@ -604,28 +605,31 @@ async function landSearch(){
     const actionRows=futureAction==="hearing"
       ? filterLandHearingRows(landActionInventory,{mode:landAttendance,closingWeek:landClosingWeek,today:todayISO()})
       : landActionInventory;
+    const geography=await landGeo.resolve(landGeo.get());
+    if(geography.status==="unavailable"){
+      if(stale()) return;
+      landGeo.showUnavailable({
+        listEl:$("#llist"),translate:t,setResultCount:setLandResultCount,setStatus:setLandStatus,
+        unbusy:()=>unbusy("#llist"),onRetry:landSearch,
+      });
+      return;
+    }
     let projectIds=null,banner="";
     if(block){
       const bblSnapshot=await loadLandBblSnapshot();
-      const ids=projectIdsForBlock(bblSnapshot?.rows,block).slice(0,30);
-      if(ids.length){
-        projectIds=ids;
-        banner=t("banner_on_block",{label:geo.label});
-      }else banner=t("banner_none_lot",{label:geo.label,area:geo.neighbourhood||geo.borough});
+      const ids=projectIdsForBlock(bblSnapshot?.rows,block);
+      if(ids.length){ projectIds=ids; banner=t("banner_on_block",{label:geo.label}); }
+      else banner=t("banner_none_lot",{label:geo.label,area:geo.neighbourhood||geo.borough});
     }
-    let rows=addressStatus?[]:filterLandSnapshot(projects,{
-      status,stage,futureAction,procedure,family,regulatoryEffect,filingEvidence,actionRows,today:todayISO(),borough:boro,keyword:kw,
-      communityDistrict:landCommunityDistrict,councilDistrict:landCouncilDistrict,projectIds,limit:40,
-    });
-    if(block&&!rows.length){
+    const geos=landGeo.get(), placeMembership=geography.placeMembership;
+    const facet={status,stage,futureAction,procedure,family,regulatoryEffect,filingEvidence,actionRows,today:todayISO(),
+      borough:boro,communityDistrict:landCommunityDistrict,councilDistrict:landCouncilDistrict,geographies:geos,placeMembership};
+    let rows=addressStatus?[]:landGeo.filter(filterLandSnapshot,projects,{...facet,keyword:kw,projectIds,block:!!block});
+    if(landGeo.broaden({block:!!block,geographies:geos})&&!rows.length){
       rows=await landNearby(geo,status,projects,{stage,futureAction,procedure,family,regulatoryEffect,filingEvidence,actionRows});
       if(projectIds?.length) banner=t(status==="active"?"banner_none_active_nearest":"banner_none_nearest",{area:geo.neighbourhood||geo.borough});
     }
     paintLandRows(rows,banner,kw,!!block,boro,stale,true,addressStatus);
-    // A lexical project query is federated once, then projected through the
-    // existing status/geography/map read model. Address and block queries keep
-    // their local geocode semantics because the capability accepts text, not
-    // an address interpretation.
     if(kw&&!block){
       const scoped=await fetchBrowseScoped("land",kw);
       if(stale()) return;
@@ -635,15 +639,10 @@ async function landSearch(){
       const list=document.querySelector("#llist");
       if(list) list.dataset.browseScopeState=scoped.outcome;
       if(scoped.outcome==="unavailable"){
-        // Keep the exact local keyword projection painted above. A provider
-        // failure is not an instruction to widen the snapshot to every row.
         paintLandRows(rows,banner,kw,false,boro,stale,false,note);
       }else{
         const scopedRows=projectBrowseScopedRows(scoped,projects,row=>["land_use_project",row?.project_id||""].join(":")).rows;
-        const projected=filterLandSnapshot(scopedRows,{
-          status,stage,futureAction,procedure,family,regulatoryEffect,actionRows,today:todayISO(),borough:boro,
-          keyword:"",communityDistrict:landCommunityDistrict,councilDistrict:landCouncilDistrict,limit:40,
-        });
+        const projected=landGeo.filter(filterLandSnapshot,scopedRows,{...facet,keyword:""});
         paintLandRows(projected,banner,"",false,boro,stale,false,note);
       }
     }
@@ -890,6 +889,7 @@ async function showLandEntry(id){
   landBorough="";
   landAttendance="";
   landClosingWeek=false;
+  globalThis.landGeographies=null;
   $("#lkw").value="";
   // A project deep link is still part of the default review view; retain the
   // lens default so the surrounding route state remains stable while detail loads.

@@ -31,6 +31,7 @@ import {
   normalizeLandFilingEvidenceFilter,
 } from "./land_filing_evidence_facet.mjs";
 import { dueClosesThisWeek } from "./closing_this_week.mjs";
+import { resolveLandNtaGeographyConstraint } from "./land_filter_parity.mjs";
 
 export { mergeLandProjects } from "./land_project_catalog.mjs";
 
@@ -369,11 +370,29 @@ export function filterLandSnapshot(rows, {
   keyword = "",
   communityDistrict = "",
   councilDistrict = "",
+  geographies = null,
   projectIds = null,
+  placeMembership = null,
   limit = 40,
 } = {}) {
   const query = residentSnapshotLower(keyword);
   const ids = projectIds ? new Set(projectIds) : null;
+  // Geography is a first-class AND facet. An explicit array (including empty) means the
+  // resident supplied place scope; only `null` leaves the axis inactive.
+  let geographyIds = null;
+  if (Array.isArray(geographies)) {
+    if (!geographies.length) {
+      geographyIds = new Set();
+    } else {
+      const constraint = resolveLandNtaGeographyConstraint(geographies, placeMembership);
+      if (constraint.status === "unavailable") {
+        // Callers must surface unavailable membership as a failed query. Returning [] here keeps
+        // a misuse from quietly painting citywide rows under an area URL.
+        return [];
+      }
+      geographyIds = new Set(constraint.projectIds || []);
+    }
+  }
   const statusMatch = String(status || "active").match(/^(project|public):(.*)$/);
   const selectedStage = stage == null
     ? (status === "active" ? "active" : "any")
@@ -408,6 +427,7 @@ export function filterLandSnapshot(rows, {
       const districts = residentSnapshotClean(row?.cc_district);
       if (!districts || (!districts.includes(padded) && districts !== String(councilDistrict))) return false;
     }
+    if (geographyIds && !geographyIds.has(row?.project_id)) return false;
     if (ids && !ids.has(row?.project_id)) return false;
     if (query && !residentSnapshotRowText(row).includes(query)) return false;
     return true;

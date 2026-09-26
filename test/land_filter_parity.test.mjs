@@ -158,8 +158,9 @@ test("A1 the inventory names every argument the canonical Land query accepts", (
   const signature = source.slice(source.indexOf("export function filterLandSnapshot"));
   const body = signature.slice(signature.indexOf("{") + 1, signature.indexOf("} = {}"));
   const accepted = [...body.matchAll(/^\s{2}([A-Za-z][A-Za-z0-9]*)\s*=/gm)].map((match) => match[1]);
-  // `actionRows` and `today` are the query's evidence inputs, not resident-chosen filters.
-  const dimensions = accepted.filter((key) => !["actionRows", "today"].includes(key));
+  // `actionRows`, `today`, and `placeMembership` are the query's evidence inputs, not
+  // resident-chosen filters. Geography keys are the resident axis; the membership index is not.
+  const dimensions = accepted.filter((key) => !["actionRows", "today", "placeMembership"].includes(key));
   assert.equal(dimensions.length > 0, true);
   for (const key of dimensions) {
     assert.ok(
@@ -181,6 +182,8 @@ test("A1 the commissioned names map onto the canonical query keys they actually 
   assert.equal(byId.communityDistrict.routeKey, "cd");
   assert.equal(byId.councilDistrict.routeKey, "council");
   assert.equal(byId.keyword.routeKey, "q");
+  assert.equal(byId.geographies.routeKey, "geo");
+  assert.equal(byId.geographies.defaultValue, null);
   // The recorded discrepancy: this dimension has no route key of its own and travels in `facet`.
   assert.equal(byId.regulatoryEffect.routeKey, null);
   assert.equal(byId.regulatoryEffect.facetKey, "regulatoryEffect");
@@ -509,7 +512,19 @@ test("A3 changing only the view changes neither the population nor the watch sco
 
 test("A3 the semantic scope carries every filter dimension a watch may keep", () => {
   const route = facetRoute(
-    { status: "project:On-Hold", stage: "city_council", future: "any_future", procedure: "ulurp", family: "rezoning", boro: "Brooklyn", cd: "K09", council: "33", q: "bedford", view: "map" },
+    {
+      status: "project:On-Hold",
+      stage: "city_council",
+      future: "any_future",
+      procedure: "ulurp",
+      family: "rezoning",
+      boro: "Brooklyn",
+      cd: "K09",
+      council: "33",
+      q: "bedford",
+      geo: "geography:nta2020:BK0901",
+      view: "map",
+    },
     { regulatoryEffect: "upzone", filingEvidence: "required" },
   );
   const state = landFilterStateFromRouteParams(route);
@@ -520,6 +535,7 @@ test("A3 the semantic scope carries every filter dimension a watch may keep", ()
   assert.equal("view" in semantic, false);
   assert.equal("limit" in semantic, false);
   assert.equal("projectIds" in semantic, false);
+  assert.deepEqual(semantic.geographies, ["geography:nta2020:BK0901"]);
 });
 
 test("A3 viewport, pan, zoom, and selection are not membership", () => {

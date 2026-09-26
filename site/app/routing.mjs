@@ -330,6 +330,13 @@ function serializeState(){
     if(landBorough) q.set("boro", landBorough);
     if(landCommunityDistrict) q.set("cd", landCommunityDistrict);
     if(landCouncilDistrict) q.set("council", landCouncilDistrict);
+    if(Array.isArray(landGeographies)){
+      for(const key of landGeographies){
+        if(key) q.append("geo", key);
+      }
+      // Preserve an explicit empty geography input so invalid keys stay invalid across share.
+      if(!landGeographies.length) q.append("geo", "");
+    }
     if($("#lkw").value.trim()) q.set("q", $("#lkw").value.trim());
     const landStatus=$("#lstatus").value;
     const landStage=$("#lstage")?.value||"active";
@@ -1165,6 +1172,8 @@ function applyHash(){
       landBorough=landState.borough;
       landCommunityDistrict=landState.communityDistrict;
       landCouncilDistrict=landState.councilDistrict;
+      // null keeps the axis inactive; an array (possibly empty) means geography was supplied.
+      landGeographies=landState.geographies;
       // The raw text, not the query's collapsed form: the field shows what the resident typed.
       $("#lkw").value = q.get("q") || "";
       const landStatusSelect=$("#lstatus");

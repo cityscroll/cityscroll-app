@@ -36,6 +36,18 @@ export const LAND_FILTER_PARITY_SCHEMA = "cityscroll.land_filter_parity.v1";
 /** The project-limit the canonical Land search applies, once, before either renderer sees a row. */
 export const LAND_DEFAULT_RESULT_LIMIT = 40;
 
+/**
+ * Address/block narrowing still has its own presentation ceiling. Geography membership and the
+ * other facets must run before this cut, or a matching lot past the thirtieth unfiltered
+ * candidate disappears from an area-scoped query.
+ */
+export const LAND_ADDRESS_RESULT_LIMIT = 30;
+
+/** Schema id for the L02 place-membership index; compared by value to avoid a browser import cycle. */
+export const LAND_PLACE_MEMBERSHIP_SCHEMA_ID = "cityscroll.land_place_membership.v1";
+
+const LAND_NTA_GEOGRAPHY_RE = /^geography:nta2020:((?:BK|BX|MN|QN|SI)\d{4})$/;
+
 // Named apart from the several other module-private `BOROUGHS` constants of the same values:
 // the pre-split inline fixture in test/functional/21_module_dom_equivalence.py flattens these
 // modules into one classic script, where two module-private `const`s of one name collide.
@@ -122,6 +134,11 @@ export const LAND_FILTER_DIMENSIONS = Object.freeze([
     note: "Free text over the row, lowercased and whitespace-collapsed by the query.",
   }),
   Object.freeze({
+    id: "geographies", queryKey: "geographies", routeKey: "geo", defaultValue: null,
+    values: null, reachesWatchScope: true,
+    note: "Canonical NTA geography keys (`geography:nta2020:…`). OR across selected NTAs; absent is null, not all-city when the resident supplied only invalid keys.",
+  }),
+  Object.freeze({
     id: "limit", queryKey: "limit", routeKey: null,
     defaultValue: LAND_DEFAULT_RESULT_LIMIT, values: null, reachesWatchScope: false,
     note: "The canonical query's own project limit, applied once after ordering.",
@@ -181,10 +198,177 @@ function paramBag(input) {
   const params = new URLSearchParams();
   if (input && typeof input === "object" && !Array.isArray(input)) {
     for (const [key, value] of Object.entries(input)) {
-      if (value != null) params.append(key, String(value));
+      if (value == null) continue;
+      if (key === "geo" && Array.isArray(value)) {
+        for (const entry of value) {
+          if (entry != null) params.append("geo", String(entry));
+        }
+        continue;
+      }
+      params.append(key, String(value));
     }
   }
   return params;
+}
+
+function sortedUniqueStrings(values) {
+  return [...new Set((values || []).map((value) => String(value ?? "").trim()).filter(Boolean))]
+    .sort((left, right) => left.localeCompare(right));
+}
+
+/**
+ * Parse resident geography inputs into canonical NTA keys.
+ *
+ * Bare NTA ids and full `geography:nta2020:…` keys are accepted. Anything else is retained as
+ * invalid so a hand-edited URL cannot silently widen to the whole city.
+ */
+export function normalizeLandNtaGeographyKeys(rawKeys) {
+  const inputs = Array.isArray(rawKeys)
+    ? rawKeys
+    : (rawKeys == null || rawKeys === "" ? [] : [rawKeys]);
+  const keys = [];
+  const invalidKeys = [];
+  const ntaIds = [];
+  for (const raw of inputs) {
+    const value = String(raw ?? "").trim();
+    if (!value) continue;
+    const bare = /^(?:BK|BX|MN|QN|SI)\d{4}$/.test(value) ? `geography:nta2020:${value}` : value;
+    const match = bare.match(LAND_NTA_GEOGRAPHY_RE);
+    if (!match) {
+      invalidKeys.push(value);
+      continue;
+    }
+    if (!keys.includes(bare)) {
+      keys.push(bare);
+      ntaIds.push(match[1]);
+    }
+  }
+  return Object.freeze({
+    keys: Object.freeze(sortedUniqueStrings(keys)),
+    invalidKeys: Object.freeze(sortedUniqueStrings(invalidKeys)),
+    ntaIds: Object.freeze(sortedUniqueStrings(ntaIds)),
+  });
+}
+
+/**
+ * Resolve NTA geography scope against the L02 place-membership index.
+ *
+ * status:
+ * - `none` — no geography input; the query stays citywide for this axis
+ * - `ready` — one or more valid NTA keys; `projectIds` is the OR-union (may be empty)
+ * - `invalid` — input was present but no valid NTA key survived; not an all-city query
+ * - `unavailable` — valid keys need the membership index and it is missing or incoherent
+ */
+export function resolveLandNtaGeographyConstraint(rawKeys, membershipIndex = null) {
+  const inputs = Array.isArray(rawKeys)
+    ? rawKeys
+    : (rawKeys == null || rawKeys === "" ? [] : [rawKeys]);
+  if (!inputs.length) {
+    return Object.freeze({
+      status: "none",
+      keys: Object.freeze([]),
+      invalidKeys: Object.freeze([]),
+      ntaIds: Object.freeze([]),
+      projectIds: null,
+    });
+  }
+
+  const normalized = normalizeLandNtaGeographyKeys(inputs);
+  if (!normalized.keys.length) {
+    return Object.freeze({
+      status: "invalid",
+      keys: Object.freeze([]),
+      invalidKeys: normalized.invalidKeys,
+      ntaIds: Object.freeze([]),
+      projectIds: Object.freeze([]),
+    });
+  }
+
+  if (
+    !membershipIndex
+    || membershipIndex.schema !== LAND_PLACE_MEMBERSHIP_SCHEMA_ID
+    || !membershipIndex.by_geography
+    || typeof membershipIndex.by_geography !== "object"
+  ) {
+    return Object.freeze({
+      status: "unavailable",
+      keys: normalized.keys,
+      invalidKeys: normalized.invalidKeys,
+      ntaIds: normalized.ntaIds,
+      projectIds: null,
+    });
+  }
+
+  const places = membershipIndex.by_geography.nta2020;
+  if (!places || typeof places !== "object") {
+    return Object.freeze({
+      status: "unavailable",
+      keys: normalized.keys,
+      invalidKeys: normalized.invalidKeys,
+      ntaIds: normalized.ntaIds,
+      projectIds: null,
+    });
+  }
+
+  const seen = new Set();
+  const projectIds = [];
+  for (const ntaId of normalized.ntaIds) {
+    const list = places[ntaId];
+    if (!Array.isArray(list)) continue;
+    for (const projectId of list) {
+      const id = String(projectId ?? "").trim();
+      if (!id || seen.has(id)) continue;
+      seen.add(id);
+      projectIds.push(id);
+    }
+  }
+
+  return Object.freeze({
+    status: "ready",
+    keys: normalized.keys,
+    invalidKeys: normalized.invalidKeys,
+    ntaIds: normalized.ntaIds,
+    projectIds: Object.freeze(projectIds),
+  });
+}
+
+/**
+ * Checker for geography-constraint receipts. Empty findings mean the constraint is coherent;
+ * positive-control fixtures must be able to produce a non-empty list.
+ */
+export function landNtaGeographyConstraintFindings(constraint) {
+  const findings = [];
+  if (!constraint || typeof constraint !== "object") {
+    return ["constraint missing"];
+  }
+  const status = constraint.status;
+  if (!["none", "ready", "invalid", "unavailable"].includes(status)) {
+    findings.push(`unknown status ${status}`);
+  }
+  if (!Array.isArray(constraint.keys)) findings.push("keys missing");
+  if (!Array.isArray(constraint.invalidKeys)) findings.push("invalidKeys missing");
+  if (!Array.isArray(constraint.ntaIds)) findings.push("ntaIds missing");
+
+  if (status === "none") {
+    if (constraint.projectIds != null) findings.push("none constraint should leave projectIds null");
+    if ((constraint.keys || []).length) findings.push("none constraint still lists keys");
+  }
+  if (status === "invalid") {
+    if (!Array.isArray(constraint.projectIds)) findings.push("invalid constraint missing projectIds");
+    else if (constraint.projectIds.length) findings.push("invalid constraint still lists projectIds");
+    if ((constraint.keys || []).length) findings.push("invalid constraint still lists valid keys");
+    if (!(constraint.invalidKeys || []).length) findings.push("invalid constraint missing invalidKeys");
+  }
+  if (status === "ready") {
+    if (!Array.isArray(constraint.projectIds)) findings.push("ready constraint missing projectIds");
+    if (!(constraint.keys || []).length) findings.push("ready constraint missing keys");
+    if (!(constraint.ntaIds || []).length) findings.push("ready constraint missing ntaIds");
+  }
+  if (status === "unavailable") {
+    if (constraint.projectIds != null) findings.push("unavailable constraint should leave projectIds null");
+    if (!(constraint.keys || []).length) findings.push("unavailable constraint missing keys");
+  }
+  return findings;
 }
 
 function facetBag(params, provided) {
@@ -250,6 +434,12 @@ export function landFilterStateFromRouteParams(input, { facetValues } = {}) {
   const councilDistrict = COUNCIL_DISTRICT_RE.test(params.get("council") || "") ? params.get("council") : "";
   const attendanceRaw = params.get("attendance") || "";
   const attendance = futureAction === "hearing" && ATTENDANCE_IDS.has(attendanceRaw) ? attendanceRaw : "";
+  const rawGeographies = params.getAll("geo");
+  // null = axis absent. An array (even empty) means the resident supplied geography input, so an
+  // all-invalid `geo` list stays a bounded empty query instead of falling through to citywide.
+  const geographies = rawGeographies.length
+    ? normalizeLandNtaGeographyKeys(rawGeographies).keys
+    : null;
 
   return Object.freeze({
     status,
@@ -263,6 +453,7 @@ export function landFilterStateFromRouteParams(input, { facetValues } = {}) {
     communityDistrict,
     councilDistrict,
     keyword: text(params.get("q")),
+    geographies,
     attendance,
     closingWeek: futureAction === "hearing" && params.get("closing") === "week",
     limit: LAND_DEFAULT_RESULT_LIMIT,
@@ -284,6 +475,7 @@ export function landSnapshotQueryFromState(state, {
   actionRows = [],
   today,
   projectIds = null,
+  placeMembership = null,
   limit,
 } = {}) {
   return Object.freeze({
@@ -298,7 +490,9 @@ export function landSnapshotQueryFromState(state, {
     communityDistrict: state.communityDistrict,
     councilDistrict: state.councilDistrict,
     keyword: state.keyword,
+    geographies: state.geographies ?? null,
     projectIds,
+    placeMembership,
     actionRows,
     today,
     limit: Number.isFinite(limit) ? limit : state.limit,
@@ -318,6 +512,11 @@ export function landSemanticScopeFromState(state) {
   for (const dimension of LAND_FILTER_DIMENSIONS) {
     if (!dimension.reachesWatchScope) continue;
     const value = state[dimension.queryKey];
+    if (dimension.queryKey === "geographies") {
+      if (!Array.isArray(value) || value.length === 0) continue;
+      scope.geographies = [...value];
+      continue;
+    }
     if (value == null || value === "" || value === dimension.defaultValue) continue;
     scope[dimension.queryKey] = value;
   }
