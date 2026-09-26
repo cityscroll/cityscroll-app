@@ -94,6 +94,9 @@ jobs:
             --startup-report "$bundle_dir/startup.txt" \
             --read-model-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models" \
             --kv-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models"
+          # Fail closed on a large JSON re-entering the Worker startup graph, so a
+          # startup-CPU regression (validation error 10021) is caught before upload.
+          node ../tools/worker_startup_budget.mjs --metafile "$bundle_dir/meta.json"
       - name: Validate D1 release policy
         run: node tools/d1_release_policy.mjs --check
       - name: Compute D1 deploy fingerprint

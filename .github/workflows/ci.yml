@@ -505,6 +505,25 @@ jobs:
         run: node --test
         working-directory: worker
 
+      - name: Worker startup CPU budget (real bundle)
+        # A large JSON re-entering the Worker startup (static-import) graph blows
+        # the Cloudflare startup CPU budget (validation error 10021, which once
+        # blocked production deploys). Build the same bundle the deploy uses and
+        # fail the PR before it can reach that deploy. Scoped to PRs that touch the
+        # Worker or the site data it bundles. TMPDIR is redirected under the runner
+        # temp so the bundler's scratch never trips the leaked-temp guard.
+        if: matrix.family == 'worker' && (needs.changes.outputs.worker == 'true' || needs.changes.outputs.frontend == 'true')
+        working-directory: worker
+        env:
+          TMPDIR: ${{ runner.temp }}/worker-startup-budget-tmp
+        run: |
+          set -euo pipefail
+          mkdir -p "$TMPDIR"
+          bundle_dir="$RUNNER_TEMP/worker-startup-budget-bundle"
+          mkdir -p "$bundle_dir"
+          npx wrangler@4.126.0 deploy --dry-run --outdir "$bundle_dir" --metafile "$bundle_dir/meta.json"
+          node ../tools/worker_startup_budget.mjs --metafile "$bundle_dir/meta.json"
+
       - name: Fail closed on leaked temp directories
         if: always()
         run: node tools/check_temp_leaks.mjs check --in "$RUNNER_TEMP/temp-leak-${{ matrix.family }}.json" --label "${{ matrix.family }}"
