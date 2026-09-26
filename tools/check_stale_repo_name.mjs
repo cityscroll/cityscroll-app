@@ -6,10 +6,24 @@ import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 
-const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const ALLOWLIST_PATH = join(ROOT, ".github", "legacy-name-allowlist.txt");
+const TOOL_ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
+// Tests may point the guard at a temporary fixture tree so the real allowlist
+// and repository root are never written. Production/CI leave these unset.
+const ROOT = resolve(process.env.LEGACY_NAME_GUARD_ROOT || TOOL_ROOT);
+const ALLOWLIST_PATH = resolve(
+  process.env.LEGACY_NAME_ALLOWLIST_PATH || join(ROOT, ".github", "legacy-name-allowlist.txt"),
+);
 const GUARD_PATH = relative(ROOT, fileURLToPath(import.meta.url));
 const ALLOWLIST_RELATIVE_PATH = relative(ROOT, ALLOWLIST_PATH);
+
+function isolatedGitEnv() {
+  const env = { ...process.env };
+  delete env.GIT_DIR;
+  delete env.GIT_WORK_TREE;
+  delete env.GIT_INDEX_FILE;
+  delete env.GIT_COMMON_DIR;
+  return env;
+}
 // Paths whose whole-file exemption may be added in the same change that edits
 // them. The classification inventory was the only member, and it needed one only
 // for the private-term rule this guard no longer carries.
@@ -220,6 +234,7 @@ function trackedFiles() {
   const result = spawnSync("git", ["ls-files", "-co", "--exclude-standard", "-z"], {
     cwd: ROOT,
     encoding: "utf8",
+    env: isolatedGitEnv(),
   });
   if (result.status !== 0) throw new Error(result.stderr || "unable to enumerate repository files");
   return result.stdout.split("\0").filter(Boolean);
@@ -230,13 +245,23 @@ function trackedFiles() {
 // banned line and the allowlist entry that covers it, self-certifying its own
 // exception. See docs comment above ALLOWLIST_PATH's header for the full rule.
 function resolveMergeBase(baseSha) {
-  const result = spawnSync("git", ["merge-base", "HEAD", baseSha], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+  const result = spawnSync("git", ["merge-base", "HEAD", baseSha], {
+    cwd: ROOT,
+    encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024,
+    env: isolatedGitEnv(),
+  });
   if (result.status !== 0) return null;
   return result.stdout.trim() || null;
 }
 
 function readFileAtRevision(rev, path) {
-  const result = spawnSync("git", ["show", `${rev}:${path}`], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+  const result = spawnSync("git", ["show", `${rev}:${path}`], {
+    cwd: ROOT,
+    encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024,
+    env: isolatedGitEnv(),
+  });
   if (result.status !== 0) return null;
   return result.stdout;
 }
