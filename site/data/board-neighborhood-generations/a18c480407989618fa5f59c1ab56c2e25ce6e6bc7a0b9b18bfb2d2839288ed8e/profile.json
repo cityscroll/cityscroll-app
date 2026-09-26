@@ -1,0 +1,3418 @@
+{
+  "schema": "cityscroll.board_neighborhood_consumer.v1",
+  "consumer": "profile",
+  "generation_id": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+  "inventory": {
+    "board_identity_count": 59,
+    "board_associated_row_count": 411
+  },
+  "by_board": {
+    "brooklyn-cb-02": [
+      {
+        "nta_id": "BK0202",
+        "district_id": "K02",
+        "board_id": "brooklyn-cb-02",
+        "pct_from": 99.998693,
+        "pct_to": 29.918128,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0203",
+        "district_id": "K02",
+        "board_id": "brooklyn-cb-02",
+        "pct_from": 100,
+        "pct_to": 22.104903,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0204",
+        "district_id": "K02",
+        "board_id": "brooklyn-cb-02",
+        "pct_from": 94.818841,
+        "pct_to": 17.412796,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0261",
+        "district_id": "K02",
+        "board_id": "brooklyn-cb-02",
+        "pct_from": 99.987589,
+        "pct_to": 12.74026,
+        "subtype": "special_use"
+      },
+      {
+        "nta_id": "BK0201",
+        "district_id": "K02",
+        "board_id": "brooklyn-cb-02",
+        "pct_from": 99.996535,
+        "pct_to": 12.584087,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0601",
+        "district_id": "K02",
+        "board_id": "brooklyn-cb-02",
+        "pct_from": 1.824739,
+        "pct_to": 1.39895,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0101",
+        "district_id": "K02",
+        "board_id": "brooklyn-cb-02",
+        "pct_from": 5.407813,
+        "pct_to": 1.31082,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0301",
+        "district_id": "K02",
+        "board_id": "brooklyn-cb-02",
+        "pct_from": 2.16739,
+        "pct_to": 1.008456,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0801",
+        "district_id": "K02",
+        "board_id": "brooklyn-cb-02",
+        "pct_from": 5.125877,
+        "pct_to": 0.666187,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0602",
+        "district_id": "K02",
+        "board_id": "brooklyn-cb-02",
+        "pct_from": 1.638675,
+        "pct_to": 0.533655,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0191",
+        "district_id": "K02",
+        "board_id": "brooklyn-cb-02",
+        "pct_from": 1.961477,
+        "pct_to": 0.296575,
+        "subtype": "park"
+      }
+    ],
+    "brooklyn-cb-03": [
+      {
+        "nta_id": "BK0302",
+        "district_id": "K03",
+        "board_id": "brooklyn-cb-03",
+        "pct_from": 100,
+        "pct_to": 51.961574,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0301",
+        "district_id": "K03",
+        "board_id": "brooklyn-cb-03",
+        "pct_from": 97.831822,
+        "pct_to": 45.438652,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1601",
+        "district_id": "K03",
+        "board_id": "brooklyn-cb-03",
+        "pct_from": 5.215018,
+        "pct_to": 1.318468,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0204",
+        "district_id": "K03",
+        "board_id": "brooklyn-cb-03",
+        "pct_from": 5.179164,
+        "pct_to": 0.949421,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0802",
+        "district_id": "K03",
+        "board_id": "brooklyn-cb-03",
+        "pct_from": 0.737773,
+        "pct_to": 0.328827,
+        "subtype": "residential"
+      }
+    ],
+    "brooklyn-cb-12": [
+      {
+        "nta_id": "BK1202",
+        "district_id": "K12",
+        "board_id": "brooklyn-cb-12",
+        "pct_from": 96.843925,
+        "pct_to": 39.390692,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1204",
+        "district_id": "K12",
+        "board_id": "brooklyn-cb-12",
+        "pct_from": 93.531164,
+        "pct_to": 29.467948,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1203",
+        "district_id": "K12",
+        "board_id": "brooklyn-cb-12",
+        "pct_from": 96.866874,
+        "pct_to": 17.004567,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1201",
+        "district_id": "K12",
+        "board_id": "brooklyn-cb-12",
+        "pct_from": 100,
+        "pct_to": 11.805206,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1402",
+        "district_id": "K12",
+        "board_id": "brooklyn-cb-12",
+        "pct_from": 5.362188,
+        "pct_to": 1.23405,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0703",
+        "district_id": "K12",
+        "board_id": "brooklyn-cb-12",
+        "pct_from": 2.85116,
+        "pct_to": 0.537266,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1501",
+        "district_id": "K12",
+        "board_id": "brooklyn-cb-12",
+        "pct_from": 1.450373,
+        "pct_to": 0.508302,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1101",
+        "district_id": "K12",
+        "board_id": "brooklyn-cb-12",
+        "pct_from": 0.103801,
+        "pct_to": 0.050725,
+        "subtype": "residential"
+      }
+    ],
+    "brooklyn-cb-17": [
+      {
+        "nta_id": "BK1703",
+        "district_id": "K17",
+        "board_id": "brooklyn-cb-17",
+        "pct_from": 97.445338,
+        "pct_to": 28.256479,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1702",
+        "district_id": "K17",
+        "board_id": "brooklyn-cb-17",
+        "pct_from": 96.895053,
+        "pct_to": 24.912555,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1701",
+        "district_id": "K17",
+        "board_id": "brooklyn-cb-17",
+        "pct_from": 92.221665,
+        "pct_to": 19.43416,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1704",
+        "district_id": "K17",
+        "board_id": "brooklyn-cb-17",
+        "pct_from": 95.506305,
+        "pct_to": 18.721294,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1771",
+        "district_id": "K17",
+        "board_id": "brooklyn-cb-17",
+        "pct_from": 100,
+        "pct_to": 4.558283,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "BK1801",
+        "district_id": "K17",
+        "board_id": "brooklyn-cb-17",
+        "pct_from": 3.489793,
+        "pct_to": 2.021166,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1803",
+        "district_id": "K17",
+        "board_id": "brooklyn-cb-17",
+        "pct_from": 2.573703,
+        "pct_to": 1.934902,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0503",
+        "district_id": "K17",
+        "board_id": "brooklyn-cb-17",
+        "pct_from": 0.312655,
+        "pct_to": 0.154819,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-01": [
+      {
+        "nta_id": "QN0101",
+        "district_id": "Q01",
+        "board_id": "queens-cb-01",
+        "pct_from": 96.308168,
+        "pct_to": 32.750994,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0105",
+        "district_id": "Q01",
+        "board_id": "queens-cb-01",
+        "pct_from": 98.262276,
+        "pct_to": 15.888411,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0104",
+        "district_id": "Q01",
+        "board_id": "queens-cb-01",
+        "pct_from": 99.823185,
+        "pct_to": 15.162889,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0103",
+        "district_id": "Q01",
+        "board_id": "queens-cb-01",
+        "pct_from": 100,
+        "pct_to": 12.298318,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0151",
+        "district_id": "Q01",
+        "board_id": "queens-cb-01",
+        "pct_from": 99.991978,
+        "pct_to": 10.593639,
+        "subtype": "rikers_island"
+      },
+      {
+        "nta_id": "QN0102",
+        "district_id": "Q01",
+        "board_id": "queens-cb-01",
+        "pct_from": 99.998341,
+        "pct_to": 6.469071,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0161",
+        "district_id": "Q01",
+        "board_id": "queens-cb-01",
+        "pct_from": 99.807646,
+        "pct_to": 2.619867,
+        "subtype": "special_use"
+      },
+      {
+        "nta_id": "QN0171",
+        "district_id": "Q01",
+        "board_id": "queens-cb-01",
+        "pct_from": 99.998457,
+        "pct_to": 2.559779,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "QN0191",
+        "district_id": "Q01",
+        "board_id": "queens-cb-01",
+        "pct_from": 100,
+        "pct_to": 1.560238,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN0301",
+        "district_id": "Q01",
+        "board_id": "queens-cb-01",
+        "pct_from": 0.392852,
+        "pct_to": 0.09009,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-02": [
+      {
+        "nta_id": "QN0202",
+        "district_id": "Q02",
+        "board_id": "queens-cb-02",
+        "pct_from": 99.997874,
+        "pct_to": 34.069384,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0203",
+        "district_id": "Q02",
+        "board_id": "queens-cb-02",
+        "pct_from": 98.438138,
+        "pct_to": 23.166386,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0201",
+        "district_id": "Q02",
+        "board_id": "queens-cb-02",
+        "pct_from": 99.991668,
+        "pct_to": 19.707849,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0271",
+        "district_id": "Q02",
+        "board_id": "queens-cb-02",
+        "pct_from": 99.996574,
+        "pct_to": 10.20729,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "QN0261",
+        "district_id": "Q02",
+        "board_id": "queens-cb-02",
+        "pct_from": 100,
+        "pct_to": 6.273475,
+        "subtype": "special_use"
+      },
+      {
+        "nta_id": "QN0501",
+        "district_id": "Q02",
+        "board_id": "queens-cb-02",
+        "pct_from": 13.649165,
+        "pct_to": 5.684896,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0401",
+        "district_id": "Q02",
+        "board_id": "queens-cb-02",
+        "pct_from": 1.19296,
+        "pct_to": 0.35873,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0105",
+        "district_id": "Q02",
+        "board_id": "queens-cb-02",
+        "pct_from": 1.737591,
+        "pct_to": 0.344038,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0301",
+        "district_id": "Q02",
+        "board_id": "queens-cb-02",
+        "pct_from": 0.629648,
+        "pct_to": 0.176811,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0161",
+        "district_id": "Q02",
+        "board_id": "queens-cb-02",
+        "pct_from": 0.192354,
+        "pct_to": 0.006183,
+        "subtype": "special_use"
+      }
+    ],
+    "queens-cb-05": [
+      {
+        "nta_id": "QN0501",
+        "district_id": "Q05",
+        "board_id": "queens-cb-05",
+        "pct_from": 86.349513,
+        "pct_to": 23.933284,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0502",
+        "district_id": "Q05",
+        "board_id": "queens-cb-05",
+        "pct_from": 99.99611,
+        "pct_to": 20.222679,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0504",
+        "district_id": "Q05",
+        "board_id": "queens-cb-05",
+        "pct_from": 99.747473,
+        "pct_to": 16.566426,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0574",
+        "district_id": "Q05",
+        "board_id": "queens-cb-05",
+        "pct_from": 99.993257,
+        "pct_to": 14.841101,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "QN0503",
+        "district_id": "Q05",
+        "board_id": "queens-cb-05",
+        "pct_from": 91.566444,
+        "pct_to": 13.059182,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0573",
+        "district_id": "Q05",
+        "board_id": "queens-cb-05",
+        "pct_from": 100,
+        "pct_to": 4.160807,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "QN0571",
+        "district_id": "Q05",
+        "board_id": "queens-cb-05",
+        "pct_from": 100,
+        "pct_to": 3.634498,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "QN0572",
+        "district_id": "Q05",
+        "board_id": "queens-cb-05",
+        "pct_from": 100,
+        "pct_to": 2.619595,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "QN8291",
+        "district_id": "Q05",
+        "board_id": "queens-cb-05",
+        "pct_from": 4.751902,
+        "pct_to": 0.542277,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN0401",
+        "district_id": "Q05",
+        "board_id": "queens-cb-05",
+        "pct_from": 2.091062,
+        "pct_to": 0.418441,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-07": [
+      {
+        "nta_id": "QN0701",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 99.973583,
+        "pct_to": 20.31525,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0704",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 98.501565,
+        "pct_to": 16.938631,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0702",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 99.999363,
+        "pct_to": 16.03408,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0707",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 96.986082,
+        "pct_to": 11.384322,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0703",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 94.730958,
+        "pct_to": 11.346322,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0705",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 100,
+        "pct_to": 9.644089,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0706",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 93.962251,
+        "pct_to": 7.56419,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0791",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 99.998708,
+        "pct_to": 3.355636,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN0761",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 99.98899,
+        "pct_to": 2.119049,
+        "subtype": "special_use"
+      },
+      {
+        "nta_id": "QN1101",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 4.425115,
+        "pct_to": 0.747629,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN8191",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 3.082722,
+        "pct_to": 0.518423,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN0802",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 0.150557,
+        "pct_to": 0.016957,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0803",
+        "district_id": "Q07",
+        "board_id": "queens-cb-07",
+        "pct_from": 0.121627,
+        "pct_to": 0.012299,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-12": [
+      {
+        "nta_id": "QN1205",
+        "district_id": "Q12",
+        "board_id": "queens-cb-12",
+        "pct_from": 99.319265,
+        "pct_to": 27.595074,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1203",
+        "district_id": "Q12",
+        "board_id": "queens-cb-12",
+        "pct_from": 99.654192,
+        "pct_to": 17.873817,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1201",
+        "district_id": "Q12",
+        "board_id": "queens-cb-12",
+        "pct_from": 95.202422,
+        "pct_to": 16.67654,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1202",
+        "district_id": "Q12",
+        "board_id": "queens-cb-12",
+        "pct_from": 99.72238,
+        "pct_to": 14.125011,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1204",
+        "district_id": "Q12",
+        "board_id": "queens-cb-12",
+        "pct_from": 99.999971,
+        "pct_to": 12.891801,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1206",
+        "district_id": "Q12",
+        "board_id": "queens-cb-12",
+        "pct_from": 100,
+        "pct_to": 9.153022,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1306",
+        "district_id": "Q12",
+        "board_id": "queens-cb-12",
+        "pct_from": 3.949732,
+        "pct_to": 0.848601,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1305",
+        "district_id": "Q12",
+        "board_id": "queens-cb-12",
+        "pct_from": 2.969762,
+        "pct_to": 0.442582,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0805",
+        "district_id": "Q12",
+        "board_id": "queens-cb-12",
+        "pct_from": 3.749477,
+        "pct_to": 0.387735,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-13": [
+      {
+        "nta_id": "QN1303",
+        "district_id": "Q13",
+        "board_id": "queens-cb-13",
+        "pct_from": 99.695567,
+        "pct_to": 19.814356,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1302",
+        "district_id": "Q13",
+        "board_id": "queens-cb-13",
+        "pct_from": 99.709111,
+        "pct_to": 15.739124,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1306",
+        "district_id": "Q13",
+        "board_id": "queens-cb-13",
+        "pct_from": 96.017999,
+        "pct_to": 15.735853,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1307",
+        "district_id": "Q13",
+        "board_id": "queens-cb-13",
+        "pct_from": 96.98645,
+        "pct_to": 13.071434,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1301",
+        "district_id": "Q13",
+        "board_id": "queens-cb-13",
+        "pct_from": 99.998577,
+        "pct_to": 12.959995,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1305",
+        "district_id": "Q13",
+        "board_id": "queens-cb-13",
+        "pct_from": 97.030238,
+        "pct_to": 11.030132,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1304",
+        "district_id": "Q13",
+        "board_id": "queens-cb-13",
+        "pct_from": 99.999295,
+        "pct_to": 9.436739,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1371",
+        "district_id": "Q13",
+        "board_id": "queens-cb-13",
+        "pct_from": 100,
+        "pct_to": 1.518535,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "QN8381",
+        "district_id": "Q13",
+        "board_id": "queens-cb-13",
+        "pct_from": 0.837068,
+        "pct_to": 0.470969,
+        "subtype": "airport"
+      },
+      {
+        "nta_id": "QN1205",
+        "district_id": "Q13",
+        "board_id": "queens-cb-13",
+        "pct_from": 0.680735,
+        "pct_to": 0.144271,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1103",
+        "district_id": "Q13",
+        "board_id": "queens-cb-13",
+        "pct_from": 0.396513,
+        "pct_to": 0.077102,
+        "subtype": "residential"
+      }
+    ],
+    "staten-island-cb-01": [
+      {
+        "nta_id": "SI0107",
+        "district_id": "R01",
+        "board_id": "staten-island-cb-01",
+        "pct_from": 99.822541,
+        "pct_to": 23.654062,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0104",
+        "district_id": "R01",
+        "board_id": "staten-island-cb-01",
+        "pct_from": 99.901002,
+        "pct_to": 22.605274,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0105",
+        "district_id": "R01",
+        "board_id": "staten-island-cb-01",
+        "pct_from": 99.605587,
+        "pct_to": 20.207033,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0106",
+        "district_id": "R01",
+        "board_id": "staten-island-cb-01",
+        "pct_from": 99.999844,
+        "pct_to": 9.605995,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0103",
+        "district_id": "R01",
+        "board_id": "staten-island-cb-01",
+        "pct_from": 99.003863,
+        "pct_to": 9.251594,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0101",
+        "district_id": "R01",
+        "board_id": "staten-island-cb-01",
+        "pct_from": 99.998798,
+        "pct_to": 7.027126,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0102",
+        "district_id": "R01",
+        "board_id": "staten-island-cb-01",
+        "pct_from": 99.999216,
+        "pct_to": 6.426089,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0191",
+        "district_id": "R01",
+        "board_id": "staten-island-cb-01",
+        "pct_from": 100,
+        "pct_to": 0.998948,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "SI0204",
+        "district_id": "R01",
+        "board_id": "staten-island-cb-01",
+        "pct_from": 0.24825,
+        "pct_to": 0.137794,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0203",
+        "district_id": "R01",
+        "board_id": "staten-island-cb-01",
+        "pct_from": 0.17056,
+        "pct_to": 0.084238,
+        "subtype": "residential"
+      }
+    ],
+    "staten-island-cb-03": [
+      {
+        "nta_id": "SI0304",
+        "district_id": "R03",
+        "board_id": "staten-island-cb-03",
+        "pct_from": 99.999539,
+        "pct_to": 30.053935,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0305",
+        "district_id": "R03",
+        "board_id": "staten-island-cb-03",
+        "pct_from": 99.995735,
+        "pct_to": 21.11605,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0302",
+        "district_id": "R03",
+        "board_id": "staten-island-cb-03",
+        "pct_from": 99.991924,
+        "pct_to": 19.445042,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0303",
+        "district_id": "R03",
+        "board_id": "staten-island-cb-03",
+        "pct_from": 100,
+        "pct_to": 11.289214,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0301",
+        "district_id": "R03",
+        "board_id": "staten-island-cb-03",
+        "pct_from": 94.024411,
+        "pct_to": 8.760787,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0391",
+        "district_id": "R03",
+        "board_id": "staten-island-cb-03",
+        "pct_from": 98.594651,
+        "pct_to": 7.843426,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "SI0203",
+        "district_id": "R03",
+        "board_id": "staten-island-cb-03",
+        "pct_from": 4.461518,
+        "pct_to": 1.384591,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0291",
+        "district_id": "R03",
+        "board_id": "staten-island-cb-03",
+        "pct_from": 0.671081,
+        "pct_to": 0.076211,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "SI9593",
+        "district_id": "R03",
+        "board_id": "staten-island-cb-03",
+        "pct_from": 0.764359,
+        "pct_to": 0.029766,
+        "subtype": "park"
+      }
+    ],
+    "bronx-cb-03": [
+      {
+        "nta_id": "BX0301",
+        "district_id": "X03",
+        "board_id": "bronx-cb-03",
+        "pct_from": 98.552564,
+        "pct_to": 30.384426,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0303",
+        "district_id": "X03",
+        "board_id": "bronx-cb-03",
+        "pct_from": 81.960925,
+        "pct_to": 29.22567,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0302",
+        "district_id": "X03",
+        "board_id": "bronx-cb-03",
+        "pct_from": 92.661517,
+        "pct_to": 20.681228,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0391",
+        "district_id": "X03",
+        "board_id": "bronx-cb-03",
+        "pct_from": 100,
+        "pct_to": 14.152086,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BX0202",
+        "district_id": "X03",
+        "board_id": "bronx-cb-03",
+        "pct_from": 6.834927,
+        "pct_to": 2.348252,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0401",
+        "district_id": "X03",
+        "board_id": "bronx-cb-03",
+        "pct_from": 3.967544,
+        "pct_to": 2.347284,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0601",
+        "district_id": "X03",
+        "board_id": "bronx-cb-03",
+        "pct_from": 2.568723,
+        "pct_to": 0.67096,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0102",
+        "district_id": "X03",
+        "board_id": "bronx-cb-03",
+        "pct_from": 0.488485,
+        "pct_to": 0.188338,
+        "subtype": "residential"
+      }
+    ],
+    "bronx-cb-04": [
+      {
+        "nta_id": "BX0401",
+        "district_id": "X04",
+        "board_id": "bronx-cb-04",
+        "pct_from": 87.617488,
+        "pct_to": 41.822287,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0403",
+        "district_id": "X04",
+        "board_id": "bronx-cb-04",
+        "pct_from": 99.997936,
+        "pct_to": 24.506991,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0402",
+        "district_id": "X04",
+        "board_id": "bronx-cb-04",
+        "pct_from": 100,
+        "pct_to": 23.501683,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0491",
+        "district_id": "X04",
+        "board_id": "bronx-cb-04",
+        "pct_from": 100,
+        "pct_to": 5.062805,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BX0492",
+        "district_id": "X04",
+        "board_id": "bronx-cb-04",
+        "pct_from": 100,
+        "pct_to": 3.35374,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BX0302",
+        "district_id": "X04",
+        "board_id": "bronx-cb-04",
+        "pct_from": 5.333502,
+        "pct_to": 0.960423,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0501",
+        "district_id": "X04",
+        "board_id": "bronx-cb-04",
+        "pct_from": 2.025451,
+        "pct_to": 0.716355,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0502",
+        "district_id": "X04",
+        "board_id": "bronx-cb-04",
+        "pct_from": 0.325079,
+        "pct_to": 0.074249,
+        "subtype": "residential"
+      }
+    ],
+    "bronx-cb-09": [
+      {
+        "nta_id": "BX0901",
+        "district_id": "X09",
+        "board_id": "bronx-cb-09",
+        "pct_from": 99.936091,
+        "pct_to": 28.163736,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0902",
+        "district_id": "X09",
+        "board_id": "bronx-cb-09",
+        "pct_from": 99.993229,
+        "pct_to": 26.531259,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0903",
+        "district_id": "X09",
+        "board_id": "bronx-cb-09",
+        "pct_from": 85.434321,
+        "pct_to": 24.593714,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0904",
+        "district_id": "X09",
+        "board_id": "bronx-cb-09",
+        "pct_from": 100,
+        "pct_to": 8.036254,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0991",
+        "district_id": "X09",
+        "board_id": "bronx-cb-09",
+        "pct_from": 99.985609,
+        "pct_to": 6.819079,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BX1001",
+        "district_id": "X09",
+        "board_id": "bronx-cb-09",
+        "pct_from": 27.000209,
+        "pct_to": 3.633969,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0303",
+        "district_id": "X09",
+        "board_id": "bronx-cb-09",
+        "pct_from": 9.796734,
+        "pct_to": 1.369293,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0601",
+        "district_id": "X09",
+        "board_id": "bronx-cb-09",
+        "pct_from": 8.30708,
+        "pct_to": 0.850521,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-11": [
+      {
+        "nta_id": "QN1102",
+        "district_id": "Q11",
+        "board_id": "queens-cb-11",
+        "pct_from": 99.999993,
+        "pct_to": 27.04318,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1103",
+        "district_id": "Q11",
+        "board_id": "queens-cb-11",
+        "pct_from": 99.60171,
+        "pct_to": 26.070679,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1101",
+        "district_id": "Q11",
+        "board_id": "queens-cb-11",
+        "pct_from": 95.574885,
+        "pct_to": 20.360013,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1104",
+        "district_id": "Q11",
+        "board_id": "queens-cb-11",
+        "pct_from": 99.647558,
+        "pct_to": 15.169329,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1191",
+        "district_id": "Q11",
+        "board_id": "queens-cb-11",
+        "pct_from": 99.99617,
+        "pct_to": 10.036591,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN0703",
+        "district_id": "Q11",
+        "board_id": "queens-cb-11",
+        "pct_from": 5.268354,
+        "pct_to": 0.795629,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0704",
+        "district_id": "Q11",
+        "board_id": "queens-cb-11",
+        "pct_from": 1.498435,
+        "pct_to": 0.324897,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1302",
+        "district_id": "Q11",
+        "board_id": "queens-cb-11",
+        "pct_from": 0.288398,
+        "pct_to": 0.061279,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0891",
+        "district_id": "Q11",
+        "board_id": "queens-cb-11",
+        "pct_from": 0.683888,
+        "pct_to": 0.055961,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN0803",
+        "district_id": "Q11",
+        "board_id": "queens-cb-11",
+        "pct_from": 0.323302,
+        "pct_to": 0.041221,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1303",
+        "district_id": "Q11",
+        "board_id": "queens-cb-11",
+        "pct_from": 0.143178,
+        "pct_to": 0.038305,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-08": [
+      {
+        "nta_id": "QN0804",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 99.964488,
+        "pct_to": 18.981132,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0802",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 99.849443,
+        "pct_to": 17.787168,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0801",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 99.999983,
+        "pct_to": 16.527682,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0803",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 99.555071,
+        "pct_to": 15.922556,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0805",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 95.820748,
+        "pct_to": 12.762705,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0891",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 99.316112,
+        "pct_to": 10.194408,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN0871",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 99.999785,
+        "pct_to": 4.436801,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "QN8191",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 5.505905,
+        "pct_to": 1.464508,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN1201",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 4.567664,
+        "pct_to": 1.030554,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0706",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 6.037544,
+        "pct_to": 0.768746,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1104",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 0.352442,
+        "pct_to": 0.067302,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1303",
+        "district_id": "Q08",
+        "board_id": "queens-cb-08",
+        "pct_from": 0.158725,
+        "pct_to": 0.053268,
+        "subtype": "residential"
+      }
+    ],
+    "brooklyn-cb-05": [
+      {
+        "nta_id": "BK0503",
+        "district_id": "K05",
+        "board_id": "brooklyn-cb-05",
+        "pct_from": 82.77653,
+        "pct_to": 24.732331,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0505",
+        "district_id": "K05",
+        "board_id": "brooklyn-cb-05",
+        "pct_from": 99.998329,
+        "pct_to": 20.277153,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0502",
+        "district_id": "K05",
+        "board_id": "brooklyn-cb-05",
+        "pct_from": 99.999249,
+        "pct_to": 17.94781,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0504",
+        "district_id": "K05",
+        "board_id": "brooklyn-cb-05",
+        "pct_from": 90.649757,
+        "pct_to": 15.79136,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0501",
+        "district_id": "K05",
+        "board_id": "brooklyn-cb-05",
+        "pct_from": 99.962068,
+        "pct_to": 15.672999,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0571",
+        "district_id": "K05",
+        "board_id": "brooklyn-cb-05",
+        "pct_from": 99.99986,
+        "pct_to": 5.209991,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "BK1601",
+        "district_id": "K05",
+        "board_id": "brooklyn-cb-05",
+        "pct_from": 2.82992,
+        "pct_to": 0.365637,
+        "subtype": "residential"
+      }
+    ],
+    "manhattan-cb-12": [
+      {
+        "nta_id": "MN1202",
+        "district_id": "M12",
+        "board_id": "manhattan-cb-12",
+        "pct_from": 99.999706,
+        "pct_to": 31.772819,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN1201",
+        "district_id": "M12",
+        "board_id": "manhattan-cb-12",
+        "pct_from": 99.856431,
+        "pct_to": 26.932374,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN1203",
+        "district_id": "M12",
+        "board_id": "manhattan-cb-12",
+        "pct_from": 99.992281,
+        "pct_to": 18.516125,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN1292",
+        "district_id": "M12",
+        "board_id": "manhattan-cb-12",
+        "pct_from": 99.990821,
+        "pct_to": 12.835107,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "MN1291",
+        "district_id": "M12",
+        "board_id": "manhattan-cb-12",
+        "pct_from": 99.945812,
+        "pct_to": 9.939558,
+        "subtype": "park"
+      }
+    ],
+    "brooklyn-cb-01": [
+      {
+        "nta_id": "BK0104",
+        "district_id": "K01",
+        "board_id": "brooklyn-cb-01",
+        "pct_from": 99.995467,
+        "pct_to": 39.686202,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0101",
+        "district_id": "K01",
+        "board_id": "brooklyn-cb-01",
+        "pct_from": 99.998993,
+        "pct_to": 26.820414,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0102",
+        "district_id": "K01",
+        "board_id": "brooklyn-cb-01",
+        "pct_from": 99.999197,
+        "pct_to": 21.908477,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0103",
+        "district_id": "K01",
+        "board_id": "brooklyn-cb-01",
+        "pct_from": 99.990707,
+        "pct_to": 11.547472,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0303",
+        "district_id": "K01",
+        "board_id": "brooklyn-cb-01",
+        "pct_from": 0.202635,
+        "pct_to": 0.029204,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0601",
+        "district_id": "K01",
+        "board_id": "brooklyn-cb-01",
+        "pct_from": 0.104567,
+        "pct_to": 0.004427,
+        "subtype": "residential"
+      }
+    ],
+    "bronx-cb-12": [
+      {
+        "nta_id": "BX1202",
+        "district_id": "X12",
+        "board_id": "bronx-cb-12",
+        "pct_from": 99.56393,
+        "pct_to": 36.24749,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1203",
+        "district_id": "X12",
+        "board_id": "bronx-cb-12",
+        "pct_from": 99.99918,
+        "pct_to": 25.593862,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1201",
+        "district_id": "X12",
+        "board_id": "bronx-cb-12",
+        "pct_from": 99.999048,
+        "pct_to": 23.396052,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1271",
+        "district_id": "X12",
+        "board_id": "bronx-cb-12",
+        "pct_from": 99.955805,
+        "pct_to": 11.541372,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "BX2791",
+        "district_id": "X12",
+        "board_id": "bronx-cb-12",
+        "pct_from": 5.570453,
+        "pct_to": 1.203256,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BX1004",
+        "district_id": "X12",
+        "board_id": "bronx-cb-12",
+        "pct_from": 4.30908,
+        "pct_to": 0.808196,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1104",
+        "district_id": "X12",
+        "board_id": "bronx-cb-12",
+        "pct_from": 6.413945,
+        "pct_to": 0.652303,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1103",
+        "district_id": "X12",
+        "board_id": "bronx-cb-12",
+        "pct_from": 2.841235,
+        "pct_to": 0.551413,
+        "subtype": "residential"
+      }
+    ],
+    "brooklyn-cb-09": [
+      {
+        "nta_id": "BK0902",
+        "district_id": "K09",
+        "board_id": "brooklyn-cb-09",
+        "pct_from": 99.995019,
+        "pct_to": 53.045682,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0901",
+        "district_id": "K09",
+        "board_id": "brooklyn-cb-09",
+        "pct_from": 99.999169,
+        "pct_to": 44.254212,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1703",
+        "district_id": "K09",
+        "board_id": "brooklyn-cb-09",
+        "pct_from": 2.554158,
+        "pct_to": 1.533418,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1701",
+        "district_id": "K09",
+        "board_id": "brooklyn-cb-09",
+        "pct_from": 2.665053,
+        "pct_to": 1.162771,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-04": [
+      {
+        "nta_id": "QN0401",
+        "district_id": "Q04",
+        "board_id": "queens-cb-04",
+        "pct_from": 96.041087,
+        "pct_to": 61.50785,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0402",
+        "district_id": "Q04",
+        "board_id": "queens-cb-04",
+        "pct_from": 99.998949,
+        "pct_to": 36.546322,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0203",
+        "district_id": "Q04",
+        "board_id": "queens-cb-04",
+        "pct_from": 1.558971,
+        "pct_to": 0.781385,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0601",
+        "district_id": "Q04",
+        "board_id": "queens-cb-04",
+        "pct_from": 2.173338,
+        "pct_to": 0.667586,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN8191",
+        "district_id": "Q04",
+        "board_id": "queens-cb-04",
+        "pct_from": 0.25053,
+        "pct_to": 0.210393,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN0602",
+        "district_id": "Q04",
+        "board_id": "queens-cb-04",
+        "pct_from": 0.167626,
+        "pct_to": 0.147775,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0504",
+        "district_id": "Q04",
+        "board_id": "queens-cb-04",
+        "pct_from": 0.252527,
+        "pct_to": 0.134227,
+        "subtype": "residential"
+      }
+    ],
+    "bronx-cb-08": [
+      {
+        "nta_id": "BX0803",
+        "district_id": "X08",
+        "board_id": "bronx-cb-08",
+        "pct_from": 99.998883,
+        "pct_to": 68.402689,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0802",
+        "district_id": "X08",
+        "board_id": "bronx-cb-08",
+        "pct_from": 97.165694,
+        "pct_to": 12.993063,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0801",
+        "district_id": "X08",
+        "board_id": "bronx-cb-08",
+        "pct_from": 99.842795,
+        "pct_to": 11.895363,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0702",
+        "district_id": "X08",
+        "board_id": "bronx-cb-08",
+        "pct_from": 24.781518,
+        "pct_to": 6.608423,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX2691",
+        "district_id": "X08",
+        "board_id": "bronx-cb-08",
+        "pct_from": 0.17763,
+        "pct_to": 0.097729,
+        "subtype": "park"
+      }
+    ],
+    "brooklyn-cb-10": [
+      {
+        "nta_id": "BK1001",
+        "district_id": "K10",
+        "board_id": "brooklyn-cb-10",
+        "pct_from": 99.755619,
+        "pct_to": 55.221023,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1002",
+        "district_id": "K10",
+        "board_id": "brooklyn-cb-10",
+        "pct_from": 99.188125,
+        "pct_to": 25.940022,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1091",
+        "district_id": "K10",
+        "board_id": "brooklyn-cb-10",
+        "pct_from": 99.998854,
+        "pct_to": 8.971234,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BK1061",
+        "district_id": "K10",
+        "board_id": "brooklyn-cb-10",
+        "pct_from": 99.994501,
+        "pct_to": 7.601916,
+        "subtype": "special_use"
+      },
+      {
+        "nta_id": "BK0703",
+        "district_id": "K10",
+        "board_id": "brooklyn-cb-10",
+        "pct_from": 4.914077,
+        "pct_to": 0.827705,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1202",
+        "district_id": "K10",
+        "board_id": "brooklyn-cb-10",
+        "pct_from": 2.256689,
+        "pct_to": 0.820462,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0702",
+        "district_id": "K10",
+        "board_id": "brooklyn-cb-10",
+        "pct_from": 1.364404,
+        "pct_to": 0.617339,
+        "subtype": "residential"
+      }
+    ],
+    "bronx-cb-11": [
+      {
+        "nta_id": "BX1103",
+        "district_id": "X11",
+        "board_id": "bronx-cb-11",
+        "pct_from": 97.158765,
+        "pct_to": 29.117653,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1102",
+        "district_id": "X11",
+        "board_id": "bronx-cb-11",
+        "pct_from": 99.998531,
+        "pct_to": 27.74556,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1101",
+        "district_id": "X11",
+        "board_id": "bronx-cb-11",
+        "pct_from": 99.530091,
+        "pct_to": 15.466445,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1104",
+        "district_id": "X11",
+        "board_id": "bronx-cb-11",
+        "pct_from": 93.495476,
+        "pct_to": 14.683169,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1161",
+        "district_id": "X11",
+        "board_id": "bronx-cb-11",
+        "pct_from": 92.281886,
+        "pct_to": 11.205948,
+        "subtype": "special_use"
+      },
+      {
+        "nta_id": "BX0601",
+        "district_id": "X11",
+        "board_id": "bronx-cb-11",
+        "pct_from": 8.421242,
+        "pct_to": 0.982297,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1001",
+        "district_id": "X11",
+        "board_id": "bronx-cb-11",
+        "pct_from": 4.873098,
+        "pct_to": 0.747221,
+        "subtype": "residential"
+      }
+    ],
+    "manhattan-cb-08": [
+      {
+        "nta_id": "MN0801",
+        "district_id": "M08",
+        "board_id": "manhattan-cb-08",
+        "pct_from": 99.951394,
+        "pct_to": 38.92154,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0802",
+        "district_id": "M08",
+        "board_id": "manhattan-cb-08",
+        "pct_from": 99.998428,
+        "pct_to": 36.339917,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0803",
+        "district_id": "M08",
+        "board_id": "manhattan-cb-08",
+        "pct_from": 99.99416,
+        "pct_to": 24.71103,
+        "subtype": "residential"
+      }
+    ],
+    "brooklyn-cb-07": [
+      {
+        "nta_id": "BK0702",
+        "district_id": "K07",
+        "board_id": "brooklyn-cb-07",
+        "pct_from": 98.568916,
+        "pct_to": 47.689888,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0771",
+        "district_id": "K07",
+        "board_id": "brooklyn-cb-07",
+        "pct_from": 99.997337,
+        "pct_to": 20.264763,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "BK0703",
+        "district_id": "K07",
+        "board_id": "brooklyn-cb-07",
+        "pct_from": 92.234763,
+        "pct_to": 16.612442,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0701",
+        "district_id": "K07",
+        "board_id": "brooklyn-cb-07",
+        "pct_from": 99.997764,
+        "pct_to": 14.705075,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0601",
+        "district_id": "K07",
+        "board_id": "brooklyn-cb-07",
+        "pct_from": 0.945537,
+        "pct_to": 0.552207,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1001",
+        "district_id": "K07",
+        "board_id": "brooklyn-cb-07",
+        "pct_from": 0.243745,
+        "pct_to": 0.14428,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK5591",
+        "district_id": "K07",
+        "board_id": "brooklyn-cb-07",
+        "pct_from": 0.107211,
+        "pct_to": 0.028137,
+        "subtype": "park"
+      }
+    ],
+    "brooklyn-cb-11": [
+      {
+        "nta_id": "BK1101",
+        "district_id": "K11",
+        "board_id": "brooklyn-cb-11",
+        "pct_from": 99.896199,
+        "pct_to": 47.073896,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1103",
+        "district_id": "K11",
+        "board_id": "brooklyn-cb-11",
+        "pct_from": 93.995996,
+        "pct_to": 30.814834,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1102",
+        "district_id": "K11",
+        "board_id": "brooklyn-cb-11",
+        "pct_from": 99.99726,
+        "pct_to": 19.917204,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1204",
+        "district_id": "K11",
+        "board_id": "brooklyn-cb-11",
+        "pct_from": 4.941446,
+        "pct_to": 1.501286,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1301",
+        "district_id": "K11",
+        "board_id": "brooklyn-cb-11",
+        "pct_from": 1.490185,
+        "pct_to": 0.373031,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1002",
+        "district_id": "K11",
+        "board_id": "brooklyn-cb-11",
+        "pct_from": 0.811875,
+        "pct_to": 0.22906,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1202",
+        "district_id": "K11",
+        "board_id": "brooklyn-cb-11",
+        "pct_from": 0.230121,
+        "pct_to": 0.09026,
+        "subtype": "residential"
+      }
+    ],
+    "brooklyn-cb-13": [
+      {
+        "nta_id": "BK1302",
+        "district_id": "K13",
+        "board_id": "brooklyn-cb-13",
+        "pct_from": 99.996821,
+        "pct_to": 53.91438,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1301",
+        "district_id": "K13",
+        "board_id": "brooklyn-cb-13",
+        "pct_from": 86.936956,
+        "pct_to": 25.44701,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1303",
+        "district_id": "K13",
+        "board_id": "brooklyn-cb-13",
+        "pct_from": 91.943017,
+        "pct_to": 14.129388,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1391",
+        "district_id": "K13",
+        "board_id": "brooklyn-cb-13",
+        "pct_from": 99.993362,
+        "pct_to": 4.783309,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BK1103",
+        "district_id": "K13",
+        "board_id": "brooklyn-cb-13",
+        "pct_from": 3.728575,
+        "pct_to": 1.429294,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1501",
+        "district_id": "K13",
+        "board_id": "brooklyn-cb-13",
+        "pct_from": 0.747406,
+        "pct_to": 0.295354,
+        "subtype": "residential"
+      }
+    ],
+    "bronx-cb-06": [
+      {
+        "nta_id": "BX0602",
+        "district_id": "X06",
+        "board_id": "bronx-cb-06",
+        "pct_from": 99.996803,
+        "pct_to": 37.102454,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0603",
+        "district_id": "X06",
+        "board_id": "bronx-cb-06",
+        "pct_from": 94.897697,
+        "pct_to": 36.466566,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0601",
+        "district_id": "X06",
+        "board_id": "bronx-cb-06",
+        "pct_from": 78.872755,
+        "pct_to": 21.632802,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0502",
+        "district_id": "X06",
+        "board_id": "bronx-cb-06",
+        "pct_from": 10.753933,
+        "pct_to": 3.196704,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX2791",
+        "district_id": "X06",
+        "board_id": "bronx-cb-06",
+        "pct_from": 1.179966,
+        "pct_to": 0.925467,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BX0302",
+        "district_id": "X06",
+        "board_id": "bronx-cb-06",
+        "pct_from": 1.910107,
+        "pct_to": 0.447652,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1101",
+        "district_id": "X06",
+        "board_id": "bronx-cb-06",
+        "pct_from": 0.462434,
+        "pct_to": 0.168968,
+        "subtype": "residential"
+      }
+    ],
+    "manhattan-cb-02": [
+      {
+        "nta_id": "MN0203",
+        "district_id": "M02",
+        "board_id": "manhattan-cb-02",
+        "pct_from": 99.995391,
+        "pct_to": 38.212301,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0201",
+        "district_id": "M02",
+        "board_id": "manhattan-cb-02",
+        "pct_from": 98.365669,
+        "pct_to": 33.678251,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0202",
+        "district_id": "M02",
+        "board_id": "manhattan-cb-02",
+        "pct_from": 99.996549,
+        "pct_to": 28.103659,
+        "subtype": "residential"
+      }
+    ],
+    "brooklyn-cb-04": [
+      {
+        "nta_id": "BK0402",
+        "district_id": "K04",
+        "board_id": "brooklyn-cb-04",
+        "pct_from": 99.994025,
+        "pct_to": 49.295377,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0401",
+        "district_id": "K04",
+        "board_id": "brooklyn-cb-04",
+        "pct_from": 99.996367,
+        "pct_to": 40.826298,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0471",
+        "district_id": "K04",
+        "board_id": "brooklyn-cb-04",
+        "pct_from": 99.992929,
+        "pct_to": 9.856561,
+        "subtype": "cemetery"
+      }
+    ],
+    "manhattan-cb-01": [
+      {
+        "nta_id": "MN0101",
+        "district_id": "M01",
+        "board_id": "manhattan-cb-01",
+        "pct_from": 94.471677,
+        "pct_to": 43.561347,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0102",
+        "district_id": "M01",
+        "board_id": "manhattan-cb-01",
+        "pct_from": 99.996227,
+        "pct_to": 32.562776,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0191",
+        "district_id": "M01",
+        "board_id": "manhattan-cb-01",
+        "pct_from": 80.502524,
+        "pct_to": 23.154702,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "MN0201",
+        "district_id": "M01",
+        "board_id": "manhattan-cb-01",
+        "pct_from": 1.629533,
+        "pct_to": 0.50479,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0301",
+        "district_id": "M01",
+        "board_id": "manhattan-cb-01",
+        "pct_from": 0.757756,
+        "pct_to": 0.20974,
+        "subtype": "residential"
+      }
+    ],
+    "manhattan-cb-07": [
+      {
+        "nta_id": "MN0702",
+        "district_id": "M07",
+        "board_id": "manhattan-cb-07",
+        "pct_from": 99.99547,
+        "pct_to": 47.804824,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0701",
+        "district_id": "M07",
+        "board_id": "manhattan-cb-07",
+        "pct_from": 92.042198,
+        "pct_to": 27.355682,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0703",
+        "district_id": "M07",
+        "board_id": "manhattan-cb-07",
+        "pct_from": 99.996129,
+        "pct_to": 24.834032,
+        "subtype": "residential"
+      }
+    ],
+    "manhattan-cb-10": [
+      {
+        "nta_id": "MN1002",
+        "district_id": "M10",
+        "board_id": "manhattan-cb-10",
+        "pct_from": 99.995916,
+        "pct_to": 60.889828,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN1001",
+        "district_id": "M10",
+        "board_id": "manhattan-cb-10",
+        "pct_from": 99.991857,
+        "pct_to": 36.917934,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0903",
+        "district_id": "M10",
+        "board_id": "manhattan-cb-10",
+        "pct_from": 4.857939,
+        "pct_to": 1.987201,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN1102",
+        "district_id": "M10",
+        "board_id": "manhattan-cb-10",
+        "pct_from": 0.289939,
+        "pct_to": 0.193813,
+        "subtype": "residential"
+      }
+    ],
+    "bronx-cb-01": [
+      {
+        "nta_id": "BX0101",
+        "district_id": "X01",
+        "board_id": "bronx-cb-01",
+        "pct_from": 99.995483,
+        "pct_to": 67.836359,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0102",
+        "district_id": "X01",
+        "board_id": "bronx-cb-01",
+        "pct_from": 99.509647,
+        "pct_to": 28.455389,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0401",
+        "district_id": "X01",
+        "board_id": "bronx-cb-01",
+        "pct_from": 8.414934,
+        "pct_to": 3.692394,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0291",
+        "district_id": "X01",
+        "board_id": "bronx-cb-01",
+        "pct_from": 0.894726,
+        "pct_to": 0.013786,
+        "subtype": "park"
+      }
+    ],
+    "bronx-cb-10": [
+      {
+        "nta_id": "BX1002",
+        "district_id": "X10",
+        "board_id": "bronx-cb-10",
+        "pct_from": 99.992237,
+        "pct_to": 37.143464,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1003",
+        "district_id": "X10",
+        "board_id": "bronx-cb-10",
+        "pct_from": 99.978456,
+        "pct_to": 19.726196,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1004",
+        "district_id": "X10",
+        "board_id": "bronx-cb-10",
+        "pct_from": 95.483114,
+        "pct_to": 15.501382,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1091",
+        "district_id": "X10",
+        "board_id": "bronx-cb-10",
+        "pct_from": 99.995142,
+        "pct_to": 12.149598,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BX1001",
+        "district_id": "X10",
+        "board_id": "bronx-cb-10",
+        "pct_from": 68.123985,
+        "pct_to": 5.855326,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX2891",
+        "district_id": "X10",
+        "board_id": "bronx-cb-10",
+        "pct_from": 6.613138,
+        "pct_to": 3.668875,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BX1071",
+        "district_id": "X10",
+        "board_id": "bronx-cb-10",
+        "pct_from": 99.97791,
+        "pct_to": 2.74031,
+        "subtype": "cemetery"
+      },
+      {
+        "nta_id": "BX0903",
+        "district_id": "X10",
+        "board_id": "bronx-cb-10",
+        "pct_from": 14.56361,
+        "pct_to": 2.677305,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX1161",
+        "district_id": "X10",
+        "board_id": "bronx-cb-10",
+        "pct_from": 7.718114,
+        "pct_to": 0.525352,
+        "subtype": "special_use"
+      }
+    ],
+    "brooklyn-cb-15": [
+      {
+        "nta_id": "BK1503",
+        "district_id": "K15",
+        "board_id": "brooklyn-cb-15",
+        "pct_from": 99.994497,
+        "pct_to": 48.133217,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1501",
+        "district_id": "K15",
+        "board_id": "brooklyn-cb-15",
+        "pct_from": 97.801814,
+        "pct_to": 25.912136,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1502",
+        "district_id": "K15",
+        "board_id": "brooklyn-cb-15",
+        "pct_from": 97.650112,
+        "pct_to": 20.308326,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1301",
+        "district_id": "K15",
+        "board_id": "brooklyn-cb-15",
+        "pct_from": 11.571908,
+        "pct_to": 2.27095,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1891",
+        "district_id": "K15",
+        "board_id": "brooklyn-cb-15",
+        "pct_from": 4.497297,
+        "pct_to": 1.486339,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BK1303",
+        "district_id": "K15",
+        "board_id": "brooklyn-cb-15",
+        "pct_from": 8.055509,
+        "pct_to": 0.82998,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1103",
+        "district_id": "K15",
+        "board_id": "brooklyn-cb-15",
+        "pct_from": 2.274654,
+        "pct_to": 0.584608,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1802",
+        "district_id": "K15",
+        "board_id": "brooklyn-cb-15",
+        "pct_from": 0.880489,
+        "pct_to": 0.39374,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1403",
+        "district_id": "K15",
+        "board_id": "brooklyn-cb-15",
+        "pct_from": 0.319722,
+        "pct_to": 0.078245,
+        "subtype": "residential"
+      }
+    ],
+    "bronx-cb-02": [
+      {
+        "nta_id": "BX0201",
+        "district_id": "X02",
+        "board_id": "bronx-cb-02",
+        "pct_from": 99.994491,
+        "pct_to": 72.861856,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0202",
+        "district_id": "X02",
+        "board_id": "bronx-cb-02",
+        "pct_from": 93.16473,
+        "pct_to": 23.198735,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0303",
+        "district_id": "X02",
+        "board_id": "bronx-cb-02",
+        "pct_from": 8.213923,
+        "pct_to": 2.122806,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0291",
+        "district_id": "X02",
+        "board_id": "bronx-cb-02",
+        "pct_from": 99.045983,
+        "pct_to": 1.49133,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BX0301",
+        "district_id": "X02",
+        "board_id": "bronx-cb-02",
+        "pct_from": 1.44124,
+        "pct_to": 0.322049,
+        "subtype": "residential"
+      }
+    ],
+    "bronx-cb-07": [
+      {
+        "nta_id": "BX0702",
+        "district_id": "X07",
+        "board_id": "bronx-cb-07",
+        "pct_from": 75.218482,
+        "pct_to": 34.6457,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0701",
+        "district_id": "X07",
+        "board_id": "bronx-cb-07",
+        "pct_from": 96.33238,
+        "pct_to": 33.10166,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0703",
+        "district_id": "X07",
+        "board_id": "bronx-cb-07",
+        "pct_from": 99.994371,
+        "pct_to": 29.489354,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0603",
+        "district_id": "X07",
+        "board_id": "bronx-cb-07",
+        "pct_from": 5.102166,
+        "pct_to": 1.569085,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0802",
+        "district_id": "X07",
+        "board_id": "bronx-cb-07",
+        "pct_from": 2.832172,
+        "pct_to": 0.654144,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0503",
+        "district_id": "X07",
+        "board_id": "bronx-cb-07",
+        "pct_from": 3.546479,
+        "pct_to": 0.490914,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0801",
+        "district_id": "X07",
+        "board_id": "bronx-cb-07",
+        "pct_from": 0.157205,
+        "pct_to": 0.032351,
+        "subtype": "residential"
+      }
+    ],
+    "manhattan-cb-09": [
+      {
+        "nta_id": "MN0901",
+        "district_id": "M09",
+        "board_id": "manhattan-cb-09",
+        "pct_from": 99.993075,
+        "pct_to": 38.003861,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0903",
+        "district_id": "M09",
+        "board_id": "manhattan-cb-09",
+        "pct_from": 95.142049,
+        "pct_to": 36.298195,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0902",
+        "district_id": "M09",
+        "board_id": "manhattan-cb-09",
+        "pct_from": 99.993714,
+        "pct_to": 25.621536,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN1201",
+        "district_id": "M09",
+        "board_id": "manhattan-cb-09",
+        "pct_from": 0.143426,
+        "pct_to": 0.071988,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-14": [
+      {
+        "nta_id": "QN1403",
+        "district_id": "Q14",
+        "board_id": "queens-cb-14",
+        "pct_from": 95.972523,
+        "pct_to": 33.973828,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1401",
+        "district_id": "Q14",
+        "board_id": "queens-cb-14",
+        "pct_from": 99.993294,
+        "pct_to": 30.919173,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1402",
+        "district_id": "Q14",
+        "board_id": "queens-cb-14",
+        "pct_from": 99.989934,
+        "pct_to": 25.819944,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN8492",
+        "district_id": "Q14",
+        "board_id": "queens-cb-14",
+        "pct_from": 17.513485,
+        "pct_to": 4.713327,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN1491",
+        "district_id": "Q14",
+        "board_id": "queens-cb-14",
+        "pct_from": 99.989061,
+        "pct_to": 4.565328,
+        "subtype": "park"
+      }
+    ],
+    "manhattan-cb-11": [
+      {
+        "nta_id": "MN1102",
+        "district_id": "M11",
+        "board_id": "manhattan-cb-11",
+        "pct_from": 99.706613,
+        "pct_to": 39.36271,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN1191",
+        "district_id": "M11",
+        "board_id": "manhattan-cb-11",
+        "pct_from": 99.991979,
+        "pct_to": 35.46613,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "MN1101",
+        "district_id": "M11",
+        "board_id": "manhattan-cb-11",
+        "pct_from": 99.972374,
+        "pct_to": 25.164957,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-03": [
+      {
+        "nta_id": "QN0301",
+        "district_id": "Q03",
+        "board_id": "queens-cb-03",
+        "pct_from": 98.973139,
+        "pct_to": 46.615903,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0302",
+        "district_id": "Q03",
+        "board_id": "queens-cb-03",
+        "pct_from": 99.01334,
+        "pct_to": 34.11818,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0303",
+        "district_id": "Q03",
+        "board_id": "queens-cb-03",
+        "pct_from": 99.991266,
+        "pct_to": 16.723867,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN8191",
+        "district_id": "Q03",
+        "board_id": "queens-cb-03",
+        "pct_from": 2.765208,
+        "pct_to": 1.828825,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN0401",
+        "district_id": "Q03",
+        "board_id": "queens-cb-03",
+        "pct_from": 0.674891,
+        "pct_to": 0.340392,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN8081",
+        "district_id": "Q03",
+        "board_id": "queens-cb-03",
+        "pct_from": 0.635151,
+        "pct_to": 0.232765,
+        "subtype": "airport"
+      },
+      {
+        "nta_id": "QN0101",
+        "district_id": "Q03",
+        "board_id": "queens-cb-03",
+        "pct_from": 0.121391,
+        "pct_to": 0.084784,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0104",
+        "district_id": "Q03",
+        "board_id": "queens-cb-03",
+        "pct_from": 0.173277,
+        "pct_to": 0.054058,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-09": [
+      {
+        "nta_id": "QN0902",
+        "district_id": "Q09",
+        "board_id": "queens-cb-09",
+        "pct_from": 99.990921,
+        "pct_to": 28.187111,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0905",
+        "district_id": "Q09",
+        "board_id": "queens-cb-09",
+        "pct_from": 99.966936,
+        "pct_to": 22.089676,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0901",
+        "district_id": "Q09",
+        "board_id": "queens-cb-09",
+        "pct_from": 92.341205,
+        "pct_to": 17.444144,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0904",
+        "district_id": "Q09",
+        "board_id": "queens-cb-09",
+        "pct_from": 95.449964,
+        "pct_to": 16.077949,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0903",
+        "district_id": "Q09",
+        "board_id": "queens-cb-09",
+        "pct_from": 99.99059,
+        "pct_to": 14.758627,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1002",
+        "district_id": "Q09",
+        "board_id": "queens-cb-09",
+        "pct_from": 2.949492,
+        "pct_to": 0.689662,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1001",
+        "district_id": "Q09",
+        "board_id": "queens-cb-09",
+        "pct_from": 0.708483,
+        "pct_to": 0.539956,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0805",
+        "district_id": "Q09",
+        "board_id": "queens-cb-09",
+        "pct_from": 0.429732,
+        "pct_to": 0.110637,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1201",
+        "district_id": "Q09",
+        "board_id": "queens-cb-09",
+        "pct_from": 0.2299,
+        "pct_to": 0.100261,
+        "subtype": "residential"
+      }
+    ],
+    "manhattan-cb-04": [
+      {
+        "nta_id": "MN0401",
+        "district_id": "M04",
+        "board_id": "manhattan-cb-04",
+        "pct_from": 99.990832,
+        "pct_to": 60.168437,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0402",
+        "district_id": "M04",
+        "board_id": "manhattan-cb-04",
+        "pct_from": 99.989803,
+        "pct_to": 37.27539,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0701",
+        "district_id": "M04",
+        "board_id": "manhattan-cb-04",
+        "pct_from": 7.9518,
+        "pct_to": 2.547516,
+        "subtype": "residential"
+      }
+    ],
+    "brooklyn-cb-14": [
+      {
+        "nta_id": "BK1403",
+        "district_id": "K14",
+        "board_id": "brooklyn-cb-14",
+        "pct_from": 98.150273,
+        "pct_to": 38.481874,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1401",
+        "district_id": "K14",
+        "board_id": "brooklyn-cb-14",
+        "pct_from": 99.982019,
+        "pct_to": 29.23005,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1402",
+        "district_id": "K14",
+        "board_id": "brooklyn-cb-14",
+        "pct_from": 94.637812,
+        "pct_to": 26.378362,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK5591",
+        "district_id": "K14",
+        "board_id": "brooklyn-cb-14",
+        "pct_from": 6.887099,
+        "pct_to": 2.290355,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BK1701",
+        "district_id": "K14",
+        "board_id": "brooklyn-cb-14",
+        "pct_from": 5.113282,
+        "pct_to": 1.230231,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1203",
+        "district_id": "K14",
+        "board_id": "brooklyn-cb-14",
+        "pct_from": 3.133126,
+        "pct_to": 0.666133,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1204",
+        "district_id": "K14",
+        "board_id": "brooklyn-cb-14",
+        "pct_from": 1.526561,
+        "pct_to": 0.582506,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1801",
+        "district_id": "K14",
+        "board_id": "brooklyn-cb-14",
+        "pct_from": 0.813373,
+        "pct_to": 0.537832,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1202",
+        "district_id": "K14",
+        "board_id": "brooklyn-cb-14",
+        "pct_from": 0.669265,
+        "pct_to": 0.329694,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1502",
+        "district_id": "K14",
+        "board_id": "brooklyn-cb-14",
+        "pct_from": 0.817755,
+        "pct_to": 0.27246,
+        "subtype": "residential"
+      }
+    ],
+    "brooklyn-cb-08": [
+      {
+        "nta_id": "BK0802",
+        "district_id": "K08",
+        "board_id": "brooklyn-cb-08",
+        "pct_from": 99.257364,
+        "pct_to": 77.075932,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0801",
+        "district_id": "K08",
+        "board_id": "brooklyn-cb-08",
+        "pct_from": 88.167528,
+        "pct_to": 19.928467,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0891",
+        "district_id": "K08",
+        "board_id": "brooklyn-cb-08",
+        "pct_from": 99.981528,
+        "pct_to": 2.662635,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BK0602",
+        "district_id": "K08",
+        "board_id": "brooklyn-cb-08",
+        "pct_from": 0.585617,
+        "pct_to": 0.331679,
+        "subtype": "residential"
+      }
+    ],
+    "manhattan-cb-06": [
+      {
+        "nta_id": "MN0603",
+        "district_id": "M06",
+        "board_id": "manhattan-cb-06",
+        "pct_from": 93.178264,
+        "pct_to": 37.942263,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0604",
+        "district_id": "M06",
+        "board_id": "manhattan-cb-06",
+        "pct_from": 80.603555,
+        "pct_to": 27.343217,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0602",
+        "district_id": "M06",
+        "board_id": "manhattan-cb-06",
+        "pct_from": 79.471249,
+        "pct_to": 15.44256,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0601",
+        "district_id": "M06",
+        "board_id": "manhattan-cb-06",
+        "pct_from": 99.88388,
+        "pct_to": 14.379015,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0661",
+        "district_id": "M06",
+        "board_id": "manhattan-cb-06",
+        "pct_from": 99.970217,
+        "pct_to": 2.816701,
+        "subtype": "special_use"
+      },
+      {
+        "nta_id": "MN0502",
+        "district_id": "M06",
+        "board_id": "manhattan-cb-06",
+        "pct_from": 2.688635,
+        "pct_to": 1.704415,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0501",
+        "district_id": "M06",
+        "board_id": "manhattan-cb-06",
+        "pct_from": 0.960727,
+        "pct_to": 0.369079,
+        "subtype": "residential"
+      }
+    ],
+    "manhattan-cb-03": [
+      {
+        "nta_id": "MN0303",
+        "district_id": "M03",
+        "board_id": "manhattan-cb-03",
+        "pct_from": 99.795018,
+        "pct_to": 40.406876,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0302",
+        "district_id": "M03",
+        "board_id": "manhattan-cb-03",
+        "pct_from": 99.89755,
+        "pct_to": 35.110215,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0301",
+        "district_id": "M03",
+        "board_id": "manhattan-cb-03",
+        "pct_from": 99.235787,
+        "pct_to": 24.432834,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0101",
+        "district_id": "M03",
+        "board_id": "manhattan-cb-03",
+        "pct_from": 0.112162,
+        "pct_to": 0.046004,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-06": [
+      {
+        "nta_id": "QN0602",
+        "district_id": "Q06",
+        "board_id": "queens-cb-06",
+        "pct_from": 99.830232,
+        "pct_to": 69.956627,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0601",
+        "district_id": "Q06",
+        "board_id": "queens-cb-06",
+        "pct_from": 97.820941,
+        "pct_to": 23.884667,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN0503",
+        "district_id": "Q06",
+        "board_id": "queens-cb-06",
+        "pct_from": 8.432129,
+        "pct_to": 3.05936,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN8191",
+        "district_id": "Q06",
+        "board_id": "queens-cb-06",
+        "pct_from": 4.364626,
+        "pct_to": 2.913577,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN0901",
+        "district_id": "Q06",
+        "board_id": "queens-cb-06",
+        "pct_from": 0.756421,
+        "pct_to": 0.185531,
+        "subtype": "residential"
+      }
+    ],
+    "staten-island-cb-02": [
+      {
+        "nta_id": "SI0204",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 99.75111,
+        "pct_to": 35.310485,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0203",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 95.367922,
+        "pct_to": 30.038397,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0201",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 94.413826,
+        "pct_to": 12.787142,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0291",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 99.328919,
+        "pct_to": 11.448708,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "SI0202",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 93.370838,
+        "pct_to": 9.815075,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI9592",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 10.430249,
+        "pct_to": 0.191616,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "SI0301",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 1.401645,
+        "pct_to": 0.132549,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0391",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 1.403483,
+        "pct_to": 0.113317,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "SI0103",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 0.995626,
+        "pct_to": 0.059334,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0105",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 0.394413,
+        "pct_to": 0.051029,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI0107",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 0.177204,
+        "pct_to": 0.026779,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "SI9561",
+        "district_id": "R02",
+        "board_id": "staten-island-cb-02",
+        "pct_from": 0.675586,
+        "pct_to": 0.01127,
+        "subtype": "special_use"
+      }
+    ],
+    "brooklyn-cb-16": [
+      {
+        "nta_id": "BK1602",
+        "district_id": "K16",
+        "board_id": "brooklyn-cb-16",
+        "pct_from": 99.635971,
+        "pct_to": 59.251394,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1601",
+        "district_id": "K16",
+        "board_id": "brooklyn-cb-16",
+        "pct_from": 91.955062,
+        "pct_to": 35.684385,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0503",
+        "district_id": "K16",
+        "board_id": "brooklyn-cb-16",
+        "pct_from": 3.861802,
+        "pct_to": 3.465573,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1704",
+        "district_id": "K16",
+        "board_id": "brooklyn-cb-16",
+        "pct_from": 4.493695,
+        "pct_to": 1.596363,
+        "subtype": "residential"
+      }
+    ],
+    "queens-cb-10": [
+      {
+        "nta_id": "QN1001",
+        "district_id": "Q10",
+        "board_id": "queens-cb-10",
+        "pct_from": 99.291328,
+        "pct_to": 47.220797,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1003",
+        "district_id": "Q10",
+        "board_id": "queens-cb-10",
+        "pct_from": 97.856653,
+        "pct_to": 29.915126,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1002",
+        "district_id": "Q10",
+        "board_id": "queens-cb-10",
+        "pct_from": 97.049765,
+        "pct_to": 14.160449,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1091",
+        "district_id": "Q10",
+        "board_id": "queens-cb-10",
+        "pct_from": 98.112882,
+        "pct_to": 6.755468,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "QN8381",
+        "district_id": "Q10",
+        "board_id": "queens-cb-10",
+        "pct_from": 1.135459,
+        "pct_to": 1.301159,
+        "subtype": "airport"
+      },
+      {
+        "nta_id": "QN0904",
+        "district_id": "Q10",
+        "board_id": "queens-cb-10",
+        "pct_from": 4.548736,
+        "pct_to": 0.478122,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1203",
+        "district_id": "Q10",
+        "board_id": "queens-cb-10",
+        "pct_from": 0.345808,
+        "pct_to": 0.096358,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "QN1202",
+        "district_id": "Q10",
+        "board_id": "queens-cb-10",
+        "pct_from": 0.27762,
+        "pct_to": 0.061091,
+        "subtype": "residential"
+      }
+    ],
+    "brooklyn-cb-18": [
+      {
+        "nta_id": "BK1803",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 97.424883,
+        "pct_to": 29.159168,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1802",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 99.115921,
+        "pct_to": 24.760407,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1801",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 95.69679,
+        "pct_to": 22.065017,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1891",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 66.774861,
+        "pct_to": 12.328432,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BK1893",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 69.360692,
+        "pct_to": 3.40004,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BK0503",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 13.049013,
+        "pct_to": 2.572427,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1892",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 45.209096,
+        "pct_to": 2.03149,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BK5691",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 8.305478,
+        "pct_to": 1.926972,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BK0504",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 8.708399,
+        "pct_to": 1.000918,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1702",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 3.104231,
+        "pct_to": 0.317742,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1403",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 1.528959,
+        "pct_to": 0.209031,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1502",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 1.532134,
+        "pct_to": 0.178003,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK1602",
+        "district_id": "K18",
+        "board_id": "brooklyn-cb-18",
+        "pct_from": 0.362217,
+        "pct_to": 0.047319,
+        "subtype": "residential"
+      }
+    ],
+    "manhattan-cb-05": [
+      {
+        "nta_id": "MN0502",
+        "district_id": "M05",
+        "board_id": "manhattan-cb-05",
+        "pct_from": 97.311365,
+        "pct_to": 54.561296,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0501",
+        "district_id": "M05",
+        "board_id": "manhattan-cb-05",
+        "pct_from": 99.035474,
+        "pct_to": 33.650235,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0604",
+        "district_id": "M05",
+        "board_id": "manhattan-cb-05",
+        "pct_from": 19.334227,
+        "pct_to": 5.800962,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0602",
+        "district_id": "M05",
+        "board_id": "manhattan-cb-05",
+        "pct_from": 20.524262,
+        "pct_to": 3.527399,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0603",
+        "district_id": "M05",
+        "board_id": "manhattan-cb-05",
+        "pct_from": 6.814612,
+        "pct_to": 2.454299,
+        "subtype": "residential"
+      }
+    ],
+    "bronx-cb-05": [
+      {
+        "nta_id": "BX0501",
+        "district_id": "X05",
+        "board_id": "bronx-cb-05",
+        "pct_from": 97.97446,
+        "pct_to": 50.213763,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0502",
+        "district_id": "X05",
+        "board_id": "bronx-cb-05",
+        "pct_from": 88.920988,
+        "pct_to": 29.43133,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0503",
+        "district_id": "X05",
+        "board_id": "bronx-cb-05",
+        "pct_from": 96.448431,
+        "pct_to": 18.574661,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BX0701",
+        "district_id": "X05",
+        "board_id": "bronx-cb-05",
+        "pct_from": 3.667284,
+        "pct_to": 1.753234,
+        "subtype": "residential"
+      }
+    ],
+    "brooklyn-cb-06": [
+      {
+        "nta_id": "BK0601",
+        "district_id": "K06",
+        "board_id": "brooklyn-cb-06",
+        "pct_from": 97.226438,
+        "pct_to": 69.150302,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "BK0602",
+        "district_id": "K06",
+        "board_id": "brooklyn-cb-06",
+        "pct_from": 95.253205,
+        "pct_to": 28.777658,
+        "subtype": "residential"
+      },
+      {
+        "nta_id": "MN0191",
+        "district_id": "K06",
+        "board_id": "brooklyn-cb-06",
+        "pct_from": 9.306819,
+        "pct_to": 1.305453,
+        "subtype": "park"
+      },
+      {
+        "nta_id": "BK0801",
+        "district_id": "K06",
+        "board_id": "brooklyn-cb-06",
+        "pct_from": 6.017903,
+        "pct_to": 0.725574,
+        "subtype": "residential"
+      }
+    ]
+  },
+  "content_sha256": "ac71c027bd8dea4ebdd8dd41ad910ccd86d672280f9c110c165a524a388d7f21"
+}

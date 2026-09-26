@@ -198,6 +198,20 @@
       ]
     },
     {
+      "id": "board-neighborhood-refresh",
+      "generator": "tools/board_neighborhood_refresh.mjs",
+      "source_paths": [
+        "site/data/geography/crosswalks/nta2020__community_district/26B__2026-05-26.json",
+        "site/data/community_board_geography_lookup.json",
+        "site/data/geography/layers/nta2020/26B.json"
+      ],
+      "output_paths": [
+        "site/data/board_neighborhood_index.json",
+        "site/data/board-neighborhood-generations"
+      ],
+      "note": "Hash-based board↔neighborhood generation refresh. Runs before community-board constellation (and before scorecard when that family is registered) so directory and profile consumers share one generation."
+    },
+    {
       "id": "community-board-constellation",
       "generator": "tools/build_community_board_constellation_documents.mjs",
       "source_paths": [
@@ -206,6 +220,7 @@
         "site/data/community_board_meeting_index.json",
         "site/data/community_board_minutes_scorecard.json",
         "site/data/community_board_geography_lookup.json",
+        "site/data/board_neighborhood_index.json",
         "site/data/non_council_outcome_sources/community_board_committees.json",
         "site/data/community_board_people.json",
         "site/data/community_board_bylaws.json",
