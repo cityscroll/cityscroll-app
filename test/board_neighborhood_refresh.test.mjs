@@ -438,6 +438,10 @@ test("derived manifest registers board-neighborhood-refresh before constellation
 });
 
 test("production refresh command backfills and --check validates active consumers", () => {
+  const publicDir = path.join(ROOT, BOARD_NEIGHBORHOOD_PUBLIC_DIR);
+  const activePath = path.join(publicDir, BOARD_NEIGHBORHOOD_ACTIVE_POINTER);
+  const activeBeforeBytes = readFileSync(activePath);
+
   const result = spawnSync(
     process.execPath,
     [path.join(ROOT, "tools/board_neighborhood_refresh.mjs")],
@@ -447,6 +451,9 @@ test("production refresh command backfills and --check validates active consumer
   const summary = JSON.parse(result.stdout.trim().split("\n").at(-1));
   assert.ok(summary.ok);
   assert.ok(["activated", "unchanged"].includes(summary.status));
+  // Committed ACTIVE must stay byte-identical when inputs already match (CI
+  // checkouts have no gitignored receipt; bootstrap must not rewrite tracked files).
+  assert.equal(readFileSync(activePath).equals(activeBeforeBytes), true);
 
   const check = spawnSync(
     process.execPath,
@@ -456,9 +463,7 @@ test("production refresh command backfills and --check validates active consumer
   assert.equal(check.status, 0, check.stdout + check.stderr);
   assert.match(check.stdout, /ok board-neighborhood-refresh/);
 
-  const active = loadActiveBoardNeighborhoodGeneration(
-    path.join(ROOT, BOARD_NEIGHBORHOOD_PUBLIC_DIR),
-  );
+  const active = loadActiveBoardNeighborhoodGeneration(publicDir);
   assert.ok(active);
   assert.equal(active.index.generation.id, active.pointer.active_generation);
   assert.equal(active.directory.generation_id, active.pointer.active_generation);
