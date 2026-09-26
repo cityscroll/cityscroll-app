@@ -76,13 +76,40 @@ function initTopicPreviewBootstrap() {
   input.addEventListener("keydown", bootstrapTopicPreview);
 }
 
+function initHomeLocalEntry() {
+  const root = document.querySelector("[data-home-local-entry]");
+  if (!root || root.dataset.homeLocalMounted === "true") return;
+  let loading = null;
+  const start = () => {
+    if (loading || root.dataset.homeLocalMounted === "true") return loading;
+    loading = import("./home_local_entry.mjs")
+      .then((module) => {
+        module.mountHomeLocalEntry(root);
+        root.dataset.homeLocalMounted = "true";
+      })
+      .catch(() => {
+        loading = null;
+      });
+    return loading;
+  };
+  root.addEventListener("focusin", start, { once: true });
+  root.addEventListener("pointerdown", start, { once: true });
+  if (typeof requestIdleCallback === "function") {
+    requestIdleCallback(() => { start(); }, { timeout: 2500 });
+  } else {
+    setTimeout(() => { start(); }, 0);
+  }
+}
+
 initLanguageSwitcher();
 initTopicPreviewBootstrap();
+initHomeLocalEntry();
 homeEntryReady(runtimeRumSemanticMilestones(), {
   primaryContext: document.body?.dataset.primaryContext,
   homeReady: document.body?.dataset.homeReady,
   primaryCtaVisible: Boolean(document.getElementById("homeCta")),
   topicInputVisible: Boolean(document.getElementById("home-topic-query")),
+  localEntryVisible: Boolean(document.querySelector("[data-home-local-entry]")),
 });
 window.addEventListener("hashchange", () => {
   ensureApplicationForHash().catch(() => {});

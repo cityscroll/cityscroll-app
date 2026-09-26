@@ -29,15 +29,19 @@ test("edition strip and scenario grid are gone", () => {
   assert.doesNotMatch(index, /data-i18n="scenario_heading"/);
 });
 
-test("page order keeps Browse shortcuts ahead of the Contracts-domain signup", () => {
+test("page order keeps place entry, topic search, and Browse shortcuts ahead of the Contracts-domain signup", () => {
+  const local = index.indexOf("data-home-local-entry");
   const search = index.indexOf("data-home-topic-entry");
   const tabs = index.indexOf('class="browse-child-nav"');
   const money = index.indexOf('id="tab-money"');
   const cta = index.indexOf('id="homeCta"');
   assert.ok(
-    search > 0 && tabs > search && money > tabs && cta > money,
-    `order search=${search} tabs=${tabs} money=${money} cta=${cta}`,
+    local > 0 && search > local && tabs > search && money > tabs && cta > money,
+    `order local=${local} search=${search} tabs=${tabs} money=${money} cta=${cta}`,
   );
+  assert.match(index, /data-home-local-location/);
+  assert.match(index, /data-home-local-input/);
+  assert.match(index, /Use my location/);
 });
 
 test("language control is a top-right labelled select with all shipping locales", () => {
