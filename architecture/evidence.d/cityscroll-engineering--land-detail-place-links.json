@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-detail-place-links",
+  "status": "implemented",
+  "fingerprint": "land-detail-place-links.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-detail-place-links-module",
+      "path": "site/land_detail_place_links.mjs"
+    },
+    {
+      "id": "land-detail-place-links-verify-test",
+      "path": "test/land_detail_place_links.test.mjs"
+    },
+    {
+      "id": "land-record-links-bridge",
+      "path": "site/land_record_links.mjs"
+    }
+  ]
+}

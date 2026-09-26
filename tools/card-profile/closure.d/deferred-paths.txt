@@ -119,6 +119,7 @@ site/data/geography/crosswalks/manifest.json
 site/data/governing_body_proceedings.json
 site/data/land_authority_summary.json
 site/data/land_authority_summary_receipt.json
+site/data/land_place_membership.json
 site/data/land_project_catalog.json
 site/data/land_project_geometry_source_lookup.json
 site/data/land_project_map_points.json
