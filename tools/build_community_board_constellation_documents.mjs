@@ -14,6 +14,8 @@ import {
   communityBoardMeetingEdgeFromSourceRow,
 } from "../site/community_board_institution_edges.mjs";
 import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
+import { ntaLabelIndexFromLayer } from "../site/board_profile_neighborhoods.mjs";
+import { loadActiveBoardNeighborhoodGeneration } from "../site/board_neighborhood_refresh.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -33,6 +35,27 @@ function sourceRows() {
   const meetingIndex = readJson("site/data/community_board_meeting_index.json");
   const scorecard = readJson("site/data/community_board_minutes_scorecard.json");
   const geography = readJson("site/data/community_board_geography_lookup.json");
+  // Reverse neighborhood enrichment is optional: a missing generation or label
+  // layer must leave the board profile header, meetings, and district links intact.
+  let boardNeighborhoodIndex = null;
+  let boardNeighborhoodProfile = null;
+  let ntaLabelIndex = null;
+  try {
+    const active = loadActiveBoardNeighborhoodGeneration(join(SITE, "data/board-neighborhood-generations"));
+    boardNeighborhoodProfile = active?.profile || null;
+    boardNeighborhoodIndex = active?.index || readJson("site/data/board_neighborhood_index.json");
+  } catch (error) {
+    try {
+      boardNeighborhoodIndex = readJson("site/data/board_neighborhood_index.json");
+    } catch (_inner) {
+      boardNeighborhoodIndex = { error: `board_neighborhood_index unreadable: ${error.message}` };
+    }
+  }
+  try {
+    ntaLabelIndex = ntaLabelIndexFromLayer(readJson("site/data/geography/layers/nta2020/26B.json"));
+  } catch (error) {
+    ntaLabelIndex = null;
+  }
   const committeeRegistry = readJson("site/data/non_council_outcome_sources/community_board_committees.json");
   const people = readJson("site/data/community_board_people.json");
   const communityBoardBylaws = readJson("site/data/community_board_bylaws.json");
@@ -157,6 +180,9 @@ function sourceRows() {
     sourceInventory,
     scorecard,
     geography,
+    boardNeighborhoodIndex,
+    boardNeighborhoodProfile,
+    ntaLabelIndex,
     sourceRecords: meetingIndex.by_board,
     meetingDocuments: meetingIndex.meeting_documents,
     sourceReceipts: meetingIndex.receipts,
