@@ -36,6 +36,7 @@ import {
   computeLandPlaceInputHashes,
   createLandPlaceRefresh,
   loadActiveLandPlaceGeneration,
+  loadActiveLandPlacePointer,
   loadLandPlaceRefreshReceipt,
   loadPinnedLandPlaceGeneration,
   planLandPlaceRefresh,
@@ -555,6 +556,65 @@ test("A5 [boundary,verification] assets publish before active switch; pin one ge
       true,
     );
     assert.equal(existsSync(path.join(paths.publicDir, ".staging")), false);
+  });
+});
+
+test("A5 [boundary,verification] observes immutable publish before active pointer advances", async () => {
+  await withTempDir("land-place-refresh-a5-order-", (tempDir) => {
+    const paths = seedTempPublication(tempDir, { reduced: true });
+    const first = refreshFromPaths(paths);
+    const firstGeneration = first.active_generation;
+
+    // Force a new generation so the mid-publish observation has a distinct pin.
+    const bblDoc = loadJson(paths.bblPath);
+    const westshoreRow = bblDoc.rows.find((row) => row.project_id === ANCHORS.westshore);
+    westshoreRow.bbls = westshoreRow.bbls.slice(1);
+    writeFileSync(paths.bblPath, `${JSON.stringify(bblDoc)}\n`);
+
+    const interrupted = refreshFromPaths(paths, {
+      now: "2026-09-25T20:00:00.000Z",
+      injectFailure: "before_active_pointer",
+    });
+    assert.equal(interrupted.ok, false);
+    assert.equal(interrupted.status, "failed");
+    const publishedGeneration = interrupted.error?.published_generation;
+    assert.ok(publishedGeneration);
+    assert.notEqual(publishedGeneration, firstGeneration);
+
+    // Mid-publish freeze: new generation assets are already readable by pin,
+    // while ACTIVE still names the previous generation.
+    const pointerDuringInject = loadActiveLandPlacePointer(paths.publicDir);
+    assert.equal(pointerDuringInject.active_generation, firstGeneration);
+    assert.notEqual(pointerDuringInject.active_generation, publishedGeneration);
+
+    const pinnedPublished = loadPinnedLandPlaceGeneration(
+      paths.publicDir,
+      publishedGeneration,
+    );
+    assert.equal(pinnedPublished.ok, true);
+    assert.equal(pinnedPublished.assets.generation_id, publishedGeneration);
+    assert.equal(pinnedPublished.assets.evidence.generation_id, publishedGeneration);
+    assert.equal(pinnedPublished.assets.reverse.generation_id, publishedGeneration);
+    assert.ok(existsSync(path.join(paths.publicDir, publishedGeneration, "index.json")));
+    assert.equal(existsSync(path.join(paths.publicDir, ".staging")), false);
+
+    // Converse control: without the injection the active pointer advances.
+    const advanced = refreshFromPaths(paths, {
+      now: "2026-09-25T20:10:00.000Z",
+      force: true,
+    });
+    assert.equal(advanced.ok, true);
+    assert.equal(advanced.status, "activated");
+    assert.equal(advanced.active_generation, publishedGeneration);
+    assert.equal(advanced.previous_active_generation, firstGeneration);
+    assert.equal(
+      loadActiveLandPlacePointer(paths.publicDir).active_generation,
+      publishedGeneration,
+    );
+    assert.equal(
+      loadPinnedLandPlaceGeneration(paths.publicDir, publishedGeneration).ok,
+      true,
+    );
   });
 });
 

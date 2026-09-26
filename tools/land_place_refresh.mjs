@@ -8,7 +8,7 @@
  *   node tools/land_place_refresh.mjs --fixture-dir DIR
  *   node tools/land_place_refresh.mjs --inject-failure KIND
  *
- * KIND: partial_download | mismatched_boundary | before_activate | mixed_generation
+ * KIND: partial_download | mismatched_boundary | before_activate | before_active_pointer | mixed_generation
  */
 
 import { createHash } from "node:crypto";
@@ -209,7 +209,7 @@ async function main() {
   --public-dir DIR        Generation publication directory
   --active-index PATH     Convenience active compact index path
   --active-evidence-dir DIR  Convenience active evidence shard directory
-  --inject-failure KIND   Rehearse partial_download|mismatched_boundary|before_activate|mixed_generation`);
+  --inject-failure KIND   Rehearse partial_download|mismatched_boundary|before_activate|before_active_pointer|mixed_generation`);
     return;
   }
 

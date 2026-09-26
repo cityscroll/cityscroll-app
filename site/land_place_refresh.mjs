@@ -453,6 +453,7 @@ export function activateLandPlaceGeneration({
   inputHashes = null,
   builtAt = null,
   failBeforeActivate = false,
+  failAfterImmutablePublish = false,
   injectMixedGeneration = false,
   activeIndexPath = null,
   activeEvidenceDir = null,
@@ -575,6 +576,17 @@ export function activateLandPlaceGeneration({
     // Immutable assets land under the generation id before the active pointer moves.
     rmSync(generationDir, { recursive: true, force: true });
     renameSync(stagingDir, generationDir);
+
+    // Injection point between the immutable move and the active-pointer write.
+    // Callers that observe here can pin the new generation while ACTIVE still
+    // names the previous one.
+    if (failAfterImmutablePublish) {
+      const error = new Error(
+        "land place refresh forced failure after immutable publish before active pointer",
+      );
+      error.published_generation = generationId;
+      throw error;
+    }
 
     const pointer = {
       schema: LAND_PLACE_GENERATION_MANIFEST_SCHEMA,
@@ -1005,6 +1017,8 @@ export function createLandPlaceRefresh(adapters = {}) {
       }
       if (injectFailure === "before_activate") {
         activateGeneration({ ...activationArgs, failBeforeActivate: true });
+      } else if (injectFailure === "before_active_pointer") {
+        activateGeneration({ ...activationArgs, failAfterImmutablePublish: true });
       } else if (injectFailure === "mixed_generation" || injectMixedGeneration) {
         activateGeneration({ ...activationArgs, injectMixedGeneration: true });
       } else {
