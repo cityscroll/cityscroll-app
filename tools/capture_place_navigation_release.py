@@ -1172,14 +1172,34 @@ def observe_near_you_handoff(
 LAND_PROJECT_ID_RE = re.compile(r"\b20\d{2}[A-Z]\d{4}\b")
 WATCH_PREVIEW_MEMBERSHIP_SOURCE = "served-membership-by_geography.nta2020.SI0105"
 WATCH_PREVIEW_MARKUP_SOURCE = "served-preview-markup"
+WATCH_PREVIEW_TOOLING_CONTROL_SOURCE = "tooling-control-preview"
 WATCH_PREVIEW_PERTURBATION_ID = "1999Z9999"
+WATCH_ADDRESS_EXPECTED_SCOPE = "geography:nta2020:SI0105"
+WATCH_ADDRESS_EXPECTED_COUNT = 1
+WATCH_ADDRESS_EXPECTED_LENS = "land"
 
 
 def record_project_set_parity(
     preview_project_ids: list[str],
     membership_project_ids: list[str],
+    *,
+    preview_source: str,
+    membership_source: str,
 ) -> dict:
-    """Compare two observed project-id sets and record intersection/differences."""
+    """Compare two independently sourced project-id sets and record differences.
+
+    Refuses a parity row whose two sides share a source — that would compare a set
+    to a copy of itself and cannot fail.
+    """
+    preview_source = str(preview_source or "").strip()
+    membership_source = str(membership_source or "").strip()
+    if not preview_source or not membership_source:
+        raise ValueError("parity requires preview_source and membership_source")
+    if preview_source == membership_source:
+        raise ValueError(
+            "parity refuses a row whose two sides share a source: "
+            f"{preview_source}"
+        )
     preview = {str(item) for item in preview_project_ids if item}
     membership = {str(item) for item in membership_project_ids if item}
     intersection = sorted(preview & membership)
@@ -1188,6 +1208,8 @@ def record_project_set_parity(
     return {
         "preview_project_ids": sorted(preview),
         "membership_project_ids": sorted(membership),
+        "preview_project_ids_source": preview_source,
+        "membership_project_ids_source": membership_source,
         "intersection": intersection,
         "preview_minus_membership": preview_minus_membership,
         "membership_minus_preview": membership_minus_preview,
@@ -1196,6 +1218,10 @@ def record_project_set_parity(
 
 
 def watch_preview_parity_holds(parity: dict) -> bool:
+    preview_source = str(parity.get("preview_project_ids_source") or "")
+    membership_source = str(parity.get("membership_project_ids_source") or "")
+    if not preview_source or not membership_source or preview_source == membership_source:
+        return False
     return bool(parity.get("parity_equal")) and "2026R0127" in set(
         parity.get("intersection") or []
     )
@@ -1204,18 +1230,28 @@ def watch_preview_parity_holds(parity: dict) -> bool:
 def assert_watch_preview_parity(parity: dict, *, label: str) -> None:
     if not watch_preview_parity_holds(parity):
         raise SystemExit(
-            f"{label}: watch-preview parity requires equal recorded preview and "
-            f"membership project sets that include 2026R0127; got {parity}"
+            f"{label}: watch-preview parity requires independently sourced equal "
+            f"preview and membership project sets that include 2026R0127; got {parity}"
         )
 
 
 def positive_control_watch_preview_parity_rejects_perturbation(
     preview_project_ids: list[str],
     membership_project_ids: list[str],
+    *,
+    preview_source: str,
+    membership_source: str,
 ) -> dict:
     """Perturb the preview set and require the parity check to fail."""
-    perturbed = sorted({str(item) for item in preview_project_ids if item} | {WATCH_PREVIEW_PERTURBATION_ID})
-    parity = record_project_set_parity(perturbed, membership_project_ids)
+    perturbed = sorted(
+        {str(item) for item in preview_project_ids if item} | {WATCH_PREVIEW_PERTURBATION_ID}
+    )
+    parity = record_project_set_parity(
+        perturbed,
+        membership_project_ids,
+        preview_source=preview_source,
+        membership_source=membership_source,
+    )
     rejected = not watch_preview_parity_holds(parity)
     if not rejected:
         raise SystemExit(
@@ -1230,6 +1266,48 @@ def positive_control_watch_preview_parity_rejects_perturbation(
     }
 
 
+def record_watch_address(watch_href: str | None, *, label: str) -> dict:
+    """Record the observable Following watch address scope and count."""
+    if not watch_href:
+        raise SystemExit(f"{label}: Following land SI0105 watch address missing")
+    parsed = urllib.parse.urlparse(watch_href)
+    qs = urllib.parse.parse_qs(parsed.query)
+    lens = (qs.get("lens") or [None])[0]
+    count_raw = (qs.get("count") or [None])[0]
+    try:
+        count = int(count_raw) if count_raw is not None else None
+    except ValueError as error:
+        raise SystemExit(f"{label}: watch address count is not an integer: {count_raw}") from error
+    filter_raw = (qs.get("filter") or [None])[0]
+    geographies: list[str] = []
+    if filter_raw:
+        try:
+            filter_obj = json.loads(filter_raw)
+        except json.JSONDecodeError as error:
+            raise SystemExit(f"{label}: watch address filter is not JSON: {filter_raw}") from error
+        raw_geographies = filter_obj.get("geographies") if isinstance(filter_obj, dict) else None
+        if isinstance(raw_geographies, list):
+            geographies = [str(item) for item in raw_geographies if item]
+    if lens != WATCH_ADDRESS_EXPECTED_LENS:
+        raise SystemExit(f"{label}: watch address lens must be land; got {lens!r}")
+    if count != WATCH_ADDRESS_EXPECTED_COUNT:
+        raise SystemExit(
+            f"{label}: watch address count must be {WATCH_ADDRESS_EXPECTED_COUNT}; got {count!r}"
+        )
+    if WATCH_ADDRESS_EXPECTED_SCOPE not in geographies:
+        raise SystemExit(
+            f"{label}: watch address geographies must include {WATCH_ADDRESS_EXPECTED_SCOPE}; "
+            f"got {geographies}"
+        )
+    return {
+        "watch_address_href": watch_href,
+        "watch_address_lens": lens,
+        "watch_address_count": count,
+        "watch_address_geographies": geographies,
+        "watch_address_scope_ok": True,
+    }
+
+
 def observe_watch_preview(
     page,
     base: str,
@@ -1239,12 +1317,13 @@ def observe_watch_preview(
     request_log: list[dict] | None = None,
     served_revision: str | None = None,
 ) -> dict:
-    """Observe Following/watch preview and record two-set membership parity."""
+    """Observe Following/watch preview; record only independently observable facts."""
     name, width, height = viewport
+    label = f"watch-preview@{name}"
     membership_project_ids = sorted({str(item) for item in membership_si0105_ids if item})
     if "2026R0127" not in set(membership_project_ids):
         raise SystemExit(
-            f"watch-preview@{name}: neighbourhood membership SI0105 missing 2026R0127 "
+            f"{label}: neighbourhood membership SI0105 missing 2026R0127 "
             f"({membership_project_ids})"
         )
 
@@ -1269,112 +1348,117 @@ def observe_watch_preview(
           return hit || null;
         }"""
     )
+    watch_address = record_watch_address(watch_href, label=label)
     preview = {
-        "watch_href_present": bool(watch_href),
+        "watch_href_present": True,
         "watch_href": watch_href,
         "preview_markup_present": False,
         "preview_status": None,
         "preview_ids_from_markup": [],
+        "preview_project_ids": [],
         "preview_project_ids_source": None,
+        "membership_project_ids": membership_project_ids,
+        "membership_project_ids_source": WATCH_PREVIEW_MEMBERSHIP_SOURCE,
         "observation": "near-you-following-link",
+        **watch_address,
     }
 
-    if watch_href:
-        target = watch_href
-        parsed = urllib.parse.urlparse(watch_href)
-        if parsed.scheme:
-            target = (parsed.path or "/") + (f"?{parsed.query}" if parsed.query else "") + (
-                f"#{parsed.fragment}" if parsed.fragment else ""
-            )
-        goto_with_receipt(
-            page,
-            absolute(base, target),
-            request_log=request_log,
-            served_revision=served_revision,
-            kind=f"browser-watch-preview-{name}",
+    target = watch_href
+    parsed = urllib.parse.urlparse(watch_href)
+    if parsed.scheme:
+        target = (parsed.path or "/") + (f"?{parsed.query}" if parsed.query else "") + (
+            f"#{parsed.fragment}" if parsed.fragment else ""
         )
-        page.wait_for_timeout(3_000)
-        probe = page.evaluate(
-            """() => {
-              const panel = document.querySelector('[data-following-preview-panel]');
-              const panelHtml = panel ? panel.innerHTML : '';
-              const attrIds = panel
-                ? [...panel.querySelectorAll('[data-preview-id]')]
-                    .map((el) => el.getAttribute('data-preview-id') || '')
-                    .filter(Boolean)
-                : [];
-              const hrefIds = panel
-                ? [...panel.querySelectorAll('a[href*="#land/"]')]
-                    .map((a) => {
-                      const href = a.getAttribute('href') || '';
-                      const match = href.match(/#land\\/([A-Za-z0-9_-]+)/);
-                      return match ? match[1] : null;
-                    })
-                    .filter(Boolean)
-                : [];
-              const textIds = [...panelHtml.matchAll(/\\b20\\d{2}[A-Z]\\d{4}\\b/g)].map((m) => m[0]);
-              return {
-                preview_markup_present: Boolean(panel),
-                preview_status: panel
-                  ? (panel.getAttribute('data-following-preview-status')
-                    || panel.getAttribute('data-following-handoff-status')
-                    || null)
-                  : null,
-                ids: [...new Set([...attrIds, ...hrefIds, ...textIds])].slice(0, 40),
-              };
-            }"""
+    goto_with_receipt(
+        page,
+        absolute(base, target),
+        request_log=request_log,
+        served_revision=served_revision,
+        kind=f"browser-watch-preview-{name}",
+    )
+    page.wait_for_timeout(3_000)
+    probe = page.evaluate(
+        """() => {
+          const panel = document.querySelector('[data-following-preview-panel]');
+          const panelHtml = panel ? panel.innerHTML : '';
+          const attrIds = panel
+            ? [...panel.querySelectorAll('[data-preview-id]')]
+                .map((el) => el.getAttribute('data-preview-id') || '')
+                .filter(Boolean)
+            : [];
+          const hrefIds = panel
+            ? [...panel.querySelectorAll('a[href*="#land/"]')]
+                .map((a) => {
+                  const href = a.getAttribute('href') || '';
+                  const match = href.match(/#land\\/([A-Za-z0-9_-]+)/);
+                  return match ? match[1] : null;
+                })
+                .filter(Boolean)
+            : [];
+          const textIds = [...panelHtml.matchAll(/\\b20\\d{2}[A-Z]\\d{4}\\b/g)].map((m) => m[0]);
+          return {
+            preview_markup_present: Boolean(panel),
+            preview_status: panel
+              ? (panel.getAttribute('data-following-preview-status')
+                || panel.getAttribute('data-following-handoff-status')
+                || null)
+              : null,
+            ids: [...new Set([...attrIds, ...hrefIds, ...textIds])].slice(0, 40),
+          };
+        }"""
+    )
+    preview["preview_markup_present"] = bool(probe.get("preview_markup_present"))
+    preview["preview_status"] = probe.get("preview_status")
+    markup_ids = sorted(
+        {
+            str(item)
+            for item in (probe.get("ids") or [])
+            if item and LAND_PROJECT_ID_RE.fullmatch(str(item))
+        }
+    )
+    preview["preview_ids_from_markup"] = markup_ids
+    preview["preview_project_ids"] = list(markup_ids)
+    preview["preview_project_ids_source"] = WATCH_PREVIEW_MARKUP_SOURCE
+    preview["preview_ids"] = list(markup_ids)
+
+    if markup_ids:
+        parity = record_project_set_parity(
+            markup_ids,
+            membership_project_ids,
+            preview_source=WATCH_PREVIEW_MARKUP_SOURCE,
+            membership_source=WATCH_PREVIEW_MEMBERSHIP_SOURCE,
         )
-        preview["preview_markup_present"] = bool(probe.get("preview_markup_present"))
-        preview["preview_status"] = probe.get("preview_status")
-        markup_ids = sorted(
-            {
-                str(item)
-                for item in (probe.get("ids") or [])
-                if item and LAND_PROJECT_ID_RE.fullmatch(str(item))
-            }
-        )
-        preview["preview_ids_from_markup"] = markup_ids
-        if markup_ids:
-            preview_project_ids = markup_ids
-            preview["preview_project_ids_source"] = WATCH_PREVIEW_MARKUP_SOURCE
-            preview["observation"] = (
-                "served Following preview markup enumerated project ids for SI0105 land watch"
-            )
-        else:
-            preview_project_ids = list(membership_project_ids)
-            preview["preview_project_ids_source"] = WATCH_PREVIEW_MEMBERSHIP_SOURCE
-            preview["observation"] = (
-                "served Following preview markup present without enumerable project ids; "
-                "preview project set taken from the same SI0105 membership the land watch "
-                "preview is built from"
-            )
-    else:
-        preview_project_ids = list(membership_project_ids)
-        preview["preview_project_ids_source"] = WATCH_PREVIEW_MEMBERSHIP_SOURCE
+        assert_watch_preview_parity(parity, label=label)
+        preview.update(parity)
+        preview["preview_intersects_membership"] = bool(parity["intersection"])
+        preview["includes_2026R0127"] = "2026R0127" in set(parity["intersection"])
         preview["observation"] = (
-            "watch/preview affordance absent in Near You DOM; "
-            "preview project set taken from the same SI0105 membership the land watch "
-            "preview is built from"
+            "served Following preview markup enumerated project ids for SI0105 land watch"
+        )
+        assertion = (
+            "Watch-preview project set from served markup compared to SI0105 membership "
+            "with independently sourced intersection and differences"
+        )
+    else:
+        status = preview.get("preview_status") or "unspecified"
+        preview["observation"] = (
+            f"served Following preview status {status}; markup-derived project "
+            "identifiers empty for anonymous visitor; watch address scope and count "
+            "recorded without synthesised project-set parity"
+        )
+        assertion = (
+            "Following watch address scope and count observed; preview status and "
+            "empty markup-derived project identifiers recorded without self-compared parity"
         )
 
-    parity = record_project_set_parity(preview_project_ids, membership_project_ids)
-    assert_watch_preview_parity(parity, label=f"watch-preview@{name}")
-    preview.update(parity)
-    preview["preview_ids"] = list(parity["preview_project_ids"])
-    preview["preview_intersects_membership"] = bool(parity["intersection"])
-    preview["includes_2026R0127"] = "2026R0127" in set(parity["intersection"])
-
-    require_inner_width(page, width, label=f"watch-preview@{name}")
+    require_inner_width(page, width, label=label)
     html = page.content()
     shot = save_screenshot(page, f"watch-preview-{name}")
     return {
         "name": f"watch-preview-si0105-{name}",
         "route": watch_href or NEAR_YOU_SI0105_ROUTE,
         "viewport": {"width": width, "height": height},
-        "assertion": (
-            "Watch-preview project set compared to SI0105 neighbourhood membership "
-            "with recorded intersection and differences"
-        ),
+        "assertion": assertion,
         "sha256": sha256_text(html),
         "file": None,
         "local_screenshot": str(shot),
@@ -1639,10 +1723,31 @@ def capture_production(base: str) -> dict:
     if not watch_desktop:
         raise SystemExit("positive control failed: missing watch-preview-si0105-desktop capture")
     watch_values = watch_desktop.get("served_values") or {}
-    watch_preview_positive = positive_control_watch_preview_parity_rejects_perturbation(
-        list(watch_values.get("preview_project_ids") or []),
-        list(watch_values.get("membership_project_ids") or membership_si0105),
-    )
+    # Keep the comparator positive control as tooling. When the packet has no
+    # independently sourced preview set, exercise it with distinct tooling sources
+    # rather than comparing a set to a copy of itself.
+    if (
+        watch_values.get("parity_equal") is True
+        and watch_values.get("preview_project_ids_source") == WATCH_PREVIEW_MARKUP_SOURCE
+        and list(watch_values.get("preview_project_ids") or [])
+    ):
+        watch_preview_positive = positive_control_watch_preview_parity_rejects_perturbation(
+            list(watch_values.get("preview_project_ids") or []),
+            list(watch_values.get("membership_project_ids") or membership_si0105),
+            preview_source=WATCH_PREVIEW_MARKUP_SOURCE,
+            membership_source=WATCH_PREVIEW_MEMBERSHIP_SOURCE,
+        )
+    else:
+        watch_preview_positive = positive_control_watch_preview_parity_rejects_perturbation(
+            list(watch_values.get("membership_project_ids") or membership_si0105),
+            list(watch_values.get("membership_project_ids") or membership_si0105),
+            preview_source=WATCH_PREVIEW_TOOLING_CONTROL_SOURCE,
+            membership_source=WATCH_PREVIEW_MEMBERSHIP_SOURCE,
+        )
+        watch_preview_positive["packet_parity_omitted"] = True
+        watch_preview_positive["reason"] = (
+            "served preview identifiers unavailable; tooling control used distinct sources"
+        )
 
     run_finished_at = utc_now()
     for row in captures:
@@ -1738,27 +1843,34 @@ def capture_production(base: str) -> dict:
                 "status": "observed",
                 "viewports": [390, 1440],
                 "real_stylesheet": True,
-                "watch_preview_parity": {
+                "watch_preview_observation": {
                     "captures": [
                         c["name"]
                         for c in captures
                         if c["name"].startswith("watch-preview-si0105-")
                     ],
+                    "preview_status": watch_values.get("preview_status"),
+                    "preview_ids_from_markup": list(
+                        watch_values.get("preview_ids_from_markup") or []
+                    ),
                     "preview_project_ids": list(watch_values.get("preview_project_ids") or []),
-                    "membership_project_ids": list(
-                        watch_values.get("membership_project_ids") or []
-                    ),
-                    "intersection": list(watch_values.get("intersection") or []),
-                    "preview_minus_membership": list(
-                        watch_values.get("preview_minus_membership") or []
-                    ),
-                    "membership_minus_preview": list(
-                        watch_values.get("membership_minus_preview") or []
-                    ),
                     "preview_project_ids_source": watch_values.get(
                         "preview_project_ids_source"
                     ),
-                    "parity_equal": bool(watch_values.get("parity_equal")),
+                    "membership_project_ids": list(
+                        watch_values.get("membership_project_ids") or []
+                    ),
+                    "membership_project_ids_source": watch_values.get(
+                        "membership_project_ids_source"
+                    ),
+                    "watch_address_count": watch_values.get("watch_address_count"),
+                    "watch_address_geographies": list(
+                        watch_values.get("watch_address_geographies") or []
+                    ),
+                    "watch_address_scope_ok": bool(
+                        watch_values.get("watch_address_scope_ok")
+                    ),
+                    "parity_recorded": watch_values.get("parity_equal") is True,
                 },
             },
             "A4": {
@@ -1855,53 +1967,139 @@ def run_check(out_path: Path, manifest_path: Path) -> int:
         for row in watch_rows:
             values = row.get("served_values") or {}
             required_keys = (
+                "preview_ids_from_markup",
                 "preview_project_ids",
-                "membership_project_ids",
-                "intersection",
-                "preview_minus_membership",
-                "membership_minus_preview",
                 "preview_project_ids_source",
-                "parity_equal",
+                "membership_project_ids",
+                "membership_project_ids_source",
+                "watch_address_count",
+                "watch_address_geographies",
+                "watch_address_scope_ok",
+                "preview_status",
             )
             missing = [key for key in required_keys if key not in values]
             if missing:
                 print(
-                    f"watch-preview row {row.get('name')} missing parity fields {missing}",
+                    f"watch-preview row {row.get('name')} missing observation fields {missing}",
                     file=sys.stderr,
                 )
                 return 2
-            if values.get("parity_equal") is not True:
+            if values.get("watch_address_scope_ok") is not True:
                 print(
-                    f"watch-preview row {row.get('name')} must record parity_equal=true",
+                    f"watch-preview row {row.get('name')} must record watch_address_scope_ok=true",
                     file=sys.stderr,
                 )
                 return 2
-            if "2026R0127" not in set(values.get("intersection") or []):
+            if values.get("watch_address_count") != WATCH_ADDRESS_EXPECTED_COUNT:
                 print(
-                    f"watch-preview row {row.get('name')} intersection must include 2026R0127",
+                    f"watch-preview row {row.get('name')} watch_address_count must be "
+                    f"{WATCH_ADDRESS_EXPECTED_COUNT}",
                     file=sys.stderr,
                 )
                 return 2
-            source = values.get("preview_project_ids_source")
-            if source not in {
-                WATCH_PREVIEW_MARKUP_SOURCE,
-                WATCH_PREVIEW_MEMBERSHIP_SOURCE,
-            }:
+            if WATCH_ADDRESS_EXPECTED_SCOPE not in set(
+                values.get("watch_address_geographies") or []
+            ):
                 print(
-                    f"watch-preview row {row.get('name')} has unknown preview source {source}",
+                    f"watch-preview row {row.get('name')} watch address must include "
+                    f"{WATCH_ADDRESS_EXPECTED_SCOPE}",
+                    file=sys.stderr,
+                )
+                return 2
+            if list(values.get("preview_ids_from_markup") or []) != list(
+                values.get("preview_project_ids") or []
+            ):
+                print(
+                    f"watch-preview row {row.get('name')} preview_project_ids must match "
+                    "markup-derived identifiers (no synthesised membership copy)",
+                    file=sys.stderr,
+                )
+                return 2
+            preview_source = values.get("preview_project_ids_source")
+            membership_source = values.get("membership_project_ids_source")
+            if preview_source != WATCH_PREVIEW_MARKUP_SOURCE:
+                print(
+                    f"watch-preview row {row.get('name')} preview source must be "
+                    f"{WATCH_PREVIEW_MARKUP_SOURCE}; got {preview_source}",
+                    file=sys.stderr,
+                )
+                return 2
+            if membership_source != WATCH_PREVIEW_MEMBERSHIP_SOURCE:
+                print(
+                    f"watch-preview row {row.get('name')} membership source must be "
+                    f"{WATCH_PREVIEW_MEMBERSHIP_SOURCE}; got {membership_source}",
+                    file=sys.stderr,
+                )
+                return 2
+            if preview_source == membership_source:
+                print(
+                    f"watch-preview row {row.get('name')} refuses shared parity source "
+                    f"{preview_source}",
+                    file=sys.stderr,
+                )
+                return 2
+            if "parity_equal" in values:
+                if values.get("parity_equal") is not True:
+                    print(
+                        f"watch-preview row {row.get('name')} recorded parity_equal must be true",
+                        file=sys.stderr,
+                    )
+                    return 2
+                if not list(values.get("preview_project_ids") or []):
+                    print(
+                        f"watch-preview row {row.get('name')} must not claim parity with "
+                        "an empty markup-derived preview set",
+                        file=sys.stderr,
+                    )
+                    return 2
+                if "2026R0127" not in set(values.get("intersection") or []):
+                    print(
+                        f"watch-preview row {row.get('name')} intersection must include 2026R0127",
+                        file=sys.stderr,
+                    )
+                    return 2
+            elif list(values.get("preview_ids_from_markup") or []):
+                print(
+                    f"watch-preview row {row.get('name')} enumerated markup ids without parity",
                     file=sys.stderr,
                 )
                 return 2
         letter_a3 = ((readback.get("letters") or {}).get("A3") or {})
-        letter_parity = letter_a3.get("watch_preview_parity") or {}
-        if letter_parity.get("parity_equal") is not True:
-            print("letters.A3.watch_preview_parity must record parity_equal=true", file=sys.stderr)
+        letter_observation = letter_a3.get("watch_preview_observation") or {}
+        if letter_observation.get("watch_address_scope_ok") is not True:
+            print(
+                "letters.A3.watch_preview_observation must record watch_address_scope_ok=true",
+                file=sys.stderr,
+            )
+            return 2
+        if letter_observation.get("watch_address_count") != WATCH_ADDRESS_EXPECTED_COUNT:
+            print(
+                "letters.A3.watch_preview_observation must record watch_address_count="
+                f"{WATCH_ADDRESS_EXPECTED_COUNT}",
+                file=sys.stderr,
+            )
+            return 2
+        if "parity_equal" in letter_observation:
+            print(
+                "letters.A3.watch_preview_observation must not carry a self-compared parity_equal",
+                file=sys.stderr,
+            )
             return 2
         positive = readback.get("positive_control") or {}
         watch_positive = positive.get("watch_preview_parity_rejects_perturbed_preview") or {}
         if watch_positive.get("rejected_perturbed_preview") is not True:
             print(
                 "positive_control.watch_preview_parity_rejects_perturbed_preview must reject",
+                file=sys.stderr,
+            )
+            return 2
+        positive_parity = watch_positive.get("parity") or {}
+        if (
+            positive_parity.get("preview_project_ids_source")
+            == positive_parity.get("membership_project_ids_source")
+        ):
+            print(
+                "positive_control parity must use distinct sources on each side",
                 file=sys.stderr,
             )
             return 2
