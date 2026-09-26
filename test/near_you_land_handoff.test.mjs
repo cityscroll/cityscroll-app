@@ -142,7 +142,12 @@ describe("near_you_land_handoff", () => {
     assert.deepEqual(decodeGeoParams(resultsHref), [ANCHORS.si0105]);
     assert.match(resultsHref, /status=all/);
     assert.match(resultsHref, /stage=any/);
+    // Bare id keeps the legacy document-hash form; scope-aware calls carry geo.
     assert.equal(recordHref, `/browse/zoning/#land/${ANCHORS.fdny}`);
+    const continuityRecordHref = nearYouLandRecordHref(ANCHORS.fdny, { scope });
+    assert.match(continuityRecordHref, /^\/browse\/zoning\/\?/);
+    assert.deepEqual(decodeGeoParams(continuityRecordHref), [ANCHORS.si0105]);
+    assert.match(continuityRecordHref, /#land\/2026R0127/);
     assert.match(returnHref, /^\/near-you\/\?/);
     assert.match(returnHref, /lens=land/);
     assert.deepEqual(
@@ -207,7 +212,8 @@ describe("near_you_land_handoff", () => {
     });
     assert.equal(kept.status, "selected");
     assert.equal(kept.project_id, ANCHORS.fdny);
-    assert.equal(kept.record_href, nearYouLandRecordHref(ANCHORS.fdny));
+    assert.equal(kept.record_href, nearYouLandRecordHref(ANCHORS.fdny, { scope }));
+    assert.deepEqual(decodeGeoParams(kept.record_href), [ANCHORS.si0105]);
 
     const withoutFdny = ids.filter((id) => id !== ANCHORS.fdny);
     const cleared = resolveNearYouLandSelection({
@@ -294,7 +300,9 @@ describe("near_you_land_handoff", () => {
 
     const fdny = (view.results?.records || []).find((row) => row.id === ANCHORS.fdny);
     assert.ok(fdny, "SI0105 land results must include 2026R0127");
-    assert.equal(fdny.route, nearYouLandRecordHref(ANCHORS.fdny));
+    assert.equal(fdny.route, nearYouLandRecordHref(ANCHORS.fdny, { scope: landScope }));
+    assert.match(fdny.route, /geo=geography%3Anta2020%3ASI0105|#land\/2026R0127/);
+    assert.deepEqual(decodeGeoParams(fdny.route), [ANCHORS.si0105]);
     assert.equal(affordanceActionRole({ href: fdny.route }), AFFORDANCE_ACTION_ROLES.navigate);
     assert.equal(affordanceActionRole({ href: view.browseHref }), AFFORDANCE_ACTION_ROLES.navigate);
 
@@ -303,7 +311,7 @@ describe("near_you_land_handoff", () => {
     const deferred = renderNearYouDeferredBody(view);
     // Inspect remains a button; Land results and full-record destinations are real anchors.
     assert.match(deferred, /<button[^>]*class="[^"]*near-record-inspect/);
-    assert.match(deferred, /href="\/browse\/zoning\/#land\/2026R0127"/);
+    assert.match(deferred, /href="\/browse\/zoning\/\?[^"]*#land\/2026R0127"/);
     assert.match(body, /<a[^>]*href="\/browse\/zoning\/\?/);
 
     const packet = buildNearYouLandHandoff({

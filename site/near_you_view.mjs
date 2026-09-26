@@ -662,7 +662,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     ? scope.facets.values.place_role
     : null;
   const landRecordRoute = (record) => {
-    const projectHref = nearYouLandRecordHref(record?.id || record?.project_id);
+    const projectHref = nearYouLandRecordHref(record?.id || record?.project_id, { scope });
     return projectHref ? siteHref(projectHref) : migratedSiteHref(record?.route);
   };
   const linkedRecord = (record, { explain = true } = {}) => {

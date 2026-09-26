@@ -731,6 +731,7 @@
 /site/pin_sibling_grouping.mjs
 /site/pivot_destination_compatibility.mjs
 /site/place_context.mjs
+/site/place_navigation_continuity.mjs
 /site/precomputed_address_geocoder.mjs
 /site/preset_validation.mjs
 /site/preview_federated_form_factor.mjs
