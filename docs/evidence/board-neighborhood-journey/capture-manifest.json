@@ -63,10 +63,11 @@
       }
     },
     {
-      "assertion": "Hermetic directory selection for kensington-ambiguous yields ['brooklyn-cb-12', 'brooklyn-cb-14']",
+      "assertion": "Module-oracle directory selection for kensington-ambiguous yields ['brooklyn-cb-12', 'brooklyn-cb-14']",
       "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
       "file": null,
-      "name": "kensington-ambiguous-desktop",
+      "measurement": "module-oracle",
+      "name": "kensington-ambiguous",
       "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
       "route": "/community-boards/?geo=nta2020%3ABK1203",
       "served_values": {
@@ -78,39 +79,14 @@
         "heading": "Boards overlapping Kensington"
       },
       "sha256": "5b199246bf8264b4eef3f8e60d5bd79326dca46502c75b495a741a5fab5d6d81",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 900,
-        "width": 1440
-      }
+      "source": "hermetic-module-oracle"
     },
     {
-      "assertion": "Hermetic directory selection for kensington-ambiguous yields ['brooklyn-cb-12', 'brooklyn-cb-14']",
+      "assertion": "Module-oracle directory selection for si0105-ambiguous yields ['staten-island-cb-01', 'staten-island-cb-02']",
       "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
       "file": null,
-      "name": "kensington-ambiguous-mobile",
-      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
-      "route": "/community-boards/?geo=nta2020%3ABK1203",
-      "served_values": {
-        "boards": [
-          "brooklyn-cb-12",
-          "brooklyn-cb-14"
-        ],
-        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
-        "heading": "Boards overlapping Kensington"
-      },
-      "sha256": "5b199246bf8264b4eef3f8e60d5bd79326dca46502c75b495a741a5fab5d6d81",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 844,
-        "width": 390
-      }
-    },
-    {
-      "assertion": "Hermetic directory selection for si0105-ambiguous yields ['staten-island-cb-01', 'staten-island-cb-02']",
-      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
-      "file": null,
-      "name": "si0105-ambiguous-desktop",
+      "measurement": "module-oracle",
+      "name": "si0105-ambiguous",
       "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
       "route": "/community-boards/?geo=nta2020%3ASI0105",
       "served_values": {
@@ -122,39 +98,14 @@
         "heading": "Boards overlapping"
       },
       "sha256": "0749a782de62b4300fff77827b86401f89a8a84680db6d5d1c0185aeeebed392",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 900,
-        "width": 1440
-      }
+      "source": "hermetic-module-oracle"
     },
     {
-      "assertion": "Hermetic directory selection for si0105-ambiguous yields ['staten-island-cb-01', 'staten-island-cb-02']",
+      "assertion": "Module-oracle directory selection for greenpoint-single yields ['brooklyn-cb-01']",
       "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
       "file": null,
-      "name": "si0105-ambiguous-mobile",
-      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
-      "route": "/community-boards/?geo=nta2020%3ASI0105",
-      "served_values": {
-        "boards": [
-          "staten-island-cb-01",
-          "staten-island-cb-02"
-        ],
-        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
-        "heading": "Boards overlapping"
-      },
-      "sha256": "0749a782de62b4300fff77827b86401f89a8a84680db6d5d1c0185aeeebed392",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 844,
-        "width": 390
-      }
-    },
-    {
-      "assertion": "Hermetic directory selection for greenpoint-single yields ['brooklyn-cb-01']",
-      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
-      "file": null,
-      "name": "greenpoint-single-desktop",
+      "measurement": "module-oracle",
+      "name": "greenpoint-single",
       "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
       "route": "/community-boards/?geo=nta2020%3ABK0101",
       "served_values": {
@@ -165,38 +116,14 @@
         "heading": "Board overlapping Greenpoint"
       },
       "sha256": "3f3dca5f4dc99f9f415d6fadd15ae45d525d525ce613ee6cfb4c88cf01aae78e",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 900,
-        "width": 1440
-      }
+      "source": "hermetic-module-oracle"
     },
     {
-      "assertion": "Hermetic directory selection for greenpoint-single yields ['brooklyn-cb-01']",
+      "assertion": "Module-oracle directory selection for bk0504-special-district yields ['brooklyn-cb-05', 'brooklyn-cb-18']",
       "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
       "file": null,
-      "name": "greenpoint-single-mobile",
-      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
-      "route": "/community-boards/?geo=nta2020%3ABK0101",
-      "served_values": {
-        "boards": [
-          "brooklyn-cb-01"
-        ],
-        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
-        "heading": "Board overlapping Greenpoint"
-      },
-      "sha256": "3f3dca5f4dc99f9f415d6fadd15ae45d525d525ce613ee6cfb4c88cf01aae78e",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 844,
-        "width": 390
-      }
-    },
-    {
-      "assertion": "Hermetic directory selection for bk0504-special-district yields ['brooklyn-cb-05', 'brooklyn-cb-18']",
-      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
-      "file": null,
-      "name": "bk0504-special-district-desktop",
+      "measurement": "module-oracle",
+      "name": "bk0504-special-district",
       "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
       "route": "/community-boards/?geo=nta2020%3ABK0504",
       "served_values": {
@@ -208,39 +135,14 @@
         "heading": "Boards overlapping"
       },
       "sha256": "98f94c90977f558f9f57d8f196dfc2371303b3a1d830b9430483d266ee8a02c5",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 900,
-        "width": 1440
-      }
+      "source": "hermetic-module-oracle"
     },
     {
-      "assertion": "Hermetic directory selection for bk0504-special-district yields ['brooklyn-cb-05', 'brooklyn-cb-18']",
+      "assertion": "Module-oracle directory selection for queens-holdout yields ['queens-cb-04']",
       "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
       "file": null,
-      "name": "bk0504-special-district-mobile",
-      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
-      "route": "/community-boards/?geo=nta2020%3ABK0504",
-      "served_values": {
-        "boards": [
-          "brooklyn-cb-05",
-          "brooklyn-cb-18"
-        ],
-        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
-        "heading": "Boards overlapping"
-      },
-      "sha256": "98f94c90977f558f9f57d8f196dfc2371303b3a1d830b9430483d266ee8a02c5",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 844,
-        "width": 390
-      }
-    },
-    {
-      "assertion": "Hermetic directory selection for queens-holdout yields ['queens-cb-04']",
-      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
-      "file": null,
-      "name": "queens-holdout-desktop",
+      "measurement": "module-oracle",
+      "name": "queens-holdout",
       "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
       "route": "/community-boards/?geo=nta2020%3AQN0402",
       "served_values": {
@@ -251,38 +153,14 @@
         "heading": "Board overlapping Corona"
       },
       "sha256": "8cf1e21b8a7c304c51c5e8962a546d9f46bd27d5ee1e73e7e7750d60c0653a07",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 900,
-        "width": 1440
-      }
+      "source": "hermetic-module-oracle"
     },
     {
-      "assertion": "Hermetic directory selection for queens-holdout yields ['queens-cb-04']",
+      "assertion": "Module-oracle directory selection for bronx-holdout yields ['bronx-cb-09']",
       "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
       "file": null,
-      "name": "queens-holdout-mobile",
-      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
-      "route": "/community-boards/?geo=nta2020%3AQN0402",
-      "served_values": {
-        "boards": [
-          "queens-cb-04"
-        ],
-        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
-        "heading": "Board overlapping Corona"
-      },
-      "sha256": "8cf1e21b8a7c304c51c5e8962a546d9f46bd27d5ee1e73e7e7750d60c0653a07",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 844,
-        "width": 390
-      }
-    },
-    {
-      "assertion": "Hermetic directory selection for bronx-holdout yields ['bronx-cb-09']",
-      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
-      "file": null,
-      "name": "bronx-holdout-desktop",
+      "measurement": "module-oracle",
+      "name": "bronx-holdout",
       "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
       "route": "/community-boards/?geo=nta2020%3ABX0902",
       "served_values": {
@@ -293,38 +171,14 @@
         "heading": "Board overlapping"
       },
       "sha256": "bc4ebb79723aa323a49b5a5b8cc2b6b6bae5ade294114cb83fa7f055649a102c",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 900,
-        "width": 1440
-      }
+      "source": "hermetic-module-oracle"
     },
     {
-      "assertion": "Hermetic directory selection for bronx-holdout yields ['bronx-cb-09']",
+      "assertion": "Module-oracle: 810 East 16th Street Brooklyn resolves to Brooklyn Community Board 14",
       "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
       "file": null,
-      "name": "bronx-holdout-mobile",
-      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
-      "route": "/community-boards/?geo=nta2020%3ABX0902",
-      "served_values": {
-        "boards": [
-          "bronx-cb-09"
-        ],
-        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
-        "heading": "Board overlapping"
-      },
-      "sha256": "bc4ebb79723aa323a49b5a5b8cc2b6b6bae5ade294114cb83fa7f055649a102c",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 844,
-        "width": 390
-      }
-    },
-    {
-      "assertion": "810 East 16th Street Brooklyn resolves to Brooklyn Community Board 14",
-      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
-      "file": null,
-      "name": "address-midwood-success-desktop",
+      "measurement": "module-oracle",
+      "name": "address-midwood-success",
       "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
       "route": "/community-boards/",
       "served_values": {
@@ -333,36 +187,14 @@
         "ok": true
       },
       "sha256": "ab802cac32ef1b0c16951d2302bae8411b3f191ba91a17126a74a665cb52bde1",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 900,
-        "width": 1440
-      }
+      "source": "hermetic-module-oracle"
     },
     {
-      "assertion": "810 East 16th Street Brooklyn resolves to Brooklyn Community Board 14",
+      "assertion": "Module-oracle: 1688 Victory Boulevard remains unresolved without inventing a board",
       "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
       "file": null,
-      "name": "address-midwood-success-mobile",
-      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
-      "route": "/community-boards/",
-      "served_values": {
-        "board_id": "brooklyn-cb-14",
-        "label": "midwood-success",
-        "ok": true
-      },
-      "sha256": "ab802cac32ef1b0c16951d2302bae8411b3f191ba91a17126a74a665cb52bde1",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 844,
-        "width": 390
-      }
-    },
-    {
-      "assertion": "1688 Victory Boulevard remains unresolved without inventing a board",
-      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
-      "file": null,
-      "name": "address-victory-unresolved-desktop",
+      "measurement": "module-oracle",
+      "name": "address-victory-unresolved",
       "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
       "route": "/community-boards/",
       "served_values": {
@@ -371,39 +203,17 @@
         "ok": false
       },
       "sha256": "bd5cdd191e3a868b4b30a3f0452ae33c549d189dd268588b1d86d3a2bccf82b8",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 900,
-        "width": 1440
-      }
-    },
-    {
-      "assertion": "1688 Victory Boulevard remains unresolved without inventing a board",
-      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
-      "file": null,
-      "name": "address-victory-unresolved-mobile",
-      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
-      "route": "/community-boards/",
-      "served_values": {
-        "board_id": null,
-        "label": "victory-unresolved",
-        "ok": false
-      },
-      "sha256": "bd5cdd191e3a868b4b30a3f0452ae33c549d189dd268588b1d86d3a2bccf82b8",
-      "source": "hermetic-module-oracle",
-      "viewport": {
-        "height": 844,
-        "width": 390
-      }
+      "source": "hermetic-module-oracle"
     }
   ],
-  "condition": "Local hermetic fixture + module oracle retained until production Pages revision contains the delivery pin; production runner replaces this packet.",
+  "condition": "Local hermetic fixture widths plus module-oracle journey results retained beside the production read-back. Module-oracle rows are not browser viewport measurements.",
   "data_vintage": "board-neighborhood a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e; nta2020 26B; community 2026-05-26",
   "feature": "board-neighborhood-journey",
   "grounded_at": "05720ad16b2a53551f49ce08f02aaad9845fdb78",
   "image_binaries_committed": false,
   "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest and the read-back JSON are committed.",
   "local_image_dir_ignored": "board-neighborhood-journey-screenshots (task scratch; ignored)",
+  "note": "Sixteen prior desktop/mobile module-oracle duplicates collapsed to eight viewport-free module-oracle rows. Two Kensington fixture-document captures keep measured viewports. Production outcomes live in readback.json and do not replace this fixture packet.",
   "public_alias": "c0a2ef2da209d",
   "repository_revision": "05720ad16b2a53551f49ce08f02aaad9845fdb78",
   "required_ancestor": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",

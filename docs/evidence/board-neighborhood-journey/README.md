@@ -4,6 +4,12 @@ Public alias: `c0a2ef2da209d`.
 
 Retained textual proof that residents can move from a named neighborhood or exact address to a community board profile and its existing calendar or participation actions.
 
+## Packets
+
+- `capture-manifest.json` — local hermetic fixture widths plus module-oracle journey results. Module-oracle rows are viewport-free; only the two measured Kensington fixture-document captures keep desktop/mobile widths.
+- `readback.json` — production read-back against the served origin (runner default path). Carries HTTP/page outcomes, served generation hashes, and a per-run receipt with Date / CF-Ray / revision for each production request. Retained beside the fixture packet; it does not replace it.
+- `delivery.json` — Pages delivery pin the production runner requires as an ancestor.
+
 ## Verify
 
 ```bash

@@ -405,19 +405,34 @@ test("A3: Queens and Bronx holdouts resolve through the same directory path; evi
   assert.match(captureSource, /QN0402/);
   assert.match(captureSource, /BX0902/);
 
-  // Evidence receipts (when present) must name holdouts, viewports, and generation fields.
+  // Evidence receipts (when present) must name holdouts and generation fields.
+  // Module-oracle rows are viewport-free; only measured browser/fixture rows keep widths.
   if (existsSync(MANIFEST_PATH)) {
     const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
     assert.equal(manifest.public_alias, PUBLIC_ALIAS);
     assert.equal(manifest.image_binaries_committed, false);
     const names = (manifest.captures || []).map((row) => row.name).join(" ");
     assert.match(names, /queens-holdout|bronx-holdout/);
+    let fixtureBrowserRows = 0;
+    let moduleOracleRows = 0;
     for (const row of manifest.captures || []) {
       assert.ok(row.route);
-      assert.ok(row.viewport?.width);
       assert.ok(row.assertion);
       assert.match(String(row.sha256 || ""), /^[0-9a-f]{64}$/);
+      if (row.source === "hermetic-module-oracle") {
+        moduleOracleRows += 1;
+        assert.equal(
+          row.viewport == null || Object.keys(row.viewport || {}).length === 0,
+          true,
+          `${row.name} module-oracle row must not carry a viewport label`,
+        );
+      } else if (row.source === "headless-playwright-fixture-document") {
+        fixtureBrowserRows += 1;
+        assert.ok(row.viewport?.width, `${row.name} fixture browser row keeps measured viewport`);
+      }
     }
+    assert.equal(fixtureBrowserRows, 2);
+    assert.equal(moduleOracleRows, 8);
   }
 });
 
@@ -510,5 +525,23 @@ test("A5: verify command invokes the production runner and fails on unmet assert
     );
     assert.equal(checked.status, 0, checked.stderr || checked.stdout);
     assert.match(checked.stdout || "", /check passed/);
+
+    const readback = JSON.parse(readFileSync(READBACK_PATH, "utf8"));
+    if (readback.evidence_class === "deployed-production-read-back") {
+      assert.equal(typeof readback.run_receipt, "object");
+      assert.ok(Array.isArray(readback.run_receipt.requests));
+      assert.ok(readback.run_receipt.requests.length >= 1);
+      for (const entry of readback.run_receipt.requests) {
+        assert.ok(entry.headers?.date, `${entry.url} Date`);
+        assert.ok(entry.headers?.["cf-ray"], `${entry.url} CF-Ray`);
+        assert.match(String(entry.served_revision || ""), /^[0-9a-f]{40}$/);
+      }
+      assert.ok(readback.generations?.active_generation);
+      assert.equal(readback.deployment?.required_ancestor_contained, true);
+      assert.equal(
+        readback.fixture_evidence?.path,
+        "docs/evidence/board-neighborhood-journey/capture-manifest.json",
+      );
+    }
   }
 });
