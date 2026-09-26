@@ -396,6 +396,11 @@ test("A4 capture tool refuses stale served builds and records ancestor guard", (
   assert.match(captureTool, /refuse_reuse_claiming_interaction/);
   assert.match(captureTool, /click_named_row_into_detail|clicked-from-list/);
   assert.match(captureTool, /replacing prior packet|Fresh packet only/);
+  // Per-run receipt: proof only this execution could have produced.
+  assert.match(captureTool, /validate_run_receipt/);
+  assert.match(captureTool, /demonstrate_host_dedup/);
+  assert.match(captureTool, /page_load_receipt/);
+  assert.match(captureTool, /cf-ray/i);
   const delivery = JSON.parse(readFileSync(DELIVERY_PATH, "utf8"));
   assert.equal(delivery.landed_commit, REQUIRED_SERVED_ANCESTOR);
   assert.equal(delivery.surface, "pages");
@@ -476,6 +481,44 @@ test("A4 [verification] production capture manifest records hosted desktop/mobil
     assert.equal(coincident.feature, "segmented-meeting-detail", `${name} names the sibling packet`);
     assert.match(String(coincident.revision || ""), /^[0-9a-f]{40}$/, `${name} names the sibling revision`);
     assert.equal(coincident.independently_recaptured, true, `${name} affirms an in-run re-capture`);
+  }
+
+  // A deterministic page keeps the same hosted address across runs, so the run
+  // receipt is what proves this execution: a live upload exchange and the
+  // per-request served headers, all inside one run window.
+  const receipt = manifest.run_receipt;
+  assert.equal(typeof receipt, "object", "manifest carries a run_receipt");
+  assert.equal(receipt.capture_run_id, manifest.capture_run_id, "run receipt shares the manifest run id");
+  const runStart = Date.parse(receipt.run_started_at);
+  const runEnd = Date.parse(receipt.run_finished_at);
+  assert.ok(Number.isFinite(runStart) && Number.isFinite(runEnd) && runEnd >= runStart, "run window is coherent");
+
+  const demo = receipt.host_dedup_demonstration;
+  assert.equal(typeof demo, "object", "run receipt demonstrates host content-addressing in-run");
+  assert.equal(demo.first_upload.returned_url, demo.repeat_same_bytes.returned_url, "identical bytes returned the same URL");
+  assert.notEqual(demo.altered_one_byte.returned_url, demo.first_upload.returned_url, "a one-byte change returned a different URL");
+  assert.equal(demo.same_bytes_returned_same_url, true);
+  assert.equal(demo.altered_bytes_returned_different_url, true);
+
+  for (const name of [
+    "kensington-meetings-desktop",
+    "kensington-meetings-mobile",
+    "kensington-detail-desktop",
+    "kensington-detail-mobile",
+  ]) {
+    const rowReceipt = byName[name].run_receipt;
+    assert.equal(typeof rowReceipt, "object", `${name} carries a per-row run receipt`);
+    assert.equal(rowReceipt.capture_run_id, manifest.capture_run_id, `${name} receipt shares the run id`);
+    const capturedAt = Date.parse(rowReceipt.captured_at);
+    assert.ok(capturedAt >= runStart && capturedAt <= runEnd, `${name} captured inside the run window`);
+    assert.equal(rowReceipt.page_load.http_status, 200, `${name} page loaded with a 200`);
+    assert.match(String(rowReceipt.page_load.headers["cf-ray"] || ""), /^[0-9a-f]{16}-[A-Z0-9]{2,4}$/, `${name} records a per-request CF-Ray`);
+    assert.ok(rowReceipt.page_load.headers.date, `${name} records the served Date`);
+    assert.match(String(rowReceipt.page_load.served_revision || ""), /^[0-9a-f]{40}$/, `${name} records the served revision`);
+    assert.match(String(rowReceipt.upload.returned_url || ""), /^https:\/\//, `${name} records the upload URL`);
+    assert.equal(rowReceipt.upload.returned_url, byName[name].screenshot_url, `${name} upload URL matches the row`);
+    assert.ok(typeof rowReceipt.upload.http_status === "number", `${name} records the upload status`);
+    assert.equal(rowReceipt.click_observation.navigation, byName[name].navigation, `${name} records the observed navigation`);
   }
 });
 
@@ -569,6 +612,126 @@ assert refused({"captures": [{"name": "d2", "reused_from": reused_from, "navigat
 assert not refused({"captures": [{"name": "d3", "reused_from": reused_from, "navigation": "direct", "served_values": {"opened_from_list_click": False}}]})
 # A fresh row (no reuse) that claims a click is permitted; the click stands.
 assert not refused({"captures": [{"name": "d4", "navigation": "clicked-from-list", "served_values": {"opened_from_list_click": True}}]})
+print("ok")
+`,
+    ],
+    { cwd: ROOT, encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(result.stdout.trim(), "ok");
+});
+
+test("A4 capture run receipt: every row is backed by this run's receipt", (t) => {
+  if (!existsSync(MANIFEST_PATH)) {
+    t.skip("production capture pending after delivery deploys with wider-district previews");
+    return;
+  }
+  const result = spawnSync(
+    "python3",
+    [
+      "-c",
+      `import json, sys
+from pathlib import Path
+sys.path.insert(0, "tools")
+from capture_run_receipt import validate_run_receipt
+root = Path(${JSON.stringify(ROOT)})
+path = root / "docs/evidence/near-you-kensington-wider-district/capture-manifest.json"
+manifest = json.loads(path.read_text())
+# Accepts the committed packet: every row carries a receipt from this run.
+validate_run_receipt(manifest)
+print("ok")
+`,
+    ],
+    { cwd: ROOT, encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(result.stdout.trim(), "ok");
+});
+
+test("A4 capture run receipt guard: refuses a missing or wrong-run receipt", () => {
+  // Positive controls: a deterministic digest and hosted address cannot stand
+  // in for proof of execution, so a row with no receipt from this run - or a
+  // receipt stamped with a different run id, or outside the run window - is
+  // refused.
+  const result = spawnSync(
+    "python3",
+    [
+      "-c",
+      `import sys
+sys.path.insert(0, "tools")
+from capture_run_receipt import validate_run_receipt
+
+def refused(manifest):
+    try:
+        validate_run_receipt(manifest)
+        return False
+    except SystemExit:
+        return True
+
+RID = "11111111-1111-1111-1111-111111111111"
+OTHER = "22222222-2222-2222-2222-222222222222"
+
+def receipt(nav, url, clicked):
+    return {
+        "capture_run_id": RID,
+        "captured_at": "2026-09-26T11:07:43Z",
+        "page_load": {
+            "url": "https://cityscroll.org/near-you/",
+            "http_status": 200,
+            "served_revision": "c" * 40,
+            "headers": {"date": "Sat, 26 Sep 2026 11:07:38 GMT", "cf-ray": "a411ce559aa04391-EWR"},
+        },
+        "upload": {
+            "returned_url": url,
+            "http_status": 200,
+            "requested_at": "2026-09-26T11:07:51Z",
+            "responded_at": "2026-09-26T11:07:52Z",
+            "elapsed_seconds": 0.6,
+        },
+        "click_observation": {"navigation": nav, "opened_from_list_click": clicked},
+    }
+
+def row(name, nav, url, clicked):
+    return {
+        "name": name,
+        "navigation": nav,
+        "screenshot_url": url,
+        "served_values": {"opened_from_list_click": clicked},
+        "run_receipt": receipt(nav, url, clicked),
+    }
+
+def manifest():
+    return {
+        "capture_run_id": RID,
+        "revision": "c" * 40,
+        "run_receipt": {
+            "capture_run_id": RID,
+            "run_started_at": "2026-09-26T11:07:35Z",
+            "run_finished_at": "2026-09-26T11:07:54Z",
+            "host_dedup_demonstration": {
+                "first_upload": {"sha256": "a" * 64, "http_status": 200, "returned_url": "https://files.catbox.moe/aaa.bin", "requested_at": "2026-09-26T11:07:36Z", "responded_at": "2026-09-26T11:07:37Z"},
+                "repeat_same_bytes": {"sha256": "a" * 64, "http_status": 200, "returned_url": "https://files.catbox.moe/aaa.bin", "requested_at": "2026-09-26T11:07:37Z", "responded_at": "2026-09-26T11:07:38Z"},
+                "altered_one_byte": {"sha256": "b" * 64, "http_status": 200, "returned_url": "https://files.catbox.moe/bbb.bin", "requested_at": "2026-09-26T11:07:38Z", "responded_at": "2026-09-26T11:07:39Z"},
+                "same_bytes_returned_same_url": True,
+                "altered_bytes_returned_different_url": True,
+            },
+        },
+        "captures": [
+            row("kensington-meetings-desktop", "direct", "https://files.catbox.moe/odna8r.png", False),
+            row("kensington-detail-desktop", "clicked-from-list", "https://files.catbox.moe/snzlc1.png", True),
+        ],
+    }
+
+# A coherent single-run manifest is accepted.
+assert not refused(manifest()), "healthy manifest must pass"
+# A row missing its receipt is refused.
+m = manifest(); del m["captures"][1]["run_receipt"]; assert refused(m), "missing receipt must be refused"
+# A receipt from a different run id is refused.
+m = manifest(); m["captures"][1]["run_receipt"]["capture_run_id"] = OTHER; assert refused(m), "wrong run id must be refused"
+# A captured_at outside the run window is refused.
+m = manifest(); m["captures"][1]["run_receipt"]["captured_at"] = "2026-09-26T12:30:00Z"; assert refused(m), "out-of-window capture must be refused"
+# A demonstration that shows no host dedup is refused.
+m = manifest(); m["run_receipt"]["host_dedup_demonstration"]["same_bytes_returned_same_url"] = False; assert refused(m), "broken dedup demo must be refused"
 print("ok")
 `,
     ],
