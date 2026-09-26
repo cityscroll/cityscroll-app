@@ -28,10 +28,8 @@ import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from ".
 import { closingWeekEndISO } from "../../../site/closing_this_week.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 import { transformLandGeographyWatchRows } from "../../../site/land_nta_watch_scope.mjs";
-import {
-  catalogGenerationIdentity,
-  landProjectRowsFromPayload,
-} from "../../../site/land_project_catalog.mjs";
+import { catalogGenerationIdentity } from "../../../site/land_catalog_generation.mjs";
+import { landProjectRowsFromPayload } from "../../../site/land_project_catalog.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 import {
   exactInstitutionNoticeMatches,

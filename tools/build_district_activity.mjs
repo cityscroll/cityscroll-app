@@ -17,7 +17,7 @@ import {
 import { buildDistrictWeeklyDigests } from "./lib/district_weekly_digest.mjs";
 import { buildCommunityDistrictDigests } from "./lib/community_district_digest.mjs";
 import { GEOGRAPHY_COMMUNITY_DISTRICT_IDS } from "../worker/src/lib/subject_registry.mjs";
-import { catalogGenerationIdentity } from "../site/land_project_catalog.mjs";
+import { catalogGenerationIdentity } from "../site/land_catalog_generation.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE_OUT = join(ROOT, "site/data/district_activity.json");

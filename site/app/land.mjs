@@ -1,4 +1,4 @@
-import { bindLandBrowseCatalog } from "../land_project_catalog.mjs";
+import { bindLandBrowseCatalog } from "../land_catalog_generation.mjs";
 import { landProjectDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
 import { attendanceScopeLinksHTML, landTemporalScopeLinksHTML, normalizeAttendanceScope } from "../attendance_scope_links.mjs";
