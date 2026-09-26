@@ -46,6 +46,8 @@ an unpinned wall clock.
 
 Shifted suites must leave tracked files untouched. Tests that build evidence payloads or capture
 manifests compare against committed `docs/evidence/` fixtures (or write under a temp directory)
-instead of rewriting those paths. The Time-travel workflow finishes with
+instead of rewriting those paths. The legacy-name guard suite (`test/stale_name_guard.test.mjs`)
+likewise mutates only a temporary fixture tree via `LEGACY_NAME_GUARD_ROOT`, never the tracked
+`.github/legacy-name-allowlist.txt` or a repo-root probe. The Time-travel workflow finishes with
 `node tools/assert_tracked_working_tree_clean.mjs`, which fails when `git status --porcelain`
 reports tracked modifications after the suite.
