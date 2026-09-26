@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/home-local-entry-journey",
+  "status": "implemented",
+  "fingerprint": "home-local-entry-journey.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "home-local-entry-module",
+      "path": "site/home_local_entry.mjs"
+    },
+    {
+      "id": "home-local-entry-verify-test",
+      "path": "test/home_local_entry_journey.test.mjs"
+    },
+    {
+      "id": "home-local-entry-capture-tool",
+      "path": "tools/capture_home_local_entry_journey.py"
+    },
+    {
+      "id": "home-local-entry-capture-manifest",
+      "path": "docs/evidence/home-local-entry-journey/capture-manifest.json"
+    }
+  ]
+}

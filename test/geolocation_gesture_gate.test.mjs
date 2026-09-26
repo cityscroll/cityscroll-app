@@ -6,6 +6,7 @@ import test from "node:test";
 const awareness = readFileSync(new URL("../site/location_awareness.js", import.meta.url), "utf8");
 const map = readFileSync(new URL("../site/app/map.mjs", import.meta.url), "utf8");
 const boardExactAddress = readFileSync(new URL("../site/board_exact_address.mjs", import.meta.url), "utf8");
+const homeLocalEntry = readFileSync(new URL("../site/home_local_entry.mjs", import.meta.url), "utf8");
 const core = readFileSync(new URL("../site/app/core.mjs", import.meta.url), "utf8");
 const boot = readFileSync(new URL("../site/app/boot.mjs", import.meta.url), "utf8");
 const land = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
@@ -59,13 +60,25 @@ test("every geolocation request is downstream of an explicit click handler", () 
     boardExactAddress.slice(0, boardExactAddress.indexOf('locationBtn.addEventListener("click"')),
     /getCurrentPosition/,
   );
+  // Homepage place entry asks only after Use my location is pressed.
+  assert.match(homeLocalEntry, /locationBtn\.addEventListener\("click"/);
+  assert.match(homeLocalEntry, /geolocation\.getCurrentPosition/);
+  assert.equal((homeLocalEntry.match(/\bgetCurrentPosition\b/g) || []).length, 2);
+  assert.ok(
+    homeLocalEntry.indexOf('locationBtn.addEventListener("click"')
+      < homeLocalEntry.indexOf("geolocation.getCurrentPosition"),
+  );
+  assert.doesNotMatch(
+    homeLocalEntry.slice(0, homeLocalEntry.indexOf('locationBtn.addEventListener("click"')),
+    /getCurrentPosition/,
+  );
   assert.equal((awareness.match(/\brequestCurrentArea\(/g) || []).length, 2);
   assert.deepEqual(
     sourceFiles(siteRoot)
       .filter((path) => readFileSync(path, "utf8").includes("getCurrentPosition"))
       .map((path) => relative(siteRoot, path))
       .sort(),
-    ["app/map.mjs", "board_exact_address.mjs", "location_awareness.js"],
+    ["app/map.mjs", "board_exact_address.mjs", "home_local_entry.mjs", "location_awareness.js"],
   );
   assert.doesNotMatch(`${core}\n${boot}`, /maybeAutoLocateLand|resolveLandEntryLocation\(/);
   assert.doesNotMatch(`${core}\n${boot}\n${land}`, /navigator\.permissions\.query|permissions\.query/);
