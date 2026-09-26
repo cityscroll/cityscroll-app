@@ -128,6 +128,12 @@ test("A2: narrow touch and keyboard proof records overflow, target, form-text, a
     assert.ok(capture.assertion.includes("drawer"));
     assert.ok(capture.assertion.includes("keyboard"));
   }
+  assert.match(RELEASE_BROWSER_SOURCE, /traverse_to_primary_controls/);
+  assert.match(RELEASE_BROWSER_SOURCE, /assert_inner_width_matches_viewport/);
+  assert.match(RELEASE_BROWSER_SOURCE, /TARGET_SIZE_FLOOR_CSS_PX = 44/);
+  assert.match(RELEASE_BROWSER_SOURCE, /load_recorded_delivery/);
+  assert.match(RELEASE_BROWSER_SOURCE, /resolve_landed_ancestor/);
+  assert.match(RELEASE_BROWSER_SOURCE, /--update-a2-boundary/);
 });
 
 test("A3: City Hall point journey keeps MN0102, M01, Council 1, and Precinct 1 under At this location", () => {
@@ -330,6 +336,67 @@ test("Near You A2: 360px boundary capture combines 200% zoom, reduced motion, an
   assert.match(capture.assertion, /horizontal overflow ≤ 1px/);
   assert.match(capture.assertion, /≥44px targets/);
   assert.match(capture.assertion, /keyboard focus order/);
+
+  // Measured fields — refuse declared-only / count-only evidence.
+  assert.equal(typeof capture.visual_metrics.inner_width, "number");
+  assert.ok(Math.abs(capture.visual_metrics.inner_width - 360) <= 32, capture.visual_metrics.inner_width);
+  assert.equal(typeof capture.visual_metrics.horizontal_overflow_px, "number");
+  assert.ok(capture.visual_metrics.horizontal_overflow_px <= 1, capture.visual_metrics.horizontal_overflow_px);
+
+  const targetSize = capture.visual_metrics.target_size;
+  assert.ok(targetSize);
+  assert.equal(targetSize.floor_css_px, 44);
+  assert.ok(Array.isArray(targetSize.targets) && targetSize.targets.length > 0);
+  assert.ok(targetSize.min_width_css_px >= 44, targetSize);
+  assert.ok(targetSize.min_height_css_px >= 44, targetSize);
+  assert.equal(targetSize.meets_floor, true);
+  for (const target of targetSize.targets) {
+    assert.ok(target.width >= 44, target);
+    assert.ok(target.height >= 44, target);
+    assert.equal(typeof target.role, "string");
+  }
+  assert.ok(
+    targetSize.targets.some((target) => String(target.role).startsWith("primary_")),
+    "primary control box missing",
+  );
+
+  const traversal = capture.visual_metrics.keyboard_traversal;
+  assert.ok(traversal);
+  assert.equal(traversal.method, "tab-until-primary-control-focus");
+  assert.ok(traversal.steps_to_primary >= 1);
+  assert.ok(traversal.primary_control?.role || traversal.primary_control?.label);
+  assert.equal(traversal.escaped_without_trap, true);
+  assert.ok(traversal.steps_after_primary >= 1);
+  assert.ok(Array.isArray(traversal.named_focus_path) && traversal.named_focus_path.length > 0);
+
+  const compact = allCaptureRows().find((row) => row.name === "compact_touch");
+  assert.ok(compact);
+  assert.equal(compact.viewport.width, 360);
+  assert.equal(typeof compact.visual_metrics.horizontal_overflow_px, "number");
+  assert.ok(compact.visual_metrics.horizontal_overflow_px <= 1);
+  assert.equal(typeof compact.visual_metrics.inner_width, "number");
+  assert.ok(Math.abs(compact.visual_metrics.inner_width - 360) <= 32);
+  assert.equal(compact.visual_metrics.target_size?.meets_floor, true);
+  assert.equal(compact.visual_metrics.keyboard_traversal?.escaped_without_trap, true);
+
+  const a2Packet = RELEASE_MANIFEST.a2_boundary_evidence;
+  assert.equal(a2Packet?.status, "taken");
+  assert.ok(a2Packet.captures.includes("entry-boundary-360-zoom-200"));
+  assert.ok(a2Packet.captures.includes("compact_touch"));
+  assert.ok(a2Packet.fields.includes("target_size"));
+  assert.ok(a2Packet.fields.includes("keyboard_traversal"));
+  assert.ok(a2Packet.fields.includes("horizontal_overflow_px"));
+  assert.ok(a2Packet.fields.includes("inner_width"));
+  assert.match(a2Packet.required_ancestor || "", /^[0-9a-f]{40}$/);
+
+  const delivery = JSON.parse(
+    readFileSync(join(ROOT, "docs/evidence/geography-navigation-release/delivery.json"), "utf8"),
+  );
+  assert.equal(delivery.schema, "cityscroll.capture_delivery.v1");
+  assert.equal(delivery.public_alias, "cbcf03c490705");
+  assert.equal(delivery.surface, "pages");
+  assert.equal(delivery.landed_commit, "a8d61b1b10b2c60aacef55c31275e5d62dc91f0c");
+  assert.equal(a2Packet.required_ancestor, delivery.landed_commit);
 });
 
 test("Near You A3: production CROL_BASE journey records geometry, focus order, and Midwood population", () => {

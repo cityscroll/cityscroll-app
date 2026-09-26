@@ -34,10 +34,13 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 EVIDENCE_DIR = ROOT / "docs" / "evidence" / "geography-navigation-release"
 MANIFEST_PATH = EVIDENCE_DIR / "capture-manifest.json"
+DELIVERY_PATH = EVIDENCE_DIR / "delivery.json"
 ROUTE = "/near-you/?geo=nta2020%3ABK1503&compare=council_district&surface=map&drawer=open"
 VIEWPORTS = (("desktop", 1440, 900), ("narrow_touch", 390, 844), ("compact_touch", 360, 800))
 PRODUCTION_VIEWPORTS = (("desktop", 1440, 900), ("narrow_touch", 390, 844))
 MINIMUM_VISIBLE_MAP_HEIGHT = 240
+TARGET_SIZE_FLOOR_CSS_PX = 44
+INNER_WIDTH_TOLERANCE_PX = 32
 ENTRY_ROUTES = (
     ("default", "/near-you/"),
     ("greenpoint", "/near-you/?geo=nta2020%3ABK0101&surface=map"),
@@ -53,8 +56,9 @@ PRODUCTION_JOURNEY_ROUTES = (
         {"expect_selected_label": True, "expect_results_populated": True},
     ),
 )
-REQUIRED_SERVED_ANCESTORS = (
-    "a8d61b1b10b2c60aacef55c31275e5d62dc91f0c",
+# Additional landed default-branch ancestors the production journey still gates on.
+# The compact-map delivery itself is recorded in delivery.json and resolved first.
+ADDITIONAL_SERVED_ANCESTORS = (
     "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
 )
 ZERO_COPY = "No records match these filters."
@@ -235,16 +239,30 @@ def git_is_ancestor(ancestor: str, commit: str) -> bool:
     return completed.returncode == 0
 
 
+def required_served_ancestors() -> list[str]:
+    """Resolve landed delivery pins; refuse pre-squash branch tips as wrong pins."""
+    from deployed_capture_ancestor import load_recorded_delivery, resolve_landed_ancestor
+
+    primary = resolve_landed_ancestor(load_recorded_delivery(DELIVERY_PATH), cwd=ROOT)
+    ancestors = [primary]
+    for sha in ADDITIONAL_SERVED_ANCESTORS:
+        landed = resolve_landed_ancestor(sha, cwd=ROOT)
+        if landed not in ancestors:
+            ancestors.append(landed)
+    return ancestors
+
+
 def assert_served_revision_ready(served_sha: str) -> list[str]:
     if not SHA40.fullmatch(served_sha):
         raise AssertionError(f"served revision is not a 40-hex sha: {served_sha!r}")
-    missing = [sha for sha in REQUIRED_SERVED_ANCESTORS if not git_is_ancestor(sha, served_sha)]
+    required = required_served_ancestors()
+    missing = [sha for sha in required if not git_is_ancestor(sha, served_sha)]
     if missing:
         raise AssertionError(
             "served artifact-manifest source_commit_sha is missing required ancestors "
             f"{missing}: served={served_sha}"
         )
-    return list(REQUIRED_SERVED_ANCESTORS)
+    return list(required)
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -636,11 +654,39 @@ def shell_snapshot(page) -> dict:
             const rect = node.getBoundingClientRect();
             return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
           };
-          const boxes = (selector) => [...document.querySelectorAll(selector)].filter(visible).map((node) => {
+          const accessibleName = (node) => (
+            node.getAttribute('aria-label')
+            || node.textContent
+            || node.getAttribute('name')
+            || node.id
+            || node.tagName
+            || ''
+          ).trim().replace(/\\s+/g, ' ').slice(0, 80);
+          const targetBox = (node, role) => {
             const rect = node.getBoundingClientRect();
-            return { width: rect.width, height: rect.height };
-          });
+            return {
+              role,
+              label: accessibleName(node),
+              id: node.id || null,
+              width: rect.width,
+              height: rect.height,
+            };
+          };
+          const targets = [];
           const search = document.querySelector('#near-geo-search-input');
+          if (search && visible(search)) targets.push(targetBox(search, 'primary_search_input'));
+          const searchSubmit = document.querySelector('.near-geo-search button');
+          if (searchSubmit && visible(searchSubmit)) targets.push(targetBox(searchSubmit, 'primary_search_submit'));
+          const changePlace = document.querySelector('.near-place-guide > summary');
+          if (changePlace && visible(changePlace)) targets.push(targetBox(changePlace, 'primary_change_place'));
+          for (const recovery of document.querySelectorAll('[data-near-recovery]')) {
+            if (!visible(recovery)) continue;
+            const kind = recovery.getAttribute('data-near-recovery') || 'recovery';
+            targets.push(targetBox(
+              recovery,
+              kind === 'retry' ? 'retry_target' : `recovery_target_${kind}`,
+            ));
+          }
           const layer = document.querySelector('[data-geography-layer="nta2020"]');
           const comparison = document.querySelector('[data-geography-layer="council_district"]');
           const map = document.querySelector('.near-map-wrap, #near-map-enhanced, #nearMapSvg');
@@ -655,7 +701,7 @@ def shell_snapshot(page) -> dict:
             && left.top < right.bottom && left.bottom > right.top);
           const focusOrder = [...document.querySelectorAll('a[href], button, input, summary, [tabindex]')]
             .filter((node) => visible(node) && !node.disabled && node.getAttribute('tabindex') !== '-1')
-            .map((node) => (node.getAttribute('aria-label') || node.textContent || node.name || node.id || node.tagName).trim().replace(/\\s+/g, ' ').slice(0, 80));
+            .map((node) => accessibleName(node));
           const placeChoice = document.querySelector('.near-hero h1, #near-geo-heading');
           const root = document.querySelector('[data-near-you-root]');
           const style = (node) => node ? {
@@ -666,9 +712,10 @@ def shell_snapshot(page) -> dict:
           } : null;
           return {
             body_text: document.body.innerText || '',
+            inner_width: window.innerWidth,
             overflow_x: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
             form_font_px: search ? Number.parseFloat(getComputedStyle(search).fontSize) : null,
-            targets: boxes('#near-geo-search-input, .near-geo-search button, .near-place-guide > summary, [data-near-recovery="retry"]'),
+            targets,
             drawer_present: Boolean(document.querySelector('.near-geo-more-boundaries, [data-geography-drawer-toggle], .near-geo-drawer')),
             map_area: mapRect ? { width: mapRect.width, height: mapRect.height } : { width: 0, height: 0 },
             visible_map_height: mapRect ? Math.max(0, Math.min(innerHeight, mapRect.bottom) - Math.max(0, mapRect.top)) : 0,
@@ -688,14 +735,162 @@ def shell_snapshot(page) -> dict:
     assert "near you" in snapshot["body_text"].lower()
     assert snapshot["overflow_x"] <= 1
     assert snapshot["form_font_px"] is not None and snapshot["form_font_px"] >= 16, snapshot
-    assert snapshot["targets"] and min(item["width"] for item in snapshot["targets"]) >= 44
-    assert snapshot["targets"] and min(item["height"] for item in snapshot["targets"]) >= 44
+    assert snapshot["targets"], snapshot
+    assert min(item["width"] for item in snapshot["targets"]) >= TARGET_SIZE_FLOOR_CSS_PX, snapshot
+    assert min(item["height"] for item in snapshot["targets"]) >= TARGET_SIZE_FLOOR_CSS_PX, snapshot
     assert snapshot["drawer_present"]
     assert snapshot["map_area"]["width"] > 0 and snapshot["map_area"]["height"] > 0
     assert snapshot["place_choice_visible"]
     assert not snapshot["control_occlusion"]
     assert snapshot["nta_codes_in_primary_labels"] == 0
     return snapshot
+
+
+def assert_inner_width_matches_viewport(page, *, width: int, label: str) -> int:
+    """Refuse when the measured window width does not match the requested viewport."""
+    inner_width = int(page.evaluate("() => window.innerWidth"))
+    if abs(inner_width - int(width)) > INNER_WIDTH_TOLERANCE_PX:
+        raise AssertionError(
+            f"{label} inner_width {inner_width} does not match requested viewport width {width}"
+        )
+    return inner_width
+
+
+def build_target_size(targets: list[dict]) -> dict:
+    """Record measured primary-control and retry bounding boxes against the 44px floor."""
+    widths = [float(item["width"]) for item in targets]
+    heights = [float(item["height"]) for item in targets]
+    min_width = min(widths) if widths else 0.0
+    min_height = min(heights) if heights else 0.0
+    return {
+        "floor_css_px": TARGET_SIZE_FLOOR_CSS_PX,
+        "targets": targets,
+        "min_width_css_px": min_width,
+        "min_height_css_px": min_height,
+        "meets_floor": bool(
+            targets
+            and min_width >= TARGET_SIZE_FLOOR_CSS_PX
+            and min_height >= TARGET_SIZE_FLOOR_CSS_PX
+        ),
+    }
+
+
+def read_active_focus(page) -> dict:
+    return page.evaluate(
+        """() => {
+          const el = document.activeElement;
+          if (!el || el === document.body) {
+            return { tag: null, id: null, label: null, role: null, is_primary: false, is_retry: false };
+          }
+          const label = (
+            el.getAttribute('aria-label')
+            || el.textContent
+            || el.getAttribute('name')
+            || el.id
+            || el.tagName
+            || ''
+          ).trim().replace(/\\s+/g, ' ').slice(0, 80);
+          const isSearchInput = el.id === 'near-geo-search-input';
+          const isSearchSubmit = Boolean(el.closest?.('.near-geo-search') && el.tagName === 'BUTTON');
+          const isChangePlace = Boolean(el.matches?.('.near-place-guide > summary'));
+          const recoveryKind = el.getAttribute?.('data-near-recovery');
+          const isRetry = recoveryKind === 'retry';
+          const isRecovery = Boolean(recoveryKind);
+          let role = null;
+          if (isSearchInput) role = 'primary_search_input';
+          else if (isSearchSubmit) role = 'primary_search_submit';
+          else if (isChangePlace) role = 'primary_change_place';
+          else if (isRetry) role = 'retry_target';
+          else if (isRecovery) role = `recovery_target_${recoveryKind}`;
+          return {
+            tag: el.tagName,
+            id: el.id || null,
+            label,
+            role,
+            is_primary: Boolean(role && role.startsWith('primary_')),
+            is_retry: isRetry,
+            is_recovery: isRecovery,
+          };
+        }"""
+    )
+
+
+def traverse_to_primary_controls(page, *, max_tabs: int = 80) -> dict:
+    """Tab until a primary control receives focus; refuse presence-only focusable counts."""
+    page.evaluate(
+        """() => {
+          const active = document.activeElement;
+          if (active && active !== document.body && typeof active.blur === 'function') active.blur();
+          document.body.setAttribute('tabindex', '-1');
+          document.body.focus();
+        }"""
+    )
+    named_path: list[str] = []
+    focused = None
+    steps = 0
+    for steps in range(1, max_tabs + 1):
+        page.keyboard.press("Tab")
+        focused = read_active_focus(page)
+        label = (focused or {}).get("label")
+        if label and (not named_path or named_path[-1] != label):
+            named_path.append(label)
+        if focused and (
+            focused.get("is_primary")
+            or focused.get("is_retry")
+            or focused.get("is_recovery")
+        ):
+            break
+    else:
+        raise AssertionError(
+            f"keyboard traversal did not land on a primary control or recovery target within {max_tabs} tabs; "
+            f"last focus={focused!r}"
+        )
+
+    primary = dict(focused)
+    # Continue Tabbing to prove focus can leave the control (no trap).
+    escaped = False
+    escape_focus = None
+    escape_steps = 0
+    for escape_steps in range(1, 13):
+        page.keyboard.press("Tab")
+        escape_focus = read_active_focus(page)
+        escape_label = (escape_focus or {}).get("label")
+        if escape_label and (not named_path or named_path[-1] != escape_label):
+            named_path.append(escape_label)
+        if (
+            escape_focus
+            and escape_focus.get("tag")
+            and (
+                escape_focus.get("id") != primary.get("id")
+                or escape_focus.get("label") != primary.get("label")
+                or escape_focus.get("role") != primary.get("role")
+            )
+        ):
+            escaped = True
+            break
+    if not escaped:
+        raise AssertionError(
+            f"keyboard focus remained trapped on {primary!r} after {escape_steps} Tab presses"
+        )
+    return {
+        "method": "tab-until-primary-control-focus",
+        "steps_to_primary": steps,
+        "primary_control": {
+            "role": primary.get("role"),
+            "label": primary.get("label"),
+            "id": primary.get("id"),
+            "tag": primary.get("tag"),
+        },
+        "escaped_without_trap": True,
+        "steps_after_primary": escape_steps,
+        "focus_after_escape": {
+            "role": (escape_focus or {}).get("role"),
+            "label": (escape_focus or {}).get("label"),
+            "id": (escape_focus or {}).get("id"),
+            "tag": (escape_focus or {}).get("tag"),
+        },
+        "named_focus_path": named_path[:24],
+    }
 
 
 def overlap_snapshot(page) -> dict:
@@ -782,24 +977,18 @@ def browser_capture(
             page.wait_for_timeout(400)
             if not overlap:
                 page.locator("#near-geo-search-input").wait_for(state="attached", timeout=10_000)
+            inner_width = assert_inner_width_matches_viewport(page, width=width, label=name)
             snapshot = overlap_snapshot(page) if overlap else shell_snapshot(page)
+            snapshot["inner_width"] = snapshot.get("inner_width", inner_width)
+            if abs(int(snapshot["inner_width"]) - int(width)) > INNER_WIDTH_TOLERANCE_PX:
+                raise AssertionError(
+                    f"{name} snapshot inner_width {snapshot['inner_width']} does not match viewport {width}"
+                )
             retained = performance_samples(page, page_url, overlap=overlap) if retain_performance else None
+            keyboard_traversal = None
             if not overlap:
-                focus_target = (
-                    page.locator(".near-place-guide > summary")
-                    if route != "/near-you/"
-                    else page.locator("#near-geo-search-input")
-                )
-                focus_target.focus()
-                snapshot["keyboard_focus_start"] = page.evaluate(
-                    "() => document.activeElement?.textContent?.trim() || document.activeElement?.getAttribute('aria-label') || document.activeElement?.id"
-                )
-                page.keyboard.press("Tab")
-                assert page.evaluate("() => document.activeElement !== document.body")
-                snapshot["keyboard_focus_next"] = page.evaluate(
-                    "() => document.activeElement?.textContent?.trim() || document.activeElement?.getAttribute('aria-label') || document.activeElement?.id"
-                )
-                snapshot["keyboard_path"] = "passed"
+                keyboard_traversal = traverse_to_primary_controls(page)
+                snapshot["keyboard_traversal"] = keyboard_traversal
                 snapshot["drawer"] = "present"
             else:
                 invoker = page.locator('[data-geography-key="geography:nta2020:BK1503"]')
@@ -810,7 +999,41 @@ def browser_capture(
                 assert page.locator('[data-geography-selected-key="geography:nta2020:BK1503"]').count() == 1
                 snapshot["keyboard_path"] = "passed"
                 snapshot["drawer"] = "collapsed_and_reopened"
+            target_size = None
+            if not overlap:
+                target_size = build_target_size(snapshot.get("targets") or [])
+                assert target_size["meets_floor"], target_size
             rendered = normalize_html(page.content())
+            visual_metrics = {
+                "viewport": {"width": width, "height": height},
+                "inner_width": int(snapshot.get("inner_width", inner_width)),
+                "rendered_neighborhood_label_count": snapshot.get("rendered_neighborhood_label_count", 0),
+                "selected_label_present": snapshot.get("selected_label_present", False),
+                "clipped_or_overlapping_label_count": snapshot.get("clipped_or_overlapping_label_count", 0),
+                "computed_styles": snapshot["computed_styles"],
+                "visible_map_area_css_px": snapshot.get("visible_map_area_css_px", snapshot.get("map_area")),
+                "initial_viewport_map_height_css_px": snapshot.get("visible_map_height", 0),
+                "map_top_css_px": snapshot.get("map_top"),
+                "place_choice_visible": snapshot.get("place_choice_visible", True),
+                "map_runtime": snapshot.get("map_runtime"),
+                "map_runtime_reason": snapshot.get("map_runtime_reason"),
+                "focus_order": snapshot.get("focus_order", []),
+                "focusable_count": snapshot.get("focusable_count", 0),
+                "control_occlusion": snapshot.get("control_occlusion", False),
+                "nta_codes_in_primary_labels": snapshot["nta_codes_in_primary_labels"],
+                "zoom_percent": zoom_percent,
+                "zoom_reflow_basis": (
+                    "360 CSS px represents a 720 px viewport at 200% browser zoom"
+                    if zoom_percent == 200
+                    else "native CSS viewport"
+                ),
+                "reduced_motion": reduced_motion,
+                "horizontal_overflow_px": snapshot.get("overflow_x", snapshot.get("horizontal_overflow_px", 0)),
+            }
+            if target_size is not None:
+                visual_metrics["target_size"] = target_size
+            if keyboard_traversal is not None:
+                visual_metrics["keyboard_traversal"] = keyboard_traversal
             observations.append({
                 "name": name,
                 "route": route,
@@ -821,28 +1044,7 @@ def browser_capture(
                 "timing_samples": {"dom_content_loaded_ms": page.evaluate("() => performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart")},
                 **({"performance_samples": retained} if retained else {}),
                 "render_content_sha256": sha256(rendered),
-                "visual_metrics": {
-                    **({
-                        "viewport": {"width": width, "height": height},
-                        "rendered_neighborhood_label_count": snapshot.get("rendered_neighborhood_label_count", 0),
-                        "selected_label_present": snapshot.get("selected_label_present", False),
-                        "clipped_or_overlapping_label_count": snapshot.get("clipped_or_overlapping_label_count", 0),
-                        "computed_styles": snapshot["computed_styles"],
-                        "visible_map_area_css_px": snapshot.get("visible_map_area_css_px", snapshot.get("map_area")),
-                        "initial_viewport_map_height_css_px": snapshot.get("visible_map_height", 0),
-                        "map_top_css_px": snapshot.get("map_top"),
-                        "place_choice_visible": snapshot.get("place_choice_visible", True),
-                        "map_runtime": snapshot.get("map_runtime"),
-                        "map_runtime_reason": snapshot.get("map_runtime_reason"),
-                        "focus_order": snapshot.get("focus_order", []),
-                        "focusable_count": snapshot.get("focusable_count", 0),
-                        "control_occlusion": snapshot.get("control_occlusion", False),
-                        "nta_codes_in_primary_labels": snapshot["nta_codes_in_primary_labels"],
-                        "zoom_percent": zoom_percent,
-                        "zoom_reflow_basis": "360 CSS px represents a 720 px viewport at 200% browser zoom" if zoom_percent == 200 else "native CSS viewport",
-                        "reduced_motion": reduced_motion,
-                    }),
-                },
+                "visual_metrics": visual_metrics,
                 "snapshot": snapshot,
                 "rendered_html": rendered,
             })
@@ -852,15 +1054,126 @@ def browser_capture(
                 assert snapshot.get("map_runtime") != "maplibre", snapshot
             if not overlap:
                 assert snapshot.get("focus_order"), snapshot
+                assert visual_metrics["horizontal_overflow_px"] <= 1, visual_metrics
+                assert visual_metrics["target_size"]["meets_floor"], visual_metrics["target_size"]
+                assert visual_metrics["keyboard_traversal"]["escaped_without_trap"] is True
         finally:
             context.close()
     return observations[0]
+
+
+def update_a2_boundary_evidence(*, write: bool) -> dict:
+    """Refresh measured A2 boundary fields without wiping the production journey."""
+    observations = []
+    server, base = serve()
+    try:
+        observations.append(
+            browser_capture(base, name="compact_touch", width=360, height=800, overlap=False)
+        )
+    finally:
+        server.shutdown()
+        server.server_close()
+
+    dynamic_server, dynamic_base = serve_near_you()
+    try:
+        observations.append(
+            browser_capture(
+                dynamic_base,
+                name="entry-boundary-360-zoom-200",
+                width=360,
+                height=800,
+                overlap=False,
+                route="/near-you/",
+                dynamic=True,
+                retain_performance=False,
+                reduced_motion=True,
+                webgl_unavailable=True,
+                zoom_percent=200,
+            )
+        )
+    finally:
+        dynamic_server.terminate()
+        dynamic_server.wait(timeout=10)
+
+    by_name = {}
+    for capture in observations:
+        capture.pop("rendered_html", None)
+        capture.pop("snapshot", None)
+        by_name[capture["name"]] = capture
+
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    updated = []
+    for row in manifest.get("captures") or []:
+        if not isinstance(row, dict):
+            continue
+        fresh = by_name.get(row.get("name"))
+        if not fresh:
+            continue
+        metrics = dict(row.get("visual_metrics") or {})
+        fresh_metrics = fresh.get("visual_metrics") or {}
+        for key in (
+            "inner_width",
+            "horizontal_overflow_px",
+            "target_size",
+            "keyboard_traversal",
+            "zoom_percent",
+            "zoom_reflow_basis",
+            "reduced_motion",
+            "map_runtime",
+            "map_runtime_reason",
+            "focus_order",
+            "place_choice_visible",
+            "control_occlusion",
+            "visible_map_area_css_px",
+            "initial_viewport_map_height_css_px",
+            "map_top_css_px",
+        ):
+            if key in fresh_metrics:
+                metrics[key] = fresh_metrics[key]
+        row["visual_metrics"] = metrics
+        row["render_content_sha256"] = fresh["render_content_sha256"]
+        row["timing_samples"] = fresh.get("timing_samples", row.get("timing_samples"))
+        row["failure_mode"] = fresh.get("failure_mode", row.get("failure_mode"))
+        row["assertion"] = fresh.get("assertion", row.get("assertion"))
+        updated.append(row["name"])
+
+    missing = sorted(set(by_name) - set(updated))
+    if missing:
+        raise AssertionError(f"A2 boundary update could not find retained rows for {missing}")
+
+    # Keep production journey / deployed_version intact; only stamp local A2 proof.
+    manifest["a2_boundary_evidence"] = {
+        "status": "taken",
+        "method": "local-headless-playwright-measured-fields",
+        "captures": updated,
+        "delivery": str(DELIVERY_PATH.relative_to(ROOT)),
+        "required_ancestor": required_served_ancestors()[0],
+        "fields": [
+            "inner_width",
+            "horizontal_overflow_px",
+            "target_size",
+            "keyboard_traversal",
+        ],
+    }
+    if write:
+        MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return {
+        "manifest": str(MANIFEST_PATH.relative_to(ROOT)),
+        "updated": updated,
+        "wrote": bool(write),
+        "a2_boundary_evidence": manifest["a2_boundary_evidence"],
+    }
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--write-evidence", action="store_true")
     parser.add_argument("--layout-only", action="store_true")
+    parser.add_argument(
+        "--update-a2-boundary",
+        action="store_true",
+        help="Refresh measured A2 boundary fields on the retained local captures without wiping production journey evidence.",
+    )
     parser.add_argument(
         "--fill-deployed-version",
         action="store_true",
@@ -892,11 +1205,12 @@ def main() -> int:
         args.write_production_journey,
         args.check,
         args.check_production_journey,
+        args.update_a2_boundary,
     ]
     if sum(1 for flag in exclusive if flag) > 1:
         raise SystemExit(
             "use only one of --fill-deployed-version, --write-production-journey, "
-            "--check, or --check-production-journey"
+            "--check, --check-production-journey, or --update-a2-boundary"
         )
     if args.fill_deployed_version:
         print(json.dumps(fill_deployed_version(write=True), indent=2))
@@ -909,6 +1223,9 @@ def main() -> int:
         return 0
     if args.check_production_journey:
         print(json.dumps(check_production_journey(), indent=2))
+        return 0
+    if args.update_a2_boundary:
+        print(json.dumps(update_a2_boundary_evidence(write=True), indent=2))
         return 0
     observations = []
     fixture_html = ""
