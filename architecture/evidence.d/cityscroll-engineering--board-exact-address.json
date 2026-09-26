@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/board-exact-address",
+  "status": "implemented",
+  "fingerprint": "board-exact-address.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "board-exact-address-module",
+      "path": "site/board_exact_address.mjs"
+    },
+    {
+      "id": "board-exact-address-verify-test",
+      "path": "test/board_exact_address.test.mjs"
+    }
+  ]
+}
