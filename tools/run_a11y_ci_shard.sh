@@ -93,6 +93,7 @@ case "$shard" in
       echo "::warning::QR share interaction/capture check failed (non-blocking)"
     fi
     tools/run_a11y_functional_check.sh mobile-viewport python3 test/functional/23_mobile_viewport.py
+    tools/run_a11y_functional_check.sh near-you-map-wait python3 test/functional/near_you_map_wait.py
     tools/run_a11y_functional_check.sh geolocation-gesture python3 test/functional/24_geolocation_gesture_gate.py
     tools/run_a11y_functional_check.sh reverse-navigation python3 test/functional/52_near_you_reverse_navigation.py
     # Keep axe and its final assertion outside the functional retry wrapper.

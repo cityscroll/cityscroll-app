@@ -24,9 +24,11 @@ sys.modules["playwright.sync_api"] = sync_api
 ASSETS = pathlib.Path(__file__).parent / "assets"
 sys.path.insert(0, str(ASSETS))
 from ci_waits import (  # noqa: E402
+    NEAR_YOU_GEOGRAPHY_MAP_SETTLED,
     ROUTE_STATE_DEFAULTS,
     wait_for_app_ready,
     wait_for_locator,
+    wait_for_near_you_geography_map,
     wait_for_route_state,
 )
 
@@ -147,6 +149,32 @@ class ExhaustedRetryLabelTest(unittest.TestCase):
 
         self.assertEqual(locator.attempts, 1)
         self.assertEqual(output.getvalue(), "")
+
+
+class NearYouGeographyMapWaitTest(unittest.TestCase):
+    """Near You map settle waits on the page signal, including a never-ready fail."""
+
+    def test_wait_observes_the_geography_map_settle_expression(self):
+        page = ReadyPage()
+        wait_for_near_you_geography_map(page, timeout=654, attempts=1)
+        self.assertEqual(page.expression, NEAR_YOU_GEOGRAPHY_MAP_SETTLED)
+        self.assertEqual(page.arguments, (None, 654))
+        self.assertIn("nearGeographyMapState", NEAR_YOU_GEOGRAPHY_MAP_SETTLED)
+        self.assertIn("nearGeographyLayerCount", NEAR_YOU_GEOGRAPHY_MAP_SETTLED)
+
+    def test_never_ready_map_still_fails_the_wait(self):
+        page = TimedOutPage()
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            with self.assertRaises(FakePlaywrightTimeoutError):
+                wait_for_near_you_geography_map(
+                    page,
+                    timeout=5,
+                    attempts=1,
+                    label="Near you geography map never ready",
+                )
+        self.assertEqual(output.getvalue(), "")
+        self.assertEqual(page.wait_arguments[2], 5)
 
 
 if __name__ == "__main__":

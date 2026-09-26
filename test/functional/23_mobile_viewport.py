@@ -22,7 +22,12 @@ from playwright.sync_api import Page, sync_playwright
 ROOT = Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
-from ci_waits import wait_for_app_ready, wait_for_function, wait_for_locator  # noqa: E402
+from ci_waits import (  # noqa: E402
+    wait_for_app_ready,
+    wait_for_function,
+    wait_for_locator,
+    wait_for_near_you_geography_map,
+)
 from detail_panel_fixture import (  # noqa: E402
     DETAIL_SELECTOR,
     DetailPanelPrecondition,
@@ -105,6 +110,11 @@ def open_near_you_directory_list(page: Page) -> None:
     if details.count() > 0 and details.first.get_attribute("open") is not None:
         return
     disclosure.first.click()
+    wait_for_function(
+        page,
+        """() => Boolean(document.querySelector("[data-geography-directory-list]")?.open)""",
+        label="Near you area directory open",
+    )
 
 
 def assert_mobile_surface(page: Page, name: str) -> None:
@@ -268,6 +278,9 @@ def run(base: str) -> None:
                 assert not contract["examsGuideVisible"], contract
 
             if name == "near you":
+                # Map enhancement rewrites the Areas directory after data-enhanced
+                # flips. Wait for the page's settle signal before opening it.
+                wait_for_near_you_geography_map(page)
                 contract = page.evaluate(
                     """() => ({
                       heading: (document.querySelector('#near-geo-heading')?.textContent || '').trim(),
@@ -276,6 +289,8 @@ def run(base: str) -> None:
                       surface: document.querySelector('[data-near-you-root]')?.dataset.nearSurface
                         || document.querySelector('[data-near-you-root]')?.dataset.nearMobileSurface
                         || null,
+                      mapState: document.querySelector('[data-near-you-root]')?.dataset.nearGeographyMapState || null,
+                      layerCount: Number(document.querySelector('[data-near-you-root]')?.dataset.nearGeographyLayerCount || 0),
                       mapVisible: getComputedStyle(document.querySelector('[data-near-surface-panel="map"]')||document.body).display !== 'none',
                       recordsHidden: getComputedStyle(document.querySelector('[data-near-surface-panel="records"]')||document.body).display === 'none',
                     })"""
