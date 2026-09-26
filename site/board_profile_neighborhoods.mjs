@@ -13,7 +13,6 @@ import {
   ntaResidentLabelPolicy,
 } from "./geography_navigation_capability.mjs";
 import { formatOverlapExactPercent } from "./geography_navigation_overlap_ui.mjs";
-import { ntasForBoard } from "./board_neighborhood_index.mjs";
 import { nearYouUrlFromScope, scopeWithGeographies } from "./scope_v0.mjs";
 import { renderNodeSection } from "./civic_document_chrome.mjs";
 
@@ -36,6 +35,13 @@ const SUBTYPE_KIND_LABELS = Object.freeze({
 function clean(value, max = 240) {
   return String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 }
+
+/** Local reverse lookup — keep this module free of Node built-ins for Pages. */
+function ntasForBoard(index, boardId) {
+  const id = clean(boardId).toLowerCase().replace(/^community-board:/, "");
+  return Array.isArray(index?.by_board?.[id]) ? index.by_board[id] : [];
+}
+
 
 function esc(value) {
   return String(value ?? "")
