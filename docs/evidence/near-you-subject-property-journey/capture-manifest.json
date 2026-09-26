@@ -1,0 +1,184 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "feature": "near-you-subject-property-journey",
+  "public_alias": "ce239e01504c8",
+  "capture_mode": "headless-playwright-production-served-site",
+  "base": "https://cityscroll.org/",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "repository_revision": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+  "grounded_at": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+  "revision": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+  "revision_format": "served artifact-manifest source_commit_sha",
+  "data_vintage": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+  "required_ancestor": "cb878a22f23b88908b7f4173c97fec71569367bc",
+  "required_ancestor_contained": true,
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed. Externally retained https screenshot_url values are required.",
+  "surface": "Near You subject-property local journey",
+  "verifier": "node --test test/near_you_subject_property_journey.test.mjs",
+  "captured_at": "2026-09-26T02:14:33Z",
+  "local_image_dir_ignored": "near-you-subject-property-journey-screenshots (task scratch; ignored)",
+  "exact_links": {
+    "neighborhood": "/near-you/?geo=nta2020%3ABK1402&surface=map&lens=meetings",
+    "detail": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F#agenda-subject"
+  },
+  "repeat_path": [
+    "Open /near-you/?geo=nta2020%3ABK1402&surface=map&lens=meetings",
+    "Confirm the dated September 14 row labelled About 461 Coney Island Avenue with 1625 Ocean Avenue visible",
+    "Open the full meeting detail and confirm the Subject property anchor plus the Where venue"
+  ],
+  "captures": [
+    {
+      "name": "subject-meetings-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK1402&surface=map&lens=meetings",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "data_vintage": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "assertion": "Deployed BK1402 meetings list shows the September 14 row About 461 Coney Island Avenue with 1625 Ocean Avenue",
+      "sha256": "a65cccc2fcc077e31d4f7b90c222f706a69fb2fcaddd79bbb84e0e791ff1306a",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/bruu1d.png",
+      "source": "headless-playwright-production-served-site",
+      "served_values": {
+        "named_row_present": true,
+        "about_subject_present": true,
+        "venue_address_present": true,
+        "title_present": true,
+        "no_javascript_title_link": true,
+        "keyboard_focusable_count": 364,
+        "selected_label": true,
+        "results_count": "1"
+      }
+    },
+    {
+      "name": "subject-meetings-mobile",
+      "route": "/near-you/?geo=nta2020%3ABK1402&surface=map&lens=meetings",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "data_vintage": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "assertion": "Deployed BK1402 meetings list shows the September 14 row About 461 Coney Island Avenue with 1625 Ocean Avenue",
+      "sha256": "541a4798fcbea865ac8b18c71a915d38f88b21cd899d97bfa328bc9ccb54decb",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/trn63q.png",
+      "source": "headless-playwright-production-served-site",
+      "served_values": {
+        "named_row_present": true,
+        "about_subject_present": true,
+        "venue_address_present": true,
+        "title_present": true,
+        "no_javascript_title_link": true,
+        "keyboard_focusable_count": 365,
+        "selected_label": true,
+        "results_count": "1"
+      }
+    },
+    {
+      "name": "subject-address-search-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK1402&surface=map&lens=meetings",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "data_vintage": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "assertion": "Address search for 461 Coney Island Avenue reaches the same September 14 meeting row",
+      "sha256": "03ce279f48cb18807baa22c9874c2c8044114b6834b1928f572f1bce6116b59f",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/qrau1m.png",
+      "source": "headless-playwright-production-served-site",
+      "served_values": {
+        "named_row_present": true,
+        "about_subject_present": true,
+        "venue_address_present": true,
+        "title_present": true,
+        "no_javascript_title_link": true,
+        "keyboard_focusable_count": 364,
+        "selected_label": true,
+        "results_count": "1"
+      }
+    },
+    {
+      "name": "subject-address-search-mobile",
+      "route": "/near-you/?geo=nta2020%3ABK1402&surface=map&lens=meetings",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "data_vintage": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "assertion": "Address search for 461 Coney Island Avenue reaches the same September 14 meeting row",
+      "sha256": "250a86a82cf7f00e5b462cb37c015a502b8b2e8f38c52d0813e7471d4ef51284",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/mj05tu.png",
+      "source": "headless-playwright-production-served-site",
+      "served_values": {
+        "named_row_present": true,
+        "about_subject_present": true,
+        "venue_address_present": true,
+        "title_present": true,
+        "no_javascript_title_link": true,
+        "keyboard_focusable_count": 365,
+        "selected_label": true,
+        "results_count": "1"
+      }
+    },
+    {
+      "name": "subject-detail-desktop",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F#agenda-subject",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "data_vintage": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "assertion": "Deployed meeting detail shows Subject property About 461 Coney Island Avenue and venue 1625 Ocean Avenue",
+      "sha256": "49e348b15aaf36ef43c9bd95edd9ceb679d2661ef1eef0f1b6a92854574f7edc",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/04bdy5.png",
+      "source": "headless-playwright-production-served-site",
+      "served_values": {
+        "detail_title_present": true,
+        "about_subject_present": true,
+        "venue_address_present": true,
+        "agenda_subject_anchor_present": true,
+        "named_row_present": false,
+        "keyboard_focusable_count": 22,
+        "no_javascript_title_link": true,
+        "source_link_present": true,
+        "retained_past_status_present": true
+      }
+    },
+    {
+      "name": "subject-detail-mobile",
+      "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F#agenda-subject",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "data_vintage": "ed5468fe25dfb8f2d6d01e23b1b521ab6fe4b468",
+      "assertion": "Deployed meeting detail shows Subject property About 461 Coney Island Avenue and venue 1625 Ocean Avenue",
+      "sha256": "8094aeff54c0a3addffe416ed21c643976d93de353032b962d84b175c154ce4a",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/358bfv.png",
+      "source": "headless-playwright-production-served-site",
+      "served_values": {
+        "detail_title_present": true,
+        "about_subject_present": true,
+        "venue_address_present": true,
+        "agenda_subject_anchor_present": true,
+        "named_row_present": false,
+        "keyboard_focusable_count": 22,
+        "no_javascript_title_link": true,
+        "source_link_present": true,
+        "retained_past_status_present": true
+      }
+    }
+  ]
+}
