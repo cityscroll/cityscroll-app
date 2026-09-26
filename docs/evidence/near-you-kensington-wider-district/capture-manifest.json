@@ -3,22 +3,61 @@
   "feature": "near-you-kensington-wider-district",
   "public_alias": "ce70cec48d558",
   "capture_mode": "headless-playwright-production-served-site",
-  "capture_run_id": "ce44f060-776f-48cf-baba-2e9f3e84d09f",
+  "capture_run_id": "a5da346c-af46-46c3-b47b-97587d01066c",
   "base": "https://cityscroll.org/",
   "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
-  "repository_revision": "fc640b184a80e0c72445d92445328a2cbfc51275",
-  "grounded_at": "fc640b184a80e0c72445d92445328a2cbfc51275",
-  "revision": "fc640b184a80e0c72445d92445328a2cbfc51275",
+  "repository_revision": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
+  "grounded_at": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
+  "revision": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
   "revision_format": "served artifact-manifest source_commit_sha",
-  "data_vintage": "fc640b184a80e0c72445d92445328a2cbfc51275",
+  "data_vintage": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
   "required_ancestor": "c66960422d9c70a12db4f9e1a79651f35153adc7",
   "required_ancestor_contained": true,
   "image_binaries_committed": false,
-  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed. Externally retained https screenshot_url values are required. All captures in this packet share capture_run_id and were captured in this run. Every row is fresh: the clicked-detail rows were reached by clicking the wider-district row. The deployed meeting-detail page is deterministic, so a re-captured detail image can be byte-identical to a sibling packet; such a row discloses that coincidence in a coincident_hash field naming the sibling feature and revision and affirming the independent in-run re-capture. A digest that appears in another packet is forbidden unless the row carries reused_from (with no interaction claim) or a coincident_hash declaration backed by an observed click.",
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed. Externally retained https screenshot_url values are required. All captures in this packet share capture_run_id and were captured in this run. Every row is fresh: the clicked-detail rows were reached by clicking the wider-district row. The deployed meeting-detail page is deterministic, so a re-captured detail image can be byte-identical to a sibling packet; such a row discloses that coincidence in a coincident_hash field naming the sibling feature and revision and affirming the independent in-run re-capture. A digest that appears in another packet is forbidden unless the row carries reused_from (with no interaction claim) or a coincident_hash declaration backed by an observed click. Because the host is content-addressed, a deterministic page keeps the same hosted address across runs, so neither the digest nor the address proves a fresh execution; the run_receipt supplies that proof - per row the live upload exchange and the per-request served headers (Date, CF-Ray, served revision), plus an in-run demonstration of the host deduplication.",
   "surface": "Near You Kensington wider-district journey",
   "verifier": "node --test test/kensington_wider_district_journey.test.mjs",
-  "captured_at": "2026-09-26T08:49:02Z",
+  "captured_at": "2026-09-26T11:07:35Z",
   "local_image_dir_ignored": "near-you-kensington-wider-district-screenshots (local ignored dir under task scratch)",
+  "run_receipt": {
+    "capture_run_id": "a5da346c-af46-46c3-b47b-97587d01066c",
+    "base": "https://cityscroll.org/",
+    "served_revision": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
+    "run_started_at": "2026-09-26T11:07:35Z",
+    "run_finished_at": "2026-09-26T11:07:54Z",
+    "host": "catbox.moe",
+    "note": "Every capture row is backed by evidence only this run could have produced: the live upload HTTP exchange, the per-request served response headers (Date, CF-Ray, served revision) observed while the page loaded, and the shared capture_run_id stamped inside this run window. The four screenshot addresses repeat across runs because the host deduplicates identical bytes, as the demonstration below shows.",
+    "host_dedup_demonstration": {
+      "note": "The screenshot host is content-addressed: identical bytes return the same file URL, so a deterministic page's screenshot keeps the same address across runs; a one-byte-altered copy returns a different URL.",
+      "host": "catbox.moe",
+      "first_upload": {
+        "sha256": "24437e3b589b3f2419103a692a4a940a6b4fa4b2c96d9d1f9dc017b41e0d0f87",
+        "returned_url": "https://files.catbox.moe/cz1q1x.bin",
+        "http_status": 200,
+        "requested_at": "2026-09-26T11:07:50Z",
+        "responded_at": "2026-09-26T11:07:51Z",
+        "elapsed_seconds": 0.353
+      },
+      "repeat_same_bytes": {
+        "sha256": "24437e3b589b3f2419103a692a4a940a6b4fa4b2c96d9d1f9dc017b41e0d0f87",
+        "returned_url": "https://files.catbox.moe/cz1q1x.bin",
+        "http_status": 200,
+        "requested_at": "2026-09-26T11:07:51Z",
+        "responded_at": "2026-09-26T11:07:51Z",
+        "elapsed_seconds": 0.326
+      },
+      "altered_one_byte": {
+        "sha256": "31f3df999da9127c3ca322273c7ed7fa12399865a7862e6bfbb578c06ebdaff6",
+        "returned_url": "https://files.catbox.moe/vsx8u2.bin",
+        "http_status": 200,
+        "requested_at": "2026-09-26T11:07:51Z",
+        "responded_at": "2026-09-26T11:07:51Z",
+        "elapsed_seconds": 0.325
+      },
+      "same_bytes_returned_same_url": true,
+      "altered_bytes_returned_different_url": true
+    }
+  },
   "captures": [
     {
       "name": "kensington-meetings-desktop",
@@ -27,14 +66,14 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "fc640b184a80e0c72445d92445328a2cbfc51275",
-      "data_vintage": "fc640b184a80e0c72445d92445328a2cbfc51275",
+      "revision": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
+      "data_vintage": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
       "assertion": "Deployed Kensington meetings list shows the September 23 CB14 row under wider-district activity",
       "sha256": "b525e2db454c3a3531672fc307cbd2f749560678fb188fe42e9174fa266e822c",
       "file": null,
       "screenshot_url": "https://files.catbox.moe/odna8r.png",
       "source": "headless-playwright-production-served-site",
-      "capture_run_id": "ce44f060-776f-48cf-baba-2e9f3e84d09f",
+      "capture_run_id": "a5da346c-af46-46c3-b47b-97587d01066c",
       "navigation": "direct",
       "served_values": {
         "named_row_present": true,
@@ -47,6 +86,34 @@
         "keyboard_focusable_count": 363,
         "selected_label": true,
         "results_count": null
+      },
+      "run_receipt": {
+        "capture_run_id": "a5da346c-af46-46c3-b47b-97587d01066c",
+        "captured_at": "2026-09-26T11:07:43Z",
+        "page_load": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+          "http_status": 200,
+          "served_revision": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 11:07:38 GMT",
+            "cf-ray": "a411ce559aa04391-EWR",
+            "cf-cache-status": "HIT",
+            "age": "480",
+            "last-modified": "Sat, 26 Sep 2026 10:59:37 GMT",
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/odna8r.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T11:07:51Z",
+          "responded_at": "2026-09-26T11:07:52Z",
+          "elapsed_seconds": 0.64
+        },
+        "click_observation": {
+          "navigation": "direct",
+          "opened_from_list_click": false
+        }
       }
     },
     {
@@ -56,14 +123,14 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "fc640b184a80e0c72445d92445328a2cbfc51275",
-      "data_vintage": "fc640b184a80e0c72445d92445328a2cbfc51275",
+      "revision": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
+      "data_vintage": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
       "assertion": "Deployed meeting detail opened from the Kensington wider-district row shows the September 23 title and 810 East 16th Street venue",
       "sha256": "6d035088ed9b4ead645763f0629b4838c31974291304518aa20d8e285e5efc79",
       "file": null,
       "screenshot_url": "https://files.catbox.moe/snzlc1.png",
       "source": "headless-playwright-production-served-site",
-      "capture_run_id": "ce44f060-776f-48cf-baba-2e9f3e84d09f",
+      "capture_run_id": "a5da346c-af46-46c3-b47b-97587d01066c",
       "navigation": "clicked-from-list",
       "served_values": {
         "detail_title_present": true,
@@ -76,6 +143,34 @@
         "no_javascript_title_link": true,
         "source_link_present": true,
         "opened_from_list_click": true
+      },
+      "run_receipt": {
+        "capture_run_id": "a5da346c-af46-46c3-b47b-97587d01066c",
+        "captured_at": "2026-09-26T11:07:44Z",
+        "page_load": {
+          "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+          "http_status": 200,
+          "served_revision": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 11:07:43 GMT",
+            "cf-ray": "a411ce7c8e47d73b-EWR",
+            "cf-cache-status": "DYNAMIC",
+            "age": null,
+            "last-modified": null,
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/snzlc1.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T11:07:52Z",
+          "responded_at": "2026-09-26T11:07:53Z",
+          "elapsed_seconds": 0.605
+        },
+        "click_observation": {
+          "navigation": "clicked-from-list",
+          "opened_from_list_click": true
+        }
       },
       "coincident_hash": {
         "feature": "segmented-meeting-detail",
@@ -91,14 +186,14 @@
         "width": 390,
         "height": 844
       },
-      "revision": "fc640b184a80e0c72445d92445328a2cbfc51275",
-      "data_vintage": "fc640b184a80e0c72445d92445328a2cbfc51275",
+      "revision": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
+      "data_vintage": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
       "assertion": "Deployed Kensington meetings list shows the September 23 CB14 row under wider-district activity",
       "sha256": "a39c7f208e3a063a7a42c8e508d1859e25871ffb3e0bc4f4f7c9d58b6ea5fca3",
       "file": null,
       "screenshot_url": "https://files.catbox.moe/akzv81.png",
       "source": "headless-playwright-production-served-site",
-      "capture_run_id": "ce44f060-776f-48cf-baba-2e9f3e84d09f",
+      "capture_run_id": "a5da346c-af46-46c3-b47b-97587d01066c",
       "navigation": "direct",
       "served_values": {
         "named_row_present": true,
@@ -111,6 +206,34 @@
         "keyboard_focusable_count": 364,
         "selected_label": true,
         "results_count": null
+      },
+      "run_receipt": {
+        "capture_run_id": "a5da346c-af46-46c3-b47b-97587d01066c",
+        "captured_at": "2026-09-26T11:07:48Z",
+        "page_load": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+          "http_status": 200,
+          "served_revision": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 11:07:46 GMT",
+            "cf-ray": "a411ce865fdef25f-EWR",
+            "cf-cache-status": "HIT",
+            "age": "488",
+            "last-modified": "Sat, 26 Sep 2026 10:59:37 GMT",
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/akzv81.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T11:07:53Z",
+          "responded_at": "2026-09-26T11:07:53Z",
+          "elapsed_seconds": 0.663
+        },
+        "click_observation": {
+          "navigation": "direct",
+          "opened_from_list_click": false
+        }
       }
     },
     {
@@ -120,14 +243,14 @@
         "width": 390,
         "height": 844
       },
-      "revision": "fc640b184a80e0c72445d92445328a2cbfc51275",
-      "data_vintage": "fc640b184a80e0c72445d92445328a2cbfc51275",
+      "revision": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
+      "data_vintage": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
       "assertion": "Deployed meeting detail opened from the Kensington wider-district row shows the September 23 title and 810 East 16th Street venue",
       "sha256": "4dc7eb09ab3186dd646261d098c4c586d92458a0bca090d71248e49eda5af1a1",
       "file": null,
       "screenshot_url": "https://files.catbox.moe/gqjqnm.png",
       "source": "headless-playwright-production-served-site",
-      "capture_run_id": "ce44f060-776f-48cf-baba-2e9f3e84d09f",
+      "capture_run_id": "a5da346c-af46-46c3-b47b-97587d01066c",
       "navigation": "clicked-from-list",
       "served_values": {
         "detail_title_present": true,
@@ -140,6 +263,34 @@
         "no_javascript_title_link": true,
         "source_link_present": true,
         "opened_from_list_click": true
+      },
+      "run_receipt": {
+        "capture_run_id": "a5da346c-af46-46c3-b47b-97587d01066c",
+        "captured_at": "2026-09-26T11:07:50Z",
+        "page_load": {
+          "url": "https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+          "http_status": 200,
+          "served_revision": "c8aa1c5ca452ce5759c4be14286c7c6767f9dc8c",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 11:07:49 GMT",
+            "cf-ray": "a411ce9e183a7286-EWR",
+            "cf-cache-status": "DYNAMIC",
+            "age": null,
+            "last-modified": null,
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/gqjqnm.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T11:07:53Z",
+          "responded_at": "2026-09-26T11:07:54Z",
+          "elapsed_seconds": 0.689
+        },
+        "click_observation": {
+          "navigation": "clicked-from-list",
+          "opened_from_list_click": true
+        }
       },
       "coincident_hash": {
         "feature": "segmented-meeting-detail",

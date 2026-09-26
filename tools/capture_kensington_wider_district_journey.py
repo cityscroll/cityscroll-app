@@ -26,6 +26,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 import uuid
 import urllib.request
 from datetime import datetime, timezone
@@ -55,6 +56,7 @@ from near_you_detail_observer import (  # noqa: E402
     observe_named_row_present,
     observe_no_javascript_title_link,
 )
+from capture_run_receipt import validate_run_receipt  # noqa: E402
 
 EVIDENCE_DIR = ROOT / "docs" / "evidence" / "near-you-kensington-wider-district"
 MANIFEST_PATH = EVIDENCE_DIR / "capture-manifest.json"
@@ -108,6 +110,139 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def sha256_bytes(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
+
+
+def now_iso() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+PAGE_LOAD_HEADER_KEYS = ("date", "cf-ray", "cf-cache-status", "age", "last-modified", "etag")
+
+
+def page_load_receipt(response, served_revision: str) -> dict:
+    """Record the per-request served headers proving this run loaded the page.
+
+    ``cf-ray`` is a unique-per-request token the edge stamps on every live
+    response; ``date`` moves each second. Both distinguish a real load from a
+    deterministic page whose body never varies.
+    """
+    headers: dict[str, str | None] = {}
+    status = None
+    url = None
+    if response is not None:
+        try:
+            raw = response.headers  # Playwright lowercases header names
+        except Exception:
+            raw = {}
+        for key in PAGE_LOAD_HEADER_KEYS:
+            value = raw.get(key)
+            headers[key] = value if value else None
+        try:
+            status = response.status
+        except Exception:
+            status = None
+        try:
+            url = response.url
+        except Exception:
+            url = None
+    return {
+        "url": url,
+        "http_status": status,
+        "served_revision": served_revision,
+        "headers": headers,
+    }
+
+
+def upload_file(path: Path) -> dict:
+    """Upload one file to the screenshot host, recording the HTTP exchange."""
+    requested_at = now_iso()
+    started = time.monotonic()
+    proc = subprocess.run(
+        [
+            "curl",
+            "-sS",
+            "-w",
+            "\n%{http_code}",
+            "-F",
+            "reqtype=fileupload",
+            "-F",
+            f"fileToUpload=@{path}",
+            "https://catbox.moe/user/api.php",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    elapsed = round(time.monotonic() - started, 3)
+    responded_at = now_iso()
+    stdout = proc.stdout or ""
+    url = stdout
+    http_status = None
+    if "\n" in stdout:
+        body, _, code = stdout.rpartition("\n")
+        url = body.strip()
+        if code.strip().isdigit():
+            http_status = int(code.strip())
+    url = url.strip()
+    if not url.startswith("https://"):
+        raise SystemExit(f"screenshot host failed for {path.name}: {proc.stdout!r} {proc.stderr!r}")
+    return {
+        "returned_url": url,
+        "http_status": http_status,
+        "requested_at": requested_at,
+        "responded_at": responded_at,
+        "elapsed_seconds": elapsed,
+    }
+
+
+def demonstrate_host_dedup(capture_run_id: str) -> dict:
+    """Show, inside this run, why identical bytes keep the same hosted address.
+
+    Uploads a fresh unique payload twice (same bytes must return the same URL)
+    and a one-byte-altered copy (must return a different URL). This is exactly
+    why the packet's four screenshot addresses repeat across runs: a
+    deterministic page produces byte-identical screenshots and the host is
+    content-addressed.
+    """
+    SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
+    base_bytes = (
+        "cityscroll-host-dedup-demonstration\n"
+        f"{capture_run_id}\n"
+        f"{uuid.uuid4().hex}{os.urandom(24).hex()}\n"
+    ).encode("utf-8")
+    altered_bytes = bytearray(base_bytes)
+    altered_bytes[-1] = altered_bytes[-1] ^ 0x01  # alter exactly one byte
+    altered_bytes = bytes(altered_bytes)
+
+    first_path = SCREENSHOT_DIR / "host-dedup-demo-original.bin"
+    repeat_path = SCREENSHOT_DIR / "host-dedup-demo-identical-copy.bin"
+    altered_path = SCREENSHOT_DIR / "host-dedup-demo-one-byte-altered.bin"
+    first_path.write_bytes(base_bytes)
+    repeat_path.write_bytes(base_bytes)
+    altered_path.write_bytes(altered_bytes)
+
+    first = upload_file(first_path)
+    repeat = upload_file(repeat_path)
+    altered = upload_file(altered_path)
+
+    return {
+        "note": (
+            "The screenshot host is content-addressed: identical bytes return the same file URL, "
+            "so a deterministic page's screenshot keeps the same address across runs; a "
+            "one-byte-altered copy returns a different URL."
+        ),
+        "host": "catbox.moe",
+        "first_upload": {"sha256": sha256_bytes(base_bytes), **first},
+        "repeat_same_bytes": {"sha256": sha256_bytes(base_bytes), **repeat},
+        "altered_one_byte": {"sha256": sha256_bytes(altered_bytes), **altered},
+        "same_bytes_returned_same_url": first["returned_url"] == repeat["returned_url"],
+        "altered_bytes_returned_different_url": first["returned_url"] != altered["returned_url"],
+    }
+
+
 def sibling_manifest_revision(manifest_rel_path: str) -> str:
     """Return the recorded revision of a sibling capture manifest under evidence."""
     try:
@@ -117,29 +252,15 @@ def sibling_manifest_revision(manifest_rel_path: str) -> str:
     return str(data.get("revision") or data.get("repository_revision") or "unknown")
 
 
-def host_screenshots(paths: list[Path]) -> dict[str, str]:
-    """Upload screenshots to an external https host and return name→URL."""
-    mapping = {}
+def host_screenshots(paths: list[Path]) -> dict[str, dict]:
+    """Upload screenshots to an external https host and return name→exchange.
+
+    Each exchange records the returned URL, HTTP status, and request/response
+    timestamps so the manifest can prove this run performed the upload.
+    """
+    mapping: dict[str, dict] = {}
     for path in paths:
-        proc = subprocess.run(
-            [
-                "curl",
-                "-sS",
-                "-F",
-                "reqtype=fileupload",
-                "-F",
-                f"fileToUpload=@{path}",
-                "https://catbox.moe/user/api.php",
-            ],
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        url = (proc.stdout or "").strip()
-        if not url.startswith("https://"):
-            raise SystemExit(f"screenshot host failed for {path.name}: {proc.stdout!r} {proc.stderr!r}")
-        mapping[path.name] = url
+        mapping[path.name] = upload_file(path)
     return mapping
 
 
@@ -205,9 +326,10 @@ def observe_detail(page) -> dict:
     }
 
 
-def open_list(page, base: str) -> None:
+def open_list(page, base: str):
+    """Load the Kensington list route; return the document navigation response."""
     url = urllib.request.urljoin(base, KENSINGTON_LIST)
-    page.goto(url, wait_until="networkidle", timeout=90_000)
+    response = page.goto(url, wait_until="networkidle", timeout=90_000)
     try:
         page.locator("text=Browse records").first.click(timeout=5_000)
         page.wait_for_timeout(1000)
@@ -217,10 +339,15 @@ def open_list(page, base: str) -> None:
         page.keyboard.press("Tab")
     except Exception:
         pass
+    return response
 
 
-def click_named_row_into_detail(page) -> str:
-    """Click the broader September row into the meeting detail; return landed path."""
+def click_named_row_into_detail(page):
+    """Click the broader September row into the meeting detail.
+
+    Returns ``(landed_path, navigation_response)`` so the caller can record the
+    per-request served headers of the detail load reached by the click.
+    """
     card_selector = f'[data-record-id*="{SEPT_NEEDLE}"][data-broader-scope="broader"]'
     card = page.locator(card_selector).first
     card.wait_for(state="attached", timeout=45_000)
@@ -229,17 +356,19 @@ def click_named_row_into_detail(page) -> str:
     except Exception:
         pass
 
+    response = None
     href = page.eval_on_selector(
         f"{card_selector} a.near-record-title-link, {card_selector} a[href*='{SEPT_NEEDLE}']",
         "el => el && (el.href || el.getAttribute('href'))",
     )
     if href:
-        with page.expect_navigation(wait_until="networkidle", timeout=90_000):
+        with page.expect_navigation(wait_until="networkidle", timeout=90_000) as nav_info:
             # DOM click from the named row's own link (avoids off-screen hit-target flakes).
             page.eval_on_selector(
                 f"{card_selector} a.near-record-title-link, {card_selector} a[href*='{SEPT_NEEDLE}']",
                 "el => el.click()",
             )
+        response = nav_info.value
     else:
         inspect = card.locator(".near-record-inspect").first
         if inspect.count() == 0:
@@ -249,15 +378,16 @@ def click_named_row_into_detail(page) -> str:
         if open_link.count() == 0:
             open_link = page.get_by_role("link", name=re.compile(r"open full detail|full detail", re.I))
         open_link.wait_for(state="visible", timeout=15_000)
-        with page.expect_navigation(wait_until="networkidle", timeout=90_000):
+        with page.expect_navigation(wait_until="networkidle", timeout=90_000) as nav_info:
             open_link.click(timeout=15_000)
+        response = nav_info.value
 
     landed = urlparse(page.url).path or ""
     if SEPT_NEEDLE not in landed and SEPT_NEEDLE not in urllib.parse.unquote(page.url):
         html = page.content()
         if TITLE_NEEDLE not in html:
             raise SystemExit(f"list click did not land on September meeting detail: {page.url!r}")
-    return landed or KENSINGTON_DETAIL
+    return landed or KENSINGTON_DETAIL, response
 
 
 def require_explicit_reuse(row: dict) -> None:
@@ -332,6 +462,10 @@ def validate_manifest(manifest: dict) -> None:
         manifest_path=MANIFEST_PATH,
         cwd=ROOT,
     )
+    # Every row must carry a receipt entry from this run (matching capture_run_id
+    # and timestamps inside the run window); a deterministic digest and hosted
+    # address cannot substitute for proof this run executed.
+    validate_run_receipt(manifest)
 
 
 def capture_row(
@@ -346,6 +480,8 @@ def capture_row(
     served: dict,
     capture_run_id: str,
     navigation: str,
+    page_load: dict,
+    captured_at: str,
 ) -> dict:
     return {
         "name": name,
@@ -361,6 +497,18 @@ def capture_row(
         "capture_run_id": capture_run_id,
         "navigation": navigation,
         "served_values": served,
+        # Per-run receipt: proof only this execution could have produced. The
+        # upload exchange is filled in after hosting the screenshots.
+        "run_receipt": {
+            "capture_run_id": capture_run_id,
+            "captured_at": captured_at,
+            "page_load": page_load,
+            "upload": None,
+            "click_observation": {
+                "navigation": navigation,
+                "opened_from_list_click": bool(served.get("opened_from_list_click")),
+            },
+        },
     }
 
 
@@ -371,7 +519,8 @@ def capture(base: str, host: bool) -> dict:
 
     revision = require_served_revision_contains_delivery(base)
     capture_run_id = str(uuid.uuid4())
-    captured_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    run_started_at = now_iso()
+    captured_at = run_started_at
     print(
         f"production base={base} revision={revision} capture_run_id={capture_run_id}",
         flush=True,
@@ -387,7 +536,8 @@ def capture(base: str, host: bool) -> dict:
                 user_agent="cityscroll-kensington-wider-district/1",
             )
             page = context.new_page()
-            open_list(page, base)
+            list_response = open_list(page, base)
+            list_page_load = page_load_receipt(list_response, revision)
             list_served = observe_list(page)
             if not list_served.get("named_row_present") or not list_served.get("wider_district_present"):
                 raise SystemExit(f"{viewport_name} list capture missing broader named row: {list_served!r}")
@@ -412,10 +562,13 @@ def capture(base: str, host: bool) -> dict:
                     served=list_served,
                     capture_run_id=capture_run_id,
                     navigation="direct",
+                    page_load=list_page_load,
+                    captured_at=now_iso(),
                 )
             )
 
-            landed_path = click_named_row_into_detail(page)
+            landed_path, detail_response = click_named_row_into_detail(page)
+            detail_page_load = page_load_receipt(detail_response, revision)
             detail_served = observe_detail(page)
             if not detail_served.get("detail_title_present") or not detail_served.get("venue_address_present"):
                 raise SystemExit(f"{viewport_name} detail capture missing title/venue: {detail_served!r}")
@@ -439,6 +592,8 @@ def capture(base: str, host: bool) -> dict:
                     served=detail_served,
                     capture_run_id=capture_run_id,
                     navigation="clicked-from-list",
+                    page_load=detail_page_load,
+                    captured_at=now_iso(),
                 )
             )
             context.close()
@@ -466,12 +621,34 @@ def capture(base: str, host: bool) -> dict:
                 ),
             }
 
+    run_receipt: dict | None = None
     if host:
+        # Demonstrate the host's content-addressing inside this same run: the
+        # same bytes twice (one URL), a one-byte-altered copy (a different URL).
+        host_dedup = demonstrate_host_dedup(capture_run_id)
         hosted = host_screenshots(local_files)
         for row in captures:
-            row["screenshot_url"] = hosted.get(f"{row['name']}.png")
-            if not row["screenshot_url"]:
+            exchange = hosted.get(f"{row['name']}.png")
+            if not exchange:
                 raise SystemExit(f"missing hosted URL for {row['name']}")
+            row["screenshot_url"] = exchange["returned_url"]
+            row["run_receipt"]["upload"] = exchange
+        run_receipt = {
+            "capture_run_id": capture_run_id,
+            "base": base,
+            "served_revision": revision,
+            "run_started_at": run_started_at,
+            "run_finished_at": now_iso(),
+            "host": "catbox.moe",
+            "note": (
+                "Every capture row is backed by evidence only this run could have produced: the "
+                "live upload HTTP exchange, the per-request served response headers (Date, CF-Ray, "
+                "served revision) observed while the page loaded, and the shared capture_run_id "
+                "stamped inside this run window. The four screenshot addresses repeat across runs "
+                "because the host deduplicates identical bytes, as the demonstration below shows."
+            ),
+            "host_dedup_demonstration": host_dedup,
+        }
     else:
         for row in captures:
             row["screenshot_url"] = f"file://{SCREENSHOT_DIR / (row['name'] + '.png')}"
@@ -501,12 +678,17 @@ def capture(base: str, host: bool) -> dict:
             "byte-identical to a sibling packet; such a row discloses that coincidence in a coincident_hash "
             "field naming the sibling feature and revision and affirming the independent in-run re-capture. "
             "A digest that appears in another packet is forbidden unless the row carries reused_from "
-            "(with no interaction claim) or a coincident_hash declaration backed by an observed click."
+            "(with no interaction claim) or a coincident_hash declaration backed by an observed click. "
+            "Because the host is content-addressed, a deterministic page keeps the same hosted address "
+            "across runs, so neither the digest nor the address proves a fresh execution; the run_receipt "
+            "supplies that proof - per row the live upload exchange and the per-request served headers "
+            "(Date, CF-Ray, served revision), plus an in-run demonstration of the host deduplication."
         ),
         "surface": "Near You Kensington wider-district journey",
         "verifier": "node --test test/kensington_wider_district_journey.test.mjs",
         "captured_at": captured_at,
         "local_image_dir_ignored": LOCAL_IMAGE_DIR_NOTE,
+        "run_receipt": run_receipt,
         "captures": captures,
     }
     validate_manifest(manifest)
