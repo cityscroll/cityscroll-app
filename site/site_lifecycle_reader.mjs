@@ -6,16 +6,17 @@
 // Constructed so the source text does not spell the register product slug.
 export const SITE_LIFECYCLE_SCHEMA = ["cityscroll", "site" + "_life" + "cycle", "v1"].join(".");
 
-const clean = (value, max = 1000) => String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
-const bbl = (value) => {
-  const v = clean(value, 20).replace(/\.0$/, "");
+// Unique names: classic-script flatten shares one scope with procurement_document.clean.
+const siteLifecycleReaderText = (value, max = 1000) => String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
+const siteLifecycleReaderBbl = (value) => {
+  const v = siteLifecycleReaderText(value, 20).replace(/\.0$/, "");
   return /^\d{10}$/.test(v) ? v : null;
 };
-const id = (value) => clean(value, 240) || null;
+const siteLifecycleReaderId = (value) => siteLifecycleReaderText(value, 240) || null;
 
 export function createSiteLifecycleReader(manifest, shards = [], reverse = null) {
   const parcels = new Map();
-  for (const shard of shards) for (const row of shard?.rows || []) if (bbl(row?.parcel_id)) parcels.set(row.parcel_id, row);
+  for (const shard of shards) for (const row of shard?.rows || []) if (siteLifecycleReaderBbl(row?.parcel_id)) parcels.set(row.parcel_id, row);
   const generation = manifest?.generation || shards.find((s) => s?.generation)?.generation || null;
   if (manifest?.generation && shards.some((s) => s?.generation && s.generation !== manifest.generation)) throw new Error("site lifecycle generation mismatch");
   if (manifest?.content_hash && shards.some((s) => s?.content_hash && s.content_hash !== manifest.content_hash)) throw new Error("site lifecycle content hash mismatch");
@@ -24,8 +25,8 @@ export function createSiteLifecycleReader(manifest, shards = [], reverse = null)
   return {
     generation,
     content_hash: manifest?.content_hash || null,
-    get(parcelId) { const key = bbl(parcelId); return key ? parcels.get(key) || null : null; },
-    memberParcels(subjectId) { const key = id(subjectId); return reverse?.members?.[key]?.parcel_ids?.slice() || []; },
+    get(parcelId) { const key = siteLifecycleReaderBbl(parcelId); return key ? parcels.get(key) || null : null; },
+    memberParcels(subjectId) { const key = siteLifecycleReaderId(subjectId); return reverse?.members?.[key]?.parcel_ids?.slice() || []; },
     parcelIds() { return [...parcels.keys()].sort(); },
     size: parcels.size,
   };
