@@ -7,7 +7,7 @@
 //   node tools/build_district_activity.mjs --check
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   buildDistrictActivity,
@@ -17,6 +17,7 @@ import {
 import { buildDistrictWeeklyDigests } from "./lib/district_weekly_digest.mjs";
 import { buildCommunityDistrictDigests } from "./lib/community_district_digest.mjs";
 import { GEOGRAPHY_COMMUNITY_DISTRICT_IDS } from "../worker/src/lib/subject_registry.mjs";
+import { catalogGenerationIdentity } from "../site/land_project_catalog.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE_OUT = join(ROOT, "site/data/district_activity.json");
@@ -65,19 +66,67 @@ function loadMeetingGeographyBackfill(publicDir) {
   };
 }
 
-function loadInputs() {
-  const boundaries = loadJson(PATHS.boundaries);
-  if (!boundaries?.boundary_vintage) {
-    throw new Error("missing site/data/district_boundaries.json with boundary_vintage");
-  }
+/**
+ * Land catalog input selection shared by the district-activity builder.
+ * Source dates and content_id come from the catalog document, never wall clock.
+ */
+export function loadDistrictActivityLandCatalogInput() {
   const landCatalog = loadJson(PATHS.landCatalog);
-  const zap = loadJson(PATHS.zap);
   if (!landCatalog?.projects) {
     throw new Error("missing site/data/land_project_catalog.json; run node tools/build_land_project_catalog.mjs");
   }
   // Absent or corrupt membership stays loadable: the activity builder marks the
   // Land place query unavailable instead of inventing a successful empty NTA set.
   const landPlaceMembership = loadJson(PATHS.landPlaceMembership);
+  return {
+    landCatalog,
+    landPlaceMembership,
+    zapRows: Array.isArray(landCatalog.projects) ? landCatalog.projects : [],
+    districtCorporaLand: {
+      corpus: "land_project_catalog",
+      path: "data/land_project_catalog.json",
+      collection: "projects",
+      stamp_field: "materialized_at",
+      stamp_value: landCatalog?.materialized_at
+        || landCatalog?.source_dates?.warehouse_materialized_at
+        || landCatalog?.sources?.warehouse?.materialized_at
+        || null,
+      source_dates: landCatalog?.source_dates || null,
+      content_id: landCatalog?.generation?.content_id || null,
+      place_membership_path: "data/land_place_membership.json",
+      place_membership_generation_id: landPlaceMembership?.generation?.id || null,
+      place_membership_content_id: landPlaceMembership?.generation?.content_id || null,
+    },
+  };
+}
+
+/** Runtime observation of the catalog generation district-activity input selection loaded. */
+export function observeDistrictActivityLandCatalogGeneration() {
+  const { landCatalog, districtCorporaLand } = loadDistrictActivityLandCatalogInput();
+  return {
+    consumer: "district_activity",
+    identity: {
+      content_id: districtCorporaLand.content_id || null,
+      source_dates: {
+        warehouse_materialized_at: districtCorporaLand.source_dates?.warehouse_materialized_at || null,
+        defaults_generated_at: districtCorporaLand.source_dates?.defaults_generated_at || null,
+      },
+    },
+    // Cross-check against the raw catalog document the loader read.
+    catalog_identity: catalogGenerationIdentity(landCatalog),
+  };
+}
+
+export function loadDistrictActivityInputs() {
+  const boundaries = loadJson(PATHS.boundaries);
+  if (!boundaries?.boundary_vintage) {
+    throw new Error("missing site/data/district_boundaries.json with boundary_vintage");
+  }
+  const {
+    landPlaceMembership,
+    zapRows,
+    districtCorporaLand,
+  } = loadDistrictActivityLandCatalogInput();
   const geographyRegistry = loadJson(PATHS.geographyRegistry);
   const geographyLayers = (geographyRegistry?.layers || [])
     .filter((row) => NEAR_YOU_PUBLIC_GEOGRAPHY_TYPES.includes(row?.type))
@@ -132,7 +181,7 @@ function loadInputs() {
     geographyLayers,
     // Admitted catalog population (warehouse ∪ defaults). Source dates come from
     // the catalog document, never from this builder's wall clock.
-    zapRows: Array.isArray(landCatalog.projects) ? landCatalog.projects : [],
+    zapRows,
     landPlaceMembership,
     propertyRows: Array.isArray(property?.property_rows) ? property.property_rows : [],
     meetingsRows: meetingRows,
@@ -146,21 +195,7 @@ function loadInputs() {
     contractActionRows: Array.isArray(contractActions?.rows) ? contractActions.rows : [],
     mandateBacklinksLookup,
     districtCorpora: {
-      land: {
-        corpus: "land_project_catalog",
-        path: "data/land_project_catalog.json",
-        collection: "projects",
-        stamp_field: "materialized_at",
-        stamp_value: landCatalog?.materialized_at
-          || landCatalog?.source_dates?.warehouse_materialized_at
-          || landCatalog?.sources?.warehouse?.materialized_at
-          || null,
-        source_dates: landCatalog?.source_dates || null,
-        content_id: landCatalog?.generation?.content_id || null,
-        place_membership_path: "data/land_place_membership.json",
-        place_membership_generation_id: landPlaceMembership?.generation?.id || null,
-        place_membership_content_id: landPlaceMembership?.generation?.content_id || null,
-      },
+      land: districtCorporaLand,
       property: {
         path: "data/property_domain_observations.json",
         collection: "property_rows",
@@ -191,7 +226,7 @@ function loadInputs() {
 }
 
 function build() {
-  const inputs = loadInputs();
+  const inputs = loadDistrictActivityInputs();
   const builtAt = new Date().toISOString();
   const activity = buildDistrictActivity({ ...inputs, builtAt });
   return {
@@ -473,53 +508,57 @@ function writeCommunityDigest(doc) {
   writeFileSync(COMMUNITY_DIGEST_OUT, JSON.stringify(doc) + "\n");
 }
 
-const args = process.argv.slice(2);
-const checkOnly = args.includes("--check");
+const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 
-if (checkOnly) {
-  const existing = loadJson(SITE_OUT);
-  if (!existing) {
-    console.error("missing", SITE_OUT);
-    process.exit(1);
+if (isMain) {
+  const args = process.argv.slice(2);
+  const checkOnly = args.includes("--check");
+
+  if (checkOnly) {
+    const existing = loadJson(SITE_OUT);
+    if (!existing) {
+      console.error("missing", SITE_OUT);
+      process.exit(1);
+    }
+    check(existing);
+    const existingAudit = loadJson(GEOGRAPHY_AUDIT_OUT);
+    if (JSON.stringify(existingAudit) !== JSON.stringify(geographyAuditReceipt(existing))) {
+      throw new Error("geography located_in audit receipt drift");
+    }
+    // Rebuild and compare shape invariants (not full byte equality — built_at moves).
+    const existingDigest = loadJson(DIGEST_OUT);
+    checkDigest(existingDigest);
+    checkCommunityDigest(loadJson(COMMUNITY_DIGEST_OUT));
+    const fresh = build();
+    check(fresh.activity);
+    checkDigest(fresh.digest);
+    checkCommunityDigest(fresh.communityDigest);
+    if (existing.boundary_vintage !== fresh.activity.boundary_vintage) {
+      console.error("boundary_vintage drift vs boundary layer");
+      process.exit(1);
+    }
+    console.log("district_activity ok", {
+      boundary_vintage: existing.boundary_vintage,
+      land_located: existing.sources?.land?.located,
+      property_located: existing.sources?.property?.located,
+      meetings_located: existing.sources?.meetings?.located,
+      rules_located: existing.sources?.rules?.located,
+      money_located: existing.sources?.money?.located,
+      district_digest_bytes: existingDigest.performance?.measured_bytes,
+    });
+    process.exit(0);
   }
-  check(existing);
-  const existingAudit = loadJson(GEOGRAPHY_AUDIT_OUT);
-  if (JSON.stringify(existingAudit) !== JSON.stringify(geographyAuditReceipt(existing))) {
-    throw new Error("geography located_in audit receipt drift");
-  }
-  // Rebuild and compare shape invariants (not full byte equality — built_at moves).
-  const existingDigest = loadJson(DIGEST_OUT);
-  checkDigest(existingDigest);
-  checkCommunityDigest(loadJson(COMMUNITY_DIGEST_OUT));
-  const fresh = build();
-  check(fresh.activity);
-  checkDigest(fresh.digest);
-  checkCommunityDigest(fresh.communityDigest);
-  if (existing.boundary_vintage !== fresh.activity.boundary_vintage) {
-    console.error("boundary_vintage drift vs boundary layer");
-    process.exit(1);
-  }
-  console.log("district_activity ok", {
-    boundary_vintage: existing.boundary_vintage,
-    land_located: existing.sources?.land?.located,
-    property_located: existing.sources?.property?.located,
-    meetings_located: existing.sources?.meetings?.located,
-    rules_located: existing.sources?.rules?.located,
-    money_located: existing.sources?.money?.located,
-    district_digest_bytes: existingDigest.performance?.measured_bytes,
+
+  const { activity: doc, digest, communityDigest } = build();
+  check(doc);
+  checkDigest(digest);
+  checkCommunityDigest(communityDigest);
+  writeTwin(doc);
+  writeDigest(digest);
+  writeCommunityDigest(communityDigest);
+  console.log("wrote", SITE_OUT, {
+    boundary_vintage: doc.boundary_vintage,
+    sources: doc.sources,
+    district_digest_bytes: digest.performance.measured_bytes,
   });
-  process.exit(0);
 }
-
-const { activity: doc, digest, communityDigest } = build();
-check(doc);
-checkDigest(digest);
-checkCommunityDigest(communityDigest);
-writeTwin(doc);
-writeDigest(digest);
-writeCommunityDigest(communityDigest);
-console.log("wrote", SITE_OUT, {
-  boundary_vintage: doc.boundary_vintage,
-  sources: doc.sources,
-  district_digest_bytes: digest.performance.measured_bytes,
-});
