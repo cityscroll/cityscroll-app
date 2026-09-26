@@ -404,7 +404,7 @@
   "condition": "Local hermetic fixture widths plus module-oracle journey results retained beside the production read-back. Module-oracle rows are not browser viewport measurements.",
   "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
   "feature": "place-navigation-release",
-  "grounded_at": "f3e0bcedb92cc4de8b75e8b92064af77ba919413",
+  "grounded_at": "5f042e39d6f05e378a5013c427e4e629ef96107e",
   "image_binaries_committed": false,
   "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest and the read-back JSON are committed.",
   "local_image_dir_ignored": "place-navigation-release-screenshots (task scratch; ignored)",
