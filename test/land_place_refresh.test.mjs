@@ -17,7 +17,7 @@ import {
 } from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-import test from "node:test";
+import { describe, test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { LAND_PROJECT_CATALOG_PATH } from "../site/land_project_catalog.mjs";
@@ -65,22 +65,67 @@ const ANCHORS = Object.freeze({
   dewitt: "2023M0213",
 });
 
+
 function loadJson(filePath) {
   return JSON.parse(readFileSync(filePath, "utf8"));
 }
 
-function seedTempPublication(tempDir) {
+/** Tiny admitted catalog + BBL index for selective refresh tests. */
+function writeReducedCatalogFixture(fixtureDir, {
+  projectIds = [ANCHORS.fdny, ANCHORS.westshore, ANCHORS.dewitt],
+  contentSuffix = "reduced",
+} = {}) {
+  const fullCatalog = loadJson(CATALOG);
+  const fullBbl = loadJson(BBL_INDEX);
+  const idSet = new Set(projectIds);
+  const projects = fullCatalog.projects.filter((row) => idSet.has(row.project_id));
+  const catalogPath = path.join(fixtureDir, "land_project_catalog.json");
+  const bblPath = path.join(fixtureDir, "zap_bbl_warehouse_lookup.json");
+  writeFileSync(
+    catalogPath,
+    `${JSON.stringify({
+      ...fullCatalog,
+      project_count: projects.length,
+      projects,
+      generation: {
+        ...fullCatalog.generation,
+        content_id: `${fullCatalog.generation.content_id}:${contentSuffix}:${projects.length}`,
+      },
+    }, null, 2)}\n`,
+  );
+  const rows = (fullBbl.rows || []).filter((row) => idSet.has(row.project_id));
+  writeFileSync(
+    bblPath,
+    `${JSON.stringify({
+      ...fullBbl,
+      project_count: new Set(rows.map((row) => row.project_id)).size,
+      bbl_row_count: rows.length,
+      rows,
+    }, null, 2)}\n`,
+  );
+  return { catalogPath, bblPath, project_count: projects.length };
+}
+
+
+function seedTempPublication(tempDir, { reduced = false } = {}) {
   const fixtureDir = path.join(tempDir, "fixture");
   const publicDir = path.join(fixtureDir, "land-place-generations");
   const activeIndexPath = path.join(fixtureDir, "land_place_membership.json");
   const activeEvidenceDir = path.join(fixtureDir, "land-place-evidence");
-  const bblPath = path.join(fixtureDir, "zap_bbl_warehouse_lookup.json");
   const addressManifestPath = path.join(fixtureDir, "address-index-manifest.json");
   mkdirSync(publicDir, { recursive: true });
   mkdirSync(activeEvidenceDir, { recursive: true });
 
-  // Start from the committed BBL index so selective edits stay source-shaped.
-  writeFileSync(bblPath, readFileSync(BBL_INDEX));
+  let catalogPath = CATALOG;
+  let bblPath = path.join(fixtureDir, "zap_bbl_warehouse_lookup.json");
+  if (reduced) {
+    const reducedPaths = writeReducedCatalogFixture(fixtureDir);
+    catalogPath = reducedPaths.catalogPath;
+    bblPath = reducedPaths.bblPath;
+  } else {
+    // Full committed BBL index so selective edits stay source-shaped.
+    writeFileSync(bblPath, readFileSync(BBL_INDEX));
+  }
   if (existsSync(ADDRESS_MANIFEST)) {
     writeFileSync(addressManifestPath, readFileSync(ADDRESS_MANIFEST));
   } else {
@@ -95,7 +140,7 @@ function seedTempPublication(tempDir) {
     publicDir,
     activeIndexPath,
     activeEvidenceDir,
-    catalogPath: CATALOG,
+    catalogPath,
     bblPath,
     parcelManifestPath: PARCEL_MANIFEST,
     parcelDir: PARCEL_DIR,
@@ -122,6 +167,7 @@ function refreshFromPaths(paths, runOptions = {}) {
   });
 }
 
+describe("land_place_refresh", { concurrency: 1 }, () => {
 test("A1 [outcome] first run projects baseline catalog; unchanged inputs keep bytes; one BBL edit is selective", async () => {
   await withTempDir("land-place-refresh-a1-", async (tempDir) => {
     const paths = seedTempPublication(tempDir);
@@ -209,13 +255,13 @@ test("A1 [outcome] first run projects baseline catalog; unchanged inputs keep by
 
 test("A2 [outcome] removing a project clears compact and reverse entries; parcel correction updates dependents", async () => {
   await withTempDir("land-place-refresh-a2-", async (tempDir) => {
-    const paths = seedTempPublication(tempDir);
+    const paths = seedTempPublication(tempDir, { reduced: true });
     const first = refreshFromPaths(paths);
     assert.equal(first.status, "activated");
 
-    // Build a reduced catalog missing FDNY and keep the BBL index intact.
+    // Drop FDNY from the reduced catalog; keep the BBL index intact.
     const catalog = loadJson(paths.catalogPath);
-    const reducedCatalogPath = path.join(paths.fixtureDir, "land_project_catalog.json");
+    const reducedCatalogPath = path.join(paths.fixtureDir, "land_project_catalog.minus-fdny.json");
     const reducedProjects = catalog.projects.filter((row) => row.project_id !== ANCHORS.fdny);
     writeFileSync(reducedCatalogPath, `${JSON.stringify({
       ...catalog,
@@ -237,12 +283,14 @@ test("A2 [outcome] removing a project clears compact and reverse entries; parcel
       projectsForGeography(active.index, "nta2020", "SI0105").includes(ANCHORS.fdny),
       false,
     );
-    assert.equal(active.index.project_count, 243);
+    assert.equal(active.index.project_count, 2);
 
-    // Parcel membership correction: flip FDNY is already gone; correct Dewitt's
-    // parcel shard for one of its BBLs and ensure Dewitt updates while Westshore stays.
-    // Restore full catalog first so Dewitt remains present.
-    paths.catalogPath = CATALOG;
+    // Restore the three-project reduced catalog, then correct Dewitt's parcel
+    // shard and ensure Dewitt updates while Westshore stays.
+    const restoredCatalog = writeReducedCatalogFixture(paths.fixtureDir, {
+      contentSuffix: "restored",
+    });
+    paths.catalogPath = restoredCatalog.catalogPath;
     const restored = refreshFromPaths(paths, { now: "2026-09-25T19:10:00.000Z" });
     assert.equal(restored.status, "activated");
     const beforeDewitt = loadJson(paths.activeIndexPath).by_project[ANCHORS.dewitt];
@@ -321,7 +369,7 @@ test("A2 [outcome] removing a project clears compact and reverse entries; parcel
 
 test("A3 [boundary] partial download / mismatched boundary retain last-good; refresh clock stays off source dates", async () => {
   await withTempDir("land-place-refresh-a3-", async (tempDir) => {
-    const paths = seedTempPublication(tempDir);
+    const paths = seedTempPublication(tempDir, { reduced: true });
     const first = refreshFromPaths(paths);
     assert.equal(first.ok, true);
     const kept = first.active_generation;
@@ -350,7 +398,7 @@ test("A3 [boundary] partial download / mismatched boundary retain last-good; ref
 
 test("A4 [verification] command covers backfill, no-op, deletion, boundary failure, and recovery", async () => {
   await withTempDir("land-place-refresh-a4-", async (tempDir) => {
-    const paths = seedTempPublication(tempDir);
+    const paths = seedTempPublication(tempDir, { reduced: true });
 
     const seeded = runLandPlaceRefresh({
       publicDir: paths.publicDir,
@@ -455,7 +503,7 @@ test("A4 [verification] command covers backfill, no-op, deletion, boundary failu
 
 test("A5 [boundary,verification] assets publish before active switch; pin one generation; retain previous", async () => {
   await withTempDir("land-place-refresh-a5-", async (tempDir) => {
-    const paths = seedTempPublication(tempDir);
+    const paths = seedTempPublication(tempDir, { reduced: true });
     const first = refreshFromPaths(paths);
     const firstGeneration = first.active_generation;
 
@@ -598,3 +646,4 @@ test("committed ACTIVE stays byte-identical when inputs already match without a 
     if (hadReceipt) writeFileSync(receiptPath, receiptBackup);
   }
 });
+}); // land_place_refresh describe
