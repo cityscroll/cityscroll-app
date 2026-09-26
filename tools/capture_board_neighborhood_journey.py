@@ -18,6 +18,7 @@ import json
 import os
 import re
 import sys
+import uuid
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -48,6 +49,8 @@ DEFAULT_BASE = "https://cityscroll.org/"
 PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
 ARTIFACT_UA = "cityscroll-board-neighborhood-journey-capture/1"
 DATA_VINTAGE = "board-neighborhood generation; nta2020 26B; community 2026-05-26"
+PAGE_LOAD_HEADER_KEYS = ("date", "cf-ray", "cf-cache-status", "age", "last-modified", "etag")
+TIMESTAMP_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
 REQUIRED_ANCESTOR = load_recorded_delivery(DELIVERY_PATH)
 
@@ -131,20 +134,95 @@ def write_json(path: Path, payload: dict) -> None:
     )
 
 
-def fetch_bytes(url: str, *, accept: str = "*/*", timeout: int = 60) -> tuple[int, bytes]:
+def utc_now() -> str:
+    return datetime.now(timezone.utc).strftime(TIMESTAMP_FORMAT)
+
+
+def header_map(raw_headers) -> dict[str, str | None]:
+    """Normalize served response headers used in the per-run receipt."""
+    headers: dict[str, str | None] = {}
+    for key in PAGE_LOAD_HEADER_KEYS:
+        value = None
+        try:
+            # Playwright Response.headers is a lower-cased mapping.
+            if hasattr(raw_headers, "get"):
+                value = raw_headers.get(key) or raw_headers.get(key.title())
+            if value is None and hasattr(raw_headers, "get_all"):
+                values = raw_headers.get_all(key) or raw_headers.get_all(key.title())
+                if values:
+                    value = values[0]
+        except Exception:
+            value = None
+        if isinstance(value, (list, tuple)):
+            value = value[0] if value else None
+        headers[key] = str(value) if value else None
+    return headers
+
+
+def request_receipt(
+    *,
+    url: str,
+    http_status: int,
+    raw_headers,
+    served_revision: str | None,
+    kind: str,
+) -> dict:
+    return {
+        "kind": kind,
+        "url": url,
+        "http_status": int(http_status),
+        "observed_at": utc_now(),
+        "served_revision": served_revision,
+        "headers": header_map(raw_headers),
+    }
+
+
+def fetch_bytes(
+    url: str,
+    *,
+    accept: str = "*/*",
+    timeout: int = 60,
+    request_log: list[dict] | None = None,
+    served_revision: str | None = None,
+    kind: str = "fetch",
+) -> tuple[int, bytes]:
     request = urllib.request.Request(
         url,
         headers={"User-Agent": ARTIFACT_UA, "Accept": accept},
     )
     try:
         with urllib.request.urlopen(request, timeout=timeout) as response:
-            return int(response.status), response.read()
+            status = int(response.status)
+            body = response.read()
+            if request_log is not None:
+                request_log.append(
+                    request_receipt(
+                        url=url,
+                        http_status=status,
+                        raw_headers=response.headers,
+                        served_revision=served_revision,
+                        kind=kind,
+                    )
+                )
+            return status, body
     except (urllib.error.URLError, TimeoutError, OSError) as error:
         raise ServedDataMissingError(f"served resource unavailable at {url}: {error}") from error
 
 
-def fetch_json(url: str) -> dict | list:
-    _status, raw = fetch_bytes(url, accept="application/json")
+def fetch_json(
+    url: str,
+    *,
+    request_log: list[dict] | None = None,
+    served_revision: str | None = None,
+    kind: str = "fetch-json",
+) -> dict | list:
+    _status, raw = fetch_bytes(
+        url,
+        accept="application/json",
+        request_log=request_log,
+        served_revision=served_revision,
+        kind=kind,
+    )
     try:
         payload = json.loads(raw.decode("utf-8"))
     except json.JSONDecodeError as error:
@@ -167,14 +245,24 @@ def require_production_base(base: str) -> str:
     return normalized
 
 
-def require_served_subjects(base: str) -> dict:
+def require_served_subjects(
+    base: str,
+    *,
+    request_log: list[dict] | None = None,
+    served_revision: str | None = None,
+) -> dict:
     """Refuse when directory, index, ACTIVE pointer, or profile markup is absent."""
     index_url = absolute(base, "/data/board_neighborhood_index.json")
     active_url = absolute(base, "/data/board-neighborhood-generations/ACTIVE")
     directory_url = absolute(base, "/community-boards/")
     profile_url = absolute(base, "/community-boards/brooklyn-cb-14/")
 
-    index = fetch_json(index_url)
+    index = fetch_json(
+        index_url,
+        request_log=request_log,
+        served_revision=served_revision,
+        kind="board-neighborhood-index",
+    )
     if not isinstance(index, dict) or index.get("schema") != "cityscroll.board_neighborhood_index.v1":
         raise ServedDataMissingError(f"board neighborhood index missing schema at {index_url}")
     by_nta = index.get("by_nta") or {}
@@ -191,17 +279,31 @@ def require_served_subjects(base: str) -> dict:
                 f"served index for {nta} lacks expected boards {sorted(expected)}; got {sorted(boards)}"
             )
 
-    active = fetch_json(active_url)
+    active = fetch_json(
+        active_url,
+        request_log=request_log,
+        served_revision=served_revision,
+        kind="board-neighborhood-active",
+    )
     if not isinstance(active, dict) or not active.get("active_generation"):
         raise ServedDataMissingError(f"ACTIVE generation pointer missing at {active_url}")
     generation_id = str(active["active_generation"])
     gen_manifest = fetch_json(
-        absolute(base, f"/data/board-neighborhood-generations/{generation_id}/manifest.json")
+        absolute(base, f"/data/board-neighborhood-generations/{generation_id}/manifest.json"),
+        request_log=request_log,
+        served_revision=served_revision,
+        kind="board-neighborhood-generation-manifest",
     )
     if not isinstance(gen_manifest, dict):
         raise ServedDataMissingError("generation manifest missing")
 
-    _status, directory_html = fetch_bytes(directory_url, accept="text/html")
+    _status, directory_html = fetch_bytes(
+        directory_url,
+        accept="text/html",
+        request_log=request_log,
+        served_revision=served_revision,
+        kind="directory-html",
+    )
     directory_text = directory_html.decode("utf-8", "replace")
     for needle in (
         "data-board-neighborhood-entry",
@@ -219,6 +321,9 @@ def require_served_subjects(base: str) -> dict:
     _status, directory_module = fetch_bytes(
         absolute(base, "/board_neighborhood_directory.mjs"),
         accept="application/javascript",
+        request_log=request_log,
+        served_revision=served_revision,
+        kind="directory-module",
     )
     module_text = directory_module.decode("utf-8", "replace")
     if "board_neighborhood_index.mjs" in module_text or "node:crypto" in module_text:
@@ -226,7 +331,13 @@ def require_served_subjects(base: str) -> dict:
             "served board_neighborhood_directory.mjs still imports a Node-only index module"
         )
 
-    _status, profile_html = fetch_bytes(profile_url, accept="text/html")
+    _status, profile_html = fetch_bytes(
+        profile_url,
+        accept="text/html",
+        request_log=request_log,
+        served_revision=served_revision,
+        kind="profile-html",
+    )
     profile_text = profile_html.decode("utf-8", "replace")
     for needle in (
         "Neighborhoods in this district",
@@ -304,12 +415,141 @@ def tab_until(page, selector: str, *, max_tabs: int = 100) -> dict:
     )
 
 
-def observe_directory_geo(page, base: str, case: dict, viewport: tuple[str, int, int]) -> dict:
+def goto_with_receipt(
+    page,
+    url: str,
+    *,
+    request_log: list[dict] | None,
+    served_revision: str | None,
+    kind: str,
+) -> object:
+    response = page.goto(url, wait_until="domcontentloaded", timeout=60_000)
+    if request_log is not None and response is not None:
+        request_log.append(
+            request_receipt(
+                url=url,
+                http_status=int(response.status),
+                raw_headers=response.headers,
+                served_revision=served_revision,
+                kind=kind,
+            )
+        )
+    return response
+
+
+BOARD_HASH_GUARD_INIT = """
+(() => {
+  if (window.__cityscrollBoardHashGuard) return;
+  window.__cityscrollBoardHashGuard = true;
+  const fallbackBoard = () =>
+    document.querySelector('[data-community-board-root]')?.dataset?.selectedBoard ||
+    document.querySelector('.community-board-boundary[data-board-id]:not([hidden])')?.dataset?.boardId ||
+    'brooklyn-cb-14';
+  const normalize = (raw) => {
+    try {
+      const url = new URL(String(raw || ''), window.location.href);
+      if (url.hash === '#board-' || url.hash === '#board') {
+        url.hash = `#board-${fallbackBoard()}`;
+      }
+      // Collapse empty `?` vs no-search so replaceState cannot thrash navigations.
+      const search = url.search && url.search !== '?' ? url.search : '';
+      return `${url.pathname}${search}${url.hash}`;
+    } catch (error) {
+      return raw;
+    }
+  };
+  const sameLocation = (candidate) => {
+    try {
+      return normalize(candidate) === normalize(window.location.href);
+    } catch (error) {
+      return false;
+    }
+  };
+  const origReplace = history.replaceState.bind(history);
+  const origPush = history.pushState.bind(history);
+  history.replaceState = (state, title, url) => {
+    const next = normalize(url);
+    if (sameLocation(next)) return;
+    return origReplace(state, title, next);
+  };
+  history.pushState = (state, title, url) => {
+    const next = normalize(url);
+    if (sameLocation(next)) return;
+    return origPush(state, title, next);
+  };
+})();
+"""
+
+
+def install_board_hash_guard(page) -> None:
+    """Install before navigation so empty ``#board-`` rewrites cannot thrash the DOM."""
+    page.add_init_script(BOARD_HASH_GUARD_INIT)
+
+
+def stabilize_community_boards_page(page) -> None:
+    """Stop the live empty ``#board-`` hash thrash from detaching directory controls.
+
+    A served scorecard loop can rewrite the location to ``#board-`` (empty board
+    id) and detach progressive-enhancement nodes. Capture only needs a stable
+    document; rewrite empty board hashes to the first real board path.
+    """
+    page.wait_for_load_state("domcontentloaded")
+    page.wait_for_selector("[data-community-board-root], [data-board-neighborhood-entry]", timeout=30_000)
+    # Init-script already installed the guard; only normalize the current URL.
+    # Retry when a concurrent hash rewrite destroys the execution context.
+    last_error = None
+    for _ in range(8):
+        try:
+            page.evaluate(
+                """() => {
+                  const root = document.querySelector('[data-community-board-root]');
+                  const fallback =
+                    root?.dataset?.selectedBoard ||
+                    document.querySelector('.community-board-boundary[data-board-id]:not([hidden])')?.dataset?.boardId ||
+                    'brooklyn-cb-14';
+                  const current = new URL(window.location.href);
+                  if (current.hash === '#board-' || current.hash === '#board') {
+                    current.hash = `#board-${fallback}`;
+                  }
+                  const search = current.search && current.search !== '?' ? current.search : '';
+                  const next = `${current.pathname}${search}${current.hash}`;
+                  const now = `${window.location.pathname}${window.location.search === '?' ? '' : window.location.search}${window.location.hash}`;
+                  if (next !== now) history.replaceState(null, '', next);
+                  return window.location.href;
+                }"""
+            )
+            return
+        except Exception as error:  # noqa: BLE001 - Playwright context races
+            last_error = error
+            message = str(error)
+            if "Execution context was destroyed" not in message and "navigation" not in message.lower():
+                raise
+            page.wait_for_load_state("domcontentloaded")
+            page.wait_for_timeout(200)
+    raise SystemExit(f"stabilize_community_boards_page failed after retries: {last_error}")
+
+
+def observe_directory_geo(
+    page,
+    base: str,
+    case: dict,
+    viewport: tuple[str, int, int],
+    *,
+    request_log: list[dict] | None = None,
+    served_revision: str | None = None,
+) -> dict:
     name, width, height = viewport
     nta_id = case["geo"].split(":")[-1]
     route = f"/community-boards/?geo={urllib.parse.quote(case['geo'], safe=':')}"
     page.set_viewport_size({"width": width, "height": height})
-    page.goto(absolute(base, route), wait_until="domcontentloaded", timeout=60_000)
+    goto_with_receipt(
+        page,
+        absolute(base, route),
+        request_log=request_log,
+        served_revision=served_revision,
+        kind=f"browser-directory-{case['id']}-{name}",
+    )
+    stabilize_community_boards_page(page)
     page.wait_for_selector("[data-board-neighborhood-entry]", timeout=30_000)
     page.wait_for_selector("#scorecard-neighborhood-select", timeout=30_000)
 
@@ -363,10 +603,12 @@ def observe_directory_geo(page, base: str, case: dict, viewport: tuple[str, int,
     )
 
     # No-JS association table remains the fail-closed browse route.
+    # Progressive enhancement can leave a second same-nta link in the results
+    # panel, so read href from the first match only.
     nojs = page.locator(f'[data-board-neighborhood-link="{nta_id}"]')
-    nojs_href = nojs.get_attribute("href") if nojs.count() else None
     if nojs.count() < 1:
         raise SystemExit(f"{case['id']}@{name}: no-JS association link missing for {nta_id}")
+    nojs_href = nojs.first.get_attribute("href")
 
     for board_id in case["board_ids"]:
         profile_links = page.locator(f'a[href="/community-boards/{board_id}/"]')
@@ -424,12 +666,26 @@ def observe_directory_geo(page, base: str, case: dict, viewport: tuple[str, int,
     }
 
 
-def observe_profile_journey(page, base: str, case: dict, viewport: tuple[str, int, int]) -> dict:
+def observe_profile_journey(
+    page,
+    base: str,
+    case: dict,
+    viewport: tuple[str, int, int],
+    *,
+    request_log: list[dict] | None = None,
+    served_revision: str | None = None,
+) -> dict:
     name, width, height = viewport
     board_id = case["profile_board"]
     route = f"/community-boards/{board_id}/"
     page.set_viewport_size({"width": width, "height": height})
-    page.goto(absolute(base, route), wait_until="domcontentloaded", timeout=60_000)
+    goto_with_receipt(
+        page,
+        absolute(base, route),
+        request_log=request_log,
+        served_revision=served_revision,
+        kind=f"browser-profile-{board_id}-{name}",
+    )
     page.wait_for_selector("[data-board-profile-neighborhoods], .board-neighborhoods", timeout=30_000)
 
     inner_width = page.evaluate("() => window.innerWidth")
@@ -478,39 +734,87 @@ def observe_profile_journey(page, base: str, case: dict, viewport: tuple[str, in
     }
 
 
-def observe_exact_address(page, base: str, viewport: tuple[str, int, int]) -> list[dict]:
+def observe_exact_address(
+    page,
+    base: str,
+    viewport: tuple[str, int, int],
+    *,
+    request_log: list[dict] | None = None,
+    served_revision: str | None = None,
+) -> list[dict]:
     name, width, height = viewport
     route = "/community-boards/"
     page.set_viewport_size({"width": width, "height": height})
-    page.goto(absolute(base, route), wait_until="domcontentloaded", timeout=60_000)
-    page.wait_for_selector("[data-board-exact-address-input]", timeout=30_000)
-
-    # Open the address panel via the neighborhood address action when present.
-    action = page.locator("[data-board-address-action]")
-    if action.count():
-        action.first.click()
-    page.wait_for_selector("[data-board-exact-address-input]", state="visible", timeout=10_000)
+    goto_with_receipt(
+        page,
+        absolute(base, route),
+        request_log=request_log,
+        served_revision=served_revision,
+        kind=f"browser-exact-address-{name}",
+    )
+    stabilize_community_boards_page(page)
+    # Input exists in the server panel while hidden; wait for attachment first.
+    page.wait_for_selector("[data-board-exact-address-input]", state="attached", timeout=30_000)
+    page.wait_for_selector("[data-board-neighborhood-entry]", timeout=30_000)
 
     rows = []
     for label, address, expect_ok, board_id, recovery_needle in (
         ("midwood-success", MIDWOOD_ADDRESS, True, MIDWOOD_BOARD, None),
         ("victory-unresolved", VICTORY_ADDRESS, False, None, VICTORY_RECOVERY_NEEDLE),
     ):
-        page.fill("[data-board-exact-address-input]", address)
-        page.click("[data-board-exact-address-submit]")
-        if expect_ok:
-            page.wait_for_selector(
-                f'[data-board-exact-address-choice="{board_id}"], a[href="/community-boards/{board_id}/"]',
-                timeout=45_000,
+        stabilize_community_boards_page(page)
+        outcome = page.evaluate(
+            """async (address) => {
+              const panel = document.querySelector('[data-board-neighborhood-address]');
+              const form = document.querySelector('[data-board-exact-address-form]');
+              const input = document.querySelector('[data-board-exact-address-input]');
+              if (!panel || !form || !input) {
+                return { ok: false, error: 'exact-address controls missing' };
+              }
+              panel.hidden = false;
+              // Give the scorecard module a moment to attach submit listeners after navigation.
+              await new Promise((resolve) => setTimeout(resolve, 1500));
+              input.value = address;
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+              form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+              for (let i = 0; i < 90; i += 1) {
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                const choice = document.querySelector(
+                  '[data-board-exact-address-result] [data-board-exact-address-choice]'
+                );
+                const status = (document.querySelector('[data-board-exact-address-status]')?.textContent || '').trim();
+                if (choice || (status && status !== 'Looking up that address…')) {
+                  return {
+                    ok: true,
+                    choice: choice?.getAttribute('data-board-exact-address-choice') || null,
+                    status,
+                  };
+                }
+              }
+              return {
+                ok: false,
+                error: 'timed out waiting for exact-address outcome',
+                status: (document.querySelector('[data-board-exact-address-status]')?.textContent || '').trim(),
+              };
+            }""",
+            address,
+        )
+        if not outcome or not outcome.get("ok"):
+            raise SystemExit(
+                f"{label}@{name}: exact-address resolve failed: {outcome!r}"
             )
+        if expect_ok:
+            if outcome.get("choice") != board_id:
+                raise SystemExit(
+                    f"{label}@{name}: expected board {board_id}, got {outcome!r}"
+                )
         else:
-            page.wait_for_selector("[data-board-exact-address-status]", timeout=45_000)
-            status = page.locator("[data-board-exact-address-status]").inner_text()
+            status = str(outcome.get("status") or "")
             if recovery_needle and recovery_needle not in status:
                 raise SystemExit(
                     f"{label}@{name}: expected recovery containing {recovery_needle!r}, got {status!r}"
                 )
-            if page.locator("[data-board-exact-address-choice]").count() > 0:
+            if outcome.get("choice"):
                 raise SystemExit(f"{label}@{name}: unresolved address must not yield an exact board choice")
 
         html = page.content()
@@ -548,11 +852,25 @@ def observe_exact_address(page, base: str, viewport: tuple[str, int, int]) -> li
     return rows
 
 
-def observe_no_js_and_back(page, base: str, viewport: tuple[str, int, int]) -> dict:
+def observe_no_js_and_back(
+    page,
+    base: str,
+    viewport: tuple[str, int, int],
+    *,
+    request_log: list[dict] | None = None,
+    served_revision: str | None = None,
+) -> dict:
     name, width, height = viewport
     route = "/community-boards/?geo=nta2020%3ABK1203"
     page.set_viewport_size({"width": width, "height": height})
-    page.goto(absolute(base, route), wait_until="domcontentloaded", timeout=60_000)
+    goto_with_receipt(
+        page,
+        absolute(base, route),
+        request_log=request_log,
+        served_revision=served_revision,
+        kind=f"browser-back-nojs-{name}",
+    )
+    stabilize_community_boards_page(page)
     page.wait_for_selector("[data-board-neighborhood-entry]", timeout=30_000)
     # Follow a board profile link, then browser Back.
     page.locator('a[href="/community-boards/brooklyn-cb-14/"]').first.click()
@@ -567,7 +885,13 @@ def observe_no_js_and_back(page, base: str, viewport: tuple[str, int, int]) -> d
         raise SystemExit(f"back@{name}: directory chooser missing after Back")
 
     # No-JS: strip scripts and confirm association links remain.
-    page.goto(absolute(base, route), wait_until="domcontentloaded", timeout=60_000)
+    goto_with_receipt(
+        page,
+        absolute(base, route),
+        request_log=request_log,
+        served_revision=served_revision,
+        kind=f"browser-back-nojs-reload-{name}",
+    )
     page.evaluate(
         """() => {
           for (const node of [...document.querySelectorAll('script')]) node.remove();
@@ -595,7 +919,14 @@ def observe_no_js_and_back(page, base: str, viewport: tuple[str, int, int]) -> d
     }
 
 
-def observe_unavailable_association(page, base: str, viewport: tuple[str, int, int]) -> dict:
+def observe_unavailable_association(
+    page,
+    base: str,
+    viewport: tuple[str, int, int],
+    *,
+    request_log: list[dict] | None = None,
+    served_revision: str | None = None,
+) -> dict:
     """Positive control: blocking the index fetch keeps directory links and retry."""
     name, width, height = viewport
     route = "/community-boards/"
@@ -607,9 +938,16 @@ def observe_unavailable_association(page, base: str, viewport: tuple[str, int, i
     page.route("**/data/board_neighborhood_index.json", block_index)
     page.route("**/data/board-neighborhood-generations/**", block_index)
     try:
-        page.goto(absolute(base, route), wait_until="domcontentloaded", timeout=60_000)
+        goto_with_receipt(
+            page,
+            absolute(base, route),
+            request_log=request_log,
+            served_revision=served_revision,
+            kind=f"browser-association-unavailable-{name}",
+        )
         # Directory shell and board table/map must remain even if enrichment fails.
         page.wait_for_selector("[data-community-board-root], .scorecard, main", timeout=30_000)
+        stabilize_community_boards_page(page)
         html = page.content()
         retry = page.locator("[data-board-neighborhood-retry]")
         failure = page.locator("[data-board-neighborhood-failure]")
@@ -635,19 +973,50 @@ def observe_unavailable_association(page, base: str, viewport: tuple[str, int, i
         page.unroute("**/data/board-neighborhood-generations/**", block_index)
 
 
-def capture_production(base: str) -> tuple[dict, list[dict]]:
+def capture_production(base: str) -> dict:
     base = require_production_base(base)
+    run_id = str(uuid.uuid4())
+    run_started_at = utc_now()
+    request_log: list[dict] = []
+
+    # Record the artifact-manifest fetch itself so the packet proves the pin check ran.
+    artifact_url = absolute(base, "/artifact-manifest.json")
+    try:
+        artifact_payload = fetch_json(
+            artifact_url,
+            request_log=request_log,
+            kind="artifact-manifest",
+        )
+    except ServedDataMissingError as error:
+        raise SystemExit(str(error)) from error
+    if not isinstance(artifact_payload, dict):
+        raise SystemExit(f"served artifact-manifest is not an object at {artifact_url}")
+
+    def fetch_json_from_recorded(_url: str) -> dict:
+        # require_served_page_revision_contains_delivery re-fetches the same URL;
+        # reuse the already-fetched payload so the receipt stays one request.
+        return artifact_payload
+
     try:
         served_revision = require_served_page_revision_contains_delivery(
             base,
             REQUIRED_ANCESTOR,
             cwd=ROOT,
+            fetch_json=fetch_json_from_recorded,
         )
     except (WrongPinError, DeployPendingError) as error:
         raise SystemExit(str(error)) from error
 
+    # Stamp served_revision onto the artifact-manifest receipt now that it is known.
+    if request_log:
+        request_log[0]["served_revision"] = served_revision
+
     try:
-        subjects = require_served_subjects(base)
+        subjects = require_served_subjects(
+            base,
+            request_log=request_log,
+            served_revision=served_revision,
+        )
     except ServedDataMissingError as error:
         raise SystemExit(str(error)) from error
 
@@ -656,13 +1025,63 @@ def capture_production(base: str) -> tuple[dict, list[dict]]:
         browser = playwright.chromium.launch(headless=True)
         try:
             page = browser.new_page()
+            install_board_hash_guard(page)
             for viewport in VIEWPORTS:
                 for case in JOURNEY_CASES:
-                    captures.append(observe_directory_geo(page, base, case, viewport))
-                    captures.append(observe_profile_journey(page, base, case, viewport))
-                captures.extend(observe_exact_address(page, base, viewport))
-                captures.append(observe_no_js_and_back(page, base, viewport))
-                captures.append(observe_unavailable_association(page, base, viewport))
+                    captures.append(
+                        observe_directory_geo(
+                            page,
+                            base,
+                            case,
+                            viewport,
+                            request_log=request_log,
+                            served_revision=served_revision,
+                        )
+                    )
+                    captures.append(
+                        observe_profile_journey(
+                            page,
+                            base,
+                            case,
+                            viewport,
+                            request_log=request_log,
+                            served_revision=served_revision,
+                        )
+                    )
+                # Exact-address uses a fresh page so prior hash/geo thrash cannot
+                # leave the directory panel stuck hidden.
+                address_page = browser.new_page()
+                try:
+                    install_board_hash_guard(address_page)
+                    captures.extend(
+                        observe_exact_address(
+                            address_page,
+                            base,
+                            viewport,
+                            request_log=request_log,
+                            served_revision=served_revision,
+                        )
+                    )
+                finally:
+                    address_page.close()
+                captures.append(
+                    observe_no_js_and_back(
+                        page,
+                        base,
+                        viewport,
+                        request_log=request_log,
+                        served_revision=served_revision,
+                    )
+                )
+                captures.append(
+                    observe_unavailable_association(
+                        page,
+                        base,
+                        viewport,
+                        request_log=request_log,
+                        served_revision=served_revision,
+                    )
+                )
         finally:
             browser.close()
 
@@ -675,14 +1094,43 @@ def capture_production(base: str) -> tuple[dict, list[dict]]:
             f"({desktop['served_values']['entry_width']} <= {narrow['served_values']['entry_width']})"
         )
 
-    observed_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    run_finished_at = utc_now()
     generation_id = subjects["active_generation"]
+    for row in captures:
+        row["revision"] = served_revision
+        row["data_vintage"] = DATA_VINTAGE
+        row["repository_revision"] = served_revision
+        row["source"] = "headless-playwright-production-served-site"
+        # Screenshots stay under task scratch; never commit absolute local paths.
+        row.pop("local_screenshot", None)
+
+    # Every production request must carry Date + CF-Ray so the packet proves it ran live.
+    for entry in request_log:
+        headers = entry.get("headers") or {}
+        if not headers.get("date"):
+            raise SystemExit(f"run receipt missing Date header for {entry.get('url')}")
+        if not headers.get("cf-ray"):
+            raise SystemExit(f"run receipt missing CF-Ray header for {entry.get('url')}")
+        if entry.get("served_revision") != served_revision:
+            raise SystemExit(
+                f"run receipt served_revision mismatch for {entry.get('url')}: "
+                f"{entry.get('served_revision')} != {served_revision}"
+            )
+
     readback = {
         "schema": SCHEMA,
         "public_alias": PUBLIC_ALIAS,
-        "observed_at": observed_at,
+        "observed_at": run_finished_at,
         "evidence_class": "deployed-production-read-back",
         "origin": normalize_base(base).rstrip("/"),
+        "capture_run_id": run_id,
+        "fixture_evidence": {
+            "path": "docs/evidence/board-neighborhood-journey/capture-manifest.json",
+            "note": (
+                "Local hermetic fixture and module-oracle rows remain in capture-manifest.json; "
+                "this production read-back is retained beside that fixture packet."
+            ),
+        },
         "deployment": {
             "manifest_url": absolute(base, "/artifact-manifest.json"),
             "revision": served_revision,
@@ -701,65 +1149,38 @@ def capture_production(base: str) -> tuple[dict, list[dict]]:
             },
         },
         "letters": {
-            "A1": {"status": "observed", "captures": [c["name"] for c in captures if "address-" in c["name"] or "kensington" in c["name"] or "greenpoint" in c["name"] or "profile-" in c["name"]]},
+            "A1": {
+                "status": "observed",
+                "captures": [
+                    c["name"]
+                    for c in captures
+                    if "address-" in c["name"]
+                    or "kensington" in c["name"]
+                    or "greenpoint" in c["name"]
+                    or "profile-" in c["name"]
+                ],
+            },
             "A2": {"status": "observed", "viewports": [390, 1440]},
             "A3": {"status": "observed", "holdouts": ["queens-holdout", "bronx-holdout"]},
             "A4": {"status": "observed", "active_generation": generation_id},
             "A5": {"status": "observed", "failed_on_unmet": True},
         },
         "captures": captures,
+        "run_receipt": {
+            "capture_run_id": run_id,
+            "run_started_at": run_started_at,
+            "run_finished_at": run_finished_at,
+            "served_revision": served_revision,
+            "origin": normalize_base(base).rstrip("/"),
+            "note": (
+                "Per-request Date, CF-Ray, and served revision headers prove this production "
+                "read-back executed against the live origin."
+            ),
+            "requests": request_log,
+        },
         "image_binaries_committed": False,
     }
-
-    for row in captures:
-        row["revision"] = served_revision
-        row["data_vintage"] = DATA_VINTAGE
-        row["repository_revision"] = served_revision
-
-    manifest = {
-        "schema": MANIFEST_SCHEMA,
-        "feature": "board-neighborhood-journey",
-        "public_alias": PUBLIC_ALIAS,
-        "capture_mode": "headless-playwright-production-served-site",
-        "base": normalize_base(base),
-        "condition": "Production base after deployment; no image binary is committed.",
-        "repository_revision": served_revision,
-        "grounded_at": served_revision,
-        "revision": served_revision,
-        "revision_format": "served artifact-manifest source_commit_sha",
-        "data_vintage": DATA_VINTAGE,
-        "required_ancestor": REQUIRED_ANCESTOR,
-        "required_ancestor_contained": True,
-        "image_binaries_committed": False,
-        "image_policy": (
-            "Screenshots may exist under the local task scratch directory; only this "
-            "manifest and the read-back JSON are committed."
-        ),
-        "surface": "Community boards directory and profile neighborhood journeys",
-        "verifier": (
-            "node --test test/board_neighborhood_journey.test.mjs && "
-            "node tools/verify_board_neighborhood_journey.mjs --base-url https://cityscroll.org "
-            "--out docs/evidence/board-neighborhood-journey/readback.json"
-        ),
-        "captured_at": observed_at,
-        "local_image_dir_ignored": "board-neighborhood-journey-screenshots (task scratch; ignored)",
-        "active_generation": generation_id,
-        "captures": [
-            {
-                "name": row["name"],
-                "route": row["route"],
-                "viewport": row["viewport"],
-                "revision": served_revision,
-                "data_vintage": DATA_VINTAGE,
-                "assertion": row["assertion"],
-                "sha256": row["sha256"],
-                "file": None,
-                "served_values": row.get("served_values"),
-            }
-            for row in captures
-        ],
-    }
-    return readback, manifest
+    return readback
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -770,7 +1191,10 @@ def main(argv: list[str] | None = None) -> int:
         "--manifest-out",
         type=Path,
         default=MANIFEST_PATH,
-        help="Capture-manifest path (textual only)",
+        help=(
+            "Fixture capture-manifest path used by --check. Production runs write only the "
+            "read-back so fixture evidence stays beside the production packet."
+        ),
     )
     parser.add_argument(
         "--check",
@@ -800,14 +1224,49 @@ def main(argv: list[str] | None = None) -> int:
         if not manifest.get("captures"):
             print("manifest captures missing", file=sys.stderr)
             return 2
+        if readback.get("evidence_class") == "deployed-production-read-back":
+            receipt = readback.get("run_receipt")
+            if not isinstance(receipt, dict) or not receipt.get("requests"):
+                print("production read-back missing run_receipt.requests", file=sys.stderr)
+                return 2
+            for entry in receipt["requests"]:
+                headers = (entry or {}).get("headers") or {}
+                if not headers.get("date") or not headers.get("cf-ray"):
+                    print(
+                        f"run receipt entry missing Date/CF-Ray for {entry.get('url')}",
+                        file=sys.stderr,
+                    )
+                    return 2
+            if not readback.get("generations", {}).get("active_generation"):
+                print("production read-back missing generations.active_generation", file=sys.stderr)
+                return 2
+        # Fixture packet honesty: module-oracle rows must not pretend to be viewport captures.
+        for row in manifest.get("captures") or []:
+            source = row.get("source")
+            if source == "hermetic-module-oracle":
+                if row.get("viewport") not in (None, {}):
+                    print(
+                        f"module-oracle row {row.get('name')} must not carry a viewport label",
+                        file=sys.stderr,
+                    )
+                    return 2
+            elif source == "headless-playwright-fixture-document":
+                if not (row.get("viewport") or {}).get("width"):
+                    print(
+                        f"fixture browser row {row.get('name')} must keep its measured viewport",
+                        file=sys.stderr,
+                    )
+                    return 2
         print("check passed")
         return 0
 
-    readback, manifest = capture_production(args.base_url)
+    readback = capture_production(args.base_url)
     write_json(args.out, readback)
-    write_json(args.manifest_out, manifest)
     print(f"wrote {args.out}")
-    print(f"wrote {args.manifest_out}")
+    print(
+        "preserved fixture capture-manifest at "
+        f"{args.manifest_out.relative_to(ROOT) if args.manifest_out.is_absolute() else args.manifest_out}"
+    )
     return 0
 
 
