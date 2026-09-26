@@ -38,6 +38,15 @@ CITYSCROLL_TEST_TIME_SHIFT_DAYS=1 ./tools/preflight-required-checks.sh
 CITYSCROLL_TEST_TIME_SHIFT_DAYS=45 ./tools/preflight-required-checks.sh
 ```
 
+[`tools/preflight-required-checks.sh`](../tools/preflight-required-checks.sh) also pins
+`CROL_BUILD_DAY` for the run so primary-document rebuilds share one instant. When unset, that
+default comes from the committed money-open snapshot vintage
+(`site/data/money_default_open.json` via
+[`tools/resolve_preflight_build_day.mjs`](../tools/resolve_preflight_build_day.mjs)), matching the
+browser fixture clock — not wall-clock today. An explicit `CROL_BUILD_DAY` still wins.
+`CITYSCROLL_TEST_TIME_SHIFT_DAYS` continues to shift `Date.now` for time-travel variants and does
+not replace the build-day pin.
+
 For a direct family run, set `NODE_OPTIONS` to import the preload and use
 `--test-concurrency=2`. CI exercises the site-node, Worker, and combined families at +1 and +45
 days in the non-required `Time-travel` workflow. That check should be promoted to required only
