@@ -29,6 +29,7 @@ import {
   serializeBoardNeighborhoodIndex,
   stableStringify,
 } from "./board_neighborhood_index.mjs";
+import { tryBootstrapCommittedRefresh } from "./generation_refresh_bootstrap.mjs";
 
 export const BOARD_NEIGHBORHOOD_REFRESH_SCHEMA = "cityscroll.board_neighborhood_refresh.v1";
 export const BOARD_NEIGHBORHOOD_REFRESH_RECEIPT_SCHEMA =
@@ -637,46 +638,30 @@ export function createBoardNeighborhoodRefresh(adapters = {}) {
     // receipt. Without a prior receipt, hash planning would rebuild and rewrite
     // ACTIVE under time-travel. Seed the receipt and leave bytes alone when the
     // active generation already matches current inputs.
-    if (
-      !prior
-      && activeBefore
-      && !force
-      && !injectFailure
-      && !injectMixedGeneration
-      && bootstrapCommitted
-      && clean(indexDoc.generation?.id) === clean(activeBefore)
-    ) {
-      const receipt = {
-        schema: BOARD_NEIGHBORHOOD_REFRESH_RECEIPT_SCHEMA,
-        started_at: now,
-        completed_at: now,
+    const bootstrapped = tryBootstrapCommittedRefresh({
+      prior,
+      activeBefore,
+      force,
+      injectFailure,
+      injectMixedGeneration,
+      bootstrapCommitted,
+      activeMatches: clean(indexDoc.generation?.id) === clean(activeBefore),
+      saveReceipt,
+      receiptSchema: BOARD_NEIGHBORHOOD_REFRESH_RECEIPT_SCHEMA,
+      planSchema: BOARD_NEIGHBORHOOD_REFRESH_PLAN_SCHEMA,
+      now,
+      activatedAt: prior?.activated_at || null,
+      planFields: { changed_inputs: Object.freeze([]) },
+      receiptFields: {
         failed_at: null,
-        activated_at: prior?.activated_at || null,
-        status: "unchanged",
-        plan: {
-          schema: BOARD_NEIGHBORHOOD_REFRESH_PLAN_SCHEMA,
-          work_required: false,
-          reasons: Object.freeze(["bootstrap_committed_inputs"]),
-          changed_inputs: Object.freeze([]),
-        },
         input_hashes: inputHashes,
         vintages: indexDoc.vintages,
         inventory: indexDoc.inventory,
-        active_generation: activeBefore,
-        previous_active_generation: activeBefore,
         last_good_preserved: false,
-        message: "seeded refresh receipt from committed inputs; generation bytes unchanged",
-      };
-      if (typeof saveReceipt === "function") saveReceipt(receipt);
-      return {
-        ok: true,
-        status: "unchanged",
-        plan: receipt.plan,
-        receipt,
-        active_generation: activeBefore,
-        index: indexDoc,
-      };
-    }
+      },
+      resultFields: { index: indexDoc },
+    });
+    if (bootstrapped) return bootstrapped;
 
     // Failure injections must reach the activation boundary even when input
     // hashes match; otherwise rehearsals short-circuit as unchanged.
