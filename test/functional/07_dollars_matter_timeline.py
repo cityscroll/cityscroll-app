@@ -4,6 +4,7 @@ import json, sys
 from playwright.sync_api import sync_playwright
 import os
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
+SPA_ENTRY = BASE.rstrip("/") + "/index.html"
 _ARGS = ["--host-resolver-rules=MAP api.cityscroll.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
 SHOT = os.environ.get("CROL_SHOTS", os.path.dirname(os.path.abspath(__file__)) + "/shots") + "/"
 os.makedirs(SHOT, exist_ok=True)
@@ -26,7 +27,7 @@ with sync_playwright() as pw:
     page.on("pageerror", lambda e: errors.append(str(e)))
 
     # ---------- N3: follow-the-dollars on the known award's permalink ----------
-    page.goto(BASE + "#notice/" + PIN_NOTICE, timeout=30000)
+    page.goto(SPA_ENTRY + "#notice/" + PIN_NOTICE, timeout=30000)
     page.wait_for_selector("#ncopy", timeout=30000)
     try:
         page.wait_for_function("(document.querySelector('#ndollars')?.innerText||'').toUpperCase().includes('FOLLOW THE DOLLARS')", timeout=60000)
@@ -44,7 +45,7 @@ with sync_playwright() as pw:
 
     # ---------- N8: matter timeline (phase-grouped procurement spine) ----------
     p2 = ctx.new_page()
-    p2.goto(BASE + "#matter/" + PIN, timeout=30000)
+    p2.goto(SPA_ENTRY + "#matter/" + PIN, timeout=30000)
     p2.wait_for_function("document.querySelector('#entityview .timeline') !== null", timeout=45000)
     t = p2.locator("#entityview").inner_text()
     # lifecycle_stage_registered i18n is "Registered contract" (not "Contract registered").
@@ -58,14 +59,14 @@ with sync_playwright() as pw:
     step("OK" if all(checks.values()) else "FAIL", "N8 matter timeline: CROL + Checkbook events on one spine", json.dumps(checks))
     p2.screenshot(path=SHOT + "matter.png", full_page=True)
     # probe: bogus pin
-    p2.goto(BASE + "#matter/NOPE123456", timeout=30000)
+    p2.goto(SPA_ENTRY + "#matter/NOPE123456", timeout=30000)
     p2.wait_for_function("document.querySelector('#entityview .empty') && !document.querySelector('#entityview .loading')", timeout=30000)
     step("PROBE", "bogus matter pin", p2.locator("#entityview .empty").inner_text()[:70])
     p2.close()
 
     # ---------- N3: money-trail detail also gets the panel ----------
     p3 = ctx.new_page()
-    p3.goto(BASE + "#money?mode=award", timeout=30000)
+    p3.goto(SPA_ENTRY + "#money?mode=award", timeout=30000)
     p3.wait_for_selector("#list .row", timeout=30000)
     try:
         p3.wait_for_function("document.querySelector('#ddollars')?.innerText.length > 10", timeout=40000)
@@ -76,11 +77,11 @@ with sync_playwright() as pw:
 
     # ---------- address links (data-dependent probe) ----------
     p4 = ctx.new_page()
-    p4.goto(BASE + "#property", timeout=30000)
+    p4.goto(SPA_ENTRY + "#property", timeout=30000)
     p4.wait_for_selector("#propertyfeed .fcard", timeout=45000)
     rid = p4.evaluate("(()=>{const r=Object.values(feedRows.property).find(r=>r.street_address_1 && goodAddr(r.street_address_1)); return r?r.request_id:null;})()")
     if rid:
-        p4.goto(BASE + "#notice/" + rid, timeout=30000)
+        p4.goto(SPA_ENTRY + "#notice/" + rid, timeout=30000)
         p4.wait_for_selector("#ncopy", timeout=30000)
         try:
             p4.wait_for_function("document.querySelector('#naddr')?.innerText.includes('elsewhere')", timeout=20000)
@@ -93,7 +94,7 @@ with sync_playwright() as pw:
     p4.close()
 
     # ---------- regressions ----------
-    page.goto(BASE, timeout=30000)
+    page.goto(SPA_ENTRY, timeout=30000)
     page.wait_for_selector("#list .row", timeout=30000)
     page.wait_for_function("!!document.getElementById('homeCta')", timeout=20000)
     step("OK", "regression: default load + today strip", "")

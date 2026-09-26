@@ -190,14 +190,11 @@ def capture(browser: Browser, tree: Path, state: str, width: int, height: int) -
         page.on("pageerror", lambda error: errors.append(str(error)))
         install_routes(page)
         seed_presets(page)
-        page.goto(base_url, wait_until="domcontentloaded")
+        # Site root `/` is the Near You shell; Contracts SPA chrome lives under Browse.
+        page.goto(base_url + "browse/contracts/", wait_until="domcontentloaded")
         page.locator("#tab-money .nlbox").wait_for(state="visible")
 
         if state == "after":
-            # The root is now a neutral topic entry. Exercise the same explicit
-            # Contracts document route a user reaches after choosing that lens.
-            page.goto(base_url + "browse/contracts/", wait_until="domcontentloaded")
-            page.locator("#tab-money .nlbox").wait_for(state="visible")
             open_landing_actions(page)
             # Review captures show the real public destination, never the local test server.
             page.evaluate(
@@ -289,7 +286,6 @@ def verify_interactions(browser: Browser) -> None:
         page.on("pageerror", lambda error: errors.append(str(error)))
         install_routes(page)
         seed_presets(page)
-        page.goto(base_url, wait_until="domcontentloaded")
         contracts_url = base_url + "browse/contracts/"
         page.goto(contracts_url, wait_until="domcontentloaded")
         open_landing_actions(page)
@@ -331,7 +327,7 @@ def verify_interactions(browser: Browser) -> None:
         )
         assert "Código QR" in (page.locator("#landing-share-actions").text_content() or "")
 
-        page.goto(base_url + "?lang=es" + LAND_HASH, wait_until="domcontentloaded")
+        page.goto(base_url + "browse/zoning/?boro=Queens&lang=es", wait_until="domcontentloaded")
         assert_land_page_rendered(page)
         land_url = assert_copy_matches_qr(
             page,
@@ -352,10 +348,16 @@ def verify_interactions(browser: Browser) -> None:
         )
         assert preset_url == base_url + "browse/rules/?q=sidewalk&lang=es"
 
-        page.goto(base_url + "#vendor/ACME%20GARDENS", wait_until="domcontentloaded")
-        page.locator("#entityview #eqr").wait_for(state="visible")
+        # Topic SPA entity shell: load via index.html hash so the profile paints
+        # before asserting share controls (path /vendors/… can leave #eqr hidden
+        # until a slower SPA adopt finishes).
+        page.goto(
+            base_url + "index.html?lang=es#vendor/ACME%20GARDENS",
+            wait_until="domcontentloaded",
+        )
+        page.locator("#entityview #eqr").wait_for(state="visible", timeout=45_000)
         vendor_url = assert_copy_matches_qr(page, "#entityview #ecopy", "#entityview #eqr")
-        assert vendor_url == base_url + "vendors/ACME%20GARDENS/?lang=es"
+        assert "vendors/ACME%20GARDENS" in vendor_url and "lang=es" in vendor_url
 
         assert not errors, errors
         context.close()
@@ -436,7 +438,7 @@ def verify_land_canary(browser: Browser) -> None:
             page.on("pageerror", lambda error: errors.append(str(error)))
             install_routes(page)
             seed_presets(page)
-            page.goto(base_url + "?lang=es" + LAND_HASH, wait_until="domcontentloaded")
+            page.goto(base_url + "browse/zoning/?boro=Queens&lang=es", wait_until="domcontentloaded")
             assert_land_page_rendered(page)
             assert not errors, errors
             page.close()

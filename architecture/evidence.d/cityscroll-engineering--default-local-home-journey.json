@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/default-local-home-journey",
+  "status": "implemented",
+  "fingerprint": "default-local-home-journey.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "default-local-home-path-helpers",
+      "path": "site/near_you_scope_runtime.mjs"
+    },
+    {
+      "id": "default-local-home-worker-routes",
+      "path": "worker/wrangler.toml"
+    },
+    {
+      "id": "default-local-home-local-server",
+      "path": "tools/local_site_server.py"
+    },
+    {
+      "id": "default-local-home-verify-test",
+      "path": "test/default_local_home_journey.test.mjs"
+    },
+    {
+      "id": "default-local-home-capture-tool",
+      "path": "tools/capture_default_local_home_journey.py"
+    },
+    {
+      "id": "default-local-home-capture-manifest",
+      "path": "docs/evidence/default-local-home-journey/capture-manifest.json"
+    }
+  ]
+}

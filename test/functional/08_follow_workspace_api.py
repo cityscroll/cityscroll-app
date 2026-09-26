@@ -3,6 +3,7 @@ import json, sys
 from playwright.sync_api import sync_playwright
 import os
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
+SPA_ENTRY = BASE.rstrip("/") + "/index.html"
 _ARGS = ["--host-resolver-rules=MAP api.cityscroll.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
 SHOT = os.environ.get("CROL_SHOTS", os.path.dirname(os.path.abspath(__file__)) + "/shots") + "/"
 os.makedirs(SHOT, exist_ok=True)
@@ -23,7 +24,7 @@ with sync_playwright() as pw:
     page.on("pageerror", lambda e: errors.append(str(e)))
 
     # ---------- N7: follow from vendor page ----------
-    page.goto(BASE + "#vendor/Sinergia%20Inc", timeout=30000)
+    page.goto(SPA_ENTRY + "#vendor/Sinergia%20Inc", timeout=30000)
     page.wait_for_function("document.querySelector('#entityview .ftype')?.textContent.includes('Vendor profile')", timeout=45000)
     page.click('[data-follow="vendor"]')
     page.wait_for_function("document.querySelector('#tab-alerts').classList.contains('active')", timeout=10000)
@@ -39,19 +40,19 @@ with sync_playwright() as pw:
 
     # ---------- N9: pin → workspace → note → export → share → shared view ----------
     p2 = ctx.new_page()
-    p2.goto(BASE + "#notice/20260625017", timeout=30000)
+    p2.goto(SPA_ENTRY + "#notice/20260625017", timeout=30000)
     p2.wait_for_selector("[data-pin]", timeout=30000)
     p2.locator("[data-pin]").first.click()
     p2.wait_for_function("!!document.querySelector('a[href=\"#investigation\"].act')", timeout=5000)
     step("OK", "N9 pin flips to '✓ Pinned' link", p2.locator('a[href="#investigation"].act').inner_text())
-    p2.goto(BASE + "#investigation", timeout=30000)
+    p2.goto(SPA_ENTRY + "#investigation", timeout=30000)
     p2.wait_for_selector("#invitems .tl", timeout=15000)
     n_items = p2.locator("#invitems .tl").count()
     step("OK" if n_items == 1 else "FAIL", "N9 workspace shows pinned item", f"{n_items} item(s)")
     # note persists
     p2.fill(".invnote", "check the sub-vendors")
     p2.locator(".invnote").blur()
-    p2.goto(BASE + "#investigation", timeout=30000)
+    p2.goto(SPA_ENTRY + "#investigation", timeout=30000)
     p2.wait_for_selector(".invnote", timeout=15000)
     note = p2.input_value(".invnote")
     step("OK" if note == "check the sub-vendors" else "FAIL", "N9 note persists across reload", repr(note))
@@ -67,7 +68,7 @@ with sync_playwright() as pw:
         step("OK", "N9 share uploads snapshot", share_url[:80])
         sid = share_url.split("/shared/")[1]
         p3 = ctx.new_page()
-        p3.goto(BASE + "#investigation/shared/" + sid, timeout=30000)
+        p3.goto(SPA_ENTRY + "#investigation/shared/" + sid, timeout=30000)
         p3.wait_for_function("document.querySelector('#entityview .ftype')?.textContent.includes('Shared investigation')", timeout=30000)
         t = p3.locator("#entityview").inner_text()
         step("OK" if "check the sub-vendors" in t else "FAIL", "N9 shared view renders read-only w/ note", "")
@@ -90,7 +91,7 @@ with sync_playwright() as pw:
     p4.close()
 
     # ---------- regressions ----------
-    page.goto(BASE, timeout=30000)
+    page.goto(SPA_ENTRY, timeout=30000)
     page.wait_for_selector("#list .row", timeout=30000)
     page.click("#tabbtn-people"); page.wait_for_selector("#pchips .chip", timeout=15000)
     step("OK" if page.locator("#pchips .chip").count()==16 else "FAIL", "regression: people chips", "")

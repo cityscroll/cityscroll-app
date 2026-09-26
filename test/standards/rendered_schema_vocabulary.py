@@ -55,7 +55,8 @@ def is_current_built_document(path: pathlib.Path) -> bool:
 
 
 STATIC_DOCUMENTS = tuple(
-    "" if path.relative_to(SITE).as_posix() == "index.html" else path.relative_to(SITE).as_posix()
+    # Keep index.html addressable; site root `/` is the Near You shell.
+    path.relative_to(SITE).as_posix()
     for path in sorted(SITE.rglob("*.html"))
     if is_current_built_document(path)
 )
@@ -291,13 +292,14 @@ def main(argv: list[str] | None = None) -> int:
                 )
             for state_name, fragment in ROOT_HASH_STATES:
                 state = f"root:{state_name}"
+                # Topic SPA hash states load under index.html; `/#…` is Near You.
                 visit(
                     page,
                     records,
                     errors,
                     entries,
                     surface_id=state,
-                    source=fragment,
+                    source=f"index.html{fragment}",
                     surface_kind="route_state",
                     family=classify_surface_family(fragment, state),
                     wait_ms=800,

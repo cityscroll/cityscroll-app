@@ -35,6 +35,7 @@ from fixture_clock import pin_fixture_clock  # noqa: E402
 
 ROOT = pathlib.Path(__file__).parents[2]
 BASE = os.environ.get("CROL_BASE", "")
+SPA_ENTRY = (BASE or "http://localhost:8000/").rstrip("/") + "/index.html"
 RTL_LANGS = ["ar", "ur"]
 
 
@@ -49,7 +50,7 @@ def check_lang(pw, lang):
     pin_fixture_clock(ctx)
     page = ctx.new_page()
     install_routes(page)
-    page.goto(BASE, timeout=30000)
+    page.goto(SPA_ENTRY, timeout=30000)
     wait_for_function(
         page,
         "() => document.body?.dataset.primaryContext === 'home' && document.body?.dataset.homeReady === 'true'",

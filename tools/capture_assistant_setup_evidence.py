@@ -56,8 +56,8 @@ ROUTES = (
         "case": "assistant-setup-home",
         "route": "/",
         "path": "/",
-        "source_path": "site/index.html",
-        "assertion": "primary search remains visible before Ask with AI at this viewport",
+        "source_path": "site/near-you/index.html",
+        "assertion": "default Near You shell keeps Ask with AI reachable beside Browse and Following",
     },
     {
         "case": "assistant-setup-introduction",
@@ -82,7 +82,10 @@ VIEWPORTS = (
 )
 
 SOURCE_PATHS = (
-    "site/index.html",
+    "site/near-you/index.html",
+    "site/pages_edge.mjs",
+    "tools/local_site_server.py",
+    "worker/wrangler.toml",
     "site/use-with-ai/index.html",
     "site/api.html",
     "site/ai_discovery.mjs",
@@ -247,12 +250,12 @@ def observe(page, route_spec: dict, viewport: dict, capture_clock: str) -> dict:
           const doc = document.documentElement;
           const ask = [...document.querySelectorAll('a[href*="use-with-ai"]')]
             .find((node) => /ask with ai|preguntar con ia/i.test(node.textContent || '') || node.getAttribute('aria-current') === 'page');
-          let primary_search_before_ask = null;
+          let default_shell_ask_reachable = null;
           if (route === '/') {
-            const html = document.documentElement.outerHTML;
-            const searchPos = html.indexOf('home-topic-form');
-            const askPos = html.indexOf('Ask with AI');
-            primary_search_before_ask = searchPos >= 0 && askPos >= 0 && searchPos < askPos;
+            const root = document.querySelector('[data-near-you-root]');
+            const browse = document.querySelector('a[href^="/browse/"]');
+            const following = document.querySelector('a[href^="/following/"]');
+            default_shell_ask_reachable = Boolean(root && ask && browse && following);
           }
           const anchors = {};
           for (const id of ['connect-first', 'connect', 'claude-web', 'claude', 'other', 'try', 'next', 'mcp']) {
@@ -272,7 +275,7 @@ def observe(page, route_spec: dict, viewport: dict, capture_clock: str) -> dict:
             inner_height: window.innerHeight,
             capture_clock: new Date().toISOString(),
             horizontal_overflow: doc.scrollWidth > width + 1,
-            primary_search_before_ask,
+            default_shell_ask_reachable,
             ask_link_present: Boolean(ask),
             ask_link_href: ask ? ask.getAttribute('href') : null,
             endpoint_present: Boolean(endpoint),
@@ -404,8 +407,8 @@ def holds(route_spec: dict, viewport: dict, observed: dict, capture_clock: str) 
     if observed.get("horizontal_overflow"):
         failures.append("horizontal_overflow")
     if route_spec["route"] == "/":
-        if observed.get("primary_search_before_ask") is not True:
-            failures.append("primary_search_before_ask")
+        if observed.get("default_shell_ask_reachable") is not True:
+            failures.append("default_shell_ask_reachable")
         if not observed.get("ask_link_present"):
             failures.append("ask_link_present")
     if route_spec["route"] == "/use-with-ai/":

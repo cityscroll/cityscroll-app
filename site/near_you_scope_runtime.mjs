@@ -59,6 +59,21 @@ export function scopeWithPlace(input, place = {}) {
   return scopeWithGeographies(next, next.place.geographies);
 }
 
+/**
+ * Document paths that present the Near You shell.
+ * The site root `/` and `/near-you` share selected-place query behavior; deferred
+ * JSON stays under `/near-you/deferred.json`.
+ */
+export function isNearYouDocumentPath(pathname) {
+  const path = String(pathname || "").replace(/\/+$/, "") || "/";
+  return path === "/" || path === "/near-you";
+}
+
+/** Deferred payload path for the Near You shell (always under /near-you/). */
+export function isNearYouDeferredPath(pathname) {
+  return String(pathname || "") === "/near-you/deferred.json";
+}
+
 /** Parse the inspectable GET representation used by build and edge Near-you documents. */
 export function scopeFromNearYouUrl(input, { language = "en" } = {}) {
   const url = input instanceof URL

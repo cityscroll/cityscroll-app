@@ -13,9 +13,11 @@ from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
-from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
+from ci_waits import wait_for_app_ready, wait_for_function, wait_for_locator  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
+# Site root `/` is the Near You shell; the topic SPA (with #langSelect) lives at index.html.
+SPA_ENTRY = BASE.rstrip("/") + "/index.html"
 _ARGS = ["--host-resolver-rules=MAP api.cityscroll.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
 
 def step(tag, name, detail=""):
@@ -24,8 +26,12 @@ def step(tag, name, detail=""):
 with sync_playwright() as pw:
     browser = pw.chromium.launch(args=_ARGS)
     page = browser.new_context().new_page()
-    page.goto(BASE, timeout=30000)
+    # Hash-boot the topic SPA so setLang is wired before the language switch.
+    # Bare index.html defers loadApplication until a hash arrives; on slower CI
+    # runners select_option then never translates chrome.
+    page.goto(SPA_ENTRY + "#money", timeout=30000)
     wait_for_locator(page.locator("#langSelect"), label="language selector")
+    wait_for_app_ready(page)
 
     # Compact language dropdown: native labels, English selected by default.
     sel = page.locator("#langSelect")
@@ -253,7 +259,7 @@ with sync_playwright() as pw:
     linked.route("https://api.crol-list.org/notice*", fulfill_notice)
     linked.route("**/attachment-metadata*",
                  lambda route: route.fulfill(status=200, content_type="application/json", body='{"attachments":[]}'))
-    linked.goto(BASE.rstrip("/") + "/?lang=es#notice/20260716022", timeout=30000)
+    linked.goto(SPA_ENTRY + "?lang=es#notice/20260716022", timeout=30000)
     linked.wait_for_selector("#noticeview #ncopy", state="visible", timeout=10000)
     linked.wait_for_selector("#noticeview [data-more-tools-region], #noticeview #notice-more-tools", state="attached", timeout=10000)
     assert linked.locator("#langSelect").input_value() == "es"

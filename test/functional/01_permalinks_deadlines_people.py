@@ -3,6 +3,7 @@ import json, sys, time
 from playwright.sync_api import sync_playwright
 import os
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
+SPA_ENTRY = BASE.rstrip("/") + "/index.html"
 _ARGS = ["--host-resolver-rules=MAP api.cityscroll.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
 SHOT = os.environ.get("CROL_SHOTS", os.path.dirname(os.path.abspath(__file__)) + "/shots") + "/"
 os.makedirs(SHOT, exist_ok=True)
@@ -23,7 +24,7 @@ with sync_playwright() as pw:
     page.on("pageerror", lambda e: errors.append(str(e)))
 
     # ---------- load, default money view ----------
-    page.goto(BASE, timeout=30000)
+    page.goto(SPA_ENTRY, timeout=30000)
     page.wait_for_selector("#list .row", timeout=30000)
     n = page.locator("#list .row").count()
     step("OK", "money loads", f"{n} rows, hash='{page.evaluate('location.hash')}' (expect empty on default load)")
@@ -98,7 +99,7 @@ with sync_playwright() as pw:
 
     # ---------- (3b) deep link #rules?q=... in a fresh page ----------
     p2 = ctx.new_page()
-    p2.goto(BASE + "#rules?q=sidewalk", timeout=30000)
+    p2.goto(SPA_ENTRY + "#rules?q=sidewalk", timeout=30000)
     p2.wait_for_function("document.querySelector('#tab-rules').classList.contains('active')", timeout=15000)
     kw2 = p2.input_value("#ruleskw")
     p2.wait_for_selector("#rulesfeed .fcard, #rulesfeed .empty:not(:has(.loading))", timeout=30000)
@@ -113,7 +114,7 @@ with sync_playwright() as pw:
 
     # ---------- (3c) notice permalink view, fresh page (external entry) ----------
     p3 = ctx.new_page()
-    p3.goto(BASE + "#notice/" + req_id, timeout=30000)
+    p3.goto(SPA_ENTRY + "#notice/" + req_id, timeout=30000)
     p3.wait_for_selector("#ncopy", timeout=30000)
     view = p3.locator("#noticeview").inner_text()
     acts = {b: p3.locator(f"#noticeview {b}").count() for b in ["#ncopy", "#nprint"]}
@@ -133,7 +134,7 @@ with sync_playwright() as pw:
 
     # ---------- probe: bogus notice id ----------
     p4 = ctx.new_page()
-    p4.goto(BASE + "#notice/00000000000", timeout=30000)
+    p4.goto(SPA_ENTRY + "#notice/00000000000", timeout=30000)
     p4.wait_for_function("document.querySelector('#noticeview').textContent.includes(\"wasn't found\")", timeout=30000)
     step("PROBE", "bogus notice id", "clean 'wasn't found' message with escape links")
     p4.close()

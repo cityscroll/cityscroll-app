@@ -6,10 +6,13 @@ compatibility_date = "2026-07-27"
 # API URLs use api.cityscroll.org. api.crol-list.org remains a compatibility
 # alias for existing clients and in-flight confirmation links. Bounded path routes
 # put reader-facing dynamic documents on the canonical site without reclaiming the
-# rest of the Pages hostname.
+# rest of the Pages hostname. The bare `cityscroll.org` pattern matches only the
+# site root `/` (with or without query), so the Near You shell can be the default
+# entry while Pages keeps every other path.
 routes = [
   { pattern = "api.cityscroll.org", custom_domain = true },
   { pattern = "api.crol-list.org", custom_domain = true },
+  { pattern = "cityscroll.org", zone_name = "cityscroll.org" },
   { pattern = "cityscroll.org/near-you*", zone_name = "cityscroll.org" },
   { pattern = "cityscroll.org/following*", zone_name = "cityscroll.org" },
   { pattern = "cityscroll.org/prefs*", zone_name = "cityscroll.org" },

@@ -40,6 +40,8 @@ from ci_waits import wait_for_locator, wait_for_url  # noqa: E402
 from i18n_fixtures import install_routes, NOTICE_PERMALINK_ROW  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
+# Site root `/` is the Near You shell; agency/notice hash demos need the topic SPA.
+SPA_ENTRY = BASE.rstrip("/") + "/index.html"
 NOTICE_ID = NOTICE_PERMALINK_ROW["request_id"]  # a Solicitation — renders both reported links
 
 results = []
@@ -68,13 +70,13 @@ with sync_playwright() as pw:
     ctx = browser.new_context()
     page = ctx.new_page()
     install_routes(page)
-    page.goto(f"{BASE}#notice/{NOTICE_ID}", timeout=30000)
+    page.goto(f"{SPA_ENTRY}#notice/{NOTICE_ID}", timeout=30000)
     wait_for_locator(page.locator("#noticeview .panel"), label="notice detail")
 
     # Reader-facing ABO links must land on the human-readable dataset page, not a raw JSON
     # endpoint. Keep this check on the rendered agency surface so new source links cannot
     # quietly regress while the unit tests continue to exercise the pure render helpers.
-    page.goto(f"{BASE}#agency/School%20Construction%20Authority", timeout=30000)
+    page.goto(f"{SPA_ENTRY}#agency/School%20Construction%20Authority", timeout=30000)
     wait_for_locator(page.locator('#external-awards-content a[href*="data.ny.gov"]').first, label="ABO source link")
     abo_link = page.locator('#external-awards-content a[href*="data.ny.gov"]').first
     if abo_link.count() != 1:
@@ -91,7 +93,7 @@ with sync_playwright() as pw:
         else:
             step("OK", "ABO source link lands on a human-readable page", href)
 
-    page.goto(f"{BASE}#notice/{NOTICE_ID}", timeout=30000)
+    page.goto(f"{SPA_ENTRY}#notice/{NOTICE_ID}", timeout=30000)
     wait_for_locator(page.locator("#noticeview .panel"), label="notice detail restored")
 
     # --- Reported link 1: "View in City Record" -------------------------------------------
