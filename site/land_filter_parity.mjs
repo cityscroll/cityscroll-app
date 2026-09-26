@@ -462,6 +462,84 @@ export function landFilterStateFromRouteParams(input, { facetValues } = {}) {
 }
 
 /**
+ * Serialize one Land filter state back into shareable route search params.
+ *
+ * Round-trips with `landFilterStateFromRouteParams` for the dimensions that own a route key or
+ * the typed `facet` blob. Presentation `view` is omitted unless non-default so a copied results
+ * link stays a semantic population, not a renderer choice. `limit` and `projectIds` never appear.
+ *
+ * @param {ReturnType<typeof landFilterStateFromRouteParams>|Record<string, unknown>} state
+ * @returns {URLSearchParams}
+ */
+export function landFilterStateToSearchParams(state = {}) {
+  const params = new URLSearchParams();
+  const status = state.status == null || state.status === "" ? "all" : String(state.status);
+  const stage = state.stage == null || state.stage === "" ? "active" : String(state.stage);
+  const futureAction = state.futureAction == null || state.futureAction === ""
+    ? "any"
+    : String(state.futureAction);
+  const procedure = state.procedure == null || state.procedure === ""
+    ? DEFAULT_LAND_PROCEDURE
+    : String(state.procedure);
+  const family = state.family == null || state.family === ""
+    ? DEFAULT_LAND_FAMILY
+    : String(state.family);
+  const regulatoryEffect = state.regulatoryEffect == null || state.regulatoryEffect === ""
+    ? "any"
+    : String(state.regulatoryEffect);
+  const filingEvidence = state.filingEvidence == null || state.filingEvidence === ""
+    ? "any"
+    : String(state.filingEvidence);
+
+  if (status !== "active") params.set("status", status);
+  if (stage !== "active") params.set("stage", stage);
+  if (futureAction !== "any") params.set("future", futureAction);
+  if (procedure !== DEFAULT_LAND_PROCEDURE) params.set("procedure", procedure);
+  if (family !== DEFAULT_LAND_FAMILY) params.set("family", family);
+  if (state.borough) params.set("boro", String(state.borough));
+  if (state.communityDistrict) params.set("cd", String(state.communityDistrict));
+  if (state.councilDistrict) params.set("council", String(state.councilDistrict));
+  if (state.keyword) params.set("q", String(state.keyword));
+
+  if (Array.isArray(state.geographies)) {
+    for (const key of state.geographies) {
+      if (key) params.append("geo", String(key));
+    }
+    if (!state.geographies.length) params.append("geo", "");
+  }
+
+  if (futureAction === "hearing" && state.attendance) {
+    params.set("attendance", String(state.attendance));
+  }
+  if (futureAction === "hearing" && state.closingWeek) {
+    params.set("closing", "week");
+  }
+
+  const facet = {};
+  if (regulatoryEffect !== "any") facet.regulatoryEffect = regulatoryEffect;
+  if (filingEvidence !== "any") facet.filingEvidence = filingEvidence;
+  if (Object.keys(facet).length) params.set("facet", JSON.stringify(facet));
+
+  const view = normalizeLandView(state.view);
+  if (view && view !== "list") params.set("view", view);
+
+  return params;
+}
+
+/**
+ * Canonical Land browse document href for one filter state.
+ *
+ * @param {ReturnType<typeof landFilterStateFromRouteParams>|Record<string, unknown>} state
+ * @param {{ base?: string }} [options]
+ */
+export function landBrowseHrefFromState(state = {}, { base = "/browse/zoning/" } = {}) {
+  const path = String(base || "/browse/zoning/");
+  const params = landFilterStateToSearchParams(state);
+  const query = params.toString();
+  return query ? `${path}?${query}` : path;
+}
+
+/**
  * The options bag `filterLandSnapshot` takes, derived from one route state.
  *
  * `view` never appears here, and neither does `attendance` or `closingWeek`: they select

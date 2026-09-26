@@ -62,6 +62,10 @@ import {
   normalizeLandRegulatoryEffect,
 } from "./land_regulatory_effect.mjs";
 import {
+  nearYouLandRecordHref,
+  nearYouLandResultsHref,
+} from "./near_you_land_handoff.mjs";
+import {
   NEAR_YOU_RECORD_TITLE_LINK_CLASS,
   nearYouEventTimeLabel,
   nearYouHeldInLabel,
@@ -657,13 +661,17 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   const requestedPlaceRole = placeRoleSupportedForDomain(lens) && PLACE_ROLES.includes(scope.facets.values?.place_role)
     ? scope.facets.values.place_role
     : null;
+  const landRecordRoute = (record) => {
+    const projectHref = nearYouLandRecordHref(record?.id || record?.project_id);
+    return projectHref ? siteHref(projectHref) : migratedSiteHref(record?.route);
+  };
   const linkedRecord = (record, { explain = true } = {}) => {
     const whyHere = explain
       ? selectNearYouExplanationPath(record.why_here_candidates, scope)
       : null;
     return {
       ...record,
-      route: migratedSiteHref(record.route),
+      route: lens === "land" ? landRecordRoute(record) : migratedSiteHref(record.route),
       why_here: whyHere
         ? { ...whyHere, notice_href: siteHref(whyHere.notice_href) }
         : null,
@@ -685,7 +693,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       const whyHere = selectNearYouExplanationPath(record.why_here_candidates, lensScope);
       return {
         ...record,
-        route: migratedSiteHref(record.route),
+        route: lensName === "land" ? landRecordRoute(record) : migratedSiteHref(record.route),
         why_here: whyHere ? { ...whyHere, notice_href: siteHref(whyHere.notice_href) } : null,
         geography_evidence: selectNearYouGeographyEvidence(record, lensScope),
       };
@@ -852,7 +860,9 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       : defaultViewBox(),
     bags,
     activity: dataState === "ready" ? activityRoot : null,
-    browseHref: migratedSiteHref(`/${routeHashFromScope(scope, { surface: lens })}`),
+    browseHref: lens === "land"
+      ? siteHref(nearYouLandResultsHref(scope))
+      : migratedSiteHref(`/${routeHashFromScope(scope, { surface: lens })}`),
     membershipProjection,
     geographyLensCounts: geographyKeyForScope(scope) && activity?.geography_items
       ? geographyRecordLenses(activity, geographyKeyForScope(scope))

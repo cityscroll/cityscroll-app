@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/near-you-land-handoff",
+  "status": "implemented",
+  "fingerprint": "near-you-land-handoff.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "near-you-land-handoff",
+      "path": "site/near_you_land_handoff.mjs"
+    },
+    {
+      "id": "near-you-land-handoff-contract",
+      "path": "test/near_you_land_handoff.test.mjs"
+    }
+  ]
+}

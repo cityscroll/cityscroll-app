@@ -98,7 +98,7 @@ export const LEGACY_ROUTE_PARAMETERS = Object.freeze({
   people: new Set([...COMMON_FILTERS, "type", "mode"]),
   staffing: new Set([...COMMON_FILTERS, "role"]),
   exams: new Set([...COMMON_FILTERS, "interest", "eligibility", "window", "format", "salary", "fee", "experience"]),
-  land: new Set([...COMMON_FILTERS, "status", "stage", "future", "procedure", "sort", "attendance", "closing", "view"]),
+  land: new Set([...COMMON_FILTERS, "status", "stage", "future", "procedure", "family", "geo", "sort", "attendance", "closing", "view"]),
   property: new Set([...COMMON_FILTERS, "asset", "method", "price", "sort", "process", "stage", "view"]),
   rules: new Set([...COMMON_FILTERS, "process"]),
   meetings: new Set([...COMMON_FILTERS, "process", "group"]),
