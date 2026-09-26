@@ -1,0 +1,7 @@
+{
+  "schema": "cityscroll.capture_delivery.v1",
+  "public_alias": "cbcf03c490705",
+  "landed_commit": "a8d61b1b10b2c60aacef55c31275e5d62dc91f0c",
+  "surface": "pages",
+  "note": "Squash-merge commit on the default branch that delivered the compact Near You map-first entry shell."
+}
