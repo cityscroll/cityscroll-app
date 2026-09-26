@@ -362,7 +362,7 @@
           {
             "kind": "source",
             "ref": "worker/src/lib/filter.mjs",
-            "locator": "LENSES.land=[\"keywords\",\"boro\",\"status\",\"communityDistrict\",\"councilDistrict\",\"nearMe\",\"procedure\",\"family\",\"regulatoryEffect\",\"futureAction\",\"attendance\",\"geographies\",\"place_role\"]"
+            "locator": "LENSES.land=[\"keywords\",\"boro\",\"status\",\"stage\",\"communityDistrict\",\"councilDistrict\",\"nearMe\",\"procedure\",\"family\",\"regulatoryEffect\",\"filingEvidence\",\"futureAction\",\"attendance\",\"geographies\",\"place_role\"]"
           },
           {
             "kind": "source",

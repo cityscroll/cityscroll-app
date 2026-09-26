@@ -19,7 +19,7 @@ const DEEPLINK_LENSES = {
   // Keep field-for-field parity with worker/src/lib/filter.mjs LENSES (deeplink_watch.test).
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "minRemainingDays", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "place_role", "procurement_id", "processState"],
   people:   ["keywords", "lookupType", "view", "interest", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
-  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
+  land:     ["keywords", "boro", "status", "stage", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "filingEvidence", "futureAction", "attendance", "geographies", "place_role"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
   rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version", "activity", "body", "access", "availability"],
@@ -115,6 +115,10 @@ function deeplinkClampField(name, v){
       return ["upzone","downzone","mixed","no_density_change"].includes(s)?s:null;
     }
     case "futureAction": return ["any","none","any_future","hearing","non_hearing"].includes(v)?v:null;
+    case "filingEvidence": {
+      const s = typeof v === "string" ? v.trim().toLowerCase() : "";
+      return ["any", "required", "document_observed", "publisher_identifies_not_timely_filed"].includes(s) ? s : null;
+    }
     case "attendance": return ["in_person","livestream","hybrid"].includes(v)?v:null;
     case "when": return ["all","upcoming","week","month","past"].includes(v) ? v : null;
     case "borough": { const s=typeof v==="string"?v.trim().toLowerCase():""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s)||null; }
