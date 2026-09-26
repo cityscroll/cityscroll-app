@@ -321,6 +321,9 @@ test("A4 [verification] capture tool guards served revision; local detail shows 
   const captureTool = readFileSync(CAPTURE_TOOL, "utf8");
   assert.match(captureTool, /def revision_contains_required_ancestor/);
   assert.match(captureTool, /require_served_page_revision_contains_delivery|does not contain required ancestor/);
+  assert.match(captureTool, /require_served_meeting_subject_assertions|require_served_subject_data/);
+  assert.match(captureTool, /ServedDataMissingError/);
+  assert.match(captureTool, /lacks subject_property location_assertions|agenda_subject_places/);
   assert.match(captureTool, /load_recorded_delivery|delivery\.json/);
   assert.match(captureTool, /ce239e01504c8/);
   assert.match(captureTool, /About 461 Coney Island Avenue|461 Coney Island/);

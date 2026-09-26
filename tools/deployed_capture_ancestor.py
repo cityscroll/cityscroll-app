@@ -35,6 +35,14 @@ class DeployPendingError(CaptureAncestorError):
     """Served page revision does not yet contain the landed ancestor."""
 
 
+class ServedDataMissingError(CaptureAncestorError):
+    """Served Pages data lacks a required subject/location assertion."""
+
+
+SHARED_MEETING_READ_MODEL = "/data/shared_meeting_read_model.json"
+SUBJECT_PROPERTY_ROLE = "subject_property"
+
+
 def _git(cwd: Path | str, *args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         ["git", "-C", str(cwd), *args],
@@ -170,3 +178,88 @@ def require_served_page_revision_contains_delivery(
             f"{ancestor}; wait for Pages deploy before capturing"
         )
     return revision
+
+
+def _meeting_rows(payload: dict) -> list:
+    if isinstance(payload.get("rows"), list):
+        return payload["rows"]
+    if isinstance(payload.get("hearings"), list):
+        return payload["hearings"]
+    return []
+
+
+def meeting_has_subject_assertions(
+    row: dict | None,
+    *,
+    subject_address: str | None = None,
+) -> bool:
+    """True when a shared-meeting row carries subject assertions or places."""
+
+    if not isinstance(row, dict):
+        return False
+    needle = (subject_address or "").strip().lower()
+
+    def _address_match(value: object) -> bool:
+        text = str(value or "").strip().lower()
+        if not text:
+            return False
+        if not needle:
+            return True
+        return needle in text
+
+    for assertion in row.get("location_assertions") or []:
+        if not isinstance(assertion, dict):
+            continue
+        if assertion.get("role") != SUBJECT_PROPERTY_ROLE:
+            continue
+        if _address_match(assertion.get("original_address")):
+            return True
+    for place in row.get("agenda_subject_places") or []:
+        if not isinstance(place, dict):
+            continue
+        if _address_match(place.get("original_address") or place.get("address")):
+            return True
+    return False
+
+
+def require_served_meeting_subject_assertions(
+    base: str,
+    *,
+    meeting_id: str,
+    subject_address: str,
+    fetch_json: Callable[[str], dict] | None = None,
+) -> dict:
+    """Refuse capture when the served shared meeting catalog lacks subject data.
+
+    This is a data precondition beside the landed-ancestor code check. A missing
+    subject assertion or agenda_subject_places projection means the Pages-served
+    catalog was published without the producer retaining upstream subject
+    admissions — not a pending code deploy by itself.
+    """
+
+    if not meeting_id or not subject_address:
+        raise ServedDataMissingError(
+            "served meeting subject precondition requires meeting_id and subject_address"
+        )
+    fetcher = fetch_json or default_fetch_json
+    normalized = base if base.endswith("/") else f"{base}/"
+    url = urllib.request.urljoin(normalized, SHARED_MEETING_READ_MODEL.lstrip("/"))
+    payload = fetcher(url)
+    if not isinstance(payload, dict):
+        raise ServedDataMissingError(
+            f"served shared meeting catalog is not an object at {url}"
+        )
+    row = next((item for item in _meeting_rows(payload) if item.get("meeting_id") == meeting_id), None)
+    if row is None:
+        raise ServedDataMissingError(
+            f"served shared meeting catalog is missing meeting_id {meeting_id}; "
+            "subject-property assertions cannot be verified"
+        )
+    if meeting_has_subject_assertions(row, subject_address=subject_address):
+        return row
+    raise ServedDataMissingError(
+        "served shared meeting catalog lacks subject_property location_assertions "
+        f"and agenda_subject_places for {meeting_id} ({subject_address}); "
+        "the Pages publish slim dropped or never emitted the upstream subject "
+        "admissions the meeting-detail renderer reads"
+    )

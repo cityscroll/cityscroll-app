@@ -21,8 +21,16 @@ python3 tools/capture_near_you_subject_property_journey.py --host
 python3 tools/capture_near_you_subject_property_journey.py --check
 ```
 
-The capture refuses to run until the served Pages `/artifact-manifest.json`
-`source_commit_sha` contains the landed delivery recorded in `delivery.json`
-(the squash-merge commit on the default branch). Screenshot binaries stay
-under the local task scratch directory; only `capture-manifest.json` and
-`delivery.json` are committed.
+The capture refuses to run until:
+
+1. the served Pages `/artifact-manifest.json` `source_commit_sha` contains the
+   landed delivery recorded in `delivery.json` (the squash-merge commit on the
+   default branch), and
+2. the served `/data/shared_meeting_read_model.json` row for the September 14
+   hearing carries subject-property `location_assertions` or
+   `agenda_subject_places` for 461 Coney Island Avenue (a data precondition;
+   missing subject places name the absent catalog fields rather than a pending
+   deploy).
+
+Screenshot binaries stay under the local task scratch directory; only
+`capture-manifest.json` and `delivery.json` are committed.

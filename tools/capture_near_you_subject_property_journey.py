@@ -8,7 +8,9 @@ an externally retained https screenshot URL.
 Captures the neighborhood result, address-search result, and meeting detail
 with both the subject address and venue address visible at desktop and mobile
 widths. The capture refuses to run until the served Pages artifact-manifest
-revision contains the recorded landed delivery commit as a git ancestor.
+revision contains the recorded landed delivery commit as a git ancestor, and
+until the served shared meeting catalog carries subject-property assertions or
+agenda_subject_places for the September 14 hearing.
 """
 
 from __future__ import annotations
@@ -30,8 +32,10 @@ sys.path.insert(0, str(ROOT / "test" / "browser"))
 from browser_support import launched_chromium  # noqa: E402
 from deployed_capture_ancestor import (  # noqa: E402
     DeployPendingError,
+    ServedDataMissingError,
     WrongPinError,
     load_recorded_delivery,
+    require_served_meeting_subject_assertions,
     require_served_page_revision_contains_delivery,
     revision_contains_ancestor,
 )
@@ -50,6 +54,9 @@ SUBJECT_DETAIL = (
     "%2Fmeeting%2Fseptember-2026-board-meeting%2F#agenda-subject"
 )
 SEPT_NEEDLE = "september-2026-board-meeting"
+SEPT14_MEETING_ID = (
+    "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
+)
 TITLE_NEEDLE = "September 2026 Board Meeting"
 ABOUT_NEEDLE = "About 461 Coney Island Avenue"
 SUBJECT_ADDRESS = "461 Coney Island Avenue"
@@ -79,6 +86,18 @@ def require_served_revision_contains_delivery(base: str) -> str:
             cwd=ROOT,
         )
     except (WrongPinError, DeployPendingError) as error:
+        raise SystemExit(str(error)) from error
+
+
+def require_served_subject_data(base: str) -> None:
+    """Refuse capture when the served meeting catalog lacks subject assertions."""
+    try:
+        require_served_meeting_subject_assertions(
+            base,
+            meeting_id=SEPT14_MEETING_ID,
+            subject_address=SUBJECT_ADDRESS,
+        )
+    except ServedDataMissingError as error:
         raise SystemExit(str(error)) from error
 
 
@@ -202,6 +221,7 @@ def observe_detail(page) -> dict:
 
 def capture(base: str, host: bool) -> dict:
     revision = require_served_revision_contains_delivery(base)
+    require_served_subject_data(base)
     print(f"production base={base} revision={revision}", flush=True)
     SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
     captures = []
