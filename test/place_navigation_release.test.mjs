@@ -65,7 +65,7 @@ const READBACK_PATH = join(EVIDENCE_DIR, "readback.json");
 const DELIVERY_PATH = join(EVIDENCE_DIR, "delivery.json");
 const VERIFY_TOOL = join(ROOT, "tools/verify_place_navigation_release.mjs");
 const CAPTURE_TOOL = join(ROOT, "tools/capture_place_navigation_release.py");
-const GROUNDED_AT = "5f042e39d6f05e378a5013c427e4e629ef96107e";
+const GROUNDED_AT = "239d37d0c08c985113e42d30b7788a84d6d50b8b";
 const REQUIRED_DELIVERY_COMMIT = "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c";
 const PUBLIC_ALIAS = "cc6bdbee29292";
 const WATCH_PREVIEW_PERTURBATION_ID = "1999Z9999";
@@ -283,6 +283,11 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
   assert.match(captureSource, /watch|preview/i);
   assert.match(captureSource, /record_project_set_parity|preview_project_ids|membership_project_ids/);
   assert.match(captureSource, /preview_minus_membership|membership_minus_preview|intersection/);
+  assert.match(captureSource, /record_watch_address|watch_address_count|watch_address_geographies/);
+  assert.match(
+    captureSource,
+    /two sides share a source|share a source|refuses a row whose two sides share/,
+  );
   assert.match(
     captureSource,
     /served-preview-markup|served-membership-by_geography\.nta2020\.SI0105/,
@@ -290,6 +295,10 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
   assert.match(
     captureSource,
     /positive_control_watch_preview_parity_rejects_perturbation|rejected_perturbed_preview/,
+  );
+  assert.match(
+    captureSource,
+    /without synthesised project-set parity|empty markup-derived project identifiers/,
   );
   assert.match(captureSource, /brand\.css|stylesheet|real stylesheet|production-served/i);
   assert.match(captureSource, /entry_width.*must exceed|desktop.*exceed/s);
@@ -359,27 +368,67 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
 
   const membershipIds = shared.membership.by_geography.nta2020.SI0105.slice().sort();
   assert.deepEqual(membershipIds, [ANCHORS.fdny]);
+  // Module oracle still proves land NTA watch ids agree with membership when both
+  // are independently available; the production packet must not synthesise a
+  // preview set from that membership when markup identifiers are empty.
   const previewFromWatch = [...watchIds.ids].sort();
-  const intersection = previewFromWatch.filter((id) => membershipIds.includes(id));
-  const previewMinus = previewFromWatch.filter((id) => !membershipIds.includes(id));
-  const membershipMinus = membershipIds.filter((id) => !previewFromWatch.includes(id));
-  assert.deepEqual(intersection, [ANCHORS.fdny]);
-  assert.deepEqual(previewMinus, []);
-  assert.deepEqual(membershipMinus, []);
-  assert.equal(
-    previewFromWatch.length === membershipIds.length &&
-      previewFromWatch.every((id, index) => id === membershipIds[index]),
-    true,
+  assert.deepEqual(previewFromWatch, membershipIds);
+
+  const python = resolvePython();
+  const capturePathLiteral = JSON.stringify(CAPTURE_TOOL);
+  const sharedSource = spawnSync(
+    python,
+    [
+      "-c",
+      [
+        "import importlib.util, sys",
+        `spec = importlib.util.spec_from_file_location('cap', ${capturePathLiteral})`,
+        "mod = importlib.util.module_from_spec(spec)",
+        "spec.loader.exec_module(mod)",
+        "try:",
+        "  mod.record_project_set_parity(['2026R0127'], ['2026R0127'], preview_source='same', membership_source='same')",
+        "except ValueError as error:",
+        "  print(error)",
+        "  raise SystemExit(0)",
+        "raise SystemExit('shared-source parity must refuse')",
+      ].join("\n"),
+    ],
+    { cwd: ROOT, encoding: "utf8" },
+  );
+  assert.equal(sharedSource.status, 0, sharedSource.stderr || sharedSource.stdout);
+  assert.match(
+    `${sharedSource.stdout || ""}\n${sharedSource.stderr || ""}`,
+    /share a source|two sides share/,
   );
 
-  const perturbed = [...previewFromWatch, WATCH_PREVIEW_PERTURBATION_ID].sort();
-  const perturbedMinus = perturbed.filter((id) => !membershipIds.includes(id));
-  assert.deepEqual(perturbedMinus, [WATCH_PREVIEW_PERTURBATION_ID]);
-  assert.equal(
-    perturbed.length === membershipIds.length &&
-      perturbed.every((id, index) => id === membershipIds[index]),
-    false,
+  const distinct = spawnSync(
+    python,
+    [
+      "-c",
+      [
+        "import importlib.util, json",
+        `spec = importlib.util.spec_from_file_location('cap', ${capturePathLiteral})`,
+        "mod = importlib.util.module_from_spec(spec)",
+        "spec.loader.exec_module(mod)",
+        "parity = mod.record_project_set_parity(",
+        "  ['2026R0127'], ['2026R0127'],",
+        "  preview_source=mod.WATCH_PREVIEW_MARKUP_SOURCE,",
+        "  membership_source=mod.WATCH_PREVIEW_MEMBERSHIP_SOURCE,",
+        ")",
+        "control = mod.positive_control_watch_preview_parity_rejects_perturbation(",
+        "  ['2026R0127'], ['2026R0127'],",
+        "  preview_source=mod.WATCH_PREVIEW_TOOLING_CONTROL_SOURCE,",
+        "  membership_source=mod.WATCH_PREVIEW_MEMBERSHIP_SOURCE,",
+        ")",
+        "print(json.dumps({'parity_equal': parity['parity_equal'], 'rejected': control['rejected_perturbed_preview']}))",
+      ].join("\n"),
+    ],
+    { cwd: ROOT, encoding: "utf8" },
   );
+  assert.equal(distinct.status, 0, distinct.stderr || distinct.stdout);
+  const distinctPayload = JSON.parse(String(distinct.stdout || "").trim());
+  assert.equal(distinctPayload.parity_equal, true);
+  assert.equal(distinctPayload.rejected, true);
   assert.match(captureSource, new RegExp(WATCH_PREVIEW_PERTURBATION_ID));
 });
 
@@ -522,23 +571,57 @@ test("A5: verify command invokes the production runner and fails on unmet assert
       assert.ok(watchRows.length >= 2, "desktop and mobile watch-preview rows");
       for (const row of watchRows) {
         const values = row.served_values || {};
+        assert.ok(Array.isArray(values.preview_ids_from_markup), `${row.name} markup ids`);
         assert.ok(Array.isArray(values.preview_project_ids), `${row.name} preview set`);
-        assert.ok(Array.isArray(values.membership_project_ids), `${row.name} membership set`);
-        assert.ok(Array.isArray(values.intersection), `${row.name} intersection`);
-        assert.ok(Array.isArray(values.preview_minus_membership), `${row.name} preview-only`);
-        assert.ok(Array.isArray(values.membership_minus_preview), `${row.name} membership-only`);
-        assert.equal(values.parity_equal, true, `${row.name} parity_equal`);
-        assert.ok(values.intersection.includes(ANCHORS.fdny), `${row.name} intersection has FDNY`);
-        assert.match(
-          String(values.preview_project_ids_source || ""),
-          /served-preview-markup|served-membership-by_geography\.nta2020\.SI0105/,
+        assert.deepEqual(
+          values.preview_project_ids,
+          values.preview_ids_from_markup,
+          `${row.name} preview set must equal markup-derived identifiers`,
         );
+        assert.equal(values.preview_project_ids_source, "served-preview-markup");
+        assert.ok(Array.isArray(values.membership_project_ids), `${row.name} membership set`);
+        assert.equal(
+          values.membership_project_ids_source,
+          "served-membership-by_geography.nta2020.SI0105",
+        );
+        assert.equal(values.watch_address_count, 1, `${row.name} watch address count`);
+        assert.ok(
+          (values.watch_address_geographies || []).includes("geography:nta2020:SI0105"),
+          `${row.name} watch address scope`,
+        );
+        assert.equal(values.watch_address_scope_ok, true, `${row.name} watch address ok`);
+        assert.notEqual(
+          values.preview_project_ids_source,
+          values.membership_project_ids_source,
+          `${row.name} sources must differ`,
+        );
+        if (Object.prototype.hasOwnProperty.call(values, "parity_equal")) {
+          assert.equal(values.parity_equal, true, `${row.name} parity_equal`);
+          assert.ok(Array.isArray(values.intersection), `${row.name} intersection`);
+          assert.ok(values.intersection.includes(ANCHORS.fdny), `${row.name} intersection has FDNY`);
+          assert.ok(values.preview_project_ids.length > 0, `${row.name} parity needs markup ids`);
+        } else {
+          assert.deepEqual(values.preview_ids_from_markup, [], `${row.name} empty markup ids`);
+          assert.ok(values.preview_status, `${row.name} preview status`);
+        }
       }
-      assert.equal(readback.letters?.A3?.watch_preview_parity?.parity_equal, true);
+      const observation = readback.letters?.A3?.watch_preview_observation || {};
+      assert.equal(observation.watch_address_scope_ok, true);
+      assert.equal(observation.watch_address_count, 1);
+      assert.equal(
+        Object.prototype.hasOwnProperty.call(observation, "parity_equal"),
+        false,
+      );
       assert.equal(
         readback.positive_control?.watch_preview_parity_rejects_perturbed_preview
           ?.rejected_perturbed_preview,
         true,
+      );
+      const positiveParity =
+        readback.positive_control?.watch_preview_parity_rejects_perturbed_preview?.parity || {};
+      assert.notEqual(
+        positiveParity.preview_project_ids_source,
+        positiveParity.membership_project_ids_source,
       );
     }
   }
