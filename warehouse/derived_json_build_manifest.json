@@ -278,11 +278,39 @@
       "note": "Incremental PAD/coordinate/boundary/record-join refresh that keeps meeting-geography memberships current inside one publication generation."
     },
     {
+      "id": "land-project-catalog",
+      "generator": "tools/build_land_project_catalog.mjs",
+      "source_paths": [
+        "site/data/zap_projects_warehouse_lookup.json",
+        "site/data/land_default_ulurp.json"
+      ],
+      "output_paths": [
+        "site/data/land_project_catalog.json"
+      ],
+      "note": "Admitted Land catalog materialization. Runs after parcel/address geography inputs settle and before place-membership refresh and district activity."
+    },
+    {
+      "id": "land-place-refresh",
+      "generator": "tools/land_place_refresh.mjs",
+      "source_paths": [
+        "site/data/land_project_catalog.json",
+        "site/data/zap_bbl_warehouse_lookup.json",
+        "site/data/parcel-geography/manifest.json"
+      ],
+      "output_paths": [
+        "site/data/land_place_membership.json",
+        "site/data/land-place-evidence",
+        "site/data/land-place-generations"
+      ],
+      "note": "Hash-based Land place-membership generation refresh. Stages compact index and evidence shards, validates one generation, then promotes through the existing publication path before district activity/map projections."
+    },
+    {
       "id": "geography",
       "generator": "tools/build_district_activity.mjs",
       "source_paths": [
         "site/data/district_boundaries.json",
         "site/data/geography/layer_registry.json",
+        "site/data/land_project_catalog.json",
         "site/data/zap_projects_warehouse_lookup.json",
         "site/data/property_domain_observations.json",
         "site/data/shared_meeting_read_model.json",
