@@ -45,8 +45,11 @@ ROOT = Path(${JSON.stringify(ROOT)})
 sys.path.insert(0, str(ROOT / "tools"))
 from deployed_capture_ancestor import (
     DeployPendingError,
+    ServedDataMissingError,
     WrongPinError,
     load_recorded_delivery,
+    meeting_has_subject_assertions,
+    require_served_meeting_subject_assertions,
     require_served_page_revision_contains_delivery,
     resolve_landed_ancestor,
     revision_contains_ancestor,
@@ -54,6 +57,10 @@ from deployed_capture_ancestor import (
 )
 `;
 }
+
+const SEPT14_ID =
+  "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/";
+const SUBJECT_ADDRESS = "461 Coney Island Avenue";
 
 test("recorded deliveries pin the landed squash merges on the page surface", () => {
   const subject = spawnSync(
@@ -204,6 +211,75 @@ test("helper module is importable as a script path", () => {
     }).status,
     0,
   );
+});
+
+test("meeting_has_subject_assertions accepts location_assertions or agenda_subject_places", () => {
+  const result = runPython(`${helperPrelude()}
+assert meeting_has_subject_assertions({
+    "location_assertions": [{"role": "subject_property", "original_address": ${JSON.stringify(SUBJECT_ADDRESS)}}]
+}, subject_address=${JSON.stringify(SUBJECT_ADDRESS)})
+assert meeting_has_subject_assertions({
+    "agenda_subject_places": [{"original_address": ${JSON.stringify(SUBJECT_ADDRESS)}}]
+}, subject_address=${JSON.stringify(SUBJECT_ADDRESS)})
+assert not meeting_has_subject_assertions({
+    "location_assertions": [{"role": "venue", "original_address": "1625 Ocean Avenue"}]
+}, subject_address=${JSON.stringify(SUBJECT_ADDRESS)})
+assert not meeting_has_subject_assertions({"location_memberships": [{"role": "subject_property"}]}, subject_address=${JSON.stringify(SUBJECT_ADDRESS)})
+print("ok")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /ok/);
+});
+
+test("served subject data precondition refuses catalog without subject assertions", () => {
+  const result = runPython(`${helperPrelude()}
+payload = {
+    "rows": [{
+        "meeting_id": ${JSON.stringify(SEPT14_ID)},
+        "location_memberships": [{"role": "subject_property"}],
+        "venue": {"address": "1625 Ocean Avenue"},
+    }]
+}
+try:
+    require_served_meeting_subject_assertions(
+        "https://example.test/",
+        meeting_id=${JSON.stringify(SEPT14_ID)},
+        subject_address=${JSON.stringify(SUBJECT_ADDRESS)},
+        fetch_json=lambda url: payload,
+    )
+except ServedDataMissingError as error:
+    message = str(error)
+    assert "lacks subject_property location_assertions" in message
+    assert "agenda_subject_places" in message
+    assert ${JSON.stringify(SUBJECT_ADDRESS)} in message
+    assert "wait for Pages deploy" not in message
+    print("ok")
+else:
+    raise SystemExit("expected ServedDataMissingError")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /ok/);
+});
+
+test("served subject data precondition accepts catalog with agenda_subject_places", () => {
+  const result = runPython(`${helperPrelude()}
+payload = {
+    "rows": [{
+        "meeting_id": ${JSON.stringify(SEPT14_ID)},
+        "agenda_subject_places": [{"original_address": ${JSON.stringify(SUBJECT_ADDRESS)}}],
+    }]
+}
+row = require_served_meeting_subject_assertions(
+    "https://example.test/",
+    meeting_id=${JSON.stringify(SEPT14_ID)},
+    subject_address=${JSON.stringify(SUBJECT_ADDRESS)},
+    fetch_json=lambda url: payload,
+)
+assert row["meeting_id"] == ${JSON.stringify(SEPT14_ID)}
+print("ok")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /ok/);
 });
 
 test("recorded delivery rejects a non-pages surface", () => {

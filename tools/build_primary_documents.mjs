@@ -18,12 +18,15 @@ import { buildStaffingDocument } from "../site/staffing_surface.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
 import { readUpcomingCouncilMeetingsIndex } from "./lib/upcoming_council_meetings_io.mjs";
+import { slimSharedMeetingReadModel } from "./lib/shared_meeting_publish_slim.mjs";
 import { eligibleCityRecordMeetings } from "../site/city_record_meeting.mjs";
 import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
 import { EXAMS_SURFACE, PEOPLE_ORGANIZATIONS_SURFACE, STAFFING_SURFACE } from "../site/browse_surface_contracts.mjs";
 import { buildPeopleOrganizationsReadModel } from "../site/people_organizations_read_model.mjs";
 import { buildConsultationCollection, buildConsultationDetail, renderConsultationCollectionDocument, renderConsultationDetailDocument } from "../site/consultation_documents.mjs";
 import { buildObserveSurface, renderObserveDocument } from "../site/government_observe.mjs";
+
+export { slimSharedMeetingReadModel };
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -316,26 +319,6 @@ function buildSharedMeetingArtifacts() {
   });
   assertMeetingCoverage(sharedMeetings, cityRecordRows, cityRecordMeetings);
   return { sharedMeetings };
-}
-
-/**
- * Strip per-row location_assertions from the published shared meeting catalog.
- * Those fields are large and redundant with venue/search text for the static
- * Pages payload; keeping them pushes the file past the 18 MiB refresh headroom
- * mark after ordinary meeting admissions.
- */
-export function slimSharedMeetingReadModel(model) {
-  if (!model || typeof model !== "object") return model;
-  const slimRow = (row) => {
-    if (!row || typeof row !== "object") return row;
-    const { location_assertions, ...rest } = row;
-    return rest;
-  };
-  return {
-    ...model,
-    rows: Array.isArray(model.rows) ? model.rows.map(slimRow) : model.rows,
-    hearings: Array.isArray(model.hearings) ? model.hearings.map(slimRow) : model.hearings,
-  };
 }
 
 export function sharedMeetingOutputs() {
