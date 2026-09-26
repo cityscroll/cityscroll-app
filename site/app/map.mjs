@@ -66,8 +66,29 @@ import {
   restoreOverlapInvokerFocus,
 } from "../geography_navigation_overlap_ui.mjs";
 import { loadCivicGeographyLayer } from "../civic_geography.mjs";
+import { migrateLegacyUrl } from "../route_migration.mjs";
 
 const root = document.querySelector("[data-near-you-root]");
+
+/**
+ * Site root `/` presents the Near You shell. Non-map legacy hashes that used to
+ * boot the SPA at `/` forward through the established migration table so Search,
+ * Browse lenses, notices, and entity profiles stay reachable.
+ */
+function forwardLegacyRootHashIfNeeded() {
+  const path = location.pathname.replace(/\/+$/, "") || "/";
+  if (path !== "/" && path !== "/near-you") return false;
+  const hash = location.hash || "";
+  if (!hash || hash === "#" || /^#map(?:\?|$)/.test(hash)) return false;
+  const mapped = migrateLegacyUrl(location.href);
+  if (!mapped?.migrated || !mapped.target) return false;
+  const next = new URL(mapped.target, location.origin);
+  const current = `${location.pathname}${location.search}${location.hash}`;
+  const target = `${next.pathname}${next.search}${next.hash}`;
+  if (target === current) return false;
+  location.replace(target);
+  return true;
+}
 let geographyMapController = null;
 let geographyMapInitialization = null;
 let geographyMapGeneration = 0;
@@ -1244,11 +1265,12 @@ function wireIsland() {
   void settleNearYouDocumentRouteScroll();
 }
 
-if (root) {
+if (root && !forwardLegacyRootHashIfNeeded()) {
   bindDocumentRouteScroll(window);
   root.addEventListener("click", rememberNearYouDepartureScroll, true);
   wireIsland();
   addEventListener("hashchange", () => {
+    if (forwardLegacyRootHashIfNeeded()) return;
     if (location.hash.startsWith("#map")) void adoptMapHashRoute();
   });
   void adoptMapHashRoute();

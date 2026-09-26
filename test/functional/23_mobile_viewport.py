@@ -57,14 +57,15 @@ SURFACES = (
         "browse/people/",
         "[data-browse-concept='people'] [data-civic-object-kind='community-board']",
     ),
-    ("property", "#property", "#propertyfeed .fcard"),
-    ("rules", "#rules", "#rulesfeed .fcard"),
-    ("meetings", "#meetings", "#meetingsfeed .fcard"),
+    # Topic SPA lenses live under index.html; site root `/` is the Near You shell.
+    ("property", "index.html#property", "#propertyfeed .fcard"),
+    ("rules", "index.html#rules", "#rulesfeed .fcard"),
+    ("meetings", "index.html#meetings", "#meetingsfeed .fcard"),
     # Map-first mobile Near you: geography shell and Map surface ready before Records.
     ("near you", "near-you/", "#near-geo-heading, [data-near-surface='map'], .near-geo-workspace"),
     ("following", "following/", "[data-following-preview-form]"),
-    ("rule detail", "#notice/20260714029", ".rule-phase-stepper"),
-    ("reader action", "#notice/20260701099", "#noticeview .panel"),
+    ("rule detail", "index.html#notice/20260714029", ".rule-phase-stepper"),
+    ("reader action", "index.html#notice/20260701099", "#noticeview .panel"),
 )
 
 def rendered_target_failures(page: Page) -> list[dict]:
@@ -346,7 +347,7 @@ def run(base: str) -> None:
                 )
                 assert len(set(tops)) == len(tops), f"phase chain still wraps horizontally: {tops}"
 
-        page.goto(f"{base}#money", wait_until="domcontentloaded", timeout=30_000)
+        page.goto(f"{base}index.html#money", wait_until="domcontentloaded", timeout=30_000)
         wait_for_app_ready(page)
         wait_for_locator(page.locator("#list .row").first, label="attachment fixture source row")
         table_metrics = measure_contained_attachment_table(page)
@@ -354,7 +355,7 @@ def run(base: str) -> None:
         assert table_metrics["headHeight"] >= 43.5, table_metrics
         assert table_metrics["documentOverflow"] <= 1, table_metrics
 
-        page.goto(f"{base}#property", wait_until="domcontentloaded", timeout=30_000)
+        page.goto(f"{base}index.html#property", wait_until="domcontentloaded", timeout=30_000)
         wait_for_locator(page.locator("#property-domain-intro"), label="property domain intro")
         page.locator("#property-domain-intro").evaluate(
             """el => el.insertAdjacentHTML('beforeend', `

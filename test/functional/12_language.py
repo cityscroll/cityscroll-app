@@ -16,6 +16,8 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
+# Site root `/` is the Near You shell; the topic SPA (with #langSelect) lives at index.html.
+SPA_ENTRY = BASE.rstrip("/") + "/index.html"
 _ARGS = ["--host-resolver-rules=MAP api.cityscroll.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
 
 def step(tag, name, detail=""):
@@ -24,7 +26,7 @@ def step(tag, name, detail=""):
 with sync_playwright() as pw:
     browser = pw.chromium.launch(args=_ARGS)
     page = browser.new_context().new_page()
-    page.goto(BASE, timeout=30000)
+    page.goto(SPA_ENTRY, timeout=30000)
     wait_for_locator(page.locator("#langSelect"), label="language selector")
 
     # Compact language dropdown: native labels, English selected by default.

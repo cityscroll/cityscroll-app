@@ -55,6 +55,8 @@ from i18n_fixtures import install_routes  # noqa: E402
 from fixture_clock import pin_fixture_clock  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
+# Site root `/` is the Near You shell; the topic SPA (tabs, #langSelect) is index.html.
+SPA_ENTRY = BASE.rstrip("/") + "/index.html"
 AXE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "axe.min.js")
 
 # Public content pages only. data.html and changelog.html are handoff shells that
@@ -132,16 +134,17 @@ def _restore_ready_page(page, url=None, hash_value=None):
         # bare BASE and waiting for it here can never succeed. The hash branch
         # below applies the route first and then waits, which is the order that
         # actually boots the application.
-        if hash_value is None and url.split("#", 1)[0].rstrip("/") == BASE.split("#", 1)[0].rstrip("/"):
+        spa_path = SPA_ENTRY.split("#", 1)[0].rstrip("/")
+        if hash_value is None and url.split("#", 1)[0].rstrip("/") == spa_path:
             wait_for_app_ready(page)
     elif hash_value is None:
         page.reload(timeout=30000, wait_until="domcontentloaded")
         _wait_for_document(page)
-        if page.url.split("#", 1)[0].rstrip("/") == BASE.split("#", 1)[0].rstrip("/"):
+        if page.url.split("#", 1)[0].rstrip("/") == SPA_ENTRY.split("#", 1)[0].rstrip("/"):
             wait_for_app_ready(page)
     if hash_value is not None:
-        if page.url.split("#", 1)[0].rstrip("/") == BASE.split("#", 1)[0].rstrip("/"):
-            # The static-first home boots the application from a hashchange
+        if page.url.split("#", 1)[0].rstrip("/") == SPA_ENTRY.split("#", 1)[0].rstrip("/"):
+            # The static-first SPA boots the application from a hashchange
             # listener that home_entry.mjs attaches during an async import, so
             # document-ready does not imply the listener exists yet. A hash
             # written before then is a lost event and nothing ever boots -- a
@@ -315,7 +318,7 @@ def _set_hash_and_wait(page, hash_value, wait_fn, *, label):
     except PlaywrightTimeoutError as err:
         step("warn", f"{label}: stalled — reload from BASE and retry once",
              str(err).split("\n")[0][:160])
-        _restore_ready_page(page, BASE, hash_value)
+        _restore_ready_page(page, SPA_ENTRY, hash_value)
         wait_fn()
 
 
@@ -329,7 +332,7 @@ def run_index_states(pw, lang, viewport, failures):
         f"localStorage.setItem('crd_invs_v1', JSON.stringify({json.dumps(workspace_seed())}))")
     page = ctx.new_page()
     install_routes(page)
-    page.goto(BASE, wait_until="domcontentloaded", timeout=30000)
+    page.goto(SPA_ENTRY, wait_until="domcontentloaded", timeout=30000)
     _wait_for_home(page)
     page.add_script_tag(path=AXE)
 
@@ -343,7 +346,7 @@ def run_index_states(pw, lang, viewport, failures):
         )
 
     state = f"index.html [{lang}] [{viewport_name}] [load:money]"
-    run_axe(page, state, failures, restore_url=BASE)
+    run_axe(page, state, failures, restore_url=SPA_ENTRY)
     run_focus_exposure(page, state, failures)
 
     for tab in TABS:
@@ -364,7 +367,7 @@ def run_index_states(pw, lang, viewport, failures):
         if tab == "land" and page.locator("#landpan").count():
             page.locator("#landpan").evaluate("el => el.hidden = false")
         state = f"index.html [{lang}] [{viewport_name}] [tab:{tab}]"
-        run_axe(page, state, failures, restore_url=BASE)
+        run_axe(page, state, failures, restore_url=SPA_ENTRY)
         run_focus_exposure(page, state, failures)
         if tab == "rules":
             page.locator("#ruleskw").fill(
@@ -376,12 +379,12 @@ def run_index_states(pw, lang, viewport, failures):
                 label="Rules related-language result",
             )
             semantic_state = f"index.html [{lang}] [{viewport_name}] [tab:rules-related-language]"
-            run_axe(page, semantic_state, failures, restore_url=BASE)
+            run_axe(page, semantic_state, failures, restore_url=SPA_ENTRY)
             run_focus_exposure(page, semantic_state, failures)
 
     # Exams leaves the root shell by design. Return explicitly before exercising
     # the independent Money notice-detail state.
-    page.goto(BASE, wait_until="domcontentloaded", timeout=30000)
+    page.goto(SPA_ENTRY, wait_until="domcontentloaded", timeout=30000)
     _wait_for_home(page)
     # Notice detail: click the first fixture row (renderList also auto-clicks it on
     # load, but an explicit click keeps this state independent of that behavior).
@@ -394,7 +397,7 @@ def run_index_states(pw, lang, viewport, failures):
     wait_for_locator(page.locator("#noticeview, #detail").first, label="money notice detail")
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [money:notice-detail]", failures,
-        restore_url=BASE,
+        restore_url=SPA_ENTRY,
     )
 
     # An unavailable optional read model leaves no reader-visible placeholder.
@@ -432,7 +435,7 @@ def run_index_states(pw, lang, viewport, failures):
         and response.status == 200,
         timeout=15000,
     ):
-        page.goto(BASE + project_hash, wait_until="domcontentloaded", timeout=30000)
+        page.goto(SPA_ENTRY + project_hash, wait_until="domcontentloaded", timeout=30000)
     _wait_for_home(page)
     wait_for_locator(page.locator("#project-connections"), state="attached", label="project connections host")
     wait_for_function(
@@ -443,7 +446,7 @@ def run_index_states(pw, lang, viewport, failures):
     assert page.locator("#project-connections").inner_html().strip() == ""
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [land:project-connections-omitted]", failures,
-        restore_url=BASE, restore_hash=project_hash,
+        restore_url=SPA_ENTRY, restore_hash=project_hash,
     )
 
     # Agency profile: legacy #agency/… hash forwards to the static constellation
@@ -470,10 +473,10 @@ def run_index_states(pw, lang, viewport, failures):
         page, f"index.html [{lang}] [{viewport_name}] [entity:agency]", failures,
         # Do not restore the #agency hash: it re-forwards into /agencies/<id>/ and
         # leaves the page off the SPA shell used by later investigation states.
-        restore_url=BASE, restore_hash="#money",
+        restore_url=SPA_ENTRY, restore_hash="#money",
     )
     # Ensure we are back on the SPA home document before investigation.
-    page.goto(BASE, wait_until="domcontentloaded", timeout=30000)
+    page.goto(SPA_ENTRY, wait_until="domcontentloaded", timeout=30000)
     _wait_for_home(page)
 
     # investigation workspace (seeded above) + its share-error path (worker is stubbed dead)
@@ -484,7 +487,7 @@ def run_index_states(pw, lang, viewport, failures):
     _set_hash_and_wait(page, "#investigation", _wait_investigation, label="investigation workspace")
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [investigation]", failures,
-        restore_url=BASE, restore_hash="#investigation",
+        restore_url=SPA_ENTRY, restore_hash="#investigation",
     )
     page.click("#invshare")
     wait_for_function(
@@ -495,7 +498,7 @@ def run_index_states(pw, lang, viewport, failures):
     )
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [investigation:share-error]", failures,
-        restore_url=BASE, restore_hash="#investigation",
+        restore_url=SPA_ENTRY, restore_hash="#investigation",
     )
 
     # Task-first entry collections (precomputed local JSON; no live network).
@@ -517,7 +520,7 @@ def run_index_states(pw, lang, viewport, failures):
         )
         run_axe(
             page, f"index.html [{lang}] [{viewport_name}] [{task_state}]", failures,
-            restore_url=BASE, restore_hash=task_hash,
+            restore_url=SPA_ENTRY, restore_hash=task_hash,
         )
         run_focus_exposure(page, f"index.html [{lang}] [{viewport_name}] [{task_state}]", failures)
 
@@ -530,7 +533,7 @@ def run_index_states(pw, lang, viewport, failures):
     )
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [now]", failures,
-        restore_url=BASE, restore_hash="#now",
+        restore_url=SPA_ENTRY, restore_hash="#now",
     )
     run_focus_exposure(page, f"index.html [{lang}] [{viewport_name}] [now]", failures)
 

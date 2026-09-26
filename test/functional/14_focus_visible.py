@@ -16,6 +16,7 @@ import sys
 from playwright.sync_api import sync_playwright
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
+SPA_ENTRY = BASE.rstrip("/") + "/index.html"
 ROOT = pathlib.Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from ci_waits import wait_for_locator  # noqa: E402
@@ -63,7 +64,7 @@ with sync_playwright() as pw:
     # Keep the walk first-party: Turnstile load is async and racy on CI runners.
     page.route("**/*challenges.cloudflare.com/**", block_third_party)
     page.route("**/*turnstile*", block_third_party)
-    page.goto(BASE, timeout=30000)
+    page.goto(SPA_ENTRY, timeout=30000)
     wait_for_locator(page.locator("a.skip"), label="skip link")
 
     # Skip link must be first-focusable and its target must exist.

@@ -114,9 +114,15 @@ def assert_shared_exam_card_grammar(page):
 def run(page):
     install_routes(page)
 
-    # The home civic-object chooser reaches the unified People + organizations
+    # The Browse civic-object chooser reaches the unified People + organizations
     # document, whose visible rows cover both people and organization types.
-    page.goto(BASE, wait_until="domcontentloaded", timeout=30_000)
+    # Site root `/` is the Near You shell; Browse owns these tabs.
+    page.goto(f"{BASE}browse/", wait_until="domcontentloaded", timeout=30_000)
+    wait_for_locator(
+        page.locator(".browse-child-tabs [href='/browse/people/']"),
+        timeout=30_000,
+        label="Browse People tab",
+    )
     page.locator(".browse-child-tabs [href='/browse/people/']").click()
     page.wait_for_url(f"{BASE}browse/people/", timeout=30_000)
     people = page.locator("[data-browse-concept='people']")

@@ -3,6 +3,7 @@ import json, sys
 from playwright.sync_api import sync_playwright
 import os
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
+SPA_ENTRY = BASE.rstrip("/") + "/index.html"
 _ARGS = ["--host-resolver-rules=MAP api.cityscroll.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
 SHOT = os.environ.get("CROL_SHOTS", os.path.dirname(os.path.abspath(__file__)) + "/shots") + "/"
 os.makedirs(SHOT, exist_ok=True)
@@ -23,7 +24,7 @@ with sync_playwright() as pw:
     page.on("pageerror", lambda e: errors.append(str(e)))
 
     # ---------- load: masthead CTA + category tabs (edition strip removed) ----------
-    page.goto(BASE, timeout=30000)
+    page.goto(SPA_ENTRY, timeout=30000)
     page.wait_for_selector("#list .row", timeout=30000)
     try:
         has_cta = page.locator("#homeCta").count() == 1
@@ -76,7 +77,7 @@ with sync_playwright() as pw:
     # ---------- #6 glance box on a notice permalink ----------
     req_id = page.evaluate("currentRows[0].request_id")
     p2 = ctx.new_page()
-    p2.goto(BASE + "#notice/" + req_id, timeout=30000)
+    p2.goto(SPA_ENTRY + "#notice/" + req_id, timeout=30000)
     p2.wait_for_selector(".glance", timeout=30000)
     gl = p2.locator(".glance").inner_text()
     labels = [w for w in ["WHO","WHAT","WHEN"] if w in gl.upper()]
@@ -96,7 +97,7 @@ with sync_playwright() as pw:
 
     # ---------- #9 property explorer ----------
     p3 = ctx.new_page()
-    p3.goto(BASE + "#property", timeout=30000)
+    p3.goto(SPA_ENTRY + "#property", timeout=30000)
     p3.wait_for_selector("#assettabs .chip", timeout=45000)
     tabs = p3.evaluate("[...document.querySelectorAll('#assettabs .chip')].map(b=>b.textContent)")
     counts = p3.evaluate("[...document.querySelectorAll('#assettabs .chip .ct')].map(s=>+s.textContent)")
@@ -119,7 +120,7 @@ with sync_playwright() as pw:
     step("OK" if nbadge>=0 else "OK", "#9 labeled $ badges", f"{nbadge} badge(s) in loaded set")
     # deep-link with asset preselected (fresh page)
     p4 = ctx.new_page()
-    p4.goto(BASE + "#property?asset=timber", timeout=30000)
+    p4.goto(SPA_ENTRY + "#property?asset=timber", timeout=30000)
     p4.wait_for_selector("#assettabs .chip.on", timeout=45000)
     onchip = p4.evaluate("document.querySelector('#assettabs .chip.on')?.dataset.a")
     step("OK" if onchip=="timber" else "FAIL", "#9 asset deep-link", f"on={onchip}")
@@ -130,7 +131,7 @@ with sync_playwright() as pw:
     # ---------- #10 mobile filter tray ----------
     m = ctx.new_page()
     m.set_viewport_size({"width": 390, "height": 800})
-    m.goto(BASE, timeout=30000)
+    m.goto(SPA_ENTRY, timeout=30000)
     m.wait_for_selector("#list .row", timeout=30000)
     vis = m.evaluate("""({
         toggle: getComputedStyle(document.querySelector('#tab-money .filtertoggle')).display,
