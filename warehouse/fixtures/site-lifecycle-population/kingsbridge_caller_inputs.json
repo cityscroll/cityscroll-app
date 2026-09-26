@@ -1,0 +1,114 @@
+{
+  "schema": "cityscroll.parcel_history_caller_inputs.v1",
+  "version": 1,
+  "source_vintage": "2026-09-21",
+  "generated_at": "2026-09-26T00:00:00.000Z",
+  "family_id": "kingsbridge-armory",
+  "notes": [
+    "Bounded fixed-dossier inputs for the Kingsbridge Armory parcels.",
+    "Parcels are Bronx 3247/10 (2032470010) and 3247/2 (2032470002).",
+    "Successive CEQR proposals remain distinct subjects; 2025X0262 uses both lots."
+  ],
+  "landProjects": [
+    {
+      "project_id": "2025X0262",
+      "project_name": "Kingsbridge Armory Redevelopment",
+      "noticed_date": "2025-01-15",
+      "source_system": "zap-projects-open-data",
+      "evidence_path": "https://zap.planning.nyc.gov/projects/2025X0262"
+    }
+  ],
+  "projectLots": [
+    {
+      "project_id": "2025X0262",
+      "bbls": [
+        "2032470010",
+        "2032470002"
+      ]
+    }
+  ],
+  "procurementRecords": [
+    {
+      "source_system": "ceqr",
+      "request_id": "08DME004X",
+      "subject_id": "ceqr:08DME004X",
+      "record_kind": "ceqr_review",
+      "short_title": "Kingsbridge Armory retail CEQR 08DME004X",
+      "event_date": "2009-06-01",
+      "evidence": [
+        {
+          "resolved_bbl": "2032470010",
+          "evidence_path": "https://www.nyc.gov/site/oec/environmental-quality-review/08DME004X.page"
+        }
+      ]
+    },
+    {
+      "source_system": "ceqr",
+      "request_id": "13DME013X",
+      "subject_id": "ceqr:13DME013X",
+      "record_kind": "ceqr_review",
+      "short_title": "Kingsbridge Armory ice-center CEQR 13DME013X",
+      "event_date": "2013-01-01",
+      "evidence": [
+        {
+          "resolved_bbl": "2032470010",
+          "evidence_path": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page"
+        }
+      ]
+    },
+    {
+      "source_system": "ceqr",
+      "request_id": "13DME013X",
+      "subject_id": "ceqr:13DME013X",
+      "record_kind": "ceqr_review",
+      "short_title": "Kingsbridge Armory ice-center CEQR 13DME013X",
+      "event_date": "2013-06-15",
+      "evidence": [
+        {
+          "resolved_bbl": "2032470002",
+          "evidence_path": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page"
+        }
+      ]
+    },
+    {
+      "source_system": "ceqr",
+      "request_id": "25DME006X",
+      "subject_id": "ceqr:25DME006X",
+      "record_kind": "ceqr_review",
+      "short_title": "Kingsbridge Armory redevelopment CEQR 25DME006X",
+      "event_date": "2025-10-01",
+      "evidence": [
+        {
+          "resolved_bbl": "2032470010",
+          "evidence_path": "https://a002-ceqraccess.nyc.gov/ceqr/Details?data=MjVETUUwMDZY0"
+        },
+        {
+          "resolved_bbl": "2032470002",
+          "evidence_path": "https://a002-ceqraccess.nyc.gov/ceqr/Details?data=MjVETUUwMDZY0"
+        }
+      ]
+    }
+  ],
+  "councilMatters": [],
+  "evidence": [
+    {
+      "source_system": "ceqr",
+      "source_record_id": "13DME013X",
+      "source_url": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page"
+    },
+    {
+      "source_system": "ceqr",
+      "source_record_id": "25DME006X",
+      "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/Details?data=MjVETUUwMDZY0&signature=7baabc56de3147946d9415dc8b59f436a8e7c9ca"
+    },
+    {
+      "source_system": "zap-projects-open-data",
+      "source_record_id": "2025X0262",
+      "source_url": "https://zap.planning.nyc.gov/projects/2025X0262"
+    }
+  ],
+  "negative_rules": [
+    "Do not merge successive CEQR proposals into one subject.",
+    "Do not treat the earlier anticipated 2018 ice-center operation date as an opening."
+  ]
+}

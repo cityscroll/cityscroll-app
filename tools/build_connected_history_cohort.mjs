@@ -43,21 +43,23 @@ function loadInputs() {
   const zapPath = join(ROOT, "site/data/zap_projects_warehouse_lookup.json");
   const landPath = join(ROOT, "site/data/community_board_land_positions.json");
   const lifecycleManifestPath = join(ROOT, "site/data/site_lifecycle/manifest.json");
-  const lifecycleShardPath = join(ROOT, "site/data/site_lifecycle/0000.json");
   const bsaPath = join(ROOT, "site/data/bsa_calendar.json");
 
   const constellation = readJson(constellationPath);
   const zap = readJson(zapPath);
   const land = readJson(landPath);
   const lifecycleManifest = readJson(lifecycleManifestPath);
-  const lifecycleShard = readJson(lifecycleShardPath);
+  const lifecycleShards = (lifecycleManifest.shards || []).map((name) =>
+    readJson(join(ROOT, "site/data/site_lifecycle", name)),
+  );
+  const lifecycleParcels = lifecycleShards.flatMap((shard) => shard.rows || []);
   const bsa = readJson(bsaPath);
 
   const boardIds = Object.keys(constellation.by_id || {}).sort();
 
   // Lifecycle members already encode explicit parcel↔application↔project links.
   const explicitRelationsBySubject = {};
-  for (const parcel of lifecycleShard.rows || []) {
+  for (const parcel of lifecycleParcels) {
     const parcelId = `parcel:${parcel.parcel_id}`;
     const relations = [];
     for (const member of parcel.members || []) {
@@ -92,7 +94,7 @@ function loadInputs() {
     boardIds,
     zapProjects: zap.rows || [],
     landPositionsByBoard: land.boards || {},
-    siteLifecycleParcels: lifecycleShard.rows || [],
+    siteLifecycleParcels: lifecycleParcels,
     bsaMeetings: bsa.rows || [],
     explicitRelationsBySubject,
     sourceVersions: {
@@ -116,8 +118,10 @@ function loadInputs() {
       },
       site_lifecycle: {
         manifest: fileDigest(lifecycleManifestPath),
-        shard: fileDigest(lifecycleShardPath),
-        generation: lifecycleManifest.generation || lifecycleShard.generation || null,
+        shards: (lifecycleManifest.shards || []).map((name) =>
+          fileDigest(join(ROOT, "site/data/site_lifecycle", name)),
+        ),
+        generation: lifecycleManifest.generation || lifecycleShards[0]?.generation || null,
         counts: lifecycleManifest.counts || null,
       },
       bsa_calendar: {

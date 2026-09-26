@@ -19,6 +19,6 @@ export function writeSiteLifecycleProjection(document, { outputDir = "site/data/
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  console.error("Inputs are publisher-specific; call writeSiteLifecycleProjection from the materialization job.");
+  console.error("Inputs are publisher-specific; call tools/materialize_site_lifecycle_population.mjs with retained caller inputs.");
   process.exitCode = 2;
 }

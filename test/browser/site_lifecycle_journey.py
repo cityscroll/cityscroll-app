@@ -26,8 +26,19 @@ PROCUREMENT_ROUTE = "/procurements/procurement%3Acontract%3ACT107120258802303"
 OFFICIAL_SOURCE = "https://www.pasport.org/public-search"
 VIEWPORTS = ((1440, 900, "desktop"), (390, 844, "narrow"))
 
+LIFECYCLE_GENERATION = "journey-fixture-generation"
+LIFECYCLE_CONTENT_HASH = "journey-fixture-content-hash"
+LIFECYCLE_MANIFEST = {
+    "version": 1,
+    "generation": LIFECYCLE_GENERATION,
+    "content_hash": LIFECYCLE_CONTENT_HASH,
+    "counts": {"parcels": 1, "members": 2},
+    "shards": ["0000.json"],
+}
 LIFECYCLE_SHARD = {
-    "schema": "cityscroll.site_lifecycle_shard.v1",
+    "generation": LIFECYCLE_GENERATION,
+    "content_hash": LIFECYCLE_CONTENT_HASH,
+    "shard": "0000",
     "rows": [
         {
             "parcel_id": "3073670011",
@@ -56,7 +67,8 @@ LIFECYCLE_SHARD = {
     ],
 }
 LIFECYCLE_REVERSE = {
-    "schema": "cityscroll.site_lifecycle_reverse.v1",
+    "generation": LIFECYCLE_GENERATION,
+    "content_hash": LIFECYCLE_CONTENT_HASH,
     "members": {
         "land:project:2020K0270": {"parcel_ids": ["3073670011"]},
         "procurement:contract:CT107120258802303": {"parcel_ids": ["3073670011"]},
@@ -172,6 +184,12 @@ def install_routes(page: Page, *, lifecycle_failure: dict[str, bool]) -> None:
     def static_fixture(route: Route) -> None:
         parsed = urlsplit(route.request.url)
         path = parsed.path
+        if path.endswith("/data/site_lifecycle/manifest.json"):
+            if lifecycle_failure["enabled"]:
+                route.fulfill(status=503, content_type="application/json", body="{}")
+            else:
+                route.fulfill(status=200, content_type="application/json", body=json_body(LIFECYCLE_MANIFEST))
+            return
         if path.endswith("/data/site_lifecycle/0000.json"):
             if lifecycle_failure["enabled"]:
                 route.fulfill(status=503, content_type="application/json", body="{}")

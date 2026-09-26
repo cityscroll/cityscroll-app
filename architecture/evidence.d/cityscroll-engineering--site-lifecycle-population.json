@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/site-lifecycle-population",
+  "status": "implemented",
+  "fingerprint": "site-lifecycle-population.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "site-lifecycle-projection",
+      "path": "site/site_lifecycle_projection.mjs"
+    },
+    {
+      "id": "site-lifecycle-reader",
+      "path": "site/site_lifecycle_reader.mjs"
+    },
+    {
+      "id": "site-lifecycle-context",
+      "path": "site/site_lifecycle_context.mjs"
+    },
+    {
+      "id": "site-lifecycle-artifacts",
+      "path": "site/site_lifecycle_artifacts.mjs"
+    },
+    {
+      "id": "site-lifecycle-population-lib",
+      "path": "tools/lib/site_lifecycle_population.mjs"
+    },
+    {
+      "id": "site-lifecycle-population-caller",
+      "path": "tools/materialize_site_lifecycle_population.mjs"
+    },
+    {
+      "id": "site-lifecycle-population-inputs",
+      "path": "warehouse/fixtures/site-lifecycle-population/kingsbridge_caller_inputs.json"
+    },
+    {
+      "id": "site-lifecycle-population-receipt",
+      "path": "warehouse/receipts/proof/site_lifecycle_population_latest.json"
+    },
+    {
+      "id": "site-lifecycle-population-tests",
+      "path": "test/site_lifecycle_population.test.mjs"
+    }
+  ]
+}

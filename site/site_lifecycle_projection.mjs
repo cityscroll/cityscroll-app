@@ -4,10 +4,16 @@
  */
 
 import { createHash } from "node:crypto";
+import {
+  SITE_LIFECYCLE_SCHEMA as READER_SITE_LIFECYCLE_SCHEMA,
+  assembleSiteLifecycleDocument,
+  createSiteLifecycleReader,
+} from "./site_lifecycle_reader.mjs";
 
-export const SITE_LIFECYCLE_SCHEMA = "cityscroll.site_lifecycle.v1";
+export const SITE_LIFECYCLE_SCHEMA = READER_SITE_LIFECYCLE_SCHEMA;
 export const SITE_LIFECYCLE_MEMBER_SCHEMA = "cityscroll.site_lifecycle_member.v1";
 export const SITE_LIFECYCLE_SHARD_SIZE = 250;
+export { assembleSiteLifecycleDocument, createSiteLifecycleReader };
 
 const clean = (value, max = 1000) => String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 const date = (value) => {
@@ -99,26 +105,97 @@ function procurementMembers(records, projectLots) {
   return out;
 }
 
+function mergeSourceEvents(left = [], right = []) {
+  const byKey = new Map();
+  for (const event of [...left, ...right]) {
+    if (!event?.date) continue;
+    const key = `${event.event || "observed"}:${event.date}:${event.date_precision || "unknown"}`;
+    if (!byKey.has(key)) byKey.set(key, event);
+  }
+  return [...byKey.values()].sort((a, b) => a.date.localeCompare(b.date) || a.event.localeCompare(b.event));
+}
+
+function observationDateEvents(item) {
+  const events = [...(item?.source_events || [])];
+  if (
+    item?.source_event_date
+    && !events.some((event) => event?.date === item.source_event_date)
+  ) {
+    events.push({
+      event: "observed",
+      date: item.source_event_date,
+      date_precision: item.source_event_date_precision || "day",
+    });
+  }
+  return events;
+}
+
+/** Prefer the richer observation while preserving distinct dated evidence. */
+function mergeMemberObservations(left, right) {
+  if (!left) return right;
+  if (!right) return left;
+  const preferRight =
+    JSON.stringify(right).localeCompare(JSON.stringify(left)) < 0;
+  const primary = preferRight ? right : left;
+  const secondary = preferRight ? left : right;
+  const sourceEvents = mergeSourceEvents(observationDateEvents(left), observationDateEvents(right));
+  const eventDate =
+    [primary.source_event_date, secondary.source_event_date].filter(Boolean).sort()[0] || null;
+  return {
+    ...primary,
+    source_event_date: eventDate,
+    source_event_date_precision: eventDate
+      ? primary.source_event_date_precision || secondary.source_event_date_precision || "unknown"
+      : "unknown",
+    source_events: sourceEvents,
+    source_title: primary.source_title || secondary.source_title,
+    agency: primary.agency || secondary.agency,
+    stage: primary.stage || secondary.stage,
+    vendor: primary.vendor || secondary.vendor,
+    evidence_path: primary.evidence_path || secondary.evidence_path,
+    subject_href: primary.subject_href || secondary.subject_href,
+    footprint_scope: [...new Set([...(left.footprint_scope || []), ...(right.footprint_scope || [])])].sort(),
+    relation_path: [...new Set([...(left.relation_path || []), ...(right.relation_path || [])])],
+  };
+}
+
 function dedupeMembers(members) {
   const byId = new Map();
   for (const item of members) {
     if (!item || !item.subject_id) continue;
-    const previous = byId.get(item.subject_id);
-    if (!previous || JSON.stringify(item).localeCompare(JSON.stringify(previous)) < 0) byId.set(item.subject_id, item);
+    byId.set(item.subject_id, mergeMemberObservations(byId.get(item.subject_id), item));
   }
   return [...byId.values()].sort((a, b) => (a.source_event_date || "9999-99-99").localeCompare(b.source_event_date || "9999-99-99") || a.record_kind.localeCompare(b.record_kind) || a.subject_id.localeCompare(b.subject_id));
 }
 
 /** Build forward parcel histories and an exact reciprocal member index. */
 export function materializeSiteLifecycle({ landProjects = [], projectLots = [], councilMatters = [], councilLookup = null, procurementRecords = [], propertyRecords = [], generatedAt = null, generation = null } = {}) {
-  const all = [...landProjects.flatMap((row) => projectMembers(row, projectLots)), ...councilMembers(councilMatters, projectLots, councilLookup), ...procurementMembers(procurementRecords, projectLots), ...procurementMembers(propertyRecords, projectLots)];
+  // Retain every observation first, distribute footprints, then project identity
+  // per parcel. Collapsing by subject before distribution drops alternate lots.
+  const all = [...landProjects.flatMap((row) => projectMembers(row, projectLots)), ...councilMembers(councilMatters, projectLots, councilLookup), ...procurementMembers(procurementRecords, projectLots), ...procurementMembers(propertyRecords, projectLots)].filter(Boolean);
   const byParcel = new Map();
-  for (const item of dedupeMembers(all)) for (const parcel of item.footprint_scope) {
+  for (const item of all) for (const parcel of item.footprint_scope || []) {
     if (!byParcel.has(parcel)) byParcel.set(parcel, []);
     byParcel.get(parcel).push(item);
   }
   const parcels = {};
   for (const parcel of [...byParcel.keys()].sort()) parcels[parcel] = { parcel_id: parcel, parcel_href: `/parcels/${parcel}/`, members: dedupeMembers(byParcel.get(parcel)) };
+
+  // After footprints are distributed, project identity across parcels so every
+  // admitted entry point retains the subject's distinct dated observations.
+  const bySubject = new Map();
+  for (const history of Object.values(parcels)) {
+    for (const item of history.members) {
+      bySubject.set(item.subject_id, mergeMemberObservations(bySubject.get(item.subject_id), item));
+    }
+  }
+  for (const history of Object.values(parcels)) {
+    history.members = history.members.map((item) => {
+      const merged = bySubject.get(item.subject_id);
+      return merged ? { ...merged } : item;
+    });
+  }
+
   const members = {};
   for (const [parcel, history] of Object.entries(parcels)) for (const item of history.members) {
     members[item.subject_id] ||= { subject_id: item.subject_id, parcel_ids: [] };
@@ -137,16 +214,6 @@ export function shardSiteLifecycle(document, shardSize = SITE_LIFECYCLE_SHARD_SI
   const shards = [];
   for (let i = 0; i < entries.length; i += size) shards.push({ schema: `${SITE_LIFECYCLE_SCHEMA}.shard`, version: 1, generation: document.generation, content_hash: document.content_hash, shard: String(shards.length).padStart(4, "0"), rows: entries.slice(i, i + size) });
   return shards;
-}
-
-export function createSiteLifecycleReader(manifest, shards = [], reverse = null) {
-  const parcels = new Map();
-  for (const shard of shards) for (const row of shard?.rows || []) if (bbl(row?.parcel_id)) parcels.set(row.parcel_id, row);
-  const generation = manifest?.generation || shards.find((s) => s?.generation)?.generation || null;
-  if (manifest?.generation && shards.some((s) => s?.generation && s.generation !== manifest.generation)) throw new Error("site lifecycle generation mismatch");
-  if (reverse && manifest?.generation !== reverse.generation) throw new Error("site lifecycle reverse index generation mismatch");
-  if (reverse && manifest?.content_hash !== reverse.content_hash) throw new Error("site lifecycle reverse index content hash mismatch");
-  return { generation, get(parcelId) { const key = bbl(parcelId); return key ? parcels.get(key) || null : null; }, memberParcels(subjectId) { const key = id(subjectId); return reverse?.members?.[key]?.parcel_ids?.slice() || []; }, size: parcels.size };
 }
 
 export function siteLifecycleGeneration(document) { return document?.generation || null; }
