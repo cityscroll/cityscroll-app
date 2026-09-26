@@ -2323,8 +2323,32 @@ export function buildDistrictActivity(opts = {}) {
       left.localeCompare(right))),
     by_key: Object.fromEntries([...geographyItemSets.entries()]
       .sort(([left], [right]) => left.localeCompare(right))
-      .map(([key, lenses]) => [key,
-        Object.fromEntries(LENSES.map((lens) => [lens, sortedIds(lenses[lens])]))])),
+      .map(([key, lenses]) => {
+        // Observed membership only. A missing lens key stays source_unavailable
+        // for Near You residential fixtures. Do not fabricate empty meetings /
+        // property / money arrays just because Land NTA membership admitted the
+        // place. When a non-land lens already admitted the key, keep the prior
+        // all-lens empty arrays so existing numeric-zero cases remain distinct.
+        const nonLandObserved = LENSES.some((lens) => (
+          lens !== "land" && (lenses[lens]?.size || 0) > 0
+        ));
+        const bag = Object.create(null);
+        for (const lens of LENSES) {
+          const ids = sortedIds(lenses[lens]);
+          if (ids.length > 0) {
+            bag[lens] = ids;
+            continue;
+          }
+          if (nonLandObserved) {
+            bag[lens] = [];
+            continue;
+          }
+          if (lens === "land" && landNtaCoverageStatus === "ready") {
+            bag[lens] = [];
+          }
+        }
+        return [key, bag];
+      })),
     coverage: {
       status: "ready",
       by_lens: {

@@ -212,7 +212,7 @@
   },
   "note": "Each polygon membership has at least one routed located_in candidate; distinct record×geography pairs reconcile to membership bags while separate venue and jurisdiction roles may share a pair. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
   "boundary_vintage": "2026-05-26",
-  "built_at": "2026-09-26T06:29:02.095Z",
+  "built_at": "2026-09-26T07:41:27.793Z",
   "subject_counts": {
     "borough": 5,
     "community-district": 59,
