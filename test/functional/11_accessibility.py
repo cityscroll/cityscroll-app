@@ -382,14 +382,13 @@ def run_index_states(pw, lang, viewport, failures):
             run_axe(page, semantic_state, failures, restore_url=SPA_ENTRY)
             run_focus_exposure(page, semantic_state, failures)
 
-    # Exams leaves the root shell by design. Return explicitly before exercising
-    # the independent Money notice-detail state.
-    page.goto(SPA_ENTRY, wait_until="domcontentloaded", timeout=30000)
-    _wait_for_home(page)
+    # Exams leaves the root shell by design. Enter Contracts on its document
+    # route before the independent Money notice-detail state (site root `/` is
+    # the Near You shell; topic SPA chrome is not the default entry).
+    page.goto(f"{BASE}browse/contracts/", wait_until="domcontentloaded", timeout=30000)
+    _wait_for_browse_route(page, "money")
     # Notice detail: click the first fixture row (renderList also auto-clicks it on
     # load, but an explicit click keeps this state independent of that behavior).
-    page.click('.tabbtn[data-tab="money"]')
-    _wait_for_browse_route(page, "money")
     wait_for_locator(page.locator("#list .row").first, label="money notice row")
     # The title now opens the canonical notice document. Click stable non-interactive
     # PIN metadata to exercise the row's separate retained-preview behavior.

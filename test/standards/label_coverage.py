@@ -20,7 +20,8 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from i18n_fixtures import install_routes  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
-PAGES = ["", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html", "near-you/index.html", "following/index.html"]  # Source: public site/ pages.
+# Site root `/` is the Near You shell; the topic SPA (civic-object tabs) is index.html.
+PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html", "near-you/index.html", "following/index.html"]  # Source: public site/ pages.
 TABS = [
     ("people", '.tabbtn[data-tab="people"]'),
     ("land", '.tabbtn[data-tab="land"]'),
@@ -72,7 +73,7 @@ def main():
         browser = pw.chromium.launch()
         for path in PAGES:
             ctx = browser.new_context()
-            if not path:
+            if path in ("", "index.html"):
                 ctx.add_init_script(
                     f"localStorage.setItem('crd_invs_v1', JSON.stringify({json.dumps(INV_SEED)}))")
             page = ctx.new_page()
@@ -83,7 +84,7 @@ def main():
             name = path or "index.html"
             census(page, name, failures)
 
-            if not path:  # index.html: walk every source tab plus the investigation route
+            if path in ("", "index.html"):  # topic SPA: walk every source tab plus the investigation route
                 for tab, selector in TABS:
                     page.click(selector)
                     page.wait_for_timeout(400)

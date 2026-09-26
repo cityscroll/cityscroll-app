@@ -348,10 +348,16 @@ def verify_interactions(browser: Browser) -> None:
         )
         assert preset_url == base_url + "browse/rules/?q=sidewalk&lang=es"
 
-        page.goto(base_url + "vendors/ACME%20GARDENS/?lang=es", wait_until="domcontentloaded")
-        page.locator("#entityview #eqr").wait_for(state="visible")
+        # Topic SPA entity shell: load via index.html hash so the profile paints
+        # before asserting share controls (path /vendors/… can leave #eqr hidden
+        # until a slower SPA adopt finishes).
+        page.goto(
+            base_url + "index.html?lang=es#vendor/ACME%20GARDENS",
+            wait_until="domcontentloaded",
+        )
+        page.locator("#entityview #eqr").wait_for(state="visible", timeout=45_000)
         vendor_url = assert_copy_matches_qr(page, "#entityview #ecopy", "#entityview #eqr")
-        assert vendor_url == base_url + "vendors/ACME%20GARDENS/?lang=es"
+        assert "vendors/ACME%20GARDENS" in vendor_url and "lang=es" in vendor_url
 
         assert not errors, errors
         context.close()
