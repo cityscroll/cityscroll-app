@@ -44,6 +44,17 @@ export function readRegistry(root = ROOT) {
   if (!Array.isArray(registry.not_rebuilt)) {
     throw new Error("dependent-geography registry needs a not_rebuilt list (may be empty)");
   }
+  if (registry.additional_required_builders != null) {
+    if (!Array.isArray(registry.additional_required_builders)) {
+      throw new Error("additional_required_builders must be an array when present");
+    }
+    for (const entry of registry.additional_required_builders) {
+      if (!entry?.builder) throw new Error("every additional_required_builders entry needs a builder");
+      if (!entry.reason || entry.reason.length < 20) {
+        throw new Error(`additional required builder ${entry.builder} needs a stated reason`);
+      }
+    }
+  }
   return registry;
 }
 
@@ -169,6 +180,17 @@ export function requiredDependentCheckBuilders(root = ROOT, registry = readRegis
       source_paths: registry.refreshed_input_paths.filter((input) => (
         builderSourceTextMentionsRefreshedInputs(root, builder, [input])
       )),
+    });
+  }
+
+  for (const entry of registry.additional_required_builders || []) {
+    if (!entry?.builder || producers.has(entry.builder)) continue;
+    if (required.has(entry.builder)) continue;
+    required.set(entry.builder, {
+      builder: entry.builder,
+      via: "additional-required",
+      source_paths: [],
+      reason: entry.reason || null,
     });
   }
 

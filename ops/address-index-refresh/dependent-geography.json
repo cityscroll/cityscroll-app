@@ -15,6 +15,12 @@
     "site/data/parcel-geography/manifest.json",
     "site/data/parcel-geography"
   ],
+  "additional_required_builders": [
+    {
+      "builder": "tools/backtest_procurement_intent_radar.mjs",
+      "reason": "Corpus backtest coverage hashes site/data/shared_meeting_read_model.json. Address-geography refresh restamps that resident meeting document, so the committed corpus_backtest and corpus_coverage fixtures must rebuild in the same change."
+    }
+  ],
   "early_check_sources": [
     "tools/build_cloudflare_pages.mjs",
     "tools/preflight-required-checks.sh"
@@ -48,6 +54,10 @@
     {
       "path": "site/data/land-place-generations",
       "reason": "Immutable Land place generation tree, ACTIVE pointer, and refresh receipt published with the membership rebuild."
+    },
+    {
+      "path": "warehouse/fixtures/procurement-intent-radar",
+      "reason": "Procurement intent corpus backtest and coverage receipts restated from the refreshed shared meeting read model."
     }
   ],
   "rebuild_sequence": [
@@ -91,6 +101,23 @@
         "address-geography-refresh"
       ],
       "note": "Parcel membership changes invalidate Land project-lot joins. The refresh publishes one coherent generation and mirrors it into the active membership index and evidence shards that build_land_place_membership.mjs --check re-derives. When address-geography rewrites parcel manifests without moving the Land place generation aggregate, hermetic bootstrap can leave active mirrors stale; post_verify then force-republishes."
+    },
+    {
+      "id": "procurement-intent-corpus-backtest",
+      "command": [
+        "tools/backtest_procurement_intent_radar.mjs"
+      ],
+      "verify": [
+        "tools/backtest_procurement_intent_radar.mjs",
+        "--check"
+      ],
+      "covers": [
+        "tools/backtest_procurement_intent_radar.mjs"
+      ],
+      "after": [
+        "address-geography-refresh"
+      ],
+      "note": "Shared meeting read-model restamps invalidate the committed procurement-intent corpus backtest and coverage receipts that site-node lockstep tests re-derive."
     }
   ],
   "not_rebuilt": []

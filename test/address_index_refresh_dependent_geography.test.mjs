@@ -78,6 +78,18 @@ test("every required dependent --check builder is on the refresh chain", () => {
   assert.deepEqual(describeDrift(drift), []);
   assert.ok(drift.required.includes("tools/land_place_refresh.mjs"));
   assert.ok(drift.required.includes("tools/build_land_place_membership.mjs"));
+  assert.ok(drift.required.includes("tools/backtest_procurement_intent_radar.mjs"));
+});
+
+test("positive control: omitting the procurement-intent corpus rebuild is reported", () => {
+  const registry = readRegistry(REPO_ROOT);
+  const stripped = {
+    ...registry,
+    rebuild_sequence: registry.rebuild_sequence.filter((step) => step.id !== "procurement-intent-corpus-backtest"),
+    additional_required_builders: [...(registry.additional_required_builders || [])],
+  };
+  const drift = registryDrift(REPO_ROOT, stripped);
+  assert.ok(drift.uncovered.includes("tools/backtest_procurement_intent_radar.mjs"));
 });
 
 test("positive control: a derived family left off the chain is reported", () => {
