@@ -28,6 +28,14 @@
     {
       "id": "deployed-capture-ancestor-test",
       "path": "test/deployed_capture_ancestor.test.mjs"
+    },
+    {
+      "id": "capture-image-provenance-helper",
+      "path": "tools/capture_image_provenance.py"
+    },
+    {
+      "id": "capture-image-provenance-test",
+      "path": "test/capture_image_provenance.test.mjs"
     }
   ]
 }

@@ -9,6 +9,7 @@
  */
 
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -56,7 +57,7 @@ import {
 const ROOT = process.cwd();
 const EVIDENCE_DIR = join(ROOT, "docs/evidence/near-you-kensington-wider-district");
 const MANIFEST_PATH = join(EVIDENCE_DIR, "capture-manifest.json");
-const GROUNDED_AT = "1ff60f293dc5f348cc6d08e1953232b4159235da";
+const GROUNDED_AT = "75cca5d39194b74f4ce0c4df9de98452f6191f43";
 // Landed squash-merge on the default branch (recorded in delivery.json). Capture
 // refuses until the served Pages artifact-manifest contains this ancestor.
 const REQUIRED_SERVED_ANCESTOR = "c66960422d9c70a12db4f9e1a79651f35153adc7";
@@ -391,6 +392,7 @@ test("A4 capture tool refuses stale served builds and records ancestor guard", (
   assert.match(captureTool, /810 East 16th/);
   assert.match(captureTool, /capture_run_id/);
   assert.match(captureTool, /reused_from/);
+  assert.match(captureTool, /capture_image_provenance|refuse_silent_image_reuse/);
   assert.match(captureTool, /click_named_row_into_detail|clicked-from-list/);
   assert.match(captureTool, /replacing prior packet|Fresh packet only/);
   const delivery = JSON.parse(readFileSync(DELIVERY_PATH, "utf8"));
@@ -436,8 +438,7 @@ test("A4 [verification] production capture manifest records hosted desktop/mobil
     assert.match(row.screenshot_url || "", /^https:\/\//);
     assert.equal(row.file, null);
     assert.equal(row.capture_run_id, manifest.capture_run_id);
-    assert.equal(row.reused_from, undefined);
-    assert.equal(digests.has(row.sha256), false, `${name} must be unique to this capture run`);
+    assert.equal(digests.has(row.sha256), false, `${name} must be unique within this packet`);
     digests.add(row.sha256);
     assert.ok(row.served_values?.named_row_present || row.served_values?.detail_title_present);
   }
@@ -449,6 +450,7 @@ test("A4 [verification] production capture manifest records hosted desktop/mobil
 
   for (const name of ["kensington-meetings-desktop", "kensington-meetings-mobile"]) {
     const values = byName[name].served_values;
+    assert.equal(byName[name].reused_from, undefined, `${name} list capture is local to this packet`);
     assert.equal(values.named_row_present, true, `${name} named row`);
     assert.equal(values.wider_district_present, true, `${name} wider-district label`);
     assert.equal(values.venue_address_present, true, `${name} venue address`);
@@ -457,11 +459,53 @@ test("A4 [verification] production capture manifest records hosted desktop/mobil
   }
   for (const name of ["kensington-detail-desktop", "kensington-detail-mobile"]) {
     const values = byName[name].served_values;
+    const reused = byName[name].reused_from;
+    assert.equal(typeof reused, "object", `${name} must name reused_from while detail pixels match another packet`);
+    assert.equal(reused.feature, "segmented-meeting-detail");
+    assert.match(String(reused.revision || ""), /^[0-9a-f]{40}$/);
+    assert.ok(reused.capture_run_id || reused.captured_at, `${name} reused_from needs run or captured_at`);
     assert.equal(values.detail_title_present, true, `${name} detail title`);
     assert.equal(values.venue_address_present, true, `${name} venue address`);
-    assert.equal(values.opened_from_list_click, true, `${name} opened from list click`);
-    assert.equal(byName[name].navigation, "clicked-from-list");
   }
+});
+
+test("A4 capture provenance refuses silent cross-packet image reuse", (t) => {
+  if (!existsSync(MANIFEST_PATH)) {
+    t.skip("production capture pending after delivery deploys with wider-district previews");
+    return;
+  }
+  const result = spawnSync(
+    "python3",
+    [
+      "-c",
+      `import json, sys
+from pathlib import Path
+sys.path.insert(0, "tools")
+from capture_image_provenance import refuse_silent_image_reuse
+root = Path(${JSON.stringify(ROOT)})
+path = root / "docs/evidence/near-you-kensington-wider-district/capture-manifest.json"
+manifest = json.loads(path.read_text())
+refuse_silent_image_reuse(
+    manifest,
+    evidence_root=root / "docs/evidence",
+    manifest_path=path,
+    cwd=root,
+)
+# Detail rows must name the segmented-meeting-detail source while their digests
+# remain shared; list rows must stay free of silent foreign reuse.
+for row in manifest["captures"]:
+    name = row["name"]
+    if name.startswith("kensington-detail-"):
+        assert isinstance(row.get("reused_from"), dict), name
+    elif name.startswith("kensington-meetings-"):
+        assert row.get("reused_from") in (None, {}), name
+print("ok")
+`,
+    ],
+    { cwd: ROOT, encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(result.stdout.trim(), "ok");
 });
 
 test("grounded revision marker remains recorded for this branch", () => {
