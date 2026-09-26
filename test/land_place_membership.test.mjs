@@ -444,12 +444,115 @@ describe("land_place_membership", () => {
     assert.equal(entry.invalid_bbl_count, 2);
     assert.equal(entry.layers.nta2020.total_bbls, 1);
     assert.equal(entry.layers.nta2020.uncovered_bbls, 1);
-    assert.deepEqual(landPlaceLayerCountFindings(entry), []);
     const evidence = built.evidenceShards[entry.evidence_shard].projects.INVALTEST;
+    assert.deepEqual(landPlaceLayerCountFindings(entry), []);
+    assert.deepEqual(landPlaceLayerCountFindings(entry, evidence), []);
     assert.deepEqual(evidence.invalid_bbls.sort(), ["", "not-a-bbl"].sort());
     // Invalid inputs never create a complete-coverage claim.
     assert.equal(entry.layers.nta2020.matched_bbls, 0);
     assert.notEqual(entry.layers.nta2020.matched_bbls, entry.layers.nta2020.total_bbls + entry.invalid_bbl_count);
+  });
+
+  it("A5 positive control: checker reports partition break, double-counted lot, and dropped invalid", () => {
+    const baseLayers = Object.fromEntries(
+      LAND_PLACE_LAYERS.map((type) => [
+        type,
+        {
+          total_bbls: 1,
+          matched_bbls: 1,
+          uncovered_bbls: 0,
+          ambiguous_bbls: 0,
+          unavailable_bbls: 0,
+          places: ["BK0101"],
+        },
+      ]),
+    );
+    const cleanEntry = {
+      association_kind: LAND_PLACE_ASSOCIATION_KIND,
+      bbl_association_state: LAND_PLACE_BBL_ASSOCIATION_STATES.PRESENT,
+      valid_bbl_count: 1,
+      invalid_bbl_count: 1,
+      evidence_shard: "00",
+      layers: structuredClone(baseLayers),
+      publisher_geography: { borough: "Brooklyn", community_district: "K01", council_district: "33" },
+    };
+    const cleanEvidence = {
+      association_kind: LAND_PLACE_ASSOCIATION_KIND,
+      bbl_association_state: LAND_PLACE_BBL_ASSOCIATION_STATES.PRESENT,
+      valid_bbls: ["3000010001"],
+      invalid_bbls: ["not-a-bbl"],
+      bbls: {},
+      places: {},
+      publisher_geography: cleanEntry.publisher_geography,
+    };
+    assert.deepEqual(landPlaceLayerCountFindings(cleanEntry, cleanEvidence), []);
+
+    // Partition break: matched + uncovered + ambiguous + unavailable != total.
+    const partitionBroken = structuredClone(cleanEntry);
+    partitionBroken.layers.nta2020.matched_bbls = 0;
+    partitionBroken.layers.nta2020.uncovered_bbls = 0;
+    partitionBroken.layers.nta2020.ambiguous_bbls = 0;
+    partitionBroken.layers.nta2020.unavailable_bbls = 0;
+    // total stays 1 → sum 0 != 1
+    const partitionFindings = landPlaceLayerCountFindings(partitionBroken);
+    assert.ok(
+      partitionFindings.some((line) => line === "layer nta2020 counts 0 != total_bbls 1"),
+      `expected partition finding, got: ${partitionFindings.join("; ")}`,
+    );
+
+    // Lot counted twice across status buckets (sum 2 > total 1).
+    const doubleCounted = structuredClone(cleanEntry);
+    doubleCounted.layers.nta2020.matched_bbls = 1;
+    doubleCounted.layers.nta2020.uncovered_bbls = 1;
+    const doubleFindings = landPlaceLayerCountFindings(doubleCounted);
+    assert.ok(
+      doubleFindings.some((line) => line === "layer nta2020 counts 2 != total_bbls 1"),
+      `expected double-count finding, got: ${doubleFindings.join("; ")}`,
+    );
+
+    // Duplicate valid lot retained in evidence.
+    const duplicateEvidence = structuredClone(cleanEvidence);
+    duplicateEvidence.valid_bbls = ["3000010001", "3000010001"];
+    const duplicateFindings = landPlaceLayerCountFindings(cleanEntry, duplicateEvidence);
+    assert.ok(
+      duplicateFindings.some((line) => line === "evidence valid_bbls contains duplicates"),
+      `expected duplicate-lot finding, got: ${duplicateFindings.join("; ")}`,
+    );
+    assert.ok(
+      duplicateFindings.some((line) => line === "valid_bbl_count 1 != evidence valid_bbls 2"),
+      `expected valid-count mismatch finding, got: ${duplicateFindings.join("; ")}`,
+    );
+
+    // Invalid value dropped from the compact count while evidence still lists it.
+    const droppedInvalid = structuredClone(cleanEntry);
+    droppedInvalid.invalid_bbl_count = 0;
+    const droppedFindings = landPlaceLayerCountFindings(droppedInvalid, cleanEvidence);
+    assert.ok(
+      droppedFindings.some((line) => line === "invalid_bbl_count 0 != evidence invalid_bbls 1"),
+      `expected dropped-invalid finding, got: ${droppedFindings.join("; ")}`,
+    );
+
+    // matched + invalid == total would claim complete coverage while absorbing invalids.
+    const absorbedInvalid = structuredClone(cleanEntry);
+    absorbedInvalid.valid_bbl_count = 2;
+    absorbedInvalid.invalid_bbl_count = 1;
+    for (const type of LAND_PLACE_LAYERS) {
+      absorbedInvalid.layers[type] = {
+        total_bbls: 2,
+        matched_bbls: 1,
+        uncovered_bbls: 0,
+        ambiguous_bbls: 0,
+        unavailable_bbls: 0,
+        places: ["BK0101"],
+      };
+    }
+    const absorbedFindings = landPlaceLayerCountFindings(absorbedInvalid);
+    assert.ok(
+      absorbedFindings.some(
+        (line) => line === "layer nta2020 matched_bbls + invalid_bbl_count 2 == total_bbls 2",
+      ),
+      `expected matched+invalid absorption finding, got: ${absorbedFindings.join("; ")}`,
+    );
   });
 
   it("repo builder returns 256 evidence shards and matches committed bytes when present", () => {
