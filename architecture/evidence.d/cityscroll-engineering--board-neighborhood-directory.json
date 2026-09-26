@@ -14,6 +14,10 @@
       "path": "test/board_neighborhood_directory.test.mjs"
     },
     {
+      "id": "board-neighborhood-directory-widths-probe",
+      "path": "test/functional/board_neighborhood_directory_widths.py"
+    },
+    {
       "id": "community-board-scorecard-page",
       "path": "site/community-board-scorecard.mjs"
     },
