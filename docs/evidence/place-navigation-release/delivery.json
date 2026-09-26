@@ -1,0 +1,7 @@
+{
+  "landed_commit": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+  "note": "Default-branch commit served when the integrated board, Land place, Near You handoff, and geography-watch surfaces were already published together. Production journey read-back requires the served Pages revision to contain this commit; later default-branch tips remain valid ancestors.",
+  "public_alias": "cc6bdbee29292",
+  "schema": "cityscroll.capture_delivery.v1",
+  "surface": "pages"
+}

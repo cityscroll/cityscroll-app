@@ -1,0 +1,421 @@
+{
+  "active_generation": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7",
+  "base": "fixture://place-navigation-release",
+  "capture_mode": "local-hermetic-fixture-and-module-oracle",
+  "captured_at": "2026-09-26T15:17:43Z",
+  "captures": [
+    {
+      "assertion": "Measured Kensington directory entry/chooser at 390px with keyboard focus on the neighborhood select and product brand.css stylesheet",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "name": "kensington-fixture-narrow_touch",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/community-boards/?geo=nta2020%3ABK1203",
+      "served_values": {
+        "address_action_present": true,
+        "choice_count": 2,
+        "choice_widths": [
+          222,
+          222
+        ],
+        "chooser_width": 89,
+        "entry_width": 374,
+        "focused_neighborhood_select": true,
+        "heading_text": "Boards overlapping Kensington",
+        "inner_width": 390,
+        "keyboard_traversal_steps": 1,
+        "nojs_link_href": "/community-boards/?geo=nta2020%3ABK1203",
+        "stylesheet_hrefs": [
+          "/brand.css"
+        ]
+      },
+      "sha256": "bd8935ce1908ff851e173a93933184ef3bcc6924c31b9c07d3321e5f17bbd274",
+      "source": "headless-playwright-fixture-document",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Measured Kensington directory entry/chooser at 1440px with keyboard focus on the neighborhood select and product brand.css stylesheet",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "name": "kensington-fixture-desktop",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/community-boards/?geo=nta2020%3ABK1203",
+      "served_values": {
+        "address_action_present": true,
+        "choice_count": 2,
+        "choice_widths": [
+          222,
+          222
+        ],
+        "chooser_width": 89,
+        "entry_width": 1424,
+        "focused_neighborhood_select": true,
+        "heading_text": "Boards overlapping Kensington",
+        "inner_width": 1440,
+        "keyboard_traversal_steps": 1,
+        "nojs_link_href": "/community-boards/?geo=nta2020%3ABK1203",
+        "stylesheet_hrefs": [
+          "/brand.css"
+        ]
+      },
+      "sha256": "bcea14d024e55cb861769d0ea4b53e17fcc5df7f4d459839cfc785c329bee4c9",
+      "source": "headless-playwright-fixture-document",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Module-oracle Kensington directory yields brooklyn-cb-12 and brooklyn-cb-14",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "measurement": "module-oracle",
+      "name": "kensington-ambiguous",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/community-boards/?geo=nta2020%3ABK1203",
+      "served_values": {
+        "boards": [
+          "brooklyn-cb-12",
+          "brooklyn-cb-14"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e"
+      },
+      "sha256": "e73e7f3fc3bfc76fc66dda799b3efc9b2a6744eb1a28519ce5e47a241064c588",
+      "source": "hermetic-module-oracle"
+    },
+    {
+      "assertion": "Module-oracle SI0105 directory yields Staten Island boards without invented cutoffs",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "measurement": "module-oracle",
+      "name": "si0105-ambiguous",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/community-boards/?geo=nta2020%3ASI0105",
+      "served_values": {
+        "boards": [
+          "staten-island-cb-01",
+          "staten-island-cb-02"
+        ]
+      },
+      "sha256": "e05eb51baee84886cbe70dfecd5dafa97574b859da7b6fe270057002abe4bf5a",
+      "source": "hermetic-module-oracle"
+    },
+    {
+      "assertion": "Module-oracle Queens holdout QN0402/2025Q0142 yields queens-cb-04 through the general path",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "measurement": "module-oracle",
+      "name": "queens-holdout",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/community-boards/?geo=nta2020%3AQN0402",
+      "served_values": {
+        "boards": [
+          "queens-cb-04"
+        ],
+        "project_id": "2025Q0142",
+        "project_nta": [
+          "QN0402"
+        ]
+      },
+      "sha256": "4bd8e12ff9433f30b4be7b48f6b3d555f8268f696cc619d8b5b21dd50c8c6c1a",
+      "source": "hermetic-module-oracle"
+    },
+    {
+      "assertion": "Module-oracle Bronx holdout BX0902/2019X0255 yields bronx-cb-09 through the general path",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "measurement": "module-oracle",
+      "name": "bronx-holdout",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/community-boards/?geo=nta2020%3ABX0902",
+      "served_values": {
+        "boards": [
+          "bronx-cb-09"
+        ],
+        "project_id": "2019X0255",
+        "project_nta": [
+          "BX0902"
+        ]
+      },
+      "sha256": "7b64b11188ac8cc79cd0f65d6e5fb0644ad28bf9313703cc0cb4534a0710936e",
+      "source": "hermetic-module-oracle"
+    },
+    {
+      "assertion": "Module-oracle FDNY place links expose SI0105 and staten-island-cb-01 without a rezoning label",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "measurement": "module-oracle",
+      "name": "fdny-si0105-land",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/browse/zoning/#land/2026R0127",
+      "served_values": {
+        "bbl_state": "present",
+        "board_ids": [],
+        "coverage": {
+          "fraction": "1/1",
+          "matched": 1,
+          "total": 1
+        },
+        "coverage_copy": null,
+        "is_rezoning": false,
+        "nta": [
+          "SI0105"
+        ],
+        "publisher_geography": {
+          "borough": "Staten Island",
+          "community_district": "R01",
+          "council_district": "49"
+        },
+        "view_present": true
+      },
+      "sha256": "4730a043a0ca7f3d0d68f558c04f95cc14e873c76e8bad5db7ec7d53afd86553",
+      "source": "hermetic-module-oracle"
+    },
+    {
+      "assertion": "Module-oracle Westshore retains BK1301/BK1391 with incomplete 14/25 lot coverage",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "measurement": "module-oracle",
+      "name": "westshore-partial",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/browse/zoning/#land/2025K0305",
+      "served_values": {
+        "bbl_state": "present",
+        "board_ids": [],
+        "coverage": {
+          "fraction": "14/25",
+          "matched": 14,
+          "total": 25
+        },
+        "coverage_copy": "14 of 25 lot points placed",
+        "is_rezoning": false,
+        "nta": [
+          "BK1301",
+          "BK1391"
+        ],
+        "publisher_geography": {
+          "borough": "Brooklyn",
+          "community_district": "K13,K11",
+          "council_district": "47"
+        },
+        "view_present": true
+      },
+      "sha256": "d98724f7a5b60b92a9b1d60bb5ae0ef81cb9bbe02b73362328a0246b162c8eb9",
+      "source": "hermetic-module-oracle"
+    },
+    {
+      "assertion": "Module-oracle Dewitt Clinton exposes MN0401 and MN0402 with incomplete 5/7 coverage",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "measurement": "module-oracle",
+      "name": "dewitt-multi-area",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/browse/zoning/#land/2023M0213",
+      "served_values": {
+        "bbl_state": "present",
+        "board_ids": [],
+        "coverage": {
+          "fraction": "5/7",
+          "matched": 5,
+          "total": 7
+        },
+        "coverage_copy": "5 of 7 lot points placed",
+        "is_rezoning": false,
+        "nta": [
+          "MN0401",
+          "MN0402"
+        ],
+        "publisher_geography": {
+          "borough": "Manhattan",
+          "community_district": "M04",
+          "council_district": "36"
+        },
+        "view_present": true
+      },
+      "sha256": "d10f69ac465eeffb7cf703ba818cbe712dbb9004d4a2fcb406cfe3f0601b4c21",
+      "source": "hermetic-module-oracle"
+    },
+    {
+      "assertion": "Module-oracle no-BBL and citywide records keep publisher geography without fabricated NTA membership",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "measurement": "module-oracle",
+      "name": "no-bbl-citywide-honesty",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/browse/zoning/#land/2025M0252",
+      "served_values": {
+        "citywide": {
+          "bbl_state": "absent_from_index",
+          "board_ids": [],
+          "coverage": null,
+          "coverage_copy": null,
+          "is_rezoning": true,
+          "nta": [],
+          "publisher_geography": {
+            "borough": "Citywide",
+            "community_district": null,
+            "council_district": null
+          },
+          "view_present": false
+        },
+        "no_bbl": {
+          "bbl_state": "absent_from_index",
+          "board_ids": [],
+          "coverage": null,
+          "coverage_copy": null,
+          "is_rezoning": false,
+          "nta": [],
+          "publisher_geography": {
+            "borough": "Manhattan",
+            "community_district": "M05",
+            "council_district": "3"
+          },
+          "view_present": false
+        },
+        "spring_non_board": [
+          "K56"
+        ]
+      },
+      "sha256": "2991338b414d4d8eb333201e6e16f3a3c53233462a20395355d30c72002c3d13",
+      "source": "hermetic-module-oracle"
+    },
+    {
+      "assertion": "Module-oracle Near You Land handoff and watch preview keep SI0105 membership including FDNY",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "measurement": "module-oracle",
+      "name": "near-you-handoff-si0105",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/near-you/?v=0&lens=land&geo=geography%3Anta2020%3ASI0105",
+      "served_values": {
+        "ids": [
+          "2026R0127"
+        ],
+        "record_href": "/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105#land/2026R0127",
+        "results_href": "/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105",
+        "watch_ids": [
+          "2026R0127"
+        ]
+      },
+      "sha256": "147331ea44849774bd6fda4be2ade6070f1e3d5b8f0f4be2ca9e47fc362872e7",
+      "source": "hermetic-module-oracle"
+    },
+    {
+      "assertion": "Module-oracle SI0105 continuity journey names Near You, Land detail, and board destinations",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "measurement": "module-oracle",
+      "name": "continuity-si0105-journey",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/near-you/?v=0&lens=land&geo=geography%3Anta2020%3ASI0105",
+      "served_values": {
+        "after_back": {
+          "focus": "land-detail-place-links",
+          "scrollX": 0,
+          "scrollY": 480,
+          "source": "history",
+          "state": {
+            "board_id": null,
+            "boundaries": [
+              "nta"
+            ],
+            "focus": null,
+            "geographies": [
+              "geography:nta2020:SI0105"
+            ],
+            "href": "/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105&view=map#land/2026R0127?boundaries=nta",
+            "land_filter": {
+              "attendance": "",
+              "borough": "",
+              "closingWeek": false,
+              "communityDistrict": "",
+              "councilDistrict": "",
+              "family": "any",
+              "filingEvidence": "any",
+              "futureAction": "any",
+              "geographies": [
+                "geography:nta2020:SI0105"
+              ],
+              "keyword": "",
+              "limit": 40,
+              "procedure": "review",
+              "regulatoryEffect": "any",
+              "stage": "any",
+              "status": "all",
+              "view": "map"
+            },
+            "lens": null,
+            "ok": true,
+            "project_id": "2026R0127",
+            "recovery": null,
+            "schema": "cityscroll.place_navigation_continuity.v1",
+            "stripped_keys": [],
+            "surface": "land",
+            "view": "map"
+          }
+        },
+        "board_href": "/community-boards/staten-island-cb-01/",
+        "history_entry": {
+          "placeNavigation": {
+            "board_id": null,
+            "boundaries": [
+              "nta"
+            ],
+            "focus": "land-detail-place-links",
+            "geographies": [
+              "geography:nta2020:SI0105"
+            ],
+            "href": "/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105&view=map#land/2026R0127?boundaries=nta",
+            "project_id": "2026R0127",
+            "scrollX": 0,
+            "scrollY": 480,
+            "view": "map"
+          },
+          "schema": "cityscroll.place_navigation_continuity.v1"
+        },
+        "land_detail_href": "/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105&view=map#land/2026R0127?boundaries=nta",
+        "near_you_href": "/near-you/?v=0&lens=land&geo=geography%3Anta2020%3ASI0105"
+      },
+      "sha256": "7d80d34a048a8e31e50f92cb676e75aa3b6fe9ddfc952571634566252e9355cf",
+      "source": "hermetic-module-oracle"
+    },
+    {
+      "assertion": "Module-oracle land-place ACTIVE matches membership generation; SI0105 id set remains exact",
+      "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+      "file": null,
+      "measurement": "module-oracle",
+      "name": "generation-coherence",
+      "revision": "eb2b67fc63280ced78c0594de16ceb42cd0bb838",
+      "route": "/data/land_place_membership.json",
+      "served_values": {
+        "board_generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "land_generation": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7",
+        "si0105_ids": [
+          "2026R0127"
+        ]
+      },
+      "sha256": "f7359be47fc3bb6979952162d5b07492adf8616faf5b31a8833ef10a3e35c939",
+      "source": "hermetic-module-oracle"
+    }
+  ],
+  "condition": "Local hermetic fixture widths plus module-oracle journey results retained beside the production read-back. Module-oracle rows are not browser viewport measurements.",
+  "data_vintage": "board-neighborhood a18c48040798; land-place 6ebf3a8542b1; nta2020 26B; community 2026-05-26",
+  "feature": "place-navigation-release",
+  "grounded_at": "f3e0bcedb92cc4de8b75e8b92064af77ba919413",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest and the read-back JSON are committed.",
+  "local_image_dir_ignored": "place-navigation-release-screenshots (task scratch; ignored)",
+  "note": "Two Kensington fixture-document captures keep measured viewports with the product brand.css stylesheet. Module-oracle rows stay viewport-free. Production outcomes live in readback.json and do not replace this fixture packet.",
+  "public_alias": "cc6bdbee29292",
+  "repository_revision": "f3e0bcedb92cc4de8b75e8b92064af77ba919413",
+  "required_ancestor": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+  "required_ancestor_contained": false,
+  "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+  "revision_format": "repository tip grounded for delivery; production capture uses artifact-manifest source_commit_sha",
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "surface": "Board directory, Land detail place links, Near You Land handoff, and shared place continuity",
+  "verifier": "node --test test/place_navigation_release.test.mjs && node tools/verify_place_navigation_release.mjs --base-url https://cityscroll.org --out docs/evidence/place-navigation-release/readback.json"
+}
