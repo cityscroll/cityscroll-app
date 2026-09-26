@@ -97,9 +97,9 @@
   .home-local-form-row{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
   .home-local-form input{flex:1 1 300px;min-width:0;min-height:46px;padding:9px 12px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);font:16px/1.3 var(--font-body)}
   .home-local-form button{min-height:46px;padding:9px 16px;border:1px solid var(--oxblood);border-radius:7px;background:var(--oxblood);color:#fff;font:700 14px/1.2 var(--font-interface);cursor:pointer}
-  .home-local-actions{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:12px}
+  .home-local-actions{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:12px;min-height:44px}
   .home-local-location{min-height:44px;padding:8px 14px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);font:700 14px/1.2 var(--font-interface);cursor:pointer}
-  .home-local-location-hint{color:var(--muted);font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .home-local-location-hint{color:var(--muted);font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif;min-height:1.2em}
   .home-local-browse{font:700 14px/1.3 var(--font-body);color:var(--oxblood);text-decoration:none}
   .home-local-browse:hover{text-decoration:underline}
   .home-local-status{min-height:1.35em;margin:10px 0 0;color:var(--ink-soft);font:13.5px/1.4 var(--font-body)}
@@ -1980,8 +1980,8 @@
         </div>
       </form>
       <div class="home-local-actions">
-        <button type="button" class="home-local-location js-only" data-home-local-location hidden>Use my location</button>
-        <span class="home-local-location-hint js-only" hidden>Asked only when you press the button.</span>
+        <button type="button" class="home-local-location" data-home-local-location>Use my location</button>
+        <span class="home-local-location-hint">Asked only when you press the button.</span>
         <a class="home-local-browse" href="/near-you/" data-home-local-browse>Browse neighborhoods</a>
       </div>
       <p class="home-local-status" data-home-local-status role="status" aria-live="polite"></p>

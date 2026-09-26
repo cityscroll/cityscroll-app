@@ -220,8 +220,8 @@ export function renderHomeLocalEntryHtml({
         </div>
       </form>
       <div class="home-local-actions">
-        <button type="button" class="home-local-location js-only" data-home-local-location hidden>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
-        <span class="home-local-location-hint js-only" hidden>${esc(HOME_LOCAL_ENTRY_LOCATION_HINT)}</span>
+        <button type="button" class="home-local-location" data-home-local-location>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
+        <span class="home-local-location-hint">${esc(HOME_LOCAL_ENTRY_LOCATION_HINT)}</span>
         <a class="home-local-browse" href="${esc(browseHref)}" data-home-local-browse>${esc(HOME_LOCAL_ENTRY_BROWSE_AREAS_LABEL)}</a>
       </div>
       <p class="home-local-status" data-home-local-status role="status" aria-live="polite"></p>
@@ -284,17 +284,8 @@ export function mountHomeLocalEntry(root, {
   let cachedLayers = Array.isArray(layerData) ? layerData : null;
   let addressResolverPromise = null;
 
-  function revealJsOnly(node) {
-    if (!node) return;
-    node.hidden = false;
-    const classes = String(node.className || "")
-      .split(/\s+/)
-      .filter((token) => token && token !== "js-only");
-    node.className = classes.join(" ");
-  }
-
-  revealJsOnly(locationBtn);
-  revealJsOnly(locationHint);
+  if (locationBtn) locationBtn.hidden = false;
+  if (locationHint) locationHint.hidden = false;
 
   function setStatus(message, { refine = false } = {}) {
     if (!statusEl) return;
