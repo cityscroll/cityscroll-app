@@ -49,11 +49,33 @@ function hasOwn(value, key) {
   return !!value && Object.prototype.hasOwnProperty.call(value, key);
 }
 
+function geographyTypeFromKey(key) {
+  const parts = String(key || "").split(":");
+  return parts.length >= 3 && parts[0] === "geography" ? parts[1] : null;
+}
+
+function coverageStatusRank(status) {
+  const normalized = String(status || "").toLowerCase();
+  if (["unavailable", "missing"].includes(normalized)) return "unavailable";
+  if (["error", "failed", "load_failure"].includes(normalized)) return "error";
+  if (["incomplete", "partial", "building"].includes(normalized)) return "incomplete";
+  return null;
+}
+
 function coverageState(activity, key, lens) {
   const coverage = activity?.geography_items?.coverage;
-  const status = String(coverage?.status || coverage?.state || "").toLowerCase();
-  if (["error", "failed", "load_failure"].includes(status)) return "error";
-  if (["incomplete", "partial", "building"].includes(status)) return "incomplete";
+  const lensCoverage = coverage?.by_lens?.[lens] || coverage?.lenses?.[lens] || null;
+  const geographyType = geographyTypeFromKey(key);
+  const typeCoverage = geographyType
+    ? (lensCoverage?.types?.[geographyType] || null)
+    : null;
+  const typeRank = coverageStatusRank(typeCoverage?.status || typeCoverage?.state);
+  if (typeRank) return typeRank;
+  const lensRank = coverageStatusRank(lensCoverage?.status || lensCoverage?.state);
+  if (lensRank) return lensRank;
+
+  const statusRank = coverageStatusRank(coverage?.status || coverage?.state);
+  if (statusRank) return statusRank;
 
   const entry = activity?.geography_items?.by_key?.[key];
   if (!entry || typeof entry !== "object") return "unavailable";

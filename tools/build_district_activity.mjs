@@ -29,6 +29,7 @@ const PATHS = {
   boundaries: join(ROOT, "site/data/district_boundaries.json"),
   geographyRegistry: join(ROOT, "site/data/geography/layer_registry.json"),
   landCatalog: join(ROOT, "site/data/land_project_catalog.json"),
+  landPlaceMembership: join(ROOT, "site/data/land_place_membership.json"),
   zap: join(ROOT, "site/data/zap_projects_warehouse_lookup.json"),
   property: join(ROOT, "site/data/property_domain_observations.json"),
   meetings: join(ROOT, "site/data/shared_meeting_read_model.json"),
@@ -74,6 +75,9 @@ function loadInputs() {
   if (!landCatalog?.projects) {
     throw new Error("missing site/data/land_project_catalog.json; run node tools/build_land_project_catalog.mjs");
   }
+  // Absent or corrupt membership stays loadable: the activity builder marks the
+  // Land place query unavailable instead of inventing a successful empty NTA set.
+  const landPlaceMembership = loadJson(PATHS.landPlaceMembership);
   const geographyRegistry = loadJson(PATHS.geographyRegistry);
   const geographyLayers = (geographyRegistry?.layers || [])
     .filter((row) => NEAR_YOU_PUBLIC_GEOGRAPHY_TYPES.includes(row?.type))
@@ -129,6 +133,7 @@ function loadInputs() {
     // Admitted catalog population (warehouse ∪ defaults). Source dates come from
     // the catalog document, never from this builder's wall clock.
     zapRows: Array.isArray(landCatalog.projects) ? landCatalog.projects : [],
+    landPlaceMembership,
     propertyRows: Array.isArray(property?.property_rows) ? property.property_rows : [],
     meetingsRows: meetingRows,
     communityBoardGeography,
@@ -152,6 +157,9 @@ function loadInputs() {
           || null,
         source_dates: landCatalog?.source_dates || null,
         content_id: landCatalog?.generation?.content_id || null,
+        place_membership_path: "data/land_place_membership.json",
+        place_membership_generation_id: landPlaceMembership?.generation?.id || null,
+        place_membership_content_id: landPlaceMembership?.generation?.content_id || null,
       },
       property: {
         path: "data/property_domain_observations.json",
