@@ -100,6 +100,8 @@ class FakeElement {
     this.listeners = new Map();
     this.focusCount = 0;
     this.showModalCount = 0;
+    this.selectionStart = 0;
+    this.selectionEnd = 0;
   }
 
   // `<dialog open>` reflects between attribute and property in a real engine,
@@ -128,7 +130,12 @@ class FakeElement {
     else this.removeAttribute("hidden");
   }
   get value() { return this.attributes.has("value") ? this.attributes.get("value") : ""; }
-  set value(next) { this.setAttribute("value", String(next ?? "")); }
+  set value(next) {
+    this.setAttribute("value", String(next ?? ""));
+    // Assigning value does not select the new text; focus/select must opt in.
+    this.selectionStart = 0;
+    this.selectionEnd = 0;
+  }
 
   get isConnected() {
     let node = this;
@@ -273,6 +280,17 @@ class FakeElement {
   focus(_options) {
     this.focusCount += 1;
     this.ownerDocument.activeElement = this;
+    // Input-like controls select their value on focus so binder focus contracts
+    // can observe "focused and selected" the way the address panel intends.
+    if (this.tagName === "input" || this.tagName === "textarea") {
+      this.selectionStart = 0;
+      this.selectionEnd = String(this.value ?? "").length;
+    }
+  }
+
+  select() {
+    this.selectionStart = 0;
+    this.selectionEnd = String(this.value ?? "").length;
   }
 
   addEventListener(type, handler) {
