@@ -772,10 +772,6 @@ async function landSelect(i, el){
   const r=lRows[i];
   const displayTitle=landProjectDisplayTitle(r);
   const interaction=landObjectCardProjection(r,displayTitle);
-  if(globalThis.__landDetailBoundaryController?.dispose){
-    try{ globalThis.__landDetailBoundaryController.dispose(); }catch(_e){}
-    globalThis.__landDetailBoundaryController=null;
-  }
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
   const actList=zapActionDisplayLabels(r.actions,t);
   let html=(location.hash.startsWith("#land/")

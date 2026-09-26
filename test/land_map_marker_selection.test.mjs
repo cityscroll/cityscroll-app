@@ -258,8 +258,12 @@ test("markers are operable without a pointer", () => {
 });
 
 test("selection stays out of shareable route and watch scope", () => {
-  // The presentation keys the Land route may carry are still exactly one: the view.
-  assert.match(viewStateSrc, /LAND_PRESENTATION_STATE_KEYS = Object\.freeze\(\[LAND_VIEW_PARAM\]\)/);
+  // Presentation keys may include view and optional outline toggles; never selection.
+  assert.match(
+    viewStateSrc,
+    /LAND_PRESENTATION_STATE_KEYS = Object\.freeze\(\[\s*LAND_VIEW_PARAM\s*,\s*LAND_BOUNDARIES_PARAM\s*,?\s*\]\)/,
+  );
+  assert.match(viewStateSrc, /LAND_BOUNDARIES_PARAM/);
   // Nothing in the route serializer learned a selection parameter.
   assert.ok(!/["']selected["']\s*[,:)]/.test(viewStateSrc), "the view state grew a selection key");
   // Query-shaped, so an ordinary `.map(marker=>...)` is not mistaken for a route parameter.

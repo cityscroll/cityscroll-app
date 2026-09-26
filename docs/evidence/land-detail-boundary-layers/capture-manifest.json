@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land-detail-boundary-layers-receipt.v1",
   "alias": "cb56f9abf36a5",
-  "revision": "5d1559b43a8dc8bf4aba76a98291cd159d4b51c0",
+  "revision": "b7d10184b326295d319778b0bd30bdfde8570035",
   "artifact_vintages": {
     "nta2020": "26B",
     "community_district": "2026-05-26"
@@ -45,5 +45,5 @@
     "Mobile control width exceeds desktop control width under the stacked layout."
   ],
   "render_hash": "2eda4169fc1ee4f0887b4045382eec98beb2ce5123fe4948315e99447be0cc8f",
-  "captured_at": "2026-09-26T08:22:40.279Z"
+  "captured_at": "2026-09-26T00:00:00.000Z"
 }

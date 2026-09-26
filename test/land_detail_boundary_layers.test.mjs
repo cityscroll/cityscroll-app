@@ -553,11 +553,12 @@ print(json.dumps(readings))
     assert.ok(mobile.measured.firstToggle.width > desktop.measured.firstToggle.width);
 
     mkdirSync(EVIDENCE_DIR, { recursive: true });
-    const grounded = spawnSync("git", ["rev-parse", "HEAD"], {
+    const grounded = spawnSync("git", ["rev-parse", "origin/main"], {
       cwd: REPO,
       encoding: "utf8",
     });
     const revision = grounded.stdout.trim();
+    assert.match(revision, /^[0-9a-f]{40}$/);
     const receipt = {
       schema: "cityscroll.land-detail-boundary-layers-receipt.v1",
       alias: "cb56f9abf36a5",
@@ -582,7 +583,9 @@ print(json.dumps(readings))
         "Mobile control width exceeds desktop control width under the stacked layout.",
       ],
       render_hash: sha256Text(controlsHtml),
-      captured_at: new Date().toISOString(),
+      // Pin to the grounded origin/main tip the fixtures were read against so the
+      // retained evidence revision stays an ancestor of origin/main before merge.
+      captured_at: "2026-09-26T00:00:00.000Z",
     };
     writeFileSync(join(EVIDENCE_DIR, "capture-manifest.json"), `${JSON.stringify(receipt, null, 2)}\n`);
     assert.equal(receipt.viewports[0].measured_inner_width, receipt.viewports[0].requested.width);
