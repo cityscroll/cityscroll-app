@@ -79,8 +79,9 @@ function journeyHtml() {
 test("A4: focused native journey keeps detail links, evidence, source, Back, focus and modified-click paths", async () => {
   await withPinnedClock(`${TEST_DAY}T12:00:00.000Z`, () => {
     assert.match(LAND_SOURCE, /renderLandSiteLifecycle/);
-    assert.match(LIFECYCLE_SOURCE, /siteLifecycleShard from "\.\/data\/site_lifecycle\/0000\.json"/);
-    assert.match(LIFECYCLE_SOURCE, /siteLifecycleReverse from "\.\/data\/site_lifecycle\/reverse\.json"/);
+    assert.match(LIFECYCLE_SOURCE, /loadCommittedSiteLifecycleDocument/);
+    assert.match(LIFECYCLE_SOURCE, /site_lifecycle_artifacts\.mjs/);
+    assert.doesNotMatch(LIFECYCLE_SOURCE, /siteLifecycleShard from "\.\/data\/site_lifecycle\/0000\.json"/);
     assert.match(LAND_SOURCE, /html=html\.replace\('<div id="slc"><\/div>'/);
     assert.doesNotMatch(LAND_SOURCE, /import\("\.\.\/site_lifecycle_context\.mjs"\)/);
     assert.doesNotMatch(LAND_SOURCE, /loadSiteLifecycleContext\(\)/);

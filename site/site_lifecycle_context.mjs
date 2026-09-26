@@ -5,6 +5,8 @@
  * not an assertion that records form one project, ownership chain, or cause.
  */
 
+import { assembleSiteLifecycleDocument } from "./site_lifecycle_reader.mjs";
+
 export const SITE_LIFECYCLE_CONTEXT_SCHEMA = "cityscroll.site_lifecycle_context.v1";
 export const SITE_LIFECYCLE_LOAD_FAILED_SCHEMA = "cityscroll.detail_context_unavailable.v1";
 
@@ -67,14 +69,48 @@ function siteLifecycleIsLoadFailure(value) {
   return value?.schema === SITE_LIFECYCLE_LOAD_FAILED_SCHEMA;
 }
 
-/** Return the stable members on the first exact parcel used by a subject. */
+/** Merge member lists across every admitted parcel for one subject. */
+function siteLifecycleUnionMembers(lifecycle, parcelIds, primaryParcelId) {
+  const orderedParcelIds = [
+    primaryParcelId,
+    ...parcelIds.filter((id) => id !== primaryParcelId),
+  ].filter(Boolean);
+  const seen = new Set();
+  const members = [];
+  for (const parcelId of orderedParcelIds) {
+    const rows = lifecycle?.parcels?.[parcelId]?.members;
+    if (!Array.isArray(rows)) continue;
+    for (const member of rows) {
+      const id = siteLifecycleText(member?.subject_id, 320);
+      if (!id || seen.has(id)) continue;
+      seen.add(id);
+      members.push(member);
+    }
+  }
+  return members;
+}
+
+/** Return the stable members across every exact parcel used by a subject. */
 export function siteLifecycleMembersForSubject(lifecycle, subjectId) {
   const reverse = lifecycle?.reverse?.members || lifecycle?.members || {};
   const subject = siteLifecycleText(subjectId, 320);
   const parcelIds = (reverse[subject]?.parcel_ids || []).filter((id) => /^\d{10}$/.test(String(id))).sort();
   if (!parcelIds.length) return { parcelId: null, parcelIds: [], members: [] };
-  const parcel = lifecycle?.parcels?.[parcelIds[0]];
-  return { parcelId: parcelIds[0], parcelIds, members: Array.isArray(parcel?.members) ? parcel.members : [] };
+  // Prefer the admitted parcel that already carries the richest local membership.
+  let parcelId = parcelIds[0];
+  let bestCount = -1;
+  for (const id of parcelIds) {
+    const count = Array.isArray(lifecycle?.parcels?.[id]?.members) ? lifecycle.parcels[id].members.length : 0;
+    if (count > bestCount) {
+      bestCount = count;
+      parcelId = id;
+    }
+  }
+  return {
+    parcelId,
+    parcelIds,
+    members: siteLifecycleUnionMembers(lifecycle, parcelIds, parcelId),
+  };
 }
 
 /** Reciprocal land surface shows contracts/awards only — not hearing sections. */
@@ -117,23 +153,34 @@ function siteLifecycleReadJsonResponse(response, label) {
 }
 
 /**
- * Load the materialized site-history shards.
- * Resolves to the lifecycle document on success, or a load-failure marker.
- * Never collapses a failed fetch into an empty successful document.
+ * Load the materialized site-history shards through the generation-checked
+ * manifest reader. Resolves to the lifecycle document on success, or a
+ * load-failure marker. Never collapses a failed fetch or mixed generation into
+ * an empty successful document.
  */
-export function loadSiteLifecycleContext() {
-  return Promise.all([
-    fetch("data/site_lifecycle/0000.json", { cache: "force-cache", credentials: "omit" })
-      .then((response) => siteLifecycleReadJsonResponse(response, "site_lifecycle_shard")),
-    fetch("data/site_lifecycle/reverse.json", { cache: "force-cache", credentials: "omit" })
-      .then((response) => siteLifecycleReadJsonResponse(response, "site_lifecycle_reverse")),
-  ]).then(([shard, reverse]) => ({
-    schema: "cityscroll.site_lifecycle.v1",
-    parcels: Object.fromEntries((shard?.rows || []).map((row) => [row.parcel_id, row])),
-    members: reverse?.members || {},
-  })).catch((error) => siteLifecycleLoadFailure({
-    reason: siteLifecycleText(error?.message, 120) || "load_failed",
-  }));
+export function loadSiteLifecycleContext({
+  fetchImpl = globalThis.fetch.bind(globalThis),
+  basePath = "data/site_lifecycle",
+} = {}) {
+  const fetchJson = (path, label) => fetchImpl(path, { cache: "force-cache", credentials: "omit" })
+    .then((response) => siteLifecycleReadJsonResponse(response, label));
+
+  return fetchJson(`${basePath}/manifest.json`, "site_lifecycle_manifest")
+    .then((manifest) => {
+      const shardNames = Array.isArray(manifest?.shards) ? manifest.shards : [];
+      if (!shardNames.length) {
+        throw new Error("site_lifecycle_manifest_empty");
+      }
+      return Promise.all([
+        Promise.resolve(manifest),
+        Promise.all(shardNames.map((name) => fetchJson(`${basePath}/${name}`, "site_lifecycle_shard"))),
+        fetchJson(`${basePath}/reverse.json`, "site_lifecycle_reverse"),
+      ]);
+    })
+    .then(([manifest, shards, reverse]) => assembleSiteLifecycleDocument(manifest, shards, reverse))
+    .catch((error) => siteLifecycleLoadFailure({
+      reason: siteLifecycleText(error?.message, 120) || "load_failed",
+    }));
 }
 
 export function mountSiteLifecycleContext(host, data, subjectId) {

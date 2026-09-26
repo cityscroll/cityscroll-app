@@ -71,8 +71,7 @@ import { projectProcurementFacts } from "./procurement_fact_projection.mjs";
 import { entityChipHTML, entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { procurementSourceLinkItems } from "./procurement_source_links.mjs";
 import { buildSiteLifecycleContext, renderSiteLifecycleContext } from "./site_lifecycle_context.mjs";
-import siteLifecycleShard from "./data/site_lifecycle/0000.json" with { type: "json" };
-import siteLifecycleReverse from "./data/site_lifecycle/reverse.json" with { type: "json" };
+import { loadCommittedSiteLifecycleDocument } from "./site_lifecycle_artifacts.mjs";
 import {
   contractLifecycleForProcurement,
   paymentEvidenceFromLifecycle,
@@ -106,11 +105,7 @@ function clean(value, max = 500) {
   return String(value ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 }
 
-const DEFAULT_SITE_LIFECYCLE = {
-  schema: "cityscroll.site_lifecycle.v1",
-  parcels: Object.fromEntries((siteLifecycleShard.rows || []).map((row) => [row.parcel_id, row])),
-  members: siteLifecycleReverse.members || {},
-};
+const DEFAULT_SITE_LIFECYCLE = loadCommittedSiteLifecycleDocument();
 
 function formatAmount(value) {
   // Preserve an explicit numeric zero; only withhold null/undefined/empty.
