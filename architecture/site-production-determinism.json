@@ -113,6 +113,7 @@
     "site/bbl_reader.mjs",
     "site/beta_flags.js",
     "site/board_document_issue_slice.mjs",
+    "site/board_neighborhood_index.mjs",
     "site/board_search_producer.mjs",
     "site/borough_board_identity.mjs",
     "site/borough_scope_links.mjs",
