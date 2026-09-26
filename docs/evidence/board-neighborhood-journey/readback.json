@@ -1,0 +1,464 @@
+{
+  "captures": [
+    {
+      "assertion": "Measured Kensington directory entry/chooser at 390px with keyboard focus on the neighborhood select",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "kensington-fixture-narrow_touch",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ABK1203",
+      "served_values": {
+        "address_action_present": true,
+        "choice_count": 2,
+        "choice_widths": [
+          312,
+          312
+        ],
+        "chooser_width": 312,
+        "entry_width": 342,
+        "focused_neighborhood_select": true,
+        "heading_text": "Boards overlapping Kensington",
+        "inner_width": 390,
+        "keyboard_traversal_steps": 2,
+        "nojs_link_href": "/community-boards/?geo=nta2020%3ABK1503"
+      },
+      "sha256": "e11e33878b7de36b9070292a682bed15a6f75666f1162ab615676e6650172143",
+      "source": "headless-playwright-fixture-document",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Measured Kensington directory entry/chooser at 1440px with keyboard focus on the neighborhood select",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "kensington-fixture-desktop",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ABK1203",
+      "served_values": {
+        "address_action_present": true,
+        "choice_count": 2,
+        "choice_widths": [
+          1082,
+          1082
+        ],
+        "chooser_width": 954,
+        "entry_width": 1120,
+        "focused_neighborhood_select": true,
+        "heading_text": "Boards overlapping Kensington",
+        "inner_width": 1440,
+        "keyboard_traversal_steps": 2,
+        "nojs_link_href": "/community-boards/?geo=nta2020%3ABK1503"
+      },
+      "sha256": "1427ae2e65f1e3e211b182961802604d51a78290d22af9a24103249d8f852445",
+      "source": "headless-playwright-fixture-document",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for kensington-ambiguous yields ['brooklyn-cb-12', 'brooklyn-cb-14']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "kensington-ambiguous-desktop",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ABK1203",
+      "served_values": {
+        "boards": [
+          "brooklyn-cb-12",
+          "brooklyn-cb-14"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Boards overlapping Kensington"
+      },
+      "sha256": "5b199246bf8264b4eef3f8e60d5bd79326dca46502c75b495a741a5fab5d6d81",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for kensington-ambiguous yields ['brooklyn-cb-12', 'brooklyn-cb-14']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "kensington-ambiguous-mobile",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ABK1203",
+      "served_values": {
+        "boards": [
+          "brooklyn-cb-12",
+          "brooklyn-cb-14"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Boards overlapping Kensington"
+      },
+      "sha256": "5b199246bf8264b4eef3f8e60d5bd79326dca46502c75b495a741a5fab5d6d81",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for si0105-ambiguous yields ['staten-island-cb-01', 'staten-island-cb-02']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "si0105-ambiguous-desktop",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ASI0105",
+      "served_values": {
+        "boards": [
+          "staten-island-cb-01",
+          "staten-island-cb-02"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Boards overlapping"
+      },
+      "sha256": "0749a782de62b4300fff77827b86401f89a8a84680db6d5d1c0185aeeebed392",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for si0105-ambiguous yields ['staten-island-cb-01', 'staten-island-cb-02']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "si0105-ambiguous-mobile",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ASI0105",
+      "served_values": {
+        "boards": [
+          "staten-island-cb-01",
+          "staten-island-cb-02"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Boards overlapping"
+      },
+      "sha256": "0749a782de62b4300fff77827b86401f89a8a84680db6d5d1c0185aeeebed392",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for greenpoint-single yields ['brooklyn-cb-01']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "greenpoint-single-desktop",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ABK0101",
+      "served_values": {
+        "boards": [
+          "brooklyn-cb-01"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Board overlapping Greenpoint"
+      },
+      "sha256": "3f3dca5f4dc99f9f415d6fadd15ae45d525d525ce613ee6cfb4c88cf01aae78e",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for greenpoint-single yields ['brooklyn-cb-01']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "greenpoint-single-mobile",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ABK0101",
+      "served_values": {
+        "boards": [
+          "brooklyn-cb-01"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Board overlapping Greenpoint"
+      },
+      "sha256": "3f3dca5f4dc99f9f415d6fadd15ae45d525d525ce613ee6cfb4c88cf01aae78e",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for bk0504-special-district yields ['brooklyn-cb-05', 'brooklyn-cb-18']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "bk0504-special-district-desktop",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ABK0504",
+      "served_values": {
+        "boards": [
+          "brooklyn-cb-05",
+          "brooklyn-cb-18"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Boards overlapping"
+      },
+      "sha256": "98f94c90977f558f9f57d8f196dfc2371303b3a1d830b9430483d266ee8a02c5",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for bk0504-special-district yields ['brooklyn-cb-05', 'brooklyn-cb-18']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "bk0504-special-district-mobile",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ABK0504",
+      "served_values": {
+        "boards": [
+          "brooklyn-cb-05",
+          "brooklyn-cb-18"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Boards overlapping"
+      },
+      "sha256": "98f94c90977f558f9f57d8f196dfc2371303b3a1d830b9430483d266ee8a02c5",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for queens-holdout yields ['queens-cb-04']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "queens-holdout-desktop",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3AQN0402",
+      "served_values": {
+        "boards": [
+          "queens-cb-04"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Board overlapping Corona"
+      },
+      "sha256": "8cf1e21b8a7c304c51c5e8962a546d9f46bd27d5ee1e73e7e7750d60c0653a07",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for queens-holdout yields ['queens-cb-04']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "queens-holdout-mobile",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3AQN0402",
+      "served_values": {
+        "boards": [
+          "queens-cb-04"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Board overlapping Corona"
+      },
+      "sha256": "8cf1e21b8a7c304c51c5e8962a546d9f46bd27d5ee1e73e7e7750d60c0653a07",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for bronx-holdout yields ['bronx-cb-09']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "bronx-holdout-desktop",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ABX0902",
+      "served_values": {
+        "boards": [
+          "bronx-cb-09"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Board overlapping"
+      },
+      "sha256": "bc4ebb79723aa323a49b5a5b8cc2b6b6bae5ade294114cb83fa7f055649a102c",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Hermetic directory selection for bronx-holdout yields ['bronx-cb-09']",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "bronx-holdout-mobile",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/?geo=nta2020%3ABX0902",
+      "served_values": {
+        "boards": [
+          "bronx-cb-09"
+        ],
+        "generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+        "heading": "Board overlapping"
+      },
+      "sha256": "bc4ebb79723aa323a49b5a5b8cc2b6b6bae5ade294114cb83fa7f055649a102c",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "810 East 16th Street Brooklyn resolves to Brooklyn Community Board 14",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "address-midwood-success-desktop",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/",
+      "served_values": {
+        "board_id": "brooklyn-cb-14",
+        "label": "midwood-success",
+        "ok": true
+      },
+      "sha256": "ab802cac32ef1b0c16951d2302bae8411b3f191ba91a17126a74a665cb52bde1",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "810 East 16th Street Brooklyn resolves to Brooklyn Community Board 14",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "address-midwood-success-mobile",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/",
+      "served_values": {
+        "board_id": "brooklyn-cb-14",
+        "label": "midwood-success",
+        "ok": true
+      },
+      "sha256": "ab802cac32ef1b0c16951d2302bae8411b3f191ba91a17126a74a665cb52bde1",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "1688 Victory Boulevard remains unresolved without inventing a board",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "address-victory-unresolved-desktop",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/",
+      "served_values": {
+        "board_id": null,
+        "label": "victory-unresolved",
+        "ok": false
+      },
+      "sha256": "bd5cdd191e3a868b4b30a3f0452ae33c549d189dd268588b1d86d3a2bccf82b8",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "1688 Victory Boulevard remains unresolved without inventing a board",
+      "data_vintage": "board-neighborhood a18c48040798; nta2020 26B",
+      "file": null,
+      "name": "address-victory-unresolved-mobile",
+      "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+      "route": "/community-boards/",
+      "served_values": {
+        "board_id": null,
+        "label": "victory-unresolved",
+        "ok": false
+      },
+      "sha256": "bd5cdd191e3a868b4b30a3f0452ae33c549d189dd268588b1d86d3a2bccf82b8",
+      "source": "hermetic-module-oracle",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    }
+  ],
+  "deployment": {
+    "manifest_url": null,
+    "required_ancestor": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+    "required_ancestor_contained": false,
+    "revision": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+    "status": "pending_pages_deploy"
+  },
+  "evidence_class": "local-hermetic-fixture",
+  "generations": {
+    "active_generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+    "generation_manifest": {
+      "consumers": {
+        "directory": {
+          "content_sha256": "99be5a70083c4d1a23adbd1db1d910235501961d84ee427107d64834051bddd8",
+          "generation_id": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e"
+        },
+        "index": {
+          "content_sha256": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+          "generation_id": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e"
+        },
+        "profile": {
+          "content_sha256": "ac71c027bd8dea4ebdd8dd41ad910ccd86d672280f9c110c165a524a388d7f21",
+          "generation_id": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e"
+        }
+      },
+      "generation_id": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+      "vintages": {
+        "board_geography_boundary": "2026-05-26",
+        "community_district": "2026-05-26",
+        "nta2020": "26B"
+      }
+    },
+    "index_content_sha256": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e"
+  },
+  "image_binaries_committed": false,
+  "letters": {
+    "A1": {
+      "notes": "Module and DOM journeys for Kensington, SI0105, Greenpoint, BK0504, Midwood, Victory",
+      "status": "observed_hermetic"
+    },
+    "A2": {
+      "measured": true,
+      "status": "observed_fixture",
+      "viewports": [
+        390,
+        1440
+      ]
+    },
+    "A3": {
+      "holdouts": [
+        "queens-holdout",
+        "bronx-holdout"
+      ],
+      "status": "observed_hermetic"
+    },
+    "A4": {
+      "active_generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+      "status": "pending_pages_deploy"
+    },
+    "A5": {
+      "failed_on_unmet": true,
+      "status": "observed"
+    }
+  },
+  "observed_at": "2026-09-26T09:04:12Z",
+  "origin": "fixture://board-neighborhood-journey",
+  "public_alias": "c0a2ef2da209d",
+  "schema": "cityscroll.board_neighborhood_journey_readback.v1"
+}

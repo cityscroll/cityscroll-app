@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/board-neighborhood-journey",
+  "status": "implemented",
+  "fingerprint": "board-neighborhood-journey.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "board-neighborhood-journey-verify-test",
+      "path": "test/board_neighborhood_journey.test.mjs"
+    },
+    {
+      "id": "board-neighborhood-journey-verify-tool",
+      "path": "tools/verify_board_neighborhood_journey.mjs"
+    },
+    {
+      "id": "board-neighborhood-journey-capture-tool",
+      "path": "tools/capture_board_neighborhood_journey.py"
+    },
+    {
+      "id": "board-neighborhood-journey-delivery",
+      "path": "docs/evidence/board-neighborhood-journey/delivery.json"
+    },
+    {
+      "id": "board-neighborhood-journey-evidence-readme",
+      "path": "docs/evidence/board-neighborhood-journey/README.md"
+    },
+    {
+      "id": "board-neighborhood-journey-capture-manifest",
+      "path": "docs/evidence/board-neighborhood-journey/capture-manifest.json"
+    },
+    {
+      "id": "board-neighborhood-journey-readback",
+      "path": "docs/evidence/board-neighborhood-journey/readback.json"
+    }
+  ]
+}
