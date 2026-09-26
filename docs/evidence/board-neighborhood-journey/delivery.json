@@ -1,0 +1,7 @@
+{
+  "landed_commit": "e06d466693bd7b09aa776eddc9421bbc9f12ef80",
+  "note": "Default-branch tip that includes neighborhood directory entry, exact-address board choice, and reverse profile neighborhood links. Production journey read-back waits until the served Pages revision contains this commit.",
+  "public_alias": "c0a2ef2da209d",
+  "schema": "cityscroll.capture_delivery.v1",
+  "surface": "pages"
+}
