@@ -120,6 +120,21 @@ test("pre-push sources the shared scrub before launching preflight", () => {
   }
 });
 
+test("preflight sources the shared scrub at entry", () => {
+  const preflight = path.join(ROOT, "tools/preflight-required-checks.sh");
+  const source = readFileSync(preflight, "utf8");
+  const scrubIdx = source.indexOf(
+    'source "$PROJECT_ROOT/tools/git-hooks/scrub-hook-exported-git-env.sh"',
+  );
+  assert.ok(scrubIdx >= 0, "preflight must source scrub-hook-exported-git-env.sh");
+  const clockIdx = source.indexOf("CROL_BUILD_DAY");
+  assert.ok(clockIdx >= 0, "preflight must pin CROL_BUILD_DAY");
+  assert.ok(
+    scrubIdx < clockIdx,
+    "the scrub must run before the preflight pins its build clock and launches checks",
+  );
+});
+
 test("hook-entry scrub keeps the ambient repo intact under exported GIT_DIR/GIT_INDEX_FILE", () => {
   const standIn = ambientStandIn();
   const fixture = mkdtempSync(path.join(tmpdir(), "cityscroll-prepush-fixture-"));
