@@ -226,7 +226,7 @@ test("A4: labeled controls, keyboard selection, no-JS links, and multi-board cop
   assert.match(html, /href="\/community-boards\/\?geo=nta2020%3ABK1203"/);
   assert.match(html, /Boards overlapping Kensington/);
   assert.match(html, /data-board-address-action/);
-  assert.match(html, /All neighborhood and board associations/);
+  assert.match(html, /Neighborhood board associations/);
   assert.match(html, /neighborhood area/);
 
   const shell = scorecardShell(html);

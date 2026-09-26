@@ -429,7 +429,7 @@ export function renderBoardNeighborhoodDirectoryHtml(associations, {
       <p class="scorecard-muted">Address lookup attaches here. Until then, use the neighborhood choices above or browse the full directory.</p>
     </section>
     <details class="scorecard-neighborhood-table-wrap" data-board-neighborhood-table-wrap>
-      <summary>All neighborhood and board associations</summary>
+      <summary>Neighborhood board associations</summary>
       <p class="scorecard-muted">Complete labeled table for browsing without JavaScript. Overlap percentages use neighborhood area as the denominator.</p>
       <div class="scorecard-table-wrap">
         <table data-board-neighborhood-association-table>
