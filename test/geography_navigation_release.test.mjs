@@ -134,6 +134,10 @@ test("A2: narrow touch and keyboard proof records overflow, target, form-text, a
   assert.match(RELEASE_BROWSER_SOURCE, /load_recorded_delivery/);
   assert.match(RELEASE_BROWSER_SOURCE, /resolve_landed_ancestor/);
   assert.match(RELEASE_BROWSER_SOURCE, /--update-a2-boundary/);
+  assert.match(RELEASE_BROWSER_SOURCE, /install_deferred_records_failure/);
+  assert.match(RELEASE_BROWSER_SOURCE, /wait_for_visible_retry_target/);
+  assert.match(RELEASE_BROWSER_SOURCE, /deferred_failure/);
+  assert.match(RELEASE_BROWSER_SOURCE, /entry-boundary-360-retry/);
 });
 
 test("A3: City Hall point journey keeps MN0102, M01, Council 1, and Precinct 1 under At this location", () => {
@@ -379,14 +383,39 @@ test("Near You A2: 360px boundary capture combines 200% zoom, reduced motion, an
   assert.equal(compact.visual_metrics.target_size?.meets_floor, true);
   assert.equal(compact.visual_metrics.keyboard_traversal?.escaped_without_trap, true);
 
+  const retryCapture = allCaptureRows().find((row) => row.name === "entry-boundary-360-retry");
+  assert.ok(retryCapture, "A2 retry-boundary capture missing");
+  assert.equal(retryCapture.viewport.width, 360);
+  assert.equal(retryCapture.visual_metrics.zoom_percent, 200);
+  assert.equal(retryCapture.visual_metrics.reduced_motion, true);
+  assert.match(String(retryCapture.failure_mode || ""), /deferred_records_unavailable/);
+  assert.notEqual(retryCapture.visual_metrics.map_runtime, "maplibre");
+  assert.equal(typeof retryCapture.visual_metrics.horizontal_overflow_px, "number");
+  assert.ok(retryCapture.visual_metrics.horizontal_overflow_px <= 1);
+  const retryTargets = (retryCapture.visual_metrics.target_size?.targets || []).filter(
+    (target) => target.role === "retry_target",
+  );
+  assert.ok(retryTargets.length >= 1, "retry_target role missing from measured boxes");
+  for (const target of retryTargets) {
+    assert.ok(target.width >= 44, target);
+    assert.ok(target.height >= 44, target);
+  }
+  assert.equal(retryCapture.visual_metrics.target_size?.meets_floor, true);
+  assert.equal(retryCapture.visual_metrics.keyboard_traversal?.escaped_without_trap, true);
+  assert.match(String(JSON.stringify(RELEASE_MANIFEST)).toLowerCase(), /retry/);
+
   const a2Packet = RELEASE_MANIFEST.a2_boundary_evidence;
   assert.equal(a2Packet?.status, "taken");
   assert.ok(a2Packet.captures.includes("entry-boundary-360-zoom-200"));
   assert.ok(a2Packet.captures.includes("compact_touch"));
+  assert.ok(a2Packet.captures.includes("entry-boundary-360-retry"));
   assert.ok(a2Packet.fields.includes("target_size"));
   assert.ok(a2Packet.fields.includes("keyboard_traversal"));
   assert.ok(a2Packet.fields.includes("horizontal_overflow_px"));
   assert.ok(a2Packet.fields.includes("inner_width"));
+  assert.ok(a2Packet.fields.includes("retry_target"));
+  assert.equal(a2Packet.retry_failure_path?.capture, "entry-boundary-360-retry");
+  assert.equal(a2Packet.retry_failure_path?.role, "retry_target");
   assert.match(a2Packet.required_ancestor || "", /^[0-9a-f]{40}$/);
 
   const delivery = JSON.parse(
