@@ -46,7 +46,10 @@ const CAPTURE_MANIFEST = new URL("../docs/evidence/assistant-setup/capture-manif
 const PRODUCTION_CAPTURE_MANIFEST = new URL("../docs/evidence/assistant-setup-served/capture-manifest.json", import.meta.url);
 const CAPTURE_SCRIPT = new URL("../tools/capture_assistant_setup_evidence.py", import.meta.url);
 const SETUP_SOURCE_PATHS = Object.freeze([
-  "site/index.html",
+  "site/near-you/index.html",
+  "site/pages_edge.mjs",
+  "tools/local_site_server.py",
+  "worker/wrangler.toml",
   "site/use-with-ai/index.html",
   "site/api.html",
   "site/ai_discovery.mjs",
@@ -124,10 +127,11 @@ function witnessDigest(capture) {
 
 function assertionHolds(route, html) {
   if (route === "/") {
-    assert.match(html, /home-topic-form/);
+    assert.match(html, /data-near-you-root/);
     assert.match(html, /use-with-ai\//);
     assert.match(html, /Ask with AI/);
-    assert.ok(html.indexOf("home-topic-form") < html.indexOf("Ask with AI"), "Ask with AI stays after primary search");
+    assert.match(html, /href="\/browse\/"/);
+    assert.match(html, /href="\/following\/"/);
     return;
   }
   if (route === "/use-with-ai/") {

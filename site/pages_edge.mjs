@@ -1565,6 +1565,26 @@ function handleDataHealth(request, env) {
   return env.ASSETS.fetch(request);
 }
 
+/**
+ * Pages-only hosts (preview, pages.dev, www without the Worker apex route) still
+ * present the Near You shell at `/`. Bare `/` serves the static shell document.
+ * A root URL that already carries place/filter query forwards to `/near-you/` so
+ * selected-place behavior matches the Worker-served route.
+ */
+async function handleDefaultLocalHome(request, env, url) {
+  const path = url.pathname.replace(/\/+$/, "") || "/";
+  if (path !== "/") return null;
+  if (url.search) {
+    const target = new URL("/near-you/", url.origin);
+    target.search = url.search;
+    return Response.redirect(target.toString(), 302);
+  }
+  const shell = await staticAsset(env, request, "/near-you/");
+  if (shell?.ok) return shell;
+  const indexed = await staticAsset(env, request, "/near-you/index.html");
+  return indexed?.ok ? indexed : null;
+}
+
 export default {
   async fetch(request, env) {
     if (["GET", "HEAD"].includes(request.method)) {
@@ -1574,6 +1594,10 @@ export default {
     if (!env?.ASSETS) return new Response("Static asset binding unavailable", { status: 503 });
     if (!['GET', 'HEAD'].includes(request.method)) return new Response("Method not allowed", { status: 405, headers: { Allow: "GET, HEAD" } });
     const url = new URL(request.url);
+    if (["GET", "HEAD"].includes(request.method)) {
+      const defaultHome = await handleDefaultLocalHome(request, env, url);
+      if (defaultHome) return defaultHome;
+    }
     const assertion = assertionTarget(url);
     if (assertion) return handleAssertion(request, env, assertion);
     const agendaItem = safeRegulatoryAgendaItem(url.pathname);

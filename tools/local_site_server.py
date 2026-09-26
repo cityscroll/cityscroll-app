@@ -135,6 +135,20 @@ class QuietHandler(SimpleHTTPRequestHandler):
         if self._is_data_health_route(route) and not self._data_health_public():
             self.send_error(404, "Not Found")
             return
+        # Default local home: present the Near You shell at `/`. Query-bearing
+        # root URLs forward to `/near-you/` so selected-place behavior matches
+        # the production Worker route.
+        if route in {"", "/"}:
+            if query:
+                self.send_response(302)
+                self.send_header("Location", f"/near-you/?{query}")
+                self.end_headers()
+                return
+            near_you = Path(self.directory) / "near-you" / "index.html"
+            if near_you.is_file():
+                self.path = "/near-you/"
+                super().do_GET()
+                return
         if self._static_document(route, query):
             return
         if self._static_agency_constellation(route, query):
