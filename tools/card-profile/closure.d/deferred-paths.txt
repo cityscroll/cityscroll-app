@@ -52,6 +52,7 @@ site/data/award_registration_dwell_observations.json
 site/data/award_sources/verification_receipts/award_registration_dwell_latest.json
 site/data/bbl_mappluto_centroids_lookup.json
 site/data/bid_tabulation_sources/verification_receipts/bid_tabulations_historical_2026-07-30.json
+site/data/board_neighborhood_index.json
 site/data/calendar_display_occurrence_census.json
 site/data/capital_project_sources/verification_receipts/capital_projects_2026-07-30.json
 site/data/checkbook_spending_sources/verification_receipts/checkbook_spending_payment_retention_2026-08-11.json

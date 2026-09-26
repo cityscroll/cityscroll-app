@@ -209,7 +209,7 @@
         "site/data/board_neighborhood_index.json",
         "site/data/board-neighborhood-generations"
       ],
-      "note": "Hash-based board↔neighborhood generation refresh. Runs before community-board constellation (and before scorecard when that family is registered) so directory and profile consumers share one generation."
+      "note": "Hash-based board\u2194neighborhood generation refresh. Runs before community-board constellation (and before scorecard when that family is registered) so directory and profile consumers share one generation."
     },
     {
       "id": "community-board-constellation",
@@ -221,6 +221,8 @@
         "site/data/community_board_minutes_scorecard.json",
         "site/data/community_board_geography_lookup.json",
         "site/data/board_neighborhood_index.json",
+        "site/data/board-neighborhood-generations/ACTIVE",
+        "site/data/geography/layers/nta2020/26B.json",
         "site/data/non_council_outcome_sources/community_board_committees.json",
         "site/data/community_board_people.json",
         "site/data/community_board_bylaws.json",

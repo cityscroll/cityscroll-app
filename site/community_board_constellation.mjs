@@ -88,6 +88,10 @@ import {
   communityBoardHearingContextForBoard,
   renderCommunityBoardHearingContextSection,
 } from "./community_board_hearing_context.mjs";
+import {
+  buildBoardProfileNeighborhoodsView,
+  renderBoardProfileNeighborhoodsSection,
+} from "./board_profile_neighborhoods.mjs";
 
 export const COMMUNITY_BOARD_CONSTELLATION_SCHEMA = "cityscroll.community_board_constellation.v1";
 export const COMMUNITY_BOARD_CONSTELLATION_METHOD = "community_board_constellation_v1";
@@ -669,6 +673,17 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     provenance: { method: COMMUNITY_BOARD_CONSTELLATION_METHOD },
     neighbors: edgeSummary,
   });
+  // Optional reverse NTA enrichment from the shared board↔neighborhood generation.
+  // Absent enrichment omits the section so the rest of the profile stays usable.
+  const neighborhoods = buildBoardProfileNeighborhoodsView({
+    boardId: requested,
+    profile: sources.boardNeighborhoodProfile || sources.board_neighborhood_profile || null,
+    index: sources.boardNeighborhoodIndex || sources.board_neighborhood_index || null,
+    edges: sources.boardNeighborhoodEdges?.[requested]
+      || sources.board_neighborhood_edges?.[requested]
+      || null,
+    labelIndex: sources.ntaLabelIndex || sources.nta_label_index || null,
+  });
   return {
     schema: COMMUNITY_BOARD_CONSTELLATION_SCHEMA,
     kind: "community-board-constellation",
@@ -711,6 +726,7 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     ...(boardDecisions ? { board_decisions: boardDecisions } : {}),
     activity: boardActivity,
     ...(appointmentAuthority ? { appointment_authority: appointmentAuthority } : {}),
+    ...(neighborhoods ? { neighborhoods } : {}),
     categories,
     edge_summary: edgeSummary,
     local_constellation: localConstellation,
@@ -1187,6 +1203,17 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
   const emptyCoverageCategories = semanticCategories.filter((category) => Object.hasOwn(EMPTY_COVERAGE_CATEGORY_LABELS, category.id) && !category.items?.length);
   const assetPrefix = options.assetPrefix || "/";
   const prefix = assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`;
+  const neighborhoodsSection = renderBoardProfileNeighborhoodsSection(view.neighborhoods);
+  const sectionMenu = [
+    `<a href="#overview">Overview</a>`,
+    neighborhoodsSection ? `<a href="#board-neighborhoods">Neighborhoods</a>` : "",
+    `<a href="#board-activity">Board activity</a>`,
+    `<a href="#meetings-participation">Meetings &amp; participation</a>`,
+    `<a href="#decisions">Decisions</a>`,
+    `<a href="#district-priorities">District priorities</a>`,
+    `<a href="#people-governance">People &amp; governance</a>`,
+    `<a href="#sources">Sources</a>`,
+  ].filter(Boolean).join(" · ");
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)} · Community board constellation · CityScroll</title>
@@ -1197,8 +1224,8 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 <a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "civic-object-mast" })}
 <main id="main" class="node-document civic-object-document" data-civic-object-kind="community-board-constellation" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
-<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><nav class="board-section-menu" aria-label="On this board page"><a href="#overview">Overview</a> · <a href="#board-activity">Board activity</a> · <a href="#meetings-participation">Meetings &amp; participation</a> · <a href="#decisions">Decisions</a> · <a href="#district-priorities">District priorities</a> · <a href="#people-governance">People &amp; governance</a> · <a href="#sources">Sources</a></nav><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
-  ${renderBoardOverview(view, place, nextMeeting, participationPaths)}${renderAboutBoardSection(view)}${renderCommunityBoardResourceSection(view.resource_tasks)}${sectionWithId(renderCommunityBoardParticipationSection(view), "meetings-participation")}${renderCommunityBoardActivitySection(view.activity)}${renderedCategories.filter((category) => category.id === "meetings").map((category) => renderCategory(category, view)).join("")}${sectionWithId(renderCommunityBoardDecisionsSection(view.board_decisions, { lang: options.lang }), "decisions")}${sectionWithId(renderCommunityBoardHearingContextSection(view.hearing_context, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardMoneyCard(view.money), "institutional-finance")}${sectionWithId(renderCommunityBoardBudgetRequestsSection(view.budget_requests, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardPayrollContext(view.payroll), "people-governance")}${sectionWithId(renderCommunityBoardBylawPanel(view.governance), "people-governance")}${sectionWithId(renderBoroughOfficeAppointmentSection(view.appointment_authority), "people-governance")}${renderRelatedPublicBodiesFor(view.body_id)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.filter((category) => category.id !== "meetings").map((category) => sectionWithId(renderCategory(category, view), category.id === "sources" ? "sources" : category.id === "committees" || category.id === "members" ? "people-governance" : "decisions")).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
+<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><nav class="board-section-menu" aria-label="On this board page">${sectionMenu}</nav><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
+  ${renderBoardOverview(view, place, nextMeeting, participationPaths)}${neighborhoodsSection}${renderAboutBoardSection(view)}${renderCommunityBoardResourceSection(view.resource_tasks)}${sectionWithId(renderCommunityBoardParticipationSection(view), "meetings-participation")}${renderCommunityBoardActivitySection(view.activity)}${renderedCategories.filter((category) => category.id === "meetings").map((category) => renderCategory(category, view)).join("")}${sectionWithId(renderCommunityBoardDecisionsSection(view.board_decisions, { lang: options.lang }), "decisions")}${sectionWithId(renderCommunityBoardHearingContextSection(view.hearing_context, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardDistrictProjectsSection(view.district_projects, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardLandPositionsSection(view.land_positions, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardMoneyCard(view.money), "institutional-finance")}${sectionWithId(renderCommunityBoardBudgetRequestsSection(view.budget_requests, { lang: options.lang }), "district-priorities")}${sectionWithId(renderCommunityBoardPayrollContext(view.payroll), "people-governance")}${sectionWithId(renderCommunityBoardBylawPanel(view.governance), "people-governance")}${sectionWithId(renderBoroughOfficeAppointmentSection(view.appointment_authority), "people-governance")}${renderRelatedPublicBodiesFor(view.body_id)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.filter((category) => category.id !== "meetings").map((category) => sectionWithId(renderCategory(category, view), category.id === "sources" ? "sources" : category.id === "committees" || category.id === "members" ? "people-governance" : "decisions")).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>${renderCalendarEventPreviewScript(assetPrefix)}<script type="module" src="${esc(`${prefix}community_board_land_positions_boot.mjs`)}"></script><script type="module" src="${esc(`${prefix}community_board_budget_requests_boot.mjs`)}"></script>
 </body></html>`;

@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/board-neighborhood-index",
   "status": "implemented",
-  "fingerprint": "board-neighborhood-index.v1",
-  "updated_at": "2026-09-25T00:00:00.000Z",
+  "fingerprint": "board-neighborhood-index.v2",
+  "updated_at": "2026-09-26T00:00:00.000Z",
   "projections": [
     {
       "id": "board-neighborhood-index-module",
@@ -36,6 +36,14 @@
     {
       "id": "board-neighborhood-generations",
       "path": "site/data/board-neighborhood-generations"
+    },
+    {
+      "id": "board-profile-neighborhoods-module",
+      "path": "site/board_profile_neighborhoods.mjs"
+    },
+    {
+      "id": "board-profile-neighborhoods-verify-test",
+      "path": "test/board_profile_neighborhoods.test.mjs"
     }
   ]
 }
