@@ -60,6 +60,7 @@ jobs:
               site/data/land-place-evidence|site/data/land-place-evidence/*) ;;
               site/data/land-place-generations|site/data/land-place-generations/*) ;;
               warehouse/fixtures/procurement-intent-radar|warehouse/fixtures/procurement-intent-radar/*) ;;
+              docs/evidence/procurement-intent-radar|docs/evidence/procurement-intent-radar/*) ;;
               *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
             esac
           done <<< "$changed"
@@ -94,6 +95,7 @@ jobs:
             site/data/land-place-evidence/**
             site/data/land-place-generations/**
             warehouse/fixtures/procurement-intent-radar/**
+            docs/evidence/procurement-intent-radar/**
       - name: Run required checks for the refresh pull request
         if: steps.refresh-pr.outputs.pull-request-number != ''
         env:

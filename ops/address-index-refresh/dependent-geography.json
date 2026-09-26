@@ -58,6 +58,10 @@
     {
       "path": "warehouse/fixtures/procurement-intent-radar",
       "reason": "Procurement intent corpus backtest and coverage receipts restated from the refreshed shared meeting read model."
+    },
+    {
+      "path": "docs/evidence/procurement-intent-radar",
+      "reason": "Human-readable corpus backtest report rewritten beside the measured JSON fixtures."
     }
   ],
   "rebuild_sequence": [
