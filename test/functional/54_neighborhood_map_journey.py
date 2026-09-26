@@ -17,6 +17,23 @@ INSTRUMENT = """(() => {
   });
 })();"""
 
+# The results list nests a labelled "Meetings in districts that overlap this
+# neighborhood" preview section (added in #2322). Those rows cover a whole
+# overlapping community district, not the selected neighborhood, so they carry
+# district- or borough-level geographic evidence rather than the exact NTA and
+# are explicitly not counted as exact neighborhood records. Judge only the exact
+# records here; the preview section is a separate contract exercised on its own.
+EXACT_RECORDS = (
+    '.near-results [data-near-you-record-inspection]'
+    ':not(.near-broader-districts [data-near-you-record-inspection])'
+)
+
+def exact_geography_keys(page):
+    """Geography-evidence keys of the exact neighborhood records only."""
+    return page.locator(EXACT_RECORDS).evaluate_all(
+        "nodes=>nodes.map(n=>JSON.parse(n.dataset.nearYouRecordInspection).geography?.key ?? null)"
+    )
+
 def ready(page, selected=False, allow_unavailable=False):
     try:
         page.wait_for_function("""() => {
@@ -62,10 +79,13 @@ def main():
                 assert page.url.find('scope=') == -1
                 assert 'lens=meetings' in page.url
                 assert page.evaluate('window.__sameDocument === true'), 'selection reloaded document'
-                evidence=page.locator('.near-results [data-near-you-record-inspection]').evaluate_all("nodes=>nodes.map(n=>JSON.parse(n.dataset.nearYouRecordInspection).geography)")
-                assert all(item and item.get('key')=='geography:nta2020:MN0102' for item in evidence), evidence[:2]
-                if server:
-                    assert evidence, 'retained local fixture must exercise actual records'
+                evidence=exact_geography_keys(page)
+                # Positive control: selecting a populated downtown neighborhood must
+                # surface its own records, and every exact record must be keyed to the
+                # selected neighborhood. This still fails if selection returns nothing,
+                # broadens to other neighborhoods, or drops the geographic evidence.
+                assert evidence, 'no exact neighborhood records rendered for the selection'
+                assert all(key=='geography:nta2020:MN0102' for key in evidence), evidence[:2]
                 page.evaluate('window.scrollTo(0,0)')
                 top=page.locator('#near-map-enhanced').bounding_box()['y']
                 if top >= height-160:
@@ -118,8 +138,8 @@ def main():
                 page.wait_for_url('**geo=nta2020%3ABK0101**')
                 ready(page,selected=True,allow_unavailable=True)
                 assert page.locator('.near-hero h1').inner_text()=='Greenpoint'
-                local_evidence=page.locator('.near-results [data-near-you-record-inspection]').evaluate_all("nodes=>nodes.map(n=>JSON.parse(n.dataset.nearYouRecordInspection).geography)")
-                assert all(item and item.get('key')=='geography:nta2020:BK0101' for item in local_evidence), 'neighborhood broadened to citywide records'
+                local_evidence=exact_geography_keys(page)
+                assert all(key=='geography:nta2020:BK0101' for key in local_evidence), 'neighborhood broadened to citywide records'
                 land_url = page.url.replace('lens=meetings', 'lens=land')
                 page.goto(land_url, wait_until='domcontentloaded')
                 ready(page,selected=True,allow_unavailable=True)
@@ -132,10 +152,10 @@ def main():
                 assert page.locator('.near-results').is_visible()
                 if server:
                     assert page.locator('.near-results [data-record-id]').count()>0
-                district_evidence=page.locator('.near-results [data-near-you-record-inspection]').evaluate_all("nodes=>nodes.map(n=>JSON.parse(n.dataset.nearYouRecordInspection).geography)")
-                assert all(item and item.get('key')=='geography:community_district:K01' for item in district_evidence)
+                district_evidence=exact_geography_keys(page)
+                assert all(key=='geography:community_district:K01' for key in district_evidence)
                 if district_evidence:
-                    page.locator('.near-results [data-near-you-record-inspection]').first.click()
+                    page.locator(EXACT_RECORDS).first.click()
                     assert page.locator('dialog[open]').is_visible()
                     assert page.locator('dialog[open] a[data-near-you-record-inspection-open]').get_attribute('href')
                 page.goto(base+'/near-you/#map?level=community_district&parent=Manhattan&id=M03&lens=meetings',wait_until='domcontentloaded')
