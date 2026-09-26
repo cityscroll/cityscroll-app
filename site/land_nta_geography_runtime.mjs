@@ -169,3 +169,15 @@ export {
   LAND_DEFAULT_RESULT_LIMIT,
   resolveLandNtaGeographyConstraint,
 };
+
+/** Compact bag for the Land route module (keeps its import flattenable and small). */
+export const landGeo = Object.freeze({
+  filter: filterLandRowsWithGeography,
+  get: getLandGeographies,
+  set: setLandGeographies,
+  install: installLandGeographyGlobals,
+  empty: landEmptyStateHTML,
+  broaden: landShouldBroadenDistrict,
+  resolve: resolveLandSearchGeography,
+  showUnavailable: showLandPlaceIndexUnavailable,
+});

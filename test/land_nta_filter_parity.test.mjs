@@ -312,9 +312,10 @@ describe("land NTA geography filter parity", () => {
     assert.match(runtimeSource, /data-land-clear-area/);
     assert.match(runtimeSource, /land_clear_area/);
     assert.match(landSource, /clearLandAreaFilter/);
-    assert.match(landSource, /LG\.landShouldBroadenDistrict/);
+    assert.match(landSource, /G\.broaden/);
     assert.match(landSource, /landNearby/);
     assert.match(runtimeSource, /landShouldBroadenDistrict/);
+    assert.match(landSource, /import \{ landGeo as G \}/);
   });
 
   it("A4 invalid geography keys stay invalid and never widen to all-city", () => {
@@ -361,7 +362,7 @@ describe("land NTA geography filter parity", () => {
     assert.match(runtimeSource, /land_place_index_unavailable/);
     assert.match(runtimeSource, /data-land-retry-place/);
     assert.match(runtimeSource, /constraint\.status === "unavailable"/);
-    assert.match(landSource, /LG\.showLandPlaceIndexUnavailable/);
+    assert.match(landSource, /G\.showUnavailable/);
   });
 
   it("A4 checker reports coherent constraints and a positive-control corruption", () => {
