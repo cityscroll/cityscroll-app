@@ -18,8 +18,8 @@ import {
   filterLandSnapshot,
   projectIdsForBlock,
 } from "../resident_snapshot_queries.mjs";
-import { landGeo as G } from "../land_nta_geography_runtime.mjs";
-G.install();
+import { landGeo } from "../land_nta_geography_runtime.mjs";
+landGeo.install();
 import { loadJsonPreferWorker } from "../json_prefer_worker.mjs";
 import {
   DEFAULT_LAND_FAMILY,
@@ -372,7 +372,7 @@ function setLandResultCount(count){
 }
 function landHasAppliedFilters(){
   return !!($("#lkw")?.value.trim() || landBorough || landCommunityDistrict
-    || landCouncilDistrict || landResolvedArea || Array.isArray(G.get()) || landStageFilterIsApplied()
+    || landCouncilDistrict || landResolvedArea || Array.isArray(landGeo.get()) || landStageFilterIsApplied()
     || normalizeLandFutureAction($("#lfuture")?.value)!=="any"
     || normalizeLandProcedure($("#lprocedure")?.value)!==DEFAULT_LAND_PROCEDURE
     || normalizeLandFamily($("#lfamily")?.value)!==DEFAULT_LAND_FAMILY
@@ -381,7 +381,7 @@ function landHasAppliedFilters(){
     || landAttendance || landClosingWeek);
 }
 function clearLandAreaFilter(){
-  G.set(null); landResolvedArea=null; $("#nltrans-land").innerHTML=""; landSearch();
+  landGeo.set(null); landResolvedArea=null; $("#nltrans-land").innerHTML=""; landSearch();
 }
 function resetLandFilters(){
   landResolvedArea=null;
@@ -390,7 +390,7 @@ function resetLandFilters(){
   landClosingWeek=false;
   landCommunityDistrict="";
   landCouncilDistrict="";
-  G.set(null);
+  landGeo.set(null);
   $("#lkw").value="";
   $("#lstatus").value="all";
   $("#lstage").value="any";
@@ -403,7 +403,7 @@ function resetLandFilters(){
   landSearch();
 }
 function landEmptyStateHTML(kind="projects"){
-  return G.empty({kind,filtered:landHasAppliedFilters(),geographies:G.get(),translate:t});
+  return landGeo.empty({kind,filtered:landHasAppliedFilters(),geographies:landGeo.get(),translate:t});
 }
 function wireLandEmptyState(){
   $("#llist")?.querySelector("[data-land-widen]")?.addEventListener("click",resetLandFilters);
@@ -605,10 +605,10 @@ async function landSearch(){
     const actionRows=futureAction==="hearing"
       ? filterLandHearingRows(landActionInventory,{mode:landAttendance,closingWeek:landClosingWeek,today:todayISO()})
       : landActionInventory;
-    const geography=await G.resolve(G.get());
+    const geography=await landGeo.resolve(landGeo.get());
     if(geography.status==="unavailable"){
       if(stale()) return;
-      G.showUnavailable({
+      landGeo.showUnavailable({
         listEl:$("#llist"),translate:t,setResultCount:setLandResultCount,setStatus:setLandStatus,
         unbusy:()=>unbusy("#llist"),onRetry:landSearch,
       });
@@ -621,11 +621,11 @@ async function landSearch(){
       if(ids.length){ projectIds=ids; banner=t("banner_on_block",{label:geo.label}); }
       else banner=t("banner_none_lot",{label:geo.label,area:geo.neighbourhood||geo.borough});
     }
-    const geos=G.get(), placeMembership=geography.placeMembership;
+    const geos=landGeo.get(), placeMembership=geography.placeMembership;
     const facet={status,stage,futureAction,procedure,family,regulatoryEffect,filingEvidence,actionRows,today:todayISO(),
       borough:boro,communityDistrict:landCommunityDistrict,councilDistrict:landCouncilDistrict,geographies:geos,placeMembership};
-    let rows=addressStatus?[]:G.filter(filterLandSnapshot,projects,{...facet,keyword:kw,projectIds,block:!!block});
-    if(G.broaden({block:!!block,geographies:geos})&&!rows.length){
+    let rows=addressStatus?[]:landGeo.filter(filterLandSnapshot,projects,{...facet,keyword:kw,projectIds,block:!!block});
+    if(landGeo.broaden({block:!!block,geographies:geos})&&!rows.length){
       rows=await landNearby(geo,status,projects,{stage,futureAction,procedure,family,regulatoryEffect,filingEvidence,actionRows});
       if(projectIds?.length) banner=t(status==="active"?"banner_none_active_nearest":"banner_none_nearest",{area:geo.neighbourhood||geo.borough});
     }
@@ -642,7 +642,7 @@ async function landSearch(){
         paintLandRows(rows,banner,kw,false,boro,stale,false,note);
       }else{
         const scopedRows=projectBrowseScopedRows(scoped,projects,row=>["land_use_project",row?.project_id||""].join(":")).rows;
-        const projected=G.filter(filterLandSnapshot,scopedRows,{...facet,keyword:""});
+        const projected=landGeo.filter(filterLandSnapshot,scopedRows,{...facet,keyword:""});
         paintLandRows(projected,banner,"",false,boro,stale,false,note);
       }
     }
