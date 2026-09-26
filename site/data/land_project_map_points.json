@@ -1,37 +1,425 @@
 {
   "schema": "cityscroll.land_project_map_points.v1",
   "points": {
+    "2018X0438": {
+      "lat": 40.857116,
+      "lon": -73.9165954,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6
+    },
+    "2019K0147": {
+      "lat": 40.5921143,
+      "lon": -73.9388354,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2019K0190": {
+      "lat": 40.69481,
+      "lon": -73.9600833,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 15
+    },
+    "2019K0217": {
+      "lat": 40.6094951,
+      "lon": -73.9735897,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2019K0219": {
+      "lat": 40.7350101,
+      "lon": -73.9608783,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
+    },
+    "2019K0301": {
+      "lat": 40.620978,
+      "lon": -73.9461113,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 12
+    },
     "2019K0383": {
       "lat": 40.6189229,
       "lon": -73.9617712,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 6,
-      "shape": null
+      "bbl_count": 6
+    },
+    "2019M0059": {
+      "lat": 40.7508621,
+      "lon": -74.0022702,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2019M0107": {
+      "lat": 40.7503515,
+      "lon": -74.0055473,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2019M0206": {
+      "lat": 40.7752753,
+      "lon": -73.982637,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2019M0453": {
+      "lat": 40.8045878,
+      "lon": -73.9386193,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2019M0455": {
+      "lat": 40.8047004,
+      "lon": -73.9388287,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2019R0267": {
+      "lat": 40.5800596,
+      "lon": -74.0912198,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 25
+    },
+    "2019X0255": {
+      "lat": 40.810432,
+      "lon": -73.8561383,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2020K0276": {
+      "lat": 40.621243,
+      "lon": -73.9641401,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 7
+    },
+    "2020K0370": {
+      "lat": 40.6682093,
+      "lon": -73.8965297,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6
+    },
+    "2020K0413": {
+      "lat": 40.6796584,
+      "lon": -73.9455844,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 5
+    },
+    "2020M0266": {
+      "lat": 40.7735512,
+      "lon": -73.9801101,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 8
+    },
+    "2020M0325": {
+      "lat": 40.7593379,
+      "lon": -73.9977981,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2020M0375": {
+      "lat": 40.7520698,
+      "lon": -74.0035082,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2020M0383": {
+      "lat": 40.8052831,
+      "lon": -73.9403091,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2020M0429": {
+      "lat": 40.756693,
+      "lon": -73.9800141,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 25
+    },
+    "2020M0474": {
+      "lat": 40.7162919,
+      "lon": -74.0054002,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2020M0487": {
+      "lat": 40.7401876,
+      "lon": -73.9736245,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2020Q0157": {
+      "lat": 40.5816132,
+      "lon": -73.8274707,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2020Q0240": {
+      "lat": 40.7015211,
+      "lon": -73.7731055,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
+    },
+    "2020Q0353": {
+      "lat": 40.6533431,
+      "lon": -73.8388754,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 13
+    },
+    "2020R0264": {
+      "lat": 40.605583,
+      "lon": -74.0952522,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2020X0410": {
+      "lat": 40.8464731,
+      "lon": -73.8396727,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2021K0187": {
+      "lat": 40.730471,
+      "lon": -73.9429343,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 7
+    },
+    "2021K0261": {
+      "lat": 40.5744123,
+      "lon": -73.9793775,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2021K0376": {
+      "lat": 40.6705561,
+      "lon": -73.8625214,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2021K0380": {
+      "lat": 40.676572,
+      "lon": -73.908814,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 16
+    },
+    "2021K0420": {
+      "lat": 40.7079262,
+      "lon": -73.9338426,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6
+    },
+    "2021M0264": {
+      "lat": 40.7578482,
+      "lon": -73.9667954,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2021M0357": {
+      "lat": 40.748957,
+      "lon": -73.9733432,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2021Q0168": {
+      "lat": 40.7575071,
+      "lon": -73.7910493,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6
+    },
+    "2021Q0439": {
+      "lat": 40.767821,
+      "lon": -73.8660968,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2021R0348": {
+      "lat": 40.5776501,
+      "lon": -74.1353722,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2021X0247": {
+      "lat": 40.8235845,
+      "lon": -73.8374045,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2022K0121": {
+      "lat": 40.6219977,
+      "lon": -73.9921903,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6
+    },
+    "2022K0171": {
+      "lat": 40.64557,
+      "lon": -73.9939749,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 12
+    },
+    "2022K0252": {
+      "lat": 40.7188406,
+      "lon": -73.9361766,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6
+    },
+    "2022K0302": {
+      "lat": 40.6785601,
+      "lon": -73.9447705,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
     },
     "2022K0416": {
       "lat": 40.6321196,
       "lon": -73.9473273,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 6,
-      "shape": null
+      "bbl_count": 6
+    },
+    "2022K0419": {
+      "lat": 40.6154571,
+      "lon": -74.0005763,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 16
     },
     "2022K0430": {
       "lat": 40.6971605,
       "lon": -73.9552675,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 23,
-      "shape": null
+      "bbl_count": 23
+    },
+    "2022K0441": {
+      "lat": 40.6957304,
+      "lon": -73.9483805,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 7
+    },
+    "2022M0258": {
+      "lat": 40.8007769,
+      "lon": -73.9416315,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2022Q0160": {
+      "lat": 40.6959812,
+      "lon": -73.8999775,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 8
+    },
+    "2022Q0196": {
+      "lat": 40.6054453,
+      "lon": -73.7583423,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2022Q0214": {
+      "lat": 40.7697621,
+      "lon": -73.9054083,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 14
+    },
+    "2022Q0248": {
+      "lat": 40.7086657,
+      "lon": -73.8178648,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6
     },
     "2022Q0449": {
       "lat": 40.7116899,
       "lon": -73.900412,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 14,
-      "shape": null
+      "bbl_count": 14
+    },
+    "2022R0134": {
+      "lat": 40.6082965,
+      "lon": -74.1059057,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2022X0150": {
+      "lat": 40.852507,
+      "lon": -73.9120357,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 25
+    },
+    "2022X0392": {
+      "lat": 40.8740118,
+      "lon": -73.8737367,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2022X0393": {
+      "lat": 40.8133057,
+      "lon": -73.9319144,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2023K0126": {
+      "lat": 40.5804254,
+      "lon": -73.9755704,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2023K0148": {
+      "lat": 40.7080772,
+      "lon": -73.9209694,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
     },
     "2023K0183": {
       "lat": 40.5745977,
@@ -39,80 +427,63 @@
       "method": "single_bbl_centroid",
       "precision": "exact",
       "bbl_count": 1,
-      "shape": {
-        "project_id": "2023K0183",
-        "bbl": "3070550013",
-        "geometry_type": "Polygon",
-        "rings": [
-          [
-            [
-              -73.992018,
-              40.575446
-            ],
-            [
-              -73.991942,
-              40.575455
-            ],
-            [
-              -73.991784,
-              40.575473
-            ],
-            [
-              -73.9917,
-              40.575482
-            ],
-            [
-              -73.991612,
-              40.575492
-            ],
-            [
-              -73.991533,
-              40.575501
-            ],
-            [
-              -73.991443,
-              40.575511
-            ],
-            [
-              -73.991358,
-              40.575521
-            ],
-            [
-              -73.991269,
-              40.575531
-            ],
-            [
-              -73.991172,
-              40.575542
-            ],
-            [
-              -73.990849,
-              40.573841
-            ],
-            [
-              -73.99105,
-              40.573776
-            ],
-            [
-              -73.991668,
-              40.573605
-            ],
-            [
-              -73.992018,
-              40.575446
-            ]
-          ]
-        ],
-        "method": "single_bbl_parcel_polygon",
-        "relation": "exact_single_retained_bbl_full_project_site",
-        "precision": "tax_lot_boundary",
-        "coverage_state": "exact",
-        "source": {
-          "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
-        },
-        "vintage": "2026-09-03T01:34:56.321Z",
-        "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
-      }
+      "geometry_shard": "cf"
+    },
+    "2023K0203": {
+      "lat": 40.7035205,
+      "lon": -73.9949723,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023K0231": {
+      "lat": 40.7030961,
+      "lon": -73.9304355,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 8
+    },
+    "2023K0248": {
+      "lat": 40.6756886,
+      "lon": -73.9962903,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023K0276": {
+      "lat": 40.6795363,
+      "lon": -73.9891083,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023K0357": {
+      "lat": 40.6394672,
+      "lon": -73.9226685,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 12
+    },
+    "2023K0368": {
+      "lat": 40.6586655,
+      "lon": -73.9990917,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 10
+    },
+    "2023K0398": {
+      "lat": 40.5896832,
+      "lon": -73.9736732,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 8
+    },
+    "2023K0400": {
+      "lat": 40.5771257,
+      "lon": -73.99185,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
     },
     "2023M0116": {
       "lat": 40.713653,
@@ -120,92 +491,245 @@
       "method": "single_bbl_centroid",
       "precision": "exact",
       "bbl_count": 1,
-      "shape": {
-        "project_id": "2023M0116",
-        "bbl": "1002670019",
-        "geometry_type": "Polygon",
-        "rings": [
-          [
-            [
-              -73.983328,
-              40.713888
-            ],
-            [
-              -73.983331,
-              40.713908
-            ],
-            [
-              -73.982987,
-              40.713944
-            ],
-            [
-              -73.982939,
-              40.71357
-            ],
-            [
-              -73.982919,
-              40.713417
-            ],
-            [
-              -73.983263,
-              40.713379
-            ],
-            [
-              -73.983328,
-              40.713888
-            ]
-          ]
-        ],
-        "method": "single_bbl_parcel_polygon",
-        "relation": "exact_single_retained_bbl_full_project_site",
-        "precision": "tax_lot_boundary",
-        "coverage_state": "exact",
-        "source": {
-          "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
-        },
-        "vintage": "2026-09-03T01:34:56.321Z",
-        "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
-      }
+      "geometry_shard": "e7"
+    },
+    "2023M0117": {
+      "lat": 40.7195193,
+      "lon": -74.0108694,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023M0200": {
+      "lat": 40.719448,
+      "lon": -73.989816,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
     },
     "2023M0213": {
       "lat": 40.7622089,
       "lon": -74.0032922,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 7,
-      "shape": null
+      "bbl_count": 7
+    },
+    "2023M0271": {
+      "lat": 40.7561726,
+      "lon": -73.9881573,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023M0309": {
+      "lat": 40.7532912,
+      "lon": -73.9971017,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2023M0316": {
+      "lat": 40.7607068,
+      "lon": -73.9620508,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 10
+    },
+    "2023M0399": {
+      "lat": 40.7343951,
+      "lon": -73.9830012,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023Q0125": {
+      "lat": 40.7459505,
+      "lon": -73.9467862,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023Q0177": {
+      "lat": 40.7420336,
+      "lon": -73.9145814,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 5
+    },
+    "2023Q0211": {
+      "lat": 40.7208077,
+      "lon": -73.8560215,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 7
+    },
+    "2023Q0242": {
+      "lat": 40.7243109,
+      "lon": -73.8127892,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 7
     },
     "2023Q0303": {
       "lat": 40.7225154,
       "lon": -73.8026783,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 11,
-      "shape": null
+      "bbl_count": 11
+    },
+    "2023Q0328": {
+      "lat": 40.7623447,
+      "lon": -73.8360054,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023Q0351": {
+      "lat": 40.7616532,
+      "lon": -73.8341697,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 24
+    },
+    "2023Q0364": {
+      "lat": 40.740074,
+      "lon": -73.9361021,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2023Q0424": {
+      "lat": 40.7216748,
+      "lon": -73.9097769,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023Q0450": {
+      "lat": 40.7263905,
+      "lon": -73.8538664,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 7
+    },
+    "2023R0111": {
+      "lat": 40.5956137,
+      "lon": -74.1049385,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023R0153": {
+      "lat": 40.58187,
+      "lon": -74.1658663,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 12
+    },
+    "2023R0199": {
+      "lat": 40.5483562,
+      "lon": -74.2225171,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023R0281": {
+      "lat": 40.5726466,
+      "lon": -74.1419745,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2023R0329": {
+      "lat": 40.7653971,
+      "lon": -73.7772776,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2023R0413": {
+      "lat": 40.6097081,
+      "lon": -74.0588821,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2023X0140": {
+      "lat": 40.829953,
+      "lon": -73.9042387,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 23
+    },
+    "2023X0146": {
+      "lat": 40.8551354,
+      "lon": -73.8944604,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 17
     },
     "2023X0149": {
       "lat": 40.8475607,
       "lon": -73.8837014,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 12,
-      "shape": null
+      "bbl_count": 12
+    },
+    "2023X0347": {
+      "lat": 40.8145178,
+      "lon": -73.8447387,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2023X0393": {
+      "lat": 40.8271038,
+      "lon": -73.9108444,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 22
     },
     "2024K0196": {
       "lat": 40.6994304,
       "lon": -73.9326861,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 5,
-      "shape": null
+      "bbl_count": 5
     },
     "2024K0214": {
       "lat": 40.6844389,
       "lon": -73.890357,
       "method": "single_bbl_centroid",
       "precision": "exact",
-      "bbl_count": 1,
-      "shape": null
+      "bbl_count": 1
+    },
+    "2024K0215": {
+      "lat": 40.6604654,
+      "lon": -73.8841789,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 20
+    },
+    "2024K0233": {
+      "lat": 40.6881524,
+      "lon": -73.8740706,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 10
+    },
+    "2024K0240": {
+      "lat": 40.7147196,
+      "lon": -73.9656337,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 7
+    },
+    "2024K0274": {
+      "lat": 40.6128233,
+      "lon": -74.0315116,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
     },
     "2024K0286": {
       "lat": 40.7179526,
@@ -213,92 +737,273 @@
       "method": "single_bbl_centroid",
       "precision": "exact",
       "bbl_count": 1,
-      "shape": {
-        "project_id": "2024K0286",
-        "bbl": "3023560001",
-        "geometry_type": "Polygon",
-        "rings": [
-          [
-            [
-              -73.964607,
-              40.718301
-            ],
-            [
-              -73.964262,
-              40.718085
-            ],
-            [
-              -73.96475,
-              40.717632
-            ],
-            [
-              -73.965085,
-              40.717821
-            ],
-            [
-              -73.964607,
-              40.718301
-            ]
-          ]
-        ],
-        "method": "single_bbl_parcel_polygon",
-        "relation": "exact_single_retained_bbl_full_project_site",
-        "precision": "tax_lot_boundary",
-        "coverage_state": "exact",
-        "source": {
-          "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
-        },
-        "vintage": "2026-09-03T01:34:56.321Z",
-        "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
-      }
+      "geometry_shard": "ba"
+    },
+    "2024K0294": {
+      "lat": 40.677967,
+      "lon": -73.9292828,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2024K0299": {
+      "lat": 40.6637063,
+      "lon": -73.9224638,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 25
     },
     "2024K0358": {
       "lat": 40.7258666,
       "lon": -73.958939,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 2,
-      "shape": null
+      "bbl_count": 2
+    },
+    "2024K0369": {
+      "lat": 40.6490692,
+      "lon": -73.9722335,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 8
     },
     "2024K0421": {
       "lat": 40.6162229,
       "lon": -73.9289664,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 11,
-      "shape": null
+      "bbl_count": 11
+    },
+    "2024K0437": {
+      "lat": 40.6803627,
+      "lon": -73.9378142,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2024K0444": {
+      "lat": 40.5874573,
+      "lon": -73.9955535,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 25
+    },
+    "2024M0104": {
+      "lat": 40.7399215,
+      "lon": -73.9743283,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2024M0120": {
+      "lat": 40.757966,
+      "lon": -73.9768156,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2024M0193": {
+      "lat": 40.7643185,
+      "lon": -73.9838022,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2024M0194": {
+      "lat": 40.7157044,
+      "lon": -73.9926122,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2024M0223": {
+      "lat": 40.8086611,
+      "lon": -73.9502834,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
+    },
+    "2024M0243": {
+      "lat": 40.7140877,
+      "lon": -73.9932365,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
     },
     "2024M0244": {
       "lat": 40.7622089,
       "lon": -74.0032922,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 8,
-      "shape": null
+      "bbl_count": 8
+    },
+    "2024M0267": {
+      "lat": 40.7631221,
+      "lon": -73.9712221,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2024M0372": {
+      "lat": 40.7449027,
+      "lon": -73.9884877,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2024Q0113": {
+      "lat": 40.744196,
+      "lon": -73.8561875,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 24
+    },
+    "2024Q0164": {
+      "lat": 40.7261775,
+      "lon": -73.8045941,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6
+    },
+    "2024Q0189": {
+      "lat": 40.7396147,
+      "lon": -73.7944722,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
     },
     "2024Q0219": {
       "lat": 40.669094,
       "lon": -73.85649,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 12,
-      "shape": null
+      "bbl_count": 12
+    },
+    "2024Q0292": {
+      "lat": 40.7268141,
+      "lon": -73.846112,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2024Q0297": {
+      "lat": 40.7397814,
+      "lon": -73.8312218,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2024Q0324": {
+      "lat": 40.7670249,
+      "lon": -73.8324596,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 7
     },
     "2024Q0325": {
       "lat": 40.5883955,
       "lon": -73.8116508,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 12,
-      "shape": null
+      "bbl_count": 12
+    },
+    "2024Q0356": {
+      "lat": 40.7585008,
+      "lon": -73.7736586,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2024R0137": {
+      "lat": 40.6365536,
+      "lon": -74.0939885,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2024R0289": {
+      "lat": 40.5291508,
+      "lon": -74.1836497,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2024R0300": {
+      "lat": 40.6467994,
+      "lon": -74.0801363,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 5
+    },
+    "2024R0332": {
+      "lat": 40.5270016,
+      "lon": -74.201651,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2024R0425": {
+      "lat": 40.5492064,
+      "lon": -74.2352364,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2024X0132": {
+      "lat": 40.8309548,
+      "lon": -73.856607,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
+    },
+    "2024X0210": {
+      "lat": 40.8266051,
+      "lon": -73.8954813,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2025K0150": {
+      "lat": 40.7015305,
+      "lon": -73.9949112,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
     },
     "2025K0154": {
       "lat": 40.6839111,
       "lon": -73.9543101,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 3,
-      "shape": null
+      "bbl_count": 3
+    },
+    "2025K0226": {
+      "lat": 40.6844389,
+      "lon": -73.890357,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2025K0229": {
+      "lat": 40.6331356,
+      "lon": -74.0123866,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
+    },
+    "2025K0232": {
+      "lat": 40.6336658,
+      "lon": -74.0074651,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 5
+    },
+    "2025K0250": {
+      "lat": 40.5788513,
+      "lon": -73.9698616,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
     },
     "2025K0284": {
       "lat": 40.6167845,
@@ -306,72 +1011,7 @@
       "method": "single_bbl_centroid",
       "precision": "exact",
       "bbl_count": 1,
-      "shape": {
-        "project_id": "2025K0284",
-        "bbl": "3061090001",
-        "geometry_type": "Polygon",
-        "rings": [
-          [
-            [
-              -74.029372,
-              40.617054
-            ],
-            [
-              -74.029324,
-              40.617029
-            ],
-            [
-              -74.02943,
-              40.616905
-            ],
-            [
-              -74.02954,
-              40.616777
-            ],
-            [
-              -74.029648,
-              40.616651
-            ],
-            [
-              -74.029757,
-              40.616524
-            ],
-            [
-              -74.029813,
-              40.616459
-            ],
-            [
-              -74.029865,
-              40.616485
-            ],
-            [
-              -74.029968,
-              40.616364
-            ],
-            [
-              -74.030321,
-              40.61654
-            ],
-            [
-              -74.029728,
-              40.617231
-            ],
-            [
-              -74.029372,
-              40.617054
-            ]
-          ]
-        ],
-        "method": "single_bbl_parcel_polygon",
-        "relation": "exact_single_retained_bbl_full_project_site",
-        "precision": "tax_lot_boundary",
-        "coverage_state": "exact",
-        "source": {
-          "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
-        },
-        "vintage": "2026-09-03T01:34:56.321Z",
-        "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
-      }
+      "geometry_shard": "b9"
     },
     "2025K0287": {
       "lat": 40.7259823,
@@ -379,224 +1019,105 @@
       "method": "single_bbl_centroid",
       "precision": "exact",
       "bbl_count": 1,
-      "shape": {
-        "project_id": "2025K0287",
-        "bbl": "3025900025",
-        "geometry_type": "Polygon",
-        "rings": [
-          [
-            [
-              -73.959854,
-              40.725551
-            ],
-            [
-              -73.959496,
-              40.725586
-            ],
-            [
-              -73.959457,
-              40.725352
-            ],
-            [
-              -73.95948,
-              40.725349
-            ],
-            [
-              -73.959505,
-              40.725347
-            ],
-            [
-              -73.959699,
-              40.725334
-            ],
-            [
-              -73.959706,
-              40.725334
-            ],
-            [
-              -73.959756,
-              40.725346
-            ],
-            [
-              -73.959917,
-              40.72532
-            ],
-            [
-              -73.960063,
-              40.72531
-            ],
-            [
-              -73.960074,
-              40.725309
-            ],
-            [
-              -73.960086,
-              40.725309
-            ],
-            [
-              -73.960099,
-              40.725309
-            ],
-            [
-              -73.960111,
-              40.725312
-            ],
-            [
-              -73.960124,
-              40.725318
-            ],
-            [
-              -73.960132,
-              40.725326
-            ],
-            [
-              -73.960137,
-              40.725333
-            ],
-            [
-              -73.96014,
-              40.725341
-            ],
-            [
-              -73.960148,
-              40.725378
-            ],
-            [
-              -73.960162,
-              40.725431
-            ],
-            [
-              -73.960177,
-              40.725488
-            ],
-            [
-              -73.960181,
-              40.725517
-            ],
-            [
-              -73.960184,
-              40.725544
-            ],
-            [
-              -73.960182,
-              40.72562
-            ],
-            [
-              -73.960182,
-              40.725647
-            ],
-            [
-              -73.960176,
-              40.725665
-            ],
-            [
-              -73.960182,
-              40.725712
-            ],
-            [
-              -73.960185,
-              40.725778
-            ],
-            [
-              -73.96019,
-              40.72585
-            ],
-            [
-              -73.960199,
-              40.725925
-            ],
-            [
-              -73.960201,
-              40.725939
-            ],
-            [
-              -73.960205,
-              40.725948
-            ],
-            [
-              -73.96021,
-              40.72596
-            ],
-            [
-              -73.960219,
-              40.725974
-            ],
-            [
-              -73.96032,
-              40.725958
-            ],
-            [
-              -73.960317,
-              40.72592
-            ],
-            [
-              -73.960778,
-              40.725886
-            ],
-            [
-              -73.960784,
-              40.725919
-            ],
-            [
-              -73.960946,
-              40.725905
-            ],
-            [
-              -73.960944,
-              40.725874
-            ],
-            [
-              -73.961551,
-              40.725829
-            ],
-            [
-              -73.961559,
-              40.725875
-            ],
-            [
-              -73.961565,
-              40.725912
-            ],
-            [
-              -73.959933,
-              40.726063
-            ],
-            [
-              -73.959921,
-              40.725985
-            ],
-            [
-              -73.959854,
-              40.725551
-            ]
-          ]
-        ],
-        "method": "single_bbl_parcel_polygon",
-        "relation": "exact_single_retained_bbl_full_project_site",
-        "precision": "tax_lot_boundary",
-        "coverage_state": "exact",
-        "source": {
-          "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
-        },
-        "vintage": "2026-09-03T01:34:56.321Z",
-        "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
-      }
+      "geometry_shard": "00"
+    },
+    "2025K0293": {
+      "lat": 40.7082018,
+      "lon": -73.9693847,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
     },
     "2025K0305": {
       "lat": 40.5869002,
       "lon": -73.9960072,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 25,
-      "shape": null
+      "bbl_count": 25
+    },
+    "2025K0306": {
+      "lat": 40.5880558,
+      "lon": -73.9972961,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2025K0318": {
+      "lat": 40.6542652,
+      "lon": -74.0096442,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 23
+    },
+    "2025K0374": {
+      "lat": 40.596926,
+      "lon": -73.9847791,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 7
+    },
+    "2025K0419": {
+      "lat": 40.6872641,
+      "lon": -73.9788702,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2025K0470": {
+      "lat": 40.612361,
+      "lon": -73.9167031,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2025K0497": {
+      "lat": 40.701768,
+      "lon": -73.9817112,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2025M0115": {
+      "lat": 40.7631309,
+      "lon": -73.973453,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2025M0265": {
+      "lat": 40.764055,
+      "lon": -73.9700052,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 11
+    },
+    "2025M0329": {
+      "lat": 40.7227361,
+      "lon": -74.0112127,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2025M0332": {
+      "lat": 40.7617389,
+      "lon": -73.9873296,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
     },
     "2025M0338": {
       "lat": 40.7592851,
       "lon": -73.9876911,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 6,
-      "shape": null
+      "bbl_count": 6
+    },
+    "2025M0360": {
+      "lat": 40.7699569,
+      "lon": -73.9895592,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
     },
     "2025M0395": {
       "lat": 40.7495688,
@@ -604,56 +1125,28 @@
       "method": "single_bbl_centroid",
       "precision": "exact",
       "bbl_count": 1,
-      "shape": {
-        "project_id": "2025M0395",
-        "bbl": "1008097502",
-        "geometry_type": "Polygon",
-        "rings": [
-          [
-            [
-              -73.988359,
-              40.749909
-            ],
-            [
-              -73.988088,
-              40.749795
-            ],
-            [
-              -73.988131,
-              40.74956
-            ],
-            [
-              -73.988341,
-              40.749262
-            ],
-            [
-              -73.988859,
-              40.749479
-            ],
-            [
-              -73.988677,
-              40.749713
-            ],
-            [
-              -73.988551,
-              40.749661
-            ],
-            [
-              -73.988359,
-              40.749909
-            ]
-          ]
-        ],
-        "method": "single_bbl_parcel_polygon",
-        "relation": "exact_single_retained_bbl_full_project_site",
-        "precision": "tax_lot_boundary",
-        "coverage_state": "exact",
-        "source": {
-          "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
-        },
-        "vintage": "2026-09-03T01:34:56.321Z",
-        "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
-      }
+      "geometry_shard": "2a"
+    },
+    "2025M0441": {
+      "lat": 40.7512626,
+      "lon": -73.9923737,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2025M0473": {
+      "lat": 40.7584821,
+      "lon": -73.9663042,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 5
+    },
+    "2025Q0124": {
+      "lat": 40.7565776,
+      "lon": -73.9217096,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
     },
     "2025Q0142": {
       "lat": 40.7463368,
@@ -661,116 +1154,273 @@
       "method": "single_bbl_centroid",
       "precision": "exact",
       "bbl_count": 1,
-      "shape": {
-        "project_id": "2025Q0142",
-        "bbl": "4020030001",
-        "geometry_type": "Polygon",
-        "rings": [
-          [
-            [
-              -73.855998,
-              40.746411
-            ],
-            [
-              -73.855864,
-              40.746154
-            ],
-            [
-              -73.856089,
-              40.746088
-            ],
-            [
-              -73.856143,
-              40.745933
-            ],
-            [
-              -73.856206,
-              40.746053
-            ],
-            [
-              -73.85621,
-              40.746062
-            ],
-            [
-              -73.856472,
-              40.746566
-            ],
-            [
-              -73.856131,
-              40.746667
-            ],
-            [
-              -73.855998,
-              40.746411
-            ]
-          ]
-        ],
-        "method": "single_bbl_parcel_polygon",
-        "relation": "exact_single_retained_bbl_full_project_site",
-        "precision": "tax_lot_boundary",
-        "coverage_state": "exact",
-        "source": {
-          "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
-        },
-        "vintage": "2026-09-03T01:34:56.321Z",
-        "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
-      }
+      "geometry_shard": "b8"
+    },
+    "2025Q0155": {
+      "lat": 40.7628813,
+      "lon": -73.806775,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
     },
     "2025Q0247": {
       "lat": 40.7232627,
       "lon": -73.8442875,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 2,
-      "shape": null
+      "bbl_count": 2
+    },
+    "2025Q0304": {
+      "lat": 40.7430846,
+      "lon": -73.9142553,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2025Q0314": {
+      "lat": 40.7394375,
+      "lon": -73.8784808,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 16
     },
     "2025Q0316": {
       "lat": 40.7459602,
       "lon": -73.933729,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 25,
-      "shape": null
+      "bbl_count": 25
+    },
+    "2025Q0331": {
+      "lat": 40.7421199,
+      "lon": -73.9201568,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2025Q0335": {
+      "lat": 40.7378857,
+      "lon": -73.8629093,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2025Q0445": {
+      "lat": 40.7614448,
+      "lon": -73.8286798,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
     },
     "2025R0137": {
       "lat": 40.6450388,
       "lon": -74.0777884,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 3,
-      "shape": null
+      "bbl_count": 3
+    },
+    "2025R0140": {
+      "lat": 40.5321222,
+      "lon": -74.2381046,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
     },
     "2025R0222": {
       "lat": 40.5255405,
       "lon": -74.1771867,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 2,
-      "shape": null
+      "bbl_count": 2
+    },
+    "2025R0277": {
+      "lat": 40.5829011,
+      "lon": -74.128053,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2025R0285": {
+      "lat": 40.6247446,
+      "lon": -74.0881432,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2025R0309": {
+      "lat": 40.524096,
+      "lon": -74.1685501,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2025R0312": {
+      "lat": 40.5885963,
+      "lon": -74.1068069,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2025R0398": {
+      "lat": 40.6377896,
+      "lon": -74.0857788,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2025X0116": {
+      "lat": 40.8864292,
+      "lon": -73.8621075,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 8
+    },
+    "2025X0143": {
+      "lat": 40.8504137,
+      "lon": -73.8471707,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 20
+    },
+    "2025X0283": {
+      "lat": 40.8617913,
+      "lon": -73.9143047,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2025X0385": {
+      "lat": 40.8021971,
+      "lon": -73.9060088,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
     },
     "2026K0123": {
       "lat": 40.6696224,
       "lon": -73.9557834,
       "method": "single_bbl_centroid",
       "precision": "exact",
-      "bbl_count": 1,
-      "shape": null
+      "bbl_count": 1
+    },
+    "2026K0129": {
+      "lat": 40.7277201,
+      "lon": -73.9610558,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
     },
     "2026K0233": {
       "lat": 40.6980489,
       "lon": -73.9819394,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 2,
-      "shape": null
+      "bbl_count": 2
+    },
+    "2026K0443": {
+      "lat": 40.6861417,
+      "lon": -73.979772,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2026M0120": {
+      "lat": 40.7052441,
+      "lon": -74.0067554,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026M0136": {
+      "lat": 40.7655046,
+      "lon": -73.9714269,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026M0164": {
+      "lat": 40.7834265,
+      "lon": -73.958333,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2026M0206": {
+      "lat": 40.7642074,
+      "lon": -73.9761997,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
+    },
+    "2026M0211": {
+      "lat": 40.7540823,
+      "lon": -73.9777157,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "2026M0247": {
+      "lat": 40.7644138,
+      "lon": -73.9789071,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "2026M0275": {
+      "lat": 40.7566621,
+      "lon": -73.9760581,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026M0366": {
+      "lat": 40.7682893,
+      "lon": -73.9583858,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 8
+    },
+    "2026M0432": {
+      "lat": 40.760925,
+      "lon": -73.978013,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026M0444": {
+      "lat": 40.7158766,
+      "lon": -73.9852317,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026M0445": {
+      "lat": 40.7500963,
+      "lon": -73.9957701,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026Q0128": {
+      "lat": 40.776461,
+      "lon": -73.9311785,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6
     },
     "2026Q0210": {
       "lat": 40.6986302,
       "lon": -73.8041122,
       "method": "multi_bbl_anchor",
       "precision": "anchor",
-      "bbl_count": 25,
-      "shape": null
+      "bbl_count": 25
+    },
+    "2026Q0320": {
+      "lat": 40.7300034,
+      "lon": -73.8439975,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
     },
     "2026R0127": {
       "lat": 40.6128941,
@@ -778,104 +1428,35 @@
       "method": "single_bbl_centroid",
       "precision": "exact",
       "bbl_count": 1,
-      "shape": {
-        "project_id": "2026R0127",
-        "bbl": "5007087501",
-        "geometry_type": "Polygon",
-        "rings": [
-          [
-            [
-              -74.119547,
-              40.612969
-            ],
-            [
-              -74.119368,
-              40.612985
-            ],
-            [
-              -74.119234,
-              40.612997
-            ],
-            [
-              -74.119215,
-              40.612884
-            ],
-            [
-              -74.119804,
-              40.612833
-            ],
-            [
-              -74.119867,
-              40.612689
-            ],
-            [
-              -74.119932,
-              40.612542
-            ],
-            [
-              -74.119978,
-              40.612438
-            ],
-            [
-              -74.119979,
-              40.612436
-            ],
-            [
-              -74.120081,
-              40.612426
-            ],
-            [
-              -74.120088,
-              40.612566
-            ],
-            [
-              -74.120096,
-              40.612699
-            ],
-            [
-              -74.120101,
-              40.612803
-            ],
-            [
-              -74.120107,
-              40.612915
-            ],
-            [
-              -74.12012,
-              40.613159
-            ],
-            [
-              -74.120122,
-              40.613192
-            ],
-            [
-              -74.119737,
-              40.613234
-            ],
-            [
-              -74.11973,
-              40.61319
-            ],
-            [
-              -74.11969,
-              40.612957
-            ],
-            [
-              -74.119547,
-              40.612969
-            ]
-          ]
-        ],
-        "method": "single_bbl_parcel_polygon",
-        "relation": "exact_single_retained_bbl_full_project_site",
-        "precision": "tax_lot_boundary",
-        "coverage_state": "exact",
-        "source": {
-          "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
-        },
-        "vintage": "2026-09-03T01:34:56.321Z",
-        "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
-      }
+      "geometry_shard": "2b"
+    },
+    "2026R0137": {
+      "lat": 40.6394947,
+      "lon": -74.0988317,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026R0142": {
+      "lat": 40.5939082,
+      "lon": -74.1059945,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026R0145": {
+      "lat": 40.6090542,
+      "lon": -74.0601853,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026R0166": {
+      "lat": 40.6364415,
+      "lon": -74.0786827,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
     },
     "2026R0186": {
       "lat": 40.6005122,
@@ -883,120 +1464,216 @@
       "method": "single_bbl_centroid",
       "precision": "exact",
       "bbl_count": 1,
-      "shape": {
-        "project_id": "2026R0186",
-        "bbl": "5028100080",
-        "geometry_type": "Polygon",
-        "rings": [
-          [
-            [
-              -74.195081,
-              40.600616
-            ],
-            [
-              -74.19573,
-              40.600203
-            ],
-            [
-              -74.195822,
-              40.600287
-            ],
-            [
-              -74.196003,
-              40.600172
-            ],
-            [
-              -74.195911,
-              40.600088
-            ],
-            [
-              -74.196352,
-              40.599807
-            ],
-            [
-              -74.196387,
-              40.5998
-            ],
-            [
-              -74.196554,
-              40.600239
-            ],
-            [
-              -74.196428,
-              40.600377
-            ],
-            [
-              -74.196399,
-              40.600414
-            ],
-            [
-              -74.196374,
-              40.600453
-            ],
-            [
-              -74.196355,
-              40.600493
-            ],
-            [
-              -74.196342,
-              40.600535
-            ],
-            [
-              -74.19634,
-              40.60064
-            ],
-            [
-              -74.196341,
-              40.600676
-            ],
-            [
-              -74.196346,
-              40.600712
-            ],
-            [
-              -74.196356,
-              40.600747
-            ],
-            [
-              -74.19637,
-              40.600782
-            ],
-            [
-              -74.196214,
-              40.600787
-            ],
-            [
-              -74.195599,
-              40.601161
-            ],
-            [
-              -74.195536,
-              40.601099
-            ],
-            [
-              -74.195418,
-              40.600983
-            ],
-            [
-              -74.195149,
-              40.60071
-            ],
-            [
-              -74.195081,
-              40.600616
-            ]
-          ]
-        ],
-        "method": "single_bbl_parcel_polygon",
-        "relation": "exact_single_retained_bbl_full_project_site",
-        "precision": "tax_lot_boundary",
-        "coverage_state": "exact",
-        "source": {
-          "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
-        },
-        "vintage": "2026-09-03T01:34:56.321Z",
-        "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
-      }
+      "geometry_shard": "82"
+    },
+    "2026R0189": {
+      "lat": 40.6082071,
+      "lon": -74.0918381,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026R0195": {
+      "lat": 40.6173903,
+      "lon": -74.0894266,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026R0196": {
+      "lat": 40.617369,
+      "lon": -74.0886377,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026R0319": {
+      "lat": 40.5506677,
+      "lon": -74.1764545,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 25
+    },
+    "2026X0274": {
+      "lat": 40.8997596,
+      "lon": -73.9085042,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026X0282": {
+      "lat": 40.8942456,
+      "lon": -73.9121541,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026X0354": {
+      "lat": 40.8925631,
+      "lon": -73.9120623,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "2026X0362": {
+      "lat": 40.8080595,
+      "lon": -73.9125785,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "P2012Q0076": {
+      "lat": 40.5954756,
+      "lon": -73.8025784,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 23
+    },
+    "P2012Q0110": {
+      "lat": 40.7138448,
+      "lon": -73.9039619,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "P2012R0043": {
+      "lat": 40.5870038,
+      "lon": -74.1884172,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
+    },
+    "P2014M0309": {
+      "lat": 40.7596261,
+      "lon": -73.9985453,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1
+    },
+    "P2014R0345": {
+      "lat": 40.5408524,
+      "lon": -74.2208011,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 24
+    },
+    "P2015M0247": {
+      "lat": 40.7549738,
+      "lon": -74.001155,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "P2016K0287": {
+      "lat": 40.7241236,
+      "lon": -73.9348367,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 10
+    },
+    "P2016M0148": {
+      "lat": 40.7596261,
+      "lon": -73.9985453,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    },
+    "P2016Q0288": {
+      "lat": 40.7312763,
+      "lon": -73.9256109,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 7
+    },
+    "P2017Q0152": {
+      "lat": 40.7713118,
+      "lon": -73.8946727,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3
+    },
+    "P2017X0149": {
+      "lat": 40.9044218,
+      "lon": -73.8563147,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 5
+    },
+    "P2018M0168": {
+      "lat": 40.7073905,
+      "lon": -74.0065068,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 4
+    },
+    "P2018X0328": {
+      "lat": 40.8204881,
+      "lon": -73.9250523,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2
+    }
+  },
+  "unmapped": {
+    "2020K0444": {
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid"
+    },
+    "2020M0385": {
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid"
+    },
+    "2020Q0317": {
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid"
+    },
+    "2022Y0395": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2023M0452": {
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid"
+    },
+    "2024M0278": {
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid"
+    },
+    "2024Q0135": {
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid"
+    },
+    "2025M0252": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025M0464": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2025Y0279": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026R0327": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026X0464": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "2026Y0360": {
+      "status": "source_missing",
+      "reason": "no_retained_bbl"
+    },
+    "P2009M0029": {
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid"
+    },
+    "P2012X0048": {
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid"
     }
   }
 }

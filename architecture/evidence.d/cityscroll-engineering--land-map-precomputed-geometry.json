@@ -44,6 +44,14 @@
     {
       "id": "land-project-geometry-capture",
       "path": "tools/capture_land_project_geometry.py"
+    },
+    {
+      "id": "land-project-geometry-shards",
+      "path": "site/data/land-project-geometry"
+    },
+    {
+      "id": "land-catalog-map-parity-contract",
+      "path": "test/land_catalog_map_parity.test.mjs"
     }
   ]
 }

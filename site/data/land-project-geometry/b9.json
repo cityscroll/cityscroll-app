@@ -1,0 +1,74 @@
+{
+  "schema": "cityscroll.land_project_geometry_shard.v1",
+  "key": "b9",
+  "generation_id": "fnv1a32:06425590:244",
+  "shape_count": 1,
+  "shapes": {
+    "2025K0284": {
+      "project_id": "2025K0284",
+      "bbl": "3061090001",
+      "geometry_type": "Polygon",
+      "rings": [
+        [
+          [
+            -74.029372,
+            40.617054
+          ],
+          [
+            -74.029324,
+            40.617029
+          ],
+          [
+            -74.02943,
+            40.616905
+          ],
+          [
+            -74.02954,
+            40.616777
+          ],
+          [
+            -74.029648,
+            40.616651
+          ],
+          [
+            -74.029757,
+            40.616524
+          ],
+          [
+            -74.029813,
+            40.616459
+          ],
+          [
+            -74.029865,
+            40.616485
+          ],
+          [
+            -74.029968,
+            40.616364
+          ],
+          [
+            -74.030321,
+            40.61654
+          ],
+          [
+            -74.029728,
+            40.617231
+          ],
+          [
+            -74.029372,
+            40.617054
+          ]
+        ]
+      ],
+      "method": "single_bbl_parcel_polygon",
+      "relation": "exact_single_retained_bbl_full_project_site",
+      "precision": "tax_lot_boundary",
+      "coverage_state": "exact",
+      "source": {
+        "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
+      },
+      "vintage": "2026-09-03T01:34:56.321Z",
+      "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
+    }
+  }
+}

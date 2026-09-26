@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/land-map-project-point-materializer",
   "status": "implemented",
-  "fingerprint": "land-map-project-point-materializer.v1",
-  "updated_at": "2026-08-30T00:00:00.000Z",
+  "fingerprint": "land-map-project-point-materializer.v2-catalog",
+  "updated_at": "2026-09-26T00:00:00.000Z",
   "projections": [
     {
       "id": "land-project-map-points",
@@ -12,6 +12,26 @@
     {
       "id": "land-project-map-points-receipt",
       "path": "site/data/land_project_map_points_receipt.json"
+    },
+    {
+      "id": "land-project-map-points-module",
+      "path": "site/land_project_map_points.mjs"
+    },
+    {
+      "id": "land-project-map-points-builder",
+      "path": "tools/build_land_project_map_points.mjs"
+    },
+    {
+      "id": "land-project-geometry-shards",
+      "path": "site/data/land-project-geometry"
+    },
+    {
+      "id": "land-catalog-map-parity-contract",
+      "path": "test/land_catalog_map_parity.test.mjs"
+    },
+    {
+      "id": "land-project-map-points-contract",
+      "path": "test/land_project_map_points.test.mjs"
     }
   ]
 }

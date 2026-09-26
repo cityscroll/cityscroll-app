@@ -18,10 +18,13 @@ import { normalizeBbl } from "./bbl_mappluto_centroids.mjs";
 
 export const LAND_PROJECT_GEOMETRY_SCHEMA = "cityscroll.land_project_geometry.v1";
 export const LAND_PROJECT_GEOMETRY_RECEIPT_SCHEMA = "cityscroll.land_project_geometry_receipt.v1";
+export const LAND_PROJECT_GEOMETRY_SHARD_SCHEMA = "cityscroll.land_project_geometry_shard.v1";
 export const LAND_PROJECT_GEOMETRY_JOIN_VERSION = "exact_single_bbl_wh06_mappluto_parcel_polygon_v1";
 export const LAND_PROJECT_GEOMETRY_MAX_BYTES = 16 * 1024;
 export const LAND_PROJECT_GEOMETRY_MAX_AGE_DAYS = 120;
 export const LAND_PROJECT_GEOMETRY_MAX_RING_POINTS = 200;
+export const LAND_PROJECT_GEOMETRY_SHARD_COUNT = 256;
+export const LAND_PROJECT_GEOMETRY_SHARD_DIR = "site/data/land-project-geometry";
 
 export const LAND_PROJECT_GEOMETRY_METHOD = "single_bbl_parcel_polygon";
 export const LAND_PROJECT_GEOMETRY_PRECISION = "tax_lot_boundary";
@@ -44,6 +47,40 @@ function trimGeometryId(value) {
 
 function asGeometryObject(value) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+}
+
+/** Unsigned UTF-8 FNV-1a 32-bit (same family as place-evidence shards). */
+export function landProjectGeometryFnv1a32Utf8(value) {
+  let hash = 0x811c9dc5;
+  const text = String(value ?? "");
+  for (let i = 0; i < text.length; i += 1) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return hash >>> 0;
+}
+
+/**
+ * Geometry shard key for a project id: FNV1a-32(project_id) mod 256 as
+ * two-digit lowercase hex.
+ */
+export function landProjectGeometryShardKey(
+  projectId,
+  shardCount = LAND_PROJECT_GEOMETRY_SHARD_COUNT,
+) {
+  const id = trimGeometryId(projectId);
+  const count = Number.isInteger(shardCount) && shardCount > 0
+    ? shardCount
+    : LAND_PROJECT_GEOMETRY_SHARD_COUNT;
+  return (landProjectGeometryFnv1a32Utf8(id) % count).toString(16).padStart(2, "0");
+}
+
+export function landProjectGeometryShardPath(shardKey) {
+  return `${LAND_PROJECT_GEOMETRY_SHARD_DIR}/${String(shardKey)}.json`;
+}
+
+export function landProjectGeometryShardUrl(shardKey) {
+  return `data/land-project-geometry/${String(shardKey)}.json`;
 }
 
 function sortedGeometryKeys(record) {
@@ -90,8 +127,7 @@ function exactBblsByProject(zapBbl) {
  * project is either ambiguous (2+ retained BBLs) or has none.
  */
 export function singleBblGeometryCandidates({ catalog = null, landDefault = null, zapBbl }) {
-  void catalog;
-  const universe = geometryProjectUniverse(landDefault);
+  const universe = geometryProjectUniverse(catalog || landDefault);
   const byProject = exactBblsByProject(zapBbl);
   const out = new Map();
   for (const projectId of universe) {
@@ -202,9 +238,9 @@ export function materializeLandProjectGeometry(inputs = {}, opts = {}) {
   const geometrySource = asGeometryObject(inputs.geometrySource);
   const byBbl = asGeometryObject(geometrySource.by_bbl);
   const mappedIds = new Set(Array.isArray(inputs.mappedProjectIds) ? inputs.mappedProjectIds : []);
-  // Geometry follows the same default projection population as map points;
-  // the catalog generation is accepted for admission checks by callers.
-  const universe = geometryProjectUniverse(landDefault);
+  // Prefer the admitted catalog; the default snapshot remains the compatibility
+  // seed when a catalog is absent.
+  const universe = geometryProjectUniverse(catalog || landDefault);
   const byProject = exactBblsByProject(zapBbl);
   const now = opts.now || new Date().toISOString();
   const source = geometrySource.source || null;
@@ -397,6 +433,87 @@ export function assertLandProjectGeometry(payload, receipt, opts = {}) {
   const findings = landProjectGeometryFindings(payload, receipt, opts);
   if (findings.length) throw new Error(findings.join("; "));
   return true;
+}
+
+/**
+ * Partition exact shapes into FNV project-id shards for inspection-time load.
+ * Empty shards are omitted; the compact map-points payload carries locators
+ * only for projects that land in a nonempty shard.
+ */
+export function partitionLandProjectGeometryShards(shapes, { generationId = null } = {}) {
+  const byShard = new Map();
+  const record = shapes && typeof shapes === "object" && !Array.isArray(shapes) ? shapes : {};
+  for (const projectId of sortedGeometryKeys(record)) {
+    const shape = record[projectId];
+    if (!shape || landParcelPolygonFindings(shape)) continue;
+    const key = landProjectGeometryShardKey(projectId);
+    if (!byShard.has(key)) {
+      byShard.set(key, {
+        schema: LAND_PROJECT_GEOMETRY_SHARD_SCHEMA,
+        key,
+        generation_id: generationId,
+        shapes: {},
+      });
+    }
+    byShard.get(key).shapes[projectId] = shape;
+  }
+  const out = {};
+  for (const key of [...byShard.keys()].sort()) {
+    const shard = byShard.get(key);
+    const ordered = Object.fromEntries(
+      sortedGeometryKeys(shard.shapes).map((id) => [id, shard.shapes[id]]),
+    );
+    out[key] = {
+      schema: shard.schema,
+      key: shard.key,
+      generation_id: shard.generation_id,
+      shape_count: Object.keys(ordered).length,
+      shapes: ordered,
+    };
+  }
+  return out;
+}
+
+export function landProjectGeometryShardFindings(shard, { expectedKey = null } = {}) {
+  const findings = [];
+  if (!shard || typeof shard !== "object" || Array.isArray(shard)) {
+    return ["geometry shard missing"];
+  }
+  if (shard.schema !== LAND_PROJECT_GEOMETRY_SHARD_SCHEMA) {
+    findings.push(`geometry shard schema ${JSON.stringify(shard.schema)} != ${LAND_PROJECT_GEOMETRY_SHARD_SCHEMA}`);
+  }
+  if (expectedKey != null && shard.key !== expectedKey) {
+    findings.push(`geometry shard key ${JSON.stringify(shard.key)} != ${expectedKey}`);
+  }
+  if (!/^[0-9a-f]{2}$/.test(String(shard.key || ""))) {
+    findings.push(`geometry shard key ${JSON.stringify(shard.key)} is not two-digit hex`);
+  }
+  const shapes = shard.shapes && typeof shard.shapes === "object" && !Array.isArray(shard.shapes)
+    ? shard.shapes
+    : null;
+  if (!shapes) {
+    findings.push("geometry shard shapes missing");
+    return findings;
+  }
+  for (const [projectId, shape] of Object.entries(shapes)) {
+    if (landProjectGeometryShardKey(projectId) !== shard.key) {
+      findings.push(`${projectId} does not belong in shard ${shard.key}`);
+    }
+    const invalid = landParcelPolygonFindings(shape);
+    if (invalid) findings.push(`${projectId} shape invalid: ${invalid}`);
+  }
+  if (Number(shard.shape_count) !== Object.keys(shapes).length) {
+    findings.push(`geometry shard shape_count ${shard.shape_count} != ${Object.keys(shapes).length}`);
+  }
+  return findings;
+}
+
+export function shapeFromGeometryShard(shard, projectId) {
+  const id = trimGeometryId(projectId);
+  if (!id || !shard || typeof shard !== "object") return null;
+  const shape = shard.shapes?.[id];
+  if (!shape || landParcelPolygonFindings(shape)) return null;
+  return shape;
 }
 
 export const LAND_PARCEL_GEOMETRY_SOURCE_SCHEMA_VERSION = 1;
