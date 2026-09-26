@@ -9,7 +9,6 @@
  */
 
 import { communityBoardPageHref } from "./community_board_links.mjs";
-import { boardsForNta } from "./board_neighborhood_index.mjs";
 import {
   GEOGRAPHY_NAVIGATION_GEO_PARAM,
   geographyNavigationSelectionToken,
@@ -88,6 +87,13 @@ function compareBoardChoices(left, right) {
   const pct = (Number(right.pct_from) || 0) - (Number(left.pct_from) || 0);
   if (pct !== 0) return pct;
   return clean(left.board_id).localeCompare(clean(right.board_id));
+}
+
+
+/** Local by_nta lookup — keep this module free of Node built-ins for Pages. */
+function boardsForNta(index, ntaId) {
+  const id = clean(ntaId).toUpperCase();
+  return Array.isArray(index?.by_nta?.[id]) ? index.by_nta[id] : [];
 }
 
 /**

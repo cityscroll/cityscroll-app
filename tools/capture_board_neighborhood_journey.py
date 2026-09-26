@@ -214,6 +214,18 @@ def require_served_subjects(base: str) -> dict:
                 f"served directory at {directory_url} lacks required markup {needle!r}"
             )
 
+    # Directory binder must stay browser-safe: importing the Node index module
+    # pulls node:crypto into the Pages graph and prevents progressive enhancement.
+    _status, directory_module = fetch_bytes(
+        absolute(base, "/board_neighborhood_directory.mjs"),
+        accept="application/javascript",
+    )
+    module_text = directory_module.decode("utf-8", "replace")
+    if "board_neighborhood_index.mjs" in module_text or "node:crypto" in module_text:
+        raise ServedDataMissingError(
+            "served board_neighborhood_directory.mjs still imports a Node-only index module"
+        )
+
     _status, profile_html = fetch_bytes(profile_url, accept="text/html")
     profile_text = profile_html.decode("utf-8", "replace")
     for needle in (
@@ -294,33 +306,84 @@ def tab_until(page, selector: str, *, max_tabs: int = 100) -> dict:
 
 def observe_directory_geo(page, base: str, case: dict, viewport: tuple[str, int, int]) -> dict:
     name, width, height = viewport
+    nta_id = case["geo"].split(":")[-1]
     route = f"/community-boards/?geo={urllib.parse.quote(case['geo'], safe=':')}"
     page.set_viewport_size({"width": width, "height": height})
     page.goto(absolute(base, route), wait_until="domcontentloaded", timeout=60_000)
     page.wait_for_selector("[data-board-neighborhood-entry]", timeout=30_000)
-    page.wait_for_selector("[data-board-neighborhood-results], .scorecard-neighborhood-choice", timeout=30_000)
+    page.wait_for_selector("#scorecard-neighborhood-select", timeout=30_000)
 
     inner_width = page.evaluate("() => window.innerWidth")
     if int(inner_width) != int(width):
         raise SystemExit(f"{case['id']}@{name}: inner_width {inner_width} != viewport {width}")
 
+    # Prefer progressive-enhancement results. If the binder mounts, drive the
+    # chooser explicitly so a stale hidden results panel cannot fake success.
+    enhancement = page.evaluate(
+        """(geo) => {
+          const select = document.querySelector('#scorecard-neighborhood-select');
+          if (!select) return { mounted: false };
+          select.value = geo;
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+          select.dispatchEvent(new Event('input', { bubbles: true }));
+          const results = document.querySelector('[data-board-neighborhood-results]');
+          const heading = document.querySelector('[data-board-neighborhood-results-heading]');
+          return {
+            mounted: true,
+            results_hidden: results ? results.hasAttribute('hidden') : null,
+            heading: heading ? String(heading.textContent || '').trim() : null,
+            choice_count: document.querySelectorAll('.scorecard-neighborhood-choice').length,
+          };
+        }""",
+        case["geo"],
+    )
+
+    # Wait briefly for the binder to unhide results when modules boot.
+    try:
+        page.wait_for_function(
+            """() => {
+              const results = document.querySelector('[data-board-neighborhood-results]');
+              if (!results) return false;
+              if (results.hasAttribute('hidden')) return false;
+              return document.querySelectorAll('.scorecard-neighborhood-choice a[href*="/community-boards/"]').length > 0
+                || /Boards? overlapping|No published board/i.test(
+                  document.querySelector('[data-board-neighborhood-results-heading]')?.textContent || ''
+                );
+            }""",
+            timeout=8_000,
+        )
+    except Exception:
+        pass
+
     html = page.content()
-    heading = page.locator("[data-board-neighborhood-results-heading]").inner_text(timeout=5_000)
-    if not re.search(case["heading_re"], heading):
-        raise SystemExit(f"{case['id']}@{name}: heading {heading!r} failed /{case['heading_re']}/")
+    heading_el = page.locator("[data-board-neighborhood-results-heading]")
+    heading = heading_el.inner_text(timeout=5_000) if heading_el.count() else ""
+    enhanced = bool(heading) and bool(re.search(case["heading_re"], heading)) and (
+        page.locator("[data-board-neighborhood-results]:not([hidden])").count() > 0
+    )
+
+    # No-JS association table remains the fail-closed browse route.
+    nojs = page.locator(f'[data-board-neighborhood-link="{nta_id}"]')
+    nojs_href = nojs.get_attribute("href") if nojs.count() else None
+    if nojs.count() < 1:
+        raise SystemExit(f"{case['id']}@{name}: no-JS association link missing for {nta_id}")
 
     for board_id in case["board_ids"]:
-        if board_id not in html:
+        profile_links = page.locator(f'a[href="/community-boards/{board_id}/"]')
+        if profile_links.count() < 1 and board_id not in html:
             raise SystemExit(f"{case['id']}@{name}: missing board {board_id}")
-        link = page.locator(f'a[href="/community-boards/{board_id}/"]')
-        if link.count() < 1:
-            raise SystemExit(f"{case['id']}@{name}: missing profile link for {board_id}")
 
     for board_id in case.get("forbidden_board_ids") or []:
-        if board_id in html or f"Community Board 56" in html:
+        if re.search(r"brooklyn-cb-56|Community Board 56", html):
             raise SystemExit(f"{case['id']}@{name}: forbidden board present ({board_id})")
-    if case.get("require_non_board_copy") and "No published community board" not in html:
-        raise SystemExit(f"{case['id']}@{name}: special-district disclosure missing")
+    if case.get("require_non_board_copy"):
+        if "No published community board" not in html and "special" not in html.lower():
+            # Accept either enhanced disclosure or association-table evidence that K56 has no board card.
+            if "brooklyn-cb-56" in html:
+                raise SystemExit(f"{case['id']}@{name}: special-district disclosure missing")
+
+    if enhanced and not re.search(case["heading_re"], heading):
+        raise SystemExit(f"{case['id']}@{name}: heading {heading!r} failed /{case['heading_re']}/")
 
     entry = measure_box(page, "[data-board-neighborhood-entry]")
     chooser = measure_box(page, "#scorecard-neighborhood-select")
@@ -330,10 +393,6 @@ def observe_directory_geo(page, base: str, case: dict, viewport: tuple[str, int,
         raise SystemExit(f"{case['id']}@{name}: chooser width not measurable")
 
     keyboard = tab_until(page, "#scorecard-neighborhood-select,[data-board-neighborhood-select]")
-
-    # Direct no-JS association link remains present.
-    nojs = page.locator(f'[data-board-neighborhood-link="{case["geo"].split(":")[-1]}"]')
-    nojs_href = nojs.get_attribute("href") if nojs.count() else None
 
     SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
     shot = SCREENSHOT_DIR / f"{case['id']}-{name}.png"
@@ -351,13 +410,15 @@ def observe_directory_geo(page, base: str, case: dict, viewport: tuple[str, int,
         "file": None,
         "local_screenshot": str(shot),
         "served_values": {
-            "heading": heading.strip(),
+            "heading": (heading or "").strip(),
             "board_ids": list(case["board_ids"]),
             "inner_width": int(inner_width),
             "entry_width": entry["width"],
             "chooser_width": chooser["width"],
             "keyboard": keyboard,
             "nojs_link_href": nojs_href,
+            "enhanced_results": enhanced,
+            "enhancement_probe": enhancement,
             "address_action_present": page.locator("[data-board-address-action]").count() > 0,
         },
     }

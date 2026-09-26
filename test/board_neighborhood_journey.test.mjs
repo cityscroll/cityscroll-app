@@ -306,6 +306,9 @@ test("A1: neighborhood → profile → participation and Midwood address → Bro
 
 test("A2: 390 and 1440 keep keyboard, direct load, back, no-JS links, and unavailable-association recovery", () => {
   const associations = loadAssociations();
+  const directorySource = readFileSync(join(ROOT, "site/board_neighborhood_directory.mjs"), "utf8");
+  assert.doesNotMatch(directorySource, /board_neighborhood_index\.mjs/);
+  assert.doesNotMatch(directorySource, /node:crypto/);
   const captureSource = readFileSync(CAPTURE_TOOL, "utf8");
   assert.match(captureSource, /VIEWPORTS/);
   assert.match(captureSource, /390/);
