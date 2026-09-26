@@ -24,6 +24,7 @@ import {
   registryCoveredBuilders,
   registryDrift,
   requiredDependentCheckBuilders,
+  shouldForceAfterPostVerify,
   workflowPublishedPathAllowance,
   workflowRebuildCommands,
   workflowStepInvokesRebuildHelper,
@@ -77,6 +78,18 @@ test("every required dependent --check builder is on the refresh chain", () => {
   assert.deepEqual(describeDrift(drift), []);
   assert.ok(drift.required.includes("tools/land_place_refresh.mjs"));
   assert.ok(drift.required.includes("tools/build_land_place_membership.mjs"));
+  assert.ok(drift.required.includes("tools/backtest_procurement_intent_radar.mjs"));
+});
+
+test("positive control: omitting the procurement-intent corpus rebuild is reported", () => {
+  const registry = readRegistry(REPO_ROOT);
+  const stripped = {
+    ...registry,
+    rebuild_sequence: registry.rebuild_sequence.filter((step) => step.id !== "procurement-intent-corpus-backtest"),
+    additional_required_builders: [...(registry.additional_required_builders || [])],
+  };
+  const drift = registryDrift(REPO_ROOT, stripped);
+  assert.ok(drift.uncovered.includes("tools/backtest_procurement_intent_radar.mjs"));
 });
 
 test("positive control: a derived family left off the chain is reported", () => {
@@ -147,10 +160,20 @@ test("the workflow stages every published path the registry declares", () => {
 test("workflow rebuild commands keep address geography before Land place", () => {
   const commands = workflowRebuildCommands(readRegistry(REPO_ROOT)).map((parts) => parts.join(" "));
   const addressAt = commands.findIndex((line) => line.includes("tools/address_geography_refresh.mjs --from-live"));
-  const landAt = commands.findIndex((line) => line.includes("tools/land_place_refresh.mjs") && !line.includes("--check"));
+  const landAt = commands.findIndex((line) => line.includes("tools/land_place_refresh.mjs") && !line.includes("--check") && !line.includes("--force"));
   assert.ok(addressAt >= 0);
   assert.ok(landAt > addressAt);
   assert.ok(commands.some((line) => line.includes("tools/build_land_place_membership.mjs --check")));
+  assert.ok(commands.some((line) => line.includes("tools/land_place_refresh.mjs --force")));
+});
+
+test("positive control: membership post-verify failure forces Land place republication", () => {
+  const registry = readRegistry(REPO_ROOT);
+  const land = registry.rebuild_sequence.find((step) => step.id === "land-place-refresh");
+  assert.ok(land?.force_command?.includes("--force"));
+  assert.equal(shouldForceAfterPostVerify(land, 1), true);
+  assert.equal(shouldForceAfterPostVerify(land, 0), false);
+  assert.equal(shouldForceAfterPostVerify({ post_verify: ["tools/x.mjs", "--check"] }, 1), false);
 });
 
 test("Land place builders remain covered after the address-geography producer step", () => {

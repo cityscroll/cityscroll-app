@@ -59,6 +59,8 @@ jobs:
               site/data/land_place_membership.json) ;;
               site/data/land-place-evidence|site/data/land-place-evidence/*) ;;
               site/data/land-place-generations|site/data/land-place-generations/*) ;;
+              warehouse/fixtures/procurement-intent-radar|warehouse/fixtures/procurement-intent-radar/*) ;;
+              docs/evidence/procurement-intent-radar|docs/evidence/procurement-intent-radar/*) ;;
               *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
             esac
           done <<< "$changed"
@@ -75,7 +77,7 @@ jobs:
           commit-message: Refresh citywide address index and dependent geography
           title: Refresh citywide address index and dependent geography
           body: |
-            Automated refresh of the NYC Department of City Planning Property Address Directory snapshot and the dependent address-geography membership outputs, including Land place-membership generation when parcel geography changes.
+            Automated refresh of the NYC Department of City Planning Property Address Directory snapshot and the dependent address-geography membership outputs, including Land place-membership generation when parcel geography changes and the procurement-intent corpus backtest when the shared meeting read model changes.
 
             Validation:
             - `node tools/build_geocoder_address_index.mjs --check`
@@ -83,6 +85,7 @@ jobs:
             - `node tools/address_geography_refresh.mjs --check`
             - `node tools/land_place_refresh.mjs --check`
             - `node tools/build_land_place_membership.mjs --check`
+            - `node tools/backtest_procurement_intent_radar.mjs --check`
           add-paths: |
             site/data/address-index/*.json
             site/data/meeting-geography-backfill/**
@@ -91,6 +94,8 @@ jobs:
             site/data/land_place_membership.json
             site/data/land-place-evidence/**
             site/data/land-place-generations/**
+            warehouse/fixtures/procurement-intent-radar/**
+            docs/evidence/procurement-intent-radar/**
       - name: Run required checks for the refresh pull request
         if: steps.refresh-pr.outputs.pull-request-number != ''
         env:
