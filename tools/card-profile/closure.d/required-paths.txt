@@ -480,7 +480,9 @@ site/data/geography/layer_registry.json
 site/data/geography/layers/nta2020/26B.json
 site/data/institution_petition_procedures.json
 site/data/land_default_ulurp.json
+site/data/land_place_membership.json
 site/data/land_procedure_profiles.json
+site/data/land_project_catalog.json
 site/data/land_upcoming_hearings.json
 site/data/legal_code/manifest.json
 site/data/legal_code/search.json
@@ -575,13 +577,17 @@ site/land_authority_summary.mjs
 site/land_authority_summary_view.mjs
 site/land_decision_path.mjs
 site/land_detail_coherence.mjs
+site/land_filing_evidence_facet.mjs
+site/land_filter_parity.mjs
 site/land_hearings_empty.mjs
 site/land_keyword_soda_missfill.mjs
 site/land_lot_source_digests.mjs
 site/land_map_model.mjs
+site/land_nta_watch_scope.mjs
 site/land_phase_spine.mjs
 site/land_procedure_facet.mjs
 site/land_procedure_profiles.mjs
+site/land_project_catalog.mjs
 site/land_project_decision_relations.mjs
 site/land_project_geography.mjs
 site/land_project_map_points.mjs

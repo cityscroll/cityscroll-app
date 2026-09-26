@@ -23,6 +23,8 @@ import {
   admitMinRemainingDays,
   validateMinRemainingDays,
 } from "../../../site/money_watch_min_remaining_days.mjs";
+import { prepareLandNtaWatchFilter } from "../../../site/land_nta_watch_scope.mjs";
+import { normalizeLandFilingEvidenceFilter } from "../../../site/land_filing_evidence_facet.mjs";
 
 export const MAX_INPUT = 600;          // characters of NL we accept (a paragraph, not a novel)
 export const MAX_CALLS_PER_DAY = 300;  // denial-of-wallet ceiling
@@ -61,7 +63,10 @@ export const LENSES = {
   // closing-this-week, agency forecast tab) — not only keyword lists.
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "minRemainingDays", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "place_role", "procurement_id", "processState"],
   people:   ["keywords", "lookupType", "view", "interest", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
-  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies", "place_role"],
+  // Land watch fields track site/land_filter_parity.mjs reachesWatchScope dimensions.
+  // Wire aliases: borough→boro, keyword→keywords. stage + filingEvidence are first-class
+  // so neighborhood watches keep the same facets browse already applies.
+  land:     ["keywords", "boro", "status", "stage", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "filingEvidence", "futureAction", "attendance", "geographies", "place_role"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies", "place_role"],
   rules:    ["keywords", "agency", "process", "geographies", "place_role", "request_ids"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "dateWindow", "process", "nearMe", "geographies", "place_role", "communityBoard", "matter_ref", "matter_scope_version", "activity", "body", "access", "availability"],
@@ -186,6 +191,10 @@ function clampField(name, v) {
     }
     case "futureAction":
       return ["any", "none", "any_future", "hearing", "non_hearing"].includes(v) ? v : null;
+    case "filingEvidence": {
+      const normalized = normalizeLandFilingEvidenceFilter(v, null);
+      return normalized && normalized !== "any" ? normalized : (v === "any" ? "any" : null);
+    }
     case "attendance":
       return ["in_person", "livestream", "hybrid"].includes(v) ? v : null;
     case "when":
@@ -436,7 +445,22 @@ export function prepareWatchFilter(lens, filter) {
     }
     return { ok: true, lens: exact.lens, filter: exact.filter, exact };
   }
-  const sanitized = sanitize(lens, filter);
+  const resolvedForLand = resolveLens(lens);
+  let landFilter = filter;
+  if (resolvedForLand === "land") {
+    const landPrep = prepareLandNtaWatchFilter(filter);
+    if (!landPrep.ok) {
+      return {
+        ok: false,
+        reason: landPrep.reason,
+        correction: landPrep.correction,
+        lens: null,
+        filter: {},
+      };
+    }
+    landFilter = landPrep.filter;
+  }
+  const sanitized = sanitize(lens, landFilter);
   // sanitize carries a canonical text_query already; re-assert the admitted
   // canonical form so the stored filter is exactly what admission validated
   // (and an empty expression stays omitted rather than surviving as {}).

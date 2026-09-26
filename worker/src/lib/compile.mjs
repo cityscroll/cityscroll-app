@@ -27,7 +27,10 @@ import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "
 import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
 import { closingWeekEndISO } from "../../../site/closing_this_week.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
+import { transformLandGeographyWatchRows } from "../../../site/land_nta_watch_scope.mjs";
+import { landProjectRowsFromPayload } from "../../../site/land_project_catalog.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
+import landProjectCatalog from "../../../site/data/land_project_catalog.json" with { type: "json" };
 import {
   exactInstitutionNoticeMatches,
   interpretStoredInstitutionFollow,
@@ -303,6 +306,10 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
     try {
       payload = await loadNearYouActivity(env, q.routeReadModel.scope, q.routeReadModel.lens);
     } catch (error) {
+      // Land geography watches must not replay the empty Near You floor as a
+      // successful zero-membership digest — that would look like every local
+      // project departed. Fail closed and let the evaluator skip.
+      if (q.landGeographyWatch) throw error;
       if (!(error instanceof RouteReadModelUnavailable) || typeof process === "undefined") throw error;
       payload = { activity: NEAR_YOU_FLOOR, communityGeography: {} };
     }
@@ -463,6 +470,9 @@ export function compileSub(sub, todayISO) {
 
   if (["land", "property", "rules", "meetings", "money"].includes(sub.lens)
       && geographyKeys.length) {
+    const landCatalogRows = sub.lens === "land"
+      ? landProjectRowsFromPayload(landProjectCatalog)
+      : null;
     return {
       url: DISTRICT_ACTIVITY,
       params: {},
@@ -470,6 +480,7 @@ export function compileSub(sub, todayISO) {
       kind: sub.lens === "land" ? "rezone" : sub.lens,
       communityBoard,
       coveringCommunityDistrict: boardCommunityDistrict,
+      landGeographyWatch: sub.lens === "land",
       routeReadModel: {
         kind: "near-you",
         lens: sub.lens,
@@ -477,6 +488,14 @@ export function compileSub(sub, todayISO) {
         communityBoard,
       },
       transformRows: (payload) => {
+        // Land neighborhood watches OR selected NTA keys and AND the saved Land
+        // facets against the admitted catalog, matching browse pre-limit IDs.
+        if (sub.lens === "land") {
+          return transformLandGeographyWatchRows(payload, { ...f, geographies: geographyKeys }, {
+            catalogRows: landCatalogRows,
+            today: todayISO,
+          });
+        }
         const membershipSets = geographyKeys.map((key) =>
           new Set(payload?.geography_items?.by_key?.[key]?.[sub.lens] || []));
         const ids = membershipSets.length
@@ -494,8 +513,8 @@ export function compileSub(sub, todayISO) {
           .map((record) => ({
             ...record,
             geography_item_id: `${sub.lens}:${record.id}`,
-            request_id: sub.lens === "land" ? null : record.id,
-            project_id: sub.lens === "land" ? record.id : null,
+            request_id: record.id,
+            project_id: null,
             short_title: record.title,
             agency_name: record.agency,
             start_date: record.date,

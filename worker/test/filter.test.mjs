@@ -26,11 +26,13 @@ test("money: clamps junk / out-of-range (defense in depth)", () => {
 
 test("land: only land fields; borough validated to the 5", () => {
   const out = sanitize("land", { keywords: ["housing"], boro: "brooklyn", status: "all", minAmount: 9999 /* not a land field */ });
-  assert.deepEqual(Object.keys(out).sort(), ["attendance", "boro", "communityDistrict", "councilDistrict", "family", "futureAction", "keywords", "nearMe", "procedure", "regulatoryEffect", "status"]);
+  assert.deepEqual(Object.keys(out).sort(), ["attendance", "boro", "communityDistrict", "councilDistrict", "family", "filingEvidence", "futureAction", "keywords", "nearMe", "procedure", "regulatoryEffect", "stage", "status"]);
   assert.equal(out.boro, "Brooklyn"); // normalized to canonical casing
   assert.equal(out.status, "all");
   assert.equal(out.procedure, null);
   assert.equal(out.family, null);
+  assert.equal(out.stage, null);
+  assert.equal(out.filingEvidence, null);
   assert.deepEqual(out.keywords, ["housing"]);
   assert.equal(sanitize("land", { procedure: "elurp" }).procedure, "elurp");
   assert.equal(sanitize("land", { procedure: "ulurp-only" }).procedure, null);
@@ -39,6 +41,9 @@ test("land: only land fields; borough validated to the 5", () => {
   assert.equal(sanitize("land", { family: "dezoning" }).family, null);
   assert.equal(sanitize("land", { regulatoryEffect: "down-zone" }).regulatoryEffect, "downzone");
   assert.equal(sanitize("land", { regulatoryEffect: "unknown" }).regulatoryEffect, null);
+  assert.equal(sanitize("land", { stage: "public_review" }).stage, "public_review");
+  assert.equal(sanitize("land", { filingEvidence: "required" }).filingEvidence, "required");
+  assert.equal(sanitize("land", { filingEvidence: "not-a-state" }).filingEvidence, null);
 });
 
 test("land: council + community district clamped", () => {
