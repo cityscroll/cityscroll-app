@@ -931,6 +931,37 @@ def overlap_snapshot(page) -> dict:
     return snapshot
 
 
+DEFERRED_FAILURE_BODY = '{"schema":"cityscroll.near_you_deferred.v1","results_html":null}'
+
+
+def install_deferred_records_failure(page) -> None:
+    """Intercept the live deferred read so the product renders its real retry affordance."""
+    page.route(
+        "**/near-you/deferred.json*",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/json",
+            body=DEFERRED_FAILURE_BODY,
+        ),
+    )
+
+
+def wait_for_visible_retry_target(page, *, timeout: int = 15_000) -> None:
+    """Wait until at least one product retry control has a non-zero bounding box."""
+    page.wait_for_function(
+        """() => [...document.querySelectorAll('[data-near-recovery="retry"]')].some((node) => {
+          if (!node || node.hidden) return false;
+          const style = getComputedStyle(node);
+          const rect = node.getBoundingClientRect();
+          return style.display !== 'none'
+            && style.visibility !== 'hidden'
+            && rect.width > 0
+            && rect.height > 0;
+        })""",
+        timeout=timeout,
+    )
+
+
 def browser_capture(
     base: str,
     *,
@@ -945,8 +976,12 @@ def browser_capture(
     reduced_motion: bool = False,
     webgl_unavailable: bool = False,
     zoom_percent: int = 100,
+    deferred_failure: bool = False,
 ) -> dict:
     from tools.capture_geography_navigation import build_overlap_fixture_html
+
+    if deferred_failure and (overlap or not dynamic):
+        raise ValueError("deferred_failure requires the dynamic Near You capture server")
 
     route = route or (ROUTE if overlap else "/near-you/")
     if overlap:
@@ -973,10 +1008,14 @@ def browser_capture(
                       };
                     })()"""
                 )
+            if deferred_failure:
+                install_deferred_records_failure(page)
             page.goto(page_url, wait_until="domcontentloaded", timeout=30_000)
             page.wait_for_timeout(400)
             if not overlap:
                 page.locator("#near-geo-search-input").wait_for(state="attached", timeout=10_000)
+            if deferred_failure:
+                wait_for_visible_retry_target(page)
             inner_width = assert_inner_width_matches_viewport(page, width=width, label=name)
             snapshot = overlap_snapshot(page) if overlap else shell_snapshot(page)
             snapshot["inner_width"] = snapshot.get("inner_width", inner_width)
@@ -1003,7 +1042,35 @@ def browser_capture(
             if not overlap:
                 target_size = build_target_size(snapshot.get("targets") or [])
                 assert target_size["meets_floor"], target_size
+                if deferred_failure:
+                    retry_targets = [
+                        item for item in target_size["targets"]
+                        if item.get("role") == "retry_target"
+                    ]
+                    if not retry_targets:
+                        raise AssertionError(
+                            f"{name} deferred failure rendered no measurable retry_target boxes: {target_size}"
+                        )
             rendered = normalize_html(page.content())
+            failure_mode = "none"
+            if deferred_failure and webgl_unavailable:
+                failure_mode = "deferred_records_unavailable+webgl_unavailable"
+            elif deferred_failure:
+                failure_mode = "deferred_records_unavailable"
+            elif webgl_unavailable:
+                failure_mode = "webgl_unavailable"
+            assertion = (
+                "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, "
+                "horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, "
+                "selected labels, exact comparison percentages where present, and no selected-label control occlusion"
+            )
+            if deferred_failure:
+                assertion = (
+                    "headless Chromium induced the live deferred-records failure path, measured visible "
+                    "retry_target boxes at the 44 CSS px floor under the A2 boundary viewport, and verified "
+                    "horizontal overflow ≤ 1px, ≥44px primary and retry targets, ≥16px form text, keyboard "
+                    "focus order, and collapsible drawer behavior without a trap"
+                )
             visual_metrics = {
                 "viewport": {"width": width, "height": height},
                 "inner_width": int(snapshot.get("inner_width", inner_width)),
@@ -1038,8 +1105,8 @@ def browser_capture(
                 "name": name,
                 "route": route,
                 "viewport": {"width": width, "height": height},
-                "assertion": "headless Chromium verified a visible place choice, ≥240px initial-viewport map geometry at binding viewports, horizontal overflow ≤ 1px, ≥44px targets, ≥16px form text, keyboard focus order, collapsible drawer behavior, selected labels, exact comparison percentages where present, and no selected-label control occlusion",
-                "failure_mode": "webgl_unavailable" if webgl_unavailable else "none",
+                "assertion": assertion,
+                "failure_mode": failure_mode,
                 "asset_classes": ["server_html", "navigation_shell", "simplified_geography_layers"],
                 "timing_samples": {"dom_content_loaded_ms": page.evaluate("() => performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart")},
                 **({"performance_samples": retained} if retained else {}),
@@ -1048,7 +1115,7 @@ def browser_capture(
                 "snapshot": snapshot,
                 "rendered_html": rendered,
             })
-            if dynamic and width in (390, 1440):
+            if dynamic and width in (390, 1440) and not deferred_failure:
                 assert snapshot.get("visible_map_height", height) >= MINIMUM_VISIBLE_MAP_HEIGHT, snapshot
             if webgl_unavailable:
                 assert snapshot.get("map_runtime") != "maplibre", snapshot
@@ -1060,6 +1127,40 @@ def browser_capture(
         finally:
             context.close()
     return observations[0]
+
+
+def _merge_a2_capture_row(row: dict, fresh: dict) -> None:
+    """Copy measured A2 fields onto a retained capture row."""
+    metrics = dict(row.get("visual_metrics") or {})
+    fresh_metrics = fresh.get("visual_metrics") or {}
+    for key in (
+        "inner_width",
+        "horizontal_overflow_px",
+        "target_size",
+        "keyboard_traversal",
+        "zoom_percent",
+        "zoom_reflow_basis",
+        "reduced_motion",
+        "map_runtime",
+        "map_runtime_reason",
+        "focus_order",
+        "place_choice_visible",
+        "control_occlusion",
+        "visible_map_area_css_px",
+        "initial_viewport_map_height_css_px",
+        "map_top_css_px",
+    ):
+        if key in fresh_metrics:
+            metrics[key] = fresh_metrics[key]
+    row["visual_metrics"] = metrics
+    row["render_content_sha256"] = fresh["render_content_sha256"]
+    row["timing_samples"] = fresh.get("timing_samples", row.get("timing_samples"))
+    row["failure_mode"] = fresh.get("failure_mode", row.get("failure_mode"))
+    row["assertion"] = fresh.get("assertion", row.get("assertion"))
+    row["route"] = fresh.get("route", row.get("route"))
+    row["viewport"] = fresh.get("viewport", row.get("viewport"))
+    if "asset_classes" in fresh:
+        row["asset_classes"] = fresh["asset_classes"]
 
 
 def update_a2_boundary_evidence(*, write: bool) -> dict:
@@ -1091,6 +1192,22 @@ def update_a2_boundary_evidence(*, write: bool) -> dict:
                 zoom_percent=200,
             )
         )
+        observations.append(
+            browser_capture(
+                dynamic_base,
+                name="entry-boundary-360-retry",
+                width=360,
+                height=800,
+                overlap=False,
+                route="/near-you/",
+                dynamic=True,
+                retain_performance=False,
+                reduced_motion=True,
+                webgl_unavailable=True,
+                zoom_percent=200,
+                deferred_failure=True,
+            )
+        )
     finally:
         dynamic_server.terminate()
         dynamic_server.wait(timeout=10)
@@ -1102,45 +1219,49 @@ def update_a2_boundary_evidence(*, write: bool) -> dict:
         by_name[capture["name"]] = capture
 
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    captures = list(manifest.get("captures") or [])
     updated = []
-    for row in manifest.get("captures") or []:
+    for row in captures:
         if not isinstance(row, dict):
             continue
         fresh = by_name.get(row.get("name"))
         if not fresh:
             continue
-        metrics = dict(row.get("visual_metrics") or {})
-        fresh_metrics = fresh.get("visual_metrics") or {}
-        for key in (
-            "inner_width",
-            "horizontal_overflow_px",
-            "target_size",
-            "keyboard_traversal",
-            "zoom_percent",
-            "zoom_reflow_basis",
-            "reduced_motion",
-            "map_runtime",
-            "map_runtime_reason",
-            "focus_order",
-            "place_choice_visible",
-            "control_occlusion",
-            "visible_map_area_css_px",
-            "initial_viewport_map_height_css_px",
-            "map_top_css_px",
-        ):
-            if key in fresh_metrics:
-                metrics[key] = fresh_metrics[key]
-        row["visual_metrics"] = metrics
-        row["render_content_sha256"] = fresh["render_content_sha256"]
-        row["timing_samples"] = fresh.get("timing_samples", row.get("timing_samples"))
-        row["failure_mode"] = fresh.get("failure_mode", row.get("failure_mode"))
-        row["assertion"] = fresh.get("assertion", row.get("assertion"))
+        _merge_a2_capture_row(row, fresh)
         updated.append(row["name"])
+
+    # Upsert the deferred-failure retry capture when the retained set lacks it.
+    for name, fresh in by_name.items():
+        if name in updated:
+            continue
+        template = next(
+            (
+                dict(row)
+                for row in captures
+                if isinstance(row, dict) and row.get("name") == "entry-boundary-360-zoom-200"
+            ),
+            None,
+        )
+        row = dict(template) if template else {
+            "name": name,
+            "repository_revision": manifest.get("repository_revision"),
+            "candidate_revision": manifest.get("candidate_revision"),
+            "data_vintages": manifest.get("data_vintages"),
+            "deployed_version": manifest.get("deployed_version"),
+            "artifact": f"capture-manifest.json#capture-{name}",
+        }
+        row["name"] = name
+        row["artifact"] = f"capture-manifest.json#capture-{name}"
+        row.pop("performance_samples", None)
+        _merge_a2_capture_row(row, fresh)
+        captures.append(row)
+        updated.append(name)
 
     missing = sorted(set(by_name) - set(updated))
     if missing:
         raise AssertionError(f"A2 boundary update could not find retained rows for {missing}")
 
+    manifest["captures"] = captures
     # Keep production journey / deployed_version intact; only stamp local A2 proof.
     manifest["a2_boundary_evidence"] = {
         "status": "taken",
@@ -1153,7 +1274,14 @@ def update_a2_boundary_evidence(*, write: bool) -> dict:
             "horizontal_overflow_px",
             "target_size",
             "keyboard_traversal",
+            "retry_target",
         ],
+        "retry_failure_path": {
+            "capture": "entry-boundary-360-retry",
+            "mechanism": "playwright_route_intercept_near_you_deferred_json",
+            "product_affordance": "data-near-recovery=retry",
+            "role": "retry_target",
+        },
     }
     if write:
         MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
