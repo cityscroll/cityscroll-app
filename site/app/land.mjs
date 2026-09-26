@@ -1,3 +1,4 @@
+import { bindLandBrowseCatalog } from "../land_catalog_generation.mjs";
 import { landProjectDisplayTitle } from "../display_title.mjs";
 import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
 import { attendanceScopeLinksHTML, landTemporalScopeLinksHTML, normalizeAttendanceScope } from "../attendance_scope_links.mjs";
@@ -192,8 +193,9 @@ function loadLandProjectsSnapshot(){
       loadLandDefaultSnapshot(),
       fetch(LAND_CATALOG_URL,{cache:"no-store",credentials:"omit"}).then(r=>r.ok?r.json():null).catch(()=>null),
     ]).then(([,catalog])=>{
-      landProjectsSnapshotVintage=catalog?.source_dates?.warehouse_materialized_at||null;
-      return catalog?.projects||[];
+      const bound=bindLandBrowseCatalog(catalog);
+      landProjectsSnapshotVintage=bound.vintage;
+      return bound.projects;
     });
   }
   return landProjectsSnapshotPromise;

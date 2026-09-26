@@ -85,6 +85,49 @@ function listCommittedShardKeys(root) {
     .sort();
 }
 
+/**
+ * Runtime observation of the catalog generation the geography (map-points)
+ * builder loads through its real input path.
+ *
+ * @param {string} [root]
+ * @param {{ catalog?: object }} [opts] — optional catalog override for positive controls
+ */
+export function observeLandCatalogGenerationFromMapPointsBuilder(root = ROOT, opts = {}) {
+  const catalogPath = path.join(root, LAND_CATALOG);
+  if (!opts.catalog && !existsSync(catalogPath)) {
+    throw new Error(`${LAND_CATALOG} missing; run node tools/build_land_project_catalog.mjs`);
+  }
+  const catalog = opts.catalog || JSON.parse(readFileSync(catalogPath, "utf8"));
+  // An injected catalog (positive control) must not be checked against the
+  // committed defaults snapshot — seed defaults from the same population.
+  const landDefault = opts.catalog
+    ? { projects: Array.isArray(opts.catalog.projects) ? opts.catalog.projects : [] }
+    : (existsSync(path.join(root, LAND_DEFAULT))
+      ? JSON.parse(readFileSync(path.join(root, LAND_DEFAULT), "utf8"))
+      : { projects: [] });
+  const built = materializeLandProjectMapPoints({
+    catalog,
+    landDefault,
+    zapBbl: { rows: [] },
+    mapplutoCentroids: { by_bbl: {} },
+    artifactHashes: opts.catalog
+      ? {}
+      : { land_project_catalog: sha256File(root, LAND_CATALOG) },
+  });
+  const vintage = built.receipt?.inputs?.land_project_catalog?.vintage || {};
+  return {
+    consumer: "geography_builder",
+    identity: {
+      content_id: vintage.content_id || null,
+      source_dates: {
+        warehouse_materialized_at: vintage.warehouse_materialized_at || null,
+        defaults_generated_at: vintage.defaults_generated_at || null,
+      },
+    },
+    receipt: built.receipt,
+  };
+}
+
 export function buildLandProjectMapPointsFromRepo(root = ROOT) {
   const catalogPath = path.join(root, LAND_CATALOG);
   if (!existsSync(catalogPath)) {

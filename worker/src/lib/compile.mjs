@@ -28,6 +28,7 @@ import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from ".
 import { closingWeekEndISO } from "../../../site/closing_this_week.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 import { transformLandGeographyWatchRows } from "../../../site/land_nta_watch_scope.mjs";
+import { catalogGenerationIdentity } from "../../../site/land_catalog_generation.mjs";
 import { landProjectRowsFromPayload } from "../../../site/land_project_catalog.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 import {
@@ -126,6 +127,7 @@ export function mergeCompiledRows(q, rows) {
 // transform, so the synchronous transformRows() can read the cached rows.
 let landProjectCatalogRowsCache = null;
 let landProjectCatalogRowsPromise = null;
+let landProjectCatalogLoadObservation = null;
 
 /** Load and memoize the Land project catalog rows off the startup path. */
 export async function ensureLandProjectCatalogRows() {
@@ -133,11 +135,15 @@ export async function ensureLandProjectCatalogRows() {
   if (!landProjectCatalogRowsPromise) {
     landProjectCatalogRowsPromise = import("../../../site/data/land_project_catalog.json", { with: { type: "json" } })
       .then((module) => {
-        landProjectCatalogRowsCache = landProjectRowsFromPayload(module.default);
+        const payload = module.default;
+        landProjectCatalogRowsCache = landProjectRowsFromPayload(payload);
+        // Runtime observation of the lazily loaded generation (not the import text).
+        landProjectCatalogLoadObservation = catalogGenerationIdentity(payload);
         return landProjectCatalogRowsCache;
       })
       .catch((error) => {
         landProjectCatalogRowsPromise = null; // let a later request retry the load
+        landProjectCatalogLoadObservation = null;
         throw error;
       });
   }
@@ -147,6 +153,18 @@ export async function ensureLandProjectCatalogRows() {
 /** Cached rows, or null until ensureLandProjectCatalogRows() has resolved once. */
 export function landProjectCatalogRows() {
   return landProjectCatalogRowsCache;
+}
+
+/** Generation identity from the payload ensureLandProjectCatalogRows() last loaded. */
+export function landProjectCatalogGenerationObservation() {
+  return landProjectCatalogLoadObservation;
+}
+
+/** Test-only: clear the lazy catalog cache so the next ensure reloads. */
+export function resetLandProjectCatalogRowsForTests() {
+  landProjectCatalogRowsCache = null;
+  landProjectCatalogRowsPromise = null;
+  landProjectCatalogLoadObservation = null;
 }
 
 // A Land geography transform runs synchronously (its callers, including the L07

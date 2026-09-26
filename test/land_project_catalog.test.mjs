@@ -20,18 +20,26 @@ import {
   landProjectsForCatalogGeneration,
   mergeLandProjects,
 } from "../site/land_project_catalog.mjs";
+import {
+  bindLandBrowseCatalog,
+  catalogGenerationIdentity,
+  catalogGenerationMismatchFindings,
+} from "../site/land_catalog_generation.mjs";
 import { buildLandProjectCatalogFromRepo } from "../tools/build_land_project_catalog.mjs";
+import { observeDistrictActivityLandCatalogGeneration } from "../tools/build_district_activity.mjs";
+import { observeLandCatalogGenerationFromMapPointsBuilder } from "../tools/build_land_project_map_points.mjs";
 import { materializeLandProjectMapPoints } from "../site/land_project_map_points.mjs";
+import {
+  ensureLandProjectCatalogRows,
+  landProjectCatalogGenerationObservation,
+  resetLandProjectCatalogRowsForTests,
+} from "../worker/src/lib/compile.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const WAREHOUSE_PATH = join(ROOT, "site/data/zap_projects_warehouse_lookup.json");
 const DEFAULTS_PATH = join(ROOT, "site/data/land_default_ulurp.json");
 const CATALOG_PATH = join(ROOT, "site/data/land_project_catalog.json");
 const BBL_PATH = join(ROOT, "site/data/zap_bbl_warehouse_lookup.json");
-const MAP_POINTS_MODULE = readFileSync(join(ROOT, "site/land_project_map_points.mjs"), "utf8");
-const MAP_BUILDER = readFileSync(join(ROOT, "tools/build_land_project_map_points.mjs"), "utf8");
-const DISTRICT_BUILDER = readFileSync(join(ROOT, "tools/build_district_activity.mjs"), "utf8");
-const LAND_APP = readFileSync(join(ROOT, "site/app/land.mjs"), "utf8");
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -135,7 +143,7 @@ describe("land_project_catalog", () => {
     }
   });
 
-  it("A2 consumers share catalog generation and retain source dates independent of build time", () => {
+  it("A2 consumers share catalog generation and retain source dates independent of build time", async () => {
     const built = buildLandProjectCatalogFromRepo(ROOT);
     assert.ok(existsSync(CATALOG_PATH), "committed catalog artifact");
     const committed = readJson(CATALOG_PATH);
@@ -166,11 +174,54 @@ describe("land_project_catalog", () => {
     assert.equal(committed.materialized_at, committed.source_dates.warehouse_materialized_at);
     assert.equal(committed.generated_at, committed.source_dates.defaults_generated_at);
 
-    assert.match(LAND_APP, /land_project_catalog\.json/);
-    assert.match(LAND_APP, /source_dates/);
-    assert.match(MAP_BUILDER, /land_project_catalog/);
-    assert.match(MAP_POINTS_MODULE, /catalog/);
-    assert.match(DISTRICT_BUILDER, /land_project_catalog/);
+    // Runtime observations — drive each consumer's real load/build path.
+    const landBrowse = bindLandBrowseCatalog(committed);
+    assert.deepEqual(landBrowse.identity, catalogGenerationIdentity(committed));
+    assert.equal(landBrowse.projects.length, committed.project_count);
+
+    // Land geography loads the catalog lazily in the Worker; observe that generation.
+    resetLandProjectCatalogRowsForTests();
+    assert.equal(landProjectCatalogGenerationObservation(), null);
+    await ensureLandProjectCatalogRows();
+    const landGeographyIdentity = landProjectCatalogGenerationObservation();
+    assert.deepEqual(landGeographyIdentity, catalogGenerationIdentity(committed));
+    assert.deepEqual(landBrowse.identity, landGeographyIdentity);
+
+    const landObs = { consumer: "land", identity: landBrowse.identity };
+    const geographyObs = observeLandCatalogGenerationFromMapPointsBuilder(ROOT);
+    const districtObs = observeDistrictActivityLandCatalogGeneration();
+    assert.deepEqual(districtObs.identity, districtObs.catalog_identity);
+
+    assert.deepEqual(
+      catalogGenerationMismatchFindings([landObs, geographyObs, districtObs]),
+      [],
+      "Land, geography builder, and district-activity load the same catalog generation",
+    );
+    assert.equal(geographyObs.identity.content_id, committed.generation.content_id);
+    assert.equal(districtObs.identity.content_id, committed.generation.content_id);
+
+    // Positive control: feed the geography builder a different generation and
+    // require the shared-generation check to fail.
+    const otherCatalog = buildLandProjectCatalog({
+      warehouse: fixtureWarehouse([
+        { project_id: "OTHER-ONLY", project_name: "Other Generation" },
+      ], "2099-01-01T00:00:00.000Z"),
+      defaults: fixtureDefaults([], "2099-01-02T00:00:00.000Z"),
+    });
+    assert.notEqual(otherCatalog.generation.content_id, committed.generation.content_id);
+    const geographyOther = observeLandCatalogGenerationFromMapPointsBuilder(ROOT, {
+      catalog: otherCatalog,
+    });
+    const mismatchFindings = catalogGenerationMismatchFindings([
+      landObs,
+      geographyOther,
+      districtObs,
+    ]);
+    assert.ok(mismatchFindings.length > 0, "divergent geography generation must fail the shared check");
+    assert.ok(
+      mismatchFindings.some((finding) => finding.includes("content_id")),
+      "positive control reports content_id divergence",
+    );
 
     const mapPoints = materializeLandProjectMapPoints({
       catalog: committed,
