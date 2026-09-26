@@ -1577,7 +1577,7 @@
   },
   "membership": {
     "schema": "cityscroll.parcel-membership-manifest.v1",
-    "generated_at": "2026-09-23T19:32:23.104Z",
+    "generated_at": "2026-09-26T13:53:36.698Z",
     "inputs": {
       "points_sha256": "14fe925d8943a13100fe70cc98479a2bad3d96652af2380729e155ded43ab3c0",
       "point_coordinate_vintage": "pluto_25v4"
@@ -1591,7 +1591,7 @@
         "artifact_path": "data/geography/layers/borough/2026-05-26.full.json",
         "source_contract": "community-district-boundaries",
         "feature_count": 5,
-        "computation": "computed",
+        "computation": "reused",
         "counts": {
           "parcels": 857161,
           "matched": 855927,
@@ -1607,7 +1607,7 @@
         "artifact_path": "data/geography/layers/community_district/2026-05-26.full.json",
         "source_contract": "community-district-boundaries",
         "feature_count": 71,
-        "computation": "computed",
+        "computation": "reused",
         "counts": {
           "parcels": 857161,
           "matched": 855927,
@@ -1623,7 +1623,7 @@
         "artifact_path": "data/geography/layers/council_district/2026-05-26.full.json",
         "source_contract": "city-council-district-boundaries",
         "feature_count": 51,
-        "computation": "computed",
+        "computation": "reused",
         "counts": {
           "parcels": 857161,
           "matched": 855927,
@@ -1639,7 +1639,7 @@
         "artifact_path": "data/geography/layers/nta2020/26B.full.json",
         "source_contract": "dcp-nta2020-boundaries",
         "feature_count": 262,
-        "computation": "computed",
+        "computation": "reused",
         "counts": {
           "parcels": 857161,
           "matched": 855929,
@@ -1655,7 +1655,7 @@
         "artifact_path": "data/geography/layers/police_precinct/26B.full.json",
         "source_contract": "dcp-police-precinct-boundaries",
         "feature_count": 78,
-        "computation": "computed",
+        "computation": "reused",
         "counts": {
           "parcels": 857161,
           "matched": 855929,
@@ -1666,11 +1666,11 @@
     },
     "resolved_parcels": 857161,
     "build": {
-      "started_at": "2026-09-23T19:32:12.845Z",
-      "completed_at": "2026-09-23T19:32:23.104Z",
-      "duration_ms": 10258,
-      "index_ms": 759,
-      "resolve_ms": 8444
+      "started_at": "2026-09-26T13:53:32.185Z",
+      "completed_at": "2026-09-26T13:53:36.698Z",
+      "duration_ms": 4513,
+      "index_ms": 1130,
+      "resolve_ms": 1697
     }
   }
 }
