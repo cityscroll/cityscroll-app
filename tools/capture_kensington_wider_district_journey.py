@@ -33,6 +33,12 @@ from deployed_capture_ancestor import (  # noqa: E402
     require_served_page_revision_contains_delivery,
     revision_contains_ancestor,
 )
+from near_you_detail_observer import (  # noqa: E402
+    fetch_document_html,
+    observe_detail_packet_fields,
+    observe_named_row_present,
+    observe_no_javascript_title_link,
+)
 
 EVIDENCE_DIR = ROOT / "docs" / "evidence" / "near-you-kensington-wider-district"
 MANIFEST_PATH = EVIDENCE_DIR / "capture-manifest.json"
@@ -120,13 +126,17 @@ def observe_list(page) -> dict:
         "nodes => nodes.filter(n => !!(n.offsetParent || n.getClientRects().length)).length",
     )
     return {
-        "named_row_present": SEPT_NEEDLE in html and TITLE_NEEDLE in html,
+        "named_row_present": observe_named_row_present(
+            html,
+            record_id_needle=SEPT_NEEDLE,
+            title_needle=TITLE_NEEDLE,
+        ),
         "wider_district_present": WIDER_NEEDLE in html,
         "venue_address_present": VENUE_NEEDLE in html,
         "broader_district_k14_present": 'data-broader-district="K14"' in html,
         "broader_district_k07_present": 'data-broader-district="K07"' in html,
         "title_present": TITLE_NEEDLE in html,
-        "no_javascript_title_link": "near-record-title-link" in html,
+        "no_javascript_title_link": observe_no_javascript_title_link(html),
         "keyboard_focusable_count": int(focusable or 0),
         "selected_label": page.locator("text=Kensington").count() > 0,
         "results_count": page.locator("[data-results-count]").first.get_attribute("data-results-count")
@@ -138,6 +148,16 @@ def observe_list(page) -> dict:
 def observe_detail(page) -> dict:
     page.wait_for_selector("h1, .meeting-hero, .civic-object-hero", timeout=60_000)
     html = page.content()
+    try:
+        no_js_html = fetch_document_html(page.url, user_agent="cityscroll-kensington-wider-district/1")
+    except Exception:
+        no_js_html = html
+    packet = observe_detail_packet_fields(
+        html,
+        record_id_needle=SEPT_NEEDLE,
+        title_needle=TITLE_NEEDLE,
+        no_js_html=no_js_html,
+    )
     focusable = page.eval_on_selector_all(
         "a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])",
         "nodes => nodes.filter(n => !!(n.offsetParent || n.getClientRects().length)).length",
@@ -145,12 +165,12 @@ def observe_detail(page) -> dict:
     return {
         "detail_title_present": TITLE_NEEDLE in html,
         "venue_address_present": VENUE_NEEDLE in html,
-        "named_row_present": False,
-        "wider_district_present": False,
-        "broader_district_k14_present": False,
-        "broader_district_k07_present": False,
+        "named_row_present": packet["named_row_present"],
+        "wider_district_present": WIDER_NEEDLE in html,
+        "broader_district_k14_present": 'data-broader-district="K14"' in html,
+        "broader_district_k07_present": 'data-broader-district="K07"' in html,
         "keyboard_focusable_count": int(focusable or 0),
-        "no_javascript_title_link": True,
+        "no_javascript_title_link": packet["no_javascript_title_link"],
         "source_link_present": "cb14brooklyn.com" in html,
     }
 
