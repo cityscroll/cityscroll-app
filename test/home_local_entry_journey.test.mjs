@@ -58,6 +58,8 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 const ROOT = process.cwd();
 const EVIDENCE_DIR = join(ROOT, "docs/evidence/home-local-entry-journey");
 const MANIFEST_PATH = join(EVIDENCE_DIR, "capture-manifest.json");
+const DELIVERY_PATH = join(EVIDENCE_DIR, "delivery.json");
+const REQUIRED_SERVED_ANCESTOR = "239d37d0c08c985113e42d30b7788a84d6d50b8b";
 const MODULE_SOURCE = readFileSync(join(ROOT, "site/home_local_entry.mjs"), "utf8");
 const HOME_ENTRY_SOURCE = readFileSync(join(ROOT, "site/home_entry.mjs"), "utf8");
 const INDEX_SOURCE = SITE_SOURCE;
@@ -383,7 +385,7 @@ test("A3 [boundary] load issues no geolocation; ephemeral values stay out of URL
   }
 });
 
-test("A4 [verification] production controls, capture tool, and dual-width evidence contract", () => {
+test("A4 [verification] capture tool pins served delivery and records run-receipt helpers", () => {
   assert.match(HOME_ENTRY_SOURCE, /import\("\.\/home_local_entry\.mjs"\)/);
   assert.match(MODULE_SOURCE, /resolveGeographyEntryFromPlaceLabel/);
   assert.match(MODULE_SOURCE, /resolveGeographyEntryFromGeolocation/);
@@ -394,35 +396,87 @@ test("A4 [verification] production controls, capture tool, and dual-width eviden
     "capture tool must exist",
   );
 
-  const requiredViewports = [
-    { width: 1440, height: 900 },
-    { width: 390, height: 844 },
-  ];
-  assert.equal(existsSync(MANIFEST_PATH), true, "capture manifest must be present");
+  const captureTool = readFileSync(
+    join(ROOT, "tools/capture_home_local_entry_journey.py"),
+    "utf8",
+  );
+  assert.match(captureTool, /def revision_contains_required_ancestor/);
+  assert.match(captureTool, /require_served_page_revision_contains_delivery|does not contain required ancestor/);
+  assert.match(captureTool, /REQUIRED_ANCESTOR/);
+  assert.match(captureTool, /load_recorded_delivery|delivery\.json/);
+  assert.match(captureTool, /home-local-entry-journey/);
+  assert.match(captureTool, /geolocation-denial/);
+  assert.match(captureTool, /deny_geolocation_permission|setting.: .denied/);
+  assert.match(captureTool, /capture_run_id/);
+  assert.match(captureTool, /validate_run_receipt/);
+  assert.match(captureTool, /demonstrate_host_dedup/);
+  assert.match(captureTool, /page_load_receipt/);
+  assert.match(captureTool, /cf-ray/i);
+  assert.match(captureTool, /catbox\.moe/);
+
+  assert.equal(existsSync(DELIVERY_PATH), true, "delivery.json must record the landed Pages pin");
+  const delivery = JSON.parse(readFileSync(DELIVERY_PATH, "utf8"));
+  assert.equal(delivery.schema, "cityscroll.capture_delivery.v1");
+  assert.equal(delivery.public_alias, "c0b9b1f319b51");
+  assert.equal(delivery.landed_commit, REQUIRED_SERVED_ANCESTOR);
+  assert.equal(delivery.surface, "pages");
+});
+
+test("A4 [verification] production capture manifest records hosted dual-width journeys including denial", (t) => {
+  if (!existsSync(MANIFEST_PATH)) {
+    t.skip("production capture pending after Pages serves the homepage place-entry delivery");
+    return;
+  }
   const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
+  if (manifest.capture_mode !== "headless-playwright-production-served-site") {
+    t.skip("production capture pending after Pages serves the homepage place-entry delivery");
+    return;
+  }
   assert.equal(manifest.schema, "cityscroll.render_capture_manifest.v1");
   assert.equal(manifest.feature, "home-local-entry-journey");
   assert.equal(manifest.public_alias, "c0b9b1f319b51");
   assert.equal(manifest.image_binaries_committed, false);
-  assert.ok(manifest.capture_run_id);
-  assert.ok(Array.isArray(manifest.captures) && manifest.captures.length >= 8);
+  assert.equal(manifest.capture_mode, "headless-playwright-production-served-site");
+  assert.equal(manifest.revision_format, "served artifact-manifest source_commit_sha");
+  assert.match(manifest.revision || "", /^[0-9a-f]{40}$/);
+  assert.equal(manifest.required_ancestor, REQUIRED_SERVED_ANCESTOR);
+  assert.equal(manifest.required_ancestor_contained, true);
+  assert.match(String(manifest.capture_run_id || ""), /\S/);
+  assert.ok(Array.isArray(manifest.captures) && manifest.captures.length >= 10);
+
+  const requiredViewports = [
+    { width: 1440, height: 900 },
+    { width: 390, height: 844 },
+  ];
   for (const viewport of requiredViewports) {
     const rows = manifest.captures.filter(
       (row) => row.viewport?.width === viewport.width && row.viewport?.height === viewport.height,
     );
-    assert.ok(rows.length >= 4, `need initial + result captures at ${viewport.width}x${viewport.height}`);
+    assert.ok(rows.length >= 5, `need initial + four journeys at ${viewport.width}x${viewport.height}`);
     assert.ok(rows.some((row) => row.route === "/"), "initial homepage capture required");
     assert.ok(rows.some((row) => String(row.name || "").includes("midwood")), "Midwood result capture required");
-    assert.ok(rows.some((row) => String(row.name || "").includes("kensington")), "Kensington result capture required");
-    assert.ok(rows.some((row) => String(row.name || "").includes("geolocation")), "geolocation grant capture required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("kensington-result")), "Kensington result capture required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("geolocation-grant")), "geolocation grant capture required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("geolocation-denial-")), "geolocation denial capture required");
+    assert.ok(
+      rows.some((row) => String(row.name || "").includes("geolocation-denial-recovery")),
+      "geolocation denial recovery capture required",
+    );
   }
+
+  const byName = Object.fromEntries(manifest.captures.map((row) => [row.name, row]));
+  const digests = new Set();
   for (const row of manifest.captures) {
     assert.ok(row.sha256 && /^[0-9a-f]{64}$/i.test(row.sha256), row.name);
     assert.equal(row.file, null);
     assert.ok(row.assertion);
     assert.equal(row.capture_run_id, manifest.capture_run_id);
+    assert.match(row.screenshot_url || "", /^https:\/\//, row.name);
     assert.ok(row.route === "/" || String(row.route || "").startsWith("/near-you/"));
+    assert.equal(digests.has(row.sha256), false, `${row.name} must be unique within this packet`);
+    digests.add(row.sha256);
   }
+
   assert.deepEqual(
     (manifest.exact_links || []).slice().sort(),
     [
@@ -431,7 +485,57 @@ test("A4 [verification] production controls, capture tool, and dual-width eviden
       "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
     ].sort(),
   );
-  // Positive control: digest of the committed manifest itself stays stable to parse.
+
+  for (const suffix of ["desktop", "phone"]) {
+    const denial = byName[`home-geolocation-denial-${suffix}`];
+    assert.ok(denial, `missing denial capture for ${suffix}`);
+    assert.equal(denial.route, "/");
+    assert.equal(denial.navigation, "geolocation-denial");
+    assert.equal(denial.served_values?.still_on_home, true);
+    assert.match(String(denial.served_values?.status_text || ""), /permission was not granted|Choose an area/i);
+    assert.equal(denial.served_values?.input_usable, true);
+
+    const recovery = byName[`home-geolocation-denial-recovery-${suffix}`];
+    assert.ok(recovery, `missing denial recovery capture for ${suffix}`);
+    assert.equal(recovery.navigation, "geolocation-denial-recovery");
+    assert.match(recovery.route, /BK1203/);
+    assert.equal(recovery.served_values?.geo_in_url, true);
+  }
+
+  const receipt = manifest.run_receipt;
+  assert.equal(typeof receipt, "object", "manifest carries a run_receipt");
+  assert.equal(receipt.capture_run_id, manifest.capture_run_id);
+  assert.equal(receipt.served_revision, manifest.revision);
+  const runStart = Date.parse(receipt.run_started_at);
+  const runEnd = Date.parse(receipt.run_finished_at);
+  assert.ok(Number.isFinite(runStart) && Number.isFinite(runEnd) && runEnd >= runStart);
+
+  const demo = receipt.host_dedup_demonstration;
+  assert.equal(typeof demo, "object");
+  assert.equal(demo.first_upload.returned_url, demo.repeat_same_bytes.returned_url);
+  assert.notEqual(demo.altered_one_byte.returned_url, demo.first_upload.returned_url);
+  assert.equal(demo.same_bytes_returned_same_url, true);
+  assert.equal(demo.altered_bytes_returned_different_url, true);
+
+  for (const row of manifest.captures) {
+    const rowReceipt = row.run_receipt;
+    assert.equal(typeof rowReceipt, "object", `${row.name} carries a per-row run receipt`);
+    assert.equal(rowReceipt.capture_run_id, manifest.capture_run_id);
+    const capturedAt = Date.parse(rowReceipt.captured_at);
+    assert.ok(capturedAt >= runStart && capturedAt <= runEnd, `${row.name} captured inside the run window`);
+    assert.equal(rowReceipt.page_load.http_status, 200, `${row.name} page loaded with a 200`);
+    assert.match(
+      String(rowReceipt.page_load.headers["cf-ray"] || ""),
+      /^[0-9a-f]{16}-[A-Z0-9]{2,4}$/,
+      `${row.name} records a per-request CF-Ray`,
+    );
+    assert.ok(rowReceipt.page_load.headers.date, `${row.name} records the served Date`);
+    assert.equal(rowReceipt.page_load.served_revision, manifest.revision);
+    assert.equal(rowReceipt.upload.returned_url, row.screenshot_url);
+    assert.equal(typeof rowReceipt.upload.http_status, "number");
+    assert.equal(rowReceipt.click_observation.navigation, row.navigation);
+  }
+
   const digest = createHash("sha256").update(readFileSync(MANIFEST_PATH)).digest("hex");
   assert.equal(digest.length, 64);
 });
