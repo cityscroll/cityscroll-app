@@ -88,19 +88,36 @@
   .home-cta[data-session-open="true"] .home-cta-msg,
   .home-cta[data-session-open="true"] .home-cta-action{display:none}
   .home-cta[data-session-open="true"] .home-cta-session{display:block}
-  .home-topic-entry{max-width:680px;margin:4px auto 14px;padding:18px 20px 16px;background:var(--card);border:2px solid var(--ink);border-radius:12px;text-align:left;box-shadow:var(--shadow)}
+  .home-local-entry{max-width:680px;margin:4px auto 14px;padding:18px 20px 16px;background:var(--card);border:2px solid var(--ink);border-radius:12px;text-align:left;box-shadow:var(--shadow)}
+  .home-local-kicker{margin:0 0 5px;color:var(--oxblood);font:800 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+  .home-local-entry h2{margin:0 0 5px;color:var(--ink);font:700 clamp(1.65rem,4vw,2.25rem)/1.1 var(--font-display)}
+  .home-local-intro{margin:0;color:var(--ink-soft);font:15px/1.45 var(--font-body)}
+  .home-local-form{margin-top:13px}
+  .home-local-form label{display:block;margin-bottom:5px;font:700 13px/1.3 var(--font-label);color:var(--ink)}
+  .home-local-form-row{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+  .home-local-form input{flex:1 1 300px;min-width:0;min-height:46px;padding:9px 12px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);font:16px/1.3 var(--font-body)}
+  .home-local-form button{min-height:46px;padding:9px 16px;border:1px solid var(--oxblood);border-radius:7px;background:var(--oxblood);color:#fff;font:700 14px/1.2 var(--font-interface);cursor:pointer}
+  .home-local-actions{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:12px}
+  .home-local-location{min-height:44px;padding:8px 14px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);font:700 14px/1.2 var(--font-interface);cursor:pointer}
+  .home-local-location-hint{color:var(--muted);font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .home-local-browse{font:700 14px/1.3 var(--font-body);color:var(--oxblood);text-decoration:none}
+  .home-local-browse:hover{text-decoration:underline}
+  .home-local-status{min-height:1.35em;margin:10px 0 0;color:var(--ink-soft);font:13.5px/1.4 var(--font-body)}
+  .home-local-status[data-refine="true"]{color:var(--oxblood)}
+  .home-topic-entry{max-width:680px;margin:4px auto 14px;padding:14px 16px 12px;background:var(--card);border:1px solid var(--rule);border-radius:10px;text-align:left;box-shadow:var(--shadow)}
   .home-topic-kicker{display:flex;align-items:center;gap:7px;margin:0 0 5px;color:var(--oxblood);font:800 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}
-  .home-topic-entry h2{margin:0 0 5px;color:var(--ink);font:700 clamp(1.65rem,4vw,2.25rem)/1.1 var(--font-display)}
-  .home-topic-entry p{margin:0;color:var(--ink-soft);font:15px/1.45 var(--font-body)}
-  .home-topic-form{margin-top:13px}
+  .home-topic-entry h2{margin:0 0 5px;color:var(--ink);font:700 clamp(1.25rem,3vw,1.55rem)/1.15 var(--font-display)}
+  .home-topic-entry p{margin:0;color:var(--ink-soft);font:14px/1.45 var(--font-body)}
+  .home-topic-form{margin-top:10px}
   .home-topic-form label{display:block;margin-bottom:5px;font:700 13px/1.3 var(--font-label);color:var(--ink)}
   .home-topic-form-row{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
-  .home-topic-form input{flex:1 1 300px;min-width:0;min-height:46px;padding:9px 12px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);font:16px/1.3 var(--font-body)}
-  .home-topic-form button{min-height:46px;padding:9px 16px;border:1px solid var(--oxblood);border-radius:7px;background:var(--oxblood);color:#fff;font:700 14px/1.2 var(--font-interface);cursor:pointer}
+  .home-topic-form input{flex:1 1 300px;min-width:0;min-height:44px;padding:8px 12px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);font:16px/1.3 var(--font-body)}
+  .home-topic-form button{min-height:44px;padding:8px 14px;border:1px solid var(--oxblood);border-radius:7px;background:#fff;color:var(--oxblood);font:700 14px/1.2 var(--font-interface);cursor:pointer}
   .home-topic-note{margin-top:8px!important;color:var(--muted)!important;font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif!important}
   /* Keep the specialist contracts email CTA out of the home first paint; it lives
      inside the Contracts intro and only appears when that domain is open. */
   [data-primary-context="home"]:not([data-app-route="true"]) #tab-money{display:none}
+  [data-primary-context="search"] .home-local-entry,
   [data-primary-context="search"] .home-topic-entry,
   [data-primary-context="search"] .home-cta{display:none}
   [data-primary-context="search"] .ask-cityscroll,
@@ -1950,6 +1967,26 @@
       </a>
       <p class="cr-tagline" data-i18n="site_tagline">Explore local decisions, public spending, and published chances to take part.</p>
     </div>
+    <section class="home-local-entry" data-home-local-entry aria-labelledby="home-local-heading">
+      <p class="home-local-kicker">Local meetings</p>
+      <h2 id="home-local-heading">What's near you?</h2>
+      <p class="home-local-intro">Choose your neighborhood, type an address, or use your location to open nearby meetings.</p>
+      <form class="home-local-form" method="get" action="/near-you/" data-home-local-form>
+        <input type="hidden" name="lens" value="meetings">
+        <input type="hidden" name="surface" value="map">
+        <label for="home-local-query">Address or place</label>
+        <div class="home-local-form-row">
+          <input id="home-local-query" name="neighborhood" type="search" maxlength="240" autocomplete="street-address" enterkeyhint="search" spellcheck="false" placeholder="Neighborhood, district, or address" data-home-local-input>
+          <button type="submit" data-home-local-submit>Find nearby</button>
+        </div>
+      </form>
+      <div class="home-local-actions">
+        <button type="button" class="home-local-location js-only" data-home-local-location hidden>Use my location</button>
+        <span class="home-local-location-hint js-only" hidden>Asked only when you press the button.</span>
+        <a class="home-local-browse" href="/near-you/" data-home-local-browse>Browse neighborhoods</a>
+      </div>
+      <p class="home-local-status" data-home-local-status role="status" aria-live="polite"></p>
+    </section>
     <section class="home-topic-entry" data-home-topic-entry aria-labelledby="home-topic-heading">
       <h2 id="home-topic-heading" data-i18n="topic_search_heading">What's happening in your city?</h2>
       <p data-i18n="topic_search_intro">Search public records by topic, place, or agency. Results stay grouped by record type.</p>
