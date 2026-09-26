@@ -43,3 +43,9 @@ For a direct family run, set `NODE_OPTIONS` to import the preload and use
 days in the non-required `Time-travel` workflow. That check should be promoted to required only
 after it is green on `main`; failures should identify the test file and line that still depends on
 an unpinned wall clock.
+
+Shifted suites must leave tracked files untouched. Tests that build evidence payloads or capture
+manifests compare against committed `docs/evidence/` fixtures (or write under a temp directory)
+instead of rewriting those paths. The Time-travel workflow finishes with
+`node tools/assert_tracked_working_tree_clean.mjs`, which fails when `git status --porcelain`
+reports tracked modifications after the suite.

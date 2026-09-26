@@ -5,7 +5,7 @@
  */
 
 import assert from "node:assert/strict";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
@@ -82,12 +82,32 @@ function serializeDigestRowForWorker(row) {
 }
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const EVIDENCE_DIR = join(ROOT, "docs/evidence/deadlines-through-digest");
 const read = (path) => JSON.parse(readFileSync(join(ROOT, path), "utf8"));
 
 const MTA_FIXTURES = read("warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json");
 const DEADLINE_FIXTURES = read("warehouse/fixtures/authority-native-procurement/typed-source-deadlines.v1.json");
 const CLOCK = testClockISOString();
+
+function withoutClock(example) {
+  const { clock: _clock, ...rest } = example;
+  return rest;
+}
+
+/**
+ * Build the inspectable evidence payload in memory. Committed docs/evidence
+ * files stay read-only fixtures; compare stable fields instead of rewriting
+ * the ambient clock under time-travel.
+ */
+function assertEvidenceExample(name, payload) {
+  assert.equal(payload.schema, "cityscroll.deadlines_through_digest_example.v1");
+  assert.match(payload.clock, /^\d{4}-\d{2}-\d{2}T/);
+  assert.ok(payload.source?.source_url);
+  assert.ok(payload.digest?.response_deadline?.date || payload.digest?.due_date);
+  assert.ok(payload.preview?.label || payload.preview?.value);
+  assert.ok(payload.email?.subject || payload.email?.meta_label);
+  const committed = read(`docs/evidence/deadlines-through-digest/${name}`);
+  assert.deepEqual(withoutClock(payload), withoutClock(committed));
+}
 
 const NATIVE_MODEL = buildSharedProcurementReadModel({
   sourceRecords: recordsFromMtaOpportunityFixtures(MTA_FIXTURES),
@@ -207,13 +227,6 @@ function governorsIslandNoticeRow({ stripPublication = false } = {}) {
   };
 }
 
-function writeEvidenceExample(name, payload) {
-  mkdirSync(EVIDENCE_DIR, { recursive: true });
-  const path = join(EVIDENCE_DIR, name);
-  writeFileSync(path, `${JSON.stringify(payload, null, 2)}\n`);
-  return path;
-}
-
 test("A1 2138505, DOB 20260707026, and Governors Island 20260727019 keep precision and source links", () => {
   assert.match(CLOCK, /^\d{4}-\d{2}-\d{2}T/);
   assert.ok(OBJ_2138505);
@@ -304,7 +317,7 @@ test("A1 2138505, DOB 20260707026, and Governors Island 20260727019 keep precisi
   assert.equal(serialized.response_deadline.date, "2026-08-28");
   assert.equal(serialized.bid_opening || null, gi.bid_opening || null);
 
-  writeEvidenceExample("example-2138505-source-detail-email.json", {
+  assertEvidenceExample("example-2138505-source-detail-email.json", {
     schema: "cityscroll.deadlines_through_digest_example.v1",
     record: "procurement:contract_reporter_number:2138505",
     clock: CLOCK,
@@ -324,7 +337,7 @@ test("A1 2138505, DOB 20260707026, and Governors Island 20260727019 keep precisi
       meta_label: email2138505.rows[0].meta_label,
     },
   });
-  writeEvidenceExample("example-dob-20260707026-source-detail-email.json", {
+  assertEvidenceExample("example-dob-20260707026-source-detail-email.json", {
     schema: "cityscroll.deadlines_through_digest_example.v1",
     record: "20260707026",
     clock: CLOCK,
@@ -344,7 +357,7 @@ test("A1 2138505, DOB 20260707026, and Governors Island 20260727019 keep precisi
       meta_label: emailDob.rows[0].meta_label,
     },
   });
-  writeEvidenceExample("example-governors-island-20260727019-source-detail-email.json", {
+  assertEvidenceExample("example-governors-island-20260727019-source-detail-email.json", {
     schema: "cityscroll.deadlines_through_digest_example.v1",
     record: "20260727019",
     clock: CLOCK,
