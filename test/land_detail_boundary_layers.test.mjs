@@ -92,6 +92,118 @@ function pythonPlaywrightChromiumAvailable() {
   return probe.status === 0;
 }
 
+/** Product stylesheet that ships with the Land detail shell (site/index.html). */
+function shippedIndexStylesheet() {
+  const html = readFileSync(join(REPO, "site", "index.html"), "utf8");
+  const blocks = [...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map((match) => match[1]);
+  assert.ok(blocks.length >= 1, "site/index.html must ship at least one stylesheet block");
+  return blocks.join("\n");
+}
+
+const LAND_DETAIL_BOUNDARY_NARROW_WIDTH_RULE =
+  /\.land-detail-boundary-toggle\s*,\s*\.land-detail-boundary-retry\s*\{\s*width:\s*100%\s*\}/;
+
+function stripLandDetailBoundaryNarrowWidthRule(css) {
+  const next = String(css).replace(LAND_DETAIL_BOUNDARY_NARROW_WIDTH_RULE, "/* stripped for positive control */");
+  assert.notEqual(next, css, "positive control must remove the shipped narrow-width rule");
+  assert.equal(LAND_DETAIL_BOUNDARY_NARROW_WIDTH_RULE.test(next), false);
+  return next;
+}
+
+function narrowWidthLayoutHolds(readings) {
+  const mobile = readings.find((row) => row.requested.width === 390);
+  const desktop = readings.find((row) => row.requested.width === 1440);
+  if (!mobile?.measured?.firstToggle || !mobile?.measured?.retry) return false;
+  if (!desktop?.measured?.firstToggle || !desktop?.measured?.retry) return false;
+  const mobileToggle = mobile.measured.firstToggle.width;
+  const mobileRetry = mobile.measured.retry.width;
+  const desktopToggle = desktop.measured.firstToggle.width;
+  const desktopRetry = desktop.measured.retry.width;
+  // Shipped @media(max-width:420px) stretches both the toggle and the retry.
+  return (
+    mobileToggle > desktopToggle
+    && mobileRetry > desktopRetry
+    && Math.abs(mobileToggle - mobileRetry) < 1
+  );
+}
+
+function measureBoundaryControlsInBrowser({ stylesheet, controlsHtml }) {
+  const payload = JSON.stringify({ stylesheet, controlsHtml });
+  // Pass the shipped CSS + markup on stdin so argv stays under ARG_MAX and the
+  // suite leaves no scratch HTML for check_temp_leaks.
+  const script = `
+from playwright.sync_api import sync_playwright
+import json, sys
+payload = json.load(sys.stdin)
+css = payload["stylesheet"]
+controls = payload["controlsHtml"]
+html = (
+    "<!doctype html><html><head><meta charset=\\"utf-8\\">"
+    + "<style>" + css + "</style></head><body>"
+    + controls
+    + """
+<script>
+document.querySelectorAll('.land-detail-boundary-toggle:not([disabled])').forEach((button) => {
+  button.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      button.setAttribute('data-activated', '1');
+    }
+  });
+});
+</script>
+"""
+    + "</body></html>"
+)
+readings = []
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
+    for width, height in ((390, 844), (1440, 900)):
+        page = browser.new_page()
+        page.set_viewport_size({"width": width, "height": height})
+        page.set_content(html, wait_until="domcontentloaded")
+        measured = page.evaluate("""() => {
+          const box = (node) => {
+            if (!node) return null;
+            const rect = node.getBoundingClientRect();
+            return { width: rect.width, height: rect.height, top: rect.top };
+          };
+          return {
+            innerWidth: window.innerWidth,
+            innerHeight: window.innerHeight,
+            toggleCount: document.querySelectorAll('[data-land-boundary-layer]').length,
+            retryCount: document.querySelectorAll('[data-land-boundary-retry]').length,
+            labels: [...document.querySelectorAll('[data-land-boundary-layer]')].map((node) => node.textContent.trim()),
+            legend: !!document.querySelector('[data-land-detail-boundary-legend]'),
+            firstToggle: box(document.querySelector('[data-land-boundary-layer]')),
+            retry: box(document.querySelector('[data-land-boundary-retry]')),
+          };
+        }""")
+        focus = page.query_selector('[data-land-boundary-layer]:not([disabled])')
+        assert focus is not None, "expected an enabled outline toggle for keyboard focus"
+        focus.focus()
+        page.keyboard.press("Enter")
+        activated = focus.get_attribute("data-activated")
+        readings.append({
+            "requested": {"width": width, "height": height},
+            "measured": measured,
+            "keyboard_activated": activated == "1",
+        })
+        page.close()
+    browser.close()
+print(json.dumps(readings))
+`;
+  const probe = spawnSync("python3", ["-c", script], {
+    encoding: "utf8",
+    input: payload,
+    timeout: 120_000,
+    env: process.env,
+    maxBuffer: 16 * 1024 * 1024,
+  });
+  assert.equal(probe.status, 0, probe.stderr || probe.stdout);
+  return JSON.parse(probe.stdout.trim().split("\n").at(-1));
+}
+
 function okJson(payload) {
   return {
     ok: true,
@@ -444,11 +556,23 @@ describe("A4: controls, legend contrast, keyboard affordances, and measured view
     assert.ok(existsSync(join(REPO, "site", LAND_DETAIL_BOUNDARY_ARTIFACTS.cd.artifact_url)));
   });
 
-  it("measures control layout at 390 and 1440 in a real browser when Chromium is available", async (t) => {
-    if (!pythonPlaywrightChromiumAvailable()) {
-      t.skip("Python playwright Chromium is not launchable in this lane");
-      return;
-    }
+  it("ships the narrow-width rule for both the outline toggle and the retry control", () => {
+    const css = shippedIndexStylesheet();
+    assert.match(css, LAND_DETAIL_BOUNDARY_NARROW_WIDTH_RULE);
+    // Drift guard: a toggle-only copy of the rule is exactly what the browser
+    // harness used to retype, and it would miss a retry-control regression.
+    assert.doesNotMatch(
+      css,
+      /@media\(max-width:420px\)\{\s*\.land-detail-boundary-controls\{[^}]*\}\s*\.land-detail-boundary-toggle\{width:100%\}\s*\}/,
+    );
+  });
+
+  it("measures shipped control layout at 390 and 1440 in Chromium (required)", () => {
+    assert.equal(
+      pythonPlaywrightChromiumAvailable(),
+      true,
+      "Python playwright Chromium is required for land detail boundary layout and keyboard checks",
+    );
 
     const shared = loadShared();
     const view = buildLandDetailBoundaryLayersView({
@@ -457,84 +581,22 @@ describe("A4: controls, legend contrast, keyboard affordances, and measured view
       enabled: ["nta", "cd"],
       layerDocs: { nta: shared.nta, cd: shared.cd },
     });
-    const controlsHtml = renderLandDetailBoundaryControlsHTML(view);
-    const pageHtml = `<!doctype html><html><head><meta charset="utf-8">
-<style>
-body{margin:0;background:#f7f4ed;color:#202c32;font:16px/1.4 system-ui}
-.land-detail-boundary-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;margin:16px}
-.land-detail-boundary-toggle{min-height:44px;padding:8px 12px;border:1px solid #5a6570;border-radius:8px;background:#fff;color:#202c32;font:600 13px/1.3 system-ui}
-.land-detail-boundary-toggle[aria-pressed="true"]{background:#166b70;border-color:#166b70;color:#fff}
-.land-detail-boundary-legend{flex:1 1 100%;margin:0;padding:8px 12px;border:1px solid #d6d1c7;border-radius:8px;background:#f7f4ed;color:#202c32}
-.land-detail-boundary-legend-heading{margin:0;font:700 12px/1.3 system-ui;letter-spacing:.04em;text-transform:uppercase;color:#202c32}
-.land-detail-boundary-note{margin:4px 0 0;font:13px/1.45 system-ui;color:#202c32}
-.land-detail-boundary-legend-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
-.land-detail-boundary-legend-item{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font:13px/1.4 system-ui;color:#202c32}
-.land-detail-boundary-legend-meta{color:#4a5560;font-size:12px}
-@media(max-width:420px){
-  .land-detail-boundary-controls{flex-direction:column;align-items:stretch}
-  .land-detail-boundary-toggle{width:100%}
-}
-</style></head><body>${controlsHtml}
-<script>
-document.querySelectorAll('.land-detail-boundary-toggle').forEach((button) => {
-  button.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      button.setAttribute('data-activated', '1');
-    }
-  });
-});
-</script></body></html>`;
+    // Include a failed layer so the shipped retry control is present to measure.
+    const controlsHtml = renderLandDetailBoundaryControlsHTML(view, { failureTokens: ["nta"] });
+    assert.match(controlsHtml, /data-land-boundary-retry="nta"/);
+    assert.match(controlsHtml, /land-detail-boundary-retry/);
 
-    // Pass HTML in-process so the suite leaves no /tmp scratch for check_temp_leaks.
-    const script = `
-from playwright.sync_api import sync_playwright
-import json
-html = ${JSON.stringify(pageHtml)}
-readings = []
-with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True)
-    for width, height in ((390, 844), (1440, 900)):
-        page = browser.new_page()
-        page.set_viewport_size({"width": width, "height": height})
-        page.set_content(html, wait_until="domcontentloaded")
-        measured = page.evaluate("""() => ({
-          innerWidth: window.innerWidth,
-          innerHeight: window.innerHeight,
-          toggleCount: document.querySelectorAll('[data-land-boundary-layer]').length,
-          labels: [...document.querySelectorAll('[data-land-boundary-layer]')].map((node) => node.textContent.trim()),
-          legend: !!document.querySelector('[data-land-detail-boundary-legend]'),
-          firstToggle: (() => {
-            const node = document.querySelector('[data-land-boundary-layer]');
-            if (!node) return null;
-            const rect = node.getBoundingClientRect();
-            return { width: rect.width, height: rect.height, top: rect.top };
-          })(),
-        })""")
-        page.focus('[data-land-boundary-layer="nta"]')
-        page.keyboard.press('Enter')
-        activated = page.get_attribute('[data-land-boundary-layer="nta"]', 'data-activated')
-        readings.append({
-          "requested": {"width": width, "height": height},
-          "measured": measured,
-          "keyboard_activated": activated == "1",
-        })
-        page.close()
-    browser.close()
-print(json.dumps(readings))
-`;
-    const probe = spawnSync("python3", ["-c", script], {
-      encoding: "utf8",
-      timeout: 90_000,
-      env: process.env,
+    const shippedCss = shippedIndexStylesheet();
+    const readings = measureBoundaryControlsInBrowser({
+      stylesheet: shippedCss,
+      controlsHtml,
     });
-    assert.equal(probe.status, 0, probe.stderr || probe.stdout);
-    const readings = JSON.parse(probe.stdout.trim().split("\n").at(-1));
     assert.equal(readings.length, 2);
 
     for (const reading of readings) {
       assert.equal(reading.measured.innerWidth, reading.requested.width);
       assert.equal(reading.measured.toggleCount, 2);
+      assert.equal(reading.measured.retryCount, 1);
       assert.deepEqual(reading.measured.labels, [
         LAND_DETAIL_BOUNDARY_NTA_LABEL,
         LAND_DETAIL_BOUNDARY_CD_LABEL,
@@ -542,12 +604,17 @@ print(json.dumps(readings))
       assert.equal(reading.measured.legend, true);
       assert.equal(reading.keyboard_activated, true);
       assert.ok(reading.measured.firstToggle.height >= 44);
+      assert.ok(reading.measured.retry.height >= 44);
     }
-    const mobile = readings.find((row) => row.requested.width === 390);
-    const desktop = readings.find((row) => row.requested.width === 1440);
-    assert.ok(mobile && desktop);
-    // Mobile stacks controls full-width; desktop keeps a compact control.
-    assert.ok(mobile.measured.firstToggle.width > desktop.measured.firstToggle.width);
+    assert.equal(narrowWidthLayoutHolds(readings), true);
+
+    // Positive control: removing the shipped narrow-width rule must fail the
+    // same layout predicate, proving the harness reads product CSS.
+    const strippedReadings = measureBoundaryControlsInBrowser({
+      stylesheet: stripLandDetailBoundaryNarrowWidthRule(shippedCss),
+      controlsHtml,
+    });
+    assert.equal(narrowWidthLayoutHolds(strippedReadings), false);
 
     // Keep committed evidence read-only. Live measurements prove the run; the
     // tracked receipt is asserted, never rewritten, so time-travel suites leave
@@ -595,6 +662,8 @@ print(json.dumps(readings))
           measured_inner_height: row.measured.innerHeight,
           toggle_width: row.measured.firstToggle.width,
           toggle_height: row.measured.firstToggle.height,
+          retry_width: row.measured.retry.width,
+          retry_height: row.measured.retry.height,
           keyboard_activated: row.keyboard_activated,
           labels: row.measured.labels,
         })),
@@ -602,8 +671,10 @@ print(json.dumps(readings))
           "Requested viewport widths 390 and 1440 were applied with page.set_viewport_size and measured via window.innerWidth.",
           "Control labels remain Neighborhood boundaries and Community district boundaries.",
           "Enter activates the focused outline control.",
-          "Mobile control width exceeds desktop control width under the stacked layout.",
+          "Mobile toggle and retry widths both exceed their desktop widths under the shipped stacked layout.",
+          "Removing the shipped narrow-width rule fails the same layout predicate.",
         ],
+        stylesheet_source: "site/index.html <style>",
         render_hash: sha256Text(controlsHtml),
         captured_at: "2026-09-26T00:00:00.000Z",
       };
