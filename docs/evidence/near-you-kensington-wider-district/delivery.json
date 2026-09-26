@@ -1,0 +1,7 @@
+{
+  "schema": "cityscroll.capture_delivery.v1",
+  "public_alias": "ce70cec48d558",
+  "landed_commit": "c66960422d9c70a12db4f9e1a79651f35153adc7",
+  "surface": "pages",
+  "note": "Squash-merge commit on the default branch that delivered Kensington wider-district meeting previews."
+}

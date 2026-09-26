@@ -5,8 +5,8 @@ Records textual served values plus sha256 digests. Screenshot binaries stay
 under the local task scratch directory; the committed manifest may reference
 an externally retained https screenshot URL.
 
-The capture refuses to run until the served artifact-manifest revision
-contains the wider-district delivery commit as a git ancestor.
+The capture refuses to run until the served Pages artifact-manifest revision
+contains the recorded landed wider-district delivery commit as a git ancestor.
 """
 
 from __future__ import annotations
@@ -23,18 +23,25 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "test" / "browser"))
 from browser_support import launched_chromium  # noqa: E402
+from deployed_capture_ancestor import (  # noqa: E402
+    DeployPendingError,
+    WrongPinError,
+    load_recorded_delivery,
+    require_served_page_revision_contains_delivery,
+    revision_contains_ancestor,
+)
 
 EVIDENCE_DIR = ROOT / "docs" / "evidence" / "near-you-kensington-wider-district"
 MANIFEST_PATH = EVIDENCE_DIR / "capture-manifest.json"
+DELIVERY_PATH = EVIDENCE_DIR / "delivery.json"
 SCREENSHOT_DIR = Path(os.environ.get("FM_TASK_SCRATCH") or "/tmp") / "near-you-kensington-wider-district-screenshots"
 PUBLIC_ALIAS = "ce70cec48d558"
 DEFAULT_BASE = "https://cityscroll.org/"
-ARTIFACT_MANIFEST = "/artifact-manifest.json"
-# Set to the delivery commit SHA after that commit lands; capture refuses until
-# the served artifact-manifest contains this ancestor.
-REQUIRED_ANCESTOR = "3da4739199ec09002249e623adc49f4831438622"
+# Landed squash-merge on the default branch; derived from delivery.json at load.
+REQUIRED_ANCESTOR = load_recorded_delivery(DELIVERY_PATH)
 KENSINGTON_LIST = "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings"
 KENSINGTON_DETAIL = (
     "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com"
@@ -50,47 +57,21 @@ VIEWPORTS = (
 )
 
 
-def fetch_json(url: str) -> dict:
-    req = urllib.request.Request(url, headers={"User-Agent": "cityscroll-kensington-wider-district/1"})
-    with urllib.request.urlopen(req, timeout=60) as response:
-        return json.loads(response.read().decode("utf-8"))
-
-
-def served_revision(base: str) -> str:
-    manifest = fetch_json(urllib.request.urljoin(base, ARTIFACT_MANIFEST))
-    sha = manifest.get("source_commit_sha") or ""
-    if not re.fullmatch(r"[0-9a-f]{40}", sha):
-        raise SystemExit(f"served artifact-manifest missing source_commit_sha: {manifest!r}")
-    return sha
-
-
 def revision_contains_required_ancestor(rev: str) -> bool:
-    """True when served revision is the delivery commit or a descendant of it."""
-    if not re.fullmatch(r"[0-9a-f]{40}", REQUIRED_ANCESTOR):
-        raise SystemExit(
-            f"REQUIRED_ANCESTOR is not a commit SHA yet ({REQUIRED_ANCESTOR!r}); "
-            "set it to the delivery commit before capturing"
-        )
-    if rev == REQUIRED_ANCESTOR:
-        return True
-    result = subprocess.run(
-        ["git", "-C", str(ROOT), "merge-base", "--is-ancestor", REQUIRED_ANCESTOR, rev],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    return result.returncode == 0
+    """True when served page revision is the delivery commit or a descendant of it."""
+    return revision_contains_ancestor(REQUIRED_ANCESTOR, rev, cwd=ROOT)
 
 
 def require_served_revision_contains_delivery(base: str) -> str:
-    """Refuse capture when the served build lacks the wider-district delivery ancestor."""
-    revision = served_revision(base)
-    if not revision_contains_required_ancestor(revision):
-        raise SystemExit(
-            f"served revision {revision} does not contain required ancestor "
-            f"{REQUIRED_ANCESTOR}; wait for Pages deploy before capturing"
+    """Refuse capture until the served Pages revision contains the landed delivery."""
+    try:
+        return require_served_page_revision_contains_delivery(
+            base,
+            REQUIRED_ANCESTOR,
+            cwd=ROOT,
         )
-    return revision
+    except (WrongPinError, DeployPendingError) as error:
+        raise SystemExit(str(error)) from error
 
 
 def sha256_file(path: Path) -> str:

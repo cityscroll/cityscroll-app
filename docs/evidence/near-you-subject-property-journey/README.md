@@ -21,7 +21,8 @@ python3 tools/capture_near_you_subject_property_journey.py --host
 python3 tools/capture_near_you_subject_property_journey.py --check
 ```
 
-The capture refuses to run until the served `/artifact-manifest.json`
-`source_commit_sha` contains the delivery commit. Screenshot binaries stay
-under the local task scratch directory; only `capture-manifest.json` is
-committed.
+The capture refuses to run until the served Pages `/artifact-manifest.json`
+`source_commit_sha` contains the landed delivery recorded in `delivery.json`
+(the squash-merge commit on the default branch). Screenshot binaries stay
+under the local task scratch directory; only `capture-manifest.json` and
+`delivery.json` are committed.

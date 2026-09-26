@@ -1,0 +1,7 @@
+{
+  "schema": "cityscroll.capture_delivery.v1",
+  "public_alias": "ce239e01504c8",
+  "landed_commit": "cb878a22f23b88908b7f4173c97fec71569367bc",
+  "surface": "pages",
+  "note": "Squash-merge commit on the default branch that delivered the subject-property local journey."
+}

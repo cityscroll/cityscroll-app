@@ -12,6 +12,18 @@
     {
       "id": "subject-property-journey-capture",
       "path": "tools/capture_near_you_subject_property_journey.py"
+    },
+    {
+      "id": "subject-property-journey-delivery",
+      "path": "docs/evidence/near-you-subject-property-journey/delivery.json"
+    },
+    {
+      "id": "deployed-capture-ancestor-helper",
+      "path": "tools/deployed_capture_ancestor.py"
+    },
+    {
+      "id": "deployed-capture-ancestor-test",
+      "path": "test/deployed_capture_ancestor.test.mjs"
     }
   ]
 }

@@ -7,8 +7,8 @@ an externally retained https screenshot URL.
 
 Captures the neighborhood result, address-search result, and meeting detail
 with both the subject address and venue address visible at desktop and mobile
-widths. The capture refuses to run until the served artifact-manifest revision
-contains the delivery commit as a git ancestor.
+widths. The capture refuses to run until the served Pages artifact-manifest
+revision contains the recorded landed delivery commit as a git ancestor.
 """
 
 from __future__ import annotations
@@ -25,17 +25,25 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "test" / "browser"))
 from browser_support import launched_chromium  # noqa: E402
+from deployed_capture_ancestor import (  # noqa: E402
+    DeployPendingError,
+    WrongPinError,
+    load_recorded_delivery,
+    require_served_page_revision_contains_delivery,
+    revision_contains_ancestor,
+)
 
 EVIDENCE_DIR = ROOT / "docs" / "evidence" / "near-you-subject-property-journey"
 MANIFEST_PATH = EVIDENCE_DIR / "capture-manifest.json"
+DELIVERY_PATH = EVIDENCE_DIR / "delivery.json"
 SCREENSHOT_DIR = Path(os.environ.get("FM_TASK_SCRATCH") or "/tmp") / "near-you-subject-property-journey-screenshots"
 PUBLIC_ALIAS = "ce239e01504c8"
 DEFAULT_BASE = "https://cityscroll.org/"
-ARTIFACT_MANIFEST = "/artifact-manifest.json"
-# Updated to the delivery commit once production serves this card's tip.
-REQUIRED_ANCESTOR = "20df28b565f7c3da6a0203a5483319237ee81fe6"
+# Landed squash-merge on the default branch; derived from delivery.json at load.
+REQUIRED_ANCESTOR = load_recorded_delivery(DELIVERY_PATH)
 SUBJECT_LIST = "/near-you/?geo=nta2020%3ABK1402&surface=map&lens=meetings"
 SUBJECT_DETAIL = (
     "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com"
@@ -57,42 +65,21 @@ REPEAT_PATH = [
 ]
 
 
-def fetch_json(url: str) -> dict:
-    req = urllib.request.Request(url, headers={"User-Agent": "cityscroll-subject-property-journey/1"})
-    with urllib.request.urlopen(req, timeout=60) as response:
-        return json.loads(response.read().decode("utf-8"))
-
-
-def served_revision(base: str) -> str:
-    manifest = fetch_json(urllib.request.urljoin(base, ARTIFACT_MANIFEST))
-    sha = manifest.get("source_commit_sha") or ""
-    if not re.fullmatch(r"[0-9a-f]{40}", sha):
-        raise SystemExit(f"served artifact-manifest missing source_commit_sha: {manifest!r}")
-    return sha
-
-
 def revision_contains_required_ancestor(rev: str) -> bool:
-    """True when served revision is the delivery commit or a descendant of it."""
-    if rev == REQUIRED_ANCESTOR:
-        return True
-    result = subprocess.run(
-        ["git", "-C", str(ROOT), "merge-base", "--is-ancestor", REQUIRED_ANCESTOR, rev],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    return result.returncode == 0
+    """True when served page revision is the delivery commit or a descendant of it."""
+    return revision_contains_ancestor(REQUIRED_ANCESTOR, rev, cwd=ROOT)
 
 
 def require_served_revision_contains_delivery(base: str) -> str:
-    """Refuse capture when the served build lacks the subject-property delivery ancestor."""
-    revision = served_revision(base)
-    if not revision_contains_required_ancestor(revision):
-        raise SystemExit(
-            f"served revision {revision} does not contain required ancestor "
-            f"{REQUIRED_ANCESTOR}; wait for Pages deploy before capturing"
+    """Refuse capture until the served Pages revision contains the landed delivery."""
+    try:
+        return require_served_page_revision_contains_delivery(
+            base,
+            REQUIRED_ANCESTOR,
+            cwd=ROOT,
         )
-    return revision
+    except (WrongPinError, DeployPendingError) as error:
+        raise SystemExit(str(error)) from error
 
 
 def sha256_file(path: Path) -> str:
