@@ -409,7 +409,7 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 8
+        "dom_content_loaded_ms": 10
       },
       "performance_samples": {
         "samples": [
@@ -1290,9 +1290,9 @@
         "simplified_geography_layers"
       ],
       "timing_samples": {
-        "dom_content_loaded_ms": 155
+        "dom_content_loaded_ms": 166
       },
-      "render_content_sha256": "5e3afaa8b212cf924e64378975bc3db5c4edce1705d5c977c67563d564fed75b",
+      "render_content_sha256": "71a53c9cb2edf74dd5cffb6dd0bfd4dc3d625291da2b2e1894039a8545d28bb7",
       "visual_metrics": {
         "viewport": {
           "width": 360,
@@ -1435,6 +1435,174 @@
         "precinct": "26B"
       },
       "artifact": "capture-manifest.json#capture-entry-boundary-360-zoom-200"
+    },
+    {
+      "name": "entry-boundary-360-retry",
+      "route": "/near-you/",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "assertion": "headless Chromium induced the live deferred-records failure path, measured visible retry_target boxes at the 44 CSS px floor under the A2 boundary viewport, and verified horizontal overflow \u2264 1px, \u226544px primary and retry targets, \u226516px form text, keyboard focus order, and collapsible drawer behavior without a trap",
+      "failure_mode": "deferred_records_unavailable+webgl_unavailable",
+      "asset_classes": [
+        "server_html",
+        "navigation_shell",
+        "simplified_geography_layers"
+      ],
+      "timing_samples": {
+        "dom_content_loaded_ms": 131
+      },
+      "render_content_sha256": "5ee0968a1cadb8fb4abd996df9ee912dad6aa95a7bff362fc13f018b35424e85",
+      "visual_metrics": {
+        "viewport": {
+          "width": 360,
+          "height": 800
+        },
+        "rendered_neighborhood_label_count": 0,
+        "selected_label_present": false,
+        "clipped_or_overlapping_label_count": 0,
+        "computed_styles": {
+          "active": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "selected": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(18, 24, 31)"
+          },
+          "comparison": {
+            "display": "flex",
+            "color": "rgb(18, 24, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "rgb(122, 130, 143)"
+          }
+        },
+        "visible_map_area_css_px": {
+          "width": 328,
+          "height": 397.5
+        },
+        "initial_viewport_map_height_css_px": 143.828125,
+        "map_top_css_px": 656.171875,
+        "place_choice_visible": true,
+        "map_runtime": "failed",
+        "map_runtime_reason": "webgl_unsupported",
+        "focus_order": [
+          "Skip to content",
+          "CityScroll home",
+          "Now",
+          "Near you",
+          "Following",
+          "Browse",
+          "Guide",
+          "Ask with AI",
+          "Back one step",
+          "Restart at origin",
+          "neighborhood",
+          "Search",
+          "Map",
+          "Browse records",
+          "More ways to choose",
+          "Map details",
+          "Zoom in",
+          "Zoom out",
+          "Pan west",
+          "Pan north",
+          "Pan south",
+          "Pan east",
+          "Reset",
+          "Manhattan: 361 Meetings records"
+        ],
+        "focusable_count": 36,
+        "control_occlusion": false,
+        "nta_codes_in_primary_labels": 0,
+        "zoom_percent": 200,
+        "zoom_reflow_basis": "360 CSS px represents a 720 px viewport at 200% browser zoom",
+        "reduced_motion": true,
+        "inner_width": 360,
+        "horizontal_overflow_px": 0,
+        "target_size": {
+          "floor_css_px": 44,
+          "targets": [
+            {
+              "role": "primary_search_input",
+              "label": "neighborhood",
+              "id": "near-geo-search-input",
+              "width": 204,
+              "height": 44
+            },
+            {
+              "role": "primary_search_submit",
+              "label": "Search",
+              "id": null,
+              "width": 80.765625,
+              "height": 44
+            },
+            {
+              "role": "retry_target",
+              "label": "Try again",
+              "id": null,
+              "width": 92.84375,
+              "height": 44
+            }
+          ],
+          "min_width_css_px": 80.765625,
+          "min_height_css_px": 44.0,
+          "meets_floor": true
+        },
+        "keyboard_traversal": {
+          "method": "tab-until-primary-control-focus",
+          "steps_to_primary": 11,
+          "primary_control": {
+            "role": "primary_search_input",
+            "label": "neighborhood",
+            "id": "near-geo-search-input",
+            "tag": "INPUT"
+          },
+          "escaped_without_trap": true,
+          "steps_after_primary": 1,
+          "focus_after_escape": {
+            "role": "primary_search_submit",
+            "label": "Search",
+            "id": null,
+            "tag": "BUTTON"
+          },
+          "named_focus_path": [
+            "Skip to content",
+            "CityScroll home",
+            "Now",
+            "Near you",
+            "Following",
+            "Browse",
+            "Guide",
+            "Ask with AI",
+            "Back one step",
+            "Restart at origin",
+            "neighborhood",
+            "Search"
+          ]
+        }
+      },
+      "repository_revision": "fbefd38e164a77ec9f18a8d530e933a7ed1cd67c",
+      "candidate_revision": "0c3d5d20654f0435f970eea6762e8d049a8e286d",
+      "deployed_version": {
+        "status": "taken",
+        "source_commit_sha": "2d9aadf407bec82cb4b9cd9bcf788b8dd5870708",
+        "revision_format": "served artifact-manifest source_commit_sha",
+        "base": "https://cityscroll.org/",
+        "artifact_manifest": "https://cityscroll.org/artifact-manifest.json"
+      },
+      "data_vintages": {
+        "nta": "26B",
+        "community": "2026-05-26",
+        "council": "2026-05-26",
+        "precinct": "26B"
+      },
+      "artifact": "capture-manifest.json#capture-entry-boundary-360-retry"
     }
   ],
   "accessibility_matrix": {
@@ -2773,7 +2941,8 @@
     "method": "local-headless-playwright-measured-fields",
     "captures": [
       "compact_touch",
-      "entry-boundary-360-zoom-200"
+      "entry-boundary-360-zoom-200",
+      "entry-boundary-360-retry"
     ],
     "delivery": "docs/evidence/geography-navigation-release/delivery.json",
     "required_ancestor": "a8d61b1b10b2c60aacef55c31275e5d62dc91f0c",
@@ -2781,7 +2950,14 @@
       "inner_width",
       "horizontal_overflow_px",
       "target_size",
-      "keyboard_traversal"
-    ]
+      "keyboard_traversal",
+      "retry_target"
+    ],
+    "retry_failure_path": {
+      "capture": "entry-boundary-360-retry",
+      "mechanism": "playwright_route_intercept_near_you_deferred_json",
+      "product_affordance": "data-near-recovery=retry",
+      "role": "retry_target"
+    }
   }
 }

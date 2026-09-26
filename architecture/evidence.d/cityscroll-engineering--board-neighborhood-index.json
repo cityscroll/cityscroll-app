@@ -20,6 +20,22 @@
     {
       "id": "board-neighborhood-index-verify-test",
       "path": "test/board_neighborhood_index.test.mjs"
+    },
+    {
+      "id": "board-neighborhood-refresh-module",
+      "path": "site/board_neighborhood_refresh.mjs"
+    },
+    {
+      "id": "board-neighborhood-refresh-tool",
+      "path": "tools/board_neighborhood_refresh.mjs"
+    },
+    {
+      "id": "board-neighborhood-refresh-verify-test",
+      "path": "test/board_neighborhood_refresh.test.mjs"
+    },
+    {
+      "id": "board-neighborhood-generations",
+      "path": "site/data/board-neighborhood-generations"
     }
   ]
 }
