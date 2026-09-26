@@ -4,6 +4,13 @@ set -euo pipefail
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
 
+# Drop hook-exported git bindings before any child runs. The pre-push hook
+# sources the same scrub; sourcing it here covers `make prepush` and direct
+# invocations that may still inherit GIT_DIR / GIT_INDEX_FILE from a parent hook
+# or ambient session. See tools/git-hooks/scrub-hook-exported-git-env.sh.
+# shellcheck source=git-hooks/scrub-hook-exported-git-env.sh
+source "$PROJECT_ROOT/tools/git-hooks/scrub-hook-exported-git-env.sh"
+
 # tools/build_primary_documents.mjs defaults its build clock to new Date().
 # This run checks those outputs (below), then runs a multi-minute test suite
 # that re-derives some of them, then (in --full) a local site build writes
