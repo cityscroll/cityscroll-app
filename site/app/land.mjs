@@ -889,7 +889,7 @@ async function showLandEntry(id){
   landBorough="";
   landAttendance="";
   landClosingWeek=false;
-  LG.setLandGeographies(null);
+  globalThis.landGeographies=null;
   $("#lkw").value="";
   // A project deep link is still part of the default review view; retain the
   // lens default so the surrounding route state remains stable while detail loads.
