@@ -79,6 +79,10 @@
         "tools/build_land_place_membership.mjs",
         "--check"
       ],
+      "force_command": [
+        "tools/land_place_refresh.mjs",
+        "--force"
+      ],
       "covers": [
         "tools/land_place_refresh.mjs",
         "tools/build_land_place_membership.mjs"
@@ -86,7 +90,7 @@
       "after": [
         "address-geography-refresh"
       ],
-      "note": "Parcel membership changes invalidate Land project-lot joins. The refresh publishes one coherent generation and mirrors it into the active membership index and evidence shards that build_land_place_membership.mjs --check re-derives."
+      "note": "Parcel membership changes invalidate Land project-lot joins. The refresh publishes one coherent generation and mirrors it into the active membership index and evidence shards that build_land_place_membership.mjs --check re-derives. When address-geography rewrites parcel manifests without moving the Land place generation aggregate, hermetic bootstrap can leave active mirrors stale; post_verify then force-republishes."
     }
   ],
   "not_rebuilt": []

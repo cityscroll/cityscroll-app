@@ -211,6 +211,9 @@ export function workflowRebuildCommands(registry) {
     commands.push(["node", ...step.command]);
     if (step.verify?.length) commands.push(["node", ...step.verify]);
     if (step.post_verify?.length) commands.push(["node", ...step.post_verify]);
+    if (step.force_command?.length) {
+      commands.push(["node", ...step.force_command]);
+    }
   }
   return commands;
 }
@@ -262,10 +265,18 @@ function assertExecutables(registry, root) {
   }
 }
 
+/**
+ * Decide whether a failed post-verify should force-republish.
+ * Exported for the positive-control unit test.
+ */
+export function shouldForceAfterPostVerify(step, postVerifyStatus) {
+  return Boolean(step?.force_command?.length) && Number(postVerifyStatus) !== 0;
+}
+
 function runSequence(registry, root) {
   assertExecutables(registry, root);
   for (const step of registry.rebuild_sequence) {
-    const run = (argv, label) => {
+    const run = (argv, label, { allowFailure = false } = {}) => {
       const [tool, ...args] = argv;
       console.log(`${label} ${step.id}: node ${tool} ${args.join(" ")}`.trimEnd());
       const result = spawnSync(process.execPath, [join(root, tool), ...args], {
@@ -273,14 +284,28 @@ function runSequence(registry, root) {
         stdio: "inherit",
       });
       if (result.error) throw result.error;
-      if (result.status !== 0) {
+      if (result.status !== 0 && !allowFailure) {
         console.error(`${label} step ${step.id} failed (${tool})`);
         process.exit(result.status ?? 1);
       }
+      return result.status ?? 1;
     };
     run(step.command, "rebuilding");
     if (step.verify?.length) run(step.verify, "verifying");
-    if (step.post_verify?.length) run(step.post_verify, "post-verifying");
+    if (step.post_verify?.length) {
+      const status = run(step.post_verify, "post-verifying", { allowFailure: true });
+      if (shouldForceAfterPostVerify(step, status)) {
+        console.log(
+          `post-verify drifted for ${step.id}; forcing republication so active mirrors match --check`,
+        );
+        run(step.force_command, "force-rebuilding");
+        if (step.verify?.length) run(step.verify, "verifying");
+        run(step.post_verify, "post-verifying");
+      } else if (status !== 0) {
+        console.error(`post-verifying step ${step.id} failed (${step.post_verify[0]})`);
+        process.exit(status);
+      }
+    }
   }
   console.log(`rebuilt ${registry.rebuild_sequence.length} dependent geography steps`);
 }
