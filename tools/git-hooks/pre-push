@@ -4,6 +4,12 @@
 #   git config core.hooksPath tools/git-hooks
 # Bypass only when you intentionally skip local gates (still must pass CI):
 #   git push --no-verify
+#
+# Nested-git hazard: Git exports GIT_DIR / GIT_INDEX_FILE (and related bindings)
+# into this process. Before launching preflight, source
+# scrub-hook-exported-git-env.sh so a test that runs `git -C <tmpdir> …` cannot
+# commit into the ambient repository. See that file and
+# test/pre_push_git_env_scrub.test.mjs.
 set -euo pipefail
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || true)"
@@ -78,6 +84,13 @@ if [[ -n "${PREPUSH_EXTRA_ARGS:-}" ]]; then
   extra=( ${PREPUSH_EXTRA_ARGS} )
   args+=("${extra[@]}")
 fi
+
+# Range detection above still needs the hook-exported bindings. Drop them now so
+# every preflight child resolves git from the working tree instead of writing
+# into the ambient repository through the inherited GIT_DIR.
+# shellcheck source=scrub-hook-exported-git-env.sh
+source "$ROOT/tools/git-hooks/scrub-hook-exported-git-env.sh"
+
 # "${args[@]}" is unbound under set -u when the array is empty (bash 3.2+/set -u).
 if ((${#args[@]})); then
   preflight_cmd=("$A11Y_RUNNER" "$PREFLIGHT" "${args[@]}")
