@@ -11,14 +11,28 @@ cd "$PROJECT_ROOT"
 # shellcheck source=git-hooks/scrub-hook-exported-git-env.sh
 source "$PROJECT_ROOT/tools/git-hooks/scrub-hook-exported-git-env.sh"
 
-# tools/build_primary_documents.mjs defaults its build clock to new Date().
-# This run checks those outputs (below), then runs a multi-minute test suite
-# that re-derives some of them, then (in --full) a local site build writes
-# them again -- three separate moments that must agree with each other, not
-# with a fresh wall clock each time. Pin one instant here and every one of
-# those calls (the CLI's --build-day fallback, and primaryDocumentOutputs()'s
-# own default) resolves to it instead of racing real time across the run.
-export CROL_BUILD_DAY="${CROL_BUILD_DAY:-$(date -u +%Y-%m-%dT%H:%M:%S.000Z)}"
+# tools/build_primary_documents.mjs defaults its build clock to new Date()
+# when CROL_BUILD_DAY is unset. CI leaves the variable unset, so
+# primaryDocumentOutputs keeps a null clock and does not re-filter the
+# committed open-solicitation snapshot. This local run checks those outputs,
+# then runs a multi-minute test suite that re-derives some of them, then (in
+# --full) a local site build writes them again -- three separate moments that
+# must agree with each other. Pin one instant here so every one of those calls
+# (the CLI's --build-day fallback, and primaryDocumentOutputs()'s own default)
+# resolves to it instead of racing real time across the run.
+#
+# Default that instant from the pinned money-open snapshot's own vintage
+# (open_as_of, then generated_at, then retrieved_at) via
+# tools/resolve_preflight_build_day.mjs — the same fields
+# test/functional/assets/fixture_clock.py uses for browser checks. Pinning
+# wall-clock "today" empties /browse/contracts/ once the calendar walks past
+# the snapshot's deadlines. An explicit CROL_BUILD_DAY in the environment
+# still wins. CITYSCROLL_TEST_TIME_SHIFT_DAYS continues to shift Date.now for
+# time-travel variants; it does not replace this build-day pin.
+if [[ -z "${CROL_BUILD_DAY:-}" ]]; then
+  CROL_BUILD_DAY="$(node "$PROJECT_ROOT/tools/resolve_preflight_build_day.mjs")"
+fi
+export CROL_BUILD_DAY
 
 RUN_READING_LEVEL=0
 RUN_FULL=0
@@ -68,6 +82,10 @@ Options:
 Notes:
   - --full enables Playwright-based local validation for axe + runtime stray-English.
   - A full run emits a JSON receipt with commands, versions, statuses, timestamps, and git head.
+  - CROL_BUILD_DAY defaults to the committed money-open snapshot vintage
+    (site/data/money_default_open.json via tools/resolve_preflight_build_day.mjs).
+    Set CROL_BUILD_DAY explicitly to override. Time-travel runs still honor
+    CITYSCROLL_TEST_TIME_SHIFT_DAYS for the process clock.
 EOF
 }
 
