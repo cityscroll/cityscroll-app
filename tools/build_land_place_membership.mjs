@@ -25,9 +25,9 @@ import {
   LAND_PLACE_EVIDENCE_DIR,
   LAND_PLACE_EVIDENCE_SHARD_COUNT,
   LAND_PLACE_MEMBERSHIP_PATH,
-  buildLandPlaceMembership,
   landPlaceEvidenceShardPath,
 } from "../site/land_place_membership.mjs";
+import { buildLandPlaceMembershipFromSources } from "../site/land_place_refresh.mjs";
 import { PARCEL_GEOGRAPHY_MANIFEST_PATH } from "../site/parcel_geography.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -86,7 +86,9 @@ export function buildLandPlaceMembershipFromRepo(root = ROOT) {
     parcel_manifest: parcelManifest ? sha256File(root, PARCEL_GEOGRAPHY_MANIFEST_PATH) : null,
   };
 
-  const built = buildLandPlaceMembership({
+  // Share generation-id stamping with the refresh publication path so --check
+  // agrees with tools/land_place_refresh.mjs live mirrors.
+  const built = buildLandPlaceMembershipFromSources({
     catalog,
     bblIndex,
     loadParcelShard,
@@ -94,13 +96,19 @@ export function buildLandPlaceMembershipFromRepo(root = ROOT) {
     artifactHashes,
   });
 
-  const indexText = stableStringify(built.index);
+  const indexText = stableStringify(built.indexDoc);
   const evidenceTexts = {};
   for (const [key, shard] of Object.entries(built.evidenceShards)) {
     evidenceTexts[key] = stableStringify(shard);
   }
 
-  return { ...built, indexText, evidenceTexts };
+  return {
+    index: built.indexDoc,
+    evidenceShards: built.evidenceShards,
+    inputHashes: built.inputHashes,
+    indexText,
+    evidenceTexts,
+  };
 }
 
 function expectedEvidenceKeys() {

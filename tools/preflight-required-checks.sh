@@ -388,6 +388,7 @@ family_static_standards() {
   run_and_fail node tools/build_bbl_mappluto_centroids.mjs --check
   run_and_fail node tools/build_land_project_catalog.mjs --check
   run_and_fail node tools/build_land_place_membership.mjs --check
+  run_and_fail node tools/land_place_refresh.mjs --check
   run_and_fail node tools/build_land_project_map_points.mjs --check
   run_and_fail node tools/build_land_authority_summary.mjs --check
   run_and_fail node tools/build_council_land_matter_links.mjs --check

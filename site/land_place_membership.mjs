@@ -393,23 +393,6 @@ export function buildLandPlaceMembership(inputs = {}) {
     byGeographyOut[type] = sortedPlaces;
   }
 
-  // Stable evidence shard project ordering.
-  const evidenceShards = {};
-  for (const [key, shard] of [...evidenceByShard.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
-    const projectIds = Object.keys(shard.projects).sort();
-    const projectsOut = {};
-    for (const projectId of projectIds) {
-      projectsOut[projectId] = shard.projects[projectId];
-    }
-    evidenceShards[key] = {
-      schema: shard.schema,
-      key: shard.key,
-      association_kind: shard.association_kind,
-      project_count: projectIds.length,
-      projects: projectsOut,
-    };
-  }
-
   const catalogContentId = catalog.generation?.content_id ?? null;
   const sourceDates = {
     catalog_content_id: catalogContentId,
@@ -430,6 +413,26 @@ export function buildLandPlaceMembership(inputs = {}) {
     sourceDates,
     bblSourceMissing,
   });
+  const generationId = inputs.generationId || contentId;
+
+  // Stable evidence shard project ordering; stamp the generation id so live
+  // evidence and generation-published copies agree.
+  const evidenceShards = {};
+  for (const [key, shard] of [...evidenceByShard.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+    const projectIds = Object.keys(shard.projects).sort();
+    const projectsOut = {};
+    for (const projectId of projectIds) {
+      projectsOut[projectId] = shard.projects[projectId];
+    }
+    evidenceShards[key] = {
+      schema: shard.schema,
+      key: shard.key,
+      association_kind: shard.association_kind,
+      generation_id: generationId,
+      project_count: projectIds.length,
+      projects: projectsOut,
+    };
+  }
 
   const index = {
     schema: LAND_PLACE_MEMBERSHIP_SCHEMA,
@@ -470,6 +473,11 @@ export function buildLandPlaceMembership(inputs = {}) {
     generation: {
       derivation: "node tools/build_land_place_membership.mjs",
       content_id: contentId,
+      id: generationId,
+      built_at: inputs.builtAt
+        || sourceDates.catalog_materialized_at
+        || sourceDates.bbl_materialized_at
+        || null,
     },
   };
 
