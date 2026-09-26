@@ -287,7 +287,7 @@ test("A3: address strings and coordinates stay out of share, watch, and analytic
   const associations = loadAssociations();
   const location = makeLocation("https://cityscroll.org/community-boards/?geo=nta2020%3ABK1203");
   const history = makeHistory(location);
-  const { container } = mountDocument(scorecardShell(
+  const { doc, container } = mountDocument(scorecardShell(
     renderBoardNeighborhoodDirectoryHtml(associations, { selectedGeo: "nta2020:BK1203" }),
   ), { containerClass: "scorecard-host" });
   const root = container.querySelector("[data-community-board-root]");
@@ -307,7 +307,15 @@ test("A3: address strings and coordinates stay out of share, watch, and analytic
     geolocation: fakeGeo,
   });
   assert.ok(binder);
+  const addressInput = root.querySelector("[data-board-exact-address-input]");
+  assert.ok(addressInput);
+  addressInput.value = "810 East 16th Street Brooklyn";
+  assert.equal(addressInput.selectionStart, 0);
+  assert.equal(addressInput.selectionEnd, 0);
   binder.open({ focus: true });
+  assert.equal(doc.activeElement, addressInput);
+  assert.equal(addressInput.selectionStart, 0);
+  assert.equal(addressInput.selectionEnd, addressInput.value.length);
   root.querySelector("[data-board-exact-address-location]").dispatchEvent(new FakeEvent("click"));
   assert.equal(denied, true);
   const denial = binder.getResult();
@@ -315,13 +323,10 @@ test("A3: address strings and coordinates stay out of share, watch, and analytic
   assert.equal(denial.recovery.reason, BOARD_EXACT_ADDRESS_RECOVERY.GEOLOCATION_DENIED);
 
   // Typed address and neighborhood entry remain usable after denial.
-  const addressInput = root.querySelector("[data-board-exact-address-input]");
   const neighborhoodSelect = root.querySelector("[data-board-neighborhood-select]");
-  assert.ok(addressInput);
   assert.ok(neighborhoodSelect);
   assert.equal(addressInput.hasAttribute("disabled"), false);
   assert.equal(neighborhoodSelect.hasAttribute("disabled"), false);
-  addressInput.value = "810 East 16th Street Brooklyn";
   assert.equal(addressInput.value, "810 East 16th Street Brooklyn");
   const neighborhood = mountBoardNeighborhoodDirectory(root, {
     associations,
@@ -338,7 +343,7 @@ test("A4: browser binder covers refinement focus, clear, denial, retry, and retu
   const associations = loadAssociations();
   const location = makeLocation("https://cityscroll.org/community-boards/?geo=nta2020%3ABK1203");
   const history = makeHistory(location);
-  const { container } = mountDocument(scorecardShell(
+  const { doc, container } = mountDocument(scorecardShell(
     renderBoardNeighborhoodDirectoryHtml(associations, { selectedGeo: "nta2020:BK1203" }),
   ), { containerClass: "scorecard-host" });
   const root = container.querySelector("[data-community-board-root]");
@@ -390,9 +395,18 @@ test("A4: browser binder covers refinement focus, clear, denial, retry, and retu
   assert.equal(input.value, "");
 
   // Return to neighborhood results closes the panel and keeps neighborhood chrome.
+  // Focus-suppressed open must leave the address input unfocused so the polarity can fail.
+  const heading = root.querySelector("#scorecard-neighborhood-heading");
+  assert.ok(heading);
+  heading.focus({ preventScroll: true });
+  assert.equal(doc.activeElement, heading);
+  input.value = "keep me unfocused";
   binder.open({ focus: false });
+  assert.notEqual(doc.activeElement, input);
+  assert.equal(doc.activeElement, heading);
   root.querySelector("[data-board-exact-address-back]").dispatchEvent(new FakeEvent("click"));
   assert.equal(panel.hidden, true);
+  assert.equal(doc.activeElement, heading);
   assert.ok(root.querySelector("[data-board-neighborhood-results]"));
   assert.ok(root.querySelector("[data-board-neighborhood-select]"));
 
