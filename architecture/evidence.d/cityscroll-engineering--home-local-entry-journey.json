@@ -20,6 +20,14 @@
     {
       "id": "home-local-entry-capture-manifest",
       "path": "docs/evidence/home-local-entry-journey/capture-manifest.json"
+    },
+    {
+      "id": "home-local-entry-capture-delivery",
+      "path": "docs/evidence/home-local-entry-journey/delivery.json"
+    },
+    {
+      "id": "home-local-entry-capture-readme",
+      "path": "docs/evidence/home-local-entry-journey/README.md"
     }
   ]
 }

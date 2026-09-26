@@ -2,173 +2,685 @@
   "schema": "cityscroll.render_capture_manifest.v1",
   "feature": "home-local-entry-journey",
   "public_alias": "c0b9b1f319b51",
-  "capture_mode": "headless_playwright_local_site",
-  "capture_run_id": "aa8742ed-b85a-4f31-9f93-3851a4d5e714",
-  "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
-  "grounded_at": "d79b8e935d02af2c757afd434da636f2b12ad66e",
-  "data_vintage": "PAD 26b; parcel-geography pluto_25v4 (mappluto_published_latitude_longitude); nta2020 26B; community/council 2026-05-26; precincts 26B",
+  "capture_mode": "headless-playwright-production-served-site",
+  "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+  "base": "https://cityscroll.org/",
+  "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
+  "repository_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+  "grounded_at": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+  "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+  "revision_format": "served artifact-manifest source_commit_sha",
+  "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+  "required_ancestor": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+  "required_ancestor_contained": true,
   "image_binaries_committed": false,
-  "image_policy": "Screenshots stay under the ignored local capture directory; only this manifest is committed.",
-  "local_image_dir_ignored": "task-scratch/home-local-entry-journey-screenshots",
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed. Externally retained https screenshot_url values are required. All captures in this packet share capture_run_id and were captured in this run. Because the host is content-addressed, a deterministic page keeps the same hosted address across runs, so neither the digest nor the address proves a fresh execution; the run_receipt supplies that proof - per row the live upload exchange and the per-request served headers (Date, CF-Ray, served revision), plus an in-run demonstration of the host deduplication.",
+  "surface": "Homepage place-entry journeys into Near You",
+  "verifier": "node --test test/home_local_entry_journey.test.mjs",
+  "captured_at": "2026-09-26T19:24:23Z",
+  "local_image_dir_ignored": "home-local-entry-journey-screenshots (local ignored dir under task scratch)",
   "route": "/",
   "exact_links": [
     "/",
     "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
     "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings"
   ],
+  "run_receipt": {
+    "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+    "base": "https://cityscroll.org/",
+    "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+    "run_started_at": "2026-09-26T19:24:23Z",
+    "run_finished_at": "2026-09-26T19:24:58Z",
+    "host": "catbox.moe",
+    "note": "Every capture row is backed by evidence only this run could have produced: the live upload HTTP exchange, the per-request served response headers (Date, CF-Ray, served revision) observed while the page loaded, and the shared capture_run_id stamped inside this run window. Screenshot addresses may repeat across runs because the host deduplicates identical bytes, as the demonstration below shows.",
+    "host_dedup_demonstration": {
+      "note": "The screenshot host is content-addressed: identical bytes return the same file URL, so a deterministic page's screenshot keeps the same address across runs; a one-byte-altered copy returns a different URL.",
+      "host": "catbox.moe",
+      "first_upload": {
+        "sha256": "4fed1ca0afc9995773387c95919da739cfb9fb273070030a41709168534feecb",
+        "returned_url": "https://files.catbox.moe/8l6iwz.bin",
+        "http_status": 200,
+        "requested_at": "2026-09-26T19:24:47Z",
+        "responded_at": "2026-09-26T19:24:47Z",
+        "elapsed_seconds": 0.379
+      },
+      "repeat_same_bytes": {
+        "sha256": "4fed1ca0afc9995773387c95919da739cfb9fb273070030a41709168534feecb",
+        "returned_url": "https://files.catbox.moe/8l6iwz.bin",
+        "http_status": 200,
+        "requested_at": "2026-09-26T19:24:47Z",
+        "responded_at": "2026-09-26T19:24:47Z",
+        "elapsed_seconds": 0.338
+      },
+      "altered_one_byte": {
+        "sha256": "b44ef913d4f2477f1e8295787972022642fafeb2c3561a3658a8dd49c96c37f6",
+        "returned_url": "https://files.catbox.moe/aewwq4.bin",
+        "http_status": 200,
+        "requested_at": "2026-09-26T19:24:47Z",
+        "responded_at": "2026-09-26T19:24:48Z",
+        "elapsed_seconds": 0.354
+      },
+      "same_bytes_returned_same_url": true,
+      "altered_bytes_returned_different_url": true
+    }
+  },
   "captures": [
     {
       "name": "home-initial-desktop",
       "route": "/",
-      "mode": "local_chromium",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
-      "assertion": "homepage place entry present; Use my location present; address/place input present; topic search and Following remain reachable; horizontal overflow \u2264 1px",
-      "sha256": "46f3436237ad37c73ce5c5288c49b30b4ad4d8e91874f503f20dd2c1306c0240",
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "Deployed homepage place entry present; Use my location present; address/place input present; topic search and Following remain reachable; horizontal overflow \u2264 1px",
+      "sha256": "b6ef03c92b04e73c9bed78e464890e4e3ca8b37bae40afb689f6c54407542af8",
       "file": null,
-      "capture_run_id": "aa8742ed-b85a-4f31-9f93-3851a4d5e714",
-      "snapshot": {
+      "screenshot_url": "https://files.catbox.moe/cawhq4.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "direct",
+      "served_values": {
         "heading": "What's near you?",
         "has_location_button": true,
         "has_place_input": true,
         "has_topic_search": true,
         "has_following_link": true,
         "overflow_x": 0,
-        "mounted": true
+        "mounted": true,
+        "path": "/"
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:26Z",
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:23 GMT",
+            "cf-ray": "a414a6080a1c786b-EWR",
+            "cf-cache-status": "DYNAMIC",
+            "age": null,
+            "last-modified": null,
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/cawhq4.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:48Z",
+          "responded_at": "2026-09-26T19:24:48Z",
+          "elapsed_seconds": 0.685
+        },
+        "click_observation": {
+          "navigation": "direct"
+        }
       }
     },
     {
       "name": "home-midwood-result-desktop",
       "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
-      "mode": "local_chromium",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
-      "assertion": "typed 810 East 16th Street from / selects Midwood; shared URL carries geography only",
-      "sha256": "9c21c03011b002ec02ce3d066dff9a5e84877fa05618c786562564c9ae09de23",
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "Typed 810 East 16th Street from deployed / selects Midwood; shared URL carries geography only",
+      "sha256": "1175f2b40c3707a08895b8d5339773d75c08fc8dd0b9e29048db0a50f16c1da3",
       "file": null,
-      "capture_run_id": "aa8742ed-b85a-4f31-9f93-3851a4d5e714",
-      "snapshot": {
-        "href": "http://127.0.0.1:55213/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
-        "geo": "nta2020:BK1403"
+      "screenshot_url": "https://files.catbox.moe/r4wff1.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "typed-submit",
+      "served_values": {
+        "href": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+        "path": "/near-you/",
+        "geo": "nta2020:BK1403",
+        "geo_in_url": true,
+        "ephemeral_leak": false
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:29Z",
+        "page_load": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:27 GMT",
+            "cf-ray": "a414a61dfed2436a-EWR",
+            "cf-cache-status": null,
+            "age": null,
+            "last-modified": null,
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/r4wff1.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:48Z",
+          "responded_at": "2026-09-26T19:24:49Z",
+          "elapsed_seconds": 0.866
+        },
+        "click_observation": {
+          "navigation": "typed-submit"
+        }
       }
     },
     {
       "name": "home-kensington-result-desktop",
       "route": "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
-      "mode": "local_chromium",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
-      "assertion": "typed Kensington from / selects BK1203 Near You state",
-      "sha256": "2196907336d6254b41ca2684399144275fa85ac5de504943bfeda52536fdbef4",
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "Typed Kensington from deployed / selects BK1203 Near You state",
+      "sha256": "f581e5f0b3f2ac6dfa8dd09a527c7b7cb4213985441e0be4579799ee92c7328e",
       "file": null,
-      "capture_run_id": "aa8742ed-b85a-4f31-9f93-3851a4d5e714",
-      "snapshot": {
-        "href": "http://127.0.0.1:55213/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
-        "geo": "nta2020:BK1203"
+      "screenshot_url": "https://files.catbox.moe/ha3yqk.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "typed-submit",
+      "served_values": {
+        "href": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+        "path": "/near-you/",
+        "geo": "nta2020:BK1203",
+        "geo_in_url": true,
+        "ephemeral_leak": false
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:31Z",
+        "page_load": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:30 GMT",
+            "cf-ray": "a414a6314f719bb4-EWR",
+            "cf-cache-status": null,
+            "age": null,
+            "last-modified": null,
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/ha3yqk.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:49Z",
+          "responded_at": "2026-09-26T19:24:50Z",
+          "elapsed_seconds": 0.852
+        },
+        "click_observation": {
+          "navigation": "typed-submit"
+        }
       }
     },
     {
       "name": "home-geolocation-grant-desktop",
       "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
-      "mode": "local_chromium",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
-      "assertion": "controlled Midwood parcel geolocation grant selects BK1403",
-      "sha256": "a63eb0c5a3c38d5543ac3b9783cd468c0707f7924eb72f2bf37df0094dacafb1",
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "Controlled Midwood parcel geolocation grant on deployed / selects BK1403",
+      "sha256": "fd3baeb9005e4f30ed323a9acadae5cfdd833945e021881d453fe625f85a4772",
       "file": null,
-      "capture_run_id": "aa8742ed-b85a-4f31-9f93-3851a4d5e714",
-      "snapshot": {
-        "href": "http://127.0.0.1:55213/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
-        "geo": "nta2020:BK1403"
+      "screenshot_url": "https://files.catbox.moe/kz1a6w.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "geolocation-grant",
+      "served_values": {
+        "href": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+        "path": "/near-you/",
+        "geo": "nta2020:BK1403",
+        "geo_in_url": true,
+        "ephemeral_leak": false
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:34Z",
+        "page_load": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:32 GMT",
+            "cf-ray": "a414a640cddb43a9-EWR",
+            "cf-cache-status": "HIT",
+            "age": "4",
+            "last-modified": "Sat, 26 Sep 2026 19:24:27 GMT",
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/kz1a6w.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:50Z",
+          "responded_at": "2026-09-26T19:24:51Z",
+          "elapsed_seconds": 0.816
+        },
+        "click_observation": {
+          "navigation": "geolocation-grant"
+        }
+      }
+    },
+    {
+      "name": "home-geolocation-denial-desktop",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "Browser geolocation permission denied on deployed / keeps the resident on the homepage with a usable place chooser and permission-recovery copy",
+      "sha256": "0196d4a57b7fcd811f30f569dc6d626836485c72fa106544261d7c4f166921bf",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/pyilch.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "geolocation-denial",
+      "served_values": {
+        "path": "/",
+        "status_text": "Location permission was not granted. Choose an area from the list.",
+        "input_usable": true,
+        "location_button_enabled": true,
+        "still_on_home": true
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:35Z",
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:34 GMT",
+            "cf-ray": "a414a6493b5fb2c0-EWR",
+            "cf-cache-status": "DYNAMIC",
+            "age": null,
+            "last-modified": null,
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/pyilch.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:51Z",
+          "responded_at": "2026-09-26T19:24:52Z",
+          "elapsed_seconds": 0.684
+        },
+        "click_observation": {
+          "navigation": "geolocation-denial"
+        }
+      }
+    },
+    {
+      "name": "home-geolocation-denial-recovery-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "After geolocation denial on deployed /, typing Kensington reaches BK1203 without reload or an account",
+      "sha256": "5dd396f723931cef405fe190439c19dc75333bc4b0645ec7e74ad63863aefb77",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/sbr5jh.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "geolocation-denial-recovery",
+      "served_values": {
+        "href": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+        "path": "/near-you/",
+        "geo": "nta2020:BK1203",
+        "geo_in_url": true,
+        "ephemeral_leak": false
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:37Z",
+        "page_load": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:36 GMT",
+            "cf-ray": "a414a6558ab61ea7-EWR",
+            "cf-cache-status": "HIT",
+            "age": "5",
+            "last-modified": "Sat, 26 Sep 2026 19:24:30 GMT",
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/sbr5jh.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:52Z",
+          "responded_at": "2026-09-26T19:24:53Z",
+          "elapsed_seconds": 0.918
+        },
+        "click_observation": {
+          "navigation": "geolocation-denial-recovery"
+        }
       }
     },
     {
       "name": "home-initial-phone",
       "route": "/",
-      "mode": "local_chromium",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
-      "assertion": "homepage place entry present; Use my location present; address/place input present; topic search and Following remain reachable; horizontal overflow \u2264 1px",
-      "sha256": "a25eeea9eb5853b843cecc18f9853753adc3945cdaf6144ca50e83d4cb6b0a12",
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "Deployed homepage place entry present; Use my location present; address/place input present; topic search and Following remain reachable; horizontal overflow \u2264 1px",
+      "sha256": "fe810d38a2f1da3f748bcf1fda36a4a531080ae48f912d03919f405331d5f0e2",
       "file": null,
-      "capture_run_id": "aa8742ed-b85a-4f31-9f93-3851a4d5e714",
-      "snapshot": {
+      "screenshot_url": "https://files.catbox.moe/mgy85u.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "direct",
+      "served_values": {
         "heading": "What's near you?",
         "has_location_button": true,
         "has_place_input": true,
         "has_topic_search": true,
         "has_following_link": true,
         "overflow_x": 0,
-        "mounted": true
+        "mounted": true,
+        "path": "/"
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:38Z",
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:37 GMT",
+            "cf-ray": "a414a65d8e21429e-EWR",
+            "cf-cache-status": "DYNAMIC",
+            "age": null,
+            "last-modified": null,
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/mgy85u.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:53Z",
+          "responded_at": "2026-09-26T19:24:53Z",
+          "elapsed_seconds": 0.614
+        },
+        "click_observation": {
+          "navigation": "direct"
+        }
       }
     },
     {
       "name": "home-midwood-result-phone",
       "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
-      "mode": "local_chromium",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
-      "assertion": "typed 810 East 16th Street from / selects Midwood; shared URL carries geography only",
-      "sha256": "2ac7accfe7d9713cbd6d680a7c8bd408fd633d51ab8912c50f37964523fd9d87",
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "Typed 810 East 16th Street from deployed / selects Midwood; shared URL carries geography only",
+      "sha256": "574cba2bacefbb659ad0a09e4561c4e217c0c956bac9b104af2531179c331397",
       "file": null,
-      "capture_run_id": "aa8742ed-b85a-4f31-9f93-3851a4d5e714",
-      "snapshot": {
-        "href": "http://127.0.0.1:55213/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
-        "geo": "nta2020:BK1403"
+      "screenshot_url": "https://files.catbox.moe/50pkbn.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "typed-submit",
+      "served_values": {
+        "href": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+        "path": "/near-you/",
+        "geo": "nta2020:BK1403",
+        "geo_in_url": true,
+        "ephemeral_leak": false
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:39Z",
+        "page_load": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:38 GMT",
+            "cf-ray": "a414a6659fe061a4-EWR",
+            "cf-cache-status": "HIT",
+            "age": "10",
+            "last-modified": "Sat, 26 Sep 2026 19:24:27 GMT",
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/50pkbn.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:53Z",
+          "responded_at": "2026-09-26T19:24:54Z",
+          "elapsed_seconds": 1.191
+        },
+        "click_observation": {
+          "navigation": "typed-submit"
+        }
       }
     },
     {
       "name": "home-kensington-result-phone",
       "route": "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
-      "mode": "local_chromium",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
-      "assertion": "typed Kensington from / selects BK1203 Near You state",
-      "sha256": "3b00ea8c61990de0e8b1454ba05583a564efa18781070e03fddacc28b8a09e15",
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "Typed Kensington from deployed / selects BK1203 Near You state",
+      "sha256": "d05e0deef3f036fd44fe0ebb3a032bc877e6afba2a0d5c606f77897667b5d805",
       "file": null,
-      "capture_run_id": "aa8742ed-b85a-4f31-9f93-3851a4d5e714",
-      "snapshot": {
-        "href": "http://127.0.0.1:55213/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
-        "geo": "nta2020:BK1203"
+      "screenshot_url": "https://files.catbox.moe/n6v15v.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "typed-submit",
+      "served_values": {
+        "href": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+        "path": "/near-you/",
+        "geo": "nta2020:BK1203",
+        "geo_in_url": true,
+        "ephemeral_leak": false
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:42Z",
+        "page_load": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:41 GMT",
+            "cf-ray": "a414a6790d0defa9-EWR",
+            "cf-cache-status": "HIT",
+            "age": "11",
+            "last-modified": "Sat, 26 Sep 2026 19:24:30 GMT",
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/n6v15v.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:54Z",
+          "responded_at": "2026-09-26T19:24:55Z",
+          "elapsed_seconds": 0.796
+        },
+        "click_observation": {
+          "navigation": "typed-submit"
+        }
       }
     },
     {
       "name": "home-geolocation-grant-phone",
       "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
-      "mode": "local_chromium",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
-      "assertion": "controlled Midwood parcel geolocation grant selects BK1403",
-      "sha256": "d279a01a0e957e96d14dc07d5f539126343a4b1c391498aa1ce8ec8224674559",
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "Controlled Midwood parcel geolocation grant on deployed / selects BK1403",
+      "sha256": "114fd09264cdd1e8c7c83aa2e75abf212967080d77783619c80e4dc6ebffdfc3",
       "file": null,
-      "capture_run_id": "aa8742ed-b85a-4f31-9f93-3851a4d5e714",
-      "snapshot": {
-        "href": "http://127.0.0.1:55213/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
-        "geo": "nta2020:BK1403"
+      "screenshot_url": "https://files.catbox.moe/divdgr.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "geolocation-grant",
+      "served_values": {
+        "href": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+        "path": "/near-you/",
+        "geo": "nta2020:BK1403",
+        "geo_in_url": true,
+        "ephemeral_leak": false
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:44Z",
+        "page_load": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:43 GMT",
+            "cf-ray": "a414a6857dfabe78-EWR",
+            "cf-cache-status": "HIT",
+            "age": "15",
+            "last-modified": "Sat, 26 Sep 2026 19:24:27 GMT",
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/divdgr.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:55Z",
+          "responded_at": "2026-09-26T19:24:56Z",
+          "elapsed_seconds": 1.185
+        },
+        "click_observation": {
+          "navigation": "geolocation-grant"
+        }
+      }
+    },
+    {
+      "name": "home-geolocation-denial-phone",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "Browser geolocation permission denied on deployed / keeps the resident on the homepage with a usable place chooser and permission-recovery copy",
+      "sha256": "e1cc4059d1f74a39fe9de0846ac9dad31cb92eb8cb8d74f4b99c25b127a05116",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/iw2xhc.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "geolocation-denial",
+      "served_values": {
+        "path": "/",
+        "status_text": "Location permission was not granted. Choose an area from the list.",
+        "input_usable": true,
+        "location_button_enabled": true,
+        "still_on_home": true
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:45Z",
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:44 GMT",
+            "cf-ray": "a414a68cacd3f3e6-EWR",
+            "cf-cache-status": "DYNAMIC",
+            "age": null,
+            "last-modified": null,
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/iw2xhc.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:56Z",
+          "responded_at": "2026-09-26T19:24:57Z",
+          "elapsed_seconds": 0.752
+        },
+        "click_observation": {
+          "navigation": "geolocation-denial"
+        }
+      }
+    },
+    {
+      "name": "home-geolocation-denial-recovery-phone",
+      "route": "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "data_vintage": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "After geolocation denial on deployed /, typing Kensington reaches BK1203 without reload or an account",
+      "sha256": "7dcb16d19ed59d7fc678d34e36e071c103a1c5e03594ef0b947d40e8d093f3d1",
+      "file": null,
+      "screenshot_url": "https://files.catbox.moe/oo28ww.png",
+      "source": "headless-playwright-production-served-site",
+      "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+      "navigation": "geolocation-denial-recovery",
+      "served_values": {
+        "href": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+        "path": "/near-you/",
+        "geo": "nta2020:BK1203",
+        "geo_in_url": true,
+        "ephemeral_leak": false
+      },
+      "run_receipt": {
+        "capture_run_id": "13c5b174-2ea3-46be-b532-1970cdd97726",
+        "captured_at": "2026-09-26T19:24:47Z",
+        "page_load": {
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+          "http_status": 200,
+          "served_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+          "headers": {
+            "date": "Sat, 26 Sep 2026 19:24:46 GMT",
+            "cf-ray": "a414a693fbf3577b-EWR",
+            "cf-cache-status": "HIT",
+            "age": "15",
+            "last-modified": "Sat, 26 Sep 2026 19:24:30 GMT",
+            "etag": null
+          }
+        },
+        "upload": {
+          "returned_url": "https://files.catbox.moe/oo28ww.png",
+          "http_status": 200,
+          "requested_at": "2026-09-26T19:24:57Z",
+          "responded_at": "2026-09-26T19:24:58Z",
+          "elapsed_seconds": 0.755
+        },
+        "click_observation": {
+          "navigation": "geolocation-denial-recovery"
+        }
       }
     }
   ]
