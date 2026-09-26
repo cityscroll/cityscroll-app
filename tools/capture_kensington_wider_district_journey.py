@@ -9,8 +9,9 @@ Every list and clicked-detail screenshot in a written packet must come from the
 same capture run (shared capture_run_id). The tool never copies screenshot URLs
 or digests from a prior manifest. Deliberate reuse of another packet's image must
 record an explicit reused_from source (feature, revision, and run or captured_at).
-Identical page pixels may share a digest across independently captured packets;
-coherence is proved by the shared capture_run_id and clicked-from-list navigation.
+A row whose image digest already appears anywhere else in the retained evidence
+tree, or in this manifest's previous committed version, must carry reused_from.
+Silent reuse while asserting a fresh coherent run is refused.
 
 The capture refuses to run until the served Pages artifact-manifest revision
 contains the recorded landed wider-district delivery commit as a git ancestor.
@@ -41,6 +42,9 @@ from deployed_capture_ancestor import (  # noqa: E402
     load_recorded_delivery,
     require_served_page_revision_contains_delivery,
     revision_contains_ancestor,
+)
+from capture_image_provenance import (  # noqa: E402
+    refuse_silent_image_reuse,
 )
 from near_you_detail_observer import (  # noqa: E402
     fetch_document_html,
@@ -297,6 +301,13 @@ def validate_manifest(manifest: dict) -> None:
                 assert values.get("opened_from_list_click") is True
                 assert row.get("navigation") == "clicked-from-list"
 
+    refuse_silent_image_reuse(
+        manifest,
+        evidence_root=ROOT / "docs" / "evidence",
+        manifest_path=MANIFEST_PATH,
+        cwd=ROOT,
+    )
+
 
 def capture_row(
     *,
@@ -436,7 +447,8 @@ def capture(base: str, host: bool) -> dict:
         "image_policy": (
             "Screenshots may exist under the local task scratch directory; only this manifest is committed. "
             "Externally retained https screenshot_url values are required. "
-            "All captures in this packet share capture_run_id; silent reuse of another packet's image is forbidden."
+            "All captures in this packet share capture_run_id; silent reuse of another packet's image "
+            "or of this manifest's previous committed digests is forbidden without reused_from."
         ),
         "surface": "Near You Kensington wider-district journey",
         "verifier": "node --test test/kensington_wider_district_journey.test.mjs",
