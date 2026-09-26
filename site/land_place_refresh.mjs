@@ -801,6 +801,7 @@ export function createLandPlaceRefresh(adapters = {}) {
     injectFailure = null,
     injectMixedGeneration = false,
     builtAt = null,
+    bootstrapCommitted = true,
   } = {}) {
     const prior = previousReceipt
       || (typeof loadPreviousReceipt === "function" ? loadPreviousReceipt() : null)
@@ -868,6 +869,54 @@ export function createLandPlaceRefresh(adapters = {}) {
         || sources.catalog?.source_dates?.warehouse_materialized_at
         || indexDocBuiltAt(sources, now),
     });
+
+    // CI / materialization checkouts keep ACTIVE committed but gitignore the
+    // receipt. Without a prior receipt, hash planning would rebuild and rewrite
+    // ACTIVE under time-travel. Seed the receipt and leave bytes alone when the
+    // active generation already matches current inputs.
+    if (
+      !prior
+      && activeBefore
+      && !force
+      && !injectFailure
+      && !injectMixedGeneration
+      && bootstrapCommitted
+      && clean(indexDoc.generation?.id) === clean(activeBefore)
+    ) {
+      const receipt = {
+        schema: LAND_PLACE_REFRESH_RECEIPT_SCHEMA,
+        started_at: now,
+        completed_at: now,
+        failed_at: null,
+        activated_at: prior?.activated_at || null,
+        status: "unchanged",
+        plan: {
+          schema: LAND_PLACE_REFRESH_PLAN_SCHEMA,
+          work_required: false,
+          rebuild_all: false,
+          rebuild_project_ids: Object.freeze([]),
+          changed_inputs: Object.freeze([]),
+          reasons: Object.freeze(["bootstrap_committed_inputs"]),
+        },
+        input_hashes: inputHashes,
+        source_dates: indexDoc.source_dates,
+        project_count: indexDoc.project_count,
+        active_generation: activeBefore,
+        previous_active_generation: activeBefore,
+        last_good_preserved: false,
+        message: "seeded refresh receipt from committed inputs; generation bytes unchanged",
+      };
+      if (typeof saveReceipt === "function") saveReceipt(receipt);
+      return {
+        ok: true,
+        status: "unchanged",
+        plan: receipt.plan,
+        receipt,
+        active_generation: activeBefore,
+        index: indexDoc,
+        evidenceShards,
+      };
+    }
 
     const forceRun = Boolean(force || injectFailure || injectMixedGeneration);
     const plan = planLandPlaceRefresh({

@@ -12,6 +12,7 @@ import {
   existsSync,
   mkdirSync,
   readFileSync,
+  rmSync,
   writeFileSync,
 } from "node:fs";
 import path from "node:path";
@@ -563,4 +564,37 @@ test("production refresh command backfills and --check validates active consumer
     assert.equal(check.status, 0, check.stderr || check.stdout);
     assert.match(check.stdout, /ok land-place-refresh/);
   });
+});
+
+test("committed ACTIVE stays byte-identical when inputs already match without a receipt", () => {
+  const publicDir = path.join(ROOT, LAND_PLACE_PUBLIC_DIR);
+  const activePath = path.join(publicDir, LAND_PLACE_ACTIVE_POINTER);
+  const indexPath = path.join(ROOT, LAND_PLACE_MEMBERSHIP_PATH);
+  assert.ok(existsSync(activePath), "committed ACTIVE present");
+  const activeBeforeBytes = readFileSync(activePath);
+  const indexBeforeBytes = readFileSync(indexPath);
+
+  // Drop any local gitignored receipt so this matches a CI checkout.
+  const receiptPath = path.join(publicDir, "refresh-receipt.json");
+  const hadReceipt = existsSync(receiptPath);
+  const receiptBackup = hadReceipt ? readFileSync(receiptPath) : null;
+  if (hadReceipt) rmSync(receiptPath, { force: true });
+
+  try {
+    const result = spawnSync(
+      process.execPath,
+      [path.join(ROOT, "tools/land_place_refresh.mjs")],
+      { cwd: ROOT, encoding: "utf8" },
+    );
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+    const summary = JSON.parse(result.stdout.trim().split("\n").at(-1));
+    assert.equal(summary.ok, true);
+    assert.equal(summary.status, "unchanged");
+    // Committed ACTIVE must stay byte-identical when inputs already match (CI
+    // checkouts have no gitignored receipt; bootstrap must not rewrite tracked files).
+    assert.equal(readFileSync(activePath).equals(activeBeforeBytes), true);
+    assert.equal(readFileSync(indexPath).equals(indexBeforeBytes), true);
+  } finally {
+    if (hadReceipt) writeFileSync(receiptPath, receiptBackup);
+  }
 });
