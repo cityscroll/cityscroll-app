@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/procurement-intent-public-surfaces",
+  "status": "implemented",
+  "fingerprint": "procurement-intent-public-surfaces.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "procurement-intent-public-surfaces-module",
+      "path": "site/procurement_intent_public_surfaces.mjs"
+    },
+    {
+      "id": "procurement-intent-public-surfaces-test",
+      "path": "test/procurement_intent_public_surfaces.test.mjs"
+    },
+    {
+      "id": "procurement-intent-public-authorization-observer",
+      "path": "tools/observe_procurement_intent_public_authorization.mjs"
+    },
+    {
+      "id": "procurement-intent-public-authorization-readme",
+      "path": "docs/evidence/procurement-intent-radar/README.md"
+    }
+  ]
+}

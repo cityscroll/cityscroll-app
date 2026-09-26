@@ -6370,3 +6370,66 @@ select {
 .follow-discovery-guide-help { margin: 0; }
 .near-hero .follow-discovery,
 .now-surface .follow-discovery { margin-top: 10px; }
+
+/* Admission-gated procurement-intent lifecycle panels on meeting/procurement detail. */
+.procurement-intent-lifecycle {
+  margin: 1.1rem 0 1.4rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-border, #d6d1c7);
+  border-radius: 8px;
+  background: var(--color-surface, #fff);
+}
+.procurement-intent-lifecycle h2 {
+  margin: 0 0 0.45rem;
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+.procurement-intent-status,
+.procurement-intent-first-signal,
+.procurement-intent-advance,
+.procurement-intent-window {
+  margin: 0.25rem 0;
+  color: var(--color-text, #1b1b1b);
+  font: 600 0.95rem/1.45 ui-sans-serif, system-ui, sans-serif;
+}
+.procurement-intent-evidence {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.75rem 0 0.4rem;
+}
+.procurement-intent-evidence > div {
+  padding: 0.45rem 0.55rem;
+  border-left: 3px solid var(--color-border, #d6d1c7);
+  background: var(--color-bg-soft, #f7f5f0);
+}
+.procurement-intent-evidence > div[data-evidence-state="source_fact"] {
+  border-left-color: #166b70;
+}
+.procurement-intent-evidence > div[data-evidence-state="cityscroll_interpretation"] {
+  border-left-color: #765500;
+}
+.procurement-intent-evidence > div[data-evidence-state="later_observation"] {
+  border-left-color: #176334;
+}
+.procurement-intent-evidence dt {
+  font: 700 0.72rem/1.3 ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-text-muted, #666);
+}
+.procurement-intent-evidence dd {
+  margin: 0.15rem 0 0;
+  font: 0.95rem/1.5 ui-sans-serif, system-ui, sans-serif;
+}
+.procurement-intent-realizations {
+  margin: 0.45rem 0 0.2rem;
+  padding-inline-start: 1.15rem;
+}
+.procurement-intent-source-details {
+  margin-top: 0.55rem;
+}
+.procurement-intent-source-details > summary {
+  cursor: pointer;
+  color: var(--color-text-muted, #666);
+  font: 0.85rem/1.4 ui-sans-serif, system-ui, sans-serif;
+}
