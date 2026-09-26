@@ -889,6 +889,27 @@ async function loadGeographyLayer(type) {
   return layer;
 }
 
+function markNearGeographyMapLoading() {
+  if (!root) return;
+  root.dataset.nearGeographyMapState = "loading";
+  delete root.dataset.nearGeographyLayerCount;
+}
+
+function markNearGeographyMapReady(layerDoc) {
+  if (!root) return;
+  const counted = Array.isArray(layerDoc?.features)
+    ? layerDoc.features.length
+    : (geographyMapController?.getState?.()?.activeFeatureCount || 0);
+  root.dataset.nearGeographyLayerCount = String(counted);
+  root.dataset.nearGeographyMapState = "ready";
+}
+
+function markNearGeographyMapFailed() {
+  if (!root) return;
+  root.dataset.nearGeographyMapState = "failed";
+  delete root.dataset.nearGeographyLayerCount;
+}
+
 function refreshGeographyAreasList(type, layerDoc) {
   const panel = root.querySelector("#near-area-list")
     || root.querySelector("[data-geography-areas]");
@@ -935,81 +956,89 @@ function setActiveLayerButtons(type) {
 
 async function activateGeographyLayer(type, { asComparison = null } = {}) {
   if (!geographyMapController) return;
-  const state = parseGeographyNavigationState(location.search);
-  const selectedType = state.type || null;
-  const useComparison = asComparison != null
-    ? asComparison
-    : Boolean(state.key && type && type !== selectedType && type !== "nta2020");
-  if (useComparison) {
-    // Comparison is secondary: keep the selected place's primary layer, Areas
-    // directory, and friendly label while the compare dimension changes.
-    const primaryType = selectedType || "nta2020";
-    const selectedLayer = await loadGeographyLayer(primaryType);
-    const primaryDoc = {
-      type: primaryType,
-      geometry_fidelity: selectedLayer.geometry_fidelity || "simplified",
-      vintage: selectedLayer.vintage || null,
-      features: (selectedLayer.features || []).map((feature) => ({
+  markNearGeographyMapLoading();
+  try {
+    const state = parseGeographyNavigationState(location.search);
+    const selectedType = state.type || null;
+    const useComparison = asComparison != null
+      ? asComparison
+      : Boolean(state.key && type && type !== selectedType && type !== "nta2020");
+    if (useComparison) {
+      // Comparison is secondary: keep the selected place's primary layer, Areas
+      // directory, and friendly label while the compare dimension changes.
+      const primaryType = selectedType || "nta2020";
+      const selectedLayer = await loadGeographyLayer(primaryType);
+      const primaryDoc = {
+        type: primaryType,
+        geometry_fidelity: selectedLayer.geometry_fidelity || "simplified",
+        vintage: selectedLayer.vintage || null,
+        features: (selectedLayer.features || []).map((feature) => ({
+          key: feature.properties?.key || feature.key,
+          id: feature.properties?.id || feature.id,
+          type: feature.properties?.type || primaryType,
+          label: feature.properties?.label || feature.label,
+          subtype: feature.properties?.subtype ?? feature.subtype ?? null,
+          geometry: feature.geometry,
+        })),
+      };
+      geographyMapController.setActiveLayer(primaryType, primaryDoc);
+      setActiveLayerButtons(primaryType);
+      refreshGeographyAreasList(primaryType, primaryDoc);
+      const selectedFeature = primaryDoc.features.find((feature) => feature.key === state.key);
+      if (selectedFeature?.label) {
+        for (const node of root.querySelectorAll(".near-hero>h1,[data-geography-selected-label]")) {
+          node.textContent = selectedFeature.label;
+        }
+      }
+      const next = {
+        ...state,
+        compare: type,
+        ok: true,
+      };
+      writeGeographyNavigationHistory(history, location, next, { mode: "replace" });
+      await applyGeographyComparison(type);
+      if (state.key) geographyMapController.setSelectedKey(state.key);
+      await refreshOverlapDrawer();
+      markNearGeographyMapReady(primaryDoc);
+      return;
+    }
+    const layer = await loadGeographyLayer(type);
+    // loadSimplifiedNavigationLayer already projects features; pass a layer-shaped
+    // document so setActiveLayer can re-project from top-level label/id fields.
+    const layerDoc = {
+      type,
+      geometry_fidelity: layer.geometry_fidelity || "simplified",
+      vintage: layer.vintage || null,
+      features: (layer.features || []).map((feature) => ({
         key: feature.properties?.key || feature.key,
         id: feature.properties?.id || feature.id,
-        type: feature.properties?.type || primaryType,
+        type: feature.properties?.type || type,
         label: feature.properties?.label || feature.label,
         subtype: feature.properties?.subtype ?? feature.subtype ?? null,
         geometry: feature.geometry,
       })),
     };
-    geographyMapController.setActiveLayer(primaryType, primaryDoc);
-    setActiveLayerButtons(primaryType);
-    refreshGeographyAreasList(primaryType, primaryDoc);
-    const selectedFeature = primaryDoc.features.find((feature) => feature.key === state.key);
+    geographyMapController.setActiveLayer(type, layerDoc);
+    const selectedFeature = layerDoc.features.find((feature) => feature.key === state.key);
     if (selectedFeature?.label) {
-      for (const node of root.querySelectorAll(".near-hero>h1,[data-geography-selected-label]")) {
+      for (const node of root.querySelectorAll('.near-hero>h1,[data-geography-selected-label]')) {
         node.textContent = selectedFeature.label;
       }
     }
-    const next = {
-      ...state,
-      compare: type,
-      ok: true,
-    };
-    writeGeographyNavigationHistory(history, location, next, { mode: "replace" });
-    await applyGeographyComparison(type);
+    setActiveLayerButtons(type);
+    refreshGeographyAreasList(type, layerDoc);
+    if (state.key && state.compare) {
+      await applyGeographyComparison(state.compare);
+    } else {
+      geographyMapController.setComparisonLayer(null);
+    }
     if (state.key) geographyMapController.setSelectedKey(state.key);
     await refreshOverlapDrawer();
-    return;
+    markNearGeographyMapReady(layerDoc);
+  } catch (error) {
+    markNearGeographyMapFailed();
+    throw error;
   }
-  const layer = await loadGeographyLayer(type);
-  // loadSimplifiedNavigationLayer already projects features; pass a layer-shaped
-  // document so setActiveLayer can re-project from top-level label/id fields.
-  const layerDoc = {
-    type,
-    geometry_fidelity: layer.geometry_fidelity || "simplified",
-    vintage: layer.vintage || null,
-    features: (layer.features || []).map((feature) => ({
-      key: feature.properties?.key || feature.key,
-      id: feature.properties?.id || feature.id,
-      type: feature.properties?.type || type,
-      label: feature.properties?.label || feature.label,
-      subtype: feature.properties?.subtype ?? feature.subtype ?? null,
-      geometry: feature.geometry,
-    })),
-  };
-  geographyMapController.setActiveLayer(type, layerDoc);
-  const selectedFeature = layerDoc.features.find((feature) => feature.key === state.key);
-  if (selectedFeature?.label) {
-    for (const node of root.querySelectorAll('.near-hero>h1,[data-geography-selected-label]')) {
-      node.textContent = selectedFeature.label;
-    }
-  }
-  setActiveLayerButtons(type);
-  refreshGeographyAreasList(type, layerDoc);
-  if (state.key && state.compare) {
-    await applyGeographyComparison(state.compare);
-  } else {
-    geographyMapController.setComparisonLayer(null);
-  }
-  if (state.key) geographyMapController.setSelectedKey(state.key);
-  await refreshOverlapDrawer();
 }
 
 function wireGeographyLayerSwitcher() {
@@ -1065,12 +1094,17 @@ async function initializeGeographyNavigationMap() {
   const container = root.querySelector("#near-map-enhanced");
   if (!container || geographyMapController) return;
   const generation = ++geographyMapGeneration;
+  markNearGeographyMapLoading();
   if (globalThis.__CITYSCROLL_FORCE_GEOGRAPHY_MAP_FAILURE) {
+    markNearGeographyMapFailed();
     throw new Error("forced_geography_map_failure");
   }
   try {
     await waitForGeographyMapHost(container);
-    if (generation !== geographyMapGeneration || !container.isConnected) return;
+    if (generation !== geographyMapGeneration || !container.isConnected) {
+      markNearGeographyMapFailed();
+      return;
+    }
     const controller = await createGeographyNavigationMap({
       container,
       root,
@@ -1101,6 +1135,7 @@ async function initializeGeographyNavigationMap() {
       },
       onFallback: () => {
         geographyMapController = null;
+        markNearGeographyMapFailed();
       },
       onTileFailure: () => {
         // Basemap is decorative; keep local boundaries and controls.
@@ -1108,6 +1143,7 @@ async function initializeGeographyNavigationMap() {
     });
     if (generation !== geographyMapGeneration || !container.isConnected) {
       controller.destroy();
+      markNearGeographyMapFailed();
       return;
     }
     geographyMapController = controller;
@@ -1127,6 +1163,7 @@ async function initializeGeographyNavigationMap() {
     geographyMapController.getState?.();
   } catch {
     geographyMapController = null;
+    markNearGeographyMapFailed();
   }
 }
 

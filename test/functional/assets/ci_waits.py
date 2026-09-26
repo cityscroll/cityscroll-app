@@ -105,6 +105,44 @@ def wait_for_app_ready(
     )
 
 
+NEAR_YOU_GEOGRAPHY_MAP_SETTLED = """() => {
+    const root = document.querySelector("[data-near-you-root]");
+    if (!root || root.dataset.enhanced !== "true") return false;
+    const state = root.dataset.nearGeographyMapState;
+    if (state === "ready") {
+      return Number(root.dataset.nearGeographyLayerCount || 0) > 0;
+    }
+    // Enhancement gave up; the static Areas directory will not be rewritten.
+    if (state === "failed") return true;
+    const runtime = root.dataset.nearMapRuntime;
+    return runtime === "failed" || runtime === "svg";
+}"""
+
+
+def wait_for_near_you_geography_map(
+    page: Page,
+    *,
+    timeout: int = DEFAULT_WAIT_TIMEOUT_MS,
+    attempts: int = DEFAULT_WAIT_ATTEMPTS,
+    label: str = "Near you geography map settled",
+) -> None:
+    """Wait for Near You map settle before opening the Areas directory.
+
+    Enhanced map init rewrites `#near-area-list` after `data-enhanced` flips.
+    Waiting on that early flag (or a visible area link alone) races the rewrite
+    and leaves the directory disclosure closed. The page exposes
+    `data-near-geography-map-state` plus a layer count once the active layer and
+    Areas list are stable, or `failed`/`svg` when enhancement gives up.
+    """
+    wait_for_function(
+        page,
+        NEAR_YOU_GEOGRAPHY_MAP_SETTLED,
+        timeout=timeout,
+        attempts=attempts,
+        label=label,
+    )
+
+
 def goto_and_wait_for_app(
     page: Page,
     url: str,
