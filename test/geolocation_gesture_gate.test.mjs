@@ -5,6 +5,7 @@ import test from "node:test";
 
 const awareness = readFileSync(new URL("../site/location_awareness.js", import.meta.url), "utf8");
 const map = readFileSync(new URL("../site/app/map.mjs", import.meta.url), "utf8");
+const boardExactAddress = readFileSync(new URL("../site/board_exact_address.mjs", import.meta.url), "utf8");
 const core = readFileSync(new URL("../site/app/core.mjs", import.meta.url), "utf8");
 const boot = readFileSync(new URL("../site/app/boot.mjs", import.meta.url), "utf8");
 const land = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
@@ -44,13 +45,27 @@ test("every geolocation request is downstream of an explicit click handler", () 
   assert.match(bind, /requestCurrentArea\(settings\)/);
   assert.match(mapGate, /addEventListener\("click", \(\) =>/);
   assert.match(mapGate, /navigator\.geolocation\.getCurrentPosition/);
+  // Directory exact-address location is asked only after the resident presses
+  // the panel button; never on directory load or mount. Parameter defaults use
+  // braces, so assert against the module source rather than brace-sliced body.
+  assert.match(boardExactAddress, /locationBtn\.addEventListener\("click"/);
+  assert.match(boardExactAddress, /geolocation\.getCurrentPosition/);
+  assert.equal((boardExactAddress.match(/\bgetCurrentPosition\b/g) || []).length, 2);
+  assert.ok(
+    boardExactAddress.indexOf('locationBtn.addEventListener("click"')
+      < boardExactAddress.indexOf("geolocation.getCurrentPosition"),
+  );
+  assert.doesNotMatch(
+    boardExactAddress.slice(0, boardExactAddress.indexOf('locationBtn.addEventListener("click"')),
+    /getCurrentPosition/,
+  );
   assert.equal((awareness.match(/\brequestCurrentArea\(/g) || []).length, 2);
   assert.deepEqual(
     sourceFiles(siteRoot)
       .filter((path) => readFileSync(path, "utf8").includes("getCurrentPosition"))
       .map((path) => relative(siteRoot, path))
       .sort(),
-    ["app/map.mjs", "location_awareness.js"],
+    ["app/map.mjs", "board_exact_address.mjs", "location_awareness.js"],
   );
   assert.doesNotMatch(`${core}\n${boot}`, /maybeAutoLocateLand|resolveLandEntryLocation\(/);
   assert.doesNotMatch(`${core}\n${boot}\n${land}`, /navigator\.permissions\.query|permissions\.query/);

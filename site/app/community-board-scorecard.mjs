@@ -2,6 +2,10 @@ import {
   associationsFromBoardNeighborhoodSource,
   mountBoardNeighborhoodDirectory,
 } from "../board_neighborhood_directory.mjs";
+import {
+  createBoardExactAddressResolver,
+  mountBoardExactAddress,
+} from "../board_exact_address.mjs";
 
 const root = document.querySelector("[data-community-board-root]");
 
@@ -18,6 +22,8 @@ if (root) {
   const moneyPanels = [...root.querySelectorAll("[data-money-comparison-panel]")];
   const moneySortButtons = [...root.querySelectorAll("[data-money-sort]")];
   const defaultBoardId = root.dataset.selectedBoard || paths[0]?.dataset.boardId || "";
+  let geographyLookupCache = null;
+  let geographyLookupPromise = null;
 
   function associationsFromEmbeddedOptions() {
     const select = root.querySelector("[data-board-neighborhood-select]");
@@ -77,6 +83,76 @@ if (root) {
   if (neighborhoodBinder && root.querySelector("[data-association-state='ready']")) {
     neighborhoodBinder.retryAssociations();
   }
+
+  function boardNamesFromRows() {
+    return Object.fromEntries(
+      rows.map((row) => {
+        const id = row.id.replace(/^board-/, "");
+        const name = row.querySelector("th a, th")?.textContent?.trim() || id;
+        return [id, name.split("\n")[0].trim()];
+      }),
+    );
+  }
+
+  async function loadGeographyLookup() {
+    if (geographyLookupCache) return geographyLookupCache;
+    geographyLookupPromise ||= fetch("/data/community_board_geography_lookup.json", {
+      credentials: "same-origin",
+    })
+      .then((response) => (response.ok ? response.json() : Promise.reject(new Error("geography_lookup_unavailable"))))
+      .then((doc) => {
+        geographyLookupCache = doc;
+        return doc;
+      })
+      .catch(() => null);
+    return geographyLookupPromise;
+  }
+
+  function applyExactBoardVisibility(boardId) {
+    if (!boardId) return;
+    for (const path of paths) {
+      const visible = path.dataset.boardId === boardId;
+      path.hidden = !visible;
+      if (visible) path.setAttribute("data-neighborhood-filtered", "true");
+      else path.removeAttribute("data-neighborhood-filtered");
+    }
+    for (const detail of details) {
+      detail.hidden = detail.dataset.boardDetail !== boardId;
+    }
+    for (const row of rows) {
+      const id = row.id.replace(/^board-/, "");
+      row.hidden = id !== boardId;
+      const classes = new Set(String(row.className || "").split(/\s+/).filter(Boolean));
+      if (id === boardId) classes.add("is-neighborhood-match");
+      else classes.delete("is-neighborhood-match");
+      row.className = [...classes].join(" ");
+    }
+    selectBoard(boardId);
+  }
+
+  const exactAddressBinder = mountBoardExactAddress(root, {
+    resolveAddress: async (query, options = {}) => {
+      const geographyLookup = await loadGeographyLookup();
+      const resolve = createBoardExactAddressResolver({
+        geographyLookup,
+        boardNames: boardNamesFromRows(),
+      });
+      return resolve(query, options);
+    },
+    boardNames: boardNamesFromRows(),
+    onExactBoard: (result) => {
+      if (result?.ok && result.board_id) applyExactBoardVisibility(result.board_id);
+    },
+    onClear: () => {
+      const selection = neighborhoodBinder?.getSelection?.();
+      if (selection?.ok && selection.selected) {
+        neighborhoodBinder.selectGeo(selection.geo, { syncUrl: true });
+      } else if (neighborhoodBinder) {
+        neighborhoodBinder.selectGeo("", { syncUrl: true });
+      }
+    },
+  });
+  void exactAddressBinder;
 
   function moneyProjection(path, fiscalKey) {
     try {

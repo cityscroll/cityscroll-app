@@ -24,8 +24,25 @@
       <div data-board-neighborhood-address-slot></div>
     </div>
     <section class="scorecard-neighborhood-address" id="board-neighborhood-address" data-board-neighborhood-address hidden>
-      <h3>Exact address</h3>
-      <p class="scorecard-muted">Address lookup attaches here. Until then, use the neighborhood choices above or browse the full directory.</p>
+      <h3>Find the board for a specific address</h3>
+      <p class="scorecard-muted">Uses the local address directory and stored district memberships. Neighborhood choices stay available when an address cannot be resolved exactly.</p>
+      <form class="scorecard-exact-address-form" data-board-exact-address-form action="/community-boards/" method="get">
+        <label for="scorecard-exact-address-input">Street address</label>
+        <div class="scorecard-exact-address-form-row">
+          <input id="scorecard-exact-address-input" name="address_lookup" type="search" autocomplete="street-address" inputmode="text" spellcheck="false" data-board-exact-address-input placeholder="e.g. house number and street, borough or ZIP">
+          <button type="submit" data-board-exact-address-submit>Find board</button>
+        </div>
+      </form>
+      <p class="scorecard-exact-address-location-row">
+        <button type="button" class="scorecard-exact-address-location" data-board-exact-address-location>Use my location</button>
+        <span class="scorecard-muted">Asked only when you press the button.</span>
+      </p>
+      <div class="scorecard-exact-address-status" data-board-exact-address-status role="status" aria-live="polite"></div>
+      <div class="scorecard-exact-address-result" data-board-exact-address-result hidden></div>
+      <p class="scorecard-exact-address-actions">
+        <button type="button" class="scorecard-exact-address-clear" data-board-exact-address-clear hidden>Clear address result</button>
+        <a class="scorecard-exact-address-back" data-board-exact-address-back href="#scorecard-neighborhood-heading">Back to neighborhood choices</a>
+      </p>
     </section>
     <details class="scorecard-neighborhood-table-wrap" data-board-neighborhood-table-wrap>
       <summary>Neighborhood board associations</summary>

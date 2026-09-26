@@ -4,8 +4,8 @@
  * Turns the board↔NTA association index (and its directory consumer) into a
  * labeled neighborhood chooser, shareable geo URLs, and a complete no-JS
  * association table on /community-boards/. Special-district overlaps never
- * become board cards. Exact-address resolution is offered as an action hook
- * for the follow-on address card; this module does not resolve addresses.
+ * become board cards. Exact-address resolution is offered as an explicit panel;
+ * the address→board resolver lives in board_exact_address.mjs.
  */
 
 import { communityBoardPageHref } from "./community_board_links.mjs";
@@ -22,6 +22,9 @@ import {
 import {
   ntaBoroughForFeature,
 } from "./geography_navigation_shell.mjs";
+import {
+  renderBoardExactAddressPanelHtml,
+} from "./board_exact_address.mjs";
 
 export const BOARD_NEIGHBORHOOD_DIRECTORY_SCHEMA =
   "cityscroll.board_neighborhood_directory.v1";
@@ -424,10 +427,7 @@ export function renderBoardNeighborhoodDirectoryHtml(associations, {
       <ol class="scorecard-neighborhood-choices" data-board-neighborhood-choices>${choiceCards || "<li class=\"scorecard-muted\">No published community board overlaps this place.</li>"}</ol>
       <div data-board-neighborhood-address-slot>${addressAction}</div>
     </div>
-    <section class="scorecard-neighborhood-address" id="board-neighborhood-address" data-board-neighborhood-address hidden>
-      <h3>Exact address</h3>
-      <p class="scorecard-muted">Address lookup attaches here. Until then, use the neighborhood choices above or browse the full directory.</p>
-    </section>
+    ${renderBoardExactAddressPanelHtml()}
     <details class="scorecard-neighborhood-table-wrap" data-board-neighborhood-table-wrap>
       <summary>Neighborhood board associations</summary>
       <p class="scorecard-muted">Complete labeled table for browsing without JavaScript. Overlap percentages use neighborhood area as the denominator.</p>
