@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/land-district-activity-membership",
+  "status": "implemented",
+  "fingerprint": "land-district-activity-membership.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-district-activity-membership-builder",
+      "path": "tools/build_district_activity.mjs"
+    },
+    {
+      "id": "land-district-activity-membership-coverage",
+      "path": "site/geography_navigation_records.mjs"
+    },
+    {
+      "id": "land-district-activity-membership-verify-test",
+      "path": "test/land_district_activity_membership.test.mjs"
+    }
+  ]
+}

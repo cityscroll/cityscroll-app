@@ -6,8 +6,9 @@
  * No live GIS at render time — the artifact is the source of truth for the map.
  *
  * Lenses:
- *   land     — ZAP publisher community_district (+ optional council);
- *              missing council fans out via definitional CD∩council intersects
+ *   land     — admitted catalog rows: publisher community_district (+ optional
+ *              council) retained separately; public NTA slots come only from the
+ *              shared land_place_membership index (published_project_lot)
  *   property — geometry / addresses → point-in-polygon
  *   meetings — affectedAreaFromRow (title + body) + stamped affected_area
  *   rules    — ruleLocationFromRow + stamped rule_location / affected_area
@@ -73,8 +74,16 @@ import {
   civicGeographyKey,
   civicGeographyLayer,
 } from "../../site/civic_geography_registry.mjs";
+import {
+  LAND_PLACE_ASSOCIATION_KIND,
+  LAND_PLACE_MEMBERSHIP_SCHEMA,
+  landPlaceLayerCoverage,
+} from "../../site/land_place_membership.mjs";
 
 export { DISTRICT_ACTIVITY_SCHEMA };
+
+/** Placement method for NTA slots materialized from land_place_membership. */
+export const LAND_PLACE_MEMBERSHIP_METHOD = LAND_PLACE_ASSOCIATION_KIND;
 
 /** Council supplement from definitional CD∩council intersects (not centroid PIP). */
 export const CD_INTERSECTS_COUNCIL_METHOD = "cd_intersects_council";
@@ -118,15 +127,18 @@ export function aboutSubjectPropertyLabel(address) {
 function localityForSlot(lens, slot) {
   const place = compactRecordBasis(lens, [slot]);
   const locationRole = slot.location_role || locationRoleForRecord(lens, place.basis);
+  const associationKind = slot.association_kind ? String(slot.association_kind) : null;
   return {
     location_role: locationRole,
     basis: place.basis,
     method: place.method || slot.geography_method || slot.method || "structured_bag",
     confidence: place.confidence,
+    association_kind: associationKind,
     provenance: {
       placement_method: slot.geography_method || slot.method || "structured_bag",
       source_method: slot.source_method || null,
       confidence_tier: slot.confidence_tier || place.confidence,
+      ...(associationKind ? { association_kind: associationKind } : {}),
     },
   };
 }
@@ -148,13 +160,13 @@ function genericMatchFromSlot(type, id, slot, layerByType, place) {
     label: String(feature?.label || id),
     class: definition?.class || null,
     relation: "located_in",
-    method: slot.geography_method || slot.method || "structured_bag",
+    method: place.method || slot.geography_method || slot.method || "structured_bag",
     source_id: layer?.source?.contract_id || definition?.source?.contract_id || null,
     boundary_vintage: layer?.vintage?.id || null,
     location_role: place.location_role,
     basis: place.basis,
-    method: place.method,
     confidence: place.confidence,
+    ...(place.association_kind ? { association_kind: place.association_kind } : {}),
     provenance: place.provenance,
   };
 }
@@ -324,6 +336,7 @@ export const PUBLIC_GEOGRAPHY_PLACEMENT_METHODS = Object.freeze([
   "matter_title_place",
   "neighborhood_place",
   "parcel_membership",
+  "published_project_lot",
   "publisher_council",
   "publisher_district",
   "rule-scope",
@@ -1631,6 +1644,130 @@ export function buildContractActionBasisLayer(rows = [], boundaries = null) {
  * @param {object} [opts.districtCorpora] — client-readable descriptors for indexed rows
  * @param {string} [opts.builtAt]
  */
+/**
+ * Normalize a land_place_membership document for district-activity consumption.
+ * Missing or corrupt inputs stay unavailable — never a successful empty index.
+ */
+export function resolveLandPlaceMembershipInput(doc) {
+  if (doc == null) {
+    return {
+      status: "unavailable",
+      reason: "land_place_membership_missing",
+      index: null,
+      generation_id: null,
+      content_id: null,
+      source_dates: null,
+    };
+  }
+  if (!doc || typeof doc !== "object" || doc.schema !== LAND_PLACE_MEMBERSHIP_SCHEMA) {
+    return {
+      status: "unavailable",
+      reason: "land_place_membership_corrupt",
+      index: null,
+      generation_id: null,
+      content_id: null,
+      source_dates: null,
+    };
+  }
+  if (!doc.by_project || typeof doc.by_project !== "object"
+    || !doc.by_geography || typeof doc.by_geography !== "object") {
+    return {
+      status: "unavailable",
+      reason: "land_place_membership_corrupt",
+      index: null,
+      generation_id: null,
+      content_id: null,
+      source_dates: null,
+    };
+  }
+  return {
+    status: "ready",
+    reason: null,
+    index: doc,
+    generation_id: doc.generation?.id || null,
+    content_id: doc.generation?.content_id || null,
+    source_dates: doc.source_dates || null,
+  };
+}
+
+/**
+ * Public NTA slots from one compact membership entry. Never invents NTA from
+ * publisher CD/council fields or overlap crosswalks.
+ */
+export function landNtaSlotsFromMembershipEntry(entry) {
+  if (!entry || typeof entry !== "object") return [];
+  const places = entry.layers?.nta2020?.places;
+  if (!Array.isArray(places) || !places.length) return [];
+  const seen = new Set();
+  const slots = [];
+  for (const raw of places) {
+    const ntaId = String(raw || "").trim();
+    if (!ntaId || seen.has(ntaId)) continue;
+    seen.add(ntaId);
+    slots.push({
+      nta2020: ntaId,
+      location_role: "project_geometry",
+      association_kind: entry.association_kind || LAND_PLACE_ASSOCIATION_KIND,
+      method: LAND_PLACE_MEMBERSHIP_METHOD,
+      geography_method: LAND_PLACE_MEMBERSHIP_METHOD,
+      source_method: "land_place_membership",
+      confidence_tier: "strong",
+    });
+  }
+  return slots;
+}
+
+/**
+ * Compare a Near You NTA land ID set against the shared place index reverse map.
+ * Returns findings that fail when the materialized set drifts from L02.
+ */
+export function landDistrictActivityNtaFindings(activity, membership, ntaId) {
+  const findings = [];
+  const key = civicGeographyKey("nta2020", ntaId);
+  if (!key) {
+    findings.push(`invalid nta id ${ntaId}`);
+    return findings;
+  }
+  const resolved = resolveLandPlaceMembershipInput(membership);
+  const projectionStatus = activity?.geography_items?.coverage?.by_lens?.land?.types?.nta2020?.status
+    || activity?.sources?.land?.place_membership?.status
+    || null;
+  if (resolved.status !== "ready") {
+    if (projectionStatus !== "unavailable") {
+      findings.push(
+        `membership ${resolved.status} must yield unavailable land place query (got ${projectionStatus})`,
+      );
+    }
+    const landIds = activity?.geography_items?.by_key?.[key]?.land;
+    if (Array.isArray(landIds) && landIds.length > 0) {
+      findings.push(`unavailable membership must not materialize land ids for ${ntaId}`);
+    }
+    return findings;
+  }
+
+  const expected = new Set(
+    Array.isArray(membership?.by_geography?.nta2020?.[ntaId])
+      ? membership.by_geography.nta2020[ntaId].map(String)
+      : [],
+  );
+  const actualList = activity?.geography_items?.by_key?.[key]?.land;
+  if (!Array.isArray(actualList)) {
+    findings.push(`missing land array for ${key}`);
+    return findings;
+  }
+  const actual = new Set(actualList.map(String));
+  for (const id of expected) {
+    if (!actual.has(id)) findings.push(`missing ${id} in ${ntaId}`);
+  }
+  for (const id of actual) {
+    if (!expected.has(id)) findings.push(`extra ${id} in ${ntaId}`);
+  }
+  if (actual.size !== new Set(actualList).size) {
+    findings.push(`duplicate land ids in ${ntaId}`);
+  }
+  return findings;
+}
+
 export function buildDistrictActivity(opts = {}) {
   const boundaries = opts.boundaries;
   if (!boundaries || !boundaries.boundary_vintage) {
@@ -1736,6 +1873,9 @@ export function buildDistrictActivity(opts = {}) {
         locality_basis: locality.basis,
         placement_method: slot.geography_method || slot.method || "structured_bag",
         source_method: slot.source_method || null,
+        ...(locality.association_kind || slot.association_kind
+          ? { association_kind: locality.association_kind || slot.association_kind }
+          : {}),
         boundary_vintage: String(boundaries.boundary_vintage),
         provenance: locality.provenance,
       },
@@ -1747,6 +1887,9 @@ export function buildDistrictActivity(opts = {}) {
       reason: route.reason,
       location_role: locality.location_role,
       basis: locality.basis,
+      ...(locality.association_kind || slot.association_kind
+        ? { association_kind: locality.association_kind || slot.association_kind }
+        : {}),
       provenance: locality.provenance,
     };
     // Role-specific edges share a geography key but keep separate evidence so a
@@ -1988,14 +2131,19 @@ export function buildDistrictActivity(opts = {}) {
     return compact?.id || null;
   }
 
-  // Land — publisher community_district on ZAP; council via ZAP field or CD∩council intersects.
+  // Land — publisher community_district retained separately; public NTA slots
+  // come only from the shared land_place_membership index (no CD→NTA crosswalk).
+  const landPlaceResolved = resolveLandPlaceMembershipInput(opts.landPlaceMembership);
+  const landPlaceIndex = landPlaceResolved.status === "ready" ? landPlaceResolved.index : null;
+  let landPlaceSpatiallyMatched = 0;
+  let landPlacePartiallyCovered = 0;
   for (const row of opts.zapRows || []) {
     const cds = parseZapCommunityDistricts(row.community_district);
     const boro = canonBorough(row.borough) || (cds[0] ? boroughFromCommunityId(cds[0]) : null);
     const publisherCouncil = normalizeCouncilDistrictId(
       row.cc_district || row.council_district || row.city_council_district,
     );
-    const slots = cds.length
+    const publisherSlots = cds.length
       ? cds.map((cd) => ({
           borough: boro,
           community: cd,
@@ -2012,9 +2160,30 @@ export function buildDistrictActivity(opts = {}) {
         council: publisherCouncil,
         method: publisherCouncil ? "publisher_council" : null,
       }];
+    const projectId = String(row.project_id || row.request_id || row.id || "");
+    const membershipEntry = landPlaceIndex && projectId
+      ? landPlaceIndex.by_project?.[projectId] || null
+      : null;
+    const ntaSlots = landNtaSlotsFromMembershipEntry(membershipEntry);
+    if (membershipEntry && ntaSlots.length) landPlaceSpatiallyMatched += 1;
+    const ntaCoverage = landPlaceLayerCoverage(membershipEntry, "nta2020");
+    if (ntaCoverage && ntaCoverage.matched < ntaCoverage.total) landPlacePartiallyCovered += 1;
+    const slots = [...publisherSlots, ...ntaSlots];
     const itemId = record("land", row, slots);
     placeSlots("land", slots, itemId);
   }
+  sources.land.place_membership = {
+    status: landPlaceResolved.status,
+    reason: landPlaceResolved.reason || null,
+    generation_id: landPlaceResolved.generation_id || null,
+    content_id: landPlaceResolved.content_id || null,
+    source_dates: landPlaceResolved.source_dates || null,
+    association_kind: LAND_PLACE_ASSOCIATION_KIND,
+    admitted: (opts.zapRows || []).length,
+    spatially_matched: landPlaceResolved.status === "ready" ? landPlaceSpatiallyMatched : null,
+    partially_covered: landPlaceResolved.status === "ready" ? landPlacePartiallyCovered : null,
+    match_bound: landPlaceResolved.status === "ready" ? "spatially_matched_population" : null,
+  };
 
   // Property — geometry → point-in-polygon; else borough-only.
   for (const row of opts.propertyRows || []) {
@@ -2140,6 +2309,11 @@ export function buildDistrictActivity(opts = {}) {
     unlocated: Object.fromEntries(LENSES.map((lens) => [lens, sortedIds(districtItemSets.unlocated[lens])])),
     note: "Exact list membership stamped by the same placement pass as map counts; no client-side place reinterpretation.",
   };
+  const landPlaceCoverage = sources.land.place_membership || {
+    status: "unavailable",
+    reason: "land_place_membership_missing",
+  };
+  const landNtaCoverageStatus = landPlaceCoverage.status === "ready" ? "ready" : "unavailable";
   const geographyItems = {
     schema: "cityscroll.geography_items.v1",
     built_at: builtAt,
@@ -2151,7 +2325,38 @@ export function buildDistrictActivity(opts = {}) {
       .sort(([left], [right]) => left.localeCompare(right))
       .map(([key, lenses]) => [key,
         Object.fromEntries(LENSES.map((lens) => [lens, sortedIds(lenses[lens])]))])),
-    note: "Public typed geography membership from the same role- and basis-preserving placement pass as Near You. Sanitation districts and BIDs remain ingestion-only.",
+    coverage: {
+      status: "ready",
+      by_lens: {
+        land: {
+          // Publisher borough/CD/council land axes remain queryable; only the
+          // shared-index NTA place query follows membership availability.
+          status: "ready",
+          source: "land_place_membership",
+          association_kind: LAND_PLACE_ASSOCIATION_KIND,
+          generation_id: landPlaceCoverage.generation_id || null,
+          content_id: landPlaceCoverage.content_id || null,
+          // Preserve the membership document's own vintages; build time is not a substitute.
+          source_dates: landPlaceCoverage.source_dates || null,
+          admitted: landPlaceCoverage.admitted ?? null,
+          spatially_matched: landPlaceCoverage.spatially_matched ?? null,
+          partially_covered: landPlaceCoverage.partially_covered ?? null,
+          // Zero known matches are bounded to the spatially matched population.
+          match_bound: landPlaceCoverage.match_bound || null,
+          types: {
+            nta2020: {
+              status: landNtaCoverageStatus,
+              reason: landPlaceCoverage.reason || null,
+              generation_id: landPlaceCoverage.generation_id || null,
+              content_id: landPlaceCoverage.content_id || null,
+              source_dates: landPlaceCoverage.source_dates || null,
+              match_bound: landPlaceCoverage.match_bound || null,
+            },
+          },
+        },
+      },
+    },
+    note: "Public typed geography membership from the same role- and basis-preserving placement pass as Near You. Sanitation districts and BIDs remain ingestion-only. Land NTA slots come from land_place_membership only.",
   };
 
   // For indexed lenses, the set cardinality is the authoritative count. This
