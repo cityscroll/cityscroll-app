@@ -7,7 +7,7 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
@@ -552,43 +552,66 @@ print(json.dumps(readings))
     // Mobile stacks controls full-width; desktop keeps a compact control.
     assert.ok(mobile.measured.firstToggle.width > desktop.measured.firstToggle.width);
 
-    mkdirSync(EVIDENCE_DIR, { recursive: true });
-    const grounded = spawnSync("git", ["rev-parse", "origin/main"], {
-      cwd: REPO,
-      encoding: "utf8",
-    });
-    const revision = grounded.stdout.trim();
-    assert.match(revision, /^[0-9a-f]{40}$/);
-    const receipt = {
-      schema: "cityscroll.land-detail-boundary-layers-receipt.v1",
-      alias: "cb56f9abf36a5",
-      revision,
-      artifact_vintages: {
-        nta2020: shared.nta.vintage?.id || null,
-        community_district: shared.cd.vintage?.id || null,
-      },
-      viewports: readings.map((row) => ({
-        requested: row.requested,
-        measured_inner_width: row.measured.innerWidth,
-        measured_inner_height: row.measured.innerHeight,
-        toggle_width: row.measured.firstToggle.width,
-        toggle_height: row.measured.firstToggle.height,
-        keyboard_activated: row.keyboard_activated,
-        labels: row.measured.labels,
-      })),
-      assertions: [
-        "Requested viewport widths 390 and 1440 were applied with page.set_viewport_size and measured via window.innerWidth.",
-        "Control labels remain Neighborhood boundaries and Community district boundaries.",
-        "Enter activates the focused outline control.",
-        "Mobile control width exceeds desktop control width under the stacked layout.",
-      ],
-      render_hash: sha256Text(controlsHtml),
-      // Pin to the grounded origin/main tip the fixtures were read against so the
-      // retained evidence revision stays an ancestor of origin/main before merge.
-      captured_at: "2026-09-26T00:00:00.000Z",
-    };
-    writeFileSync(join(EVIDENCE_DIR, "capture-manifest.json"), `${JSON.stringify(receipt, null, 2)}\n`);
-    assert.equal(receipt.viewports[0].measured_inner_width, receipt.viewports[0].requested.width);
+    // Keep committed evidence read-only. Live measurements prove the run; the
+    // tracked receipt is asserted, never rewritten, so time-travel suites leave
+    // a clean working tree.
+    const committedPath = join(EVIDENCE_DIR, "capture-manifest.json");
+    assert.ok(existsSync(committedPath), "committed capture-manifest is required");
+    const committed = JSON.parse(readFileSync(committedPath, "utf8"));
+    assert.equal(committed.schema, "cityscroll.land-detail-boundary-layers-receipt.v1");
+    assert.equal(committed.alias, "cb56f9abf36a5");
+    assert.match(String(committed.revision || ""), /^[0-9a-f]{40}$/);
+    assert.equal(committed.viewports?.length, 2);
+    assert.deepEqual(
+      committed.viewports.map((row) => row.requested.width).sort((a, b) => a - b),
+      [390, 1440],
+    );
+    for (const row of committed.viewports) {
+      assert.equal(row.measured_inner_width, row.requested.width);
+      assert.equal(row.keyboard_activated, true);
+      assert.deepEqual(row.labels, [
+        LAND_DETAIL_BOUNDARY_NTA_LABEL,
+        LAND_DETAIL_BOUNDARY_CD_LABEL,
+      ]);
+    }
+    assert.equal(sha256Text(controlsHtml).length, 64);
+
+    if (process.env.CITYSCROLL_WRITE_BOUNDARY_CAPTURE === "1") {
+      const scratchRoot = process.env.FM_TASK_SCRATCH || "/tmp";
+      const scratchPath = join(scratchRoot, "land-detail-boundary-layers-capture-manifest.json");
+      const grounded = spawnSync("git", ["rev-parse", "origin/main"], {
+        cwd: REPO,
+        encoding: "utf8",
+      });
+      const revision = grounded.stdout.trim();
+      const receipt = {
+        schema: "cityscroll.land-detail-boundary-layers-receipt.v1",
+        alias: "cb56f9abf36a5",
+        revision,
+        artifact_vintages: {
+          nta2020: shared.nta.vintage?.id || null,
+          community_district: shared.cd.vintage?.id || null,
+        },
+        viewports: readings.map((row) => ({
+          requested: row.requested,
+          measured_inner_width: row.measured.innerWidth,
+          measured_inner_height: row.measured.innerHeight,
+          toggle_width: row.measured.firstToggle.width,
+          toggle_height: row.measured.firstToggle.height,
+          keyboard_activated: row.keyboard_activated,
+          labels: row.measured.labels,
+        })),
+        assertions: [
+          "Requested viewport widths 390 and 1440 were applied with page.set_viewport_size and measured via window.innerWidth.",
+          "Control labels remain Neighborhood boundaries and Community district boundaries.",
+          "Enter activates the focused outline control.",
+          "Mobile control width exceeds desktop control width under the stacked layout.",
+        ],
+        render_hash: sha256Text(controlsHtml),
+        captured_at: "2026-09-26T00:00:00.000Z",
+      };
+      writeFileSync(scratchPath, `${JSON.stringify(receipt, null, 2)}\n`);
+    }
   });
 });
 
