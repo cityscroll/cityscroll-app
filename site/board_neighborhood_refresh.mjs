@@ -295,6 +295,7 @@ export function activateBoardNeighborhoodGeneration({
   inputHashes = null,
   builtAt = null,
   failBeforeActivate = false,
+  failAfterImmutablePublish = false,
   injectMixedGeneration = false,
   activeIndexPath = null,
 } = {}) {
@@ -381,6 +382,17 @@ export function activateBoardNeighborhoodGeneration({
     // Immutable assets land under the generation id before the active pointer moves.
     rmSync(generationDir, { recursive: true, force: true });
     renameSync(stagingDir, generationDir);
+
+    // Injection point between the immutable move and the active-pointer write.
+    // Callers that observe here can pin the new generation while ACTIVE still
+    // names the previous one.
+    if (failAfterImmutablePublish) {
+      const error = new Error(
+        "board neighborhood refresh forced failure after immutable publish before active pointer",
+      );
+      error.published_generation = generationId;
+      throw error;
+    }
 
     const pointer = {
       schema: BOARD_NEIGHBORHOOD_GENERATION_MANIFEST_SCHEMA,
@@ -742,6 +754,16 @@ export function createBoardNeighborhoodRefresh(adapters = {}) {
           generation: indexDoc.generation.id,
           builtAt: indexDoc.generation.built_at,
           failBeforeActivate: true,
+          injectMixedGeneration,
+          activeIndexPath,
+        });
+      } else if (injectFailure === "before_active_pointer") {
+        activateGeneration({
+          indexDoc,
+          inputHashes,
+          generation: indexDoc.generation.id,
+          builtAt: indexDoc.generation.built_at,
+          failAfterImmutablePublish: true,
           injectMixedGeneration,
           activeIndexPath,
         });
