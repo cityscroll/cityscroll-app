@@ -513,29 +513,91 @@ export function landPlaceLayerCoverage(projectEntry, layerType) {
 
 /**
  * Assert per-layer count partition: matched + uncovered + ambiguous + unavailable == total.
- * Invalid BBLs are outside this denominator.
+ * Invalid BBLs are outside this denominator. Optional evidence catches dropped invalids
+ * and duplicate valid lots that the compact index alone cannot see.
+ *
+ * @param {object} projectEntry compact by_project entry
+ * @param {object|null} [evidence] optional evidence-shard project record
  */
-export function landPlaceLayerCountFindings(projectEntry) {
+export function landPlaceLayerCountFindings(projectEntry, evidence = null) {
   const findings = [];
   if (!projectEntry || typeof projectEntry !== "object") {
     return ["project entry missing"];
   }
+
+  const validCount = Number(projectEntry.valid_bbl_count);
+  const invalidCount = Number(projectEntry.invalid_bbl_count);
+  if (!Number.isFinite(validCount) || validCount < 0 || !Number.isInteger(validCount)) {
+    findings.push(`valid_bbl_count missing or invalid (${projectEntry.valid_bbl_count})`);
+  }
+  if (!Number.isFinite(invalidCount) || invalidCount < 0 || !Number.isInteger(invalidCount)) {
+    findings.push(`invalid_bbl_count missing or invalid (${projectEntry.invalid_bbl_count})`);
+  }
+
   for (const type of LAND_PLACE_LAYERS) {
     const layer = projectEntry.layers?.[type];
     if (!layer) {
       findings.push(`layer ${type} missing`);
       continue;
     }
-    const sum = Number(layer.matched_bbls || 0)
-      + Number(layer.uncovered_bbls || 0)
-      + Number(layer.ambiguous_bbls || 0)
-      + Number(layer.unavailable_bbls || 0);
-    if (sum !== Number(layer.total_bbls || 0)) {
+    const matched = Number(layer.matched_bbls || 0);
+    const uncovered = Number(layer.uncovered_bbls || 0);
+    const ambiguous = Number(layer.ambiguous_bbls || 0);
+    const unavailable = Number(layer.unavailable_bbls || 0);
+    const total = Number(layer.total_bbls || 0);
+    const sum = matched + uncovered + ambiguous + unavailable;
+    if (sum !== total) {
       findings.push(
         `layer ${type} counts ${sum} != total_bbls ${layer.total_bbls}`,
       );
     }
+    // Invalid inputs stay outside the valid-BBL denominator.
+    if (Number.isInteger(validCount) && total !== validCount) {
+      findings.push(
+        `layer ${type} total_bbls ${layer.total_bbls} != valid_bbl_count ${validCount}`,
+      );
+    }
+    // Absorbing invalids into a complete-coverage claim (matched + invalid == total).
+    if (
+      Number.isInteger(invalidCount)
+      && invalidCount > 0
+      && matched + invalidCount === total
+      && uncovered === 0
+      && ambiguous === 0
+      && unavailable === 0
+    ) {
+      findings.push(
+        `layer ${type} matched_bbls + invalid_bbl_count ${matched + invalidCount} == total_bbls ${total}`,
+      );
+    }
   }
+
+  const evidenceDoc = asObject(evidence);
+  if (evidenceDoc) {
+    const invalidList = Array.isArray(evidenceDoc.invalid_bbls) ? evidenceDoc.invalid_bbls : null;
+    if (invalidList == null) {
+      findings.push("evidence invalid_bbls missing");
+    } else if (Number.isInteger(invalidCount) && invalidList.length !== invalidCount) {
+      findings.push(
+        `invalid_bbl_count ${invalidCount} != evidence invalid_bbls ${invalidList.length}`,
+      );
+    }
+
+    const validList = Array.isArray(evidenceDoc.valid_bbls) ? evidenceDoc.valid_bbls : null;
+    if (validList == null) {
+      findings.push("evidence valid_bbls missing");
+    } else {
+      if (Number.isInteger(validCount) && validList.length !== validCount) {
+        findings.push(
+          `valid_bbl_count ${validCount} != evidence valid_bbls ${validList.length}`,
+        );
+      }
+      if (new Set(validList).size !== validList.length) {
+        findings.push("evidence valid_bbls contains duplicates");
+      }
+    }
+  }
+
   return findings;
 }
 
