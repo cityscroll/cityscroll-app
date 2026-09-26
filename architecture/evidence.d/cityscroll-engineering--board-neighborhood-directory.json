@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/board-neighborhood-directory",
+  "status": "implemented",
+  "fingerprint": "board-neighborhood-directory.v1",
+  "updated_at": "2026-09-26T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "board-neighborhood-directory-module",
+      "path": "site/board_neighborhood_directory.mjs"
+    },
+    {
+      "id": "board-neighborhood-directory-verify-test",
+      "path": "test/board_neighborhood_directory.test.mjs"
+    },
+    {
+      "id": "community-board-scorecard-page",
+      "path": "site/community-board-scorecard.mjs"
+    },
+    {
+      "id": "community-board-scorecard-app",
+      "path": "site/app/community-board-scorecard.mjs"
+    },
+    {
+      "id": "community-board-scorecard-builder",
+      "path": "tools/build_community_board_scorecard.mjs"
+    },
+    {
+      "id": "community-boards-directory-html",
+      "path": "site/community-boards/index.html"
+    }
+  ]
+}

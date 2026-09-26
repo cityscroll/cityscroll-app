@@ -1,3 +1,8 @@
+import {
+  associationsFromBoardNeighborhoodSource,
+  mountBoardNeighborhoodDirectory,
+} from "../board_neighborhood_directory.mjs";
+
 const root = document.querySelector("[data-community-board-root]");
 
 if (root) {
@@ -13,6 +18,65 @@ if (root) {
   const moneyPanels = [...root.querySelectorAll("[data-money-comparison-panel]")];
   const moneySortButtons = [...root.querySelectorAll("[data-money-sort]")];
   const defaultBoardId = root.dataset.selectedBoard || paths[0]?.dataset.boardId || "";
+
+  function associationsFromEmbeddedOptions() {
+    const select = root.querySelector("[data-board-neighborhood-select]");
+    if (!select) return associationsFromBoardNeighborhoodSource({}, { loadFailed: true });
+    const byNta = Object.create(null);
+    const labels = Object.create(null);
+    for (const option of select.querySelectorAll("option[data-nta-id]")) {
+      const ntaId = option.dataset.ntaId;
+      const boardIds = String(option.dataset.boardIds || "").split(/\s+/).filter(Boolean);
+      labels[ntaId] = {
+        id: ntaId,
+        label: option.dataset.neighborhoodLabel || option.textContent || ntaId,
+        subtype: option.closest("optgroup")?.label === "Special-use areas" ? "special_use" : "residential",
+        borough: null,
+      };
+      byNta[ntaId] = boardIds.map((boardId) => ({
+        nta_id: ntaId,
+        board_id: boardId,
+        district_id: null,
+        pct_from: 0,
+        pct_to: 0,
+        subtype: labels[ntaId].subtype,
+      }));
+    }
+    if (!Object.keys(byNta).length) {
+      return associationsFromBoardNeighborhoodSource({}, { loadFailed: true });
+    }
+    return associationsFromBoardNeighborhoodSource({ by_nta: byNta, non_board_overlaps: [] }, { labels });
+  }
+
+  async function loadDirectoryAssociations() {
+    try {
+      const response = await fetch("/data/board_neighborhood_index.json", { credentials: "same-origin" });
+      if (!response.ok) throw new Error(`association_http_${response.status}`);
+      const index = await response.json();
+      const embedded = associationsFromEmbeddedOptions();
+      const boardNames = Object.fromEntries(
+        rows.map((row) => {
+          const id = row.id.replace(/^board-/, "");
+          const name = row.querySelector("th a, th")?.textContent?.trim() || id;
+          return [id, name.split("\n")[0].trim()];
+        }),
+      );
+      return associationsFromBoardNeighborhoodSource(index, {
+        labels: embedded.labels || {},
+        boardNames,
+      });
+    } catch {
+      return associationsFromBoardNeighborhoodSource({}, { loadFailed: true });
+    }
+  }
+
+  const neighborhoodBinder = mountBoardNeighborhoodDirectory(root, {
+    associations: associationsFromEmbeddedOptions(),
+    fetchAssociations: loadDirectoryAssociations,
+  });
+  if (neighborhoodBinder && root.querySelector("[data-association-state='ready']")) {
+    neighborhoodBinder.retryAssociations();
+  }
 
   function moneyProjection(path, fiscalKey) {
     try {
@@ -89,7 +153,7 @@ if (root) {
 
   function selectBoard(boardId, { focus = false } = {}) {
     const path = paths.find((candidate) => candidate.dataset.boardId === boardId);
-    if (!path) return;
+    if (!path || path.hidden) return;
     root.dataset.selectedBoard = boardId;
     for (const candidate of paths) {
       const selected = candidate === path;
@@ -99,8 +163,11 @@ if (root) {
     for (const detail of details) detail.hidden = detail.dataset.boardDetail !== boardId;
     for (const row of rows) row.classList.toggle("is-selected", row.id === `board-${boardId}`);
     if (focus) path.focus({ preventScroll: true });
-    if (window.location.hash !== `#board-${boardId}`) {
-      window.history.replaceState(null, "", `#board-${boardId}`);
+    const nextHash = `#board-${boardId}`;
+    if (window.location.hash !== nextHash) {
+      const url = new URL(window.location.href);
+      url.hash = nextHash;
+      window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
     }
   }
 
@@ -141,7 +208,8 @@ if (root) {
   for (const button of moneySortButtons) button.addEventListener("click", () => sortMoneyTable(button));
 
   const hashBoard = window.location.hash.match(/^#board-(.+)$/)?.[1] || "";
-  selectBoard(paths.some((path) => path.dataset.boardId === hashBoard) ? hashBoard : defaultBoardId);
+  const hashPath = paths.find((path) => path.dataset.boardId === hashBoard && !path.hidden);
+  selectBoard(hashPath ? hashBoard : (paths.find((path) => !path.hidden)?.dataset.boardId || defaultBoardId));
   setView("map");
   setMapLayer("sources");
   if (moneyFiscalSelect) setMoneyFiscal(moneyFiscalSelect.value);
