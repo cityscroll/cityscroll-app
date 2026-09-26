@@ -34,6 +34,7 @@ import {
   computeBoardNeighborhoodInputHashes,
   createBoardNeighborhoodRefresh,
   loadActiveBoardNeighborhoodGeneration,
+  loadActiveBoardNeighborhoodPointer,
   loadBoardNeighborhoodRefreshReceipt,
   loadPinnedBoardNeighborhoodGeneration,
   planBoardNeighborhoodRefresh,
@@ -419,6 +420,66 @@ test("A5 [boundary,verification] assets publish before active switch; pin one ge
       true,
     );
     assert.equal(existsSync(path.join(paths.publicDir, ".staging")), false);
+  });
+});
+
+test("A5 [boundary,verification] observes immutable publish before active pointer advances", async () => {
+  await withTempDir("board-neighborhood-refresh-a5-order-", (tempDir) => {
+    const paths = seedFixtureDir(tempDir);
+    const first = refreshFromFixture(paths);
+    const firstGeneration = first.active_generation;
+
+    // Force a new generation so the mid-publish observation has a distinct pin.
+    const ontology = loadJson(paths.ontologyPath);
+    ontology.public_edges = (ontology.public_edges || []).filter(
+      (edge) => !(edge.type === "covers" && edge.from === "community-board:brooklyn-cb-12"),
+    );
+    writeFileSync(paths.ontologyPath, `${JSON.stringify(ontology)}\n`);
+
+    const interrupted = refreshFromFixture(paths, {
+      now: "2026-09-25T20:00:00.000Z",
+      injectFailure: "before_active_pointer",
+    });
+    assert.equal(interrupted.ok, false);
+    assert.equal(interrupted.status, "failed");
+    const publishedGeneration = interrupted.error?.published_generation;
+    assert.ok(publishedGeneration);
+    assert.notEqual(publishedGeneration, firstGeneration);
+
+    // Mid-publish freeze: new generation assets are already readable by pin,
+    // while ACTIVE still names the previous generation.
+    const pointerDuringInject = loadActiveBoardNeighborhoodPointer(paths.publicDir);
+    assert.equal(pointerDuringInject.active_generation, firstGeneration);
+    assert.notEqual(pointerDuringInject.active_generation, publishedGeneration);
+
+    const pinnedPublished = loadPinnedBoardNeighborhoodGeneration(
+      paths.publicDir,
+      publishedGeneration,
+    );
+    assert.equal(pinnedPublished.ok, true);
+    assert.equal(pinnedPublished.assets.generation_id, publishedGeneration);
+    assert.equal(pinnedPublished.assets.directory.generation_id, publishedGeneration);
+    assert.equal(pinnedPublished.assets.profile.generation_id, publishedGeneration);
+    assert.ok(existsSync(path.join(paths.publicDir, publishedGeneration, "index.json")));
+    assert.equal(existsSync(path.join(paths.publicDir, ".staging")), false);
+
+    // Converse control: without the injection the active pointer advances.
+    const advanced = refreshFromFixture(paths, {
+      now: "2026-09-25T20:10:00.000Z",
+      force: true,
+    });
+    assert.equal(advanced.ok, true);
+    assert.equal(advanced.status, "activated");
+    assert.equal(advanced.active_generation, publishedGeneration);
+    assert.equal(advanced.previous_active_generation, firstGeneration);
+    assert.equal(
+      loadActiveBoardNeighborhoodPointer(paths.publicDir).active_generation,
+      publishedGeneration,
+    );
+    assert.equal(
+      loadPinnedBoardNeighborhoodGeneration(paths.publicDir, publishedGeneration).ok,
+      true,
+    );
   });
 });
 

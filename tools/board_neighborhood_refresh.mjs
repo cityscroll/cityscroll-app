@@ -8,7 +8,7 @@
  *   node tools/board_neighborhood_refresh.mjs --fixture-dir DIR
  *   node tools/board_neighborhood_refresh.mjs --inject-failure KIND
  *
- * KIND: missing_crosswalk | invalid_ontology | before_activate | mixed_generation
+ * KIND: missing_crosswalk | invalid_ontology | before_activate | before_active_pointer | mixed_generation
  */
 
 import { readFileSync, existsSync, mkdirSync } from "node:fs";
@@ -167,7 +167,7 @@ async function main() {
   --fixture-dir DIR       Controlled inputs for rehearsal
   --public-dir DIR        Generation publication directory
   --active-index PATH     Convenience active index path
-  --inject-failure KIND   Rehearse missing_crosswalk|invalid_ontology|before_activate|mixed_generation`);
+  --inject-failure KIND   Rehearse missing_crosswalk|invalid_ontology|before_activate|before_active_pointer|mixed_generation`);
     return;
   }
 
