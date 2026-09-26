@@ -30,6 +30,11 @@ import {
   loadLandMapBoundaryContext,
 } from "../land_map_boundary_context.mjs";
 import {
+  LAND_PROJECT_GEOMETRY_SHARD_SCHEMA,
+  landProjectGeometryShardUrl,
+  shapeFromGeometryShard,
+} from "../land_project_geometry.mjs";
+import {
   fetchLandMapArtifact,
   landMapFailureKindOf,
 } from "../land_map_performance_budget.mjs";
@@ -269,11 +274,17 @@ async function landShowLots(gj, n, selection){
    only thing an activation costs is a repaint. */
 
 export const LAND_MAP_SHELL_SCHEMA = "cityscroll.land_map_shell.v1";
-/* The only network dependency browse Map activation adds: a committed, versioned, bounded
-   projection served from this origin. No publisher call, no live GIS, no tile provider. */
+/* The only network dependency browse Map activation adds for project points: a committed,
+   versioned, bounded catalog projection served from this origin. No publisher call, no live
+   GIS, no tile provider. Detail geometry shards load only when a project is inspected. */
 export const LAND_MAP_POINTS_URL = "data/land_project_map_points.json";
 export const LAND_MAP_PANEL_ID = "land-map-panel";
 export const LAND_MAP_SELECTION_ID = "land-map-selected";
+
+/** Point/index URLs fetched on initial browse Map activation (geometry shards excluded). */
+export function landMapInitialPointIndexUrls(){
+  return Object.freeze([LAND_MAP_POINTS_URL]);
+}
 
 let landMapPointsPromise = null;
 function loadLandMapPoints(){
@@ -290,6 +301,76 @@ function loadLandMapPoints(){
       .catch(error=>{ landMapPointsPromise=null; throw error; });
   }
   return landMapPointsPromise;
+}
+
+const landMapGeometryShardPromises = new Map();
+function loadLandProjectGeometryShard(shardKey){
+  const key = String(shardKey || "");
+  if(!/^[0-9a-f]{2}$/.test(key)){
+    return Promise.reject(new Error(`invalid geometry shard key ${JSON.stringify(shardKey)}`));
+  }
+  if(!landMapGeometryShardPromises.has(key)){
+    const url = landProjectGeometryShardUrl(key);
+    const pending = fetchLandMapArtifact(url, {
+      validate: (payload) => Boolean(
+        payload
+        && typeof payload === "object"
+        && payload.schema === LAND_PROJECT_GEOMETRY_SHARD_SCHEMA
+        && payload.shapes
+        && typeof payload.shapes === "object"
+      ),
+    })
+      .then(({payload}) => payload)
+      .catch((error) => {
+        landMapGeometryShardPromises.delete(key);
+        throw error;
+      });
+    landMapGeometryShardPromises.set(key, pending);
+  }
+  return landMapGeometryShardPromises.get(key);
+}
+
+/**
+ * Optional inspection-time parcel outline for one selected project. A missing or
+ * failed shard leaves the marker and project link intact.
+ */
+export async function loadSelectedLandMapGeometry(pointLookup, selectedProjectId){
+  const projectId = String(selectedProjectId ?? "").trim();
+  if(!projectId) return null;
+  const points = pointLookup?.points && typeof pointLookup.points === "object"
+    ? pointLookup.points
+    : pointLookup;
+  const entry = points && typeof points === "object" ? points[projectId] : null;
+  const shardKey = entry?.geometry_shard;
+  if(!shardKey) return null;
+  try{
+    const shard = await loadLandProjectGeometryShard(shardKey);
+    return shapeFromGeometryShard(shard, projectId);
+  }catch(_error){
+    return null;
+  }
+}
+
+export function pointLookupWithSelectedShape(pointLookup, selectedProjectId, shape){
+  const projectId = String(selectedProjectId ?? "").trim();
+  if(!projectId || !shape || !pointLookup || typeof pointLookup !== "object") return pointLookup;
+  if(pointLookup.points && typeof pointLookup.points === "object"){
+    const current = pointLookup.points[projectId];
+    if(!current || typeof current !== "object") return pointLookup;
+    return {
+      ...pointLookup,
+      points: {
+        ...pointLookup.points,
+        [projectId]: { ...current, shape },
+      },
+    };
+  }
+  const current = pointLookup[projectId];
+  if(!current || typeof current !== "object") return pointLookup;
+  return {
+    ...pointLookup,
+    [projectId]: { ...current, shape },
+  };
 }
 
 let landMapBoundaryPromise = null;
@@ -309,6 +390,7 @@ function loadLandMapBoundaries(){
 export function __resetLandMapRuntimeCachesForTests(){
   landMapPointsPromise = null;
   landMapBoundaryPromise = null;
+  landMapGeometryShardPromises.clear();
 }
 
 /** Copy seam. The app publishes `t`; a node contract test injects its own. */
@@ -988,15 +1070,27 @@ export async function mountLandBrowseMap(host, {rows, selectedProjectId, filters
   const havePopulation = population.length > 0;
   const intent = havePopulation ? landMapFocusIntent : null;
   if(havePopulation) landMapFocusIntent = null;
+  const selectedId = selectedProjectId ?? currentLandSelection();
+  const currentHash = globalThis.serializeState?.() || globalThis.location?.hash
+    || (globalThis.location?.search ? `#land${globalThis.location.search}` : "#land");
   try{
+    // First paint uses the compact catalog projection only. Lot outlines stay out of the
+    // activation payload and load below only for the inspected project.
     renderLandMapModel(panel, buildLandMapModel({
       rows: population,
       pointLookup: payload,
-      selectedProjectId: selectedProjectId ?? currentLandSelection(),
+      selectedProjectId: selectedId,
       filters,
-    }), payload.schema ?? null, boundaryContext,
-      globalThis.serializeState?.() || globalThis.location?.hash
-        || (globalThis.location?.search ? `#land${globalThis.location.search}` : "#land"));
+    }), payload.schema ?? null, boundaryContext, currentHash);
+    const selectedShape = await loadSelectedLandMapGeometry(payload, selectedId);
+    if(selectedShape){
+      renderLandMapModel(panel, buildLandMapModel({
+        rows: population,
+        pointLookup: pointLookupWithSelectedShape(payload, selectedId, selectedShape),
+        selectedProjectId: selectedId,
+        filters,
+      }), payload.schema ?? null, boundaryContext, currentHash);
+    }
   }catch(error){
     renderLandMapFailure(panel, hadPanelFocus, error);
     throw error;

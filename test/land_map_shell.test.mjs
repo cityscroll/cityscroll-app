@@ -108,13 +108,14 @@ test("A2 the runtime registers the renderer seam LM-04 left for it", () => {
 
 test("A2 browse Map activation requests exactly one approved projection path", () => {
   assert.equal(LAND_MAP_POINTS_URL, "data/land_project_map_points.json");
-  // LM-12 routes this fetch through fetchLandMapArtifact (the budgeted, typed-failure, bounded-
-  // retry wrapper) instead of a bare fetch() call; the shell itself still names exactly one
-  // artifact and holds no `fetch(` call site of its own.
+  // LM-12 routes fetches through fetchLandMapArtifact. Initial activation names exactly one
+  // point/index artifact; inspection may later load a geometry shard through the same wrapper.
   assert.doesNotMatch(runtimeSrc, /\bfetch\(/, "the shell should route requests through fetchLandMapArtifact, not fetch() directly");
-  const fetches = [...runtimeSrc.matchAll(/fetchLandMapArtifact\(([^,)]+)/g)].map((match) => match[1].trim());
-  assert.deepEqual(fetches, ["LAND_MAP_POINTS_URL"], "the shell adds no second request");
+  assert.match(runtimeSrc, /fetchLandMapArtifact\(LAND_MAP_POINTS_URL/);
+  assert.match(runtimeSrc, /landMapInitialPointIndexUrls/);
+  assert.equal(/landMapInitialPointIndexUrls\(\)\s*\{\s*return Object\.freeze\(\[LAND_MAP_POINTS_URL\]\)/.test(runtimeSrc), true);
   assert.equal(points.schema, "cityscroll.land_project_map_points.v1");
+  assert.ok(points.unmapped && typeof points.unmapped === "object");
 });
 
 test("A2 no map SDK or tile provider is added, and the detail map keeps its own", () => {

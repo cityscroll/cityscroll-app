@@ -9,7 +9,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -22,6 +22,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 export const PAYLOAD_JSON = "site/data/land_project_geometry.json";
 export const RECEIPT_JSON = "site/data/land_project_geometry_receipt.json";
 
+const LAND_CATALOG = "site/data/land_project_catalog.json";
 const LAND_DEFAULT = "site/data/land_default_ulurp.json";
 const ZAP_BBL = "site/data/zap_bbl_warehouse_lookup.json";
 const GEOMETRY_SOURCE = "site/data/land_project_geometry_source_lookup.json";
@@ -45,6 +46,10 @@ function sha256Text(text) {
 }
 
 export function buildLandProjectGeometryFromRepo(root = ROOT) {
+  const catalogPath = path.join(root, LAND_CATALOG);
+  const catalog = existsSync(catalogPath)
+    ? JSON.parse(readFileSync(catalogPath, "utf8"))
+    : null;
   const landDefault = JSON.parse(readFileSync(path.join(root, LAND_DEFAULT), "utf8"));
   const zapBbl = JSON.parse(readFileSync(path.join(root, ZAP_BBL), "utf8"));
   const geometrySource = JSON.parse(readFileSync(path.join(root, GEOMETRY_SOURCE), "utf8"));
@@ -52,6 +57,7 @@ export function buildLandProjectGeometryFromRepo(root = ROOT) {
   const mappedProjectIds = Object.keys(mapPoints.points || {});
 
   const { payload, receipt } = materializeLandProjectGeometry({
+    catalog,
     landDefault,
     zapBbl,
     geometrySource,

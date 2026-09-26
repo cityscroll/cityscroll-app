@@ -20,6 +20,11 @@ import {
   indexLandMapPoints,
 } from "../site/land_map_model.mjs";
 import { LAND_PROJECT_MAP_POINT_SPECIMENS } from "../site/land_project_map_points.mjs";
+import {
+  landProjectGeometryShardPath,
+  shapeFromGeometryShard,
+} from "../site/land_project_geometry.mjs";
+import { pointLookupWithSelectedShape } from "../site/app/map_runtime.mjs";
 import { filterLandSnapshot } from "../site/resident_snapshot_queries.mjs";
 import {
   LAND_FAMILY_OPTIONS,
@@ -36,6 +41,17 @@ const landDefault = JSON.parse(
 const pointArtifact = JSON.parse(
   readFileSync(new URL("../site/data/land_project_map_points.json", import.meta.url), "utf8"),
 );
+
+function committedGeometryShape(projectId) {
+  const shardKey = pointArtifact.points?.[projectId]?.geometry_shard;
+  assert.ok(shardKey, `${projectId} must advertise a geometry_shard locator`);
+  const shard = JSON.parse(
+    readFileSync(new URL(`../${landProjectGeometryShardPath(shardKey)}`, import.meta.url), "utf8"),
+  );
+  const shape = shapeFromGeometryShard(shard, projectId);
+  assert.ok(shape?.rings, `${projectId} shard must carry a valid shape`);
+  return shape;
+}
 const hearings = JSON.parse(
   readFileSync(new URL("../site/data/land_upcoming_hearings.json", import.meta.url), "utf8"),
 );
@@ -380,13 +396,21 @@ test("A3 every existing Land filter dimension preserves List/Map id equality", (
 
 test("LM-17 a single-BBL exact marker carries its committed parcel shape", () => {
   const rows = filterLandSnapshot(landDefault.projects, { limit: 40, status: "all", stage: "any" });
-  const model = buildLandMapModel({ rows, pointLookup: pointArtifact });
-  const marker = model.markers.find((item) => item.projectId === LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl);
+  const selectedId = LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl;
+  const shape = committedGeometryShape(selectedId);
+  const model = buildLandMapModel({
+    rows,
+    pointLookup: pointLookupWithSelectedShape(pointArtifact, selectedId, shape),
+    selectedProjectId: selectedId,
+  });
+  const marker = model.markers.find((item) => item.projectId === selectedId);
   assert.ok(marker, "single-BBL specimen must still be a marker");
-  assert.ok(marker.geometry, "single-BBL specimen should carry the committed shape");
+  assert.ok(marker.geometry, "single-BBL specimen should carry the inspection-loaded shape");
   assert.equal(marker.geometry.method, "single_bbl_parcel_polygon");
   assert.equal(marker.geometry.precision, "tax_lot_boundary");
   assert.ok(Array.isArray(marker.geometry.rings?.[0]));
+  // Compact activation payload itself never embeds rings.
+  assert.equal(Object.prototype.hasOwnProperty.call(pointArtifact.points[selectedId], "shape"), false);
 });
 
 test("LM-17 a multi-BBL anchor marker never carries a shape", () => {

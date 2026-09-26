@@ -188,7 +188,9 @@ describe("land_project_catalog", () => {
       mapPoints.receipt.inputs.land_project_catalog.vintage.content_id,
       committed.generation.content_id,
     );
-    assert.equal(mapPoints.receipt.counts.universe, (defaults.projects || []).length);
+    assert.equal(mapPoints.receipt.counts.universe, committed.project_count);
+    assert.equal(Object.keys(mapPoints.payload.points).length
+      + Object.keys(mapPoints.payload.unmapped || {}).length, committed.project_count);
   });
 
   it("A3 historical BBL keys do not enlarge the catalog", () => {

@@ -1,9 +1,11 @@
 /**
  * Bounded Land project-location projection.
  *
- * Joins the default Land snapshot to retained WH-06 BBLs and MapPLUTO
- * centroids, then asks the known-point resolver for a mapped coordinate.
- * Geocodes, district/borough centers, and outcome-only points never publish.
+ * Joins the admitted Land catalog (falling back to the default snapshot) to
+ * retained WH-06 BBLs and MapPLUTO centroids, then asks the known-point
+ * resolver for a mapped coordinate. Geocodes, district/borough centers, and
+ * outcome-only points never publish. Detail geometry stays out of this
+ * compact payload: mapped rows may carry only a geometry-shard locator.
  */
 
 import { centroidEntry, normalizeBbl } from "./bbl_mappluto_centroids.mjs";
@@ -13,7 +15,10 @@ import {
   REJECTED_KNOWN_LAND_POINT_METHODS,
   resolveKnownLandProjectPoint,
 } from "./land_project_geography.mjs";
-import { landParcelPolygonFindings } from "./land_project_geometry.mjs";
+import {
+  landParcelPolygonFindings,
+  landProjectGeometryShardKey,
+} from "./land_project_geometry.mjs";
 
 export const LAND_PROJECT_MAP_POINTS_SCHEMA = "cityscroll.land_project_map_points.v1";
 export const LAND_PROJECT_MAP_POINTS_RECEIPT_SCHEMA = "cityscroll.land_project_map_points_receipt.v1";
@@ -148,23 +153,38 @@ function classifyOutcome({ uniqueExactCount, matchedCount, resolved }) {
   };
 }
 
-function mappedEntry(resolved, shape) {
-  return {
+function mappedEntry(resolved, geometryShardKey) {
+  const entry = {
     lat: resolved.lat,
     lon: resolved.lon,
     method: resolved.method,
     precision: resolved.precision,
     bbl_count: resolved.bblCount,
-    // Additive only (LM-17): a bounded, optional richer shape for the same exact point.
-    // Never required, never touches lat/lon/method/precision/bbl_count above.
-    shape: shape || null,
   };
+  // Compact catalog projection: never embed parcel rings. A locator names the
+  // FNV shard that holds optional detail geometry for inspection-time load.
+  if (geometryShardKey) entry.geometry_shard = geometryShardKey;
+  return entry;
 }
 
-function geometryByProjectMap(value) {
+function geometryShardByProjectMap(value) {
   if (value instanceof Map) return value;
   const record = value && typeof value === "object" && !Array.isArray(value) ? value : {};
   return new Map(Object.entries(record));
+}
+
+function geometryLocatorFor(projectId, geometryByProject) {
+  if (!geometryByProject || !geometryByProject.has(projectId)) return null;
+  const shape = geometryByProject.get(projectId);
+  if (!shape || landParcelPolygonFindings(shape)) return null;
+  return landProjectGeometryShardKey(projectId);
+}
+
+function unmappedPayloadEntry(outcome) {
+  return {
+    status: outcome.status,
+    reason: outcome.reason,
+  };
 }
 
 function receiptRow({ projectId, outcome, resolved, uniqueExactCount }) {
@@ -214,6 +234,7 @@ function inputRecord({ path, countField, vintage, sha256 }) {
  * @param {object} [inputs.publisherPoints]
  * @param {object} [inputs.propertyPoints]
  * @param {object} [inputs.geometryPoints]
+ * @param {Map|object} [inputs.geometryByProject] — shapes used only to stamp geometry_shard locators
  */
 export function materializeLandProjectMapPoints(inputs = {}) {
   const catalog = inputs.catalog == null ? null : asObject(inputs.catalog);
@@ -222,23 +243,22 @@ export function materializeLandProjectMapPoints(inputs = {}) {
   const centroidsDoc = asObject(inputs.mapplutoCentroids);
   const byBbl = asObject(centroidsDoc.by_bbl);
   const hashes = asObject(inputs.artifactHashes);
-  // Population for projected points stays the default snapshot until the
-  // compact full-catalog map projection lands. When a catalog is supplied,
-  // its generation/source dates are recorded on the receipt and default IDs
-  // must already be admitted.
-  const universe = projectUniverse(landDefault);
+  // Prefer the admitted catalog population. The default snapshot remains the
+  // compatibility seed when a catalog is absent (fixtures / older callers).
+  const universe = projectUniverse(catalog || landDefault);
   if (catalog) {
     const admitted = new Set(projectRowsFromPopulation(catalog).map((row) => trimId(row?.project_id)).filter(Boolean));
-    for (const item of universe) {
+    for (const item of projectUniverse(landDefault)) {
       if (!admitted.has(item.project_id)) {
         throw new Error(`land_project_map_points default id ${item.project_id} missing from admitted catalog`);
       }
     }
   }
   const bblsByProject = indexBblsByProject(zapBbl);
-  const geometryByProject = geometryByProjectMap(inputs.geometryByProject);
+  const geometryByProject = geometryShardByProjectMap(inputs.geometryByProject);
 
   const points = {};
+  const unmapped = {};
   const outcomes = [];
   const counts = {
     universe: universe.length,
@@ -280,20 +300,24 @@ export function materializeLandProjectMapPoints(inputs = {}) {
     if (outcome.reason === LAND_PROJECT_MAP_POINT_REASONS.NO_RETAINED_BBL) {
       noRetainedBbl.push(projectId);
     }
-    if (outcome.status === LAND_PROJECT_MAP_POINT_OUTCOMES.MAPPED) {
-      points[projectId] = mappedEntry(resolved, geometryByProject.get(projectId) || null);
-    }
-    outcomes.push(receiptRow({
+    const row = receiptRow({
       projectId,
       outcome,
       resolved,
       uniqueExactCount: uniqueExact.length,
-    }));
+    });
+    outcomes.push(row);
+    if (outcome.status === LAND_PROJECT_MAP_POINT_OUTCOMES.MAPPED) {
+      points[projectId] = mappedEntry(resolved, geometryLocatorFor(projectId, geometryByProject));
+    } else {
+      unmapped[projectId] = unmappedPayloadEntry(row);
+    }
   }
 
   const payload = {
     schema: LAND_PROJECT_MAP_POINTS_SCHEMA,
     points: Object.fromEntries(sortedKeys(points).map((id) => [id, points[id]])),
+    unmapped: Object.fromEntries(sortedKeys(unmapped).map((id) => [id, unmapped[id]])),
   };
 
   const catalogVintage = catalog
@@ -378,6 +402,9 @@ export function landProjectMapPointsFindings(payload, receipt, opts = {}) {
     findings.push("receipt join_version mismatch");
   }
   const points = payload?.points && typeof payload.points === "object" ? payload.points : {};
+  const unmapped = payload?.unmapped && typeof payload.unmapped === "object" && !Array.isArray(payload.unmapped)
+    ? payload.unmapped
+    : null;
   const pointIds = Object.keys(points);
   const mappedIds = new Set(receipt?.mapped_project_ids || []);
   if (pointIds.length !== mappedIds.size) {
@@ -397,13 +424,52 @@ export function landProjectMapPointsFindings(payload, receipt, opts = {}) {
       findings.push(`${id} payload carries receipt fields`);
     }
     if (!mappedIds.has(id)) findings.push(`${id} is in the payload but not the receipt mapped set`);
-    if (point?.shape) {
-      const shapeInvalid = landParcelPolygonFindings(point.shape);
-      if (shapeInvalid) findings.push(`${id} shape invalid: ${shapeInvalid}`);
-      if (!point.shape.method || !point.shape.precision || !point.shape.relation || !point.shape.vintage) {
-        findings.push(`${id} shape missing method, precision, relation, or vintage`);
+    if (point && Object.prototype.hasOwnProperty.call(point, "shape")) {
+      findings.push(`${id} compact payload embeds shape; use geometry_shard`);
+    }
+    if (point?.geometry_shard != null) {
+      const key = String(point.geometry_shard);
+      if (!/^[0-9a-f]{2}$/.test(key)) {
+        findings.push(`${id} geometry_shard ${JSON.stringify(point.geometry_shard)} is not a two-digit hex key`);
+      } else if (key !== landProjectGeometryShardKey(id)) {
+        findings.push(`${id} geometry_shard ${key} != FNV key ${landProjectGeometryShardKey(id)}`);
       }
     }
+    if (unmapped && Object.prototype.hasOwnProperty.call(unmapped, id)) {
+      findings.push(`${id} appears in both points and unmapped`);
+    }
+  }
+  const receiptUnmappedIds = [
+    ...(receipt?.unmapped_project_ids || []),
+    ...(receipt?.rejected_project_ids || []),
+    ...(receipt?.source_missing_project_ids || []),
+  ];
+  if (unmapped) {
+    const payloadUnmappedIds = Object.keys(unmapped);
+    if (payloadUnmappedIds.length !== receiptUnmappedIds.length) {
+      findings.push(`payload unmapped ${payloadUnmappedIds.length} != receipt non-mapped ${receiptUnmappedIds.length}`);
+    }
+    const receiptUnmappedSet = new Set(receiptUnmappedIds);
+    for (const id of payloadUnmappedIds) {
+      const entry = unmapped[id];
+      if (!receiptUnmappedSet.has(id)) {
+        findings.push(`${id} is in payload unmapped but not the receipt non-mapped set`);
+      }
+      if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+        findings.push(`${id} unmapped entry is not an object`);
+        continue;
+      }
+      if (!entry.status) findings.push(`${id} unmapped entry missing status`);
+      if (entry.status === LAND_PROJECT_MAP_POINT_OUTCOMES.MAPPED) {
+        findings.push(`${id} unmapped entry claims mapped status`);
+      }
+      if (!("reason" in entry)) findings.push(`${id} unmapped entry missing reason`);
+      if ("lat" in entry || "lon" in entry || "rings" in entry || "shape" in entry) {
+        findings.push(`${id} unmapped entry carries geometry fields`);
+      }
+    }
+  } else if (receiptUnmappedIds.length) {
+    findings.push("payload missing unmapped statuses for non-mapped projects");
   }
   const represented = new Set([
     ...(receipt?.mapped_project_ids || []),

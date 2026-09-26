@@ -302,11 +302,13 @@ test("A2 the Map renderer consumes only the filtered rows it is handed", () => {
     assert.equal(forbidden.test(browse), false, `browse map must not contain ${forbidden}`);
   }
 
-  // The only network the browse map does is the point artifact it joins against, routed
-  // through fetchLandMapArtifact (LM-12's budgeted, typed-failure, bounded-retry wrapper).
+  // Initial activation fetches only the compact point/index artifact. Detail geometry
+  // shards may load later on inspection through the same budgeted wrapper.
   assert.doesNotMatch(runtimeSrc, /\bfetch\(/, "the shell should route requests through fetchLandMapArtifact, not fetch()");
-  const fetches = [...runtimeSrc.matchAll(/fetchLandMapArtifact\(([A-Za-z_$][\w$]*)/g)].map((match) => match[1]);
-  assert.deepEqual([...new Set(fetches)], ["LAND_MAP_POINTS_URL"]);
+  assert.match(runtimeSrc, /fetchLandMapArtifact\(LAND_MAP_POINTS_URL/);
+  assert.match(runtimeSrc, /landMapInitialPointIndexUrls/);
+  assert.match(runtimeSrc, /loadSelectedLandMapGeometry/);
+  assert.equal(/landMapInitialPointIndexUrls\(\)\s*\{\s*return Object\.freeze\(\[LAND_MAP_POINTS_URL\]\)/.test(runtimeSrc), true);
 
   // `bounds` is derived from markers that already exist; it never selects them. The only reader
   // of the model's bounds is the view box, which is drawing, not membership.

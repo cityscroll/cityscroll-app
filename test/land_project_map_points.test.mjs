@@ -37,13 +37,15 @@ const fixture = requireJson("./fixtures/land_project_map_points/inputs.json");
 const materializerSrc = readFileSync(new URL("../site/land_project_map_points.mjs", import.meta.url), "utf8");
 const builderSrc = readFileSync(new URL("../tools/build_land_project_map_points.mjs", import.meta.url), "utf8");
 
-const SIX_EXACT_BBL_MISSES = [
-  "2020M0385",
+const EXACT_BBL_MISSES = [
   "2020K0444",
-  "2024Q0135",
-  "P2012X0048",
+  "2020M0385",
   "2020Q0317",
   "2023M0452",
+  "2024M0278",
+  "2024Q0135",
+  "P2009M0029",
+  "P2012X0048",
 ];
 
 function fixtureRun(overrides = {}) {
@@ -238,30 +240,38 @@ test("committed projection maps 2026R0127 and anchors 2025K0305 on a retained ce
   assert.notEqual(multi.lon, expected.mean.lon);
 });
 
-test("committed receipt keeps 2025M0252 and the six exact-BBL misses out of the payload", () => {
+test("committed receipt keeps 2025M0252 and exact-BBL misses out of the payload", () => {
   const payload = JSON.parse(readFileSync(new URL(`../${PAYLOAD_JSON}`, import.meta.url), "utf8"));
   const receipt = JSON.parse(readFileSync(new URL(`../${RECEIPT_JSON}`, import.meta.url), "utf8"));
   assert.equal(LAND_PROJECT_MAP_POINT_SPECIMENS.no_retained_bbl in payload.points, false);
+  assert.equal(LAND_PROJECT_MAP_POINT_SPECIMENS.no_retained_bbl in payload.unmapped, true);
   assert.equal(receipt.source_missing_project_ids.includes("2025M0252"), true);
   const missingBbl = receipt.outcomes.find((row) => row.project_id === "2025M0252");
   assert.equal(missingBbl.status, "source_missing");
   assert.equal(missingBbl.reason, "no_retained_bbl");
-  assert.deepEqual(receipt.unmapped_exact_bbl_missing_centroid, SIX_EXACT_BBL_MISSES);
-  for (const id of SIX_EXACT_BBL_MISSES) {
+  assert.deepEqual(receipt.unmapped_exact_bbl_missing_centroid, EXACT_BBL_MISSES);
+  for (const id of EXACT_BBL_MISSES) {
     assert.equal(id in payload.points, false);
+    assert.equal(payload.unmapped[id]?.status, "source_missing");
     const row = receipt.outcomes.find((item) => item.project_id === id);
     assert.equal(row.status, "source_missing");
     assert.equal(row.reason, "exact_bbl_missing_centroid");
     assert.equal(row.exact_bbl_count >= 1, true);
     assert.equal(row.bbl_count, 0);
   }
-  assert.equal(receipt.counts.universe, 40);
-  assert.equal(receipt.counts.mapped + receipt.counts.source_missing + receipt.counts.unmapped + receipt.counts.rejected, 40);
+  assert.equal(receipt.counts.universe, 244);
+  assert.equal(
+    receipt.counts.mapped + receipt.counts.source_missing + receipt.counts.unmapped + receipt.counts.rejected,
+    244,
+  );
   assert.equal(Object.keys(payload.points).length, receipt.counts.mapped);
+  assert.equal(Object.keys(payload.unmapped).length, 244 - receipt.counts.mapped);
   assert.ok(receipt.inputs.land_project_catalog, "map points bind to the admitted catalog generation");
   assert.equal(receipt.inputs.land_project_catalog.count, 244);
   assert.equal(receipt.inputs.land_project_catalog.vintage.warehouse_materialized_at, "2026-09-09T06:54:36.054Z");
   assert.equal(receipt.inputs.land_project_catalog.vintage.content_id.startsWith("fnv1a32:"), true);
+  assert.equal(payload.points["2026R0127"].geometry_shard, "2b");
+  assert.equal(Object.prototype.hasOwnProperty.call(payload.points["2026R0127"], "shape"), false);
 });
 
 test("resident payload stays bounded and does not copy the WH-06 corpus", () => {

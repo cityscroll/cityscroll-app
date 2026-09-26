@@ -1,0 +1,106 @@
+{
+  "schema": "cityscroll.land_project_geometry_shard.v1",
+  "key": "2b",
+  "generation_id": "fnv1a32:06425590:244",
+  "shape_count": 1,
+  "shapes": {
+    "2026R0127": {
+      "project_id": "2026R0127",
+      "bbl": "5007087501",
+      "geometry_type": "Polygon",
+      "rings": [
+        [
+          [
+            -74.119547,
+            40.612969
+          ],
+          [
+            -74.119368,
+            40.612985
+          ],
+          [
+            -74.119234,
+            40.612997
+          ],
+          [
+            -74.119215,
+            40.612884
+          ],
+          [
+            -74.119804,
+            40.612833
+          ],
+          [
+            -74.119867,
+            40.612689
+          ],
+          [
+            -74.119932,
+            40.612542
+          ],
+          [
+            -74.119978,
+            40.612438
+          ],
+          [
+            -74.119979,
+            40.612436
+          ],
+          [
+            -74.120081,
+            40.612426
+          ],
+          [
+            -74.120088,
+            40.612566
+          ],
+          [
+            -74.120096,
+            40.612699
+          ],
+          [
+            -74.120101,
+            40.612803
+          ],
+          [
+            -74.120107,
+            40.612915
+          ],
+          [
+            -74.12012,
+            40.613159
+          ],
+          [
+            -74.120122,
+            40.613192
+          ],
+          [
+            -74.119737,
+            40.613234
+          ],
+          [
+            -74.11973,
+            40.61319
+          ],
+          [
+            -74.11969,
+            40.612957
+          ],
+          [
+            -74.119547,
+            40.612969
+          ]
+        ]
+      ],
+      "method": "single_bbl_parcel_polygon",
+      "relation": "exact_single_retained_bbl_full_project_site",
+      "precision": "tax_lot_boundary",
+      "coverage_state": "exact",
+      "source": {
+        "publisher": "NYC Department of City Planning MapPLUTO/PLUTO"
+      },
+      "vintage": "2026-09-03T01:34:56.321Z",
+      "materialization_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1"
+    }
+  }
+}

@@ -101,10 +101,10 @@ export function indexLandMapPoints(pointLookup) {
 }
 
 /**
- * A joined point's own optional `shape`, when present and valid. Geometry
- * rides on the same already-fetched point projection (LM-17 adds it as a
- * field, not a second artifact), so this never mints a second request. A
- * malformed polygon degrades to "no shape" rather than a broken render.
+ * A joined point's optional `shape`, when present and valid. Compact catalog
+ * activation omits rings; the browse shell may attach an inspection-loaded
+ * shape onto the selected point before calling this model. A malformed
+ * polygon degrades to "no shape" rather than a broken render.
  */
 function shapeFromPoint(record) {
   const shape = asObject(record)?.shape;

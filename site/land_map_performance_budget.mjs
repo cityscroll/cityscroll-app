@@ -34,7 +34,7 @@ export const LAND_MAP_FAILURE_KINDS = Object.freeze({
 });
 
 /* Measured baselines this card found, with headroom, not the tightest number that happens to
- * pass today: site/data/land_project_map_points.json was 22,849 bytes; site/data/
+ * pass today: site/data/land_project_map_points.json is the compact catalog projection (≤65,536 bytes); site/data/
  * land_default_ulurp.json was 249,323 bytes; the three boundary layers (borough,
  * community_district, council_district) totalled 330,791 bytes; browse Map activation issues
  * exactly those 1 + 3 = 4 deferred requests. */
@@ -44,7 +44,7 @@ export const LAND_MAP_BUDGETS = Object.freeze({
   map_activation_requests_max: 4,
   map_activation_bytes_max: 500_000,
   map_activation_ms_max: 3_000,
-  map_projection_bytes_max: 40_000,
+  map_projection_bytes_max: 64 * 1024,
   map_request_timeout_ms: 4_000,
   map_transient_retry_max: 2,
   map_transient_retry_delay_ms: 150,

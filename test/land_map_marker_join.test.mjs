@@ -37,7 +37,12 @@ import {
   landMapPanelHTML,
   landMapParcelSvg,
   landMarkerDetailHref,
+  pointLookupWithSelectedShape,
 } from "../site/app/map_runtime.mjs";
+import {
+  landProjectGeometryShardPath,
+  shapeFromGeometryShard,
+} from "../site/land_project_geometry.mjs";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const read = (...parts) => readFileSync(join(ROOT, "..", ...parts), "utf8");
@@ -45,6 +50,15 @@ const read = (...parts) => readFileSync(join(ROOT, "..", ...parts), "utf8");
 const runtimeSrc = read("site", "app", "map_runtime.mjs");
 const landDefault = JSON.parse(read("site", "data", "land_default_ulurp.json"));
 const points = JSON.parse(read("site", "data", "land_project_map_points.json"));
+
+function committedGeometryShape(projectId) {
+  const shardKey = points.points?.[projectId]?.geometry_shard;
+  assert.ok(shardKey, `${projectId} must advertise a geometry_shard locator`);
+  const shard = JSON.parse(read(...landProjectGeometryShardPath(shardKey).split("/")));
+  const shape = shapeFromGeometryShard(shard, projectId);
+  assert.ok(shape?.rings, `${projectId} shard must carry a valid shape`);
+  return shape;
+}
 
 const en = new Function(
   "window",
@@ -287,11 +301,12 @@ test("A4 the marker layer adds no choropleth, no search, and no fetch of its own
     "the only filled shapes are the schematic borough and parcel outlines");
   assert.doesNotMatch(html, /data-land-map-value|land-map-choropleth/);
 
-  // The whole projection is only ever reached through the shell's one committed URL, routed
-  // through fetchLandMapArtifact (LM-12's budgeted, typed-failure, bounded-retry wrapper).
+  // Point/index activation uses one committed URL. Inspection may fetch one geometry shard
+  // through the same budgeted wrapper; both stay behind fetchLandMapArtifact.
   assert.doesNotMatch(runtimeSrc, /\bfetch\s*\(/, "the shell should route requests through fetchLandMapArtifact, not fetch()");
-  assert.equal([...runtimeSrc.matchAll(/fetchLandMapArtifact\s*\(/g)].length, 1);
+  assert.equal([...runtimeSrc.matchAll(/fetchLandMapArtifact\s*\(/g)].length, 2);
   assert.match(runtimeSrc, /fetchLandMapArtifact\(LAND_MAP_POINTS_URL/);
+  assert.match(runtimeSrc, /loadSelectedLandMapGeometry/);
 });
 
 test("A4 an id the canonical route rejects gets a point but never a link", () => {
@@ -358,7 +373,7 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
 });
 
 test("LM-17 landMapParcelSvg draws only markers that carry a shape, and never interactively", () => {
-  const shape = points.points["2026R0127"].shape;
+  const shape = committedGeometryShape("2026R0127");
   const markerLayer = [
     { projectId: "2026R0127", geometry: shape, label: "One lot" },
     { projectId: "2025K0305", geometry: null, label: "Many lots" },
@@ -379,12 +394,16 @@ test("LM-17 landMapParcelSvg renders nothing for an empty marker layer", () => {
 
 test("LM-17 a marker's committed shape survives the full model-to-SVG pipeline", () => {
   const SINGLE_BBL_SPECIMEN = "2026R0127";
-  const model = modelFor();
+  const shape = committedGeometryShape(SINGLE_BBL_SPECIMEN);
+  const model = modelFor(
+    {},
+    pointLookupWithSelectedShape(pointsWithOrphan(), SINGLE_BBL_SPECIMEN, shape),
+  );
   const layer = layerFor(model);
   const marker = layer.find((item) => item.projectId === SINGLE_BBL_SPECIMEN);
   assert.ok(marker, "the single-BBL specimen must still be a marker");
   // Regression: landMapMarkerLayer once dropped model.markers[].geometry entirely, so the
-  // committed shape never reached the SVG despite being present and valid in the model.
+  // inspection-loaded shape never reached the SVG despite being present and valid in the model.
   assert.ok(marker.geometry, "landMapMarkerLayer must carry the model's geometry through");
   const svg = landMapCanvasSvg(model, { t, sourceVintage: points.schema });
   assert.match(svg, new RegExp(`land-map-parcel-outline"[^>]*data-land-map-project="${SINGLE_BBL_SPECIMEN}"`));
