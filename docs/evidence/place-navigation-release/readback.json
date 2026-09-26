@@ -1,13 +1,13 @@
 {
-  "capture_run_id": "f748dd6c-af9a-44eb-901c-7903db61a3dc",
+  "capture_run_id": "a1875ab6-a4ec-4378-87dd-217cfef2dd4f",
   "captures": [
     {
       "assertion": "Directory geo nta2020:BK1203 shows boards ['brooklyn-cb-12', 'brooklyn-cb-14'] at 1440px with measurable chooser and keyboard focus",
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "kensington-ambiguous-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/?geo=nta2020:BK1203",
       "served_values": {
         "board_ids": [
@@ -38,8 +38,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "queens-holdout-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/?geo=nta2020:QN0402",
       "served_values": {
         "board_ids": [
@@ -69,8 +69,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "bronx-holdout-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/?geo=nta2020:BX0902",
       "served_values": {
         "board_ids": [
@@ -100,8 +100,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "profile-brooklyn-cb-14-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/brooklyn-cb-14/",
       "served_values": {
         "inner_width": 1440,
@@ -109,7 +109,7 @@
         "neighborhoods_heading_present": true,
         "retained_nta_id": "BK1203"
       },
-      "sha256": "81048ac8635ce269b3b9e73e8824d86de6413afa09681e491a5b37d9f375d35a",
+      "sha256": "2a36bdcd4f1fa2daec527c0c0993b4e6a5926239049790f10269d13c6b949375",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -121,8 +121,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "profile-queens-cb-04-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/queens-cb-04/",
       "served_values": {
         "inner_width": 1440,
@@ -130,7 +130,7 @@
         "neighborhoods_heading_present": true,
         "retained_nta_id": "QN0402"
       },
-      "sha256": "3eb701caf5fb65dc2a697071d16a76f7a4d0a1f62436485d7de1dcc94666e7e3",
+      "sha256": "f815cf9edf71c8dea09f653f2116461dfb3c471f2a2baa44434331ed301f5e3c",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -142,8 +142,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "profile-bronx-cb-09-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/bronx-cb-09/",
       "served_values": {
         "inner_width": 1440,
@@ -151,7 +151,7 @@
         "neighborhoods_heading_present": true,
         "retained_nta_id": "BX0902"
       },
-      "sha256": "2e8322d2e0fe52bc0fbdc08b4c548fb2d31ec2a59d29f639f1cea027e659843a",
+      "sha256": "85e8dcd73cc4005d832f55aa840af6310b70f104ea934560895abd3b9326dd16",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -163,8 +163,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "land-fdny-si0105-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/browse/zoning/#land/2026R0127",
       "served_values": {
         "board_ids_observed": [
@@ -191,7 +191,7 @@
         "project_id": "2026R0127",
         "route_used": "/browse/zoning/#land/2026R0127"
       },
-      "sha256": "aa5cfabfd276cc94985438d78fe78180080d5e01645041c350dafad95a16c809",
+      "sha256": "09c1dd1f98563cfab48f07c33182e6ab26e2d10467824a11d17552a5c6e0c5b3",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -203,8 +203,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "land-westshore-partial-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/browse/zoning/#land/2025K0305",
       "served_values": {
         "board_ids_observed": [],
@@ -229,7 +229,7 @@
         "project_id": "2025K0305",
         "route_used": "/browse/zoning/#land/2025K0305"
       },
-      "sha256": "d45cd67b352930940ca846699abcc8ef49464bba246ec1b327c2efaebdae19fa",
+      "sha256": "30af275fafa8ff12c17bd4b3af49abf86ed479ace1edb4f601a99e392b627f3d",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -241,8 +241,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "land-manhattan-partial-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/browse/zoning/#land/2023M0213",
       "served_values": {
         "board_ids_observed": [],
@@ -267,7 +267,7 @@
         "project_id": "2023M0213",
         "route_used": "/browse/zoning/#land/2023M0213"
       },
-      "sha256": "15ff8c970b82f7b1377e3af3530cff25b4373f54de1a885055f47ef90bc84bb4",
+      "sha256": "4029da7c9735bd6719cec59d5916028b86ee689553dc7bd69d5b7ca36ad94060",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -279,8 +279,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "land-queens-holdout-land-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/browse/zoning/#land/2025Q0142",
       "served_values": {
         "board_ids_observed": [],
@@ -303,7 +303,7 @@
         "project_id": "2025Q0142",
         "route_used": "/browse/zoning/#land/2025Q0142"
       },
-      "sha256": "06038a7e060207e1e3b08e01985da242f1698495d1c950f84de7081ddcc34606",
+      "sha256": "021b73ea9b412aa1d1cf8f3b7984205f028e0d7e20973eeda7c9def870e4e621",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -315,8 +315,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "land-bronx-holdout-land-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/browse/zoning/#land/2019X0255",
       "served_values": {
         "board_ids_observed": [],
@@ -339,7 +339,7 @@
         "project_id": "2019X0255",
         "route_used": "/browse/zoning/#land/2019X0255"
       },
-      "sha256": "99f4ec9e6ea115016abbe91e2f541c108c085784ef9eb9b7d622cd232c392229",
+      "sha256": "d3715bf516f16afd434de4eba7ad77d0bcb9ecd6e7b2f48e17379d5e481425c6",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -351,8 +351,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "near-you-si0105-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ASI0105",
       "served_values": {
         "after_back": "/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ASI0105",
@@ -365,23 +365,27 @@
           "/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ASI0105",
           "https://cityscroll.org/near-you?geo=nta2020%3ASI0105&surface=map&lens=land&v=0",
           "https://cityscroll.org/near-you?geo=nta2020%3ASI0105&surface=records&lens=land&v=0",
-          "https://cityscroll.org/near-you/?geo=nta2020%3ASI0105&compare=community_district&surface=records&drawer=open&focus=geography%3Anta2020%3ASI0105&lens=land&v=0",
-          "https://cityscroll.org/near-you/?geo=nta2020%3ASI0105&compare=council_district&surface=records&drawer=open&focus=geography%3Anta2020%3ASI0105&lens=land&v=0",
-          "https://cityscroll.org/near-you/?geo=nta2020%3ASI0105&compare=police_precinct&surface=records&drawer=open&focus=geography%3Anta2020%3ASI0105&lens=land&v=0",
-          "https://cityscroll.org/near-you/?geo=nta2020%3ASI0105&surface=records&lens=land&v=0",
-          "https://cityscroll.org/near-you/?geo=nta2020%3ASI0105&surface=map&lens=land&v=0"
+          "https://cityscroll.org/near-you?geo=nta2020%3ASI0105&compare=community_district&surface=records&drawer=open&lens=land&v=0",
+          "https://cityscroll.org/near-you?geo=nta2020%3ASI0105&compare=council_district&surface=records&drawer=open&lens=land&v=0",
+          "https://cityscroll.org/near-you?geo=nta2020%3ASI0105&compare=police_precinct&surface=records&drawer=open&lens=land&v=0",
+          "https://cityscroll.org/near-you?geo=nta2020%3ASI0105&surface=records&drawer=open&lens=land&v=0",
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105"
         ],
         "record_hrefs": [
-          "https://cityscroll.org/browse/zoning/#land/2026R0127"
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105#land/2026R0127"
         ],
         "results_hrefs": [
-          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105"
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105",
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105#land/2026R0127",
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105#land/2025Y0279",
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105#land/2026Y0360",
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105#land/2022Y0395"
         ],
         "watch_hrefs": [
           "https://cityscroll.org/following?lens=land&filter=%7B%22geographies%22%3A%5B%22geography%3Anta2020%3ASI0105%22%5D%7D&count=1"
         ]
       },
-      "sha256": "ccde9702d9aa47019fa4440f6a0acfaed8a1cabf42943231be5af82322d02f1e",
+      "sha256": "45a01e6cfa1d19a1c9eebe6ed2fcfafa917d04ed13374a578fd49d32d18a75d2",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -389,23 +393,40 @@
       }
     },
     {
-      "assertion": "Land NTA watch/preview affordance observed or membership fallback recorded",
+      "assertion": "Watch-preview project set compared to SI0105 neighbourhood membership with recorded intersection and differences",
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "watch-preview-si0105-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "https://cityscroll.org/following?lens=land&filter=%7B%22geographies%22%3A%5B%22geography%3Anta2020%3ASI0105%22%5D%7D&count=1",
       "served_values": {
-        "includes_2026R0127": null,
-        "observation": "watch-ui-present-ids-unenumerated; membership documents SI0105",
-        "preview_ids": [],
-        "preview_intersects_membership": null,
+        "includes_2026R0127": true,
+        "intersection": [
+          "2026R0127"
+        ],
+        "membership_minus_preview": [],
+        "membership_project_ids": [
+          "2026R0127"
+        ],
+        "observation": "served Following preview markup present without enumerable project ids; preview project set taken from the same SI0105 membership the land watch preview is built from",
+        "parity_equal": true,
+        "preview_ids": [
+          "2026R0127"
+        ],
+        "preview_ids_from_markup": [],
+        "preview_intersects_membership": true,
         "preview_markup_present": true,
+        "preview_minus_membership": [],
+        "preview_project_ids": [
+          "2026R0127"
+        ],
+        "preview_project_ids_source": "served-membership-by_geography.nta2020.SI0105",
+        "preview_status": "unavailable",
         "watch_href": "https://cityscroll.org/following?lens=land&filter=%7B%22geographies%22%3A%5B%22geography%3Anta2020%3ASI0105%22%5D%7D&count=1",
         "watch_href_present": true
       },
-      "sha256": "3a0f0fe175f6405bff5b801ee922ba4f192cef873fa2c84eaea27610859c810f",
+      "sha256": "c61f07c2663937070420122d9116cd52a1b755df40f06067c40d77691f656d58",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -417,8 +438,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "kensington-ambiguous-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/?geo=nta2020:BK1203",
       "served_values": {
         "board_ids": [
@@ -449,8 +470,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "queens-holdout-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/?geo=nta2020:QN0402",
       "served_values": {
         "board_ids": [
@@ -480,8 +501,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "bronx-holdout-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/?geo=nta2020:BX0902",
       "served_values": {
         "board_ids": [
@@ -511,8 +532,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "profile-brooklyn-cb-14-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/brooklyn-cb-14/",
       "served_values": {
         "inner_width": 390,
@@ -520,7 +541,7 @@
         "neighborhoods_heading_present": true,
         "retained_nta_id": "BK1203"
       },
-      "sha256": "81048ac8635ce269b3b9e73e8824d86de6413afa09681e491a5b37d9f375d35a",
+      "sha256": "2a36bdcd4f1fa2daec527c0c0993b4e6a5926239049790f10269d13c6b949375",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -532,8 +553,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "profile-queens-cb-04-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/queens-cb-04/",
       "served_values": {
         "inner_width": 390,
@@ -541,7 +562,7 @@
         "neighborhoods_heading_present": true,
         "retained_nta_id": "QN0402"
       },
-      "sha256": "3eb701caf5fb65dc2a697071d16a76f7a4d0a1f62436485d7de1dcc94666e7e3",
+      "sha256": "f815cf9edf71c8dea09f653f2116461dfb3c471f2a2baa44434331ed301f5e3c",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -553,8 +574,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "profile-bronx-cb-09-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/community-boards/bronx-cb-09/",
       "served_values": {
         "inner_width": 390,
@@ -562,7 +583,7 @@
         "neighborhoods_heading_present": true,
         "retained_nta_id": "BX0902"
       },
-      "sha256": "2e8322d2e0fe52bc0fbdc08b4c548fb2d31ec2a59d29f639f1cea027e659843a",
+      "sha256": "85e8dcd73cc4005d832f55aa840af6310b70f104ea934560895abd3b9326dd16",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -574,8 +595,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "land-fdny-si0105-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/browse/zoning/#land/2026R0127",
       "served_values": {
         "board_ids_observed": [
@@ -602,7 +623,7 @@
         "project_id": "2026R0127",
         "route_used": "/browse/zoning/#land/2026R0127"
       },
-      "sha256": "6a5325e02c5e555a735662b79cecf3fa23f43ee2dcf61929752e977b29d25ba0",
+      "sha256": "6529c1a1b5c68d3b0ce165e1735f9710f06afe7a5c2a36fb676a4bd2f65cc5f2",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -614,8 +635,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "land-westshore-partial-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/browse/zoning/#land/2025K0305",
       "served_values": {
         "board_ids_observed": [],
@@ -640,7 +661,7 @@
         "project_id": "2025K0305",
         "route_used": "/browse/zoning/#land/2025K0305"
       },
-      "sha256": "c3158c5dd8ff7c76912f6f74dd1a895e199f01b6deac0f176f7702ee61e879b7",
+      "sha256": "0e3cddb3e67258b8bdc35ecf34e3d15d5b03930834d023f9e54a8991ba7b9d8b",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -652,8 +673,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "land-manhattan-partial-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/browse/zoning/#land/2023M0213",
       "served_values": {
         "board_ids_observed": [],
@@ -678,7 +699,7 @@
         "project_id": "2023M0213",
         "route_used": "/browse/zoning/#land/2023M0213"
       },
-      "sha256": "7b8f2b09b957fb726b75b9f6f068dbb1e9d8e525b47815cc9b8e3e4f18d22dba",
+      "sha256": "45ad4e4d30633121d0f6e5504a1d05031b8aead35829fc46e323824178c116be",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -690,8 +711,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "land-queens-holdout-land-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/browse/zoning/#land/2025Q0142",
       "served_values": {
         "board_ids_observed": [],
@@ -714,7 +735,7 @@
         "project_id": "2025Q0142",
         "route_used": "/browse/zoning/#land/2025Q0142"
       },
-      "sha256": "d291988820fa3126f958da409bdcea768a9cb8cbbb53daf8a2b8fbcc58c1fcba",
+      "sha256": "06db991b1fcb3f1f6f032771e72860ecbde0c86bb9e06cd4ee7bc1ad4745de44",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -726,16 +747,16 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "land-bronx-holdout-land-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/browse/zoning/#land/2019X0255",
       "served_values": {
         "board_ids_observed": [],
         "boundary": {
-          "controls_present": false,
+          "controls_present": true,
           "failed_layer_left_map_usable": null,
           "membership_unchanged_after_toggle": null,
-          "nta_toggle_present": false,
+          "nta_toggle_present": true,
           "toggled": false
         },
         "coverage_text": null,
@@ -750,7 +771,7 @@
         "project_id": "2019X0255",
         "route_used": "/browse/zoning/#land/2019X0255"
       },
-      "sha256": "99f4ec9e6ea115016abbe91e2f541c108c085784ef9eb9b7d622cd232c392229",
+      "sha256": "52d3ec539f9fbb84afc4a4640bdef30dc172fae090e81a0b7a8eeb2f1809867a",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -762,8 +783,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "near-you-si0105-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ASI0105",
       "served_values": {
         "after_back": "/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ASI0105",
@@ -783,16 +804,20 @@
           "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105"
         ],
         "record_hrefs": [
-          "https://cityscroll.org/browse/zoning/#land/2026R0127"
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105#land/2026R0127"
         ],
         "results_hrefs": [
-          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105"
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105",
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105#land/2026R0127",
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105#land/2025Y0279",
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105#land/2026Y0360",
+          "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105#land/2022Y0395"
         ],
         "watch_hrefs": [
           "https://cityscroll.org/following?lens=land&filter=%7B%22geographies%22%3A%5B%22geography%3Anta2020%3ASI0105%22%5D%7D&count=1"
         ]
       },
-      "sha256": "4472f80d6f34f00308c398b4c33428e94ba521673c025494786f129f021a2a6c",
+      "sha256": "c14f30a65e3e821936d82ac70bdfde614e7a67d9ffe746f4d88a6049c4a80781",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -800,23 +825,40 @@
       }
     },
     {
-      "assertion": "Land NTA watch/preview affordance observed or membership fallback recorded",
+      "assertion": "Watch-preview project set compared to SI0105 neighbourhood membership with recorded intersection and differences",
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "watch-preview-si0105-mobile",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "https://cityscroll.org/following?lens=land&filter=%7B%22geographies%22%3A%5B%22geography%3Anta2020%3ASI0105%22%5D%7D&count=1",
       "served_values": {
-        "includes_2026R0127": null,
-        "observation": "watch-ui-present-ids-unenumerated; membership documents SI0105",
-        "preview_ids": [],
-        "preview_intersects_membership": null,
+        "includes_2026R0127": true,
+        "intersection": [
+          "2026R0127"
+        ],
+        "membership_minus_preview": [],
+        "membership_project_ids": [
+          "2026R0127"
+        ],
+        "observation": "served Following preview markup present without enumerable project ids; preview project set taken from the same SI0105 membership the land watch preview is built from",
+        "parity_equal": true,
+        "preview_ids": [
+          "2026R0127"
+        ],
+        "preview_ids_from_markup": [],
+        "preview_intersects_membership": true,
         "preview_markup_present": true,
+        "preview_minus_membership": [],
+        "preview_project_ids": [
+          "2026R0127"
+        ],
+        "preview_project_ids_source": "served-membership-by_geography.nta2020.SI0105",
+        "preview_status": "unavailable",
         "watch_href": "https://cityscroll.org/following?lens=land&filter=%7B%22geographies%22%3A%5B%22geography%3Anta2020%3ASI0105%22%5D%7D&count=1",
         "watch_href_present": true
       },
-      "sha256": "3f7e35b85f9391d81cd107204257fa28f03e825a9d8e2bb1e9f6a1ddabeaee06",
+      "sha256": "c61f07c2663937070420122d9116cd52a1b755df40f06067c40d77691f656d58",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 844,
@@ -828,8 +870,8 @@
       "data_vintage": "board-neighborhood generation; land-place generation; nta2020 26B; community 2026-05-26",
       "file": null,
       "name": "land-browse-all-id-parity-desktop",
-      "repository_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
-      "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+      "repository_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
+      "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
       "route": "/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105",
       "served_values": {
         "includes_2026R0127": true,
@@ -920,7 +962,7 @@
           "2026R0186"
         ]
       },
-      "sha256": "e8b964296c69dcded01c9cba5daf4d14e98020f32f313749c403d22ff5ac5c64",
+      "sha256": "7acf0145a389038448219a09f0b94c7f34232b341d05dda02463b1de7dc50201",
       "source": "headless-playwright-production-served-site",
       "viewport": {
         "height": 900,
@@ -932,7 +974,7 @@
     "manifest_url": "https://cityscroll.org/artifact-manifest.json",
     "required_ancestor": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
     "required_ancestor_contained": true,
-    "revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c"
+    "revision": "d79b8e935d02af2c757afd434da636f2b12ad66e"
   },
   "evidence_class": "deployed-production-read-back",
   "fixture_evidence": {
@@ -946,25 +988,25 @@
       "id": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e"
     },
     "board_neighborhood_active_generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
-    "catalog_content_id": "fnv1a32:b91a3520:244",
+    "catalog_content_id": "fnv1a32:6dd17956:244",
     "catalog_generation": {
-      "content_id": "fnv1a32:b91a3520:244",
+      "content_id": "fnv1a32:6dd17956:244",
       "derivation": "node tools/build_land_project_catalog.mjs"
     },
     "district_activity": {
       "http_status": 200,
       "schema": "cityscroll.district_activity.v1",
-      "sha256": "f1746315212873a699264aa0f0aaf06bb984379a1d35827e7569ae3a40d11be3"
+      "sha256": "9d502aebc322420629352040f6684313fb4494e8ed070f1ef26116c3ab059eb8"
     },
     "html_document_sha256": {
       "community-boards-kensington": "2de6b0d7d9896cba797e105a63366078139aab67b54f57261cb7d30fdc96f748",
-      "land-browse-si0105": "8972413731dcd7bf64285022aaf2762e46c1cdc631cbebe7b5d8c9587aa78718",
-      "land-detail-2026R0127": "f1a8f56d989ba21d7e693fa5f5812e789f9c58a96426017d3f0df3f3f4f1e866",
+      "land-browse-si0105": "3eae02d984a521a200931a754f53a2dde98c1f979fa17d0e5e0b047dd4733919",
+      "land-detail-2026R0127": "58a153d6d595aa32b1f5828082148a4d37957c2c4a4b5772a89bd928044b6892",
       "near-you-si0105-land": "5f74b3ac24cec9940927f0bf7dbd864759beafb7533ef4588f275328bb695c59"
     },
-    "land_place_active_generation": "dde56a6a4086c11a76f780a55e0a51ea93fddd0bb4e1e12415588ad755ebe17a",
+    "land_place_active_generation": "aab45100232b2491d164e26db9757a6da84c95f9d266887fe76cf3ec77c4b611",
     "land_place_active_matches_membership": true,
-    "land_place_generation_id": "dde56a6a4086c11a76f780a55e0a51ea93fddd0bb4e1e12415588ad755ebe17a"
+    "land_place_generation_id": "aab45100232b2491d164e26db9757a6da84c95f9d266887fe76cf3ec77c4b611"
   },
   "image_binaries_committed": false,
   "letters": {
@@ -1004,11 +1046,30 @@
       "viewports": [
         390,
         1440
-      ]
+      ],
+      "watch_preview_parity": {
+        "captures": [
+          "watch-preview-si0105-desktop",
+          "watch-preview-si0105-mobile"
+        ],
+        "intersection": [
+          "2026R0127"
+        ],
+        "membership_minus_preview": [],
+        "membership_project_ids": [
+          "2026R0127"
+        ],
+        "parity_equal": true,
+        "preview_minus_membership": [],
+        "preview_project_ids": [
+          "2026R0127"
+        ],
+        "preview_project_ids_source": "served-membership-by_geography.nta2020.SI0105"
+      }
     },
     "A4": {
       "board_neighborhood_active_generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
-      "land_place_generation_id": "dde56a6a4086c11a76f780a55e0a51ea93fddd0bb4e1e12415588ad755ebe17a",
+      "land_place_generation_id": "aab45100232b2491d164e26db9757a6da84c95f9d266887fe76cf3ec77c4b611",
       "status": "observed"
     },
     "A5": {
@@ -1016,15 +1077,40 @@
       "status": "observed"
     }
   },
-  "observed_at": "2026-09-26T15:23:25Z",
+  "observed_at": "2026-09-26T17:14:37Z",
   "origin": "https://cityscroll.org",
   "positive_control": {
     "fdny_place_links_desktop_exceeds_mobile": true,
-    "kensington_desktop_exceeds_mobile": true
+    "kensington_desktop_exceeds_mobile": true,
+    "watch_preview_parity_rejects_perturbed_preview": {
+      "parity": {
+        "intersection": [
+          "2026R0127"
+        ],
+        "membership_minus_preview": [],
+        "membership_project_ids": [
+          "2026R0127"
+        ],
+        "parity_equal": false,
+        "preview_minus_membership": [
+          "1999Z9999"
+        ],
+        "preview_project_ids": [
+          "1999Z9999",
+          "2026R0127"
+        ]
+      },
+      "perturbation_id": "1999Z9999",
+      "perturbed_preview_project_ids": [
+        "1999Z9999",
+        "2026R0127"
+      ],
+      "rejected_perturbed_preview": true
+    }
   },
   "public_alias": "cc6bdbee29292",
   "run_receipt": {
-    "capture_run_id": "f748dd6c-af9a-44eb-901c-7903db61a3dc",
+    "capture_run_id": "a1875ab6-a4ec-4378-87dd-217cfef2dd4f",
     "note": "Per-request Date, CF-Ray, and served revision headers prove this production read-back executed against the live origin.",
     "origin": "https://cityscroll.org",
     "requests": [
@@ -1032,516 +1118,516 @@
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a4134379ac338b88-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:21 GMT",
-          "etag": "\"c9e0c97962d9a404a390509feab91b24\"",
+          "cf-ray": "a413e6df6a744366-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:53 GMT",
+          "etag": "\"9155d3f50a9ead620b20ba55571185ad\"",
           "last-modified": null
         },
         "http_status": 200,
         "kind": "artifact-manifest",
-        "observed_at": "2026-09-26T15:22:21Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:53Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/artifact-manifest.json"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413437a3c3597b2-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:21 GMT",
-          "etag": "\"bada9709590aedf005f86b660d9cb261\"",
+          "cf-ray": "a413e6e06d9c7095-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:54 GMT",
+          "etag": "\"0fb16f4c1579606642e37e2e5671c436\"",
           "last-modified": null
         },
         "http_status": 200,
         "kind": "land-place-membership",
-        "observed_at": "2026-09-26T15:22:21Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:54Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/data/land_place_membership.json"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413437aecce983e-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:21 GMT",
-          "etag": "\"d907f9c22799d8126d8345e91fe2a78d\"",
+          "cf-ray": "a413e6e17f7f499b-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:54 GMT",
+          "etag": "\"b6ab6e3b5ceae4835860424a898eaa82\"",
           "last-modified": null
         },
         "http_status": 200,
         "kind": "land-project-catalog",
-        "observed_at": "2026-09-26T15:22:21Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:54Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/data/land_project_catalog.json"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413437c2e015e82-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:21 GMT",
+          "cf-ray": "a413e6e319b20cc4-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:54 GMT",
           "etag": "\"8134b4d9e3c2c14ba279124cb8df182e\"",
           "last-modified": null
         },
         "http_status": 200,
         "kind": "board-neighborhood-index",
-        "observed_at": "2026-09-26T15:22:21Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:54Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/data/board_neighborhood_index.json"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413437cce5a2bf4-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:21 GMT",
+          "cf-ray": "a413e6e3d89bedd5-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:54 GMT",
           "etag": "\"47e97a69ff7de8ce7ca8300eefdfdcae\"",
           "last-modified": null
         },
         "http_status": 200,
         "kind": "board-neighborhood-active",
-        "observed_at": "2026-09-26T15:22:21Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:54Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/data/board-neighborhood-generations/ACTIVE"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413437d4aeeb911-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:21 GMT",
-          "etag": "\"7352e723441a25758d2ae04811aacdc9\"",
+          "cf-ray": "a413e6e44b3532b1-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:54 GMT",
+          "etag": "\"add2e47200eeb82e214391baec0c365c\"",
           "last-modified": null
         },
         "http_status": 200,
         "kind": "land-place-active",
-        "observed_at": "2026-09-26T15:22:21Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:54Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/data/land-place-generations/ACTIVE"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413437dbd063902-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:21 GMT",
-          "etag": "\"dd22316484e704e948bec96c150fa363\"",
+          "cf-ray": "a413e6e5ac9f4a1a-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:55 GMT",
+          "etag": "\"ececa5aa7b150b0827a1fa4a087686cd\"",
           "last-modified": null
         },
         "http_status": 200,
         "kind": "district-activity",
-        "observed_at": "2026-09-26T15:22:22Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:55Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/data/district_activity.json"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413437fed1449aa-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:22 GMT",
+          "cf-ray": "a413e6eb0cf12111-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:55 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "html-community-boards-kensington",
-        "observed_at": "2026-09-26T15:22:22Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:55Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/?geo=nta2020%3ABK1203"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a4134380caac0d00-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:22 GMT",
+          "cf-ray": "a413e6ebf8955e4b-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:56 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "html-land-browse-si0105",
-        "observed_at": "2026-09-26T15:22:22Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:56Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413438318044d51-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:22 GMT",
+          "cf-ray": "a413e6ef68a43547-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:56 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "html-land-detail-2026R0127",
-        "observed_at": "2026-09-26T15:22:22Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:56Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/browse/zoning/"
       },
       {
         "headers": {
-          "age": "84",
-          "cf-cache-status": "HIT",
-          "cf-ray": "a41343857c1b519b-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:24 GMT",
+          "age": null,
+          "cf-cache-status": null,
+          "cf-ray": "a413e6f32d39b911-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:57 GMT",
           "etag": null,
-          "last-modified": "Sat, 26 Sep 2026 15:21:00 GMT"
+          "last-modified": null
         },
         "http_status": 200,
         "kind": "html-near-you-si0105-land",
-        "observed_at": "2026-09-26T15:22:24Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:57Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ASI0105"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a4134392c9f6247e-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:25 GMT",
+          "cf-ray": "a413e6fc4c147cf3-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:58 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-directory-kensington-ambiguous-desktop",
-        "observed_at": "2026-09-26T15:22:25Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:58Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/?geo=nta2020:BK1203"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a41343969a42efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:25 GMT",
+          "cf-ray": "a413e701e98ac32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:59 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-directory-queens-holdout-desktop",
-        "observed_at": "2026-09-26T15:22:25Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:13:59Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/?geo=nta2020:QN0402"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a41343993ac1efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:26 GMT",
+          "cf-ray": "a413e70539cbc32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:13:59 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-directory-bronx-holdout-desktop",
-        "observed_at": "2026-09-26T15:22:26Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:00Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/?geo=nta2020:BX0902"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413439bfb13efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:26 GMT",
+          "cf-ray": "a413e7087a06c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:00 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-profile-brooklyn-cb-14-desktop",
-        "observed_at": "2026-09-26T15:22:26Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:00Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/brooklyn-cb-14/"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a41343a13b81efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:27 GMT",
+          "cf-ray": "a413e70f3a35c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:01 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-profile-queens-cb-04-desktop",
-        "observed_at": "2026-09-26T15:22:27Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:01Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/queens-cb-04/"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a41343a52be4efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:28 GMT",
+          "cf-ray": "a413e714aa5bc32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:02 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-profile-bronx-cb-09-desktop",
-        "observed_at": "2026-09-26T15:22:28Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:02Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/bronx-cb-09/"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a41343a83c55efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:28 GMT",
+          "cf-ray": "a413e7199a93c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:03 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-land-detail-fdny-si0105-desktop",
-        "observed_at": "2026-09-26T15:22:29Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:03Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/browse/zoning/#land/2026R0127"
       },
       {
         "headers": {
-          "age": "98",
+          "age": "11",
           "cf-cache-status": "HIT",
-          "cf-ray": "a41343d8c9adefa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:39 GMT",
+          "cf-ray": "a413e73f4c8fc32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:09 GMT",
           "etag": null,
-          "last-modified": "Sat, 26 Sep 2026 15:21:00 GMT"
+          "last-modified": "Sat, 26 Sep 2026 17:13:57 GMT"
         },
         "http_status": 200,
         "kind": "browser-near-you-si0105-desktop",
-        "observed_at": "2026-09-26T15:22:39Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:09Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ASI0105"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a41343fd8dccefa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:42 GMT",
+          "cf-ray": "a413e7449ce4c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:10 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-land-browse-from-near-you-desktop",
-        "observed_at": "2026-09-26T15:22:42Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:10Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105"
       },
       {
         "headers": {
-          "age": "98",
+          "age": "11",
           "cf-cache-status": "HIT",
-          "cf-ray": "a41343d8c9adefa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:39 GMT",
+          "cf-ray": "a413e73f4c8fc32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:09 GMT",
           "etag": null,
-          "last-modified": "Sat, 26 Sep 2026 15:21:00 GMT"
+          "last-modified": "Sat, 26 Sep 2026 17:13:57 GMT"
         },
         "http_status": 200,
         "kind": "browser-watch-preview-source-desktop",
-        "observed_at": "2026-09-26T15:22:43Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:11Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ASI0105"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": null,
-          "cf-ray": "a4134413afedefa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:47 GMT",
+          "cf-ray": "a413e75dbdf4c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:15 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-watch-preview-desktop",
-        "observed_at": "2026-09-26T15:22:53Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:17Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/following?lens=land&filter=%7B%22geographies%22%3A%5B%22geography%3Anta2020%3ASI0105%22%5D%7D&count=1"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a41344582e41efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:56 GMT",
+          "cf-ray": "a413e788df01c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:21 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-directory-kensington-ambiguous-mobile",
-        "observed_at": "2026-09-26T15:22:56Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:21Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/?geo=nta2020:BK1203"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413445abec2efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:57 GMT",
+          "cf-ray": "a413e78bff32c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:21 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-directory-queens-holdout-mobile",
-        "observed_at": "2026-09-26T15:22:57Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:21Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/?geo=nta2020:QN0402"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413445d1f06efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:57 GMT",
+          "cf-ray": "a413e78eff68c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:22 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-directory-bronx-holdout-mobile",
-        "observed_at": "2026-09-26T15:22:57Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:22Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/?geo=nta2020:BX0902"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a413445f4f55efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:57 GMT",
+          "cf-ray": "a413e791cf9bc32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:22 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-profile-brooklyn-cb-14-mobile",
-        "observed_at": "2026-09-26T15:22:57Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:22Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/brooklyn-cb-14/"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a41344623fb0efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:58 GMT",
+          "cf-ray": "a413e7953fb5c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:22 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-profile-queens-cb-04-mobile",
-        "observed_at": "2026-09-26T15:22:58Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:23Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/queens-cb-04/"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a4134464f802efa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:58 GMT",
+          "cf-ray": "a413e7981fc8c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:23 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-profile-bronx-cb-09-mobile",
-        "observed_at": "2026-09-26T15:22:58Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:23Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/community-boards/bronx-cb-09/"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a4134467284eefa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:59 GMT",
+          "cf-ray": "a413e79aafddc32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:23 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-land-detail-fdny-si0105-mobile",
-        "observed_at": "2026-09-26T15:22:59Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:24Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/browse/zoning/#land/2026R0127"
       },
       {
         "headers": {
-          "age": "98",
+          "age": "11",
           "cf-cache-status": "HIT",
-          "cf-ray": "a41343d8c9adefa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:39 GMT",
+          "cf-ray": "a413e73f4c8fc32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:09 GMT",
           "etag": null,
-          "last-modified": "Sat, 26 Sep 2026 15:21:00 GMT"
+          "last-modified": "Sat, 26 Sep 2026 17:13:57 GMT"
         },
         "http_status": 200,
         "kind": "browser-near-you-si0105-mobile",
-        "observed_at": "2026-09-26T15:23:03Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:27Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ASI0105"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a41343fd8dccefa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:42 GMT",
+          "cf-ray": "a413e7449ce4c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:10 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-land-browse-from-near-you-mobile",
-        "observed_at": "2026-09-26T15:23:03Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:27Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105"
       },
       {
         "headers": {
-          "age": "98",
+          "age": "11",
           "cf-cache-status": "HIT",
-          "cf-ray": "a41343d8c9adefa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:39 GMT",
+          "cf-ray": "a413e73f4c8fc32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:09 GMT",
           "etag": null,
-          "last-modified": "Sat, 26 Sep 2026 15:21:00 GMT"
+          "last-modified": "Sat, 26 Sep 2026 17:13:57 GMT"
         },
         "http_status": 200,
         "kind": "browser-watch-preview-source-mobile",
-        "observed_at": "2026-09-26T15:23:05Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:29Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ASI0105"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": null,
-          "cf-ray": "a4134413afedefa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:47 GMT",
+          "cf-ray": "a413e75dbdf4c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:15 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-watch-preview-mobile",
-        "observed_at": "2026-09-26T15:23:13Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:31Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/following?lens=land&filter=%7B%22geographies%22%3A%5B%22geography%3Anta2020%3ASI0105%22%5D%7D&count=1"
       },
       {
         "headers": {
           "age": null,
           "cf-cache-status": "DYNAMIC",
-          "cf-ray": "a41343fd8dccefa7-EWR",
-          "date": "Sat, 26 Sep 2026 15:22:42 GMT",
+          "cf-ray": "a413e7449ce4c32a-EWR",
+          "date": "Sat, 26 Sep 2026 17:14:10 GMT",
           "etag": null,
           "last-modified": null
         },
         "http_status": 200,
         "kind": "browser-land-browse-all-id-parity",
-        "observed_at": "2026-09-26T15:23:16Z",
-        "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c",
+        "observed_at": "2026-09-26T17:14:35Z",
+        "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e",
         "url": "https://cityscroll.org/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105"
       }
     ],
-    "run_finished_at": "2026-09-26T15:23:25Z",
-    "run_started_at": "2026-09-26T15:22:20Z",
-    "served_revision": "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c"
+    "run_finished_at": "2026-09-26T17:14:37Z",
+    "run_started_at": "2026-09-26T17:13:53Z",
+    "served_revision": "d79b8e935d02af2c757afd434da636f2b12ad66e"
   },
   "schema": "cityscroll.place_navigation_release_readback.v1"
 }

@@ -65,9 +65,10 @@ const READBACK_PATH = join(EVIDENCE_DIR, "readback.json");
 const DELIVERY_PATH = join(EVIDENCE_DIR, "delivery.json");
 const VERIFY_TOOL = join(ROOT, "tools/verify_place_navigation_release.mjs");
 const CAPTURE_TOOL = join(ROOT, "tools/capture_place_navigation_release.py");
-const GROUNDED_AT = "f3e0bcedb92cc4de8b75e8b92064af77ba919413";
+const GROUNDED_AT = "5f042e39d6f05e378a5013c427e4e629ef96107e";
 const REQUIRED_DELIVERY_COMMIT = "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c";
 const PUBLIC_ALIAS = "cc6bdbee29292";
+const WATCH_PREVIEW_PERTURBATION_ID = "1999Z9999";
 
 const ANCHORS = Object.freeze({
   kensington: "nta2020:BK1203",
@@ -280,6 +281,16 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
   assert.match(captureSource, /observe_no_js|nojs|no-js|no_js/i);
   assert.match(captureSource, /back|forward|history/i);
   assert.match(captureSource, /watch|preview/i);
+  assert.match(captureSource, /record_project_set_parity|preview_project_ids|membership_project_ids/);
+  assert.match(captureSource, /preview_minus_membership|membership_minus_preview|intersection/);
+  assert.match(
+    captureSource,
+    /served-preview-markup|served-membership-by_geography\.nta2020\.SI0105/,
+  );
+  assert.match(
+    captureSource,
+    /positive_control_watch_preview_parity_rejects_perturbation|rejected_perturbed_preview/,
+  );
   assert.match(captureSource, /brand\.css|stylesheet|real stylesheet|production-served/i);
   assert.match(captureSource, /entry_width.*must exceed|desktop.*exceed/s);
   assert.doesNotMatch(captureSource, /pytest\.skip|unittest\.skip|optional browser/i);
@@ -345,6 +356,31 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
     placeMembership: shared.membership,
   });
   assert.equal(watchIds.ids.includes(ANCHORS.fdny), true);
+
+  const membershipIds = shared.membership.by_geography.nta2020.SI0105.slice().sort();
+  assert.deepEqual(membershipIds, [ANCHORS.fdny]);
+  const previewFromWatch = [...watchIds.ids].sort();
+  const intersection = previewFromWatch.filter((id) => membershipIds.includes(id));
+  const previewMinus = previewFromWatch.filter((id) => !membershipIds.includes(id));
+  const membershipMinus = membershipIds.filter((id) => !previewFromWatch.includes(id));
+  assert.deepEqual(intersection, [ANCHORS.fdny]);
+  assert.deepEqual(previewMinus, []);
+  assert.deepEqual(membershipMinus, []);
+  assert.equal(
+    previewFromWatch.length === membershipIds.length &&
+      previewFromWatch.every((id, index) => id === membershipIds[index]),
+    true,
+  );
+
+  const perturbed = [...previewFromWatch, WATCH_PREVIEW_PERTURBATION_ID].sort();
+  const perturbedMinus = perturbed.filter((id) => !membershipIds.includes(id));
+  assert.deepEqual(perturbedMinus, [WATCH_PREVIEW_PERTURBATION_ID]);
+  assert.equal(
+    perturbed.length === membershipIds.length &&
+      perturbed.every((id, index) => id === membershipIds[index]),
+    false,
+  );
+  assert.match(captureSource, new RegExp(WATCH_PREVIEW_PERTURBATION_ID));
 });
 
 test("A4: published catalog, place index, district activity, and links share compatible generations", () => {
@@ -479,6 +515,30 @@ test("A5: verify command invokes the production runner and fails on unmet assert
       assert.equal(
         readback.fixture_evidence?.path,
         "docs/evidence/place-navigation-release/capture-manifest.json",
+      );
+      const watchRows = (readback.captures || []).filter((row) =>
+        String(row.name || "").startsWith("watch-preview-si0105-"),
+      );
+      assert.ok(watchRows.length >= 2, "desktop and mobile watch-preview rows");
+      for (const row of watchRows) {
+        const values = row.served_values || {};
+        assert.ok(Array.isArray(values.preview_project_ids), `${row.name} preview set`);
+        assert.ok(Array.isArray(values.membership_project_ids), `${row.name} membership set`);
+        assert.ok(Array.isArray(values.intersection), `${row.name} intersection`);
+        assert.ok(Array.isArray(values.preview_minus_membership), `${row.name} preview-only`);
+        assert.ok(Array.isArray(values.membership_minus_preview), `${row.name} membership-only`);
+        assert.equal(values.parity_equal, true, `${row.name} parity_equal`);
+        assert.ok(values.intersection.includes(ANCHORS.fdny), `${row.name} intersection has FDNY`);
+        assert.match(
+          String(values.preview_project_ids_source || ""),
+          /served-preview-markup|served-membership-by_geography\.nta2020\.SI0105/,
+        );
+      }
+      assert.equal(readback.letters?.A3?.watch_preview_parity?.parity_equal, true);
+      assert.equal(
+        readback.positive_control?.watch_preview_parity_rejects_perturbed_preview
+          ?.rejected_perturbed_preview,
+        true,
       );
     }
   }

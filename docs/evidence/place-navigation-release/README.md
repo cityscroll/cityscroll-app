@@ -7,7 +7,7 @@ Retained textual proof that the published neighborhood → board → Land journe
 ## Packets
 
 - `capture-manifest.json` — local hermetic fixture widths plus module-oracle journey results. Module-oracle rows are viewport-free; only measured fixture-document captures keep desktop/mobile widths.
-- `readback.json` — production read-back against the served origin (runner default path). Carries HTTP/page outcomes, served generation hashes, and a per-run receipt with Date / CF-Ray / revision for each production request. Retained beside the fixture packet; it does not replace it.
+- `readback.json` — production read-back against the served origin (runner default path). Carries HTTP/page outcomes, served generation hashes, and a per-run receipt with Date / CF-Ray / revision for each production request. Retained beside the fixture packet; it does not replace it. Watch-preview parity records two observed project-id sets (served preview markup when enumerable, otherwise the same SI0105 membership the land watch preview is built from) plus their intersection and differences, with a positive control that rejects a perturbed preview set.
 - `delivery.json` — Pages delivery pin the production runner requires as an ancestor.
 
 ## Verify
