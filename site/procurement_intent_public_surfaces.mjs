@@ -17,7 +17,6 @@
  */
 
 import { realizationRefFor } from "../warehouse/lib/procurement_intent_realization_matcher.mjs";
-import { SHADOW_MODE_SCHEMA } from "../warehouse/lib/procurement_intent_shadow.mjs";
 import {
   PROCUREMENT_INTENT_EVIDENCE_STATES,
   parseProvisionalSubjectRef,
@@ -30,8 +29,21 @@ export const PROCUREMENT_INTENT_PUBLIC_SURFACE_SCHEMA =
   "cityscroll.procurement_intent_public_surface.v1";
 export const PROCUREMENT_INTENT_PUBLIC_AUTHORIZATION_SCHEMA =
   "cityscroll.procurement_intent_public_authorization.v1";
-/** Same schema the shadow-mode aggregate already publishes; imported to avoid a second literal. */
-export const PROCUREMENT_INTENT_PRODUCTION_OBSERVATION_SCHEMA = SHADOW_MODE_SCHEMA;
+
+/**
+ * Structural recognition for a shadow-mode aggregate.
+ * Avoid importing the warehouse shadow module here: meeting detail is reachable
+ * from the Worker entry graph, and that warehouse module uses Node built-ins.
+ */
+export function isShadowModeAggregate(aggregate) {
+  if (!aggregate || typeof aggregate !== "object") return false;
+  if (typeof aggregate.schema !== "string") return false;
+  if (!aggregate.schema.endsWith(".shadow_mode.v1")) return false;
+  if (typeof aggregate.shadow_mode_version !== "string") return false;
+  if (!aggregate.promotion || typeof aggregate.promotion !== "object") return false;
+  if (!Array.isArray(aggregate.intents)) return false;
+  return true;
+}
 
 /** Resident path a production observation receipt must occupy when present. */
 export const PROCUREMENT_INTENT_PRODUCTION_AGGREGATE_PATH =
@@ -654,7 +666,7 @@ export function readProductionShadowObservation(aggregate, {
   if (typeof aggregate !== "object") {
     throw new Error(`production observation at ${sourcePath} is not an object`);
   }
-  if (aggregate.schema !== PROCUREMENT_INTENT_PRODUCTION_OBSERVATION_SCHEMA) {
+  if (!isShadowModeAggregate(aggregate)) {
     throw new Error(`production observation schema mismatch at ${sourcePath}`);
   }
   const role = text(aggregate.input_coverage?.role || aggregate.provenance?.role, 80);
