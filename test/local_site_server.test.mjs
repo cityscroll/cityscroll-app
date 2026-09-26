@@ -290,9 +290,16 @@ test("local site server publishes an OS-assigned origin and serves the requested
   const home = await fetch(new URL("", base));
   const homeBody = await home.text();
   assert.equal(home.status, 200);
-  assert.match(homeBody, /data-primary-context="home" data-home-ready="true"/);
-  assert.match(homeBody, /data-home-topic-entry/);
-  assert.doesNotMatch(homeBody, /<section id="tab-money" class="tabpane active"/);
+  // Default entry presents the Near You shell at `/`.
+  assert.match(homeBody, /data-near-you-root/);
+  assert.match(homeBody, /href="\/following\/"/);
+  assert.match(homeBody, /href="\/browse\/"/);
+  assert.match(homeBody, /Use my location|data-use-location|near-geo-search/);
+  const homeWithGeo = await fetch(new URL("/?geo=nta2020%3ABK1403&surface=map", base), {
+    redirect: "manual",
+  });
+  assert.equal(homeWithGeo.status, 302);
+  assert.match(homeWithGeo.headers.get("location") || "", /\/near-you\/\?geo=nta2020%3ABK1403/);
 
   const notice = await fetch(new URL("notices/20260701099", base));
   assert.equal(notice.status, 200);

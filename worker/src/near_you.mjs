@@ -1,7 +1,11 @@
 import boundaries from "./data/district_boundaries.json" with { type: "json" };
 import communityGeography from "./data/community_board_geography_lookup.json" with { type: "json" };
 import nta2020Layer from "./data/geography/layers/nta2020/26B.json" with { type: "json" };
-import { scopeFromNearYouUrl } from "../../site/near_you_scope_runtime.mjs";
+import {
+  isNearYouDeferredPath,
+  isNearYouDocumentPath,
+  scopeFromNearYouUrl,
+} from "../../site/near_you_scope_runtime.mjs";
 import { geographyNavigationUrlWithFilters } from "../../site/geography_navigation_state.mjs";
 import { resolveGeographyEntryFromPlaceLabel } from "../../site/geography_navigation_entry.mjs";
 import {
@@ -69,8 +73,8 @@ function deferredResponseHeaders() {
 
 export async function handleNearYou(request, env = {}, ctx = {}) {
   const url = new URL(request.url);
-  const deferred = url.pathname === "/near-you/deferred.json";
-  if (!deferred && url.pathname !== "/near-you" && url.pathname !== "/near-you/") {
+  const deferred = isNearYouDeferredPath(url.pathname);
+  if (!deferred && !isNearYouDocumentPath(url.pathname)) {
     return new Response("Not found", { status: 404, headers: { "Content-Type": "text/plain" } });
   }
   if (request.method !== "GET" && request.method !== "HEAD") {

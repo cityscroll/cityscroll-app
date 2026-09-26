@@ -105,6 +105,7 @@ import { handleAdminAttachmentMetadata, handleAttachmentMetadata } from "./attac
 import { runDigestShadow } from "./digest_shadow.mjs";
 import { handleDigestShadowRebuildQueueMessage } from "./digest_shadow_rebuild.mjs";
 import { handleNearYou } from "./near_you.mjs";
+import { isNearYouDeferredPath, isNearYouDocumentPath } from "../../site/near_you_scope_runtime.mjs";
 import { handleFollowing } from "./following.mjs";
 import { handleSearch } from "./search.mjs";
 import { handleSemanticCandidates } from "./semantic_candidates.mjs";
@@ -152,7 +153,11 @@ export default {
   async fetch(request, env, ctx) {
     const { pathname, hostname } = new URL(request.url);
     if (MIRROR_HOSTS.has(hostname)) {
-      if (pathname === "/near-you" || pathname === "/near-you/" || pathname === "/near-you/deferred.json") return handleNearYou(request, env, ctx);
+      // Site root `/` and `/near-you` share the local discovery shell; deferred
+      // JSON remains under `/near-you/deferred.json`.
+      if (isNearYouDocumentPath(pathname) || isNearYouDeferredPath(pathname)) {
+        return handleNearYou(request, env, ctx);
+      }
       if (pathname === "/following" || pathname === "/following/" || pathname === "/following/personal") return handleFollowing(request, env, ctx);
       if (pathname === "/prefs") return handlePrefs(request, env);
       return handleMirror(request);
@@ -209,7 +214,14 @@ export default {
     if (pathname === "/rules") return handleRules(request, env, ctx);
     if (pathname === "/source-vault/fetch" || pathname.startsWith("/source-vault/")) return handleSourceVault(request, env);
     if (pathname === "/suggestions") return handleSuggestions(request, env, ctx);
-    if (pathname === "/near-you" || pathname === "/near-you/" || pathname === "/near-you/deferred.json") return handleNearYou(request, env, ctx);
+    // API and workers.dev hosts keep `/near-you` (canonical redirect) but never
+    // claim the host root as the resident shell — that default entry is only on
+    // cityscroll.org via the site-host branch above.
+    if (
+      pathname === "/near-you"
+      || pathname === "/near-you/"
+      || isNearYouDeferredPath(pathname)
+    ) return handleNearYou(request, env, ctx);
     if (pathname === "/following" || pathname === "/following/" || pathname === "/following/personal") return handleFollowing(request, env, ctx);
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname === "/source-health") return handleSourceHealth(request);

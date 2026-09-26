@@ -1,0 +1,7 @@
+{
+  "schema": "cityscroll.capture_delivery.v1",
+  "public_alias": "c27355579ade0",
+  "landed_commit": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+  "surface": "worker",
+  "note": "Delivery opens against grounded origin/main; register keeper refreshes landed_commit after the merge commit is served."
+}

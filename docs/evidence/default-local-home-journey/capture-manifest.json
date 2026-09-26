@@ -1,0 +1,246 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "feature": "default-local-home-journey",
+  "public_alias": "c27355579ade0",
+  "capture_mode": "headless_playwright_local_site",
+  "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+  "repository_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+  "grounded_at": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+  "data_vintage": "PAD 26b; parcel-geography pluto_25v4 (mappluto_published_latitude_longitude); nta2020 26B; community/council 2026-05-26; precincts 26B",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots stay under the ignored local capture directory; only this manifest is committed.",
+  "local_image_dir_ignored": "task-scratch/default-local-home-journey-screenshots",
+  "route": "/",
+  "exact_links": [
+    "/",
+    "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+    "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+    "/near-you/?geo=nta2020%3ABK1402&surface=map&lens=meetings",
+    "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+    "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F"
+  ],
+  "captures": [
+    {
+      "name": "root-shell-initial-desktop",
+      "route": "/",
+      "mode": "local_chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "root presents Near You shell; place search and Use my location available; Following and Browse reachable; measured viewport matches product CSS",
+      "sha256": "8662708fe3e77f6fcfe3aa6dbd530eaa06efd95331488ab5a406e2f58b03f20c",
+      "file": null,
+      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "http://127.0.0.1:57496/brand.css",
+          "http://127.0.0.1:57496/civic-documents.css",
+          "http://127.0.0.1:57496/walk-entry.css",
+          "http://127.0.0.1:57496/local_constellation.css",
+          "http://127.0.0.1:57496/traversal.css",
+          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "has_shell": true,
+        "has_search": true,
+        "has_location_control": true,
+        "has_following_link": true,
+        "has_browse_link": true,
+        "viewport_width_px": 1440,
+        "viewport_height_px": 900,
+        "map_or_shell_height_px": 1978,
+        "overflow_x": 0,
+        "geo": null
+      }
+    },
+    {
+      "name": "root-midwood-result-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+      "mode": "local_chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "typed 810 East 16th Street from / selects Midwood on the shared shell",
+      "sha256": "5d2a657a3bcf3ec158595f41ecf52bdd17a2b75128f8bf65adfb0032b91e103a",
+      "file": null,
+      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "http://127.0.0.1:57496/brand.css",
+          "http://127.0.0.1:57496/civic-documents.css",
+          "http://127.0.0.1:57496/walk-entry.css",
+          "http://127.0.0.1:57496/local_constellation.css",
+          "http://127.0.0.1:57496/traversal.css",
+          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "has_shell": true,
+        "has_search": true,
+        "has_location_control": true,
+        "has_following_link": true,
+        "has_browse_link": true,
+        "viewport_width_px": 1440,
+        "viewport_height_px": 900,
+        "map_or_shell_height_px": 2005,
+        "overflow_x": 0,
+        "geo": "nta2020:BK1403",
+        "href": "http://127.0.0.1:57496/?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403"
+      }
+    },
+    {
+      "name": "root-failure-recovery-kensington-desktop",
+      "route": "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+      "mode": "local_chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "without a geolocation grant, typed Kensington place choice still works; shell navigation and Following/Browse remain available",
+      "sha256": "0fb4a52b259f4f60feef5141d5f46aed125cd05a96363fec9a705afb69d512aa",
+      "file": null,
+      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "http://127.0.0.1:57496/brand.css",
+          "http://127.0.0.1:57496/civic-documents.css",
+          "http://127.0.0.1:57496/walk-entry.css",
+          "http://127.0.0.1:57496/local_constellation.css",
+          "http://127.0.0.1:57496/traversal.css",
+          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "has_shell": true,
+        "has_search": true,
+        "has_location_control": true,
+        "has_following_link": true,
+        "has_browse_link": true,
+        "viewport_width_px": 1440,
+        "viewport_height_px": 900,
+        "map_or_shell_height_px": 2005,
+        "overflow_x": 0,
+        "geo": "nta2020:BK1203",
+        "geolocation_requests_on_load": 0,
+        "href": "http://127.0.0.1:57496/?geo=nta2020%3ABK1203&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1203"
+      }
+    },
+    {
+      "name": "root-shell-initial-phone",
+      "route": "/",
+      "mode": "local_chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "root presents Near You shell; place search and Use my location available; Following and Browse reachable; measured viewport matches product CSS",
+      "sha256": "73d4e3820283d7248974f146401cee615dd4c74da011101323dd5601e5c8d6c2",
+      "file": null,
+      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "http://127.0.0.1:57496/brand.css",
+          "http://127.0.0.1:57496/civic-documents.css",
+          "http://127.0.0.1:57496/walk-entry.css",
+          "http://127.0.0.1:57496/local_constellation.css",
+          "http://127.0.0.1:57496/traversal.css",
+          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "has_shell": true,
+        "has_search": true,
+        "has_location_control": true,
+        "has_following_link": true,
+        "has_browse_link": true,
+        "viewport_width_px": 390,
+        "viewport_height_px": 844,
+        "map_or_shell_height_px": 2006,
+        "overflow_x": 0,
+        "geo": null
+      }
+    },
+    {
+      "name": "root-midwood-result-phone",
+      "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
+      "mode": "local_chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "typed 810 East 16th Street from / selects Midwood on the shared shell",
+      "sha256": "772eea7925f63c33f0829550c0ba360502f6d37b5ae81a32d1c0791b0b4f436f",
+      "file": null,
+      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "http://127.0.0.1:57496/brand.css",
+          "http://127.0.0.1:57496/civic-documents.css",
+          "http://127.0.0.1:57496/walk-entry.css",
+          "http://127.0.0.1:57496/local_constellation.css",
+          "http://127.0.0.1:57496/traversal.css",
+          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "has_shell": true,
+        "has_search": true,
+        "has_location_control": true,
+        "has_following_link": true,
+        "has_browse_link": true,
+        "viewport_width_px": 390,
+        "viewport_height_px": 844,
+        "map_or_shell_height_px": 2939,
+        "overflow_x": 0,
+        "geo": "nta2020:BK1403",
+        "href": "http://127.0.0.1:57496/?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403"
+      }
+    },
+    {
+      "name": "root-failure-recovery-kensington-phone",
+      "route": "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
+      "mode": "local_chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
+      "assertion": "without a geolocation grant, typed Kensington place choice still works; shell navigation and Following/Browse remain available",
+      "sha256": "5e5ca41b5334b9c20dc54dce38d251dec4e4b62ff5756047bc56d7bdbe43ba50",
+      "file": null,
+      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "http://127.0.0.1:57496/brand.css",
+          "http://127.0.0.1:57496/civic-documents.css",
+          "http://127.0.0.1:57496/walk-entry.css",
+          "http://127.0.0.1:57496/local_constellation.css",
+          "http://127.0.0.1:57496/traversal.css",
+          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "has_shell": true,
+        "has_search": true,
+        "has_location_control": true,
+        "has_following_link": true,
+        "has_browse_link": true,
+        "viewport_width_px": 390,
+        "viewport_height_px": 844,
+        "map_or_shell_height_px": 2810,
+        "overflow_x": 0,
+        "geo": "nta2020:BK1203",
+        "geolocation_requests_on_load": 0,
+        "href": "http://127.0.0.1:57496/?geo=nta2020%3ABK1203&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1203"
+      }
+    }
+  ]
+}
