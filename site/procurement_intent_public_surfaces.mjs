@@ -21,7 +21,6 @@ import {
   PROCUREMENT_INTENT_EVIDENCE_STATES,
   parseProvisionalSubjectRef,
 } from "./procurement_intent_watch_continuity.mjs";
-import { predictionBand } from "../worker/src/lib/prediction_contract.mjs";
 
 export { PROCUREMENT_INTENT_EVIDENCE_STATES };
 
@@ -322,17 +321,6 @@ export function evaluateIntentSignalAdmission({
     }
   } else if (coverage.window_closed && statedLatest && today && statedLatest < today) {
     lifecycleStatus = PROCUREMENT_INTENT_LIFECYCLE_STATUS.OVERDUE;
-  } else if (process?.predictions?.timing) {
-    try {
-      const band = predictionBand(process.predictions.timing, {
-        now: today ? `${today}T00:00:00.000Z` : undefined,
-      });
-      if (band === "overdue" && coverage.complete && coverage.searched && coverage.window_closed) {
-        lifecycleStatus = PROCUREMENT_INTENT_LIFECYCLE_STATUS.OVERDUE;
-      }
-    } catch {
-      // Prediction seams stay optional; a malformed open claim never admits overdue.
-    }
   }
 
   // Overdue is itself an admission predicate: incomplete observation coverage

@@ -820,8 +820,7 @@ export function renderProcurementDocument(object = {}, observations = [], {
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
 ${relatedMonitorPackHtml}
-${procurementIntentLifecycleHtml}
-${pursuitSnapshotHtml}
+${procurementIntentLifecycleHtml ? `${procurementIntentLifecycleHtml}\n` : ""}${pursuitSnapshotHtml}
 ${pursuitControlsHtml}
 ${pursuitAliasMapHtml}
 ${projectContextHtml}

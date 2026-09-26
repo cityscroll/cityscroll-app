@@ -1008,8 +1008,7 @@ export function renderMeetingDocument(record = {}, readModel = {}, options = {})
   <section class="node-hero civic-object-hero meeting-hero"${historical ? ` data-meeting-historical="1"` : ""}${record.status === "cancelled" || record.lifecycle === "cancelled" ? ` data-meeting-status="cancelled"` : ""}><p class="node-kicker civic-object-kicker">${esc(sourceLabel)}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(formatMeetingWhen(record.event_date) || record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(formatMeetingWhen(record.event_end) || record.event_end)}</time></p>` : ""}${historical && historicalDay ? `<p class="meeting-historical-lede" role="status">Historical meeting record for <time datetime="${esc(historicalDay)}">${esc(formatMeetingWhen(historicalDay) || historicalDay)}</time>.</p>` : ""}${record.status === "cancelled" || record.lifecycle === "cancelled" ? `<p class="meeting-status-notice" role="status">This event is cancelled.${record.cancellation_notice ? ` ${esc(String(record.cancellation_notice))}` : ""}</p>` : ""}</section>
   ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}
   ${moreTools}
-  ${procurementIntentLifecycleHtml}
-  ${institutionSection}
+  ${procurementIntentLifecycleHtml ? `${procurementIntentLifecycleHtml}\n  ` : ""}${institutionSection}
   ${locationSection}
   ${agendaSubjectSection}
   ${descriptionSection}
