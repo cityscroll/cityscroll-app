@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land-detail-boundary-layers-receipt.v1",
   "alias": "cb56f9abf36a5",
-  "revision": "b7d10184b326295d319778b0bd30bdfde8570035",
+  "revision": "72f4bdcc9dc21f3f3b21159547ae943a9a1a0f0e",
   "artifact_vintages": {
     "nta2020": "26B",
     "community_district": "2026-05-26"
