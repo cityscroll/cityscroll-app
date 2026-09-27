@@ -128,6 +128,7 @@ export const CONNECTED_HISTORY_ROLE_CANDIDATES = Object.freeze([
       quote: "quoted community board chair statement",
     }),
     role_date: Object.freeze({ value: "2025-06-05", precision: "day" }),
+    scope: Object.freeze(["lighthouse-point", "staten-island-cb-1"]),
     observed_time: OBSERVED_AT,
     method_version: CONNECTED_HISTORY_ROLE_METHOD,
   }),
@@ -168,6 +169,7 @@ export const CONNECTED_HISTORY_ROLE_CANDIDATES = Object.freeze([
       quote: "same applicant label",
     }),
     role_date: Object.freeze({ value: "2024", precision: "year" }),
+    scope: Object.freeze(["franklin-avenue", "brooklyn-1192"]),
     observed_time: OBSERVED_AT,
     method_version: CONNECTED_HISTORY_ROLE_METHOD,
   }),
@@ -188,6 +190,7 @@ export const CONNECTED_HISTORY_ROLE_CANDIDATES = Object.freeze([
       quote: "2025-54-A",
     }),
     role_date: Object.freeze({ value: "2026-04-28", precision: "day" }),
+    scope: Object.freeze(["coyle", "brooklyn-cb-15"]),
     // Flags alone must not certify formal action.
     formal_evidence: true,
     board_action: true,

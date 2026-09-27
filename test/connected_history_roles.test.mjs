@@ -92,6 +92,18 @@ test("vocabulary registers the six supported history-family roles", () => {
 test("A1: admitted observations carry locator, qualifier, date precision, and scope", () => {
   const artifact = buildConnectedHistoryRolesArtifact();
   assert.ok(artifact.observations.length >= 4);
+  // Population beside the floor: every admitted row carries all four fields.
+  assert.equal(
+    artifact.observations.filter(
+      (row) =>
+        row.source_locator?.source_span?.locator
+        && row.actor?.entity_qualifier
+        && row.role_date?.precision
+        && Array.isArray(row.scope)
+        && row.scope.length > 0,
+    ).length,
+    artifact.observations.length,
+  );
 
   const byId = new Map(
     artifact.observations.map((row) => [row.candidate_id, row]),
@@ -132,6 +144,14 @@ test("A1: admitted observations carry locator, qualifier, date precision, and sc
   assert.equal(artifact.role_coverage.speaker.status, "observed");
   assert.equal(artifact.role_coverage.operator.status, "observed");
   assert.equal(artifact.role_coverage.sponsor.status, "absent");
+
+  // Positive control: admission gate requires scope (not only observation).
+  for (const roleId of CONNECTED_HISTORY_ROLE_IDS) {
+    assert.ok(
+      CONNECTED_HISTORY_ROLE_VOCABULARY[roleId].required_evidence.includes("scope"),
+      roleId,
+    );
+  }
 });
 
 test("A1/A3: role changes keep dated applicant observations distinct", () => {
@@ -197,24 +217,69 @@ test("A2: chair quotation stays speaker; presentation and testimony never become
   );
   assert.equal(speaker.role, "speaker");
   assert.equal(speaker.formal_board_endorsement, false);
+
+  // Positive control: ownership from an applicant-label locator stays rejected
+  // even after the self-declared basis field is removed.
+  const ownershipNeg = CONNECTED_HISTORY_ROLE_CANDIDATES.find(
+    (row) => row.candidate_id === "negative-same-applicant-spelling-beneficial-ownership",
+  );
+  assert.ok(ownershipNeg);
+  const { basis: _basis, ...withoutBasis } = ownershipNeg;
+  const stripped = admitConnectedHistoryRole(withoutBasis);
+  assert.equal(stripped.admitted, false);
+  assert.match(stripped.reason, /applicant_label_as_ownership|same_applicant_spelling/);
+  assert.ok(CONNECTED_HISTORY_ROLE_REJECTED_BASES.includes("applicant_label_as_ownership"));
 });
 
 test("A3: unresolved company identity stays distinct under shared spelling", () => {
   const artifact = buildConnectedHistoryRolesArtifact();
   const franklins = artifact.observations.filter((row) => row.role === "applicant");
+  assert.equal(franklins.length, 2);
   assert.equal(
     unresolvedCompanyIdentitiesRemainDistinct(franklins),
     true,
   );
   const qualifiers = new Set(franklins.map((row) => row.actor.entity_qualifier));
+  const entityIds = new Set(franklins.map((row) => row.actor.entity_id));
   assert.equal(qualifiers.size, 2);
+  assert.equal(entityIds.size, 2);
   for (const row of franklins) {
     assert.equal(row.actor.identity_status, "source_qualified");
     assert.equal(row.linking, false);
     assert.equal(row.beneficial_ownership, false);
   }
 
-  // Positive control: a beneficial_ownership flag fails the distinctness guard.
+  // Positive control 1: collapsing distinct source qualifiers onto one entity_id
+  // under shared spelling fails the distinctness guard.
+  assert.equal(
+    unresolvedCompanyIdentitiesRemainDistinct([
+      {
+        ...franklins[0],
+        actor: { ...franklins[0].actor, entity_id: "collapsed-company-id" },
+      },
+      {
+        ...franklins[1],
+        actor: { ...franklins[1].actor, entity_id: "collapsed-company-id" },
+      },
+    ]),
+    false,
+  );
+
+  // Positive control 2: claiming a resolved identity while distinct entity ids
+  // still share the spelling fails the distinctness guard.
+  assert.equal(
+    unresolvedCompanyIdentitiesRemainDistinct([
+      {
+        ...franklins[0],
+        actor: { ...franklins[0].actor, identity_status: "resolved" },
+        linking: true,
+      },
+      franklins[1],
+    ]),
+    false,
+  );
+
+  // Positive control 3: a beneficial_ownership flag fails the distinctness guard.
   assert.equal(
     unresolvedCompanyIdentitiesRemainDistinct([
       { ...franklins[0], beneficial_ownership: true },
@@ -237,12 +302,14 @@ test("A3: formal-vote admission works only through the board-document evidence g
       quote: "The board voted",
     },
     role_date: { value: "2026-02-24", precision: "day" },
+    scope: ["brooklyn-cb-15", "formal-vote-fixture"],
     observed_time: "2026-09-26T00:00:00.000Z",
   });
   assert.equal(admitted.admitted, true);
   assert.equal(admitted.observation.role, "formal_board_action");
   assert.equal(admitted.observation.formal_evidence_role, "formal_vote");
   assert.equal(admitted.observation.formal_board_endorsement, true);
+  assert.ok(admitted.observation.scope.includes("brooklyn-cb-15"));
 
   // Converse / positive controls for the gate.
   const chairUpgrade = admitConnectedHistoryRole({
@@ -259,6 +326,7 @@ test("A3: formal-vote admission works only through the board-document evidence g
       quote: "quoted community board chair statement",
     },
     role_date: { value: "2025-06-05", precision: "day" },
+    scope: ["lighthouse-point"],
     observed_time: "2026-09-26T00:00:00.000Z",
   });
   assert.equal(chairUpgrade.admitted, false);
@@ -278,6 +346,7 @@ test("A3: formal-vote admission works only through the board-document evidence g
     source_record_id: "brooklyn-cb-15:Agenda-4-28-26.pdf",
     source_span: { locator: "agenda_public_testimony_item", quote: "2025-54-A" },
     role_date: { value: "2026-04-28", precision: "day" },
+    scope: ["coyle"],
     observed_time: "2026-09-26T00:00:00.000Z",
   });
   assert.equal(testimonyFlags.admitted, false);
@@ -295,6 +364,7 @@ test("A3: formal-vote admission works only through the board-document evidence g
       quote: "June 2026 CB2/CB4/CB5",
     },
     role_date: { value: "2026-06", precision: "month" },
+    scope: ["sixth-avenue"],
     observed_time: "2026-09-26T00:00:00.000Z",
   });
   assert.equal(presentation.admitted, false);
@@ -344,9 +414,11 @@ test("A3: incomplete evidence fails with positive controls", () => {
       quote: "C230356ZMK",
     },
     role_date: { value: "2024", precision: "year" },
+    scope: ["franklin-avenue", "brooklyn-1192"],
     observed_time: "2026-09-26T00:00:00.000Z",
   };
 
+  assert.equal(admitConnectedHistoryRole(base).admitted, true);
   assert.equal(
     admitConnectedHistoryRole({ ...base, source_span: { locator: "x", quote: "" } }).admitted,
     false,
@@ -363,6 +435,11 @@ test("A3: incomplete evidence fails with positive controls", () => {
     admitConnectedHistoryRole({ ...base, subject: "" }).reason,
     "missing_subject",
   );
+  // Positive control: omitting scope flips the admission gate.
+  const { scope: _scope, ...withoutScope } = base;
+  assert.equal(admitConnectedHistoryRole(withoutScope).reason, "missing_scope");
+  assert.equal(admitConnectedHistoryRole({ ...base, scope: [] }).reason, "missing_scope");
+  assert.equal(admitConnectedHistoryRole({ ...base, scope: null }).reason, "missing_scope");
 });
 
 test("A4: candidates are exactly the fixed dossier set; missing strata stay reportable", () => {

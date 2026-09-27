@@ -44,6 +44,7 @@ const REQUIRED_EVIDENCE = Object.freeze([
   "source_span",
   "entity_qualifier",
   "role_date",
+  "scope",
   "method_version",
   "observed_time",
 ]);
@@ -139,6 +140,7 @@ export const CONNECTED_HISTORY_ROLE_VOCABULARY = Object.freeze({
 /** Bases that never establish a history-family participant role. */
 export const CONNECTED_HISTORY_ROLE_REJECTED_BASES = Object.freeze([
   "same_applicant_spelling",
+  "applicant_label_as_ownership",
   "beneficial_ownership_inference",
   "chair_quote_as_formal_board_action",
   "presentation_as_formal_board_action",
@@ -147,6 +149,29 @@ export const CONNECTED_HISTORY_ROLE_REJECTED_BASES = Object.freeze([
   "publisher_label",
   "related_news",
 ]);
+
+/**
+ * True when ownership evidence is only an applicant label / locator.
+ * Structural: does not trust a self-declared basis field.
+ */
+function isApplicantLabelOwnershipEvidence(candidate = {}) {
+  const system = clean(candidate.source_system, 100).toLowerCase();
+  const locator = clean(candidate?.source_span?.locator, 240).toLowerCase();
+  if (system.includes("applicant-label") || system.includes("applicant_label")) {
+    return true;
+  }
+  if (!locator) return false;
+  if (
+    locator === "primary_applicant"
+    || locator.includes("applicant_label")
+    || locator.includes("applicant-label")
+    || locator.endsWith("_applicant")
+    || locator.startsWith("applicant_")
+  ) {
+    return true;
+  }
+  return false;
+}
 
 /** Source roles that may support formal_board_action (lcd-11 evidence gate). */
 export const CONNECTED_HISTORY_FORMAL_EVIDENCE_ROLES = Object.freeze([
@@ -268,6 +293,18 @@ export function admitConnectedHistoryRole(candidate = {}) {
     };
   }
 
+  // Ownership never admits from applicant-label evidence alone, even when the
+  // candidate omits a self-declared rejected basis.
+  if (vocab.id === "recorded_owner" && isApplicantLabelOwnershipEvidence(candidate)) {
+    return {
+      admitted: false,
+      reason: "rejected_basis:applicant_label_as_ownership",
+      rejection_class: "insufficient_role_basis",
+      candidate,
+      vocab_id: vocab.id,
+    };
+  }
+
   // Boundary upgrades: chair quotes / presentations / testimony flags cannot
   // enter as formal_board_action even when the claimed role string matches.
   const claimedAs = clean(candidate.claimed_as || candidate.source_kind || "", 80).toLowerCase();
@@ -379,6 +416,16 @@ export function admitConnectedHistoryRole(candidate = {}) {
   }
 
   const scope = scopeValue(candidate);
+  if (!scope) {
+    return {
+      admitted: false,
+      reason: "missing_scope",
+      rejection_class: "incomplete",
+      candidate,
+      vocab_id: vocab.id,
+    };
+  }
+
   const observation = {
     schema: CONNECTED_HISTORY_ROLE_SCHEMA,
     role: vocab.role,
@@ -402,6 +449,7 @@ export function admitConnectedHistoryRole(candidate = {}) {
     },
     role_date: roleDate,
     as_of: roleDate.value,
+    scope,
     observed_time: observedTime,
     confidence: "strong",
     linking: actor.identity_status === "resolved",
@@ -413,7 +461,6 @@ export function admitConnectedHistoryRole(candidate = {}) {
     envelope: "civic_institution_role_edge",
   };
 
-  if (scope) observation.scope = scope;
   if (candidate.family_id) observation.family_id = clean(candidate.family_id, 80);
   if (candidate.candidate_id) observation.candidate_id = clean(candidate.candidate_id, 120);
   if (vocab.id === "formal_board_action") {
@@ -558,38 +605,51 @@ export function roleAbsenceInference(artifact, { subject, role } = {}) {
 /**
  * Source-qualified actors that share a spelling remain distinct identities.
  * Shared spelling never collapses company identity or proves ownership.
+ *
+ * Returns false on identity collapse:
+ * 1. Multiple source qualifiers under one spelling forced onto one entity_id.
+ * 2. beneficial_ownership, or a resolved identity claimed while distinct
+ *    entity ids still share that spelling.
  */
 export function unresolvedCompanyIdentitiesRemainDistinct(observations = []) {
+  const rows = Array.isArray(observations) ? observations : [];
   const bySpelling = new Map();
-  for (const row of observations || []) {
+  for (const row of rows) {
     const spelling = clean(row?.actor?.spelling, 240).toLowerCase();
     if (!spelling) continue;
     const qualifier = clean(row?.actor?.entity_qualifier, 240);
     const entityId = clean(row?.actor?.entity_id, 240);
     if (!qualifier || !entityId) return false;
-    const bucket = bySpelling.get(spelling) || new Set();
-    bucket.add(`${entityId}\0${qualifier}`);
+    const bucket = bySpelling.get(spelling) || [];
+    bucket.push({
+      entity_id: entityId,
+      entity_qualifier: qualifier,
+      identity_status: clean(row?.actor?.identity_status, 40).toLowerCase(),
+    });
     bySpelling.set(spelling, bucket);
   }
+
+  // Check 1: shared spelling must not collapse distinct source-qualified
+  // identities into a single entity_id.
   for (const bucket of bySpelling.values()) {
-    // Distinct source-qualified identities under one spelling must survive.
-    if (bucket.size >= 2) {
-      const entityIds = new Set([...bucket].map((key) => key.split("\0")[0]));
-      if (entityIds.size < bucket.size && entityIds.size === 1) {
-        // Same entity_id reused with different qualifiers is still distinct
-        // only when qualifiers differ; entity_id collision with one id is ok
-        // when qualifiers differ — already encoded in bucket size.
-      }
+    const qualifiers = new Set(bucket.map((item) => item.entity_qualifier));
+    const entityIds = new Set(bucket.map((item) => item.entity_id));
+    if (qualifiers.size >= 2 && entityIds.size === 1) {
+      return false;
     }
   }
-  // Never allow beneficial_ownership true on any observation.
-  for (const row of observations || []) {
+
+  // Check 2: ownership inference and spelling-based resolution are collapses.
+  for (const row of rows) {
     if (row?.beneficial_ownership) return false;
-    if (row?.actor?.identity_status === "resolved" && row?.actor?.spelling) {
-      // Resolved identity is allowed only with an explicit qualifier; shared
-      // spelling alone must not be the resolution basis. Callers mark
-      // unresolved/source_qualified for spelling-only cases.
-      continue;
+  }
+  for (const bucket of bySpelling.values()) {
+    const entityIds = new Set(bucket.map((item) => item.entity_id));
+    const hasResolved = bucket.some((item) => item.identity_status === "resolved");
+    // A resolved company identity cannot stand while distinct entity ids
+    // remain under the same spelling — that is spelling used as a merge key.
+    if (hasResolved && entityIds.size >= 2) {
+      return false;
     }
   }
   return true;
