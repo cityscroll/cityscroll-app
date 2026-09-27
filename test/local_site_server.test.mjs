@@ -326,6 +326,43 @@ test("local site server publishes an OS-assigned origin and serves the requested
   assert.match(await agencyProfile.text(), /id="entityview"/);
 });
 
+test("local site server can reproduce Pages HTML canonicalization", async (t) => {
+  const temp = mkdtempSync(join(tmpdir(), "crol-pages-canonical-"));
+  const ready = join(temp, "ready");
+  const site = join(temp, "site");
+  mkdirSync(join(site, "app"), { recursive: true });
+  mkdirSync(join(site, "guide"), { recursive: true });
+  writeFileSync(join(site, "index.html"), "root document\n");
+  writeFileSync(join(site, "about.html"), "about document\n");
+  writeFileSync(join(site, "app", "index.html"), "topic app document\n");
+  writeFileSync(join(site, "guide", "index.html"), "guide document\n");
+  const child = spawn("python3", [
+    "tools/local_site_server.py",
+    "--directory", site,
+    "--port", "0",
+    "--ready-file", ready,
+    "--pages-canonicalization",
+  ], { cwd: ROOT, stdio: "ignore" });
+  t.after(() => {
+    child.kill("SIGTERM");
+    rmSync(temp, { recursive: true, force: true });
+  });
+
+  const base = await waitForReady(ready, child);
+  for (const [source, destination] of [
+    ["index.html", "/"],
+    ["about.html?lang=es", "/about?lang=es"],
+    ["guide/index.html", "/guide/"],
+  ]) {
+    const response = await fetch(new URL(source, base), { redirect: "manual" });
+    assert.equal(response.status, 308, source);
+    assert.equal(response.headers.get("location"), destination, source);
+  }
+  const app = await fetch(new URL("app/", base));
+  assert.equal(app.status, 200);
+  assert.equal(await app.text(), "topic app document\n");
+});
+
 test("local site server does not publish readiness for an artifact without index.html", async (t) => {
   const temp = mkdtempSync(join(tmpdir(), "crol-local-site-empty-"));
   const ready = join(temp, "ready");

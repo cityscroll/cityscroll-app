@@ -46,6 +46,10 @@ class QuietHandler(SimpleHTTPRequestHandler):
     # Nothing here benefits from coalescing writes across a request boundary.
     disable_nagle_algorithm = True
 
+    def __init__(self, *args, pages_canonicalization=False, **kwargs):
+        self.pages_canonicalization = pages_canonicalization
+        super().__init__(*args, **kwargs)
+
     def log_message(self, _format, *_args):
         return
 
@@ -125,11 +129,35 @@ class QuietHandler(SimpleHTTPRequestHandler):
         stripped = (route or "").rstrip("/")
         return stripped == "/data-health" or stripped.startswith("/data-health/")
 
+    def _pages_pretty_url_redirect(self) -> bool:
+        """Reproduce Pages' extensionless HTML canonicalization when requested."""
+        if not self.pages_canonicalization:
+            return False
+        path_only, separator, query = self.path.partition("?")
+        document = Path(self.directory) / path_only.lstrip("/")
+        if not document.is_file() or not path_only.endswith(".html"):
+            return False
+        if path_only == "/index.html":
+            target = "/"
+        elif path_only.endswith("/index.html"):
+            target = path_only[: -len("index.html")]
+        else:
+            target = path_only[: -len(".html")]
+        if separator:
+            target = f"{target}?{query}"
+        self.send_response(308)
+        self.send_header("Location", target)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+        return True
+
     def do_GET(self):
         # Pages supplies the shared shell for edge-rendered notice documents. Local browser
         # gates exercise the enhancement island against that shell; response HTML is tested
         # separately against the edge renderer.
         raw = self.path
+        if self._pages_pretty_url_redirect():
+            return
         path_only, _, query = raw.partition("?")
         route = path_only.rstrip("/")
         if self._is_data_health_route(route) and not self._data_health_public():
@@ -170,6 +198,8 @@ class QuietHandler(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def do_HEAD(self):
+        if self._pages_pretty_url_redirect():
+            return
         raw = self.path
         path_only, _, query = raw.partition("?")
         route = path_only.rstrip("/")
@@ -279,6 +309,11 @@ def main() -> int:
     )
     parser.add_argument("--ready-file", type=Path)
     parser.add_argument(
+        "--pages-canonicalization",
+        action="store_true",
+        help="reproduce Cloudflare Pages .html and index.html 308 redirects",
+    )
+    parser.add_argument(
         "--readiness-timeout",
         type=positive_seconds,
         default=READINESS_TIMEOUT_SECONDS,
@@ -286,7 +321,11 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    handler = functools.partial(QuietHandler, directory=args.directory)
+    handler = functools.partial(
+        QuietHandler,
+        directory=args.directory,
+        pages_canonicalization=args.pages_canonicalization,
+    )
     server = _RobustThreadingHTTPServer((args.host, args.port), handler)
     server.daemon_threads = True
     base = f"http://{args.host}:{server.server_port}/"

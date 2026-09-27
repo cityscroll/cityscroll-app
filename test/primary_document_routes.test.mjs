@@ -1482,7 +1482,7 @@ test("legacy fragments use a finite location.replace bridge and preserve languag
   assert.equal(forwardLegacyFragment(location), true);
   assert.deepEqual(calls, [
     "/notices/20240515016?lang=es",
-    "/index.html#matter/84124P0003001",
+    "/app/#matter/84124P0003001",
   ]);
 });
 

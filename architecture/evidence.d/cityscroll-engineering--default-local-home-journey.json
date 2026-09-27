@@ -2,7 +2,7 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/default-local-home-journey",
   "status": "implemented",
-  "fingerprint": "default-local-home-journey.v1",
+  "fingerprint": "default-local-home-journey.v2",
   "updated_at": "2026-09-26T00:00:00.000Z",
   "projections": [
     {
@@ -16,6 +16,18 @@
     {
       "id": "default-local-home-local-server",
       "path": "tools/local_site_server.py"
+    },
+    {
+      "id": "default-local-home-topic-app-publisher",
+      "path": "tools/build_public_site.mjs"
+    },
+    {
+      "id": "default-local-home-hash-ingress",
+      "path": "site/legacy_hash_forward.mjs"
+    },
+    {
+      "id": "default-local-home-pages-canonicalization-gate",
+      "path": "test/functional/57_root_hash_deeplinks.py"
     },
     {
       "id": "default-local-home-verify-test",

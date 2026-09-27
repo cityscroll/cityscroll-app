@@ -48,8 +48,14 @@ test("public-site generation fails loudly when its required output is missing", 
     assert.equal(receipt.schema, "cityscroll.generation-output-receipt.v1");
     assert.equal(receipt.boundary, "public-site-generation");
     assert.equal(receipt.status, "failed");
-    assert.deepEqual(receipt.expected_artifacts, [join(siteDir, "index.html")]);
-    assert.deepEqual(receipt.findings, [`missing generated output: ${join(siteDir, "index.html")}`]);
+    assert.deepEqual(receipt.expected_artifacts, [
+      join(siteDir, "index.html"),
+      join(siteDir, "app", "index.html"),
+    ]);
+    assert.deepEqual(receipt.findings, [
+      `missing generated output: ${join(siteDir, "index.html")}`,
+      `missing generated output: ${join(siteDir, "app", "index.html")}`,
+    ]);
   } finally {
     rmSync(temporary, { recursive: true, force: true });
   }
@@ -70,11 +76,15 @@ test("public-site generation passes with the required output and ignores optiona
 
     assert.equal(result.status, 0, result.stderr);
     assert.equal(readFileSync(join(siteDir, "index.html"), "utf8"), readFileSync(sourceIndex, "utf8"));
+    assert.equal(readFileSync(join(siteDir, "app", "index.html"), "utf8"), readFileSync(sourceIndex, "utf8"));
     const receipt = JSON.parse(readFileSync(receiptPath, "utf8"));
     assert.equal(receipt.schema, "cityscroll.generation-output-receipt.v1");
     assert.equal(receipt.boundary, "public-site-generation");
     assert.equal(receipt.status, "passed");
-    assert.deepEqual(receipt.expected_artifacts, [join(siteDir, "index.html")]);
+    assert.deepEqual(receipt.expected_artifacts, [
+      join(siteDir, "index.html"),
+      join(siteDir, "app", "index.html"),
+    ]);
     assert.deepEqual(receipt.findings, []);
   } finally {
     rmSync(temporary, { recursive: true, force: true });

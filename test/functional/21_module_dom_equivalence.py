@@ -298,7 +298,12 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
     index = index_path.read_text()
     marker = '<script type="module" src="app/main.mjs"></script>'
     assert marker in index, "module loader tag missing"
-    index_path.write_text(index.replace(marker, f"<script>\n{inline}\n</script>"))
+    reconstructed_index = index.replace(marker, f"<script>\n{inline}\n</script>")
+    index_path.write_text(reconstructed_index)
+    # Registered root hashes now enter through the stable Pages directory
+    # document. Give the reconstructed pre-split fixture the same document so
+    # this parity gate compares application rendering rather than a 404.
+    (target / "app" / "index.html").write_text(reconstructed_index)
 
 
 def install_meeting_notice_route(page) -> None:

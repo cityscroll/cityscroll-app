@@ -26,9 +26,11 @@ export function forwardLegacyFragment(locationObject = globalThis.location) {
   }
   // The Near You document is now served at `/`, but retained item and workspace
   // hashes still belong to the topic SPA. Send only registered hashes to its
-  // explicit document; an unknown fragment remains on Near You.
+  // dedicated directory document; an unknown fragment remains on Near You.
+  // Pages canonicalizes /index.html to /, so that URL would re-enter this
+  // branch indefinitely instead of reaching the topic application.
   if (globalThis.CROL_DISABLE_ROOT_HASH_BOOT || !matchSpaHashRoute(locationObject.hash)) return false;
-  const spaTarget = `/index.html${locationObject.search || ""}${locationObject.hash}`;
+  const spaTarget = `/app/${locationObject.search || ""}${locationObject.hash}`;
   if (spaTarget === current) return false;
   locationObject.replace(spaTarget);
   return true;
