@@ -690,6 +690,7 @@
     "site/solicitation_response_context.mjs",
     "site/source_health_public_projection.mjs",
     "site/source_vintage_public_projection.mjs",
+    "site/spa_hash_routes.mjs",
     "site/staffing_agency_scope.mjs",
     "site/staffing_surface.mjs",
     "site/staffing.js",

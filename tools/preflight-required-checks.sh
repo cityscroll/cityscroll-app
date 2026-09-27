@@ -667,6 +667,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   rm -f "${SERVER_READY_FILE}"
   SERVER_READY_FILE=""
   run_and_fail python3 test/functional/23_mobile_viewport.py
+  run_and_fail python3 test/functional/57_root_hash_deeplinks.py
   run_and_fail python3 test/functional/24_geolocation_gesture_gate.py
   run_and_fail python3 test/functional/32_near_you_location.py
   run_and_fail python3 test/functional/11_accessibility.py

@@ -153,6 +153,7 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/land_project_route.mjs",
   "/agency_scope_route.mjs",
   "/land_view_switch.mjs",
+  "/spa_hash_routes.mjs",
   "/community_board_watch.mjs",
   "/app/boot.mjs",
   "/home_entry.mjs",

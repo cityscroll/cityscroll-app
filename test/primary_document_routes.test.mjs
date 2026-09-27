@@ -1479,8 +1479,11 @@ test("legacy fragments use a finite location.replace bridge and preserve languag
   location.href = "https://cityscroll.org/#matter/84124P0003001";
   location.search = "";
   location.hash = "#matter/84124P0003001";
-  assert.equal(forwardLegacyFragment(location), false);
-  assert.equal(calls.length, 1);
+  assert.equal(forwardLegacyFragment(location), true);
+  assert.deepEqual(calls, [
+    "/notices/20240515016?lang=es",
+    "/index.html#matter/84124P0003001",
+  ]);
 });
 
 test("notice response renderer supplies semantic HTML before the enhancement island", () => {
