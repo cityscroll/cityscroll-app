@@ -3075,6 +3075,36 @@
       "outputs_equal": true
     }
   ],
+  "change_kind_population": {
+    "civic_event": 13,
+    "correction": 0,
+    "newly_acquired_old_evidence": 0
+  },
+  "fact_kind_population": {
+    "application_version": 1,
+    "component_plan": 1,
+    "component_status": 2,
+    "disposition": 1,
+    "forecast": 1,
+    "measurement_period": 1,
+    "phase_status": 1,
+    "proposal_epoch": 5
+  },
+  "numeric_observation_population": 0,
+  "unrepresented_fact_kinds": [
+    {
+      "kind": "correction",
+      "population": 0
+    },
+    {
+      "kind": "newly_acquired_old_evidence",
+      "population": 0
+    },
+    {
+      "kind": "numeric",
+      "population": 0
+    }
+  ],
   "counts": {
     "dossier_families": 6,
     "families_with_temporal_facts": 4,
@@ -3082,5 +3112,5 @@
     "query_pairs": 4,
     "source_judgments": 4
   },
-  "selection_hash": "26bc64d23fb4a42b89cdef24089e7e92f5f6b2ed6a72909d38d869aff36a4549"
+  "selection_hash": "ee767976cc810ba53c2316ae30928a98f9ec02df704d9f151b41a8faeba03914"
 }

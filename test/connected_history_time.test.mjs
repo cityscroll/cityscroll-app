@@ -5,6 +5,7 @@
  */
 
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { test } from "node:test";
@@ -32,8 +33,12 @@ import {
   CONNECTED_HISTORY_TIME_DOSSIER_FAMILIES,
   CONNECTED_HISTORY_TIME_OBSERVATIONS,
   CONNECTED_HISTORY_TIME_QUERY_JUDGMENTS,
+  CONNECTED_HISTORY_TIME_SOURCE_POLICY,
   buildConnectedHistoryTimeArtifact,
+  buildConnectedHistoryTimeReceipt,
   checkConnectedHistorySourceJudgment,
+  materializeConnectedHistoryTime,
+  reportConnectedHistoryTimeKindPopulation,
   verifyConnectedHistoryTimeArtifact,
 } from "../tools/lib/connected_history_time.mjs";
 
@@ -388,7 +393,7 @@ test("A4: artifact is limited to the six fixed dossier families and uses no subs
   );
   assert.equal(committed.counts.dossier_families, 6);
   assert.equal(committed.counts.families_with_temporal_facts, 4);
-  assert.equal(committed.source_policy, "fixed-six-case-dossier-and-retained-inputs-only");
+  assert.equal(committed.source_policy, CONNECTED_HISTORY_TIME_SOURCE_POLICY);
   assert.ok(committed.dossier_outcomes.every((row) => row.substitute_family_used === false));
   assert.deepEqual(
     committed.dossier_outcomes.filter((row) => row.temporal_observations === 0).map((row) => row.family_id),
@@ -411,3 +416,78 @@ test("A4: artifact is limited to the six fixed dossier families and uses no subs
     );
   }
 });
+
+test("A4: verifier refuses altered selection hash, inflated counts, and rewritten source policy", () => {
+  assert.equal(verifyConnectedHistoryTimeArtifact(committed).valid, true);
+
+  const alteredHash = structuredClone(committed);
+  alteredHash.selection_hash = "0".repeat(64);
+  const hashResult = verifyConnectedHistoryTimeArtifact(alteredHash);
+  assert.equal(hashResult.valid, false);
+  assert.ok(hashResult.errors.includes("selection_hash"));
+
+  const inflatedCounts = structuredClone(committed);
+  inflatedCounts.counts = {
+    ...inflatedCounts.counts,
+    observations: inflatedCounts.counts.observations + 50,
+  };
+  // Keep the declared hash matched to the inflated payload so only the
+  // recomputed observation census can refuse the tampering.
+  const { selection_hash: _ignoredHash, ...inflatedWithoutHash } = inflatedCounts;
+  inflatedCounts.selection_hash = payloadHash(inflatedWithoutHash);
+  const countResult = verifyConnectedHistoryTimeArtifact(inflatedCounts);
+  assert.equal(countResult.valid, false);
+  assert.ok(countResult.errors.includes("counts"));
+
+  const rewrittenPolicy = structuredClone(committed);
+  rewrittenPolicy.source_policy = "anything-goes-substitute-examples";
+  const { selection_hash: _policyHash, ...policyWithoutHash } = rewrittenPolicy;
+  rewrittenPolicy.selection_hash = payloadHash(policyWithoutHash);
+  const policyResult = verifyConnectedHistoryTimeArtifact(rewrittenPolicy);
+  assert.equal(policyResult.valid, false);
+  assert.ok(policyResult.errors.includes("source_policy"));
+});
+
+test("A4: receipt verification state is derived from the verifier result", () => {
+  const { artifact, receipt } = materializeConnectedHistoryTime();
+  const verification = verifyConnectedHistoryTimeArtifact(artifact);
+  assert.equal(verification.valid, true);
+  assert.equal(receipt.verification.state, "passed");
+  assert.equal(
+    buildConnectedHistoryTimeReceipt(artifact, verification).verification.state,
+    verification.valid ? "passed" : "failed",
+  );
+
+  const failed = buildConnectedHistoryTimeReceipt(artifact, {
+    valid: false,
+    errors: ["selection_hash", "counts"],
+  });
+  assert.equal(failed.verification.state, "failed");
+  assert.deepEqual(failed.verification.errors, ["selection_hash", "counts"]);
+  assert.notEqual(failed.verification.state, "passed");
+});
+
+test("A4: artifact reports unrepresented fact kinds with population", () => {
+  const built = buildConnectedHistoryTimeArtifact();
+  const expected = reportConnectedHistoryTimeKindPopulation(built.observations);
+  assert.deepEqual(built.change_kind_population, {
+    civic_event: 13,
+    correction: 0,
+    newly_acquired_old_evidence: 0,
+  });
+  assert.equal(built.numeric_observation_population, 0);
+  assert.deepEqual(built.unrepresented_fact_kinds, [
+    { kind: "correction", population: 0 },
+    { kind: "newly_acquired_old_evidence", population: 0 },
+    { kind: "numeric", population: 0 },
+  ]);
+  assert.deepEqual(built.unrepresented_fact_kinds, expected.unrepresented_fact_kinds);
+  assert.deepEqual(committed.unrepresented_fact_kinds, built.unrepresented_fact_kinds);
+  assert.deepEqual(committed.change_kind_population, built.change_kind_population);
+  assert.equal(committed.numeric_observation_population, 0);
+  assert.deepEqual(committedReceipt.unrepresented_fact_kinds, built.unrepresented_fact_kinds);
+});
+
+function payloadHash(value) {
+  return createHash("sha256").update(JSON.stringify(value)).digest("hex");
+}

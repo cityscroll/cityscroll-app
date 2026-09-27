@@ -8,6 +8,7 @@
 import { createHash } from "node:crypto";
 
 import {
+  CONNECTED_HISTORY_CHANGE_KINDS,
   CONNECTED_HISTORY_TIME_CASE_FAMILY,
   CONNECTED_HISTORY_TIME_COMPARISON_SCHEMA,
   CONNECTED_HISTORY_TIME_METHOD,
@@ -25,6 +26,8 @@ export const CONNECTED_HISTORY_TIME_RECEIPT_SCHEMA =
   "cityscroll.connected_history_time_receipt.v1";
 
 export const CONNECTED_HISTORY_TIME_GENERATED_AT = "2026-09-26T00:00:00.000Z";
+export const CONNECTED_HISTORY_TIME_SOURCE_POLICY =
+  "fixed-six-case-dossier-and-retained-inputs-only";
 export const CONNECTED_HISTORY_TIME_DOSSIER_FAMILIES = Object.freeze([
   "coyle",
   "franklin-avenue",
@@ -434,6 +437,49 @@ function hashOf(value) {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");
 }
 
+/**
+ * Census retained change kinds and numeric facts so an empty stratum is a
+ * recorded zero rather than an omitted key.
+ */
+export function reportConnectedHistoryTimeKindPopulation(observations = []) {
+  const change_kind_population = Object.fromEntries(
+    CONNECTED_HISTORY_CHANGE_KINDS.map((kind) => [kind, 0]),
+  );
+  const fact_kind_population = {};
+  let numeric_observation_population = 0;
+  for (const row of observations) {
+    const changeKind = row?.change_kind;
+    if (Object.hasOwn(change_kind_population, changeKind)) {
+      change_kind_population[changeKind] += 1;
+    }
+    const factKind = row?.fact_kind;
+    if (factKind) {
+      fact_kind_population[factKind] = (fact_kind_population[factKind] || 0) + 1;
+    }
+    if (typeof row?.numeric_value === "number" && Number.isFinite(row.numeric_value)) {
+      numeric_observation_population += 1;
+    }
+  }
+  const sortedFactKinds = Object.fromEntries(
+    Object.entries(fact_kind_population).sort(([left], [right]) => left.localeCompare(right)),
+  );
+  const unrepresented_fact_kinds = [
+    ...CONNECTED_HISTORY_CHANGE_KINDS
+      .filter((kind) => change_kind_population[kind] === 0)
+      .map((kind) => ({ kind, population: 0 })),
+  ];
+  if (numeric_observation_population === 0) {
+    unrepresented_fact_kinds.push({ kind: "numeric", population: 0 });
+  }
+  unrepresented_fact_kinds.sort((left, right) => left.kind.localeCompare(right.kind));
+  return {
+    change_kind_population,
+    fact_kind_population: sortedFactKinds,
+    numeric_observation_population,
+    unrepresented_fact_kinds,
+  };
+}
+
 function buildPair(observations, judgment) {
   const before = projectConnectedHistoryStateAsOf(observations, {
     familyId: judgment.family_id,
@@ -490,16 +536,21 @@ export function buildConnectedHistoryTimeArtifact() {
     };
   });
 
+  const kindReport = reportConnectedHistoryTimeKindPopulation(observations);
   const base = {
     schema: CONNECTED_HISTORY_TIME_ARTIFACT_SCHEMA,
     version: CONNECTED_HISTORY_TIME_VERSION,
     generated_at: CONNECTED_HISTORY_TIME_GENERATED_AT,
     method: CONNECTED_HISTORY_TIME_METHOD,
-    source_policy: "fixed-six-case-dossier-and-retained-inputs-only",
+    source_policy: CONNECTED_HISTORY_TIME_SOURCE_POLICY,
     observations,
     dossier_outcomes,
     query_pairs,
     ordering_controls,
+    change_kind_population: kindReport.change_kind_population,
+    fact_kind_population: kindReport.fact_kind_population,
+    numeric_observation_population: kindReport.numeric_observation_population,
+    unrepresented_fact_kinds: kindReport.unrepresented_fact_kinds,
     counts: {
       dossier_families: dossier_outcomes.length,
       families_with_temporal_facts: observedFamilyIds.size,
@@ -516,6 +567,9 @@ export function verifyConnectedHistoryTimeArtifact(artifact) {
   const errors = [];
   if (artifact?.schema !== CONNECTED_HISTORY_TIME_ARTIFACT_SCHEMA) errors.push("schema");
   if (artifact?.version !== CONNECTED_HISTORY_TIME_VERSION) errors.push("version");
+  if (artifact?.source_policy !== CONNECTED_HISTORY_TIME_SOURCE_POLICY) {
+    errors.push("source_policy");
+  }
   const dossierIds = (artifact?.dossier_outcomes || []).map((row) => row.family_id).sort();
   if (JSON.stringify(dossierIds) !== JSON.stringify([...CONNECTED_HISTORY_TIME_DOSSIER_FAMILIES].sort())) {
     errors.push("dossier_family_set");
@@ -528,6 +582,32 @@ export function verifyConnectedHistoryTimeArtifact(artifact) {
       return null;
     }
   }).filter(Boolean);
+  const expectedCounts = {
+    dossier_families: CONNECTED_HISTORY_TIME_DOSSIER_FAMILIES.length,
+    families_with_temporal_facts: new Set(observations.map((row) => row.family_id)).size,
+    observations: observations.length,
+    query_pairs: CONNECTED_HISTORY_TIME_QUERY_JUDGMENTS.length,
+    source_judgments: CONNECTED_HISTORY_TIME_QUERY_JUDGMENTS.length,
+  };
+  if (JSON.stringify(artifact?.counts || null) !== JSON.stringify(expectedCounts)) {
+    errors.push("counts");
+  }
+  const kindReport = reportConnectedHistoryTimeKindPopulation(observations);
+  if (JSON.stringify(artifact?.change_kind_population || null)
+    !== JSON.stringify(kindReport.change_kind_population)) {
+    errors.push("change_kind_population");
+  }
+  if (JSON.stringify(artifact?.fact_kind_population || null)
+    !== JSON.stringify(kindReport.fact_kind_population)) {
+    errors.push("fact_kind_population");
+  }
+  if (artifact?.numeric_observation_population !== kindReport.numeric_observation_population) {
+    errors.push("numeric_observation_population");
+  }
+  if (JSON.stringify(artifact?.unrepresented_fact_kinds || null)
+    !== JSON.stringify(kindReport.unrepresented_fact_kinds)) {
+    errors.push("unrepresented_fact_kinds");
+  }
   for (const judgment of CONNECTED_HISTORY_TIME_QUERY_JUDGMENTS) {
     const rebuilt = buildPair(observations, judgment);
     errors.push(...checkConnectedHistorySourceJudgment(rebuilt, judgment));
@@ -570,31 +650,45 @@ export function verifyConnectedHistoryTimeArtifact(artifact) {
       errors.push(`stale_converse_order:${familyId}`);
     }
   }
+  if (artifact && typeof artifact === "object") {
+    const { selection_hash: claimedHash, ...withoutHash } = artifact;
+    if (hashOf(withoutHash) !== claimedHash) {
+      errors.push("selection_hash");
+    }
+  } else {
+    errors.push("selection_hash");
+  }
   return { valid: errors.length === 0, errors };
+}
+
+/** Receipt verification.state comes from the verifier result, never a constant. */
+export function buildConnectedHistoryTimeReceipt(artifact, verification) {
+  const state = verification?.valid ? "passed" : "failed";
+  return {
+    schema: CONNECTED_HISTORY_TIME_RECEIPT_SCHEMA,
+    version: CONNECTED_HISTORY_TIME_VERSION,
+    artifact: "site/data/connected_history_time.json",
+    generated_at: CONNECTED_HISTORY_TIME_GENERATED_AT,
+    method: CONNECTED_HISTORY_TIME_METHOD,
+    selection_hash: artifact.selection_hash,
+    counts: artifact.counts,
+    source_policy: artifact.source_policy,
+    unrepresented_fact_kinds: artifact.unrepresented_fact_kinds,
+    verification: {
+      state,
+      ...(state === "failed" ? { errors: [...(verification?.errors || [])] } : {}),
+      module_oracle_queries: artifact.query_pairs.length,
+      ordering_converse_controls: artifact.ordering_controls.length,
+    },
+  };
 }
 
 export function materializeConnectedHistoryTime() {
   const artifact = buildConnectedHistoryTimeArtifact();
   const verification = verifyConnectedHistoryTimeArtifact(artifact);
+  const receipt = buildConnectedHistoryTimeReceipt(artifact, verification);
   if (!verification.valid) {
     throw new Error(`connected history time artifact failed verification: ${verification.errors.join(", ")}`);
   }
-  return {
-    artifact,
-    receipt: {
-      schema: CONNECTED_HISTORY_TIME_RECEIPT_SCHEMA,
-      version: CONNECTED_HISTORY_TIME_VERSION,
-      artifact: "site/data/connected_history_time.json",
-      generated_at: CONNECTED_HISTORY_TIME_GENERATED_AT,
-      method: CONNECTED_HISTORY_TIME_METHOD,
-      selection_hash: artifact.selection_hash,
-      counts: artifact.counts,
-      source_policy: artifact.source_policy,
-      verification: {
-        state: "passed",
-        module_oracle_queries: artifact.query_pairs.length,
-        ordering_converse_controls: artifact.ordering_controls.length,
-      },
-    },
-  };
+  return { artifact, receipt };
 }
