@@ -10,6 +10,10 @@
     "project_id": "2026R0127",
     "why": "an exact single-BBL centroid, contrasted against the anchor's lower precision"
   },
+  "unmapped_specimen": {
+    "project_id": "2020K0444",
+    "why": "a catalog project explicitly retained in the point projection's unmapped partition"
+  },
   "viewports": {
     "mobile": [320, 568],
     "narrow": [390, 844],
@@ -44,8 +48,8 @@
     {
       "id": "unmapped-honesty",
       "title": "An all-unmapped scope keeps every row counted and listed, with no invented marker",
-      "list_route": "/browse/zoning/?status=all&stage=completed",
-      "map_route": "/browse/zoning/?status=all&stage=completed&view=map",
+      "list_route": "/browse/zoning/?status=all&stage=any&q=2020K0444",
+      "map_route": "/browse/zoning/?status=all&stage=any&q=2020K0444&view=map",
       "viewports": ["narrow", "wide"],
       "dependency_scenario": "healthy",
       "expects": {
