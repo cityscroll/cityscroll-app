@@ -11,6 +11,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { materializeSiteLifecycle } from "../../site/site_lifecycle_projection.mjs";
 import { writeSiteLifecycleProjection } from "../build_site_lifecycle_projection.mjs";
+import { CONNECTED_HISTORY_DEMO_FAMILIES } from "./connected_history_cohort.mjs";
 
 // Constructed so the source text does not spell the register product slug.
 export const SITE_LIFECYCLE_POPULATION_RECEIPT_SCHEMA = [
@@ -18,6 +19,11 @@ export const SITE_LIFECYCLE_POPULATION_RECEIPT_SCHEMA = [
   "parcel_history_population_receipt",
   "v1",
 ].join(".");
+
+/** Fixed six-case dossier family ids — the receipt denominator for population status. */
+export const SITE_LIFECYCLE_POPULATION_EXPECTED_STRATA = Object.freeze(
+  CONNECTED_HISTORY_DEMO_FAMILIES.map((family) => family.family_id),
+);
 
 /** Subject / matter identifiers that exist only in hermetic fixtures. */
 const FIXTURE_INVENTED_ID_PATTERN =
@@ -51,6 +57,63 @@ function collectStrings(value, out = []) {
     for (const item of Object.values(value)) collectStrings(item, out);
   }
   return out;
+}
+
+/**
+ * Record which fixed-dossier sample strata appear in the built population.
+ * Representation is detected from admitted input identifiers and materialized
+ * parcel/member ids — never by substituting an unrepresented family.
+ */
+export function observeSiteLifecyclePopulationStrata({ document = null, admitted = {} } = {}) {
+  const tokens = new Set(collectStrings(admitted).map((token) => clean(token, 320)).filter(Boolean));
+  for (const parcelId of Object.keys(document?.parcels || {})) {
+    tokens.add(parcelId);
+    tokens.add(`parcel:${parcelId}`);
+  }
+  for (const subjectId of Object.keys(document?.members || {})) {
+    tokens.add(subjectId);
+  }
+
+  const observed = new Set();
+  for (const family of CONNECTED_HISTORY_DEMO_FAMILIES) {
+    if (tokens.has(family.family_id)) {
+      observed.add(family.family_id);
+      continue;
+    }
+    for (const subjectId of family.subject_ids) {
+      if (tokens.has(subjectId)) {
+        observed.add(family.family_id);
+        break;
+      }
+      if (subjectId.startsWith("parcel:") && tokens.has(subjectId.slice("parcel:".length))) {
+        observed.add(family.family_id);
+        break;
+      }
+    }
+  }
+  return [...observed].sort();
+}
+
+/**
+ * Derive population receipt status from expected vs observed dossier strata.
+ * Missing strata are named shortfalls; an empty shortfall list means complete.
+ */
+export function deriveSiteLifecyclePopulationStatus({
+  expectedStrata = SITE_LIFECYCLE_POPULATION_EXPECTED_STRATA,
+  observedStrata = [],
+} = {}) {
+  const expected = [...expectedStrata].map((value) => clean(value, 120)).filter(Boolean);
+  const observed = [...new Set(
+    [...observedStrata].map((value) => clean(value, 120)).filter(Boolean),
+  )].sort();
+  const expectedSorted = [...new Set(expected)].sort();
+  const shortfalls = expectedSorted.filter((stratum) => !observed.includes(stratum));
+  return {
+    status: shortfalls.length === 0 ? "complete" : "incomplete",
+    expected_strata: expectedSorted,
+    observed_strata: observed,
+    shortfalls,
+  };
 }
 
 /** True when a token is a known fixture-only invented identifier. */
@@ -94,9 +157,18 @@ function buildPopulationReceipt({ document, manifest, admitted, mode, outputDir,
     source_vintage: admitted.source_vintage || null,
   });
 
+  const observedStrata = observeSiteLifecyclePopulationStrata({ document, admitted });
+  const coverage = deriveSiteLifecyclePopulationStatus({
+    expectedStrata: SITE_LIFECYCLE_POPULATION_EXPECTED_STRATA,
+    observedStrata,
+  });
+
   return {
     schema: SITE_LIFECYCLE_POPULATION_RECEIPT_SCHEMA,
-    status: "complete",
+    status: coverage.status,
+    expected_strata: coverage.expected_strata,
+    observed_strata: coverage.observed_strata,
+    shortfalls: coverage.shortfalls,
     mode,
     generated_at: document.generated_at,
     source_vintage: admitted.source_vintage || null,
