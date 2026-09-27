@@ -306,8 +306,13 @@ def persisted(page):
 
 def rendered_rows(page):
     return page.evaluate(
-        """() => [...document.querySelectorAll('[data-search-result]')].map((card) =>
-            (card.querySelector('h4')?.textContent || '').replace(/\\s+/g, ' ').trim())"""
+        """() => [...document.querySelectorAll('[data-search-result]')].map((card) => {
+            const titles = [...card.querySelectorAll(
+                'h4 > .topic-search-result-title-link, h4 > .topic-search-result-inspect'
+            )];
+            const visibleTitle = titles.find((node) => getComputedStyle(node).display !== 'none');
+            return (visibleTitle?.textContent || '').replace(/\\s+/g, ' ').trim();
+        })"""
     )
 
 
