@@ -361,7 +361,7 @@ export function renderConnectedHistoryFailure(query, entry = connectedHistoryCas
   const source = entry.sources[0];
   return `<p class="connected-history-kicker">Documented history</p>` +
     `<h3 id="connected-history-heading">History details did not load</h3>` +
-    `<p>The request for “${escapedQuery}” is still in the address bar. This is an unavailable result, not a successful empty result.</p>` +
+    `<p>The request for “${escapedQuery}” remains in the address bar. This unavailable result records a loading failure. A successful empty result confirms that the sources contained no matching history.</p>` +
     `<p class="connected-history-actions"><a href="${escapeHtml(retry)}" data-connected-history-retry>Try again</a>` +
     `<a href="${escapeHtml(source[1])}">Open ${escapeHtml(source[0])}</a></p>`;
 }

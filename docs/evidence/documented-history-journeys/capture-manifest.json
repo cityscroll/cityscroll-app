@@ -269,7 +269,7 @@
       "revision": "21cb8a1b9f662a52651078fca8f2b597a5345e91",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Injected materialization failure preserves the exact query and exposes retry plus an official source without claiming a successful empty result.",
-      "sha256": "48be2c9b067c8405341ed82cc4d1c20baea6371b2b8684b8848a7201c5b8c3a0"
+      "sha256": "4e2a5d2f38b2cf574599bd62d52568ecef19d74bbc4362d0f8c4e46810d359b2"
     }
   ]
 }
