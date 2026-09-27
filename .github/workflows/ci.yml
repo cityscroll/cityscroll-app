@@ -459,6 +459,9 @@ jobs:
       - name: Detail panel fixture precondition regression proof
         if: matrix.family == 'static-standards'
         run: python3 test/functional/detail_panel_fixture_test.py
+      - name: Land visual-parity receipt regression proof
+        if: matrix.family == 'static-standards'
+        run: python3 test/functional/land_map_visual_parity_receipt_test.py
       - name: Temp-directory cleanup helper regression proof
         if: matrix.family == 'static-standards'
         run: python3 -m unittest discover -s test -p 'temp_workspace_guard_test.py'
@@ -1042,6 +1045,71 @@ jobs:
           if-no-files-found: error
           overwrite: true
           retention-days: 1
+
+  # These are the fixture-backed browser checks that the local full preflight requires
+  # and that no existing required PR job exercised. Keep the shards on merge_group so
+  # composition failures are caught before the queue updates main.
+  required-functional-shard:
+    name: Functional browser shard (${{ matrix.shard }})
+    needs: [changes, unit, browser-pr-site]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [near-search, procurement-history, land-interaction, land-quality]
+    steps:
+      - name: Functional shard fast path
+        if: always() && (needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success')
+        run: echo "No required functional shard is needed for this path set."
+      - name: Fail when the shared site artifact is unavailable
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result != 'success'
+        run: |
+          echo "The shared verified browser site artifact job did not succeed: ${{ needs.browser-pr-site.result }}"
+          exit 1
+      - uses: actions/checkout@v4
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        with:
+          persist-credentials: false
+      - name: Restore and verify exact-input site artifact
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        uses: ./.github/actions/use-site-artifact
+        with:
+          artifact-name: browser-pr-site-${{ github.run_id }}
+      - uses: ./.github/actions/setup-playwright
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+      - name: Run required functional shard
+        if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        run: tools/run_a11y_ci_shard.sh "functional-${{ matrix.shard }}" primary
+      - name: Upload functional shard evidence
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: required-functional-${{ matrix.shard }}-logs-${{ github.run_id }}
+          path: ${{ runner.temp }}/a11y-pr-shard-functional-${{ matrix.shard }}-primary-logs
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 7
+
+  required-functional:
+    name: Functional browser tests
+    needs: [changes, unit, required-functional-shard]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Changelog-only, docs-only, non-frontend, or unit-failed fast path
+        if: always() && (needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success')
+        run: echo "No required functional browser checks are needed for this path set."
+      - name: Fail when a required functional shard fails or is missing
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.required-functional-shard.result != 'success'
+        run: |
+          echo "Required functional shard result: ${{ needs.required-functional-shard.result }}"
+          exit 1
+      - name: Report all required functional shards green
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.required-functional-shard.result == 'success'
+        run: echo "All required functional browser shards passed."
 
   # The matrix is deliberately not required by branch protection. On pull_request and
   # push to main, a11y-pr above is the single accessibility verdict while every shard

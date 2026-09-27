@@ -13,6 +13,7 @@ const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const REQUIRED_CHECK_NAMES = [
   "Unit tests (site + worker)",
   "Reading-level ratchet gate (readable-or-else)",
+  "Functional browser tests",
 ];
 
 // Still defined in ci.yml and required on pull_request / push to main, but skipped on merge_group.
@@ -68,6 +69,8 @@ test("required jobs stay runnable (not job-level skipped) so the check name alwa
   // Reading-level remains a merge-queue required check and must always report.
   assert.match(ci, /reading-level:[\s\S]*?\n    if:\s*always\(\)\s*\n/);
   assert.match(ci, /reading-level:[\s\S]*?\n    needs:\s*\[changes,\s*unit\]/);
+  assert.match(ci, /required-functional:[\s\S]*?\n    if:\s*always\(\)/);
+  assert.match(ci, /required-functional:[\s\S]*?\n    needs:\s*\[changes,\s*unit,\s*required-functional-shard\]/);
   assert.match(
     ci,
     /Changelog-only, non-frontend, or unit-failed — report required check success[\s\S]*?needs\.unit\.result == 'success'/,

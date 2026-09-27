@@ -48,6 +48,8 @@ const GUARDRAIL_KEEP_JOBS = [
   "merge-group-preflight",
   "unit",
   "browser-pr-site",
+  "required-functional-shard",
+  "required-functional",
   "reading-level",
 ];
 
@@ -108,6 +110,7 @@ test("documented merge-queue required checks match policy and workflow job names
   const remain = [
     "Unit tests (site + worker)",
     "Reading-level ratchet gate (readable-or-else)",
+    "Functional browser tests",
   ];
   const remove = ["Accessibility + language gate (axe on every PR)"];
 

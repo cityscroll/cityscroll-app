@@ -8,8 +8,9 @@ checks that depend on the merge base, so a queue entry finishes in roughly
 `push` to `main` keeps the full check set.
 
 Only the slow browser-driven classes are trimmed on `merge_group`: accessibility
-shards and their aggregator, performance serial baseline and raw-sample shards,
-and the Playwright functional layer. The performance budgets aggregate is also
+shards and their aggregator, plus the performance serial baseline and raw-sample shards.
+The fixture-backed functional gap shards and their required aggregate run on both pull
+requests and `merge_group`. The performance budgets aggregate is also
 skipped on `merge_group` because it has no inputs once those pilots are absent
 and would otherwise fail red. Reading-level stays on `merge_group` and remains
 ruleset-required: it is cheap and guards copy that other merges can change.
@@ -31,6 +32,7 @@ forever. After this trim lands, apply these exact lists to that ruleset (via
 
 - `Unit tests (site + worker)`
 - `Reading-level ratchet gate (readable-or-else)`
+- `Functional browser tests`
 
 ### Still run on `merge_group` (not all are ruleset-required)
 
@@ -41,6 +43,7 @@ not ruleset-required contexts:
 - every Time-travel shifted family (`Time-travel (…)` matrix)
 - `Merge-group inventory preflight`
 - `Shared browser site artifact`
+- every required Functional browser shard and the `Functional browser tests` aggregator
 - Architecture reconciliation (`Reconcile architecture evidence`)
 - Home path leak guard (`Reject absolute home paths`)
 - Pages-bundle no-Node-built-ins gate (inside Unit family `site-node`, via
@@ -49,6 +52,7 @@ not ruleset-required contexts:
 
 ### Risk
 
-Combination-only regressions in the trimmed classes (accessibility, performance,
-Playwright functional) surface on the post-merge `push` to `main` run, which
-still executes the full set.
+Combination-only regressions in the trimmed accessibility and performance classes
+surface on the post-merge `push` to `main` run, which still executes the full set.
+The functional checks that previously existed only in the local full preflight now
+block the merge queue through their dedicated required aggregate.

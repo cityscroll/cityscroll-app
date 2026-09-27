@@ -115,12 +115,13 @@ test("shared browser artifact starts with path detection while unit remains a re
   // branch that would poison the queue's combined tree turns red pre-queue.
   assert.match(unit, /Fail when the merge-group preflight is not green[\s\S]*?needs\.merge-group-preflight\.result != 'success'[\s\S]*?exit 1/);
 
-  // Unit and Reading-level remain required merge-queue checks; Accessibility is
-  // PR/main-only after the merge-group trim. A passing artifact is only an input
-  // to the browser consumers, not a substitute for the Unit verdict.
+  // Unit, Reading-level, and the functional aggregate remain required merge-queue
+  // checks; Accessibility is PR/main-only after the merge-group trim. A passing
+  // artifact is only an input to the browser consumers, not a substitute for Unit.
   assert.deepEqual(policy.required_status_checks, [
     "Unit tests (site + worker)",
     "Reading-level ratchet gate (readable-or-else)",
+    "Functional browser tests",
   ]);
   assert.match(
     accessibility,
@@ -133,6 +134,7 @@ test("shared browser artifact starts with path detection while unit remains a re
   const unitFailureWithHealthyBrowser = {
     "Unit tests (site + worker)": "failure",
     "Reading-level ratchet gate (readable-or-else)": "success",
+    "Functional browser tests": "success",
     "Shared browser site artifact": "success",
   };
   assert.equal(
@@ -158,6 +160,7 @@ test("browser consumers remain downstream of the successfully built artifact", (
     "a11y-pr-shard",
     "a11y-routes-focus-primary",
     "a11y-routes-focus-retry",
+    "required-functional-shard",
   ]) {
     assert.match(jobBlock(ci, job), /needs:[^\n]*browser-pr-site/, `${job} must wait for browser-pr-site`);
   }
@@ -226,7 +229,7 @@ test("runtime multi-locale stray-English is not a CI job; static lint is the gat
   assert.ok(
     !policy.required_status_checks.includes("Stray-English guard (runtime, fixtures)"),
   );
-  assert.equal(policy.required_status_checks.length, 2);
+  assert.equal(policy.required_status_checks.length, 3);
 });
 
 test("merge queue policy documents train wait and apply tool", () => {
