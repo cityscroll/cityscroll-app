@@ -481,3 +481,52 @@ test("meeting delivery temporal fixtures cover replay, join, reschedule, cancell
   const reconciled = reconcileMeetingDelivery({ rows: compiled.readRows(), seen: new Set() });
   assert.equal(reconciled.fresh[0].meeting_id, FIXTURE_MEETING_ID);
 });
+
+test("anonymous Land geography Following preview uses public place membership", async () => {
+  const filter = encodeURIComponent(JSON.stringify({
+    geographies: ["geography:nta2020:SI0105"],
+  }));
+  const response = await handleFollowing(new Request(
+    `https://cityscroll.org/following?lens=land&filter=${filter}&count=1`,
+  ), {}, {}, {
+    todayISO: "2026-09-26",
+    fetchImpl: async () => {
+      throw new Error("Land geography preview must not fetch open-data or Near You");
+    },
+  });
+  const html = await response.text();
+  assert.equal(response.status, 200);
+  assert.match(html, /data-following-preview-status="complete"/);
+  assert.match(html, /data-preview-id="2026R0127"/);
+  assert.match(html, /data-session-recognized="false"/);
+  assert.match(html, /data-following-subscribe-form/);
+  assert.match(html, /type="email"/);
+  assert.doesNotMatch(html, /data-session-recognized="true"/);
+  assert.doesNotMatch(html, /data-watch-key=/);
+  assert.doesNotMatch(html, /data-personal-state="recognized"/);
+  assert.doesNotMatch(html, /subscriber_id|watch_id|prefs_token|cs_session=/i);
+});
+
+test("anonymous Land geography Following preview shows the empty state when membership is emptied", async () => {
+  const membership = JSON.parse(readFileSync(new URL("../../site/data/land_place_membership.json", import.meta.url), "utf8"));
+  membership.by_geography.nta2020.SI0105 = [];
+  const filter = encodeURIComponent(JSON.stringify({
+    geographies: ["geography:nta2020:SI0105"],
+  }));
+  const response = await handleFollowing(new Request(
+    `https://cityscroll.org/following?lens=land&filter=${filter}&count=1`,
+  ), {}, {}, {
+    todayISO: "2026-09-26",
+    placeMembership: membership,
+    fetchImpl: async () => {
+      throw new Error("empty Land geography preview must not fetch");
+    },
+  });
+  const html = await response.text();
+  assert.equal(response.status, 200);
+  assert.match(html, /data-following-preview-status="complete"/);
+  assert.match(html, /No matches now — still watch for new/);
+  assert.doesNotMatch(html, /data-preview-id=/);
+  assert.match(html, /data-session-recognized="false"/);
+  assert.match(html, /type="email"/);
+});
