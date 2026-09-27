@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.connected_history_time_receipt.v1",
+  "version": 1,
+  "artifact": "site/data/connected_history_time.json",
+  "generated_at": "2026-09-26T00:00:00.000Z",
+  "method": "connected_history_bitemporal_as_of_v1",
+  "selection_hash": "26bc64d23fb4a42b89cdef24089e7e92f5f6b2ed6a72909d38d869aff36a4549",
+  "counts": {
+    "dossier_families": 6,
+    "families_with_temporal_facts": 4,
+    "observations": 13,
+    "query_pairs": 4,
+    "source_judgments": 4
+  },
+  "source_policy": "fixed-six-case-dossier-and-retained-inputs-only",
+  "verification": {
+    "state": "passed",
+    "module_oracle_queries": 4,
+    "ordering_converse_controls": 4
+  }
+}
