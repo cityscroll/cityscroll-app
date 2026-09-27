@@ -1,0 +1,670 @@
+{
+  "schema": "cityscroll.connected_history_relations.v1",
+  "version": 1,
+  "method": "connected_history_relation_v1",
+  "vocabulary": [
+    "corridor_segment",
+    "discussed_in_document",
+    "explicitly_references",
+    "phase_component",
+    "shares_documented_footprint",
+    "successive_proposal"
+  ],
+  "families": [
+    "explicit_reference",
+    "scoped_history"
+  ],
+  "rejected_bases": [
+    "proximity",
+    "coappearance",
+    "same_applicant",
+    "same_board",
+    "related_news",
+    "street_name_similarity",
+    "parcel_assumption",
+    "inferred_ownership",
+    "project_equivalence_shortcut"
+  ],
+  "counts": {
+    "candidates": 23,
+    "admitted": 17,
+    "rejected": 6
+  },
+  "relations": [
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "discussed_in_document",
+      "family": "explicit_reference",
+      "from": "bsa:case:2025-54-A",
+      "to": "board_document:brooklyn-cb-15:agenda-2026-01-27",
+      "inverse": "discusses_case",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "community-board-agenda",
+      "source_record_id": "brooklyn-cb-15:Agenda-1-27-26-Revised.pdf",
+      "source_span": {
+        "locator": "agenda_item_case_number",
+        "quote": "2025-54-A"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Discussed in document",
+      "semantic_threshold": "stable_case_identifier_with_quoted_span",
+      "negative_rule": "A case-to-document link does not resolve parcel identity, ownership, or project equivalence. Conflicting parcel claims stay unresolved.",
+      "family_id": "coyle",
+      "candidate_id": "coyle-bsa-2025-54-a-cb15-agenda",
+      "parcel_conflict": {
+        "status": "unresolved",
+        "notes": "Published block/lot for 2114 Coyle conflicts with an assumed common parcel; left unresolved.",
+        "claims": [
+          {
+            "address": "2114 Coyle Street",
+            "block": null,
+            "lot": null,
+            "source_record_id": "city-record:20260723030"
+          },
+          {
+            "address": "2114 Coyle Street",
+            "block": "7367",
+            "lot": "11",
+            "source_record_id": "assumed-common-parcel"
+          }
+        ]
+      },
+      "parcel_identity": "unresolved"
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "discussed_in_document",
+      "family": "explicit_reference",
+      "from": "bsa:case:2026-09-A",
+      "to": "board_document:brooklyn-cb-15:minutes-2026-02-24",
+      "inverse": "discusses_case",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "community-board-minutes",
+      "source_record_id": "brooklyn-cb-15:Board-Meeting-Minutes-February-24-2026.pdf",
+      "source_span": {
+        "locator": "minutes_case_number",
+        "quote": "2026-09-A"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Discussed in document",
+      "semantic_threshold": "stable_case_identifier_with_quoted_span",
+      "negative_rule": "A case-to-document link does not resolve parcel identity, ownership, or project equivalence. Conflicting parcel claims stay unresolved.",
+      "family_id": "coyle",
+      "candidate_id": "coyle-bsa-2026-09-a-cb15-minutes",
+      "parcel_conflict": {
+        "status": "unresolved",
+        "notes": "2140 Coyle and 2114 Coyle remain separately cited; no silent parcel merge.",
+        "claims": [
+          {
+            "address": "2140 Coyle Street",
+            "block": null,
+            "lot": null,
+            "source_record_id": "city-record:20260723030"
+          },
+          {
+            "address": "2114 Coyle Street",
+            "block": null,
+            "lot": null,
+            "source_record_id": "city-record:20260723030"
+          }
+        ]
+      },
+      "parcel_identity": "unresolved"
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "explicitly_references",
+      "family": "explicit_reference",
+      "from": "land:application:C230356ZMK",
+      "to": "land:application:C200184ZMK",
+      "inverse": "referenced_by",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "zap-project-action-report",
+      "source_record_id": "zap:document:230356-official-report",
+      "source_span": {
+        "locator": "official_report_board_bp_documents_predecessor_applications",
+        "quote": "C200184ZMK"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Explicitly references",
+      "semantic_threshold": "stable_source_identifier_with_quoted_span",
+      "negative_rule": "Proximity, coappearance, the same applicant label, or a shared board never mint this link. Distinct applications keep separate identities.",
+      "family_id": "franklin-avenue",
+      "candidate_id": "franklin-c230356zmk-references-c200184zmk",
+      "preserves_ids": [
+        "land:application:C200184ZMK",
+        "land:application:C230356ZMK"
+      ]
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "explicitly_references",
+      "family": "explicit_reference",
+      "from": "land:application:C230356ZMK",
+      "to": "land:application:C200186ZSK",
+      "inverse": "referenced_by",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "zap-project-action-report",
+      "source_record_id": "zap:document:230356-official-report",
+      "source_span": {
+        "locator": "official_report_board_bp_documents_predecessor_applications",
+        "quote": "C200186ZSK"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Explicitly references",
+      "semantic_threshold": "stable_source_identifier_with_quoted_span",
+      "negative_rule": "Proximity, coappearance, the same applicant label, or a shared board never mint this link. Distinct applications keep separate identities.",
+      "family_id": "franklin-avenue",
+      "candidate_id": "franklin-c230356zmk-references-c200186zsk"
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "explicitly_references",
+      "family": "explicit_reference",
+      "from": "land:application:C230356ZMK",
+      "to": "land:application:C200187ZSK",
+      "inverse": "referenced_by",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "zap-project-action-report",
+      "source_record_id": "zap:document:230356-official-report",
+      "source_span": {
+        "locator": "official_report_board_bp_documents_predecessor_applications",
+        "quote": "C200187ZSK"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Explicitly references",
+      "semantic_threshold": "stable_source_identifier_with_quoted_span",
+      "negative_rule": "Proximity, coappearance, the same applicant label, or a shared board never mint this link. Distinct applications keep separate identities.",
+      "family_id": "franklin-avenue",
+      "candidate_id": "franklin-c230356zmk-references-c200187zsk"
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "explicitly_references",
+      "family": "explicit_reference",
+      "from": "land:application:C230356ZMK",
+      "to": "land:application:N200185ZRK",
+      "inverse": "referenced_by",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "zap-project-action-report",
+      "source_record_id": "zap:document:230356-official-report",
+      "source_span": {
+        "locator": "official_report_board_bp_documents_predecessor_applications",
+        "quote": "N200185ZRK"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Explicitly references",
+      "semantic_threshold": "stable_source_identifier_with_quoted_span",
+      "negative_rule": "Proximity, coappearance, the same applicant label, or a shared board never mint this link. Distinct applications keep separate identities.",
+      "family_id": "franklin-avenue",
+      "candidate_id": "franklin-c230356zmk-references-n200185zrk",
+      "preserves_ids": [
+        "land:application:C230356ZMK",
+        "land:application:N200185ZRK"
+      ]
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "successive_proposal",
+      "family": "scoped_history",
+      "from": "ceqr:13DME013X",
+      "to": "ceqr:08DME004X",
+      "inverse": "preceded_by_proposal",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "ceqr",
+      "source_record_id": "ceqr:13DME013X",
+      "source_span": {
+        "locator": "oec_environmental_quality_review_page",
+        "quote": "13DME013X"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Successive proposal",
+      "semantic_threshold": "source_backed_successive_proposal_with_scope",
+      "negative_rule": "Successive proposals remain separate civic identities. A later proposal never absorbs an earlier one.",
+      "family_id": "kingsbridge-armory",
+      "candidate_id": "kingsbridge-13dme013x-successive-of-08dme004x",
+      "scope": [
+        "kingsbridge-armory"
+      ]
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "shares_documented_footprint",
+      "family": "scoped_history",
+      "from": "land:project:2025X0262",
+      "to": "parcel:2032470010",
+      "inverse": "shares_documented_footprint",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "zap",
+      "source_record_id": "zap:project:2025X0262",
+      "source_span": {
+        "locator": "zap_project_page_tax_lots",
+        "quote": "3247/10"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Shares documented footprint",
+      "semantic_threshold": "source_backed_multi_parcel_footprint",
+      "negative_rule": "Footprint scope is evidence of co-inclusion in a published plan, not ownership or a merged project.",
+      "family_id": "kingsbridge-armory",
+      "candidate_id": "kingsbridge-2025x0262-footprint-3247-10",
+      "geographic_scope": [
+        "parcel:2032470010",
+        "parcel:2032470002"
+      ]
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "shares_documented_footprint",
+      "family": "scoped_history",
+      "from": "land:project:2025X0262",
+      "to": "parcel:2032470002",
+      "inverse": "shares_documented_footprint",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "zap",
+      "source_record_id": "zap:project:2025X0262",
+      "source_span": {
+        "locator": "zap_project_page_tax_lots",
+        "quote": "3247/2"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Shares documented footprint",
+      "semantic_threshold": "source_backed_multi_parcel_footprint",
+      "negative_rule": "Footprint scope is evidence of co-inclusion in a published plan, not ownership or a merged project.",
+      "family_id": "kingsbridge-armory",
+      "candidate_id": "kingsbridge-2025x0262-footprint-3247-2",
+      "geographic_scope": [
+        "parcel:2032470010",
+        "parcel:2032470002"
+      ]
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "successive_proposal",
+      "family": "scoped_history",
+      "from": "ceqr:25DME006X",
+      "to": "ceqr:13DME013X",
+      "inverse": "preceded_by_proposal",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "ceqr",
+      "source_record_id": "ceqr:25DME006X",
+      "source_span": {
+        "locator": "ceqr_access_details",
+        "quote": "25DME006X"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Successive proposal",
+      "semantic_threshold": "source_backed_successive_proposal_with_scope",
+      "negative_rule": "Successive proposals remain separate civic identities. A later proposal never absorbs an earlier one.",
+      "family_id": "kingsbridge-armory",
+      "candidate_id": "kingsbridge-25dme006x-successive-of-13dme013x",
+      "scope": [
+        "kingsbridge-armory"
+      ]
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "phase_component",
+      "family": "scoped_history",
+      "from": "edc:opening:lighthouse-point-phase-1-2025-06-05",
+      "to": "edc:project:lighthouse-point",
+      "inverse": "has_phase_component",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "edc-press-release",
+      "source_record_id": "edc:press-release:lighthouse-point-opening-2025-06-05",
+      "source_span": {
+        "locator": "opening_announcement_first_residential_phase",
+        "quote": "first residential phase with 115 units"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Phase or component",
+      "semantic_threshold": "source_backed_component_or_phase_scope",
+      "negative_rule": "A completed component does not close the parent project. Related-news listings are not identity links.",
+      "family_id": "lighthouse-point",
+      "candidate_id": "lighthouse-phase1-opening-component",
+      "component_scope": [
+        "phase-1-residential",
+        "115-units"
+      ]
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "phase_component",
+      "family": "scoped_history",
+      "from": "edc:phase:lighthouse-point-phase-2",
+      "to": "edc:project:lighthouse-point",
+      "inverse": "has_phase_component",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "edc-press-release",
+      "source_record_id": "edc:press-release:lighthouse-point-opening-2025-06-05",
+      "source_span": {
+        "locator": "opening_announcement_future_phase",
+        "quote": "Phase 2 remains future"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Phase or component",
+      "semantic_threshold": "source_backed_component_or_phase_scope",
+      "negative_rule": "A completed component does not close the parent project. Related-news listings are not identity links.",
+      "family_id": "lighthouse-point",
+      "candidate_id": "lighthouse-phase2-future-component",
+      "component_scope": [
+        "phase-2-future"
+      ]
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "corridor_segment",
+      "family": "scoped_history",
+      "from": "dot:corridor:sixth-avenue-lispenard-w14",
+      "to": "dot:corridor:sixth-avenue",
+      "inverse": "has_corridor_segment",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "dot-current-projects",
+      "source_record_id": "dot:heading:sixth-avenue-lispenard-w14",
+      "source_span": {
+        "locator": "dot_current_projects_heading",
+        "quote": "Sixth Avenue, Lispenard Street to West 14th Street"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Corridor segment",
+      "semantic_threshold": "source_backed_segment_scope",
+      "negative_rule": "Repeated board presentations of one segment never create multiple projects or any board endorsement.",
+      "family_id": "sixth-avenue",
+      "candidate_id": "sixth-ave-lispenard-w14-segment",
+      "geographic_scope": [
+        "lispenard-street",
+        "west-14th-street"
+      ],
+      "board_presentations": 1,
+      "board_endorsement": false
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "corridor_segment",
+      "family": "scoped_history",
+      "from": "dot:corridor:sixth-avenue-w14-w35",
+      "to": "dot:corridor:sixth-avenue",
+      "inverse": "has_corridor_segment",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "dot-current-projects",
+      "source_record_id": "dot:heading:sixth-avenue-w14-w35",
+      "source_span": {
+        "locator": "dot_current_projects_heading",
+        "quote": "Sixth Avenue, West 14th Street to West 35th Street"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Corridor segment",
+      "semantic_threshold": "source_backed_segment_scope",
+      "negative_rule": "Repeated board presentations of one segment never create multiple projects or any board endorsement.",
+      "family_id": "sixth-avenue",
+      "candidate_id": "sixth-ave-w14-w35-segment",
+      "geographic_scope": [
+        "west-14th-street",
+        "west-35th-street"
+      ],
+      "board_presentations": 1,
+      "board_endorsement": false
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "corridor_segment",
+      "family": "scoped_history",
+      "from": "dot:corridor:sixth-avenue-watts-w59",
+      "to": "dot:corridor:sixth-avenue",
+      "inverse": "has_corridor_segment",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "dot-current-projects",
+      "source_record_id": "dot:heading:sixth-avenue-watts-w59",
+      "source_span": {
+        "locator": "dot_current_projects_heading",
+        "quote": "Sixth Avenue, Watts Street to West 59th Street"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Corridor segment",
+      "semantic_threshold": "source_backed_segment_scope",
+      "negative_rule": "Repeated board presentations of one segment never create multiple projects or any board endorsement.",
+      "family_id": "sixth-avenue",
+      "candidate_id": "sixth-ave-watts-w59-segment",
+      "geographic_scope": [
+        "watts-street",
+        "west-59th-street"
+      ],
+      "board_presentations": 3,
+      "board_endorsement": false
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "phase_component",
+      "family": "scoped_history",
+      "from": "dot:phase:31st-avenue-phase-i",
+      "to": "dot:corridor:31st-avenue-vernon-51",
+      "inverse": "has_phase_component",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "dot-project-materials",
+      "source_record_id": "dot:31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+      "source_span": {
+        "locator": "phase_i_implementation_note",
+        "quote": "Phase I implementation"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Phase or component",
+      "semantic_threshold": "source_backed_component_or_phase_scope",
+      "negative_rule": "A completed component does not close the parent project. Related-news listings are not identity links.",
+      "family_id": "thirty-first-avenue",
+      "candidate_id": "thirty-first-ave-phase-i-of-corridor",
+      "component_scope": [
+        "phase-i",
+        "vernon-boulevard-to-51st-street"
+      ]
+    },
+    {
+      "schema": "cityscroll.connected_history_relation.v1",
+      "relation": "phase_component",
+      "family": "scoped_history",
+      "from": "dot:phase:31st-avenue-phase-ii",
+      "to": "dot:corridor:31st-avenue-vernon-51",
+      "inverse": "has_phase_component",
+      "method": "connected_history_relation_v1",
+      "method_version": "connected_history_relation_v1",
+      "source_system": "dot-project-materials",
+      "source_record_id": "dot:31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+      "source_span": {
+        "locator": "phase_ii_materials_title",
+        "quote": "31st Avenue Phase II"
+      },
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "tier": "deterministic_exact_key",
+      "warrant_method": "exact_quoted_source_span",
+      "identities_merged": false,
+      "reader_label": "Phase or component",
+      "semantic_threshold": "source_backed_component_or_phase_scope",
+      "negative_rule": "A completed component does not close the parent project. Related-news listings are not identity links.",
+      "family_id": "thirty-first-avenue",
+      "candidate_id": "thirty-first-ave-phase-ii-of-corridor",
+      "component_scope": [
+        "phase-ii",
+        "vernon-boulevard-to-51st-street"
+      ]
+    }
+  ],
+  "rejections": [
+    {
+      "candidate_id": "negative-31st-street-vs-avenue",
+      "relation": "corridor_segment",
+      "from": "dot:corridor:31st-street",
+      "to": "dot:corridor:31st-avenue-vernon-51",
+      "reason": "rejected_basis:street_name_similarity",
+      "rejection_class": "insufficient_continuity_basis",
+      "basis": "street_name_similarity"
+    },
+    {
+      "candidate_id": "negative-coyle-parcel-assumption-merge",
+      "relation": "shares_documented_footprint",
+      "from": "parcel:assumed-2114-coyle",
+      "to": "parcel:3073670011",
+      "reason": "rejected_basis:parcel_assumption",
+      "rejection_class": "insufficient_continuity_basis",
+      "basis": "parcel_assumption"
+    },
+    {
+      "candidate_id": "negative-coyle-same-board-ownership",
+      "relation": "discussed_in_document",
+      "from": "bsa:case:2025-54-A",
+      "to": "bsa:case:2026-09-A",
+      "reason": "rejected_basis:same_board",
+      "rejection_class": "insufficient_continuity_basis",
+      "basis": "same_board"
+    },
+    {
+      "candidate_id": "negative-emmons-coyle-proximity",
+      "relation": "explicitly_references",
+      "from": "parcel:emmons-avenue-control",
+      "to": "land:project:2020K0270",
+      "reason": "rejected_basis:proximity",
+      "rejection_class": "insufficient_continuity_basis",
+      "basis": "proximity"
+    },
+    {
+      "candidate_id": "negative-franklin-same-applicant-shortcut",
+      "relation": "explicitly_references",
+      "from": "land:application:C230356ZMK",
+      "to": "land:application:C200184ZMK",
+      "reason": "rejected_basis:same_applicant",
+      "rejection_class": "insufficient_continuity_basis",
+      "basis": "same_applicant"
+    },
+    {
+      "candidate_id": "negative-stapleton-related-news-lighthouse",
+      "relation": "phase_component",
+      "from": "edc:related-news:stapleton",
+      "to": "edc:project:lighthouse-point",
+      "reason": "rejected_basis:related_news",
+      "rejection_class": "insufficient_continuity_basis",
+      "basis": "related_news"
+    }
+  ],
+  "generated_at": "2026-09-26T00:00:00.000Z",
+  "source_policy": "fixed-six-case-dossier-only",
+  "dossier_families": [
+    "coyle",
+    "franklin-avenue",
+    "kingsbridge-armory",
+    "sixth-avenue",
+    "thirty-first-avenue",
+    "lighthouse-point"
+  ],
+  "family_counts": {
+    "coyle": {
+      "admitted": 2,
+      "rejected": 3
+    },
+    "franklin-avenue": {
+      "admitted": 4,
+      "rejected": 1
+    },
+    "kingsbridge-armory": {
+      "admitted": 4,
+      "rejected": 0
+    },
+    "sixth-avenue": {
+      "admitted": 3,
+      "rejected": 0
+    },
+    "thirty-first-avenue": {
+      "admitted": 2,
+      "rejected": 1
+    },
+    "lighthouse-point": {
+      "admitted": 2,
+      "rejected": 1
+    }
+  },
+  "selection_hash": "6de20da95e60cb9f415d122d3896ea3ea2c76677e3de4368b5335e4ac73169c4",
+  "boundaries": {
+    "no_identity_merge": true,
+    "no_same_applicant_ownership": true,
+    "no_same_board_project_equivalence": true,
+    "no_related_news_identity": true,
+    "unresolved_parcel_conflicts_preserved": true
+  }
+}
