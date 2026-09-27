@@ -15,6 +15,17 @@ import { renderGuideHelpLink } from "./guide_contextual_links.mjs";
 
 export const CIVIC_TIME_LEDGER_SCHEMA = "cityscroll.civic_time_ledger.v1";
 export const CIVIC_TIME_LEDGER_METHOD = "civic_time_ledger_as_of_v1";
+/**
+ * Case families admitted to the shared valid/system clock contract.
+ *
+ * Family-specific projectors remain fail-closed. Admission here means that a
+ * projector may reuse the ledger's clock ownership; it does not make one
+ * family's facts valid input to another family's projector.
+ */
+export const CIVIC_TIME_LEDGER_CASE_FAMILIES = Object.freeze([
+  "procurement_notice",
+  "connected_history_fact",
+]);
 export const AS_OF_QUERY_KEY = "as_of";
 export const CIVIC_TIME_DEPENDENCY_REGISTRY_SCHEMA = "cityscroll.civic_time_dependency_registry.v1";
 export const CIVIC_TIME_REMATERIALIZATION_RECEIPT_SCHEMA = "cityscroll.civic_time_rematerialization_receipt.v1";

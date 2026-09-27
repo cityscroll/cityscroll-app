@@ -6,7 +6,9 @@ any extraction tuning; record the bounded CEQR / DOT / EDC document retention
 pass over the fixed six-case dossier; freeze typed explicit-reference and
 scoped-history relation admission over that same dossier; and freeze
 time-scoped participant role observations (applicant, speaker, operator, and
-related roles) without inventing ownership or formal board action.
+related roles) without inventing ownership or formal board action. The temporal
+materialization reuses the shared civic valid/system clocks to retain scoped
+before-and-after states without treating corrections as civic events.
 
 Rebuild or verify:
 
@@ -30,6 +32,10 @@ node --test test/connected_history_relations.test.mjs
 node tools/build_connected_history_roles.mjs
 node tools/build_connected_history_roles.mjs --check
 node --test test/connected_history_roles.test.mjs
+
+node tools/build_connected_history_time.mjs
+node tools/build_connected_history_time.mjs --check
+node --test test/connected_history_time.test.mjs
 ```
 
 Document retention resolves DOT parent-page attachment selectors once into an

@@ -1,0 +1,3086 @@
+{
+  "schema": "cityscroll.connected_history_time_artifact.v1",
+  "version": 1,
+  "generated_at": "2026-09-26T00:00:00.000Z",
+  "method": "connected_history_bitemporal_as_of_v1",
+  "source_policy": "fixed-six-case-dossier-and-retained-inputs-only",
+  "observations": [
+    {
+      "observation_id": "franklin-later-proposal-2024",
+      "family_id": "franklin-avenue",
+      "subject_ref": "land:application:C230356ZMK",
+      "assertion_key": "later-application-proposal",
+      "fact_kind": "proposal_epoch",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "land_application_history",
+      "event_class": "planned",
+      "change_kind": "civic_event",
+      "lifecycle_action": "proposed",
+      "event_time": {
+        "value": "2024",
+        "precision": "year",
+        "start": "2024-01-01",
+        "end": "2024-12-31"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": null,
+      "supersedes_observation_id": null,
+      "comparison_key": "later-application-proposal",
+      "scope": {
+        "footprint": "brooklyn-1192-63-and-66",
+        "metric": null,
+        "phase": "later-application",
+        "population": null,
+        "unit": null,
+        "measurement_period": null
+      },
+      "value": {
+        "application_ids": [
+          "C230356ZMK",
+          "N230357(A)ZRK",
+          "C230358ZSK"
+        ],
+        "identity_merged": false
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "zap-project-action-report",
+        "source_record_id": "zap:document:230356-official-report",
+        "source_span": {
+          "locator": "official_report_later_applications",
+          "quote": "C230356ZMK and N230357(A)ZRK"
+        }
+      }
+    },
+    {
+      "observation_id": "franklin-earlier-proposal-2021",
+      "family_id": "franklin-avenue",
+      "subject_ref": "land:application:C200184ZMK",
+      "assertion_key": "earlier-application-proposal",
+      "fact_kind": "proposal_epoch",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "land_application_history",
+      "event_class": "planned",
+      "change_kind": "civic_event",
+      "lifecycle_action": "proposed",
+      "event_time": {
+        "value": "2021",
+        "precision": "year",
+        "start": "2021-01-01",
+        "end": "2021-12-31"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": null,
+      "supersedes_observation_id": null,
+      "comparison_key": "earlier-application-proposal",
+      "scope": {
+        "footprint": "960-franklin-avenue",
+        "metric": null,
+        "phase": "earlier-application",
+        "population": null,
+        "unit": null,
+        "measurement_period": null
+      },
+      "value": {
+        "application_ids": [
+          "C200184ZMK",
+          "N200185ZRK",
+          "C200186ZSK",
+          "C200187ZSK"
+        ],
+        "identity_merged": false
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "zap-project-action-report",
+        "source_record_id": "zap:document:230356-official-report",
+        "source_span": {
+          "locator": "official_report_predecessor_applications",
+          "quote": "C200184ZMK"
+        }
+      }
+    },
+    {
+      "observation_id": "franklin-earlier-withdrawal-2021",
+      "family_id": "franklin-avenue",
+      "subject_ref": "land:application:C200184ZMK",
+      "assertion_key": "earlier-application-disposition",
+      "fact_kind": "disposition",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "land_application_history",
+      "event_class": "decided",
+      "change_kind": "civic_event",
+      "lifecycle_action": "withdrawn",
+      "event_time": {
+        "value": "2021",
+        "precision": "year",
+        "start": "2021-01-01",
+        "end": "2021-12-31"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": null,
+      "supersedes_observation_id": null,
+      "comparison_key": "earlier-application-disposition",
+      "scope": {
+        "footprint": "960-franklin-avenue",
+        "metric": null,
+        "phase": "earlier-application",
+        "population": null,
+        "unit": null,
+        "measurement_period": null
+      },
+      "value": {
+        "disposition": "withdrawn",
+        "applies_to": "earlier-application-only"
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "zap-project-action-report",
+        "source_record_id": "zap:document:230356-official-report",
+        "source_span": {
+          "locator": "official_report_predecessor_disposition",
+          "quote": "earlier 960 Franklin applications"
+        }
+      }
+    },
+    {
+      "observation_id": "franklin-later-amendment-2024",
+      "family_id": "franklin-avenue",
+      "subject_ref": "land:application:N230357(A)ZRK",
+      "assertion_key": "later-application-amendment",
+      "fact_kind": "application_version",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "land_application_history",
+      "event_class": "planned",
+      "change_kind": "civic_event",
+      "lifecycle_action": "amended",
+      "event_time": {
+        "value": "2024",
+        "precision": "year",
+        "start": "2024-01-01",
+        "end": "2024-12-31"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": null,
+      "supersedes_observation_id": null,
+      "comparison_key": "later-application-amendment",
+      "scope": {
+        "footprint": "brooklyn-1192-63-and-66",
+        "metric": null,
+        "phase": "later-application",
+        "population": null,
+        "unit": null,
+        "measurement_period": null
+      },
+      "value": {
+        "application_id": "N230357(A)ZRK",
+        "amended": true,
+        "identity_merged": false
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "zap-project-action-report",
+        "source_record_id": "zap:document:230356-official-report",
+        "source_span": {
+          "locator": "official_report_amended_application",
+          "quote": "N230357(A)ZRK"
+        }
+      }
+    },
+    {
+      "observation_id": "kingsbridge-redevelopment-2025",
+      "family_id": "kingsbridge-armory",
+      "subject_ref": "ceqr:25DME006X",
+      "assertion_key": "redevelopment-proposal-epoch",
+      "fact_kind": "proposal_epoch",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "environmental_review_history",
+      "event_class": "planned",
+      "change_kind": "civic_event",
+      "lifecycle_action": "proposed",
+      "event_time": {
+        "value": "2025",
+        "precision": "year",
+        "start": "2025-01-01",
+        "end": "2025-12-31"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": null,
+      "supersedes_observation_id": null,
+      "comparison_key": "redevelopment-proposal-epoch",
+      "scope": {
+        "footprint": "bronx-3247-10-and-2",
+        "metric": null,
+        "phase": "2025-redevelopment",
+        "population": null,
+        "unit": null,
+        "measurement_period": null
+      },
+      "value": {
+        "ceqr_id": "25DME006X",
+        "project_id": "2025X0262",
+        "proposal": "redevelopment"
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "ceqr",
+        "source_record_id": "ceqr:25DME006X",
+        "source_span": {
+          "locator": "ceqr_access_details",
+          "quote": "25DME006X"
+        }
+      }
+    },
+    {
+      "observation_id": "kingsbridge-retail-2009",
+      "family_id": "kingsbridge-armory",
+      "subject_ref": "ceqr:08DME004X",
+      "assertion_key": "retail-proposal-epoch",
+      "fact_kind": "proposal_epoch",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "environmental_review_history",
+      "event_class": "planned",
+      "change_kind": "civic_event",
+      "lifecycle_action": "proposed",
+      "event_time": {
+        "value": "2009",
+        "precision": "year",
+        "start": "2009-01-01",
+        "end": "2009-12-31"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": null,
+      "supersedes_observation_id": null,
+      "comparison_key": "retail-proposal-epoch",
+      "scope": {
+        "footprint": "kingsbridge-armory",
+        "metric": null,
+        "phase": "2009-retail",
+        "population": null,
+        "unit": null,
+        "measurement_period": null
+      },
+      "value": {
+        "ceqr_id": "08DME004X",
+        "proposal": "retail"
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "ceqr",
+        "source_record_id": "ceqr:13DME013X",
+        "source_span": {
+          "locator": "successive_proposal_reference",
+          "quote": "08DME004X"
+        }
+      }
+    },
+    {
+      "observation_id": "kingsbridge-ice-center-2013",
+      "family_id": "kingsbridge-armory",
+      "subject_ref": "ceqr:13DME013X",
+      "assertion_key": "ice-center-proposal-epoch",
+      "fact_kind": "proposal_epoch",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "environmental_review_history",
+      "event_class": "planned",
+      "change_kind": "civic_event",
+      "lifecycle_action": "proposed",
+      "event_time": {
+        "value": "2013",
+        "precision": "year",
+        "start": "2013-01-01",
+        "end": "2013-12-31"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": null,
+      "supersedes_observation_id": null,
+      "comparison_key": "ice-center-proposal-epoch",
+      "scope": {
+        "footprint": "kingsbridge-armory",
+        "metric": null,
+        "phase": "2013-ice-center",
+        "population": null,
+        "unit": null,
+        "measurement_period": null
+      },
+      "value": {
+        "ceqr_id": "13DME013X",
+        "proposal": "ice-center"
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "ceqr",
+        "source_record_id": "ceqr:13DME013X",
+        "source_span": {
+          "locator": "oec_environmental_quality_review_page",
+          "quote": "13DME013X"
+        }
+      }
+    },
+    {
+      "observation_id": "kingsbridge-operation-forecast-2018",
+      "family_id": "kingsbridge-armory",
+      "subject_ref": "ceqr:13DME013X",
+      "assertion_key": "ice-center-operation-forecast",
+      "fact_kind": "forecast",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "environmental_review_history",
+      "event_class": "planned",
+      "change_kind": "civic_event",
+      "lifecycle_action": "forecast",
+      "event_time": {
+        "value": "2013",
+        "precision": "year",
+        "start": "2013-01-01",
+        "end": "2013-12-31"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": null,
+      "supersedes_observation_id": null,
+      "comparison_key": "ice-center-operation-forecast",
+      "scope": {
+        "footprint": "kingsbridge-armory",
+        "metric": null,
+        "phase": "2013-ice-center",
+        "population": null,
+        "unit": null,
+        "measurement_period": null
+      },
+      "value": {
+        "expected_operation": {
+          "value": "2018",
+          "precision": "year"
+        },
+        "realized": false
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "ceqr",
+        "source_record_id": "ceqr:13DME013X",
+        "source_span": {
+          "locator": "anticipated_operation_forecast",
+          "quote": "2018 forecast, not an opening"
+        }
+      }
+    },
+    {
+      "observation_id": "lighthouse-first-phase-opening-2025",
+      "family_id": "lighthouse-point",
+      "subject_ref": "edc:opening:lighthouse-point-phase-1-2025-06-05",
+      "assertion_key": "phase-1-residential-opening",
+      "fact_kind": "component_status",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "component_phase_history",
+      "event_class": "realized",
+      "change_kind": "civic_event",
+      "lifecycle_action": "opened",
+      "event_time": {
+        "value": "2025-06-05",
+        "precision": "day",
+        "start": "2025-06-05",
+        "end": "2025-06-05"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": {
+        "value": "2025-06-05",
+        "precision": "day",
+        "start": "2025-06-05",
+        "end": "2025-06-05"
+      },
+      "supersedes_observation_id": null,
+      "comparison_key": "phase-1-residential-opening",
+      "scope": {
+        "footprint": "lighthouse-point",
+        "metric": "housing-units",
+        "phase": "phase-1-residential",
+        "population": "residential-units",
+        "unit": "units",
+        "measurement_period": null
+      },
+      "value": {
+        "status": "opened",
+        "units": 115,
+        "closes_parent_project": false
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "edc-press-release",
+        "source_record_id": "edc:press-release:lighthouse-point-opening-2025-06-05",
+        "source_span": {
+          "locator": "opening_announcement_first_residential_phase",
+          "quote": "first residential phase with 115 units"
+        }
+      }
+    },
+    {
+      "observation_id": "lighthouse-plan-2014",
+      "family_id": "lighthouse-point",
+      "subject_ref": "edc:project:lighthouse-point",
+      "assertion_key": "historical-component-plan",
+      "fact_kind": "component_plan",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "component_phase_history",
+      "event_class": "planned",
+      "change_kind": "civic_event",
+      "lifecycle_action": "proposed",
+      "event_time": {
+        "value": "2014",
+        "precision": "year",
+        "start": "2014-01-01",
+        "end": "2014-12-31"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": null,
+      "supersedes_observation_id": null,
+      "comparison_key": "historical-component-plan",
+      "scope": {
+        "footprint": "lighthouse-point",
+        "metric": null,
+        "phase": "whole-plan",
+        "population": null,
+        "unit": null,
+        "measurement_period": null
+      },
+      "value": {
+        "basis": "2014 lease",
+        "status": "planned-components"
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "edc",
+        "source_record_id": "edc:project:lighthouse-point",
+        "source_span": {
+          "locator": "lease_and_planned_components",
+          "quote": "2014 lease and planned components"
+        }
+      }
+    },
+    {
+      "observation_id": "lighthouse-future-phase-2025",
+      "family_id": "lighthouse-point",
+      "subject_ref": "edc:phase:lighthouse-point-phase-2",
+      "assertion_key": "phase-2-future-status",
+      "fact_kind": "component_status",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "component_phase_history",
+      "event_class": "planned",
+      "change_kind": "civic_event",
+      "lifecycle_action": "proposed",
+      "event_time": {
+        "value": "2025-06-05",
+        "precision": "day",
+        "start": "2025-06-05",
+        "end": "2025-06-05"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": {
+        "value": "2025-06-05",
+        "precision": "day",
+        "start": "2025-06-05",
+        "end": "2025-06-05"
+      },
+      "supersedes_observation_id": null,
+      "comparison_key": "phase-2-future-status",
+      "scope": {
+        "footprint": "lighthouse-point",
+        "metric": null,
+        "phase": "phase-2",
+        "population": null,
+        "unit": null,
+        "measurement_period": null
+      },
+      "value": {
+        "status": "future",
+        "opened": false
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "edc-press-release",
+        "source_record_id": "edc:press-release:lighthouse-point-opening-2025-06-05",
+        "source_span": {
+          "locator": "opening_announcement_future_phase",
+          "quote": "Phase 2 remains future"
+        }
+      }
+    },
+    {
+      "observation_id": "thirty-first-avenue-phase-ii-2026",
+      "family_id": "thirty-first-avenue",
+      "subject_ref": "dot:phase:31st-avenue-phase-ii",
+      "assertion_key": "phase-ii-proposal",
+      "fact_kind": "phase_status",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "corridor_measurement_history",
+      "event_class": "planned",
+      "change_kind": "civic_event",
+      "lifecycle_action": "proposed",
+      "event_time": {
+        "value": "2026-05",
+        "precision": "month",
+        "start": "2026-05-01",
+        "end": "2026-05-31"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": {
+        "value": "2026-05",
+        "precision": "month",
+        "start": "2026-05-01",
+        "end": "2026-05-31"
+      },
+      "supersedes_observation_id": null,
+      "comparison_key": "phase-ii-proposal",
+      "scope": {
+        "footprint": "vernon-boulevard-to-51st-street",
+        "metric": null,
+        "phase": "phase-ii",
+        "population": null,
+        "unit": null,
+        "measurement_period": null
+      },
+      "value": {
+        "status": "proposal",
+        "phase": "phase-ii"
+      },
+      "numeric_value": null,
+      "preliminary": false,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "dot-project-materials",
+        "source_record_id": "dot:31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+        "source_span": {
+          "locator": "phase_ii_materials_title",
+          "quote": "31st Avenue Phase II"
+        }
+      }
+    },
+    {
+      "observation_id": "thirty-first-avenue-preliminary-period-2024",
+      "family_id": "thirty-first-avenue",
+      "subject_ref": "dot:phase:31st-avenue-phase-i",
+      "assertion_key": "phase-i-preliminary-measurement",
+      "fact_kind": "measurement_period",
+      "schema": "cityscroll.connected_history_time.v1",
+      "case_family": "connected_history_fact",
+      "history_family": "corridor_measurement_history",
+      "event_class": "realized",
+      "change_kind": "civic_event",
+      "lifecycle_action": "measured",
+      "event_time": {
+        "value": "2024",
+        "precision": "year",
+        "start": "2024-01-01",
+        "end": "2024-12-31"
+      },
+      "observed_at": "2026-09-26T00:00:00.000Z",
+      "publication_time": null,
+      "supersedes_observation_id": null,
+      "comparison_key": "phase-i-preliminary-measurement",
+      "scope": {
+        "footprint": "vernon-boulevard-to-51st-street",
+        "metric": "preliminary-before-after-observations",
+        "phase": "phase-i",
+        "population": "not-published",
+        "unit": "not-published",
+        "measurement_period": "2024"
+      },
+      "value": {
+        "status": "preliminary",
+        "result": "before-and-after-observations",
+        "numeric_value_published": false
+      },
+      "numeric_value": null,
+      "preliminary": true,
+      "source_judgment": {
+        "judgment_basis": "fixed_dossier_source_judgment",
+        "source_system": "dot-project-materials",
+        "source_record_id": "dot:31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+        "source_span": {
+          "locator": "phase_i_implementation_period",
+          "quote": "preliminary before/after observations; measurement period 2024"
+        }
+      }
+    }
+  ],
+  "dossier_outcomes": [
+    {
+      "family_id": "coyle",
+      "temporal_observations": 0,
+      "outcome": "insufficient_retained_temporal_evidence_for_this_comparison",
+      "substitute_family_used": false
+    },
+    {
+      "family_id": "franklin-avenue",
+      "temporal_observations": 4,
+      "outcome": "retained_temporal_facts",
+      "substitute_family_used": false
+    },
+    {
+      "family_id": "kingsbridge-armory",
+      "temporal_observations": 4,
+      "outcome": "retained_temporal_facts",
+      "substitute_family_used": false
+    },
+    {
+      "family_id": "sixth-avenue",
+      "temporal_observations": 0,
+      "outcome": "insufficient_retained_temporal_evidence_for_this_comparison",
+      "substitute_family_used": false
+    },
+    {
+      "family_id": "thirty-first-avenue",
+      "temporal_observations": 2,
+      "outcome": "retained_temporal_facts",
+      "substitute_family_used": false
+    },
+    {
+      "family_id": "lighthouse-point",
+      "temporal_observations": 3,
+      "outcome": "retained_temporal_facts",
+      "substitute_family_used": false
+    }
+  ],
+  "query_pairs": [
+    {
+      "id": "franklin-proposal-epochs",
+      "evidence_class": "module_oracle",
+      "source_judgment": {
+        "basis": "fixed_dossier_source_judgment",
+        "expected_before": [
+          "franklin-earlier-proposal-2021",
+          "franklin-earlier-withdrawal-2021"
+        ],
+        "expected_after": [
+          "franklin-earlier-proposal-2021",
+          "franklin-earlier-withdrawal-2021",
+          "franklin-later-amendment-2024",
+          "franklin-later-proposal-2024"
+        ],
+        "forbidden_after": [],
+        "negative_assertion": "The earlier and later application identifiers remain separate."
+      },
+      "before": {
+        "schema": "cityscroll.connected_history_time_state.v1",
+        "version": 1,
+        "method": "connected_history_bitemporal_as_of_v1",
+        "family_id": "franklin-avenue",
+        "as_of": {
+          "civic_time": "2021-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "entries": [
+          {
+            "observation_id": "franklin-earlier-withdrawal-2021",
+            "family_id": "franklin-avenue",
+            "subject_ref": "land:application:C200184ZMK",
+            "assertion_key": "earlier-application-disposition",
+            "fact_kind": "disposition",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "land_application_history",
+            "event_class": "decided",
+            "change_kind": "civic_event",
+            "lifecycle_action": "withdrawn",
+            "event_time": {
+              "value": "2021",
+              "precision": "year",
+              "start": "2021-01-01",
+              "end": "2021-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "earlier-application-disposition",
+            "scope": {
+              "footprint": "960-franklin-avenue",
+              "metric": null,
+              "phase": "earlier-application",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "disposition": "withdrawn",
+              "applies_to": "earlier-application-only"
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "zap-project-action-report",
+              "source_record_id": "zap:document:230356-official-report",
+              "source_span": {
+                "locator": "official_report_predecessor_disposition",
+                "quote": "earlier 960 Franklin applications"
+              }
+            }
+          },
+          {
+            "observation_id": "franklin-earlier-proposal-2021",
+            "family_id": "franklin-avenue",
+            "subject_ref": "land:application:C200184ZMK",
+            "assertion_key": "earlier-application-proposal",
+            "fact_kind": "proposal_epoch",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "land_application_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2021",
+              "precision": "year",
+              "start": "2021-01-01",
+              "end": "2021-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "earlier-application-proposal",
+            "scope": {
+              "footprint": "960-franklin-avenue",
+              "metric": null,
+              "phase": "earlier-application",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "application_ids": [
+                "C200184ZMK",
+                "N200185ZRK",
+                "C200186ZSK",
+                "C200187ZSK"
+              ],
+              "identity_merged": false
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "zap-project-action-report",
+              "source_record_id": "zap:document:230356-official-report",
+              "source_span": {
+                "locator": "official_report_predecessor_applications",
+                "quote": "C200184ZMK"
+              }
+            }
+          }
+        ],
+        "lifecycle_counts": {
+          "planned": 1,
+          "decided": 1,
+          "realized": 0
+        },
+        "receipt": {
+          "temporal_contract": "cityscroll.civic_time_ledger.v1",
+          "case_family": "connected_history_fact",
+          "axes": {
+            "valid": {
+              "owner": "civic",
+              "query": "2021-12-31",
+              "imprecise_date_rule": "include_after_interval_end"
+            },
+            "system": {
+              "owner": "observation",
+              "query": "2026-09-26T00:00:00.000Z"
+            },
+            "publication": {
+              "owner": null,
+              "role": "evidence_clock"
+            },
+            "processing": {
+              "owner": null,
+              "role": "receipt_only",
+              "used_for_membership": false
+            }
+          },
+          "counts": {
+            "retained_observations": 4,
+            "selected_assertions": 2,
+            "omitted_after_civic_time": 2,
+            "omitted_after_belief_time": 0
+          },
+          "selected_observation_ids": [
+            "franklin-earlier-withdrawal-2021",
+            "franklin-earlier-proposal-2021"
+          ],
+          "ordering": {
+            "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+            "method": "stable_temporal_insertion_v1",
+            "input_observation_ids": [
+              "franklin-earlier-proposal-2021",
+              "franklin-earlier-withdrawal-2021"
+            ],
+            "intermediate_steps": [
+              {
+                "inserted_observation_id": "franklin-earlier-proposal-2021",
+                "insertion_index": 0,
+                "before": [],
+                "after": [
+                  "franklin-earlier-proposal-2021"
+                ]
+              },
+              {
+                "inserted_observation_id": "franklin-earlier-withdrawal-2021",
+                "insertion_index": 0,
+                "before": [
+                  "franklin-earlier-proposal-2021"
+                ],
+                "after": [
+                  "franklin-earlier-withdrawal-2021",
+                  "franklin-earlier-proposal-2021"
+                ]
+              }
+            ],
+            "output_observation_ids": [
+              "franklin-earlier-withdrawal-2021",
+              "franklin-earlier-proposal-2021"
+            ]
+          }
+        }
+      },
+      "after": {
+        "schema": "cityscroll.connected_history_time_state.v1",
+        "version": 1,
+        "method": "connected_history_bitemporal_as_of_v1",
+        "family_id": "franklin-avenue",
+        "as_of": {
+          "civic_time": "2024-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "entries": [
+          {
+            "observation_id": "franklin-earlier-withdrawal-2021",
+            "family_id": "franklin-avenue",
+            "subject_ref": "land:application:C200184ZMK",
+            "assertion_key": "earlier-application-disposition",
+            "fact_kind": "disposition",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "land_application_history",
+            "event_class": "decided",
+            "change_kind": "civic_event",
+            "lifecycle_action": "withdrawn",
+            "event_time": {
+              "value": "2021",
+              "precision": "year",
+              "start": "2021-01-01",
+              "end": "2021-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "earlier-application-disposition",
+            "scope": {
+              "footprint": "960-franklin-avenue",
+              "metric": null,
+              "phase": "earlier-application",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "disposition": "withdrawn",
+              "applies_to": "earlier-application-only"
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "zap-project-action-report",
+              "source_record_id": "zap:document:230356-official-report",
+              "source_span": {
+                "locator": "official_report_predecessor_disposition",
+                "quote": "earlier 960 Franklin applications"
+              }
+            }
+          },
+          {
+            "observation_id": "franklin-earlier-proposal-2021",
+            "family_id": "franklin-avenue",
+            "subject_ref": "land:application:C200184ZMK",
+            "assertion_key": "earlier-application-proposal",
+            "fact_kind": "proposal_epoch",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "land_application_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2021",
+              "precision": "year",
+              "start": "2021-01-01",
+              "end": "2021-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "earlier-application-proposal",
+            "scope": {
+              "footprint": "960-franklin-avenue",
+              "metric": null,
+              "phase": "earlier-application",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "application_ids": [
+                "C200184ZMK",
+                "N200185ZRK",
+                "C200186ZSK",
+                "C200187ZSK"
+              ],
+              "identity_merged": false
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "zap-project-action-report",
+              "source_record_id": "zap:document:230356-official-report",
+              "source_span": {
+                "locator": "official_report_predecessor_applications",
+                "quote": "C200184ZMK"
+              }
+            }
+          },
+          {
+            "observation_id": "franklin-later-proposal-2024",
+            "family_id": "franklin-avenue",
+            "subject_ref": "land:application:C230356ZMK",
+            "assertion_key": "later-application-proposal",
+            "fact_kind": "proposal_epoch",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "land_application_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2024",
+              "precision": "year",
+              "start": "2024-01-01",
+              "end": "2024-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "later-application-proposal",
+            "scope": {
+              "footprint": "brooklyn-1192-63-and-66",
+              "metric": null,
+              "phase": "later-application",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "application_ids": [
+                "C230356ZMK",
+                "N230357(A)ZRK",
+                "C230358ZSK"
+              ],
+              "identity_merged": false
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "zap-project-action-report",
+              "source_record_id": "zap:document:230356-official-report",
+              "source_span": {
+                "locator": "official_report_later_applications",
+                "quote": "C230356ZMK and N230357(A)ZRK"
+              }
+            }
+          },
+          {
+            "observation_id": "franklin-later-amendment-2024",
+            "family_id": "franklin-avenue",
+            "subject_ref": "land:application:N230357(A)ZRK",
+            "assertion_key": "later-application-amendment",
+            "fact_kind": "application_version",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "land_application_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "amended",
+            "event_time": {
+              "value": "2024",
+              "precision": "year",
+              "start": "2024-01-01",
+              "end": "2024-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "later-application-amendment",
+            "scope": {
+              "footprint": "brooklyn-1192-63-and-66",
+              "metric": null,
+              "phase": "later-application",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "application_id": "N230357(A)ZRK",
+              "amended": true,
+              "identity_merged": false
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "zap-project-action-report",
+              "source_record_id": "zap:document:230356-official-report",
+              "source_span": {
+                "locator": "official_report_amended_application",
+                "quote": "N230357(A)ZRK"
+              }
+            }
+          }
+        ],
+        "lifecycle_counts": {
+          "planned": 3,
+          "decided": 1,
+          "realized": 0
+        },
+        "receipt": {
+          "temporal_contract": "cityscroll.civic_time_ledger.v1",
+          "case_family": "connected_history_fact",
+          "axes": {
+            "valid": {
+              "owner": "civic",
+              "query": "2024-12-31",
+              "imprecise_date_rule": "include_after_interval_end"
+            },
+            "system": {
+              "owner": "observation",
+              "query": "2026-09-26T00:00:00.000Z"
+            },
+            "publication": {
+              "owner": null,
+              "role": "evidence_clock"
+            },
+            "processing": {
+              "owner": null,
+              "role": "receipt_only",
+              "used_for_membership": false
+            }
+          },
+          "counts": {
+            "retained_observations": 4,
+            "selected_assertions": 4,
+            "omitted_after_civic_time": 0,
+            "omitted_after_belief_time": 0
+          },
+          "selected_observation_ids": [
+            "franklin-earlier-withdrawal-2021",
+            "franklin-earlier-proposal-2021",
+            "franklin-later-proposal-2024",
+            "franklin-later-amendment-2024"
+          ],
+          "ordering": {
+            "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+            "method": "stable_temporal_insertion_v1",
+            "input_observation_ids": [
+              "franklin-later-proposal-2024",
+              "franklin-earlier-proposal-2021",
+              "franklin-earlier-withdrawal-2021",
+              "franklin-later-amendment-2024"
+            ],
+            "intermediate_steps": [
+              {
+                "inserted_observation_id": "franklin-later-proposal-2024",
+                "insertion_index": 0,
+                "before": [],
+                "after": [
+                  "franklin-later-proposal-2024"
+                ]
+              },
+              {
+                "inserted_observation_id": "franklin-earlier-proposal-2021",
+                "insertion_index": 0,
+                "before": [
+                  "franklin-later-proposal-2024"
+                ],
+                "after": [
+                  "franklin-earlier-proposal-2021",
+                  "franklin-later-proposal-2024"
+                ]
+              },
+              {
+                "inserted_observation_id": "franklin-earlier-withdrawal-2021",
+                "insertion_index": 0,
+                "before": [
+                  "franklin-earlier-proposal-2021",
+                  "franklin-later-proposal-2024"
+                ],
+                "after": [
+                  "franklin-earlier-withdrawal-2021",
+                  "franklin-earlier-proposal-2021",
+                  "franklin-later-proposal-2024"
+                ]
+              },
+              {
+                "inserted_observation_id": "franklin-later-amendment-2024",
+                "insertion_index": 3,
+                "before": [
+                  "franklin-earlier-withdrawal-2021",
+                  "franklin-earlier-proposal-2021",
+                  "franklin-later-proposal-2024"
+                ],
+                "after": [
+                  "franklin-earlier-withdrawal-2021",
+                  "franklin-earlier-proposal-2021",
+                  "franklin-later-proposal-2024",
+                  "franklin-later-amendment-2024"
+                ]
+              }
+            ],
+            "output_observation_ids": [
+              "franklin-earlier-withdrawal-2021",
+              "franklin-earlier-proposal-2021",
+              "franklin-later-proposal-2024",
+              "franklin-later-amendment-2024"
+            ]
+          }
+        }
+      },
+      "comparison": {
+        "schema": "cityscroll.connected_history_time_comparison.v1",
+        "method": "connected_history_bitemporal_as_of_v1",
+        "before": {
+          "civic_time": "2021-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "after": {
+          "civic_time": "2024-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "changes": [
+          {
+            "family_id": "franklin-avenue",
+            "comparison_key": "later-application-amendment",
+            "before_observation_id": null,
+            "after_observation_id": "franklin-later-amendment-2024",
+            "classification": "civic_change",
+            "knowledge_change_kind": null,
+            "event_class": "planned",
+            "numeric": {
+              "comparable": false,
+              "delta": null,
+              "blocked_by": [
+                "missing_comparison_side"
+              ]
+            }
+          },
+          {
+            "family_id": "franklin-avenue",
+            "comparison_key": "later-application-proposal",
+            "before_observation_id": null,
+            "after_observation_id": "franklin-later-proposal-2024",
+            "classification": "civic_change",
+            "knowledge_change_kind": null,
+            "event_class": "planned",
+            "numeric": {
+              "comparable": false,
+              "delta": null,
+              "blocked_by": [
+                "missing_comparison_side"
+              ]
+            }
+          }
+        ],
+        "counts": {
+          "civic_changes": 2,
+          "knowledge_changes": 0,
+          "comparable_numeric_deltas": 0,
+          "withheld_numeric_deltas": 2
+        }
+      }
+    },
+    {
+      "id": "kingsbridge-proposal-epochs",
+      "evidence_class": "module_oracle",
+      "source_judgment": {
+        "basis": "fixed_dossier_source_judgment",
+        "expected_before": [
+          "kingsbridge-retail-2009",
+          "kingsbridge-ice-center-2013",
+          "kingsbridge-operation-forecast-2018"
+        ],
+        "expected_after": [
+          "kingsbridge-retail-2009",
+          "kingsbridge-ice-center-2013",
+          "kingsbridge-operation-forecast-2018",
+          "kingsbridge-redevelopment-2025"
+        ],
+        "forbidden_after": [],
+        "negative_assertion": "The expected 2018 operation remains a forecast, never an opening."
+      },
+      "before": {
+        "schema": "cityscroll.connected_history_time_state.v1",
+        "version": 1,
+        "method": "connected_history_bitemporal_as_of_v1",
+        "family_id": "kingsbridge-armory",
+        "as_of": {
+          "civic_time": "2013-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "entries": [
+          {
+            "observation_id": "kingsbridge-retail-2009",
+            "family_id": "kingsbridge-armory",
+            "subject_ref": "ceqr:08DME004X",
+            "assertion_key": "retail-proposal-epoch",
+            "fact_kind": "proposal_epoch",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "environmental_review_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2009",
+              "precision": "year",
+              "start": "2009-01-01",
+              "end": "2009-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "retail-proposal-epoch",
+            "scope": {
+              "footprint": "kingsbridge-armory",
+              "metric": null,
+              "phase": "2009-retail",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "ceqr_id": "08DME004X",
+              "proposal": "retail"
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "ceqr",
+              "source_record_id": "ceqr:13DME013X",
+              "source_span": {
+                "locator": "successive_proposal_reference",
+                "quote": "08DME004X"
+              }
+            }
+          },
+          {
+            "observation_id": "kingsbridge-operation-forecast-2018",
+            "family_id": "kingsbridge-armory",
+            "subject_ref": "ceqr:13DME013X",
+            "assertion_key": "ice-center-operation-forecast",
+            "fact_kind": "forecast",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "environmental_review_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "forecast",
+            "event_time": {
+              "value": "2013",
+              "precision": "year",
+              "start": "2013-01-01",
+              "end": "2013-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "ice-center-operation-forecast",
+            "scope": {
+              "footprint": "kingsbridge-armory",
+              "metric": null,
+              "phase": "2013-ice-center",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "expected_operation": {
+                "value": "2018",
+                "precision": "year"
+              },
+              "realized": false
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "ceqr",
+              "source_record_id": "ceqr:13DME013X",
+              "source_span": {
+                "locator": "anticipated_operation_forecast",
+                "quote": "2018 forecast, not an opening"
+              }
+            }
+          },
+          {
+            "observation_id": "kingsbridge-ice-center-2013",
+            "family_id": "kingsbridge-armory",
+            "subject_ref": "ceqr:13DME013X",
+            "assertion_key": "ice-center-proposal-epoch",
+            "fact_kind": "proposal_epoch",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "environmental_review_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2013",
+              "precision": "year",
+              "start": "2013-01-01",
+              "end": "2013-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "ice-center-proposal-epoch",
+            "scope": {
+              "footprint": "kingsbridge-armory",
+              "metric": null,
+              "phase": "2013-ice-center",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "ceqr_id": "13DME013X",
+              "proposal": "ice-center"
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "ceqr",
+              "source_record_id": "ceqr:13DME013X",
+              "source_span": {
+                "locator": "oec_environmental_quality_review_page",
+                "quote": "13DME013X"
+              }
+            }
+          }
+        ],
+        "lifecycle_counts": {
+          "planned": 3,
+          "decided": 0,
+          "realized": 0
+        },
+        "receipt": {
+          "temporal_contract": "cityscroll.civic_time_ledger.v1",
+          "case_family": "connected_history_fact",
+          "axes": {
+            "valid": {
+              "owner": "civic",
+              "query": "2013-12-31",
+              "imprecise_date_rule": "include_after_interval_end"
+            },
+            "system": {
+              "owner": "observation",
+              "query": "2026-09-26T00:00:00.000Z"
+            },
+            "publication": {
+              "owner": null,
+              "role": "evidence_clock"
+            },
+            "processing": {
+              "owner": null,
+              "role": "receipt_only",
+              "used_for_membership": false
+            }
+          },
+          "counts": {
+            "retained_observations": 4,
+            "selected_assertions": 3,
+            "omitted_after_civic_time": 1,
+            "omitted_after_belief_time": 0
+          },
+          "selected_observation_ids": [
+            "kingsbridge-retail-2009",
+            "kingsbridge-operation-forecast-2018",
+            "kingsbridge-ice-center-2013"
+          ],
+          "ordering": {
+            "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+            "method": "stable_temporal_insertion_v1",
+            "input_observation_ids": [
+              "kingsbridge-retail-2009",
+              "kingsbridge-ice-center-2013",
+              "kingsbridge-operation-forecast-2018"
+            ],
+            "intermediate_steps": [
+              {
+                "inserted_observation_id": "kingsbridge-retail-2009",
+                "insertion_index": 0,
+                "before": [],
+                "after": [
+                  "kingsbridge-retail-2009"
+                ]
+              },
+              {
+                "inserted_observation_id": "kingsbridge-ice-center-2013",
+                "insertion_index": 1,
+                "before": [
+                  "kingsbridge-retail-2009"
+                ],
+                "after": [
+                  "kingsbridge-retail-2009",
+                  "kingsbridge-ice-center-2013"
+                ]
+              },
+              {
+                "inserted_observation_id": "kingsbridge-operation-forecast-2018",
+                "insertion_index": 1,
+                "before": [
+                  "kingsbridge-retail-2009",
+                  "kingsbridge-ice-center-2013"
+                ],
+                "after": [
+                  "kingsbridge-retail-2009",
+                  "kingsbridge-operation-forecast-2018",
+                  "kingsbridge-ice-center-2013"
+                ]
+              }
+            ],
+            "output_observation_ids": [
+              "kingsbridge-retail-2009",
+              "kingsbridge-operation-forecast-2018",
+              "kingsbridge-ice-center-2013"
+            ]
+          }
+        }
+      },
+      "after": {
+        "schema": "cityscroll.connected_history_time_state.v1",
+        "version": 1,
+        "method": "connected_history_bitemporal_as_of_v1",
+        "family_id": "kingsbridge-armory",
+        "as_of": {
+          "civic_time": "2025-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "entries": [
+          {
+            "observation_id": "kingsbridge-retail-2009",
+            "family_id": "kingsbridge-armory",
+            "subject_ref": "ceqr:08DME004X",
+            "assertion_key": "retail-proposal-epoch",
+            "fact_kind": "proposal_epoch",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "environmental_review_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2009",
+              "precision": "year",
+              "start": "2009-01-01",
+              "end": "2009-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "retail-proposal-epoch",
+            "scope": {
+              "footprint": "kingsbridge-armory",
+              "metric": null,
+              "phase": "2009-retail",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "ceqr_id": "08DME004X",
+              "proposal": "retail"
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "ceqr",
+              "source_record_id": "ceqr:13DME013X",
+              "source_span": {
+                "locator": "successive_proposal_reference",
+                "quote": "08DME004X"
+              }
+            }
+          },
+          {
+            "observation_id": "kingsbridge-operation-forecast-2018",
+            "family_id": "kingsbridge-armory",
+            "subject_ref": "ceqr:13DME013X",
+            "assertion_key": "ice-center-operation-forecast",
+            "fact_kind": "forecast",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "environmental_review_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "forecast",
+            "event_time": {
+              "value": "2013",
+              "precision": "year",
+              "start": "2013-01-01",
+              "end": "2013-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "ice-center-operation-forecast",
+            "scope": {
+              "footprint": "kingsbridge-armory",
+              "metric": null,
+              "phase": "2013-ice-center",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "expected_operation": {
+                "value": "2018",
+                "precision": "year"
+              },
+              "realized": false
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "ceqr",
+              "source_record_id": "ceqr:13DME013X",
+              "source_span": {
+                "locator": "anticipated_operation_forecast",
+                "quote": "2018 forecast, not an opening"
+              }
+            }
+          },
+          {
+            "observation_id": "kingsbridge-ice-center-2013",
+            "family_id": "kingsbridge-armory",
+            "subject_ref": "ceqr:13DME013X",
+            "assertion_key": "ice-center-proposal-epoch",
+            "fact_kind": "proposal_epoch",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "environmental_review_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2013",
+              "precision": "year",
+              "start": "2013-01-01",
+              "end": "2013-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "ice-center-proposal-epoch",
+            "scope": {
+              "footprint": "kingsbridge-armory",
+              "metric": null,
+              "phase": "2013-ice-center",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "ceqr_id": "13DME013X",
+              "proposal": "ice-center"
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "ceqr",
+              "source_record_id": "ceqr:13DME013X",
+              "source_span": {
+                "locator": "oec_environmental_quality_review_page",
+                "quote": "13DME013X"
+              }
+            }
+          },
+          {
+            "observation_id": "kingsbridge-redevelopment-2025",
+            "family_id": "kingsbridge-armory",
+            "subject_ref": "ceqr:25DME006X",
+            "assertion_key": "redevelopment-proposal-epoch",
+            "fact_kind": "proposal_epoch",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "environmental_review_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2025",
+              "precision": "year",
+              "start": "2025-01-01",
+              "end": "2025-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "redevelopment-proposal-epoch",
+            "scope": {
+              "footprint": "bronx-3247-10-and-2",
+              "metric": null,
+              "phase": "2025-redevelopment",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "ceqr_id": "25DME006X",
+              "project_id": "2025X0262",
+              "proposal": "redevelopment"
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "ceqr",
+              "source_record_id": "ceqr:25DME006X",
+              "source_span": {
+                "locator": "ceqr_access_details",
+                "quote": "25DME006X"
+              }
+            }
+          }
+        ],
+        "lifecycle_counts": {
+          "planned": 4,
+          "decided": 0,
+          "realized": 0
+        },
+        "receipt": {
+          "temporal_contract": "cityscroll.civic_time_ledger.v1",
+          "case_family": "connected_history_fact",
+          "axes": {
+            "valid": {
+              "owner": "civic",
+              "query": "2025-12-31",
+              "imprecise_date_rule": "include_after_interval_end"
+            },
+            "system": {
+              "owner": "observation",
+              "query": "2026-09-26T00:00:00.000Z"
+            },
+            "publication": {
+              "owner": null,
+              "role": "evidence_clock"
+            },
+            "processing": {
+              "owner": null,
+              "role": "receipt_only",
+              "used_for_membership": false
+            }
+          },
+          "counts": {
+            "retained_observations": 4,
+            "selected_assertions": 4,
+            "omitted_after_civic_time": 0,
+            "omitted_after_belief_time": 0
+          },
+          "selected_observation_ids": [
+            "kingsbridge-retail-2009",
+            "kingsbridge-operation-forecast-2018",
+            "kingsbridge-ice-center-2013",
+            "kingsbridge-redevelopment-2025"
+          ],
+          "ordering": {
+            "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+            "method": "stable_temporal_insertion_v1",
+            "input_observation_ids": [
+              "kingsbridge-redevelopment-2025",
+              "kingsbridge-retail-2009",
+              "kingsbridge-ice-center-2013",
+              "kingsbridge-operation-forecast-2018"
+            ],
+            "intermediate_steps": [
+              {
+                "inserted_observation_id": "kingsbridge-redevelopment-2025",
+                "insertion_index": 0,
+                "before": [],
+                "after": [
+                  "kingsbridge-redevelopment-2025"
+                ]
+              },
+              {
+                "inserted_observation_id": "kingsbridge-retail-2009",
+                "insertion_index": 0,
+                "before": [
+                  "kingsbridge-redevelopment-2025"
+                ],
+                "after": [
+                  "kingsbridge-retail-2009",
+                  "kingsbridge-redevelopment-2025"
+                ]
+              },
+              {
+                "inserted_observation_id": "kingsbridge-ice-center-2013",
+                "insertion_index": 1,
+                "before": [
+                  "kingsbridge-retail-2009",
+                  "kingsbridge-redevelopment-2025"
+                ],
+                "after": [
+                  "kingsbridge-retail-2009",
+                  "kingsbridge-ice-center-2013",
+                  "kingsbridge-redevelopment-2025"
+                ]
+              },
+              {
+                "inserted_observation_id": "kingsbridge-operation-forecast-2018",
+                "insertion_index": 1,
+                "before": [
+                  "kingsbridge-retail-2009",
+                  "kingsbridge-ice-center-2013",
+                  "kingsbridge-redevelopment-2025"
+                ],
+                "after": [
+                  "kingsbridge-retail-2009",
+                  "kingsbridge-operation-forecast-2018",
+                  "kingsbridge-ice-center-2013",
+                  "kingsbridge-redevelopment-2025"
+                ]
+              }
+            ],
+            "output_observation_ids": [
+              "kingsbridge-retail-2009",
+              "kingsbridge-operation-forecast-2018",
+              "kingsbridge-ice-center-2013",
+              "kingsbridge-redevelopment-2025"
+            ]
+          }
+        }
+      },
+      "comparison": {
+        "schema": "cityscroll.connected_history_time_comparison.v1",
+        "method": "connected_history_bitemporal_as_of_v1",
+        "before": {
+          "civic_time": "2013-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "after": {
+          "civic_time": "2025-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "changes": [
+          {
+            "family_id": "kingsbridge-armory",
+            "comparison_key": "redevelopment-proposal-epoch",
+            "before_observation_id": null,
+            "after_observation_id": "kingsbridge-redevelopment-2025",
+            "classification": "civic_change",
+            "knowledge_change_kind": null,
+            "event_class": "planned",
+            "numeric": {
+              "comparable": false,
+              "delta": null,
+              "blocked_by": [
+                "missing_comparison_side"
+              ]
+            }
+          }
+        ],
+        "counts": {
+          "civic_changes": 1,
+          "knowledge_changes": 0,
+          "comparable_numeric_deltas": 0,
+          "withheld_numeric_deltas": 1
+        }
+      }
+    },
+    {
+      "id": "lighthouse-component-status",
+      "evidence_class": "module_oracle",
+      "source_judgment": {
+        "basis": "fixed_dossier_source_judgment",
+        "expected_before": [
+          "lighthouse-plan-2014"
+        ],
+        "expected_after": [
+          "lighthouse-plan-2014",
+          "lighthouse-first-phase-opening-2025",
+          "lighthouse-future-phase-2025"
+        ],
+        "forbidden_after": [],
+        "negative_assertion": "Opening Phase 1 does not mark Phase 2 or the parent project complete."
+      },
+      "before": {
+        "schema": "cityscroll.connected_history_time_state.v1",
+        "version": 1,
+        "method": "connected_history_bitemporal_as_of_v1",
+        "family_id": "lighthouse-point",
+        "as_of": {
+          "civic_time": "2014-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "entries": [
+          {
+            "observation_id": "lighthouse-plan-2014",
+            "family_id": "lighthouse-point",
+            "subject_ref": "edc:project:lighthouse-point",
+            "assertion_key": "historical-component-plan",
+            "fact_kind": "component_plan",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "component_phase_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2014",
+              "precision": "year",
+              "start": "2014-01-01",
+              "end": "2014-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "historical-component-plan",
+            "scope": {
+              "footprint": "lighthouse-point",
+              "metric": null,
+              "phase": "whole-plan",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "basis": "2014 lease",
+              "status": "planned-components"
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "edc",
+              "source_record_id": "edc:project:lighthouse-point",
+              "source_span": {
+                "locator": "lease_and_planned_components",
+                "quote": "2014 lease and planned components"
+              }
+            }
+          }
+        ],
+        "lifecycle_counts": {
+          "planned": 1,
+          "decided": 0,
+          "realized": 0
+        },
+        "receipt": {
+          "temporal_contract": "cityscroll.civic_time_ledger.v1",
+          "case_family": "connected_history_fact",
+          "axes": {
+            "valid": {
+              "owner": "civic",
+              "query": "2014-12-31",
+              "imprecise_date_rule": "include_after_interval_end"
+            },
+            "system": {
+              "owner": "observation",
+              "query": "2026-09-26T00:00:00.000Z"
+            },
+            "publication": {
+              "owner": null,
+              "role": "evidence_clock"
+            },
+            "processing": {
+              "owner": null,
+              "role": "receipt_only",
+              "used_for_membership": false
+            }
+          },
+          "counts": {
+            "retained_observations": 3,
+            "selected_assertions": 1,
+            "omitted_after_civic_time": 2,
+            "omitted_after_belief_time": 0
+          },
+          "selected_observation_ids": [
+            "lighthouse-plan-2014"
+          ],
+          "ordering": {
+            "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+            "method": "stable_temporal_insertion_v1",
+            "input_observation_ids": [
+              "lighthouse-plan-2014"
+            ],
+            "intermediate_steps": [
+              {
+                "inserted_observation_id": "lighthouse-plan-2014",
+                "insertion_index": 0,
+                "before": [],
+                "after": [
+                  "lighthouse-plan-2014"
+                ]
+              }
+            ],
+            "output_observation_ids": [
+              "lighthouse-plan-2014"
+            ]
+          }
+        }
+      },
+      "after": {
+        "schema": "cityscroll.connected_history_time_state.v1",
+        "version": 1,
+        "method": "connected_history_bitemporal_as_of_v1",
+        "family_id": "lighthouse-point",
+        "as_of": {
+          "civic_time": "2025-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "entries": [
+          {
+            "observation_id": "lighthouse-plan-2014",
+            "family_id": "lighthouse-point",
+            "subject_ref": "edc:project:lighthouse-point",
+            "assertion_key": "historical-component-plan",
+            "fact_kind": "component_plan",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "component_phase_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2014",
+              "precision": "year",
+              "start": "2014-01-01",
+              "end": "2014-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "historical-component-plan",
+            "scope": {
+              "footprint": "lighthouse-point",
+              "metric": null,
+              "phase": "whole-plan",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "basis": "2014 lease",
+              "status": "planned-components"
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "edc",
+              "source_record_id": "edc:project:lighthouse-point",
+              "source_span": {
+                "locator": "lease_and_planned_components",
+                "quote": "2014 lease and planned components"
+              }
+            }
+          },
+          {
+            "observation_id": "lighthouse-first-phase-opening-2025",
+            "family_id": "lighthouse-point",
+            "subject_ref": "edc:opening:lighthouse-point-phase-1-2025-06-05",
+            "assertion_key": "phase-1-residential-opening",
+            "fact_kind": "component_status",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "component_phase_history",
+            "event_class": "realized",
+            "change_kind": "civic_event",
+            "lifecycle_action": "opened",
+            "event_time": {
+              "value": "2025-06-05",
+              "precision": "day",
+              "start": "2025-06-05",
+              "end": "2025-06-05"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": {
+              "value": "2025-06-05",
+              "precision": "day",
+              "start": "2025-06-05",
+              "end": "2025-06-05"
+            },
+            "supersedes_observation_id": null,
+            "comparison_key": "phase-1-residential-opening",
+            "scope": {
+              "footprint": "lighthouse-point",
+              "metric": "housing-units",
+              "phase": "phase-1-residential",
+              "population": "residential-units",
+              "unit": "units",
+              "measurement_period": null
+            },
+            "value": {
+              "status": "opened",
+              "units": 115,
+              "closes_parent_project": false
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "edc-press-release",
+              "source_record_id": "edc:press-release:lighthouse-point-opening-2025-06-05",
+              "source_span": {
+                "locator": "opening_announcement_first_residential_phase",
+                "quote": "first residential phase with 115 units"
+              }
+            }
+          },
+          {
+            "observation_id": "lighthouse-future-phase-2025",
+            "family_id": "lighthouse-point",
+            "subject_ref": "edc:phase:lighthouse-point-phase-2",
+            "assertion_key": "phase-2-future-status",
+            "fact_kind": "component_status",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "component_phase_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2025-06-05",
+              "precision": "day",
+              "start": "2025-06-05",
+              "end": "2025-06-05"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": {
+              "value": "2025-06-05",
+              "precision": "day",
+              "start": "2025-06-05",
+              "end": "2025-06-05"
+            },
+            "supersedes_observation_id": null,
+            "comparison_key": "phase-2-future-status",
+            "scope": {
+              "footprint": "lighthouse-point",
+              "metric": null,
+              "phase": "phase-2",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "status": "future",
+              "opened": false
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "edc-press-release",
+              "source_record_id": "edc:press-release:lighthouse-point-opening-2025-06-05",
+              "source_span": {
+                "locator": "opening_announcement_future_phase",
+                "quote": "Phase 2 remains future"
+              }
+            }
+          }
+        ],
+        "lifecycle_counts": {
+          "planned": 2,
+          "decided": 0,
+          "realized": 1
+        },
+        "receipt": {
+          "temporal_contract": "cityscroll.civic_time_ledger.v1",
+          "case_family": "connected_history_fact",
+          "axes": {
+            "valid": {
+              "owner": "civic",
+              "query": "2025-12-31",
+              "imprecise_date_rule": "include_after_interval_end"
+            },
+            "system": {
+              "owner": "observation",
+              "query": "2026-09-26T00:00:00.000Z"
+            },
+            "publication": {
+              "owner": null,
+              "role": "evidence_clock"
+            },
+            "processing": {
+              "owner": null,
+              "role": "receipt_only",
+              "used_for_membership": false
+            }
+          },
+          "counts": {
+            "retained_observations": 3,
+            "selected_assertions": 3,
+            "omitted_after_civic_time": 0,
+            "omitted_after_belief_time": 0
+          },
+          "selected_observation_ids": [
+            "lighthouse-plan-2014",
+            "lighthouse-first-phase-opening-2025",
+            "lighthouse-future-phase-2025"
+          ],
+          "ordering": {
+            "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+            "method": "stable_temporal_insertion_v1",
+            "input_observation_ids": [
+              "lighthouse-first-phase-opening-2025",
+              "lighthouse-plan-2014",
+              "lighthouse-future-phase-2025"
+            ],
+            "intermediate_steps": [
+              {
+                "inserted_observation_id": "lighthouse-first-phase-opening-2025",
+                "insertion_index": 0,
+                "before": [],
+                "after": [
+                  "lighthouse-first-phase-opening-2025"
+                ]
+              },
+              {
+                "inserted_observation_id": "lighthouse-plan-2014",
+                "insertion_index": 0,
+                "before": [
+                  "lighthouse-first-phase-opening-2025"
+                ],
+                "after": [
+                  "lighthouse-plan-2014",
+                  "lighthouse-first-phase-opening-2025"
+                ]
+              },
+              {
+                "inserted_observation_id": "lighthouse-future-phase-2025",
+                "insertion_index": 2,
+                "before": [
+                  "lighthouse-plan-2014",
+                  "lighthouse-first-phase-opening-2025"
+                ],
+                "after": [
+                  "lighthouse-plan-2014",
+                  "lighthouse-first-phase-opening-2025",
+                  "lighthouse-future-phase-2025"
+                ]
+              }
+            ],
+            "output_observation_ids": [
+              "lighthouse-plan-2014",
+              "lighthouse-first-phase-opening-2025",
+              "lighthouse-future-phase-2025"
+            ]
+          }
+        }
+      },
+      "comparison": {
+        "schema": "cityscroll.connected_history_time_comparison.v1",
+        "method": "connected_history_bitemporal_as_of_v1",
+        "before": {
+          "civic_time": "2014-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "after": {
+          "civic_time": "2025-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "changes": [
+          {
+            "family_id": "lighthouse-point",
+            "comparison_key": "phase-1-residential-opening",
+            "before_observation_id": null,
+            "after_observation_id": "lighthouse-first-phase-opening-2025",
+            "classification": "civic_change",
+            "knowledge_change_kind": null,
+            "event_class": "realized",
+            "numeric": {
+              "comparable": false,
+              "delta": null,
+              "blocked_by": [
+                "missing_comparison_side"
+              ]
+            }
+          },
+          {
+            "family_id": "lighthouse-point",
+            "comparison_key": "phase-2-future-status",
+            "before_observation_id": null,
+            "after_observation_id": "lighthouse-future-phase-2025",
+            "classification": "civic_change",
+            "knowledge_change_kind": null,
+            "event_class": "planned",
+            "numeric": {
+              "comparable": false,
+              "delta": null,
+              "blocked_by": [
+                "missing_comparison_side"
+              ]
+            }
+          }
+        ],
+        "counts": {
+          "civic_changes": 2,
+          "knowledge_changes": 0,
+          "comparable_numeric_deltas": 0,
+          "withheld_numeric_deltas": 2
+        }
+      }
+    },
+    {
+      "id": "thirty-first-avenue-periods",
+      "evidence_class": "module_oracle",
+      "source_judgment": {
+        "basis": "fixed_dossier_source_judgment",
+        "expected_before": [
+          "thirty-first-avenue-preliminary-period-2024"
+        ],
+        "expected_after": [
+          "thirty-first-avenue-preliminary-period-2024",
+          "thirty-first-avenue-phase-ii-2026"
+        ],
+        "forbidden_after": [],
+        "negative_assertion": "Preliminary Phase I measurements remain distinct from the Phase II proposal."
+      },
+      "before": {
+        "schema": "cityscroll.connected_history_time_state.v1",
+        "version": 1,
+        "method": "connected_history_bitemporal_as_of_v1",
+        "family_id": "thirty-first-avenue",
+        "as_of": {
+          "civic_time": "2024-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "entries": [
+          {
+            "observation_id": "thirty-first-avenue-preliminary-period-2024",
+            "family_id": "thirty-first-avenue",
+            "subject_ref": "dot:phase:31st-avenue-phase-i",
+            "assertion_key": "phase-i-preliminary-measurement",
+            "fact_kind": "measurement_period",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "corridor_measurement_history",
+            "event_class": "realized",
+            "change_kind": "civic_event",
+            "lifecycle_action": "measured",
+            "event_time": {
+              "value": "2024",
+              "precision": "year",
+              "start": "2024-01-01",
+              "end": "2024-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "phase-i-preliminary-measurement",
+            "scope": {
+              "footprint": "vernon-boulevard-to-51st-street",
+              "metric": "preliminary-before-after-observations",
+              "phase": "phase-i",
+              "population": "not-published",
+              "unit": "not-published",
+              "measurement_period": "2024"
+            },
+            "value": {
+              "status": "preliminary",
+              "result": "before-and-after-observations",
+              "numeric_value_published": false
+            },
+            "numeric_value": null,
+            "preliminary": true,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "dot-project-materials",
+              "source_record_id": "dot:31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+              "source_span": {
+                "locator": "phase_i_implementation_period",
+                "quote": "preliminary before/after observations; measurement period 2024"
+              }
+            }
+          }
+        ],
+        "lifecycle_counts": {
+          "planned": 0,
+          "decided": 0,
+          "realized": 1
+        },
+        "receipt": {
+          "temporal_contract": "cityscroll.civic_time_ledger.v1",
+          "case_family": "connected_history_fact",
+          "axes": {
+            "valid": {
+              "owner": "civic",
+              "query": "2024-12-31",
+              "imprecise_date_rule": "include_after_interval_end"
+            },
+            "system": {
+              "owner": "observation",
+              "query": "2026-09-26T00:00:00.000Z"
+            },
+            "publication": {
+              "owner": null,
+              "role": "evidence_clock"
+            },
+            "processing": {
+              "owner": null,
+              "role": "receipt_only",
+              "used_for_membership": false
+            }
+          },
+          "counts": {
+            "retained_observations": 2,
+            "selected_assertions": 1,
+            "omitted_after_civic_time": 1,
+            "omitted_after_belief_time": 0
+          },
+          "selected_observation_ids": [
+            "thirty-first-avenue-preliminary-period-2024"
+          ],
+          "ordering": {
+            "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+            "method": "stable_temporal_insertion_v1",
+            "input_observation_ids": [
+              "thirty-first-avenue-preliminary-period-2024"
+            ],
+            "intermediate_steps": [
+              {
+                "inserted_observation_id": "thirty-first-avenue-preliminary-period-2024",
+                "insertion_index": 0,
+                "before": [],
+                "after": [
+                  "thirty-first-avenue-preliminary-period-2024"
+                ]
+              }
+            ],
+            "output_observation_ids": [
+              "thirty-first-avenue-preliminary-period-2024"
+            ]
+          }
+        }
+      },
+      "after": {
+        "schema": "cityscroll.connected_history_time_state.v1",
+        "version": 1,
+        "method": "connected_history_bitemporal_as_of_v1",
+        "family_id": "thirty-first-avenue",
+        "as_of": {
+          "civic_time": "2026-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "entries": [
+          {
+            "observation_id": "thirty-first-avenue-preliminary-period-2024",
+            "family_id": "thirty-first-avenue",
+            "subject_ref": "dot:phase:31st-avenue-phase-i",
+            "assertion_key": "phase-i-preliminary-measurement",
+            "fact_kind": "measurement_period",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "corridor_measurement_history",
+            "event_class": "realized",
+            "change_kind": "civic_event",
+            "lifecycle_action": "measured",
+            "event_time": {
+              "value": "2024",
+              "precision": "year",
+              "start": "2024-01-01",
+              "end": "2024-12-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": null,
+            "supersedes_observation_id": null,
+            "comparison_key": "phase-i-preliminary-measurement",
+            "scope": {
+              "footprint": "vernon-boulevard-to-51st-street",
+              "metric": "preliminary-before-after-observations",
+              "phase": "phase-i",
+              "population": "not-published",
+              "unit": "not-published",
+              "measurement_period": "2024"
+            },
+            "value": {
+              "status": "preliminary",
+              "result": "before-and-after-observations",
+              "numeric_value_published": false
+            },
+            "numeric_value": null,
+            "preliminary": true,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "dot-project-materials",
+              "source_record_id": "dot:31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+              "source_span": {
+                "locator": "phase_i_implementation_period",
+                "quote": "preliminary before/after observations; measurement period 2024"
+              }
+            }
+          },
+          {
+            "observation_id": "thirty-first-avenue-phase-ii-2026",
+            "family_id": "thirty-first-avenue",
+            "subject_ref": "dot:phase:31st-avenue-phase-ii",
+            "assertion_key": "phase-ii-proposal",
+            "fact_kind": "phase_status",
+            "schema": "cityscroll.connected_history_time.v1",
+            "case_family": "connected_history_fact",
+            "history_family": "corridor_measurement_history",
+            "event_class": "planned",
+            "change_kind": "civic_event",
+            "lifecycle_action": "proposed",
+            "event_time": {
+              "value": "2026-05",
+              "precision": "month",
+              "start": "2026-05-01",
+              "end": "2026-05-31"
+            },
+            "observed_at": "2026-09-26T00:00:00.000Z",
+            "publication_time": {
+              "value": "2026-05",
+              "precision": "month",
+              "start": "2026-05-01",
+              "end": "2026-05-31"
+            },
+            "supersedes_observation_id": null,
+            "comparison_key": "phase-ii-proposal",
+            "scope": {
+              "footprint": "vernon-boulevard-to-51st-street",
+              "metric": null,
+              "phase": "phase-ii",
+              "population": null,
+              "unit": null,
+              "measurement_period": null
+            },
+            "value": {
+              "status": "proposal",
+              "phase": "phase-ii"
+            },
+            "numeric_value": null,
+            "preliminary": false,
+            "source_judgment": {
+              "judgment_basis": "fixed_dossier_source_judgment",
+              "source_system": "dot-project-materials",
+              "source_record_id": "dot:31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+              "source_span": {
+                "locator": "phase_ii_materials_title",
+                "quote": "31st Avenue Phase II"
+              }
+            }
+          }
+        ],
+        "lifecycle_counts": {
+          "planned": 1,
+          "decided": 0,
+          "realized": 1
+        },
+        "receipt": {
+          "temporal_contract": "cityscroll.civic_time_ledger.v1",
+          "case_family": "connected_history_fact",
+          "axes": {
+            "valid": {
+              "owner": "civic",
+              "query": "2026-12-31",
+              "imprecise_date_rule": "include_after_interval_end"
+            },
+            "system": {
+              "owner": "observation",
+              "query": "2026-09-26T00:00:00.000Z"
+            },
+            "publication": {
+              "owner": null,
+              "role": "evidence_clock"
+            },
+            "processing": {
+              "owner": null,
+              "role": "receipt_only",
+              "used_for_membership": false
+            }
+          },
+          "counts": {
+            "retained_observations": 2,
+            "selected_assertions": 2,
+            "omitted_after_civic_time": 0,
+            "omitted_after_belief_time": 0
+          },
+          "selected_observation_ids": [
+            "thirty-first-avenue-preliminary-period-2024",
+            "thirty-first-avenue-phase-ii-2026"
+          ],
+          "ordering": {
+            "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+            "method": "stable_temporal_insertion_v1",
+            "input_observation_ids": [
+              "thirty-first-avenue-phase-ii-2026",
+              "thirty-first-avenue-preliminary-period-2024"
+            ],
+            "intermediate_steps": [
+              {
+                "inserted_observation_id": "thirty-first-avenue-phase-ii-2026",
+                "insertion_index": 0,
+                "before": [],
+                "after": [
+                  "thirty-first-avenue-phase-ii-2026"
+                ]
+              },
+              {
+                "inserted_observation_id": "thirty-first-avenue-preliminary-period-2024",
+                "insertion_index": 0,
+                "before": [
+                  "thirty-first-avenue-phase-ii-2026"
+                ],
+                "after": [
+                  "thirty-first-avenue-preliminary-period-2024",
+                  "thirty-first-avenue-phase-ii-2026"
+                ]
+              }
+            ],
+            "output_observation_ids": [
+              "thirty-first-avenue-preliminary-period-2024",
+              "thirty-first-avenue-phase-ii-2026"
+            ]
+          }
+        }
+      },
+      "comparison": {
+        "schema": "cityscroll.connected_history_time_comparison.v1",
+        "method": "connected_history_bitemporal_as_of_v1",
+        "before": {
+          "civic_time": "2024-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "after": {
+          "civic_time": "2026-12-31",
+          "belief_time": "2026-09-26T00:00:00.000Z"
+        },
+        "changes": [
+          {
+            "family_id": "thirty-first-avenue",
+            "comparison_key": "phase-ii-proposal",
+            "before_observation_id": null,
+            "after_observation_id": "thirty-first-avenue-phase-ii-2026",
+            "classification": "civic_change",
+            "knowledge_change_kind": null,
+            "event_class": "planned",
+            "numeric": {
+              "comparable": false,
+              "delta": null,
+              "blocked_by": [
+                "missing_comparison_side"
+              ]
+            }
+          }
+        ],
+        "counts": {
+          "civic_changes": 1,
+          "knowledge_changes": 0,
+          "comparable_numeric_deltas": 0,
+          "withheld_numeric_deltas": 1
+        }
+      }
+    }
+  ],
+  "ordering_controls": [
+    {
+      "family_id": "franklin-avenue",
+      "evidence_class": "module_oracle",
+      "intermediate_state_observed": true,
+      "forward": {
+        "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+        "method": "stable_temporal_insertion_v1",
+        "input_observation_ids": [
+          "franklin-later-proposal-2024",
+          "franklin-earlier-proposal-2021",
+          "franklin-earlier-withdrawal-2021",
+          "franklin-later-amendment-2024"
+        ],
+        "intermediate_steps": [
+          {
+            "inserted_observation_id": "franklin-later-proposal-2024",
+            "insertion_index": 0,
+            "before": [],
+            "after": [
+              "franklin-later-proposal-2024"
+            ]
+          },
+          {
+            "inserted_observation_id": "franklin-earlier-proposal-2021",
+            "insertion_index": 0,
+            "before": [
+              "franklin-later-proposal-2024"
+            ],
+            "after": [
+              "franklin-earlier-proposal-2021",
+              "franklin-later-proposal-2024"
+            ]
+          },
+          {
+            "inserted_observation_id": "franklin-earlier-withdrawal-2021",
+            "insertion_index": 0,
+            "before": [
+              "franklin-earlier-proposal-2021",
+              "franklin-later-proposal-2024"
+            ],
+            "after": [
+              "franklin-earlier-withdrawal-2021",
+              "franklin-earlier-proposal-2021",
+              "franklin-later-proposal-2024"
+            ]
+          },
+          {
+            "inserted_observation_id": "franklin-later-amendment-2024",
+            "insertion_index": 3,
+            "before": [
+              "franklin-earlier-withdrawal-2021",
+              "franklin-earlier-proposal-2021",
+              "franklin-later-proposal-2024"
+            ],
+            "after": [
+              "franklin-earlier-withdrawal-2021",
+              "franklin-earlier-proposal-2021",
+              "franklin-later-proposal-2024",
+              "franklin-later-amendment-2024"
+            ]
+          }
+        ],
+        "output_observation_ids": [
+          "franklin-earlier-withdrawal-2021",
+          "franklin-earlier-proposal-2021",
+          "franklin-later-proposal-2024",
+          "franklin-later-amendment-2024"
+        ]
+      },
+      "converse": {
+        "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+        "method": "stable_temporal_insertion_v1",
+        "input_observation_ids": [
+          "franklin-later-amendment-2024",
+          "franklin-earlier-withdrawal-2021",
+          "franklin-earlier-proposal-2021",
+          "franklin-later-proposal-2024"
+        ],
+        "intermediate_steps": [
+          {
+            "inserted_observation_id": "franklin-later-amendment-2024",
+            "insertion_index": 0,
+            "before": [],
+            "after": [
+              "franklin-later-amendment-2024"
+            ]
+          },
+          {
+            "inserted_observation_id": "franklin-earlier-withdrawal-2021",
+            "insertion_index": 0,
+            "before": [
+              "franklin-later-amendment-2024"
+            ],
+            "after": [
+              "franklin-earlier-withdrawal-2021",
+              "franklin-later-amendment-2024"
+            ]
+          },
+          {
+            "inserted_observation_id": "franklin-earlier-proposal-2021",
+            "insertion_index": 1,
+            "before": [
+              "franklin-earlier-withdrawal-2021",
+              "franklin-later-amendment-2024"
+            ],
+            "after": [
+              "franklin-earlier-withdrawal-2021",
+              "franklin-earlier-proposal-2021",
+              "franklin-later-amendment-2024"
+            ]
+          },
+          {
+            "inserted_observation_id": "franklin-later-proposal-2024",
+            "insertion_index": 2,
+            "before": [
+              "franklin-earlier-withdrawal-2021",
+              "franklin-earlier-proposal-2021",
+              "franklin-later-amendment-2024"
+            ],
+            "after": [
+              "franklin-earlier-withdrawal-2021",
+              "franklin-earlier-proposal-2021",
+              "franklin-later-proposal-2024",
+              "franklin-later-amendment-2024"
+            ]
+          }
+        ],
+        "output_observation_ids": [
+          "franklin-earlier-withdrawal-2021",
+          "franklin-earlier-proposal-2021",
+          "franklin-later-proposal-2024",
+          "franklin-later-amendment-2024"
+        ]
+      },
+      "outputs_equal": true
+    },
+    {
+      "family_id": "kingsbridge-armory",
+      "evidence_class": "module_oracle",
+      "intermediate_state_observed": true,
+      "forward": {
+        "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+        "method": "stable_temporal_insertion_v1",
+        "input_observation_ids": [
+          "kingsbridge-redevelopment-2025",
+          "kingsbridge-retail-2009",
+          "kingsbridge-ice-center-2013",
+          "kingsbridge-operation-forecast-2018"
+        ],
+        "intermediate_steps": [
+          {
+            "inserted_observation_id": "kingsbridge-redevelopment-2025",
+            "insertion_index": 0,
+            "before": [],
+            "after": [
+              "kingsbridge-redevelopment-2025"
+            ]
+          },
+          {
+            "inserted_observation_id": "kingsbridge-retail-2009",
+            "insertion_index": 0,
+            "before": [
+              "kingsbridge-redevelopment-2025"
+            ],
+            "after": [
+              "kingsbridge-retail-2009",
+              "kingsbridge-redevelopment-2025"
+            ]
+          },
+          {
+            "inserted_observation_id": "kingsbridge-ice-center-2013",
+            "insertion_index": 1,
+            "before": [
+              "kingsbridge-retail-2009",
+              "kingsbridge-redevelopment-2025"
+            ],
+            "after": [
+              "kingsbridge-retail-2009",
+              "kingsbridge-ice-center-2013",
+              "kingsbridge-redevelopment-2025"
+            ]
+          },
+          {
+            "inserted_observation_id": "kingsbridge-operation-forecast-2018",
+            "insertion_index": 1,
+            "before": [
+              "kingsbridge-retail-2009",
+              "kingsbridge-ice-center-2013",
+              "kingsbridge-redevelopment-2025"
+            ],
+            "after": [
+              "kingsbridge-retail-2009",
+              "kingsbridge-operation-forecast-2018",
+              "kingsbridge-ice-center-2013",
+              "kingsbridge-redevelopment-2025"
+            ]
+          }
+        ],
+        "output_observation_ids": [
+          "kingsbridge-retail-2009",
+          "kingsbridge-operation-forecast-2018",
+          "kingsbridge-ice-center-2013",
+          "kingsbridge-redevelopment-2025"
+        ]
+      },
+      "converse": {
+        "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+        "method": "stable_temporal_insertion_v1",
+        "input_observation_ids": [
+          "kingsbridge-operation-forecast-2018",
+          "kingsbridge-ice-center-2013",
+          "kingsbridge-retail-2009",
+          "kingsbridge-redevelopment-2025"
+        ],
+        "intermediate_steps": [
+          {
+            "inserted_observation_id": "kingsbridge-operation-forecast-2018",
+            "insertion_index": 0,
+            "before": [],
+            "after": [
+              "kingsbridge-operation-forecast-2018"
+            ]
+          },
+          {
+            "inserted_observation_id": "kingsbridge-ice-center-2013",
+            "insertion_index": 1,
+            "before": [
+              "kingsbridge-operation-forecast-2018"
+            ],
+            "after": [
+              "kingsbridge-operation-forecast-2018",
+              "kingsbridge-ice-center-2013"
+            ]
+          },
+          {
+            "inserted_observation_id": "kingsbridge-retail-2009",
+            "insertion_index": 0,
+            "before": [
+              "kingsbridge-operation-forecast-2018",
+              "kingsbridge-ice-center-2013"
+            ],
+            "after": [
+              "kingsbridge-retail-2009",
+              "kingsbridge-operation-forecast-2018",
+              "kingsbridge-ice-center-2013"
+            ]
+          },
+          {
+            "inserted_observation_id": "kingsbridge-redevelopment-2025",
+            "insertion_index": 3,
+            "before": [
+              "kingsbridge-retail-2009",
+              "kingsbridge-operation-forecast-2018",
+              "kingsbridge-ice-center-2013"
+            ],
+            "after": [
+              "kingsbridge-retail-2009",
+              "kingsbridge-operation-forecast-2018",
+              "kingsbridge-ice-center-2013",
+              "kingsbridge-redevelopment-2025"
+            ]
+          }
+        ],
+        "output_observation_ids": [
+          "kingsbridge-retail-2009",
+          "kingsbridge-operation-forecast-2018",
+          "kingsbridge-ice-center-2013",
+          "kingsbridge-redevelopment-2025"
+        ]
+      },
+      "outputs_equal": true
+    },
+    {
+      "family_id": "lighthouse-point",
+      "evidence_class": "module_oracle",
+      "intermediate_state_observed": true,
+      "forward": {
+        "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+        "method": "stable_temporal_insertion_v1",
+        "input_observation_ids": [
+          "lighthouse-first-phase-opening-2025",
+          "lighthouse-plan-2014",
+          "lighthouse-future-phase-2025"
+        ],
+        "intermediate_steps": [
+          {
+            "inserted_observation_id": "lighthouse-first-phase-opening-2025",
+            "insertion_index": 0,
+            "before": [],
+            "after": [
+              "lighthouse-first-phase-opening-2025"
+            ]
+          },
+          {
+            "inserted_observation_id": "lighthouse-plan-2014",
+            "insertion_index": 0,
+            "before": [
+              "lighthouse-first-phase-opening-2025"
+            ],
+            "after": [
+              "lighthouse-plan-2014",
+              "lighthouse-first-phase-opening-2025"
+            ]
+          },
+          {
+            "inserted_observation_id": "lighthouse-future-phase-2025",
+            "insertion_index": 2,
+            "before": [
+              "lighthouse-plan-2014",
+              "lighthouse-first-phase-opening-2025"
+            ],
+            "after": [
+              "lighthouse-plan-2014",
+              "lighthouse-first-phase-opening-2025",
+              "lighthouse-future-phase-2025"
+            ]
+          }
+        ],
+        "output_observation_ids": [
+          "lighthouse-plan-2014",
+          "lighthouse-first-phase-opening-2025",
+          "lighthouse-future-phase-2025"
+        ]
+      },
+      "converse": {
+        "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+        "method": "stable_temporal_insertion_v1",
+        "input_observation_ids": [
+          "lighthouse-future-phase-2025",
+          "lighthouse-plan-2014",
+          "lighthouse-first-phase-opening-2025"
+        ],
+        "intermediate_steps": [
+          {
+            "inserted_observation_id": "lighthouse-future-phase-2025",
+            "insertion_index": 0,
+            "before": [],
+            "after": [
+              "lighthouse-future-phase-2025"
+            ]
+          },
+          {
+            "inserted_observation_id": "lighthouse-plan-2014",
+            "insertion_index": 0,
+            "before": [
+              "lighthouse-future-phase-2025"
+            ],
+            "after": [
+              "lighthouse-plan-2014",
+              "lighthouse-future-phase-2025"
+            ]
+          },
+          {
+            "inserted_observation_id": "lighthouse-first-phase-opening-2025",
+            "insertion_index": 1,
+            "before": [
+              "lighthouse-plan-2014",
+              "lighthouse-future-phase-2025"
+            ],
+            "after": [
+              "lighthouse-plan-2014",
+              "lighthouse-first-phase-opening-2025",
+              "lighthouse-future-phase-2025"
+            ]
+          }
+        ],
+        "output_observation_ids": [
+          "lighthouse-plan-2014",
+          "lighthouse-first-phase-opening-2025",
+          "lighthouse-future-phase-2025"
+        ]
+      },
+      "outputs_equal": true
+    },
+    {
+      "family_id": "thirty-first-avenue",
+      "evidence_class": "module_oracle",
+      "intermediate_state_observed": true,
+      "forward": {
+        "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+        "method": "stable_temporal_insertion_v1",
+        "input_observation_ids": [
+          "thirty-first-avenue-phase-ii-2026",
+          "thirty-first-avenue-preliminary-period-2024"
+        ],
+        "intermediate_steps": [
+          {
+            "inserted_observation_id": "thirty-first-avenue-phase-ii-2026",
+            "insertion_index": 0,
+            "before": [],
+            "after": [
+              "thirty-first-avenue-phase-ii-2026"
+            ]
+          },
+          {
+            "inserted_observation_id": "thirty-first-avenue-preliminary-period-2024",
+            "insertion_index": 0,
+            "before": [
+              "thirty-first-avenue-phase-ii-2026"
+            ],
+            "after": [
+              "thirty-first-avenue-preliminary-period-2024",
+              "thirty-first-avenue-phase-ii-2026"
+            ]
+          }
+        ],
+        "output_observation_ids": [
+          "thirty-first-avenue-preliminary-period-2024",
+          "thirty-first-avenue-phase-ii-2026"
+        ]
+      },
+      "converse": {
+        "schema": "cityscroll.connected_history_time_ordering_receipt.v1",
+        "method": "stable_temporal_insertion_v1",
+        "input_observation_ids": [
+          "thirty-first-avenue-preliminary-period-2024",
+          "thirty-first-avenue-phase-ii-2026"
+        ],
+        "intermediate_steps": [
+          {
+            "inserted_observation_id": "thirty-first-avenue-preliminary-period-2024",
+            "insertion_index": 0,
+            "before": [],
+            "after": [
+              "thirty-first-avenue-preliminary-period-2024"
+            ]
+          },
+          {
+            "inserted_observation_id": "thirty-first-avenue-phase-ii-2026",
+            "insertion_index": 1,
+            "before": [
+              "thirty-first-avenue-preliminary-period-2024"
+            ],
+            "after": [
+              "thirty-first-avenue-preliminary-period-2024",
+              "thirty-first-avenue-phase-ii-2026"
+            ]
+          }
+        ],
+        "output_observation_ids": [
+          "thirty-first-avenue-preliminary-period-2024",
+          "thirty-first-avenue-phase-ii-2026"
+        ]
+      },
+      "outputs_equal": true
+    }
+  ],
+  "counts": {
+    "dossier_families": 6,
+    "families_with_temporal_facts": 4,
+    "observations": 13,
+    "query_pairs": 4,
+    "source_judgments": 4
+  },
+  "selection_hash": "26bc64d23fb4a42b89cdef24089e7e92f5f6b2ed6a72909d38d869aff36a4549"
+}
