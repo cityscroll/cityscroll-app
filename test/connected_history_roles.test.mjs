@@ -234,6 +234,7 @@ test("A2: chair quotation stays speaker; presentation and testimony never become
 test("A3: unresolved company identity stays distinct under shared spelling", () => {
   const artifact = buildConnectedHistoryRolesArtifact();
   const franklins = artifact.observations.filter((row) => row.role === "applicant");
+  // Population beside the floor: two dated applicants share spelling and stay distinct.
   assert.equal(franklins.length, 2);
   assert.equal(
     unresolvedCompanyIdentitiesRemainDistinct(franklins),
@@ -241,32 +242,79 @@ test("A3: unresolved company identity stays distinct under shared spelling", () 
   );
   const qualifiers = new Set(franklins.map((row) => row.actor.entity_qualifier));
   const entityIds = new Set(franklins.map((row) => row.actor.entity_id));
+  const subjects = new Set(franklins.map((row) => row.subject));
   assert.equal(qualifiers.size, 2);
   assert.equal(entityIds.size, 2);
+  assert.equal(subjects.size, 2);
   for (const row of franklins) {
     assert.equal(row.actor.identity_status, "source_qualified");
     assert.equal(row.linking, false);
     assert.equal(row.beneficial_ownership, false);
   }
 
-  // Positive control 1: collapsing distinct source qualifiers onto one entity_id
-  // under shared spelling fails the distinctness guard.
-  assert.equal(
-    unresolvedCompanyIdentitiesRemainDistinct([
-      {
-        ...franklins[0],
-        actor: { ...franklins[0].actor, entity_id: "collapsed-company-id" },
-      },
-      {
-        ...franklins[1],
-        actor: { ...franklins[1].actor, entity_id: "collapsed-company-id" },
-      },
-    ]),
-    false,
-  );
+  // Positive control — partial collapse: distinct source qualifiers forced onto
+  // one entity_id under shared spelling flips the guard.
+  const partialCollapse = [
+    {
+      ...franklins[0],
+      actor: { ...franklins[0].actor, entity_id: "collapsed-company-id" },
+    },
+    {
+      ...franklins[1],
+      actor: { ...franklins[1].actor, entity_id: "collapsed-company-id" },
+    },
+  ];
+  assert.equal(new Set(partialCollapse.map((row) => row.actor.entity_qualifier)).size, 2);
+  assert.equal(new Set(partialCollapse.map((row) => row.actor.entity_id)).size, 1);
+  assert.equal(new Set(partialCollapse.map((row) => row.subject)).size, 2);
+  assert.equal(unresolvedCompanyIdentitiesRemainDistinct(partialCollapse), false);
 
-  // Positive control 2: claiming a resolved identity while distinct entity ids
-  // still share the spelling fails the distinctness guard.
+  // Positive control — total collapse: distinct subjects merged onto one
+  // entity_id AND one entity_qualifier under shared spelling flips the guard.
+  // Plurality-of-qualifiers / plural-entity-id checks alone stay silent here.
+  const totalCollapse = [
+    {
+      ...franklins[0],
+      actor: {
+        ...franklins[0].actor,
+        entity_id: "merged-company-id",
+        entity_qualifier: "merged-source-qualifier",
+      },
+    },
+    {
+      ...franklins[1],
+      actor: {
+        ...franklins[1].actor,
+        entity_id: "merged-company-id",
+        entity_qualifier: "merged-source-qualifier",
+      },
+    },
+  ];
+  assert.equal(new Set(totalCollapse.map((row) => row.actor.entity_qualifier)).size, 1);
+  assert.equal(new Set(totalCollapse.map((row) => row.actor.entity_id)).size, 1);
+  assert.equal(new Set(totalCollapse.map((row) => row.subject)).size, 2);
+  assert.equal(unresolvedCompanyIdentitiesRemainDistinct(totalCollapse), false);
+
+  // Positive control — resolved after total merge: a resolved identity claimed
+  // once ids are already merged still flips the guard.
+  const totalResolved = [
+    {
+      ...totalCollapse[0],
+      actor: { ...totalCollapse[0].actor, identity_status: "resolved" },
+      linking: true,
+    },
+    totalCollapse[1],
+  ];
+  assert.equal(new Set(totalResolved.map((row) => row.actor.entity_id)).size, 1);
+  assert.equal(new Set(totalResolved.map((row) => row.subject)).size, 2);
+  assert.equal(
+    totalResolved.some((row) => row.actor.identity_status === "resolved"),
+    true,
+  );
+  assert.equal(unresolvedCompanyIdentitiesRemainDistinct(totalResolved), false);
+
+  // Positive control — partial resolved: claiming resolved while distinct
+  // entity ids still share the spelling flips the guard.
   assert.equal(
     unresolvedCompanyIdentitiesRemainDistinct([
       {
@@ -279,7 +327,7 @@ test("A3: unresolved company identity stays distinct under shared spelling", () 
     false,
   );
 
-  // Positive control 3: a beneficial_ownership flag fails the distinctness guard.
+  // Positive control: a beneficial_ownership flag flips the guard.
   assert.equal(
     unresolvedCompanyIdentitiesRemainDistinct([
       { ...franklins[0], beneficial_ownership: true },
