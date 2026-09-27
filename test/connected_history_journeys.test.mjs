@@ -137,9 +137,11 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
   assert.equal(receipt.browser, "Chromium");
   assert.equal(receipt.mode, "hermetic_fixture");
   assert.equal(receipt.evidence_class, "runtime_browser_measurement");
+  assert.match(receipt.repository_revision, /^[a-f0-9]{40}$/);
 
   const observed = new Map(receipt.captures.map((capture) => [capture.case, capture]));
   const retained = new Map(MANIFEST.captures.map((capture) => [capture.case, capture]));
+  assert.deepEqual(new Set(MANIFEST.captures.map((capture) => capture.revision)), new Set([receipt.repository_revision]));
   for (const entry of CONNECTED_HISTORY_CASES) {
     for (const [suffix, width, height] of [
       ["desktop-keyboard", 1440, 900],
@@ -151,6 +153,7 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
       const manifest = retained.get(id);
       assert.ok(actual, id);
       assert.ok(manifest, id);
+      assert.equal(manifest.revision, receipt.repository_revision, id);
       assert.deepEqual(actual.viewport, { name: suffix, width, height });
       assert.equal(actual.render_sha256, manifest.sha256, id);
       assert.match(actual.render_sha256, /^[a-f0-9]{64}$/);
@@ -164,6 +167,7 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
 
   const failure = observed.get("history-materialization-failure-positive-control");
   assert.ok(failure);
+  assert.equal(retained.get(failure.case).revision, receipt.repository_revision);
   assert.equal(failure.render_sha256, retained.get(failure.case).sha256);
 });
 

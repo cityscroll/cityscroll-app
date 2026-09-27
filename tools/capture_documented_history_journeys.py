@@ -33,8 +33,10 @@ from deployed_capture_ancestor import (  # noqa: E402
     require_served_page_revision_contains_delivery,
 )
 from local_site_server import QuietHandler, _RobustThreadingHTTPServer  # noqa: E402
+from repository_revision import resolve_repository_revision  # noqa: E402
 
 DEFAULT_BASE = "https://cityscroll.org"
+MANIFEST_PATH = ROOT / "docs" / "evidence" / "documented-history-journeys" / "capture-manifest.json"
 PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
 VIEWPORTS = (
     ("desktop-keyboard", 1440, 900, False),
@@ -367,17 +369,39 @@ def run_failure_control(browser, base: str, *, fixture: bool) -> dict | None:
     return result
 
 
+def write_manifest(receipt: dict) -> None:
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    observed = {capture["case"]: capture for capture in receipt["captures"]}
+    retained = {capture["case"]: capture for capture in manifest["captures"]}
+    if observed.keys() != retained.keys():
+        missing = sorted(observed.keys() ^ retained.keys())
+        raise RuntimeError(f"manifest cases do not match measurement: {missing}")
+    for capture in manifest["captures"]:
+        measurement = observed[capture["case"]]
+        capture["revision"] = receipt["repository_revision"]
+        capture["sha256"] = measurement["render_sha256"]
+        if measurement["capture_sha256"]:
+            capture["local_capture_sha256"] = measurement["capture_sha256"]
+        else:
+            capture.pop("local_capture_sha256", None)
+    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--production", action="store_true")
     parser.add_argument("--base-url", default=DEFAULT_BASE)
     parser.add_argument("--landed-commit")
     parser.add_argument("--screenshot-dir")
+    parser.add_argument("--write-manifest", action="store_true")
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
+    if args.production and args.write_manifest:
+        raise SystemExit("--write-manifest is only available for the hermetic measurement")
+    repository_revision = resolve_repository_revision(ROOT)
     server = None
     served_revision = None
     required_landed_commit = None
@@ -430,6 +454,7 @@ def main() -> int:
         "evidence_class": "runtime_browser_measurement",
         "mode": "production" if args.production else "hermetic_fixture",
         "browser": "Chromium",
+        "repository_revision": repository_revision,
         "observed_at": utc_now(),
         "base_url": base,
         "required_landed_commit": required_landed_commit,
@@ -440,6 +465,8 @@ def main() -> int:
         "screenshot_directory": str(screenshot_dir) if screenshot_dir else None,
         "captures": captures,
     }
+    if args.write_manifest:
+        write_manifest(receipt)
     print(json.dumps(receipt, indent=2, sort_keys=True))
     return 0
 
