@@ -49,6 +49,7 @@ import {
   noticeContextTimingMark,
   runtimeRumSemanticMilestones,
 } from "../rum_static_record_instrumentation.mjs";
+import { matchSpaHashRoute, SPA_HASH_ROUTE_PATTERNS } from "../spa_hash_routes.mjs";
 
 function showNotice(id, watch) {
   return import("../notice_subject_client.mjs").then((module) => module.showNotice(id, watch));
@@ -991,6 +992,9 @@ function applyHash(){
     globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT=null;
     return false;
   }
+  const registeredHashRoute=matchSpaHashRoute(raw);
+  if(location.hash&&!registeredHashRoute) return false;
+  if(registeredHashRoute) document.body.dataset.spaHashRoute=registeredHashRoute.id;
   // Concept landing documents are complete static documents. They are not SPA lenses;
   // leave their server-rendered content in place instead of falling through to the
   // default Contracts search and rewriting the canonical concept route.
@@ -1366,6 +1370,7 @@ const NOTICE_SELECT = SELECT + ",event_date,street_address_1,section_name,additi
 globalThis.DEEPLINK_BOROS = DEEPLINK_BOROS;
 globalThis.DEEPLINK_CATEGORIES = DEEPLINK_CATEGORIES;
 globalThis.DEEPLINK_LENSES = DEEPLINK_LENSES;
+globalThis.CrolSpaHashRoutes = SPA_HASH_ROUTE_PATTERNS;
 globalThis.NOTICE_SELECT = NOTICE_SELECT;
 globalThis.applyActiveHistoryRouteScroll = applyActiveHistoryRouteScroll;
 globalThis.applyHash = applyHash;
