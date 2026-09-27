@@ -1,0 +1,338 @@
+{
+  "schema": "cityscroll.connected_history_roles.v1",
+  "version": 1,
+  "method": "connected_history_role_observation_v1",
+  "vocabulary": [
+    "sponsor",
+    "applicant",
+    "recorded_owner",
+    "operator",
+    "speaker",
+    "formal_board_action"
+  ],
+  "rejected_bases": [
+    "same_applicant_spelling",
+    "beneficial_ownership_inference",
+    "chair_quote_as_formal_board_action",
+    "presentation_as_formal_board_action",
+    "testimony_flags_as_resolution",
+    "coappearance",
+    "publisher_label",
+    "related_news"
+  ],
+  "counts": {
+    "candidates": 8,
+    "admitted": 4,
+    "rejected": 4
+  },
+  "role_coverage": {
+    "sponsor": {
+      "admitted": 0,
+      "status": "absent"
+    },
+    "applicant": {
+      "admitted": 2,
+      "status": "observed"
+    },
+    "recorded_owner": {
+      "admitted": 0,
+      "status": "absent"
+    },
+    "operator": {
+      "admitted": 1,
+      "status": "observed"
+    },
+    "speaker": {
+      "admitted": 1,
+      "status": "observed"
+    },
+    "formal_board_action": {
+      "admitted": 0,
+      "status": "absent"
+    }
+  },
+  "missing_strata": [
+    "sponsor",
+    "recorded_owner",
+    "formal_board_action"
+  ],
+  "observations": [
+    {
+      "schema": "cityscroll.connected_history_role_observation.v1",
+      "role": "applicant",
+      "relation": "applicant_of",
+      "inverse": "has_applicant",
+      "from": "source_qualified:zap:application:C200184ZMK:primary_applicant",
+      "to": "land:application:C200184ZMK",
+      "actor": {
+        "entity_id": "source_qualified:zap:application:C200184ZMK:primary_applicant",
+        "entity_qualifier": "zap:application:C200184ZMK#primary_applicant",
+        "spelling": "Franklin Avenue applicant label",
+        "display_name": null,
+        "identity_status": "source_qualified"
+      },
+      "subject": "land:application:C200184ZMK",
+      "method": "connected_history_role_observation_v1",
+      "method_version": "connected_history_role_observation_v1",
+      "source_system": "zap-project-action-report",
+      "source_record_id": "zap:document:230356-official-report",
+      "source_locator": {
+        "source_system": "zap-project-action-report",
+        "source_record_id": "zap:document:230356-official-report",
+        "source_span": {
+          "locator": "official_report_predecessor_application_applicant",
+          "quote": "C200184ZMK"
+        }
+      },
+      "role_date": {
+        "value": "2021",
+        "precision": "year"
+      },
+      "as_of": "2021",
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "linking": false,
+      "beneficial_ownership": false,
+      "formal_board_endorsement": false,
+      "reader_label": "Applicant",
+      "semantic_threshold": "exact_source_applicant_field_with_quoted_span",
+      "negative_rule": "Shared applicant spelling never proves beneficial ownership or merges company identity.",
+      "envelope": "civic_institution_role_edge",
+      "scope": [
+        "franklin-avenue",
+        "brooklyn-1192"
+      ],
+      "family_id": "franklin-avenue",
+      "candidate_id": "franklin-applicant-c200184zmk"
+    },
+    {
+      "schema": "cityscroll.connected_history_role_observation.v1",
+      "role": "applicant",
+      "relation": "applicant_of",
+      "inverse": "has_applicant",
+      "from": "source_qualified:zap:application:C230356ZMK:primary_applicant",
+      "to": "land:application:C230356ZMK",
+      "actor": {
+        "entity_id": "source_qualified:zap:application:C230356ZMK:primary_applicant",
+        "entity_qualifier": "zap:application:C230356ZMK#primary_applicant",
+        "spelling": "Franklin Avenue applicant label",
+        "display_name": null,
+        "identity_status": "source_qualified"
+      },
+      "subject": "land:application:C230356ZMK",
+      "method": "connected_history_role_observation_v1",
+      "method_version": "connected_history_role_observation_v1",
+      "source_system": "zap-project-action-report",
+      "source_record_id": "zap:document:230356-official-report",
+      "source_locator": {
+        "source_system": "zap-project-action-report",
+        "source_record_id": "zap:document:230356-official-report",
+        "source_span": {
+          "locator": "official_report_later_application_applicant",
+          "quote": "C230356ZMK"
+        }
+      },
+      "role_date": {
+        "value": "2024",
+        "precision": "year"
+      },
+      "as_of": "2024",
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "linking": false,
+      "beneficial_ownership": false,
+      "formal_board_endorsement": false,
+      "reader_label": "Applicant",
+      "semantic_threshold": "exact_source_applicant_field_with_quoted_span",
+      "negative_rule": "Shared applicant spelling never proves beneficial ownership or merges company identity.",
+      "envelope": "civic_institution_role_edge",
+      "scope": [
+        "franklin-avenue",
+        "brooklyn-1192"
+      ],
+      "family_id": "franklin-avenue",
+      "candidate_id": "franklin-applicant-c230356zmk"
+    },
+    {
+      "schema": "cityscroll.connected_history_role_observation.v1",
+      "role": "speaker",
+      "relation": "speaker_at",
+      "inverse": "has_speaker",
+      "from": "source_qualified:edc:press-release:lighthouse-point-opening:cb1-chair",
+      "to": "edc:project:lighthouse-point",
+      "actor": {
+        "entity_id": "source_qualified:edc:press-release:lighthouse-point-opening:cb1-chair",
+        "entity_qualifier": "edc:press-release:lighthouse-point-opening-2025-06-05#cb1-chair",
+        "spelling": null,
+        "display_name": "Community Board 1 chair",
+        "identity_status": "source_qualified"
+      },
+      "subject": "edc:project:lighthouse-point",
+      "method": "connected_history_role_observation_v1",
+      "method_version": "connected_history_role_observation_v1",
+      "source_system": "edc-press-release",
+      "source_record_id": "edc:press-release:lighthouse-point-opening-2025-06-05",
+      "source_locator": {
+        "source_system": "edc-press-release",
+        "source_record_id": "edc:press-release:lighthouse-point-opening-2025-06-05",
+        "source_span": {
+          "locator": "opening_announcement_chair_quotation",
+          "quote": "quoted community board chair statement"
+        }
+      },
+      "role_date": {
+        "value": "2025-06-05",
+        "precision": "day"
+      },
+      "as_of": "2025-06-05",
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "linking": false,
+      "beneficial_ownership": false,
+      "formal_board_endorsement": false,
+      "reader_label": "Speaker",
+      "semantic_threshold": "exact_quoted_speaker_or_chair_statement",
+      "negative_rule": "A chair quotation or individual statement remains a speaker observation and never becomes formal board action.",
+      "envelope": "civic_institution_role_edge",
+      "scope": [
+        "lighthouse-point",
+        "staten-island-cb-1"
+      ],
+      "family_id": "lighthouse-point",
+      "candidate_id": "lighthouse-cb1-chair-speaker",
+      "chair_statement": true
+    },
+    {
+      "schema": "cityscroll.connected_history_role_observation.v1",
+      "role": "operator",
+      "relation": "operator_of",
+      "inverse": "has_operator",
+      "from": "source_qualified:edc:project:lighthouse-point:leaseholder",
+      "to": "edc:project:lighthouse-point",
+      "actor": {
+        "entity_id": "source_qualified:edc:project:lighthouse-point:leaseholder",
+        "entity_qualifier": "edc:project:lighthouse-point#2014-lease",
+        "spelling": null,
+        "display_name": "NYCEDC project leaseholder",
+        "identity_status": "source_qualified"
+      },
+      "subject": "edc:project:lighthouse-point",
+      "method": "connected_history_role_observation_v1",
+      "method_version": "connected_history_role_observation_v1",
+      "source_system": "edc-project-page",
+      "source_record_id": "edc:project:lighthouse-point",
+      "source_locator": {
+        "source_system": "edc-project-page",
+        "source_record_id": "edc:project:lighthouse-point",
+        "source_span": {
+          "locator": "project_page_lease_and_planned_components",
+          "quote": "2014 lease"
+        }
+      },
+      "role_date": {
+        "value": "2014",
+        "precision": "year"
+      },
+      "as_of": "2014",
+      "observed_time": "2026-09-26T00:00:00.000Z",
+      "confidence": "strong",
+      "linking": false,
+      "beneficial_ownership": false,
+      "formal_board_endorsement": false,
+      "reader_label": "Operator",
+      "semantic_threshold": "exact_source_operator_or_lease_field_with_quoted_span",
+      "negative_rule": "A related-news listing or publisher notice never mints an operator role.",
+      "envelope": "civic_institution_role_edge",
+      "scope": [
+        "lighthouse-point",
+        "phase-plan"
+      ],
+      "family_id": "lighthouse-point",
+      "candidate_id": "lighthouse-edc-operator-lease"
+    }
+  ],
+  "rejections": [
+    {
+      "candidate_id": "negative-dot-presentation-as-formal-board-action",
+      "role": "formal_board_action",
+      "from": "source_qualified:dot:corridor:sixth-avenue:presenter",
+      "to": "dot:corridor:sixth-avenue-watts-w59",
+      "reason": "rejected_basis:presentation_as_formal_board_action",
+      "rejection_class": "insufficient_role_basis",
+      "basis": "presentation_as_formal_board_action"
+    },
+    {
+      "candidate_id": "negative-lighthouse-chair-as-formal-board-action",
+      "role": "formal_board_action",
+      "from": "source_qualified:edc:press-release:lighthouse-point-opening:cb1-chair",
+      "to": "edc:project:lighthouse-point",
+      "reason": "rejected_basis:chair_quote_as_formal_board_action",
+      "rejection_class": "insufficient_role_basis",
+      "basis": "chair_quote_as_formal_board_action"
+    },
+    {
+      "candidate_id": "negative-same-applicant-spelling-beneficial-ownership",
+      "role": "recorded_owner",
+      "from": "source_qualified:zap:application:C230356ZMK:primary_applicant",
+      "to": "parcel:brooklyn-1192-63",
+      "reason": "rejected_basis:same_applicant_spelling",
+      "rejection_class": "insufficient_role_basis",
+      "basis": "same_applicant_spelling"
+    },
+    {
+      "candidate_id": "negative-testimony-flags-as-resolution",
+      "role": "formal_board_action",
+      "from": "source_qualified:brooklyn-cb-15:testimony:coyle",
+      "to": "bsa:case:2025-54-A",
+      "reason": "rejected_basis:testimony_flags_as_resolution",
+      "rejection_class": "insufficient_role_basis",
+      "basis": "testimony_flags_as_resolution"
+    }
+  ],
+  "generated_at": "2026-09-26T00:00:00.000Z",
+  "source_policy": "fixed-six-case-dossier-only",
+  "dossier_families": [
+    "coyle",
+    "franklin-avenue",
+    "kingsbridge-armory",
+    "sixth-avenue",
+    "thirty-first-avenue",
+    "lighthouse-point"
+  ],
+  "family_counts": {
+    "coyle": {
+      "admitted": 0,
+      "rejected": 1
+    },
+    "franklin-avenue": {
+      "admitted": 2,
+      "rejected": 1
+    },
+    "kingsbridge-armory": {
+      "admitted": 0,
+      "rejected": 0
+    },
+    "sixth-avenue": {
+      "admitted": 0,
+      "rejected": 1
+    },
+    "thirty-first-avenue": {
+      "admitted": 0,
+      "rejected": 0
+    },
+    "lighthouse-point": {
+      "admitted": 2,
+      "rejected": 1
+    }
+  },
+  "selection_hash": "e40f892fba9d6440765ee117418bfd3e29a39de0258f8389da2db031b12eb499",
+  "boundaries": {
+    "no_beneficial_ownership_from_applicant_spelling": true,
+    "no_chair_quote_as_formal_board_action": true,
+    "no_presentation_as_formal_board_action": true,
+    "no_testimony_flags_as_resolution": true,
+    "absence_is_not_adverse_inference": true,
+    "formal_stance_uses_board_document_gate": true,
+    "unresolved_company_identity_preserved": true
+  }
+}

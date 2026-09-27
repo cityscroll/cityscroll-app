@@ -235,6 +235,7 @@
     "site/comparative_signal_admission.mjs",
     "site/composed_object_documents.mjs",
     "site/connected_history_relations.mjs",
+    "site/connected_history_roles.mjs",
     "site/consequence_projection.mjs",
     "site/consultation_acquisition.mjs",
     "site/consultation_classification.mjs",
