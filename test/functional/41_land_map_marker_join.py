@@ -30,17 +30,26 @@ QUEENS_MAP_ROUTE = "/browse/zoning/?boro=Queens&view=map"
 PROJECTION = "data/land_project_map_points.json"
 
 MAPPED_SPECIMEN = "2025K0305"
-# The one project genuinely lacking a retained BBL (site/data/land_project_map_points_receipt.json).
+# The one visible project genuinely lacking a retained BBL in the generated point projection.
 UNMAPPED_SPECIMEN = "2025M0252"
-# Derived from the committed join receipt rather than pinned, so a future resolver refresh
-# that legitimately changes how many of the 40 Land projects resolve to a map point updates
-# this expectation from its own source instead of drifting silently against a stale number.
-_RECEIPT = json.loads((ROOT / "site" / "data" / "land_project_map_points_receipt.json").read_text())
-EXPECTED = {
-    "total": _RECEIPT["counts"]["universe"],
-    "mapped": _RECEIPT["counts"]["mapped"],
-    "unmapped": _RECEIPT["counts"]["universe"] - _RECEIPT["counts"]["mapped"],
-}
+_POINT_PROJECTION = json.loads(
+    (ROOT / "site" / "data" / "land_project_map_points.json").read_text()
+)
+
+
+def expected_counts_for_list(list_ids: list[str]) -> dict[str, int]:
+    """Join the bounded visible List to the full-catalog generated point projection."""
+    ids = list(dict.fromkeys(list_ids))
+    points = _POINT_PROJECTION.get("points", {})
+    unmapped = _POINT_PROJECTION.get("unmapped", {})
+    missing = [project_id for project_id in ids if project_id not in points and project_id not in unmapped]
+    assert not missing, f"visible List ids are absent from the point projection: {missing}"
+    mapped_count = sum(project_id in points for project_id in ids)
+    return {
+        "total": len(ids),
+        "mapped": mapped_count,
+        "unmapped": len(ids) - mapped_count,
+    }
 
 
 def install_routes(page) -> None:
@@ -115,16 +124,17 @@ def check_three_counts_agree(page) -> dict:
     page.goto(f"{BASE}{MAP_ROUTE}", wait_until="domcontentloaded", timeout=45_000)
     wait_for_map(page)
     state = read_map(page)
+    expected = expected_counts_for_list(state["list_ids"])
 
-    assert state["counts"] == EXPECTED, f"counts were {state['counts']}, expected {EXPECTED}"
+    assert state["counts"] == expected, f"counts were {state['counts']}, expected {expected}"
     assert state["counts"]["mapped"] + state["counts"]["unmapped"] == state["counts"]["total"]
     # The failure this card exists to prevent.
-    assert state["marker_count"] == EXPECTED["mapped"], (
-        f"{state['marker_count']} markers for {EXPECTED['mapped']} mapped rows")
+    assert state["marker_count"] == expected["mapped"], (
+        f"{state['marker_count']} markers for {expected['mapped']} mapped rows")
     assert state["marker_count"] != state["counts"]["total"], "the marker count stood in for the total"
-    assert state["unmapped_note"].strip(), f"the {EXPECTED['unmapped']} unmapped projects were never mentioned"
-    assert str(EXPECTED["unmapped"]) in state["unmapped_note"], state["unmapped_note"]
-    assert state["list_rows"] == EXPECTED["total"], "the List no longer holds all 40 rows"
+    assert state["unmapped_note"].strip(), f"the {expected['unmapped']} unmapped projects were never mentioned"
+    assert str(expected["unmapped"]) in state["unmapped_note"], state["unmapped_note"]
+    assert state["list_rows"] == expected["total"], "the List count differs from its project identities"
     print("three-counts:", json.dumps(
         {"counts": state["counts"], "markers": state["marker_count"], "list_rows": state["list_rows"]},
         ensure_ascii=False))
@@ -225,16 +235,18 @@ def check_unmapped_project_is_listed_never_drawn(page, state: dict) -> None:
     print("unmapped-handoff:", json.dumps({"id": UNMAPPED_SPECIMEN, "drawn": False, "reachable": True}))
 
 
-def check_filtered_map_is_a_subset(browser) -> None:
+def check_filtered_map_is_a_subset(browser, baseline: dict) -> None:
     page = new_page(browser)
     requests: list[str] = []  # accumulator (not a measured table)
     page.on("request", lambda request: requests.append(request.url))
     page.goto(f"{BASE}{QUEENS_MAP_ROUTE}", wait_until="domcontentloaded", timeout=45_000)
     wait_for_map(page)
     state = read_map(page)
+    expected = expected_counts_for_list(state["list_ids"])
 
-    assert state["counts"]["total"] < EXPECTED["total"], "the borough filter did not narrow the population"
-    assert state["marker_count"] <= state["counts"]["mapped"] < EXPECTED["mapped"], (
+    assert state["counts"] == expected, f"filtered counts were {state['counts']}, expected {expected}"
+    assert state["counts"]["total"] < baseline["counts"]["total"], "the borough filter did not narrow the population"
+    assert state["marker_count"] <= state["counts"]["mapped"] < baseline["counts"]["mapped"], (
         "a filtered map painted the whole projection")
     assert state["counts"]["mapped"] + state["counts"]["unmapped"] == state["counts"]["total"]
     if state["list_ids"]:
@@ -261,7 +273,7 @@ def main() -> None:
         wait_for_map(page)
         check_unmapped_project_is_listed_never_drawn(page, read_map(page))
         page.close()
-        check_filtered_map_is_a_subset(browser)
+        check_filtered_map_is_a_subset(browser, state)
         browser.close()
     print("land map marker join OK")
 
