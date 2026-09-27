@@ -4,7 +4,7 @@
   "artifact": "site/data/connected_history_time.json",
   "generated_at": "2026-09-26T00:00:00.000Z",
   "method": "connected_history_bitemporal_as_of_v1",
-  "selection_hash": "26bc64d23fb4a42b89cdef24089e7e92f5f6b2ed6a72909d38d869aff36a4549",
+  "selection_hash": "ee767976cc810ba53c2316ae30928a98f9ec02df704d9f151b41a8faeba03914",
   "counts": {
     "dossier_families": 6,
     "families_with_temporal_facts": 4,
@@ -13,6 +13,20 @@
     "source_judgments": 4
   },
   "source_policy": "fixed-six-case-dossier-and-retained-inputs-only",
+  "unrepresented_fact_kinds": [
+    {
+      "kind": "correction",
+      "population": 0
+    },
+    {
+      "kind": "newly_acquired_old_evidence",
+      "population": 0
+    },
+    {
+      "kind": "numeric",
+      "population": 0
+    }
+  ],
   "verification": {
     "state": "passed",
     "module_oracle_queries": 4,
