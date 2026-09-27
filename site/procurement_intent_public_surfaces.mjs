@@ -16,10 +16,10 @@
  * seams. They do not create a standalone dashboard.
  */
 
-import { realizationRefFor } from "../warehouse/lib/procurement_intent_realization_matcher.mjs";
 import {
   PROCUREMENT_INTENT_EVIDENCE_STATES,
   parseProvisionalSubjectRef,
+  realizationRefFor,
 } from "./procurement_intent_watch_continuity.mjs";
 
 export { PROCUREMENT_INTENT_EVIDENCE_STATES };

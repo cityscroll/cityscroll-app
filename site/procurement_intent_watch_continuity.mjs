@@ -26,8 +26,6 @@
  * replay produces byte-identical records.
  */
 
-import { realizationRefFor } from "../warehouse/lib/procurement_intent_realization_matcher.mjs";
-
 export const PROCUREMENT_INTENT_WATCH_SCHEMA = "cityscroll.procurement_intent_watch.v1";
 
 /** Delivery stays gated until prospective data is promoted out of shadow mode. */
@@ -64,6 +62,27 @@ function text(value, max = 320) {
     .trim()
     .slice(0, max);
   return result || null;
+}
+
+/**
+ * Build the stable identity for a later publisher observation without pulling
+ * warehouse-only modules into the public browser graph.
+ */
+export function realizationRefFor(realization) {
+  const supplied = text(realization?.realization_ref);
+  if (supplied) return supplied;
+  const procurementId = text(realization?.procurement_id);
+  if (procurementId?.startsWith("procurement:")) return procurementId;
+  if (procurementId) return `procurement:publisher:${procurementId}`;
+  const system = text(realization?.source_system || realization?.sourceSystem)?.toLowerCase();
+  const nativeId = text(
+    realization?.source_system_id
+      || realization?.sourceSystemId
+      || realization?.epin
+      || realization?.pin,
+  );
+  if (system && nativeId) return `procurement:${system}:${nativeId}`;
+  return null;
 }
 
 function day(value) {
