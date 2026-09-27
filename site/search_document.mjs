@@ -44,6 +44,7 @@ import {
   removeRecentSearch,
 } from "./search_recent_history.mjs";
 import { renderRecentSearches } from "./search_recent_history_view.mjs";
+import { paintConnectedHistoryJourney } from "./connected_history_journeys.mjs";
 
 const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
@@ -1104,6 +1105,7 @@ function render() {
   applyScopeLaneVisibility(root, activeScope);
   paintRecentSearches(root);
   renderInitialState(root, query);
+  void paintConnectedHistoryJourney(root, query);
   installSearchHistoryControls(root);
   void loadSearchHistory(root);
   void loadResults(root, query, activeScope, activeIncludeArchived);

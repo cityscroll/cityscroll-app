@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/documented-history-journeys",
+  "status": "implemented",
+  "fingerprint": "documented-history-journeys.v1",
+  "updated_at": "2026-09-27T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "documented-history-search-projection",
+      "path": "site/connected_history_journeys.mjs"
+    },
+    {
+      "id": "documented-history-browser-measurement",
+      "path": "tools/capture_documented_history_journeys.py"
+    },
+    {
+      "id": "documented-history-capture-manifest",
+      "path": "docs/evidence/documented-history-journeys/capture-manifest.json"
+    },
+    {
+      "id": "documented-history-verifier",
+      "path": "test/connected_history_journeys.test.mjs"
+    }
+  ]
+}

@@ -274,6 +274,16 @@
   .interpret-preview-results .topic-search-result-reason{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.06em;text-transform:uppercase}
   .interpret-preview-results .topic-search-result-snippet{margin:6px 0 0;color:var(--ink-soft);font:12px/1.4 var(--font-body)}
   .interpret-preview-results .topic-search-result mark{padding:0 .08em;background:#ffe7a3;color:inherit;border-radius:2px}
+  .connected-history{min-width:0;margin:18px 0;padding:18px;border:1px solid var(--rule);border-radius:10px;background:var(--paper-2,#f7f4ed);overflow-wrap:anywhere;scroll-margin-top:16px}
+  .connected-history[hidden]{display:none}.connected-history-kicker{margin:0 0 5px;color:var(--oxblood);font:750 10px/1.2 var(--font-interface);letter-spacing:.09em;text-transform:uppercase}
+  .connected-history h3{margin:0;font:750 22px/1.2 var(--font-display)}.connected-history header p,.connected-history-boundary,.connected-history-identities{margin:7px 0;color:var(--ink-soft);font:13px/1.5 var(--font-interface)}
+  .connected-history-timeline{display:grid;gap:10px;margin:16px 0;padding:0;list-style:none}.connected-history-event{min-width:0;padding:13px;border:1px solid var(--rule);border-radius:8px;background:var(--paper,#fff)}
+  .connected-history-event-heading{display:grid;grid-template-columns:minmax(0,11rem) minmax(0,1fr);gap:6px 12px;margin:0}.connected-history-event-heading time{color:var(--muted);font:650 11px/1.35 var(--font-interface)}
+  .connected-history-event-heading strong{font:700 14px/1.35 var(--font-display);text-transform:capitalize}.connected-history-marker{width:max-content;padding:2px 6px;border-radius:999px;background:var(--wash,#eee9df);font:700 10px/1.2 var(--font-interface)}
+  .connected-history-event-scope,.connected-history-event-evidence p{margin:7px 0;color:var(--ink-soft);font:12.5px/1.5 var(--font-interface)}.connected-history-event details{margin-top:9px}.connected-history-event summary,.connected-history-sources summary{cursor:pointer;color:var(--oxblood);font:700 12.5px/1.4 var(--font-interface)}
+  .connected-history-event-evidence{padding:4px 0 0 12px;border-left:2px solid var(--rule)}.connected-history-participants{margin:15px 0}.connected-history-participants h4{margin:0 0 7px}.connected-history-participants ul,.connected-history-sources ul{margin:0;padding-left:20px}.connected-history-participants span{color:var(--muted)}
+  .connected-history-actions{display:flex;flex-wrap:wrap;gap:8px 12px;margin:15px 0 0}.connected-history-actions a{display:inline-block;min-height:44px;padding:11px 13px;border:1px solid var(--rule-strong);border-radius:6px;font:700 12.5px/1.4 var(--font-interface)}
+  @media(max-width:680px){.connected-history{padding:14px 12px}.connected-history-event-heading{grid-template-columns:minmax(0,1fr)}.connected-history-actions{display:grid;grid-template-columns:minmax(0,1fr)}.connected-history-actions a{min-width:0}}
   .interpret-preview-empty{margin-top:var(--space-3);padding:var(--space-3);border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--paper-2);color:var(--ink-soft);font:13px/1.45 var(--font-interface)}
   .qr-dialog{width:min(92vw,520px);max-height:92vh;border:1px solid var(--rule-strong);border-radius:10px;background:var(--card);color:var(--ink);padding:22px;box-shadow:0 18px 60px #12181f80}
   .qr-dialog::backdrop{background:#12181fb8}
@@ -2035,6 +2045,22 @@
     </form>
     <div class="topic-search-context" data-search-place hidden></div>
     <div class="topic-search-scopebar" data-search-scope hidden></div>
+    <section class="connected-history" id="connected-history" data-connected-history hidden></section>
+    <noscript>
+      <section class="connected-history" aria-labelledby="connected-history-noscript-heading">
+        <p class="connected-history-kicker">Documented histories</p>
+        <h3 id="connected-history-noscript-heading">Open an official history source</h3>
+        <p>Search enhancement needs JavaScript. These fixed source destinations remain ordinary links, and Back returns to the submitted query.</p>
+        <ul>
+          <li><a href="https://a856-cityrecord.nyc.gov/RequestDetail/20260723030">Coyle Street BSA cases</a></li>
+          <li><a href="https://zap-api-production.herokuapp.com/document/projectaction/sites/nycdcppfs/dcp_projectaction/ZM%20-%20Zoning%20Map%20Amendment%20_90047288D727ED11B83C001DD80696EC/230356.pdf">Franklin Avenue applications</a></li>
+          <li><a href="https://zap.planning.nyc.gov/projects/2025X0262">Kingsbridge Armory proposals</a></li>
+          <li><a href="https://www.nyc.gov/html/dot/html/about/current-projects.shtml">Sixth Avenue corridor</a></li>
+          <li><a href="https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf">31st Avenue corridor</a></li>
+          <li><a href="https://edc.nyc/project/lighthouse-point">Lighthouse Point components</a></li>
+        </ul>
+      </section>
+    </noscript>
     <div class="topic-search-recent-region" data-search-recent-region>
       <section class="topic-search-recent" data-search-recent aria-labelledby="search-recent-heading" hidden>
         <div class="topic-search-recent-head">

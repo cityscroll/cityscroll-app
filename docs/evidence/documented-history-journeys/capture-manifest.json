@@ -1,0 +1,275 @@
+{
+  "schema": "cityscroll.documented_history_journey_manifest.v1",
+  "evidence_class": "runtime_browser_measurement",
+  "surface": "source-backed civic history in Search",
+  "grounded_at": "60ee17a516d256211d99bb79bc6e1b104594cbad",
+  "image_binaries_committed": false,
+  "capture_policy": "Screenshot binaries remain in ignored task scratch; this manifest retains their hashes and the rendered panel hashes.",
+  "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+  "production_measurement": {
+    "state": "awaiting_landed_deploy",
+    "runner": "python3 tools/capture_documented_history_journeys.py --production --landed-commit <40-hex landed commit>",
+    "requirement": "The runner refuses a non-main pin, a served revision that does not contain it, absent served materializations, or a missing rendered journey."
+  },
+  "captures": [
+    {
+      "case": "coyle-desktop-keyboard",
+      "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+      "viewport": {
+        "name": "desktop-keyboard",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
+      "local_capture_sha256": "ed81193438c8b9e9dca40e051de83f98076217a23659557c06c03d95d59d2935"
+    },
+    {
+      "case": "franklin-avenue-desktop-keyboard",
+      "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "name": "desktop-keyboard",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
+      "local_capture_sha256": "a17dbd07a9555fa7da7d9a0f58feb761af6eeb14d3004667a3097b575e54ac96"
+    },
+    {
+      "case": "kingsbridge-armory-desktop-keyboard",
+      "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+      "viewport": {
+        "name": "desktop-keyboard",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
+      "local_capture_sha256": "59bb4d47753ee8cb971543fdf72de79a6a8144300ec26d9da65121d329fe8e34"
+    },
+    {
+      "case": "sixth-avenue-desktop-keyboard",
+      "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "name": "desktop-keyboard",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
+      "local_capture_sha256": "74a02c2a4baf6c7e965ad113cc6ac016be7d85e82c837fa76cc1003176abec70"
+    },
+    {
+      "case": "thirty-first-avenue-desktop-keyboard",
+      "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "name": "desktop-keyboard",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
+      "local_capture_sha256": "8cd0fcc9281bd61d467e982b5bbae1c69acbfa377f72a57a2a19c0ea30bd8eed"
+    },
+    {
+      "case": "lighthouse-point-desktop-keyboard",
+      "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+      "viewport": {
+        "name": "desktop-keyboard",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
+      "local_capture_sha256": "d14e50d507532e348f8ab5a04927d8ce00110127ece305edcda67d2047e4cd7c"
+    },
+    {
+      "case": "coyle-narrow-touch",
+      "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+      "viewport": {
+        "name": "narrow-touch",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
+      "local_capture_sha256": "981461781ee53b2e34da3ec425ebcaadcbf1d895a4e585934bb0111c339929f6"
+    },
+    {
+      "case": "franklin-avenue-narrow-touch",
+      "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "name": "narrow-touch",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
+      "local_capture_sha256": "ad1a8054e0967212e4512c7b7a3ba5e1b0af980b40b746902fd5534e1cf1ca8b"
+    },
+    {
+      "case": "kingsbridge-armory-narrow-touch",
+      "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+      "viewport": {
+        "name": "narrow-touch",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
+      "local_capture_sha256": "96ddd66f82be8a8f8a15f2a59c2be4a972f5afdd1e36b6c152c2c893eaa621be"
+    },
+    {
+      "case": "sixth-avenue-narrow-touch",
+      "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "name": "narrow-touch",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
+      "local_capture_sha256": "45ea75c0f7f79eac9c896352705fe838e651353168cc6b6a6283bf82ca408f63"
+    },
+    {
+      "case": "thirty-first-avenue-narrow-touch",
+      "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "name": "narrow-touch",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
+      "local_capture_sha256": "88ace0641ef5925e1aec2dfda901bb627dbf8243e9d822622e334c49cb40e1c5"
+    },
+    {
+      "case": "lighthouse-point-narrow-touch",
+      "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+      "viewport": {
+        "name": "narrow-touch",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
+      "sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
+      "local_capture_sha256": "beef6f057e70de8d0a2564c687968d3a3fc8cc4aa286e22b475feb854db7217f"
+    },
+    {
+      "case": "coyle-no-javascript",
+      "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+      "viewport": {
+        "name": "no-javascript",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
+      "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
+    },
+    {
+      "case": "franklin-avenue-no-javascript",
+      "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "name": "no-javascript",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
+      "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
+    },
+    {
+      "case": "kingsbridge-armory-no-javascript",
+      "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+      "viewport": {
+        "name": "no-javascript",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
+      "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
+    },
+    {
+      "case": "sixth-avenue-no-javascript",
+      "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "name": "no-javascript",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
+      "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
+    },
+    {
+      "case": "thirty-first-avenue-no-javascript",
+      "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+      "viewport": {
+        "name": "no-javascript",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
+      "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
+    },
+    {
+      "case": "lighthouse-point-no-javascript",
+      "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+      "viewport": {
+        "name": "no-javascript",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
+      "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
+    },
+    {
+      "case": "history-materialization-failure-positive-control",
+      "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+      "viewport": {
+        "name": "desktop-keyboard",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "pending delivery commit on card/cf369ad9238fe",
+      "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
+      "assertion": "Injected materialization failure preserves the exact query and exposes retry plus an official source without claiming a successful empty result.",
+      "sha256": "48be2c9b067c8405341ed82cc4d1c20baea6371b2b8684b8848a7201c5b8c3a0"
+    }
+  ]
+}
