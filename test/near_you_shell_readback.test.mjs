@@ -8,6 +8,7 @@ import { dirname, join } from "node:path";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const READBACK = join(ROOT, "docs/evidence/near-you-shell-readback/read-back.json");
 const MANIFEST = join(ROOT, "docs/evidence/near-you-shell-readback/capture-manifest.json");
+const SHELL_MANIFEST = join(ROOT, "docs/evidence/geography-navigation-shell/capture-manifest.json");
 const MAP_SOURCE = readFileSync(join(ROOT, "site/geography_navigation_map.mjs"), "utf8");
 
 function loadJson(path) {
@@ -141,6 +142,68 @@ test("map host records collision observation fields for shell label capture", ()
   assert.match(MAP_SOURCE, /dataset\.labelTextIgnorePlacement/);
   assert.match(MAP_SOURCE, /text-allow-overlap/);
   assert.match(MAP_SOURCE, /text-ignore-placement/);
+});
+
+test("A13 branch read-back proves no collision drops, populated control clearance, and selected-name priority", () => {
+  const manifest = loadJson(SHELL_MANIFEST);
+  const enhanced = manifest.captures.filter((row) => (
+    row.mode === "enhanced" && [1440, 390].includes(row.viewport.width)
+  ));
+  assert.equal(enhanced.length, 2);
+  for (const row of enhanced) {
+    const geometry = row.snapshot.a13_geometry;
+    assert.equal(
+      geometry.measurement,
+      "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
+    );
+    assert.ok(geometry.collision_source_label_count > 0);
+    assert.equal(geometry.placed_label_count, geometry.collision_source_label_count);
+    assert.equal(geometry.collision_dropped_label_count, 0);
+    assert.equal(geometry.overlapping_label_pair_count, 0);
+    assert.equal(typeof geometry.frame_crossing_label_count, "number");
+    if (geometry.frame_crossing_label_count > 0) {
+      assert.ok(geometry.frame_crossing_labels_sample.length > 0);
+      assert.ok(geometry.frame_crossing_labels_sample.every(Boolean));
+    }
+    assert.ok(geometry.control_occlusion_label_box_count > 0);
+    assert.equal(geometry.obscured_by_primary_control_count, 0);
+
+    const controls = row.snapshot.a13_positive_controls;
+    assert.ok(controls.overlap.overlapping_label_pair_count > 0);
+    assert.ok(controls.overlap.overlapping_pairs_sample.flat().every(Boolean));
+    assert.ok(controls.collision_drop.collision_dropped_label_count > 0);
+    assert.ok(controls.collision_drop.collision_dropped_labels_sample.every(Boolean));
+    assert.ok(controls.control_occlusion.label_box_count > 0);
+    assert.ok(controls.control_occlusion.obscured_by_primary_control_count > 0);
+    assert.ok(controls.control_occlusion.obscured_sample.every((sample) => sample.label));
+    assert.ok(controls.frame_crossing.frame_crossing_label_count > 0);
+    assert.ok(
+      controls.frame_crossing.frame_crossing_labels_sample
+        .includes(controls.frame_crossing.moved_label),
+    );
+  }
+
+  const selected = manifest.captures.filter((row) => row.mode === "selected-enhanced");
+  assert.equal(selected.length, 4);
+  assert.deepEqual(
+    new Set(selected.map((row) => row.snapshot.selected_neighborhood_label)),
+    new Set(["Greenpoint", "East Village"]),
+  );
+  for (const row of selected) {
+    const snapshot = row.snapshot;
+    const expected = snapshot.selected_neighborhood_label;
+    assert.ok([1440, 390].includes(row.viewport.width));
+    assert.ok(snapshot.surrounding_placed_label_count > 0);
+    assert.equal(
+      snapshot.surrounding_placed_label_count,
+      snapshot.surrounding_collision_source_label_count,
+    );
+    assert.ok(snapshot.selected_layer_rendered_labels.includes(expected));
+    const control = snapshot.selected_priority_positive_control;
+    assert.ok(control.selected_layer_rendered_labels.includes(expected));
+    assert.ok(control.ordinary_collision_dropped_label_count > 0);
+    assert.ok(control.ordinary_collision_dropped_labels_sample.every(Boolean));
+  }
 });
 
 test("generator --check agrees with the retained Near You shell production read-back", () => {

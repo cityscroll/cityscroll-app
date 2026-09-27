@@ -3,8 +3,8 @@
   "feature": "geography-navigation-shell",
   "public_alias": "ced62a84f8213",
   "capture_mode": "headless_playwright_local_site",
-  "repository_revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-  "grounded_at": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+  "repository_revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+  "grounded_at": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
   "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
   "image_binaries_committed": false,
   "image_policy": "Screenshots may exist under docs/screenshots/ locally; only this manifest is committed.",
@@ -18,14 +18,14 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; server SVG visible path",
-      "sha256": "ba4597e0b2c926b06ded2937cad7150c1948566da5d12d381568da19192431a3",
+      "sha256": "8bcf785c3ea5a583790d4b2b1971b1b4ce85f35f052cd3eab8c5ca9f8cc4b219",
       "file": null,
       "snapshot": {
         "heading": "What's near you?",
         "overflow_x": 0,
-        "area_key_count": 197,
+        "area_key_count": 262,
         "surface": "map",
         "runtime": null,
         "code_like_labels": 0,
@@ -34,8 +34,76 @@
         "has_map_svg": true,
         "map_canvas_width": 0,
         "map_canvas_height": 0,
+        "target_size_summary": [
+          {
+            "name": "search input",
+            "selector": "#near-geo-search-input",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 346,
+            "min_height": 44
+          },
+          {
+            "name": "search submit",
+            "selector": ".near-geo-search button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 81,
+            "min_height": 44
+          },
+          {
+            "name": "Use my location",
+            "selector": "[data-use-location]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "layer controls",
+            "selector": ".near-geo-layer",
+            "count": 4,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "More boundaries",
+            "selector": ".near-geo-more-boundaries [data-geography-layer]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "surface controls",
+            "selector": ".near-surface-link",
+            "count": 2,
+            "visible_count": 2,
+            "min_width": 54,
+            "min_height": 44
+          },
+          {
+            "name": "area selection links",
+            "selector": "#near-area-list a",
+            "count": 262,
+            "visible_count": 262,
+            "min_width": 978,
+            "min_height": 44
+          },
+          {
+            "name": "map attribution disclosure",
+            "selector": ".maplibregl-ctrl-attrib-button",
+            "count": 0,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          }
+        ],
         "rendered_neighborhood_label_count": 0,
-        "rendered_neighborhood_labels": []
+        "rendered_neighborhood_labels": [],
+        "a13_geometry": null,
+        "a13_positive_controls": null
       }
     },
     {
@@ -46,14 +114,14 @@
         "width": 390,
         "height": 844
       },
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; server SVG visible path",
-      "sha256": "181e8d39cec111380bd8959ca9a6887538342ae40dba22f8b5524b10fcad7d2e",
+      "sha256": "ba98103fa517b775b0fe261463fe7fb19ee8caf821b33f84be795d4b84aa9fc6",
       "file": null,
       "snapshot": {
         "heading": "What's near you?",
         "overflow_x": 0,
-        "area_key_count": 197,
+        "area_key_count": 262,
         "surface": "map",
         "runtime": null,
         "code_like_labels": 0,
@@ -62,8 +130,76 @@
         "has_map_svg": true,
         "map_canvas_width": 0,
         "map_canvas_height": 0,
+        "target_size_summary": [
+          {
+            "name": "search input",
+            "selector": "#near-geo-search-input",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 242,
+            "min_height": 44
+          },
+          {
+            "name": "search submit",
+            "selector": ".near-geo-search button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 81,
+            "min_height": 44
+          },
+          {
+            "name": "Use my location",
+            "selector": "[data-use-location]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "layer controls",
+            "selector": ".near-geo-layer",
+            "count": 4,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "More boundaries",
+            "selector": ".near-geo-more-boundaries [data-geography-layer]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "surface controls",
+            "selector": ".near-surface-link",
+            "count": 2,
+            "visible_count": 2,
+            "min_width": 54,
+            "min_height": 44
+          },
+          {
+            "name": "area selection links",
+            "selector": "#near-area-list a",
+            "count": 262,
+            "visible_count": 262,
+            "min_width": 308,
+            "min_height": 44
+          },
+          {
+            "name": "map attribution disclosure",
+            "selector": ".maplibregl-ctrl-attrib-button",
+            "count": 0,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          }
+        ],
         "rendered_neighborhood_label_count": 0,
-        "rendered_neighborhood_labels": []
+        "rendered_neighborhood_labels": [],
+        "a13_geometry": null,
+        "a13_positive_controls": null
       }
     },
     {
@@ -74,14 +210,14 @@
         "width": 360,
         "height": 800
       },
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; server SVG visible path",
-      "sha256": "63a9a81bd619250b88f0f07751f299b306046f02e57d35314ded8f063519187f",
+      "sha256": "c9197a536e1bc17f2b1134a0f30b9a4f963f800d8379abebe37067e54d77d1be",
       "file": null,
       "snapshot": {
         "heading": "What's near you?",
         "overflow_x": 0,
-        "area_key_count": 197,
+        "area_key_count": 262,
         "surface": "map",
         "runtime": null,
         "code_like_labels": 0,
@@ -90,8 +226,76 @@
         "has_map_svg": true,
         "map_canvas_width": 0,
         "map_canvas_height": 0,
+        "target_size_summary": [
+          {
+            "name": "search input",
+            "selector": "#near-geo-search-input",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 239,
+            "min_height": 44
+          },
+          {
+            "name": "search submit",
+            "selector": ".near-geo-search button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 81,
+            "min_height": 44
+          },
+          {
+            "name": "Use my location",
+            "selector": "[data-use-location]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "layer controls",
+            "selector": ".near-geo-layer",
+            "count": 4,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "More boundaries",
+            "selector": ".near-geo-more-boundaries [data-geography-layer]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "surface controls",
+            "selector": ".near-surface-link",
+            "count": 2,
+            "visible_count": 2,
+            "min_width": 54,
+            "min_height": 53
+          },
+          {
+            "name": "area selection links",
+            "selector": "#near-area-list a",
+            "count": 262,
+            "visible_count": 262,
+            "min_width": 278,
+            "min_height": 44
+          },
+          {
+            "name": "map attribution disclosure",
+            "selector": ".maplibregl-ctrl-attrib-button",
+            "count": 0,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          }
+        ],
         "rendered_neighborhood_label_count": 0,
-        "rendered_neighborhood_labels": []
+        "rendered_neighborhood_labels": [],
+        "a13_geometry": null,
+        "a13_positive_controls": null
       }
     },
     {
@@ -102,9 +306,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; first-viewport heading present; advanced filters do not precede the map; MapLibre rendered 22 neighborhood labels with collision handling",
-      "sha256": "7e75ef6c961b7028eb7603d133d78c549aadc6687f8ae394a4902fa4ae1a347c",
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; first-viewport heading present; advanced filters do not precede the map; visible interactive targets measure at least 44x44px; MapLibre rendered 14 neighborhood labels with collision handling",
+      "sha256": "b1c08d554568418ee38f397da107cbcccf53aeabfd1f67163b7f60635d8fb2b2",
       "file": null,
       "snapshot": {
         "heading": "What's near you?",
@@ -116,33 +320,169 @@
         "advanced_precedes_map": false,
         "has_map_canvas": true,
         "has_map_svg": true,
-        "map_canvas_width": 466,
+        "map_canvas_width": 994,
         "map_canvas_height": 630,
-        "rendered_neighborhood_label_count": 22,
+        "target_size_summary": [
+          {
+            "name": "search input",
+            "selector": "#near-geo-search-input",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 346,
+            "min_height": 44
+          },
+          {
+            "name": "search submit",
+            "selector": ".near-geo-search button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 81,
+            "min_height": 44
+          },
+          {
+            "name": "Use my location",
+            "selector": "[data-use-location]",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 143,
+            "min_height": 44
+          },
+          {
+            "name": "layer controls",
+            "selector": ".near-geo-layer",
+            "count": 4,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "More boundaries",
+            "selector": ".near-geo-more-boundaries [data-geography-layer]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "surface controls",
+            "selector": ".near-surface-link",
+            "count": 2,
+            "visible_count": 2,
+            "min_width": 54,
+            "min_height": 44
+          },
+          {
+            "name": "area selection links",
+            "selector": "#near-area-list a",
+            "count": 262,
+            "visible_count": 262,
+            "min_width": 978,
+            "min_height": 44
+          },
+          {
+            "name": "map attribution disclosure",
+            "selector": ".maplibregl-ctrl-attrib-button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 44,
+            "min_height": 44
+          }
+        ],
+        "rendered_neighborhood_label_count": 14,
         "rendered_neighborhood_labels": [
-          "Bayside",
-          "Bellerose",
-          "Bensonhurst",
-          "East Elmhurst",
-          "East New York (North)",
-          "Far Rockaway-Bayswater",
-          "Fordham Heights",
-          "Gravesend (South)",
-          "Greenpoint",
-          "Hell's Kitchen",
-          "Highbridge",
-          "Jamaica",
+          "Brighton Beach",
+          "Brownsville",
+          "Flatlands",
+          "Kew Gardens",
+          "Kingsbridge-Marble Hill",
           "Laurelton",
-          "Mott Haven-Port Morris",
-          "New Springville-Willowbrook-Bulls Head-Travis",
-          "Oakwood-Richmondtown",
-          "Rego Park",
-          "Riverdale-Spuyten Duyvil",
-          "Rosedale",
-          "South Williamsburg",
-          "Sunset Park (Central)",
-          "Tottenville-Charleston"
-        ]
+          "Lower East Side",
+          "Morrisania",
+          "Murray Hill-Broadway Flushing",
+          "New Dorp-Midland Beach",
+          "Queensbridge-Ravenswood-Dutch Kills",
+          "Rockaway Beach-Arverne-Edgemere",
+          "Tottenville-Charleston",
+          "Westerleigh-Castleton Corners"
+        ],
+        "a13_geometry": {
+          "measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
+          "measured_label_box_count": 14,
+          "overlapping_label_pair_count": 0,
+          "collision_source_label_count": 14,
+          "placed_label_count": 14,
+          "collision_dropped_label_count": 0,
+          "collision_dropped_labels_sample": [],
+          "frame_crossing_label_count": 0,
+          "frame_crossing_labels_sample": [],
+          "obscured_by_primary_control_count": 0,
+          "control_occlusion_label_box_count": 14,
+          "clip_surface": "map_host_canvas_and_overflow_hidden_ancestors",
+          "primary_control_box_count": 1,
+          "overlapping_pairs_sample": [],
+          "obscured_sample": [],
+          "dataset_overlap_flag_ignored": "0",
+          "clip_bounds": {
+            "left": 381,
+            "top": 509.3125,
+            "right": 1375,
+            "bottom": 1139.3125
+          },
+          "browser_fold_label_count": 6
+        },
+        "a13_positive_controls": {
+          "overlap": {
+            "overlapping_label_pair_count": 1,
+            "overlapping_pairs_sample": [
+              [
+                "Brownsville",
+                "Queensbridge-Ravenswood-Dutch Kills"
+              ]
+            ]
+          },
+          "collision_drop": {
+            "forced_text_padding_px": 160,
+            "collision_source_label_count": 14,
+            "placed_label_count": 1,
+            "collision_dropped_label_count": 13,
+            "collision_dropped_labels_sample": [
+              "Brighton Beach",
+              "Flatlands",
+              "Kew Gardens",
+              "Kingsbridge-Marble Hill",
+              "Laurelton",
+              "Lower East Side",
+              "Morrisania",
+              "Murray Hill-Broadway Flushing",
+              "New Dorp-Midland Beach",
+              "Queensbridge-Ravenswood-Dutch Kills",
+              "Rockaway Beach-Arverne-Edgemere",
+              "Tottenville-Charleston"
+            ]
+          },
+          "control_occlusion": {
+            "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+            "label_box_count": 14,
+            "obscured_by_primary_control_count": 2,
+            "obscured_sample": [
+              {
+                "label": "Brownsville",
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show"
+              },
+              {
+                "label": "Flatlands",
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show"
+              }
+            ]
+          },
+          "frame_crossing": {
+            "moved_label": "Brownsville",
+            "frame_crossing_label_count": 1,
+            "frame_crossing_labels_sample": [
+              "Brownsville"
+            ]
+          }
+        }
       }
     },
     {
@@ -153,9 +493,9 @@
         "width": 390,
         "height": 844
       },
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; MapLibre rendered 13 neighborhood labels with collision handling",
-      "sha256": "075bfc83bc102d032e243f857bfd580a916c52877bfcaae0a7258b85e729c7df",
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; visible interactive targets measure at least 44x44px; MapLibre rendered 8 neighborhood labels with collision handling",
+      "sha256": "b6f8328aea486f45ceb04ab7581774dda3d9db9f1d76e8f2ee93a3875e36aa32",
       "file": null,
       "snapshot": {
         "heading": "What's near you?",
@@ -167,24 +507,165 @@
         "advanced_precedes_map": false,
         "has_map_canvas": true,
         "has_map_svg": true,
-        "map_canvas_width": 308,
+        "map_canvas_width": 340,
         "map_canvas_height": 591,
-        "rendered_neighborhood_label_count": 13,
+        "target_size_summary": [
+          {
+            "name": "search input",
+            "selector": "#near-geo-search-input",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 242,
+            "min_height": 44
+          },
+          {
+            "name": "search submit",
+            "selector": ".near-geo-search button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 81,
+            "min_height": 44
+          },
+          {
+            "name": "Use my location",
+            "selector": "[data-use-location]",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 135,
+            "min_height": 44
+          },
+          {
+            "name": "layer controls",
+            "selector": ".near-geo-layer",
+            "count": 4,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "More boundaries",
+            "selector": ".near-geo-more-boundaries [data-geography-layer]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "surface controls",
+            "selector": ".near-surface-link",
+            "count": 2,
+            "visible_count": 2,
+            "min_width": 54,
+            "min_height": 44
+          },
+          {
+            "name": "area selection links",
+            "selector": "#near-area-list a",
+            "count": 262,
+            "visible_count": 262,
+            "min_width": 308,
+            "min_height": 44
+          },
+          {
+            "name": "map attribution disclosure",
+            "selector": ".maplibregl-ctrl-attrib-button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 44,
+            "min_height": 44
+          }
+        ],
+        "rendered_neighborhood_label_count": 8,
         "rendered_neighborhood_labels": [
-          "Arden Heights-Rossville",
-          "Bensonhurst",
-          "Brighton Beach",
-          "Brooklyn Heights",
-          "Far Rockaway-Bayswater",
-          "Greenpoint",
-          "Hell's Kitchen",
-          "Mott Haven-Port Morris",
-          "Mount Hope",
-          "Pomonok-Electchester-Hillcrest",
-          "Riverdale-Spuyten Duyvil",
+          "Bellerose",
+          "Brownsville",
+          "Kingsbridge-Marble Hill",
+          "Mariner's Harbor-Arlington-Graniteville",
+          "Queensbridge-Ravenswood-Dutch Kills",
+          "Rockaway Beach-Arverne-Edgemere",
           "Rosedale",
-          "Sunset Park (West)"
-        ]
+          "Tottenville-Charleston"
+        ],
+        "a13_geometry": {
+          "measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
+          "measured_label_box_count": 8,
+          "overlapping_label_pair_count": 0,
+          "collision_source_label_count": 8,
+          "placed_label_count": 8,
+          "collision_dropped_label_count": 0,
+          "collision_dropped_labels_sample": [],
+          "frame_crossing_label_count": 1,
+          "frame_crossing_labels_sample": [
+            "Tottenville-Charleston"
+          ],
+          "obscured_by_primary_control_count": 0,
+          "control_occlusion_label_box_count": 8,
+          "clip_surface": "map_host_canvas_and_overflow_hidden_ancestors",
+          "primary_control_box_count": 1,
+          "overlapping_pairs_sample": [],
+          "obscured_sample": [],
+          "dataset_overlap_flag_ignored": "0",
+          "clip_bounds": {
+            "left": 25,
+            "top": 569.171875,
+            "right": 365,
+            "bottom": 1160.171875
+          },
+          "browser_fold_label_count": 7
+        },
+        "a13_positive_controls": {
+          "overlap": {
+            "overlapping_label_pair_count": 1,
+            "overlapping_pairs_sample": [
+              [
+                "Brownsville",
+                "Queensbridge-Ravenswood-Dutch Kills"
+              ]
+            ]
+          },
+          "collision_drop": {
+            "forced_text_padding_px": 160,
+            "collision_source_label_count": 8,
+            "placed_label_count": 1,
+            "collision_dropped_label_count": 7,
+            "collision_dropped_labels_sample": [
+              "Bellerose",
+              "Kingsbridge-Marble Hill",
+              "Mariner's Harbor-Arlington-Graniteville",
+              "Queensbridge-Ravenswood-Dutch Kills",
+              "Rockaway Beach-Arverne-Edgemere",
+              "Rosedale",
+              "Tottenville-Charleston"
+            ]
+          },
+          "control_occlusion": {
+            "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+            "label_box_count": 8,
+            "obscured_by_primary_control_count": 3,
+            "obscured_sample": [
+              {
+                "label": "Brownsville",
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show"
+              },
+              {
+                "label": "Rockaway Beach-Arverne-Edgemere",
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show"
+              },
+              {
+                "label": "Rosedale",
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show"
+              }
+            ]
+          },
+          "frame_crossing": {
+            "moved_label": "Brownsville",
+            "frame_crossing_label_count": 2,
+            "frame_crossing_labels_sample": [
+              "Brownsville",
+              "Tottenville-Charleston"
+            ]
+          }
+        }
       }
     },
     {
@@ -195,9 +676,9 @@
         "width": 360,
         "height": 800
       },
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
-      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; MapLibre rendered 12 neighborhood labels with collision handling",
-      "sha256": "3b19000d73e9d11eed8adad1e3726603d4643ef7a939fafbdf5e3d5eb62f7532",
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; visible interactive targets measure at least 44x44px; MapLibre rendered 5 neighborhood labels with collision handling",
+      "sha256": "5b17f77e6df4a2c7c4093e7a7a16dec49bfa87fe6d38d8d6d4d7ab83bb3d3a87",
       "file": null,
       "snapshot": {
         "heading": "What's near you?",
@@ -209,23 +690,84 @@
         "advanced_precedes_map": false,
         "has_map_canvas": true,
         "has_map_svg": true,
-        "map_canvas_width": 278,
+        "map_canvas_width": 310,
         "map_canvas_height": 560,
-        "rendered_neighborhood_label_count": 12,
+        "target_size_summary": [
+          {
+            "name": "search input",
+            "selector": "#near-geo-search-input",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 239,
+            "min_height": 44
+          },
+          {
+            "name": "search submit",
+            "selector": ".near-geo-search button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 81,
+            "min_height": 44
+          },
+          {
+            "name": "Use my location",
+            "selector": "[data-use-location]",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 134,
+            "min_height": 54
+          },
+          {
+            "name": "layer controls",
+            "selector": ".near-geo-layer",
+            "count": 4,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "More boundaries",
+            "selector": ".near-geo-more-boundaries [data-geography-layer]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "surface controls",
+            "selector": ".near-surface-link",
+            "count": 2,
+            "visible_count": 2,
+            "min_width": 54,
+            "min_height": 53
+          },
+          {
+            "name": "area selection links",
+            "selector": "#near-area-list a",
+            "count": 262,
+            "visible_count": 262,
+            "min_width": 278,
+            "min_height": 44
+          },
+          {
+            "name": "map attribution disclosure",
+            "selector": ".maplibregl-ctrl-attrib-button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 44,
+            "min_height": 44
+          }
+        ],
+        "rendered_neighborhood_label_count": 5,
         "rendered_neighborhood_labels": [
-          "Arden Heights-Rossville",
-          "Auburndale",
-          "Bensonhurst",
-          "Brighton Beach",
-          "Brooklyn Heights",
-          "Fordham Heights",
-          "Greenpoint",
-          "Jamaica",
-          "Mott Haven-Port Morris",
-          "Rosedale",
-          "Sunset Park (West)",
-          "Wakefield-Woodlawn"
-        ]
+          "Brownsville",
+          "Kingsbridge-Marble Hill",
+          "Mariner's Harbor-Arlington-Graniteville",
+          "Queensbridge-Ravenswood-Dutch Kills",
+          "Tottenville-Charleston"
+        ],
+        "a13_geometry": null,
+        "a13_positive_controls": null
       }
     },
     {
@@ -236,14 +778,14 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; failed enhancement restored SVG",
-      "sha256": "3079f9e0bda9b0a0a3212c86f94a76c22cc3d80c9ffc3f84c0f298bd2c2411b7",
+      "sha256": "16224724ee75ede8e09e0fc056624ced2bf6b56f8def644ce7032fecc1d835b0",
       "file": null,
       "snapshot": {
         "heading": "What's near you?",
         "overflow_x": 0,
-        "area_key_count": 197,
+        "area_key_count": 262,
         "surface": "map",
         "runtime": null,
         "code_like_labels": 0,
@@ -252,8 +794,76 @@
         "has_map_svg": true,
         "map_canvas_width": 0,
         "map_canvas_height": 0,
+        "target_size_summary": [
+          {
+            "name": "search input",
+            "selector": "#near-geo-search-input",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 346,
+            "min_height": 44
+          },
+          {
+            "name": "search submit",
+            "selector": ".near-geo-search button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 81,
+            "min_height": 44
+          },
+          {
+            "name": "Use my location",
+            "selector": "[data-use-location]",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 143,
+            "min_height": 44
+          },
+          {
+            "name": "layer controls",
+            "selector": ".near-geo-layer",
+            "count": 4,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "More boundaries",
+            "selector": ".near-geo-more-boundaries [data-geography-layer]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "surface controls",
+            "selector": ".near-surface-link",
+            "count": 2,
+            "visible_count": 2,
+            "min_width": 54,
+            "min_height": 44
+          },
+          {
+            "name": "area selection links",
+            "selector": "#near-area-list a",
+            "count": 262,
+            "visible_count": 262,
+            "min_width": 978,
+            "min_height": 44
+          },
+          {
+            "name": "map attribution disclosure",
+            "selector": ".maplibregl-ctrl-attrib-button",
+            "count": 0,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          }
+        ],
         "rendered_neighborhood_label_count": 0,
-        "rendered_neighborhood_labels": []
+        "rendered_neighborhood_labels": [],
+        "a13_geometry": null,
+        "a13_positive_controls": null
       }
     },
     {
@@ -264,14 +874,14 @@
         "width": 390,
         "height": 844
       },
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; failed enhancement restored SVG",
-      "sha256": "1c90514859ccf5f25b61066f0cb5ac59b4c0262866fdc5dfb42defad59bcd6ba",
+      "sha256": "48fbd38c6a2c3ec1669e6816f0b79aaecc2c29dc4d065f21d9282cec9974e288",
       "file": null,
       "snapshot": {
         "heading": "What's near you?",
         "overflow_x": 0,
-        "area_key_count": 197,
+        "area_key_count": 262,
         "surface": "map",
         "runtime": null,
         "code_like_labels": 0,
@@ -280,8 +890,76 @@
         "has_map_svg": true,
         "map_canvas_width": 0,
         "map_canvas_height": 0,
+        "target_size_summary": [
+          {
+            "name": "search input",
+            "selector": "#near-geo-search-input",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 242,
+            "min_height": 44
+          },
+          {
+            "name": "search submit",
+            "selector": ".near-geo-search button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 81,
+            "min_height": 44
+          },
+          {
+            "name": "Use my location",
+            "selector": "[data-use-location]",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 135,
+            "min_height": 44
+          },
+          {
+            "name": "layer controls",
+            "selector": ".near-geo-layer",
+            "count": 4,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "More boundaries",
+            "selector": ".near-geo-more-boundaries [data-geography-layer]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "surface controls",
+            "selector": ".near-surface-link",
+            "count": 2,
+            "visible_count": 2,
+            "min_width": 54,
+            "min_height": 44
+          },
+          {
+            "name": "area selection links",
+            "selector": "#near-area-list a",
+            "count": 262,
+            "visible_count": 262,
+            "min_width": 308,
+            "min_height": 44
+          },
+          {
+            "name": "map attribution disclosure",
+            "selector": ".maplibregl-ctrl-attrib-button",
+            "count": 0,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          }
+        ],
         "rendered_neighborhood_label_count": 0,
-        "rendered_neighborhood_labels": []
+        "rendered_neighborhood_labels": [],
+        "a13_geometry": null,
+        "a13_positive_controls": null
       }
     },
     {
@@ -292,14 +970,14 @@
         "width": 360,
         "height": 800
       },
-      "revision": "689ac7d97ffa9beae998c4df11f20d94a71962bc",
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; failed enhancement restored SVG",
-      "sha256": "1f671c9f56e06399310364b6294d867bbf7cf60e17c0c157e4691045bbf23f0b",
+      "sha256": "a863d55d8ceedbe7e14199b6e2f50a691b9d1fec2a0ba5957a30359db50d1860",
       "file": null,
       "snapshot": {
         "heading": "What's near you?",
         "overflow_x": 0,
-        "area_key_count": 197,
+        "area_key_count": 262,
         "surface": "map",
         "runtime": null,
         "code_like_labels": 0,
@@ -308,8 +986,216 @@
         "has_map_svg": true,
         "map_canvas_width": 0,
         "map_canvas_height": 0,
+        "target_size_summary": [
+          {
+            "name": "search input",
+            "selector": "#near-geo-search-input",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 239,
+            "min_height": 44
+          },
+          {
+            "name": "search submit",
+            "selector": ".near-geo-search button",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 81,
+            "min_height": 44
+          },
+          {
+            "name": "Use my location",
+            "selector": "[data-use-location]",
+            "count": 1,
+            "visible_count": 1,
+            "min_width": 134,
+            "min_height": 54
+          },
+          {
+            "name": "layer controls",
+            "selector": ".near-geo-layer",
+            "count": 4,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "More boundaries",
+            "selector": ".near-geo-more-boundaries [data-geography-layer]",
+            "count": 1,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          },
+          {
+            "name": "surface controls",
+            "selector": ".near-surface-link",
+            "count": 2,
+            "visible_count": 2,
+            "min_width": 54,
+            "min_height": 53
+          },
+          {
+            "name": "area selection links",
+            "selector": "#near-area-list a",
+            "count": 262,
+            "visible_count": 262,
+            "min_width": 278,
+            "min_height": 44
+          },
+          {
+            "name": "map attribution disclosure",
+            "selector": ".maplibregl-ctrl-attrib-button",
+            "count": 0,
+            "visible_count": 0,
+            "min_width": 0,
+            "min_height": 0
+          }
+        ],
         "rendered_neighborhood_label_count": 0,
-        "rendered_neighborhood_labels": []
+        "rendered_neighborhood_labels": [],
+        "a13_geometry": null,
+        "a13_positive_controls": null
+      }
+    },
+    {
+      "name": "shell-selected-greenpoint-1440",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+      "mode": "selected-enhanced",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "assertion": "Selected label 'Greenpoint' remained placed among 2 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name.",
+      "sha256": "11e206eed226f4e2c4aa32f848c9c07644755dc7e3d4165e6aa9164c63cb5c59",
+      "file": null,
+      "snapshot": {
+        "selected_neighborhood_label": "Greenpoint",
+        "selected_ui_label": "BK0101",
+        "selected_layer_rendered_labels": [
+          "Greenpoint"
+        ],
+        "surrounding_placed_label_count": 2,
+        "surrounding_collision_source_label_count": 2,
+        "selected_priority_positive_control": {
+          "forced_text_padding_px": 160,
+          "selected_label": "Greenpoint",
+          "selected_layer_rendered_labels": [
+            "Greenpoint"
+          ],
+          "surrounding_collision_source_label_count": 2,
+          "surrounding_placed_label_count": 1,
+          "ordinary_collision_dropped_label_count": 1,
+          "ordinary_collision_dropped_labels_sample": [
+            "South Williamsburg"
+          ]
+        }
+      }
+    },
+    {
+      "name": "shell-selected-greenpoint-390",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+      "mode": "selected-enhanced",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "assertion": "Selected label 'Greenpoint' remained placed among 7 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name.",
+      "sha256": "36526419a180551da40106565664aa5569f4c0d1e01dfd4a8ca9be555bd91b99",
+      "file": null,
+      "snapshot": {
+        "selected_neighborhood_label": "Greenpoint",
+        "selected_ui_label": "BK0101",
+        "selected_layer_rendered_labels": [
+          "Greenpoint"
+        ],
+        "surrounding_placed_label_count": 7,
+        "surrounding_collision_source_label_count": 7,
+        "selected_priority_positive_control": {
+          "forced_text_padding_px": 160,
+          "selected_label": "Greenpoint",
+          "selected_layer_rendered_labels": [
+            "Greenpoint"
+          ],
+          "surrounding_collision_source_label_count": 2,
+          "surrounding_placed_label_count": 1,
+          "ordinary_collision_dropped_label_count": 1,
+          "ordinary_collision_dropped_labels_sample": [
+            "South Williamsburg"
+          ]
+        }
+      }
+    },
+    {
+      "name": "shell-selected-east-village-1440",
+      "route": "/near-you/?geo=nta2020%3AMN0303&surface=map",
+      "mode": "selected-enhanced",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "assertion": "Selected label 'East Village' remained placed among 5 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name.",
+      "sha256": "008e701566c0d9c7bf7143374d8064d406da465370126616cfcffbc6e178e550",
+      "file": null,
+      "snapshot": {
+        "selected_neighborhood_label": "East Village",
+        "selected_ui_label": "MN0303",
+        "selected_layer_rendered_labels": [
+          "East Village"
+        ],
+        "surrounding_placed_label_count": 5,
+        "surrounding_collision_source_label_count": 5,
+        "selected_priority_positive_control": {
+          "forced_text_padding_px": 160,
+          "selected_label": "East Village",
+          "selected_layer_rendered_labels": [
+            "East Village"
+          ],
+          "surrounding_collision_source_label_count": 2,
+          "surrounding_placed_label_count": 1,
+          "ordinary_collision_dropped_label_count": 1,
+          "ordinary_collision_dropped_labels_sample": [
+            "Williamsburg"
+          ]
+        }
+      }
+    },
+    {
+      "name": "shell-selected-east-village-390",
+      "route": "/near-you/?geo=nta2020%3AMN0303&surface=map",
+      "mode": "selected-enhanced",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "assertion": "Selected label 'East Village' remained placed among 5 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name.",
+      "sha256": "008e701566c0d9c7bf7143374d8064d406da465370126616cfcffbc6e178e550",
+      "file": null,
+      "snapshot": {
+        "selected_neighborhood_label": "East Village",
+        "selected_ui_label": "MN0303",
+        "selected_layer_rendered_labels": [
+          "East Village"
+        ],
+        "surrounding_placed_label_count": 5,
+        "surrounding_collision_source_label_count": 5,
+        "selected_priority_positive_control": {
+          "forced_text_padding_px": 160,
+          "selected_label": "East Village",
+          "selected_layer_rendered_labels": [
+            "East Village"
+          ],
+          "surrounding_collision_source_label_count": 2,
+          "surrounding_placed_label_count": 1,
+          "ordinary_collision_dropped_label_count": 1,
+          "ordinary_collision_dropped_labels_sample": [
+            "Williamsburg"
+          ]
+        }
       }
     }
   ],

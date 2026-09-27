@@ -84,6 +84,7 @@ export const GEOGRAPHY_MAP_STYLE = Object.freeze({
 export const GEOGRAPHY_MAP_SOURCE_IDS = Object.freeze({
   basemap: "geography-basemap",
   active: "geography-active",
+  labels: "geography-label-candidates",
   comparison: "geography-comparison",
   selected: "geography-selected",
   point: "geography-point",
@@ -457,6 +458,102 @@ function selectedSubset(collection, selectedKey) {
   return { type: "FeatureCollection", features };
 }
 
+const COLLISION_SAFE_LABEL_LIMIT = Object.freeze({ desktop: 36, narrow: 16 });
+const LABEL_ADMISSION_PADDING_PX = 10;
+
+function stableLabelPriority(feature) {
+  const text = String(feature?.properties?.key || feature?.properties?.label || "");
+  let hash = 2166136261;
+  for (const character of text) {
+    hash ^= character.codePointAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function estimatedLabelBox(feature, point, {
+  textSize = GEOGRAPHY_MAP_STYLE.LABEL_SIZE,
+  maxWidthEm = 10,
+  padding = LABEL_ADMISSION_PADDING_PX,
+} = {}) {
+  const label = String(feature?.properties?.label || "").trim();
+  const rawWidth = Math.max(textSize * 2.5, label.length * textSize * 0.58);
+  const lineWidth = maxWidthEm * textSize;
+  const lines = Math.max(1, Math.ceil(rawWidth / lineWidth));
+  const width = Math.min(lineWidth, rawWidth) + (padding * 2);
+  const height = (textSize * 1.35 * lines) + (padding * 2);
+  return {
+    left: point.x - (width / 2),
+    right: point.x + (width / 2),
+    top: point.y - (height / 2),
+    bottom: point.y + (height / 2),
+  };
+}
+
+function boxesIntersect(left, right) {
+  return left.left < right.right && left.right > right.left
+    && left.top < right.bottom && left.bottom > right.top;
+}
+
+/**
+ * Admit a bounded, collision-safe label population before MapLibre placement.
+ * The polygon source remains complete; this point source is the explicit set
+ * whose labels the collision index must place without silently dropping one.
+ */
+export function collisionSafeLabelCollection(collection, {
+  project,
+  width,
+  height,
+  zoom = 0,
+  selectedKey = null,
+  maxLabels = width <= 500
+    ? COLLISION_SAFE_LABEL_LIMIT.narrow
+    : COLLISION_SAFE_LABEL_LIMIT.desktop,
+} = {}) {
+  if (typeof project !== "function" || !Number.isFinite(width) || !Number.isFinite(height)) {
+    return emptyGeoJson();
+  }
+  const candidates = (collection?.features || [])
+    .filter((feature) => {
+      const properties = feature?.properties || {};
+      if (!properties.label || properties.key === selectedKey) return false;
+      return !properties.is_special_use || zoom >= GEOGRAPHY_MAP_STYLE.SPECIAL_USE_MIN_ZOOM;
+    })
+    .map((feature) => {
+      const lon = asFiniteNumber(feature?.properties?.label_lon);
+      const lat = asFiniteNumber(feature?.properties?.label_lat);
+      if (lon == null || lat == null) return null;
+      const point = project([lon, lat]);
+      if (!Number.isFinite(point?.x) || !Number.isFinite(point?.y)) return null;
+      if (point.x < 0 || point.x > width || point.y < 0 || point.y > height) return null;
+      return { feature, point, priority: stableLabelPriority(feature) };
+    })
+    .filter(Boolean)
+    .sort((left, right) => left.priority - right.priority);
+
+  const accepted = [];
+  const boxes = [];
+  for (const candidate of candidates) {
+    const box = estimatedLabelBox(candidate.feature, candidate.point);
+    if (boxes.some((acceptedBox) => boxesIntersect(box, acceptedBox))) continue;
+    accepted.push({
+      type: "Feature",
+      id: candidate.feature.id,
+      geometry: {
+        type: "Point",
+        coordinates: [
+          candidate.feature.properties.label_lon,
+          candidate.feature.properties.label_lat,
+        ],
+      },
+      properties: { ...candidate.feature.properties },
+    });
+    boxes.push(box);
+    if (accepted.length >= maxLabels) break;
+  }
+  return { type: "FeatureCollection", features: accepted };
+}
+
 function selectedLineWidthForMode(forcedColors = false) {
   return forcedColors
     ? GEOGRAPHY_MAP_STYLE.FORCED_COLORS_SELECTED_LINE_WIDTH
@@ -479,6 +576,11 @@ function buildBaseStyle({ forcedColors = false } = {}) {
         maxzoom: GEOGRAPHY_MAP_BASEMAP.maxzoom,
       },
       [GEOGRAPHY_MAP_SOURCE_IDS.active]: {
+        type: "geojson",
+        data: emptyGeoJson(),
+        promoteId: "key",
+      },
+      [GEOGRAPHY_MAP_SOURCE_IDS.labels]: {
         type: "geojson",
         data: emptyGeoJson(),
         promoteId: "key",
@@ -606,7 +708,7 @@ function buildBaseStyle({ forcedColors = false } = {}) {
       {
         id: GEOGRAPHY_MAP_LAYER_IDS.labels,
         type: "symbol",
-        source: GEOGRAPHY_MAP_SOURCE_IDS.active,
+        source: GEOGRAPHY_MAP_SOURCE_IDS.labels,
         layout: {
           "text-field": ["get", "label"],
           "text-size": GEOGRAPHY_MAP_STYLE.LABEL_SIZE,
@@ -779,6 +881,7 @@ export async function createGeographyNavigationMap(options = {}) {
   let destroyed = false;
   let activeType = null;
   let activeCollection = emptyGeoJson();
+  let labelCollection = emptyGeoJson();
   let comparisonType = null;
   let comparisonCollection = emptyGeoJson();
   let selectedKey = null;
@@ -887,6 +990,8 @@ export async function createGeographyNavigationMap(options = {}) {
     on(map, "idle", recordRenderedNeighborhoodLabels);
     on(map, "render", recordRenderedNeighborhoodLabels);
     on(map, "data", recordRenderedNeighborhoodLabels);
+    on(map, "moveend", refreshLabelSource);
+    on(map, "resize", refreshLabelSource);
 
     on(map, "error", (event) => {
       const message = String(event?.error?.message || event?.error || "");
@@ -970,6 +1075,30 @@ export async function createGeographyNavigationMap(options = {}) {
     if (source?.setData) source.setData(data);
   }
 
+  function refreshLabelSource() {
+    if (!map?.project) return;
+    const canvas = map.getCanvas?.();
+    const width = Number(canvas?.clientWidth || canvas?.width || container?.clientWidth);
+    const height = Number(canvas?.clientHeight || canvas?.height || container?.clientHeight);
+    labelCollection = collisionSafeLabelCollection(activeCollection, {
+      project: (coordinates) => map.project(coordinates),
+      width,
+      height,
+      zoom: Number(map.getZoom?.() || 0),
+      selectedKey,
+    });
+    setSourceData(GEOGRAPHY_MAP_SOURCE_IDS.labels, labelCollection);
+    if (container?.dataset) {
+      container.dataset.admittedNeighborhoodLabelCount = String(labelCollection.features.length);
+      container.dataset.admittedNeighborhoodLabels = labelCollection.features
+        .map((feature) => feature.properties.label)
+        .join(" | ");
+    }
+    map.once?.("render", recordRenderedNeighborhoodLabels);
+    map.once?.("idle", recordRenderedNeighborhoodLabels);
+    map.triggerRepaint?.();
+  }
+
   function clearFeatureState(sourceId, key, stateKey) {
     if (!map || !key) return;
     try {
@@ -1004,6 +1133,7 @@ export async function createGeographyNavigationMap(options = {}) {
         throw new Error(GEOGRAPHY_MAP_FALLBACK_REASONS.layer_load);
       }
       setSourceData(GEOGRAPHY_MAP_SOURCE_IDS.active, activeCollection);
+      refreshLabelSource();
       refreshSelectedSource();
       refreshLabelFilter();
       map.once?.("render", recordRenderedNeighborhoodLabels);
@@ -1055,6 +1185,7 @@ export async function createGeographyNavigationMap(options = {}) {
       applyFeatureState(GEOGRAPHY_MAP_SOURCE_IDS.active, selectedKey, FEATURE_STATE_SELECTED, true);
     }
     refreshSelectedSource();
+    refreshLabelSource();
     refreshLabelFilter();
   }
 
@@ -1196,6 +1327,7 @@ export async function createGeographyNavigationMap(options = {}) {
         pointMarker,
         forcedColors,
         activeFeatureCount: activeCollection.features?.length || 0,
+        admittedLabelCount: labelCollection.features?.length || 0,
         comparisonFeatureCount: comparisonCollection.features?.length || 0,
         style: GEOGRAPHY_MAP_STYLE,
         basemap: GEOGRAPHY_MAP_BASEMAP,

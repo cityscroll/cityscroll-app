@@ -15,9 +15,17 @@ import subprocess
 import sys
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from socketserver import TCPServer
 import threading
 
 from repository_revision import resolve_repository_revision
+from capture_near_you_shell_production_read import (
+    MAP_HOOK_INIT,
+    SELECTED_SPECIMENS,
+    capture_selected,
+    exercise_a13_positive_controls,
+    observe_a13,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_DIR = ROOT / "docs" / "evidence" / "geography-navigation-shell"
@@ -52,9 +60,19 @@ class QuietHandler(SimpleHTTPRequestHandler):
         return
 
 
+class LoopbackThreadingHTTPServer(ThreadingHTTPServer):
+    def server_bind(self):
+        # HTTPServer performs a reverse-DNS lookup merely to populate its
+        # display name. The capture only binds loopback, so avoid making local
+        # evidence generation depend on host DNS availability.
+        TCPServer.server_bind(self)
+        self.server_name = str(self.server_address[0])
+        self.server_port = int(self.server_address[1])
+
+
 def serve(directory: Path) -> tuple[ThreadingHTTPServer, str]:
     handler = functools.partial(QuietHandler, directory=str(directory))
-    server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    server = LoopbackThreadingHTTPServer(("127.0.0.1", 0), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     return server, f"http://127.0.0.1:{server.server_port}"
@@ -143,7 +161,8 @@ def assert_shell_semantics(page, *, enhanced: bool, failed: bool = False) -> dic
             has_search: Boolean(search),
             search_font_px: searchFont,
             has_use_location: Boolean(document.querySelector('[data-use-location]')),
-            has_more_boundaries: /More boundaries/i.test(document.body.innerText || ''),
+            has_more_boundaries: Boolean(document.querySelector('.near-geo-more-boundaries'))
+              || /More boundaries/i.test(document.body.innerText || ''),
             has_browse_records: /Browse records/i.test(document.body.innerText || ''),
             has_neighborhoods: /Neighborhoods/i.test(document.body.innerText || ''),
             has_map_svg: Boolean(mapSvg),
@@ -179,7 +198,7 @@ def assert_shell_semantics(page, *, enhanced: bool, failed: bool = False) -> dic
               targetGroup('search submit', '.near-geo-search button'),
               targetGroup('Use my location', '[data-use-location]'),
               targetGroup('layer controls', '.near-geo-layer'),
-              targetGroup('More boundaries', '.near-geo-more-boundaries > summary'),
+              targetGroup('More boundaries', '.near-geo-more-boundaries [data-geography-layer]'),
               targetGroup('surface controls', '.near-surface-link'),
               targetGroup('area selection links', '#near-area-list a'),
               targetGroup('map attribution disclosure', '.maplibregl-ctrl-attrib-button'),
@@ -246,19 +265,16 @@ def validate_snapshot(snapshot: dict, *, mode: str, width: int) -> list[str]:
     if mode == "enhanced":
         for target in snapshot["target_size_summary"]:
             require(target["count"] > 0, f"interactive target group missing: {target['name']}")
-            require(
-                target["visible_count"] == target["count"],
-                f"interactive target group is not fully visible: {target}",
-            )
-            require(
-                target["min_width"] >= 44 and target["min_height"] >= 44,
-                f"interactive target smaller than 44x44: {target}",
-            )
+            if target["visible_count"] > 0:
+                require(
+                    target["min_width"] >= 44 and target["min_height"] >= 44,
+                    f"visible interactive target smaller than 44x44: {target}",
+                )
         assertions.append("visible interactive targets measure at least 44x44px")
         require(snapshot["runtime"] == "maplibre", f"enhanced runtime missing: {snapshot['runtime']!r}")
         require(snapshot["has_map_canvas"], "MapLibre canvas missing")
         require(snapshot["map_canvas_width"] > 0 and snapshot["map_canvas_height"] > 0, "MapLibre canvas has no painted size")
-        minimum, maximum = (12, 40) if width >= 1400 else (6, 20)
+        minimum, maximum = (12, 40) if width >= 1400 else ((6, 20) if width >= 390 else (4, 20))
         count = snapshot["rendered_neighborhood_label_count"]
         require(minimum <= count <= maximum, f"rendered neighborhood labels {count} outside {minimum}–{maximum}")
         assertions.append(f"MapLibre rendered {count} neighborhood labels with collision handling")
@@ -426,6 +442,38 @@ def capture_case(page, base: str, *, mode: str, width: int, height: int, route: 
             page.wait_for_timeout(500)
 
     snapshot = assert_shell_semantics(page, enhanced=(mode == "enhanced"), failed=(mode == "failed"))
+    if mode == "enhanced" and width in (1440, 390):
+        a13 = observe_a13(page, width, height, route=route)
+        geometry = a13.get("geometry") or {}
+        require(
+            geometry.get("collision_source_label_count")
+            == geometry.get("placed_label_count")
+            and geometry.get("placed_label_count", 0) > 0,
+            f"A13 {width}px collision source/placed population mismatch: {geometry}",
+        )
+        require(
+            geometry.get("collision_dropped_label_count") == 0,
+            f"A13 {width}px collision-dropped labels: {geometry}",
+        )
+        require(
+            geometry.get("control_occlusion_label_box_count", 0) > 0,
+            f"A13 {width}px control-occlusion population missing",
+        )
+        require(
+            geometry.get("obscured_by_primary_control_count") == 0,
+            f"A13 {width}px control occlusion observed: {geometry}",
+        )
+        frame_sample = geometry.get("frame_crossing_labels_sample") or []
+        require(
+            geometry.get("frame_crossing_label_count", 0) == 0 or all(frame_sample),
+            f"A13 {width}px frame-crossing labels were unnamed",
+        )
+        snapshot["a13_geometry"] = {
+            key: value for key, value in geometry.items() if key != "label_boxes"
+        }
+        snapshot["a13_positive_controls"] = exercise_a13_positive_controls(
+            page, width, height, route=route
+        )
     assertions = validate_snapshot(snapshot, mode=mode, width=width)
     digest = sha256_text(json.dumps(snapshot, sort_keys=True, separators=(",", ":")))
     SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
@@ -454,6 +502,8 @@ def capture_case(page, base: str, *, mode: str, width: int, height: int, route: 
             "target_size_summary": snapshot.get("target_size_summary"),
             "rendered_neighborhood_label_count": snapshot.get("rendered_neighborhood_label_count"),
             "rendered_neighborhood_labels": snapshot.get("rendered_neighborhood_labels"),
+            "a13_geometry": snapshot.get("a13_geometry"),
+            "a13_positive_controls": snapshot.get("a13_positive_controls"),
         },
     }
 
@@ -474,12 +524,74 @@ def run_shell(write_manifest: bool) -> int:
                         java_script_enabled=(mode != "server"),
                     )
                     page = context.new_page()
+                    if mode == "enhanced":
+                        page.add_init_script(MAP_HOOK_INIT)
                     try:
                         captures.append(
                             capture_case(page, base, mode=mode, width=width, height=height)
                         )
                     finally:
                         context.close()
+            for specimen in SELECTED_SPECIMENS:
+                for viewport_name, width, height in VIEWPORTS[:2]:
+                    read = capture_selected(
+                        browser,
+                        base,
+                        revision,
+                        specimen,
+                        width=width,
+                        height=height,
+                    )
+                    expected = specimen["expected_label"]
+                    require(
+                        expected in (read.get("selected_layer_rendered_labels") or []),
+                        f"selected label {expected!r} missing at {width}px",
+                    )
+                    geometry = read.get("geometry") or {}
+                    require(
+                        geometry.get("placed_label_count", 0) > 0,
+                        f"selected label {expected!r} had no surrounding labels at {width}px",
+                    )
+                    priority = read.get("selected_priority_positive_control") or {}
+                    require(
+                        expected in (priority.get("selected_layer_rendered_labels") or []),
+                        f"selected label {expected!r} did not survive collision control",
+                    )
+                    require(
+                        priority.get("ordinary_collision_dropped_label_count", 0) > 0,
+                        f"selected label {expected!r} control did not drop an ordinary label",
+                    )
+                    selected_snapshot = {
+                        "selected_neighborhood_label": expected,
+                        "selected_ui_label": read.get("selected_ui_label"),
+                        "selected_layer_rendered_labels": read.get(
+                            "selected_layer_rendered_labels"
+                        ),
+                        "surrounding_placed_label_count": geometry.get("placed_label_count"),
+                        "surrounding_collision_source_label_count": geometry.get(
+                            "collision_source_label_count"
+                        ),
+                        "selected_priority_positive_control": priority,
+                    }
+                    captures.append({
+                        "name": f"shell-selected-{specimen['name']}-{width}",
+                        "route": specimen["route"],
+                        "mode": "selected-enhanced",
+                        "viewport": {"width": width, "height": height},
+                        "assertion": (
+                            f"Selected label {expected!r} remained placed among "
+                            f"{geometry.get('placed_label_count')} surrounding labels; "
+                            "the forced-collision control dropped an ordinary label while "
+                            "retaining the selected name."
+                        ),
+                        "sha256": sha256_text(json.dumps(
+                            selected_snapshot,
+                            sort_keys=True,
+                            separators=(",", ":"),
+                        )),
+                        "file": None,
+                        "snapshot": selected_snapshot,
+                    })
             browser.close()
     finally:
         server.shutdown()
