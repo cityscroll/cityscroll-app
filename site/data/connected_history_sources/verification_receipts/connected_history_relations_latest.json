@@ -1,0 +1,15 @@
+{
+  "schema": "cityscroll.connected_history_relations_receipt.v1",
+  "version": 1,
+  "artifact": "site/data/connected_history_relations.json",
+  "generated_at": "2026-09-26T00:00:00.000Z",
+  "selection_hash": "6de20da95e60cb9f415d122d3896ea3ea2c76677e3de4368b5335e4ac73169c4",
+  "counts": {
+    "candidates": 23,
+    "admitted": 17,
+    "rejected": 6
+  },
+  "method": "connected_history_relation_v1",
+  "source_policy": "fixed-six-case-dossier-only",
+  "candidate_count": 23
+}

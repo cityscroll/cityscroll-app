@@ -181,6 +181,7 @@ export function warrantClassForEdge(input = {}) {
     method.includes("fuzzy")
     || method.includes("probabilistic")
     || method.includes("similarity")
+    || method.includes("proximity")
     || method.includes("token")
     || method.includes("mandate_meeting_subject_temporal")
     || method.includes("conventional_v2")

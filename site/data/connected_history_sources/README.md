@@ -2,8 +2,9 @@
 
 Receipts under `verification_receipts/` freeze the cross-board evaluation cohort
 built from already-retained ZAP, parcel, board-position, and BSA inputs before
-any extraction tuning, and record the bounded CEQR / DOT / EDC document
-retention pass over the fixed six-case dossier.
+any extraction tuning; record the bounded CEQR / DOT / EDC document retention
+pass over the fixed six-case dossier; and freeze typed explicit-reference and
+scoped-history relation admission over that same dossier.
 
 Rebuild or verify:
 
@@ -19,6 +20,10 @@ node --test test/connected_history_cohort.test.mjs
 node tools/build_connected_history_documents.mjs
 node tools/build_connected_history_documents.mjs --check
 node --test test/connected_history_documents.test.mjs
+
+node tools/build_connected_history_relations.mjs
+node tools/build_connected_history_relations.mjs --check
+node --test test/connected_history_relations.test.mjs
 ```
 
 Document retention resolves DOT parent-page attachment selectors once into an

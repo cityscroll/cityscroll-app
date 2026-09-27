@@ -393,10 +393,22 @@
       "identity_contract": {
         "schema": "cityscroll.land_use_filing_obligation.v1",
         "source_qualified": true,
-        "applicability_states": ["required", "not_required", "unknown", "not_yet_effective", "source_conflict"],
+        "applicability_states": [
+          "required",
+          "not_required",
+          "unknown",
+          "not_yet_effective",
+          "source_conflict"
+        ],
         "applicability_public_state_requires_publisher_assertion": true,
         "reconstructed_candidate_never_public": true,
-        "fulfillment_states": ["document_observed", "publisher_identifies_not_timely_filed", "not_observed", "not_checked", "source_unavailable"],
+        "fulfillment_states": [
+          "document_observed",
+          "publisher_identifies_not_timely_filed",
+          "not_observed",
+          "not_checked",
+          "source_unavailable"
+        ],
         "certification_blocker_false_for_racial_equity_report": true,
         "public_route": null
       },
@@ -448,9 +460,22 @@
         "source_qualified": true,
         "document_id_derived_from_publisher_document_id_and_first_observed_at": true,
         "same_name_never_merges": true,
-        "document_types": ["racial_equity_report", "filed_land_use_package", "notice_of_receipt", "notice_of_certification_or_referral", "ceqr_document_link", "other", "unknown"],
+        "document_types": [
+          "racial_equity_report",
+          "filed_land_use_package",
+          "notice_of_receipt",
+          "notice_of_certification_or_referral",
+          "ceqr_document_link",
+          "other",
+          "unknown"
+        ],
         "ceqr_document_link_blocked_until_seqra_04": true,
-        "classification_order": ["explicit_publisher_type_or_group", "title_token_plus_markers", "reviewed_mapping", "unknown"],
+        "classification_order": [
+          "explicit_publisher_type_or_group",
+          "title_token_plus_markers",
+          "reviewed_mapping",
+          "unknown"
+        ],
         "public_route": null
       },
       "grounding": "gap"
@@ -1550,7 +1575,7 @@
       "to": "civic-institution",
       "relation": "staffs",
       "inverse": "has_staffing_from",
-      "reason": "Institution-to-institution staffing from a sourced legal basis such as Charter § 191. Staffing a commission is not a merge and is not general control.",
+      "reason": "Institution-to-institution staffing from a sourced legal basis such as Charter \u00a7 191. Staffing a commission is not a merge and is not general control.",
       "edge_schema": "cityscroll.civic_institution_role_edge.v1",
       "required_fields": [
         "relation_id",
@@ -1658,7 +1683,7 @@
       "to": "civic-institution",
       "relation": "chairs_body",
       "inverse": "body_chaired_by",
-      "reason": "An elected office chairs a distinct governing body, such as a borough president chairing a borough board under Charter § 85. Chairing is not general control.",
+      "reason": "An elected office chairs a distinct governing body, such as a borough president chairing a borough board under Charter \u00a7 85. Chairing is not general control.",
       "edge_schema": "cityscroll.civic_institution_role_edge.v1",
       "required_fields": [
         "relation_id",
@@ -1913,7 +1938,7 @@
       "status": "unregistered",
       "from": "community-board-committee",
       "to": "matter",
-      "reason": "Declared for a committee source that explicitly identifies a publisher-keyed matter; an agenda string or topic similarity cannot create a canonical matter. Council meeting→LU joins stay an explicit gap until an exact Legistar or ZAP receipt exists.",
+      "reason": "Declared for a committee source that explicitly identifies a publisher-keyed matter; an agenda string or topic similarity cannot create a canonical matter. Council meeting\u2192LU joins stay an explicit gap until an exact Legistar or ZAP receipt exists.",
       "contract_ref": "cityscroll.community_board_agenda_item_source_contract.v1",
       "edge_schema": "cityscroll.community_board_considers_matter_edge.v1",
       "required_evidence": [
@@ -2004,7 +2029,7 @@
       "from": "land_project",
       "to": "community-board|borough-president|borough-board",
       "relation": "affected_review_body_for",
-      "reason": "Normative Charter § 196 affected-review-body edge from exact project community districts and Community Board covers relations. Same-borough distinct community districts affect the borough board. The edge is not an observed recommendation, meeting, or disposition.",
+      "reason": "Normative Charter \u00a7 196 affected-review-body edge from exact project community districts and Community Board covers relations. Same-borough distinct community districts affect the borough board. The edge is not an observed recommendation, meeting, or disposition.",
       "contract_ref": "cityscroll.affected_review_body_for.v1",
       "edge_schema": "cityscroll.affected_review_body_for.v1",
       "required_evidence": [
@@ -2444,7 +2469,7 @@
       "to": "project",
       "relation": "decides_land_project",
       "inverse": "has_meeting_join",
-      "reason": "Staged compatibility projection of exact meeting→land-project joins. Canonical semantics are about_project or reviews_project. Existing entity-intelligence, project-connections, calendar, agency, and pivot consumers keep this id until migration is complete.",
+      "reason": "Staged compatibility projection of exact meeting\u2192land-project joins. Canonical semantics are about_project or reviews_project. Existing entity-intelligence, project-connections, calendar, agency, and pivot consumers keep this id until migration is complete.",
       "contract_ref": "cityscroll.land_project_decision_relation.v1",
       "edge_schema": "cityscroll.land_project_decision_relation.v1",
       "compatibility_for": [
@@ -2663,9 +2688,16 @@
       "inverse": "obligation_of_project",
       "reason": "LDP-23: a project carries a filing obligation only when a real land_use_filing_obligation.v1 envelope exists for it (its own source, clock, and applicability contract) -- never minted from a project mention alone.",
       "edge_schema": "cityscroll.land_use_filing_relation.v1",
-      "allowed_statuses": ["accepted", "unknown", "held", "unresolved"],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
       "negative_rule": "Never mint a filing obligation from a project mention alone; require an obligation envelope with its own source, clock, and applicability contract.",
-      "backing": ["cityscroll.land_use_filing_obligation.v1"],
+      "backing": [
+        "cityscroll.land_use_filing_obligation.v1"
+      ],
       "label": "Has filing obligation",
       "grounding": "gap"
     },
@@ -2678,9 +2710,16 @@
       "inverse": "has_filed_document",
       "reason": "LDP-23: the exact ZAP project/document relationship a filing document was observed under. Never a title, address, or applicant resemblance join.",
       "edge_schema": "cityscroll.land_use_filing_relation.v1",
-      "allowed_statuses": ["accepted", "unknown", "held", "unresolved"],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
       "negative_rule": "Never relate a document to a project by title, address, or applicant resemblance; require the exact ZAP project/document relationship the document was observed under.",
-      "backing": ["cityscroll.land_use_filing_document.v1"],
+      "backing": [
+        "cityscroll.land_use_filing_document.v1"
+      ],
       "label": "Filed for project",
       "grounding": "gap"
     },
@@ -2693,9 +2732,17 @@
       "inverse": "obligation_evidenced_by_document",
       "reason": "LDP-23: records that CityScroll observed this document as the qualifying artifact for the obligation's fulfillment.document_refs. Filename similarity alone is insufficient; never asserts review, decision, approval, clearance, compliance, or completeness.",
       "edge_schema": "cityscroll.land_use_filing_relation.v1",
-      "allowed_statuses": ["accepted", "unknown", "held", "unresolved"],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
       "negative_rule": "Filename similarity alone is insufficient. Never asserts review, decision, approval, clearance, compliance, or completeness.",
-      "backing": ["cityscroll.land_use_filing_obligation.v1", "cityscroll.land_use_filing_document.v1"],
+      "backing": [
+        "cityscroll.land_use_filing_obligation.v1",
+        "cityscroll.land_use_filing_document.v1"
+      ],
       "label": "Satisfies obligation",
       "grounding": "gap"
     },
@@ -2708,9 +2755,17 @@
       "inverse": "obligation_has_published_evidence",
       "reason": "LDP-23: a weaker evidentiary link than satisfies_obligation -- e.g. a notice or package version relevant to an obligation's procedural context. Never sets fulfillment.state by itself.",
       "edge_schema": "cityscroll.land_use_filing_relation.v1",
-      "allowed_statuses": ["accepted", "unknown", "held", "unresolved"],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
       "negative_rule": "Never sets fulfillment.state by itself and never implies review, decision, approval, clearance, compliance, or completeness.",
-      "backing": ["cityscroll.land_use_filing_obligation.v1", "cityscroll.land_use_filing_document.v1"],
+      "backing": [
+        "cityscroll.land_use_filing_obligation.v1",
+        "cityscroll.land_use_filing_document.v1"
+      ],
       "label": "Published as evidence",
       "grounding": "gap"
     },
@@ -2723,11 +2778,178 @@
       "inverse": "superseded_by_document",
       "reason": "LDP-23: formalizes a land_use_filing_document.v1 record's own `supersedes` field as a typed, source-evidenced edge for graph traversal and as-of projection.",
       "edge_schema": "cityscroll.land_use_filing_relation.v1",
-      "allowed_statuses": ["accepted", "unknown", "held", "unresolved"],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
       "negative_rule": "Supersession requires an explicit source-stated basis; never inferred from name or date proximity alone.",
-      "backing": ["cityscroll.land_use_filing_document.v1"],
+      "backing": [
+        "cityscroll.land_use_filing_document.v1"
+      ],
       "label": "Supersedes document",
       "grounding": "gap"
+    },
+    {
+      "id": "explicitly_references",
+      "status": "registered",
+      "from": "land_application|project|document|proceeding",
+      "to": "land_application|project|document|proceeding",
+      "relation": "explicitly_references",
+      "inverse": "referenced_by",
+      "reason": "Quoted document span names a stable predecessor or related application identifier. Applications remain distinct identities.",
+      "contract_ref": "cityscroll.connected_history_relation.v1",
+      "edge_schema": "cityscroll.connected_history_relation.v1",
+      "required_evidence": [
+        "source_system",
+        "source_record_id",
+        "source_span",
+        "method_version",
+        "observed_time"
+      ],
+      "semantic_threshold": "stable_source_identifier_with_quoted_span",
+      "negative_rule": "Proximity, coappearance, the same applicant label, or a shared board never mint this link. Distinct applications keep separate identities.",
+      "backing": [
+        "connected_history_relations",
+        "site/connected_history_relations.mjs"
+      ],
+      "label": "Explicitly references",
+      "grounding": "partial"
+    },
+    {
+      "id": "discussed_in_document",
+      "status": "registered",
+      "from": "bsa_case|proceeding",
+      "to": "board_document|official_document",
+      "relation": "discussed_in_document",
+      "inverse": "discusses_case",
+      "reason": "A board or official document quotes a stable case identifier. The link does not resolve parcel identity.",
+      "contract_ref": "cityscroll.connected_history_relation.v1",
+      "edge_schema": "cityscroll.connected_history_relation.v1",
+      "required_evidence": [
+        "source_system",
+        "source_record_id",
+        "source_span",
+        "method_version",
+        "observed_time"
+      ],
+      "semantic_threshold": "stable_case_identifier_with_quoted_span",
+      "negative_rule": "A case-to-document link does not resolve parcel identity, ownership, or project equivalence. Conflicting parcel claims stay unresolved.",
+      "backing": [
+        "connected_history_relations",
+        "site/connected_history_relations.mjs"
+      ],
+      "label": "Discussed in document",
+      "grounding": "partial"
+    },
+    {
+      "id": "successive_proposal",
+      "status": "registered",
+      "from": "ceqr|project|proposal",
+      "to": "ceqr|project|proposal",
+      "relation": "successive_proposal",
+      "inverse": "preceded_by_proposal",
+      "reason": "Source-backed successive proposal on a scoped subject. Earlier and later proposals remain separate civic identities.",
+      "contract_ref": "cityscroll.connected_history_relation.v1",
+      "edge_schema": "cityscroll.connected_history_relation.v1",
+      "required_evidence": [
+        "source_system",
+        "source_record_id",
+        "source_span",
+        "method_version",
+        "observed_time",
+        "scope"
+      ],
+      "semantic_threshold": "source_backed_successive_proposal_with_scope",
+      "negative_rule": "Successive proposals remain separate civic identities. A later proposal never absorbs an earlier one.",
+      "backing": [
+        "connected_history_relations",
+        "site/connected_history_relations.mjs"
+      ],
+      "label": "Successive proposal",
+      "grounding": "partial"
+    },
+    {
+      "id": "shares_documented_footprint",
+      "status": "registered",
+      "from": "parcel|project|proposal",
+      "to": "parcel|project|proposal",
+      "relation": "shares_documented_footprint",
+      "inverse": "shares_documented_footprint",
+      "reason": "Source-backed multi-parcel footprint co-inclusion. Scope is evidence of a published plan, not ownership.",
+      "contract_ref": "cityscroll.connected_history_relation.v1",
+      "edge_schema": "cityscroll.connected_history_relation.v1",
+      "required_evidence": [
+        "source_system",
+        "source_record_id",
+        "source_span",
+        "method_version",
+        "observed_time",
+        "geographic_scope"
+      ],
+      "semantic_threshold": "source_backed_multi_parcel_footprint",
+      "negative_rule": "Footprint scope is evidence of co-inclusion in a published plan, not ownership or a merged project.",
+      "backing": [
+        "connected_history_relations",
+        "site/connected_history_relations.mjs"
+      ],
+      "label": "Shares documented footprint",
+      "grounding": "partial"
+    },
+    {
+      "id": "corridor_segment",
+      "status": "registered",
+      "from": "corridor_segment|corridor",
+      "to": "corridor|corridor_segment",
+      "relation": "corridor_segment",
+      "inverse": "has_corridor_segment",
+      "reason": "Source-backed corridor segment with geographic scope. Repeated board presentations never imply endorsement.",
+      "contract_ref": "cityscroll.connected_history_relation.v1",
+      "edge_schema": "cityscroll.connected_history_relation.v1",
+      "required_evidence": [
+        "source_system",
+        "source_record_id",
+        "source_span",
+        "method_version",
+        "observed_time",
+        "geographic_scope"
+      ],
+      "semantic_threshold": "source_backed_segment_scope",
+      "negative_rule": "Repeated board presentations of one segment never create multiple projects or any board endorsement.",
+      "backing": [
+        "connected_history_relations",
+        "site/connected_history_relations.mjs"
+      ],
+      "label": "Corridor segment",
+      "grounding": "partial"
+    },
+    {
+      "id": "phase_component",
+      "status": "registered",
+      "from": "phase|component|opening",
+      "to": "project|phase",
+      "relation": "phase_component",
+      "inverse": "has_phase_component",
+      "reason": "Source-backed phase or component scope under a parent project. Related-news listings are not identity links.",
+      "contract_ref": "cityscroll.connected_history_relation.v1",
+      "edge_schema": "cityscroll.connected_history_relation.v1",
+      "required_evidence": [
+        "source_system",
+        "source_record_id",
+        "source_span",
+        "method_version",
+        "observed_time",
+        "component_scope"
+      ],
+      "semantic_threshold": "source_backed_component_or_phase_scope",
+      "negative_rule": "A completed component does not close the parent project. Related-news listings are not identity links.",
+      "backing": [
+        "connected_history_relations",
+        "site/connected_history_relations.mjs"
+      ],
+      "label": "Phase or component",
+      "grounding": "partial"
     }
   ],
   "event_kinds": [
@@ -3649,9 +3871,9 @@
   "procurement_policy_registry": {
     "schema": "cityscroll.procurement_publication_policy_registry.v1",
     "version": "effective-2023-06-03-amended-through-2025-09-26",
-    "description": "Versioned publication and access policy for procurement methods governed by PPB Rule § 3-08. Coverage observations are separate from legal obligations.",
+    "description": "Versioned publication and access policy for procurement methods governed by PPB Rule \u00a7 3-08. Coverage observations are separate from legal obligations.",
     "source": {
-      "title": "PPB Rule § 3-08 Small Purchases",
+      "title": "PPB Rule \u00a7 3-08 Small Purchases",
       "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
       "rule_version": "effective-2023-06-03-amended-through-2025-09-26",
       "effective_from": "2023-06-03",
@@ -3725,7 +3947,7 @@
             "effective_from": "2023-06-03",
             "effective_to": null,
             "legal_citation": {
-              "rule": "PPB Rule § 3-08",
+              "rule": "PPB Rule \u00a7 3-08",
               "section": "3-08(c)(1)(i)-(ii)",
               "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
               "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
@@ -3738,7 +3960,7 @@
             "effective_from": "2023-06-03",
             "effective_to": null,
             "legal_citation": {
-              "rule": "PPB Rule § 3-08",
+              "rule": "PPB Rule \u00a7 3-08",
               "section": "3-08(c)(1)(i)",
               "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
               "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
@@ -3781,7 +4003,7 @@
             "effective_from": "2023-06-03",
             "effective_to": null,
             "legal_citation": {
-              "rule": "PPB Rule § 3-08",
+              "rule": "PPB Rule \u00a7 3-08",
               "section": "3-08(c)(1)(i), (iii); 3-08(c)(2)",
               "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
               "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
@@ -3794,7 +4016,7 @@
             "effective_from": "2023-06-03",
             "effective_to": null,
             "legal_citation": {
-              "rule": "PPB Rule § 3-08",
+              "rule": "PPB Rule \u00a7 3-08",
               "section": "3-08(c)(1)(i); 3-08(d)(1)",
               "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
               "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
@@ -3840,7 +4062,7 @@
             "effective_from": "2023-06-03",
             "effective_to": null,
             "legal_citation": {
-              "rule": "PPB Rule § 3-08",
+              "rule": "PPB Rule \u00a7 3-08",
               "section": "3-08(c)(1)(i), (iv)",
               "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
               "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
@@ -3857,7 +4079,7 @@
             "effective_from": "2023-06-03",
             "effective_to": null,
             "legal_citation": {
-              "rule": "PPB Rule § 3-08",
+              "rule": "PPB Rule \u00a7 3-08",
               "section": "3-08(c)(1)(i); 3-08(d)(2)",
               "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
               "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
@@ -3884,7 +4106,7 @@
             "effective_from": "2023-06-03",
             "effective_to": null,
             "legal_citation": {
-              "rule": "PPB Rule § 3-08",
+              "rule": "PPB Rule \u00a7 3-08",
               "section": "3-08 (method match required before applying a subsection)",
               "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
               "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
@@ -3897,7 +4119,7 @@
             "effective_from": "2023-06-03",
             "effective_to": null,
             "legal_citation": {
-              "rule": "PPB Rule § 3-08",
+              "rule": "PPB Rule \u00a7 3-08",
               "section": "3-08 (method match required before applying a subsection)",
               "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
               "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
