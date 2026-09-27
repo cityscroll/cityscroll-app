@@ -13,6 +13,7 @@ export const NEAR_YOU_SCOPE_REGION_SELECTORS = Object.freeze([
   ".near-geo-entry",
   ".near-overview",
   ".near-place-guide",
+  ".near-scope",
   ".near-explore",
   ".local-constellation",
   ".near-form",

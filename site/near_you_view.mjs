@@ -1075,7 +1075,7 @@ export function renderNearYouDeferredParts(view) {
   // The wider-district block renders first so its scope label is read before
   // any exact result, including the honest unavailable exact-coverage copy.
   const broaderHtml = renderNearYouBroaderDistrictsHtml(view.broader_districts);
-  const resultsHtml = `<section class="near-results" aria-labelledby="${broaderHtml ? "near-broader-districts-heading" : "near-results-heading"}"${resultCount == null ? "" : ` data-results-count="${resultCount}"`} data-near-surface-panel="records">
+  const resultsHtml = `<section class="near-results" aria-labelledby="${broaderHtml ? "near-broader-districts-heading" : "near-results-heading"}"${resultCount == null ? "" : ` data-results-count="${resultCount}"`}>
       ${broaderHtml}<div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${resultCount == null ? `Matching ${esc(view.lensLabel)} records` : `${resultCount} ${esc(view.lensLabel)} records for these filters`}</h2></div></div>
       ${recordList(visibleResults, noResultsCopy || (view.mapState === "unsupported"
         ? `${esc(view.lensLabel)} records are not mapped here.`
@@ -1096,15 +1096,15 @@ export function renderNearYouDeferredBody(view) {
     ${bagsHtml}`;
 }
 
-function renderNearYouDeferredShell(view, part, { includeListPanelMarker = false } = {}) {
+function renderNearYouDeferredShell(view, part) {
   if (part === "results") {
     if (view.dataState === "error") {
-      return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="error"${includeListPanelMarker ? ` data-near-surface-panel="records"` : ""} aria-busy="false">
+      return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="error" aria-busy="false">
       <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>
       ${renderNearYouRecordsRecovery(view)}
     </section>`;
     }
-    return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending"${includeListPanelMarker ? ` data-near-surface-panel="records"` : ""} aria-busy="true">
+    return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending" aria-busy="true">
       <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>
       <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
     </section>`;
@@ -1311,7 +1311,7 @@ function renderNearYouGeoWorkspace(view) {
     </div>`;
 }
 
-export function renderNearYouBody(view, { includeListPanelMarker = false } = {}) {
+export function renderNearYouBody(view) {
   const scopeChips = view.scopeSummary
     .filter((chip) => chip.axis !== "lens")
     .map((chip) => `<li data-scope-axis="${esc(chip.axis)}"><span>${esc(chip.label)}</span><a href="${esc(nearYouUrlFromScope(scopeWithoutAxis(view.scope, chip.axis), { base: view.canonicalBase }))}" data-remove-filter="${esc(chip.axis)}" aria-label="Remove ${esc(chip.label)}">×</a></li>`).join("");
@@ -1376,7 +1376,7 @@ export function renderNearYouBody(view, { includeListPanelMarker = false } = {})
   const recordsBlock = `<div class="near-records-surface" data-near-surface-panel="records">
       ${advancedFilters}
       ${coverageNotes}
-      ${renderNearYouDeferredShell(view, "results", { includeListPanelMarker })}
+      ${renderNearYouDeferredShell(view, "results")}
     </div>`;
   const selectedHero = view.hasPlace ? `<section class="near-hero">
       <h1>${esc(view.placePresentation.label)}</h1>
@@ -1470,7 +1470,7 @@ export function renderNearYouDocument(view, options = {}) {
   const assetPrefix = options.assetPrefix || "/";
   const prefix = assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`;
   const deferredDataHref = options.deferredDataHref || view.deferredDataHref || "";
-  const body = renderNearYouBody({ ...view, deferredDataHref }, { includeListPanelMarker: true });
+  const body = renderNearYouBody({ ...view, deferredDataHref });
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active filters.">

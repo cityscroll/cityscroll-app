@@ -272,6 +272,7 @@ test("A2 negative fixture: failed deferred load stays an error, not an empty suc
 });
 
 test("region ownership includes resolved result and bag selectors", () => {
+  assert.ok(NEAR_YOU_SCOPE_REGION_SELECTORS.includes(".near-scope"));
   assert.ok(NEAR_YOU_SCOPE_REGION_SELECTORS.includes(".near-results"));
   assert.ok(NEAR_YOU_SCOPE_REGION_SELECTORS.includes(".near-bags"));
   const mapSource = readFileSync(join(ROOT, MAP_PATH), "utf8");
