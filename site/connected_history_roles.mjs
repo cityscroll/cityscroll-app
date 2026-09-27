@@ -609,10 +609,14 @@ export function roleAbsenceInference(artifact, { subject, role } = {}) {
  * Returns false on identity collapse:
  * 1. Partial: multiple source qualifiers under one spelling forced onto one
  *    entity_id.
- * 2. Total: distinct subjects under one spelling merged onto one entity_id
- *    (including when the entity_qualifier is also identical).
+ * 2. Total: distinct source-qualified identity evidence under one spelling
+ *    merged onto one entity_id and one entity_qualifier.
  * 3. beneficial_ownership, or a resolved identity claimed while that spelling
- *    still covers more than one subject or more than one entity_id.
+ *    still covers more than one entity_id.
+ *
+ * Subject plurality is intentionally not an identity signal: one actor may
+ * legitimately hold roles in multiple subjects. The source qualification is
+ * the independent signal that makes total collapse detectable.
  */
 export function unresolvedCompanyIdentitiesRemainDistinct(observations = []) {
   const rows = Array.isArray(observations) ? observations : [];
@@ -623,12 +627,26 @@ export function unresolvedCompanyIdentitiesRemainDistinct(observations = []) {
     const qualifier = clean(row?.actor?.entity_qualifier, 240);
     const entityId = clean(row?.actor?.entity_id, 240);
     if (!qualifier || !entityId) return false;
+    const sourceSystem = clean(
+      row?.source_locator?.source_system || row?.source_system,
+      100,
+    );
+    const sourceRecordId = clean(
+      row?.source_locator?.source_record_id || row?.source_record_id,
+      160,
+    );
+    const sourceSpanLocator = clean(
+      row?.source_locator?.source_span?.locator || row?.source_span?.locator,
+      240,
+    );
     const bucket = bySpelling.get(spelling) || [];
     bucket.push({
       entity_id: entityId,
       entity_qualifier: qualifier,
       identity_status: clean(row?.actor?.identity_status, 40).toLowerCase(),
-      subject: clean(row?.subject, 240),
+      source_identity: sourceSystem && sourceRecordId && sourceSpanLocator
+        ? [sourceSystem, sourceRecordId, sourceSpanLocator].join("\0")
+        : null,
     });
     bySpelling.set(spelling, bucket);
   }
@@ -637,16 +655,19 @@ export function unresolvedCompanyIdentitiesRemainDistinct(observations = []) {
   for (const bucket of bySpelling.values()) {
     const qualifiers = new Set(bucket.map((item) => item.entity_qualifier));
     const entityIds = new Set(bucket.map((item) => item.entity_id));
-    const subjects = new Set(
-      bucket.map((item) => item.subject).filter((subject) => subject.length > 0),
+    const actorIdentities = new Set(
+      bucket.map((item) => `${item.entity_id}\0${item.entity_qualifier}`),
+    );
+    const sourceIdentities = new Set(
+      bucket.map((item) => item.source_identity).filter(Boolean),
     );
     // Partial collapse: distinct source qualifiers forced onto one entity_id.
     if (qualifiers.size >= 2 && entityIds.size === 1) {
       return false;
     }
-    // Total collapse: distinct subjects merged onto one entity_id. Plurality
-    // of qualifiers is erased by a thorough merge, so subjects are the signal.
-    if (subjects.size >= 2 && entityIds.size === 1) {
+    // Total collapse: independent source qualifications forced onto one actor
+    // identity. Repeated role edges from one qualification remain legitimate.
+    if (sourceIdentities.size >= 2 && actorIdentities.size === 1) {
       return false;
     }
   }
@@ -657,14 +678,10 @@ export function unresolvedCompanyIdentitiesRemainDistinct(observations = []) {
   }
   for (const bucket of bySpelling.values()) {
     const entityIds = new Set(bucket.map((item) => item.entity_id));
-    const subjects = new Set(
-      bucket.map((item) => item.subject).filter((subject) => subject.length > 0),
-    );
     const hasResolved = bucket.some((item) => item.identity_status === "resolved");
-    // A resolved company identity cannot stand while distinct entity ids or
-    // distinct subjects remain under the same spelling — that is spelling
-    // used as a merge key, including after a total id merge.
-    if (hasResolved && (entityIds.size >= 2 || subjects.size >= 2)) {
+    // A resolved company identity cannot stand while distinct entity ids
+    // remain under the same spelling — that is spelling used as a merge key.
+    if (hasResolved && entityIds.size >= 2) {
       return false;
     }
   }

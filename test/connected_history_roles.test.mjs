@@ -234,26 +234,14 @@ test("A2: chair quotation stays speaker; presentation and testimony never become
 test("A3: unresolved company identity stays distinct under shared spelling", () => {
   const artifact = buildConnectedHistoryRolesArtifact();
   const franklins = artifact.observations.filter((row) => row.role === "applicant");
-  // Population beside the floor: two dated applicants share spelling and stay distinct.
+  // Population beside the floor: two dated applicants share spelling.
   assert.equal(franklins.length, 2);
-  assert.equal(
-    unresolvedCompanyIdentitiesRemainDistinct(franklins),
-    true,
-  );
-  const qualifiers = new Set(franklins.map((row) => row.actor.entity_qualifier));
-  const entityIds = new Set(franklins.map((row) => row.actor.entity_id));
-  const subjects = new Set(franklins.map((row) => row.subject));
-  assert.equal(qualifiers.size, 2);
-  assert.equal(entityIds.size, 2);
-  assert.equal(subjects.size, 2);
   for (const row of franklins) {
     assert.equal(row.actor.identity_status, "source_qualified");
     assert.equal(row.linking, false);
     assert.equal(row.beneficial_ownership, false);
   }
 
-  // Positive control — partial collapse: distinct source qualifiers forced onto
-  // one entity_id under shared spelling flips the guard.
   const partialCollapse = [
     {
       ...franklins[0],
@@ -264,14 +252,7 @@ test("A3: unresolved company identity stays distinct under shared spelling", () 
       actor: { ...franklins[1].actor, entity_id: "collapsed-company-id" },
     },
   ];
-  assert.equal(new Set(partialCollapse.map((row) => row.actor.entity_qualifier)).size, 2);
-  assert.equal(new Set(partialCollapse.map((row) => row.actor.entity_id)).size, 1);
-  assert.equal(new Set(partialCollapse.map((row) => row.subject)).size, 2);
-  assert.equal(unresolvedCompanyIdentitiesRemainDistinct(partialCollapse), false);
 
-  // Positive control — total collapse: distinct subjects merged onto one
-  // entity_id AND one entity_qualifier under shared spelling flips the guard.
-  // Plurality-of-qualifiers / plural-entity-id checks alone stay silent here.
   const totalCollapse = [
     {
       ...franklins[0],
@@ -290,10 +271,91 @@ test("A3: unresolved company identity stays distinct under shared spelling", () 
       },
     },
   ];
-  assert.equal(new Set(totalCollapse.map((row) => row.actor.entity_qualifier)).size, 1);
-  assert.equal(new Set(totalCollapse.map((row) => row.actor.entity_id)).size, 1);
-  assert.equal(new Set(totalCollapse.map((row) => row.subject)).size, 2);
-  assert.equal(unresolvedCompanyIdentitiesRemainDistinct(totalCollapse), false);
+
+  const oneActorTwoSubjects = [
+    franklins[0],
+    {
+      ...franklins[0],
+      candidate_id: "same-actor-second-subject",
+      subject: franklins[1].subject,
+      to: franklins[1].subject,
+    },
+  ];
+
+  // Property: distinct source-qualified identity evidence under one spelling
+  // must retain distinct actor identity. Multiple subjects alone do not imply
+  // collapse because one evidenced actor may legitimately hold two role edges.
+  const controls = [
+    {
+      name: "distinct identities",
+      observations: franklins,
+      entityIds: 2,
+      qualifiers: 2,
+      sourceIdentities: 2,
+      subjects: 2,
+      expected: true,
+    },
+    {
+      name: "partial collapse",
+      observations: partialCollapse,
+      entityIds: 1,
+      qualifiers: 2,
+      sourceIdentities: 2,
+      subjects: 2,
+      expected: false,
+    },
+    {
+      name: "total collapse",
+      observations: totalCollapse,
+      entityIds: 1,
+      qualifiers: 1,
+      sourceIdentities: 2,
+      subjects: 2,
+      expected: false,
+    },
+    {
+      name: "one actor in two subjects",
+      observations: oneActorTwoSubjects,
+      entityIds: 1,
+      qualifiers: 1,
+      sourceIdentities: 1,
+      subjects: 2,
+      expected: true,
+    },
+  ];
+
+  for (const control of controls) {
+    assert.equal(control.observations.length, 2, `${control.name}: population`);
+    assert.equal(
+      new Set(control.observations.map((row) => row.actor.entity_id)).size,
+      control.entityIds,
+      `${control.name}: actor ids`,
+    );
+    assert.equal(
+      new Set(control.observations.map((row) => row.actor.entity_qualifier)).size,
+      control.qualifiers,
+      `${control.name}: actor qualifiers`,
+    );
+    assert.equal(
+      new Set(control.observations.map((row) => [
+        row.source_locator.source_system,
+        row.source_locator.source_record_id,
+        row.source_locator.source_span.locator,
+      ].join("\0"))).size,
+      control.sourceIdentities,
+      `${control.name}: source identities`,
+    );
+    assert.equal(
+      new Set(control.observations.map((row) => row.subject)).size,
+      control.subjects,
+      `${control.name}: subjects`,
+    );
+    assert.equal(
+      unresolvedCompanyIdentitiesRemainDistinct(control.observations),
+      control.expected,
+      `${control.name}: guard outcome`,
+    );
+  }
 
   // Positive control — resolved after total merge: a resolved identity claimed
   // once ids are already merged still flips the guard.
