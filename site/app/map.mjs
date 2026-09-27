@@ -446,7 +446,15 @@ async function adoptGeographyEntrySelection(entry, { ephemeralPoint = null } = {
     drawer: GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
     focus: entry.selection.key,
   };
-  if (!await adoptDocument(geographySelectionHref(nextState))) return false;
+  try {
+    if (!await adoptDocument(geographySelectionHref(nextState))) {
+      throw new Error("geography-entry-adoption-stale");
+    }
+  } catch {
+    const label = entry.selected?.label || entry.selection?.id || "area";
+    status(copy("messageLocationUpdateFailed", { district: label }));
+    return false;
+  }
   overlapPointBundle = entry.bundle
     ? {
       id: entry.source || "entry",

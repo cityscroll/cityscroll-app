@@ -48,7 +48,13 @@ def install_near_you_responses(page: Page, base: str, *, break_exact: bool = Fal
 
     def fulfill(route: Route) -> None:
         query = parse_qs(urlparse(route.request.url).query)
-        if query.get("boro") == ["Queens"]:
+        if break_exact and query.get("geo"):
+            route.fulfill(
+                status=200,
+                content_type="text/html",
+                body="<html><body>broken exact document</body></html>",
+            )
+        elif query.get("boro") == ["Queens"]:
             body = (
                 "<html><body>broken exact document</body></html>"
                 if break_exact and query.get("cd")
@@ -58,7 +64,7 @@ def install_near_you_responses(page: Page, base: str, *, break_exact: bool = Fal
         else:
             route.continue_()
 
-    page.route("**/near-you?*", fulfill)
+    page.route("**/near-you/**", fulfill)
 
 
 def rebase_area_links(page: Page, base: str) -> None:
@@ -94,7 +100,7 @@ def exercise(
     page.wait_for_function(
         """() => {
           const text = document.querySelector('[data-map-status]')?.textContent.trim() || '';
-          return Boolean(text) && text !== 'Finding your district…';
+          return Boolean(text) && text !== 'Finding your area…';
         }"""
     )
     return page
@@ -111,20 +117,22 @@ def main() -> None:
 
             matched = exercise(browser, base, ASTORIA)
             matched_status = matched.locator("[data-map-status]").inner_text()
-            assert matched_status == "Location matched Q01.", f"{matched.url}: {matched_status}"
-            assert parse_qs(urlparse(matched.url).query)["cd"] == ["Q01"]
+            assert matched_status == "Location matched Astoria (Central).", (
+                f"{matched.url}: {matched_status}"
+            )
+            assert parse_qs(urlparse(matched.url).query)["geo"] == ["nta2020:QN0103"]
             matched.context.close()
 
             unmatched = exercise(browser, base, OUTSIDE_NYC)
-            assert unmatched.locator("[data-map-status]").inner_text().startswith(
-                "Your district could not be matched."
+            assert unmatched.locator("[data-map-status]").inner_text() == (
+                "That location is outside the covered city land. Choose an area from the list."
             )
             assert urlparse(unmatched.url).query == ""
             unmatched.context.close()
 
             update_failed = exercise(browser, base, ASTORIA, break_exact=True)
             assert update_failed.locator("[data-map-status]").inner_text().startswith(
-                "Location matched Q01, but the page could not update."
+                "Location matched Astoria (Central), but the page could not update."
             )
             assert urlparse(update_failed.url).query == ""
             update_failed.context.close()

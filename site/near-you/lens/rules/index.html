@@ -48,15 +48,19 @@
         <button type="submit">Search</button>
       </div>
     </form>
-      <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
-        <a class="near-surface-link is-active" href="https://cityscroll.org/near-you?surface=map&amp;lens=rules&amp;v=0" data-near-surface="map" aria-current="true">Map</a>
-        <a class="near-surface-link" href="https://cityscroll.org/near-you?surface=records&amp;lens=rules&amp;v=0" data-near-surface="records">Browse records</a>
-      </nav>
+      <div class="near-geo-primary-controls">
+        <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
+          <a class="near-surface-link is-active" href="https://cityscroll.org/near-you?surface=map&amp;lens=rules&amp;v=0" data-near-surface="map" aria-current="true">Map</a>
+          <a class="near-surface-link" href="https://cityscroll.org/near-you?surface=records&amp;lens=rules&amp;v=0" data-near-surface="records">Browse records</a>
+        </nav>
+        <div class="near-place-actions near-geo-actions">
+          <button type="button" class="js-only near-location-action" data-use-location hidden>Use my location</button>
+        </div>
+      </div>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
       <details class="near-entry-secondary">
         <summary>More ways to choose</summary>
-        <div class="near-place-actions near-geo-actions">
-          <button type="button" class="js-only near-location-action" data-use-location hidden>Use my location</button>
+        <div class="near-place-actions">
           <a href="#near-area-list">Browse the area list</a>
         </div>
         <div class="near-geo-layers" data-geography-layer-switcher role="group" aria-label="Boundary layers">
