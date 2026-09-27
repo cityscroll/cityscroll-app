@@ -44,6 +44,7 @@ test("manifest identity and viewport registry", () => {
   assert.equal(manifest.join, "exact_project_id");
   assert.match(manifest.anchor_specimen.project_id, PROJECT_ID_RE);
   assert.match(manifest.exact_precision_specimen.project_id, PROJECT_ID_RE);
+  assert.match(manifest.unmapped_specimen.project_id, PROJECT_ID_RE);
   assert.notEqual(manifest.anchor_specimen.project_id, manifest.exact_precision_specimen.project_id);
 
   const viewportNames = Object.keys(manifest.viewports);
@@ -188,6 +189,10 @@ test("boundary and unmapped-honesty fixtures disclose state rather than assert s
 
   const unmapped = manifest.fixtures.find((fixture) => fixture.id === "unmapped-honesty");
   assert.ok(unmapped);
+  assert.ok(
+    unmapped.list_route.includes(`q=${manifest.unmapped_specimen.project_id}`),
+    "the all-unmapped fixture must name its registered negative specimen",
+  );
   assert.equal(unmapped.expects.mapped, 0);
   assert.equal(unmapped.expects.unmapped_note_present, true);
   assert.ok(unmapped.expects.total_at_least >= 1);

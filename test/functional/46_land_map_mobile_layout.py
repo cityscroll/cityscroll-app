@@ -15,10 +15,13 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import sys
 
 from playwright.sync_api import Route, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from land_map_expectations import expected_counts_for_list  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 MAP_ROUTE = "/browse/zoning/?view=map"
@@ -29,14 +32,6 @@ ANCHOR_SPECIMEN = "2025K0305"
 # The one project genuinely lacking a retained BBL (site/data/land_project_map_points_receipt.json)
 # -- reachable only through the List.
 UNMAPPED_SPECIMEN = "2025M0252"
-# Derived from the committed join receipt rather than pinned, so a future resolver refresh
-# that legitimately changes how many of the 40 Land projects resolve to a map point updates
-# this expectation from its own source instead of drifting silently against a stale number.
-_RECEIPT = json.loads((ROOT / "site" / "data" / "land_project_map_points_receipt.json").read_text())
-EXPECTED_TOTAL = _RECEIPT["counts"]["universe"]
-EXPECTED_MAPPED = _RECEIPT["counts"]["mapped"]
-EXPECTED_UNMAPPED = EXPECTED_TOTAL - EXPECTED_MAPPED
-
 # The registered fixtures, plus the desktop regression width.
 FIXTURES = ((320, 568), (375, 667), (768, 1024), (1440, 900))
 
@@ -100,6 +95,9 @@ def read_layout(page) -> dict:
             list_link_present: Boolean(listLink),
             list_link_reachable: inViewport(listLink),
             list_link_href: listLink ? listLink.getAttribute('href') : null,
+            list_ids: [...document.querySelectorAll('#llist a[href*="#land/"]')]
+              .map((a) => decodeURIComponent(a.getAttribute('href').split('#land/')[1] || ''))
+              .filter(Boolean),
             list_rows: document.querySelectorAll('#llist .row').length,
           };
         }"""
@@ -140,14 +138,15 @@ def check_fixture(browser, width: int, height: int) -> None:
 
         # A1: switch, counts, unmapped accounting, and a List exit -- all without overflow.
         layout = read_layout(page)
+        expected = expected_counts_for_list(layout["list_ids"])
         assert layout["overflow"] <= 1, f"{width}px: horizontal overflow of {layout['overflow']}px"
         assert layout["switch_present"] and layout["switch_reachable"], (width, layout)
-        assert layout["total"] == EXPECTED_TOTAL, (width, layout)
-        assert layout["mapped"] == EXPECTED_MAPPED, (width, layout)
-        assert layout["unmapped"] == EXPECTED_UNMAPPED, (width, layout)
+        assert layout["total"] == expected["total"], (width, layout)
+        assert layout["mapped"] == expected["mapped"], (width, layout)
+        assert layout["unmapped"] == expected["unmapped"], (width, layout)
         assert layout["list_link_present"] and layout["list_link_reachable"], (width, layout)
         assert layout["list_link_href"], f"{width}px: the List exit has no shareable href"
-        assert layout["list_rows"] == EXPECTED_TOTAL, "the List denominator dropped a row"
+        assert layout["list_rows"] == expected["total"], "the List denominator dropped a row"
 
         # A2: a touch tap -- never a hover -- reveals identity, method, precision, and detail.
         marker(page, ANCHOR_SPECIMEN).tap()
@@ -181,7 +180,7 @@ def check_fixture(browser, width: int, height: int) -> None:
             UNMAPPED_SPECIMEN,
         )
         assert after_handoff["map_mounted"] is False, (width, "the List exit left the Map mounted")
-        assert after_handoff["rows"] == EXPECTED_TOTAL, (width, after_handoff)
+        assert after_handoff["rows"] == expected["total"], (width, after_handoff)
 
         # A4: back to Map, then a canonical detail visit, then back -- no overflow either side.
         page.locator('#land-view-switch [data-land-view="map"]').tap()
@@ -198,7 +197,7 @@ def check_fixture(browser, width: int, height: int) -> None:
         page.wait_for_selector("#land-map-selected", timeout=20_000)
         back = read_layout(page)
         assert back["overflow"] <= 1, (width, "overflowed after Back")
-        assert back["total"] == EXPECTED_TOTAL, (width, "Back changed the filtered population")
+        assert back["total"] == expected["total"], (width, "Back changed the filtered population")
         back_selection = page.evaluate(
             "() => document.getElementById('land-map-panel')?.dataset.landMapSelected || null"
         )
@@ -217,8 +216,12 @@ def check_filtered_population_keeps_the_same_model(browser) -> None:
         page.goto(f"{BASE}{FILTERED_MAP_ROUTE}", wait_until="domcontentloaded", timeout=45_000)
         wait_for_map(page)
         layout = read_layout(page)
+        expected = expected_counts_for_list(layout["list_ids"])
         assert layout["overflow"] <= 1, layout
-        assert layout["total"] < EXPECTED_TOTAL, "the borough filter did not narrow the population"
+        assert layout["total"] < 40, "the borough filter did not narrow the bounded default population"
+        assert layout["total"] == expected["total"]
+        assert layout["mapped"] == expected["mapped"]
+        assert layout["unmapped"] == expected["unmapped"]
         assert layout["total"] == layout["list_rows"], "the map summary and the List disagree on the count"
         print("filtered-375px: OK", json.dumps({"total": layout["total"]}))
     finally:

@@ -6,7 +6,7 @@ that can quietly stop being true, so this drives the whole journey a resident ac
 -- Map, select, summary, canonical detail, Back, List, Map -- and checks the five things a
 source assertion cannot:
 
-  1. Selecting costs no project search. The summary is written from a row already on screen.
+  1. Selecting costs no project-data request. The summary is written from a row already on screen.
   2. Pointer and keyboard reach the same state, and exactly one marker is ever active.
   3. The detail route a selection offers is the route the List card offers, and Back returns
      to the same filtered population with the selection and the focus the resident left.
@@ -116,8 +116,8 @@ def assert_selection_absent_from_url(state: dict) -> None:
 
 
 def check_pointer_selection_costs_no_search(page) -> dict:
-    requests: list[str] = []
-    page.on("request", lambda request: requests.append(request.url))
+    requests: list[tuple[str, str]] = []
+    page.on("request", lambda request: requests.append((request.url, request.resource_type)))
     page.goto(f"{BASE}{MAP_ROUTE}", wait_until="domcontentloaded", timeout=45_000)
     wait_for_map(page)
 
@@ -131,14 +131,11 @@ def check_pointer_selection_costs_no_search(page) -> dict:
     page.wait_for_selector("#land-map-selected", timeout=15_000)
     page.wait_for_timeout(500)
 
-    # The whole point of reusing the filtered row: activating a marker asks the network
-    # for nothing. A project search here would mean the map had built a second lookup.
-    during = [url for url in requests[mark:] if url.startswith(BASE)]
-    for url in during:
-        assert "land" not in url.rsplit("/", 1)[-1] or url.endswith(".png"), (
-            f"selecting a marker fetched {url}")
-    assert not [u for u in during if "zap-outcomes" in u or "land_projects" in u], (
-        f"selecting a marker issued a project search: {during}")
+    # The whole point of reusing the filtered row: activation may load local presentation
+    # code, but it must not issue a data request to reconstruct the selected project.
+    during = [(url, resource_type) for url, resource_type in requests[mark:] if url.startswith(BASE)]
+    data_requests = [url for url, resource_type in during if resource_type in {"fetch", "xhr"}]
+    assert not data_requests, f"selecting a marker issued a project-data request: {data_requests}"
 
     state = read_selection(page)
     assert state["painted"] == ANCHOR_SPECIMEN, state["painted"]
@@ -149,7 +146,7 @@ def check_pointer_selection_costs_no_search(page) -> dict:
         f"pointer selection left focus on {state['focus_kind']}, not the summary it produced")
     assert_selection_absent_from_url(state)
     print("pointer-selection:", json.dumps(
-        {"selected": state["painted"], "requests": len(during), "total": state["total"]},
+        {"selected": state["painted"], "data_requests": len(data_requests), "total": state["total"]},
         ensure_ascii=False))
     return state
 

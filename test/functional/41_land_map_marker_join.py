@@ -19,10 +19,13 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import sys
 
 from playwright.sync_api import Route, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from land_map_expectations import expected_counts_for_list  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 MAP_ROUTE = "/browse/zoning/?view=map"
@@ -32,24 +35,6 @@ PROJECTION = "data/land_project_map_points.json"
 MAPPED_SPECIMEN = "2025K0305"
 # The one visible project genuinely lacking a retained BBL in the generated point projection.
 UNMAPPED_SPECIMEN = "2025M0252"
-_POINT_PROJECTION = json.loads(
-    (ROOT / "site" / "data" / "land_project_map_points.json").read_text()
-)
-
-
-def expected_counts_for_list(list_ids: list[str]) -> dict[str, int]:
-    """Join the bounded visible List to the full-catalog generated point projection."""
-    ids = list(dict.fromkeys(list_ids))
-    points = _POINT_PROJECTION.get("points", {})
-    unmapped = _POINT_PROJECTION.get("unmapped", {})
-    missing = [project_id for project_id in ids if project_id not in points and project_id not in unmapped]
-    assert not missing, f"visible List ids are absent from the point projection: {missing}"
-    mapped_count = sum(project_id in points for project_id in ids)
-    return {
-        "total": len(ids),
-        "mapped": mapped_count,
-        "unmapped": len(ids) - mapped_count,
-    }
 
 
 def install_routes(page) -> None:

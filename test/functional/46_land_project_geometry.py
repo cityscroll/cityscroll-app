@@ -11,10 +11,13 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+import sys
 
 from playwright.sync_api import Route, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from land_map_expectations import expected_counts_for_list  # noqa: E402
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 MAP_ROUTE = "/browse/zoning/?view=map"
 POSITIVE_SPECIMEN = "2026R0127"  # single-BBL exact.
@@ -61,6 +64,9 @@ def observe(page) -> dict:
             positive_pointer_events: positive ? getComputedStyle(positive).pointerEvents : null,
             fallback_present: !!byId(ids.fallback),
             marker_count: document.querySelectorAll('#land-map-panel .land-map-marker').length,
+            list_ids: [...document.querySelectorAll('#llist a[href*="#land/"]')]
+              .map((a) => decodeURIComponent(a.getAttribute('href').split('#land/')[1] || ''))
+              .filter(Boolean),
             counts: summary ? {
               total: Number(summary.dataset.landMapTotal),
               mapped: Number(summary.dataset.landMapMapped),
@@ -79,20 +85,27 @@ def main() -> None:
         install_routes(page)
         page.goto(f"{BASE}{MAP_ROUTE}", wait_until="domcontentloaded", timeout=45_000)
         wait_for_map(page)
+        before = observe(page)
+        page.locator(f'[data-land-map-project="{POSITIVE_SPECIMEN}"][role="button"]').click()
+        page.wait_for_selector(
+            f'.land-map-parcel-outline[data-land-map-project="{POSITIVE_SPECIMEN}"]', timeout=15_000
+        )
         reading = observe(page)
         browser.close()
 
-    assert reading["counts"] == {"total": 40, "mapped": 29, "unmapped": 11}, (
+    expected = expected_counts_for_list(reading["list_ids"])
+    assert reading["counts"] == expected, (
         f"geometry must not change the published counts: {reading['counts']}"
     )
-    assert reading["outline_count"] == 9, f"expected 9 exact-key parcel outlines, saw {reading['outline_count']}"
+    assert before["outline_count"] == 0, "parcel geometry loaded before a project was inspected"
+    assert reading["outline_count"] == 1, f"expected one inspected parcel outline, saw {reading['outline_count']}"
     assert reading["positive_present"], "the single-BBL specimen must carry a parcel outline"
     assert reading["positive_method"] == "single_bbl_parcel_polygon"
     assert reading["positive_precision"] == "tax_lot_boundary"
     assert reading["positive_interactive"] is False, "a parcel outline must never be its own control"
     assert reading["positive_pointer_events"] == "none", "a parcel outline must never intercept pointer events"
     assert reading["fallback_present"] is False, "a multi-BBL anchor must never carry a shape"
-    assert reading["marker_count"] == 29, "geometry must not add or remove a single marker"
+    assert reading["marker_count"] == expected["mapped"], "geometry must not add or remove a single marker"
     print(f"ok land-project-geometry: outlines={reading['outline_count']} counts={reading['counts']}")
 
 
