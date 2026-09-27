@@ -118,6 +118,9 @@ test("next digest preview shares the drain renderer and does not send or mutate 
     assert.equal(body.next_scheduled_at, "2026-08-10T13:00:00.000Z");
     assert.equal(body.subscriber_label, "person@example.com");
     assert.equal(body.owed_item_count, 1);
+    assert.equal(body.owed_attach.attached_count, 1);
+    assert.equal(body.owed_drain_check.ok, true);
+    assert.equal(body.owed_drain_check.status, "drain_ready");
     assert.equal(body.empty, false);
     assert.match(body.digest_html, /Owed harbor project/);
     assert.match(body.digest_text, /Owed harbor project/);

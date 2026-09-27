@@ -6,6 +6,7 @@ import assert from "node:assert/strict";
 import {
   attachOwedRows,
   OWED_ATTACH_REASONS,
+  owedDrainCheck,
 } from "../src/lib/owed_attach.mjs";
 
 const PRIOR_WATCH_ID = "watch:prior-district-key";
@@ -166,4 +167,29 @@ test("district production rows without a repeated district id attach only from f
   const refused = attachOwedRows([outOfScope], [owedItem({ payload: row })]);
   assert.equal(refused.attached_count, 0);
   assert.equal(refused.unattached[0].reason, OWED_ATTACH_REASONS.FILTER_MISMATCH);
+});
+
+test("drain check fails when an owed row is silently skipped", () => {
+  const check = owedDrainCheck({
+    owed_count: 1,
+    attached_count: 0,
+    unattached_count: 0,
+    unattached: [],
+  });
+  assert.equal(check.ok, false);
+  assert.equal(check.status, "undrained_without_reason");
+  assert.equal(check.accounted_count, 0);
+});
+
+test("drain check accepts an undrained backlog only when every row has a reason", () => {
+  const receipt = attachOwedRows([], [owedItem()]);
+  assert.deepEqual(owedDrainCheck(receipt), {
+    ok: true,
+    status: "undrained_with_reasons",
+    owed_count: 1,
+    attached_count: 0,
+    unattached_count: 1,
+    accounted_count: 1,
+    reason_counts: { no_current_lens_watch: 1 },
+  });
 });
