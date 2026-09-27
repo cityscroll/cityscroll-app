@@ -1,12 +1,30 @@
 {
   "schema": "cityscroll.parcel_history_population_receipt.v1",
-  "status": "complete",
+  "status": "incomplete",
+  "expected_strata": [
+    "coyle",
+    "franklin-avenue",
+    "kingsbridge-armory",
+    "lighthouse-point",
+    "sixth-avenue",
+    "thirty-first-avenue"
+  ],
+  "observed_strata": [
+    "kingsbridge-armory"
+  ],
+  "shortfalls": [
+    "coyle",
+    "franklin-avenue",
+    "lighthouse-point",
+    "sixth-avenue",
+    "thirty-first-avenue"
+  ],
   "mode": "production",
   "generated_at": "2026-09-26T00:00:00.000Z",
   "source_vintage": "2026-09-21",
   "input_fingerprint": "966ca618a888ae0c775d670b12e78f3dbd5ffc4d7baaef75789145b0b9d4faa1",
-  "generation": "a1593b71a5090a5970376ce0912547e722c3344d3583d82248d67b716da6f3f9",
-  "content_hash": "a1593b71a5090a5970376ce0912547e722c3344d3583d82248d67b716da6f3f9",
+  "generation": "eeb29d48054bbc7601c27bb4005f3735398584702bc6ed8a40622fa995d7f9e3",
+  "content_hash": "eeb29d48054bbc7601c27bb4005f3735398584702bc6ed8a40622fa995d7f9e3",
   "counts": {
     "parcels": 2,
     "members": 4

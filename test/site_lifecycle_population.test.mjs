@@ -24,11 +24,15 @@ import {
 import { writeSiteLifecycleProjection } from "../tools/build_site_lifecycle_projection.mjs";
 import {
   assertProductionSiteLifecycleInputs,
+  deriveSiteLifecyclePopulationStatus,
   materializeSiteLifecyclePopulation,
+  observeSiteLifecyclePopulationStrata,
   readSiteLifecycleCallerInputs,
   runSiteLifecyclePopulationCaller,
+  SITE_LIFECYCLE_POPULATION_EXPECTED_STRATA,
   SITE_LIFECYCLE_POPULATION_RECEIPT_SCHEMA,
 } from "../tools/lib/site_lifecycle_population.mjs";
+import { CONNECTED_HISTORY_DEMO_FAMILIES } from "../tools/lib/connected_history_cohort.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
@@ -206,7 +210,11 @@ test("A3: population suite covers empty docs, nonzero shards, and retained calle
     generatedAt: testClockISOString(),
   });
   assert.equal(result.receipt.schema, SITE_LIFECYCLE_POPULATION_RECEIPT_SCHEMA);
-  assert.equal(result.receipt.status, "complete");
+  assert.deepEqual(result.receipt.expected_strata, [...SITE_LIFECYCLE_POPULATION_EXPECTED_STRATA].sort());
+  assert.deepEqual(result.receipt.observed_strata, ["kingsbridge-armory"]);
+  assert.ok(Array.isArray(result.receipt.shortfalls));
+  assert.ok(result.receipt.shortfalls.includes("coyle"));
+  assert.equal(result.receipt.status, "incomplete");
   assert.equal(result.receipt.mode, "production");
   assert.ok(result.receipt.counts.parcels >= 2);
   assert.deepEqual(result.receipt.shards, ["0000.json", "0001.json"]);
@@ -216,6 +224,8 @@ test("A3: population suite covers empty docs, nonzero shards, and retained calle
   const written = JSON.parse(await readFile(populationReceiptPath, "utf8"));
   assert.equal(written.generation, result.document.generation);
   assert.equal(written.input_fingerprint, result.receipt.input_fingerprint);
+  assert.equal(written.status, result.receipt.status);
+  assert.deepEqual(written.shortfalls, result.receipt.shortfalls);
 
   const committedReceipt = JSON.parse(await readFile(POPULATION_RECEIPT_PATH, "utf8"));
   assert.equal(committedReceipt.schema, SITE_LIFECYCLE_POPULATION_RECEIPT_SCHEMA);
@@ -230,6 +240,13 @@ test("A3: population suite covers empty docs, nonzero shards, and retained calle
     "population receipt must retain caller inputs beyond the committed two-parcel fixture",
   );
   assert.equal(committedReceipt.scheduled_observation.awaiting_deployed_cycle, true);
+  assert.ok(Array.isArray(committedReceipt.expected_strata));
+  assert.ok(Array.isArray(committedReceipt.observed_strata));
+  assert.ok(Array.isArray(committedReceipt.shortfalls));
+  assert.equal(
+    committedReceipt.status,
+    committedReceipt.shortfalls.length === 0 ? "complete" : "incomplete",
+  );
 
   const files = await readdir(outputDir);
   assert.ok(files.includes("0000.json"));
@@ -314,3 +331,139 @@ test("A3 runtime: manifest reader loads every shard and unions multi-lot members
     globalThis.fetch = originalFetch;
   }
 })));
+
+/**
+ * Build fixture-mode caller inputs that mark every fixed-dossier sample stratum
+ * using already-retained subject ids. Corridor families are represented by their
+ * dossier subject tokens in notes so a shortfall can be removed without inventing
+ * parcel joins.
+ */
+function dossierPopulationInputs(familyIds) {
+  const wanted = new Set(familyIds);
+  const families = CONNECTED_HISTORY_DEMO_FAMILIES.filter((family) => wanted.has(family.family_id));
+  const landProjects = [];
+  const projectLots = [];
+  const procurementRecords = [];
+  const notes = [];
+
+  for (const family of families) {
+    notes.push(family.family_id);
+    const parcelIds = family.subject_ids
+      .filter((subjectId) => subjectId.startsWith("parcel:"))
+      .map((subjectId) => subjectId.slice("parcel:".length));
+    const landProjectId = family.subject_ids
+      .find((subjectId) => subjectId.startsWith("land:project:"))
+      ?.slice("land:project:".length);
+    const ceqrIds = family.subject_ids.filter((subjectId) => subjectId.startsWith("ceqr:"));
+
+    if (landProjectId && parcelIds.length) {
+      landProjects.push({
+        project_id: landProjectId,
+        project_name: family.label,
+        noticed_date: "2020-01-01",
+        source_system: "zap-projects-open-data",
+        evidence_path: `zap-projects-open-data:${landProjectId}`,
+      });
+      projectLots.push({ project_id: landProjectId, bbls: parcelIds });
+    } else if (parcelIds.length) {
+      const applicationId = family.subject_ids.find((subjectId) => subjectId.startsWith("land:application:"));
+      notes.push(applicationId || family.subject_ids[0]);
+      procurementRecords.push({
+        subject_id: applicationId || `parcel:${parcelIds[0]}`,
+        record_kind: "dossier_stratum_marker",
+        request_id: `${family.family_id}-marker`,
+        event_date: "2020-01-01",
+        source_system: "retained-dossier",
+        short_title: family.label,
+        evidence: parcelIds.map((bbl) => ({ bbl, classification: "exact_target" })),
+      });
+    } else {
+      for (const subjectId of family.subject_ids) notes.push(subjectId);
+    }
+
+    for (const subjectId of ceqrIds) {
+      const requestId = subjectId.slice("ceqr:".length);
+      const bbl = parcelIds[0];
+      if (!bbl) {
+        notes.push(subjectId);
+        continue;
+      }
+      procurementRecords.push({
+        subject_id: subjectId,
+        record_kind: "ceqr_review",
+        request_id: requestId,
+        event_date: "2020-01-01",
+        source_system: "ceqr",
+        short_title: `${family.label} ${requestId}`,
+        evidence: [{ bbl, classification: "exact_target" }],
+      });
+    }
+  }
+
+  return {
+    schema: "cityscroll.parcel_history_caller_inputs.v1",
+    version: 1,
+    source_vintage: "2026-09-21",
+    generated_at: "2026-09-26T00:00:00.000Z",
+    notes,
+    landProjects,
+    projectLots,
+    procurementRecords,
+    councilMatters: [],
+    evidence: [],
+    negative_rules: ["Do not fill a missing dossier stratum by substituting another family."],
+  };
+}
+
+test("A5: population status derives from dossier strata and can report a named shortfall", async () => withPinnedClock("2026-09-26T00:00:00.000Z", async () => {
+  assert.deepEqual(
+    [...SITE_LIFECYCLE_POPULATION_EXPECTED_STRATA].sort(),
+    CONNECTED_HISTORY_DEMO_FAMILIES.map((family) => family.family_id).sort(),
+  );
+
+  const allFamilyIds = CONNECTED_HISTORY_DEMO_FAMILIES.map((family) => family.family_id);
+  const completeInputs = dossierPopulationInputs(allFamilyIds);
+  const complete = materializeSiteLifecyclePopulation(completeInputs, {
+    mode: "fixture",
+    generatedAt: testClockISOString(),
+  });
+  assert.deepEqual(complete.receipt.expected_strata, [...allFamilyIds].sort());
+  assert.deepEqual(complete.receipt.observed_strata, [...allFamilyIds].sort());
+  assert.deepEqual(complete.receipt.shortfalls, []);
+  assert.equal(complete.receipt.status, "complete");
+
+  // Positive control: remove one dossier stratum and require status to leave complete.
+  const removed = "franklin-avenue";
+  const reducedInputs = dossierPopulationInputs(allFamilyIds.filter((familyId) => familyId !== removed));
+  const reduced = materializeSiteLifecyclePopulation(reducedInputs, {
+    mode: "fixture",
+    generatedAt: testClockISOString(),
+  });
+  assert.equal(reduced.receipt.status, "incomplete");
+  assert.deepEqual(reduced.receipt.shortfalls, [removed]);
+  assert.equal(reduced.receipt.observed_strata.includes(removed), false);
+  assert.ok(reduced.receipt.expected_strata.includes(removed));
+  assert.notEqual(reduced.receipt.status, complete.receipt.status);
+
+  // Runtime observation of the helper itself: empty observed list names every expected stratum.
+  const emptyCoverage = deriveSiteLifecyclePopulationStatus({
+    expectedStrata: SITE_LIFECYCLE_POPULATION_EXPECTED_STRATA,
+    observedStrata: observeSiteLifecyclePopulationStrata({
+      document: { parcels: {}, members: {} },
+      admitted: {},
+    }),
+  });
+  assert.equal(emptyCoverage.status, "incomplete");
+  assert.deepEqual(emptyCoverage.shortfalls, [...SITE_LIFECYCLE_POPULATION_EXPECTED_STRATA].sort());
+  assert.deepEqual(emptyCoverage.observed_strata, []);
+
+  // Existing invented-identifier refusal stays in force — shortfalls are never filled by substitution.
+  assert.throws(
+    () => materializeSiteLifecyclePopulation({
+      landProjects: [{ project_id: "P1", project_name: "Synthetic filler" }],
+      projectLots: [{ project_id: "P1", bbls: ["1000000001"] }],
+      notes: ["franklin-avenue"],
+    }, { mode: "production" }),
+    /fixture-only invented source identifiers/,
+  );
+}));
