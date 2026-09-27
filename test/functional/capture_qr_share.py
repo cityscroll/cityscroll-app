@@ -9,7 +9,6 @@ import io
 import json
 from pathlib import Path
 import subprocess
-import shutil
 import tarfile
 import tempfile
 import threading
@@ -417,6 +416,16 @@ def main() -> None:
 
 def assert_land_page_rendered(page: Page) -> None:
     """The required canary: the Queens land page renders its fixture-backed content."""
+    page.wait_for_function(
+        """
+        expected => {
+          const copy = document.querySelector('#searchactions-land [data-search-copy]');
+          const text = document.body?.innerText || '';
+          return Boolean(copy && expected.every(value => text.includes(value)));
+        }
+        """,
+        arg=LAND_CANARY_COPY,
+    )
     page.locator("#searchactions-land [data-search-copy]").wait_for(state="visible")
     text = page.locator("body").inner_text()
     for expected in LAND_CANARY_COPY:
@@ -425,13 +434,25 @@ def assert_land_page_rendered(page: Page) -> None:
 
 def verify_land_canary(browser: Browser) -> None:
     """Run only the cheap, source-tree land render check used by required preflight."""
-    # The source tree intentionally keeps client capability modules beside site/;
-    # make the tiny Pages-shaped tree needed by this canary in a fresh temp dir.
-    # This avoids consuming any stale or previously prepared checkout artifact.
+    # Build the same client-module layout production publishes. A plain site/
+    # copy omits repository-relative capability dependencies and can fail before
+    # Land boots even though the production artifact contains those modules.
+    # The fresh destination avoids consuming stale checkout artifacts.
     with tempfile.TemporaryDirectory(prefix="crol-land-canary-") as temp:
-        canary_tree = Path(temp)
-        shutil.copytree(ROOT / "site", canary_tree / "site")
-        shutil.copytree(ROOT / "capabilities", canary_tree / "site" / "capabilities")
+        canary_tree = Path(temp) / "public"
+        subprocess.run(
+            [
+                "node",
+                "tools/build_public_site.mjs",
+                "--source-dir",
+                str(ROOT),
+                "--site-dir",
+                str(canary_tree),
+            ],
+            cwd=ROOT,
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
         with StaticServer(canary_tree) as base_url:
             page = browser.new_page(viewport={"width": 390, "height": 844})
             errors: list[str] = []

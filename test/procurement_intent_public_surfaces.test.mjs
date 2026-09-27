@@ -85,6 +85,29 @@ const COMPLETE_COVERAGE = {
   sources_checked: ["city_record", "passport"],
 };
 
+test("public intent surfaces only statically import browser-published modules", () => {
+  const siteRoot = new URL("../site/", import.meta.url);
+  const pending = [new URL("procurement_intent_public_surfaces.mjs", siteRoot)];
+  const visited = new Set();
+  const imports = /\b(?:import|export)\s+(?:[^"']*?\sfrom\s+)?["'](\.[^"']+)["']/gu;
+
+  while (pending.length) {
+    const moduleUrl = pending.pop();
+    if (visited.has(moduleUrl.href)) continue;
+    visited.add(moduleUrl.href);
+
+    const source = readFileSync(moduleUrl, "utf8");
+    for (const match of source.matchAll(imports)) {
+      const target = new URL(match[1], moduleUrl);
+      assert.ok(
+        target.href.startsWith(siteRoot.href),
+        `${moduleUrl.pathname} imports unpublished browser dependency ${target.pathname}`,
+      );
+      pending.push(target);
+    }
+  }
+});
+
 function processFor(fixtureCase) {
   return buildProspectiveProcess({
     source: fixtureCase.source,
