@@ -31,6 +31,7 @@ const graph = JSON.parse(files[JSON_OUTPUT]);
 /** The desk's view toggle, as the document declares it. */
 const VIEWS = [
   { toggle: "overviewToggle", section: "overviewView", label: "Source health", home: true },
+  { toggle: "coverageToggle", section: "historyCoverageView", label: "History coverage", home: false },
   { toggle: "graphToggle", section: "graphView", label: "Departments", home: false },
   { toggle: "tableToggle", section: "tableView", label: "Table view", home: false },
   { toggle: "repairToggle", section: "repairView", label: "Repair queue", home: false },

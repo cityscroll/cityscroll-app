@@ -192,11 +192,7 @@ test("retained measurements require an ancestor capture with unchanged declared 
   }
 });
 
-test("committed evidence revisions are reachable from origin/main", (t) => {
-  if (!originAvailable()) {
-    t.skip("origin/main is unavailable");
-    return;
-  }
+test("committed evidence revisions are ancestors of HEAD with unchanged measurement inputs", () => {
   const failures = [];
   for (const file of jsonFiles(EVIDENCE)) {
     if (file === join(EVIDENCE, "assistant-setup", "capture-manifest.json")) continue;
@@ -207,7 +203,7 @@ test("committed evidence revisions are reachable from origin/main", (t) => {
       continue;
     }
     const retainedRevision = document?.measurement_provenance?.revision;
-    if (document?.schema === "cityscroll.documented_history_journey_manifest.v1" && retainedRevision) {
+    if (retainedRevision && Array.isArray(document?.measurement_provenance?.inputs)) {
       const retained = retainedMeasurementStatus(ROOT, {
         revision: retainedRevision,
         inputs: document.measurement_provenance.inputs,
@@ -221,7 +217,7 @@ test("committed evidence revisions are reachable from origin/main", (t) => {
     }
     const collected = recordedRevisions(document, [], /manifest\.json$/i.test(file));
     for (const entry of collected.revisions) {
-      const status = spawnSync("git", ["merge-base", "--is-ancestor", entry.value, "origin/main"], {
+      const status = spawnSync("git", ["merge-base", "--is-ancestor", entry.value, "HEAD"], {
         cwd: ROOT,
         stdio: "ignore",
       }).status;
