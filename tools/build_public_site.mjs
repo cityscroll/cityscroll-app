@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { cpSync, mkdirSync, rmSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -61,6 +61,14 @@ function publishClientCapabilityModules(sourceDir, siteSource, siteDir) {
   }
 }
 
+function publishTopicAppDocument(siteSource, siteDir) {
+  const sourcePath = join(siteSource, "index.html");
+  if (!existsSync(sourcePath)) return;
+  const destinationPath = join(siteDir, "app", "index.html");
+  mkdirSync(dirname(destinationPath), { recursive: true });
+  cpSync(sourcePath, destinationPath);
+}
+
 const args = parseArgs(process.argv.slice(2));
 const cwd = process.cwd();
 const sourceDir = resolve(cwd, args["source-dir"] || ".");
@@ -72,10 +80,14 @@ if (siteDir === sourceDir || siteDir === siteSource || siteDir.startsWith(`${sou
 }
 
 copyTree(siteSource, siteDir);
+// Cloudflare Pages canonicalizes /index.html back to /. Publish the topic SPA
+// as a directory document so root hash ingress has a stable destination that
+// cannot collapse back onto the Near You home document.
+publishTopicAppDocument(siteSource, siteDir);
 publishClientCapabilityModules(sourceDir, siteSource, siteDir);
 assertGeneratedOutputs({
   rootDir: cwd,
   boundary: "public-site-generation",
-  outputs: [join(siteDir, "index.html")],
+  outputs: [join(siteDir, "index.html"), join(siteDir, "app", "index.html")],
 });
 console.log(`Built public site from ${relative(cwd, siteSource) || "."} to ${relative(cwd, siteDir) || "."}`);

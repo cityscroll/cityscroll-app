@@ -5,7 +5,11 @@ from __future__ import annotations
 
 import os
 import pathlib
+import subprocess
 import sys
+import tempfile
+import time
+from contextlib import contextmanager
 
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
@@ -14,7 +18,8 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
 from i18n_fixtures import install_routes  # noqa: E402
 
 
-BASE = os.environ.get("CROL_BASE", "http://localhost:8000/").rstrip("/") + "/"
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+ROUTE_TIMEOUT_MS = int(os.environ.get("CROL_ROOT_HASH_TIMEOUT_MS", "60000"))
 
 # One representative per registry entry. The equality assertion below makes a
 # newly registered route fail this census until it has a real browser specimen.
@@ -69,10 +74,10 @@ def new_page(browser):
     return page
 
 
-def registered_route_ids(browser) -> list[str]:
+def registered_route_ids(browser, base: str) -> list[str]:
     page = new_page(browser)
     try:
-        page.goto(f"{BASE}index.html#browse", wait_until="domcontentloaded", timeout=60_000)
+        page.goto(f"{base}app/#browse", wait_until="domcontentloaded", timeout=60_000)
         page.wait_for_function(
             "() => document.body.dataset.appReady === 'true' && Array.isArray(globalThis.CrolSpaHashRoutes)",
             timeout=60_000,
@@ -82,12 +87,12 @@ def registered_route_ids(browser) -> list[str]:
         page.close()
 
 
-def assert_route(browser, route_id: str, fragment: str, selector: str) -> None:
+def assert_route(browser, base: str, route_id: str, fragment: str, selector: str) -> None:
     page = new_page(browser)
     try:
-        page.goto(f"{BASE}#{fragment}", wait_until="domcontentloaded", timeout=60_000)
+        page.goto(f"{base}#{fragment}", wait_until="domcontentloaded", timeout=60_000)
         try:
-            page.locator(selector).first.wait_for(state="visible", timeout=60_000)
+            page.locator(selector).first.wait_for(state="visible", timeout=ROUTE_TIMEOUT_MS)
         except PlaywrightTimeoutError as error:
             raise AssertionError(
                 f"{route_id} did not reach {selector} via /#{fragment}: {page.url}"
@@ -96,11 +101,63 @@ def assert_route(browser, route_id: str, fragment: str, selector: str) -> None:
         page.close()
 
 
+@contextmanager
+def pages_server():
+    configured = os.environ.get("CROL_PAGES_BASE")
+    if configured:
+        yield configured.rstrip("/") + "/"
+        return
+
+    site_directory = pathlib.Path(os.environ.get("CROL_PAGES_SITE_DIR", ROOT / "_site"))
+    if not (site_directory / "app" / "index.html").is_file():
+        raise AssertionError(
+            f"Pages-shaped artifact missing {site_directory / 'app' / 'index.html'}; "
+            "run tools/prepare_functional_site.sh"
+        )
+    with tempfile.TemporaryDirectory(prefix="crol-pages-canonical-") as temporary:
+        ready_file = pathlib.Path(temporary) / "ready"
+        process = subprocess.Popen(
+            [
+                sys.executable,
+                "tools/local_site_server.py",
+                "--directory",
+                str(site_directory),
+                "--port",
+                "0",
+                "--ready-file",
+                str(ready_file),
+                "--pages-canonicalization",
+            ],
+            cwd=ROOT,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        try:
+            deadline = time.monotonic() + 30
+            while time.monotonic() < deadline:
+                if ready_file.is_file() and ready_file.stat().st_size:
+                    yield ready_file.read_text(encoding="utf-8").strip().rstrip("/") + "/"
+                    return
+                if process.poll() is not None:
+                    error = process.stderr.read() if process.stderr else ""
+                    raise AssertionError(f"Pages-shaped local server exited early: {error}")
+                time.sleep(0.1)
+            raise AssertionError("timed out waiting for Pages-shaped local server")
+        finally:
+            process.terminate()
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait(timeout=5)
+
+
 def main() -> None:
-    with sync_playwright() as playwright:
+    with pages_server() as base, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
 
-        route_ids = registered_route_ids(browser)
+        route_ids = registered_route_ids(browser, base)
         assert len(route_ids) == len(set(route_ids)), f"duplicate SPA route ids: {route_ids}"
         assert set(route_ids) == set(CASES), (
             f"root hash census does not match router registry; "
@@ -109,26 +166,28 @@ def main() -> None:
         )
 
         for route_id in route_ids:
-            assert_route(browser, route_id, *CASES[route_id])
+            assert_route(browser, base, route_id, *CASES[route_id])
 
         bare = new_page(browser)
-        bare.goto(BASE, wait_until="domcontentloaded", timeout=60_000)
+        bare.goto(base, wait_until="domcontentloaded", timeout=60_000)
         bare.locator("[data-near-you-root]").wait_for(state="visible", timeout=30_000)
         assert "Near you" in bare.title()
         bare.close()
 
         unknown = new_page(browser)
-        unknown.goto(f"{BASE}#not-a-cityscroll-route", wait_until="domcontentloaded", timeout=60_000)
+        unknown.goto(f"{base}#not-a-cityscroll-route", wait_until="domcontentloaded", timeout=60_000)
         unknown.locator("[data-near-you-root]").wait_for(state="visible", timeout=30_000)
         assert unknown.url.endswith("/#not-a-cityscroll-route"), unknown.url
         unknown.close()
 
-        # Positive control: turning off the new retained-hash boot branch must
-        # reproduce the Land-item failure on the Near You root document.
+        # Positive control: Pages must collapse the former /index.html target
+        # back onto Near You. Disabling root ingress prevents the fixed path
+        # from rescuing this deliberately unsafe direct navigation.
         control = new_page(browser)
         control.add_init_script("globalThis.CROL_DISABLE_ROOT_HASH_BOOT = true")
-        control.goto(f"{BASE}#land/2022M0258", wait_until="domcontentloaded", timeout=60_000)
+        control.goto(f"{base}index.html#land/2022M0258", wait_until="domcontentloaded", timeout=60_000)
         control.locator("[data-near-you-root]").wait_for(state="visible", timeout=30_000)
+        assert control.url == f"{base}#land/2022M0258", control.url
         failed_as_expected = False
         try:
             control.locator("#land-item-card").wait_for(state="attached", timeout=1_500)
@@ -139,7 +198,10 @@ def main() -> None:
 
         browser.close()
 
-    print(f"root hash deep links OK routes={len(route_ids)} bare=near-you unknown=near-you control=failed")
+    print(
+        f"root hash deep links OK routes={len(route_ids)} bare=near-you "
+        "unknown=near-you pages-index-control=failed"
+    )
 
 
 if __name__ == "__main__":
