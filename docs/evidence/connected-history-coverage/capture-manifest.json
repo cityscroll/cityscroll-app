@@ -10,7 +10,7 @@
     "requirement": "The production read refuses a non-main pin, a served revision that does not contain it, absent served data, incomplete board enumeration, or unsupported zero-denominator scores."
   },
   "measurement_provenance": {
-    "revision": "051882e9ec5265f0497e2411d1c67fc17794fc3d",
+    "revision": "d3dfa50ff3a6fce152fdbe73fc73a081ab22c5ae",
     "inputs": [
       {
         "path": "data/data-source-graph-desk-contract.v1.json",
@@ -39,7 +39,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "051882e9ec5265f0497e2411d1c67fc17794fc3d",
+      "revision": "d3dfa50ff3a6fce152fdbe73fc73a081ab22c5ae",
       "data_vintage": {
         "cohort_selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
         "documents_generated_at": "2026-09-21T20:19:01.507Z",
@@ -49,7 +49,7 @@
       },
       "assertion": "Chromium measured all 59 board rows, distinct unknown and measured-zero cells, the civic-activity disclaimer, and contained horizontal table scrolling with the generated Desk stylesheet.",
       "sha256": "18d7de65752bb332b8a75bbbda292a8007caa579b372ec99aa9b31f05563f707",
-      "local_capture_sha256": "8fe14ce8520d0fa0c7e7e9c75037e4fc4a0a26315dd2778ad3919ba0148f548b"
+      "local_capture_sha256": "3a4c517c3b1e800fbd0b3e51d2d92e78ca001abdb3ad7c7eddc12b67842cd587"
     },
     {
       "case": "coverage-desktop-keyboard",
@@ -59,7 +59,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "051882e9ec5265f0497e2411d1c67fc17794fc3d",
+      "revision": "d3dfa50ff3a6fce152fdbe73fc73a081ab22c5ae",
       "data_vintage": {
         "cohort_selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
         "documents_generated_at": "2026-09-21T20:19:01.507Z",
@@ -69,7 +69,7 @@
       },
       "assertion": "Chromium measured all 59 board rows, distinct unknown and measured-zero cells, the civic-activity disclaimer, and contained horizontal table scrolling with the generated Desk stylesheet.",
       "sha256": "18d7de65752bb332b8a75bbbda292a8007caa579b372ec99aa9b31f05563f707",
-      "local_capture_sha256": "34a9cb7bad6594b6c0e29fd48407391b4dba107630c9d60f32c53e55e973d206"
+      "local_capture_sha256": "1a59c63244e432e61e87c43557d53b88c740bba758a20334765f019616ad1b71"
     }
   ]
 }
