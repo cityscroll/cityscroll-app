@@ -6,6 +6,7 @@
 
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -30,6 +31,11 @@ const ARTIFACTS = Object.freeze({
 });
 const MANIFEST = readJson("docs/evidence/documented-history-journeys/capture-manifest.json");
 const ADDRESS_REFRESH_REGISTRY = readJson("ops/address-index-refresh/dependent-geography.json");
+const PRODUCTION_DATA_PATHS = Object.freeze([
+  "/data/connected_history_relations.json",
+  "/data/connected_history_roles.json",
+  "/data/connected_history_time.json",
+]);
 
 // The scheduled refresh owns this registry. Keeping the control registry-driven
 // means a newly published geography output must remain outside both the static
@@ -45,6 +51,16 @@ function belongsToAddressRefresh(path) {
 
 function clone(value) {
   return structuredClone(value);
+}
+
+function canonicalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value).sort().map((key) => (
+      `${JSON.stringify(key)}:${canonicalJson(value[key])}`
+    )).join(",")}}`;
+  }
+  return JSON.stringify(value);
 }
 
 function dateKey(event) {
@@ -141,7 +157,57 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
   assert.equal(MANIFEST.schema, "cityscroll.documented_history_journey_manifest.v1");
   assert.equal(MANIFEST.evidence_class, "runtime_browser_measurement");
   assert.equal(MANIFEST.image_binaries_committed, false);
-  assert.equal(MANIFEST.production_measurement.state, "awaiting_landed_deploy");
+  assert.equal(MANIFEST.production_measurement.state, "measured");
+
+  const production = MANIFEST.production_measurement;
+  const productionReceipt = production.run_receipt;
+  assert.equal(productionReceipt.schema, "cityscroll.documented_history_production_read.v1");
+  assert.equal(productionReceipt.evidence_class, "deployed-production-read-back");
+  assert.equal(productionReceipt.origin, "https://cityscroll.org");
+  assert.match(productionReceipt.repository_revision, /^[a-f0-9]{40}$/);
+  assert.match(productionReceipt.required_landed_commit, /^[a-f0-9]{40}$/);
+  assert.equal(productionReceipt.served_revision_after, productionReceipt.served_revision);
+  assert.equal(productionReceipt.image_binaries_committed, false);
+  assert.equal(productionReceipt.capture_count, 18);
+  assert.equal(productionReceipt.captures.length, 18);
+  assert.deepEqual(
+    new Set(productionReceipt.captures.map((capture) => capture.case)),
+    new Set(CONNECTED_HISTORY_CASES.flatMap((entry) => [
+      `${entry.family_id}-desktop-keyboard`,
+      `${entry.family_id}-narrow-touch`,
+      `${entry.family_id}-no-javascript`,
+    ])),
+  );
+  assert.equal(productionReceipt.request_receipts.length, 3);
+  assert.deepEqual(
+    productionReceipt.request_receipts.map((entry) => new URL(entry.url).pathname).sort(),
+    [...PRODUCTION_DATA_PATHS].sort(),
+  );
+  for (const entry of productionReceipt.request_receipts) {
+    assert.equal(entry.http_status, 200);
+    assert.equal(entry.served_revision, productionReceipt.served_revision);
+    assert.match(entry.sha256, /^[a-f0-9]{64}$/);
+    assert.ok(entry.headers.Date);
+    assert.ok(entry.headers["CF-Ray"]);
+  }
+  for (const capture of productionReceipt.captures) {
+    assert.equal(capture.revision, productionReceipt.served_revision, capture.case);
+    assert.ok(capture.data_vintage, capture.case);
+    assert.ok(capture.assertion, capture.case);
+    assert.match(capture.sha256, /^[a-f0-9]{64}$/, capture.case);
+    assert.match(capture.render_sha256, /^[a-f0-9]{64}$/, capture.case);
+    assert.equal(
+      capture.hash_kind,
+      capture.case.endsWith("-no-javascript") ? "rendered_markup" : "screenshot",
+      capture.case,
+    );
+  }
+  const publicReceipt = JSON.stringify(productionReceipt);
+  assert.doesNotMatch(publicReceipt, /(?:\/Users\/|\/private\/tmp\/|local_path|screenshot_directory)/);
+  const productionDigest = createHash("sha256")
+    .update(canonicalJson(productionReceipt))
+    .digest("hex");
+  assert.equal(production.run_receipt_sha256, productionDigest);
 
   const captureTemp = mkdtempSync(join(tmpdir(), "connected-history-runner-"));
   const captureEnv = { ...process.env, TMPDIR: captureTemp };
@@ -206,6 +272,22 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
     inputs: provenance.inputs,
   });
   assert.equal(retainedStatus.ok, true, `${retainedStatus.reason}: ${retainedStatus.changedInputs.join(", ")}`);
+  assert.equal(productionReceipt.retained_measurement.revision, provenance.revision);
+  assert.equal(productionReceipt.retained_measurement.inputs_ref, "#/measurement_provenance/inputs");
+  const productionStatus = retainedMeasurementStatus(ROOT, {
+    revision: productionReceipt.repository_revision,
+    inputs: provenance.inputs,
+  });
+  assert.equal(productionStatus.ok, true, `${productionStatus.reason}: ${productionStatus.changedInputs.join(", ")}`);
+  assert.equal(
+    spawnSync(
+      "git",
+      ["merge-base", "--is-ancestor", productionReceipt.required_landed_commit, productionReceipt.served_revision],
+      { cwd: ROOT, stdio: "ignore" },
+    ).status,
+    0,
+    "served revision contains the required landed commit",
+  );
 
   const observed = new Map(receipt.captures.map((capture) => [capture.case, capture]));
   const retained = new Map(MANIFEST.captures.map((capture) => [capture.case, capture]));
@@ -229,6 +311,10 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
       if (suffix !== "no-javascript") {
         assert.equal(actual.runtime.horizontal_overflow, false, id);
         assert.equal(actual.runtime.positive_tabindex_count, 0, id);
+        assert.match(actual.runtime.official_source_destination, /^https?:\/\//, id);
+        assert.equal(typeof actual.runtime.official_source_document_departed, "boolean", id);
+        assert.match(actual.runtime.continue_destination, /^https?:\/\//, id);
+        assert.equal(typeof actual.runtime.continue_document_departed, "boolean", id);
       }
     }
   }
@@ -244,7 +330,9 @@ test("A3: production instrumentation pins the landed Pages revision and served d
   assert.match(source, /require_served_page_revision_contains_delivery/);
   assert.match(source, /--production requires --landed-commit/);
   assert.match(source, /served materialization has no generated_at/);
+  assert.match(source, /served revision changed during capture/);
   assert.match(source, /request_receipts/);
+  assert.match(source, /activate_link/);
   assert.match(source, /runtime_browser_measurement/);
 
   // Converse control: production cannot be invoked without its landed pin.

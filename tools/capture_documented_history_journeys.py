@@ -32,6 +32,7 @@ from browser_support import launched_chromium  # noqa: E402
 from deployed_capture_ancestor import (  # noqa: E402
     ServedDataMissingError,
     require_served_page_revision_contains_delivery,
+    served_page_revision,
 )
 from local_site_server import QuietHandler, _RobustThreadingHTTPServer  # noqa: E402
 from repository_revision import branch_head, resolve_repository_revision  # noqa: E402
@@ -235,7 +236,70 @@ def screenshot_receipt(page, capture_id: str, screenshot_dir: Path | None) -> di
     return {"local_path": str(path), "sha256": sha256_bytes(path.read_bytes())}
 
 
-def panel_measurement(page, family_id: str, query: str, expected_title: str, mode: str) -> tuple[dict, str]:
+def activate_link(
+    page,
+    link,
+    *,
+    initial_url: str,
+    fixture: bool,
+) -> tuple[str, bool]:
+    """Activate a link and return its observed destination and departure state.
+
+    Fixture routes intentionally render a small page headed "Official source".
+    Production destinations are publisher-owned and must not be required to use
+    that fixture copy. A publisher can serve an attachment instead of a browser
+    document, so an in-run navigation request also proves activation when the
+    original document remains loaded. Same-origin continuation links must still
+    load their exact path; external links may follow publisher redirects.
+    """
+
+    href = link.get_attribute("href")
+    assert href
+    expected = urllib.parse.urljoin(initial_url, href)
+    navigation_requests: list[str] = []
+
+    def record_request(request) -> None:
+        if request.is_navigation_request():
+            navigation_requests.append(request.url)
+
+    page.on("request", record_request)
+    link.click()
+    page.wait_for_load_state("domcontentloaded")
+    actual = page.url
+    departed = actual != initial_url
+    actual_url = urllib.parse.urlsplit(actual)
+    expected_url = urllib.parse.urlsplit(expected)
+    initial_host = (urllib.parse.urlsplit(initial_url).hostname or "").lower()
+    requested_expected = any(
+        urllib.parse.urldefrag(request_url)[0] == urllib.parse.urldefrag(expected)[0]
+        for request_url in navigation_requests
+    )
+    assert departed or requested_expected, (
+        f"link did not activate expected destination {expected}; "
+        f"page remained at {actual}; navigation requests={navigation_requests}"
+    )
+    same_origin = (expected_url.hostname or "").lower() == initial_host
+    destination = actual if same_origin and departed else expected
+    destination_url = urllib.parse.urlsplit(destination)
+    assert destination_url.scheme in ({"http", "https"} if fixture else {"https"})
+    if same_origin:
+        assert departed, f"same-origin link did not load {expected}"
+        assert (destination_url.hostname or "").lower() == initial_host
+        assert destination_url.path == expected_url.path
+    if fixture and expected_url.hostname not in {"127.0.0.1", "localhost"}:
+        assert page.get_by_role("heading", name="Official source").is_visible()
+    return destination, departed
+
+
+def panel_measurement(
+    page,
+    family_id: str,
+    query: str,
+    expected_title: str,
+    mode: str,
+    *,
+    fixture: bool,
+) -> tuple[dict, str]:
     panel = page.locator("[data-connected-history]")
     panel.wait_for(state="visible", timeout=30_000)
     page.wait_for_function(
@@ -269,11 +333,14 @@ def panel_measurement(page, family_id: str, query: str, expected_title: str, mod
     summary.click()
     assert details.get_attribute("open") is not None
     open_link = details.locator("[data-connected-history-open]")
-    assert open_link.get_attribute("href")
-    open_link.click()
-    page.wait_for_load_state("domcontentloaded")
-    assert page.get_by_role("heading", name="Official source").is_visible()
-    page.go_back(wait_until="domcontentloaded", timeout=30_000)
+    official_source_destination, official_source_departed = activate_link(
+        page,
+        open_link,
+        initial_url=initial_url,
+        fixture=fixture,
+    )
+    if official_source_departed:
+        page.go_back(wait_until="domcontentloaded", timeout=30_000)
     page.wait_for_function(
         "family => document.querySelector('[data-connected-history]')?.dataset.connectedHistoryState === 'ready' "
         "&& document.querySelector('[data-connected-history]')?.dataset.connectedHistoryFamily === family",
@@ -284,14 +351,14 @@ def panel_measurement(page, family_id: str, query: str, expected_title: str, mod
     assert page.locator("#search-query").input_value() == query
 
     continue_link = page.locator("[data-connected-history] [data-connected-history-continue]")
-    assert continue_link.get_attribute("href")
-    continue_link.click()
-    page.wait_for_load_state("domcontentloaded")
-    if page.url.startswith("http://127.0.0.1"):
-        assert "/browse/zoning/" in page.url
-    else:
-        assert page.get_by_role("heading", name="Official source").is_visible()
-    page.go_back(wait_until="domcontentloaded", timeout=30_000)
+    continue_destination, continue_departed = activate_link(
+        page,
+        continue_link,
+        initial_url=initial_url,
+        fixture=fixture,
+    )
+    if continue_departed:
+        page.go_back(wait_until="domcontentloaded", timeout=30_000)
     page.wait_for_function(
         "family => document.querySelector('[data-connected-history]')?.dataset.connectedHistoryState === 'ready' "
         "&& document.querySelector('[data-connected-history]')?.dataset.connectedHistoryFamily === family",
@@ -311,6 +378,10 @@ def panel_measurement(page, family_id: str, query: str, expected_title: str, mod
           route: `${location.pathname}${location.search}${location.hash}`,
         })"""
     )
+    measured["official_source_destination"] = official_source_destination
+    measured["official_source_document_departed"] = official_source_departed
+    measured["continue_destination"] = continue_destination
+    measured["continue_document_departed"] = continue_departed
     html = panel.evaluate("node => node.outerHTML")
     return measured, html
 
@@ -333,7 +404,14 @@ def run_ready_matrix(
             route = route_for(query)
             response = page.goto(f"{base}{route}", wait_until="domcontentloaded", timeout=60_000)
             assert response is not None and response.status == 200
-            measured, html = panel_measurement(page, family_id, query, title, mode)
+            measured, html = panel_measurement(
+                page,
+                family_id,
+                query,
+                title,
+                mode,
+                fixture=fixture,
+            )
             assert measured["width"] == width
             assert measured["height"] == height
             assert measured["query"] == query
@@ -457,7 +535,7 @@ def run_failure_control(
     return result
 
 
-def write_manifest(receipt: dict) -> None:
+def write_hermetic_manifest(receipt: dict) -> None:
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
     observed = {capture["case"]: capture for capture in receipt["captures"]}
     retained = {capture["case"]: capture for capture in manifest["captures"]}
@@ -479,6 +557,68 @@ def write_manifest(receipt: dict) -> None:
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
 
+def write_production_manifest(receipt: dict) -> None:
+    """Retain a public-safe production receipt without local screenshot paths."""
+
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    vintages = sorted({value for value in receipt["data_vintage"].values() if value})
+    data_vintage = vintages[0] if len(vintages) == 1 else receipt["data_vintage"]
+    captures = []
+    for capture in receipt["captures"]:
+        screenshot_hash = capture.get("capture_sha256")
+        captures.append({
+            "case": capture["case"],
+            "route": capture["route"],
+            "viewport": capture["viewport"],
+            "revision": receipt["served_revision"],
+            "data_vintage": data_vintage,
+            "assertion": capture["assertion"],
+            "sha256": screenshot_hash or capture["render_sha256"],
+            "hash_kind": "screenshot" if screenshot_hash else "rendered_markup",
+            "render_sha256": capture["render_sha256"],
+            "runtime": capture["runtime"],
+        })
+    run_receipt = {
+        "schema": "cityscroll.documented_history_production_read.v1",
+        "evidence_class": "deployed-production-read-back",
+        "observed_at": receipt["observed_at"],
+        "origin": receipt["base_url"],
+        "repository_revision": receipt["repository_revision"],
+        "required_landed_commit": receipt["required_landed_commit"],
+        "served_revision": receipt["served_revision"],
+        "served_revision_after": receipt["served_revision_after"],
+        "retained_measurement": {
+            "revision": manifest["measurement_provenance"]["revision"],
+            "inputs_ref": "#/measurement_provenance/inputs",
+        },
+        "data_vintage": receipt["data_vintage"],
+        "request_receipts": receipt["request_receipts"],
+        "capture_count": len(captures),
+        "image_binaries_committed": False,
+        "captures": captures,
+    }
+    run_receipt_sha256 = sha256_text(json.dumps(
+        run_receipt,
+        sort_keys=True,
+        separators=(",", ":"),
+    ))
+    manifest["production_measurement"] = {
+        "state": "measured",
+        "runner": (
+            "python3 tools/capture_documented_history_journeys.py --production "
+            f"--landed-commit {receipt['required_landed_commit']} --write-manifest"
+        ),
+        "requirement": (
+            "The runner refuses a non-main pin, a served revision that does not contain it, "
+            "a revision change during capture, absent served materializations, or a missing "
+            "rendered journey."
+        ),
+        "run_receipt_sha256": run_receipt_sha256,
+        "run_receipt": run_receipt,
+    }
+    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--production", action="store_true")
@@ -491,12 +631,11 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    if args.production and args.write_manifest:
-        raise SystemExit("--write-manifest is only available for the hermetic measurement")
     repository_revision = resolve_repository_revision(ROOT)
     capture_revision = branch_head(ROOT)
     server = None
     served_revision = None
+    served_revision_after = None
     required_landed_commit = None
     request_receipts: list[dict] = []
     measured_inputs: list[dict[str, str]] = []
@@ -557,6 +696,13 @@ def main() -> int:
             )
             if failure:
                 captures.append(failure)
+        if args.production:
+            served_revision_after = served_page_revision(base)
+            if served_revision_after != served_revision:
+                raise SystemExit(
+                    "served revision changed during capture: "
+                    f"{served_revision} -> {served_revision_after}"
+                )
     finally:
         if server is not None:
             measured_inputs = measured_input_receipts(discover_measured_inputs())
@@ -578,6 +724,7 @@ def main() -> int:
         "base_url": base,
         "required_landed_commit": required_landed_commit,
         "served_revision": served_revision,
+        "served_revision_after": served_revision_after,
         "data_vintage": data_vintage,
         "request_receipts": request_receipts,
         "local_request_paths": sorted(local_request_paths),
@@ -586,7 +733,10 @@ def main() -> int:
         "captures": captures,
     }
     if args.write_manifest:
-        write_manifest(receipt)
+        if args.production:
+            write_production_manifest(receipt)
+        else:
+            write_hermetic_manifest(receipt)
     print(json.dumps(receipt, indent=2, sort_keys=True))
     return 0
 
