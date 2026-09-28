@@ -160,6 +160,27 @@
         "requires-observation-producer"
       ],
       "notes": "Additive coverage of CityScroll-controlled acquisition and serving observations for the seven priority source families, plus the remaining non-priority observation gaps. Acquisition input vintage stays distinct from later materialization. Unaware additive consumers may ignore the extension. No extension field may enter a public response."
+    },
+    "connected_history_coverage": {
+      "version": 1,
+      "graph_fields": [
+        "connected_history_coverage"
+      ],
+      "coverage_schema": "cityscroll.connected_history_coverage.v1",
+      "stages": [
+        "registered",
+        "acquired",
+        "extractable",
+        "admitted",
+        "discoverable"
+      ],
+      "coverage_states": [
+        "observed",
+        "partial",
+        "measured_zero",
+        "unknown"
+      ],
+      "notes": "Additive 59-board census over the frozen connected-history population and retained fixed dossier. Local scopes retain multiboard subjects while citywide totals deduplicate. Missingness and measured zero remain distinct, held-out scores retain their numerators, denominators and source-judgment limits, and coverage observations do not create repair work outside the existing queue."
     }
   }
 }

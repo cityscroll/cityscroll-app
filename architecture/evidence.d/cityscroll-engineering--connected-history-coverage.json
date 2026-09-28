@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/connected-history-coverage",
+  "status": "implemented",
+  "fingerprint": "connected-history-coverage.v1",
+  "updated_at": "2026-09-28T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "connected-history-coverage-model",
+      "path": "tools/connected_history_coverage.mjs"
+    },
+    {
+      "id": "connected-history-coverage-builder",
+      "path": "tools/build_connected_history_coverage.mjs"
+    },
+    {
+      "id": "connected-history-coverage-capture",
+      "path": "tools/capture_connected_history_coverage.py"
+    },
+    {
+      "id": "connected-history-coverage-artifact",
+      "path": "site/data/connected_history_coverage.json"
+    },
+    {
+      "id": "connected-history-coverage-receipt",
+      "path": "site/data/connected_history_sources/verification_receipts/connected_history_coverage_latest.json"
+    },
+    {
+      "id": "connected-history-coverage-tests",
+      "path": "test/connected_history_coverage.test.mjs"
+    }
+  ]
+}

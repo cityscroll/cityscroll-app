@@ -1,0 +1,75 @@
+{
+  "schema": "cityscroll.connected_history_coverage_render_manifest.v1",
+  "evidence_class": "runtime_browser_measurement",
+  "surface": "authenticated Desk connected-history coverage extension",
+  "image_binaries_committed": false,
+  "capture_policy": "Screenshot binaries remain in task scratch; this manifest retains their hashes and runtime assertions.",
+  "production_measurement": {
+    "state": "awaiting_landed_deploy",
+    "runner": "python3 tools/capture_connected_history_coverage.py --production --landed-commit <40-hex landed commit>",
+    "requirement": "The production read refuses a non-main pin, a served revision that does not contain it, absent served data, incomplete board enumeration, or unsupported zero-denominator scores."
+  },
+  "measurement_provenance": {
+    "revision": "d3dfa50ff3a6fce152fdbe73fc73a081ab22c5ae",
+    "inputs": [
+      {
+        "path": "data/data-source-graph-desk-contract.v1.json",
+        "sha256": "b89ec81dc8d2b036a85333e77d4036944607f0fb047892435d9c9e6782beb4f7"
+      },
+      {
+        "path": "site/data/connected_history_coverage.json",
+        "sha256": "3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed"
+      },
+      {
+        "path": "tools/connected_history_coverage.mjs",
+        "sha256": "66e6191ddfe8df05cfc149a9291718410bbab2020140e76f6c371d5d63bd75ca"
+      },
+      {
+        "path": "tools/data_source_graph.mjs",
+        "sha256": "e4c37e6121f84abedf108abb2e88d8579e37b47d0cdc771a403cbeccf6755722"
+      }
+    ]
+  },
+  "captures": [
+    {
+      "case": "coverage-narrow-touch",
+      "route": "/data-sources#history-coverage",
+      "viewport": {
+        "name": "narrow-touch",
+        "width": 390,
+        "height": 844
+      },
+      "revision": "d3dfa50ff3a6fce152fdbe73fc73a081ab22c5ae",
+      "data_vintage": {
+        "cohort_selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
+        "documents_generated_at": "2026-09-21T20:19:01.507Z",
+        "relations_generated_at": "2026-09-26T00:00:00.000Z",
+        "time_generated_at": "2026-09-26T00:00:00.000Z",
+        "roles_generated_at": "2026-09-26T00:00:00.000Z"
+      },
+      "assertion": "Chromium measured all 59 board rows, distinct unknown and measured-zero cells, the civic-activity disclaimer, and contained horizontal table scrolling with the generated Desk stylesheet.",
+      "sha256": "18d7de65752bb332b8a75bbbda292a8007caa579b372ec99aa9b31f05563f707",
+      "local_capture_sha256": "3a4c517c3b1e800fbd0b3e51d2d92e78ca001abdb3ad7c7eddc12b67842cd587"
+    },
+    {
+      "case": "coverage-desktop-keyboard",
+      "route": "/data-sources#history-coverage",
+      "viewport": {
+        "name": "desktop-keyboard",
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "d3dfa50ff3a6fce152fdbe73fc73a081ab22c5ae",
+      "data_vintage": {
+        "cohort_selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
+        "documents_generated_at": "2026-09-21T20:19:01.507Z",
+        "relations_generated_at": "2026-09-26T00:00:00.000Z",
+        "time_generated_at": "2026-09-26T00:00:00.000Z",
+        "roles_generated_at": "2026-09-26T00:00:00.000Z"
+      },
+      "assertion": "Chromium measured all 59 board rows, distinct unknown and measured-zero cells, the civic-activity disclaimer, and contained horizontal table scrolling with the generated Desk stylesheet.",
+      "sha256": "18d7de65752bb332b8a75bbbda292a8007caa579b372ec99aa9b31f05563f707",
+      "local_capture_sha256": "1a59c63244e432e61e87c43557d53b88c740bba758a20334765f019616ad1b71"
+    }
+  ]
+}

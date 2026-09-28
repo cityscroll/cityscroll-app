@@ -192,11 +192,57 @@ test("retained measurements require an ancestor capture with unchanged declared 
   }
 });
 
-test("committed evidence revisions are reachable from origin/main", (t) => {
-  if (!originAvailable()) {
-    t.skip("origin/main is unavailable");
-    return;
+test("retained measurements survive an unrelated main advance and synthetic merge", () => {
+  const fixture = mkdtempSync(join(tmpdir(), "cityscroll-retained-main-advance-"));
+  const run = (args) => execFileSync("git", args, { cwd: fixture, encoding: "utf8" }).trim();
+  try {
+    run(["init", "-q", "-b", "main"]);
+    run(["config", "user.email", "test@example.invalid"]);
+    run(["config", "user.name", "test"]);
+    writeFileSync(join(fixture, "measured.txt"), "measured\n");
+    run(["add", "measured.txt"]);
+    run(["commit", "-qm", "capture base"]);
+    const captureRevision = run(["rev-parse", "HEAD"]);
+    const inputs = [{
+      path: "measured.txt",
+      sha256: createHash("sha256").update(readFileSync(join(fixture, "measured.txt"))).digest("hex"),
+    }];
+
+    run(["checkout", "-qb", "feature"]);
+    writeFileSync(join(fixture, "feature.txt"), "feature\n");
+    run(["add", "feature.txt"]);
+    run(["commit", "-qm", "feature"]);
+
+    run(["checkout", "-q", "main"]);
+    writeFileSync(join(fixture, "unrelated.txt"), "new main work\n");
+    run(["add", "unrelated.txt"]);
+    run(["commit", "-qm", "unrelated main advance"]);
+    run(["merge", "--no-ff", "feature", "-m", "synthetic merge group"]);
+
+    const afterAdvance = retainedMeasurementStatus(fixture, {
+      revision: captureRevision,
+      inputs,
+    });
+    assert.notEqual(afterAdvance.currentRevision, captureRevision);
+    assert.equal(afterAdvance.ok, true);
+    assert.deepEqual(afterAdvance.changedInputs, []);
+
+    writeFileSync(join(fixture, "measured.txt"), "changed\n");
+    run(["add", "measured.txt"]);
+    run(["commit", "-qm", "change measured input"]);
+    const changedInput = retainedMeasurementStatus(fixture, {
+      revision: captureRevision,
+      inputs,
+    });
+    assert.equal(changedInput.ok, false);
+    assert.match(changedInput.reason, /inputs changed/);
+    assert.deepEqual(changedInput.changedInputs, ["measured.txt"]);
+  } finally {
+    rmSync(fixture, { recursive: true, force: true });
   }
+});
+
+test("committed evidence revisions are ancestors of HEAD with unchanged measurement inputs", () => {
   const failures = [];
   for (const file of jsonFiles(EVIDENCE)) {
     if (file === join(EVIDENCE, "assistant-setup", "capture-manifest.json")) continue;
@@ -207,7 +253,7 @@ test("committed evidence revisions are reachable from origin/main", (t) => {
       continue;
     }
     const retainedRevision = document?.measurement_provenance?.revision;
-    if (document?.schema === "cityscroll.documented_history_journey_manifest.v1" && retainedRevision) {
+    if (retainedRevision && Array.isArray(document?.measurement_provenance?.inputs)) {
       const retained = retainedMeasurementStatus(ROOT, {
         revision: retainedRevision,
         inputs: document.measurement_provenance.inputs,
@@ -221,7 +267,7 @@ test("committed evidence revisions are reachable from origin/main", (t) => {
     }
     const collected = recordedRevisions(document, [], /manifest\.json$/i.test(file));
     for (const entry of collected.revisions) {
-      const status = spawnSync("git", ["merge-base", "--is-ancestor", entry.value, "origin/main"], {
+      const status = spawnSync("git", ["merge-base", "--is-ancestor", entry.value, "HEAD"], {
         cwd: ROOT,
         stdio: "ignore",
       }).status;
