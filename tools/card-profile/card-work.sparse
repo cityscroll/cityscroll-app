@@ -373,6 +373,7 @@
 /site/comparative_receipt.mjs
 /site/comparative_signal_admission.mjs
 /site/composed_object_documents.mjs
+/site/connected_history_journeys.mjs
 /site/connected_history_relations.mjs
 /site/connected_history_roles.mjs
 /site/connected_history_time.mjs

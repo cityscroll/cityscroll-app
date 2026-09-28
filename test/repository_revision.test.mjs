@@ -1,10 +1,14 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import test from "node:test";
-import { resolveRepositoryRevision } from "../tools/repository_revision.mjs";
+import {
+  resolveRepositoryRevision,
+  retainedMeasurementStatus,
+} from "../tools/repository_revision.mjs";
 
 const ROOT = resolve(import.meta.dirname, "..");
 const EVIDENCE = join(ROOT, "docs", "evidence");
@@ -130,6 +134,64 @@ test("the shared helper ignores a synthetic pull-request merge parent", () => {
   }
 });
 
+test("retained measurements require an ancestor capture with unchanged declared inputs", () => {
+  const fixture = mkdtempSync(join(tmpdir(), "cityscroll-retained-measurement-"));
+  const run = (args) => execFileSync("git", args, { cwd: fixture, encoding: "utf8" }).trim();
+  try {
+    run(["init", "-q", "-b", "main"]);
+    run(["config", "user.email", "test@example.invalid"]);
+    run(["config", "user.name", "test"]);
+    writeFileSync(join(fixture, "measured.txt"), "measured\n");
+    run(["add", "measured.txt"]);
+    run(["commit", "-qm", "base"]);
+
+    run(["checkout", "-qb", "capture"]);
+    writeFileSync(join(fixture, "capture-marker"), "capture\n");
+    run(["add", "capture-marker"]);
+    run(["commit", "-qm", "capture"]);
+    const captureRevision = run(["rev-parse", "HEAD"]);
+    const inputs = [{
+      path: "measured.txt",
+      sha256: createHash("sha256").update(readFileSync(join(fixture, "measured.txt"))).digest("hex"),
+    }];
+
+    writeFileSync(join(fixture, "unrelated.txt"), "later\n");
+    run(["add", "unrelated.txt"]);
+    run(["commit", "-qm", "unrelated descendant"]);
+    const unchanged = retainedMeasurementStatus(fixture, {
+      revision: captureRevision,
+      inputs,
+    });
+    assert.equal(unchanged.ok, true);
+    assert.deepEqual(unchanged.changedInputs, []);
+
+    run(["checkout", "-q", "main"]);
+    writeFileSync(join(fixture, "main-only.txt"), "diverged\n");
+    run(["add", "main-only.txt"]);
+    run(["commit", "-qm", "divergent head"]);
+    const nonAncestor = retainedMeasurementStatus(fixture, {
+      revision: captureRevision,
+      inputs,
+    });
+    assert.equal(nonAncestor.ok, false);
+    assert.match(nonAncestor.reason, /not an ancestor/);
+
+    run(["checkout", "-q", "capture"]);
+    writeFileSync(join(fixture, "measured.txt"), "changed\n");
+    run(["add", "measured.txt"]);
+    run(["commit", "-qm", "change measured input"]);
+    const changedInput = retainedMeasurementStatus(fixture, {
+      revision: captureRevision,
+      inputs,
+    });
+    assert.equal(changedInput.ok, false);
+    assert.match(changedInput.reason, /inputs changed/);
+    assert.deepEqual(changedInput.changedInputs, ["measured.txt"]);
+  } finally {
+    rmSync(fixture, { recursive: true, force: true });
+  }
+});
+
 test("committed evidence revisions are reachable from origin/main", (t) => {
   if (!originAvailable()) {
     t.skip("origin/main is unavailable");
@@ -143,6 +205,19 @@ test("committed evidence revisions are reachable from origin/main", (t) => {
       document = JSON.parse(readFileSync(file, "utf8"));
     } catch {
       continue;
+    }
+    const retainedRevision = document?.measurement_provenance?.revision;
+    if (document?.schema === "cityscroll.documented_history_journey_manifest.v1" && retainedRevision) {
+      const retained = retainedMeasurementStatus(ROOT, {
+        revision: retainedRevision,
+        inputs: document.measurement_provenance.inputs,
+      });
+      if (!retained.ok) {
+        failures.push(
+          `${relative(ROOT, file)}:measurement_provenance=${retained.reason}:`
+          + retained.changedInputs.join(","),
+        );
+      }
     }
     const collected = recordedRevisions(document, [], /manifest\.json$/i.test(file));
     for (const entry of collected.revisions) {
