@@ -430,12 +430,14 @@ def main() -> int:
             data_vintage[path] = payload.get("generated_at")
 
     screenshot_dir = None
+    temporary_screenshot_dir = None
     if args.screenshot_dir:
         screenshot_dir = Path(args.screenshot_dir)
     elif os.environ.get("FM_TASK_SCRATCH"):
         screenshot_dir = Path(os.environ["FM_TASK_SCRATCH"]) / "documented-history-captures"
     elif not args.production:
-        screenshot_dir = Path(tempfile.mkdtemp(prefix="documented-history-captures-"))
+        temporary_screenshot_dir = tempfile.TemporaryDirectory(prefix="documented-history-captures-")
+        screenshot_dir = Path(temporary_screenshot_dir.name)
 
     try:
         with launched_chromium() as browser:
@@ -448,6 +450,8 @@ def main() -> int:
         if server is not None:
             server.shutdown()
             server.server_close()
+        if temporary_screenshot_dir is not None:
+            temporary_screenshot_dir.cleanup()
 
     receipt = {
         "schema": "cityscroll.documented_history_journey_measurement.v1",

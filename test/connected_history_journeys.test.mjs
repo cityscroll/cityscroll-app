@@ -6,7 +6,9 @@
 
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { test } from "node:test";
 
 import {
@@ -127,13 +129,28 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
   assert.equal(MANIFEST.image_binaries_committed, false);
   assert.equal(MANIFEST.production_measurement.state, "awaiting_landed_deploy");
 
-  const run = spawnSync(
-    process.env.CITYSCROLL_BROWSER_PYTHON || "python3",
-    ["tools/capture_documented_history_journeys.py"],
-    { cwd: ROOT, encoding: "utf8", timeout: 180_000, maxBuffer: 8 * 1024 * 1024 },
-  );
-  assert.equal(run.status, 0, `${run.stderr}\n${run.stdout}`);
-  const receipt = JSON.parse(run.stdout);
+  const captureTemp = mkdtempSync(join(tmpdir(), "connected-history-runner-"));
+  const captureEnv = { ...process.env, TMPDIR: captureTemp };
+  delete captureEnv.FM_TASK_SCRATCH;
+  let receipt;
+  try {
+    const run = spawnSync(
+      process.env.CITYSCROLL_BROWSER_PYTHON || "python3",
+      ["tools/capture_documented_history_journeys.py"],
+      {
+        cwd: ROOT,
+        encoding: "utf8",
+        timeout: 180_000,
+        maxBuffer: 8 * 1024 * 1024,
+        env: captureEnv,
+      },
+    );
+    assert.equal(run.status, 0, `${run.stderr}\n${run.stdout}`);
+    receipt = JSON.parse(run.stdout);
+    assert.deepEqual(readdirSync(captureTemp), [], "capture runner must remove its fallback screenshot directory");
+  } finally {
+    rmSync(captureTemp, { recursive: true, force: true });
+  }
   assert.equal(receipt.browser, "Chromium");
   assert.equal(receipt.mode, "hermetic_fixture");
   assert.equal(receipt.evidence_class, "runtime_browser_measurement");
