@@ -15,12 +15,39 @@ function loadJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
+function assertInRunRequestReceipt(requestReceipt, runReceipt, expectedRevision) {
+  assert.equal(typeof requestReceipt, "object");
+  assert.equal(requestReceipt.capture_run_id, runReceipt.capture_run_id);
+  assert.match(requestReceipt.request_id || "", /^near-you-/);
+  const observedAt = Date.parse(requestReceipt.observed_at);
+  assert.ok(observedAt >= Date.parse(runReceipt.run_started_at));
+  assert.ok(observedAt <= Date.parse(runReceipt.run_finished_at));
+
+  assert.equal(requestReceipt.page_load.http_status, 200);
+  assert.match(requestReceipt.page_load.url || "", /^https:\/\/cityscroll\.org\/near-you\//);
+  assert.ok(requestReceipt.page_load.headers.date);
+  assert.match(
+    requestReceipt.page_load.headers["cf-ray"] || "",
+    /^[0-9a-f]{16}-[A-Z0-9]{2,4}$/,
+  );
+
+  const servedManifest = requestReceipt.served_manifest_read;
+  assert.equal(servedManifest.http_status, 200);
+  assert.equal(servedManifest.served_revision, expectedRevision);
+  assert.match(servedManifest.url || "", /\/artifact-manifest\.json$/);
+  assert.ok(servedManifest.headers.date);
+  assert.match(servedManifest.headers["cf-ray"] || "", /^[0-9a-f]{16}-[A-Z0-9]{2,4}$/);
+  assert.match(servedManifest.payload_sha256 || "", /^[0-9a-f]{64}$/);
+}
+
 test("retained Near You shell production read-back carries observed A9/A13 values", () => {
   const receipt = loadJson(READBACK);
   assert.equal(receipt.schema, "cityscroll.near_you_shell_production_read.v1");
   assert.equal(receipt.public_alias, "ced62a84f8213");
   assert.equal(receipt.evidence_class, "deployed-production-read-back");
   assert.match(receipt.deployment.revision, /^[0-9a-f]{40}$/);
+  assert.match(receipt.deployment.required_ancestor, /^[0-9a-f]{40}$/);
+  assert.equal(receipt.deployment.required_ancestor_contained, true);
   assert.equal(
     receipt.producer.path,
     "docs/evidence/near-you-shell-readback/read-back.json",
@@ -34,7 +61,22 @@ test("retained Near You shell production read-back carries observed A9/A13 value
   const allCity = a13.filter((row) => !row.selected_neighborhood_label);
   const selected = a13.filter((row) => row.selected_neighborhood_label);
   assert.equal(allCity.length, 2);
-  assert.ok(selected.length >= 1);
+  assert.equal(selected.length, 4);
+  const runReceipt = receipt.run_receipt;
+  assert.equal(typeof runReceipt, "object");
+  assert.match(runReceipt.capture_run_id || "", /^[0-9a-f-]{36}$/);
+  assert.equal(runReceipt.served_revision, receipt.deployment.revision);
+  assert.equal(runReceipt.request_count, 6);
+  assert.equal(runReceipt.initial_served_manifest.served_revision, receipt.deployment.revision);
+  assert.equal(runReceipt.final_served_manifest.served_revision, receipt.deployment.revision);
+  assert.ok(Date.parse(runReceipt.run_finished_at) >= Date.parse(runReceipt.run_started_at));
+
+  const a13RequestIds = new Set();
+  for (const row of a13) {
+    assertInRunRequestReceipt(row.request_receipt, runReceipt, receipt.deployment.revision);
+    a13RequestIds.add(row.request_receipt.request_id);
+  }
+  assert.equal(a13RequestIds.size, 6);
   const desktop = allCity.find((row) => row.viewport.width === 1440);
   const mobile = allCity.find((row) => row.viewport.width === 390);
   assert.ok(desktop);
@@ -68,10 +110,25 @@ test("retained Near You shell production read-back carries observed A9/A13 value
     assert.ok(geometry.measured_label_box_count >= 1);
     assert.equal(geometry.overlapping_label_pair_count, 0);
     assert.equal(geometry.overlapping_label_pair_count, row.overlapping_label_pair_count);
-    assert.equal(typeof geometry.clipped_label_count, "number");
+    assert.equal(typeof geometry.frame_crossing_label_count, "number");
     assert.equal(typeof geometry.obscured_by_primary_control_count, "number");
     assert.equal(geometry.obscured_by_primary_control_count, 0);
+    assert.ok(geometry.primary_control_box_count > 0);
+    assert.ok(geometry.control_occlusion_label_box_count > 0);
     assert.match(geometry.clip_surface, /map_host_canvas/);
+    const controls = row.positive_controls;
+    assert.ok(controls.overlap.overlapping_label_pair_count > 0);
+    assert.ok(controls.overlap.overlapping_pairs_sample.flat().every(Boolean));
+    assert.ok(controls.collision_drop.collision_dropped_label_count > 0);
+    assert.ok(controls.collision_drop.collision_dropped_labels_sample.every(Boolean));
+    assert.ok(controls.control_occlusion.label_box_count > 0);
+    assert.ok(controls.control_occlusion.obscured_by_primary_control_count > 0);
+    assert.ok(controls.control_occlusion.obscured_sample.every((sample) => sample.label));
+    assert.ok(controls.frame_crossing.frame_crossing_label_count > 0);
+    assert.ok(
+      controls.frame_crossing.frame_crossing_labels_sample
+        .includes(controls.frame_crossing.moved_label),
+    );
     // Derived dataset flag must remain ignored, never the geometry source.
     assert.ok(Object.hasOwn(geometry, "dataset_overlap_flag_ignored"));
     for (const banned of ["result", "pass", "passed", "verdict"]) {
@@ -80,7 +137,10 @@ test("retained Near You shell production read-back carries observed A9/A13 value
     }
   }
 
-  const selectedRow = selected[0];
+  const selectedRow = selected.find((row) => (
+    row.selected_neighborhood_label === "Greenpoint" && row.viewport.width === 1440
+  ));
+  assert.ok(selectedRow);
   assert.equal(selectedRow.selected_neighborhood_label, "Greenpoint");
   assert.ok(
     (selectedRow.selected_layer_rendered_labels || []).includes("Greenpoint"),
@@ -95,6 +155,8 @@ test("retained Near You shell production read-back carries observed A9/A13 value
   const a9 = receipt.letters.A9.reads;
   assert.equal(a9.length, 2);
   for (const row of a9) {
+    assertInRunRequestReceipt(row.request_receipt, runReceipt, receipt.deployment.revision);
+    assert.ok(a13RequestIds.has(row.request_receipt.request_id));
     assert.equal(row.focus_trap_observed, false);
     assert.equal(typeof row.first_map_focus_index, "number");
     assert.equal(typeof row.exit_map_focus_index, "number");
@@ -117,14 +179,18 @@ test("capture-manifest stays aligned with the Near You shell production read-bac
   assert.equal(manifest.revision, receipt.deployment.revision);
   assert.equal(manifest.repository_revision, receipt.deployment.revision);
   assert.equal(manifest.image_binaries_committed, false);
-  assert.ok(manifest.captures.length >= 5);
+  assert.equal(manifest.captures.length, 8);
+  assert.equal(manifest.capture_run_id, receipt.run_receipt.capture_run_id);
+  assert.deepEqual(manifest.run_receipt, receipt.run_receipt);
   assert.equal(
     manifest.producer.path,
     "docs/evidence/near-you-shell-readback/read-back.json",
   );
   assert.deepEqual(manifest.producer.letters, ["A9", "A13"]);
   assert.match(manifest.condition, /Production base https:\/\/cityscroll\.org/);
-  const selectedCapture = manifest.captures.find((row) => row.name === "a13-selected-desktop");
+  const selectedCapture = manifest.captures.find((row) => (
+    row.name === "a13-selected-greenpoint-1440"
+  ));
   assert.ok(selectedCapture);
   assert.match(selectedCapture.route, /geo=nta2020%3ABK0101/);
   assert.equal(selectedCapture.observed.selected_neighborhood_label, "Greenpoint");
@@ -134,6 +200,14 @@ test("capture-manifest stays aligned with the Near You shell production read-bac
     desktopGeometry.observed.geometry.measurement,
     "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
   );
+  assert.ok(desktopGeometry.observed.geometry.primary_control_box_count > 0);
+  for (const row of manifest.captures) {
+    assertInRunRequestReceipt(
+      row.request_receipt,
+      receipt.run_receipt,
+      receipt.deployment.revision,
+    );
+  }
 });
 
 test("map host records collision observation fields for shell label capture", () => {
@@ -214,4 +288,27 @@ test("generator --check agrees with the retained Near You shell production read-
   );
   assert.equal(result.status, 0, result.stderr || result.stdout);
   assert.match(result.stdout, /check passed/);
+});
+
+test("production read-back validation refuses an in-run served revision mismatch", () => {
+  const result = spawnSync(
+    "python3",
+    [
+      "-c",
+      `import copy, json, sys
+sys.path.insert(0, "tools")
+import capture_near_you_shell_production_read as capture
+receipt = json.loads(open(${JSON.stringify(READBACK)}, encoding="utf-8").read())
+mutated = copy.deepcopy(receipt)
+mutated["letters"]["A13"]["reads"][0]["request_receipt"]["served_manifest_read"]["served_revision"] = "0" * 40
+try:
+    capture.validate(mutated)
+except AssertionError as error:
+    assert "served revision mismatch" in str(error), error
+else:
+    raise AssertionError("revision mismatch was accepted")`,
+    ],
+    { cwd: ROOT, encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
 });

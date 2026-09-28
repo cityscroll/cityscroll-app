@@ -16,6 +16,9 @@ Deployment-identity-stamped observations for the Near You map-first shell
   that the selected name renders on the `geography-selected-label` layer and in
   the UI. The resident `dataset.overlappingNeighborhoodLabelCount` flag is a
   derived style signal and is never treated as the overlap measurement.
+  The production run exercises the overlap, collision-drop, frame-crossing,
+  control-occlusion, and selected-name-priority controls on the served origin.
+  It refuses an empty primary-control population.
 
 ## Artifacts
 
@@ -26,6 +29,11 @@ Deployment-identity-stamped observations for the Near You map-first shell
 
 Image binaries are not committed. Optional screenshots may exist under the local
 task scratch directory during capture.
+
+Every capture row carries the page response headers and a fresh in-run read of
+the served `/artifact-manifest.json`. The capture refuses if any such read, or
+the final read at run completion, differs from the revision established at the
+start of the run.
 
 ## Reproduce
 
