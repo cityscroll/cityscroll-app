@@ -3,7 +3,9 @@ import {
   nearYouUrlFromScope,
   NEAR_YOU_COMMON_BOROUGHS,
   NEAR_YOU_COMMON_LENSES,
+  normalizeScope,
   PLACE_ROLES,
+  routeHashFromScope,
   scopeWithGeographies,
   normalizeGeographyKey,
   scopeFromRouteHash,
@@ -57,6 +59,95 @@ export function scopeWithPlace(input, place = {}) {
   if (has("neighborhood")) next.place.neighborhood = place.neighborhood || null;
   next.place.viewport = has("viewport") ? place.viewport || null : null;
   return scopeWithGeographies(next, next.place.geographies);
+}
+
+/**
+ * Facet values a Browse surface reads from its route beyond its first-class keys.
+ * Community-board refs are place constraints and are cleared with the other place axes.
+ */
+const ALL_NYC_BROWSE_FACET_JSON_KEYS = Object.freeze({
+  meetings: ["entity_refs_all"],
+  land: ["regulatoryEffect"],
+  rules: ["entity_refs_all"],
+  money: ["basis", "actionBasis", "entity_refs_all"],
+});
+
+/** Browse lenses with an All NYC collection; other lenses have no broader destination. */
+export const ALL_NYC_BROWSE_LENSES = Object.freeze(["meetings", "land", "property", "rules", "money", "people"]);
+
+/**
+ * Whether the Browse route grammar serializes this facet as its own query parameter
+ * (or drops it as the lens default). A value that only survives as opaque `facet`
+ * JSON is one the destination page does not apply.
+ */
+function browseRouteKeepsFacet(lens, key, value) {
+  const hash = routeHashFromScope(
+    normalizeScope({ facets: { domains: [lens], values: { [key]: value } } }),
+    { surface: lens },
+  );
+  return !new URLSearchParams(hash.split("?")[1] || "").has("facet");
+}
+
+function placeFreeEntityRefs(refs) {
+  return (Array.isArray(refs) ? refs : []).filter((ref) => !/^community-board:/i.test(String(ref)));
+}
+
+/**
+ * Broaden one scope to the All NYC collection of its category: an explicit user action,
+ * never a silent expansion of exact local results. Every place axis and map-only view
+ * state is cleared; topic, agency, dates and the facets the destination applies survive.
+ * A facet the destination cannot apply is removed and reported in `removed`, so the caller
+ * can name it beside the link instead of erasing it silently.
+ */
+export function scopeForAllNycRecords(input, { lens } = {}) {
+  const scope = scopeWithGeographies(input);
+  const category = lens || scope.facets.domains[0] || "meetings";
+  const readsFromFacetJson = new Set(ALL_NYC_BROWSE_FACET_JSON_KEYS[category] || []);
+  const applied = { has: (key) => readsFromFacetJson.has(key) || browseRouteKeepsFacet(category, key, scope.facets.values[key]) };
+  const values = {};
+  const removed = [];
+  for (const [key, value] of Object.entries(scope.facets.values || {})) {
+    if (key === "entity_refs_all") {
+      const refs = placeFreeEntityRefs(value);
+      if (applied.has(key) && refs.length) values[key] = refs;
+      continue;
+    }
+    if (applied.has(key)) values[key] = value;
+    else removed.push(Object.freeze({ axis: key, value }));
+  }
+  const next = normalizeScope({
+    ...scope,
+    place: {
+      boroughs: [],
+      community_districts: [],
+      council_districts: [],
+      neighborhood: null,
+      location_scope: null,
+      viewport: null,
+    },
+    facets: { ...scope.facets, domains: [category], values },
+  });
+  return Object.freeze({
+    scope: scopeWithGeographies(next, []),
+    lens: category,
+    removed: Object.freeze(removed),
+  });
+}
+
+/**
+ * Canonical legacy route hash for the All NYC collection. A Browse Meetings route
+ * without `when` opens on this week, so an unbounded Near You date window is
+ * serialized as `when=all` rather than silently narrowed.
+ */
+export function allNycRecordsRouteHash(input, { lens } = {}) {
+  const broadened = scopeForAllNycRecords(input, { lens });
+  if (!ALL_NYC_BROWSE_LENSES.includes(broadened.lens)) return null;
+  const timeWindow = broadened.scope.time_window;
+  const unbounded = !timeWindow.preset && !timeWindow.start && !timeWindow.end && !timeWindow.rolling_months;
+  const routeScope = broadened.lens === "meetings" && unbounded
+    ? normalizeScope({ ...broadened.scope, time_window: { ...timeWindow, preset: "all" } })
+    : broadened.scope;
+  return routeHashFromScope(routeScope, { surface: broadened.lens });
 }
 
 /**

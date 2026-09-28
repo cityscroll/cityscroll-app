@@ -30,7 +30,7 @@
     data-message-location-timeout="Location timed out. Try again or choose an area from the list."
     data-message-location-outside="That location is outside the covered city land. Choose an area from the list."
     data-message-location-lookup-failed="The location lookup failed. Try again or choose an area from the list."
-    data-message-deferred-unavailable="Matching records are temporarily unavailable."
+    data-message-deferred-unavailable="These rules could not load." data-near-all-nyc-href="/browse/rules/" data-near-all-nyc-label="All NYC rules"
     data-message-bags-unavailable="Other place records are temporarily unavailable."
     data-message-retry="Try again"
     data-translation-all-boroughs="All boroughs"
@@ -168,7 +168,11 @@
           <p class="map-legend"><span></span> Fewer to more qualifying records</p>
           <p class="near-vintage">Map boundaries: 26B</p>
         </div>
-
+        <div class="near-coverage near-local-recovery" data-near-local-recovery="zero" data-near-local-recovery-surface="map" role="note">
+      <strong>No mapped rules match these filters.</strong>
+      <p class="near-local-recovery-actions"><a href="/browse/rules/" data-near-recovery="all-nyc">All NYC rules</a></p>
+      <p class="near-local-recovery-note">Removes the Bronx place filter.</p>
+    </div>
         <div class="near-area-panel near-area-directory" id="near-area-list" data-geography-areas data-geography-directory="residential" data-geography-layer="nta2020">
           <h3>Areas</h3>
           <form class="near-area-directory-filter" method="get" action="https://cityscroll.org/near-you" data-geography-directory-filter><input type="hidden" name="v" value="0"><input type="hidden" name="lens" value="rules">
@@ -257,7 +261,11 @@
 
 
       <section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending" aria-busy="true">
-      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching Rules records</h2></div></div>
+      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching Rules records</h2></div></div><div class="near-coverage near-local-recovery" data-near-local-recovery="zero" data-near-local-recovery-surface="records" role="note">
+      <strong>No mapped rules match these filters.</strong>
+      <p class="near-local-recovery-actions"><a href="/browse/rules/" data-near-recovery="all-nyc">All NYC rules</a></p>
+      <p class="near-local-recovery-note">Removes the Bronx place filter.</p>
+    </div>
       <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
     </section>
     </div>

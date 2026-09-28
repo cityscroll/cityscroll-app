@@ -18,7 +18,7 @@ import {
 } from "./scope_v0.mjs";
 import { ACTION_LOCATION_BASIS_LABELS } from "./contract_action_location.mjs";
 import { civicGeographyKey } from "./civic_geography_registry.mjs";
-import { scopeWithPlace } from "./near_you_scope_runtime.mjs";
+import { allNycRecordsRouteHash, scopeForAllNycRecords, scopeWithPlace } from "./near_you_scope_runtime.mjs";
 import {
   geographyKeyForScope,
   geographyRecordProjection,
@@ -815,7 +815,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       exactIds: [...exactIdSet],
     });
   }
-  return {
+  const view = {
     schema: "cityscroll.near_you_view.v1",
     scope,
     lens,
@@ -905,6 +905,124 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       scope,
     ),
   };
+  view.allNyc = buildNearYouAllNycLink(view, { migratedSiteHref });
+  view.localRecovery = buildNearYouLocalRecovery(view, { membershipProjection });
+  return view;
+}
+
+/** Resident nouns for one category; the All NYC link names the same collection. */
+const LOCAL_RECOVERY_NOUNS = Object.freeze({
+  meetings: "meetings",
+  land: "zoning records",
+  property: "property records",
+  rules: "rules",
+  money: "contracts",
+  consultations: "consultations",
+  people: "people and organizations",
+});
+
+const LOCAL_RECOVERY_PLACE_NOUNS = Object.freeze({
+  nta2020: "neighborhood",
+  community_district: "community district",
+  council_district: "council district",
+  police_precinct: "precinct",
+  borough: "borough",
+});
+
+function localRecoveryState(view, membershipProjection) {
+  if (!view.hasPlace) return null;
+  if (view.dataState === "pending") return null;
+  if (view.dataState === "error") return "error";
+  const key = geographyKeyForScope(view.scope);
+  if (!key && view.scope.place.neighborhood && !view.scope.place.location_scope) return "unknown";
+  if (!view.mapped) return "unsupported";
+  const state = membershipProjection?.state;
+  if (state === "incomplete") return "incomplete";
+  if (state === "error") return "failed";
+  if (!membershipProjection?.exact) return "unsupported";
+  return view.results.count === 0 ? "zero" : null;
+}
+
+function removedFilterLabel({ axis, value }) {
+  if (axis === "place_role") return `“${placeRoleUserLabel(value)}”`;
+  if (axis === "type" || axis === "noticeType") return `type “${String(value)}”`;
+  return `${String(axis).replace(/_/g, " ")} “${typeof value === "string" ? value : JSON.stringify(value)}”`;
+}
+
+/** One explicit All NYC destination for the current category, only when a place narrows it. */
+function buildNearYouAllNycLink(view, { migratedSiteHref }) {
+  if (!view.hasPlace) return null;
+  const routeHash = allNycRecordsRouteHash(view.scope, { lens: view.lens });
+  if (!routeHash) return null;
+  return Object.freeze({
+    href: migratedSiteHref(`/${routeHash}`),
+    label: `All NYC ${LOCAL_RECOVERY_NOUNS[view.lens] || "records"}`,
+  });
+}
+
+/**
+ * The single local recovery for a selected place: plain-language task consequence, one
+ * All NYC link for the current category and, only for a transient load failure, Retry.
+ * Internal states stay distinct; resident copy never says there is no civic activity.
+ */
+function buildNearYouLocalRecovery(view, { membershipProjection }) {
+  const state = localRecoveryState(view, membershipProjection);
+  if (!state) return null;
+  const noun = LOCAL_RECOVERY_NOUNS[view.lens] || "records";
+  const place = view.scope.place;
+  const keyType = String(geographyKeyForScope(view.scope) || "").split(":")[1];
+  const placeNoun = LOCAL_RECOVERY_PLACE_NOUNS[keyType]
+    || (place.council_districts.length ? "council district"
+      : place.community_districts.length ? "community district"
+        : place.boroughs.length ? "borough" : "place");
+  const message = {
+    unsupported: `We can’t filter these ${noun} to this ${placeNoun} yet.`,
+    incomplete: `The list of ${noun} for this ${placeNoun} is not complete yet.`,
+    unknown: `We couldn’t find this place, so these ${noun} are not filtered to it.`,
+    error: `These ${noun} could not load.`,
+    failed: `These ${noun} could not load for this ${placeNoun}.`,
+    zero: `No mapped ${noun} match these filters.`,
+  }[state];
+  const allNyc = view.allNyc;
+  const broadened = scopeForAllNycRecords(view.scope, { lens: view.lens });
+  const placeLabel = state === "unknown"
+    ? view.scope.place.neighborhood
+    : view.placePresentation?.label || null;
+  const removedLabels = broadened.removed.map(removedFilterLabel);
+  return Object.freeze({
+    state,
+    message,
+    allNycHref: allNyc?.href || null,
+    allNycLabel: allNyc?.label || null,
+    placeNote: allNyc && placeLabel ? `Removes the ${placeLabel} place filter.` : null,
+    removedNote: allNyc && removedLabels.length ? `Also removes: ${removedLabels.join(", ")}.` : null,
+    removed: broadened.removed,
+    retryHref: state === "error" ? view.recoveryHref : null,
+  });
+}
+
+function renderNearYouLocalRecovery(view, surface) {
+  const recovery = view.localRecovery;
+  if (!recovery) return "";
+  const alert = recovery.state === "error" || recovery.state === "failed";
+  const links = [
+    recovery.allNycHref
+      ? `<a href="${esc(recovery.allNycHref)}" data-near-recovery="all-nyc">${esc(recovery.allNycLabel)}</a>`
+      : "",
+    recovery.retryHref
+      ? `<a href="${esc(recovery.retryHref)}" data-near-recovery="retry">Try again</a>`
+      : "",
+  ].filter(Boolean).join("");
+  const notes = [recovery.placeNote, recovery.removedNote].filter(Boolean)
+    .map((note) => `<p class="near-local-recovery-note">${esc(note)}</p>`).join("");
+  const body = [
+    `<strong>${esc(recovery.message)}</strong>`,
+    links ? `<p class="near-local-recovery-actions">${links}</p>` : "",
+    notes,
+  ].filter(Boolean).join("\n      ");
+  return `<div class="near-coverage near-local-recovery" data-near-local-recovery="${esc(recovery.state)}" data-near-local-recovery-surface="${esc(surface)}" role="${alert ? "alert" : "note"}">
+      ${body}
+    </div>`;
 }
 
 function dateLabel(value) {
@@ -1061,13 +1179,7 @@ export function renderNearYouDeferredParts(view) {
       : `No ${bag.label.toLowerCase()} records match these filters.`)}
   </details>`).join("");
   const resultCount = knownCount(view.results.count);
-  const noResultsCopy = view.mapState === "unsupported" && view.membershipProjection?.state === "unfilterable"
-    ? "This lens cannot be filtered to this exact area yet."
-    : view.mapState === "unsupported" && view.membershipProjection?.state === "incomplete"
-      ? "This area’s materialized records are incomplete."
-      : view.mapState === "unsupported" && view.membershipProjection?.state === "unavailable"
-        ? "This area’s materialized records are unavailable right now."
-        : undefined;
+  const localRecoveryHtml = renderNearYouLocalRecovery(view, "records");
   const visibleResults = view.results.records.slice(0, INITIAL_RECORD_LIMIT);
   const moreResults = view.results.records.length > INITIAL_RECORD_LIMIT && resultCount != null
     ? `<p class="near-results-more"><a href="${esc(view.browseHref)}">Open all ${resultCount} matching records</a></p>`
@@ -1077,9 +1189,9 @@ export function renderNearYouDeferredParts(view) {
   const broaderHtml = renderNearYouBroaderDistrictsHtml(view.broader_districts);
   const resultsHtml = `<section class="near-results" aria-labelledby="${broaderHtml ? "near-broader-districts-heading" : "near-results-heading"}"${resultCount == null ? "" : ` data-results-count="${resultCount}"`}>
       ${broaderHtml}<div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${resultCount == null ? `Matching ${esc(view.lensLabel)} records` : `${resultCount} ${esc(view.lensLabel)} records for these filters`}</h2></div></div>
-      ${recordList(visibleResults, noResultsCopy || (view.mapState === "unsupported"
-        ? `${esc(view.lensLabel)} records are not mapped here.`
-        : resultCount == null ? "Matching records are not available right now." : undefined))}
+      ${localRecoveryHtml || recordList(visibleResults, view.mapState === "unsupported"
+        ? `${view.lensLabel} records are not mapped here.`
+        : resultCount == null ? "Matching records are not available right now." : undefined)}
       ${moreResults}
     </section>`;
   const bagsHtml = `<section class="near-bags" aria-labelledby="near-bags-heading">
@@ -1105,7 +1217,7 @@ function renderNearYouDeferredShell(view, part) {
     </section>`;
     }
     return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending" aria-busy="true">
-      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>
+      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>${renderNearYouLocalRecovery(view, "records")}
       <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
     </section>`;
   }
@@ -1161,6 +1273,7 @@ function renderNearYouOverview(view) {
 
 function renderNearYouRecordsRecovery(view) {
   if (view.dataState !== "error") return "";
+  if (view.localRecovery) return renderNearYouLocalRecovery(view, "records");
   return `<div class="near-coverage near-records-state" data-near-records-state="error" role="alert">
       <strong>Matching records are temporarily unavailable.</strong>
       <p>Your place, topic, comparison, and filters stay selected. You can keep exploring the map while records recover.</p>
@@ -1171,15 +1284,11 @@ function renderNearYouRecordsRecovery(view) {
 function renderNearYouMapState(view) {
   const state = view.mapState;
   let notice = "";
-  if (state === "unsupported") {
-    const membershipState = view.membershipProjection?.state;
-    const exactLocalFilterUnavailable = ["unfilterable", "unavailable", "incomplete"].includes(membershipState);
+  if (state === "unsupported" && !view.localRecovery) {
     notice = `<div class="near-coverage near-map-state" data-near-map-state="unsupported" role="note">
-      <strong>${esc(exactLocalFilterUnavailable ? `${view.lensLabel} records are not available for this exact area filter.` : `${view.lensLabel} records are not mapped here.`)}</strong>
-      <p>${esc(exactLocalFilterUnavailable
-        ? "This lens has no exact local membership materialization here, so no local count or broader destination is shown."
-        : "This map does not have place data for this lens, so it will not imply that no civic activity exists.")}</p>
-      ${exactLocalFilterUnavailable ? "" : `<a href="${esc(view.browseHref)}" data-near-recovery="unsupported">Open ${esc(view.lensLabel)} records</a>`}
+      <strong>${esc(`${view.lensLabel} records are not mapped here.`)}</strong>
+      <p>This map does not have place data for this lens, so it will not imply that no civic activity exists.</p>
+      <a href="${esc(view.browseHref)}" data-near-recovery="unsupported">Open ${esc(view.lensLabel)} records</a>
     </div>`;
   }
   if (state === "pending") {
@@ -1237,7 +1346,7 @@ function renderNearYouMapState(view) {
           <p class="map-legend"><span></span> Fewer to more qualifying records</p>
           <p class="near-vintage">Map boundaries: ${esc(view.boundaryVintage || "not published")}</p>
         </div>
-        ${notice}
+        ${renderNearYouLocalRecovery(view, "map")}${notice}
         ${navigationAreasHtml}
       </div>`;
 }
@@ -1371,7 +1480,7 @@ export function renderNearYouBody(view) {
     ? GEOGRAPHY_NAVIGATION_SURFACE_RECORDS
     : GEOGRAPHY_NAVIGATION_SURFACE_MAP);
   const advancedFilters = renderNearYouAdvancedFilters(view);
-  const coverageNotes = `${view.mapState === "unsupported" ? `<aside class="near-coverage" role="note"><strong>${esc(view.lensLabel)} place data is not available.</strong> Your other filters stay in place; this is not an empty activity result.</aside>` : ""}
+  const coverageNotes = `${view.mapState === "unsupported" && !view.localRecovery ? `<aside class="near-coverage" role="note"><strong>${esc(view.lensLabel)} place data is not available.</strong> Your other filters stay in place; this is not an empty activity result.</aside>` : ""}
     ${view.basis === "contract_action_address" ? `<aside class="near-coverage" role="note"><strong>${esc(view.basisLabel)}.</strong> This shows where to submit a bid, attend a pre-bid event, or pick up a file. It does not say where the contract work will happen.</aside>` : ""}`;
   const recordsBlock = `<div class="near-records-surface" data-near-surface-panel="records">
       ${advancedFilters}
@@ -1450,7 +1559,7 @@ export function renderNearYouBody(view) {
     data-message-location-timeout="Location timed out. Try again or choose an area from the list."
     data-message-location-outside="That location is outside the covered city land. Choose an area from the list."
     data-message-location-lookup-failed="The location lookup failed. Try again or choose an area from the list."
-    data-message-deferred-unavailable="Matching records are temporarily unavailable."
+    data-message-deferred-unavailable="${esc(view.allNyc ? `These ${LOCAL_RECOVERY_NOUNS[view.lens] || "records"} could not load.` : "Matching records are temporarily unavailable.")}"${view.allNyc ? ` data-near-all-nyc-href="${esc(view.allNyc.href)}" data-near-all-nyc-label="${esc(view.allNyc.label)}"` : ""}
     data-message-bags-unavailable="Other place records are temporarily unavailable."
     data-message-retry="Try again"
     data-translation-all-boroughs="All boroughs"

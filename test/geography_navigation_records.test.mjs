@@ -284,7 +284,8 @@ test("duplicate IDs are collapsed, zero is not unknown, and an unfilterable lens
   const view = buildNearYouViewModel(scopeFor(KEYS.nta, "money"), source, emptyBoundaries);
   assert.equal(view.results.count, null);
   const html = renderNearYouDeferredParts(view).resultsHtml;
-  assert.match(html, /exact area yet|materialized records are incomplete/);
+  assert.match(html, /data-near-local-recovery="incomplete"/);
+  assert.match(html, /The list of contracts for this neighborhood is not complete yet\./);
   assert.doesNotMatch(html, /Open all .*matching records/);
   assert.doesNotMatch(html, /citywide/);
 });
@@ -297,13 +298,14 @@ test("missing data states stay distinct from an honest zero", () => {
   const unavailable = buildNearYouViewModel(scopeFor(KEYS.nta, "meetings"), null, emptyBoundaries);
   assert.equal(unavailable.dataState, "error");
   assert.equal(unavailable.results.count, null);
-  assert.match(renderNearYouDeferredParts(unavailable).resultsHtml, /not available right now/);
+  assert.match(renderNearYouDeferredParts(unavailable).resultsHtml, /data-near-local-recovery="error"/);
+  assert.match(renderNearYouDeferredParts(unavailable).resultsHtml, /These meetings could not load\./);
 
   const incomplete = buildNearYouViewModel(scopeFor(KEYS.nta, "meetings"), activity({
     geography_items: { coverage: { status: "incomplete" } },
   }), emptyBoundaries);
   assert.equal(incomplete.results.count, null);
-  assert.match(renderNearYouDeferredParts(incomplete).resultsHtml, /materialized records are incomplete/);
+  assert.match(renderNearYouDeferredParts(incomplete).resultsHtml, /The list of meetings for this neighborhood is not complete yet\./);
 });
 
 test("record inspection preserves the selected key, role, evidence tier, source, and vintage", () => {

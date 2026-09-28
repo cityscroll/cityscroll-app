@@ -283,3 +283,254 @@ test("NTA and Police Precinct scopes drive the same Near You membership index an
     assert.match(initialHtml, new RegExp(`<option value="${key}" selected>`));
   }
 });
+
+// Local recovery (explicit All NYC broadening) over the frozen published rows.
+// Imports are local to this block so the earlier tests above stay unchanged.
+import { LEGACY_LENS_ROUTES } from "../site/route_migration.mjs";
+import { entityRouteRef } from "../site/entity_pivot.mjs";
+import {
+  allNycRecordsRouteHash,
+  scopeForAllNycRecords,
+} from "../site/near_you_scope_runtime.mjs";
+import { renderNearYouDocument } from "../site/near_you_view.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
+import {
+  LOCAL_ESCAPE_SOURCE,
+  readLocalEscapeFixture,
+  readPinnedDistrictActivity,
+  reduceDistrictActivity,
+} from "./helpers/near_you_local_escape_fixture.mjs";
+
+const FROZEN_CLOCK = "2026-09-28T12:00:00.000Z";
+const frozen = readLocalEscapeFixture();
+const SHEEPSHEAD_BAY = "geography:nta2020:BK1503";
+const TRIBECA = "geography:nta2020:MN0102";
+const MOTT_HAVEN = "geography:nta2020:BX0101";
+const KENSINGTON = "geography:nta2020:BK1203";
+const LOCAL_PLACE_PARAMS = ["geo", "boro", "cd", "council", "neighborhood", "scope", "level", "id", "parent"];
+
+function frozenTest(name, body) {
+  return test(name, () => withPinnedClock(FROZEN_CLOCK, body));
+}
+
+function nearYouScope(query) {
+  return scopeFromNearYouUrl(`https://cityscroll.org/near-you/?${query}`);
+}
+
+/** The destination's own reading of a Browse document URL: path facet, then the scope route grammar. */
+function scopeFromBrowseDocument(href) {
+  const url = new URL(href, "https://cityscroll.org");
+  const lens = Object.entries(LEGACY_LENS_ROUTES).find(([, route]) => route === url.pathname)?.[0];
+  assert.ok(lens, `${href} is not a Browse collection document`);
+  return { lens, url, scope: scopeFromRouteHash(`#${lens}?${url.searchParams.toString()}`) };
+}
+
+function surfacePanel(html, surface) {
+  const start = html.indexOf(`data-near-surface-panel="${surface}"`);
+  assert.ok(start >= 0, `${surface} surface panel is rendered`);
+  const next = html.indexOf("data-near-surface-panel=", start + 1);
+  return html.slice(start, next < 0 ? undefined : next);
+}
+
+function allNycLinks(html) {
+  return [...html.matchAll(/<a href="([^"]+)" data-near-recovery="all-nyc">([^<]+)<\/a>/g)]
+    .map((match) => ({ href: match[1].replaceAll("&amp;", "&"), label: match[2] }));
+}
+
+function assertNoPlaceConstraint(scope, label) {
+  assert.deepEqual(scope.place.boroughs, [], label);
+  assert.deepEqual(scope.place.community_districts, [], label);
+  assert.deepEqual(scope.place.council_districts, [], label);
+  assert.equal(scope.place.neighborhood, null, label);
+  assert.equal(scope.place.location_scope, null, label);
+  assert.deepEqual(scope.place.geographies || [], [], label);
+}
+
+frozenTest("the frozen fixture is the exact reduction of the pinned published snapshot", (t) => {
+  assert.deepEqual(frozen.provenance.revision, LOCAL_ESCAPE_SOURCE.revision);
+  assert.deepEqual(frozen.provenance.blob, LOCAL_ESCAPE_SOURCE.blob);
+  const pinned = readPinnedDistrictActivity();
+  if (!pinned) {
+    t.skip(`pinned blob ${LOCAL_ESCAPE_SOURCE.blob} is not in this checkout's object store`);
+    return;
+  }
+  const { provenance, ...rows } = frozen;
+  assert.deepEqual(rows, reduceDistrictActivity(pinned));
+});
+
+frozenTest("A1: Sheepshead Bay's unsupported Meetings filter keeps a null count and offers one All NYC link on Map and Records", () => {
+  assert.deepEqual(frozen.geography_items.by_key[SHEEPSHEAD_BAY], { land: ["2019K0147"] });
+  const view = buildNearYouViewModel(
+    nearYouScope("geo=nta2020:BK1503&lens=meetings&surface=map"),
+    frozen,
+    boundaries,
+    { canonicalBase: "https://cityscroll.org/near-you" },
+  );
+  assert.equal(view.results.count, null);
+  assert.deepEqual(view.results.ids, []);
+  assert.equal(view.localRecovery.state, "unsupported");
+  assert.equal(view.localRecovery.message, "We can’t filter these meetings to this neighborhood yet.");
+
+  const html = renderNearYouDocument(view);
+  const deferred = renderNearYouDeferredParts(view).resultsHtml;
+  const hydrated = allNycLinks(deferred);
+  for (const [surface, links] of [
+    ["map", allNycLinks(surfacePanel(html, "map"))],
+    ["records", allNycLinks(surfacePanel(html, "records"))],
+    ["records after hydration", hydrated],
+  ]) {
+    assert.equal(links.length, 1, `${surface}: exactly one All NYC link`);
+    assert.equal(links[0].label, "All NYC meetings", surface);
+    const destination = scopeFromBrowseDocument(links[0].href);
+    assert.equal(destination.lens, "meetings", surface);
+    assert.equal(destination.url.pathname, "/browse/meetings/", surface);
+    assertNoPlaceConstraint(destination.scope, surface);
+    for (const name of LOCAL_PLACE_PARAMS) assert.equal(destination.url.searchParams.has(name), false, `${surface}: ${name}`);
+  }
+  assert.equal(allNycLinks(html).length, 2, "one link per surface, no third copy inside disclosures");
+  // Converse control: the pre-existing list link keeps the failing place when the
+  // scope carries legacy axes, and the same destination check rejects it.
+  const legacy = buildNearYouViewModel(
+    nearYouScope("geo=nta2020:BK1503&lens=meetings&boro=Brooklyn&cd=K15&neighborhood=Sheepshead%20Bay"),
+    frozen,
+    boundaries,
+  );
+  assert.throws(() => assertNoPlaceConstraint(scopeFromBrowseDocument(legacy.browseHref).scope, "legacy list link"));
+  assertNoPlaceConstraint(scopeFromBrowseDocument(legacy.localRecovery.allNycHref).scope, "legacy All NYC link");
+});
+
+frozenTest("A2: broadening round-trips topic, agency, type and dates through the Browse parser and clears every place axis", () => {
+  const agency = "Landmarks Preservation Commission";
+  const scope = nearYouScope([
+    "geo=nta2020:BK1503",
+    "lens=meetings",
+    "q=hearing",
+    `agency=${encodeURIComponent(agency)}`,
+    "type=Public%20Hearings",
+    "when=month",
+    "placeRole=venue",
+    "boro=Brooklyn",
+    "cd=K15",
+    "council=48",
+    "neighborhood=Sheepshead%20Bay",
+  ].join("&"));
+  assert.deepEqual(scope.place.geographies, [SHEEPSHEAD_BAY]);
+  assert.deepEqual(scope.place.boroughs, ["Brooklyn"]);
+  const view = buildNearYouViewModel(scope, frozen, boundaries);
+  const href = view.localRecovery.allNycHref;
+  const { scope: destination } = scopeFromBrowseDocument(href);
+  assertNoPlaceConstraint(destination, "broadened destination");
+  assert.equal(destination.topic.query, scope.topic.query);
+  assert.equal(destination.time_window.preset, "month");
+  assert.deepEqual(destination.facets.domains, ["meetings"]);
+  assert.deepEqual(destination.facets.values.entity_refs_all, [entityRouteRef("agency", agency)]);
+  // The destination cannot apply type or place role; both are named, never carried silently.
+  assert.deepEqual(scopeForAllNycRecords(scope).removed.map((row) => [row.axis, row.value]), [
+    ["type", "Public Hearings"],
+    ["place_role", "venue"],
+  ]);
+  assert.equal(destination.facets.values.type, undefined);
+  assert.equal(destination.facets.values.place_role, undefined);
+  assert.equal(view.localRecovery.removedNote, "Also removes: type “Public Hearings”, “Happening here”.");
+  assert.ok(view.placePresentation.label);
+  assert.equal(view.localRecovery.placeNote, `Removes the ${view.placePresentation.label} place filter.`);
+  // The exact local scope stays usable and unchanged.
+  assert.deepEqual(view.scope.place.geographies, [SHEEPSHEAD_BAY]);
+  assert.equal(view.scope.facets.values.type, "Public Hearings");
+
+  // Converse control: without a date filter Browse would open on this week, so
+  // an unbounded Near You window is carried explicitly.
+  const undated = allNycRecordsRouteHash(nearYouScope("geo=nta2020:BK1503&lens=meetings"));
+  assert.equal(undated, "#meetings?when=all");
+  assert.equal(scopeFromRouteHash(undated).time_window.preset, "all");
+});
+
+frozenTest("A3: exact membership, published zero and wider-district previews keep their own identities", () => {
+  const tribecaIds = frozen.geography_items.by_key[TRIBECA].meetings;
+  assert.equal(tribecaIds.length, 26);
+  const tribeca = buildNearYouViewModel(nearYouScope("geo=nta2020:MN0102&lens=meetings"), frozen, boundaries);
+  assert.deepEqual(tribeca.results.ids, [...tribecaIds].map(String).sort());
+  assert.equal(tribeca.results.count, 26);
+  assert.equal(tribeca.localRecovery, null);
+
+  assert.deepEqual(frozen.geography_items.by_key[MOTT_HAVEN].meetings, []);
+  const mottHaven = buildNearYouViewModel(nearYouScope("geo=nta2020:BX0101&lens=meetings"), frozen, boundaries);
+  assert.equal(mottHaven.results.count, 0);
+  assert.equal(mottHaven.localRecovery.state, "zero");
+  assert.equal(mottHaven.localRecovery.message, "No mapped meetings match these filters.");
+  assert.match(renderNearYouDeferredParts(mottHaven).resultsHtml, /data-results-count="0"/);
+
+  assert.equal(frozen.geography_items.by_key[KENSINGTON], undefined);
+  const districts = frozen.district_items.by_level.community_district;
+  const slices = Object.fromEntries(["K12", "K14"].map((id) => [`geography:community_district:${id}`, {
+    records: {
+      meetings: Object.fromEntries(districts[id].meetings.map((recordId) => [recordId, frozen.records.meetings[recordId]])),
+    },
+    district_items: { by_level: { community_district: { [id]: districts[id] } } },
+  }]));
+  const kensington = buildNearYouViewModel(nearYouScope("geo=nta2020:BK1203&lens=meetings"), frozen, boundaries, {
+    broaderDistricts: {
+      relations: ["K14", "K12"].map((id) => ({ key: `geography:community_district:${id}`, id })),
+      slices,
+    },
+  });
+  assert.equal(kensington.results.count, null);
+  assert.deepEqual(kensington.results.ids, []);
+  assert.equal(kensington.localRecovery.state, "unsupported");
+  const k14 = kensington.broader_districts.districts.find((district) => district.id === "K14");
+  assert.ok(k14, "K14 previews remain available as wider-district content");
+  assert.equal(k14.scope, "broader");
+  assert.equal(k14.count, k14.records.length);
+  assert.ok(k14.records.every((record) => districts.K14.meetings.includes(record.id)));
+  assert.match(k14.href, /geo=community_district%3AK14/);
+  assert.equal(kensington.broader_districts.districts.some((district) => district.id === "K12"), false,
+    "K12 publishes no meetings, so no empty preview group appears");
+  const html = renderNearYouDeferredParts(kensington).resultsHtml;
+  assert.ok(html.indexOf("near-broader-districts-heading") < html.indexOf('data-near-recovery="all-nyc"'));
+});
+
+frozenTest("A4: zero, unsupported, incomplete, failed load and unknown place render distinct task copy without side effects", () => {
+  const incomplete = structuredClone(frozen);
+  incomplete.geography_items.coverage = { status: "incomplete" };
+  const cases = {
+    zero: buildNearYouViewModel(nearYouScope("geo=nta2020:BX0101&lens=meetings"), frozen, boundaries),
+    unsupported: buildNearYouViewModel(nearYouScope("geo=nta2020:BK1503&lens=meetings"), frozen, boundaries),
+    incomplete: buildNearYouViewModel(nearYouScope("geo=nta2020:MN0102&lens=meetings"), incomplete, boundaries),
+    error: buildNearYouViewModel(nearYouScope("geo=nta2020:MN0102&lens=meetings"), null, boundaries, { dataState: "error" }),
+    unknown: buildNearYouViewModel(nearYouScope("neighborhood=Atlantis&lens=meetings"), frozen, boundaries),
+  };
+  const fetchCalls = [];
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = (...args) => { fetchCalls.push(args); throw new Error("no fetch during render"); };
+  let rendered;
+  try {
+    rendered = Object.fromEntries(Object.entries(cases).map(([name, view]) => [name, {
+      view,
+      html: renderNearYouDocument(view),
+      deferred: renderNearYouDeferredParts(view).resultsHtml,
+    }]));
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+  assert.deepEqual(fetchCalls, []);
+  const messages = Object.entries(rendered).map(([name, row]) => {
+    assert.equal(row.view.localRecovery.state, name);
+    return row.view.localRecovery.message;
+  });
+  assert.equal(new Set(messages).size, 5, "each state carries its own copy");
+  for (const [name, row] of Object.entries(rendered)) {
+    const blocks = [...row.html.matchAll(/<div class="near-coverage near-local-recovery"[\s\S]*?<\/div>/g)].map((match) => match[0]);
+    assert.equal(blocks.length, 2, `${name}: one block per surface`);
+    for (const block of blocks) {
+      const text = block.replace(/<[^>]+>/g, " ");
+      assert.doesNotMatch(text, /no civic activity|no activity|materializ|membership|lens|projection|\bKV\b/i, name);
+      assert.doesNotMatch(block, /<(?:button|form|script|meta)\b|data-use-location|\/following\//, name);
+      const actions = [...block.matchAll(/data-near-recovery="([a-z-]+)"/g)].map((match) => match[1]);
+      assert.deepEqual(actions, name === "error" ? ["all-nyc", "retry"] : ["all-nyc"], name);
+    }
+    assert.doesNotMatch(row.html, /http-equiv="refresh"/i, name);
+    assert.equal(row.view.results.count, name === "zero" ? 0 : null, name);
+  }
+  assert.equal(rendered.error.view.localRecovery.retryHref, rendered.error.view.recoveryHref);
+  assert.deepEqual(new URL(rendered.error.view.localRecovery.retryHref).searchParams.getAll("geo"), [TRIBECA], "Retry keeps the local scope");
+});

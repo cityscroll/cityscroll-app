@@ -227,7 +227,18 @@ async function hydrateCurrentNearYouDeferred() {
         if (translated && translated !== "buyer_history_retry") retryLabel = translated;
       }
       recovery.textContent = retryLabel;
-      host.replaceChildren(statusNode, recovery);
+      // Transient failure: Retry plus, for a selected place, the one explicit All NYC route.
+      const allNycHref = host.dataset.nearDeferred === "results" ? root.dataset.nearAllNycHref : "";
+      if (allNycHref) {
+        const allNyc = document.createElement("a");
+        allNyc.className = "near-deferred-recovery";
+        allNyc.href = allNycHref;
+        allNyc.dataset.nearRecovery = "all-nyc";
+        allNyc.textContent = root.dataset.nearAllNycLabel || "";
+        host.replaceChildren(statusNode, allNyc, recovery);
+      } else {
+        host.replaceChildren(statusNode, recovery);
+      }
       host.setAttribute("aria-busy", "false");
       if (host.dataset.nearDeferred === "results") host.removeAttribute("data-results-count");
       host.dataset.nearDeferredState = "error";

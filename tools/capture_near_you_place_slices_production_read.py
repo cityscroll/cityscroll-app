@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html
 import json
 import re
 import secrets
@@ -45,6 +46,12 @@ VIEWPORTS = (("desktop", 1440, 900), ("mobile", 390, 844))
 ZERO_COPY = "No records match these filters."
 UNAVAILABLE_COPY = "This area\u2019s materialized records are unavailable right now."
 GENERIC_UNAVAILABLE_COPY = "Matching records are not available right now."
+# Current served pages mark the local recovery state structurally; the copy is
+# read from the block, so a copy revision never silently reclassifies a state.
+LOCAL_RECOVERY_RE = re.compile(
+    r'data-near-local-recovery="([a-z]+)"[^>]*>\s*<strong>([^<]*)</strong>'
+)
+LOCAL_RECOVERY_SELECTOR = "section.near-results [data-near-local-recovery] strong"
 DEFERRED_SCHEMA = "cityscroll.near_you_deferred.v1"
 DEFERRED_ERROR_SCHEMA = "cityscroll.near_you_deferred_error.v1"
 
@@ -125,17 +132,30 @@ def classify_deferred(status: int, payload: Any) -> dict[str, Any]:
     results_html = payload.get("results_html")
     if not isinstance(results_html, str):
         raise AssertionError("deferred read has no results_html")
+    recoveries = [
+        (state, html.unescape(copy).strip())
+        for state, copy in LOCAL_RECOVERY_RE.findall(results_html)
+    ]
+    if len(recoveries) > 1:
+        raise AssertionError("deferred read carries more than one local recovery state")
+    recovery = recoveries[0] if recoveries else None
     count_match = re.search(r'data-results-count="(\d+)"', results_html)
     if count_match:
         count = int(count_match.group(1))
         if count > 0:
-            if "<ol class=\"near-records\">" not in results_html:
+            if "<ol class=\"near-records\">" not in results_html or recovery:
                 raise AssertionError("positive count without a rendered record list")
             return {"state": "available_records", "count": count, "typed_copy": None}
-        if ZERO_COPY not in results_html:
+        if recovery and recovery[0] == "zero" and recovery[1] and ZERO_COPY not in results_html:
+            return {"state": "published_zero", "count": 0, "typed_copy": recovery[1]}
+        if ZERO_COPY not in results_html or recovery:
             raise AssertionError("zero count without the published-zero copy")
         return {"state": "published_zero", "count": 0, "typed_copy": ZERO_COPY}
-    if UNAVAILABLE_COPY in results_html:
+    if recovery and recovery[0] == "unsupported" and recovery[1]:
+        if GENERIC_UNAVAILABLE_COPY in results_html or ZERO_COPY in results_html or UNAVAILABLE_COPY in results_html:
+            raise AssertionError("unavailable source coverage mixed with generic or zero copy")
+        return {"state": "unavailable_source_coverage", "count": None, "typed_copy": recovery[1]}
+    if UNAVAILABLE_COPY in results_html and not recovery:
         if GENERIC_UNAVAILABLE_COPY in results_html or ZERO_COPY in results_html:
             raise AssertionError("unavailable source coverage mixed with generic or zero copy")
         return {"state": "unavailable_source_coverage", "count": None, "typed_copy": UNAVAILABLE_COPY}
@@ -149,9 +169,9 @@ def page_assertion_for(state: str) -> dict[str, str]:
             "expect": "records",
         }
     if state == "published_zero":
-        return {"selector": "section.near-results .near-empty", "expect": "zero_copy"}
+        return {"selector": f"section.near-results .near-empty, {LOCAL_RECOVERY_SELECTOR}", "expect": "zero_copy"}
     if state == "unavailable_source_coverage":
-        return {"selector": "section.near-results .near-empty", "expect": "unavailable_copy"}
+        return {"selector": f"section.near-results .near-empty, {LOCAL_RECOVERY_SELECTOR}", "expect": "unavailable_copy"}
     raise AssertionError(f"no page assertion for served state {state}")
 
 
@@ -211,7 +231,7 @@ def capture() -> dict[str, Any]:
                     timeout=90_000,
                 )
                 page.wait_for_selector(
-                    "section.near-results .near-record, section.near-results .near-empty",
+                    f"section.near-results .near-record, section.near-results .near-empty, {LOCAL_RECOVERY_SELECTOR}",
                     timeout=90_000,
                 )
                 page.wait_for_timeout(150)
@@ -236,7 +256,11 @@ def capture() -> dict[str, Any]:
                         generic_seen: !!results && results.textContent.includes('Matching records are not available right now.'),
                       };
                     }""",
-                    [page_assertion["selector"], ZERO_COPY, UNAVAILABLE_COPY],
+                    [
+                        page_assertion["selector"],
+                        classification["typed_copy"] if expected_state == "published_zero" else ZERO_COPY,
+                        classification["typed_copy"] if expected_state == "unavailable_source_coverage" else UNAVAILABLE_COPY,
+                    ],
                 )
                 if expected_state == "available_records":
                     if observed["records"] < 1 or observed["records"] != classification["count"]:
