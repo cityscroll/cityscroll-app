@@ -7,6 +7,7 @@
  */
 
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -372,6 +373,14 @@ test("A4 [verification] production retake carries dual-width URL transitions, co
   assert.match(captureTool, /data-near-you-root/);
   assert.match(captureTool, /headless-playwright-production-served-site/);
   assert.match(captureTool, /require_served_page_revision_contains_delivery/);
+  assert.match(captureTool, /require_stable_served_deployment/);
+  assert.match(captureTool, /served JSON is not an object/);
+  assert.match(captureTool, /lacks a 40-hex source_commit_sha/);
+  assert.match(captureTool, /lacks a 64-hex artifact_hash/);
+  assert.match(captureTool, /lacks a source-receipt digest/);
+  assert.match(captureTool, /lacks source-receipt generated_at/);
+  assert.match(captureTool, /origin\/main did not resolve to a full commit/);
+  assert.match(captureTool, /served revision changed during capture/);
   assert.match(captureTool, /observed_url_before/);
   assert.match(captureTool, /observed_url_after/);
   assert.match(captureTool, /project-connections/);
@@ -566,6 +575,223 @@ test("A4 [verification] production retake carries dual-width URL transitions, co
 
   const digest = createHash("sha256").update(readFileSync(MANIFEST_PATH)).digest("hex");
   assert.equal(digest.length, 64);
+});
+
+function runCaptureFreshness(code) {
+  return spawnSync("python3", ["-c", code], {
+    cwd: ROOT,
+    encoding: "utf8",
+    env: process.env,
+  });
+}
+
+function captureFreshnessPrelude() {
+  return `
+import importlib.util
+import json
+import subprocess
+import sys
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from pathlib import Path
+from threading import Thread
+
+ROOT = Path(${JSON.stringify(ROOT)})
+CAPTURE = ROOT / "tools" / "capture_default_local_home_journey.py"
+spec = importlib.util.spec_from_file_location("capture_default_local_home_journey", CAPTURE)
+mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(mod)
+
+VALID_SHA = "a" * 40
+VALID_HASH = "b" * 64
+VALID_RECEIPT = "c" * 64
+VALID = {
+    "schema": "cityscroll.served-artifact-manifest.v1",
+    "source_commit_sha": VALID_SHA,
+    "artifact_hash": VALID_HASH,
+    "generated_at": "2026-09-28T00:00:00Z",
+    "deployment_at": "2026-09-28T00:00:00Z",
+    "source_receipt": {
+        "sha256": VALID_RECEIPT,
+        "generated_at": "2026-09-28T00:00:00Z",
+    },
+}
+
+def serve(body: bytes):
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(body)
+        def log_message(self, *_args):
+            return
+    server = HTTPServer(("127.0.0.1", 0), Handler)
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    host, port = server.server_address
+    return server, f"http://{host}:{port}/"
+`;
+}
+
+test("A4 [freshness] refuses non-object served JSON payload", () => {
+  const result = runCaptureFreshness(`${captureFreshnessPrelude()}
+server, base = serve(b"[1, 2, 3]")
+try:
+    mod.deployment_manifest(base)
+except SystemExit as error:
+    message = str(error)
+    assert "served JSON is not an object" in message, message
+    print("refused")
+else:
+    raise SystemExit("expected non-object refusal")
+finally:
+    server.shutdown()
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /refused/);
+});
+
+test("A4 [freshness] refuses missing or malformed source_commit_sha", () => {
+  const result = runCaptureFreshness(`${captureFreshnessPrelude()}
+payload = dict(VALID)
+payload["source_commit_sha"] = "not-a-commit"
+try:
+    mod.deployment_manifest("https://example.test/", fetch_json_impl=lambda url: payload)
+except SystemExit as error:
+    message = str(error)
+    assert "lacks a 40-hex source_commit_sha" in message, message
+    print("refused")
+else:
+    raise SystemExit("expected source_commit_sha refusal")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /refused/);
+});
+
+test("A4 [freshness] refuses missing or malformed artifact_hash", () => {
+  const result = runCaptureFreshness(`${captureFreshnessPrelude()}
+payload = dict(VALID)
+payload["artifact_hash"] = "short"
+try:
+    mod.deployment_manifest("https://example.test/", fetch_json_impl=lambda url: payload)
+except SystemExit as error:
+    message = str(error)
+    assert "lacks a 64-hex artifact_hash" in message, message
+    print("refused")
+else:
+    raise SystemExit("expected artifact_hash refusal")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /refused/);
+});
+
+test("A4 [freshness] refuses missing source-receipt digest", () => {
+  const result = runCaptureFreshness(`${captureFreshnessPrelude()}
+payload = dict(VALID)
+payload["source_receipt"] = {"generated_at": "2026-09-28T00:00:00Z"}
+try:
+    mod.deployment_manifest("https://example.test/", fetch_json_impl=lambda url: payload)
+except SystemExit as error:
+    message = str(error)
+    assert "lacks a source-receipt digest" in message, message
+    print("refused")
+else:
+    raise SystemExit("expected source-receipt digest refusal")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /refused/);
+});
+
+test("A4 [freshness] refuses missing source-receipt generated_at", () => {
+  const result = runCaptureFreshness(`${captureFreshnessPrelude()}
+payload = dict(VALID)
+payload["source_receipt"] = {"sha256": VALID_RECEIPT}
+try:
+    mod.deployment_manifest("https://example.test/", fetch_json_impl=lambda url: payload)
+except SystemExit as error:
+    message = str(error)
+    assert "lacks source-receipt generated_at" in message, message
+    print("refused")
+else:
+    raise SystemExit("expected source-receipt generated_at refusal")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /refused/);
+});
+
+test("A4 [freshness] refuses unresolvable origin/main", () => {
+  const result = runCaptureFreshness(`${captureFreshnessPrelude()}
+class Result:
+    stdout = "not-a-full-commit\\n"
+def fake_run(*_args, **_kwargs):
+    return Result()
+subprocess.run = fake_run
+try:
+    mod.grounded_origin_main()
+except SystemExit as error:
+    message = str(error)
+    assert "origin/main did not resolve to a full commit" in message, message
+    print("refused")
+else:
+    raise SystemExit("expected origin/main refusal")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /refused/);
+});
+
+test("A4 [freshness] refuses served revision changing mid-run", () => {
+  const result = runCaptureFreshness(`${captureFreshnessPrelude()}
+before = dict(VALID)
+after = dict(VALID)
+after["source_commit_sha"] = "d" * 40
+try:
+    mod.require_stable_served_deployment(before=before, after=after, revision=VALID_SHA)
+except SystemExit as error:
+    message = str(error)
+    assert "served revision changed during capture" in message, message
+    assert VALID_SHA in message, message
+    assert ("d" * 40) in message, message
+    print("refused")
+else:
+    raise SystemExit("expected mid-run revision refusal")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /refused/);
+});
+
+test("A4 [freshness] accepting control: well-formed served manifest and stable revision proceed", () => {
+  const result = runCaptureFreshness(`${captureFreshnessPrelude()}
+accepted = mod.deployment_manifest(
+    "https://example.test/",
+    fetch_json_impl=lambda url: dict(VALID),
+)
+assert accepted["source_commit_sha"] == VALID_SHA
+assert accepted["artifact_hash"] == VALID_HASH
+assert accepted["source_receipt"]["sha256"] == VALID_RECEIPT
+assert accepted["source_receipt"]["generated_at"] == "2026-09-28T00:00:00Z"
+mod.require_stable_served_deployment(before=VALID, after=dict(VALID), revision=VALID_SHA)
+real = mod.grounded_origin_main()
+assert len(real) == 40 and all(ch in "0123456789abcdef" for ch in real)
+# Attribution: correcting only the previously bad field lets each check pass.
+for key, bad, good in (
+    ("source_commit_sha", "short", VALID_SHA),
+    ("artifact_hash", "short", VALID_HASH),
+):
+    broken = dict(VALID)
+    broken[key] = bad
+    try:
+        mod.deployment_manifest("https://example.test/", fetch_json_impl=lambda url, p=broken: p)
+    except SystemExit:
+        pass
+    else:
+        raise SystemExit(f"expected refusal for broken {key}")
+    fixed = dict(broken)
+    fixed[key] = good
+    mod.deployment_manifest("https://example.test/", fetch_json_impl=lambda url, p=fixed: p)
+print("accepted")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /accepted/);
 });
 
 test("facts: September 23 Midwood view keeps venue address (positive control)", async () => {

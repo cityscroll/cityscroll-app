@@ -74,9 +74,9 @@ def fetch_json(url: str) -> dict:
     return payload
 
 
-def deployment_manifest(base: str) -> dict:
+def deployment_manifest(base: str, *, fetch_json_impl=None) -> dict:
     url = urljoin(base.rstrip("/") + "/", "artifact-manifest.json")
-    payload = fetch_json(url)
+    payload = (fetch_json_impl or fetch_json)(url)
     revision = str(payload.get("source_commit_sha") or "")
     artifact_hash = str(payload.get("artifact_hash") or "")
     source_receipt = payload.get("source_receipt") or {}
@@ -89,6 +89,16 @@ def deployment_manifest(base: str) -> dict:
     if not source_receipt.get("generated_at"):
         raise SystemExit("served artifact manifest lacks source-receipt generated_at; production data vintage is absent")
     return {"url": url, **payload}
+
+
+def require_stable_served_deployment(*, before: dict, after: dict, revision: str) -> None:
+    """Refuse a mixed run when the served Pages revision or artifact hash moves mid-capture."""
+    if after.get("source_commit_sha") != revision:
+        raise SystemExit(
+            f"served revision changed during capture: {revision} -> {after.get('source_commit_sha')}"
+        )
+    if after.get("artifact_hash") != before.get("artifact_hash"):
+        raise SystemExit("served artifact hash changed during capture; discard this mixed run")
 
 
 def require_deployed_revision(base: str, deployment: dict) -> str:
@@ -922,10 +932,7 @@ def capture(base: str, *, host_images: bool) -> dict:
             context4.close()
 
     deployment_after = deployment_manifest(base)
-    if deployment_after.get("source_commit_sha") != revision:
-        raise SystemExit(f"served revision changed during capture: {revision} -> {deployment_after.get('source_commit_sha')}")
-    if deployment_after.get("artifact_hash") != deployment.get("artifact_hash"):
-        raise SystemExit("served artifact hash changed during capture; discard this mixed run")
+    require_stable_served_deployment(before=deployment, after=deployment_after, revision=revision)
 
     if host_images:
         for row in captures:
