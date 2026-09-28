@@ -506,6 +506,7 @@ export function collisionSafeLabelCollection(collection, {
   height,
   zoom = 0,
   selectedKey = null,
+  avoidBoxes = [],
   maxLabels = width <= 500
     ? COLLISION_SAFE_LABEL_LIMIT.narrow
     : COLLISION_SAFE_LABEL_LIMIT.desktop,
@@ -535,6 +536,7 @@ export function collisionSafeLabelCollection(collection, {
   const boxes = [];
   for (const candidate of candidates) {
     const box = estimatedLabelBox(candidate.feature, candidate.point);
+    if (avoidBoxes.some((avoidBox) => boxesIntersect(box, avoidBox))) continue;
     if (boxes.some((acceptedBox) => boxesIntersect(box, acceptedBox))) continue;
     accepted.push({
       type: "Feature",
@@ -552,6 +554,23 @@ export function collisionSafeLabelCollection(collection, {
     if (accepted.length >= maxLabels) break;
   }
   return { type: "FeatureCollection", features: accepted };
+}
+
+function primaryControlAvoidanceBoxes(container, canvas) {
+  if (!container?.querySelectorAll || !canvas?.getBoundingClientRect) return [];
+  const canvasRect = canvas.getBoundingClientRect();
+  const padding = 4;
+  return [...container.querySelectorAll(
+    ".maplibregl-ctrl-attrib, .maplibregl-ctrl-group",
+  )]
+    .map((control) => control.getBoundingClientRect?.())
+    .filter((box) => box && box.width > 1 && box.height > 1)
+    .map((box) => ({
+      left: box.left - canvasRect.left - padding,
+      top: box.top - canvasRect.top - padding,
+      right: box.right - canvasRect.left + padding,
+      bottom: box.bottom - canvasRect.top + padding,
+    }));
 }
 
 function selectedLineWidthForMode(forcedColors = false) {
@@ -993,6 +1012,15 @@ export async function createGeographyNavigationMap(options = {}) {
     on(map, "moveend", refreshLabelSource);
     on(map, "resize", refreshLabelSource);
 
+    // Attribution can expand in place. Re-admit labels after its disclosure
+    // changes size so the visible control rectangle remains a no-label zone.
+    const refreshAfterControlActivation = (event) => {
+      if (!event.target?.closest?.(".maplibregl-ctrl-attrib, .maplibregl-ctrl-group")) return;
+      globalThis.requestAnimationFrame?.(() => refreshLabelSource());
+    };
+    container.addEventListener("click", refreshAfterControlActivation);
+    listeners.push(() => container.removeEventListener("click", refreshAfterControlActivation));
+
     on(map, "error", (event) => {
       const message = String(event?.error?.message || event?.error || "");
       const sourceId = String(event?.sourceId || event?.error?.sourceId || "");
@@ -1080,12 +1108,14 @@ export async function createGeographyNavigationMap(options = {}) {
     const canvas = map.getCanvas?.();
     const width = Number(canvas?.clientWidth || canvas?.width || container?.clientWidth);
     const height = Number(canvas?.clientHeight || canvas?.height || container?.clientHeight);
+    const avoidBoxes = primaryControlAvoidanceBoxes(container, canvas);
     labelCollection = collisionSafeLabelCollection(activeCollection, {
       project: (coordinates) => map.project(coordinates),
       width,
       height,
       zoom: Number(map.getZoom?.() || 0),
       selectedKey,
+      avoidBoxes,
     });
     setSourceData(GEOGRAPHY_MAP_SOURCE_IDS.labels, labelCollection);
     if (container?.dataset) {
@@ -1093,6 +1123,7 @@ export async function createGeographyNavigationMap(options = {}) {
       container.dataset.admittedNeighborhoodLabels = labelCollection.features
         .map((feature) => feature.properties.label)
         .join(" | ");
+      container.dataset.labelControlAvoidanceBoxCount = String(avoidBoxes.length);
     }
     map.once?.("render", recordRenderedNeighborhoodLabels);
     map.once?.("idle", recordRenderedNeighborhoodLabels);

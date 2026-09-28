@@ -273,10 +273,25 @@ test("A13 branch read-back proves no collision drops, populated control clearanc
       snapshot.surrounding_collision_source_label_count,
     );
     assert.ok(snapshot.selected_layer_rendered_labels.includes(expected));
+    const geometry = snapshot.geometry;
+    assert.ok(geometry.control_occlusion_label_box_count > 0);
+    assert.ok(geometry.primary_control_box_count > 0);
+    assert.equal(geometry.obscured_by_primary_control_count, 0);
+    assert.deepEqual(geometry.obscured_sample, []);
+    const selectedControl = snapshot.selected_name_control_occlusion;
+    assert.equal(selectedControl.label_box_count, 1);
+    assert.ok(selectedControl.primary_control_box_count > 0);
+    assert.equal(selectedControl.obscured_by_primary_control_count, 0);
+    assert.deepEqual(selectedControl.obscured_sample, []);
     const control = snapshot.selected_priority_positive_control;
     assert.ok(control.selected_layer_rendered_labels.includes(expected));
     assert.ok(control.ordinary_collision_dropped_label_count > 0);
     assert.ok(control.ordinary_collision_dropped_labels_sample.every(Boolean));
+    const occlusionControl = snapshot.selected_control_occlusion_positive_control;
+    assert.ok(occlusionControl.label_box_count > 0);
+    assert.ok(occlusionControl.primary_control_box_count > 0);
+    assert.ok(occlusionControl.obscured_by_primary_control_count > 0);
+    assert.ok(occlusionControl.obscured_sample.every((sample) => sample.label));
   }
 });
 
