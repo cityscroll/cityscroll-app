@@ -40,6 +40,10 @@ import {
   buildOperatorOverview,
   renderOperatorOverviewSection,
 } from "./desk_health_overview.mjs";
+import {
+  CONNECTED_HISTORY_COVERAGE_EXTENSION_VERSION,
+  renderConnectedHistoryCoverageSection,
+} from "./connected_history_coverage.mjs";
 import { classifySourceVintage } from "./source_vintage_status.mjs";
 import {
   backstageSourceVintage,
@@ -58,6 +62,7 @@ export { OPERATOR_OVERVIEW_EXTENSION_VERSION };
 export const DESK_CONSUMER_CONTRACT_PATH = "data/data-source-graph-desk-contract.v1.json";
 export { PUBLICATION_CYCLE_EXTENSION_VERSION };
 export { PRIORITY_SOURCE_HEALTH_CLOSURE_EXTENSION_VERSION };
+export { CONNECTED_HISTORY_COVERAGE_EXTENSION_VERSION };
 
 const CORE_INPUTS = [
   "docs/data-sources.md",
@@ -67,6 +72,7 @@ const CORE_INPUTS = [
   "site/data/source_health_observations.json",
   "site/data/source_vintage_observations.json",
   "site/data/source_vintage_alternates.json",
+  "site/data/connected_history_coverage.json",
   "site/data/gap_taxonomy.json",
   "data/repair-queue-register.v1.json",
   "warehouse/datasets.v0.json",
@@ -696,6 +702,7 @@ export function buildDataSourceGraph({
   publicationCycle = null,
   prioritySourceClosure = null,
   cardSynthesis = null,
+  connectedHistoryCoverage = null,
   inputs = [],
 } = {}) {
   const contracts = registry?.contracts || [];
@@ -815,6 +822,7 @@ export function buildDataSourceGraph({
       operator_overview: OPERATOR_OVERVIEW_EXTENSION_VERSION,
       publication_cycle: PUBLICATION_CYCLE_EXTENSION_VERSION,
       priority_source_closure: PRIORITY_SOURCE_HEALTH_CLOSURE_EXTENSION_VERSION,
+      connected_history_coverage: CONNECTED_HISTORY_COVERAGE_EXTENSION_VERSION,
     },
     title: "CityScroll data-source topology",
     description: "Generated collecting-body → dataset → ingest → surface architecture for the authenticated desk.",
@@ -838,6 +846,7 @@ export function buildDataSourceGraph({
     // never-served boundary as the observations it reads.
     repair_queue: repairQueue,
     operator_overview: operatorOverview,
+    connected_history_coverage: connectedHistoryCoverage,
     bodies,
     sources,
     surfaces,
@@ -933,6 +942,7 @@ export function renderGraphHtml(graph) {
 .details ol,.details ul{padding-left:20px;margin:5px 0}.details pre{margin:6px 0 0;padding:8px;border:1px solid var(--line);border-radius:7px;background:#f4f1e9;color:#5f302d;font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.status-candidate{color:var(--ghost);border-color:#baa7c2;background:var(--ghost-paper)}tr[data-node-class="candidate-source"]{background:var(--ghost-paper)}
 .primary-pane{min-width:0}.overview-view{min-width:0;max-width:100%}.overview-view[hidden]{display:none}.overview-view h2{font:700 26px/1.12 Georgia,serif;margin:22px 0 6px}.overview-filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:100%}.overview-filters label{color:var(--muted);font-size:12px}.overview-filters select{min-height:44px;max-width:100%}.overview-table-wrap{max-width:100%;min-width:0;width:100%;contain:inline-size;overflow-x:auto}.overview-table-wrap:focus-visible{outline:3px solid var(--green);outline-offset:2px}.overview-table-wrap table{min-width:760px;width:100%}.overview-source{display:inline-flex;min-height:44px;align-items:center;overflow-wrap:anywhere;white-space:normal;color:var(--blue);font-weight:700}.overview-use,.overview-repair{overflow-wrap:anywhere}.overview-use small,.overview-repair small,td small{display:block;color:var(--muted)}.detail-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.detail-toolbar button{min-height:44px;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:9px 11px}
 .publication-cycle{margin-top:16px;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;min-width:0;max-width:100%;overflow-wrap:anywhere;overflow-x:hidden}.publication-cycle[data-stage]:not([data-stage=""]){border-color:#daa5a1;background:#fdf3f2}.publication-cycle h2{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--green);margin:0 0 8px}.publication-clocks{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;min-width:0}.publication-clocks div{min-width:0;max-width:100%}.publication-clocks dt{color:var(--muted);font-size:12px}.publication-clocks dd{margin:4px 0 0;font-weight:700;overflow-wrap:anywhere;word-break:break-word}.publication-cycle .last-good{margin:8px 0 0}.publication-cycle summary{display:flex;align-items:center;min-height:44px;cursor:pointer;font-weight:700}.publication-cycle summary:focus-visible{outline:3px solid var(--green);outline-offset:2px}@media(min-width:720px){.publication-clocks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.history-coverage-view{min-width:0;max-width:100%}.history-coverage-view[hidden]{display:none}.history-coverage-view h2{font:700 26px/1.12 Georgia,serif;margin:22px 0 6px}.history-coverage-table{max-width:100%;min-width:0;width:100%;contain:inline-size;overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}.history-coverage-table table{min-width:1120px}.history-coverage-table td[data-stage-state="unknown"]{background:#fdf6e9}.history-coverage-table td[data-stage-state="measured_zero"]{background:#eef4f7}
 </style><noscript><style>#graphView{display:none!important}#tableView[hidden],#detailLayer[hidden]{display:block!important}</style></noscript></head><body><main class="shell">
 <div class="eyebrow">Maintainer architecture</div><h1>Where CityScroll’s data comes from</h1>
 <p class="lede">Start from monitoring, publication, and the conditions that need attention. Collecting-body topology remains available as a secondary view. Trace a selected source through its declared artifacts, clocks, and existing repair group without treating a tolerated served age as a recent acquisition.</p>
@@ -940,7 +950,7 @@ export function renderGraphHtml(graph) {
 ${renderPublicationCycle(graph.publication_cycle)}
 ${renderPrioritySourceClosure(graph.priority_source_closure)}
 <div class="legend" aria-label="Graph visual classes"><span><i></i> Available source path</span><span><i class="ghost-key"></i> Candidate / access-gated research path</span></div>
-<div class="controls"><label class="sr-only" for="search">Filter sources</label><input id="search" type="search" placeholder="Filter by source, endpoint, adapter, error, or access route…"><label class="sr-only" for="status">Filter by source state</label><select id="status"><option value="">All statuses</option><option value="live">Live</option><option value="build-time">Build-time</option><option value="manual">Manual</option><option value="disabled">Disabled</option><option value="candidate">Candidate</option><option value="application-possible">Application possible</option><option value="blocked">Blocked</option><option value="declined">Declined</option></select><div class="toggle" aria-label="View"><button id="overviewToggle" type="button" aria-pressed="true">Source health</button><button id="graphToggle" type="button" aria-pressed="false">Departments</button><button id="tableToggle" type="button" aria-pressed="false">Table view</button><button id="repairToggle" type="button" aria-pressed="false">Repair queue</button></div></div>
+<div class="controls"><label class="sr-only" for="search">Filter sources</label><input id="search" type="search" placeholder="Filter by source, endpoint, adapter, error, or access route…"><label class="sr-only" for="status">Filter by source state</label><select id="status"><option value="">All statuses</option><option value="live">Live</option><option value="build-time">Build-time</option><option value="manual">Manual</option><option value="disabled">Disabled</option><option value="candidate">Candidate</option><option value="application-possible">Application possible</option><option value="blocked">Blocked</option><option value="declined">Declined</option></select><div class="toggle" aria-label="View"><button id="overviewToggle" type="button" aria-pressed="true">Source health</button><button id="coverageToggle" type="button" aria-pressed="false">History coverage</button><button id="graphToggle" type="button" aria-pressed="false">Departments</button><button id="tableToggle" type="button" aria-pressed="false">Table view</button><button id="repairToggle" type="button" aria-pressed="false">Repair queue</button></div></div>
 <div class="workspace" id="inspectWorkspace">
 <div class="primary-pane">
 ${renderOperatorOverviewSection(graph.operator_overview)}
@@ -951,6 +961,7 @@ ${renderOperatorOverviewSection(graph.operator_overview)}
 <div id="detailLayer" hidden></div>
 <section class="table-wrap" id="tableView" hidden><table><thead><tr><th>Source</th><th>Collecting body</th><th>Source state</th><th>Health</th><th>Ingest cadence</th><th>Join gate</th><th>Surfaces</th></tr></thead><tbody>${tableRows(graph)}</tbody></table></section>
 ${renderRepairQueueSection(graph.repair_queue)}
+${renderConnectedHistoryCoverageSection(graph.connected_history_coverage)}
 <p class="foot">Generated for the authenticated desk from the canonical source-contract ledger, the shared source-health observations, lifecycle research inventory, warehouse registry and receipts, and Worker cron implementation. Rebuild with <code>node tools/data_source_graph.mjs</code>; verify staleness with <code>--check</code>. This backstage artifact remains separate from the strict public projection and never includes credentials.</p>
 </main><script>
 const graph=${payload};
@@ -1038,9 +1049,9 @@ if(repairState)repairState.addEventListener("change",filterRepairQueue);
 search.addEventListener("input",render);statusFilter.addEventListener("change",render);
 function isModifiedClick(event){return event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey}
 document.querySelectorAll(".table-source").forEach(link=>link.addEventListener("click",event=>{if(isModifiedClick(event))return;event.preventDefault();selectSource(link.dataset.source)}));
-function setView(view){const views={overview:"overviewView",graph:"graphView",table:"tableView",repair:"repairView"},toggles={overview:"overviewToggle",graph:"graphToggle",table:"tableToggle",repair:"repairToggle"};for(const [name,id] of Object.entries(views)){const node=document.getElementById(id);if(node)node.hidden=name!==view;const toggle=document.getElementById(toggles[name]);if(toggle)toggle.setAttribute("aria-pressed",String(name===view))}const workspace=document.getElementById("inspectWorkspace");if(workspace)workspace.hidden=view==="table"||view==="repair"}
+function setView(view){const views={overview:"overviewView",coverage:"historyCoverageView",graph:"graphView",table:"tableView",repair:"repairView"},toggles={overview:"overviewToggle",coverage:"coverageToggle",graph:"graphToggle",table:"tableToggle",repair:"repairToggle"};for(const [name,id] of Object.entries(views)){const node=document.getElementById(id);if(node)node.hidden=name!==view;const toggle=document.getElementById(toggles[name]);if(toggle)toggle.setAttribute("aria-pressed",String(name===view))}const workspace=document.getElementById("inspectWorkspace");if(workspace)workspace.hidden=view==="table"||view==="repair"||view==="coverage"}
 function restoreSelectionFromUrl(){const params=new URLSearchParams(window.location.search);if(productFilter)productFilter.value=params.get("product")||"";if(publisherFilter)publisherFilter.value=params.get("publisher")||"";if(conditionFilter)conditionFilter.value=params.get("condition")||"";if(modeFilter)modeFilter.value=params.get("mode")||"";const id=params.get("source");if(id)selectSource(id,{updateUrl:false});else{selected=null;details.innerHTML=emptyDetails;render()}filterOverview()}
-document.getElementById("overviewToggle").onclick=()=>setView("overview");document.getElementById("graphToggle").onclick=()=>setView("graph");document.getElementById("tableToggle").onclick=()=>setView("table");document.getElementById("repairToggle").onclick=()=>setView("repair");window.addEventListener("popstate",restoreSelectionFromUrl);restoreSelectionFromUrl();setView("overview");
+document.getElementById("overviewToggle").onclick=()=>setView("overview");document.getElementById("coverageToggle").onclick=()=>setView("coverage");document.getElementById("graphToggle").onclick=()=>setView("graph");document.getElementById("tableToggle").onclick=()=>setView("table");document.getElementById("repairToggle").onclick=()=>setView("repair");window.addEventListener("popstate",restoreSelectionFromUrl);restoreSelectionFromUrl();setView("overview");
 </script></body></html>\n`;
 }
 
@@ -1152,6 +1163,7 @@ export function generatedGraphFiles({ inputs = inputManifest() } = {}) {
     repairObservations,
     prioritySourceClosure: prioritySourceClosureForGraph(registry, healthObservations),
     cardSynthesis: cardSynthesisOwner(),
+    connectedHistoryCoverage: readJson("site/data/connected_history_coverage.json"),
     repairObservedAt: repair.observedAt,
     repairSourceVintage: repair.sourceVintage,
     repairRegister: readJson(REPAIR_QUEUE_REGISTER_PATH),
