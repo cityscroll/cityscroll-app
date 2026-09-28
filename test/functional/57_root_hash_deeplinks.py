@@ -127,6 +127,7 @@ def pages_server():
                 "--ready-file",
                 str(ready_file),
                 "--pages-canonicalization",
+                "--pages-root-query-fallback",
             ],
             cwd=ROOT,
             stdout=subprocess.DEVNULL,
@@ -196,11 +197,37 @@ def main() -> None:
         assert failed_as_expected, "positive control unexpectedly reached the Land SPA view"
         control.close()
 
+        # The bare root is a Worker-owned Near You shell, but a query-bearing
+        # root can fall through to the Pages topic document. A resolved place
+        # must therefore adopt the canonical /near-you/ document explicitly.
+        root_place = new_page(browser)
+        root_place.goto(base, wait_until="domcontentloaded", timeout=60_000)
+        root_place.locator("#near-geo-search-input").fill("Midwood")
+        root_place.locator("form.near-geo-search button[type='submit']").click()
+        expected_midwood = (
+            f"{base}near-you/?geo=nta2020%3ABK1403&surface=map"
+            "&drawer=open&focus=geography%3Anta2020%3ABK1403"
+        )
+        root_place.wait_for_url(expected_midwood, timeout=ROUTE_TIMEOUT_MS)
+        root_place.locator("[data-near-you-root]").wait_for(state="visible", timeout=ROUTE_TIMEOUT_MS)
+        assert "Near you" in root_place.title()
+        assert "page could not update" not in root_place.locator("[data-map-status]").inner_text()
+        root_place.close()
+
+        # Positive control: the same resolved-place action already works from
+        # the canonical Near You document under the Pages-shaped server.
+        canonical_place = new_page(browser)
+        canonical_place.goto(f"{base}near-you/", wait_until="domcontentloaded", timeout=60_000)
+        canonical_place.locator("#near-geo-search-input").fill("Midwood")
+        canonical_place.locator("form.near-geo-search button[type='submit']").click()
+        canonical_place.wait_for_url(expected_midwood, timeout=ROUTE_TIMEOUT_MS)
+        canonical_place.close()
+
         browser.close()
 
     print(
         f"root hash deep links OK routes={len(route_ids)} bare=near-you "
-        "unknown=near-you pages-index-control=failed"
+        "unknown=near-you pages-index-control=failed root-place=near-you"
     )
 
 

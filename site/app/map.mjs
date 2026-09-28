@@ -427,7 +427,15 @@ function geographyEntryStatusMessage(entry) {
 }
 
 function geographySelectionHref(state) {
-  return geographyNavigationUrlWithFilters(state, {base:location.href});
+  // The default local shell is also served at `/`, but query-bearing root
+  // requests can fall through to the Pages topic document. Always move a
+  // root selection onto the canonical Near You document before adopting it;
+  // an existing /near-you/ route can continue preserving its current path.
+  const rootPath = String(location.pathname || "").replace(/\/+$/, "") || "/";
+  const base = rootPath === "/" || rootPath === "/index.html"
+    ? new URL("/near-you/", location.href).toString()
+    : location.href;
+  return geographyNavigationUrlWithFilters(state, {base});
 }
 
 async function adoptGeographyEntrySelection(entry, { ephemeralPoint = null } = {}) {
