@@ -14,6 +14,7 @@ import functools
 import hashlib
 import json
 import os
+import re
 import sys
 import tempfile
 import threading
@@ -33,7 +34,7 @@ from deployed_capture_ancestor import (  # noqa: E402
     require_served_page_revision_contains_delivery,
 )
 from local_site_server import QuietHandler, _RobustThreadingHTTPServer  # noqa: E402
-from repository_revision import resolve_repository_revision  # noqa: E402
+from repository_revision import branch_head, resolve_repository_revision  # noqa: E402
 
 DEFAULT_BASE = "https://cityscroll.org"
 MANIFEST_PATH = ROOT / "docs" / "evidence" / "documented-history-journeys" / "capture-manifest.json"
@@ -55,6 +56,13 @@ DATA_PATHS = (
     "/data/connected_history_time.json",
     "/data/connected_history_roles.json",
 )
+LOCAL_RUNTIME_DATA_PATHS = DATA_PATHS + ("/beta-flags.json",)
+LOCAL_ASSET_SUFFIXES = frozenset({".css", ".js", ".mjs"})
+HTML_ASSET_PATTERN = re.compile(r"(?:src|href)=[\"']([^\"']+)[\"']", re.IGNORECASE)
+MODULE_IMPORT_PATTERN = re.compile(
+    r"(?:\bfrom\s+|\bimport\s*\(\s*|\bimport\s+)[\"']([^\"']+)[\"']"
+)
+CSS_IMPORT_PATTERN = re.compile(r"@import\s+(?:url\()?\s*[\"']([^\"']+)[\"']", re.IGNORECASE)
 
 
 def utc_now() -> str:
@@ -93,6 +101,61 @@ def serve_fixture() -> tuple[object, str]:
     )
     threading.Thread(target=server.serve_forever, daemon=True).start()
     return server, f"http://127.0.0.1:{server.server_port}"
+
+
+def local_dependency(source: Path, reference: str) -> Path | None:
+    parsed = urllib.parse.urlsplit(reference)
+    if parsed.scheme or parsed.netloc or reference.startswith(("#", "data:")):
+        return None
+    path = parsed.path
+    if not path:
+        return None
+    if path.startswith("/"):
+        candidate = ROOT / "site" / path.lstrip("/")
+    elif source.name == "index.html":
+        # Both measured documents declare <base href="/">.
+        candidate = ROOT / "site" / path
+    else:
+        candidate = source.parent / path
+    candidate = candidate.resolve()
+    try:
+        candidate.relative_to(ROOT)
+    except ValueError:
+        return None
+    return candidate if candidate.is_file() else None
+
+
+def discover_measured_inputs() -> set[str]:
+    # The measurement asserts the Search document and its interactions. The
+    # continuation click proves its destination URL, not the destination page's
+    # rendering, so that second document is deliberately outside this closure.
+    documents = {ROOT / "site" / "search" / "index.html"}
+    pending = list(documents)
+    for path in LOCAL_RUNTIME_DATA_PATHS:
+        pending.append(ROOT / "site" / path.lstrip("/"))
+    discovered: set[Path] = set()
+    while pending:
+        source = pending.pop()
+        if source in discovered:
+            continue
+        discovered.add(source)
+        if source.suffix not in LOCAL_ASSET_SUFFIXES and source not in documents:
+            continue
+        text = source.read_text(encoding="utf-8")
+        patterns = [HTML_ASSET_PATTERN] if source in documents else [MODULE_IMPORT_PATTERN, CSS_IMPORT_PATTERN]
+        for pattern in patterns:
+            for reference in pattern.findall(text):
+                dependency = local_dependency(source, reference)
+                if dependency and (dependency.suffix in LOCAL_ASSET_SUFFIXES or dependency.suffix == ".json"):
+                    pending.append(dependency)
+    return {path.relative_to(ROOT).as_posix() for path in discovered}
+
+
+def measured_input_receipts(paths: set[str]) -> list[dict[str, str]]:
+    return [
+        {"path": path, "sha256": sha256_bytes((ROOT / path).read_bytes())}
+        for path in sorted(paths)
+    ]
 
 
 def require_production_base(base: str) -> str:
@@ -376,9 +439,13 @@ def write_manifest(receipt: dict) -> None:
     if observed.keys() != retained.keys():
         missing = sorted(observed.keys() ^ retained.keys())
         raise RuntimeError(f"manifest cases do not match measurement: {missing}")
+    manifest["measurement_provenance"] = {
+        "revision": receipt["capture_revision"],
+        "inputs": receipt["measured_inputs"],
+    }
     for capture in manifest["captures"]:
         measurement = observed[capture["case"]]
-        capture["revision"] = receipt["repository_revision"]
+        capture["revision"] = receipt["capture_revision"]
         capture["sha256"] = measurement["render_sha256"]
         if measurement["capture_sha256"]:
             capture["local_capture_sha256"] = measurement["capture_sha256"]
@@ -402,10 +469,12 @@ def main() -> int:
     if args.production and args.write_manifest:
         raise SystemExit("--write-manifest is only available for the hermetic measurement")
     repository_revision = resolve_repository_revision(ROOT)
+    capture_revision = branch_head(ROOT)
     server = None
     served_revision = None
     required_landed_commit = None
     request_receipts: list[dict] = []
+    measured_inputs: list[dict[str, str]] = []
     data_vintage: dict[str, str | None] = {}
     if args.production:
         if not args.landed_commit:
@@ -448,6 +517,8 @@ def main() -> int:
                 captures.append(failure)
     finally:
         if server is not None:
+            measured_inputs = measured_input_receipts(discover_measured_inputs())
+        if server is not None:
             server.shutdown()
             server.server_close()
         if temporary_screenshot_dir is not None:
@@ -459,6 +530,8 @@ def main() -> int:
         "mode": "production" if args.production else "hermetic_fixture",
         "browser": "Chromium",
         "repository_revision": repository_revision,
+        "capture_revision": capture_revision,
+        "measured_inputs": measured_inputs,
         "observed_at": utc_now(),
         "base_url": base,
         "required_landed_commit": required_landed_commit,

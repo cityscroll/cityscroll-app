@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 
 function git(args, cwd) {
   return execFileSync("git", args, {
@@ -44,4 +44,43 @@ export function resolveRepositoryRevision(cwd, mainRef = "origin/main") {
 /** Return the branch tip for optional, explicitly non-authoritative detail. */
 export function branchHead(cwd) {
   return git(["rev-parse", "HEAD"], cwd);
+}
+
+/**
+ * Check whether a retained browser measurement still describes the executing
+ * tree. The capture must be in this tree's history, and every declared input
+ * must be byte-identical in Git since the capture.
+ */
+export function retainedMeasurementStatus(cwd, { revision, head = "HEAD", inputPaths }) {
+  if (!Array.isArray(inputPaths) || inputPaths.length === 0) {
+    throw new TypeError("retained measurement requires at least one input path");
+  }
+  const captureRevision = git(["rev-parse", "--verify", `${revision}^{commit}`], cwd);
+  const currentRevision = git(["rev-parse", "--verify", `${head}^{commit}`], cwd);
+  const ancestor = spawnSync(
+    "git",
+    ["merge-base", "--is-ancestor", captureRevision, currentRevision],
+    { cwd, stdio: "ignore" },
+  ).status === 0;
+  if (!ancestor) {
+    return {
+      ok: false,
+      reason: "capture revision is not an ancestor of the executing tree",
+      captureRevision,
+      currentRevision,
+      changedInputs: [],
+    };
+  }
+  const changed = git(
+    ["diff", "--name-only", `${captureRevision}..${currentRevision}`, "--", ...inputPaths],
+    cwd,
+  );
+  const changedInputs = changed ? changed.split("\n") : [];
+  return {
+    ok: changedInputs.length === 0,
+    reason: changedInputs.length === 0 ? null : "measured inputs changed after capture",
+    captureRevision,
+    currentRevision,
+    changedInputs,
+  };
 }
