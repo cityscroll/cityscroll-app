@@ -3,6 +3,7 @@
     "browser": "chromium",
     "map_hook": "Init script wraps window.maplibregl.Map; A13 geometry reads CollisionIndex grid bboxes via getBoundingClientRect.",
     "screenshot_binaries_committed": false,
+    "selected_control_clearance_contract": 1,
     "tool": "tools/capture_near_you_shell_production_read.py",
     "viewports": [
       {
@@ -41,15 +42,15 @@
       }
     ]
   },
-  "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+  "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
   "deployment": {
-    "deployment_at": "2026-09-28T11:34:10.668Z",
-    "generated_at": "2026-09-28T11:34:10.668Z",
-    "manifest_sha256": "42cdbea9574a852f2bcbce179ee1459c390473ae47675494b40e167d13c506f0",
+    "deployment_at": "2026-09-28T17:32:40.833Z",
+    "generated_at": "2026-09-28T17:32:40.833Z",
+    "manifest_sha256": "4f580635699d77378386b701d730e96d7efb178ddb06077705f4e8753e6b92c6",
     "manifest_url": "https://cityscroll.org/artifact-manifest.json",
-    "required_ancestor": "81f2ad9e466d0ecdda5b88cdabda3d463264efae",
+    "required_ancestor": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
     "required_ancestor_contained": true,
-    "revision": "0e6763ff949009820a1178c19366cd246d50964f"
+    "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907"
   },
   "evidence_class": "deployed-production-read-back",
   "letters": {
@@ -315,16 +316,16 @@
           },
           "queried_unique_label_count": 14,
           "request_receipt": {
-            "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-            "observed_at": "2026-09-28T12:11:18.149642Z",
+            "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+            "observed_at": "2026-09-28T18:02:21.038454Z",
             "page_load": {
               "headers": {
-                "age": null,
-                "cf-cache-status": null,
-                "cf-ray": "a422a64e6fad9e17-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:16 GMT",
+                "age": "74",
+                "cf-cache-status": "HIT",
+                "cf-ray": "a424a88d5ca1f981-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:19 GMT",
                 "etag": null,
-                "last-modified": null
+                "last-modified": "Mon, 28 Sep 2026 18:01:04 GMT"
               },
               "http_status": 200,
               "url": "https://cityscroll.org/near-you/"
@@ -334,16 +335,16 @@
               "headers": {
                 "age": null,
                 "cf-cache-status": "DYNAMIC",
-                "cf-ray": "a422a65e39eb4b05-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:18 GMT",
-                "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+                "cf-ray": "a424a8992d814d51-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:21 GMT",
+                "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
                 "last-modified": null
               },
               "http_status": 200,
-              "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-              "requested_at": "2026-09-28T12:11:18.069569Z",
-              "responded_at": "2026-09-28T12:11:18.149568Z",
-              "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+              "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+              "requested_at": "2026-09-28T18:02:20.939350Z",
+              "responded_at": "2026-09-28T18:02:21.038422Z",
+              "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
               "url": "https://cityscroll.org/artifact-manifest.json"
             }
           },
@@ -364,7 +365,7 @@
             "Tottenville-Charleston",
             "Westerleigh-Castleton Corners"
           ],
-          "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "route": "/near-you/",
           "text_allow_overlap": false,
           "text_ignore_placement": false,
@@ -559,16 +560,16 @@
           },
           "queried_unique_label_count": 8,
           "request_receipt": {
-            "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-            "observed_at": "2026-09-28T12:11:25.145781Z",
+            "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+            "observed_at": "2026-09-28T18:02:29.356917Z",
             "page_load": {
               "headers": {
-                "age": "7",
+                "age": "81",
                 "cf-cache-status": "HIT",
-                "cf-ray": "a422a67eb8e0aded-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:23 GMT",
+                "cf-ray": "a424a8b98e1c43a1-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:26 GMT",
                 "etag": null,
-                "last-modified": "Mon, 28 Sep 2026 12:11:16 GMT"
+                "last-modified": "Mon, 28 Sep 2026 18:01:04 GMT"
               },
               "http_status": 200,
               "url": "https://cityscroll.org/near-you/"
@@ -578,16 +579,16 @@
               "headers": {
                 "age": null,
                 "cf-cache-status": "DYNAMIC",
-                "cf-ray": "a422a689d8716a4e-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:25 GMT",
-                "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+                "cf-ray": "a424a8cd18218c2d-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:29 GMT",
+                "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
                 "last-modified": null
               },
               "http_status": 200,
-              "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-              "requested_at": "2026-09-28T12:11:25.050991Z",
-              "responded_at": "2026-09-28T12:11:25.145758Z",
-              "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+              "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+              "requested_at": "2026-09-28T18:02:29.255342Z",
+              "responded_at": "2026-09-28T18:02:29.356896Z",
+              "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
               "url": "https://cityscroll.org/artifact-manifest.json"
             }
           },
@@ -602,7 +603,7 @@
             "Rosedale",
             "Tottenville-Charleston"
           ],
-          "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "route": "/near-you/",
           "text_allow_overlap": false,
           "text_ignore_placement": false,
@@ -679,16 +680,16 @@
           "overlapping_label_pair_count": 0,
           "queried_unique_label_count": 2,
           "request_receipt": {
-            "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-            "observed_at": "2026-09-28T12:11:32.495365Z",
+            "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+            "observed_at": "2026-09-28T18:02:36.381446Z",
             "page_load": {
               "headers": {
-                "age": null,
-                "cf-cache-status": null,
-                "cf-ray": "a422a6aa48d2f9a9-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:30 GMT",
+                "age": "75",
+                "cf-cache-status": "HIT",
+                "cf-ray": "a424a8ed5bbcdc28-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:34 GMT",
                 "etag": null,
-                "last-modified": null
+                "last-modified": "Mon, 28 Sep 2026 18:01:19 GMT"
               },
               "http_status": 200,
               "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK0101&surface=map"
@@ -698,16 +699,16 @@
               "headers": {
                 "age": null,
                 "cf-cache-status": "DYNAMIC",
-                "cf-ray": "a422a6b7c9da7d26-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:32 GMT",
-                "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+                "cf-ray": "a424a8f93a4e7b0e-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:36 GMT",
+                "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
                 "last-modified": null
               },
               "http_status": 200,
-              "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-              "requested_at": "2026-09-28T12:11:32.403745Z",
-              "responded_at": "2026-09-28T12:11:32.495344Z",
-              "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+              "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+              "requested_at": "2026-09-28T18:02:36.321473Z",
+              "responded_at": "2026-09-28T18:02:36.381426Z",
+              "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
               "url": "https://cityscroll.org/artifact-manifest.json"
             }
           },
@@ -716,8 +717,20 @@
             "Sunnyside",
             "Williamsburg"
           ],
-          "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+          "selected_control_occlusion_positive_control": {
+            "label_box_count": 2,
+            "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+            "obscured_by_primary_control_count": 1,
+            "obscured_sample": [
+              {
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+                "label": "Williamsburg"
+              }
+            ],
+            "primary_control_box_count": 1
+          },
           "selected_heading": "Greenpoint",
           "selected_layer_rendered_label_count": 1,
           "selected_layer_rendered_labels": [
@@ -737,6 +750,12 @@
               "y": 280
             },
             "label": "Greenpoint"
+          },
+          "selected_name_control_occlusion": {
+            "label_box_count": 1,
+            "obscured_by_primary_control_count": 0,
+            "obscured_sample": [],
+            "primary_control_box_count": 1
           },
           "selected_neighborhood_label": "Greenpoint",
           "selected_priority_positive_control": {
@@ -765,7 +784,7 @@
           "collision_measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
           "data_vintage": "nta2020 26B",
           "geometry": {
-            "browser_fold_label_count": 5,
+            "browser_fold_label_count": 4,
             "clip_bounds": {
               "bottom": 1011.34375,
               "left": 25,
@@ -775,12 +794,11 @@
             "clip_surface": "map_host_canvas_and_overflow_hidden_ancestors",
             "collision_dropped_label_count": 0,
             "collision_dropped_labels_sample": [],
-            "collision_source_label_count": 7,
-            "control_occlusion_label_box_count": 7,
+            "collision_source_label_count": 6,
+            "control_occlusion_label_box_count": 6,
             "dataset_overlap_flag_ignored": "0",
-            "frame_crossing_label_count": 4,
+            "frame_crossing_label_count": 3,
             "frame_crossing_labels_sample": [
-              "South Williamsburg",
               "United Nations",
               "Sunnyside",
               "Sunnyside Yards (South)"
@@ -796,17 +814,6 @@
                   "width": 75.5
                 },
                 "label": "Williamsburg"
-              },
-              {
-                "box": {
-                  "bottom": 1014.53125,
-                  "height": 18.375,
-                  "left": 48.65625,
-                  "right": 158.65625,
-                  "top": 996.15625,
-                  "width": 110
-                },
-                "label": "South Williamsburg"
               },
               {
                 "box": {
@@ -864,18 +871,13 @@
                 "label": "Sunnyside Yards (South)"
               }
             ],
-            "measured_label_box_count": 7,
+            "measured_label_box_count": 6,
             "measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
-            "obscured_by_primary_control_count": 1,
-            "obscured_sample": [
-              {
-                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
-                "label": "South Williamsburg"
-              }
-            ],
+            "obscured_by_primary_control_count": 0,
+            "obscured_sample": [],
             "overlapping_label_pair_count": 0,
             "overlapping_pairs_sample": [],
-            "placed_label_count": 7,
+            "placed_label_count": 6,
             "primary_control_box_count": 1
           },
           "heading": "Greenpoint",
@@ -889,18 +891,18 @@
           "map_runtime_reason": null,
           "name": "a13-selected-greenpoint-390",
           "overlapping_label_pair_count": 0,
-          "queried_unique_label_count": 7,
+          "queried_unique_label_count": 6,
           "request_receipt": {
-            "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-            "observed_at": "2026-09-28T12:11:36.914518Z",
+            "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+            "observed_at": "2026-09-28T18:02:40.922101Z",
             "page_load": {
               "headers": {
-                "age": "4",
+                "age": "79",
                 "cf-cache-status": "HIT",
-                "cf-ray": "a422a6c70a778c24-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:34 GMT",
+                "cf-ray": "a424a9098d606e26-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:38 GMT",
                 "etag": null,
-                "last-modified": "Mon, 28 Sep 2026 12:11:30 GMT"
+                "last-modified": "Mon, 28 Sep 2026 18:01:19 GMT"
               },
               "http_status": 200,
               "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK0101&surface=map"
@@ -910,31 +912,42 @@
               "headers": {
                 "age": null,
                 "cf-cache-status": "DYNAMIC",
-                "cf-ray": "a422a6d38bf0ff90-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:36 GMT",
-                "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+                "cf-ray": "a424a91568951512-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:40 GMT",
+                "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
                 "last-modified": null
               },
               "http_status": 200,
-              "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-              "requested_at": "2026-09-28T12:11:36.821284Z",
-              "responded_at": "2026-09-28T12:11:36.914464Z",
-              "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+              "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+              "requested_at": "2026-09-28T18:02:40.823205Z",
+              "responded_at": "2026-09-28T18:02:40.922068Z",
+              "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
               "url": "https://cityscroll.org/artifact-manifest.json"
             }
           },
-          "residential_neighborhood_label_count": 7,
+          "residential_neighborhood_label_count": 6,
           "residential_neighborhood_labels": [
             "East Williamsburg",
             "Long Island City-Hunters Point",
-            "South Williamsburg",
             "Sunnyside",
             "Sunnyside Yards (South)",
             "United Nations",
             "Williamsburg"
           ],
-          "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+          "selected_control_occlusion_positive_control": {
+            "label_box_count": 6,
+            "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+            "obscured_by_primary_control_count": 1,
+            "obscured_sample": [
+              {
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+                "label": "Williamsburg"
+              }
+            ],
+            "primary_control_box_count": 1
+          },
           "selected_heading": "Greenpoint",
           "selected_layer_rendered_label_count": 1,
           "selected_layer_rendered_labels": [
@@ -954,6 +967,12 @@
               "y": 280
             },
             "label": "Greenpoint"
+          },
+          "selected_name_control_occlusion": {
+            "label_box_count": 1,
+            "obscured_by_primary_control_count": 0,
+            "obscured_sample": [],
+            "primary_control_box_count": 1
           },
           "selected_neighborhood_label": "Greenpoint",
           "selected_priority_positive_control": {
@@ -982,7 +1001,7 @@
           "collision_measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
           "data_vintage": "nta2020 26B",
           "geometry": {
-            "browser_fold_label_count": 1,
+            "browser_fold_label_count": 0,
             "clip_bounds": {
               "bottom": 980.5,
               "left": 381,
@@ -992,12 +1011,11 @@
             "clip_surface": "map_host_canvas_and_overflow_hidden_ancestors",
             "collision_dropped_label_count": 0,
             "collision_dropped_labels_sample": [],
-            "collision_source_label_count": 5,
-            "control_occlusion_label_box_count": 5,
+            "collision_source_label_count": 4,
+            "control_occlusion_label_box_count": 4,
             "dataset_overlap_flag_ignored": "0",
-            "frame_crossing_label_count": 2,
+            "frame_crossing_label_count": 1,
             "frame_crossing_labels_sample": [
-              "Williamsburg",
               "SoHo-Little Italy-Hudson Square"
             ],
             "label_boxes": [
@@ -1025,17 +1043,6 @@
               },
               {
                 "box": {
-                  "bottom": 949.78125,
-                  "height": 18.375,
-                  "left": 1300.65625,
-                  "right": 1376.15625,
-                  "top": 931.40625,
-                  "width": 75.5
-                },
-                "label": "Williamsburg"
-              },
-              {
-                "box": {
                   "bottom": 494.90625,
                   "height": 18.375,
                   "left": 439.34375,
@@ -1057,18 +1064,13 @@
                 "label": "SoHo-Little Italy-Hudson Square"
               }
             ],
-            "measured_label_box_count": 5,
+            "measured_label_box_count": 4,
             "measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
-            "obscured_by_primary_control_count": 1,
-            "obscured_sample": [
-              {
-                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
-                "label": "Williamsburg"
-              }
-            ],
+            "obscured_by_primary_control_count": 0,
+            "obscured_sample": [],
             "overlapping_label_pair_count": 0,
             "overlapping_pairs_sample": [],
-            "placed_label_count": 5,
+            "placed_label_count": 4,
             "primary_control_box_count": 1
           },
           "heading": "East Village",
@@ -1082,18 +1084,18 @@
           "map_runtime_reason": null,
           "name": "a13-selected-east-village-1440",
           "overlapping_label_pair_count": 0,
-          "queried_unique_label_count": 5,
+          "queried_unique_label_count": 4,
           "request_receipt": {
-            "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-            "observed_at": "2026-09-28T12:11:41.610159Z",
+            "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+            "observed_at": "2026-09-28T18:02:45.418876Z",
             "page_load": {
               "headers": {
-                "age": null,
-                "cf-cache-status": null,
-                "cf-ray": "a422a6e2ab2e424c-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:39 GMT",
+                "age": "73",
+                "cf-cache-status": "HIT",
+                "cf-ray": "a424a9259ae383ad-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:43 GMT",
                 "etag": null,
-                "last-modified": null
+                "last-modified": "Mon, 28 Sep 2026 18:01:29 GMT"
               },
               "http_status": 200,
               "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0303&surface=map"
@@ -1103,29 +1105,40 @@
               "headers": {
                 "age": null,
                 "cf-cache-status": "DYNAMIC",
-                "cf-ray": "a422a6f0ed8ec688-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:41 GMT",
-                "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+                "cf-ray": "a424a9314f0143f3-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:45 GMT",
+                "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
                 "last-modified": null
               },
               "http_status": 200,
-              "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-              "requested_at": "2026-09-28T12:11:41.535609Z",
-              "responded_at": "2026-09-28T12:11:41.610122Z",
-              "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+              "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+              "requested_at": "2026-09-28T18:02:45.287786Z",
+              "responded_at": "2026-09-28T18:02:45.418850Z",
+              "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
               "url": "https://cityscroll.org/artifact-manifest.json"
             }
           },
-          "residential_neighborhood_label_count": 5,
+          "residential_neighborhood_label_count": 4,
           "residential_neighborhood_labels": [
             "Gramercy",
             "Greenwich Village",
             "SoHo-Little Italy-Hudson Square",
-            "Stuyvesant Town-Peter Cooper Village",
-            "Williamsburg"
+            "Stuyvesant Town-Peter Cooper Village"
           ],
-          "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "route": "/near-you/?geo=nta2020%3AMN0303&surface=map",
+          "selected_control_occlusion_positive_control": {
+            "label_box_count": 4,
+            "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+            "obscured_by_primary_control_count": 1,
+            "obscured_sample": [
+              {
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+                "label": "Gramercy"
+              }
+            ],
+            "primary_control_box_count": 1
+          },
           "selected_heading": "East Village",
           "selected_layer_rendered_label_count": 1,
           "selected_layer_rendered_labels": [
@@ -1145,6 +1158,12 @@
               "y": 280
             },
             "label": "East Village"
+          },
+          "selected_name_control_occlusion": {
+            "label_box_count": 1,
+            "obscured_by_primary_control_count": 0,
+            "obscured_sample": [],
+            "primary_control_box_count": 1
           },
           "selected_neighborhood_label": "East Village",
           "selected_priority_positive_control": {
@@ -1270,16 +1289,16 @@
           "overlapping_label_pair_count": 0,
           "queried_unique_label_count": 5,
           "request_receipt": {
-            "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-            "observed_at": "2026-09-28T12:11:46.029382Z",
+            "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+            "observed_at": "2026-09-28T18:02:50.180023Z",
             "page_load": {
               "headers": {
-                "age": "4",
+                "age": "78",
                 "cf-cache-status": "HIT",
-                "cf-ray": "a422a7001cd32ef5-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:44 GMT",
+                "cf-ray": "a424a9420e00aa2a-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:48 GMT",
                 "etag": null,
-                "last-modified": "Mon, 28 Sep 2026 12:11:39 GMT"
+                "last-modified": "Mon, 28 Sep 2026 18:01:29 GMT"
               },
               "http_status": 200,
               "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0303&surface=map"
@@ -1289,16 +1308,16 @@
               "headers": {
                 "age": null,
                 "cf-cache-status": "DYNAMIC",
-                "cf-ray": "a422a70c58300c74-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:46 GMT",
-                "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+                "cf-ray": "a424a94f0855c436-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:50 GMT",
+                "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
                 "last-modified": null
               },
               "http_status": 200,
-              "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-              "requested_at": "2026-09-28T12:11:45.921733Z",
-              "responded_at": "2026-09-28T12:11:46.029358Z",
-              "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+              "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+              "requested_at": "2026-09-28T18:02:50.055606Z",
+              "responded_at": "2026-09-28T18:02:50.179998Z",
+              "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
               "url": "https://cityscroll.org/artifact-manifest.json"
             }
           },
@@ -1310,8 +1329,20 @@
             "Lower East Side",
             "Murray Hill-Kips Bay"
           ],
-          "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "route": "/near-you/?geo=nta2020%3AMN0303&surface=map",
+          "selected_control_occlusion_positive_control": {
+            "label_box_count": 5,
+            "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+            "obscured_by_primary_control_count": 1,
+            "obscured_sample": [
+              {
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+                "label": "Murray Hill-Kips Bay"
+              }
+            ],
+            "primary_control_box_count": 1
+          },
           "selected_heading": "East Village",
           "selected_layer_rendered_label_count": 1,
           "selected_layer_rendered_labels": [
@@ -1331,6 +1362,12 @@
               "y": 280
             },
             "label": "East Village"
+          },
+          "selected_name_control_occlusion": {
+            "label_box_count": 1,
+            "obscured_by_primary_control_count": 0,
+            "obscured_sample": [],
+            "primary_control_box_count": 1
           },
           "selected_neighborhood_label": "East Village",
           "selected_priority_positive_control": {
@@ -1756,16 +1793,16 @@
           ],
           "name": "a9-desktop",
           "request_receipt": {
-            "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-            "observed_at": "2026-09-28T12:11:18.149642Z",
+            "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+            "observed_at": "2026-09-28T18:02:21.038454Z",
             "page_load": {
               "headers": {
-                "age": null,
-                "cf-cache-status": null,
-                "cf-ray": "a422a64e6fad9e17-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:16 GMT",
+                "age": "74",
+                "cf-cache-status": "HIT",
+                "cf-ray": "a424a88d5ca1f981-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:19 GMT",
                 "etag": null,
-                "last-modified": null
+                "last-modified": "Mon, 28 Sep 2026 18:01:04 GMT"
               },
               "http_status": 200,
               "url": "https://cityscroll.org/near-you/"
@@ -1775,20 +1812,20 @@
               "headers": {
                 "age": null,
                 "cf-cache-status": "DYNAMIC",
-                "cf-ray": "a422a65e39eb4b05-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:18 GMT",
-                "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+                "cf-ray": "a424a8992d814d51-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:21 GMT",
+                "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
                 "last-modified": null
               },
               "http_status": 200,
-              "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-              "requested_at": "2026-09-28T12:11:18.069569Z",
-              "responded_at": "2026-09-28T12:11:18.149568Z",
-              "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+              "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+              "requested_at": "2026-09-28T18:02:20.939350Z",
+              "responded_at": "2026-09-28T18:02:21.038422Z",
+              "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
               "url": "https://cityscroll.org/artifact-manifest.json"
             }
           },
-          "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "route": "/near-you/",
           "viewport": {
             "height": 900,
@@ -2180,16 +2217,16 @@
           ],
           "name": "a9-mobile",
           "request_receipt": {
-            "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-            "observed_at": "2026-09-28T12:11:25.145781Z",
+            "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+            "observed_at": "2026-09-28T18:02:29.356917Z",
             "page_load": {
               "headers": {
-                "age": "7",
+                "age": "81",
                 "cf-cache-status": "HIT",
-                "cf-ray": "a422a67eb8e0aded-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:23 GMT",
+                "cf-ray": "a424a8b98e1c43a1-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:26 GMT",
                 "etag": null,
-                "last-modified": "Mon, 28 Sep 2026 12:11:16 GMT"
+                "last-modified": "Mon, 28 Sep 2026 18:01:04 GMT"
               },
               "http_status": 200,
               "url": "https://cityscroll.org/near-you/"
@@ -2199,20 +2236,20 @@
               "headers": {
                 "age": null,
                 "cf-cache-status": "DYNAMIC",
-                "cf-ray": "a422a689d8716a4e-EWR",
-                "date": "Mon, 28 Sep 2026 12:11:25 GMT",
-                "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+                "cf-ray": "a424a8cd18218c2d-EWR",
+                "date": "Mon, 28 Sep 2026 18:02:29 GMT",
+                "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
                 "last-modified": null
               },
               "http_status": 200,
-              "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-              "requested_at": "2026-09-28T12:11:25.050991Z",
-              "responded_at": "2026-09-28T12:11:25.145758Z",
-              "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+              "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+              "requested_at": "2026-09-28T18:02:29.255342Z",
+              "responded_at": "2026-09-28T18:02:29.356896Z",
+              "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
               "url": "https://cityscroll.org/artifact-manifest.json"
             }
           },
-          "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "route": "/near-you/",
           "viewport": {
             "height": 844,
@@ -2223,7 +2260,7 @@
       "route": "/near-you/"
     }
   },
-  "observed_at": "2026-09-28T12:11:14.123216Z",
+  "observed_at": "2026-09-28T18:02:18.435344Z",
   "origin": "https://cityscroll.org",
   "producer": {
     "letters": [
@@ -2235,43 +2272,43 @@
   },
   "public_alias": "ced62a84f8213",
   "run_receipt": {
-    "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+    "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
     "final_served_manifest": {
       "headers": {
         "age": null,
         "cf-cache-status": "DYNAMIC",
-        "cf-ray": "a422a71b5c86b9c6-EWR",
-        "date": "Mon, 28 Sep 2026 12:11:48 GMT",
-        "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+        "cf-ray": "a424a95f5cc142e8-EWR",
+        "date": "Mon, 28 Sep 2026 18:02:52 GMT",
+        "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
         "last-modified": null
       },
       "http_status": 200,
-      "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-      "requested_at": "2026-09-28T12:11:48.339584Z",
-      "responded_at": "2026-09-28T12:11:48.413135Z",
-      "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+      "requested_at": "2026-09-28T18:02:52.659764Z",
+      "responded_at": "2026-09-28T18:02:52.767077Z",
+      "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "url": "https://cityscroll.org/artifact-manifest.json"
     },
     "initial_served_manifest": {
       "headers": {
         "age": null,
         "cf-cache-status": "DYNAMIC",
-        "cf-ray": "a422a6465aa9421d-EWR",
-        "date": "Mon, 28 Sep 2026 12:11:14 GMT",
-        "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+        "cf-ray": "a424a8897987da80-EWR",
+        "date": "Mon, 28 Sep 2026 18:02:18 GMT",
+        "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
         "last-modified": null
       },
       "http_status": 200,
-      "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-      "requested_at": "2026-09-28T12:11:14.123416Z",
-      "responded_at": "2026-09-28T12:11:14.354214Z",
-      "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+      "requested_at": "2026-09-28T18:02:18.435506Z",
+      "responded_at": "2026-09-28T18:02:18.514638Z",
+      "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "url": "https://cityscroll.org/artifact-manifest.json"
     },
     "request_count": 6,
-    "run_finished_at": "2026-09-28T12:11:48.413164Z",
-    "run_started_at": "2026-09-28T12:11:14.123216Z",
-    "served_revision": "0e6763ff949009820a1178c19366cd246d50964f"
+    "run_finished_at": "2026-09-28T18:02:52.767103Z",
+    "run_started_at": "2026-09-28T18:02:18.435344Z",
+    "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907"
   },
   "schema": "cityscroll.near_you_shell_production_read.v1"
 }
