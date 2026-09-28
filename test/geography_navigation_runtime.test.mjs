@@ -325,6 +325,16 @@ test("A13: label admission keeps a named source population collision-safe before
   assert.ok(admitted.features.some((feature) => feature.properties.label === "Third place"));
   assert.ok(admitted.features.every((feature) => feature.geometry.type === "Point"));
 
+  const controlSafe = collisionSafeLabelCollection(collection, {
+    project: ([x, y]) => ({ x, y }),
+    width: 100,
+    height: 100,
+    avoidBoxes: [{ left: 55, top: 55, right: 100, bottom: 100 }],
+    maxLabels: 3,
+  });
+  assert.equal(controlSafe.features.length, 1);
+  assert.ok(controlSafe.features.every((feature) => feature.properties.label !== "Third place"));
+
   const style = __test__.buildBaseStyle();
   const labels = style.layers.find((layer) => layer.id === GEOGRAPHY_MAP_LAYER_IDS.labels);
   assert.equal(labels.source, GEOGRAPHY_MAP_SOURCE_IDS.labels);

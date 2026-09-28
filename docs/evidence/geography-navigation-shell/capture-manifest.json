@@ -3,8 +3,8 @@
   "feature": "geography-navigation-shell",
   "public_alias": "ced62a84f8213",
   "capture_mode": "headless_playwright_local_site",
-  "repository_revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
-  "grounded_at": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+  "repository_revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
+  "grounded_at": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
   "data_vintage": "nta2020 26B; community/council 2026-05-26; precincts 26B",
   "image_binaries_committed": false,
   "image_policy": "Screenshots may exist under docs/screenshots/ locally; only this manifest is committed.",
@@ -18,7 +18,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; server SVG visible path",
       "sha256": "8bcf785c3ea5a583790d4b2b1971b1b4ce85f35f052cd3eab8c5ca9f8cc4b219",
       "file": null,
@@ -114,7 +114,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; server SVG visible path",
       "sha256": "ba98103fa517b775b0fe261463fe7fb19ee8caf821b33f84be795d4b84aa9fc6",
       "file": null,
@@ -210,7 +210,7 @@
         "width": 360,
         "height": 800
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; server SVG visible path",
       "sha256": "c9197a536e1bc17f2b1134a0f30b9a4f963f800d8379abebe37067e54d77d1be",
       "file": null,
@@ -306,7 +306,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; first-viewport heading present; advanced filters do not precede the map; visible interactive targets measure at least 44x44px; MapLibre rendered 14 neighborhood labels with collision handling",
       "sha256": "b1c08d554568418ee38f397da107cbcccf53aeabfd1f67163b7f60635d8fb2b2",
       "file": null,
@@ -493,7 +493,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; visible interactive targets measure at least 44x44px; MapLibre rendered 8 neighborhood labels with collision handling",
       "sha256": "b6f8328aea486f45ceb04ab7581774dda3d9db9f1d76e8f2ee93a3875e36aa32",
       "file": null,
@@ -676,7 +676,7 @@
         "width": 360,
         "height": 800
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; visible interactive targets measure at least 44x44px; MapLibre rendered 5 neighborhood labels with collision handling",
       "sha256": "5b17f77e6df4a2c7c4093e7a7a16dec49bfa87fe6d38d8d6d4d7ab83bb3d3a87",
       "file": null,
@@ -778,7 +778,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; layer controls present; failed enhancement restored SVG",
       "sha256": "16224724ee75ede8e09e0fc056624ced2bf6b56f8def644ce7032fecc1d835b0",
       "file": null,
@@ -874,7 +874,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; failed enhancement restored SVG",
       "sha256": "48fbd38c6a2c3ec1669e6816f0b79aaecc2c29dc4d065f21d9282cec9974e288",
       "file": null,
@@ -970,7 +970,7 @@
         "width": 360,
         "height": 800
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
       "assertion": "search control present; Use my location present; Neighborhoods layer present; More boundaries present; Browse records present; Areas list present; map surface present; horizontal overflow \u2264 1px; NTA codes absent from primary area labels; search font \u2265 16px on narrow; layer controls present; failed enhancement restored SVG",
       "sha256": "a863d55d8ceedbe7e14199b6e2f50a691b9d1fec2a0ba5957a30359db50d1860",
       "file": null,
@@ -1066,9 +1066,9 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
-      "assertion": "Selected label 'Greenpoint' remained placed among 2 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name.",
-      "sha256": "11e206eed226f4e2c4aa32f848c9c07644755dc7e3d4165e6aa9164c63cb5c59",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
+      "assertion": "Selected label 'Greenpoint' remained placed among 2 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name; no ordinary or selected label was obscured by a primary control, and the control-occlusion positive control reported a named obscured label.",
+      "sha256": "90a71cae2a73e39e52f6d689a68939ee208d58ef6d5609bd14367a8e236270e3",
       "file": null,
       "snapshot": {
         "selected_neighborhood_label": "Greenpoint",
@@ -1090,6 +1090,30 @@
           "ordinary_collision_dropped_labels_sample": [
             "South Williamsburg"
           ]
+        },
+        "geometry": {
+          "control_occlusion_label_box_count": 2,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": []
+        },
+        "selected_name_control_occlusion": {
+          "label_box_count": 1,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": []
+        },
+        "selected_control_occlusion_positive_control": {
+          "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+          "label_box_count": 2,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 1,
+          "obscured_sample": [
+            {
+              "label": "Williamsburg",
+              "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show"
+            }
+          ]
         }
       }
     },
@@ -1101,9 +1125,9 @@
         "width": 390,
         "height": 844
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
-      "assertion": "Selected label 'Greenpoint' remained placed among 7 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name.",
-      "sha256": "36526419a180551da40106565664aa5569f4c0d1e01dfd4a8ca9be555bd91b99",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
+      "assertion": "Selected label 'Greenpoint' remained placed among 6 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name; no ordinary or selected label was obscured by a primary control, and the control-occlusion positive control reported a named obscured label.",
+      "sha256": "f0d13e589071c54521018d2ad07087991d6ae51818e8a7d606ade0155b9b5153",
       "file": null,
       "snapshot": {
         "selected_neighborhood_label": "Greenpoint",
@@ -1111,8 +1135,8 @@
         "selected_layer_rendered_labels": [
           "Greenpoint"
         ],
-        "surrounding_placed_label_count": 7,
-        "surrounding_collision_source_label_count": 7,
+        "surrounding_placed_label_count": 6,
+        "surrounding_collision_source_label_count": 6,
         "selected_priority_positive_control": {
           "forced_text_padding_px": 160,
           "selected_label": "Greenpoint",
@@ -1125,6 +1149,30 @@
           "ordinary_collision_dropped_labels_sample": [
             "South Williamsburg"
           ]
+        },
+        "geometry": {
+          "control_occlusion_label_box_count": 6,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": []
+        },
+        "selected_name_control_occlusion": {
+          "label_box_count": 1,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": []
+        },
+        "selected_control_occlusion_positive_control": {
+          "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+          "label_box_count": 6,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 1,
+          "obscured_sample": [
+            {
+              "label": "Williamsburg",
+              "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show"
+            }
+          ]
         }
       }
     },
@@ -1136,9 +1184,68 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
-      "assertion": "Selected label 'East Village' remained placed among 5 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name.",
-      "sha256": "008e701566c0d9c7bf7143374d8064d406da465370126616cfcffbc6e178e550",
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
+      "assertion": "Selected label 'East Village' remained placed among 4 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name; no ordinary or selected label was obscured by a primary control, and the control-occlusion positive control reported a named obscured label.",
+      "sha256": "13b89c34b24b06f39e63c63ac58a2b65d80dac8408f5896579a3426dd5dfe92e",
+      "file": null,
+      "snapshot": {
+        "selected_neighborhood_label": "East Village",
+        "selected_ui_label": "MN0303",
+        "selected_layer_rendered_labels": [
+          "East Village"
+        ],
+        "surrounding_placed_label_count": 4,
+        "surrounding_collision_source_label_count": 4,
+        "selected_priority_positive_control": {
+          "forced_text_padding_px": 160,
+          "selected_label": "East Village",
+          "selected_layer_rendered_labels": [
+            "East Village"
+          ],
+          "surrounding_collision_source_label_count": 2,
+          "surrounding_placed_label_count": 1,
+          "ordinary_collision_dropped_label_count": 1,
+          "ordinary_collision_dropped_labels_sample": [
+            "Williamsburg"
+          ]
+        },
+        "geometry": {
+          "control_occlusion_label_box_count": 4,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": []
+        },
+        "selected_name_control_occlusion": {
+          "label_box_count": 1,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": []
+        },
+        "selected_control_occlusion_positive_control": {
+          "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+          "label_box_count": 4,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 1,
+          "obscured_sample": [
+            {
+              "label": "Gramercy",
+              "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "shell-selected-east-village-390",
+      "route": "/near-you/?geo=nta2020%3AMN0303&surface=map",
+      "mode": "selected-enhanced",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "aa7d81ba0b140aa0ea39c0195a93a66277103a4d",
+      "assertion": "Selected label 'East Village' remained placed among 5 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name; no ordinary or selected label was obscured by a primary control, and the control-occlusion positive control reported a named obscured label.",
+      "sha256": "9b83e3e5227e9d545fa301edc3cdd403dc0bf798ddaffd82a46db14716aa1abb",
       "file": null,
       "snapshot": {
         "selected_neighborhood_label": "East Village",
@@ -1160,40 +1267,29 @@
           "ordinary_collision_dropped_labels_sample": [
             "Williamsburg"
           ]
-        }
-      }
-    },
-    {
-      "name": "shell-selected-east-village-390",
-      "route": "/near-you/?geo=nta2020%3AMN0303&surface=map",
-      "mode": "selected-enhanced",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "revision": "fea8dfe995cc522c00785834a5be3f561b2c3c16",
-      "assertion": "Selected label 'East Village' remained placed among 5 surrounding labels; the forced-collision control dropped an ordinary label while retaining the selected name.",
-      "sha256": "008e701566c0d9c7bf7143374d8064d406da465370126616cfcffbc6e178e550",
-      "file": null,
-      "snapshot": {
-        "selected_neighborhood_label": "East Village",
-        "selected_ui_label": "MN0303",
-        "selected_layer_rendered_labels": [
-          "East Village"
-        ],
-        "surrounding_placed_label_count": 5,
-        "surrounding_collision_source_label_count": 5,
-        "selected_priority_positive_control": {
-          "forced_text_padding_px": 160,
-          "selected_label": "East Village",
-          "selected_layer_rendered_labels": [
-            "East Village"
-          ],
-          "surrounding_collision_source_label_count": 2,
-          "surrounding_placed_label_count": 1,
-          "ordinary_collision_dropped_label_count": 1,
-          "ordinary_collision_dropped_labels_sample": [
-            "Williamsburg"
+        },
+        "geometry": {
+          "control_occlusion_label_box_count": 5,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": []
+        },
+        "selected_name_control_occlusion": {
+          "label_box_count": 1,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": []
+        },
+        "selected_control_occlusion_positive_control": {
+          "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+          "label_box_count": 5,
+          "primary_control_box_count": 1,
+          "obscured_by_primary_control_count": 1,
+          "obscured_sample": [
+            {
+              "label": "Murray Hill-Kips Bay",
+              "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show"
+            }
           ]
         }
       }

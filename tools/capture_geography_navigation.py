@@ -538,9 +538,11 @@ def run_shell(write_manifest: bool) -> int:
                         browser,
                         base,
                         revision,
+                        None,
                         specimen,
                         width=width,
                         height=height,
+                        served_receipts=False,
                     )
                     expected = specimen["expected_label"]
                     require(
@@ -551,6 +553,47 @@ def run_shell(write_manifest: bool) -> int:
                     require(
                         geometry.get("placed_label_count", 0) > 0,
                         f"selected label {expected!r} had no surrounding labels at {width}px",
+                    )
+                    require(
+                        geometry.get("control_occlusion_label_box_count", 0) > 0,
+                        f"selected label {expected!r} had no control-clearance label population at {width}px",
+                    )
+                    require(
+                        geometry.get("primary_control_box_count", 0) > 0,
+                        f"selected label {expected!r} had no primary control population at {width}px",
+                    )
+                    require(
+                        geometry.get("obscured_by_primary_control_count") == 0,
+                        f"selected label {expected!r} view had obscured ordinary labels at {width}px",
+                    )
+                    selected_control = read.get("selected_name_control_occlusion") or {}
+                    require(
+                        selected_control.get("label_box_count") == 1,
+                        f"selected label {expected!r} name box was not measured at {width}px",
+                    )
+                    require(
+                        selected_control.get("primary_control_box_count", 0) > 0,
+                        f"selected label {expected!r} name read had no controls at {width}px",
+                    )
+                    require(
+                        selected_control.get("obscured_by_primary_control_count") == 0,
+                        f"selected label {expected!r} was obscured by a control at {width}px",
+                    )
+                    control_positive = read.get(
+                        "selected_control_occlusion_positive_control"
+                    ) or {}
+                    require(
+                        control_positive.get("label_box_count", 0) > 0
+                        and control_positive.get("primary_control_box_count", 0) > 0,
+                        f"selected label {expected!r} control positive population missing at {width}px",
+                    )
+                    require(
+                        control_positive.get("obscured_by_primary_control_count", 0) > 0,
+                        f"selected label {expected!r} control positive did not flip at {width}px",
+                    )
+                    require(
+                        all(row.get("label") for row in control_positive.get("obscured_sample") or []),
+                        f"selected label {expected!r} control positive sample missing at {width}px",
                     )
                     priority = read.get("selected_priority_positive_control") or {}
                     require(
@@ -572,6 +615,20 @@ def run_shell(write_manifest: bool) -> int:
                             "collision_source_label_count"
                         ),
                         "selected_priority_positive_control": priority,
+                        "geometry": {
+                            "control_occlusion_label_box_count": geometry.get(
+                                "control_occlusion_label_box_count"
+                            ),
+                            "primary_control_box_count": geometry.get(
+                                "primary_control_box_count"
+                            ),
+                            "obscured_by_primary_control_count": geometry.get(
+                                "obscured_by_primary_control_count"
+                            ),
+                            "obscured_sample": geometry.get("obscured_sample"),
+                        },
+                        "selected_name_control_occlusion": selected_control,
+                        "selected_control_occlusion_positive_control": control_positive,
                     }
                     captures.append({
                         "name": f"shell-selected-{specimen['name']}-{width}",
@@ -582,7 +639,9 @@ def run_shell(write_manifest: bool) -> int:
                             f"Selected label {expected!r} remained placed among "
                             f"{geometry.get('placed_label_count')} surrounding labels; "
                             "the forced-collision control dropped an ordinary label while "
-                            "retaining the selected name."
+                            "retaining the selected name; no ordinary or selected label was "
+                            "obscured by a primary control, and the control-occlusion positive "
+                            "control reported a named obscured label."
                         ),
                         "sha256": sha256_text(json.dumps(
                             selected_snapshot,

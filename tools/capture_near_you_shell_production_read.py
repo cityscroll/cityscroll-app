@@ -834,6 +834,20 @@ def observe_a13_selected(page, width: int, height: int, *, route: str, expected_
             }
             measureRoot.remove();
           }
+          const intersects = (a, b) => (
+            a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top
+          );
+          const controlBoxes = [...(host?.querySelectorAll(
+            '.maplibregl-ctrl-attrib, .maplibregl-ctrl-group, .maplibregl-ctrl-zoom-in, .maplibregl-ctrl-zoom-out, .maplibregl-ctrl-compass',
+          ) || [])]
+            .map((control) => ({
+              className: String(control.className || '').slice(0, 96),
+              box: control.getBoundingClientRect(),
+            }))
+            .filter((row) => row.box.width > 1 && row.box.height > 1);
+          const selectedOcclusions = selected_name_box
+            ? controlBoxes.filter((control) => intersects(selected_name_box.box, control.box))
+            : [];
           return {
             selected_neighborhood_label: expectedLabel,
             selected_ui_label: uiLabel,
@@ -841,6 +855,15 @@ def observe_a13_selected(page, width: int, height: int, *, route: str, expected_
             selected_layer_rendered_label_count: layerLabels.length,
             selected_layer_rendered_labels: layerLabels,
             selected_name_box,
+            selected_name_control_occlusion: {
+              label_box_count: selected_name_box ? 1 : 0,
+              primary_control_box_count: controlBoxes.length,
+              obscured_by_primary_control_count: selectedOcclusions.length,
+              obscured_sample: selectedOcclusions.map((control) => ({
+                label: expectedLabel,
+                control: control.className,
+              })).slice(0, 12),
+            },
             map_runtime: document.querySelector('[data-near-you-root]')?.dataset?.nearMapRuntime || null,
             map_instance_hooked: Boolean(map),
             host_present: Boolean(host),
@@ -850,6 +873,68 @@ def observe_a13_selected(page, width: int, height: int, *, route: str, expected_
     )
     base.update(selected)
     return base
+
+
+def exercise_selected_control_occlusion_positive_control(
+    page,
+    width: int,
+    height: int,
+    *,
+    route: str,
+) -> dict:
+    """Move a real primary control over a placed ordinary label on a selected read."""
+    baseline = observe_a13(page, width, height, route=route)
+    geometry = baseline.get("geometry") or {}
+    boxes = [row for row in geometry.get("label_boxes") or [] if row.get("label")]
+    if not boxes:
+        raise AssertionError("A13 selected control positive control needs a placed label")
+    target = boxes[0]
+    state = page.evaluate(
+        """({ box }) => {
+          const host = document.querySelector('#near-map-enhanced');
+          const control = host?.querySelector('.maplibregl-ctrl-attrib, .maplibregl-ctrl-group');
+          if (!control) return null;
+          const previous = control.getAttribute('style');
+          control.style.setProperty('position', 'fixed', 'important');
+          control.style.setProperty('left', `${box.left}px`, 'important');
+          control.style.setProperty('top', `${box.top}px`, 'important');
+          control.style.setProperty('right', 'auto', 'important');
+          control.style.setProperty('bottom', 'auto', 'important');
+          control.style.setProperty('width', `${Math.max(44, box.width)}px`, 'important');
+          control.style.setProperty('height', `${Math.max(44, box.height)}px`, 'important');
+          return { previous, className: String(control.className || '') };
+        }""",
+        {"box": target["box"]},
+    )
+    if state is None:
+        raise AssertionError("A13 selected control positive control found no primary control")
+    page.wait_for_timeout(100)
+    pressured = observe_a13(page, width, height, route=route)
+    page.evaluate(
+        """(previous) => {
+          const host = document.querySelector('#near-map-enhanced');
+          const control = host?.querySelector('.maplibregl-ctrl-attrib, .maplibregl-ctrl-group');
+          if (!control) return;
+          if (previous == null) control.removeAttribute('style');
+          else control.setAttribute('style', previous);
+        }""",
+        state["previous"],
+    )
+    page.wait_for_timeout(100)
+    pressured_geometry = pressured.get("geometry") or {}
+    obscured = pressured_geometry.get("obscured_by_primary_control_count", 0)
+    sample = pressured_geometry.get("obscured_sample") or []
+    if obscured < 1:
+        raise AssertionError("A13 selected control positive control did not report occlusion")
+    if not sample or not sample[0].get("label"):
+        raise AssertionError("A13 selected control positive control did not name its label")
+    return {
+        "moved_control_class": state["className"],
+        "label_box_count": pressured_geometry.get("control_occlusion_label_box_count"),
+        "primary_control_box_count": pressured_geometry.get("primary_control_box_count"),
+        "obscured_by_primary_control_count": obscured,
+        "obscured_sample": sample,
+    }
 
 
 def exercise_selected_priority_positive_control(
@@ -1070,6 +1155,8 @@ def observe_a9(page, width: int, height: int) -> dict:
 def assert_letter_observations(
     a13_reads: list[dict],
     a9_reads: list[dict],
+    *,
+    require_selected_control_clearance: bool = True,
 ) -> None:
     all_city = [
         row for row in a13_reads
@@ -1207,6 +1294,35 @@ def assert_letter_observations(
         geometry = selected.get("geometry") or {}
         if geometry.get("placed_label_count", 0) < 1:
             raise AssertionError(f"A13 selected {expected!r} has no surrounding label population")
+        if require_selected_control_clearance:
+            if geometry.get("control_occlusion_label_box_count", 0) < 1:
+                raise AssertionError(f"A13 selected {expected!r} control population has no labels")
+            if geometry.get("primary_control_box_count", 0) < 1:
+                raise AssertionError(f"A13 selected {expected!r} primary control population was empty")
+            if geometry.get("obscured_by_primary_control_count") != 0:
+                raise AssertionError(
+                    f"A13 selected {expected!r} obscured ordinary labels: "
+                    f"{geometry.get('obscured_sample')!r}"
+                )
+            selected_control = selected.get("selected_name_control_occlusion") or {}
+            if selected_control.get("label_box_count") != 1:
+                raise AssertionError(f"A13 selected {expected!r} name box population was empty")
+            if selected_control.get("primary_control_box_count", 0) < 1:
+                raise AssertionError(f"A13 selected {expected!r} name control population was empty")
+            if selected_control.get("obscured_by_primary_control_count") != 0:
+                raise AssertionError(
+                    f"A13 selected name {expected!r} was obscured: "
+                    f"{selected_control.get('obscured_sample')!r}"
+                )
+            control_positive = selected.get("selected_control_occlusion_positive_control") or {}
+            if control_positive.get("label_box_count", 0) < 1:
+                raise AssertionError(f"A13 selected {expected!r} control positive population missing")
+            if control_positive.get("primary_control_box_count", 0) < 1:
+                raise AssertionError(f"A13 selected {expected!r} positive control population was empty")
+            if control_positive.get("obscured_by_primary_control_count", 0) < 1:
+                raise AssertionError(f"A13 selected {expected!r} control positive did not flip")
+            if not (control_positive.get("obscured_sample") or [{}])[0].get("label"):
+                raise AssertionError(f"A13 selected {expected!r} control positive label missing")
         priority = selected.get("selected_priority_positive_control") or {}
         if expected not in (priority.get("selected_layer_rendered_labels") or []):
             raise AssertionError(f"A13 selected priority control lost {expected!r}")
@@ -1335,23 +1451,39 @@ def capture_selected(
     browser,
     base: str,
     rev: str,
-    capture_run_id: str,
+    capture_run_id: str | None,
     specimen: dict,
     *,
     width: int,
     height: int,
+    served_receipts: bool = True,
 ) -> dict:
     capture_name = f"selected-{specimen['name']}-{width}"
-    context, page, receipt = _open_near_you(
-        browser,
-        base,
-        width=width,
-        height=height,
-        route=specimen["route"],
-        name=capture_name,
-        revision=rev,
-        capture_run_id=capture_run_id,
-    )
+    if served_receipts:
+        if not capture_run_id:
+            raise ValueError("capture_run_id is required for a served-origin selected read")
+        context, page, receipt = _open_near_you(
+            browser,
+            base,
+            width=width,
+            height=height,
+            route=specimen["route"],
+            name=capture_name,
+            revision=rev,
+            capture_run_id=capture_run_id,
+        )
+    else:
+        context = browser.new_context(viewport={"width": width, "height": height})
+        page = context.new_page()
+        page.add_init_script(MAP_HOOK_INIT)
+        page.goto(
+            f"{normalize_base(base).rstrip('/')}{specimen['route']}",
+            wait_until="domcontentloaded",
+            timeout=60000,
+        )
+        wait_for_enhanced_labels(page)
+        page.wait_for_timeout(800)
+        receipt = None
     # Selected routes can show zero ordinary labels while the camera flies;
     # wait until the selected layer or UI label is present.
     page.wait_for_function(
@@ -1381,13 +1513,22 @@ def capture_selected(
     a13["name"] = f"a13-{capture_name}"
     a13["revision"] = rev
     a13["data_vintage"] = DATA_VINTAGE
-    a13["request_receipt"] = receipt
+    if receipt is not None:
+        a13["request_receipt"] = receipt
     a13["selected_priority_positive_control"] = exercise_selected_priority_positive_control(
         page,
         width,
         height,
         route=specimen["route"],
         expected_label=specimen["expected_label"],
+    )
+    a13["selected_control_occlusion_positive_control"] = (
+        exercise_selected_control_occlusion_positive_control(
+            page,
+            width,
+            height,
+            route=specimen["route"],
+        )
     )
     SCRATCH.mkdir(parents=True, exist_ok=True)
     page.screenshot(
@@ -1527,6 +1668,7 @@ def capture() -> dict:
                 for name, width, height, _minimum, _maximum in VIEWPORTS
             ],
             "screenshot_binaries_committed": False,
+            "selected_control_clearance_contract": 1,
             "map_hook": (
                 "Init script wraps window.maplibregl.Map; A13 geometry reads "
                 "CollisionIndex grid bboxes via getBoundingClientRect."
@@ -1598,6 +1740,40 @@ def build_manifest(receipt: dict) -> dict:
                 "surrounding": geometry.get("placed_label_count"),
                 "priority_control": read.get("selected_priority_positive_control"),
             }
+            if "selected_name_control_occlusion" in read:
+                assertion += (
+                    " No ordinary or selected label was obscured by a primary control "
+                    f"across {geometry.get('control_occlusion_label_box_count')} ordinary "
+                    "label boxes and one selected-name box; the selected-view control "
+                    "positive control reported a named obscured label."
+                )
+                observed.update({
+                    "geometry": {
+                        "control_occlusion_label_box_count": geometry.get(
+                            "control_occlusion_label_box_count"
+                        ),
+                        "primary_control_box_count": geometry.get("primary_control_box_count"),
+                        "obscured_by_primary_control_count": geometry.get(
+                            "obscured_by_primary_control_count"
+                        ),
+                        "obscured_sample": geometry.get("obscured_sample"),
+                    },
+                    "selected_name_control_occlusion": read.get(
+                        "selected_name_control_occlusion"
+                    ),
+                    "selected_control_occlusion_positive_control": read.get(
+                        "selected_control_occlusion_positive_control"
+                    ),
+                })
+                digest.update({
+                    "control_clearance": observed["geometry"],
+                    "selected_name_control_occlusion": read.get(
+                        "selected_name_control_occlusion"
+                    ),
+                    "control_positive": read.get(
+                        "selected_control_occlusion_positive_control"
+                    ),
+                })
             mode = "headless-playwright-production-selected"
             route = read.get("route") or ENTRY_ROUTE
         else:
@@ -1886,7 +2062,14 @@ def validate(receipt: dict) -> None:
     if current_contract:
         if len(selected) != len(SELECTED_SPECIMENS) * len(VIEWPORTS):
             raise AssertionError("missing A13 selected-neighborhood viewport observations")
-        assert_letter_observations(a13, a9)
+        selected_control_contract = (
+            (receipt.get("capture") or {}).get("selected_control_clearance_contract") == 1
+        )
+        assert_letter_observations(
+            a13,
+            a9,
+            require_selected_control_clearance=selected_control_contract,
+        )
         a13_request_ids = {
             validate_request_receipt(
                 row.get("request_receipt"),
