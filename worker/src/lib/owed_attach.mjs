@@ -50,6 +50,40 @@ export function emptyOwedAttachReceipt(owedCount = 0) {
   };
 }
 
+/** A complete drain accounts for every owed row, attached or explicitly refused. */
+export function owedDrainCheck(receipt) {
+  const owedCount = Number(receipt?.owed_count) || 0;
+  const attachedCount = Number(receipt?.attached_count) || 0;
+  const unattached = Array.isArray(receipt?.unattached) ? receipt.unattached : [];
+  const reasonCounts = {};
+  let reasonsComplete = true;
+  for (const row of unattached) {
+    const reason = publicIdentityRef(row?.reason);
+    if (!reason) {
+      reasonsComplete = false;
+      continue;
+    }
+    reasonCounts[reason] = (reasonCounts[reason] || 0) + 1;
+  }
+  const accountedCount = attachedCount + unattached.length;
+  const ok = accountedCount === owedCount && reasonsComplete;
+  return {
+    ok,
+    status: owedCount === 0
+      ? "no_backlog"
+      : !ok
+        ? "undrained_without_reason"
+        : attachedCount > 0
+          ? "drain_ready"
+          : "undrained_with_reasons",
+    owed_count: owedCount,
+    attached_count: attachedCount,
+    unattached_count: unattached.length,
+    accounted_count: accountedCount,
+    reason_counts: reasonCounts,
+  };
+}
+
 function sectionCanReceiveOwed(section) {
   return Boolean(
     section

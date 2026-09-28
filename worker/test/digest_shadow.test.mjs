@@ -108,6 +108,60 @@ test("a schedule-skipped weekly watch does not masquerade as a recall drop", () 
   assert.equal(out.previews[0].watch_counts[0].skip_reason, "weekly");
 });
 
+test("shadow summary retains the reason when an owed backlog does not drain", () => {
+  const out = summary([{
+    sub: "acct:owed",
+    owed_drain_check: {
+      ok: true,
+      status: "undrained_with_reasons",
+      owed_count: 2,
+      attached_count: 0,
+      unattached_count: 2,
+      accounted_count: 2,
+      reason_counts: { filter_mismatch: 2 },
+    },
+  }]);
+  assert.deepEqual(out.owed_drain_checks, [{
+    digest_id: "acct:owed",
+    ok: true,
+    status: "undrained_with_reasons",
+    owed_count: 2,
+    attached_count: 0,
+    unattached_count: 2,
+    accounted_count: 2,
+    reason_counts: { filter_mismatch: 2 },
+  }]);
+});
+
+test("shadow drain check fails when owed rows are silently skipped", () => {
+  const out = summary([{
+    sub: "acct:owed",
+    owed_drain_check: {
+      ok: false,
+      status: "undrained_without_reason",
+      owed_count: 2,
+      attached_count: 0,
+      unattached_count: 1,
+      accounted_count: 1,
+      reason_counts: { filter_mismatch: 1 },
+    },
+  }]);
+  assert.equal(out.ok, false);
+  assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
+  assert.deepEqual(out.redlines.find((item) => item.code === "owed_backlog_unaccounted"), {
+    code: "owed_backlog_unaccounted",
+    digest_id: "acct:owed",
+    watch_id: null,
+    reason: "The owed backlog contains rows that were neither attached nor given a refusal reason.",
+    evidence: {
+      owed_count: 2,
+      attached_count: 0,
+      unattached_count: 1,
+      accounted_count: 1,
+    },
+  });
+});
+
 test("aggregate item-count collapse versus trailing average redlines", () => {
   const history = [20, 24, 16].map((total, index) => ({ day: `2026-08-0${3 - index}`, totalNotices: total, entries: [] }));
   const out = summary([result({ count: 1 })], history);

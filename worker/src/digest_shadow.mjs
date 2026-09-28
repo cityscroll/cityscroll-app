@@ -536,6 +536,26 @@ export function buildDigestShadowSummary({
     item_count: preview.item_count,
     watch_counts: preview.watch_counts,
   }));
+  const owedDrainChecks = results
+    .filter((result) => Number(result?.owed_drain_check?.owed_count) > 0)
+    .map((result) => ({
+      digest_id: result.previewId || result.sub || result.watch || "unknown",
+      ...result.owed_drain_check,
+    }));
+  for (const check of owedDrainChecks) {
+    if (check.ok) continue;
+    redlines.push(redline(
+      "owed_backlog_unaccounted",
+      check.digest_id,
+      "The owed backlog contains rows that were neither attached nor given a refusal reason.",
+      {
+        owed_count: check.owed_count,
+        attached_count: check.attached_count,
+        unattached_count: check.unattached_count,
+        accounted_count: check.accounted_count,
+      },
+    ));
+  }
   const affectedDigestIds = [...new Set(redlines
     .map((item) => item.digest_id)
     .filter((id) => id && id !== "run"))];
@@ -572,6 +592,7 @@ export function buildDigestShadowSummary({
     trailing_baseline: trailingBaseline,
     trailing_baseline_method: baseline.method,
     selection_funnel: selectionFunnel,
+    owed_drain_checks: owedDrainChecks,
     collapse_stage: collapse?.stage || null,
     observations,
     redlines,

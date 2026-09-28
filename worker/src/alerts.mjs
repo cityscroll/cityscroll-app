@@ -60,6 +60,7 @@ import {
   isTestSubscriber,
   rowAfterDeliveryNotBefore,
 } from "./lib/subscriptions.mjs";
+import { historicalDistrictOwedSections } from "./lib/district_owed_recovery.mjs";
 import {
   digestDayLogKey,
   buildDayLog,
@@ -107,6 +108,7 @@ import {
 import {
   attachOwedRows,
   isAwardWatchSection,
+  owedDrainCheck,
 } from "./lib/owed_attach.mjs";
 import { evaluatePropertyWatch, propertyWatchStageLabel } from "./lib/property_saved_watch.mjs";
 import { groupDistrictDigestRows } from "../../site/district_weekly_digest.mjs";
@@ -1039,6 +1041,7 @@ export async function processOneSub(env, s, ctx) {
     outboxSection.outboxEnqueue = await enqueueNormalSection(env, s, outboxSection, enqueueRows, ctx, q.kind);
     if (ctx.injectCrash === "after-enqueue") throw new Error("injected-crash-after-enqueue");
     const owedAttach = attachOwedRows([outboxSection], await owedForSubscriber(env, s.subscriber_id));
+    const owedDrain = owedDrainCheck(owedAttach);
     // Provider-submit cutoff: re-read the current expression before composing
     // or submitting. A stale query revision rebuilds membership; after the
     // provider accepts, there is no recall.
@@ -1225,6 +1228,7 @@ export async function processOneSub(env, s, ctx) {
       sendUnits: send || (underCap && !ctx.LIVE) ? 1 : 0,
       selection_funnel: normalizeFunnel(funnel),
       owed_attach: owedAttach,
+      owed_drain_check: owedDrain,
       ...(preview ? { preview } : {}),
     };
   } catch (e) {
@@ -1290,7 +1294,10 @@ export async function processAccountRollup(env, subs, ctx) {
       section.watchId = watch?.watch_id || null;
       section.filter = watch?.filter || section.filter || {};
     }
+    sections.push(...await historicalDistrictOwedSections(owed, subs));
+    const watchCount = sections.filter((section) => !section.historicalOwed).length;
     const owedAttach = attachOwedRows(sections, owed);
+    const owedDrain = owedDrainCheck(owedAttach);
     // Provider-submit cutoff: last current-revision read after evaluation and
     // attach, immediately before composing the provider payload and reserving
     // the occasion. Stale content is rebuilt; accepted messages are not recalled.
@@ -1339,7 +1346,6 @@ export async function processAccountRollup(env, subs, ctx) {
       manageUrlPresent = !!manageUrl;
       // Account watch count (all evaluated sections, including quiet/weekly) drives the
       // multi-watch subject form even when only one section wanted send.
-      const watchCount = sections.length;
       const bodySections = rollupBodySections(sections);
       const sinceDates = (bodySections.length ? bodySections : wanting)
         .map((sec) => sec.since)
@@ -1461,7 +1467,7 @@ export async function processAccountRollup(env, subs, ctx) {
       kind: "rollup",
       email: email || null,
       emailRedacted: redactEmail(email),
-      queryLabel: `${sections.length} watches`,
+      queryLabel: `${watchCount} watches`,
       found: totalFound,
       new: decision.totalNew,
       noticeIds: allNoticeIds.slice(0, 100),
@@ -1482,6 +1488,7 @@ export async function processAccountRollup(env, subs, ctx) {
       sendUnits: (send || (underCap && decision.wantSend && !ctx.LIVE)) ? 1 : 0,
       selection_funnel: mergeFunnels(sections.map((sec) => sec.funnel).filter(Boolean)),
       owed_attach: owedAttach,
+      owed_drain_check: owedDrain,
       sections: sections.map((sec) => ({
         sub: sec.sub,
         ...(sec.previewId ? { previewId: sec.previewId } : {}),

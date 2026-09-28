@@ -1453,6 +1453,8 @@ export async function handleAdminNextDigestPreview(req, env, options = {}) {
     subscriber_label: row.subscriber_label || row.subscriber_id,
     owed_item_count: Number(row.owed_count) || 0,
     mode: result.mode,
+    owed_attach: result.result?.owed_attach || null,
+    owed_drain_check: result.result?.owed_drain_check || null,
     empty: !digest?.html,
     subject: digest?.subject || null,
     digest_html: digest?.html || null,

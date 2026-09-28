@@ -7,6 +7,7 @@ import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 
 import { processAccountRollup, processOneSub } from "../src/alerts.mjs";
+import { deriveWatchId, subscriptionKey } from "../src/lib/subscriptions.mjs";
 
 const migration = readFileSync(new URL("../migrations/0018_digest_outbox.sql", import.meta.url), "utf8");
 const NOW = new Date("2026-08-10T13:00:00.000Z");
@@ -404,39 +405,55 @@ test("field case: consecutive mixed-rollup deliveries do not repeat catching-up 
   sqlite.close();
 });
 
-test("district owed rows recorded under a prior watch_id still drain on the current same-lens watch", async () => {
+test("district owed rows from a replaced watch drain in their recorded historical section", async () => {
   const { sqlite, DB } = makeDb();
-  const district = sub("sub:district", "district", { councilDistrict: "3" }, { watch_id: "watch:current-district-key" });
-  const land = sub("sub:land", "land", { status: "all" }, { freq: "weekly", watch_id: "watch:current-land-key" });
-  insertOwed(sqlite, {
-    watchId: "watch:prior-district-key",
-    itemId: "district:land:2019M0059:2023-03-13",
-    lens: "district",
-    itemKind: "district",
-    firstOwedAt: "2026-08-13T10:00:59.502Z",
-    payload: {
-      district_item_id: "land:2019M0059:2023-03-13",
-      district_section: "land",
-      project_id: "2019M0059",
-      project_name: "Held district land action",
-      public_status: "In review",
-      district_kind: "rezone",
-      council_district: "3",
-      watch_filter: { councilDistrict: "3" },
-    },
+  const email = "owed@example.com";
+  const currentKey = await subscriptionKey({ email, lens: "district", filter: { councilDistrict: "1" } });
+  const priorKey = await subscriptionKey({ email, lens: "district", filter: { councilDistrict: "3" } });
+  const district = sub(currentKey, "district", { councilDistrict: "1" }, {
+    email,
+    watch_id: await deriveWatchId(currentKey),
   });
+  const land = sub("sub:land", "land", { status: "all" }, { freq: "weekly", watch_id: "watch:current-land-key" });
+  const priorWatchId = await deriveWatchId(priorKey);
+  for (let index = 0; index < 78; index++) {
+    const observed = index === 0;
+    const projectId = observed ? "2019M0059" : `historical-${index}`;
+    const districtItemId = observed ? "land:2019M0059:2023-03-13" : `land:historical-${index}`;
+    insertOwed(sqlite, {
+      watchId: priorWatchId,
+      itemId: `district:${districtItemId}`,
+      lens: "district",
+      itemKind: "district",
+      firstOwedAt: observed ? "2026-08-13T10:00:59.502Z" : "2026-08-14T10:00:00.000Z",
+      payload: {
+        district_item_id: districtItemId,
+        district_section: "land",
+        project_id: projectId,
+        project_name: observed ? "Held district land action" : `Historical district item ${index}`,
+        public_status: "In review",
+        district_kind: "rezone",
+      },
+    });
+  }
   const state = kv();
   await state.put(`lastsent:${district.key}`, LAST_SENT);
   await state.put(`lastsent:${land.key}`, LAST_SENT);
   await withFetch({ rows: [], fn: async (sent) => {
     const result = await processAccountRollup(env(DB, state), [district, land], runCtx());
     assert.equal(result.error, undefined, result.error || "no error");
-    assert.equal(result.owed_attach.attached_by.watch_id, 0);
-    assert.equal(result.owed_attach.attached_by.lens, 1);
+    assert.equal(result.owed_attach.owed_count, 78);
+    assert.equal(result.owed_attach.attached_by.watch_id, 78);
+    assert.equal(result.owed_attach.attached_by.lens, 0);
     assert.equal(result.owed_attach.unattached_count, 0);
+    assert.equal(result.owed_drain_check.ok, true);
+    assert.equal(result.owed_drain_check.status, "drain_ready");
+    assert.equal(result.owed_drain_check.attached_count, 78);
     assert.equal(result.sent, true);
     assert.equal(sent.length, 1);
+    assert.match(sent[0].subject, /2 watches/);
     assert.match(sent[0].html, /Held district land action/);
+    assert.match(sent[0].html, /Previously followed: City Council District 3/);
     assert.equal(
       sqlite.prepare("SELECT status FROM digest_outbox_items WHERE item_id = ?").get("district:land:2019M0059:2023-03-13").status,
       "delivered",

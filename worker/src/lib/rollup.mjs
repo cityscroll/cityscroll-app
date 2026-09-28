@@ -294,6 +294,7 @@ export function toRollupDayLogEntry(result = {}, { day = null } = {}) {
     error: result.error || null,
     forecasts: Number(result.forecasts) || 0,
     sections,
+    ...(result.owed_drain_check ? { owed_drain_check: result.owed_drain_check } : {}),
     sendUnits: 1, // one rollup email = one send unit
   };
 }
