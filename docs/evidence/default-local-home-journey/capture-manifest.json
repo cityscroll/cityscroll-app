@@ -2,47 +2,96 @@
   "schema": "cityscroll.render_capture_manifest.v1",
   "feature": "default-local-home-journey",
   "public_alias": "c27355579ade0",
-  "capture_mode": "headless_playwright_local_site",
-  "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
-  "repository_revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
-  "grounded_at": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
-  "data_vintage": "PAD 26b; parcel-geography pluto_25v4 (mappluto_published_latitude_longitude); nta2020 26B; community/council 2026-05-26; precincts 26B",
+  "capture_mode": "headless-playwright-production-served-site",
+  "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+  "base": "https://cityscroll.org/",
+  "repository_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+  "grounded_at": "f59d912cebb080458052e156d188beb3ba0fa70c",
+  "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+  "revision_format": "served artifact-manifest source_commit_sha",
+  "required_ancestor": "f59d912cebb080458052e156d188beb3ba0fa70c",
+  "required_ancestor_contained": true,
+  "data_vintage": {
+    "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+    "deployment_at": "2026-09-28T16:12:52.867Z",
+    "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+    "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+  },
+  "deployment": {
+    "artifact_manifest_url": "https://cityscroll.org/artifact-manifest.json",
+    "schema": "cityscroll.served-artifact-manifest.v1",
+    "source_commit_sha": "f59d912cebb080458052e156d188beb3ba0fa70c",
+    "artifact_hash": "9ef04cb03fa23a567d9e9a613d72beb2bc0c5a6ed4be6d40e26b8cb32525050c",
+    "generated_at": "2026-09-28T16:12:52.867Z",
+    "deployment_at": "2026-09-28T16:12:52.867Z",
+    "source_receipt": {
+      "schema": "cityscroll.source_health_observations.v1",
+      "generated_at": "2026-09-28T15:46:40.620Z",
+      "sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+    }
+  },
   "image_binaries_committed": false,
-  "image_policy": "Screenshots stay under the ignored local capture directory; only this manifest is committed.",
-  "local_image_dir_ignored": "task-scratch/default-local-home-journey-screenshots",
+  "image_policy": "Screenshot binaries are retained in the ignored repository-local run directory and are not committed. Each row records its image digest, runtime assertions, and in-run URL/revision receipt; the retained files can be uploaded later if externally viewable images are required.",
+  "local_image_dir_ignored": ".artifacts/default-local-home-journey/624ec7eb-eed7-47c4-989a-51a86926272c",
   "route": "/",
   "exact_links": [
     "/",
+    "/#land/2022M0258",
+    "/app/#land/2022M0258",
+    "/#not-a-cityscroll-route",
     "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
-    "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
-    "/near-you/?geo=nta2020%3ABK1402&surface=map&lens=meetings",
-    "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
-    "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F"
+    "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings"
   ],
+  "run_receipt": {
+    "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+    "run_started_at": "2026-09-28T16:24:53Z",
+    "run_finished_at": "2026-09-28T16:25:13Z",
+    "served_revision_before": "f59d912cebb080458052e156d188beb3ba0fa70c",
+    "served_revision_after": "f59d912cebb080458052e156d188beb3ba0fa70c",
+    "artifact_hash_before": "9ef04cb03fa23a567d9e9a613d72beb2bc0c5a6ed4be6d40e26b8cb32525050c",
+    "artifact_hash_after": "9ef04cb03fa23a567d9e9a613d72beb2bc0c5a6ed4be6d40e26b8cb32525050c"
+  },
   "captures": [
     {
       "name": "root-shell-initial-desktop",
       "route": "/",
-      "mode": "local_chromium",
+      "source": "headless-playwright-production-served-site",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
-      "assertion": "root presents Near You shell; place search and Use my location available; Following and Browse reachable; measured viewport matches product CSS",
-      "sha256": "8662708fe3e77f6fcfe3aa6dbd530eaa06efd95331488ab5a406e2f58b03f20c",
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "Bare production root remains on the Near You shell with local entry and global navigation available.",
+      "assertions": {
+        "near_you_shell_visible": true,
+        "place_search_visible": true,
+        "location_control_visible": true,
+        "following_link_present": true,
+        "browse_link_present": true,
+        "viewport_matches": true,
+        "horizontal_overflow_at_most_one_px": true,
+        "bare_root_remained_near_you": true
+      },
+      "sha256": "7917a39ae52a1ebf26bd65751f36a13be195d950f0dba8c13081ccedb21957f3",
       "file": null,
-      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "screenshot_url": null,
+      "local_image_name": "root-shell-initial-desktop.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
       "snapshot": {
         "measured_css": true,
         "stylesheet_hrefs": [
           "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
-          "http://127.0.0.1:57496/brand.css",
-          "http://127.0.0.1:57496/civic-documents.css",
-          "http://127.0.0.1:57496/walk-entry.css",
-          "http://127.0.0.1:57496/local_constellation.css",
-          "http://127.0.0.1:57496/traversal.css",
-          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/civic-documents.css",
+          "https://cityscroll.org/walk-entry.css",
+          "https://cityscroll.org/local_constellation.css",
+          "https://cityscroll.org/traversal.css"
         ],
         "has_shell": true,
         "has_search": true,
@@ -51,34 +100,78 @@
         "has_browse_link": true,
         "viewport_width_px": 1440,
         "viewport_height_px": 900,
-        "map_or_shell_height_px": 1978,
+        "map_or_shell_height_px": 1970,
         "overflow_x": 0,
-        "geo": null
+        "geo": null,
+        "selected_geo": null,
+        "results_count": null,
+        "title": "Near you \u00b7 CityScroll"
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:24:54Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/",
+        "observed_url_after": "https://cityscroll.org/",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:24:54Z",
+            "url": "https://cityscroll.org/"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:24:54 GMT",
+            "cf-ray": "a42419dcfc76a4a0-EWR",
+            "cf-cache-status": "HIT",
+            "age": "86",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
       }
     },
     {
       "name": "root-midwood-result-desktop",
       "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
-      "mode": "local_chromium",
+      "source": "headless-playwright-production-served-site",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
-      "assertion": "typed 810 East 16th Street from / selects Midwood on the shared shell",
-      "sha256": "5d2a657a3bcf3ec158595f41ecf52bdd17a2b75128f8bf65adfb0032b91e103a",
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "Typing the Midwood address from production root selects BK1403 and returns the named retained meeting row.",
+      "assertions": {
+        "near_you_shell_visible": true,
+        "selected_midwood_geo": true,
+        "midwood_geo_in_url": true,
+        "served_midwood_record_present": true,
+        "horizontal_overflow_at_most_one_px": true
+      },
+      "sha256": "66a02d51b60f1b903c9a0dba36782a0ff71e39707188b0511049b768155b569b",
       "file": null,
-      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "screenshot_url": null,
+      "local_image_name": "root-midwood-result-desktop.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
       "snapshot": {
         "measured_css": true,
         "stylesheet_hrefs": [
           "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
-          "http://127.0.0.1:57496/brand.css",
-          "http://127.0.0.1:57496/civic-documents.css",
-          "http://127.0.0.1:57496/walk-entry.css",
-          "http://127.0.0.1:57496/local_constellation.css",
-          "http://127.0.0.1:57496/traversal.css",
-          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/civic-documents.css",
+          "https://cityscroll.org/walk-entry.css",
+          "https://cityscroll.org/local_constellation.css",
+          "https://cityscroll.org/traversal.css",
+          "https://cityscroll.org/vendor/maplibre-gl-4.7.1.css"
         ],
         "has_shell": true,
         "has_search": true,
@@ -87,35 +180,163 @@
         "has_browse_link": true,
         "viewport_width_px": 1440,
         "viewport_height_px": 900,
-        "map_or_shell_height_px": 2005,
+        "map_or_shell_height_px": 1939,
         "overflow_x": 0,
-        "geo": "nta2020:BK1403",
-        "href": "http://127.0.0.1:57496/?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403"
+        "geo": null,
+        "selected_geo": "nta2020:BK1403",
+        "results_count": "2",
+        "title": "Near you \u00b7 CityScroll",
+        "named_record_present": true
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:24:56Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/",
+        "observed_url_after": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:24:54Z",
+            "url": "https://cityscroll.org/"
+          },
+          {
+            "observed_at": "2026-09-28T16:24:56Z",
+            "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:24:54 GMT",
+            "cf-ray": "a42419dcfc76a4a0-EWR",
+            "cf-cache-status": "HIT",
+            "age": "86",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
+      }
+    },
+    {
+      "name": "root-geolocation-denial-desktop",
+      "route": "/",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "A denied production geolocation request keeps the Near You shell and typed place recovery available.",
+      "assertions": {
+        "near_you_shell_visible": true,
+        "permission_denial_visible": true,
+        "place_search_still_visible": true,
+        "url_unchanged_after_denial": true
+      },
+      "sha256": "88157ec4b6595bb0e55d2d3384c2063e5307294a85981d467e3e5e2f8d33066e",
+      "file": null,
+      "screenshot_url": null,
+      "local_image_name": "root-geolocation-denial-desktop.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/civic-documents.css",
+          "https://cityscroll.org/walk-entry.css",
+          "https://cityscroll.org/local_constellation.css",
+          "https://cityscroll.org/traversal.css",
+          "https://cityscroll.org/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "has_shell": true,
+        "has_search": true,
+        "has_location_control": true,
+        "has_following_link": true,
+        "has_browse_link": true,
+        "viewport_width_px": 1440,
+        "viewport_height_px": 900,
+        "map_or_shell_height_px": 1953,
+        "overflow_x": 0,
+        "geo": null,
+        "selected_geo": null,
+        "results_count": "525",
+        "title": "Near you \u00b7 CityScroll",
+        "location_status": "Location permission was not granted. Choose an area from the list."
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:24:58Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/",
+        "observed_url_after": "https://cityscroll.org/",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:24:58Z",
+            "url": "https://cityscroll.org/"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:24:58 GMT",
+            "cf-ray": "a42419ed8a39f580-EWR",
+            "cf-cache-status": "HIT",
+            "age": "90",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
       }
     },
     {
       "name": "root-failure-recovery-kensington-desktop",
       "route": "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
-      "mode": "local_chromium",
+      "source": "headless-playwright-production-served-site",
       "viewport": {
         "width": 1440,
         "height": 900
       },
-      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
-      "assertion": "without a geolocation grant, typed Kensington place choice still works; shell navigation and Following/Browse remain available",
-      "sha256": "0fb4a52b259f4f60feef5141d5f46aed125cd05a96363fec9a705afb69d512aa",
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "After geolocation denial on production root, typing Kensington selects BK1203 without losing the shell.",
+      "assertions": {
+        "near_you_shell_visible": true,
+        "selected_kensington_geo": true,
+        "kensington_geo_in_url": true,
+        "place_search_still_visible": true,
+        "horizontal_overflow_at_most_one_px": true
+      },
+      "sha256": "9c27f9f8d34ae055afee72b7df6463397e645e8954f0bef06834adc791b9286e",
       "file": null,
-      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "screenshot_url": null,
+      "local_image_name": "root-failure-recovery-kensington-desktop.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
       "snapshot": {
         "measured_css": true,
         "stylesheet_hrefs": [
           "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
-          "http://127.0.0.1:57496/brand.css",
-          "http://127.0.0.1:57496/civic-documents.css",
-          "http://127.0.0.1:57496/walk-entry.css",
-          "http://127.0.0.1:57496/local_constellation.css",
-          "http://127.0.0.1:57496/traversal.css",
-          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/civic-documents.css",
+          "https://cityscroll.org/walk-entry.css",
+          "https://cityscroll.org/local_constellation.css",
+          "https://cityscroll.org/traversal.css",
+          "https://cityscroll.org/vendor/maplibre-gl-4.7.1.css"
         ],
         "has_shell": true,
         "has_search": true,
@@ -124,36 +345,239 @@
         "has_browse_link": true,
         "viewport_width_px": 1440,
         "viewport_height_px": 900,
-        "map_or_shell_height_px": 2005,
+        "map_or_shell_height_px": 2240,
         "overflow_x": 0,
-        "geo": "nta2020:BK1203",
-        "geolocation_requests_on_load": 0,
-        "href": "http://127.0.0.1:57496/?geo=nta2020%3ABK1203&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1203"
+        "geo": null,
+        "selected_geo": "nta2020:BK1203",
+        "results_count": null,
+        "title": "Near you \u00b7 CityScroll"
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:24:59Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/",
+        "observed_url_after": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1203",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:24:58Z",
+            "url": "https://cityscroll.org/"
+          },
+          {
+            "observed_at": "2026-09-28T16:24:59Z",
+            "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1203"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:24:58 GMT",
+            "cf-ray": "a42419ed8a39f580-EWR",
+            "cf-cache-status": "HIT",
+            "age": "90",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
+      }
+    },
+    {
+      "name": "root-registered-land-hash-desktop",
+      "route": "/#land/2022M0258",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "The registered production Land hash crosses from root to /app/ and renders the project connections section.",
+      "assertions": {
+        "registered_hash_reached_app_document": true,
+        "topic_app_ready": true,
+        "land_item_present": true,
+        "project_connections_present": true,
+        "project_id_present": true,
+        "horizontal_overflow_at_most_one_px": true
+      },
+      "sha256": "638fe54c38f5fa41ccacc933d1e78c0d01ee2dc59680a412c968538ce9cd2de7",
+      "file": null,
+      "screenshot_url": null,
+      "local_image_name": "root-registered-land-hash-desktop.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/procurement_pursuit_snapshot.css",
+          "https://cityscroll.org/traversal.css",
+          "https://cityscroll.org/procurement_pursuit_controls.css"
+        ],
+        "viewport_width_px": 1440,
+        "viewport_height_px": 900,
+        "overflow_x": 0,
+        "app_ready": true,
+        "land_item_present": true,
+        "project_connections_present": true,
+        "project_id_present": true,
+        "title": "CityScroll \u00b7 track RFPs, rezonings, meetings"
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:25:03Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/#land/2022M0258",
+        "observed_url_after": "https://cityscroll.org/app/#land/2022M0258",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:25:00Z",
+            "url": "https://cityscroll.org/#land/2022M0258"
+          },
+          {
+            "observed_at": "2026-09-28T16:25:00Z",
+            "url": "https://cityscroll.org/app/#land/2022M0258"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:25:00 GMT",
+            "cf-ray": "a4241a006eed93b7-EWR",
+            "cf-cache-status": "HIT",
+            "age": "92",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
+      }
+    },
+    {
+      "name": "root-unknown-hash-desktop",
+      "route": "/#not-a-cityscroll-route",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "An unknown production root hash remains on Near You and does not boot the topic application.",
+      "assertions": {
+        "unknown_hash_remained_near_you": true,
+        "near_you_shell_visible": true,
+        "place_search_visible": true,
+        "topic_app_not_ready": true,
+        "horizontal_overflow_at_most_one_px": true
+      },
+      "sha256": "c1f0f3995fe609e423efa6957ae83e25f613393bb9e63631973d63ca0895770e",
+      "file": null,
+      "screenshot_url": null,
+      "local_image_name": "root-unknown-hash-desktop.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/civic-documents.css",
+          "https://cityscroll.org/walk-entry.css",
+          "https://cityscroll.org/local_constellation.css"
+        ],
+        "has_shell": true,
+        "has_search": true,
+        "has_location_control": true,
+        "has_following_link": true,
+        "has_browse_link": true,
+        "viewport_width_px": 1440,
+        "viewport_height_px": 900,
+        "map_or_shell_height_px": 1963,
+        "overflow_x": 0,
+        "geo": null,
+        "selected_geo": null,
+        "results_count": null,
+        "title": "Near you \u00b7 CityScroll"
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:25:04Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/#not-a-cityscroll-route",
+        "observed_url_after": "https://cityscroll.org/#not-a-cityscroll-route",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:25:03Z",
+            "url": "https://cityscroll.org/#not-a-cityscroll-route"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:25:03 GMT",
+            "cf-ray": "a4241a17cd65c745-EWR",
+            "cf-cache-status": "HIT",
+            "age": "95",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
       }
     },
     {
       "name": "root-shell-initial-phone",
       "route": "/",
-      "mode": "local_chromium",
+      "source": "headless-playwright-production-served-site",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
-      "assertion": "root presents Near You shell; place search and Use my location available; Following and Browse reachable; measured viewport matches product CSS",
-      "sha256": "73d4e3820283d7248974f146401cee615dd4c74da011101323dd5601e5c8d6c2",
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "Bare production root remains on the Near You shell with local entry and global navigation available.",
+      "assertions": {
+        "near_you_shell_visible": true,
+        "place_search_visible": true,
+        "location_control_visible": true,
+        "following_link_present": true,
+        "browse_link_present": true,
+        "viewport_matches": true,
+        "horizontal_overflow_at_most_one_px": true,
+        "bare_root_remained_near_you": true
+      },
+      "sha256": "05f1a029745786d2170d123dcacc0c38b07fdce65da937a0d4e0fede423acbb4",
       "file": null,
-      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "screenshot_url": null,
+      "local_image_name": "root-shell-initial-phone.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
       "snapshot": {
         "measured_css": true,
         "stylesheet_hrefs": [
           "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
-          "http://127.0.0.1:57496/brand.css",
-          "http://127.0.0.1:57496/civic-documents.css",
-          "http://127.0.0.1:57496/walk-entry.css",
-          "http://127.0.0.1:57496/local_constellation.css",
-          "http://127.0.0.1:57496/traversal.css",
-          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/civic-documents.css",
+          "https://cityscroll.org/walk-entry.css",
+          "https://cityscroll.org/local_constellation.css"
         ],
         "has_shell": true,
         "has_search": true,
@@ -162,34 +586,78 @@
         "has_browse_link": true,
         "viewport_width_px": 390,
         "viewport_height_px": 844,
-        "map_or_shell_height_px": 2006,
+        "map_or_shell_height_px": 2091,
         "overflow_x": 0,
-        "geo": null
+        "geo": null,
+        "selected_geo": null,
+        "results_count": null,
+        "title": "Near you \u00b7 CityScroll"
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:25:04Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/",
+        "observed_url_after": "https://cityscroll.org/",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:25:04Z",
+            "url": "https://cityscroll.org/"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:25:04 GMT",
+            "cf-ray": "a4241a1b591fd826-EWR",
+            "cf-cache-status": "HIT",
+            "age": "96",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
       }
     },
     {
       "name": "root-midwood-result-phone",
       "route": "/near-you/?geo=nta2020%3ABK1403&surface=map&lens=meetings",
-      "mode": "local_chromium",
+      "source": "headless-playwright-production-served-site",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
-      "assertion": "typed 810 East 16th Street from / selects Midwood on the shared shell",
-      "sha256": "772eea7925f63c33f0829550c0ba360502f6d37b5ae81a32d1c0791b0b4f436f",
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "Typing the Midwood address from production root selects BK1403 and returns the named retained meeting row.",
+      "assertions": {
+        "near_you_shell_visible": true,
+        "selected_midwood_geo": true,
+        "midwood_geo_in_url": true,
+        "served_midwood_record_present": true,
+        "horizontal_overflow_at_most_one_px": true
+      },
+      "sha256": "afdefa3bec01aa6e88e93b9e7bcba5e9447e9cca231caeb9224e4ba2e02ebe22",
       "file": null,
-      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "screenshot_url": null,
+      "local_image_name": "root-midwood-result-phone.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
       "snapshot": {
         "measured_css": true,
         "stylesheet_hrefs": [
           "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
-          "http://127.0.0.1:57496/brand.css",
-          "http://127.0.0.1:57496/civic-documents.css",
-          "http://127.0.0.1:57496/walk-entry.css",
-          "http://127.0.0.1:57496/local_constellation.css",
-          "http://127.0.0.1:57496/traversal.css",
-          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/civic-documents.css",
+          "https://cityscroll.org/walk-entry.css",
+          "https://cityscroll.org/local_constellation.css",
+          "https://cityscroll.org/traversal.css",
+          "https://cityscroll.org/vendor/maplibre-gl-4.7.1.css"
         ],
         "has_shell": true,
         "has_search": true,
@@ -198,35 +666,163 @@
         "has_browse_link": true,
         "viewport_width_px": 390,
         "viewport_height_px": 844,
-        "map_or_shell_height_px": 2939,
+        "map_or_shell_height_px": 3037,
         "overflow_x": 0,
-        "geo": "nta2020:BK1403",
-        "href": "http://127.0.0.1:57496/?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403"
+        "geo": null,
+        "selected_geo": "nta2020:BK1403",
+        "results_count": "2",
+        "title": "Near you \u00b7 CityScroll",
+        "named_record_present": true
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:25:06Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/",
+        "observed_url_after": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:25:04Z",
+            "url": "https://cityscroll.org/"
+          },
+          {
+            "observed_at": "2026-09-28T16:25:06Z",
+            "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1403&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1403"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:25:04 GMT",
+            "cf-ray": "a4241a1b591fd826-EWR",
+            "cf-cache-status": "HIT",
+            "age": "96",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
+      }
+    },
+    {
+      "name": "root-geolocation-denial-phone",
+      "route": "/",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "A denied production geolocation request keeps the Near You shell and typed place recovery available.",
+      "assertions": {
+        "near_you_shell_visible": true,
+        "permission_denial_visible": true,
+        "place_search_still_visible": true,
+        "url_unchanged_after_denial": true
+      },
+      "sha256": "5114cff111e730379a569b4df5f65d8008e0c661077a5d2f443cdcf5b4165ffc",
+      "file": null,
+      "screenshot_url": null,
+      "local_image_name": "root-geolocation-denial-phone.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/civic-documents.css",
+          "https://cityscroll.org/walk-entry.css",
+          "https://cityscroll.org/local_constellation.css",
+          "https://cityscroll.org/traversal.css",
+          "https://cityscroll.org/vendor/maplibre-gl-4.7.1.css"
+        ],
+        "has_shell": true,
+        "has_search": true,
+        "has_location_control": true,
+        "has_following_link": true,
+        "has_browse_link": true,
+        "viewport_width_px": 390,
+        "viewport_height_px": 844,
+        "map_or_shell_height_px": 2153,
+        "overflow_x": 0,
+        "geo": null,
+        "selected_geo": null,
+        "results_count": "525",
+        "title": "Near you \u00b7 CityScroll",
+        "location_status": "Location permission was not granted. Choose an area from the list."
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:25:07Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/",
+        "observed_url_after": "https://cityscroll.org/",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:25:06Z",
+            "url": "https://cityscroll.org/"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:25:06 GMT",
+            "cf-ray": "a4241a29af321efc-EWR",
+            "cf-cache-status": "HIT",
+            "age": "98",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
       }
     },
     {
       "name": "root-failure-recovery-kensington-phone",
       "route": "/near-you/?geo=nta2020%3ABK1203&surface=map&lens=meetings",
-      "mode": "local_chromium",
+      "source": "headless-playwright-production-served-site",
       "viewport": {
         "width": 390,
         "height": 844
       },
-      "revision": "239d37d0c08c985113e42d30b7788a84d6d50b8b",
-      "assertion": "without a geolocation grant, typed Kensington place choice still works; shell navigation and Following/Browse remain available",
-      "sha256": "5e5ca41b5334b9c20dc54dce38d251dec4e4b62ff5756047bc56d7bdbe43ba50",
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "After geolocation denial on production root, typing Kensington selects BK1203 without losing the shell.",
+      "assertions": {
+        "near_you_shell_visible": true,
+        "selected_kensington_geo": true,
+        "kensington_geo_in_url": true,
+        "place_search_still_visible": true,
+        "horizontal_overflow_at_most_one_px": true
+      },
+      "sha256": "0443b1c90944f62a309ae7d8f4c4168ae14dd6453cbfbaa96a7d760a352203e0",
       "file": null,
-      "capture_run_id": "eceaae17-3634-40b5-a787-11ad96f2bd2a",
+      "screenshot_url": null,
+      "local_image_name": "root-failure-recovery-kensington-phone.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
       "snapshot": {
         "measured_css": true,
         "stylesheet_hrefs": [
           "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
-          "http://127.0.0.1:57496/brand.css",
-          "http://127.0.0.1:57496/civic-documents.css",
-          "http://127.0.0.1:57496/walk-entry.css",
-          "http://127.0.0.1:57496/local_constellation.css",
-          "http://127.0.0.1:57496/traversal.css",
-          "http://127.0.0.1:57496/vendor/maplibre-gl-4.7.1.css"
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/civic-documents.css",
+          "https://cityscroll.org/walk-entry.css",
+          "https://cityscroll.org/local_constellation.css",
+          "https://cityscroll.org/traversal.css",
+          "https://cityscroll.org/vendor/maplibre-gl-4.7.1.css"
         ],
         "has_shell": true,
         "has_search": true,
@@ -235,11 +831,198 @@
         "has_browse_link": true,
         "viewport_width_px": 390,
         "viewport_height_px": 844,
-        "map_or_shell_height_px": 2810,
+        "map_or_shell_height_px": 2883,
         "overflow_x": 0,
-        "geo": "nta2020:BK1203",
-        "geolocation_requests_on_load": 0,
-        "href": "http://127.0.0.1:57496/?geo=nta2020%3ABK1203&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1203"
+        "geo": null,
+        "selected_geo": "nta2020:BK1203",
+        "results_count": null,
+        "title": "Near you \u00b7 CityScroll"
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:25:08Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/",
+        "observed_url_after": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1203",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:25:06Z",
+            "url": "https://cityscroll.org/"
+          },
+          {
+            "observed_at": "2026-09-28T16:25:08Z",
+            "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK1203&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1203"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:25:06 GMT",
+            "cf-ray": "a4241a29af321efc-EWR",
+            "cf-cache-status": "HIT",
+            "age": "98",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
+      }
+    },
+    {
+      "name": "root-registered-land-hash-phone",
+      "route": "/#land/2022M0258",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "The registered production Land hash crosses from root to /app/ and renders the project connections section.",
+      "assertions": {
+        "registered_hash_reached_app_document": true,
+        "topic_app_ready": true,
+        "land_item_present": true,
+        "project_connections_present": true,
+        "project_id_present": true,
+        "horizontal_overflow_at_most_one_px": true
+      },
+      "sha256": "95f3d2c3c7297b8ac1e1f373c6c8230a42df1278c3570b26aa3da20bef8e2164",
+      "file": null,
+      "screenshot_url": null,
+      "local_image_name": "root-registered-land-hash-phone.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/procurement_pursuit_snapshot.css",
+          "https://cityscroll.org/traversal.css",
+          "https://cityscroll.org/procurement_pursuit_controls.css"
+        ],
+        "viewport_width_px": 390,
+        "viewport_height_px": 844,
+        "overflow_x": 0,
+        "app_ready": true,
+        "land_item_present": true,
+        "project_connections_present": true,
+        "project_id_present": true,
+        "title": "CityScroll \u00b7 track RFPs, rezonings, meetings"
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:25:12Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/#land/2022M0258",
+        "observed_url_after": "https://cityscroll.org/app/#land/2022M0258",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:25:08Z",
+            "url": "https://cityscroll.org/#land/2022M0258"
+          },
+          {
+            "observed_at": "2026-09-28T16:25:09Z",
+            "url": "https://cityscroll.org/app/#land/2022M0258"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:25:08 GMT",
+            "cf-ray": "a4241a34fa284f2e-EWR",
+            "cf-cache-status": "HIT",
+            "age": "100",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
+      }
+    },
+    {
+      "name": "root-unknown-hash-phone",
+      "route": "/#not-a-cityscroll-route",
+      "source": "headless-playwright-production-served-site",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+      "data_vintage": {
+        "artifact_generated_at": "2026-09-28T16:12:52.867Z",
+        "deployment_at": "2026-09-28T16:12:52.867Z",
+        "source_receipt_generated_at": "2026-09-28T15:46:40.620Z",
+        "source_receipt_sha256": "8004754dea8da173af5e32d6b1c7156091961a046f21ba52433f7738c1651c0d"
+      },
+      "assertion": "An unknown production root hash remains on Near You and does not boot the topic application.",
+      "assertions": {
+        "unknown_hash_remained_near_you": true,
+        "near_you_shell_visible": true,
+        "place_search_visible": true,
+        "topic_app_not_ready": true,
+        "horizontal_overflow_at_most_one_px": true
+      },
+      "sha256": "8b4befa56528ab557f0da07d9990f27c440104819353e3a598cbe848516ba9b5",
+      "file": null,
+      "screenshot_url": null,
+      "local_image_name": "root-unknown-hash-phone.png",
+      "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+      "snapshot": {
+        "measured_css": true,
+        "stylesheet_hrefs": [
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+          "https://cityscroll.org/brand.css",
+          "https://cityscroll.org/civic-documents.css",
+          "https://cityscroll.org/walk-entry.css",
+          "https://cityscroll.org/local_constellation.css"
+        ],
+        "has_shell": true,
+        "has_search": true,
+        "has_location_control": true,
+        "has_following_link": true,
+        "has_browse_link": true,
+        "viewport_width_px": 390,
+        "viewport_height_px": 844,
+        "map_or_shell_height_px": 2091,
+        "overflow_x": 0,
+        "geo": null,
+        "selected_geo": null,
+        "results_count": null,
+        "title": "Near you \u00b7 CityScroll"
+      },
+      "run_receipt": {
+        "capture_run_id": "624ec7eb-eed7-47c4-989a-51a86926272c",
+        "captured_at": "2026-09-28T16:25:13Z",
+        "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+        "observed_url_before": "https://cityscroll.org/#not-a-cityscroll-route",
+        "observed_url_after": "https://cityscroll.org/#not-a-cityscroll-route",
+        "navigation_events": [
+          {
+            "observed_at": "2026-09-28T16:25:12Z",
+            "url": "https://cityscroll.org/#not-a-cityscroll-route"
+          }
+        ],
+        "page_load": {
+          "url": "https://cityscroll.org/",
+          "http_status": 200,
+          "served_revision": "f59d912cebb080458052e156d188beb3ba0fa70c",
+          "headers": {
+            "date": "Mon, 28 Sep 2026 16:25:12 GMT",
+            "cf-ray": "a4241a4deec35a29-EWR",
+            "cf-cache-status": "HIT",
+            "age": "104",
+            "last-modified": "Mon, 28 Sep 2026 16:23:28 GMT",
+            "etag": null
+          }
+        }
       }
     }
   ]

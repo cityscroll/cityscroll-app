@@ -52,8 +52,8 @@ const EVIDENCE_DIR = join(ROOT, "docs/evidence/default-local-home-journey");
 const MANIFEST_PATH = join(EVIDENCE_DIR, "capture-manifest.json");
 const CAPTURE_TOOL = join(ROOT, "tools/capture_default_local_home_journey.py");
 const DELIVERY_PATH = join(EVIDENCE_DIR, "delivery.json");
-const GROUNDED_AT = "239d37d0c08c985113e42d30b7788a84d6d50b8b";
 const PUBLIC_ALIAS = "c27355579ade0";
+const REQUIRED_SERVED_ANCESTOR = "f59d912cebb080458052e156d188beb3ba0fa70c";
 
 const SEPT23_ID =
   "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/";
@@ -363,13 +363,18 @@ test("A3 [boundary] denied geolocation, unavailable map, failed broader feed kee
   assert.equal(missing.status, 404);
 });
 
-test("A4 [verification] capture tool, dual-width manifest contract, wrangler apex route, lean Worker path", () => {
+test("A4 [verification] production retake carries dual-width URL transitions, controls, receipts, and no image binaries", () => {
   assert.equal(existsSync(CAPTURE_TOOL), true, "capture tool must exist");
   const captureTool = readFileSync(CAPTURE_TOOL, "utf8");
   assert.match(captureTool, /1440/);
   assert.match(captureTool, /390/);
   assert.match(captureTool, /c27355579ade0/);
   assert.match(captureTool, /data-near-you-root/);
+  assert.match(captureTool, /headless-playwright-production-served-site/);
+  assert.match(captureTool, /require_served_page_revision_contains_delivery/);
+  assert.match(captureTool, /observed_url_before/);
+  assert.match(captureTool, /observed_url_after/);
+  assert.match(captureTool, /project-connections/);
   assert.match(captureTool, /image_binaries_committed|file.: null/);
 
   assert.equal(existsSync(MANIFEST_PATH), true, "capture manifest must be present");
@@ -377,9 +382,20 @@ test("A4 [verification] capture tool, dual-width manifest contract, wrangler ape
   assert.equal(manifest.schema, "cityscroll.render_capture_manifest.v1");
   assert.equal(manifest.feature, "default-local-home-journey");
   assert.equal(manifest.public_alias, PUBLIC_ALIAS);
+  assert.equal(manifest.capture_mode, "headless-playwright-production-served-site");
   assert.equal(manifest.image_binaries_committed, false);
+  assert.equal(manifest.revision_format, "served artifact-manifest source_commit_sha");
+  assert.equal(manifest.required_ancestor, REQUIRED_SERVED_ANCESTOR);
+  assert.equal(manifest.required_ancestor_contained, true);
+  assert.match(manifest.revision || "", /^[0-9a-f]{40}$/);
+  assert.match(manifest.grounded_at || "", /^[0-9a-f]{40}$/);
+  assert.equal(manifest.deployment?.source_commit_sha, manifest.revision);
+  assert.match(manifest.deployment?.artifact_hash || "", /^[0-9a-f]{64}$/);
+  assert.match(manifest.data_vintage?.source_receipt_sha256 || "", /^[0-9a-f]{64}$/);
   assert.ok(manifest.capture_run_id);
-  assert.ok(Array.isArray(manifest.captures) && manifest.captures.length >= 6);
+  assert.ok(Array.isArray(manifest.captures) && manifest.captures.length >= 12);
+  assert.equal(JSON.stringify(manifest).includes("127.0.0.1"), false);
+  assert.equal(JSON.stringify(manifest).includes("localhost"), false);
 
   const requiredViewports = [
     { width: 1440, height: 900 },
@@ -389,24 +405,78 @@ test("A4 [verification] capture tool, dual-width manifest contract, wrangler ape
     const rows = manifest.captures.filter(
       (row) => row.viewport?.width === viewport.width && row.viewport?.height === viewport.height,
     );
-    assert.ok(rows.length >= 3, `need captures at ${viewport.width}x${viewport.height}`);
+    assert.ok(rows.length >= 6, `need six production cases at ${viewport.width}x${viewport.height}`);
     assert.ok(rows.some((row) => row.route === "/"), "root shell capture required");
     assert.ok(rows.some((row) => String(row.name || "").includes("midwood")), "Midwood capture required");
-    assert.ok(rows.some((row) => String(row.name || "").includes("failure") || String(row.name || "").includes("denied")), "failure-recovery capture required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("geolocation-denial")), "denial capture required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("failure-recovery")), "failure-recovery capture required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("registered-land-hash")), "registered hash capture required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("unknown-hash")), "unknown hash control required");
     for (const row of rows) {
       assert.ok(row.snapshot?.measured_css === true || row.snapshot?.stylesheet_hrefs?.length >= 1, row.name);
-      assert.ok(typeof row.snapshot?.map_or_shell_height_px === "number" || typeof row.snapshot?.viewport_width_px === "number", row.name);
+      assert.equal(row.snapshot?.viewport_width_px, viewport.width, row.name);
+      assert.equal(row.snapshot?.viewport_height_px, viewport.height, row.name);
     }
   }
   for (const row of manifest.captures) {
     assert.ok(row.sha256 && /^[0-9a-f]{64}$/i.test(row.sha256), row.name);
     assert.equal(row.file, null);
+    assert.equal(row.screenshot_url, null);
     assert.ok(row.assertion);
+    assert.equal(row.source, "headless-playwright-production-served-site");
     assert.equal(row.capture_run_id, manifest.capture_run_id);
+    assert.equal(row.revision, manifest.revision);
+    assert.ok(Object.keys(row.assertions || {}).length > 0, row.name);
+    assert.ok(Object.values(row.assertions).every((value) => value === true), row.name);
+    assert.equal(row.data_vintage?.source_receipt_sha256, manifest.data_vintage.source_receipt_sha256);
+
+    const receipt = row.run_receipt;
+    assert.equal(receipt.capture_run_id, manifest.capture_run_id, row.name);
+    assert.equal(receipt.served_revision, manifest.revision, row.name);
+    assert.ok(Number.isFinite(Date.parse(receipt.captured_at)), row.name);
+    assert.match(receipt.observed_url_before || "", /^https:\/\//, row.name);
+    assert.match(receipt.observed_url_after || "", /^https:\/\//, row.name);
+    assert.ok(Array.isArray(receipt.navigation_events) && receipt.navigation_events.length > 0, row.name);
+    assert.equal(receipt.page_load?.http_status, 200, row.name);
+    assert.equal(receipt.page_load?.served_revision, manifest.revision, row.name);
   }
+
+  const byName = Object.fromEntries(manifest.captures.map((row) => [row.name, row]));
+  for (const suffix of ["desktop", "phone"]) {
+    const bare = byName[`root-shell-initial-${suffix}`];
+    assert.equal(bare.run_receipt.observed_url_before, "https://cityscroll.org/");
+    assert.equal(bare.run_receipt.observed_url_after, "https://cityscroll.org/");
+    assert.equal(bare.assertions.bare_root_remained_near_you, true);
+
+    const land = byName[`root-registered-land-hash-${suffix}`];
+    assert.equal(land.run_receipt.observed_url_before, "https://cityscroll.org/#land/2022M0258");
+    assert.equal(land.run_receipt.observed_url_after, "https://cityscroll.org/app/#land/2022M0258");
+    assert.equal(land.assertions.project_connections_present, true);
+
+    const unknown = byName[`root-unknown-hash-${suffix}`];
+    assert.equal(unknown.run_receipt.observed_url_before, "https://cityscroll.org/#not-a-cityscroll-route");
+    assert.equal(unknown.run_receipt.observed_url_after, "https://cityscroll.org/#not-a-cityscroll-route");
+    assert.equal(unknown.assertions.unknown_hash_remained_near_you, true);
+
+    const midwood = byName[`root-midwood-result-${suffix}`];
+    assert.equal(midwood.assertions.served_midwood_record_present, true);
+    const recovery = byName[`root-failure-recovery-kensington-${suffix}`];
+    assert.equal(recovery.assertions.selected_kensington_geo, true);
+  }
+
   assert.ok((manifest.exact_links || []).includes("/"));
-  assert.ok((manifest.exact_links || []).some((link) => String(link).includes("nta2020%3ABK1403") || String(link).includes("BK1403")));
-  assert.ok((manifest.exact_links || []).some((link) => String(link).includes("BK1203") || String(link).includes("BK1402")));
+  assert.ok((manifest.exact_links || []).includes("/#land/2022M0258"));
+  assert.ok((manifest.exact_links || []).includes("/app/#land/2022M0258"));
+  assert.ok((manifest.exact_links || []).includes("/#not-a-cityscroll-route"));
+  assert.ok((manifest.exact_links || []).some((link) => String(link).includes("BK1403")));
+  assert.ok((manifest.exact_links || []).some((link) => String(link).includes("BK1203")));
+
+  const runStart = Date.parse(manifest.run_receipt?.run_started_at);
+  const runEnd = Date.parse(manifest.run_receipt?.run_finished_at);
+  assert.ok(Number.isFinite(runStart) && Number.isFinite(runEnd) && runEnd >= runStart);
+  assert.equal(manifest.run_receipt.served_revision_before, manifest.revision);
+  assert.equal(manifest.run_receipt.served_revision_after, manifest.revision);
+  assert.equal(manifest.run_receipt.artifact_hash_before, manifest.run_receipt.artifact_hash_after);
 
   const wrangler = readFileSync(join(ROOT, "worker/wrangler.toml"), "utf8");
   assert.match(wrangler, /pattern = "cityscroll\.org"/);
@@ -417,15 +487,13 @@ test("A4 [verification] capture tool, dual-width manifest contract, wrangler ape
   // Module-oracle: Worker startup must not gain a new static JSON import for this card.
   assert.equal(workerSource.includes("import boundaries from"), false);
 
-  if (existsSync(DELIVERY_PATH)) {
-    const delivery = JSON.parse(readFileSync(DELIVERY_PATH, "utf8"));
-    assert.equal(delivery.public_alias, PUBLIC_ALIAS);
-    assert.match(String(delivery.landed_commit || GROUNDED_AT), /^[0-9a-f]{40}$/);
-  }
+  const delivery = JSON.parse(readFileSync(DELIVERY_PATH, "utf8"));
+  assert.equal(delivery.public_alias, PUBLIC_ALIAS);
+  assert.equal(delivery.landed_commit, REQUIRED_SERVED_ANCESTOR);
+  assert.equal(delivery.surface, "pages");
 
   const digest = createHash("sha256").update(readFileSync(MANIFEST_PATH)).digest("hex");
   assert.equal(digest.length, 64);
-  assert.match(GROUNDED_AT, /^[0-9a-f]{40}$/);
 });
 
 test("facts: September 23 Midwood view keeps venue address (positive control)", async () => {
