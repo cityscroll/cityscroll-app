@@ -18,7 +18,7 @@ test("shared browser artifact is exact-input cached and every consumer verifies 
   const consumer = read(".github/actions/use-site-artifact/action.yml");
   const producer = workflow.slice(
     workflow.indexOf("  browser-pr-site:\n"),
-    workflow.indexOf("  a11y-pr-shard:\n"),
+    workflow.indexOf("  required-functional-shard:\n"),
   );
 
   assert.match(producer, /actions\/cache\/restore@v4/);
@@ -33,7 +33,7 @@ test("shared browser artifact is exact-input cached and every consumer verifies 
   assert.match(producer, /_site\.identity\.json/);
 
   const consumers = workflow.match(/uses: \.\/\.github\/actions\/use-site-artifact/g) || [];
-  assert.equal(consumers.length, 7);
+  assert.equal(consumers.length, 8);
   const runScopedNames = workflow.match(/artifact-name: browser-pr-site-\$\{\{ github\.run_id \}\}/g) || [];
   assert.equal(runScopedNames.length, consumers.length);
   assert.doesNotMatch(workflow, /artifact-name: browser-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/);

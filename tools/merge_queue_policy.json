@@ -14,7 +14,8 @@
   },
   "required_status_checks": [
     "Unit tests (site + worker)",
-    "Reading-level ratchet gate (readable-or-else)"
+    "Reading-level ratchet gate (readable-or-else)",
+    "Functional browser tests"
   ],
   "elder_slot": {
     "enabled": true,
@@ -28,7 +29,7 @@
   "notes": [
     "min_entries_to_merge_wait_minutes=5 forms a short merge train so near-simultaneous PRs share one merge_group when independent.",
     "ALLGREEN is intentional: do not switch to looser grouping to hide composition failures.",
-    "Merge-queue required checks are Unit and Reading-level only. Accessibility + language, performance serial/shard/budgets, and Playwright functional/browser-a11y shards are skipped on merge_group so they do not report there; they remain required on pull_request and on push to main. See docs/ci.md.",
+    "Merge-queue required checks are Unit, Reading-level, and Functional browser tests. Accessibility + language and performance serial/shard/budgets are skipped on merge_group; they remain required on pull_request and on push to main. See docs/ci.md.",
     "Performance budgets (20-sample p95) is not a merge-queue required check. That job path-filters on `perf` (site chrome/assets + budget harness) and reports SUCCESS without measuring for data/worker/docs diffs on pull_request and main push.",
     "Runtime multi-locale stray-English is not a required check; Unit static lint owns that class.",
     "An external seater may submit work to this native train but does not define a second capacity limit. Its implementation is outside this repository; the repository-owned ceiling remains max_entries_to_build."

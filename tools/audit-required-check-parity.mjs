@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * Keep the provider-neutral preflight contract wider than, and in parity with,
- * the four required hosted validation jobs. Setup/reporting shell and local-only
- * performance helpers are intentionally outside this comparison.
+ * Keep the provider-neutral preflight and required hosted validation jobs in parity.
+ * Setup/reporting shell and local-only performance helpers are intentionally outside
+ * the general command comparison. Functional checks additionally have reverse parity:
+ * every required local browser command must appear in hosted CI.
  */
 
 import { readFileSync } from "node:fs";
@@ -16,7 +17,13 @@ const PREFLIGHT_PATH = join(ROOT, "tools", "preflight-required-checks.sh");
 const A11Y_SHARD_RUNNER_PATH = join(ROOT, "tools", "run_a11y_ci_shard.sh");
 // Source: the required validation graph declared in .github/workflows/ci.yml. The Unit
 // aggregate owns the required status context; its matrix owns the hosted Unit commands.
-const REQUIRED_JOBS = ["unit-family", "a11y-pr-shard", "browser-journeys-pr", "reading-level"];
+const REQUIRED_JOBS = [
+  "unit-family",
+  "a11y-pr-shard",
+  "required-functional-shard",
+  "browser-journeys-pr",
+  "reading-level",
+];
 
 function jobBlock(source, job) {
   const start = source.search(new RegExp(`^  ${job}:\\s*$`, "m"));
@@ -128,6 +135,15 @@ function localCommands(source) {
   return commands;
 }
 
+function functionalCommands(source) {
+  const commands = [];
+  const pattern = /\bpython3\s+test\/functional\/[A-Za-z0-9_./-]+\.py(?:\s+--[A-Za-z0-9_-]+)*/g;
+  for (const command of joinShellContinuations(source)) {
+    for (const match of command.matchAll(pattern)) commands.push(normalize(match[0]));
+  }
+  return [...new Set(commands)];
+}
+
 export function compareRequiredCheckParity({ ciSource, preflightSource, a11yShardRunnerSource = "" }) {
   const hosted = hostedCommands(ciSource, a11yShardRunnerSource);
   const local = new Set(localCommands(preflightSource).map(parityKey));
@@ -135,10 +151,17 @@ export function compareRequiredCheckParity({ ciSource, preflightSource, a11yShar
   const duplicateHosted = hosted
     .map(({ command }) => command)
     .filter((command, index, all) => all.indexOf(command) !== index);
+  const localFunctional = functionalCommands(preflightSource);
+  const hostedFunctional = new Set([
+    ...functionalCommands(ciSource),
+    ...functionalCommands(a11yShardRunnerSource),
+  ]);
+  const missingHostedFunctional = localFunctional.filter((command) => !hostedFunctional.has(command));
   return {
     hosted,
     local: [...local].sort(),
     missing,
+    missingHostedFunctional,
     duplicateHosted: [...new Set(duplicateHosted)],
   };
 }
@@ -160,6 +183,10 @@ function main() {
   if (result.missing.length) {
     const details = result.missing.map(({ job, command }) => `  ${job}: ${command}`).join("\n");
     throw new Error(`required hosted commands missing from local preflight contract:\n${details}`);
+  }
+  if (result.missingHostedFunctional.length) {
+    const details = result.missingHostedFunctional.map((command) => `  ${command}`).join("\n");
+    throw new Error(`required local functional commands missing from hosted CI:\n${details}`);
   }
   console.log(`required-check parity green (${result.hosted.length} hosted commands represented locally)`);
 }

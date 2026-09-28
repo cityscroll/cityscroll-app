@@ -9,6 +9,8 @@ const ciWith = (command) => [
   `        run: ${command}`,
   "  a11y-pr-shard:",
   "    steps:",
+  "  required-functional-shard:",
+  "    steps:",
   "  browser-journeys-pr:",
   "    steps:",
   "  reading-level:",
@@ -32,4 +34,23 @@ test("required-check parity reports a hosted validation command missing locally"
     job: "unit-family",
     command: "node tools/example_check.mjs --check",
   }]);
+});
+
+test("required-check parity reports a local functional command missing from hosted CI", () => {
+  const result = compareRequiredCheckParity({
+    ciSource: ciWith("node --test test/example.test.mjs"),
+    preflightSource: "run_and_fail python3 test/functional/example.py\n",
+  });
+  assert.deepEqual(result.missingHostedFunctional, [
+    "python3 test/functional/example.py",
+  ]);
+});
+
+test("required-check parity recognizes functional checks behind the retry wrapper", () => {
+  const result = compareRequiredCheckParity({
+    ciSource: ciWith("node --test test/example.test.mjs"),
+    preflightSource: "run_and_fail python3 test/functional/example.py --land-canary\n",
+    a11yShardRunnerSource: "tools/run_a11y_functional_check.sh example python3 test/functional/example.py --land-canary\n",
+  });
+  assert.deepEqual(result.missingHostedFunctional, []);
 });

@@ -132,6 +132,31 @@ case "$shard" in
     python3 test/standards/rendered_schema_vocabulary.py
     python3 test/standards/heading_uniqueness.py
     ;;
+  functional-near-search)
+    tools/run_a11y_functional_check.sh near-you-location python3 test/functional/32_near_you_location.py
+    tools/run_a11y_functional_check.sh search-activity-receipt python3 test/functional/33_search_activity_receipt.py
+    tools/run_a11y_functional_check.sh search-recent-history python3 test/functional/42_search_recent_history.py
+    tools/run_a11y_functional_check.sh near-you-surface-switch python3 test/functional/34_near_you_surface_switch.py
+    ;;
+  functional-procurement-history)
+    tools/run_a11y_functional_check.sh buyer-contracting-history python3 test/functional/30_buyer_contracting_history.py
+    tools/run_a11y_functional_check.sh contract-search-regression python3 test/functional/31_contract_search_regression.py
+    tools/run_a11y_functional_check.sh account-search-history python3 test/functional/43_account_search_history.py
+    ;;
+  functional-land-interaction)
+    tools/run_a11y_functional_check.sh land-render-canary python3 test/functional/capture_qr_share.py --land-canary
+    tools/run_a11y_functional_check.sh land-map-activation python3 test/functional/40_land_map_activation.py
+    tools/run_a11y_functional_check.sh land-map-marker-join python3 test/functional/41_land_map_marker_join.py
+    tools/run_a11y_functional_check.sh land-map-marker-selection python3 test/functional/42_land_map_marker_selection.py
+    tools/run_a11y_functional_check.sh land-filter-parity python3 test/functional/44_land_filter_parity.py
+    ;;
+  functional-land-quality)
+    tools/run_a11y_functional_check.sh land-map-boundary-context python3 test/functional/45_land_map_boundary_context.py
+    tools/run_a11y_functional_check.sh land-map-mobile-layout python3 test/functional/46_land_map_mobile_layout.py
+    tools/run_a11y_functional_check.sh land-map-accessibility python3 test/functional/49_land_map_accessibility.py
+    tools/run_a11y_functional_check.sh land-map-performance-failure python3 test/functional/50_land_map_performance_and_failure.py
+    tools/run_a11y_functional_check.sh land-map-visual-parity python3 test/functional/51_land_map_visual_parity_fixtures.py
+    ;;
   *)
     echo "unknown accessibility shard: $shard" >&2
     exit 1
