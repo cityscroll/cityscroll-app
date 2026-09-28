@@ -10,7 +10,7 @@
     "requirement": "The production read refuses a non-main pin, a served revision that does not contain it, absent served data, incomplete board enumeration, or unsupported zero-denominator scores."
   },
   "measurement_provenance": {
-    "revision": "051882e9ec5265f0497e2411d1c67fc17794fc3d",
+    "revision": "3fbc9dc660dd8a64d9eb940421ba59583e732a93",
     "inputs": [
       {
         "path": "data/data-source-graph-desk-contract.v1.json",
@@ -18,11 +18,11 @@
       },
       {
         "path": "site/data/connected_history_coverage.json",
-        "sha256": "1c74bc95b67ef6e925dfecaabaf567d48953a6e4761bd7252efe1162541eacb2"
+        "sha256": "3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed"
       },
       {
         "path": "tools/connected_history_coverage.mjs",
-        "sha256": "ec64d56574b9f6ba6dc21099a283eddac8c66e152583401bcd8cc4ccf7958875"
+        "sha256": "66e6191ddfe8df05cfc149a9291718410bbab2020140e76f6c371d5d63bd75ca"
       },
       {
         "path": "tools/data_source_graph.mjs",
@@ -39,7 +39,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "051882e9ec5265f0497e2411d1c67fc17794fc3d",
+      "revision": "3fbc9dc660dd8a64d9eb940421ba59583e732a93",
       "data_vintage": {
         "cohort_selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
         "documents_generated_at": "2026-09-21T20:19:01.507Z",
@@ -48,8 +48,8 @@
         "roles_generated_at": "2026-09-26T00:00:00.000Z"
       },
       "assertion": "Chromium measured all 59 board rows, distinct unknown and measured-zero cells, the civic-activity disclaimer, and contained horizontal table scrolling with the generated Desk stylesheet.",
-      "sha256": "e76bbcb87ba38c840bec0b6869bb606c8e7fb157dcaa7afe26e9fc6bc7c0295a",
-      "local_capture_sha256": "8f16a26feeefae8df6978beedfb4b1e26935176dbea460972d319781d389b036"
+      "sha256": "18d7de65752bb332b8a75bbbda292a8007caa579b372ec99aa9b31f05563f707",
+      "local_capture_sha256": "8fe14ce8520d0fa0c7e7e9c75037e4fc4a0a26315dd2778ad3919ba0148f548b"
     },
     {
       "case": "coverage-desktop-keyboard",
@@ -59,7 +59,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "051882e9ec5265f0497e2411d1c67fc17794fc3d",
+      "revision": "3fbc9dc660dd8a64d9eb940421ba59583e732a93",
       "data_vintage": {
         "cohort_selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
         "documents_generated_at": "2026-09-21T20:19:01.507Z",
@@ -68,8 +68,8 @@
         "roles_generated_at": "2026-09-26T00:00:00.000Z"
       },
       "assertion": "Chromium measured all 59 board rows, distinct unknown and measured-zero cells, the civic-activity disclaimer, and contained horizontal table scrolling with the generated Desk stylesheet.",
-      "sha256": "e76bbcb87ba38c840bec0b6869bb606c8e7fb157dcaa7afe26e9fc6bc7c0295a",
-      "local_capture_sha256": "5896c0a323fb6f808ffc818fc04315fc447c2b4b79b3b1a139414abceaf6b38e"
+      "sha256": "18d7de65752bb332b8a75bbbda292a8007caa579b372ec99aa9b31f05563f707",
+      "local_capture_sha256": "34a9cb7bad6594b6c0e29fd48407391b4dba107630c9d60f32c53e55e973d206"
     }
   ]
 }
