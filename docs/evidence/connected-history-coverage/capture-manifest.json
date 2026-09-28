@@ -10,7 +10,7 @@
     "requirement": "The production read refuses a non-main pin, a served revision that does not contain it, absent served data, incomplete board enumeration, or unsupported zero-denominator scores."
   },
   "measurement_provenance": {
-    "revision": "3fbc9dc660dd8a64d9eb940421ba59583e732a93",
+    "revision": "051882e9ec5265f0497e2411d1c67fc17794fc3d",
     "inputs": [
       {
         "path": "data/data-source-graph-desk-contract.v1.json",
@@ -39,7 +39,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "3fbc9dc660dd8a64d9eb940421ba59583e732a93",
+      "revision": "051882e9ec5265f0497e2411d1c67fc17794fc3d",
       "data_vintage": {
         "cohort_selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
         "documents_generated_at": "2026-09-21T20:19:01.507Z",
@@ -59,7 +59,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "3fbc9dc660dd8a64d9eb940421ba59583e732a93",
+      "revision": "051882e9ec5265f0497e2411d1c67fc17794fc3d",
       "data_vintage": {
         "cohort_selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
         "documents_generated_at": "2026-09-21T20:19:01.507Z",

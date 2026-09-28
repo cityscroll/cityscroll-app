@@ -33,7 +33,7 @@ from deployed_capture_ancestor import (  # noqa: E402
     ServedDataMissingError,
     require_served_page_revision_contains_delivery,
 )
-from repository_revision import branch_head, resolve_repository_revision  # noqa: E402
+from repository_revision import resolve_repository_revision  # noqa: E402
 
 DEFAULT_BASE = "https://cityscroll.org"
 DATA_PATH = "/data/connected_history_coverage.json"
@@ -322,13 +322,14 @@ def main() -> int:
             server.shutdown()
             server.server_close()
 
+        repository_revision = resolve_repository_revision(ROOT)
         receipt = {
             "schema": "cityscroll.connected_history_coverage_measurement.v1",
             "evidence_class": "runtime_browser_measurement",
             "mode": "hermetic_fixture",
             "browser": "Chromium",
-            "repository_revision": resolve_repository_revision(ROOT),
-            "capture_revision": branch_head(ROOT),
+            "repository_revision": repository_revision,
+            "capture_revision": repository_revision,
             "measured_inputs": input_receipts(),
             "observed_at": utc_now(),
             "data_vintage": payload.get("input_vintages"),

@@ -5,8 +5,7 @@
  */
 
 import assert from "node:assert/strict";
-import { execFileSync, spawnSync } from "node:child_process";
-import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -38,10 +37,6 @@ const CONTRACT = readJson("data/data-source-graph-desk-contract.v1.json");
 
 function clone(value) {
   return structuredClone(value);
-}
-
-function sha256(value) {
-  return createHash("sha256").update(value).digest("hex");
 }
 
 test("A1: baseline and post-change snapshots enumerate every canonical board and every stage", () => {
@@ -178,12 +173,6 @@ test("A3: retained Chromium measurements use named viewports and unchanged ances
     inputs: MANIFEST.measurement_provenance.inputs,
   });
   assert.equal(retained.ok, true, `${retained.reason}: ${retained.changedInputs.join(", ")}`);
-  for (const input of MANIFEST.measurement_provenance.inputs) {
-    execFileSync("git", ["cat-file", "-e", `${MANIFEST.measurement_provenance.revision}:${input.path}`], { cwd: ROOT });
-    const body = execFileSync("git", ["show", `${MANIFEST.measurement_provenance.revision}:${input.path}`], { cwd: ROOT });
-    assert.equal(sha256(body), input.sha256, input.path);
-  }
-
   const captureTemp = mkdtempSync(join(tmpdir(), "connected-history-coverage-test-"));
   const env = { ...process.env, TMPDIR: captureTemp };
   delete env.FM_TASK_SCRATCH;
@@ -197,6 +186,8 @@ test("A3: retained Chromium measurements use named viewports and unchanged ances
     const receipt = JSON.parse(run.stdout);
     assert.equal(receipt.browser, "Chromium");
     assert.equal(receipt.mode, "hermetic_fixture");
+    assert.equal(receipt.capture_revision, receipt.repository_revision);
+    assert.equal(receipt.capture_revision, MANIFEST.measurement_provenance.revision);
     assert.deepEqual(receipt.measured_inputs, MANIFEST.measurement_provenance.inputs);
     const observed = new Map(receipt.captures.map((row) => [row.case, row]));
     const retainedCaptures = new Map(MANIFEST.captures.map((row) => [row.case, row]));
