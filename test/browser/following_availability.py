@@ -18,7 +18,7 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 sys.path.insert(0, str(ROOT))
 
 if TYPE_CHECKING:
-    from playwright.sync_api import Page, Route
+    from playwright.sync_api import ElementHandle, Page, Route
 
 from browser_support import launched_chromium  # noqa: E402
 from fixture_clock import fixture_today, pin_fixture_clock  # noqa: E402
@@ -98,9 +98,20 @@ def install_routes(page: Page) -> None:
     page.route("https://data.cityofnewyork.us/**", lambda route: route.abort())
 
 
-def open_following(page: Page, base: str, query: str = "lens=meetings") -> None:
+def open_following(
+    page: Page,
+    base: str,
+    query: str = "lens=meetings",
+    *,
+    wait_for_runtime: bool = True,
+) -> None:
     page.goto(f"{base}/following/?{query}", wait_until="domcontentloaded", timeout=30_000)
     page.locator("[data-following-availability]").wait_for(state="visible", timeout=30_000)
+    if wait_for_runtime:
+        page.locator("[data-following-preview-form][data-rule-live='true']").wait_for(
+            state="attached",
+            timeout=30_000,
+        )
 
 
 def assert_accessible_controls(page: Page) -> None:
@@ -119,7 +130,14 @@ def assert_touch_targets(page: Page) -> None:
     assert heights and min(heights) >= 44, heights
 
 
-def wait_for_preview(page: Page) -> None:
+def preview_form(page: Page) -> ElementHandle:
+    form = page.locator("[data-following-preview-form]").element_handle()
+    assert form is not None, "preview form was not rendered"
+    return form
+
+
+def wait_for_preview(page: Page, previous_form: ElementHandle) -> None:
+    page.wait_for_function("form => !form.isConnected", arg=previous_form, timeout=30_000)
     page.locator("p[data-following-preview-status]").wait_for(state="visible", timeout=30_000)
     page.wait_for_function(
         "() => document.querySelector('p[data-following-preview-status]')?.textContent.includes('Preview updated.')",
@@ -142,12 +160,13 @@ def run_journeys(base: str) -> None:
         assert_accessible_controls(page)
         assert_touch_targets(page)
         preset = page.get_by_label("Evenings and weekends")
+        previous_form = preview_form(page)
         preset.focus()
         page.keyboard.press("Space")
         assert preset.is_checked(), "keyboard activation did not select the preset"
         page.locator("[data-following-availability-summary]").wait_for(state="visible")
         assert "Weekdays from 17:00" in page.locator("[data-following-availability-summary]").inner_text()
-        wait_for_preview(page)
+        wait_for_preview(page, previous_form)
         assert "2 meetings without a start time excluded" in page.locator(
             "[data-following-availability-result]"
         ).inner_text()
@@ -160,6 +179,7 @@ def run_journeys(base: str) -> None:
         page.locator("[data-following-availability]").wait_for(state="visible", timeout=30_000)
         assert page.get_by_label("Evenings and weekends").is_checked()
 
+        previous_form = preview_form(page)
         page.get_by_label("Custom weekly schedule").check()
         page.get_by_label("Monday").check()
         page.locator('input[data-following-availability-day][value="6"]').check()
@@ -169,7 +189,7 @@ def run_journeys(base: str) -> None:
         page.get_by_label("Ends before").fill("21:00")
         page.get_by_label("Timezone").select_option("America/Chicago")
         page.get_by_label("Meetings without a start time").select_option("include")
-        wait_for_preview(page)
+        wait_for_preview(page, previous_form)
         assert page.get_by_label("Custom weekly schedule").is_checked()
         assert page.get_by_label("Monday").is_checked()
         assert page.locator('input[data-following-availability-day][value="6"]').is_checked()
@@ -211,6 +231,7 @@ def run_journeys(base: str) -> None:
             "lens=meetings&availability_preset=custom&availability_day=1&availability_day=6"
             "&availability_start=18%3A00&availability_end=21%3A00"
             "&availability_timezone=America%2FChicago&availability_unknown_start=include",
+            wait_for_runtime=False,
         )
         assert no_js_page.get_by_label("Custom weekly schedule").is_checked()
         assert no_js_page.get_by_label("Monday").is_checked()

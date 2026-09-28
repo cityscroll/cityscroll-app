@@ -237,7 +237,6 @@ def install_routes(page: Page, *, lifecycle_failure: dict[str, bool]) -> None:
 
 def open_land(page: Page, base: str) -> None:
     page.goto(f"{base}{LAND_ROUTE}", wait_until="domcontentloaded", timeout=30_000)
-    page.wait_for_timeout(2_000)
     page.locator("#ldetail .site-lifecycle-context").wait_for(state="visible", timeout=30_000)
     page.locator("#land-item-card").wait_for(state="visible", timeout=30_000)
     page.wait_for_function(
@@ -253,6 +252,23 @@ def browser_state(page: Page) -> dict[str, object]:
           scrollY: Math.round(window.scrollY),
           activeElement: document.activeElement?.id || document.activeElement?.tagName.toLowerCase() || null,
         })"""
+    )
+
+
+def wait_for_browser_state(page: Page, expected: dict[str, object]) -> None:
+    page.wait_for_function(
+        """expected => {
+          const actual = {
+            route: `${location.pathname}${location.search}${location.hash}`,
+            scrollY: Math.round(window.scrollY),
+            activeElement: document.activeElement?.id || document.activeElement?.tagName.toLowerCase() || null,
+          };
+          return actual.route === expected.route
+            && actual.scrollY === expected.scrollY
+            && actual.activeElement === expected.activeElement;
+        }""",
+        arg=expected,
+        timeout=30_000,
     )
 
 
@@ -282,10 +298,11 @@ def run_journey(page: Page, base: str) -> tuple[dict[str, object], dict[str, obj
     assert modified.get_attribute("onclick") is None
     assert modified.get_attribute("onauxclick") is None
     before_page_count = len(page.context.pages)
-    modified.click(button="middle")
-    page.wait_for_timeout(1_000)
+    with page.context.expect_page(timeout=30_000) as popup_info:
+        modified.click(button="middle")
+    popup = popup_info.value
     assert len(page.context.pages) == before_page_count + 1
-    popup = page.context.pages[-1]
+    popup.wait_for_url(lambda url: "/parcels/3073670011/" in url, timeout=30_000)
     assert "/parcels/3073670011/" in popup.url
     popup.close()
 
@@ -309,7 +326,7 @@ def run_journey(page: Page, base: str) -> tuple[dict[str, object], dict[str, obj
     page.locator("#procurement-item-card").wait_for(state="visible", timeout=30_000)
     page.go_back(wait_until="domcontentloaded", timeout=30_000)
     page.locator("#ldetail .site-lifecycle-context").wait_for(state="visible", timeout=30_000)
-    page.wait_for_function("() => document.body.dataset.appReady === 'true'", timeout=30_000)
+    wait_for_browser_state(page, before)
     after = browser_state(page)
     assert after == before, {"before": before, "after": after}
     assert page.get_by_text("Other government activity at this site").is_visible()
