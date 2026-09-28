@@ -17,6 +17,7 @@ import {
 } from "./land_filter_parity.mjs";
 import { filterLandSnapshot } from "./resident_snapshot_queries.mjs";
 import { normalizeGeographyKey } from "./scope_v0.mjs";
+import { geographyCoverageLimit } from "./geography_navigation_records.mjs";
 import { normalizeLandFilingEvidenceFilter } from "./land_filing_evidence_facet.mjs";
 import { normalizeLandStage } from "./land_status_facets.mjs";
 
@@ -290,7 +291,10 @@ export function landGeographyArtifactState(payload) {
   if (!coverage) {
     return Object.freeze({ status: "unavailable", reason: "missing_land_coverage", items, coverage: null });
   }
-  if (coverage.status === "unavailable" || coverage.status === "failed") {
+  // The same index/lens coverage reading the Near You projection applies, so a
+  // Worker watch and a resident page agree on whether Land coverage is usable.
+  if (coverage.status === "unavailable" || coverage.status === "failed"
+    || geographyCoverageLimit(root, null, "land")) {
     return Object.freeze({ status: "unavailable", reason: "land_coverage_unavailable", items, coverage });
   }
   return Object.freeze({ status: "ready", reason: null, items, coverage });
@@ -380,6 +384,18 @@ export function landNtaWatchMatchingIds({
 
   if (source === "activity") {
     const artifact = assertLandGeographyArtifact(activityPayload);
+    const root = asObject(activityPayload?.activity) || asObject(activityPayload) || {};
+    // A geography type whose coverage is published as unavailable keeps its
+    // stale IDs out of a delivery; it is never read as current membership.
+    if (geographies.some((key) => geographyCoverageLimit(root, normalizeGeographyKey(key), "land"))) {
+      return Object.freeze({
+        status: "unavailable",
+        reason: "land_coverage_unavailable",
+        correction: null,
+        ids: Object.freeze([]),
+        disclosure: null,
+      });
+    }
     disclosure = landNtaWatchCoverageDisclosure(artifact.coverage);
     memberIds = membershipIdsFromActivity(artifact.items, geographies, "land");
   } else {

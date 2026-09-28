@@ -88,8 +88,13 @@ test("A1: canonical residential registry × LENSES has no silently missing slice
     assert.ok(["ready", "source_unavailable"].includes(slice.coverage.state), `${code}:${slice.coverage.state}`);
     assert.notEqual(slice.coverage.state, "zero", code);
     assert.equal(placeCoverageState(activity, key, "meetings"), "source_unavailable");
+    // Publication keeps the full artifact's own non-exact state (a missing
+    // lens stays unfilterable) rather than collapsing it into "unavailable".
     const projection = geographyRecordProjection(slice.activity, { key, lens: "meetings" });
-    assert.equal(projection.state, "unavailable");
+    const source = geographyRecordProjection(activity, { key, lens: "meetings" });
+    assert.ok(["unavailable", "unfilterable", "incomplete"].includes(projection.state), `${code}:${projection.state}`);
+    assert.equal(projection.state, source.state, code);
+    assert.equal(projection.exact, false, code);
     assert.equal(projection.count, null);
   }
 });
@@ -201,14 +206,18 @@ test("A3: live read-back receipt retains the five borough fixtures and activatio
     const sliceId = `geography:nta2020:${fixture.id}:meetings`;
     const slice = JSON.parse(built.entries.find((row) => row.key === built.manifest.slices[sliceId]).value);
     assert.equal(slice.coverage.state, fixture.expected_local_coverage, fixture.id);
-    assert.equal(
-      geographyRecordProjection(slice.activity, {
-        key: `geography:nta2020:${fixture.id}`,
-        lens: "meetings",
-      }).state,
-      fixture.expected_projection_state,
-      fixture.id,
-    );
+    const key = `geography:nta2020:${fixture.id}`;
+    const projection = geographyRecordProjection(slice.activity, { key, lens: "meetings" });
+    if (fixture.expected_projection_state === "ready" || fixture.expected_projection_state === "zero") {
+      assert.equal(projection.state, fixture.expected_projection_state, fixture.id);
+    } else {
+      // The receipt's capture revision collapsed every non-exact slice state
+      // into "unavailable". Its resident-facing claim (no exact membership, no
+      // count) must still hold; the state name now matches the full artifact.
+      assert.equal(projection.exact, false, fixture.id);
+      assert.equal(projection.count, null, fixture.id);
+      assert.equal(projection.state, geographyRecordProjection(activity, { key, lens: "meetings" }).state, fixture.id);
+    }
   }
   assert.ok(receipt.assertions.some((row) => row.id === "canonical-registry-census" && row.result === "accepted"));
   assert.ok(receipt.assertions.some((row) => row.id === "fail-then-recover-activation" && row.result === "accepted"));

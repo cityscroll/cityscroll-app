@@ -8,6 +8,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { isMaterialForNavigation } from "../site/geography_crosswalk_artifacts.mjs";
+import { geographyCoverageForLens, geographyRecordProjection } from "../site/geography_navigation_records.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT = join(ROOT, "worker/.route-read-models");
@@ -153,19 +154,17 @@ export function broaderDistrictsFromCommittedArtifacts(root = ROOT) {
 
 /**
  * Observed membership only. A missing by_key row is source_unavailable —
- * never a fabricated empty array.
+ * never a fabricated empty array. A geography key is classified by the same
+ * projection readers use, so published coverage limits (a geography type or
+ * lens marked unavailable) are source_unavailable even when stale IDs remain.
  */
 export function placeCoverageState(activity, sliceId, lens) {
   const id = String(sliceId || "");
   const topic = String(lens || "");
   if (!id || !LENSES.includes(topic)) return "source_unavailable";
   if (id.startsWith("geography:")) {
-    const entry = activity?.geography_items?.by_key?.[id];
-    if (!entry || typeof entry !== "object" || !Object.prototype.hasOwnProperty.call(entry, topic)) {
-      return "source_unavailable";
-    }
-    if (!Array.isArray(entry[topic])) return "source_unavailable";
-    return entry[topic].length ? "ready" : "zero";
+    const { state } = geographyRecordProjection(activity, { key: id, lens: topic });
+    return state === "ready" || state === "zero" ? state : "source_unavailable";
   }
   const members = idsFor(activity, id, topic);
   return members.length ? "ready" : "zero";
@@ -564,10 +563,21 @@ function sliceActivity(activity, id, lens, { includeBasis = true } = {}) {
   const records = Object.fromEntries([...allowed]
     .map((recordId) => [recordId, activity.records?.[lens]?.[recordId]])
     .filter(([, record]) => record));
-  const geoMembership = Object.fromEntries(Object.entries(activity.geography_items?.by_key || {})
-    .map(([key, lenses]) => [key, { [lens]: (lenses?.[lens] || []).filter((member) => allowed.has(String(member))) }])
-    .filter(([key, lenses]) => lenses[lens].length
-      || (key === id && Array.isArray(activity.geography_items?.by_key?.[key]?.[lens]))));
+  const geoMembership = {};
+  for (const [key, lenses] of Object.entries(activity.geography_items?.by_key || {})) {
+    const members = lenses?.[lens];
+    const kept = Array.isArray(members) ? members.filter((member) => allowed.has(String(member))) : [];
+    if (kept.length) {
+      geoMembership[key] = { [lens]: kept };
+    } else if (key === id && lenses && typeof lenses === "object") {
+      // The selected key keeps its published shape: an explicit [] is a zero,
+      // a missing lens stays unfilterable, and a non-list stays incomplete.
+      // Dropping the entry would turn either limit into "unavailable".
+      if (Array.isArray(members)) geoMembership[key] = { [lens]: [] };
+      else if (Object.prototype.hasOwnProperty.call(lenses, lens)) geoMembership[key] = { [lens]: null };
+      else geoMembership[key] = {};
+    }
+  }
   // Keep only definitions needed for this slice. A selected geography keeps its
   // definition even when source coverage is unpublished (no fabricated by_key).
   const definitionKeys = new Set(Object.keys(geoMembership));
@@ -584,6 +594,10 @@ function sliceActivity(activity, id, lens, { includeBasis = true } = {}) {
     public_types: activity.geography_items?.public_types,
     definitions,
     by_key: geoMembership,
+    // Lens-bounded availability and generation metadata. Omitted (not
+    // defaulted) when the source published none, so a legacy slice keeps its
+    // explicit membership semantics.
+    coverage: geographyCoverageForLens(activity.geography_items?.coverage, lens),
     note: activity.geography_items?.note,
   };
   const core = {

@@ -1,9 +1,14 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { NEAR_YOU_FLOOR } from "../src/data/route_read_model_floor.mjs";
 import { handleNearYou } from "../src/near_you.mjs";
+import { buildNearYou } from "../../tools/build_worker_route_read_models.mjs";
+import { geographyRecordProjection } from "../../site/geography_navigation_records.mjs";
+import { landGeographyArtifactState } from "../../site/land_nta_watch_scope.mjs";
 import {
+  COVERAGE_CONFLICT_REASON,
   loadMeetingRecord,
   loadCommunityDistrictDigest,
   loadNearYouActivity,
@@ -152,4 +157,91 @@ test("Near You edge-cache miss fetches the route slice once, then serves the cac
   } finally {
     delete globalThis.caches;
   }
+});
+
+// Coverage metadata merge (public alias c419deec4d475): slices built by the
+// real builder from compact pinned rows, with conflicting metadata injected
+// into one stored slice before the real loader merges them.
+const pinnedRows = JSON.parse(readFileSync(new URL("../../test/fixtures/near_you_coverage_semantics.v1.json", import.meta.url), "utf8"));
+const MN = pinnedRows.keys.positive_meetings;
+const BX = pinnedRows.keys.explicit_zero_meetings;
+
+function publishedLandPair(inject = null) {
+  const built = buildNearYou(pinnedRows.activity, {}, "coverage-merge");
+  const values = new Map(built.entries.map(({ key, value }) => [key, value]));
+  values.set(NEAR_YOU_MANIFEST_KEY, JSON.stringify(built.manifest));
+  if (inject) {
+    const key = built.manifest.slices[`${BX}:land`];
+    const slice = JSON.parse(values.get(key));
+    inject(slice.activity.geography_items.coverage);
+    values.set(key, JSON.stringify(slice));
+  }
+  return { built, values };
+}
+
+async function loadLand(values, geographies) {
+  return loadNearYouActivity({ ALERT_STATE: kv(values) }, { place: { geographies }, facets: { domains: ["land"] } });
+}
+
+test("equal same-lens coverage is shared once, never added or dropped", async () => {
+  const { built, values } = publishedLandPair();
+  const stored = JSON.parse(values.get(built.manifest.slices[`${MN}:land`])).activity.geography_items.coverage;
+  const loaded = await loadLand(values, [MN, BX]);
+  assert.deepEqual(loaded.activity.geography_items.coverage, stored);
+  assert.equal(loaded.activity.geography_items.coverage.by_lens.land.admitted, pinnedRows.activity.geography_items.coverage.by_lens.land.admitted);
+  const projection = geographyRecordProjection(loaded.activity, { key: MN, lens: "land" });
+  assert.equal(projection.state, "ready");
+  assert.equal(projection.count, pinnedRows.activity.geography_items.by_key[MN].land.length);
+});
+
+for (const [name, inject] of [
+  ["an incompatible generation identifier", (coverage) => {
+    coverage.by_lens.land.generation_id = "other-generation";
+    coverage.by_lens.land.types.nta2020.generation_id = "other-generation";
+  }],
+  ["a contradictory ready/error state", (coverage) => { coverage.by_lens.land.types.nta2020.status = "error"; }],
+]) {
+  test(`A3: ${name} in one same-lens slice is a typed unavailable result in either slice order`, async () => {
+    const { values } = publishedLandPair(inject);
+    const forward = await loadLand(values, [MN, BX]);
+    const reverse = await loadLand(values, [BX, MN]);
+    // The injected data really is order-sensitive: a first-wins merge would
+    // publish different metadata for the two orders.
+    const storedCoverage = (key) => JSON.parse(values.get(JSON.parse(values.get(NEAR_YOU_MANIFEST_KEY)).slices[`${key}:land`]))
+      .activity.geography_items.coverage;
+    assert.notDeepEqual(storedCoverage(MN), storedCoverage(BX));
+
+    for (const loaded of [forward, reverse]) {
+      const coverage = loaded.activity.geography_items.coverage;
+      assert.equal(coverage.status, "unavailable");
+      assert.equal(coverage.reason, COVERAGE_CONFLICT_REASON);
+      assert.deepEqual(coverage.by_lens, { land: { status: "unavailable", reason: COVERAGE_CONFLICT_REASON } });
+      for (const key of [MN, BX]) {
+        const projection = geographyRecordProjection(loaded.activity, { key, lens: "land" });
+        assert.equal(projection.state, "unavailable", key);
+        assert.equal(projection.exact, false, key);
+        assert.equal(projection.count, null, key);
+        assert.ok(loaded.activity.geography_items.by_key[key].land.length > 0, "the IDs are present but not current");
+      }
+      assert.equal(landGeographyArtifactState(loaded).status, "unavailable");
+    }
+    assert.deepEqual(forward.activity.geography_items.coverage, reverse.activity.geography_items.coverage);
+    assert.deepEqual(forward.activity.geography_items.by_key, reverse.activity.geography_items.by_key);
+  });
+}
+
+test("A4: slices without coverage merge without inventing any", async () => {
+  const built = buildNearYou({
+    ...pinnedRows.activity,
+    geography_items: { ...pinnedRows.activity.geography_items, coverage: undefined },
+  }, {}, "legacy-merge");
+  const values = new Map(built.entries.map(({ key, value }) => [key, value]));
+  values.set(NEAR_YOU_MANIFEST_KEY, JSON.stringify(built.manifest));
+  const loaded = await loadLand(values, [MN, BX]);
+  assert.equal(Object.hasOwn(loaded.activity.geography_items, "coverage"), false);
+  assert.equal(geographyRecordProjection(loaded.activity, { key: MN, lens: "land" }).state, "ready");
+  const meetings = await loadNearYouActivity({ ALERT_STATE: kv(values) }, {
+    place: { geographies: [pinnedRows.keys.unfilterable_meetings] }, facets: { domains: ["meetings"] },
+  });
+  assert.equal(geographyRecordProjection(meetings.activity, { key: pinnedRows.keys.unfilterable_meetings, lens: "meetings" }).state, "unfilterable");
 });

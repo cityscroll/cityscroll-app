@@ -1,8 +1,16 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test as runTest } from "node:test";
 
+import { buildNearYou } from "../tools/build_worker_route_read_models.mjs";
+import {
+  LAND_GEOGRAPHY_ARTIFACT_UNAVAILABLE,
+  landNtaWatchMatchingIds,
+} from "../site/land_nta_watch_scope.mjs";
 import {
   GEOGRAPHY_RECORD_LENSES,
+  geographyCoverageForLens,
+  geographyCoverageLimit,
   geographyRecordLenses,
   geographyRecordProjection,
   recordIdsForScope,
@@ -553,4 +561,74 @@ test("A1: broader district suggestions are labeled broader and stay outside exac
     /<a[^>]*data-geography-related-district[^>]*href="\/near-you\/\?geo=community_district%3AM01&amp;surface=records"/,
   );
   assert.doesNotMatch(html, /<li[^>]*data-geography-related-district[^>]*>/);
+});
+
+// Coverage metadata consumers (public alias c419deec4d475). The resident
+// projection and the Worker Land watch must read the same coverage fields on
+// both the full artifact and a published slice: a declared limitation at the
+// index, lens, or geography-type level makes both refuse exact membership.
+const pinnedCoverageRows = JSON.parse(readFileSync(new URL("./fixtures/near_you_coverage_semantics.v1.json", import.meta.url), "utf8"));
+const COVERAGE_KEY = pinnedCoverageRows.keys.positive_meetings;
+const COVERAGE_STATUSES = ["ready", "unavailable", "missing", "error", "failed", "load_failure", "incomplete", "partial", "building"];
+
+function coverageVariants() {
+  const variants = [];
+  for (const level of ["index", "lens", "type"]) {
+    for (const status of COVERAGE_STATUSES) {
+      const activity = structuredClone(pinnedCoverageRows.activity);
+      const coverage = activity.geography_items.coverage;
+      if (level === "index") coverage.status = status;
+      if (level === "lens") coverage.by_lens.land.status = status;
+      if (level === "type") coverage.by_lens.land.types.nta2020.status = status;
+      const built = buildNearYou(activity, {}, `consumers-${level}-${status}`);
+      const slice = JSON.parse(built.entries.find((entry) => entry.key === built.manifest.slices[`${COVERAGE_KEY}:land`]).value);
+      variants.push({ name: `${level}:${status}:full`, activity });
+      variants.push({ name: `${level}:${status}:published`, activity: slice.activity });
+    }
+  }
+  return variants;
+}
+
+const siteExact = (activity) => geographyRecordProjection(activity, { key: COVERAGE_KEY, lens: "land" }).exact;
+function workerWatchReady(activity) {
+  try {
+    return landNtaWatchMatchingIds({
+      filter: { status: "all", stage: "any", geographies: [COVERAGE_KEY] }, activityPayload: activity, source: "activity",
+    }).status === "ready";
+  } catch (error) {
+    if (error?.code === LAND_GEOGRAPHY_ARTIFACT_UNAVAILABLE) return false;
+    throw error;
+  }
+}
+
+function consumerDisagreements(variants, readSite, readWorker) {
+  return variants
+    .map(({ name, activity }) => ({ name, site: readSite(activity), worker: readWorker(activity) }))
+    .filter((row) => row.site !== row.worker)
+    .map((row) => `${row.name}: site exact=${row.site}, worker ready=${row.worker}`);
+}
+
+test("A6: site projection and Worker Land watch agree on every coverage status at every level", () => {
+  const variants = coverageVariants();
+  assert.equal(variants.length, 3 * COVERAGE_STATUSES.length * 2);
+  assert.deepEqual(consumerDisagreements(variants, siteExact, workerWatchReady), []);
+  // Both outcomes are exercised, so agreement is not agreement on a constant.
+  const exactness = new Set(variants.map(({ activity }) => siteExact(activity)));
+  assert.deepEqual([...exactness].sort(), [false, true]);
+
+  // Positive control: a Worker reader that looks only at membership lists (the
+  // stale-ID reading) disagrees with the projection on declared limitations.
+  const membershipOnly = (activity) => Array.isArray(activity.geography_items?.by_key?.[COVERAGE_KEY]?.land);
+  const naive = consumerDisagreements(variants, siteExact, membershipOnly);
+  assert.ok(naive.some((row) => row.startsWith("type:unavailable:published")), naive.join("; "));
+  assert.ok(naive.some((row) => row.startsWith("index:error:full")), naive.join("; "));
+});
+
+test("coverage carried into a slice is bounded to the requested lens and absent for a legacy source", () => {
+  const coverage = pinnedCoverageRows.activity.geography_items.coverage;
+  assert.deepEqual(geographyCoverageForLens(coverage, "land"), { status: "ready", by_lens: { land: coverage.by_lens.land } });
+  assert.deepEqual(geographyCoverageForLens(coverage, "meetings"), { status: "ready", by_lens: {} });
+  assert.equal(geographyCoverageForLens(undefined, "land"), undefined);
+  assert.equal(geographyCoverageLimit({ geography_items: { coverage } }, COVERAGE_KEY, "land"), null);
+  assert.equal(geographyCoverageLimit({ geography_items: {} }, COVERAGE_KEY, "land"), null);
 });

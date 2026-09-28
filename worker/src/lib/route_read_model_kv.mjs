@@ -99,14 +99,54 @@ function mergeCounts(target, source) {
   return target;
 }
 
+function canonicalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`).join(",")}}`;
+  }
+  return JSON.stringify(value ?? null);
+}
+
+export const COVERAGE_CONFLICT_REASON = "slice_coverage_conflict";
+
+/**
+ * Coverage metadata for one same-lens request. Equal metadata is shared, never
+ * added. Slices that disagree (a different generation, source date, or status)
+ * cannot be combined, so the merged index is typed unavailable for the lenses
+ * involved rather than inheriting whichever slice happened to load first. A
+ * legacy slice that published no coverage contributes none; when no slice
+ * carries coverage the result has none, preserving legacy membership semantics.
+ */
+function mergeCoverage(slices) {
+  const published = slices
+    .map((slice) => slice?.geography_items?.coverage)
+    .filter((coverage) => coverage && typeof coverage === "object");
+  if (!published.length) return undefined;
+  const distinct = new Set(published.map(canonicalJson));
+  if (distinct.size === 1) return published[0];
+  const lenses = [...new Set(published.flatMap((coverage) => Object.keys(coverage.by_lens || {})))].sort();
+  const unavailable = { status: "unavailable", reason: COVERAGE_CONFLICT_REASON };
+  return {
+    ...unavailable,
+    by_lens: Object.fromEntries(lenses.map((lens) => [lens, { ...unavailable }])),
+  };
+}
+
 function mergeActivity(slices) {
   const first = slices[0] || NEAR_YOU_FLOOR;
+  const { coverage: _firstCoverage, ...firstGeographyItems } = first.geography_items || {};
+  const coverage = mergeCoverage(slices);
   const out = {
     ...first,
     by_level: { borough: {}, community_district: {}, council_district: {} },
     citywide: {}, virtual: {}, unlocated: {},
     district_items: { by_level: { borough: {}, community_district: {}, council_district: {} }, citywide: {}, virtual: {}, unlocated: {} },
-    geography_items: { ...(first.geography_items || {}), definitions: {}, by_key: {} },
+    geography_items: {
+      ...firstGeographyItems,
+      ...(coverage ? { coverage } : {}),
+      definitions: {},
+      by_key: {},
+    },
     records: {},
   };
   for (const slice of slices) {
@@ -128,8 +168,12 @@ function mergeActivity(slices) {
     for (const [lens, rows] of Object.entries(slice.records || {})) out.records[lens] = { ...(out.records[lens] || {}), ...rows };
     for (const [key, definition] of Object.entries(slice.geography_items?.definitions || {})) out.geography_items.definitions[key] = definition;
     for (const [key, lenses] of Object.entries(slice.geography_items?.by_key || {})) {
+      // An entry without the lens stays unfilterable, and a non-list stays
+      // incomplete: neither is widened into a list (or a zero) by merging.
       const dest = out.geography_items.by_key[key] ||= {};
-      for (const [lens, ids] of Object.entries(lenses || {})) dest[lens] = mergeArrays(dest[lens], ids);
+      for (const [lens, ids] of Object.entries(lenses || {})) {
+        dest[lens] = Array.isArray(ids) && dest[lens] !== null ? mergeArrays(dest[lens], ids) : null;
+      }
     }
   }
   return out;
