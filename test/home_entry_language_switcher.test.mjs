@@ -62,6 +62,15 @@ test("picking a language on the static home hands the choice to setLang", () => 
   select.value = "zh-Hans";
   onChange({ target: select });
   assert.deepEqual(picked, ["zh-Hans"]);
+
+  select.dataset.appLanguageSwitcher = "true";
+  select.value = "en";
+  onChange({ target: select });
+  assert.deepEqual(
+    picked,
+    ["zh-Hans"],
+    "the static handler must yield once the application language handler owns the picker",
+  );
 });
 
 test("the entry module registers the hash-route loader and the topic-preview bootstrap", () => {

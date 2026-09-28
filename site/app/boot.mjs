@@ -867,6 +867,7 @@ async function sessionBoot(){
   function initLangSwitcher(){
     const sel = document.getElementById("langSelect");
     if(!sel) return;
+    sel.dataset.appLanguageSwitcher = "true";
     const saved = window.LANG || "en";
     if([...sel.options].some(function(o){ return o.value === saved; })) sel.value = saved;
     // applyStrings() also runs updateLangNotice() (i18n.js), which shows the "notices stay
