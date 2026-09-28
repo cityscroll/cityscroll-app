@@ -67,6 +67,11 @@ def wait_for_map(page) -> None:
     page.wait_for_selector('#land-map-panel[data-land-map-state="ready"]', timeout=30_000)
 
 
+def wait_for_initial_request_quiescence(page) -> None:
+    """Put request-cost measurements after the page's deferred initial hydration."""
+    page.wait_for_load_state("networkidle", timeout=45_000)
+
+
 def marker(page, project_id: str):
     return page.locator(f'#land-map-panel [role="button"][data-land-map-project="{project_id}"]')
 
@@ -126,10 +131,23 @@ def check_pointer_selection_costs_no_search(page) -> dict:
     assert before["active_ids"] == [], "a marker was active before anything was selected"
     assert before["total"] == EXPECTED_TOTAL, before["total"]
 
+    # The List keeps its automatically selected detail beside the Map and hydrates that
+    # detail's place links after first paint. Under full-suite load those legitimate initial
+    # requests can finish after the Map itself reports ready. Network quiescence is the
+    # measurement boundary: anything recorded below was initiated after marker activation.
+    wait_for_initial_request_quiescence(page)
     mark = len(requests)
     marker(page, ANCHOR_SPECIMEN).click()
     page.wait_for_selector("#land-map-selected", timeout=15_000)
-    page.wait_for_timeout(500)
+    page.wait_for_function(
+        """(id) => {
+          const panel = document.getElementById('land-map-panel');
+          return panel?.dataset.landMapState === 'ready'
+            && panel.dataset.landMapSelected === id;
+        }""",
+        arg=ANCHOR_SPECIMEN,
+        timeout=15_000,
+    )
 
     # The whole point of reusing the filtered row: activation may load local presentation
     # code, but it must not issue a data request to reconstruct the selected project.
