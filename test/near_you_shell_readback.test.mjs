@@ -305,6 +305,33 @@ test("generator --check agrees with the retained Near You shell production read-
   assert.match(result.stdout, /check passed/);
 });
 
+test("production checker rejects a pre-fix selected-view receipt", () => {
+  const result = spawnSync(
+    "python3",
+    [
+      "-c",
+      `import copy, json, sys
+sys.path.insert(0, "tools")
+import capture_near_you_shell_production_read as capture
+receipt = json.loads(open(${JSON.stringify(READBACK)}, encoding="utf-8").read())
+mutated = copy.deepcopy(receipt)
+mutated["capture"].pop("selected_control_clearance_contract", None)
+for row in mutated["letters"]["A13"]["reads"]:
+    if row.get("selected_neighborhood_label"):
+        row.pop("selected_name_control_occlusion", None)
+        row.pop("selected_control_occlusion_positive_control", None)
+try:
+    capture.validate(mutated)
+except AssertionError as error:
+    assert "name box population was empty" in str(error), error
+else:
+    raise AssertionError("pre-fix selected-view receipt was accepted")`,
+    ],
+    { cwd: ROOT, encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});
+
 test("production read-back validation refuses an in-run served revision mismatch", () => {
   const result = spawnSync(
     "python3",

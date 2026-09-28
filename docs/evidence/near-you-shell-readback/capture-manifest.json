@@ -1,7 +1,7 @@
 {
   "base": "https://cityscroll.org/",
   "capture_mode": "headless-playwright-production-served-site",
-  "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+  "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
   "captures": [
     {
       "assertion": "Observed 14 residential neighborhood labels at 1440x900 with text-allow-overlap=False; geometry overlapping_label_pair_count=0, collision_dropped_label_count=0 across 14 placed labels, frame_crossing_label_count=0 (permitted), obscured_by_primary_control_count=0 across 14 label boxes via maplibre-collisionIndex-grid-bboxes+getBoundingClientRect.",
@@ -101,16 +101,16 @@
         "text_ignore_placement": false
       },
       "request_receipt": {
-        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-        "observed_at": "2026-09-28T12:11:18.149642Z",
+        "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+        "observed_at": "2026-09-28T18:02:21.038454Z",
         "page_load": {
           "headers": {
-            "age": null,
-            "cf-cache-status": null,
-            "cf-ray": "a422a64e6fad9e17-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:16 GMT",
+            "age": "74",
+            "cf-cache-status": "HIT",
+            "cf-ray": "a424a88d5ca1f981-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:19 GMT",
             "etag": null,
-            "last-modified": null
+            "last-modified": "Mon, 28 Sep 2026 18:01:04 GMT"
           },
           "http_status": 200,
           "url": "https://cityscroll.org/near-you/"
@@ -120,20 +120,20 @@
           "headers": {
             "age": null,
             "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a422a65e39eb4b05-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:18 GMT",
-            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "cf-ray": "a424a8992d814d51-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:21 GMT",
+            "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
             "last-modified": null
           },
           "http_status": 200,
-          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-          "requested_at": "2026-09-28T12:11:18.069569Z",
-          "responded_at": "2026-09-28T12:11:18.149568Z",
-          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+          "requested_at": "2026-09-28T18:02:20.939350Z",
+          "responded_at": "2026-09-28T18:02:21.038422Z",
+          "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "url": "https://cityscroll.org/artifact-manifest.json"
         }
       },
-      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "route": "/near-you/",
       "sha256": "662e8223a1147a1a8edad032de1d042fe33de452c8723bed45ebfe799a56d7ea",
       "viewport": {
@@ -235,16 +235,16 @@
         "text_ignore_placement": false
       },
       "request_receipt": {
-        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-        "observed_at": "2026-09-28T12:11:25.145781Z",
+        "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+        "observed_at": "2026-09-28T18:02:29.356917Z",
         "page_load": {
           "headers": {
-            "age": "7",
+            "age": "81",
             "cf-cache-status": "HIT",
-            "cf-ray": "a422a67eb8e0aded-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:23 GMT",
+            "cf-ray": "a424a8b98e1c43a1-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:26 GMT",
             "etag": null,
-            "last-modified": "Mon, 28 Sep 2026 12:11:16 GMT"
+            "last-modified": "Mon, 28 Sep 2026 18:01:04 GMT"
           },
           "http_status": 200,
           "url": "https://cityscroll.org/near-you/"
@@ -254,20 +254,20 @@
           "headers": {
             "age": null,
             "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a422a689d8716a4e-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:25 GMT",
-            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "cf-ray": "a424a8cd18218c2d-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:29 GMT",
+            "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
             "last-modified": null
           },
           "http_status": 200,
-          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-          "requested_at": "2026-09-28T12:11:25.050991Z",
-          "responded_at": "2026-09-28T12:11:25.145758Z",
-          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+          "requested_at": "2026-09-28T18:02:29.255342Z",
+          "responded_at": "2026-09-28T18:02:29.356896Z",
+          "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "url": "https://cityscroll.org/artifact-manifest.json"
         }
       },
-      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "route": "/near-you/",
       "sha256": "e932f99e97cc9bf650d0e24ea98ddfbde3e9a3f34f02097d98d6ecbc95402b64",
       "viewport": {
@@ -276,13 +276,31 @@
       }
     },
     {
-      "assertion": "Selected neighborhood 'Greenpoint' rendered on /near-you/?geo=nta2020%3ABK0101&surface=map at 1440x900 (layer labels=['Greenpoint'], surrounding placed labels=2, ui='Greenpoint'); the forced-collision control retained the selected label while dropping an ordinary label.",
+      "assertion": "Selected neighborhood 'Greenpoint' rendered on /near-you/?geo=nta2020%3ABK0101&surface=map at 1440x900 (layer labels=['Greenpoint'], surrounding placed labels=2, ui='Greenpoint'); the forced-collision control retained the selected label while dropping an ordinary label. No ordinary or selected label was obscured by a primary control across 2 ordinary label boxes and one selected-name box; the selected-view control positive control reported a named obscured label.",
       "data_vintage": "nta2020 26B",
       "file": null,
       "mode": "headless-playwright-production-selected",
       "name": "a13-selected-greenpoint-1440",
       "observed": {
+        "geometry": {
+          "control_occlusion_label_box_count": 2,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": [],
+          "primary_control_box_count": 1
+        },
         "map_runtime": "maplibre",
+        "selected_control_occlusion_positive_control": {
+          "label_box_count": 2,
+          "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+          "obscured_by_primary_control_count": 1,
+          "obscured_sample": [
+            {
+              "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+              "label": "Williamsburg"
+            }
+          ],
+          "primary_control_box_count": 1
+        },
         "selected_heading": "Greenpoint",
         "selected_layer_rendered_label_count": 1,
         "selected_layer_rendered_labels": [
@@ -303,6 +321,12 @@
           },
           "label": "Greenpoint"
         },
+        "selected_name_control_occlusion": {
+          "label_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": [],
+          "primary_control_box_count": 1
+        },
         "selected_neighborhood_label": "Greenpoint",
         "selected_priority_positive_control": {
           "forced_text_padding_px": 160,
@@ -321,16 +345,16 @@
         "surrounding_placed_label_count": 2
       },
       "request_receipt": {
-        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-        "observed_at": "2026-09-28T12:11:32.495365Z",
+        "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+        "observed_at": "2026-09-28T18:02:36.381446Z",
         "page_load": {
           "headers": {
-            "age": null,
-            "cf-cache-status": null,
-            "cf-ray": "a422a6aa48d2f9a9-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:30 GMT",
+            "age": "75",
+            "cf-cache-status": "HIT",
+            "cf-ray": "a424a8ed5bbcdc28-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:34 GMT",
             "etag": null,
-            "last-modified": null
+            "last-modified": "Mon, 28 Sep 2026 18:01:19 GMT"
           },
           "http_status": 200,
           "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK0101&surface=map"
@@ -340,35 +364,53 @@
           "headers": {
             "age": null,
             "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a422a6b7c9da7d26-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:32 GMT",
-            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "cf-ray": "a424a8f93a4e7b0e-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:36 GMT",
+            "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
             "last-modified": null
           },
           "http_status": 200,
-          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-          "requested_at": "2026-09-28T12:11:32.403745Z",
-          "responded_at": "2026-09-28T12:11:32.495344Z",
-          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+          "requested_at": "2026-09-28T18:02:36.321473Z",
+          "responded_at": "2026-09-28T18:02:36.381426Z",
+          "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "url": "https://cityscroll.org/artifact-manifest.json"
         }
       },
-      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
-      "sha256": "c09cb955faa1d4be494e96ac8804186142aa987f007e90346cf440148d8cf761",
+      "sha256": "295e1f3cab076e8803b040909f3592d7fe0329aeae45aad73f87eaa079b33f31",
       "viewport": {
         "height": 900,
         "width": 1440
       }
     },
     {
-      "assertion": "Selected neighborhood 'Greenpoint' rendered on /near-you/?geo=nta2020%3ABK0101&surface=map at 390x844 (layer labels=['Greenpoint'], surrounding placed labels=7, ui='Greenpoint'); the forced-collision control retained the selected label while dropping an ordinary label.",
+      "assertion": "Selected neighborhood 'Greenpoint' rendered on /near-you/?geo=nta2020%3ABK0101&surface=map at 390x844 (layer labels=['Greenpoint'], surrounding placed labels=6, ui='Greenpoint'); the forced-collision control retained the selected label while dropping an ordinary label. No ordinary or selected label was obscured by a primary control across 6 ordinary label boxes and one selected-name box; the selected-view control positive control reported a named obscured label.",
       "data_vintage": "nta2020 26B",
       "file": null,
       "mode": "headless-playwright-production-selected",
       "name": "a13-selected-greenpoint-390",
       "observed": {
+        "geometry": {
+          "control_occlusion_label_box_count": 6,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": [],
+          "primary_control_box_count": 1
+        },
         "map_runtime": "maplibre",
+        "selected_control_occlusion_positive_control": {
+          "label_box_count": 6,
+          "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+          "obscured_by_primary_control_count": 1,
+          "obscured_sample": [
+            {
+              "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+              "label": "Williamsburg"
+            }
+          ],
+          "primary_control_box_count": 1
+        },
         "selected_heading": "Greenpoint",
         "selected_layer_rendered_label_count": 1,
         "selected_layer_rendered_labels": [
@@ -389,6 +431,12 @@
           },
           "label": "Greenpoint"
         },
+        "selected_name_control_occlusion": {
+          "label_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": [],
+          "primary_control_box_count": 1
+        },
         "selected_neighborhood_label": "Greenpoint",
         "selected_priority_positive_control": {
           "forced_text_padding_px": 160,
@@ -404,19 +452,19 @@
           "surrounding_placed_label_count": 1
         },
         "selected_ui_label": "Greenpoint",
-        "surrounding_placed_label_count": 7
+        "surrounding_placed_label_count": 6
       },
       "request_receipt": {
-        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-        "observed_at": "2026-09-28T12:11:36.914518Z",
+        "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+        "observed_at": "2026-09-28T18:02:40.922101Z",
         "page_load": {
           "headers": {
-            "age": "4",
+            "age": "79",
             "cf-cache-status": "HIT",
-            "cf-ray": "a422a6c70a778c24-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:34 GMT",
+            "cf-ray": "a424a9098d606e26-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:38 GMT",
             "etag": null,
-            "last-modified": "Mon, 28 Sep 2026 12:11:30 GMT"
+            "last-modified": "Mon, 28 Sep 2026 18:01:19 GMT"
           },
           "http_status": 200,
           "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK0101&surface=map"
@@ -426,35 +474,53 @@
           "headers": {
             "age": null,
             "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a422a6d38bf0ff90-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:36 GMT",
-            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "cf-ray": "a424a91568951512-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:40 GMT",
+            "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
             "last-modified": null
           },
           "http_status": 200,
-          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-          "requested_at": "2026-09-28T12:11:36.821284Z",
-          "responded_at": "2026-09-28T12:11:36.914464Z",
-          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+          "requested_at": "2026-09-28T18:02:40.823205Z",
+          "responded_at": "2026-09-28T18:02:40.922068Z",
+          "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "url": "https://cityscroll.org/artifact-manifest.json"
         }
       },
-      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
-      "sha256": "cecec004a06aec8adb605edb052c5fefd509ceba47232dd318762b9621714195",
+      "sha256": "3113a923195c7d457f5dbbc455f6e274b70d3ab8316231d968098058d16e042e",
       "viewport": {
         "height": 844,
         "width": 390
       }
     },
     {
-      "assertion": "Selected neighborhood 'East Village' rendered on /near-you/?geo=nta2020%3AMN0303&surface=map at 1440x900 (layer labels=['East Village'], surrounding placed labels=5, ui='East Village'); the forced-collision control retained the selected label while dropping an ordinary label.",
+      "assertion": "Selected neighborhood 'East Village' rendered on /near-you/?geo=nta2020%3AMN0303&surface=map at 1440x900 (layer labels=['East Village'], surrounding placed labels=4, ui='East Village'); the forced-collision control retained the selected label while dropping an ordinary label. No ordinary or selected label was obscured by a primary control across 4 ordinary label boxes and one selected-name box; the selected-view control positive control reported a named obscured label.",
       "data_vintage": "nta2020 26B",
       "file": null,
       "mode": "headless-playwright-production-selected",
       "name": "a13-selected-east-village-1440",
       "observed": {
+        "geometry": {
+          "control_occlusion_label_box_count": 4,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": [],
+          "primary_control_box_count": 1
+        },
         "map_runtime": "maplibre",
+        "selected_control_occlusion_positive_control": {
+          "label_box_count": 4,
+          "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+          "obscured_by_primary_control_count": 1,
+          "obscured_sample": [
+            {
+              "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+              "label": "Gramercy"
+            }
+          ],
+          "primary_control_box_count": 1
+        },
         "selected_heading": "East Village",
         "selected_layer_rendered_label_count": 1,
         "selected_layer_rendered_labels": [
@@ -475,6 +541,12 @@
           },
           "label": "East Village"
         },
+        "selected_name_control_occlusion": {
+          "label_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": [],
+          "primary_control_box_count": 1
+        },
         "selected_neighborhood_label": "East Village",
         "selected_priority_positive_control": {
           "forced_text_padding_px": 160,
@@ -490,19 +562,19 @@
           "surrounding_placed_label_count": 1
         },
         "selected_ui_label": "East Village",
-        "surrounding_placed_label_count": 5
+        "surrounding_placed_label_count": 4
       },
       "request_receipt": {
-        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-        "observed_at": "2026-09-28T12:11:41.610159Z",
+        "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+        "observed_at": "2026-09-28T18:02:45.418876Z",
         "page_load": {
           "headers": {
-            "age": null,
-            "cf-cache-status": null,
-            "cf-ray": "a422a6e2ab2e424c-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:39 GMT",
+            "age": "73",
+            "cf-cache-status": "HIT",
+            "cf-ray": "a424a9259ae383ad-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:43 GMT",
             "etag": null,
-            "last-modified": null
+            "last-modified": "Mon, 28 Sep 2026 18:01:29 GMT"
           },
           "http_status": 200,
           "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0303&surface=map"
@@ -512,35 +584,53 @@
           "headers": {
             "age": null,
             "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a422a6f0ed8ec688-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:41 GMT",
-            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "cf-ray": "a424a9314f0143f3-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:45 GMT",
+            "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
             "last-modified": null
           },
           "http_status": 200,
-          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-          "requested_at": "2026-09-28T12:11:41.535609Z",
-          "responded_at": "2026-09-28T12:11:41.610122Z",
-          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+          "requested_at": "2026-09-28T18:02:45.287786Z",
+          "responded_at": "2026-09-28T18:02:45.418850Z",
+          "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "url": "https://cityscroll.org/artifact-manifest.json"
         }
       },
-      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "route": "/near-you/?geo=nta2020%3AMN0303&surface=map",
-      "sha256": "f827dad2d799d46aa72454e392ffa8377e7c24c90f2750cb3bc211cd414e45eb",
+      "sha256": "f3677a7f7471e082ca85941971b74e536826708d8abde052e66512f8f828a42d",
       "viewport": {
         "height": 900,
         "width": 1440
       }
     },
     {
-      "assertion": "Selected neighborhood 'East Village' rendered on /near-you/?geo=nta2020%3AMN0303&surface=map at 390x844 (layer labels=['East Village'], surrounding placed labels=5, ui='East Village'); the forced-collision control retained the selected label while dropping an ordinary label.",
+      "assertion": "Selected neighborhood 'East Village' rendered on /near-you/?geo=nta2020%3AMN0303&surface=map at 390x844 (layer labels=['East Village'], surrounding placed labels=5, ui='East Village'); the forced-collision control retained the selected label while dropping an ordinary label. No ordinary or selected label was obscured by a primary control across 5 ordinary label boxes and one selected-name box; the selected-view control positive control reported a named obscured label.",
       "data_vintage": "nta2020 26B",
       "file": null,
       "mode": "headless-playwright-production-selected",
       "name": "a13-selected-east-village-390",
       "observed": {
+        "geometry": {
+          "control_occlusion_label_box_count": 5,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": [],
+          "primary_control_box_count": 1
+        },
         "map_runtime": "maplibre",
+        "selected_control_occlusion_positive_control": {
+          "label_box_count": 5,
+          "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+          "obscured_by_primary_control_count": 1,
+          "obscured_sample": [
+            {
+              "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+              "label": "Murray Hill-Kips Bay"
+            }
+          ],
+          "primary_control_box_count": 1
+        },
         "selected_heading": "East Village",
         "selected_layer_rendered_label_count": 1,
         "selected_layer_rendered_labels": [
@@ -561,6 +651,12 @@
           },
           "label": "East Village"
         },
+        "selected_name_control_occlusion": {
+          "label_box_count": 1,
+          "obscured_by_primary_control_count": 0,
+          "obscured_sample": [],
+          "primary_control_box_count": 1
+        },
         "selected_neighborhood_label": "East Village",
         "selected_priority_positive_control": {
           "forced_text_padding_px": 160,
@@ -579,16 +675,16 @@
         "surrounding_placed_label_count": 5
       },
       "request_receipt": {
-        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-        "observed_at": "2026-09-28T12:11:46.029382Z",
+        "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+        "observed_at": "2026-09-28T18:02:50.180023Z",
         "page_load": {
           "headers": {
-            "age": "4",
+            "age": "78",
             "cf-cache-status": "HIT",
-            "cf-ray": "a422a7001cd32ef5-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:44 GMT",
+            "cf-ray": "a424a9420e00aa2a-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:48 GMT",
             "etag": null,
-            "last-modified": "Mon, 28 Sep 2026 12:11:39 GMT"
+            "last-modified": "Mon, 28 Sep 2026 18:01:29 GMT"
           },
           "http_status": 200,
           "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0303&surface=map"
@@ -598,22 +694,22 @@
           "headers": {
             "age": null,
             "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a422a70c58300c74-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:46 GMT",
-            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "cf-ray": "a424a94f0855c436-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:50 GMT",
+            "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
             "last-modified": null
           },
           "http_status": 200,
-          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-          "requested_at": "2026-09-28T12:11:45.921733Z",
-          "responded_at": "2026-09-28T12:11:46.029358Z",
-          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+          "requested_at": "2026-09-28T18:02:50.055606Z",
+          "responded_at": "2026-09-28T18:02:50.179998Z",
+          "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "url": "https://cityscroll.org/artifact-manifest.json"
         }
       },
-      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "route": "/near-you/?geo=nta2020%3AMN0303&surface=map",
-      "sha256": "f827dad2d799d46aa72454e392ffa8377e7c24c90f2750cb3bc211cd414e45eb",
+      "sha256": "2fa50472bf444f9086056272e11f3ccfb84709cc82e62488c2ddc1bb51fbb70e",
       "viewport": {
         "height": 844,
         "width": 390
@@ -661,16 +757,16 @@
         "title_only_instruction_count": 0
       },
       "request_receipt": {
-        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-        "observed_at": "2026-09-28T12:11:18.149642Z",
+        "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+        "observed_at": "2026-09-28T18:02:21.038454Z",
         "page_load": {
           "headers": {
-            "age": null,
-            "cf-cache-status": null,
-            "cf-ray": "a422a64e6fad9e17-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:16 GMT",
+            "age": "74",
+            "cf-cache-status": "HIT",
+            "cf-ray": "a424a88d5ca1f981-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:19 GMT",
             "etag": null,
-            "last-modified": null
+            "last-modified": "Mon, 28 Sep 2026 18:01:04 GMT"
           },
           "http_status": 200,
           "url": "https://cityscroll.org/near-you/"
@@ -680,20 +776,20 @@
           "headers": {
             "age": null,
             "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a422a65e39eb4b05-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:18 GMT",
-            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "cf-ray": "a424a8992d814d51-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:21 GMT",
+            "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
             "last-modified": null
           },
           "http_status": 200,
-          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-          "requested_at": "2026-09-28T12:11:18.069569Z",
-          "responded_at": "2026-09-28T12:11:18.149568Z",
-          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+          "requested_at": "2026-09-28T18:02:20.939350Z",
+          "responded_at": "2026-09-28T18:02:21.038422Z",
+          "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "url": "https://cityscroll.org/artifact-manifest.json"
         }
       },
-      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "route": "/near-you/",
       "sha256": "d7291d81b401f391814dda1919f3b1b69a0baa9bdfd5faa4b8f7055313780796",
       "viewport": {
@@ -743,16 +839,16 @@
         "title_only_instruction_count": 0
       },
       "request_receipt": {
-        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
-        "observed_at": "2026-09-28T12:11:25.145781Z",
+        "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
+        "observed_at": "2026-09-28T18:02:29.356917Z",
         "page_load": {
           "headers": {
-            "age": "7",
+            "age": "81",
             "cf-cache-status": "HIT",
-            "cf-ray": "a422a67eb8e0aded-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:23 GMT",
+            "cf-ray": "a424a8b98e1c43a1-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:26 GMT",
             "etag": null,
-            "last-modified": "Mon, 28 Sep 2026 12:11:16 GMT"
+            "last-modified": "Mon, 28 Sep 2026 18:01:04 GMT"
           },
           "http_status": 200,
           "url": "https://cityscroll.org/near-you/"
@@ -762,20 +858,20 @@
           "headers": {
             "age": null,
             "cf-cache-status": "DYNAMIC",
-            "cf-ray": "a422a689d8716a4e-EWR",
-            "date": "Mon, 28 Sep 2026 12:11:25 GMT",
-            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "cf-ray": "a424a8cd18218c2d-EWR",
+            "date": "Mon, 28 Sep 2026 18:02:29 GMT",
+            "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
             "last-modified": null
           },
           "http_status": 200,
-          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-          "requested_at": "2026-09-28T12:11:25.050991Z",
-          "responded_at": "2026-09-28T12:11:25.145758Z",
-          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+          "requested_at": "2026-09-28T18:02:29.255342Z",
+          "responded_at": "2026-09-28T18:02:29.356896Z",
+          "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
           "url": "https://cityscroll.org/artifact-manifest.json"
         }
       },
-      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "route": "/near-you/",
       "sha256": "760e7362c819edff5fb986738b2448037dfa17ab8db0e1be5e3b373962195d45",
       "viewport": {
@@ -787,7 +883,7 @@
   "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
   "data_vintage": "nta2020 26B",
   "feature": "near-you-shell-readback",
-  "grounded_at": "0e6763ff949009820a1178c19366cd246d50964f",
+  "grounded_at": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
   "image_binaries_committed": false,
   "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed.",
   "producer": {
@@ -799,47 +895,47 @@
     "schema": "cityscroll.near_you_shell_production_read.v1"
   },
   "public_alias": "ced62a84f8213",
-  "repository_revision": "0e6763ff949009820a1178c19366cd246d50964f",
-  "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+  "repository_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
+  "revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
   "revision_format": "served artifact-manifest source_commit_sha",
   "run_receipt": {
-    "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+    "capture_run_id": "d79840d5-ae0b-4769-9f4c-79f53fac4d7c",
     "final_served_manifest": {
       "headers": {
         "age": null,
         "cf-cache-status": "DYNAMIC",
-        "cf-ray": "a422a71b5c86b9c6-EWR",
-        "date": "Mon, 28 Sep 2026 12:11:48 GMT",
-        "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+        "cf-ray": "a424a95f5cc142e8-EWR",
+        "date": "Mon, 28 Sep 2026 18:02:52 GMT",
+        "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
         "last-modified": null
       },
       "http_status": 200,
-      "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-      "requested_at": "2026-09-28T12:11:48.339584Z",
-      "responded_at": "2026-09-28T12:11:48.413135Z",
-      "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+      "requested_at": "2026-09-28T18:02:52.659764Z",
+      "responded_at": "2026-09-28T18:02:52.767077Z",
+      "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "url": "https://cityscroll.org/artifact-manifest.json"
     },
     "initial_served_manifest": {
       "headers": {
         "age": null,
         "cf-cache-status": "DYNAMIC",
-        "cf-ray": "a422a6465aa9421d-EWR",
-        "date": "Mon, 28 Sep 2026 12:11:14 GMT",
-        "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+        "cf-ray": "a424a8897987da80-EWR",
+        "date": "Mon, 28 Sep 2026 18:02:18 GMT",
+        "etag": "\"c90bcdefc8de90837bf8ea463543ac2f\"",
         "last-modified": null
       },
       "http_status": 200,
-      "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
-      "requested_at": "2026-09-28T12:11:14.123416Z",
-      "responded_at": "2026-09-28T12:11:14.354214Z",
-      "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "payload_sha256": "ed36d3e0e7d12786261d16958624e700f6dacedc776b5f90e17fd07609b935f5",
+      "requested_at": "2026-09-28T18:02:18.435506Z",
+      "responded_at": "2026-09-28T18:02:18.514638Z",
+      "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
       "url": "https://cityscroll.org/artifact-manifest.json"
     },
     "request_count": 6,
-    "run_finished_at": "2026-09-28T12:11:48.413164Z",
-    "run_started_at": "2026-09-28T12:11:14.123216Z",
-    "served_revision": "0e6763ff949009820a1178c19366cd246d50964f"
+    "run_finished_at": "2026-09-28T18:02:52.767103Z",
+    "run_started_at": "2026-09-28T18:02:18.435344Z",
+    "served_revision": "8e62e3a92d1c47b748d48e028ed27d9bc7194907"
   },
   "schema": "cityscroll.render_capture_manifest.v1",
   "surface": "Near You map-first shell"

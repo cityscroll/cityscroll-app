@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.capture_delivery.v1",
   "public_alias": "ced62a84f8213",
-  "landed_commit": "81f2ad9e466d0ecdda5b88cdabda3d463264efae",
+  "landed_commit": "8e62e3a92d1c47b748d48e028ed27d9bc7194907",
   "surface": "pages",
-  "note": "Squash-merge commit on the default branch that delivered the production collision instrumentation."
+  "note": "Squash-merge commit on the default branch that keeps selected-view labels clear of primary controls."
 }

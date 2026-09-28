@@ -1155,8 +1155,6 @@ def observe_a9(page, width: int, height: int) -> dict:
 def assert_letter_observations(
     a13_reads: list[dict],
     a9_reads: list[dict],
-    *,
-    require_selected_control_clearance: bool = True,
 ) -> None:
     all_city = [
         row for row in a13_reads
@@ -1294,35 +1292,34 @@ def assert_letter_observations(
         geometry = selected.get("geometry") or {}
         if geometry.get("placed_label_count", 0) < 1:
             raise AssertionError(f"A13 selected {expected!r} has no surrounding label population")
-        if require_selected_control_clearance:
-            if geometry.get("control_occlusion_label_box_count", 0) < 1:
-                raise AssertionError(f"A13 selected {expected!r} control population has no labels")
-            if geometry.get("primary_control_box_count", 0) < 1:
-                raise AssertionError(f"A13 selected {expected!r} primary control population was empty")
-            if geometry.get("obscured_by_primary_control_count") != 0:
-                raise AssertionError(
-                    f"A13 selected {expected!r} obscured ordinary labels: "
-                    f"{geometry.get('obscured_sample')!r}"
-                )
-            selected_control = selected.get("selected_name_control_occlusion") or {}
-            if selected_control.get("label_box_count") != 1:
-                raise AssertionError(f"A13 selected {expected!r} name box population was empty")
-            if selected_control.get("primary_control_box_count", 0) < 1:
-                raise AssertionError(f"A13 selected {expected!r} name control population was empty")
-            if selected_control.get("obscured_by_primary_control_count") != 0:
-                raise AssertionError(
-                    f"A13 selected name {expected!r} was obscured: "
-                    f"{selected_control.get('obscured_sample')!r}"
-                )
-            control_positive = selected.get("selected_control_occlusion_positive_control") or {}
-            if control_positive.get("label_box_count", 0) < 1:
-                raise AssertionError(f"A13 selected {expected!r} control positive population missing")
-            if control_positive.get("primary_control_box_count", 0) < 1:
-                raise AssertionError(f"A13 selected {expected!r} positive control population was empty")
-            if control_positive.get("obscured_by_primary_control_count", 0) < 1:
-                raise AssertionError(f"A13 selected {expected!r} control positive did not flip")
-            if not (control_positive.get("obscured_sample") or [{}])[0].get("label"):
-                raise AssertionError(f"A13 selected {expected!r} control positive label missing")
+        if geometry.get("control_occlusion_label_box_count", 0) < 1:
+            raise AssertionError(f"A13 selected {expected!r} control population has no labels")
+        if geometry.get("primary_control_box_count", 0) < 1:
+            raise AssertionError(f"A13 selected {expected!r} primary control population was empty")
+        if geometry.get("obscured_by_primary_control_count") != 0:
+            raise AssertionError(
+                f"A13 selected {expected!r} obscured ordinary labels: "
+                f"{geometry.get('obscured_sample')!r}"
+            )
+        selected_control = selected.get("selected_name_control_occlusion") or {}
+        if selected_control.get("label_box_count") != 1:
+            raise AssertionError(f"A13 selected {expected!r} name box population was empty")
+        if selected_control.get("primary_control_box_count", 0) < 1:
+            raise AssertionError(f"A13 selected {expected!r} name control population was empty")
+        if selected_control.get("obscured_by_primary_control_count") != 0:
+            raise AssertionError(
+                f"A13 selected name {expected!r} was obscured: "
+                f"{selected_control.get('obscured_sample')!r}"
+            )
+        control_positive = selected.get("selected_control_occlusion_positive_control") or {}
+        if control_positive.get("label_box_count", 0) < 1:
+            raise AssertionError(f"A13 selected {expected!r} control positive population missing")
+        if control_positive.get("primary_control_box_count", 0) < 1:
+            raise AssertionError(f"A13 selected {expected!r} positive control population was empty")
+        if control_positive.get("obscured_by_primary_control_count", 0) < 1:
+            raise AssertionError(f"A13 selected {expected!r} control positive did not flip")
+        if not (control_positive.get("obscured_sample") or [{}])[0].get("label"):
+            raise AssertionError(f"A13 selected {expected!r} control positive label missing")
         priority = selected.get("selected_priority_positive_control") or {}
         if expected not in (priority.get("selected_layer_rendered_labels") or []):
             raise AssertionError(f"A13 selected priority control lost {expected!r}")
@@ -2062,14 +2059,7 @@ def validate(receipt: dict) -> None:
     if current_contract:
         if len(selected) != len(SELECTED_SPECIMENS) * len(VIEWPORTS):
             raise AssertionError("missing A13 selected-neighborhood viewport observations")
-        selected_control_contract = (
-            (receipt.get("capture") or {}).get("selected_control_clearance_contract") == 1
-        )
-        assert_letter_observations(
-            a13,
-            a9,
-            require_selected_control_clearance=selected_control_contract,
-        )
+        assert_letter_observations(a13, a9)
         a13_request_ids = {
             validate_request_receipt(
                 row.get("request_receipt"),
