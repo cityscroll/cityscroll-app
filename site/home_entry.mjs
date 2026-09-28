@@ -13,6 +13,10 @@ function initLanguageSwitcher() {
   if ([...select.options].some((option) => option.value === window.LANG)) select.value = window.LANG;
   window.applyStrings?.();
   select.addEventListener("change", () => {
+    // The full application installs the richer handler once a hash route loads.
+    // Hand ownership over instead of applying the same selection twice and
+    // hiding the language transition from boot.mjs's dynamic-content repaint.
+    if (select.dataset.appLanguageSwitcher === "true") return;
     window.setLang?.(select.value);
   });
 }

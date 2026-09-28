@@ -46,8 +46,15 @@ class QuietHandler(SimpleHTTPRequestHandler):
     # Nothing here benefits from coalescing writes across a request boundary.
     disable_nagle_algorithm = True
 
-    def __init__(self, *args, pages_canonicalization=False, **kwargs):
+    def __init__(
+        self,
+        *args,
+        pages_canonicalization=False,
+        pages_root_query_fallback=False,
+        **kwargs,
+    ):
         self.pages_canonicalization = pages_canonicalization
+        self.pages_root_query_fallback = pages_root_query_fallback
         super().__init__(*args, **kwargs)
 
     def log_message(self, _format, *_args):
@@ -168,6 +175,14 @@ class QuietHandler(SimpleHTTPRequestHandler):
         # the production Worker route.
         if route in {"", "/"}:
             if query:
+                if self.pages_root_query_fallback:
+                    # Model the Pages fallback observed when a query-bearing
+                    # root request misses the exact Worker route. The browser
+                    # island must target the canonical /near-you/ document
+                    # instead of depending on root-query routing.
+                    self.path = f"/index.html?{query}"
+                    super().do_GET()
+                    return
                 self.send_response(302)
                 self.send_header("Location", f"/near-you/?{query}")
                 self.end_headers()
@@ -314,6 +329,11 @@ def main() -> int:
         help="reproduce Cloudflare Pages .html and index.html 308 redirects",
     )
     parser.add_argument(
+        "--pages-root-query-fallback",
+        action="store_true",
+        help="serve the Pages topic shell when a query-bearing root misses the exact Worker route",
+    )
+    parser.add_argument(
         "--readiness-timeout",
         type=positive_seconds,
         default=READINESS_TIMEOUT_SECONDS,
@@ -325,6 +345,7 @@ def main() -> int:
         QuietHandler,
         directory=args.directory,
         pages_canonicalization=args.pages_canonicalization,
+        pages_root_query_fallback=args.pages_root_query_fallback,
     )
     server = _RobustThreadingHTTPServer((args.host, args.port), handler)
     server.daemon_threads = True

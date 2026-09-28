@@ -307,14 +307,19 @@ def nav_metrics(page: Page) -> dict[str, float]:
 
 def wait_for_home(page: Page) -> None:
     # Homepage: static neutral topic entry. No source-backed list is part of home
-    # readiness; those lookups belong to an explicit document route.
+    # readiness; those lookups belong to an explicit document route. The local-entry
+    # module graph is intentionally idle-loaded, so wait for its mount before taking a
+    # wire inventory. Otherwise a sample can observe that graph halfway through loading
+    # and compare an incomplete file set with complete samples.
     page.wait_for_function(
         """() => {
           const cta = document.getElementById('homeCta');
           const topic = document.querySelector('[data-home-topic-entry] input[name="q"]');
+          const localEntry = document.querySelector('[data-home-local-entry]');
           return document.body?.dataset.primaryContext === 'home'
             && document.body?.dataset.homeReady === 'true'
-            && !!cta && !!topic && topic.getClientRects().length > 0;
+            && !!cta && !!topic && topic.getClientRects().length > 0
+            && (!localEntry || localEntry.dataset.homeLocalMounted === 'true');
         }"""
     )
     page.wait_for_timeout(120)
