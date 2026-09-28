@@ -1,9 +1,10 @@
 {
   "base": "https://cityscroll.org/",
   "capture_mode": "headless-playwright-production-served-site",
+  "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
   "captures": [
     {
-      "assertion": "Observed 38 residential neighborhood labels at 1440x900 with text-allow-overlap=False; geometry overlapping_label_pair_count=0, clipped_label_count=3, obscured_by_primary_control_count=0 via maplibre-collisionIndex-grid-bboxes+getBoundingClientRect.",
+      "assertion": "Observed 14 residential neighborhood labels at 1440x900 with text-allow-overlap=False; geometry overlapping_label_pair_count=0, collision_dropped_label_count=0 across 14 placed labels, frame_crossing_label_count=0 (permitted), obscured_by_primary_control_count=0 across 14 label boxes via maplibre-collisionIndex-grid-bboxes+getBoundingClientRect.",
       "data_vintage": "nta2020 26B",
       "file": null,
       "mode": "headless-playwright-production-enhanced",
@@ -11,68 +12,137 @@
       "observed": {
         "geometry": {
           "clip_surface": "map_host_canvas_and_overflow_hidden_ancestors",
-          "clipped_label_count": 3,
-          "measured_label_box_count": 38,
+          "collision_dropped_label_count": 0,
+          "collision_dropped_labels_sample": [],
+          "collision_source_label_count": 14,
+          "control_occlusion_label_box_count": 14,
+          "frame_crossing_label_count": 0,
+          "frame_crossing_labels_sample": [],
+          "measured_label_box_count": 14,
           "measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
           "obscured_by_primary_control_count": 0,
-          "overlapping_label_pair_count": 0
+          "overlapping_label_pair_count": 0,
+          "placed_label_count": 14,
+          "primary_control_box_count": 1
         },
         "map_runtime": "maplibre",
         "overlapping_label_pair_count": 0,
-        "residential_neighborhood_label_count": 38,
+        "positive_controls": {
+          "collision_drop": {
+            "collision_dropped_label_count": 13,
+            "collision_dropped_labels_sample": [
+              "Brighton Beach",
+              "Flatlands",
+              "Kew Gardens",
+              "Kingsbridge-Marble Hill",
+              "Laurelton",
+              "Lower East Side",
+              "Morrisania",
+              "Murray Hill-Broadway Flushing",
+              "New Dorp-Midland Beach",
+              "Queensbridge-Ravenswood-Dutch Kills",
+              "Rockaway Beach-Arverne-Edgemere",
+              "Tottenville-Charleston"
+            ],
+            "collision_source_label_count": 14,
+            "forced_text_padding_px": 160,
+            "placed_label_count": 1
+          },
+          "control_occlusion": {
+            "label_box_count": 14,
+            "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+            "obscured_by_primary_control_count": 2,
+            "obscured_sample": [
+              {
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+                "label": "Brownsville"
+              },
+              {
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+                "label": "Flatlands"
+              }
+            ]
+          },
+          "frame_crossing": {
+            "frame_crossing_label_count": 1,
+            "frame_crossing_labels_sample": [
+              "Brownsville"
+            ],
+            "moved_label": "Brownsville"
+          },
+          "overlap": {
+            "overlapping_label_pair_count": 1,
+            "overlapping_pairs_sample": [
+              [
+                "Brownsville",
+                "Queensbridge-Ravenswood-Dutch Kills"
+              ]
+            ]
+          }
+        },
+        "residential_neighborhood_label_count": 14,
         "residential_neighborhood_labels": [
-          "Annadale-Huguenot-Prince's Bay-Woodrow",
-          "Baisley Park",
-          "Bath Beach",
-          "Bay Ridge",
-          "Breezy Point-Belle Harbor-Rockaway Park-Broad Channel",
-          "Brooklyn Heights",
-          "Chelsea-Hudson Yards",
-          "Claremont Village-Claremont (East)",
-          "College Point",
-          "Cypress Hills",
-          "Douglaston-Little Neck",
-          "East New York-New Lots",
-          "Far Rockaway-Bayswater",
-          "Flatbush",
-          "Flushing-Willets Point",
-          "Glendale",
-          "Gravesend (South)",
-          "Great Kills-Eltingville",
-          "Greenpoint",
-          "Jamaica Estates-Holliswood",
-          "Madison",
-          "Mariner's Harbor-Arlington-Graniteville",
-          "Mott Haven-Port Morris",
+          "Brighton Beach",
+          "Brownsville",
+          "Flatlands",
+          "Kew Gardens",
+          "Kingsbridge-Marble Hill",
+          "Laurelton",
+          "Lower East Side",
+          "Morrisania",
+          "Murray Hill-Broadway Flushing",
           "New Dorp-Midland Beach",
-          "Park Slope",
-          "Pelham Bay-Country Club-City Island",
-          "Queensboro Hill",
-          "Rego Park",
-          "Riverdale-Spuyten Duyvil",
-          "South Jamaica",
-          "Springfield Gardens (South)-Brookville",
-          "Sunset Park (West)",
-          "Throgs Neck-Schuylerville",
-          "University Heights (North)-Fordham",
-          "Upper East Side-Yorkville",
-          "Westerleigh-Castleton Corners",
-          "Williamsburg",
-          "Woodside"
+          "Queensbridge-Ravenswood-Dutch Kills",
+          "Rockaway Beach-Arverne-Edgemere",
+          "Tottenville-Charleston",
+          "Westerleigh-Castleton Corners"
         ],
         "text_allow_overlap": false,
         "text_ignore_placement": false
       },
-      "revision": "217cde9ffa827500f06bcd6bca337491551a5740",
+      "request_receipt": {
+        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+        "observed_at": "2026-09-28T12:11:18.149642Z",
+        "page_load": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": null,
+            "cf-ray": "a422a64e6fad9e17-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:16 GMT",
+            "etag": null,
+            "last-modified": null
+          },
+          "http_status": 200,
+          "url": "https://cityscroll.org/near-you/"
+        },
+        "request_id": "near-you-desktop",
+        "served_manifest_read": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a422a65e39eb4b05-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:18 GMT",
+            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "last-modified": null
+          },
+          "http_status": 200,
+          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
+          "requested_at": "2026-09-28T12:11:18.069569Z",
+          "responded_at": "2026-09-28T12:11:18.149568Z",
+          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "url": "https://cityscroll.org/artifact-manifest.json"
+        }
+      },
+      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
       "route": "/near-you/",
-      "sha256": "d0dbf1a0058cb6b62bf7783edee749deb410e318bac9d9763a7500647eb4c1b8",
+      "sha256": "662e8223a1147a1a8edad032de1d042fe33de452c8723bed45ebfe799a56d7ea",
       "viewport": {
         "height": 900,
         "width": 1440
       }
     },
     {
-      "assertion": "Observed 15 residential neighborhood labels at 390x844 with text-allow-overlap=False; geometry overlapping_label_pair_count=0, clipped_label_count=6, obscured_by_primary_control_count=0 via maplibre-collisionIndex-grid-bboxes+getBoundingClientRect.",
+      "assertion": "Observed 8 residential neighborhood labels at 390x844 with text-allow-overlap=False; geometry overlapping_label_pair_count=0, collision_dropped_label_count=0 across 8 placed labels, frame_crossing_label_count=1 (permitted), obscured_by_primary_control_count=0 across 8 label boxes via maplibre-collisionIndex-grid-bboxes+getBoundingClientRect.",
       "data_vintage": "nta2020 26B",
       "file": null,
       "mode": "headless-playwright-production-enhanced",
@@ -80,49 +150,137 @@
       "observed": {
         "geometry": {
           "clip_surface": "map_host_canvas_and_overflow_hidden_ancestors",
-          "clipped_label_count": 6,
-          "measured_label_box_count": 15,
+          "collision_dropped_label_count": 0,
+          "collision_dropped_labels_sample": [],
+          "collision_source_label_count": 8,
+          "control_occlusion_label_box_count": 8,
+          "frame_crossing_label_count": 1,
+          "frame_crossing_labels_sample": [
+            "Tottenville-Charleston"
+          ],
+          "measured_label_box_count": 8,
           "measurement": "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect",
           "obscured_by_primary_control_count": 0,
-          "overlapping_label_pair_count": 0
+          "overlapping_label_pair_count": 0,
+          "placed_label_count": 8,
+          "primary_control_box_count": 1
         },
         "map_runtime": "maplibre",
         "overlapping_label_pair_count": 0,
-        "residential_neighborhood_label_count": 15,
+        "positive_controls": {
+          "collision_drop": {
+            "collision_dropped_label_count": 7,
+            "collision_dropped_labels_sample": [
+              "Bellerose",
+              "Kingsbridge-Marble Hill",
+              "Mariner's Harbor-Arlington-Graniteville",
+              "Queensbridge-Ravenswood-Dutch Kills",
+              "Rockaway Beach-Arverne-Edgemere",
+              "Rosedale",
+              "Tottenville-Charleston"
+            ],
+            "collision_source_label_count": 8,
+            "forced_text_padding_px": 160,
+            "placed_label_count": 1
+          },
+          "control_occlusion": {
+            "label_box_count": 8,
+            "moved_control_class": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+            "obscured_by_primary_control_count": 3,
+            "obscured_sample": [
+              {
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+                "label": "Brownsville"
+              },
+              {
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+                "label": "Rockaway Beach-Arverne-Edgemere"
+              },
+              {
+                "control": "maplibregl-ctrl maplibregl-ctrl-attrib maplibregl-compact maplibregl-compact-show",
+                "label": "Rosedale"
+              }
+            ]
+          },
+          "frame_crossing": {
+            "frame_crossing_label_count": 2,
+            "frame_crossing_labels_sample": [
+              "Brownsville",
+              "Tottenville-Charleston"
+            ],
+            "moved_label": "Brownsville"
+          },
+          "overlap": {
+            "overlapping_label_pair_count": 1,
+            "overlapping_pairs_sample": [
+              [
+                "Brownsville",
+                "Queensbridge-Ravenswood-Dutch Kills"
+              ]
+            ]
+          }
+        },
+        "residential_neighborhood_label_count": 8,
         "residential_neighborhood_labels": [
-          "Bensonhurst",
-          "Brighton Beach",
-          "East Flushing",
-          "East New York (North)",
-          "Far Rockaway-Bayswater",
-          "Great Kills-Eltingville",
-          "Greenpoint",
-          "Hell's Kitchen",
-          "Jamaica",
-          "Mott Haven-Port Morris",
-          "Mount Hope",
-          "Norwood",
-          "South Williamsburg",
-          "Sunset Park (Central)",
+          "Bellerose",
+          "Brownsville",
+          "Kingsbridge-Marble Hill",
+          "Mariner's Harbor-Arlington-Graniteville",
+          "Queensbridge-Ravenswood-Dutch Kills",
+          "Rockaway Beach-Arverne-Edgemere",
+          "Rosedale",
           "Tottenville-Charleston"
         ],
         "text_allow_overlap": false,
         "text_ignore_placement": false
       },
-      "revision": "217cde9ffa827500f06bcd6bca337491551a5740",
+      "request_receipt": {
+        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+        "observed_at": "2026-09-28T12:11:25.145781Z",
+        "page_load": {
+          "headers": {
+            "age": "7",
+            "cf-cache-status": "HIT",
+            "cf-ray": "a422a67eb8e0aded-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:23 GMT",
+            "etag": null,
+            "last-modified": "Mon, 28 Sep 2026 12:11:16 GMT"
+          },
+          "http_status": 200,
+          "url": "https://cityscroll.org/near-you/"
+        },
+        "request_id": "near-you-mobile",
+        "served_manifest_read": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a422a689d8716a4e-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:25 GMT",
+            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "last-modified": null
+          },
+          "http_status": 200,
+          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
+          "requested_at": "2026-09-28T12:11:25.050991Z",
+          "responded_at": "2026-09-28T12:11:25.145758Z",
+          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "url": "https://cityscroll.org/artifact-manifest.json"
+        }
+      },
+      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
       "route": "/near-you/",
-      "sha256": "5d78bdf31f25fdb8b35fc5df123a4898fa813984e6e830a38b7cb698a3cda3a0",
+      "sha256": "e932f99e97cc9bf650d0e24ea98ddfbde3e9a3f34f02097d98d6ecbc95402b64",
       "viewport": {
         "height": 844,
         "width": 390
       }
     },
     {
-      "assertion": "Selected neighborhood 'Greenpoint' rendered on /near-you/?geo=nta2020%3ABK0101&surface=map at 1440x900 (layer labels=['Greenpoint'], ui='Greenpoint').",
+      "assertion": "Selected neighborhood 'Greenpoint' rendered on /near-you/?geo=nta2020%3ABK0101&surface=map at 1440x900 (layer labels=['Greenpoint'], surrounding placed labels=2, ui='Greenpoint'); the forced-collision control retained the selected label while dropping an ordinary label.",
       "data_vintage": "nta2020 26B",
       "file": null,
       "mode": "headless-playwright-production-selected",
-      "name": "a13-selected-desktop",
+      "name": "a13-selected-greenpoint-1440",
       "observed": {
         "map_runtime": "maplibre",
         "selected_heading": "Greenpoint",
@@ -146,63 +304,319 @@
           "label": "Greenpoint"
         },
         "selected_neighborhood_label": "Greenpoint",
-        "selected_ui_label": "Greenpoint"
+        "selected_priority_positive_control": {
+          "forced_text_padding_px": 160,
+          "ordinary_collision_dropped_label_count": 1,
+          "ordinary_collision_dropped_labels_sample": [
+            "South Williamsburg"
+          ],
+          "selected_label": "Greenpoint",
+          "selected_layer_rendered_labels": [
+            "Greenpoint"
+          ],
+          "surrounding_collision_source_label_count": 2,
+          "surrounding_placed_label_count": 1
+        },
+        "selected_ui_label": "Greenpoint",
+        "surrounding_placed_label_count": 2
       },
-      "revision": "217cde9ffa827500f06bcd6bca337491551a5740",
+      "request_receipt": {
+        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+        "observed_at": "2026-09-28T12:11:32.495365Z",
+        "page_load": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": null,
+            "cf-ray": "a422a6aa48d2f9a9-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:30 GMT",
+            "etag": null,
+            "last-modified": null
+          },
+          "http_status": 200,
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK0101&surface=map"
+        },
+        "request_id": "near-you-selected-greenpoint-1440",
+        "served_manifest_read": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a422a6b7c9da7d26-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:32 GMT",
+            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "last-modified": null
+          },
+          "http_status": 200,
+          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
+          "requested_at": "2026-09-28T12:11:32.403745Z",
+          "responded_at": "2026-09-28T12:11:32.495344Z",
+          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "url": "https://cityscroll.org/artifact-manifest.json"
+        }
+      },
+      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
       "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
-      "sha256": "3e76a689ea0ee806bdd9c7793941fbf746fd3decec79546361eba4cfed4c8f54",
+      "sha256": "c09cb955faa1d4be494e96ac8804186142aa987f007e90346cf440148d8cf761",
       "viewport": {
         "height": 900,
         "width": 1440
       }
     },
     {
-      "assertion": "Focus reached the map at index 15 and left at index 19; Escape+Tab left the map region in 4 Tab step(s); directory links provide keyboard/tap equivalents for neighborhood names.",
+      "assertion": "Selected neighborhood 'Greenpoint' rendered on /near-you/?geo=nta2020%3ABK0101&surface=map at 390x844 (layer labels=['Greenpoint'], surrounding placed labels=7, ui='Greenpoint'); the forced-collision control retained the selected label while dropping an ordinary label.",
       "data_vintage": "nta2020 26B",
       "file": null,
-      "mode": "headless-playwright-production-keyboard",
-      "name": "a9-desktop",
+      "mode": "headless-playwright-production-selected",
+      "name": "a13-selected-greenpoint-390",
       "observed": {
-        "area_links_with_href": 262,
-        "escape_path_key": "Focus #near-map-enhanced → Escape (clears hover/focus ring) → Tab until focus leaves the map region",
-        "exit_map_focus_index": 19,
-        "first_map_focus_index": 15,
-        "focus_trap_observed": false,
-        "map_region_focus_steps": [
-          {
-            "ariaLabel": null,
-            "id": "near-map-enhanced",
-            "tag": "DIV",
-            "text": "© OpenStreetMap © CARTO | MapLibre"
-          },
-          {
-            "ariaLabel": "Map",
-            "id": null,
-            "tag": "CANVAS",
-            "text": "Map"
-          },
-          {
-            "ariaLabel": "Toggle attribution",
-            "id": null,
-            "tag": "SUMMARY",
-            "text": "Toggle attribution"
-          },
-          {
-            "ariaLabel": null,
-            "id": null,
-            "tag": "A",
-            "text": "MapLibre"
-          }
+        "map_runtime": "maplibre",
+        "selected_heading": "Greenpoint",
+        "selected_layer_rendered_label_count": 1,
+        "selected_layer_rendered_labels": [
+          "Greenpoint"
         ],
-        "tabs_from_map_host_to_leave_region": 4,
-        "title_only_instruction_count": 0
+        "selected_name_box": {
+          "box": {
+            "bottom": 708.140625,
+            "height": 15.59375,
+            "left": 88.3671875,
+            "right": 161.6328125,
+            "top": 692.546875,
+            "width": 73.265625
+          },
+          "hit": {
+            "x": 100,
+            "y": 280
+          },
+          "label": "Greenpoint"
+        },
+        "selected_neighborhood_label": "Greenpoint",
+        "selected_priority_positive_control": {
+          "forced_text_padding_px": 160,
+          "ordinary_collision_dropped_label_count": 1,
+          "ordinary_collision_dropped_labels_sample": [
+            "South Williamsburg"
+          ],
+          "selected_label": "Greenpoint",
+          "selected_layer_rendered_labels": [
+            "Greenpoint"
+          ],
+          "surrounding_collision_source_label_count": 2,
+          "surrounding_placed_label_count": 1
+        },
+        "selected_ui_label": "Greenpoint",
+        "surrounding_placed_label_count": 7
       },
-      "revision": "217cde9ffa827500f06bcd6bca337491551a5740",
-      "route": "/near-you/",
-      "sha256": "94d494fc762082860f5eab77898f5362d841079fcd504c8235839e78b69e2f92",
+      "request_receipt": {
+        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+        "observed_at": "2026-09-28T12:11:36.914518Z",
+        "page_load": {
+          "headers": {
+            "age": "4",
+            "cf-cache-status": "HIT",
+            "cf-ray": "a422a6c70a778c24-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:34 GMT",
+            "etag": null,
+            "last-modified": "Mon, 28 Sep 2026 12:11:30 GMT"
+          },
+          "http_status": 200,
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3ABK0101&surface=map"
+        },
+        "request_id": "near-you-selected-greenpoint-390",
+        "served_manifest_read": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a422a6d38bf0ff90-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:36 GMT",
+            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "last-modified": null
+          },
+          "http_status": 200,
+          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
+          "requested_at": "2026-09-28T12:11:36.821284Z",
+          "responded_at": "2026-09-28T12:11:36.914464Z",
+          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "url": "https://cityscroll.org/artifact-manifest.json"
+        }
+      },
+      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+      "sha256": "cecec004a06aec8adb605edb052c5fefd509ceba47232dd318762b9621714195",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "assertion": "Selected neighborhood 'East Village' rendered on /near-you/?geo=nta2020%3AMN0303&surface=map at 1440x900 (layer labels=['East Village'], surrounding placed labels=5, ui='East Village'); the forced-collision control retained the selected label while dropping an ordinary label.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
+      "mode": "headless-playwright-production-selected",
+      "name": "a13-selected-east-village-1440",
+      "observed": {
+        "map_runtime": "maplibre",
+        "selected_heading": "East Village",
+        "selected_layer_rendered_label_count": 1,
+        "selected_layer_rendered_labels": [
+          "East Village"
+        ],
+        "selected_name_box": {
+          "box": {
+            "bottom": 638.296875,
+            "height": 15.59375,
+            "left": 643.765625,
+            "right": 718.234375,
+            "top": 622.703125,
+            "width": 74.46875
+          },
+          "hit": {
+            "x": 300,
+            "y": 280
+          },
+          "label": "East Village"
+        },
+        "selected_neighborhood_label": "East Village",
+        "selected_priority_positive_control": {
+          "forced_text_padding_px": 160,
+          "ordinary_collision_dropped_label_count": 1,
+          "ordinary_collision_dropped_labels_sample": [
+            "Williamsburg"
+          ],
+          "selected_label": "East Village",
+          "selected_layer_rendered_labels": [
+            "East Village"
+          ],
+          "surrounding_collision_source_label_count": 2,
+          "surrounding_placed_label_count": 1
+        },
+        "selected_ui_label": "East Village",
+        "surrounding_placed_label_count": 5
+      },
+      "request_receipt": {
+        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+        "observed_at": "2026-09-28T12:11:41.610159Z",
+        "page_load": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": null,
+            "cf-ray": "a422a6e2ab2e424c-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:39 GMT",
+            "etag": null,
+            "last-modified": null
+          },
+          "http_status": 200,
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0303&surface=map"
+        },
+        "request_id": "near-you-selected-east-village-1440",
+        "served_manifest_read": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a422a6f0ed8ec688-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:41 GMT",
+            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "last-modified": null
+          },
+          "http_status": 200,
+          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
+          "requested_at": "2026-09-28T12:11:41.535609Z",
+          "responded_at": "2026-09-28T12:11:41.610122Z",
+          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "url": "https://cityscroll.org/artifact-manifest.json"
+        }
+      },
+      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "route": "/near-you/?geo=nta2020%3AMN0303&surface=map",
+      "sha256": "f827dad2d799d46aa72454e392ffa8377e7c24c90f2750cb3bc211cd414e45eb",
       "viewport": {
         "height": 900,
         "width": 1440
+      }
+    },
+    {
+      "assertion": "Selected neighborhood 'East Village' rendered on /near-you/?geo=nta2020%3AMN0303&surface=map at 390x844 (layer labels=['East Village'], surrounding placed labels=5, ui='East Village'); the forced-collision control retained the selected label while dropping an ordinary label.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
+      "mode": "headless-playwright-production-selected",
+      "name": "a13-selected-east-village-390",
+      "observed": {
+        "map_runtime": "maplibre",
+        "selected_heading": "East Village",
+        "selected_layer_rendered_label_count": 1,
+        "selected_layer_rendered_labels": [
+          "East Village"
+        ],
+        "selected_name_box": {
+          "box": {
+            "bottom": 708.140625,
+            "height": 15.59375,
+            "left": 67.765625,
+            "right": 142.234375,
+            "top": 692.546875,
+            "width": 74.46875
+          },
+          "hit": {
+            "x": 80,
+            "y": 280
+          },
+          "label": "East Village"
+        },
+        "selected_neighborhood_label": "East Village",
+        "selected_priority_positive_control": {
+          "forced_text_padding_px": 160,
+          "ordinary_collision_dropped_label_count": 1,
+          "ordinary_collision_dropped_labels_sample": [
+            "Williamsburg"
+          ],
+          "selected_label": "East Village",
+          "selected_layer_rendered_labels": [
+            "East Village"
+          ],
+          "surrounding_collision_source_label_count": 2,
+          "surrounding_placed_label_count": 1
+        },
+        "selected_ui_label": "East Village",
+        "surrounding_placed_label_count": 5
+      },
+      "request_receipt": {
+        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+        "observed_at": "2026-09-28T12:11:46.029382Z",
+        "page_load": {
+          "headers": {
+            "age": "4",
+            "cf-cache-status": "HIT",
+            "cf-ray": "a422a7001cd32ef5-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:44 GMT",
+            "etag": null,
+            "last-modified": "Mon, 28 Sep 2026 12:11:39 GMT"
+          },
+          "http_status": 200,
+          "url": "https://cityscroll.org/near-you/?geo=nta2020%3AMN0303&surface=map"
+        },
+        "request_id": "near-you-selected-east-village-390",
+        "served_manifest_read": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a422a70c58300c74-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:46 GMT",
+            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "last-modified": null
+          },
+          "http_status": 200,
+          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
+          "requested_at": "2026-09-28T12:11:45.921733Z",
+          "responded_at": "2026-09-28T12:11:46.029358Z",
+          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "url": "https://cityscroll.org/artifact-manifest.json"
+        }
+      },
+      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "route": "/near-you/?geo=nta2020%3AMN0303&surface=map",
+      "sha256": "f827dad2d799d46aa72454e392ffa8377e7c24c90f2750cb3bc211cd414e45eb",
+      "viewport": {
+        "height": 844,
+        "width": 390
       }
     },
     {
@@ -210,7 +624,7 @@
       "data_vintage": "nta2020 26B",
       "file": null,
       "mode": "headless-playwright-production-keyboard",
-      "name": "a9-mobile",
+      "name": "a9-desktop",
       "observed": {
         "area_links_with_href": 262,
         "escape_path_key": "Focus #near-map-enhanced → Escape (clears hover/focus ring) → Tab until focus leaves the map region",
@@ -246,9 +660,124 @@
         "tabs_from_map_host_to_leave_region": 4,
         "title_only_instruction_count": 0
       },
-      "revision": "217cde9ffa827500f06bcd6bca337491551a5740",
+      "request_receipt": {
+        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+        "observed_at": "2026-09-28T12:11:18.149642Z",
+        "page_load": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": null,
+            "cf-ray": "a422a64e6fad9e17-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:16 GMT",
+            "etag": null,
+            "last-modified": null
+          },
+          "http_status": 200,
+          "url": "https://cityscroll.org/near-you/"
+        },
+        "request_id": "near-you-desktop",
+        "served_manifest_read": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a422a65e39eb4b05-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:18 GMT",
+            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "last-modified": null
+          },
+          "http_status": 200,
+          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
+          "requested_at": "2026-09-28T12:11:18.069569Z",
+          "responded_at": "2026-09-28T12:11:18.149568Z",
+          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "url": "https://cityscroll.org/artifact-manifest.json"
+        }
+      },
+      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
       "route": "/near-you/",
-      "sha256": "569dc6ae0c2b233bd7116d1f8f1e56bc979348f270b1e9dee1095816cb2cf00a",
+      "sha256": "d7291d81b401f391814dda1919f3b1b69a0baa9bdfd5faa4b8f7055313780796",
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "assertion": "Focus reached the map at index 17 and left at index 21; Escape+Tab left the map region in 4 Tab step(s); directory links provide keyboard/tap equivalents for neighborhood names.",
+      "data_vintage": "nta2020 26B",
+      "file": null,
+      "mode": "headless-playwright-production-keyboard",
+      "name": "a9-mobile",
+      "observed": {
+        "area_links_with_href": 262,
+        "escape_path_key": "Focus #near-map-enhanced → Escape (clears hover/focus ring) → Tab until focus leaves the map region",
+        "exit_map_focus_index": 21,
+        "first_map_focus_index": 17,
+        "focus_trap_observed": false,
+        "map_region_focus_steps": [
+          {
+            "ariaLabel": null,
+            "id": "near-map-enhanced",
+            "tag": "DIV",
+            "text": "© OpenStreetMap © CARTO | MapLibre"
+          },
+          {
+            "ariaLabel": "Map",
+            "id": null,
+            "tag": "CANVAS",
+            "text": "Map"
+          },
+          {
+            "ariaLabel": "Toggle attribution",
+            "id": null,
+            "tag": "SUMMARY",
+            "text": "Toggle attribution"
+          },
+          {
+            "ariaLabel": null,
+            "id": null,
+            "tag": "A",
+            "text": "MapLibre"
+          }
+        ],
+        "tabs_from_map_host_to_leave_region": 4,
+        "title_only_instruction_count": 0
+      },
+      "request_receipt": {
+        "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+        "observed_at": "2026-09-28T12:11:25.145781Z",
+        "page_load": {
+          "headers": {
+            "age": "7",
+            "cf-cache-status": "HIT",
+            "cf-ray": "a422a67eb8e0aded-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:23 GMT",
+            "etag": null,
+            "last-modified": "Mon, 28 Sep 2026 12:11:16 GMT"
+          },
+          "http_status": 200,
+          "url": "https://cityscroll.org/near-you/"
+        },
+        "request_id": "near-you-mobile",
+        "served_manifest_read": {
+          "headers": {
+            "age": null,
+            "cf-cache-status": "DYNAMIC",
+            "cf-ray": "a422a689d8716a4e-EWR",
+            "date": "Mon, 28 Sep 2026 12:11:25 GMT",
+            "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+            "last-modified": null
+          },
+          "http_status": 200,
+          "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
+          "requested_at": "2026-09-28T12:11:25.050991Z",
+          "responded_at": "2026-09-28T12:11:25.145758Z",
+          "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+          "url": "https://cityscroll.org/artifact-manifest.json"
+        }
+      },
+      "revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "route": "/near-you/",
+      "sha256": "760e7362c819edff5fb986738b2448037dfa17ab8db0e1be5e3b373962195d45",
       "viewport": {
         "height": 844,
         "width": 390
@@ -258,7 +787,7 @@
   "condition": "Production base https://cityscroll.org/ after deployment; no image binary is committed.",
   "data_vintage": "nta2020 26B",
   "feature": "near-you-shell-readback",
-  "grounded_at": "217cde9ffa827500f06bcd6bca337491551a5740",
+  "grounded_at": "0e6763ff949009820a1178c19366cd246d50964f",
   "image_binaries_committed": false,
   "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed.",
   "producer": {
@@ -270,9 +799,48 @@
     "schema": "cityscroll.near_you_shell_production_read.v1"
   },
   "public_alias": "ced62a84f8213",
-  "repository_revision": "217cde9ffa827500f06bcd6bca337491551a5740",
-  "revision": "217cde9ffa827500f06bcd6bca337491551a5740",
+  "repository_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+  "revision": "0e6763ff949009820a1178c19366cd246d50964f",
   "revision_format": "served artifact-manifest source_commit_sha",
+  "run_receipt": {
+    "capture_run_id": "e1445333-ac2a-43fb-b31c-b3fc788573fa",
+    "final_served_manifest": {
+      "headers": {
+        "age": null,
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a422a71b5c86b9c6-EWR",
+        "date": "Mon, 28 Sep 2026 12:11:48 GMT",
+        "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+        "last-modified": null
+      },
+      "http_status": 200,
+      "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
+      "requested_at": "2026-09-28T12:11:48.339584Z",
+      "responded_at": "2026-09-28T12:11:48.413135Z",
+      "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "url": "https://cityscroll.org/artifact-manifest.json"
+    },
+    "initial_served_manifest": {
+      "headers": {
+        "age": null,
+        "cf-cache-status": "DYNAMIC",
+        "cf-ray": "a422a6465aa9421d-EWR",
+        "date": "Mon, 28 Sep 2026 12:11:14 GMT",
+        "etag": "\"c5d74f99d726df3c8305ed5f267dbdd3\"",
+        "last-modified": null
+      },
+      "http_status": 200,
+      "payload_sha256": "130f886b2b3f305bdfbc0b3790a4b64295e954d18f90eeb0beeb5fd3852e8e95",
+      "requested_at": "2026-09-28T12:11:14.123416Z",
+      "responded_at": "2026-09-28T12:11:14.354214Z",
+      "served_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+      "url": "https://cityscroll.org/artifact-manifest.json"
+    },
+    "request_count": 6,
+    "run_finished_at": "2026-09-28T12:11:48.413164Z",
+    "run_started_at": "2026-09-28T12:11:14.123216Z",
+    "served_revision": "0e6763ff949009820a1178c19366cd246d50964f"
+  },
   "schema": "cityscroll.render_capture_manifest.v1",
   "surface": "Near You map-first shell"
 }

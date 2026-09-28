@@ -28,16 +28,24 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
+
+from deployed_capture_ancestor import (
+    load_recorded_delivery,
+    resolve_landed_ancestor,
+    revision_contains_ancestor,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRATCH = Path(os.environ.get("FM_TASK_SCRATCH") or "/tmp") / "near-you-shell-production-read"
 OUT_DIR = ROOT / "docs/evidence/near-you-shell-readback"
 READBACK = OUT_DIR / "read-back.json"
 MANIFEST = OUT_DIR / "capture-manifest.json"
+DELIVERY = OUT_DIR / "delivery.json"
 
 PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
 ARTIFACT_MANIFEST_PATH = "/artifact-manifest.json"
@@ -47,6 +55,8 @@ PUBLIC_ALIAS = "ced62a84f8213"
 SCHEMA = "cityscroll.near_you_shell_production_read.v1"
 DATA_VINTAGE = "nta2020 26B"
 ENTRY_ROUTE = "/near-you/"
+REQUIRED_ANCESTOR = load_recorded_delivery(DELIVERY)
+RECEIPT_HEADER_KEYS = ("date", "cf-ray", "cf-cache-status", "age", "last-modified", "etag")
 
 VIEWPORTS = (
     ("desktop", 1440, 900, 12, 40),
@@ -133,20 +143,45 @@ def resolve_base() -> str:
     return base
 
 
-def read_artifact_manifest(base: str) -> dict:
+def now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def read_artifact_manifest(base: str) -> tuple[dict, dict]:
     url = f"{normalize_base(base).rstrip('/')}{ARTIFACT_MANIFEST_PATH}"
     request = urllib.request.Request(
         url,
         headers={"User-Agent": ARTIFACT_UA, "Accept": "application/json"},
     )
+    requested_at = now_iso()
     try:
         with urllib.request.urlopen(request, timeout=20) as response:
-            payload = json.load(response)
-    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError) as error:
+            raw = response.read()
+            payload = json.loads(raw.decode("utf-8"))
+            headers = {
+                key: response.headers.get(key)
+                for key in RECEIPT_HEADER_KEYS
+            }
+            receipt = {
+                "url": response.geturl(),
+                "http_status": response.status,
+                "requested_at": requested_at,
+                "responded_at": now_iso(),
+                "headers": headers,
+                "payload_sha256": hashlib.sha256(raw).hexdigest(),
+            }
+    except (
+        urllib.error.URLError,
+        TimeoutError,
+        json.JSONDecodeError,
+        UnicodeDecodeError,
+        OSError,
+    ) as error:
         raise RuntimeError(f"deployed build revision unavailable at {url}: {error}") from error
     if not isinstance(payload, dict):
         raise RuntimeError(f"artifact-manifest at {url} is not an object")
-    return payload
+    receipt["served_revision"] = deployed_revision(payload)
+    return payload, receipt
 
 
 def deployed_revision(manifest: dict) -> str:
@@ -154,6 +189,52 @@ def deployed_revision(manifest: dict) -> str:
     if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
         raise RuntimeError("artifact-manifest lacks a 40-hex source_commit_sha")
     return sha
+
+
+def page_load_receipt(response) -> dict:
+    headers: dict[str, str | None] = {}
+    status = None
+    url = None
+    if response is not None:
+        try:
+            raw = response.headers
+        except Exception:  # noqa: BLE001
+            raw = {}
+        headers = {key: raw.get(key) or None for key in RECEIPT_HEADER_KEYS}
+        try:
+            status = response.status
+        except Exception:  # noqa: BLE001
+            status = None
+        try:
+            url = response.url
+        except Exception:  # noqa: BLE001
+            url = None
+    return {"url": url, "http_status": status, "headers": headers}
+
+
+def request_receipt(
+    *,
+    base: str,
+    response,
+    expected_revision: str,
+    capture_run_id: str,
+    request_id: str,
+) -> dict:
+    """Bind one production navigation to a fresh served-manifest read."""
+    _artifact, manifest_read = read_artifact_manifest(base)
+    observed_revision = manifest_read["served_revision"]
+    if observed_revision != expected_revision:
+        raise AssertionError(
+            f"served revision changed during capture request {request_id}: "
+            f"{observed_revision} != {expected_revision}"
+        )
+    return {
+        "capture_run_id": capture_run_id,
+        "request_id": request_id,
+        "observed_at": now_iso(),
+        "page_load": page_load_receipt(response),
+        "served_manifest_read": manifest_read,
+    }
 
 
 def write_json(path: Path, payload: dict) -> None:
@@ -1054,6 +1135,10 @@ def assert_letter_observations(
             "measured_label_box_count"
         ):
             raise AssertionError(f"A13 {name} control occlusion population drifted")
+        if not isinstance(geometry.get("primary_control_box_count"), int) or geometry.get(
+            "primary_control_box_count", 0
+        ) < 1:
+            raise AssertionError(f"A13 {name} primary control-box population was empty")
         if geometry.get("obscured_by_primary_control_count") != 0:
             raise AssertionError(
                 f"A13 {name} obscured_by_primary_control_count was "
@@ -1154,14 +1239,24 @@ def assert_letter_observations(
             )
 
 
-def _open_near_you(browser, base: str, *, width: int, height: int, route: str, name: str):
+def _open_near_you(
+    browser,
+    base: str,
+    *,
+    width: int,
+    height: int,
+    route: str,
+    name: str,
+    revision: str,
+    capture_run_id: str,
+):
     context = browser.new_context(
         viewport={"width": width, "height": height},
         user_agent="Mozilla/5.0 (compatible; CityScrollShellCapture/1.0)",
     )
     page = context.new_page()
     page.add_init_script(MAP_HOOK_INIT)
-    page.goto(
+    response = page.goto(
         f"{normalize_base(base).rstrip('/')}{route}",
         wait_until="domcontentloaded",
         timeout=60000,
@@ -1181,18 +1276,41 @@ def _open_near_you(browser, base: str, *, width: int, height: int, route: str, n
         )
         context.close()
         raise AssertionError(f"{name}: enhanced labels missing: {diagnostics}") from error
-    return context, page
+    receipt = request_receipt(
+        base=base,
+        response=response,
+        expected_revision=revision,
+        capture_run_id=capture_run_id,
+        request_id=f"near-you-{name}",
+    )
+    return context, page, receipt
 
 
-def capture_viewport(browser, base: str, rev: str, name: str, width: int, height: int) -> tuple[dict, dict]:
-    context, page = _open_near_you(
-        browser, base, width=width, height=height, route=ENTRY_ROUTE, name=name
+def capture_viewport(
+    browser,
+    base: str,
+    rev: str,
+    capture_run_id: str,
+    name: str,
+    width: int,
+    height: int,
+) -> tuple[dict, dict]:
+    context, page, receipt = _open_near_you(
+        browser,
+        base,
+        width=width,
+        height=height,
+        route=ENTRY_ROUTE,
+        name=name,
+        revision=rev,
+        capture_run_id=capture_run_id,
     )
 
     a13 = observe_a13(page, width, height, route=ENTRY_ROUTE)
     a13["name"] = f"a13-{name}"
     a13["revision"] = rev
     a13["data_vintage"] = DATA_VINTAGE
+    a13["request_receipt"] = receipt
     a13["positive_controls"] = exercise_a13_positive_controls(
         page, width, height, route=ENTRY_ROUTE
     )
@@ -1201,6 +1319,7 @@ def capture_viewport(browser, base: str, rev: str, name: str, width: int, height
     a9["name"] = f"a9-{name}"
     a9["revision"] = rev
     a9["data_vintage"] = DATA_VINTAGE
+    a9["request_receipt"] = receipt
 
     SCRATCH.mkdir(parents=True, exist_ok=True)
     page.screenshot(
@@ -1216,19 +1335,22 @@ def capture_selected(
     browser,
     base: str,
     rev: str,
+    capture_run_id: str,
     specimen: dict,
     *,
     width: int,
     height: int,
 ) -> dict:
     capture_name = f"selected-{specimen['name']}-{width}"
-    context, page = _open_near_you(
+    context, page, receipt = _open_near_you(
         browser,
         base,
         width=width,
         height=height,
         route=specimen["route"],
         name=capture_name,
+        revision=rev,
+        capture_run_id=capture_run_id,
     )
     # Selected routes can show zero ordinary labels while the camera flies;
     # wait until the selected layer or UI label is present.
@@ -1259,6 +1381,7 @@ def capture_selected(
     a13["name"] = f"a13-{capture_name}"
     a13["revision"] = rev
     a13["data_vintage"] = DATA_VINTAGE
+    a13["request_receipt"] = receipt
     a13["selected_priority_positive_control"] = exercise_selected_priority_positive_control(
         page,
         width,
@@ -1278,11 +1401,23 @@ def capture_selected(
 
 def capture() -> dict:
     base = resolve_base()
-    artifact = read_artifact_manifest(base)
+    capture_run_id = str(uuid.uuid4())
+    run_started_at = now_iso()
+    artifact, initial_manifest_receipt = read_artifact_manifest(base)
     rev = deployed_revision(artifact)
+    resolve_landed_ancestor(REQUIRED_ANCESTOR, cwd=ROOT)
+    if not revision_contains_ancestor(REQUIRED_ANCESTOR, rev, cwd=ROOT):
+        raise RuntimeError(
+            f"served page revision {rev} does not contain required ancestor "
+            f"{REQUIRED_ANCESTOR}; wait for the instrumented Pages deployment"
+        )
     generated_at = artifact.get("generated_at")
-    observed_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-    print(f"production base={base} revision={rev} generated_at={generated_at}", flush=True)
+    observed_at = run_started_at
+    print(
+        f"production base={base} revision={rev} generated_at={generated_at} "
+        f"capture_run_id={capture_run_id}",
+        flush=True,
+    )
 
     a13_reads: list[dict] = []
     a9_reads: list[dict] = []
@@ -1291,7 +1426,9 @@ def capture() -> dict:
         browser = playwright.chromium.launch(headless=True, args=list(WEBGL_BROWSER_ARGS))
         for name, width, height, _minimum, _maximum in VIEWPORTS:
             print(f"capture {name} {width}x{height}", flush=True)
-            a13, a9 = capture_viewport(browser, base, rev, name, width, height)
+            a13, a9 = capture_viewport(
+                browser, base, rev, capture_run_id, name, width, height
+            )
             a13_reads.append(a13)
             a9_reads.append(a9)
             geometry = a13.get("geometry") or {}
@@ -1320,6 +1457,7 @@ def capture() -> dict:
                     browser,
                     base,
                     rev,
+                    capture_run_id,
                     specimen,
                     width=width,
                     height=height,
@@ -1335,6 +1473,25 @@ def capture() -> dict:
         browser.close()
 
     assert_letter_observations(a13_reads, a9_reads)
+    _final_artifact, final_manifest_receipt = read_artifact_manifest(base)
+    if final_manifest_receipt["served_revision"] != rev:
+        raise AssertionError(
+            "served revision changed before capture completion: "
+            f"{final_manifest_receipt['served_revision']} != {rev}"
+        )
+    request_ids = {
+        row["request_receipt"]["request_id"]
+        for row in a13_reads
+    }
+    run_receipt = {
+        "capture_run_id": capture_run_id,
+        "run_started_at": run_started_at,
+        "run_finished_at": now_iso(),
+        "served_revision": rev,
+        "request_count": len(request_ids),
+        "initial_served_manifest": initial_manifest_receipt,
+        "final_served_manifest": final_manifest_receipt,
+    }
 
     receipt = {
         "schema": SCHEMA,
@@ -1348,7 +1505,11 @@ def capture() -> dict:
             "generated_at": generated_at,
             "deployment_at": artifact.get("deployment_at") or generated_at,
             "manifest_sha256": sha256_text(json.dumps(artifact, sort_keys=True)),
+            "required_ancestor": REQUIRED_ANCESTOR,
+            "required_ancestor_contained": True,
         },
+        "capture_run_id": capture_run_id,
+        "run_receipt": run_receipt,
         "capture": {
             "tool": "tools/capture_near_you_shell_production_read.py",
             "browser": "chromium",
@@ -1481,6 +1642,7 @@ def build_manifest(receipt: dict) -> dict:
                     "control_occlusion_label_box_count": geometry.get(
                         "control_occlusion_label_box_count"
                     ),
+                    "primary_control_box_count": geometry.get("primary_control_box_count"),
                     "clip_surface": geometry.get("clip_surface"),
                 },
                 "positive_controls": read.get("positive_controls"),
@@ -1513,6 +1675,7 @@ def build_manifest(receipt: dict) -> dict:
                 ),
                 "file": None,
                 "observed": observed,
+                "request_receipt": read.get("request_receipt"),
             }
         )
     for read in receipt["letters"]["A9"]["reads"]:
@@ -1532,6 +1695,7 @@ def build_manifest(receipt: dict) -> dict:
                 ),
                 "sha256": read["dom_sha256"],
                 "file": None,
+                "request_receipt": read.get("request_receipt"),
                 "observed": {
                     "first_map_focus_index": read["first_map_focus_index"],
                     "exit_map_focus_index": read["exit_map_focus_index"],
@@ -1570,8 +1734,97 @@ def build_manifest(receipt: dict) -> dict:
             "only this manifest is committed."
         ),
         "producer": receipt["producer"],
+        "capture_run_id": receipt["capture_run_id"],
+        "run_receipt": receipt["run_receipt"],
         "captures": captures,
     }
+
+
+def parse_timestamp(value: object, *, label: str) -> datetime:
+    if not isinstance(value, str) or not value:
+        raise AssertionError(f"{label} missing")
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as error:
+        raise AssertionError(f"{label} is not an ISO timestamp: {value!r}") from error
+
+
+def validate_manifest_read(
+    read: object,
+    *,
+    revision: str,
+    label: str,
+    run_started_at: datetime | None = None,
+    run_finished_at: datetime | None = None,
+) -> None:
+    if not isinstance(read, dict):
+        raise AssertionError(f"{label} missing")
+    if read.get("http_status") != 200:
+        raise AssertionError(f"{label} status was {read.get('http_status')!r}")
+    if read.get("served_revision") != revision:
+        raise AssertionError(
+            f"{label} served revision mismatch: {read.get('served_revision')!r} != {revision}"
+        )
+    if not str(read.get("url") or "").endswith(ARTIFACT_MANIFEST_PATH):
+        raise AssertionError(f"{label} URL was {read.get('url')!r}")
+    if not re.fullmatch(r"[0-9a-f]{64}", str(read.get("payload_sha256") or "")):
+        raise AssertionError(f"{label} payload_sha256 missing")
+    requested_at = parse_timestamp(read.get("requested_at"), label=f"{label} requested_at")
+    responded_at = parse_timestamp(read.get("responded_at"), label=f"{label} responded_at")
+    if responded_at < requested_at:
+        raise AssertionError(f"{label} response precedes request")
+    if run_started_at is not None and run_finished_at is not None and (
+        requested_at < run_started_at or responded_at > run_finished_at
+    ):
+        raise AssertionError(f"{label} falls outside the capture run window")
+    headers = read.get("headers") or {}
+    if not headers.get("date"):
+        raise AssertionError(f"{label} Date header missing")
+    if not re.fullmatch(r"[0-9a-f]{16}-[A-Z0-9]{2,4}", str(headers.get("cf-ray") or "")):
+        raise AssertionError(f"{label} CF-Ray header missing")
+
+
+def validate_request_receipt(
+    value: object,
+    *,
+    capture_run_id: str,
+    revision: str,
+    run_started_at: datetime,
+    run_finished_at: datetime,
+    label: str,
+) -> str:
+    if not isinstance(value, dict):
+        raise AssertionError(f"{label} request_receipt missing")
+    if value.get("capture_run_id") != capture_run_id:
+        raise AssertionError(f"{label} request_receipt capture_run_id mismatch")
+    request_id = value.get("request_id")
+    if not isinstance(request_id, str) or not request_id.startswith("near-you-"):
+        raise AssertionError(f"{label} request_receipt request_id missing")
+    observed_at = parse_timestamp(
+        value.get("observed_at"), label=f"{label} request_receipt observed_at"
+    )
+    if observed_at < run_started_at or observed_at > run_finished_at:
+        raise AssertionError(f"{label} request_receipt observed_at outside run window")
+    page_load = value.get("page_load") or {}
+    if page_load.get("http_status") != 200:
+        raise AssertionError(f"{label} page load status was {page_load.get('http_status')!r}")
+    if not str(page_load.get("url") or "").startswith("https://cityscroll.org/near-you/"):
+        raise AssertionError(f"{label} page load URL was {page_load.get('url')!r}")
+    page_headers = page_load.get("headers") or {}
+    if not page_headers.get("date"):
+        raise AssertionError(f"{label} page load Date header missing")
+    if not re.fullmatch(
+        r"[0-9a-f]{16}-[A-Z0-9]{2,4}", str(page_headers.get("cf-ray") or "")
+    ):
+        raise AssertionError(f"{label} page load CF-Ray header missing")
+    validate_manifest_read(
+        value.get("served_manifest_read"),
+        revision=revision,
+        label=f"{label} served_manifest_read",
+        run_started_at=run_started_at,
+        run_finished_at=run_finished_at,
+    )
+    return request_id
 
 
 def validate(receipt: dict) -> None:
@@ -1580,8 +1833,43 @@ def validate(receipt: dict) -> None:
     if receipt.get("public_alias") != PUBLIC_ALIAS:
         raise AssertionError("public_alias mismatch")
     deployment = receipt.get("deployment") or {}
-    if not re.fullmatch(r"[0-9a-f]{40}", deployment.get("revision") or ""):
+    revision = deployment.get("revision") or ""
+    if not re.fullmatch(r"[0-9a-f]{40}", revision):
         raise AssertionError("deployment.revision must be a 40-hex served SHA")
+    if deployment.get("required_ancestor") != REQUIRED_ANCESTOR:
+        raise AssertionError("deployment.required_ancestor mismatch")
+    if deployment.get("required_ancestor_contained") is not True:
+        raise AssertionError("deployment.required_ancestor_contained must be true")
+    capture_run_id = receipt.get("capture_run_id")
+    if not isinstance(capture_run_id, str) or not capture_run_id:
+        raise AssertionError("capture_run_id missing")
+    run_receipt = receipt.get("run_receipt") or {}
+    if run_receipt.get("capture_run_id") != capture_run_id:
+        raise AssertionError("run_receipt capture_run_id mismatch")
+    if run_receipt.get("served_revision") != revision:
+        raise AssertionError("run_receipt served_revision mismatch")
+    run_started_at = parse_timestamp(
+        run_receipt.get("run_started_at"), label="run_receipt.run_started_at"
+    )
+    run_finished_at = parse_timestamp(
+        run_receipt.get("run_finished_at"), label="run_receipt.run_finished_at"
+    )
+    if run_finished_at < run_started_at:
+        raise AssertionError("run_receipt run window is reversed")
+    validate_manifest_read(
+        run_receipt.get("initial_served_manifest"),
+        revision=revision,
+        label="initial served manifest read",
+        run_started_at=run_started_at,
+        run_finished_at=run_finished_at,
+    )
+    validate_manifest_read(
+        run_receipt.get("final_served_manifest"),
+        revision=revision,
+        label="final served manifest read",
+        run_started_at=run_started_at,
+        run_finished_at=run_finished_at,
+    )
     for banned in ("result", "pass", "passed", "verdict"):
         if banned in receipt:
             raise AssertionError(f"receipt must not carry a {banned!r} field")
@@ -1599,6 +1887,34 @@ def validate(receipt: dict) -> None:
         if len(selected) != len(SELECTED_SPECIMENS) * len(VIEWPORTS):
             raise AssertionError("missing A13 selected-neighborhood viewport observations")
         assert_letter_observations(a13, a9)
+        a13_request_ids = {
+            validate_request_receipt(
+                row.get("request_receipt"),
+                capture_run_id=capture_run_id,
+                revision=revision,
+                run_started_at=run_started_at,
+                run_finished_at=run_finished_at,
+                label=row.get("name") or "A13 row",
+            )
+            for row in a13
+        }
+        if len(a13_request_ids) != len(all_city) + len(selected):
+            raise AssertionError("A13 rows do not carry one distinct receipt per page request")
+        if run_receipt.get("request_count") != len(a13_request_ids):
+            raise AssertionError("run_receipt request_count drift")
+        a9_request_ids = {
+            validate_request_receipt(
+                row.get("request_receipt"),
+                capture_run_id=capture_run_id,
+                revision=revision,
+                run_started_at=run_started_at,
+                run_finished_at=run_finished_at,
+                label=row.get("name") or "A9 row",
+            )
+            for row in a9
+        }
+        if not a9_request_ids.issubset(a13_request_ids):
+            raise AssertionError("A9 rows do not reference their shared page request receipts")
     else:
         # Historical deployed packets remain checkable until a release carrying
         # the candidate-label source can replace them. Current branch evidence
@@ -1628,6 +1944,8 @@ def check() -> None:
         raise AssertionError("capture-manifest revision drift")
     if manifest.get("producer", {}).get("letters") != ["A9", "A13"]:
         raise AssertionError("capture-manifest producer letters mismatch")
+    if manifest != build_manifest(receipt):
+        raise AssertionError("capture-manifest does not match the retained read-back")
     print(f"near-you-shell production read-back check passed: {READBACK.relative_to(ROOT)}")
 
 
@@ -1639,6 +1957,7 @@ def main() -> int:
         check()
         return 0
     receipt = capture()
+    validate(receipt)
     write_json(READBACK, receipt)
     write_json(MANIFEST, build_manifest(receipt))
     print(f"wrote {READBACK.relative_to(ROOT)}", flush=True)
