@@ -187,8 +187,17 @@ test("A3: retained Chromium measurements use named viewports and unchanged ances
     assert.equal(receipt.browser, "Chromium");
     assert.equal(receipt.mode, "hermetic_fixture");
     assert.equal(receipt.capture_revision, receipt.repository_revision);
-    assert.equal(receipt.capture_revision, MANIFEST.measurement_provenance.revision);
     assert.deepEqual(receipt.measured_inputs, MANIFEST.measurement_provenance.inputs);
+    const runtimeRetained = retainedMeasurementStatus(ROOT, {
+      revision: MANIFEST.measurement_provenance.revision,
+      head: receipt.capture_revision,
+      inputs: MANIFEST.measurement_provenance.inputs,
+    });
+    assert.equal(
+      runtimeRetained.ok,
+      true,
+      `${runtimeRetained.reason}: ${runtimeRetained.changedInputs.join(", ")}`,
+    );
     const observed = new Map(receipt.captures.map((row) => [row.case, row]));
     const retainedCaptures = new Map(MANIFEST.captures.map((row) => [row.case, row]));
     for (const [name, width, height] of [["narrow-touch", 390, 844], ["desktop-keyboard", 1440, 900]]) {
