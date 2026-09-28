@@ -27,3 +27,21 @@ export function assertTrackedWorkingTreeClean(cwd = process.cwd(), options = {})
   error.code = "TRACKED_WORKING_TREE_DIRTY";
   throw error;
 }
+
+/**
+ * Compare a prior porcelain snapshot to the current tracked tree.
+ * Suites that may start on an intentionally dirty tree use this so the run
+ * cannot introduce additional tracked-path residue.
+ */
+export function assertTrackedWorkingTreeUnchanged(baselinePorcelain, cwd = process.cwd(), options = {}) {
+  const before = String(baselinePorcelain || "").trim();
+  const after = trackedWorkingTreePorcelain(cwd, options);
+  if (before === after) return;
+  const error = new Error(
+    `tracked working tree changed during suite:\nbefore:\n${before || "(clean)"}\nafter:\n${after || "(clean)"}`,
+  );
+  error.code = "TRACKED_WORKING_TREE_CHANGED";
+  error.before = before;
+  error.after = after;
+  throw error;
+}

@@ -37,7 +37,9 @@ test("full preflight and CI use the route-aware server without touching existing
   const prepareFunctionalSite = read("tools/prepare_functional_site.sh");
   const preflightBuild = source.indexOf("run_and_fail tools/prepare_functional_site.sh");
   const preflightServer = source.indexOf("python3 tools/local_site_server.py");
-  assert.match(prepareFunctionalSite, /node tools\/build_primary_documents\.mjs/);
+  assert.match(prepareFunctionalSite, /node tools\/build_primary_documents\.mjs --preserve-tracked/);
+  assert.match(prepareFunctionalSite, /assert_tracked_working_tree_unchanged\.mjs --write-baseline/);
+  assert.match(prepareFunctionalSite, /assert_tracked_working_tree_unchanged\.mjs --baseline/);
   assert.equal(source.match(/run_and_fail tools\/prepare_functional_site\.sh/g)?.length, 1,
     "full preflight must prepare primary documents exactly once");
   assert.ok(preflightBuild >= 0 && preflightBuild < preflightServer,

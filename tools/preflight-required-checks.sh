@@ -507,6 +507,12 @@ family_worker() {
 TEMP_LEAK_UNIT_SNAPSHOT="$PROJECT_ROOT/.artifacts/temp-leak-snapshot-unit.json"
 node tools/check_temp_leaks.mjs snapshot --out "$TEMP_LEAK_UNIT_SNAPSHOT"
 
+TRACKED_TREE_UNIT_BASELINE="$PROJECT_ROOT/.artifacts/tracked-working-tree-baseline-unit.txt"
+mkdir -p "$PROJECT_ROOT/.artifacts"
+run_banner "Unit tests (site + worker)" "Snapshot tracked working tree before families" \
+  "node tools/assert_tracked_working_tree_unchanged.mjs --write-baseline"
+run_and_fail node tools/assert_tracked_working_tree_unchanged.mjs --write-baseline "$TRACKED_TREE_UNIT_BASELINE"
+
 run_family 0 static-standards family_static_standards
 run_family 1 site-node family_site_node
 run_family 2 contract family_contract
@@ -516,6 +522,11 @@ run_banner "Unit tests (site + worker)" "Fail closed on leaked temp directories"
   "node tools/check_temp_leaks.mjs check"
 run_and_fail node tools/check_temp_leaks.mjs check --in "$TEMP_LEAK_UNIT_SNAPSHOT" --label unit
 rm -f "$TEMP_LEAK_UNIT_SNAPSHOT"
+
+run_banner "Unit tests (site + worker)" "Refuse tracked working-tree residue" \
+  "node tools/assert_tracked_working_tree_unchanged.mjs --baseline"
+run_and_fail node tools/assert_tracked_working_tree_unchanged.mjs --baseline "$TRACKED_TREE_UNIT_BASELINE"
+rm -f "$TRACKED_TREE_UNIT_BASELINE"
 
 if [[ "$FAMILY_FAILED" == "1" ]]; then
   echo
