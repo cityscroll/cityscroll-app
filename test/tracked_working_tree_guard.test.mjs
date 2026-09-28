@@ -8,12 +8,17 @@ import { fileURLToPath } from "node:url";
 
 import {
   assertTrackedWorkingTreeClean,
+  assertTrackedWorkingTreeUnchanged,
   trackedWorkingTreePorcelain,
 } from "./helpers/tracked_working_tree.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const WORKFLOW = readFileSync(new URL("../.github/workflows/time-travel.yml", import.meta.url), "utf8");
+const PREFLIGHT = readFileSync(new URL("../tools/preflight-required-checks.sh", import.meta.url), "utf8");
+const PREPARE_FUNCTIONAL_SITE = readFileSync(new URL("../tools/prepare_functional_site.sh", import.meta.url), "utf8");
+const PRIMARY_DOCUMENTS = readFileSync(new URL("../tools/build_primary_documents.mjs", import.meta.url), "utf8");
 const ASSERT_TOOL = fileURLToPath(new URL("../tools/assert_tracked_working_tree_clean.mjs", import.meta.url));
+const UNCHANGED_TOOL = fileURLToPath(new URL("../tools/assert_tracked_working_tree_unchanged.mjs", import.meta.url));
 const FRICTION = readFileSync(new URL("./friction_t1_capability.test.mjs", import.meta.url), "utf8");
 const MEETING_UI = readFileSync(new URL("./watch_text_query_meeting_ui.test.mjs", import.meta.url), "utf8");
 const READER_UI = readFileSync(new URL("./watch_text_query_ui.test.mjs", import.meta.url), "utf8");
@@ -170,4 +175,77 @@ test("assertTrackedWorkingTreeClean fails when the legacy-name allowlist is empt
       },
     );
   });
+});
+
+test("assertTrackedWorkingTreeUnchanged passes when porcelain is stable", () => {
+  withFixtureRepo((dir) => {
+    const before = trackedWorkingTreePorcelain(dir);
+    assert.doesNotThrow(() => assertTrackedWorkingTreeUnchanged(before, dir));
+  });
+});
+
+test("assertTrackedWorkingTreeUnchanged fails on a deliberate tracked-file write", () => {
+  withFixtureRepo((dir) => {
+    const before = trackedWorkingTreePorcelain(dir);
+    writeFileSync(
+      join(dir, "docs/evidence/example/capture-manifest.json"),
+      '{"schema":"fixture","clock":"deliberate-write"}\n',
+    );
+    assert.throws(
+      () => assertTrackedWorkingTreeUnchanged(before, dir),
+      (error) => {
+        assert.equal(error.code, "TRACKED_WORKING_TREE_CHANGED");
+        assert.match(error.message, /tracked working tree changed during suite/);
+        assert.match(error.message, /capture-manifest\.json/);
+        return true;
+      },
+    );
+
+    const baseline = join(dir, "baseline.txt");
+    writeFileSync(baseline, before ? `${before}\n` : "");
+    const tool = spawnSync(process.execPath, [UNCHANGED_TOOL, "--baseline", baseline], {
+      cwd: dir,
+      encoding: "utf8",
+      env: { ...process.env, GIT_DIR: undefined, GIT_WORK_TREE: undefined, GIT_INDEX_FILE: undefined, GIT_COMMON_DIR: undefined },
+    });
+    assert.notEqual(tool.status, 0);
+    assert.match(tool.stderr, /tracked working tree changed during suite/);
+    assert.match(tool.stderr, /capture-manifest\.json/);
+  });
+});
+
+test("prepare_functional_site preserves tracked primary documents and guards porcelain", () => {
+  assert.match(
+    PREPARE_FUNCTIONAL_SITE,
+    /build_primary_documents\.mjs --preserve-tracked/,
+    "prepare_functional_site must materialize generated docs without rewriting tracked read models",
+  );
+  assert.match(
+    PREPARE_FUNCTIONAL_SITE,
+    /assert_tracked_working_tree_unchanged\.mjs --write-baseline/,
+    "prepare_functional_site must snapshot tracked porcelain before materializing documents",
+  );
+  assert.match(
+    PREPARE_FUNCTIONAL_SITE,
+    /assert_tracked_working_tree_unchanged\.mjs --baseline/,
+    "prepare_functional_site must refuse tracked residue after materializing documents",
+  );
+  assert.doesNotMatch(
+    PREPARE_FUNCTIONAL_SITE,
+    /node tools\/build_primary_documents\.mjs(?! --preserve-tracked)/,
+    "prepare_functional_site must not invoke the primary-document builder in default write mode",
+  );
+});
+
+test("primary-document builder can preserve tracked outputs and remap writes", () => {
+  assert.match(PRIMARY_DOCUMENTS, /--preserve-tracked/);
+  assert.match(PRIMARY_DOCUMENTS, /--output-root/);
+  assert.match(PRIMARY_DOCUMENTS, /resolvePrimaryDocumentWritePlan/);
+  assert.match(PRIMARY_DOCUMENTS, /preserved tracked/);
+});
+
+test("preflight refuses tracked residue after the unit families", () => {
+  assert.match(PREFLIGHT, /Refuse tracked working-tree residue/);
+  assert.match(PREFLIGHT, /assert_tracked_working_tree_unchanged\.mjs --write-baseline/);
+  assert.match(PREFLIGHT, /assert_tracked_working_tree_unchanged\.mjs --baseline/);
 });

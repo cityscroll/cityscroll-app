@@ -17,9 +17,22 @@ node tools/verify_functional_corpus.mjs --check \
 # Build them from the committed inputs before copying the functional site.
 node tools/build_shared_procurement_read_model.mjs
 
-# Functional tests exercise the static-first document routes. Materialize them
-# once at the suite boundary before any local server can expose a stale shell.
-node tools/build_primary_documents.mjs
+# Capture tracked-path porcelain before materializing generated documents so a
+# rewrite of committed read models fails closed instead of leaving residue.
+TRACKED_BASELINE="$(mktemp "${TMPDIR:-/tmp}/cityscroll-tracked-baseline.XXXXXX")"
+cleanup_tracked_baseline() {
+  rm -f "${TRACKED_BASELINE}"
+}
+trap cleanup_tracked_baseline EXIT
+node tools/assert_tracked_working_tree_unchanged.mjs --write-baseline "${TRACKED_BASELINE}"
+
+# Functional tests exercise the static-first document routes. Materialize the
+# gitignored browse/now shells here, but leave tracked read models (especially
+# site/data/shared_meeting_read_model.json) untouched — those change only through
+# their real generators / geography stamp pipeline.
+node tools/build_primary_documents.mjs --preserve-tracked
 # Serve the public artifact shape used by Pages so client-imported capability modules
 # are present during local browser checks.
 node tools/build_public_site.mjs --source-dir . --site-dir _site
+
+node tools/assert_tracked_working_tree_unchanged.mjs --baseline "${TRACKED_BASELINE}"

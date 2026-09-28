@@ -1,6 +1,7 @@
 #!/usr/bin/env node
+import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { BROWSE_FACETS } from "../site/browse_view.mjs";
@@ -349,30 +350,137 @@ function buildDayClock(argv) {
   return new Date(instantMs);
 }
 
+function parsePrimaryDocumentCliArgs(argv) {
+  const args = {
+    check: false,
+    preserveTracked: false,
+    outputRoot: null,
+    buildDayArgv: [],
+  };
+  for (let index = 0; index < argv.length; index += 1) {
+    const token = argv[index];
+    if (token === "--check") {
+      args.check = true;
+      continue;
+    }
+    if (token === "--preserve-tracked") {
+      args.preserveTracked = true;
+      continue;
+    }
+    if (token === "--output-root") {
+      const value = argv[++index];
+      if (!value) throw new Error("--output-root requires a directory");
+      args.outputRoot = resolve(value);
+      continue;
+    }
+    if (token === "--build-day") {
+      const value = argv[++index];
+      if (!value) throw new Error("--build-day requires a value");
+      args.buildDayArgv.push(token, value);
+      continue;
+    }
+    throw new Error(`Unknown argument: ${token}`);
+  }
+  return args;
+}
+
+function repositoryRelativePath(filePath) {
+  return relative(ROOT, filePath).split("\\").join("/");
+}
+
+function isGitTrackedPath(filePath) {
+  const rel = repositoryRelativePath(filePath);
+  if (!rel || rel.startsWith("..")) return false;
+  const result = spawnSync("git", ["ls-files", "--error-unmatch", "--", rel], {
+    cwd: ROOT,
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      GIT_DIR: undefined,
+      GIT_WORK_TREE: undefined,
+      GIT_INDEX_FILE: undefined,
+      GIT_COMMON_DIR: undefined,
+    },
+  });
+  return result.status === 0;
+}
+
+function remapOutputPath(filePath, outputRoot) {
+  if (!outputRoot) return filePath;
+  const rel = repositoryRelativePath(filePath);
+  if (!rel.startsWith("site/")) {
+    throw new Error(`Refusing to remap non-site primary document output: ${rel || filePath}`);
+  }
+  return join(outputRoot, rel.slice("site/".length));
+}
+
+export function resolvePrimaryDocumentWritePlan(outputs, {
+  preserveTracked = false,
+  outputRoot = null,
+} = {}) {
+  return outputs.map(([path, content]) => {
+    const sourcePath = path;
+    const destinationPath = remapOutputPath(path, outputRoot);
+    const tracked = isGitTrackedPath(sourcePath);
+    const preserve = Boolean(preserveTracked && tracked && !outputRoot);
+    return {
+      sourcePath,
+      destinationPath,
+      content,
+      tracked,
+      preserve,
+    };
+  });
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const check = process.argv.includes("--check");
-  const clock = buildDayClock(process.argv.slice(2));
+  const args = parsePrimaryDocumentCliArgs(process.argv.slice(2));
+  const clock = buildDayClock(args.buildDayArgv);
   let stale = 0;
-  for (const [path, content] of [...primaryDocumentOutputs({ clock }), ...sharedMeetingOutputs(), ...peopleOrganizationsOutputs()]) {
+  let wrote = 0;
+  let preserved = 0;
+  const planned = resolvePrimaryDocumentWritePlan(
+    [...primaryDocumentOutputs({ clock }), ...sharedMeetingOutputs(), ...peopleOrganizationsOutputs()],
+    { preserveTracked: args.preserveTracked, outputRoot: args.outputRoot },
+  );
+  for (const item of planned) {
+    if (item.preserve) {
+      preserved += 1;
+      console.log("preserved tracked", item.sourcePath);
+      continue;
+    }
+    const path = item.destinationPath;
+    const content = item.content;
     if (!existsSync(path)) {
-      if (!check) {
+      if (!args.check) {
         mkdirSync(dirname(path), { recursive: true });
         writeFileSync(path, content);
+        wrote += 1;
         console.log("wrote", path);
+      } else {
+        stale += 1;
       }
       continue;
     }
     if (existsSync(path) && readFileSync(path, "utf8") === content) continue;
     stale += 1;
-    if (!check) {
+    if (!args.check) {
       mkdirSync(dirname(path), { recursive: true });
       writeFileSync(path, content);
+      wrote += 1;
       console.log("wrote", path);
     }
   }
-  if (check && stale) {
+  if (args.check && stale) {
     console.error(`${stale} primary document artifact(s) are stale`);
     process.exit(1);
   }
-  console.log(check ? "Primary documents are current" : "Primary documents built");
+  if (args.preserveTracked && preserved) {
+    console.log(`preserved ${preserved} tracked primary document artifact(s)`);
+  }
+  if (!args.check && wrote === 0 && preserved > 0) {
+    console.log("Primary documents built (tracked artifacts preserved)");
+  } else {
+    console.log(args.check ? "Primary documents are current" : "Primary documents built");
+  }
 }
