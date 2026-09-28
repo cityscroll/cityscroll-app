@@ -169,7 +169,7 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
   const retainedStatus = retainedMeasurementStatus(ROOT, {
     revision: provenance.revision,
     head: receipt.capture_revision,
-    inputPaths: provenance.inputs.map((input) => input.path),
+    inputs: provenance.inputs,
   });
   assert.equal(retainedStatus.ok, true, `${retainedStatus.reason}: ${retainedStatus.changedInputs.join(", ")}`);
 

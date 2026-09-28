@@ -440,12 +440,12 @@ def write_manifest(receipt: dict) -> None:
         missing = sorted(observed.keys() ^ retained.keys())
         raise RuntimeError(f"manifest cases do not match measurement: {missing}")
     manifest["measurement_provenance"] = {
-        "revision": receipt["capture_revision"],
+        "revision": receipt["repository_revision"],
         "inputs": receipt["measured_inputs"],
     }
     for capture in manifest["captures"]:
         measurement = observed[capture["case"]]
-        capture["revision"] = receipt["capture_revision"]
+        capture["revision"] = receipt["repository_revision"]
         capture["sha256"] = measurement["render_sha256"]
         if measurement["capture_sha256"]:
             capture["local_capture_sha256"] = measurement["capture_sha256"]
