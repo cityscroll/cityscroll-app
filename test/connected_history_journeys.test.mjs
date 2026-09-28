@@ -29,6 +29,19 @@ const ARTIFACTS = Object.freeze({
   roles: readJson("site/data/connected_history_roles.json"),
 });
 const MANIFEST = readJson("docs/evidence/documented-history-journeys/capture-manifest.json");
+const ADDRESS_REFRESH_REGISTRY = readJson("ops/address-index-refresh/dependent-geography.json");
+
+// The scheduled refresh owns this registry. Keeping the control registry-driven
+// means a newly published geography output must remain outside both the static
+// input closure and the browser's observed requests, or this test fails.
+const ADDRESS_REFRESH_ROOTS = Object.freeze([
+  ...ADDRESS_REFRESH_REGISTRY.refreshed_input_paths,
+  ...ADDRESS_REFRESH_REGISTRY.published_paths.map((entry) => entry.path),
+]);
+
+function belongsToAddressRefresh(path) {
+  return ADDRESS_REFRESH_ROOTS.some((root) => path === root || path.startsWith(`${root}/`));
+}
 
 function clone(value) {
   return structuredClone(value);
@@ -148,7 +161,9 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
     );
     assert.equal(run.status, 0, `${run.stderr}\n${run.stdout}`);
     receipt = JSON.parse(run.stdout);
-    assert.deepEqual(readdirSync(captureTemp), [], "capture runner must remove its fallback screenshot directory");
+    const runnerOwnedTemps = readdirSync(captureTemp)
+      .filter((name) => name.startsWith("documented-history-captures-"));
+    assert.deepEqual(runnerOwnedTemps, [], "capture runner must remove its fallback screenshot directory");
   } finally {
     rmSync(captureTemp, { recursive: true, force: true });
   }
@@ -166,6 +181,25 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
     [...provenance.inputs.map((input) => input.path)].sort(),
   );
   assert.deepEqual(receipt.measured_inputs, provenance.inputs);
+  assert.deepEqual(
+    receipt.measured_inputs.map((input) => input.path).filter(belongsToAddressRefresh),
+    [],
+    "address-refresh outputs are outside the declared measurement closure",
+  );
+  assert.deepEqual(
+    receipt.local_request_paths
+      .map((path) => `site${path}`)
+      .filter(belongsToAddressRefresh),
+    [],
+    "the six measured journeys do not request address-refresh outputs",
+  );
+  for (const path of [
+    "/data/connected_history_relations.json",
+    "/data/connected_history_roles.json",
+    "/data/connected_history_time.json",
+  ]) {
+    assert.ok(receipt.local_request_paths.includes(path), `runtime request control observed ${path}`);
+  }
   const retainedStatus = retainedMeasurementStatus(ROOT, {
     revision: provenance.revision,
     head: receipt.capture_revision,

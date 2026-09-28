@@ -195,9 +195,15 @@ def fetch_json_receipt(base: str, path: str, served_revision: str) -> tuple[dict
     }
 
 
-def install_fixture_routes(page, failure: dict[str, bool]) -> None:
+def install_fixture_routes(
+    page,
+    failure: dict[str, bool],
+    local_request_paths: set[str] | None = None,
+) -> None:
     def route_request(route) -> None:
         parsed = urllib.parse.urlsplit(route.request.url)
+        if local_request_paths is not None and parsed.hostname in {"127.0.0.1", "localhost"}:
+            local_request_paths.add(parsed.path)
         if failure["enabled"] and parsed.path.endswith("/data/connected_history_relations.json"):
             route.fulfill(status=503, content_type="application/json", body="{}")
             return
@@ -309,14 +315,21 @@ def panel_measurement(page, family_id: str, query: str, expected_title: str, mod
     return measured, html
 
 
-def run_ready_matrix(browser, base: str, *, fixture: bool, screenshot_dir: Path | None) -> list[dict]:
+def run_ready_matrix(
+    browser,
+    base: str,
+    *,
+    fixture: bool,
+    screenshot_dir: Path | None,
+    local_request_paths: set[str] | None = None,
+) -> list[dict]:
     observations: list[dict] = []
     for mode, width, height, has_touch in VIEWPORTS:
         context = browser.new_context(viewport={"width": width, "height": height}, has_touch=has_touch)
         for family_id, query, title in CASES:
             page = context.new_page()
             if fixture:
-                install_fixture_routes(page, {"enabled": False})
+                install_fixture_routes(page, {"enabled": False}, local_request_paths)
             route = route_for(query)
             response = page.goto(f"{base}{route}", wait_until="domcontentloaded", timeout=60_000)
             assert response is not None and response.status == 200
@@ -345,13 +358,19 @@ def run_ready_matrix(browser, base: str, *, fixture: bool, screenshot_dir: Path 
     return observations
 
 
-def run_no_javascript(browser, base: str, *, fixture: bool) -> list[dict]:
+def run_no_javascript(
+    browser,
+    base: str,
+    *,
+    fixture: bool,
+    local_request_paths: set[str] | None = None,
+) -> list[dict]:
     observations: list[dict] = []
     context = browser.new_context(viewport={"width": 1440, "height": 900}, java_script_enabled=False)
     for family_id, query, title in CASES:
         page = context.new_page()
         if fixture:
-            install_fixture_routes(page, {"enabled": False})
+            install_fixture_routes(page, {"enabled": False}, local_request_paths)
         route = route_for(query)
         response = page.goto(f"{base}{route}", wait_until="domcontentloaded", timeout=60_000)
         assert response is not None and response.status == 200
@@ -392,13 +411,19 @@ def run_no_javascript(browser, base: str, *, fixture: bool) -> list[dict]:
     return observations
 
 
-def run_failure_control(browser, base: str, *, fixture: bool) -> dict | None:
+def run_failure_control(
+    browser,
+    base: str,
+    *,
+    fixture: bool,
+    local_request_paths: set[str] | None = None,
+) -> dict | None:
     if not fixture:
         return None
     context = browser.new_context(viewport={"width": 1440, "height": 900})
     page = context.new_page()
     failure = {"enabled": True}
-    install_fixture_routes(page, failure)
+    install_fixture_routes(page, failure, local_request_paths)
     query = "Kingsbridge Armory"
     route = route_for(query)
     page.goto(f"{base}{route}", wait_until="domcontentloaded", timeout=60_000)
@@ -475,6 +500,7 @@ def main() -> int:
     required_landed_commit = None
     request_receipts: list[dict] = []
     measured_inputs: list[dict[str, str]] = []
+    local_request_paths: set[str] = set()
     data_vintage: dict[str, str | None] = {}
     if args.production:
         if not args.landed_commit:
@@ -510,9 +536,25 @@ def main() -> int:
 
     try:
         with launched_chromium() as browser:
-            captures = run_ready_matrix(browser, base, fixture=not args.production, screenshot_dir=screenshot_dir)
-            captures.extend(run_no_javascript(browser, base, fixture=not args.production))
-            failure = run_failure_control(browser, base, fixture=not args.production)
+            captures = run_ready_matrix(
+                browser,
+                base,
+                fixture=not args.production,
+                screenshot_dir=screenshot_dir,
+                local_request_paths=local_request_paths,
+            )
+            captures.extend(run_no_javascript(
+                browser,
+                base,
+                fixture=not args.production,
+                local_request_paths=local_request_paths,
+            ))
+            failure = run_failure_control(
+                browser,
+                base,
+                fixture=not args.production,
+                local_request_paths=local_request_paths,
+            )
             if failure:
                 captures.append(failure)
     finally:
@@ -538,6 +580,7 @@ def main() -> int:
         "served_revision": served_revision,
         "data_vintage": data_vintage,
         "request_receipts": request_receipts,
+        "local_request_paths": sorted(local_request_paths),
         "image_binaries_committed": False,
         "screenshot_directory": str(screenshot_dir) if screenshot_dir else None,
         "captures": captures,
