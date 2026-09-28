@@ -376,6 +376,10 @@ test("A4 [verification] production retake carries dual-width URL transitions, co
   assert.match(captureTool, /observed_url_after/);
   assert.match(captureTool, /project-connections/);
   assert.match(captureTool, /image_binaries_committed|file.: null/);
+  assert.match(captureTool, /root-midwood-meeting-detail/);
+  assert.match(captureTool, /direct-bk1402-subject-result/);
+  assert.match(captureTool, /shared-geo-map-feed-failure/);
+  assert.match(captureTool, /require_served_journey_data/);
 
   assert.equal(existsSync(MANIFEST_PATH), true, "capture manifest must be present");
   const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
@@ -393,7 +397,7 @@ test("A4 [verification] production retake carries dual-width URL transitions, co
   assert.match(manifest.deployment?.artifact_hash || "", /^[0-9a-f]{64}$/);
   assert.match(manifest.data_vintage?.source_receipt_sha256 || "", /^[0-9a-f]{64}$/);
   assert.ok(manifest.capture_run_id);
-  assert.ok(Array.isArray(manifest.captures) && manifest.captures.length >= 12);
+  assert.ok(Array.isArray(manifest.captures) && manifest.captures.length >= 28);
   assert.equal(JSON.stringify(manifest).includes("127.0.0.1"), false);
   assert.equal(JSON.stringify(manifest).includes("localhost"), false);
 
@@ -405,13 +409,21 @@ test("A4 [verification] production retake carries dual-width URL transitions, co
     const rows = manifest.captures.filter(
       (row) => row.viewport?.width === viewport.width && row.viewport?.height === viewport.height,
     );
-    assert.ok(rows.length >= 6, `need six production cases at ${viewport.width}x${viewport.height}`);
+    assert.ok(rows.length >= 14, `need fourteen production cases at ${viewport.width}x${viewport.height}`);
     assert.ok(rows.some((row) => row.route === "/"), "root shell capture required");
     assert.ok(rows.some((row) => String(row.name || "").includes("midwood")), "Midwood capture required");
     assert.ok(rows.some((row) => String(row.name || "").includes("geolocation-denial")), "denial capture required");
     assert.ok(rows.some((row) => String(row.name || "").includes("failure-recovery")), "failure-recovery capture required");
     assert.ok(rows.some((row) => String(row.name || "").includes("registered-land-hash")), "registered hash capture required");
     assert.ok(rows.some((row) => String(row.name || "").includes("unknown-hash")), "unknown hash control required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("midwood-meeting-detail")), "A1 detail capture required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("shared-midwood-route")), "A1 shared route required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("kensington-wider-result")), "A2 wider result required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("kensington-wider-detail")), "A2 wider detail required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("kensington-agreement")), "A2 route agreement required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("bk1402-subject-result")), "A2 subject result required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("map-feed-failure")), "A3 fault capture required");
+    assert.ok(rows.some((row) => String(row.name || "").includes("map-feed-recovery")), "A3 recovery capture required");
     for (const row of rows) {
       assert.ok(row.snapshot?.measured_css === true || row.snapshot?.stylesheet_hrefs?.length >= 1, row.name);
       assert.equal(row.snapshot?.viewport_width_px, viewport.width, row.name);
@@ -421,7 +433,7 @@ test("A4 [verification] production retake carries dual-width URL transitions, co
   for (const row of manifest.captures) {
     assert.ok(row.sha256 && /^[0-9a-f]{64}$/i.test(row.sha256), row.name);
     assert.equal(row.file, null);
-    assert.equal(row.screenshot_url, null);
+    assert.match(row.screenshot_url || "", /^https:\/\//, row.name);
     assert.ok(row.assertion);
     assert.equal(row.source, "headless-playwright-production-served-site");
     assert.equal(row.capture_run_id, manifest.capture_run_id);
@@ -439,6 +451,8 @@ test("A4 [verification] production retake carries dual-width URL transitions, co
     assert.ok(Array.isArray(receipt.navigation_events) && receipt.navigation_events.length > 0, row.name);
     assert.equal(receipt.page_load?.http_status, 200, row.name);
     assert.equal(receipt.page_load?.served_revision, manifest.revision, row.name);
+    assert.equal(receipt.upload?.http_status, 200, row.name);
+    assert.equal(receipt.upload?.returned_url, row.screenshot_url, row.name);
   }
 
   const byName = Object.fromEntries(manifest.captures.map((row) => [row.name, row]));
@@ -460,8 +474,50 @@ test("A4 [verification] production retake carries dual-width URL transitions, co
 
     const midwood = byName[`root-midwood-result-${suffix}`];
     assert.equal(midwood.assertions.served_midwood_record_present, true);
+    const midwoodDetail = byName[`root-midwood-meeting-detail-${suffix}`];
+    assert.equal(midwoodDetail.assertions.detail_title_present, true);
+    assert.equal(midwoodDetail.assertions.three_user_actions_at_most, true);
+    assert.equal(midwoodDetail.journey_receipt.user_action_count, 3);
+    assert.equal(midwoodDetail.journey_receipt.maximum_user_actions, 3);
+    assert.equal(midwoodDetail.journey_receipt.starting_route, "/");
+
+    const sharedMidwood = byName[`shared-midwood-route-${suffix}`];
+    assert.equal(sharedMidwood.assertions.selected_midwood_geo, true);
+    assert.equal(sharedMidwood.assertions.served_midwood_record_present, true);
+
     const recovery = byName[`root-failure-recovery-kensington-${suffix}`];
     assert.equal(recovery.assertions.selected_kensington_geo, true);
+
+    const kensington = byName[`root-kensington-wider-result-${suffix}`];
+    assert.equal(kensington.assertions.selected_kensington_geo, true);
+    assert.equal(kensington.assertions.wider_named_row_present, true);
+    assert.equal(kensington.assertions.wider_district_section_present, true);
+
+    const kensingtonDetail = byName[`root-kensington-wider-detail-${suffix}`];
+    assert.equal(kensingtonDetail.assertions.opened_from_wider_row, true);
+    assert.equal(kensingtonDetail.journey_receipt.user_action_count, 3);
+    assert.equal(kensingtonDetail.journey_receipt.starting_route, "/");
+
+    const agreement = byName[`near-you-kensington-agreement-${suffix}`];
+    assert.equal(agreement.assertions.selected_place_matches_root, true);
+    assert.equal(agreement.assertions.named_records_match_root, true);
+
+    const subject = byName[`direct-bk1402-subject-result-${suffix}`];
+    assert.equal(subject.assertions.selected_bk1402_geo, true);
+    assert.equal(subject.assertions.subject_record_present, true);
+    assert.equal(subject.assertions.subject_address_present, true);
+
+    const fault = byName[`shared-geo-map-feed-failure-${suffix}`];
+    assert.equal(fault.assertions.map_rendering_failed, true);
+    assert.equal(fault.assertions.deferred_feed_failed, true);
+    assert.equal(fault.assertions.retry_link_visible, true);
+    assert.equal(fault.assertions.following_reachable, true);
+
+    const faultRecovery = byName[`shared-geo-map-feed-recovery-${suffix}`];
+    assert.equal(faultRecovery.assertions.map_still_unavailable, true);
+    assert.equal(faultRecovery.assertions.deferred_feed_recovered, true);
+    assert.equal(faultRecovery.assertions.named_record_navigation_restored, true);
+    assert.equal(faultRecovery.journey_receipt.bounded, true);
   }
 
   assert.ok((manifest.exact_links || []).includes("/"));
@@ -470,6 +526,10 @@ test("A4 [verification] production retake carries dual-width URL transitions, co
   assert.ok((manifest.exact_links || []).includes("/#not-a-cityscroll-route"));
   assert.ok((manifest.exact_links || []).some((link) => String(link).includes("BK1403")));
   assert.ok((manifest.exact_links || []).some((link) => String(link).includes("BK1203")));
+  assert.ok((manifest.exact_links || []).some((link) => String(link).includes("BK1402")));
+  assert.ok((manifest.exact_links || []).some((link) => String(link).includes("housing-and-land-use-committee-meeting-september-2026")));
+  assert.ok((manifest.exact_links || []).some((link) => String(link).includes("september-2026-board-meeting")));
+  assert.equal(Object.values(manifest.served_data_preflight?.checks || {}).every(Boolean), true);
 
   const runStart = Date.parse(manifest.run_receipt?.run_started_at);
   const runEnd = Date.parse(manifest.run_receipt?.run_finished_at);
@@ -477,6 +537,18 @@ test("A4 [verification] production retake carries dual-width URL transitions, co
   assert.equal(manifest.run_receipt.served_revision_before, manifest.revision);
   assert.equal(manifest.run_receipt.served_revision_after, manifest.revision);
   assert.equal(manifest.run_receipt.artifact_hash_before, manifest.run_receipt.artifact_hash_after);
+
+  const firstByDigest = new Map();
+  for (const row of manifest.captures) {
+    const first = firstByDigest.get(row.sha256);
+    if (!first) {
+      firstByDigest.set(row.sha256, row.name);
+      continue;
+    }
+    assert.equal(row.coincident_hash?.with_capture, first, row.name);
+    assert.equal(row.coincident_hash?.independently_recaptured, true, row.name);
+    assert.equal(row.coincident_hash?.independently_uploaded, true, row.name);
+  }
 
   const wrangler = readFileSync(join(ROOT, "worker/wrangler.toml"), "utf8");
   assert.match(wrangler, /pattern = "cityscroll\.org"/);
