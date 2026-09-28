@@ -107,6 +107,7 @@ def exercise(
 
 
 def main() -> None:
+    raise AssertionError("intentional required-CI positive control")
     handler = functools.partial(QuietHandler, directory=str(ROOT / "site"))
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
