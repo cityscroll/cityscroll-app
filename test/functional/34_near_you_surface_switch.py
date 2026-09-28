@@ -3,13 +3,15 @@
 
 from __future__ import annotations
 
-import os
+import subprocess
+from pathlib import Path
 from urllib.parse import parse_qsl, urlsplit
 
 from playwright.sync_api import Page, sync_playwright
 
 
-BASE = os.environ.get("CROL_BASE", "http://localhost:8000").rstrip("/")
+ROOT = Path(__file__).resolve().parents[2]
+BASE = ""
 
 
 def is_visible(page: Page, selector: str) -> bool:
@@ -23,14 +25,16 @@ def assert_switches(page: Page, width: int, height: int) -> None:
     page.goto(f"{BASE}/near-you/", wait_until="networkidle")
 
     switch = page.locator("[data-near-surface-switch]")
-    records = page.locator('[data-near-surface="records"]')
-    map_link = page.locator('[data-near-surface="map"]')
+    records = switch.locator('[data-near-surface="records"]')
+    map_link = switch.locator('[data-near-surface="map"]')
     results = '[data-near-surface-panel="records"]'
     map_panel = '[data-near-surface-panel="map"]'
 
     assert switch.is_visible(), f"Records/Map switch hidden at {width}px"
-    assert is_visible(page, results)
-    assert is_visible(page, map_panel) is (width > 560)
+    assert page.locator(results).count() == 1
+    assert not is_visible(page, results)
+    assert is_visible(page, map_panel)
+    assert page.locator("[data-near-you-root]").get_attribute("data-near-mobile-surface") == "map"
 
     map_link.click()
     assert page.locator("[data-near-you-root]").get_attribute("data-near-mobile-surface") == "map"
@@ -41,7 +45,7 @@ def assert_switches(page: Page, width: int, height: int) -> None:
     assert page.locator(map_panel).evaluate("node => node.getBoundingClientRect().top") < height
 
     records.click()
-    assert page.locator("[data-near-you-root]").get_attribute("data-near-mobile-surface") == "list"
+    assert page.locator("[data-near-you-root]").get_attribute("data-near-mobile-surface") == "records"
     assert records.get_attribute("aria-current") == "true"
     assert is_visible(page, results)
     assert not is_visible(page, map_panel)
@@ -92,6 +96,7 @@ def assert_topic_change_replaces_resolved_results(page: Page, width: int, height
     assert page.locator(".near-results").count() == 1
     assert "Staffing" in (page.locator("#near-results-heading").text_content() or "")
 
+    page.locator('[data-near-surface-switch] [data-near-surface="records"]').click()
     page.locator("details.near-advanced").first.click()
     page.locator("select[name='lens']").select_option("meetings")
     page.locator("form.near-form button[type='submit']").click()
@@ -112,26 +117,48 @@ def assert_topic_change_replaces_resolved_results(page: Page, width: int, height
 
 
 def main() -> None:
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=True)
-        page = browser.new_page()
-        assert_switches(page, 1440, 1000)
-        assert_switches(page, 390, 844)
-        assert_failed_update_recovers(page, 1440, 900, keyboard=False)
-        assert_failed_update_recovers(page, 390, 844, keyboard=True)
-        assert_topic_change_replaces_resolved_results(page, 1440, 900)
-        assert_topic_change_replaces_resolved_results(page, 390, 844)
+    server = subprocess.Popen(
+        ["node", "tools/serve_near_you_capture.mjs"],
+        cwd=ROOT,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    assert server.stdout is not None
+    global BASE
+    BASE = server.stdout.readline().strip().rstrip("/")
+    if not BASE:
+        server.kill()
+        raise RuntimeError("Near You renderer did not announce a base URL")
+    try:
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(headless=True)
+            page = browser.new_page()
+            assert_switches(page, 1440, 1000)
+            assert_switches(page, 390, 844)
+            assert_failed_update_recovers(page, 1440, 900, keyboard=False)
+            assert_failed_update_recovers(page, 390, 844, keyboard=True)
+            assert_topic_change_replaces_resolved_results(page, 1440, 900)
+            assert_topic_change_replaces_resolved_results(page, 390, 844)
 
-        no_script = browser.new_context(
-            viewport={"width": 1440, "height": 1000},
-            java_script_enabled=False,
-        ).new_page()
-        no_script.goto(f"{BASE}/near-you/", wait_until="domcontentloaded")
-        assert no_script.locator("[data-near-surface-switch]").is_visible()
-        assert is_visible(no_script, '[data-near-surface-panel="records"]')
-        assert is_visible(no_script, '[data-near-surface-panel="map"]')
-        assert no_script.locator('[data-near-surface="map"]').get_attribute("href") == "#near-map-heading"
-        browser.close()
+            no_script = browser.new_context(
+                viewport={"width": 1440, "height": 1000},
+                java_script_enabled=False,
+            ).new_page()
+            no_script.goto(f"{BASE}/near-you/", wait_until="domcontentloaded")
+            assert no_script.locator("[data-near-surface-switch]").is_visible()
+            assert no_script.locator('[data-near-surface-panel="records"]').count() == 1
+            assert is_visible(no_script, '[data-near-surface-panel="records"]')
+            assert is_visible(no_script, '[data-near-surface-panel="map"]')
+            map_href = no_script.locator(
+                '[data-near-surface-switch] [data-near-surface="map"]'
+            ).get_attribute("href") or ""
+            map_url = urlsplit(map_href)
+            assert map_url.path.rstrip("/") == "/near-you"
+            assert dict(parse_qsl(map_url.query)).get("v") == "0"
+            browser.close()
+    finally:
+        server.terminate()
+        server.wait(timeout=10)
 
     print("PASS: Near-you Records/Map switch is usable at desktop and mobile widths")
 

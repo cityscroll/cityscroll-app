@@ -130,6 +130,7 @@ test("Near-you initial body keeps the map frame and exposes the deferred list", 
   assert.match(body, /data-near-deferred="results"/);
   assert.match(body, /data-near-surface-panel="map"/);
   assert.match(body, /data-near-surface-panel="records"/);
+  assert.equal((body.match(/data-near-surface-panel="records"/g) || []).length, 1);
   const listSlot = body.indexOf('data-near-deferred="results"');
   const mapPanel = body.indexOf('data-near-surface-panel="map"');
   assert.ok(listSlot >= 0 && mapPanel >= 0 && mapPanel < listSlot, "map precedes deferred records for map-first shell");

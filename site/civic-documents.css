@@ -3950,6 +3950,16 @@ select {
   margin: var(--space-4) 0 var(--space-2);
   flex-wrap: wrap;
 }
+.near-geo-primary-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 var(--space-2);
+}
+.near-geo-primary-controls .near-surface-switch {
+  margin: 0;
+}
 [data-geography-shell][data-near-surface="map"] > .near-surface-switch {
   margin-block: var(--space-1);
 }
@@ -4533,6 +4543,20 @@ select {
   }
   [data-geography-shell] .near-geo-entry .near-geo-search input {
     flex-basis: 0;
+  }
+  [data-geography-shell] .near-geo-primary-controls {
+    flex-wrap: nowrap;
+  }
+  [data-geography-shell] .near-geo-primary-controls .near-surface-switch {
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+  }
+  [data-geography-shell] .near-geo-primary-controls .near-geo-actions {
+    flex: 0 1 auto;
+  }
+  [data-geography-shell] .near-geo-primary-controls .near-geo-actions button {
+    width: auto;
+    padding-inline: var(--space-3);
   }
   .near-geo-search input {
     font-size: 16px;

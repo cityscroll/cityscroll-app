@@ -183,10 +183,16 @@ def json_response(route, body):
 def rendered_rows(page):
     """Read what the reader can actually see, in visible order."""
     return page.evaluate(
-        """() => [...document.querySelectorAll('[data-search-result]')].map((card) => ({
-            title: (card.querySelector('h4')?.textContent || '').replace(/\\s+/g, ' ').trim(),
-            entity_type: card.dataset.searchEntityType || null,
-        }))"""
+        """() => [...document.querySelectorAll('[data-search-result]')].map((card) => {
+            const titles = [...card.querySelectorAll(
+                'h4 > .topic-search-result-title-link, h4 > .topic-search-result-inspect'
+            )];
+            const visibleTitle = titles.find((node) => getComputedStyle(node).display !== 'none');
+            return {
+                title: (visibleTitle?.textContent || '').replace(/\\s+/g, ' ').trim(),
+                entity_type: card.dataset.searchEntityType || null,
+            };
+        })"""
     )
 
 
