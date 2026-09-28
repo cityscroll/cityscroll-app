@@ -15,6 +15,7 @@ import {
   GEOGRAPHY_MAP_STYLE,
   MAPLIBRE_PIN,
   RESIDENT_GEOGRAPHY_MAP_SCHEMA,
+  collisionSafeLabelCollection,
   createGeographyNavigationMap,
   hideServerMapFallback,
   importPinnedMapLibre,
@@ -303,6 +304,32 @@ test("A4/A13: projected features keep canonical labels and interior anchors; cod
   const anchor = interiorLabelLonLat(sheepheadFeature());
   assert.ok(anchor);
   assert.equal(anchor.length, 2);
+});
+
+test("A13: label admission keeps a named source population collision-safe before placement", () => {
+  const collection = {
+    type: "FeatureCollection",
+    features: [
+      { id: "one", properties: { key: "one", label: "First place", label_lon: 10, label_lat: 10 } },
+      { id: "two", properties: { key: "two", label: "Second place", label_lon: 10, label_lat: 10 } },
+      { id: "three", properties: { key: "three", label: "Third place", label_lon: 80, label_lat: 80 } },
+    ],
+  };
+  const admitted = collisionSafeLabelCollection(collection, {
+    project: ([x, y]) => ({ x, y }),
+    width: 100,
+    height: 100,
+    maxLabels: 3,
+  });
+  assert.equal(admitted.features.length, 2);
+  assert.ok(admitted.features.some((feature) => feature.properties.label === "Third place"));
+  assert.ok(admitted.features.every((feature) => feature.geometry.type === "Point"));
+
+  const style = __test__.buildBaseStyle();
+  const labels = style.layers.find((layer) => layer.id === GEOGRAPHY_MAP_LAYER_IDS.labels);
+  assert.equal(labels.source, GEOGRAPHY_MAP_SOURCE_IDS.labels);
+  assert.equal(labels.layout["text-allow-overlap"], false);
+  assert.equal(style.sources[GEOGRAPHY_MAP_SOURCE_IDS.labels].type, "geojson");
 });
 
 test("A1/A2/A8: renderer seam drives pan, zoom, selection, comparison persistence, and reduced-motion fit", async () => {

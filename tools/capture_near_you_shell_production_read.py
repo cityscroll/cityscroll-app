@@ -53,15 +53,22 @@ VIEWPORTS = (
     ("mobile", 390, 844, 6, 20),
 )
 
-# Selected-neighborhood specimen for the A13 name-renders clause.
-SELECTED_SPECIMEN = {
-    "name": "selected-desktop",
-    "width": 1440,
-    "height": 900,
-    "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
-    "expected_label": "Greenpoint",
-    "geo": "nta2020:BK0101",
-}
+# Dense-area specimens for the A13 selected-name priority clause. Each is read
+# at both binding viewports under the same collision measurement as all-city.
+SELECTED_SPECIMENS = (
+    {
+        "name": "greenpoint",
+        "route": "/near-you/?geo=nta2020%3ABK0101&surface=map",
+        "expected_label": "Greenpoint",
+        "geo": "nta2020:BK0101",
+    },
+    {
+        "name": "east-village",
+        "route": "/near-you/?geo=nta2020%3AMN0303&surface=map",
+        "expected_label": "East Village",
+        "geo": "nta2020:MN0303",
+    },
+)
 
 # Headless Chromium on macOS needs an explicit GL path for MapLibre.
 WEBGL_BROWSER_ARGS = (
@@ -210,6 +217,9 @@ def observe_a13(page, width: int, height: int, *, route: str = ENTRY_ROUTE) -> d
           let textIgnorePlacement = host?.dataset?.labelTextIgnorePlacement ?? null;
           let bucketCanOverlap = null;
           let queriedUnique = null;
+          let collisionSourceFeatures = [];
+          let collisionSourceLabels = [];
+          let placedLabels = [];
           if (map && typeof map.getLayoutProperty === 'function') {
             try {
               textAllowOverlap = map.getLayoutProperty('geography-labels', 'text-allow-overlap');
@@ -217,11 +227,26 @@ def observe_a13(page, width: int, height: int, *, route: str = ENTRY_ROUTE) -> d
             } catch (_error) { /* keep dataset values */ }
             try {
               const features = map.queryRenderedFeatures(undefined, { layers: ['geography-labels'] }) || [];
-              queriedUnique = [...new Set(features
+              placedLabels = [...new Set(features
                 .map((feature) => String(feature?.properties?.label || '').trim())
-                .filter(Boolean))].length;
+                .filter(Boolean))].sort((left, right) => left.localeCompare(right));
+              queriedUnique = placedLabels.length;
             } catch (_error) {
               queriedUnique = null;
+            }
+            try {
+              const source = map.getSource('geography-label-candidates');
+              const sourceData = source?._data || source?._options?.data;
+              collisionSourceFeatures = Array.isArray(sourceData?.features)
+                ? sourceData.features
+                : [];
+              collisionSourceLabels = collisionSourceFeatures
+                .map((feature) => String(feature?.properties?.label || '').trim())
+                .filter(Boolean)
+                .sort((left, right) => left.localeCompare(right));
+            } catch (_error) {
+              collisionSourceFeatures = [];
+              collisionSourceLabels = [];
             }
             try {
               const style = map.style;
@@ -247,13 +272,19 @@ def observe_a13(page, width: int, height: int, *, route: str = ENTRY_ROUTE) -> d
             measurement: 'maplibre-collisionIndex-grid-bboxes+getBoundingClientRect',
             measured_label_box_count: 0,
             overlapping_label_pair_count: null,
-            clipped_label_count: null,
+            collision_source_label_count: collisionSourceLabels.length,
+            placed_label_count: placedLabels.length,
+            collision_dropped_label_count: null,
+            collision_dropped_labels_sample: [],
+            frame_crossing_label_count: null,
+            frame_crossing_labels_sample: [],
             obscured_by_primary_control_count: null,
+            control_occlusion_label_box_count: 0,
             clip_surface: 'map_host_canvas_and_overflow_hidden_ancestors',
             primary_control_box_count: 0,
             overlapping_pairs_sample: [],
-            clipped_labels_sample: [],
             obscured_sample: [],
+            label_boxes: [],
             dataset_overlap_flag_ignored: host?.dataset?.overlappingNeighborhoodLabelCount ?? null,
           };
 
@@ -262,13 +293,50 @@ def observe_a13(page, width: int, height: int, *, route: str = ENTRY_ROUTE) -> d
             const canvasRect = canvas.getBoundingClientRect();
             const hostRect = host.getBoundingClientRect();
             const placement = map.painter?.placement || map.style?.placement;
-            const raw = placement?.collisionIndex?.grid?.bboxes;
+            const collisionGrid = placement?.collisionIndex?.grid;
+            const raw = collisionGrid?.bboxes;
+            const boxKeys = collisionGrid?.boxKeys || [];
             if (raw && raw.length >= 4) {
-              const mapBoxes = [];
+              const gridOffsetX = Math.max(0, ((collisionGrid?.width || canvas.clientWidth) - canvas.clientWidth) / 2);
+              const gridOffsetY = Math.max(0, ((collisionGrid?.height || canvas.clientHeight) - canvas.clientHeight) / 2);
+              const unmatchedBoxes = [];
               for (let i = 0; i + 3 < raw.length; i += 4) {
-                mapBoxes.push({
-                  x1: raw[i], y1: raw[i + 1], x2: raw[i + 2], y2: raw[i + 3],
+                const key = boxKeys[i / 4] || null;
+                // The selected label uses overlapMode=always and a separate
+                // source. Ordinary A13 geometry owns only the collision-gated
+                // candidate population (overlapMode=never).
+                const includeAlways = host.dataset.a13IncludeAlwaysCollisionBoxes === '1';
+                if (!includeAlways && key?.overlapMode && key.overlapMode !== 'never') continue;
+                unmatchedBoxes.push({
+                  x1: raw[i] - gridOffsetX,
+                  y1: raw[i + 1] - gridOffsetY,
+                  x2: raw[i + 2] - gridOffsetX,
+                  y2: raw[i + 3] - gridOffsetY,
                 });
+              }
+              const placedSet = new Set(placedLabels);
+              const mapBoxes = [];
+              for (const feature of collisionSourceFeatures) {
+                const label = String(feature?.properties?.label || '').trim();
+                if (!label || !placedSet.has(label) || unmatchedBoxes.length === 0) continue;
+                const coordinates = feature?.geometry?.type === 'Point'
+                  ? feature.geometry.coordinates
+                  : [feature?.properties?.label_lon, feature?.properties?.label_lat];
+                const point = map.project(coordinates);
+                let bestIndex = 0;
+                let bestDistance = Number.POSITIVE_INFINITY;
+                for (let index = 0; index < unmatchedBoxes.length; index += 1) {
+                  const box = unmatchedBoxes[index];
+                  const centerX = (box.x1 + box.x2) / 2;
+                  const centerY = (box.y1 + box.y2) / 2;
+                  const distance = Math.hypot(centerX - point.x, centerY - point.y);
+                  if (distance < bestDistance) {
+                    bestIndex = index;
+                    bestDistance = distance;
+                  }
+                }
+                const [box] = unmatchedBoxes.splice(bestIndex, 1);
+                mapBoxes.push({ ...box, label });
               }
               const measureRoot = document.createElement('div');
               measureRoot.setAttribute('data-a13-label-geometry-measure', '1');
@@ -291,15 +359,8 @@ def observe_a13(page, width: int, height: int, *, route: str = ENTRY_ROUTE) -> d
                 ].join(';');
                 measureRoot.appendChild(el);
                 const r = el.getBoundingClientRect();
-                const cx = (mb.x1 + mb.x2) / 2;
-                const cy = (mb.y1 + mb.y2) / 2;
-                let label = null;
-                try {
-                  const feats = map.queryRenderedFeatures([cx, cy], { layers: ['geography-labels'] }) || [];
-                  label = feats.map((f) => String(f.properties?.label || '').trim()).find(Boolean) || null;
-                } catch (_error) { /* leave null */ }
                 labelBoxes.push({
-                  label,
+                  label: mb.label,
                   box: {
                     left: r.left, top: r.top, right: r.right, bottom: r.bottom,
                     width: r.width, height: r.height,
@@ -387,12 +448,17 @@ def observe_a13(page, width: int, height: int, *, route: str = ENTRY_ROUTE) -> d
 
               geometry.measured_label_box_count = labelBoxes.length;
               geometry.overlapping_label_pair_count = overlapping;
-              geometry.clipped_label_count = clippedRows.length;
+              const droppedLabels = collisionSourceLabels.filter((label) => !placedSet.has(label));
+              geometry.collision_dropped_label_count = droppedLabels.length;
+              geometry.collision_dropped_labels_sample = droppedLabels.slice(0, 12);
+              geometry.frame_crossing_label_count = clippedRows.length;
+              geometry.frame_crossing_labels_sample = clippedRows.slice(0, 12).map((row) => row.label);
               geometry.obscured_by_primary_control_count = obscured;
+              geometry.control_occlusion_label_box_count = labelBoxes.length;
               geometry.primary_control_box_count = controlBoxes.length;
               geometry.overlapping_pairs_sample = overlappingSample;
-              geometry.clipped_labels_sample = clippedRows.slice(0, 12).map((row) => row.label);
               geometry.obscured_sample = obscuredSample;
+              geometry.label_boxes = labelBoxes;
               geometry.clip_bounds = clip;
               geometry.browser_fold_label_count = browserFoldRows.length;
               measureRoot.remove();
@@ -427,6 +493,185 @@ def observe_a13(page, width: int, height: int, *, route: str = ENTRY_ROUTE) -> d
         }""",
         {"width": width, "height": height, "route": route},
     )
+
+
+def exercise_a13_positive_controls(page, width: int, height: int, *, route: str) -> dict:
+    """Prove the drop and control-occlusion detectors flip on real map state."""
+    baseline = observe_a13(page, width, height, route=route)
+    geometry = baseline.get("geometry") or {}
+    boxes = [row for row in geometry.get("label_boxes") or [] if row.get("label")]
+    if not boxes:
+        raise AssertionError("A13 positive controls need a named placed label box")
+
+    original_padding = page.evaluate(
+        """() => {
+          const map = (window.__cityscrollShellMaps || []).at(-1);
+          const value = map?.getLayoutProperty?.('geography-labels', 'text-padding');
+          map?.setLayoutProperty?.('geography-labels', 'text-padding', 160);
+          return value ?? null;
+        }"""
+    )
+    page.wait_for_timeout(800)
+    collision = observe_a13(page, width, height, route=route)
+    page.evaluate(
+        """(padding) => {
+          const map = (window.__cityscrollShellMaps || []).at(-1);
+          map?.setLayoutProperty?.('geography-labels', 'text-padding', padding ?? 2);
+        }""",
+        original_padding,
+    )
+    page.wait_for_timeout(800)
+    collision_geometry = collision.get("geometry") or {}
+    if collision_geometry.get("collision_dropped_label_count", 0) < 1:
+        raise AssertionError("A13 collision positive control did not report a dropped label")
+    collision_sample = collision_geometry.get("collision_dropped_labels_sample") or []
+    if not collision_sample or not all(collision_sample):
+        raise AssertionError("A13 collision positive control did not name the dropped label")
+
+    overlap_state = page.evaluate(
+        """() => {
+          const map = (window.__cityscrollShellMaps || []).at(-1);
+          const host = document.querySelector('#near-map-enhanced');
+          const source = map?.getSource?.('geography-label-candidates');
+          const originalData = structuredClone(source?._data || { type: 'FeatureCollection', features: [] });
+          const features = structuredClone(originalData.features || []).slice(0, 2);
+          if (features.length < 2) return null;
+          features[1].geometry.coordinates = [...features[0].geometry.coordinates];
+          const allowOverlap = map.getLayoutProperty('geography-labels', 'text-allow-overlap');
+          const ignorePlacement = map.getLayoutProperty('geography-labels', 'text-ignore-placement');
+          host.dataset.a13IncludeAlwaysCollisionBoxes = '1';
+          source.setData({ type: 'FeatureCollection', features });
+          map.setLayoutProperty('geography-labels', 'text-allow-overlap', true);
+          return { originalData, allowOverlap, ignorePlacement };
+        }"""
+    )
+    if overlap_state is None:
+        raise AssertionError("A13 overlap positive control needs two admitted labels")
+    page.wait_for_timeout(800)
+    overlap = observe_a13(page, width, height, route=route)
+    page.evaluate(
+        """({ data, allowOverlap, ignorePlacement }) => {
+          const map = (window.__cityscrollShellMaps || []).at(-1);
+          const host = document.querySelector('#near-map-enhanced');
+          map?.getSource?.('geography-label-candidates')?.setData?.(data);
+          map?.setLayoutProperty?.('geography-labels', 'text-allow-overlap', allowOverlap);
+          map?.setLayoutProperty?.('geography-labels', 'text-ignore-placement', ignorePlacement);
+          delete host?.dataset?.a13IncludeAlwaysCollisionBoxes;
+        }""",
+        {
+            "data": overlap_state["originalData"],
+            "allowOverlap": overlap_state["allowOverlap"],
+            "ignorePlacement": overlap_state["ignorePlacement"],
+        },
+    )
+    page.wait_for_timeout(800)
+    overlap_geometry = overlap.get("geometry") or {}
+    if overlap_geometry.get("overlapping_label_pair_count", 0) < 1:
+        raise AssertionError("A13 overlap positive control did not report an overlapping pair")
+    overlap_sample = overlap_geometry.get("overlapping_pairs_sample") or []
+    if not overlap_sample or not all(all(pair) for pair in overlap_sample):
+        raise AssertionError("A13 overlap positive control did not name both labels")
+
+    frame_state = page.evaluate(
+        """() => {
+          const map = (window.__cityscrollShellMaps || []).at(-1);
+          const source = map?.getSource?.('geography-label-candidates');
+          const originalData = structuredClone(source?._data || { type: 'FeatureCollection', features: [] });
+          const mutated = structuredClone(originalData);
+          if (!mutated.features?.length) return null;
+          const canvas = map.getCanvas();
+          const edge = map.unproject([1, canvas.clientHeight / 2]);
+          mutated.features[0].geometry.coordinates = [edge.lng, edge.lat];
+          source.setData(mutated);
+          return { originalData, label: mutated.features[0].properties.label };
+        }"""
+    )
+    if frame_state is None:
+        raise AssertionError("A13 frame positive control needs an admitted label")
+    page.wait_for_timeout(800)
+    frame = observe_a13(page, width, height, route=route)
+    page.evaluate(
+        """(data) => {
+          const map = (window.__cityscrollShellMaps || []).at(-1);
+          map?.getSource?.('geography-label-candidates')?.setData?.(data);
+        }""",
+        frame_state["originalData"],
+    )
+    page.wait_for_timeout(800)
+    frame_geometry = frame.get("geometry") or {}
+    if frame_geometry.get("frame_crossing_label_count", 0) < 1:
+        raise AssertionError("A13 frame-crossing positive control did not flip")
+    frame_sample = frame_geometry.get("frame_crossing_labels_sample") or []
+    if frame_state["label"] not in frame_sample:
+        raise AssertionError("A13 frame-crossing positive control did not name its moved label")
+
+    target = boxes[0]
+    control_state = page.evaluate(
+        """({ box }) => {
+          const host = document.querySelector('#near-map-enhanced');
+          const control = host?.querySelector('.maplibregl-ctrl-attrib, .maplibregl-ctrl-group');
+          if (!control) return null;
+          const previous = control.getAttribute('style');
+          control.style.setProperty('position', 'fixed', 'important');
+          control.style.setProperty('left', `${box.left}px`, 'important');
+          control.style.setProperty('top', `${box.top}px`, 'important');
+          control.style.setProperty('right', 'auto', 'important');
+          control.style.setProperty('bottom', 'auto', 'important');
+          control.style.setProperty('width', `${Math.max(44, box.width)}px`, 'important');
+          control.style.setProperty('height', `${Math.max(44, box.height)}px`, 'important');
+          return { previous, className: String(control.className || '') };
+        }""",
+        {"box": target["box"]},
+    )
+    if control_state is None:
+        raise AssertionError("A13 control-occlusion positive control found no primary control")
+    page.wait_for_timeout(100)
+    control = observe_a13(page, width, height, route=route)
+    page.evaluate(
+        """(previous) => {
+          const host = document.querySelector('#near-map-enhanced');
+          const control = host?.querySelector('.maplibregl-ctrl-attrib, .maplibregl-ctrl-group');
+          if (!control) return;
+          if (previous == null) control.removeAttribute('style');
+          else control.setAttribute('style', previous);
+        }""",
+        control_state["previous"],
+    )
+    control_geometry = control.get("geometry") or {}
+    if control_geometry.get("obscured_by_primary_control_count", 0) < 1:
+        raise AssertionError("A13 control positive control did not report occlusion")
+    obscured_sample = control_geometry.get("obscured_sample") or []
+    if not obscured_sample or not obscured_sample[0].get("label"):
+        raise AssertionError("A13 control positive control did not name the obscured label")
+
+    return {
+        "overlap": {
+            "overlapping_label_pair_count": overlap_geometry.get(
+                "overlapping_label_pair_count"
+            ),
+            "overlapping_pairs_sample": overlap_sample,
+        },
+        "collision_drop": {
+            "forced_text_padding_px": 160,
+            "collision_source_label_count": collision_geometry.get("collision_source_label_count"),
+            "placed_label_count": collision_geometry.get("placed_label_count"),
+            "collision_dropped_label_count": collision_geometry.get("collision_dropped_label_count"),
+            "collision_dropped_labels_sample": collision_sample,
+        },
+        "control_occlusion": {
+            "moved_control_class": control_state["className"],
+            "label_box_count": control_geometry.get("control_occlusion_label_box_count"),
+            "obscured_by_primary_control_count": control_geometry.get(
+                "obscured_by_primary_control_count"
+            ),
+            "obscured_sample": obscured_sample,
+        },
+        "frame_crossing": {
+            "moved_label": frame_state["label"],
+            "frame_crossing_label_count": frame_geometry.get("frame_crossing_label_count"),
+            "frame_crossing_labels_sample": frame_sample,
+        },
+    }
 
 
 def observe_a13_selected(page, width: int, height: int, *, route: str, expected_label: str) -> dict:
@@ -523,8 +768,90 @@ def observe_a13_selected(page, width: int, height: int, *, route: str, expected_
         {"expectedLabel": expected_label},
     )
     base.update(selected)
-    base["name"] = f"a13-{SELECTED_SPECIMEN['name']}"
     return base
+
+
+def exercise_selected_priority_positive_control(
+    page,
+    width: int,
+    height: int,
+    *,
+    route: str,
+    expected_label: str,
+) -> dict:
+    control_state = page.evaluate(
+        """() => {
+          const map = (window.__cityscrollShellMaps || []).at(-1);
+          const labelSource = map?.getSource?.('geography-label-candidates');
+          const activeSource = map?.getSource?.('geography-active');
+          const selectedSource = map?.getSource?.('geography-selected');
+          const originalData = structuredClone(labelSource?._data || { type: 'FeatureCollection', features: [] });
+          const selectedFeature = selectedSource?._data?.features?.[0];
+          const coordinates = [
+            Number(selectedFeature?.properties?.label_lon),
+            Number(selectedFeature?.properties?.label_lat),
+          ];
+          const neighbors = (activeSource?._data?.features || [])
+            .filter((feature) => feature?.properties?.key !== selectedFeature?.properties?.key)
+            .slice(0, 2)
+            .map((feature) => ({
+              type: 'Feature',
+              id: feature.id,
+              geometry: { type: 'Point', coordinates },
+              properties: { ...feature.properties },
+            }));
+          if (neighbors.length < 2 || coordinates.some((value) => !Number.isFinite(value))) {
+            return null;
+          }
+          const originalPadding = map?.getLayoutProperty?.('geography-labels', 'text-padding');
+          labelSource.setData({ type: 'FeatureCollection', features: neighbors });
+          map?.setLayoutProperty?.('geography-labels', 'text-padding', 160);
+          return { originalData, originalPadding: originalPadding ?? null };
+        }"""
+    )
+    if control_state is None:
+        raise AssertionError("A13 selected priority control could not stage neighboring labels")
+    page.wait_for_timeout(800)
+    pressured = observe_a13_selected(
+        page,
+        width,
+        height,
+        route=route,
+        expected_label=expected_label,
+    )
+    page.evaluate(
+        """({ padding, data }) => {
+          const map = (window.__cityscrollShellMaps || []).at(-1);
+          map?.getSource?.('geography-label-candidates')?.setData?.(data);
+          map?.setLayoutProperty?.('geography-labels', 'text-padding', padding ?? 2);
+        }""",
+        {
+            "padding": control_state["originalPadding"],
+            "data": control_state["originalData"],
+        },
+    )
+    page.wait_for_timeout(800)
+    geometry = pressured.get("geometry") or {}
+    if expected_label not in (pressured.get("selected_layer_rendered_labels") or []):
+        raise AssertionError(
+            f"A13 selected priority positive control dropped {expected_label!r}"
+        )
+    if geometry.get("collision_dropped_label_count", 0) < 1:
+        raise AssertionError(
+            "A13 selected priority positive control did not drop an ordinary neighboring label"
+        )
+    dropped = geometry.get("collision_dropped_labels_sample") or []
+    if not dropped or not all(dropped):
+        raise AssertionError("A13 selected priority control did not name an ordinary dropped label")
+    return {
+        "forced_text_padding_px": 160,
+        "selected_label": expected_label,
+        "selected_layer_rendered_labels": pressured.get("selected_layer_rendered_labels"),
+        "surrounding_collision_source_label_count": geometry.get("collision_source_label_count"),
+        "surrounding_placed_label_count": geometry.get("placed_label_count"),
+        "ordinary_collision_dropped_label_count": geometry.get("collision_dropped_label_count"),
+        "ordinary_collision_dropped_labels_sample": dropped,
+    }
 
 
 def observe_a9(page, width: int, height: int) -> dict:
@@ -662,8 +989,6 @@ def observe_a9(page, width: int, height: int) -> dict:
 def assert_letter_observations(
     a13_reads: list[dict],
     a9_reads: list[dict],
-    *,
-    a13_selected: dict | None = None,
 ) -> None:
     all_city = [
         row for row in a13_reads
@@ -701,45 +1026,112 @@ def assert_letter_observations(
             raise AssertionError(
                 f"A13 {name} overlapping_label_pair_count was {row.get('overlapping_label_pair_count')!r}"
             )
-        if not isinstance(geometry.get("clipped_label_count"), int):
-            raise AssertionError(f"A13 {name} clipped_label_count missing")
+        source_count = geometry.get("collision_source_label_count")
+        placed_count = geometry.get("placed_label_count")
+        if not isinstance(source_count, int) or source_count < 1:
+            raise AssertionError(f"A13 {name} collision source population was {source_count!r}")
+        if not isinstance(placed_count, int) or placed_count < 1:
+            raise AssertionError(f"A13 {name} placed label denominator was {placed_count!r}")
+        if source_count != placed_count:
+            raise AssertionError(
+                f"A13 {name} source/placed populations differ: {source_count}/{placed_count}"
+            )
+        if geometry.get("collision_dropped_label_count") != 0:
+            raise AssertionError(
+                f"A13 {name} collision_dropped_label_count was "
+                f"{geometry.get('collision_dropped_label_count')!r}"
+            )
+        if not isinstance(geometry.get("frame_crossing_label_count"), int):
+            raise AssertionError(f"A13 {name} frame_crossing_label_count missing")
+        frame_sample = geometry.get("frame_crossing_labels_sample") or []
+        if geometry.get("frame_crossing_label_count", 0) > 0 and (
+            not frame_sample or not all(frame_sample)
+        ):
+            raise AssertionError(f"A13 {name} frame-crossing sample did not name its labels")
         if not isinstance(geometry.get("obscured_by_primary_control_count"), int):
             raise AssertionError(f"A13 {name} obscured_by_primary_control_count missing")
+        if geometry.get("control_occlusion_label_box_count") != geometry.get(
+            "measured_label_box_count"
+        ):
+            raise AssertionError(f"A13 {name} control occlusion population drifted")
         if geometry.get("obscured_by_primary_control_count") != 0:
             raise AssertionError(
                 f"A13 {name} obscured_by_primary_control_count was "
                 f"{geometry.get('obscured_by_primary_control_count')!r}"
             )
+        positive = row.get("positive_controls") or {}
+        overlap_positive = positive.get("overlap") or {}
+        if overlap_positive.get("overlapping_label_pair_count", 0) < 1:
+            raise AssertionError(f"A13 {name} overlap positive control did not flip")
+        overlap_sample = overlap_positive.get("overlapping_pairs_sample") or []
+        if not overlap_sample or not all(all(pair) for pair in overlap_sample):
+            raise AssertionError(f"A13 {name} overlap positive control labels missing")
+        collision_positive = positive.get("collision_drop") or {}
+        if collision_positive.get("collision_dropped_label_count", 0) < 1:
+            raise AssertionError(f"A13 {name} collision positive control did not flip")
+        if not all(collision_positive.get("collision_dropped_labels_sample") or []):
+            raise AssertionError(f"A13 {name} collision positive control sample missing")
+        control_positive = positive.get("control_occlusion") or {}
+        if control_positive.get("label_box_count", 0) < 1:
+            raise AssertionError(f"A13 {name} control positive population missing")
+        if control_positive.get("obscured_by_primary_control_count", 0) < 1:
+            raise AssertionError(f"A13 {name} control positive control did not flip")
+        if not (control_positive.get("obscured_sample") or [{}])[0].get("label"):
+            raise AssertionError(f"A13 {name} control positive control label missing")
+        frame_positive = positive.get("frame_crossing") or {}
+        if frame_positive.get("frame_crossing_label_count", 0) < 1:
+            raise AssertionError(f"A13 {name} frame positive control did not flip")
+        if frame_positive.get("moved_label") not in (
+            frame_positive.get("frame_crossing_labels_sample") or []
+        ):
+            raise AssertionError(f"A13 {name} frame positive control label missing")
         # Receipts record observed values only — never a result/pass verdict field.
         for banned in ("result", "pass", "passed", "verdict"):
             if banned in row or banned in geometry:
                 raise AssertionError(f"A13 {name} must not carry a {banned!r} field")
 
-    selected = a13_selected
-    if selected is None:
-        selected = next((row for row in a13_reads if row.get("selected_neighborhood_label")), None)
-    if not selected:
-        raise AssertionError("A13 missing selected-neighborhood observation")
-    expected = SELECTED_SPECIMEN["expected_label"]
-    if selected.get("selected_neighborhood_label") != expected:
+    selected_reads = [row for row in a13_reads if row.get("selected_neighborhood_label")]
+    expected_pairs = {
+        (specimen["expected_label"], width)
+        for specimen in SELECTED_SPECIMENS
+        for _name, width, _height, _minimum, _maximum in VIEWPORTS
+    }
+    observed_pairs = {
+        (row.get("selected_neighborhood_label"), row.get("viewport", {}).get("width"))
+        for row in selected_reads
+    }
+    if observed_pairs != expected_pairs:
         raise AssertionError(
-            f"A13 selected label specimen was {selected.get('selected_neighborhood_label')!r}"
+            f"A13 selected-neighborhood coverage was {sorted(observed_pairs)!r}, "
+            f"expected {sorted(expected_pairs)!r}"
         )
-    if expected not in (selected.get("selected_layer_rendered_labels") or []):
-        raise AssertionError(
-            f"A13 selected layer did not render {expected!r}: "
-            f"{selected.get('selected_layer_rendered_labels')!r}"
-        )
-    if selected.get("selected_layer_rendered_label_count", 0) < 1:
-        raise AssertionError("A13 selected layer rendered label count was zero")
-    if selected.get("selected_ui_label") != expected and selected.get("selected_heading") != expected:
-        raise AssertionError(
-            f"A13 selected UI/heading missing {expected!r}: "
-            f"ui={selected.get('selected_ui_label')!r} heading={selected.get('selected_heading')!r}"
-        )
-    for banned in ("result", "pass", "passed", "verdict"):
-        if banned in selected:
-            raise AssertionError(f"A13 selected read must not carry a {banned!r} field")
+    for selected in selected_reads:
+        expected = selected.get("selected_neighborhood_label")
+        if expected not in (selected.get("selected_layer_rendered_labels") or []):
+            raise AssertionError(
+                f"A13 selected layer did not render {expected!r}: "
+                f"{selected.get('selected_layer_rendered_labels')!r}"
+            )
+        if selected.get("selected_layer_rendered_label_count", 0) < 1:
+            raise AssertionError("A13 selected layer rendered label count was zero")
+        if selected.get("selected_ui_label") != expected and selected.get("selected_heading") != expected:
+            raise AssertionError(
+                f"A13 selected UI/heading missing {expected!r}: "
+                f"ui={selected.get('selected_ui_label')!r} heading={selected.get('selected_heading')!r}"
+            )
+        geometry = selected.get("geometry") or {}
+        if geometry.get("placed_label_count", 0) < 1:
+            raise AssertionError(f"A13 selected {expected!r} has no surrounding label population")
+        priority = selected.get("selected_priority_positive_control") or {}
+        if expected not in (priority.get("selected_layer_rendered_labels") or []):
+            raise AssertionError(f"A13 selected priority control lost {expected!r}")
+        if priority.get("ordinary_collision_dropped_label_count", 0) < 1:
+            raise AssertionError(f"A13 selected priority control did not drop an ordinary label")
+        if not all(priority.get("ordinary_collision_dropped_labels_sample") or []):
+            raise AssertionError(f"A13 selected priority control sample missing")
+        for banned in ("result", "pass", "passed", "verdict"):
+            if banned in selected:
+                raise AssertionError(f"A13 selected read must not carry a {banned!r} field")
 
     for read in a9_reads:
         width = read["viewport"]["width"]
@@ -801,6 +1193,9 @@ def capture_viewport(browser, base: str, rev: str, name: str, width: int, height
     a13["name"] = f"a13-{name}"
     a13["revision"] = rev
     a13["data_vintage"] = DATA_VINTAGE
+    a13["positive_controls"] = exercise_a13_positive_controls(
+        page, width, height, route=ENTRY_ROUTE
+    )
 
     a9 = observe_a9(page, width, height)
     a9["name"] = f"a9-{name}"
@@ -817,15 +1212,23 @@ def capture_viewport(browser, base: str, rev: str, name: str, width: int, height
     return a13, a9
 
 
-def capture_selected(browser, base: str, rev: str) -> dict:
-    specimen = SELECTED_SPECIMEN
+def capture_selected(
+    browser,
+    base: str,
+    rev: str,
+    specimen: dict,
+    *,
+    width: int,
+    height: int,
+) -> dict:
+    capture_name = f"selected-{specimen['name']}-{width}"
     context, page = _open_near_you(
         browser,
         base,
-        width=specimen["width"],
-        height=specimen["height"],
+        width=width,
+        height=height,
         route=specimen["route"],
-        name=specimen["name"],
+        name=capture_name,
     )
     # Selected routes can show zero ordinary labels while the camera flies;
     # wait until the selected layer or UI label is present.
@@ -848,16 +1251,24 @@ def capture_selected(browser, base: str, rev: str) -> dict:
     page.wait_for_timeout(600)
     a13 = observe_a13_selected(
         page,
-        specimen["width"],
-        specimen["height"],
+        width,
+        height,
         route=specimen["route"],
         expected_label=specimen["expected_label"],
     )
+    a13["name"] = f"a13-{capture_name}"
     a13["revision"] = rev
     a13["data_vintage"] = DATA_VINTAGE
+    a13["selected_priority_positive_control"] = exercise_selected_priority_positive_control(
+        page,
+        width,
+        height,
+        route=specimen["route"],
+        expected_label=specimen["expected_label"],
+    )
     SCRATCH.mkdir(parents=True, exist_ok=True)
     page.screenshot(
-        path=str(SCRATCH / f"shell-{specimen['name']}-{specimen['width']}x{specimen['height']}.png"),
+        path=str(SCRATCH / f"shell-{capture_name}-{width}x{height}.png"),
         full_page=False,
         animations="disabled",
     )
@@ -875,7 +1286,7 @@ def capture() -> dict:
 
     a13_reads: list[dict] = []
     a9_reads: list[dict] = []
-    a13_selected: dict | None = None
+    a13_selected: list[dict] = []
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True, args=list(WEBGL_BROWSER_ARGS))
         for name, width, height, _minimum, _maximum in VIEWPORTS:
@@ -887,7 +1298,8 @@ def capture() -> dict:
             print(
                 f"  A13 count={a13['residential_neighborhood_label_count']} "
                 f"overlap={a13['overlapping_label_pair_count']} "
-                f"clipped={geometry.get('clipped_label_count')} "
+                f"dropped={geometry.get('collision_dropped_label_count')} "
+                f"frame-crossing={geometry.get('frame_crossing_label_count')} "
                 f"obscured={geometry.get('obscured_by_primary_control_count')} "
                 f"allowOverlap={a13['text_allow_overlap']}",
                 flush=True,
@@ -897,21 +1309,32 @@ def capture() -> dict:
                 f"trap={a9['focus_trap_observed']}",
                 flush=True,
             )
-        print(
-            f"capture selected {SELECTED_SPECIMEN['width']}x{SELECTED_SPECIMEN['height']} "
-            f"{SELECTED_SPECIMEN['route']}",
-            flush=True,
-        )
-        a13_selected = capture_selected(browser, base, rev)
-        a13_reads.append(a13_selected)
-        print(
-            f"  A13 selected={a13_selected.get('selected_layer_rendered_labels')} "
-            f"ui={a13_selected.get('selected_ui_label')!r}",
-            flush=True,
-        )
+        for specimen in SELECTED_SPECIMENS:
+            for viewport_name, width, height, _minimum, _maximum in VIEWPORTS:
+                print(
+                    f"capture selected {specimen['name']} {viewport_name} "
+                    f"{width}x{height} {specimen['route']}",
+                    flush=True,
+                )
+                selected_read = capture_selected(
+                    browser,
+                    base,
+                    rev,
+                    specimen,
+                    width=width,
+                    height=height,
+                )
+                a13_selected.append(selected_read)
+                a13_reads.append(selected_read)
+                print(
+                    f"  A13 selected={selected_read.get('selected_layer_rendered_labels')} "
+                    f"surrounding={selected_read.get('geometry', {}).get('placed_label_count')} "
+                    f"ui={selected_read.get('selected_ui_label')!r}",
+                    flush=True,
+                )
         browser.close()
 
-    assert_letter_observations(a13_reads, a9_reads, a13_selected=a13_selected)
+    assert_letter_observations(a13_reads, a9_reads)
 
     receipt = {
         "schema": SCHEMA,
@@ -934,11 +1357,13 @@ def capture() -> dict:
                 for name, width, height, _minimum, _maximum in VIEWPORTS
             ] + [
                 {
-                    "name": SELECTED_SPECIMEN["name"],
-                    "width": SELECTED_SPECIMEN["width"],
-                    "height": SELECTED_SPECIMEN["height"],
-                    "route": SELECTED_SPECIMEN["route"],
+                    "name": f"selected-{specimen['name']}-{name}",
+                    "width": width,
+                    "height": height,
+                    "route": specimen["route"],
                 }
+                for specimen in SELECTED_SPECIMENS
+                for name, width, height, _minimum, _maximum in VIEWPORTS
             ],
             "screenshot_binaries_committed": False,
             "map_hook": (
@@ -962,11 +1387,14 @@ def capture() -> dict:
                     "desktop_1440x900": {"min": 12, "max": 40},
                     "mobile_390x844": {"min": 6, "max": 20},
                 },
-                "selected_specimen": {
-                    "route": SELECTED_SPECIMEN["route"],
-                    "label": SELECTED_SPECIMEN["expected_label"],
-                    "geo": SELECTED_SPECIMEN["geo"],
-                },
+                "selected_specimens": [
+                    {
+                        "route": specimen["route"],
+                        "label": specimen["expected_label"],
+                        "geo": specimen["geo"],
+                    }
+                    for specimen in SELECTED_SPECIMENS
+                ],
                 "reads": a13_reads,
             },
         },
@@ -985,7 +1413,9 @@ def build_manifest(receipt: dict) -> dict:
                 f"Selected neighborhood {read.get('selected_neighborhood_label')!r} rendered "
                 f"on {read.get('route')} at {read['viewport']['width']}x{read['viewport']['height']} "
                 f"(layer labels={read.get('selected_layer_rendered_labels')}, "
-                f"ui={read.get('selected_ui_label')!r})."
+                f"surrounding placed labels={geometry.get('placed_label_count')}, "
+                f"ui={read.get('selected_ui_label')!r}); the forced-collision control retained "
+                "the selected label while dropping an ordinary label."
             )
             observed = {
                 "selected_neighborhood_label": read.get("selected_neighborhood_label"),
@@ -994,23 +1424,32 @@ def build_manifest(receipt: dict) -> dict:
                 "selected_layer_rendered_label_count": read.get("selected_layer_rendered_label_count"),
                 "selected_layer_rendered_labels": read.get("selected_layer_rendered_labels"),
                 "selected_name_box": read.get("selected_name_box"),
+                "surrounding_placed_label_count": geometry.get("placed_label_count"),
+                "selected_priority_positive_control": read.get(
+                    "selected_priority_positive_control"
+                ),
                 "map_runtime": read.get("map_runtime"),
             }
             digest = {
                 "selected": read.get("selected_neighborhood_label"),
                 "layer": read.get("selected_layer_rendered_labels"),
                 "ui": read.get("selected_ui_label"),
+                "surrounding": geometry.get("placed_label_count"),
+                "priority_control": read.get("selected_priority_positive_control"),
             }
             mode = "headless-playwright-production-selected"
-            route = read.get("route") or SELECTED_SPECIMEN["route"]
+            route = read.get("route") or ENTRY_ROUTE
         else:
             assertion = (
                 f"Observed {read['residential_neighborhood_label_count']} residential "
                 f"neighborhood labels at {read['viewport']['width']}x{read['viewport']['height']} "
                 f"with text-allow-overlap={read['text_allow_overlap']}; geometry "
                 f"overlapping_label_pair_count={geometry.get('overlapping_label_pair_count')}, "
-                f"clipped_label_count={geometry.get('clipped_label_count')}, "
+                f"collision_dropped_label_count={geometry.get('collision_dropped_label_count')} "
+                f"across {geometry.get('placed_label_count')} placed labels, "
+                f"frame_crossing_label_count={geometry.get('frame_crossing_label_count')} (permitted), "
                 f"obscured_by_primary_control_count={geometry.get('obscured_by_primary_control_count')} "
+                f"across {geometry.get('control_occlusion_label_box_count')} label boxes "
                 f"via {geometry.get('measurement')}."
             )
             observed = {
@@ -1024,19 +1463,38 @@ def build_manifest(receipt: dict) -> dict:
                     "measurement": geometry.get("measurement"),
                     "measured_label_box_count": geometry.get("measured_label_box_count"),
                     "overlapping_label_pair_count": geometry.get("overlapping_label_pair_count"),
-                    "clipped_label_count": geometry.get("clipped_label_count"),
+                    "collision_source_label_count": geometry.get("collision_source_label_count"),
+                    "placed_label_count": geometry.get("placed_label_count"),
+                    "collision_dropped_label_count": geometry.get(
+                        "collision_dropped_label_count"
+                    ),
+                    "collision_dropped_labels_sample": geometry.get(
+                        "collision_dropped_labels_sample"
+                    ),
+                    "frame_crossing_label_count": geometry.get("frame_crossing_label_count"),
+                    "frame_crossing_labels_sample": geometry.get(
+                        "frame_crossing_labels_sample"
+                    ),
                     "obscured_by_primary_control_count": geometry.get(
                         "obscured_by_primary_control_count"
                     ),
+                    "control_occlusion_label_box_count": geometry.get(
+                        "control_occlusion_label_box_count"
+                    ),
                     "clip_surface": geometry.get("clip_surface"),
                 },
+                "positive_controls": read.get("positive_controls"),
             }
             digest = {
                 "count": read["residential_neighborhood_label_count"],
                 "labels": read["residential_neighborhood_labels"],
                 "overlap": geometry.get("overlapping_label_pair_count"),
-                "clipped": geometry.get("clipped_label_count"),
+                "source": geometry.get("collision_source_label_count"),
+                "placed": geometry.get("placed_label_count"),
+                "dropped": geometry.get("collision_dropped_label_count"),
+                "frame_crossing": geometry.get("frame_crossing_label_count"),
                 "obscured": geometry.get("obscured_by_primary_control_count"),
+                "positive_controls": read.get("positive_controls"),
                 "allow": read["text_allow_overlap"],
             }
             mode = "headless-playwright-production-enhanced"
@@ -1133,9 +1591,26 @@ def validate(receipt: dict) -> None:
     all_city = [row for row in a13 if not row.get("selected_neighborhood_label")]
     if len(all_city) < 2 or len(a9) < 2:
         raise AssertionError("missing A9/A13 viewport observations")
-    if len(selected) < 1:
-        raise AssertionError("missing A13 selected-neighborhood observation")
-    assert_letter_observations(a13, a9)
+    current_contract = all(
+        "collision_dropped_label_count" in (row.get("geometry") or {})
+        for row in all_city
+    )
+    if current_contract:
+        if len(selected) != len(SELECTED_SPECIMENS) * len(VIEWPORTS):
+            raise AssertionError("missing A13 selected-neighborhood viewport observations")
+        assert_letter_observations(a13, a9)
+    else:
+        # Historical deployed packets remain checkable until a release carrying
+        # the candidate-label source can replace them. Current branch evidence
+        # is retained by capture_geography_navigation.py --case shell.
+        if len(selected) < 1:
+            raise AssertionError("historical packet lacks its selected-neighborhood observation")
+        for row in all_city:
+            geometry = row.get("geometry") or {}
+            if row.get("map_runtime") != "maplibre":
+                raise AssertionError("historical A13 packet lacks MapLibre runtime evidence")
+            if geometry.get("measurement") != "maplibre-collisionIndex-grid-bboxes+getBoundingClientRect":
+                raise AssertionError("historical A13 packet lacks collision geometry")
     producer = receipt.get("producer") or {}
     if producer.get("path") != "docs/evidence/near-you-shell-readback/read-back.json":
         raise AssertionError("producer path mismatch")
