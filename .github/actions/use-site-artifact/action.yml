@@ -17,7 +17,9 @@ runs:
     - name: Setup Node for artifact identity
       uses: actions/setup-node@v4
       with:
-        node-version: 22
+        # Exact pin shared with the producer so build_input_identity matches across
+        # runners while GitHub's hosted Node 22.x patch line rolls forward.
+        node-version-file: .node-version
     - name: Calculate exact build-input identity
       id: identity
       shell: bash
@@ -34,13 +36,21 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        if [ "${{ steps.download.outcome }}" = "success" ] && \
-           node tools/site_artifact_identity.mjs verify --commit-sha "$GITHUB_SHA"; then
-          echo "ready=true" >> "$GITHUB_OUTPUT"
-        else
+        if [ "${{ steps.download.outcome }}" != "success" ]; then
           rm -rf _site _site.sha256 _site.identity.json
           echo "ready=false" >> "$GITHUB_OUTPUT"
+          exit 0
         fi
+        # A successful download that fails identity/digest checks is not a miss.
+        # Rebuilding here abandons the shared producer bytes and often burns the
+        # entire performance-shard timeout (~15m) on a cold Pages build (~12m+).
+        if ! node tools/site_artifact_identity.mjs verify --commit-sha "$GITHUB_SHA"; then
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+          echo "Run-scoped site artifact '${{ inputs.artifact-name }}' downloaded but failed verification; refusing rebuild." >&2
+          echo "Consumer identity: ${{ steps.identity.outputs.build-input-identity }} (Node $(node -p process.version))." >&2
+          exit 1
+        fi
+        echo "ready=true" >> "$GITHUB_OUTPUT"
     - name: Restore exact-input site cache
       id: site-cache
       if: steps.artifact.outputs.ready != 'true'

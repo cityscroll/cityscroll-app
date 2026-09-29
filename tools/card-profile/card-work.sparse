@@ -6,6 +6,7 @@
 /.gitattributes
 /.github/
 /.gitignore
+/.node-version
 /.scrimignore
 /AGENTS.md
 /AP-EVIDENCE.md

@@ -50,7 +50,8 @@ runs:
     - name: Setup Node for generated artifacts
       uses: actions/setup-node@v4
       with:
-        node-version: 22
+        # Keep the exact pin in lockstep with site-artifact identity consumers.
+        node-version-file: .node-version
     # First-class calendar PDFs (BSA and peers) often ship FlateDecode streams.
     # tools/lib/pdf_calendar_text.mjs needs pdftotext from poppler-utils; the
     # naive byte extractor cannot read those streams. Pin the Ubuntu package so

@@ -82,7 +82,9 @@ jobs:
               - 'test/functional/**'
               - '.github/workflows/ci.yml'
               - '.github/actions/build-site/**'
+              - '.github/actions/use-site-artifact/**'
               - '.github/actions/setup-playwright/**'
+              - '.node-version'
               - '.github/workflows/deploy-cloudflare-pages.yml'
             # Subset of frontend that can move the static 20-sample budget.
             # Excludes site/data/** (receipts, join JSON), pure Markdown under site/,
@@ -105,6 +107,8 @@ jobs:
               - 'performance-budgets.json'
               - 'test/performance/**'
               - '.github/actions/setup-playwright/**'
+              - '.github/actions/use-site-artifact/**'
+              - '.node-version'
             worker:
               - 'worker/**'
             docs:
@@ -197,7 +201,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version-file: .node-version
       - name: Collect added and changed paths from the diff
         env:
           GH_TOKEN: ${{ github.token }}
@@ -253,13 +257,13 @@ jobs:
       - uses: actions/setup-node@v4
         if: matrix.family == 'worker'
         with:
-          node-version: "22"
+          node-version-file: .node-version
           cache: pnpm
           cache-dependency-path: worker/pnpm-lock.yaml
       - uses: actions/setup-node@v4
         if: matrix.family != 'worker'
         with:
-          node-version: "22"
+          node-version-file: .node-version
       - uses: ./.github/actions/setup-playwright
         if: matrix.family == 'site-node'
       - name: Snapshot temp-dir state before this family's tests
@@ -591,7 +595,7 @@ jobs:
       - uses: actions/setup-node@v4
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true'
         with:
-          node-version: "22"
+          node-version-file: .node-version
       - name: Simulate the merge-group combined tree
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true'
         run: node tools/aggregate_inventory_preflight.mjs --fetch
@@ -906,7 +910,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version-file: .node-version
       - uses: ./.github/actions/setup-playwright
       - name: Run retained browser journeys
         run: node --test test/browser/*.test.mjs
@@ -983,7 +987,7 @@ jobs:
         if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true')
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .node-version
       - name: Calculate exact build-input identity
         id: site-identity
         if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true')
