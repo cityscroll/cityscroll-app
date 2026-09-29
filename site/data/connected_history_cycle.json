@@ -1,0 +1,617 @@
+{
+  "schema": "cityscroll.connected_history_cycle_receipt.v1",
+  "cycle": {
+    "id": "connected-history-cycle",
+    "workflow": ".github/workflows/connected-history-cycle.yml",
+    "schedule": "13 7 * * *",
+    "cadence_hours": 24,
+    "served_path": "/data/connected_history_cycle.json"
+  },
+  "run": {
+    "run_id": "github-actions:36555302802:1",
+    "github_run_id": 36555302802,
+    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/36555302802",
+    "trigger": "workflow_dispatch",
+    "code_revision": "747d723fa502b3d4ad3932acca9246bef324999f",
+    "started_at": "2026-09-29T10:24:15.855Z",
+    "finished_at": "2026-09-29T10:24:25.921Z",
+    "status": "succeeded",
+    "outcome": "held",
+    "failed_stage": null,
+    "error": null,
+    "served": {
+      "status": "observed",
+      "origin": "https://cityscroll.org",
+      "observed_at": "2026-09-29T10:24:15.855Z",
+      "revision": "66b2d410b9864b306f6dde76825500490d4493b7",
+      "deployment_at": "2026-09-29T10:10:38.284Z",
+      "manifest_sha256": "sha256:cb23352e38202579f9fb0ab08fa73587fa48544dcef0b8eb1412a91944005f44",
+      "previous_receipt": {
+        "status": "absent",
+        "reason": "HTTP 200 text/html; charset=utf-8 is not a cycle receipt"
+      },
+      "after": {
+        "status": "observed",
+        "origin": "https://cityscroll.org",
+        "observed_at": "2026-09-29T10:24:25.921Z",
+        "revision": "66b2d410b9864b306f6dde76825500490d4493b7",
+        "deployment_at": "2026-09-29T10:10:38.284Z",
+        "manifest_sha256": "sha256:cb23352e38202579f9fb0ab08fa73587fa48544dcef0b8eb1412a91944005f44"
+      }
+    }
+  },
+  "stages": [
+    {
+      "stage": "acquisition",
+      "started_at": "2026-09-29T10:24:16.280Z",
+      "status": "succeeded",
+      "finished_at": "2026-09-29T10:24:25.380Z"
+    },
+    {
+      "stage": "materialization",
+      "started_at": "2026-09-29T10:24:25.380Z",
+      "status": "succeeded",
+      "finished_at": "2026-09-29T10:24:25.490Z"
+    },
+    {
+      "stage": "publication",
+      "started_at": "2026-09-29T10:24:25.490Z",
+      "status": "succeeded",
+      "finished_at": "2026-09-29T10:24:25.522Z"
+    },
+    {
+      "stage": "verification",
+      "started_at": "2026-09-29T10:24:25.522Z",
+      "status": "succeeded",
+      "finished_at": "2026-09-29T10:24:25.921Z"
+    }
+  ],
+  "acquisition": {
+    "documents": {
+      "attempted": true,
+      "source_policy": "fixed-six-case-dossier-ceqr-dot-edc-only",
+      "parser_version": "connected_history_documents.v1",
+      "observed_at": "2026-09-29T10:24:15.855Z",
+      "request_count": 8,
+      "requests": [
+        {
+          "order": 1,
+          "url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "byte_count": 245494,
+          "content_hash": "sha256:e380aacb72d75110f3205a0250625a1d317d5b8ca63a26d2988b03a9235792ee",
+          "content_fingerprint": "sha256:f23c7742e064235e8573a551c07e55db18c7142970620040331d8f0bc5dbbb20",
+          "per_response_markup_removed": true,
+          "outcome": "response"
+        },
+        {
+          "order": 2,
+          "url": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
+          "http_status": 200,
+          "content_type": "text/html;charset=UTF-8",
+          "byte_count": 27293,
+          "content_hash": "sha256:ab0b4eda0f1484e5e58be268093af8101fd2d69b615b9fd6ab1daa56b55e8a66",
+          "content_fingerprint": "sha256:d7785899b5bcc5e16f5fef585ec388c0cd8c80173faef7f63751ee7cf51c131d",
+          "per_response_markup_removed": true,
+          "outcome": "response"
+        },
+        {
+          "order": 3,
+          "url": "https://zap.planning.nyc.gov/projects/2025X0262",
+          "http_status": 200,
+          "content_type": "text/html; charset=UTF-8",
+          "byte_count": 7539,
+          "content_hash": "sha256:1527c80dd709b0dfbdc43e508c324f00d8f3f9dee69ad95d2b37f0b3919e9a22",
+          "content_fingerprint": "sha256:c46f1325931723dda0035e0455f727a2c6baf6e36a5ae3e23198dd4962539144",
+          "per_response_markup_removed": true,
+          "outcome": "response"
+        },
+        {
+          "order": 4,
+          "url": "https://a002-ceqraccess.nyc.gov/ceqr/Details?data=MjVETUUwMDZY0&signature=7baabc56de3147946d9415dc8b59f436a8e7c9ca",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "byte_count": 72902,
+          "content_hash": "sha256:86c8e2f39fe371782951e37fd6834f52eb92f8c5773e89b5e2d68b873fc17d86",
+          "content_fingerprint": "sha256:cf58768784b9b537661082d6be133b4976672616de626fe2fd53ed3b875befc4",
+          "per_response_markup_removed": true,
+          "outcome": "response"
+        },
+        {
+          "order": 5,
+          "url": "https://a002-ceqraccess.nyc.gov/Handlers/ProjectFile.ashx?file=MjAyNVwyNURNRTAwNlhcZmluZGluZ3NcMjVETUUwMDZYX1N0YXRlbWVudF9PZl9GaW5kaW5nc18xMDAxMjAyNS5wZGY1&signature=203eb9aee503f4ce2970ef6e003267bb39fb5d6c",
+          "http_status": 200,
+          "content_type": "application/pdf",
+          "byte_count": 308885,
+          "content_hash": "sha256:d8d07aa99d776a5dc5dc9a7a67268fe26c9cbdb695ff2b6bee379c0bff5a4f39",
+          "content_fingerprint": "sha256:d8d07aa99d776a5dc5dc9a7a67268fe26c9cbdb695ff2b6bee379c0bff5a4f39",
+          "per_response_markup_removed": false,
+          "outcome": "response"
+        },
+        {
+          "order": 6,
+          "url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+          "http_status": 200,
+          "content_type": "application/pdf",
+          "byte_count": 5191783,
+          "content_hash": "sha256:fd19caffb94d0d0d675c5573bfc9bf9503b188e6f726277e7392add57126fc19",
+          "content_fingerprint": "sha256:fd19caffb94d0d0d675c5573bfc9bf9503b188e6f726277e7392add57126fc19",
+          "per_response_markup_removed": false,
+          "outcome": "response"
+        },
+        {
+          "order": 7,
+          "url": "https://edc.nyc/project/lighthouse-point",
+          "http_status": 403,
+          "content_type": "text/html; charset=UTF-8",
+          "byte_count": 5619,
+          "content_hash": "sha256:008fcb274c9c1d8629689b49fbcf103504b3368649c646c1bfcfadd609fb2572",
+          "content_fingerprint": "sha256:fb34ee55ddf3ae992f0258ac8db68fde99cc2f994d19e678090767225ea06ff3",
+          "per_response_markup_removed": true,
+          "outcome": "response"
+        },
+        {
+          "order": 8,
+          "url": "https://edc.nyc/press-release/mixed-use-housing-complex-opens-lighthouse-point",
+          "http_status": 403,
+          "content_type": "text/html; charset=UTF-8",
+          "byte_count": 5754,
+          "content_hash": "sha256:cc61e27b5f748c1e40d16953d46c626ba2d51c95e94f219da75c09b37c5141a7",
+          "content_fingerprint": "sha256:627b8db3f5f45de40195c188850c740a1ad5c048a4f1b76eb63a562d083c78a9",
+          "per_response_markup_removed": true,
+          "outcome": "response"
+        }
+      ],
+      "acquired_selection_hash": "c975a124c9059a8d9a520ea4d1fc75fb81ae9486a316767be54f16b2241628b1",
+      "committed_selection_hash": "8af9223d8e45f005087b0ea3c7d920d6ae4c9ecd2bcd35cb90d1f788346d1f23",
+      "content_fingerprint_rule": "connected_history_content_fingerprint.v1",
+      "sources": [
+        {
+          "source_id": "kingsbridge-ceqr-13dme013x-page",
+          "publisher": "ceqr",
+          "requested_url": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
+          "resolved_url": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
+          "http_status": 200,
+          "status": "retained",
+          "reason": null,
+          "fetched_content_hash": "sha256:ab0b4eda0f1484e5e58be268093af8101fd2d69b615b9fd6ab1daa56b55e8a66",
+          "byte_count": 27293,
+          "content_fingerprint": "sha256:d7785899b5bcc5e16f5fef585ec388c0cd8c80173faef7f63751ee7cf51c131d",
+          "committed": {
+            "status": "retained",
+            "reason": null,
+            "content_hash": "sha256:8571a1563656d571737bba9669b206391987f2b55674610c00ddafd8ac3256a9"
+          },
+          "comparison": "reconfirmed",
+          "basis": "facts re-confirmed; per-response markup changed the digest and no fingerprint baseline existed, so this run records one",
+          "committed_content_hash": "sha256:8571a1563656d571737bba9669b206391987f2b55674610c00ddafd8ac3256a9",
+          "committed_content_fingerprint": "sha256:d7785899b5bcc5e16f5fef585ec388c0cd8c80173faef7f63751ee7cf51c131d"
+        },
+        {
+          "source_id": "kingsbridge-ceqr-25dme006x-details",
+          "publisher": "ceqr",
+          "requested_url": "https://a002-ceqraccess.nyc.gov/ceqr/Details?data=MjVETUUwMDZY0&signature=7baabc56de3147946d9415dc8b59f436a8e7c9ca",
+          "resolved_url": "https://a002-ceqraccess.nyc.gov/ceqr/Details?data=MjVETUUwMDZY0&signature=7baabc56de3147946d9415dc8b59f436a8e7c9ca",
+          "http_status": 200,
+          "status": "retained",
+          "reason": null,
+          "fetched_content_hash": "sha256:86c8e2f39fe371782951e37fd6834f52eb92f8c5773e89b5e2d68b873fc17d86",
+          "byte_count": 72902,
+          "content_fingerprint": "sha256:cf58768784b9b537661082d6be133b4976672616de626fe2fd53ed3b875befc4",
+          "committed": {
+            "status": "retained",
+            "reason": null,
+            "content_hash": "sha256:4e8ef2dc74d2435176b0b9543a351d9d8667e8a4fa3eb484349d0fa99fd178ab"
+          },
+          "comparison": "reconfirmed",
+          "basis": "facts re-confirmed; per-response markup changed the digest and no fingerprint baseline existed, so this run records one",
+          "committed_content_hash": "sha256:4e8ef2dc74d2435176b0b9543a351d9d8667e8a4fa3eb484349d0fa99fd178ab",
+          "committed_content_fingerprint": "sha256:cf58768784b9b537661082d6be133b4976672616de626fe2fd53ed3b875befc4"
+        },
+        {
+          "source_id": "kingsbridge-ceqr-25dme006x-findings",
+          "publisher": "ceqr",
+          "requested_url": "https://a002-ceqraccess.nyc.gov/Handlers/ProjectFile.ashx?file=MjAyNVwyNURNRTAwNlhcZmluZGluZ3NcMjVETUUwMDZYX1N0YXRlbWVudF9PZl9GaW5kaW5nc18xMDAxMjAyNS5wZGY1&signature=203eb9aee503f4ce2970ef6e003267bb39fb5d6c",
+          "resolved_url": "https://a002-ceqraccess.nyc.gov/Handlers/ProjectFile.ashx?file=MjAyNVwyNURNRTAwNlhcZmluZGluZ3NcMjVETUUwMDZYX1N0YXRlbWVudF9PZl9GaW5kaW5nc18xMDAxMjAyNS5wZGY1&signature=203eb9aee503f4ce2970ef6e003267bb39fb5d6c",
+          "http_status": 200,
+          "status": "retained",
+          "reason": null,
+          "fetched_content_hash": "sha256:d8d07aa99d776a5dc5dc9a7a67268fe26c9cbdb695ff2b6bee379c0bff5a4f39",
+          "byte_count": 308885,
+          "content_fingerprint": "sha256:d8d07aa99d776a5dc5dc9a7a67268fe26c9cbdb695ff2b6bee379c0bff5a4f39",
+          "committed": {
+            "status": "retained",
+            "reason": null,
+            "content_hash": "sha256:d8d07aa99d776a5dc5dc9a7a67268fe26c9cbdb695ff2b6bee379c0bff5a4f39"
+          },
+          "comparison": "unchanged",
+          "basis": "identical fetch digest",
+          "committed_content_hash": "sha256:d8d07aa99d776a5dc5dc9a7a67268fe26c9cbdb695ff2b6bee379c0bff5a4f39",
+          "committed_content_fingerprint": "sha256:d8d07aa99d776a5dc5dc9a7a67268fe26c9cbdb695ff2b6bee379c0bff5a4f39"
+        },
+        {
+          "source_id": "kingsbridge-zap-2025x0262",
+          "publisher": "ceqr",
+          "requested_url": "https://zap.planning.nyc.gov/projects/2025X0262",
+          "resolved_url": "https://zap.planning.nyc.gov/projects/2025X0262",
+          "http_status": 200,
+          "status": "acquisition_failure",
+          "reason": "source_span_not_found",
+          "fetched_content_hash": null,
+          "byte_count": null,
+          "content_fingerprint": null,
+          "committed": {
+            "status": "acquisition_failure",
+            "reason": "source_span_not_found",
+            "content_hash": null
+          },
+          "comparison": "unchanged",
+          "basis": "same recorded outcome",
+          "committed_content_hash": null,
+          "committed_content_fingerprint": null
+        },
+        {
+          "source_id": "lighthouse-point-opening-announcement",
+          "publisher": "edc",
+          "requested_url": "https://edc.nyc/press-release/mixed-use-housing-complex-opens-lighthouse-point",
+          "resolved_url": "https://edc.nyc/press-release/mixed-use-housing-complex-opens-lighthouse-point",
+          "http_status": 403,
+          "status": "acquisition_failure",
+          "reason": "retrieval_failure",
+          "fetched_content_hash": null,
+          "byte_count": null,
+          "content_fingerprint": null,
+          "committed": {
+            "status": "acquisition_failure",
+            "reason": "retrieval_failure",
+            "content_hash": null
+          },
+          "comparison": "unchanged",
+          "basis": "same recorded outcome",
+          "committed_content_hash": null,
+          "committed_content_fingerprint": null
+        },
+        {
+          "source_id": "lighthouse-point-project-page",
+          "publisher": "edc",
+          "requested_url": "https://edc.nyc/project/lighthouse-point",
+          "resolved_url": "https://edc.nyc/project/lighthouse-point",
+          "http_status": 403,
+          "status": "acquisition_failure",
+          "reason": "retrieval_failure",
+          "fetched_content_hash": null,
+          "byte_count": null,
+          "content_fingerprint": null,
+          "committed": {
+            "status": "acquisition_failure",
+            "reason": "retrieval_failure",
+            "content_hash": null
+          },
+          "comparison": "unchanged",
+          "basis": "same recorded outcome",
+          "committed_content_hash": null,
+          "committed_content_fingerprint": null
+        },
+        {
+          "source_id": "sixth-avenue-february-2025-cb4-cb5",
+          "publisher": "dot",
+          "requested_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+          "resolved_url": null,
+          "http_status": null,
+          "status": "acquisition_failure",
+          "reason": "link_label_not_found_under_heading",
+          "fetched_content_hash": null,
+          "byte_count": null,
+          "content_fingerprint": null,
+          "committed": {
+            "status": "acquisition_failure",
+            "reason": "link_label_not_found_under_heading",
+            "content_hash": null
+          },
+          "comparison": "unchanged",
+          "basis": "same recorded outcome",
+          "committed_content_hash": null,
+          "committed_content_fingerprint": null
+        },
+        {
+          "source_id": "sixth-avenue-june-2024-cb2",
+          "publisher": "dot",
+          "requested_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+          "resolved_url": null,
+          "http_status": null,
+          "status": "acquisition_failure",
+          "reason": "link_label_not_found_under_heading",
+          "fetched_content_hash": null,
+          "byte_count": null,
+          "content_fingerprint": null,
+          "committed": {
+            "status": "acquisition_failure",
+            "reason": "link_label_not_found_under_heading",
+            "content_hash": null
+          },
+          "comparison": "unchanged",
+          "basis": "same recorded outcome",
+          "committed_content_hash": null,
+          "committed_content_fingerprint": null
+        },
+        {
+          "source_id": "sixth-avenue-june-2026-cb2-cb4-cb5",
+          "publisher": "dot",
+          "requested_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+          "resolved_url": null,
+          "http_status": null,
+          "status": "acquisition_failure",
+          "reason": "link_label_not_found_under_heading",
+          "fetched_content_hash": null,
+          "byte_count": null,
+          "content_fingerprint": null,
+          "committed": {
+            "status": "acquisition_failure",
+            "reason": "link_label_not_found_under_heading",
+            "content_hash": null
+          },
+          "comparison": "unchanged",
+          "basis": "same recorded outcome",
+          "committed_content_hash": null,
+          "committed_content_fingerprint": null
+        },
+        {
+          "source_id": "thirty-first-avenue-may-2026-phase-ii",
+          "publisher": "dot",
+          "requested_url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+          "resolved_url": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+          "http_status": 200,
+          "status": "retained",
+          "reason": null,
+          "fetched_content_hash": "sha256:fd19caffb94d0d0d675c5573bfc9bf9503b188e6f726277e7392add57126fc19",
+          "byte_count": 5191783,
+          "content_fingerprint": "sha256:fd19caffb94d0d0d675c5573bfc9bf9503b188e6f726277e7392add57126fc19",
+          "committed": {
+            "status": "retained",
+            "reason": null,
+            "content_hash": "sha256:fd19caffb94d0d0d675c5573bfc9bf9503b188e6f726277e7392add57126fc19"
+          },
+          "comparison": "unchanged",
+          "basis": "identical fetch digest",
+          "committed_content_hash": "sha256:fd19caffb94d0d0d675c5573bfc9bf9503b188e6f726277e7392add57126fc19",
+          "committed_content_fingerprint": "sha256:fd19caffb94d0d0d675c5573bfc9bf9503b188e6f726277e7392add57126fc19"
+        },
+        {
+          "source_id": "thirty-first-avenue-may-june-2024",
+          "publisher": "dot",
+          "requested_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+          "resolved_url": null,
+          "http_status": null,
+          "status": "acquisition_failure",
+          "reason": "link_label_not_found_under_heading",
+          "fetched_content_hash": null,
+          "byte_count": null,
+          "content_fingerprint": null,
+          "committed": {
+            "status": "acquisition_failure",
+            "reason": "link_label_not_found_under_heading",
+            "content_hash": null
+          },
+          "comparison": "unchanged",
+          "basis": "same recorded outcome",
+          "committed_content_hash": null,
+          "committed_content_fingerprint": null
+        },
+        {
+          "source_id": "thirty-first-avenue-september-2023-workshop",
+          "publisher": "dot",
+          "requested_url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+          "resolved_url": null,
+          "http_status": null,
+          "status": "acquisition_failure",
+          "reason": "link_label_not_found_under_heading",
+          "fetched_content_hash": null,
+          "byte_count": null,
+          "content_fingerprint": null,
+          "committed": {
+            "status": "acquisition_failure",
+            "reason": "link_label_not_found_under_heading",
+            "content_hash": null
+          },
+          "comparison": "unchanged",
+          "basis": "same recorded outcome",
+          "committed_content_hash": null,
+          "committed_content_fingerprint": null
+        }
+      ]
+    },
+    "retained_inputs": [
+      {
+        "path": "site/data/community_board_constellation_lookup.json",
+        "role": "frozen cohort input (boards_registry)",
+        "frozen_sha256": "6d8e7f187d80b522141cf94ba76b028362bd73a319dca0e74801ed8f87d95d77",
+        "current_sha256": "adea95e09177dcee67a62f60b3bb9e897e590651be49e97394cd16471f103da2",
+        "drifted": true
+      },
+      {
+        "path": "site/data/zap_projects_warehouse_lookup.json",
+        "role": "frozen cohort input (zap_projects)",
+        "frozen_sha256": "7a79bab1cf1d0cbc698d74942452d193a3914c10682326a939fbfc6cdaa3f51b",
+        "current_sha256": "7a79bab1cf1d0cbc698d74942452d193a3914c10682326a939fbfc6cdaa3f51b",
+        "drifted": false
+      },
+      {
+        "path": "site/data/community_board_land_positions.json",
+        "role": "frozen cohort input (board_land_positions)",
+        "frozen_sha256": "7682ab286c4998bed627bde95be165fc649dd3a99eae1822eae7a39377b0dffe",
+        "current_sha256": "7682ab286c4998bed627bde95be165fc649dd3a99eae1822eae7a39377b0dffe",
+        "drifted": false
+      },
+      {
+        "path": "site/data/site_lifecycle/manifest.json",
+        "role": "frozen cohort input (site_lifecycle)",
+        "frozen_sha256": "35f9fa5114ada2fb7e87ec9d0a7b40f8db6db7f9429a5e72082d1e0810fafe07",
+        "current_sha256": "35f9fa5114ada2fb7e87ec9d0a7b40f8db6db7f9429a5e72082d1e0810fafe07",
+        "drifted": false
+      },
+      {
+        "path": "site/data/bsa_calendar.json",
+        "role": "frozen cohort input (bsa_calendar)",
+        "frozen_sha256": "2c9940b39fc38ae0d3800088296e29813be77fa79e7c86fb770d927efdb21654",
+        "current_sha256": "2c9940b39fc38ae0d3800088296e29813be77fa79e7c86fb770d927efdb21654",
+        "drifted": false
+      }
+    ]
+  },
+  "materialization": [
+    {
+      "id": "cohort",
+      "path": "site/data/connected_history_evaluation_cohort.json",
+      "mode": "frozen_baseline",
+      "action": "carried_frozen",
+      "committed_sha256": "sha256:eac74cfa6b2ce2d999ed07fa8742ddde6d49ca3b0e4a2754b61f9be980ebc5dc",
+      "materialized_sha256": "sha256:eac74cfa6b2ce2d999ed07fa8742ddde6d49ca3b0e4a2754b61f9be980ebc5dc",
+      "byte_identical": true,
+      "generated_at": {
+        "committed": null,
+        "materialized": null
+      },
+      "stamp_source": "frozen evaluation seed",
+      "verification_receipt": {
+        "path": "site/data/connected_history_sources/verification_receipts/connected_history_evaluation_cohort_latest.json",
+        "committed_sha256": "sha256:81e163facdaadca706d152e88850d86f2c245786759ea1b4f9da1f968b670a0b",
+        "materialized_sha256": "sha256:81e163facdaadca706d152e88850d86f2c245786759ea1b4f9da1f968b670a0b"
+      },
+      "confirmed_current_at": "2026-09-29T10:24:25.921Z"
+    },
+    {
+      "id": "documents",
+      "path": "site/data/connected_history_documents.json",
+      "mode": "acquired",
+      "action": "rematerialized",
+      "committed_sha256": "sha256:51c54a94466b8d2b77630c621dbaa83802355eea2a0bceb314a9f312615ba161",
+      "materialized_sha256": "sha256:51c54a94466b8d2b77630c621dbaa83802355eea2a0bceb314a9f312615ba161",
+      "byte_identical": true,
+      "generated_at": {
+        "committed": "2026-09-21T20:19:01.507Z",
+        "materialized": "2026-09-21T20:19:01.507Z"
+      },
+      "stamp_source": "acquisition instant of the published observation set",
+      "verification_receipt": {
+        "path": "site/data/connected_history_sources/verification_receipts/connected_history_documents_latest.json",
+        "committed_sha256": "sha256:44eb1e4848f53691afa5ef4462648b2ad3f434ff38d20e7fa5e0498f10376530",
+        "materialized_sha256": "sha256:44eb1e4848f53691afa5ef4462648b2ad3f434ff38d20e7fa5e0498f10376530"
+      },
+      "confirmed_current_at": "2026-09-29T10:24:25.921Z"
+    },
+    {
+      "id": "relations",
+      "path": "site/data/connected_history_relations.json",
+      "mode": "fixed_dossier",
+      "action": "rematerialized",
+      "committed_sha256": "sha256:20883bc7a09276e37f0ec85cfe299a398e496132dcd14763f5caeff38c47d56a",
+      "materialized_sha256": "sha256:20883bc7a09276e37f0ec85cfe299a398e496132dcd14763f5caeff38c47d56a",
+      "byte_identical": true,
+      "generated_at": {
+        "committed": "2026-09-26T00:00:00.000Z",
+        "materialized": "2026-09-26T00:00:00.000Z"
+      },
+      "stamp_source": "fixed-dossier judgment version in code",
+      "verification_receipt": {
+        "path": "site/data/connected_history_sources/verification_receipts/connected_history_relations_latest.json",
+        "committed_sha256": "sha256:854fded9838bea03b5bb129a472cc97274cde1e123c9948e4ebe8bf9f1e6c959",
+        "materialized_sha256": "sha256:854fded9838bea03b5bb129a472cc97274cde1e123c9948e4ebe8bf9f1e6c959"
+      },
+      "confirmed_current_at": "2026-09-29T10:24:25.921Z"
+    },
+    {
+      "id": "roles",
+      "path": "site/data/connected_history_roles.json",
+      "mode": "fixed_dossier",
+      "action": "rematerialized",
+      "committed_sha256": "sha256:e7edfbee41e82a40288dbe53af5c61d2f0365718238f308423920af7d5a16997",
+      "materialized_sha256": "sha256:d25ac875ec2d620002621959012df2731e908d150b026d9716d9ac525557a210",
+      "byte_identical": false,
+      "generated_at": {
+        "committed": "2026-09-26T00:00:00.000Z",
+        "materialized": "2026-09-26T00:00:00.000Z"
+      },
+      "stamp_source": "fixed-dossier judgment version in code",
+      "verification_receipt": {
+        "path": "site/data/connected_history_sources/verification_receipts/connected_history_roles_latest.json",
+        "committed_sha256": "sha256:a1b8babf54f9a234abc7bf86606fe73625057adbfb88a469aade535a073ed941",
+        "materialized_sha256": "sha256:a1b8babf54f9a234abc7bf86606fe73625057adbfb88a469aade535a073ed941"
+      },
+      "confirmed_current_at": null
+    },
+    {
+      "id": "time",
+      "path": "site/data/connected_history_time.json",
+      "mode": "fixed_dossier",
+      "action": "rematerialized",
+      "committed_sha256": "sha256:2df8f0ebbcabf5b4ba3bb1ea87becf4252e694839bdbd5cfe92d08a602a1a889",
+      "materialized_sha256": "sha256:2df8f0ebbcabf5b4ba3bb1ea87becf4252e694839bdbd5cfe92d08a602a1a889",
+      "byte_identical": true,
+      "generated_at": {
+        "committed": "2026-09-26T00:00:00.000Z",
+        "materialized": "2026-09-26T00:00:00.000Z"
+      },
+      "stamp_source": "fixed-dossier judgment version in code",
+      "verification_receipt": {
+        "path": "site/data/connected_history_sources/verification_receipts/connected_history_time_latest.json",
+        "committed_sha256": "sha256:cb891e09e0d18312ed291630a35eb3d83c5a8b2b2f9017e5e90f7e678c3a38b5",
+        "materialized_sha256": "sha256:cb891e09e0d18312ed291630a35eb3d83c5a8b2b2f9017e5e90f7e678c3a38b5"
+      },
+      "confirmed_current_at": "2026-09-29T10:24:25.921Z"
+    },
+    {
+      "id": "coverage",
+      "path": "site/data/connected_history_coverage.json",
+      "mode": "derived",
+      "action": "rematerialized",
+      "committed_sha256": "sha256:3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed",
+      "materialized_sha256": "sha256:3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed",
+      "byte_identical": true,
+      "generated_at": {
+        "committed": "2026-09-21T20:19:01.507Z",
+        "materialized": "2026-09-21T20:19:01.507Z"
+      },
+      "stamp_source": "input stamps of the other materializations",
+      "verification_receipt": {
+        "path": "site/data/connected_history_sources/verification_receipts/connected_history_coverage_latest.json",
+        "committed_sha256": "sha256:0b38fd9e17f99655976d62c851d9382e3693fdefba6c5bef1f2cfcc0d098a79f",
+        "materialized_sha256": "sha256:0b38fd9e17f99655976d62c851d9382e3693fdefba6c5bef1f2cfcc0d098a79f"
+      },
+      "confirmed_current_at": "2026-09-29T10:24:25.921Z"
+    }
+  ],
+  "publication": {
+    "decision": "held",
+    "reason": "Publishing would change bytes that retained production measurements pin (docs/evidence/connected-history-release/release-readback.json, docs/evidence/documented-history-journeys/capture-manifest.json); the change is held for a reviewed publication that re-measures them, so the served bytes did not change.",
+    "derived_decision": "held",
+    "changed_paths": [
+      "site/data/connected_history_roles.json"
+    ],
+    "invalidated_evidence": [
+      {
+        "path": "docs/evidence/connected-history-release/release-readback.json",
+        "measured_revision": "e806246135dde1f9cccb3a91d9b3beaeb6251189",
+        "inputs_changed": [
+          "site/data/connected_history_roles.json"
+        ]
+      },
+      {
+        "path": "docs/evidence/documented-history-journeys/capture-manifest.json",
+        "measured_revision": "0e6763ff949009820a1178c19366cd246d50964f",
+        "inputs_changed": [
+          "site/data/connected_history_roles.json"
+        ]
+      }
+    ],
+    "reobservation_failures": [],
+    "written_paths": [],
+    "dry_run": false,
+    "channel": {
+      "kind": "pull_request",
+      "branch": "automation/connected-history-cycle",
+      "merge": "auto"
+    }
+  },
+  "prior_runs": []
+}
