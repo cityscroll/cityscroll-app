@@ -202,6 +202,34 @@ test("A3: retained Chromium measurements cover all six at named viewports and no
       capture.case,
     );
   }
+  // Served positive control: the failure is induced in the browser only, the
+  // page shows its declared unavailable state, and its retry link recovers.
+  const servedFailure = productionReceipt.failure_control;
+  assert.equal(servedFailure.case, "history-materialization-failure-positive-control");
+  assert.equal(servedFailure.revision, productionReceipt.served_revision);
+  assert.equal(servedFailure.induced_failure.method, "browser_request_interception");
+  assert.equal(servedFailure.induced_failure.path, "/data/connected_history_relations.json");
+  assert.equal(servedFailure.induced_failure.response_status, 503);
+  assert.equal(servedFailure.induced_failure.served_revision, productionReceipt.served_revision);
+  assert.ok(servedFailure.induced_failure.failed_response_count >= 1);
+  assert.equal(servedFailure.observed_state, "unavailable");
+  assert.equal(servedFailure.observed_family, "kingsbridge-armory");
+  assert.match(servedFailure.official_source_destination, /^https:\/\//);
+  assert.deepEqual(servedFailure.recovery, {
+    action: "Try again",
+    route: "/search/?q=Kingsbridge%20Armory#connected-history",
+    observed_state: "ready",
+    heading: "Kingsbridge Armory proposal history",
+    relations_http_status: 200,
+  });
+  assert.ok(servedFailure.data_vintage);
+  assert.equal(servedFailure.hash_kind, "screenshot");
+  assert.match(servedFailure.sha256, /^[a-f0-9]{64}$/);
+  assert.equal(
+    servedFailure.render_sha256,
+    MANIFEST.captures.find((capture) => capture.case === servedFailure.case).sha256,
+    "served failure markup matches the retained hermetic control",
+  );
   const publicReceipt = JSON.stringify(productionReceipt);
   assert.doesNotMatch(publicReceipt, /(?:\/Users\/|\/private\/tmp\/|local_path|screenshot_directory)/);
   const productionDigest = createHash("sha256")
@@ -333,6 +361,8 @@ test("A3: production instrumentation pins the landed Pages revision and served d
   assert.match(source, /served revision changed during capture/);
   assert.match(source, /request_receipts/);
   assert.match(source, /activate_link/);
+  assert.match(source, /install_served_failure_route/);
+  assert.match(source, /served failure control did not intercept the relations payload/);
   assert.match(source, /runtime_browser_measurement/);
 
   // Converse control: production cannot be invoked without its landed pin.

@@ -489,46 +489,144 @@ def run_no_javascript(
     return observations
 
 
+FAILURE_CONTROL_PATH = "/data/connected_history_relations.json"
+FAILURE_CONTROL_STATUS = 503
+
+
+def install_served_failure_route(page, base: str, failure: dict, intercepted: list[str]) -> None:
+    """Fail one served materialization inside this browser page only.
+
+    The route matches the relations payload on the served origin and answers it
+    from the browser's own interception layer, so no request for that payload
+    leaves the browser while the failure is enabled and nothing on the origin is
+    written. Every other request continues to the served site unchanged.
+    """
+
+    origin_host = (urllib.parse.urlsplit(base).hostname or "").lower()
+
+    def matches(url: str) -> bool:
+        parsed = urllib.parse.urlsplit(url)
+        return (parsed.hostname or "").lower() == origin_host and parsed.path.endswith(FAILURE_CONTROL_PATH)
+
+    def route_request(route) -> None:
+        if failure["enabled"] and route.request.method == "GET":
+            intercepted.append(route.request.url)
+            route.fulfill(status=FAILURE_CONTROL_STATUS, content_type="application/json", body="{}")
+            return
+        route.continue_()
+
+    page.route(matches, route_request)
+
+
 def run_failure_control(
     browser,
     base: str,
     *,
     fixture: bool,
+    served_revision: str | None = None,
+    screenshot_dir: Path | None = None,
     local_request_paths: set[str] | None = None,
-) -> dict | None:
-    if not fixture:
-        return None
+) -> dict:
+    """Induce the history-load failure, then prove the declared recovery.
+
+    Fixture mode injects the failure through the hermetic routes. Production
+    mode intercepts only the relations payload in the browser, observes the
+    unavailable state on the served page, lifts the interception, and follows
+    the page's own retry link back to the ready history.
+    """
+
     context = browser.new_context(viewport={"width": 1440, "height": 900})
     page = context.new_page()
     failure = {"enabled": True}
-    install_fixture_routes(page, failure, local_request_paths)
+    intercepted: list[str] = []
+    if fixture:
+        install_fixture_routes(page, failure, local_request_paths)
+    else:
+        install_served_failure_route(page, base, failure, intercepted)
+    relation_responses: list[dict] = []
+
+    def record_response(response) -> None:
+        if urllib.parse.urlsplit(response.url).path.endswith(FAILURE_CONTROL_PATH):
+            relation_responses.append({"status": response.status, "enabled": failure["enabled"]})
+
+    page.on("response", record_response)
+    family_id = "kingsbridge-armory"
     query = "Kingsbridge Armory"
     route = route_for(query)
-    page.goto(f"{base}{route}", wait_until="domcontentloaded", timeout=60_000)
+    response = page.goto(f"{base}{route}", wait_until="domcontentloaded", timeout=60_000)
+    assert response is not None and response.status == 200
     panel = page.locator("[data-connected-history]")
     page.wait_for_function(
         "() => document.querySelector('[data-connected-history]')?.dataset.connectedHistoryState === 'unavailable'",
         timeout=30_000,
     )
+    failed_responses = [
+        entry for entry in relation_responses
+        if entry["enabled"] and entry["status"] == FAILURE_CONTROL_STATUS
+    ]
+    assert failed_responses, "failure control did not fail the relations payload"
+    if not fixture:
+        assert intercepted, "served failure control did not intercept the relations payload"
     assert page.locator("#search-query").input_value() == query
-    assert panel.get_by_role("link", name="Try again").get_attribute("href") == (
-        "/search/?q=Kingsbridge%20Armory#connected-history"
-    )
+    retry = panel.get_by_role("link", name="Try again")
+    retry_href = retry.get_attribute("href")
+    assert retry_href == "/search/?q=Kingsbridge%20Armory#connected-history"
     assert panel.locator("a[href^='https://']").count() == 1
+    official_source = panel.locator("a[href^='https://']").get_attribute("href")
     text = panel.inner_text().lower()
     assert "unavailable result" in text
     assert "successful empty result" in text
     assert "no history" not in text
+    failed_state = panel.get_attribute("data-connected-history-state")
+    failed_family = panel.get_attribute("data-connected-history-family")
+    assert failed_state == "unavailable"
+    assert failed_family == family_id
     html = panel.evaluate("node => node.outerHTML")
+    screenshot = screenshot_receipt(page, "history-materialization-failure-positive-control", screenshot_dir)
+
+    # Recovery: lift the interception and follow the page's own retry link.
+    failure["enabled"] = False
+    retry.click()
+    page.wait_for_load_state("domcontentloaded")
+    page.wait_for_function(
+        "family => document.querySelector('[data-connected-history]')?.dataset.connectedHistoryState === 'ready' "
+        "&& document.querySelector('[data-connected-history]')?.dataset.connectedHistoryFamily === family",
+        arg=family_id,
+        timeout=30_000,
+    )
+    assert page.locator("#search-query").input_value() == query
+    recovered_route = page.evaluate("() => `${location.pathname}${location.search}${location.hash}`")
+    assert recovered_route == retry_href
+    recovered_title = panel.locator("#connected-history-heading").inner_text()
+    assert recovered_title == "Kingsbridge Armory proposal history"
+    assert any(entry["status"] == 200 and not entry["enabled"] for entry in relation_responses), relation_responses
     result = {
         "case": "history-materialization-failure-positive-control",
-        "family_id": "kingsbridge-armory",
+        "family_id": family_id,
         "route": route,
         "viewport": {"name": "desktop-keyboard", "width": 1440, "height": 900},
         "interaction": "failure injection",
         "assertion": "A failed retained-history load preserves the query and exposes retry plus an official source without asserting an empty history.",
         "render_sha256": sha256_text(html),
-        "capture_sha256": None,
+        "capture_sha256": screenshot["sha256"] if screenshot else None,
+        "induced_failure": {
+            "method": "fixture_route" if fixture else "browser_request_interception",
+            "scope": "this browser page only; the served origin received no write",
+            "path": FAILURE_CONTROL_PATH,
+            "response_status": FAILURE_CONTROL_STATUS,
+            "failed_response_count": len(failed_responses),
+            "served_revision": served_revision,
+        },
+        "observed_state": failed_state,
+        "observed_family": failed_family,
+        "official_source_destination": official_source,
+        "recovery": {
+            "action": "Try again",
+            "route": recovered_route,
+            "observed_state": "ready",
+            "heading": recovered_title,
+            "relations_http_status": 200,
+        },
     }
     page.close()
     context.close()
@@ -555,6 +653,33 @@ def write_hermetic_manifest(receipt: dict) -> None:
         else:
             capture.pop("local_capture_sha256", None)
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+
+def production_failure_control(receipt: dict, data_vintage) -> dict:
+    """Public-safe record of the served failure control and its recovery."""
+
+    control = receipt["failure_control"]
+    screenshot_hash = control.get("capture_sha256")
+    return {
+        "case": control["case"],
+        "route": control["route"],
+        "viewport": control["viewport"],
+        "revision": receipt["served_revision"],
+        "data_vintage": data_vintage,
+        "assertion": (
+            "On the served page, a browser-only interception of the relations payload shows the "
+            "declared unavailable state with the query retained, a retry link, and one official "
+            "source; lifting the interception and following the retry link restores the ready history."
+        ),
+        "sha256": screenshot_hash or control["render_sha256"],
+        "hash_kind": "screenshot" if screenshot_hash else "rendered_markup",
+        "render_sha256": control["render_sha256"],
+        "induced_failure": control["induced_failure"],
+        "observed_state": control["observed_state"],
+        "observed_family": control["observed_family"],
+        "official_source_destination": control["official_source_destination"],
+        "recovery": control["recovery"],
+    }
 
 
 def write_production_manifest(receipt: dict) -> None:
@@ -596,6 +721,7 @@ def write_production_manifest(receipt: dict) -> None:
         "capture_count": len(captures),
         "image_binaries_committed": False,
         "captures": captures,
+        "failure_control": production_failure_control(receipt, data_vintage),
     }
     run_receipt_sha256 = sha256_text(json.dumps(
         run_receipt,
@@ -610,8 +736,9 @@ def write_production_manifest(receipt: dict) -> None:
         ),
         "requirement": (
             "The runner refuses a non-main pin, a served revision that does not contain it, "
-            "a revision change during capture, absent served materializations, or a missing "
-            "rendered journey."
+            "a revision change during capture, absent served materializations, a missing "
+            "rendered journey, or a served failure control that is not intercepted, does not "
+            "show the unavailable state, or does not recover through its retry link."
         ),
         "run_receipt_sha256": run_receipt_sha256,
         "run_receipt": run_receipt,
@@ -636,6 +763,7 @@ def main() -> int:
     server = None
     served_revision = None
     served_revision_after = None
+    failure_control = None
     required_landed_commit = None
     request_receipts: list[dict] = []
     measured_inputs: list[dict[str, str]] = []
@@ -688,14 +816,16 @@ def main() -> int:
                 fixture=not args.production,
                 local_request_paths=local_request_paths,
             ))
-            failure = run_failure_control(
+            failure_control = run_failure_control(
                 browser,
                 base,
                 fixture=not args.production,
+                served_revision=served_revision,
+                screenshot_dir=screenshot_dir,
                 local_request_paths=local_request_paths,
             )
-            if failure:
-                captures.append(failure)
+            if not args.production:
+                captures.append(failure_control)
         if args.production:
             served_revision_after = served_page_revision(base)
             if served_revision_after != served_revision:
@@ -731,6 +861,7 @@ def main() -> int:
         "image_binaries_committed": False,
         "screenshot_directory": str(screenshot_dir) if screenshot_dir else None,
         "captures": captures,
+        "failure_control": failure_control if args.production else None,
     }
     if args.write_manifest:
         if args.production:
