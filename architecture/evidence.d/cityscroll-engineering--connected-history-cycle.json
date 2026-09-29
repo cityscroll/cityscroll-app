@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/connected-history-cycle",
+  "status": "implemented",
+  "fingerprint": "connected-history-cycle.v1",
+  "updated_at": "2026-09-29T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "connected-history-cycle-contract",
+      "path": "tools/lib/connected_history_cycle.mjs"
+    },
+    {
+      "id": "connected-history-cycle-runner",
+      "path": "tools/connected_history_cycle.mjs"
+    },
+    {
+      "id": "connected-history-cycle-schedule",
+      "path": ".github/workflows/connected-history-cycle.yml"
+    },
+    {
+      "id": "connected-history-cycle-tests",
+      "path": "test/connected_history_cycle.test.mjs"
+    }
+  ]
+}

@@ -38,6 +38,46 @@ node tools/build_connected_history_time.mjs --check
 node --test test/connected_history_time.test.mjs
 ```
 
+## Scheduled cycle
+
+`.github/workflows/connected-history-cycle.yml` runs
+`node tools/connected_history_cycle.mjs --run` daily at 07:13 UTC (and on
+manual dispatch). The declaration is checked by
+`node tools/connected_history_cycle.mjs --check-declaration` and
+`test/connected_history_cycle.test.mjs`. Each run:
+
+1. **acquisition**: re-fetches the fixed dossier documents and records every
+   request with its digest and a content fingerprint. The fingerprint ignores
+   HTML that differs on every response (inline scripts, hidden form state,
+   hidden frames, comments, nonces). The frozen cohort's declared inputs are
+   digested and reported as drifted or not. They are never re-frozen.
+2. **materialization**: rebuilds documents, relations, roles, time and
+   coverage in memory and compares them with the committed bytes. A document
+   counts as changed only when its facts or content changed. A new fetch digest
+   caused only by per-response markup does not count, and neither does a
+   transport failure. A committed observation that cannot be re-fetched is
+   kept.
+3. **publication**: `derivePublicationDecision` decides `unchanged`,
+   `published` or `held`. A change is held, and the served bytes stay as they
+   are, when a committed observation could not be re-fetched or when a
+   retained production measurement under `docs/evidence/` pins a changed path.
+   Held files are uploaded with the run.
+4. **verification**: the owning builders' `--check` modes run over the tree
+   the run leaves. A failure restores the committed bytes.
+
+Every run writes `site/data/connected_history_cycle.json`, served at
+`/data/connected_history_cycle.json`, and the workflow publishes it through
+the `automation/connected-history-cycle` pull request with auto-merge. The
+receipt records the run's start and finish, the served revision before and
+after, each stage, the acquired sources and digests, each materialization's
+committed and materialized digests and stamps, the publication decision with
+its reason, and a ledger of earlier runs. Because a byte-identical run still
+writes a new receipt, an idempotent cycle can be told apart from no cycle. A
+failed stage writes a receipt naming that stage. Rebuilding from committed
+inputs (a builder or a deploy) never writes a receipt, so a missing receipt
+means no cycle ran. `verifyConnectedHistoryCycleReceipt` re-derives the status,
+the outcome and the decision from the receipt's own facts.
+
 Document retention resolves DOT parent-page attachment selectors once into an
 auditable manifest, keeps publication time distinct from internal section dates
 and observation time, and records acquisition failures without counting them as

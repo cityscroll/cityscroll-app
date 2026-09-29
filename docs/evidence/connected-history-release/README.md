@@ -50,15 +50,20 @@ served revision changes during the read.
 
 ## Scheduled cycle
 
-The connected-history materializations have no scheduled acquisition of their
-own. The release is proven to survive publication by observing the first
-scheduled publication workflow run (`geocoder-address-index.yml` or
-`first-class-refresh.yml`) that starts after the release deployment, is merged
-through its pull request, and is then served. After that cycle, a journey
-outside Brooklyn Community Board 15 must pass again and the served history
-materializations must be byte-identical to the first read-back. Until all of
-that is observed, the cycle stays open. The read-back then records the next
-scheduled check and the seven-day deadline.
+The connected-history materializations have their own scheduled cycle,
+`connected-history-cycle.yml` (see
+[`site/data/connected_history_sources/README.md`](../../../site/data/connected_history_sources/README.md#scheduled-cycle)).
+The read-back observes the first scheduled run of that workflow that starts
+after the release deployment, is merged through its pull request, and is then
+served. No other workflow counts. After that cycle, a journey outside Brooklyn
+Community Board 15 must pass again and the served history materializations
+must be byte-identical to the first read-back. Until all of that is observed,
+the cycle stays open. The read-back then records the next scheduled check and
+the seven-day deadline. Each read-back also retains the cycle receipt the
+origin served at `/data/connected_history_cycle.json`, as
+`served_cycle_receipt`. That receipt names its run and never decides the
+status. Read-backs retained before the cycle existed name the earlier proxy
+workflows. They are not rewritten.
 
 ## Limits that stay visible
 

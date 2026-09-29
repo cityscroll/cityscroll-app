@@ -1,0 +1,125 @@
+name: Connected-history cycle
+
+# The connected-history materializations had no scheduled producer: they
+# changed only through hand-merged pull requests, so a read-back could not tell
+# an idempotent cycle from no cycle at all. This job acquires the fixed-dossier
+# documents from their publishers, rematerializes every history artifact,
+# decides whether the served bytes may change, and publishes a receipt naming
+# the run through the same automation pull-request path the address-index
+# refresh uses. The receipt is served at /data/connected_history_cycle.json.
+# Contract: site/data/connected_history_sources/README.md.
+on:
+  schedule:
+    # Daily, after the City's overnight publishing window and ahead of the
+    # scheduled Pages deploy.
+    - cron: "13 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: connected-history-cycle
+  cancel-in-progress: false
+
+jobs:
+  cycle:
+    name: Acquire, materialize and publish connected histories
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # A failed stage still writes a receipt naming the stage, so the run
+      # continues to publish it and fails at the end.
+      - name: Run the cycle
+        id: cycle
+        continue-on-error: true
+        run: node tools/connected_history_cycle.mjs --run
+
+      - name: Summarise the cycle receipt
+        if: ${{ !cancelled() && hashFiles('site/data/connected_history_cycle.json') != '' }}
+        run: node tools/connected_history_cycle.mjs --summarize site/data/connected_history_cycle.json >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep held materializations with the run
+        if: ${{ !cancelled() && hashFiles('.artifacts/connected-history-cycle/held/**') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: connected-history-held-materializations
+          path: .artifacts/connected-history-cycle/held/
+          retention-days: 30
+
+      - name: Guard generated changes
+        id: generated
+        if: ${{ !cancelled() }}
+        run: |
+          set -euo pipefail
+          changed="$(git status --porcelain --untracked-files=all | awk '{print $NF}')"
+          if [ -z "$changed" ]; then
+            echo "The cycle wrote no receipt." >&2
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          while IFS= read -r path; do
+            case "$path" in
+              site/data/connected_history_cycle.json) ;;
+              site/data/connected_history_*.json) ;;
+              site/data/connected_history_sources/verification_receipts/*.json) ;;
+              *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
+            esac
+          done <<< "$changed"
+          git diff --check
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the cycle pull request
+        if: ${{ !cancelled() && steps.generated.outputs.changed == 'true' }}
+        id: cycle-pr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.REFRESH_PR_TOKEN }}
+          branch: automation/connected-history-cycle
+          delete-branch: true
+          commit-message: Record the scheduled connected-history cycle
+          title: Record the scheduled connected-history cycle
+          body: |
+            Automated connected-history cycle. The receipt at `site/data/connected_history_cycle.json` names the run, the served revision it ran against, every document it acquired with its digest, what it materialized, and the publication decision. A history materialization changes here only when the cycle derived a `published` decision; otherwise only the receipt changes.
+
+            Validation:
+            - `node tools/connected_history_cycle.mjs --check-declaration`
+            - `node tools/build_connected_history_documents.mjs --check`
+            - `node tools/build_connected_history_relations.mjs --check`
+            - `node tools/build_connected_history_roles.mjs --check`
+            - `node tools/build_connected_history_time.mjs --check`
+            - `node tools/build_connected_history_coverage.mjs --check`
+          add-paths: |
+            site/data/connected_history_cycle.json
+            site/data/connected_history_*.json
+            site/data/connected_history_sources/verification_receipts/*.json
+
+      - name: Run required checks for the cycle pull request
+        if: ${{ !cancelled() && steps.cycle-pr.outputs.pull-request-number != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
+        run: gh workflow run ci.yml --ref automation/connected-history-cycle
+
+      - name: Queue the recorded cycle for merge
+        if: ${{ !cancelled() && steps.cycle-pr.outputs.pull-request-number != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
+          CYCLE_PR: ${{ steps.cycle-pr.outputs.pull-request-number }}
+          CYCLE_HEAD: ${{ steps.cycle-pr.outputs.pull-request-head-sha }}
+        run: gh pr merge "$CYCLE_PR" --auto --match-head-commit "$CYCLE_HEAD"
+
+      - name: Fail the run when a cycle stage failed
+        if: ${{ steps.cycle.outcome == 'failure' }}
+        run: |
+          echo "A cycle stage failed; its receipt names the stage and is published above." >&2
+          exit 1

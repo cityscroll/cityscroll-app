@@ -51,22 +51,18 @@ export const SERVED_DATA = Object.freeze({
 });
 
 /**
- * Scheduled publication workflows that acquire, commit through a pull request,
- * and are then served by the Pages deploy. The connected-history family itself
- * has no scheduled acquisition caller; a cycle of these workflows is the next
- * scheduled publication after which the histories must remain discoverable
- * with unchanged bytes.
+ * The connected-history family's own scheduled cycle: it acquires, commits its
+ * receipt (and any published change) through a pull request, and is then
+ * served by the Pages deploy. Its served receipt names the run. After that
+ * cycle the histories must remain discoverable with unchanged bytes. The
+ * entry mirrors CONNECTED_HISTORY_CYCLE in connected_history_cycle.mjs.
  */
 export const SCHEDULED_PUBLICATION_WORKFLOWS = Object.freeze([
   Object.freeze({
-    workflow: "geocoder-address-index.yml",
-    cron: "47 9 * * *",
-    branch: () => "automation/refresh-geocoder-address-index",
-  }),
-  Object.freeze({
-    workflow: "first-class-refresh.yml",
-    cron: "40 6 * * *",
-    branch: (runCreatedAt) => `data/first-class-refresh-${runCreatedAt.slice(0, 10).replaceAll("-", "")}`,
+    workflow: "connected-history-cycle.yml",
+    cron: "13 7 * * *",
+    branch: () => "automation/connected-history-cycle",
+    served_receipt: "/data/connected_history_cycle.json",
   }),
 ]);
 
@@ -705,7 +701,7 @@ export function nextScheduledCheck(observedAt) {
  * `observations` lists, per scheduled workflow, the runs created after the
  * release deployment with their pull request and served-ancestry facts.
  */
-export function scheduledCycleStatus({ release_deployed_at: deployedAt, observed_at: observedAt, observations, journeys_passed_after_cycle: journeys, unchanged_history_bytes: unchanged }) {
+export function scheduledCycleStatus({ release_deployed_at: deployedAt, observed_at: observedAt, observations, journeys_passed_after_cycle: journeys, unchanged_history_bytes: unchanged, served_cycle_receipt: servedReceipt = null }) {
   const deadline = new Date(new Date(deployedAt).getTime() + SCHEDULED_READBACK_WINDOW_DAYS * 86_400_000).toISOString();
   const runs = (observations || []).flatMap((entry) => (entry.runs || []).map((run) => ({ workflow: entry.workflow, ...run })));
   const eligible = runs.filter((run) => run.event === "schedule" && run.created_at > deployedAt);
@@ -722,6 +718,8 @@ export function scheduledCycleStatus({ release_deployed_at: deployedAt, observed
       merge_commit: run.merge_commit ?? null,
       served_contains_merge: run.served_contains_merge ?? null,
     })),
+    // The receipt the origin served during this read-back, whichever run wrote it.
+    served_cycle_receipt: servedReceipt,
   };
   if (!observations) {
     return { ...base, status: "open", reason: "scheduled runs were not queried in this read-back", next_check_at: nextScheduledCheck(observedAt) };
