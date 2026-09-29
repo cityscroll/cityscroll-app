@@ -1325,10 +1325,10 @@ function renderNearYouSpecialRecords(view, { position = "after-results", shell =
     </div>`;
   }
   const secondaryHtml = secondary.length
-    ? `${showCitywide ? "" : `<h2 id="near-bags-heading" tabindex="-1">${esc("Other collections")}</h2>`}<ul class="near-special-links" aria-label="${esc("Other collections")}">${secondary.map((bag) => {
+    ? `${showCitywide ? "" : `<h2 id="near-bags-heading" tabindex="-1">Other collections</h2>`}<ul class="near-special-links" aria-label="Other collections">${secondary.map((bag) => {
       const label = labels[bag.kind];
       if (bag.state === "error") {
-        return `<li data-bag="${bag.kind}" data-near-section-state="unavailable"><a href="${esc(bag.href)}" data-near-special-link="${bag.kind}">${esc(label)}</a> ${countMarkup(null)} <span>${esc("could not load.")}</span> <a href="${esc(view.recoveryHref)}" data-near-recovery="retry">Try again</a></li>`;
+        return `<li data-bag="${bag.kind}" data-near-section-state="unavailable"><a href="${esc(bag.href)}" data-near-special-link="${bag.kind}">${esc(label)}</a> ${countMarkup(null)} <span>could not load.</span> <a href="${esc(view.recoveryHref)}" data-near-recovery="retry">Try again</a></li>`;
       }
       if (bag.count === 0) {
         return `<li data-bag="${bag.kind}"><span>${esc(label)}</span> ${countMarkup(0)}</li>`;
