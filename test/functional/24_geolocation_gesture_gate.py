@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Browser regression: route entry never requests location; empty Zoning can widen."""
+"""Browser regression: only Near You asks for location on load; empty Zoning can widen.
+
+Near You asks once per session on a fresh load with no place chosen, as the
+site owner decided; every other route asks only after an explicit press.
+"""
 
 from __future__ import annotations
 
@@ -84,7 +88,16 @@ def main() -> None:
                     "() => document.readyState !== 'loading'",
                     label=f"{route or 'home'} document settled",
                 )
-                assert page.evaluate("window.__geoCalls") == 0, route
+                if route == "near-you/":
+                    # Near You's own load-time request, answered by the probe's refusal.
+                    wait_for_function(
+                        page,
+                        "() => /not granted/.test(document.querySelector('[data-map-status]')?.textContent || '')",
+                        label="near-you load-time request answered",
+                    )
+                    assert page.evaluate("window.__geoCalls") == 1, route
+                else:
+                    assert page.evaluate("window.__geoCalls") == 0, route
                 context.close()
 
             context = browser.new_context(viewport={"width": 390, "height": 844})
@@ -92,6 +105,14 @@ def main() -> None:
             page = context.new_page()
             install_routes(page)
             page.goto(base + "near-you/", wait_until="networkidle")
+            wait_for_function(
+                page,
+                "() => window.__geoCalls === 1",
+                label="near-you asks once on load",
+            )
+            # The same session does not ask again on a later load.
+            page.goto(base + "near-you/", wait_until="networkidle")
+            assert page.evaluate("window.__geoCalls") == 0
             page.locator(".near-entry-secondary > summary").click()
             page.locator("[data-use-location]").click()
             assert page.evaluate("window.__geoCalls") == 1

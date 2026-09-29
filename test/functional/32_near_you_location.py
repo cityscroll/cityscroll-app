@@ -10,8 +10,10 @@ selected neighborhood's Records surface. Every failure keeps the page the
 reader already had and puts at most two working next steps beside the entry
 controls. A location answer that arrives after a newer typed selection never
 replaces it, while a map click keeps the Map. The Use my location button is
-revealed only once its handler is bound, and nothing but that button asks for
-location. From a selected place the reader can inspect a record, dismiss it,
+revealed only once its handler is bound. Near You asks for location on its own
+only once per session, so every journey here starts as a session that already
+asked (the load-time request has its own real-permission suite), and then
+nothing but that button asks. From a selected place the reader can inspect a record, dismiss it,
 open the full record and come Back to the same heading, category, scroll
 offset and focus.
 
@@ -111,6 +113,11 @@ GEOLOCATION_STUB = """
 })();
 """
 
+# A session that already asked for location: page loads here never ask again.
+LOCATION_ALREADY_ASKED = (
+    "try { sessionStorage.setItem('near-you:location-asked', '1'); } catch {}"
+)
+
 ENTRY_STATE_JS = """() => {
   const root = document.querySelector('[data-near-you-root]');
   const button = document.querySelector('[data-use-location]');
@@ -205,6 +212,7 @@ class Journey:
             "__geolocationRequested", lambda _source, options: self.requests.append(options),
         )
         plan = {"unsupported": unsupported, "steps": steps or [{"kind": "deny"}]}
+        self.context.add_init_script(LOCATION_ALREADY_ASKED)
         self.context.add_init_script(GEOLOCATION_STUB % json.dumps(plan))
         # The clock is pinned in the server that renders record timing; the
         # browser keeps its real clock, which navigation timing depends on.
@@ -1180,7 +1188,8 @@ def check_location_request_gate(browser: Browser, base: str) -> list[dict]:
     finally:
         journey.close()
 
-    # Page load, retrying failed record data and changing category never ask.
+    # In a session that already asked, page load, retrying failed record data
+    # and changing category never ask again.
     journey = Journey(browser, 1440, 900)
     try:
         page = journey.page

@@ -15,11 +15,13 @@ import {
 import {
   BOUNDARIES_AT_LOCATION_HEADING,
   GEOGRAPHY_ENTRY_ADOPTION_FAILURE,
+  GEOGRAPHY_ENTRY_LOCATION_ASKED_KEY,
   GEOGRAPHY_ENTRY_RECOVERY,
   GEOGRAPHY_ENTRY_RECOVERY_ACTIONS,
   GEOGRAPHY_ENTRY_RECOVERY_COPY,
   GEOGRAPHY_ENTRY_SOURCES,
   RESIDENT_GEOGRAPHY_ENTRY_SCHEMA,
+  geographyEntryBlockedLocationResult,
   geographyEntryDestinationSurface,
   geographyEntryPayloadLeaksEphemeral,
   geographyEntryPublicProjection,
@@ -38,6 +40,7 @@ import {
   resolveGeographyEntryFromMapClick,
   resolveGeographyEntryFromPlaceLabel,
   resolveGeographyEntryFromPoint,
+  shouldRequestGeographyEntryLocationOnLoad,
   sameGeographyEntrySchema,
 } from "../site/geography_navigation_entry.mjs";
 import neighborhoodGazetteer from "../site/data/neighborhood_gazetteer.json" with { type: "json" };
@@ -231,6 +234,7 @@ test("A5: geolocation recovery reasons stay distinct and plain", () => {
   const reasons = [
     GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_UNAVAILABLE,
     GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_DENIED,
+    GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_BLOCKED,
     GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_TIMEOUT,
     GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE,
     GEOGRAPHY_ENTRY_RECOVERY.OUTSIDE_COVERED_LAND,
@@ -241,27 +245,25 @@ test("A5: geolocation recovery reasons stay distinct and plain", () => {
     assert.match(message, /choose an area from the list/i);
   }
 
-  // Gesture gate: the map island requests location only from the button's
-  // click handler (observed at runtime in test/functional/32_near_you_location.py).
+  // Gesture gate: the map island requests location from the button's click
+  // handler, or once on load through the site owner's load-time policy
+  // (observed at runtime in test/functional/59_near_you_location_permission.py).
   const start = MAP_SOURCE.indexOf("function wireGeolocation(");
   assert.ok(start >= 0);
-  const bodyStart = MAP_SOURCE.indexOf("{", start);
-  let depth = 0;
-  let end = bodyStart;
-  for (; end < MAP_SOURCE.length; end += 1) {
-    if (MAP_SOURCE[end] === "{") depth += 1;
-    if (MAP_SOURCE[end] === "}" && --depth === 0) break;
-  }
-  const wireBody = MAP_SOURCE.slice(start, end + 1);
+  const wireBody = MAP_SOURCE.slice(start, MAP_SOURCE.indexOf("\n}\n", start) + 2);
   const handler = wireBody.indexOf('button.addEventListener("click", () => {');
   assert.ok(handler >= 0);
-  assert.ok(wireBody.indexOf("getCurrentPosition") > handler);
+  assert.ok(wireBody.indexOf("requestGeographyEntryLocation(button)") > handler);
+  assert.ok(wireBody.indexOf("button.hidden = false") > wireBody.indexOf("requestGeographyEntryLocation(button)"));
+  const requestStart = MAP_SOURCE.indexOf("async function requestGeographyEntryLocation(");
+  assert.ok(requestStart >= 0);
+  const requestBody = MAP_SOURCE.slice(requestStart, start);
   assert.equal((MAP_SOURCE.match(/getCurrentPosition/g) || []).length, 1);
+  assert.ok(requestBody.includes("navigator.geolocation.getCurrentPosition("));
   // Retry repeats the request only by pressing the same button.
-  assert.match(wireBody, /const retry = \(\) => button\.click\(\);/);
-  assert.ok(wireBody.indexOf("button.hidden = false") > wireBody.lastIndexOf("getCurrentPosition"));
+  assert.match(requestBody, /const retry = \(\) => button\.click\(\);/);
   // The existing low-accuracy request, 10-second timeout and cached-position window.
-  assert.match(wireBody, /\{ enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 \}/);
+  assert.match(requestBody, /\{ enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 \}/);
 });
 
 test("A6: raw coordinates and address query text never persist, serialize, or report", () => {
@@ -611,4 +613,55 @@ test("A9: suite covers seeded fixtures, ambiguity, special-use, outside-city, pr
   for (const reason of Object.values(GEOGRAPHY_ENTRY_RECOVERY)) {
     assert.equal(typeof GEOGRAPHY_ENTRY_RECOVERY_COPY[reason], "string");
   }
+});
+
+test("a refusal while the browser reports a block is its own recovery, naming how to allow it", () => {
+  const blocked = resolveGeographyEntryFromGeolocationError({ code: 1 }, { permission: "denied" });
+  assert.equal(blocked.recovery.reason, GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_BLOCKED);
+  assert.equal(geographyEntryBlockedLocationResult().recovery.reason, GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_BLOCKED);
+  // A refusal answered at a prompt, or with no readable permission state, stays a denial.
+  for (const permission of ["prompt", "granted", null]) {
+    assert.equal(
+      resolveGeographyEntryFromGeolocationError({ code: 1 }, { permission }).recovery.reason,
+      GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_DENIED,
+      String(permission),
+    );
+  }
+  // A block never turns a timeout or position failure into a permission message.
+  assert.equal(
+    resolveGeographyEntryFromGeolocationError({ code: 3 }, { permission: "denied" }).recovery.reason,
+    GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_TIMEOUT,
+  );
+  const copy = geographyEntryRecoveryCopy(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_BLOCKED);
+  assert.match(copy, /blocked/i);
+  assert.match(copy, /set Location to Allow/);
+  assert.match(copy, /choose an area from the list/i);
+  // Only the button retries a block, once the resident has lifted it.
+  assert.deepEqual(
+    geographyEntryRecoveryActions(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_BLOCKED, { source: "geolocation" }),
+    [GEOGRAPHY_ENTRY_RECOVERY_ACTIONS.ENTER_ADDRESS, GEOGRAPHY_ENTRY_RECOVERY_ACTIONS.BROWSE_ALL],
+  );
+});
+
+test("Near You asks for location on load only with no place chosen, once per session", () => {
+  const fresh = { search: "", hash: "", hasLocationControl: true };
+  assert.equal(GEOGRAPHY_ENTRY_LOCATION_ASKED_KEY, "near-you:location-asked");
+  assert.equal(shouldRequestGeographyEntryLocationOnLoad(fresh), true);
+  assert.equal(shouldRequestGeographyEntryLocationOnLoad({ ...fresh, search: "?surface=map&lens=meetings" }), true);
+  const declined = {
+    "no control": { hasLocationControl: false },
+    "already asked this session": { askedThisSession: true },
+    "Back or Forward restore": { historyTraversal: true },
+    "server-rendered selection": { selectedKey: "geography:nta2020:QN0103" },
+    "place in the URL": { search: "?geo=nta2020%3AQN0103&surface=records" },
+    "unrecognized place in the URL": { search: "?geo=nonsense" },
+    "comparison in the URL": { search: "?compare=council_district" },
+    "focus in the URL": { search: "?focus=geography%3Anta2020%3AQN0103" },
+    "typed place without JavaScript": { search: "?neighborhood=Astoria" },
+    "map hash route": { hash: "#map/cd/QN01" },
+  };
+  for (const [label, override] of Object.entries(declined)) {
+    assert.equal(shouldRequestGeographyEntryLocationOnLoad({ ...fresh, ...override }), false, label);
+  }
+  assert.equal(shouldRequestGeographyEntryLocationOnLoad(), false);
 });
