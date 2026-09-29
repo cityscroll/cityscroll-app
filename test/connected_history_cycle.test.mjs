@@ -354,6 +354,8 @@ test("a stage that fails still emits a receipt naming the stage and what had bee
   });
   assert.equal(verification.exitCode, 1);
   assert.equal(verification.receipt.run.failed_stage, "verification");
+  assert.equal(verification.receipt.publication.decision, "not_published");
+  assert.equal(verification.receipt.publication.derived_decision, "published");
   assert.deepEqual(verification.receipt.publication.written_paths, []);
   assert.deepEqual(historySnapshot(root), before, "the committed bytes are restored");
   assert.deepEqual(verifyConnectedHistoryCycleReceipt(verification.receipt).errors, []);
@@ -373,6 +375,12 @@ test("statuses in a receipt are re-derived from its facts, never taken as stated
   assert.ok(tamper((copy) => { copy.stages[1].status = "failed"; }).includes("status"));
   assert.ok(tamper((copy) => { copy.publication.written_paths = [DOCUMENTS_PATH]; }).includes("unpublished_writes"));
   assert.ok(tamper((copy) => { copy.materialization.pop(); }).includes("materialization_coverage"));
+  const failedCopy = structuredClone(receipt);
+  failedCopy.stages[3].status = "failed";
+  failedCopy.run.status = "failed";
+  failedCopy.run.outcome = "failed";
+  failedCopy.run.failed_stage = "verification";
+  assert.ok(verifyConnectedHistoryCycleReceipt(failedCopy).errors.includes("failed_run_published"), "a failed run cannot read as published");
 });
 
 function importClosure(entries) {

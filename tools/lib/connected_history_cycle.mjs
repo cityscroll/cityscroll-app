@@ -882,8 +882,11 @@ export function buildConnectedHistoryCycleReceipt({
     })),
     publication: publication
       ? {
-          decision: publication.decision,
-          reason: publication.reason,
+          decision: failure ? "not_published" : publication.decision,
+          reason: failure
+            ? `The ${failedStage} stage failed after the publication decision (${publication.decision}); any change it wrote was restored to the committed bytes.`
+            : publication.reason,
+          derived_decision: publication.decision,
           changed_paths: publication.changed_paths,
           invalidated_evidence: publication.invalidated_evidence,
           reobservation_failures: publication.reobservation_failures,
@@ -928,7 +931,9 @@ export function verifyConnectedHistoryCycleReceipt(receipt) {
   if (failed) {
     if (run.failed_stage !== failed.stage || run.outcome !== "failed") errors.push("failed_stage");
     if (stages.indexOf(failed) !== stages.length - 1) errors.push("stages_after_failure");
-    if ((receipt.publication?.written_paths || []).length) errors.push("failed_run_published");
+    if ((receipt.publication?.written_paths || []).length || receipt.publication?.decision !== "not_published") {
+      errors.push("failed_run_published");
+    }
     return { valid: errors.length === 0, errors };
   }
   if (stages.length !== CONNECTED_HISTORY_CYCLE_STAGES.length || stages.some((entry) => entry.status !== "succeeded")) {
