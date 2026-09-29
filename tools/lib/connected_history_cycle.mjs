@@ -14,7 +14,7 @@
  * from committed inputs (what a deploy or a builder does) never produces one.
  */
 
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
 import { contentHashOf } from "../../warehouse/lib/document_processing.mjs";
@@ -25,6 +25,7 @@ import {
 } from "./connected_history_documents.mjs";
 import { materializeConnectedHistoryRelations } from "./connected_history_relations.mjs";
 import { materializeConnectedHistoryRoles } from "./connected_history_roles.mjs";
+import { evidenceInvalidatedBy, retainedEvidencePins } from "./retained_evidence_pins.mjs";
 import {
   materializeConnectedHistoryTime,
   verifyConnectedHistoryTimeArtifact,
@@ -57,6 +58,8 @@ export const CONNECTED_HISTORY_CYCLE = Object.freeze({
   held_dir: ".artifacts/connected-history-cycle/held",
   ledger_limit: 30,
 });
+
+export { evidenceInvalidatedBy, retainedEvidencePins };
 
 const RECEIPTS_DIR = "site/data/connected_history_sources/verification_receipts";
 
@@ -439,46 +442,6 @@ export function fingerprintBaseline(previousReceipt) {
       committed_content_hash: row.committed_content_hash,
       committed_content_fingerprint: row.committed_content_fingerprint,
     }]));
-}
-
-function walkJson(root, directory, found = []) {
-  const absolute = join(root, directory);
-  if (!existsSync(absolute)) return found;
-  for (const entry of readdirSync(absolute, { withFileTypes: true })) {
-    const path = `${directory}/${entry.name}`;
-    if (entry.isDirectory()) walkJson(root, path, found);
-    else if (entry.isFile() && entry.name.endsWith(".json")) found.push(path);
-  }
-  return found;
-}
-
-/**
- * Retained measurements under docs/evidence that pin a path's bytes. Changing
- * a pinned path makes that measurement stop describing the served tree.
- */
-export function retainedEvidencePins(root, evidenceRoot = "docs/evidence") {
-  const pins = [];
-  for (const path of walkJson(root, evidenceRoot).sort()) {
-    const text = readText(root, path);
-    if (!text || !text.includes("\"measurement_provenance\"")) continue;
-    let provenance;
-    try {
-      provenance = JSON.parse(text).measurement_provenance;
-    } catch {
-      continue;
-    }
-    const inputs = (provenance?.inputs || []).map((input) => input?.path).filter(Boolean);
-    if (inputs.length) pins.push({ path, measured_revision: provenance.revision || null, inputs });
-  }
-  return pins;
-}
-
-export function evidenceInvalidatedBy(pins, changedPaths) {
-  const changed = new Set(changedPaths);
-  return pins
-    .map((pin) => ({ ...pin, inputs_changed: pin.inputs.filter((input) => changed.has(input)) }))
-    .filter((pin) => pin.inputs_changed.length)
-    .map(({ path, measured_revision, inputs_changed }) => ({ path, measured_revision, inputs_changed }));
 }
 
 /**

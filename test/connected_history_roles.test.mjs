@@ -27,8 +27,12 @@ import {
 } from "../site/connected_history_roles.mjs";
 import {
   CONNECTED_HISTORY_ROLE_CANDIDATES,
+  CONNECTED_HISTORY_ROLES_ARTIFACT_PATH,
+  CONNECTED_HISTORY_ROLES_RECEIPT_PATH,
   buildConnectedHistoryRolesArtifact,
+  connectedHistoryRolesDrift,
   materializeConnectedHistoryRoles,
+  serializeConnectedHistoryRolesJson,
 } from "../tools/lib/connected_history_roles.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -604,4 +608,79 @@ test("committed artifact and receipt match a fresh materialization", () => {
   assert.deepEqual(committed.missing_strata, artifact.missing_strata);
   assert.equal(committedReceipt.selection_hash, receipt.selection_hash);
   assert.equal(committedReceipt.artifact, "site/data/connected_history_roles.json");
+});
+
+const committedArtifactText = readFileSync(join(ROOT, CONNECTED_HISTORY_ROLES_ARTIFACT_PATH), "utf8");
+const committedReceiptText = readFileSync(join(ROOT, CONNECTED_HISTORY_ROLES_RECEIPT_PATH), "utf8");
+
+/** Replace the byte at `index` with a different printable byte. */
+function flipByte(text, index) {
+  const bytes = Buffer.from(text, "utf8");
+  bytes[index] = bytes[index] === 0x20 ? 0x21 : 0x20;
+  return bytes.toString("utf8");
+}
+
+test("committed artifact and receipt are byte-identical to a fresh materialization", () => {
+  const findings = connectedHistoryRolesDrift({
+    artifactText: committedArtifactText,
+    receiptText: committedReceiptText,
+  });
+  assert.deepEqual(findings, [], "rebuild with node tools/build_connected_history_roles.mjs");
+});
+
+test("the byte-exact guard catches drift that equal summaries hide", () => {
+  const fresh = materializeConnectedHistoryRoles();
+  // A lagging artifact of the shape once committed: one rejected basis missing
+  // and the scope field serialized in a different position. Selection hash,
+  // counts and missing strata are unchanged, so a summary comparison passes.
+  const lagging = structuredClone(fresh.artifact);
+  lagging.rejected_bases = lagging.rejected_bases.filter((basis) => basis !== "applicant_label_as_ownership");
+  lagging.observations = lagging.observations.map(({ scope, family_id: familyId, candidate_id: candidateId, ...rest }) => ({
+    ...rest,
+    family_id: familyId,
+    candidate_id: candidateId,
+    scope,
+  }));
+  assert.equal(lagging.rejected_bases.length, fresh.artifact.rejected_bases.length - 1);
+  assert.equal(lagging.schema, fresh.artifact.schema);
+  assert.equal(lagging.selection_hash, fresh.artifact.selection_hash);
+  assert.deepEqual(lagging.counts, fresh.artifact.counts);
+  assert.deepEqual(lagging.missing_strata, fresh.artifact.missing_strata);
+
+  const findings = connectedHistoryRolesDrift({
+    artifactText: serializeConnectedHistoryRolesJson(lagging),
+    receiptText: serializeConnectedHistoryRolesJson(fresh.receipt),
+  }, fresh);
+  assert.deepEqual(findings.map((finding) => finding.path), [CONNECTED_HISTORY_ROLES_ARTIFACT_PATH]);
+  assert.notEqual(findings[0].committed_sha256, findings[0].materialized_sha256);
+  assert.ok(findings[0].first_difference_at >= 0);
+});
+
+test("a one-byte change to the committed artifact or receipt fails the byte-exact guard", () => {
+  const fresh = materializeConnectedHistoryRoles();
+  const current = { artifactText: committedArtifactText, receiptText: committedReceiptText };
+  assert.deepEqual(connectedHistoryRolesDrift(current, fresh), [], "the unmutated tree is current");
+
+  for (const [field, path] of [
+    ["artifactText", CONNECTED_HISTORY_ROLES_ARTIFACT_PATH],
+    ["receiptText", CONNECTED_HISTORY_ROLES_RECEIPT_PATH],
+  ]) {
+    const text = current[field];
+    for (const index of [0, Math.floor(text.length / 2), text.length - 1]) {
+      const mutated = { ...current, [field]: flipByte(text, index) };
+      assert.equal(Buffer.byteLength(mutated[field]), Buffer.byteLength(text), `${path}@${index}: same length`);
+      const findings = connectedHistoryRolesDrift(mutated, fresh);
+      assert.deepEqual(findings.map((finding) => finding.path), [path], `${path}@${index}`);
+      assert.equal(findings[0].first_difference_at, index, `${path}@${index}: located`);
+    }
+    // A missing trailing newline or a missing file is drift, not a pass.
+    assert.deepEqual(
+      connectedHistoryRolesDrift({ ...current, [field]: text.slice(0, -1) }, fresh).map((finding) => finding.path),
+      [path],
+    );
+    assert.deepEqual(
+      connectedHistoryRolesDrift({ ...current, [field]: null }, fresh).map((finding) => finding.path),
+      [path],
+    );
+  }
 });

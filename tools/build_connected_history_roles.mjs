@@ -6,7 +6,7 @@
  *   node tools/build_connected_history_roles.mjs --check
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -15,23 +15,26 @@ import {
   CONNECTED_HISTORY_ROLES_VERSION,
 } from "../site/connected_history_roles.mjs";
 import {
+  CONNECTED_HISTORY_ROLES_ARTIFACT_PATH,
+  CONNECTED_HISTORY_ROLES_RECEIPT_PATH,
+  connectedHistoryRolesDrift,
   materializeConnectedHistoryRoles,
+  serializeConnectedHistoryRolesJson,
 } from "./lib/connected_history_roles.mjs";
+import { evidenceInvalidatedBy, retainedEvidencePins } from "./lib/retained_evidence_pins.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const OUT = join(ROOT, "site/data/connected_history_roles.json");
-const RECEIPT = join(
-  ROOT,
-  "site/data/connected_history_sources/verification_receipts/connected_history_roles_latest.json",
-);
+const OUT = join(ROOT, CONNECTED_HISTORY_ROLES_ARTIFACT_PATH);
+const RECEIPT = join(ROOT, CONNECTED_HISTORY_ROLES_RECEIPT_PATH);
 
 const checkOnly = process.argv.includes("--check");
 
-function readJson(path) {
-  return JSON.parse(readFileSync(path, "utf8"));
+function readText(path) {
+  return existsSync(path) ? readFileSync(path, "utf8") : null;
 }
 
-const { artifact, receipt } = materializeConnectedHistoryRoles();
+const materialized = materializeConnectedHistoryRoles();
+const { artifact, receipt } = materialized;
 
 if (artifact.schema !== CONNECTED_HISTORY_ROLES_ARTIFACT_SCHEMA) {
   throw new Error("unexpected artifact schema");
@@ -40,31 +43,44 @@ if (artifact.version !== CONNECTED_HISTORY_ROLES_VERSION) {
   throw new Error("unexpected artifact version");
 }
 
+// The check is byte-exact: equal selection hashes and counts do not make the
+// committed artifact what the code produces.
+const drift = connectedHistoryRolesDrift(
+  { artifactText: readText(OUT), receiptText: readText(RECEIPT) },
+  materialized,
+);
+// Retained production measurements that pin the bytes this build would change.
+const invalidated = evidenceInvalidatedBy(retainedEvidencePins(ROOT), drift.map((finding) => finding.path));
+
 if (checkOnly) {
-  const existing = readJson(OUT);
-  const existingReceipt = readJson(RECEIPT);
-  if (existing.selection_hash !== artifact.selection_hash) {
-    throw new Error("connected history roles artifact is stale; rebuild required");
+  if (drift.length) {
+    for (const finding of drift) {
+      console.error(
+        `${finding.path}: committed ${finding.committed_bytes} bytes (sha256 ${finding.committed_sha256}) `
+        + `differ from a fresh materialization of ${finding.materialized_bytes} bytes `
+        + `(sha256 ${finding.materialized_sha256}) at byte ${finding.first_difference_at}`,
+      );
+    }
+    for (const entry of invalidated) {
+      console.error(`rebuilding changes bytes pinned by ${entry.path} (${entry.inputs_changed.join(", ")})`);
+    }
+    throw new Error("connected history roles artifact or receipt is stale; rebuild required");
   }
-  if (existingReceipt.selection_hash !== receipt.selection_hash) {
-    throw new Error("connected history roles receipt is stale; rebuild required");
-  }
-  if (existingReceipt.artifact !== "site/data/connected_history_roles.json") {
-    throw new Error("receipt does not name the committed artifact");
-  }
-  console.log("ok connected history roles artifact is current");
+  console.log("ok connected history roles artifact and receipt are byte-identical to a fresh materialization");
   process.exit(0);
 }
 
-writeFileSync(OUT, `${JSON.stringify(artifact, null, 2)}\n`);
-writeFileSync(RECEIPT, `${JSON.stringify(receipt, null, 2)}\n`);
+writeFileSync(OUT, serializeConnectedHistoryRolesJson(artifact));
+writeFileSync(RECEIPT, serializeConnectedHistoryRolesJson(receipt));
 console.log(
   JSON.stringify(
     {
       counts: artifact.counts,
       missing_strata: artifact.missing_strata,
       selection_hash: artifact.selection_hash,
-      out: [OUT, RECEIPT],
+      changed: drift.map((finding) => finding.path),
+      invalidates_retained_measurements: invalidated,
+      out: [CONNECTED_HISTORY_ROLES_ARTIFACT_PATH, CONNECTED_HISTORY_ROLES_RECEIPT_PATH],
     },
     null,
     2,
