@@ -441,3 +441,48 @@ test("A5: a retry overtaken by a newer place selection or a second retry never r
   assert.equal(root.querySelectorAll("[data-record-id]").length, 0, "no Midwood or citywide record repaints the newer place");
   assert.match(root.dataset.nearDeferredHref, /cd=K15/);
 });
+
+// Neighborhood suggestions (public alias c0cece577f277) are a document region:
+// adopting a selected place removes them, and adopting a new filter replaces
+// them with that filter's own links.
+import { readPlaceSuggestionsFixture } from "./helpers/near_you_place_suggestions_fixture.mjs";
+
+const suggestionBuild = buildNearYou(readPlaceSuggestionsFixture().activity, {}, "place-suggestions");
+const suggestionValues = new Map(suggestionBuild.entries.map(({ key, value }) => [key, value]));
+suggestionValues.set("route-read-model:near-you:manifest:v1", JSON.stringify(suggestionBuild.manifest));
+
+async function servedSuggestionsPage(query) {
+  const response = await handleNearYou(new Request(`https://cityscroll.org/near-you/?${query}`), {
+    ALERT_STATE: faultKv(suggestionValues),
+  });
+  return response.text();
+}
+
+/** The served suggestion row (or nothing) inside a minimal Near You root. */
+function mountSuggestionRegion(page) {
+  const nav = page.match(/<nav class="near-place-suggestions"[\s\S]*?<\/nav>/)?.[0] || "";
+  const mounted = mountDocument(`<main id="main" data-near-you-root data-lens="meetings" data-near-deferred-state="pending">
+    <section class="near-geo-workspace"><p>map</p></section>${nav}
+  </main>`, { containerClass: "near-suggestions" });
+  return mounted.doc.querySelector("[data-near-you-root]");
+}
+
+const suggestionLinkIds = (root) => root.querySelectorAll("[data-near-place-suggestion]")
+  .map((link) => `${link.getAttribute("data-near-place-suggestion")}:${link.getAttribute("data-count")}`);
+
+test("adopting a selected place removes the suggestions; adopting a new filter replaces them", async () => {
+  assert.ok(NEAR_YOU_SCOPE_REGION_SELECTORS.includes(".near-place-suggestions"));
+  const root = mountSuggestionRegion(await servedSuggestionsPage("lens=meetings"));
+  assert.deepEqual(suggestionLinkIds(root), ["MN0102:26", "MN0402:12", "MN0101:9"]);
+
+  const filtered = mountSuggestionRegion(await servedSuggestionsPage("lens=meetings&q=landmarks"));
+  adoptNearYouDocumentScope(root, filtered);
+  assert.deepEqual(suggestionLinkIds(root), ["MN0102:10", "MN0202:1"]);
+  assert.equal(root.querySelectorAll(".near-place-suggestions").length, 1);
+
+  const selected = mountSuggestionRegion(await servedSuggestionsPage("geo=nta2020:MN0102&lens=meetings&surface=records"));
+  assert.equal(selected.querySelector(".near-place-suggestions"), null, "a selected place serves no suggestions");
+  adoptNearYouDocumentScope(root, selected);
+  assert.equal(root.querySelector(".near-place-suggestions"), null);
+  assert.deepEqual(suggestionLinkIds(root), []);
+});

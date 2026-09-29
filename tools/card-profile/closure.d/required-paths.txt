@@ -1176,6 +1176,7 @@ test/hearing_logistics.test.mjs
 test/hearing_widening.test.mjs
 test/helpers/mandate_subject.mjs
 test/helpers/near_you_local_escape_fixture.mjs
+test/helpers/near_you_place_suggestions_fixture.mjs
 test/helpers/near_you_section_isolation_fixture.mjs
 test/helpers/site_source.mjs
 test/helpers/test_clock.mjs

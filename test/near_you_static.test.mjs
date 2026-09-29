@@ -1130,3 +1130,235 @@ test("A6: before a place is chosen, citywide records come after the entry row an
   assert.equal(unpublished.bags.citywide.count, null);
   assert.doesNotMatch(renderNearYouDocument(unpublished), /data-bag=/);
 });
+
+// Neighborhood suggestions before a place is chosen (public alias c0cece577f277):
+// counts are the deduplicated matching IDs each link's own Records list shows,
+// over a frozen reduction of the pinned published snapshot.
+import {
+  DYKER_BEACH_PARK,
+  MOTT_HAVEN,
+  SHEEPSHEAD_BAY as SUGGESTION_SHEEPSHEAD_BAY,
+  PLACE_SUGGESTIONS_SOURCE,
+  placeSuggestionKeys,
+  readPinnedNtaLayer,
+  readPlaceSuggestionsFixture,
+  reducePlaceSuggestionActivity,
+  reducePlaceSuggestionLayer,
+} from "./helpers/near_you_place_suggestions_fixture.mjs";
+
+const SUGGESTION_BASE = "https://cityscroll.org/near-you";
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function suggestionRows() {
+  const { activity, layer } = readPlaceSuggestionsFixture();
+  return { activity, layer };
+}
+
+function suggestionView(url, { activity, layer } = suggestionRows(), options = {}) {
+  const parsed = new URL(url);
+  return buildNearYouViewModel(scopeFromNearYouUrl(parsed), activity, fixtureBoundaries, {
+    canonicalBase: SUGGESTION_BASE,
+    navigationLayerDoc: layer,
+    navigationLayerType: "nta2020",
+    geographySearch: parsed.search,
+    ...options,
+  });
+}
+
+/** The suggestion links a document renders, read from its markup alone. */
+function renderedSuggestions(html) {
+  const nav = html.match(/<nav class="near-place-suggestions"[\s\S]*?<\/nav>/)?.[0] || "";
+  return {
+    nav,
+    heading: nav.match(/<h2 id="near-place-suggestions-heading">([^<]+)<\/h2>/)?.[1] || null,
+    links: [...nav.matchAll(/<a href="([^"]+)" data-near-place-suggestion="([^"]+)" data-geography-key="([^"]+)" data-count="(\d+)">([\s\S]*?)<\/a>/g)]
+      .map(([, href, id, key, count, body]) => ({
+        href: href.replaceAll("&amp;", "&"),
+        id,
+        key,
+        count: Number(count),
+        text: body.replace(/<[^>]+>/g, "").replaceAll("&#39;", "'").replace(/\s+/g, " ").trim(),
+      })),
+  };
+}
+
+/** Follow a suggestion: the destination built from its href alone, over the same rows. */
+function destinationIds(href, rows) {
+  const view = suggestionView(href, rows);
+  assert.equal(view.hasPlace, true);
+  assert.equal(view.shellSurface, "records");
+  return { ids: [...view.results.ids].map(String).sort(), count: view.results.count };
+}
+
+/** Reference counts recomputed from the records themselves for one residential place. */
+function recomputedCounts(activity, layer, lens, keep) {
+  const residential = new Set(layer.features.filter((feature) => feature.subtype === "residential").map((feature) => feature.key));
+  const out = {};
+  for (const [key, lenses] of Object.entries(activity.geography_items.by_key)) {
+    if (!residential.has(key) || !Array.isArray(lenses[lens])) continue;
+    const ids = [...new Set(lenses[lens].map(String))].filter((id) => activity.records[lens][id] && keep(activity.records[lens][id]));
+    if (ids.length) out[key] = ids.length;
+  }
+  return out;
+}
+
+function topThree(counts) {
+  return Object.entries(counts).sort(([leftKey, left], [rightKey, right]) => right - left || (leftKey < rightKey ? -1 : 1))
+    .slice(0, 3).map(([key, count]) => `${key.split(":")[2]}:${count}`);
+}
+
+test("the suggestion fixture is the exact reduction of the pinned published snapshot and layer", (t) => {
+  const frozen = readPlaceSuggestionsFixture();
+  assert.equal(frozen.provenance.activity.blob, PLACE_SUGGESTIONS_SOURCE.activity.blob);
+  assert.equal(frozen.provenance.layer.blob, PLACE_SUGGESTIONS_SOURCE.layer.blob);
+  const pinned = readPinnedDistrictActivity();
+  const pinnedLayer = readPinnedNtaLayer();
+  if (!pinned || !pinnedLayer) {
+    t.skip("pinned blobs are not in this checkout's object store");
+    return;
+  }
+  assert.deepEqual(frozen.activity, reducePlaceSuggestionActivity(pinned));
+  assert.deepEqual(frozen.layer, reducePlaceSuggestionLayer(pinnedLayer, placeSuggestionKeys(pinned)));
+  // Positive control: a changed membership row is caught.
+  const altered = structuredClone(frozen.activity);
+  altered.geography_items.by_key[DYKER_BEACH_PARK].meetings.push("invented");
+  assert.notDeepEqual(altered, reducePlaceSuggestionActivity(pinned));
+});
+
+test("A1: the unfiltered Meetings entry suggests Tribeca 26, Hell's Kitchen 12 and Financial District 9, and each link lists exactly those IDs", () => {
+  const rows = suggestionRows();
+  const html = renderNearYouDocument(suggestionView(`${SUGGESTION_BASE}/`, rows));
+  const { heading, links } = renderedSuggestions(html);
+  assert.equal(heading, "Neighborhoods with mapped meetings");
+  assert.deepEqual(links.map((link) => `${link.id}:${link.count}`), ["MN0102:26", "MN0402:12", "MN0101:9"]);
+  assert.deepEqual(links.map((link) => link.text), [
+    "Tribeca-Civic Center (26 meetings)",
+    "Hell's Kitchen (12 meetings)",
+    "Financial District-Battery Park City (9 meetings)",
+  ]);
+  for (const link of links) {
+    const published = [...new Set(rows.activity.geography_items.by_key[link.key].meetings.map(String))].sort();
+    const destination = destinationIds(link.href, rows);
+    assert.deepEqual(destination.ids, published, link.id);
+    assert.equal(destination.count, link.count, link.id);
+  }
+  // Positive control: a list that drops one member no longer matches its link.
+  const perturbed = structuredClone(rows);
+  perturbed.activity.geography_items.by_key[links[0].key].meetings.pop();
+  assert.notEqual(destinationIds(links[0].href, perturbed).count, links[0].count);
+});
+
+test("A2: under a date or topic filter each count is recomputed from matching records and equals its destination", () => {
+  const rows = suggestionRows();
+  const builtAt = Date.parse(rows.activity.built_at);
+  const cases = [
+    {
+      query: "when=month",
+      keep: (record) => {
+        const date = Date.parse(record.date || "");
+        return Number.isFinite(date) && date >= builtAt && date <= builtAt + 31 * DAY_MS;
+      },
+      expected: ["MN0402:3", "BK1002:1", "MN0202:1"],
+      dropped: ["MN0102", "MN0101"],
+    },
+    {
+      query: "q=landmarks",
+      keep: (record) => [record.id, record.title, record.agency, record.type, record.status]
+        .filter(Boolean).join(" ").toLowerCase().includes("landmarks"),
+      expected: ["MN0102:10", "MN0202:1"],
+      dropped: ["MN0402", "MN0101"],
+    },
+  ];
+  for (const { query, keep, expected, dropped } of cases) {
+    const { links } = renderedSuggestions(renderNearYouDocument(suggestionView(`${SUGGESTION_BASE}/?${query}`, rows)));
+    const shown = links.map((link) => `${link.id}:${link.count}`);
+    assert.deepEqual(shown, expected, query);
+    assert.deepEqual(shown, topThree(recomputedCounts(rows.activity, rows.layer, "meetings", keep)), query);
+    for (const id of dropped) assert.equal(links.some((link) => link.id === id), false, `${id} lost its last match under ${query}`);
+    for (const link of links) {
+      const url = new URL(link.href);
+      const [name, value] = query.split("=");
+      assert.equal(url.searchParams.get(name), value, `${link.id} keeps ${query}`);
+      const destination = destinationIds(link.href, rows);
+      assert.equal(destination.count, link.count, `${link.id} under ${query}`);
+      assert.ok(destination.ids.every((id) => keep(rows.activity.records.meetings[id])), `${link.id} lists only matching records`);
+    }
+  }
+  // The unfiltered control keeps the places the filters removed.
+  const control = renderedSuggestions(renderNearYouDocument(suggestionView(`${SUGGESTION_BASE}/`, rows))).links;
+  assert.ok(control.some((link) => link.id === "MN0101") && control.some((link) => link.id === "MN0102"));
+});
+
+test("A2/A5: a second category suggests from its own lists and its links open that category's Records", () => {
+  const rows = suggestionRows();
+  const { heading, links } = renderedSuggestions(renderNearYouDocument(suggestionView(`${SUGGESTION_BASE}/?lens=land`, rows)));
+  assert.equal(heading, "Neighborhoods with mapped zoning records");
+  assert.deepEqual(links.map((link) => `${link.id}:${link.count}`), ["MN0402:4", "BK1403:3", "BX0101:3"]);
+  for (const link of links) {
+    assert.equal(new URL(link.href).searchParams.get("lens"), "land");
+    const destination = suggestionView(link.href, rows);
+    assert.equal(destination.lens, "land");
+    assert.equal(destination.results.count, link.count, link.id);
+  }
+});
+
+test("A3: absent, published-zero and special-use places are never suggested; a selected place gets no suggestions", () => {
+  const rows = suggestionRows();
+  const view = suggestionView(`${SUGGESTION_BASE}/`, rows);
+  const everyCandidate = view.placeSuggestions.map((row) => row.key);
+  for (const key of [SUGGESTION_SHEEPSHEAD_BAY, MOTT_HAVEN, DYKER_BEACH_PARK]) {
+    assert.equal(everyCandidate.includes(key), false, key);
+  }
+  // Dyker Beach Park's one meeting is a real record its own page lists.
+  const park = suggestionView(`${SUGGESTION_BASE}/?geo=nta2020:BK1091&surface=records`, rows);
+  assert.equal(park.results.count, 1);
+  for (const selected of ["geo=nta2020:MN0102&surface=records", "geo=nta2020:BK1503&surface=records", "boro=Manhattan"]) {
+    const html = renderNearYouDocument(suggestionView(`${SUGGESTION_BASE}/?${selected}`, rows));
+    assert.doesNotMatch(html, /data-near-place-suggestion/, selected);
+  }
+});
+
+test("A4: a failed or partial records read offers no ranked suggestions while search, location and collections remain", () => {
+  const rows = suggestionRows();
+  const states = [
+    { dataState: "error" },
+    { dataState: "pending" },
+    { sections: { primary: { state: "unavailable" }, citywide: { state: "ready" }, virtual: { state: "ready" }, unlocated: { state: "ready" } } },
+  ];
+  for (const options of states) {
+    const view = suggestionView(`${SUGGESTION_BASE}/`, rows, options);
+    const html = renderNearYouDocument(view);
+    const label = JSON.stringify(options);
+    assert.deepEqual(view.placeSuggestions, [], label);
+    assert.doesNotMatch(html, /near-place-suggestions|\(26 meetings\)/, label);
+    assert.match(html, /data-geography-search/, label);
+    assert.match(html, /data-use-location/, label);
+    assert.match(html, /data-near-collection-entry/, label);
+    assert.match(html, /data-near-surface="records"/, label);
+  }
+  // Without the neighborhood directory there is nothing canonical to suggest.
+  assert.deepEqual(suggestionView(`${SUGGESTION_BASE}/`, rows, { navigationLayerDoc: null }).placeSuggestions, []);
+  // Positive control: the same page with a complete read suggests.
+  assert.equal(suggestionView(`${SUGGESTION_BASE}/`, rows).placeSuggestions.length, 3);
+});
+
+test("A6: suggestions are at most three plain document links after the citywide preview and before the map", () => {
+  // Add the frozen citywide bucket so the entry shows both sections.
+  const rows = suggestionRows();
+  const citywide = readSectionIsolationFixture();
+  rows.activity.district_items.citywide = citywide.district_items.citywide;
+  rows.activity.records.meetings = { ...citywide.records.meetings, ...rows.activity.records.meetings };
+  const html = renderNearYouDocument(suggestionView(`${SUGGESTION_BASE}/`, rows));
+  const { nav, links } = renderedSuggestions(html);
+  assert.equal(links.length, 3);
+  assert.ok(html.indexOf('data-near-special-records="entry"') >= 0, "the citywide preview is rendered");
+  assert.doesNotMatch(nav, /<(?:script|button|form|input|img)\b|\bhidden\b|js-only|data-near-deferred|\.json/);
+  const at = html.indexOf(nav);
+  assert.ok(html.indexOf('data-near-special-records="entry"') < at, "after the citywide preview");
+  assert.ok(at < html.indexOf('class="near-geo-workspace"'), "before the map and area directory");
+  assert.ok(at < html.indexOf("<script"), "in the document before any script");
+  // The committed root document carries the same bounded, count-labeled row.
+  const committed = renderedSuggestions(readFileSync(new URL("../site/near-you/index.html", import.meta.url), "utf8"));
+  assert.ok(committed.links.length > 0 && committed.links.length <= 3);
+  for (const link of committed.links) assert.match(link.text, new RegExp(`\\(${link.count} meetings?\\)$`));
+});

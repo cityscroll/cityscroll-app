@@ -544,3 +544,90 @@ test("A3: explicit published zero and a refused incomplete candidate stay distin
   ]);
   assert.equal(causes.size, Object.values(ROUTE_READ_MODEL_CAUSES).length + 2);
 });
+
+// Neighborhood suggestions (public alias c0cece577f277): the Worker root ranks
+// the current-category borough slices it already reads; a failed borough or
+// manifest read offers no ranking, and no neighborhood slice is fetched.
+import { readPlaceSuggestionsFixture } from "../../test/helpers/near_you_place_suggestions_fixture.mjs";
+
+const placeSuggestionRows = readPlaceSuggestionsFixture().activity;
+const placeSuggestions = materialize(placeSuggestionRows, "place-suggestions");
+const placeSuggestionSlice = (id) => placeSuggestions.built.manifest.slices[`${id}:meetings`];
+const NEAR_YOU_MANIFEST_KEY = "route-read-model:near-you:manifest:v1";
+const BOROUGH_NAMES = Object.freeze(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]);
+
+function placeSuggestionLinks(html) {
+  const nav = String(html).match(/<nav class="near-place-suggestions"[\s\S]*?<\/nav>/)?.[0] || "";
+  return [...nav.matchAll(/<a href="([^"]+)" data-near-place-suggestion="([^"]+)" data-geography-key="([^"]+)" data-count="(\d+)">/g)]
+    .map(([, href, id, key, count]) => ({ href: href.replaceAll("&amp;", "&"), id, key, count: Number(count) }));
+}
+
+/** The logical slice each KV read named, so reads from different builds compare. */
+function logicalReads(store, manifest) {
+  const names = new Map([[NEAR_YOU_MANIFEST_KEY, "manifest"]]);
+  for (const [name, value] of Object.entries(manifest.slices)) {
+    if (typeof value === "string") names.set(value, name);
+    else for (const [lens, key] of Object.entries(value || {})) names.set(key, `${name}:${lens}`);
+  }
+  return [...store.reads.keys()].map((key) => names.get(key) || `unknown:${key}`).sort();
+}
+
+function assertEntryControls(html, label) {
+  assert.match(html, /data-geography-search/, label);
+  assert.match(html, /data-use-location/, label);
+  assert.match(html, /data-near-collection-entry/, label);
+  assert.match(html, /data-near-surface="records"/, label);
+}
+
+test("A1/A6: the Worker root suggests from its borough slices, each link lists its neighborhood's IDs, and no read is added", () => withPinnedClock(CITYWIDE_CLOCK, async () => {
+  const { response, body, store } = await sectionRequest("", [], { deferred: false, values: placeSuggestions.values });
+  assert.equal(response.status, 200);
+  const links = placeSuggestionLinks(body);
+  assert.deepEqual(links.map((link) => `${link.id}:${link.count}`), ["MN0102:26", "MN0402:12", "MN0101:9"]);
+  for (const link of links) {
+    const url = new URL(link.href);
+    assert.equal(url.searchParams.get("surface"), "records");
+    const destination = await sectionRequest(url.search.slice(1), [], { values: placeSuggestions.values });
+    const published = [...new Set(placeSuggestionRows.geography_items.by_key[link.key].meetings.map(String))].sort();
+    assert.match(destination.body.results_html, new RegExp(`data-results-count="${link.count}"`), link.id);
+    assert.deepEqual(recordIds(destination.body.results_html), published, link.id);
+  }
+  // The root reads the manifest, the five borough slices and the three
+  // special buckets once each, exactly as the citywide-preview root does, and
+  // never a neighborhood slice.
+  const reads = logicalReads(store, placeSuggestions.built.manifest);
+  assert.deepEqual(reads, [
+    "borough:Bronx:meetings", "borough:Brooklyn:meetings", "borough:Manhattan:meetings",
+    "borough:Queens:meetings", "borough:Staten Island:meetings",
+    "citywide:meetings", "manifest", "unlocated:meetings", "virtual:meetings",
+  ]);
+  for (const [key, count] of store.reads) assert.equal(count, 1, key);
+  assert.equal(reads.some((name) => name.startsWith("geography:")), false);
+  const previous = await sectionRequest("", [], { deferred: false, values: isolation.values });
+  assert.deepEqual(reads, logicalReads(previous.store, isolation.built.manifest));
+  // Positive control: a selected neighborhood does read its own slice.
+  const selected = await sectionRequest("geo=nta2020:MN0102&lens=meetings&surface=records", [], { values: placeSuggestions.values });
+  assert.ok(logicalReads(selected.store, placeSuggestions.built.manifest).includes("geography:nta2020:MN0102:meetings"));
+}));
+
+test("A4: one failed borough slice or a failed manifest offers no ranked suggestions while entry controls survive", () => withPinnedClock(CITYWIDE_CLOCK, async () => {
+  const cases = [
+    ...["reject", "timeout", "corrupt", "missing"].map((control) => [`Brooklyn ${control}`, [[placeSuggestionSlice("borough:Brooklyn"), control]]]),
+    ["Staten Island reject", [[placeSuggestionSlice("borough:Staten Island"), "reject"]]],
+    ["manifest reject", [[NEAR_YOU_MANIFEST_KEY, "reject"]]],
+    ["manifest missing", [[NEAR_YOU_MANIFEST_KEY, "missing"]]],
+  ];
+  for (const [label, controls] of cases) {
+    for (const [key] of controls) assert.ok(key, `${label} names a real read`);
+    const { response, body } = await sectionRequest("", controls, { deferred: false, values: placeSuggestions.values });
+    assert.equal(response.status, 503, label);
+    assert.deepEqual(placeSuggestionLinks(body), [], label);
+    assert.doesNotMatch(body, /near-place-suggestions|\(26 meetings\)/, label);
+    assertEntryControls(body, label);
+  }
+  // Positive control: the Manhattan slice alone still holds Tribeca's 26
+  // meetings, so omitting the ranking is the partial-read rule, not missing data.
+  for (const name of BOROUGH_NAMES) assert.ok(placeSuggestionSlice(`borough:${name}`), name);
+  const manhattan = JSON.parse(placeSuggestions.values.get(placeSuggestionSlice("borough:Manhattan")));
+  assert.equal(manhattan.activity.geography_items.by_key["geography:nta2020:MN0102"].meetings.length, 26);
+}));

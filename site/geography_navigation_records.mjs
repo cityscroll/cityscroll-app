@@ -220,6 +220,60 @@ export function recordIdsForScope(activity, lens, scope = {}) {
   });
 }
 
+/**
+ * Most place suggestions an unselected page offers. The same three-item limit
+ * as CONTEXTUAL_SUGGESTION_LIMIT in contextual_suggestions.mjs, held equal by
+ * the owning test so this module does not pull that module's dependencies.
+ */
+export const GEOGRAPHY_PLACE_SUGGESTION_LIMIT = 3;
+
+/**
+ * Rank candidate places by the records their own destination would list.
+ *
+ * `candidates` is the canonical directory to choose from (for example the
+ * residential neighborhoods); a candidate flagged special-use is never ranked.
+ * `matches(record, key)` is the destination's record predicate for that key.
+ * A candidate qualifies only when its membership is exact and ready for the
+ * lens and at least one member has a record body that matches, so an
+ * unavailable, incomplete, unfilterable or zero place is omitted, never shown
+ * as zero. The count is the deduplicated matching member set. Order is
+ * descending count, then canonical key; there is no quota or favored place.
+ */
+export function geographyPlaceSuggestions(activity, {
+  lens,
+  candidates = [],
+  matches = () => true,
+  limit = GEOGRAPHY_PLACE_SUGGESTION_LIMIT,
+} = {}) {
+  const records = activity?.records?.[lens];
+  if (!GEOGRAPHY_RECORD_LENSES.includes(lens) || !activity?.geography_items
+    || !records || typeof records !== "object") return Object.freeze([]);
+  const seen = new Set();
+  const ranked = [];
+  for (const candidate of candidates || []) {
+    const key = String(candidate?.key || "");
+    if (!key || seen.has(key) || candidate.is_special_use) continue;
+    seen.add(key);
+    const projection = geographyRecordProjection(activity, { key, lens });
+    if (projection.state !== "ready") continue;
+    const ids = projection.ids.filter((id) => {
+      const record = records[id];
+      return !!record && typeof record === "object" && matches(record, key);
+    }).sort();
+    if (!ids.length) continue;
+    ranked.push(Object.freeze({
+      key,
+      id: candidate.id == null ? key.split(":").slice(2).join(":") : String(candidate.id),
+      label: String(candidate.label || key),
+      ids: Object.freeze(ids),
+      count: ids.length,
+    }));
+  }
+  ranked.sort((left, right) => right.count - left.count
+    || (left.key < right.key ? -1 : left.key > right.key ? 1 : 0));
+  return Object.freeze(ranked.slice(0, Math.max(0, Number(limit) || 0)));
+}
+
 export function geographyRecordDestination(scope, lens, base = "/near-you/") {
   const next = scopeWithCanonicalGeography({
     ...scope,

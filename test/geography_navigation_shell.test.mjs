@@ -657,3 +657,66 @@ test("A3 production journey harness covers Midwood on the served origin", () => 
     assert.equal(row.visual_metrics?.results_populated, true, row.name);
   }
 });
+
+// Neighborhood suggestions (public alias c0cece577f277): plain links to each
+// neighborhood's Records list, labeled with that list's count.
+import { geographyShellPlaceSuggestionsHtml } from "../site/geography_navigation_shell.mjs";
+
+const SUGGESTION_ROWS = Object.freeze([
+  Object.freeze({ key: "geography:nta2020:MN0102", id: "MN0102", label: "Tribeca-Civic Center", count: 26 }),
+  Object.freeze({ key: "geography:nta2020:MN0402", id: "MN0402", label: "Hell's Kitchen", count: 12 }),
+  Object.freeze({ key: "geography:nta2020:MN1001", id: "MN1001", label: "Harlem (South)", count: 1 }),
+]);
+
+function suggestionLinks(html) {
+  return [...html.matchAll(/<a href="([^"]+)" data-near-place-suggestion="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
+    .map(([, href, id, body]) => ({
+      href: href.replaceAll("&amp;", "&"),
+      id,
+      text: body.replace(/<[^>]+>/g, "").replaceAll("&#39;", "'").replace(/\s+/g, " ").trim(),
+    }));
+}
+
+test("suggestions are native Records links that name the neighborhood, count and category and keep the page filters", () => {
+  const html = geographyShellPlaceSuggestionsHtml(SUGGESTION_ROWS, {
+    base: "https://cityscroll.org/near-you?v=0&q=board&agency=City+Council&when=month",
+    lens: "meetings",
+    noun: "meetings",
+    singularNoun: "meeting",
+  });
+  assert.match(html, /<h2 id="near-place-suggestions-heading">Neighborhoods with mapped meetings<\/h2>/);
+  const links = suggestionLinks(html);
+  assert.deepEqual(links.map((link) => link.text), [
+    "Tribeca-Civic Center (26 meetings)",
+    "Hell's Kitchen (12 meetings)",
+    "Harlem (South) (1 meeting)",
+  ]);
+  for (const [index, link] of links.entries()) {
+    const url = new URL(link.href);
+    assert.equal(url.searchParams.get("geo"), `nta2020:${SUGGESTION_ROWS[index].id}`);
+    assert.equal(url.searchParams.get("surface"), GEOGRAPHY_NAVIGATION_SURFACE_RECORDS);
+    assert.equal(url.searchParams.get("lens"), "meetings");
+    assert.equal(url.searchParams.get("q"), "board");
+    assert.equal(url.searchParams.get("agency"), "City Council");
+    assert.equal(url.searchParams.get("when"), "month");
+  }
+  // Links and a heading only: nothing that needs a script, a form or a data read.
+  assert.doesNotMatch(html, /<(?:script|button|form|input|img)\b|\bhidden\b|js-only|\.json/);
+});
+
+test("suggestions adapt to the category and render nothing when no neighborhood qualifies", () => {
+  const land = geographyShellPlaceSuggestionsHtml(SUGGESTION_ROWS.slice(0, 1), {
+    base: "/near-you/",
+    lens: "land",
+    noun: "zoning records",
+    singularNoun: "zoning record",
+  });
+  assert.match(land, /Neighborhoods with mapped zoning records/);
+  assert.equal(new URL(suggestionLinks(land)[0].href, "https://cityscroll.org").searchParams.get("lens"), "land");
+  assert.deepEqual(suggestionLinks(land).map((link) => link.text), ["Tribeca-Civic Center (26 zoning records)"]);
+  assert.equal(geographyShellPlaceSuggestionsHtml([]), "");
+  // A zero or unknown count is never rendered as a suggestion.
+  assert.equal(geographyShellPlaceSuggestionsHtml([{ ...SUGGESTION_ROWS[0], count: 0 }, { ...SUGGESTION_ROWS[1], count: null }]), "");
+  // Positive control: the same rows with a count render.
+  assert.equal(suggestionLinks(geographyShellPlaceSuggestionsHtml([SUGGESTION_ROWS[1]])).length, 1);
+});

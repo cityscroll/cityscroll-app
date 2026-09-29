@@ -1,0 +1,3637 @@
+{
+  "provenance": {
+    "activity": {
+      "path": "site/data/district_activity.json",
+      "revision": "d886b385d647f4534df985f5922749a9414fab26",
+      "blob": "5deaa202fe578e09b58380d43755419dbb85ec60",
+      "reduction": "test/helpers/near_you_place_suggestions_fixture.mjs#reducePlaceSuggestionActivity"
+    },
+    "layer": {
+      "path": "site/data/geography/layers/nta2020/26B.json",
+      "revision": "d886b385d647f4534df985f5922749a9414fab26",
+      "blob": "d1adafa84a543842ec28d8c79f3c96afa33b86c0",
+      "reduction": "test/helpers/near_you_place_suggestions_fixture.mjs#reducePlaceSuggestionLayer"
+    }
+  },
+  "activity": {
+    "schema": "cityscroll.district_activity.v1",
+    "boundary_vintage": "2026-05-26",
+    "built_at": "2026-09-26T07:41:27.793Z",
+    "lenses": [
+      "land",
+      "property",
+      "rules",
+      "meetings",
+      "money"
+    ],
+    "district_items": {
+      "schema": "cityscroll.district_items.v1",
+      "boundary_vintage": "2026-05-26",
+      "built_at": "2026-09-26T07:41:27.793Z",
+      "lenses": [
+        "land",
+        "property",
+        "rules",
+        "meetings",
+        "money"
+      ],
+      "by_level": {
+        "borough": {
+          "Bronx": {
+            "meetings": [],
+            "land": [
+              "2022X0393",
+              "2025X0385",
+              "2026X0362"
+            ]
+          },
+          "Brooklyn": {
+            "meetings": [
+              "20260723030",
+              "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260714T223000@google.com::2026-07-14",
+              "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260908T223000@google.com::2026-09-08",
+              "meeting:community_board:5vd2bvo36ek1b06euilka2ghmt_R20260909T223000@google.com::2026-09-09",
+              "meeting:community_board:7h17q97cq2fsthjerram67q67h_R20260903T223000@google.com::2026-09-03",
+              "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+              "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+              "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+              "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-12/",
+              "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-15/",
+              "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-19/",
+              "meeting:community_board:https://www.brooklyncb11.org/event/general-meeting-6/"
+            ],
+            "land": [
+              "2019K0147",
+              "2019K0301",
+              "2019K0383",
+              "2020K0276",
+              "2020K0370",
+              "2025K0229"
+            ]
+          },
+          "Manhattan": {
+            "meetings": [
+              "20260106033",
+              "20260603039",
+              "20260610067",
+              "20260612028",
+              "20260616058",
+              "20260617039",
+              "20260623006",
+              "20260623060",
+              "20260624002",
+              "20260625040",
+              "20260629003",
+              "20260630005",
+              "20260706036",
+              "20260706044",
+              "20260707004",
+              "20260707021",
+              "20260707022",
+              "20260707029",
+              "20260708015",
+              "20260709028",
+              "20260710032",
+              "20260714001",
+              "20260715002",
+              "20260716022",
+              "20260716025",
+              "20260721023",
+              "20260722029",
+              "20260723030",
+              "20260727031",
+              "20260729004",
+              "20260730025",
+              "20260805038",
+              "20260811003",
+              "20260819025",
+              "20260824048",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-10-07/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/cannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only-8/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-16/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-11/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-31/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-19/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/traffic-janet-liff-vice-chair-9/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+              "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/"
+            ],
+            "land": [
+              "2020M0474",
+              "2023M0117",
+              "2023M0213",
+              "2024M0223",
+              "2024M0244",
+              "2025M0329",
+              "2025M0332",
+              "2025M0360",
+              "2026M0120",
+              "P2018M0168"
+            ]
+          },
+          "Staten Island": {
+            "meetings": [
+              "20260629003"
+            ],
+            "land": []
+          },
+          "Queens": {
+            "meetings": [
+              "20260612028",
+              "20260629003",
+              "20260723030"
+            ],
+            "land": []
+          }
+        },
+        "community_district": {},
+        "council_district": {}
+      },
+      "citywide": {},
+      "virtual": {},
+      "unlocated": {}
+    },
+    "geography_items": {
+      "schema": "cityscroll.geography_items.v1",
+      "built_at": "2026-09-26T07:41:27.793Z",
+      "lenses": [
+        "land",
+        "property",
+        "rules",
+        "meetings",
+        "money"
+      ],
+      "public_types": [
+        "borough",
+        "community_district",
+        "council_district",
+        "nta2020",
+        "police_precinct"
+      ],
+      "coverage": {
+        "status": "ready",
+        "by_lens": {
+          "land": {
+            "status": "ready",
+            "source": "land_place_membership",
+            "association_kind": "published_project_lot",
+            "generation_id": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7",
+            "content_id": "fnv1a32:49453cf1:244",
+            "source_dates": {
+              "catalog_content_id": "fnv1a32:06425590:244",
+              "catalog_materialized_at": "2026-09-09T06:54:36.054Z",
+              "catalog_generated_at": "2026-09-09T06:46:42.537Z",
+              "bbl_materialized_at": "2026-09-04T11:12:46.107Z",
+              "parcel_coordinate_vintage": "pluto_25v4",
+              "boundary_vintages": {
+                "borough": "2026-05-26",
+                "community_district": "2026-05-26",
+                "council_district": "2026-05-26",
+                "nta2020": "26B",
+                "police_precinct": "26B"
+              }
+            },
+            "admitted": 244,
+            "spatially_matched": 233,
+            "partially_covered": 22,
+            "match_bound": "spatially_matched_population",
+            "types": {
+              "nta2020": {
+                "status": "ready",
+                "reason": null,
+                "generation_id": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7",
+                "content_id": "fnv1a32:49453cf1:244",
+                "source_dates": {
+                  "catalog_content_id": "fnv1a32:06425590:244",
+                  "catalog_materialized_at": "2026-09-09T06:54:36.054Z",
+                  "catalog_generated_at": "2026-09-09T06:46:42.537Z",
+                  "bbl_materialized_at": "2026-09-04T11:12:46.107Z",
+                  "parcel_coordinate_vintage": "pluto_25v4",
+                  "boundary_vintages": {
+                    "borough": "2026-05-26",
+                    "community_district": "2026-05-26",
+                    "council_district": "2026-05-26",
+                    "nta2020": "26B",
+                    "police_precinct": "26B"
+                  }
+                },
+                "match_bound": "spatially_matched_population"
+              }
+            }
+          }
+        }
+      },
+      "definitions": {
+        "geography:nta2020:BK0502": {
+          "key": "geography:nta2020:BK0502",
+          "type": "nta2020",
+          "id": "BK0502",
+          "label": "East New York (North)",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:BK1002": {
+          "key": "geography:nta2020:BK1002",
+          "type": "nta2020",
+          "id": "BK1002",
+          "label": "Dyker Heights",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:BK1091": {
+          "key": "geography:nta2020:BK1091",
+          "type": "nta2020",
+          "id": "BK1091",
+          "label": "Dyker Beach Park",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:BK1102": {
+          "key": "geography:nta2020:BK1102",
+          "type": "nta2020",
+          "id": "BK1102",
+          "label": "Bath Beach",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:BK1402": {
+          "key": "geography:nta2020:BK1402",
+          "type": "nta2020",
+          "id": "BK1402",
+          "label": "Flatbush (West)-Ditmas Park-Parkville",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:BK1403": {
+          "key": "geography:nta2020:BK1403",
+          "type": "nta2020",
+          "id": "BK1403",
+          "label": "Midwood",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:BK1503": {
+          "key": "geography:nta2020:BK1503",
+          "type": "nta2020",
+          "id": "BK1503",
+          "label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:BX0101": {
+          "key": "geography:nta2020:BX0101",
+          "type": "nta2020",
+          "id": "BX0101",
+          "label": "Mott Haven-Port Morris",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:MN0101": {
+          "key": "geography:nta2020:MN0101",
+          "type": "nta2020",
+          "id": "MN0101",
+          "label": "Financial District-Battery Park City",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:MN0102": {
+          "key": "geography:nta2020:MN0102",
+          "type": "nta2020",
+          "id": "MN0102",
+          "label": "Tribeca-Civic Center",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:MN0202": {
+          "key": "geography:nta2020:MN0202",
+          "type": "nta2020",
+          "id": "MN0202",
+          "label": "Greenwich Village",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:MN0402": {
+          "key": "geography:nta2020:MN0402",
+          "type": "nta2020",
+          "id": "MN0402",
+          "label": "Hell's Kitchen",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:MN1001": {
+          "key": "geography:nta2020:MN1001",
+          "type": "nta2020",
+          "id": "MN1001",
+          "label": "Harlem (South)",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        }
+      },
+      "by_key": {
+        "geography:nta2020:BK0502": {
+          "meetings": [
+            "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260714T223000@google.com::2026-07-14",
+            "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260908T223000@google.com::2026-09-08",
+            "meeting:community_board:5vd2bvo36ek1b06euilka2ghmt_R20260909T223000@google.com::2026-09-09",
+            "meeting:community_board:7h17q97cq2fsthjerram67q67h_R20260903T223000@google.com::2026-09-03"
+          ],
+          "land": [
+            "2020K0370"
+          ]
+        },
+        "geography:nta2020:BK1002": {
+          "meetings": [
+            "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-12/",
+            "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-19/"
+          ],
+          "land": [
+            "2025K0229"
+          ]
+        },
+        "geography:nta2020:BK1091": {
+          "meetings": [
+            "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-15/"
+          ],
+          "land": []
+        },
+        "geography:nta2020:BK1102": {
+          "meetings": [
+            "meeting:community_board:https://www.brooklyncb11.org/event/general-meeting-6/"
+          ],
+          "land": []
+        },
+        "geography:nta2020:BK1402": {
+          "meetings": [
+            "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
+          ],
+          "land": []
+        },
+        "geography:nta2020:BK1403": {
+          "meetings": [
+            "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+            "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+          ],
+          "land": [
+            "2019K0301",
+            "2019K0383",
+            "2020K0276"
+          ]
+        },
+        "geography:nta2020:BK1503": {
+          "land": [
+            "2019K0147"
+          ]
+        },
+        "geography:nta2020:BX0101": {
+          "meetings": [],
+          "land": [
+            "2022X0393",
+            "2025X0385",
+            "2026X0362"
+          ]
+        },
+        "geography:nta2020:MN0101": {
+          "meetings": [
+            "20260610067",
+            "20260616058",
+            "20260624002",
+            "20260706044",
+            "20260707029",
+            "20260721023",
+            "20260722029",
+            "20260730025",
+            "20260805038"
+          ],
+          "land": [
+            "2026M0120",
+            "P2018M0168"
+          ]
+        },
+        "geography:nta2020:MN0102": {
+          "meetings": [
+            "20260106033",
+            "20260603039",
+            "20260612028",
+            "20260617039",
+            "20260623006",
+            "20260623060",
+            "20260625040",
+            "20260629003",
+            "20260630005",
+            "20260706036",
+            "20260707004",
+            "20260707021",
+            "20260707022",
+            "20260708015",
+            "20260709028",
+            "20260710032",
+            "20260714001",
+            "20260715002",
+            "20260716022",
+            "20260716025",
+            "20260723030",
+            "20260727031",
+            "20260729004",
+            "20260811003",
+            "20260819025",
+            "20260824048"
+          ],
+          "land": [
+            "2020M0474",
+            "2023M0117",
+            "2025M0329"
+          ]
+        },
+        "geography:nta2020:MN0202": {
+          "meetings": [
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/cannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only-8/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-16/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-11/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-31/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-19/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/traffic-janet-liff-vice-chair-9/"
+          ],
+          "land": []
+        },
+        "geography:nta2020:MN0402": {
+          "meetings": [
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/"
+          ],
+          "land": [
+            "2023M0213",
+            "2024M0244",
+            "2025M0332",
+            "2025M0360"
+          ]
+        },
+        "geography:nta2020:MN1001": {
+          "meetings": [
+            "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-10-07/"
+          ],
+          "land": [
+            "2024M0223"
+          ]
+        }
+      }
+    },
+    "records": {
+      "meetings": {
+        "20260106033": {
+          "id": "20260106033",
+          "title": "Board of Correction Public Meeting",
+          "agency": "Board of Correction",
+          "type": "Meeting",
+          "date": "2026-07-14T13:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260106033",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_line",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260603039": {
+          "id": "20260603039",
+          "title": "CITY OF NEW YORK AUDIT COMMITTEE MEETING",
+          "agency": "Comptroller",
+          "type": "Meeting",
+          "date": "2026-06-24T09:30:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260603039",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_line",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260610067": {
+          "id": "20260610067",
+          "title": "BERS EXECUTIVE COMMITTEE MEETING",
+          "agency": "Board of Education Retirement System",
+          "type": "Meeting",
+          "date": "2026-06-24T12:30:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260610067",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0101",
+                "type": "nta2020",
+                "id": "MN0101",
+                "label": "Financial District-Battery Park City",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_line",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260612028": {
+          "id": "20260612028",
+          "title": "Board of Standards and Appeals Public Hearing Notice",
+          "agency": "Board of Standards and Appeals",
+          "type": "Public Hearings",
+          "date": "2026-07-13T10:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260612028",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "matter_body_borough",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260616058": {
+          "id": "20260616058",
+          "title": "NEW YORK CITY DEPARTMENT OF TRANSPORTATION",
+          "agency": "Transportation",
+          "type": "Public Hearings",
+          "date": "2026-07-22T11:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260616058",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0101",
+                "type": "nta2020",
+                "id": "MN0101",
+                "label": "Financial District-Battery Park City",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260617039": {
+          "id": "20260617039",
+          "title": "7-1-26 Subcommittee on Zoning and Franchises meeting",
+          "agency": "City Council",
+          "type": "Public Hearings",
+          "date": "2026-07-01T11:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260617039",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260623006": {
+          "id": "20260623006",
+          "title": "July 14, 2026, Public Hearing Agenda CR",
+          "agency": "Landmarks Preservation Commission",
+          "type": "Public Hearings",
+          "date": "2026-07-14T09:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260623006",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260623060": {
+          "id": "20260623060",
+          "title": "NYC Civic Engagement Commission Public Meeting",
+          "agency": "Civic Engagement Commission",
+          "type": "Meeting",
+          "date": "2026-07-21T11:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260623060",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260624002": {
+          "id": "20260624002",
+          "title": "City Planning Commission Public Hearing Ad",
+          "agency": "City Planning Commission",
+          "type": "Public Hearings",
+          "date": "2026-07-15T10:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260624002",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0101",
+                "type": "nta2020",
+                "id": "MN0101",
+                "label": "Financial District-Battery Park City",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260625040": {
+          "id": "20260625040",
+          "title": "7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+          "agency": "City Council",
+          "type": "Public Hearings",
+          "date": "2026-07-09T11:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260625040",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260629003": {
+          "id": "20260629003",
+          "title": "Correction: Board of Standards and Appeals Public Hearing Notice",
+          "agency": "Board of Standards and Appeals",
+          "type": "Public Hearings",
+          "date": "2026-07-27T10:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260629003",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "matter_body_borough",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260630005": {
+          "id": "20260630005",
+          "title": "July 21, 2026, Public Hearing Agenda",
+          "agency": "Landmarks Preservation Commission",
+          "type": "Public Hearings",
+          "date": "2026-07-21T09:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260630005",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260706036": {
+          "id": "20260706036",
+          "title": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+          "agency": "City Council",
+          "type": "Public Hearings",
+          "date": "2026-07-14T10:30:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260706036",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260706044": {
+          "id": "20260706044",
+          "title": "Driver Relief Penalty Reduction and Medallion Relief Program Rule Proposal.",
+          "agency": "Taxi and Limousine Commission",
+          "type": "Public Hearings",
+          "date": "2026-08-13T10:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260706044",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0101",
+                "type": "nta2020",
+                "id": "MN0101",
+                "label": "Financial District-Battery Park City",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260707004": {
+          "id": "20260707004",
+          "title": "July 28, 2026, Public Hearing Agenda",
+          "agency": "Landmarks Preservation Commission",
+          "type": "Public Hearings",
+          "date": "2026-07-28T09:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260707004",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260707021": {
+          "id": "20260707021",
+          "title": "7-21-26 Subcommittee on Zoning and Franchises meeting",
+          "agency": "City Council",
+          "type": "Public Hearings",
+          "date": "2026-07-21T11:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260707021",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260707022": {
+          "id": "20260707022",
+          "title": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+          "agency": "City Council",
+          "type": "Public Hearings",
+          "date": "2026-07-22T11:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260707022",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260707029": {
+          "id": "20260707029",
+          "title": "City Planning Commission Public Hearing Ad",
+          "agency": "City Planning Commission",
+          "type": "Public Hearings",
+          "date": "2026-07-29T10:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260707029",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0101",
+                "type": "nta2020",
+                "id": "MN0101",
+                "label": "Financial District-Battery Park City",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260708015": {
+          "id": "20260708015",
+          "title": "EEPC COMMISSION MEETING #289",
+          "agency": "Equal Employment Practices Commission",
+          "type": "Meeting",
+          "date": "2026-07-30T10:15:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260708015",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260709028": {
+          "id": "20260709028",
+          "title": "Concession for Operation and Maintenance of Cafeteria at the NYPD Police Academy",
+          "agency": "Police Department",
+          "type": "Public Hearings",
+          "date": "2026-08-10T14:30:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260709028",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "matter_title_place",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260710032": {
+          "id": "20260710032",
+          "title": "FCRC AUGUST PUBLIC MEETING",
+          "agency": "Franchise and Concession Review Committee",
+          "type": "Meeting",
+          "date": "2026-08-12T14:30:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260710032",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_line",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260714001": {
+          "id": "20260714001",
+          "title": "August 4, 2026, Public Hearing Agenda CR",
+          "agency": "Landmarks Preservation Commission",
+          "type": "Public Hearings",
+          "date": "2026-08-04T09:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260714001",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260715002": {
+          "id": "20260715002",
+          "title": "Final Meeting of the Commission on Government Efficiency",
+          "agency": "Charter Revision Commission",
+          "type": "Meeting",
+          "date": "2026-07-20T00:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260715002",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_line",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260716022": {
+          "id": "20260716022",
+          "title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Café and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
+          "agency": "Parks and Recreation",
+          "type": "Public Hearings",
+          "date": "2026-08-10T14:30:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260716022",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "matter_title_place",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260716025": {
+          "id": "20260716025",
+          "title": "New York City Environmental Control Board Meeting August 6, 2026",
+          "agency": "Environmental Control Board",
+          "type": "Meeting",
+          "date": "2026-08-06T09:30:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260716025",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_line",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260721023": {
+          "id": "20260721023",
+          "title": "City Planning Commission Public Hearing",
+          "agency": "City Planning Commission",
+          "type": "Public Hearings",
+          "date": "2026-08-12T10:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260721023",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0101",
+                "type": "nta2020",
+                "id": "MN0101",
+                "label": "Financial District-Battery Park City",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260722029": {
+          "id": "20260722029",
+          "title": "BERS EXECUTIVE COMMITTEE MEETING",
+          "agency": "Board of Education Retirement System",
+          "type": "Meeting",
+          "date": "2026-08-25T12:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260722029",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0101",
+                "type": "nta2020",
+                "id": "MN0101",
+                "label": "Financial District-Battery Park City",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260723030": {
+          "id": "20260723030",
+          "title": "Board of Standards and Appeals Public Hearing Notice",
+          "agency": "Board of Standards and Appeals",
+          "type": "Public Hearings",
+          "date": "2026-08-10T10:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260723030",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "matter_body_borough",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260727031": {
+          "id": "20260727031",
+          "title": "AUGUST 18, 2026 PUBLIC HEARING AGENDA",
+          "agency": "Landmarks Preservation Commission",
+          "type": "Public Hearings",
+          "date": "2026-08-18T09:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260727031",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260729004": {
+          "id": "20260729004",
+          "title": "8-12-26 Subcommittee on Zoning and Franchises meeting",
+          "agency": "City Council",
+          "type": "Public Hearings",
+          "date": "2026-08-12T11:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260729004",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260730025": {
+          "id": "20260730025",
+          "title": "August 26, 2026 PUBLIC HEARING",
+          "agency": "Transportation",
+          "type": "Public Hearings",
+          "date": "2026-08-26T11:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260730025",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0101",
+                "type": "nta2020",
+                "id": "MN0101",
+                "label": "Financial District-Battery Park City",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260805038": {
+          "id": "20260805038",
+          "title": "City Planning Commission Public Hearing",
+          "agency": "City Planning Commission",
+          "type": "Public Hearings",
+          "date": "2026-08-26T10:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260805038",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0101",
+                "type": "nta2020",
+                "id": "MN0101",
+                "label": "Financial District-Battery Park City",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260811003": {
+          "id": "20260811003",
+          "title": "September 1, 2026, Public Hearing Agenda CR",
+          "agency": "Landmarks Preservation Commission",
+          "type": "Public Hearings",
+          "date": "2026-09-01T09:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260811003",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260819025": {
+          "id": "20260819025",
+          "title": "The Battery Conservancy, Inc. for the Operation and Maintenance of The Battery in Manhattan",
+          "agency": "Parks and Recreation",
+          "type": "Public Hearings",
+          "date": "2026-09-14T14:30:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/#notice/20260819025",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "20260824048": {
+          "id": "20260824048",
+          "title": "9-8-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+          "agency": "City Council",
+          "type": "Public Hearings",
+          "date": "2026-09-08T11:00:00.000",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "civic_address_pip",
+          "route": "/#notice/20260824048",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "civic_address_pip",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "derived",
+                "provenance": {
+                  "placement_method": "civic_address_pip",
+                  "source_method": "venue_column",
+                  "confidence_tier": "derived"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260714T223000@google.com::2026-07-14": {
+          "id": "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260714T223000@google.com::2026-07-14",
+          "title": "Aging, Health & Social Services (AHSS) Committee Mtg",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-07-14T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3A2kgb7s2c3q87p5h3nbv9hcqe5v_R20260714T223000%40google.com%3A%3A2026-07-14",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK0502",
+                "type": "nta2020",
+                "id": "BK0502",
+                "label": "East New York (North)",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260908T223000@google.com::2026-09-08": {
+          "id": "meeting:community_board:2kgb7s2c3q87p5h3nbv9hcqe5v_R20260908T223000@google.com::2026-09-08",
+          "title": "Aging, Health & Social Services (AHSS) Committee Mtg",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-08T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3A2kgb7s2c3q87p5h3nbv9hcqe5v_R20260908T223000%40google.com%3A%3A2026-09-08",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK0502",
+                "type": "nta2020",
+                "id": "BK0502",
+                "label": "East New York (North)",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:5vd2bvo36ek1b06euilka2ghmt_R20260909T223000@google.com::2026-09-09": {
+          "id": "meeting:community_board:5vd2bvo36ek1b06euilka2ghmt_R20260909T223000@google.com::2026-09-09",
+          "title": "Economic Development, IBZ, & BIDs (EDIB) Committee",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-09T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3A5vd2bvo36ek1b06euilka2ghmt_R20260909T223000%40google.com%3A%3A2026-09-09",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK0502",
+                "type": "nta2020",
+                "id": "BK0502",
+                "label": "East New York (North)",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:7h17q97cq2fsthjerram67q67h_R20260903T223000@google.com::2026-09-03": {
+          "id": "meeting:community_board:7h17q97cq2fsthjerram67q67h_R20260903T223000@google.com::2026-09-03",
+          "title": "Education & Youth Services (EYS) Committee Meeting",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-03T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3A7h17q97cq2fsthjerram67q67h_R20260903T223000%40google.com%3A%3A2026-09-03",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK0502",
+                "type": "nta2020",
+                "id": "BK0502",
+                "label": "East New York (North)",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/": {
+          "id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+          "title": "Housing and Land Use Committee Meeting",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-23T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1403",
+                "type": "nta2020",
+                "id": "BK1403",
+                "label": "Midwood",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/": {
+          "id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+          "title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-09",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1403",
+                "type": "nta2020",
+                "id": "BK1403",
+                "label": "Midwood",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/": {
+          "id": "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+          "title": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-14T18:30:00-04:00",
+          "status": null,
+          "basis": "About 461 Coney Island Avenue",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1402",
+                "type": "nta2020",
+                "id": "BK1402",
+                "label": "Flatbush (West)-Ditmas Park-Parkville",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "matter",
+                "basis": "About 461 Coney Island Avenue",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_subject_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-12/": {
+          "id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-12/",
+          "title": "Monthly Board Meeting",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-10-19T19:00:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb10%2Fevent%2Fmonthly-board-meeting-12%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1002",
+                "type": "nta2020",
+                "id": "BK1002",
+                "label": "Dyker Heights",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-15/": {
+          "id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-15/",
+          "title": "Monthly Board Meeting",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2027-01-19T19:00:00-05:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb10%2Fevent%2Fmonthly-board-meeting-15%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1091",
+                "type": "nta2020",
+                "id": "BK1091",
+                "label": "Dyker Beach Park",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-19/": {
+          "id": "meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-19/",
+          "title": "Monthly Board Meeting",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2027-06-21T19:00:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb10%2Fevent%2Fmonthly-board-meeting-19%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1002",
+                "type": "nta2020",
+                "id": "BK1002",
+                "label": "Dyker Heights",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-10-07/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-10-07/",
+          "title": "General Board Meeting",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-10-07T18:00:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb10%2Fevent%2Fgeneral-board-meeting-12-3-2-2-2%2F2026-10-07%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN1001",
+                "type": "nta2020",
+                "id": "MN1001",
+                "label": "Harlem (South)",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/cannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only-8/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/cannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only-8/",
+          "title": "CANCELLED – CANNABIS LICENSING – Mar Fitzgerald, Chair; Patricia Laraia, Vice Chair – IN PERSON ONLY",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-08-31T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Fcannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only-8%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0202",
+                "type": "nta2020",
+                "id": "MN0202",
+                "label": "Greenwich Village",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-16/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-16/",
+          "title": "EXECUTIVE – Valerie De La Rosa, Chair",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-22T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Fexecutive-valerie-de-la-rosa-chair-16%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0202",
+                "type": "nta2020",
+                "id": "MN0202",
+                "label": "Greenwich Village",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-11/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-11/",
+          "title": "FULL BOARD – Valerie De La Rosa, Chair",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-24T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Ffull-board-valerie-de-la-rosa-chair-11%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0202",
+                "type": "nta2020",
+                "id": "MN0202",
+                "label": "Greenwich Village",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-31/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-31/",
+          "title": "LANDMARKS – Chenault Spence, Chair; Susan Gammie, Vice Chair",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-17T18:00:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Flandmarks-chenault-spence-chair-susan-gammie-vice-chair-31%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0202",
+                "type": "nta2020",
+                "id": "MN0202",
+                "label": "Greenwich Village",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
+          "title": "OUTDOOR DINING WORKING GROUP – Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-15T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Foutdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0202",
+                "type": "nta2020",
+                "id": "MN0202",
+                "label": "Greenwich Village",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-19/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-19/",
+          "title": "STREET ACTIVITIES & RESILIEINCY – Will Benesh, Chair; Erika Olson, Vice Chair",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-14T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Fstreet-activities-erika-olson-vice-chair-19%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0202",
+                "type": "nta2020",
+                "id": "MN0202",
+                "label": "Greenwich Village",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/traffic-janet-liff-vice-chair-9/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/traffic-janet-liff-vice-chair-9/",
+          "title": "TRAFFIC & TRANSPORTATION – Jeannine Kiely, Chair; Janet Liff, Vice Chair",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-29T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Ftraffic-janet-liff-vice-chair-9%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0202",
+                "type": "nta2020",
+                "id": "MN0202",
+                "label": "Greenwich Village",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+          "title": "Arts, Culture, Education & Schools Committee (ACES)",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-14T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Farts-culture-education-schools-committee-aces-24%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+          "title": "Budget Task Force",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-28T17:00:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fbudget-task-force-15%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+          "title": "Business License & Permits Committee (BLP)",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-08T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fbusiness-license-permits-committee-blp-67%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+          "title": "Chelsea Land Use Committee (CLU)",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-22T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fchelsea-land-use-committee-clu-61%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+          "title": "Clinton/Hell’s Kitchen Land Use Committee (CHKLU)",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-09T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fclinton-hells-kitchen-land-use-committee-chklu-58%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+          "title": "Economic Development & Public Safety Committee (EDPS)",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-17T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Feconomic-development-public-safety-committee-edps-3%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+          "title": "Executive Committee (EXEC)",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-28T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fexecutive-committee-exec-59%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+          "title": "Full Board",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-02T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Ffull-board-66%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+          "title": "Housing, Health & Human Services Committee (HHHS)",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-23T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-52%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+          "title": "Housing, Health & Human Services Committee (HHHS)",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-10-01T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fhousing-health-human-services-committee-hhhs-53%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+          "title": "Transportation Planning Committee (TPC)",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-16T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Ftransportation-planning-committee-tpc-25%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/": {
+          "id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/",
+          "title": "Waterfront, Parks & Environment Committee (WPE)",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-10T18:30:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Fwaterfront-parks-environment-committee-wpe-59%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "meeting:community_board:https://www.brooklyncb11.org/event/general-meeting-6/": {
+          "id": "meeting:community_board:https://www.brooklyncb11.org/event/general-meeting-6/",
+          "title": "General Meeting",
+          "agency": null,
+          "type": "Community board meeting",
+          "date": "2026-09-10T19:00:00-04:00",
+          "status": null,
+          "basis": "Venue / logistics",
+          "basis_method": "parcel_membership",
+          "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fwww.brooklyncb11.org%2Fevent%2Fgeneral-meeting-6%2F",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1102",
+                "type": "nta2020",
+                "id": "BK1102",
+                "label": "Bath Beach",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "parcel_membership",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "venue",
+                "basis": "Venue / logistics",
+                "confidence": "strong",
+                "provenance": {
+                  "placement_method": "parcel_membership",
+                  "source_method": "admitted_venue_membership",
+                  "confidence_tier": "strong"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        }
+      },
+      "land": {
+        "2019K0147": {
+          "id": "2019K0147",
+          "title": "2959 Avenue Y Rezoning",
+          "agency": "Shore Park Jewish Center",
+          "type": "Noticed",
+          "date": "2026-04-06T00:00:00.000",
+          "status": "EAS - Project Readiness",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2019K0147",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1503",
+                "type": "nta2020",
+                "id": "BK1503",
+                "label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2019K0301": {
+          "id": "2019K0301",
+          "title": "2586 Nostrand Avenue Rezoning",
+          "agency": "2586 Nostrand LLC",
+          "type": "Noticed",
+          "date": "2026-03-07T00:00:00.000",
+          "status": "EAS - Prepare Filed Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2019K0301",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1403",
+                "type": "nta2020",
+                "id": "BK1403",
+                "label": "Midwood",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2019K0383": {
+          "id": "2019K0383",
+          "title": "East 14th Street and Locust Avenue Rezoning",
+          "agency": "E 14 Realty Holdings LLC",
+          "type": "Filed",
+          "date": "2026-07-01T00:00:00.000",
+          "status": "ZM - Prepare Filed Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2019K0383",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1403",
+                "type": "nta2020",
+                "id": "BK1403",
+                "label": "Midwood",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2020K0276": {
+          "id": "2020K0276",
+          "title": "1455 Coney Island Avenue Rezoning",
+          "agency": "Prospect Park Land LLC",
+          "type": "In Public Review",
+          "date": "2026-06-24T00:00:00.000",
+          "status": "EAS - Borough President Referral",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2020K0276",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1403",
+                "type": "nta2020",
+                "id": "BK1403",
+                "label": "Midwood",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2020K0370": {
+          "id": "2020K0370",
+          "title": "Sutter Crossing",
+          "agency": "Omni New York LLC",
+          "type": "Filed",
+          "date": "2024-12-23T00:00:00.000",
+          "status": "ZM - Prepare Filed Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2020K0370",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK0502",
+                "type": "nta2020",
+                "id": "BK0502",
+                "label": "East New York (North)",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2020M0474": {
+          "id": "2020M0474",
+          "title": "33 Thomas Street",
+          "agency": "Jon Popin",
+          "type": "Filed",
+          "date": "2025-12-29T00:00:00.000",
+          "status": "ZS - Review Draft Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2020M0474",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2022X0393": {
+          "id": "2022X0393",
+          "title": "110 East 138th Street/63 Exterior Street",
+          "agency": "east 138th street JV associates LLC",
+          "type": "In Public Review",
+          "date": "2026-06-24T00:00:00.000",
+          "status": "HA - Community Board Referral",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2022X0393",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BX0101",
+                "type": "nta2020",
+                "id": "BX0101",
+                "label": "Mott Haven-Port Morris",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2023M0117": {
+          "id": "2023M0117",
+          "title": "Independence Plaza Modifications",
+          "agency": "Stellar Management",
+          "type": "Filed",
+          "date": "2026-02-19T00:00:00.000",
+          "status": "ZS - Prepare Filed Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2023M0117",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2023M0213": {
+          "id": "2023M0213",
+          "title": "Dewitt Clinton Park North (629 West 54th Street)",
+          "agency": "760 12th LLC",
+          "type": "In Public Review",
+          "date": "2026-07-01T00:00:00.000",
+          "status": "Ad-hoc - CPC Review of Modification Scope",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2023M0213",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2024M0223": {
+          "id": "2024M0223",
+          "title": "254 West 124th Street - Ennis Francis LSRD",
+          "agency": "Caroline Harris",
+          "type": "Filed",
+          "date": "2026-06-08T00:00:00.000",
+          "status": "ZM - Review Draft Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2024M0223",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN1001",
+                "type": "nta2020",
+                "id": "MN1001",
+                "label": "Harlem (South)",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2024M0244": {
+          "id": "2024M0244",
+          "title": "Dewitt Clinton Park North (801 Eleventh Avenue)",
+          "agency": "801 11th Avenue LLC",
+          "type": "In Public Review",
+          "date": "2026-07-01T00:00:00.000",
+          "status": "Ad-hoc - CPC Review of Modification Scope",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2024M0244",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2025K0229": {
+          "id": "2025K0229",
+          "title": "6418 8th Avenue Rezoning",
+          "agency": "Basic Group Corp. Architectural & Engineering Services",
+          "type": "Filed",
+          "date": "2026-05-22T00:00:00.000",
+          "status": "ZM - Prepare Filed Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2025K0229",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BK1002",
+                "type": "nta2020",
+                "id": "BK1002",
+                "label": "Dyker Heights",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2025M0329": {
+          "id": "2025M0329",
+          "title": "67 Vestry Street Parking Authorization",
+          "agency": "IRG 67 LLC",
+          "type": "Filed",
+          "date": "2026-06-22T00:00:00.000",
+          "status": "ZA - Project Readiness",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2025M0329",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0102",
+                "type": "nta2020",
+                "id": "MN0102",
+                "label": "Tribeca-Civic Center",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2025M0332": {
+          "id": "2025M0332",
+          "title": "304 West 49th Street",
+          "agency": "304 West 49th Street Garage LLC",
+          "type": "Filed",
+          "date": "2026-05-12T00:00:00.000",
+          "status": "ZR - Review Draft Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2025M0332",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2025M0360": {
+          "id": "2025M0360",
+          "title": "515 West 57th Street Rezoning",
+          "agency": "515 West 57th Street Leasehold LLC",
+          "type": "Noticed",
+          "date": "2026-06-04T00:00:00.000",
+          "status": "ZM - Review Filed Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2025M0360",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0402",
+                "type": "nta2020",
+                "id": "MN0402",
+                "label": "Hell's Kitchen",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2025X0385": {
+          "id": "2025X0385",
+          "title": "139th Street Demapping",
+          "agency": "Sprague Operating Resources LLC",
+          "type": "Filed",
+          "date": "2026-06-22T00:00:00.000",
+          "status": "MM - Prepare Filed Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_district",
+          "route": "/#land/2025X0385",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BX0101",
+                "type": "nta2020",
+                "id": "BX0101",
+                "label": "Mott Haven-Port Morris",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2026M0120": {
+          "id": "2026M0120",
+          "title": "100 Wall Street Arcade Infill",
+          "agency": "100 Wall Realty LLC",
+          "type": "Filed",
+          "date": "2026-03-19T00:00:00.000",
+          "status": "ZC - Review Filed Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/2026M0120",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0101",
+                "type": "nta2020",
+                "id": "MN0101",
+                "label": "Financial District-Battery Park City",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "2026X0362": {
+          "id": "2026X0362",
+          "title": "351 Powers Avenue (HPD ELURP)",
+          "agency": "HPD - NYC Dept of Housing Preservation & Development",
+          "type": "In Public Review",
+          "date": "2026-04-22T00:00:00.000",
+          "status": "PP - City Council Review",
+          "basis": "Affected area",
+          "basis_method": "publisher_district",
+          "route": "/#land/2026X0362",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:BX0101",
+                "type": "nta2020",
+                "id": "BX0101",
+                "label": "Mott Haven-Port Morris",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        },
+        "P2018M0168": {
+          "id": "P2018M0168",
+          "title": "2 Gold Street Cafe Certification",
+          "agency": "Lisa Orrantia",
+          "type": "Filed",
+          "date": "2022-02-03T00:00:00.000",
+          "status": "ZC - Prepare Filed Land Use Application",
+          "basis": "Affected area",
+          "basis_method": "publisher_council",
+          "route": "/#land/P2018M0168",
+          "place": {
+            "geographies": [
+              {
+                "key": "geography:nta2020:MN0101",
+                "type": "nta2020",
+                "id": "MN0101",
+                "label": "Financial District-Battery Park City",
+                "class": "statistical",
+                "relation": "located_in",
+                "method": "published_project_lot",
+                "source_id": "dcp-nta2020-boundaries",
+                "boundary_vintage": "26B",
+                "location_role": "project_geometry",
+                "basis": "Affected area",
+                "confidence": "strong",
+                "association_kind": "published_project_lot",
+                "provenance": {
+                  "placement_method": "published_project_lot",
+                  "source_method": "land_place_membership",
+                  "confidence_tier": "strong",
+                  "association_kind": "published_project_lot"
+                },
+                "visibility": "public"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "layer": {
+    "schema": "cityscroll.geography_layer.v1",
+    "type": "nta2020",
+    "class": "statistical",
+    "vintage": {
+      "id": "26B",
+      "published_at": "2026-05-04T00:00:00.000Z",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "features": [
+      {
+        "key": "geography:nta2020:BK0502",
+        "type": "nta2020",
+        "id": "BK0502",
+        "label": "East New York (North)",
+        "subtype": "residential"
+      },
+      {
+        "key": "geography:nta2020:BK1002",
+        "type": "nta2020",
+        "id": "BK1002",
+        "label": "Dyker Heights",
+        "subtype": "residential"
+      },
+      {
+        "key": "geography:nta2020:BK1091",
+        "type": "nta2020",
+        "id": "BK1091",
+        "label": "Dyker Beach Park",
+        "subtype": "park"
+      },
+      {
+        "key": "geography:nta2020:BK1102",
+        "type": "nta2020",
+        "id": "BK1102",
+        "label": "Bath Beach",
+        "subtype": "residential"
+      },
+      {
+        "key": "geography:nta2020:BK1402",
+        "type": "nta2020",
+        "id": "BK1402",
+        "label": "Flatbush (West)-Ditmas Park-Parkville",
+        "subtype": "residential"
+      },
+      {
+        "key": "geography:nta2020:BK1403",
+        "type": "nta2020",
+        "id": "BK1403",
+        "label": "Midwood",
+        "subtype": "residential"
+      },
+      {
+        "key": "geography:nta2020:BK1503",
+        "type": "nta2020",
+        "id": "BK1503",
+        "label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+        "subtype": "residential"
+      },
+      {
+        "key": "geography:nta2020:BX0101",
+        "type": "nta2020",
+        "id": "BX0101",
+        "label": "Mott Haven-Port Morris",
+        "subtype": "residential"
+      },
+      {
+        "key": "geography:nta2020:MN0101",
+        "type": "nta2020",
+        "id": "MN0101",
+        "label": "Financial District-Battery Park City",
+        "subtype": "residential"
+      },
+      {
+        "key": "geography:nta2020:MN0102",
+        "type": "nta2020",
+        "id": "MN0102",
+        "label": "Tribeca-Civic Center",
+        "subtype": "residential"
+      },
+      {
+        "key": "geography:nta2020:MN0202",
+        "type": "nta2020",
+        "id": "MN0202",
+        "label": "Greenwich Village",
+        "subtype": "residential"
+      },
+      {
+        "key": "geography:nta2020:MN0402",
+        "type": "nta2020",
+        "id": "MN0402",
+        "label": "Hell's Kitchen",
+        "subtype": "residential"
+      },
+      {
+        "key": "geography:nta2020:MN1001",
+        "type": "nta2020",
+        "id": "MN1001",
+        "label": "Harlem (South)",
+        "subtype": "residential"
+      }
+    ]
+  }
+}

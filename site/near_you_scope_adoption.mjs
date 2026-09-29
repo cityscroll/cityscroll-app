@@ -24,6 +24,7 @@ export const NEAR_YOU_SCOPE_REGION_SELECTORS = Object.freeze([
   ".near-records-surface",
   ".near-results",
   ".near-bags",
+  ".near-place-suggestions",
 ]);
 
 /** Root dataset keys owned by the server document (not client-only chrome). */
