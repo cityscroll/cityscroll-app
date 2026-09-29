@@ -3,7 +3,7 @@
   "scenario": "discovery-recovery",
   "public_alias": "c94563a6bbaf3",
   "capture_mode": "headless-playwright-local-fixture-server",
-  "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+  "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
   "base": "local-fixture-server",
   "viewports": [
     {
@@ -18,8 +18,8 @@
     }
   ],
   "run_receipt": {
-    "started_at": "2026-09-29T19:38:54Z",
-    "finished_at": "2026-09-29T19:39:47Z"
+    "started_at": "2026-09-29T22:20:37Z",
+    "finished_at": "2026-09-29T22:21:32Z"
   },
   "identity": {
     "before": {
@@ -40,7 +40,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/",
         "viewport": {
@@ -52,10 +52,9 @@
           "/civic-documents.css",
           "/walk-entry.css",
           "/local_constellation.css",
-          "/traversal.css",
-          "/vendor/maplibre-gl-4.7.1.css"
+          "/traversal.css"
         ],
-        "stylesheet_rules": 1352,
+        "stylesheet_rules": 1240,
         "overflow_x": 0,
         "heading": "What's near you?",
         "surface": "map",
@@ -66,7 +65,7 @@
       "render": {
         "sha256": "8a78ece1818c6721cd8674cc1977692b1722031994f7e80928ad3dd9fdf193d0",
         "bytes": 67676,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/root-category-record-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/root-category-record-phone.png",
         "committed": false
       },
       "observations": {
@@ -123,7 +122,7 @@
           "url": "/browse/meetings/",
           "status": 200,
           "marker": "browse",
-          "overflow_x": 175,
+          "overflow_x": 0,
           "record_links": 522
         },
         "record_href": "/meetings/meeting%3Aoath_trial_calendar%3A262213%3A2026-09-29%3A09%3A30%3A00%3AScheduled-For-Trial",
@@ -178,7 +177,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "six_record_families_offered": true,
         "family_link_is_native": true,
         "collection_reached": true,
@@ -196,7 +196,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
         "viewport": {
@@ -217,12 +217,12 @@
         "surface": "records",
         "deferred_state": "ready",
         "results_count": "2",
-        "scroll_y": 1825
+        "scroll_y": 1826
       },
       "render": {
-        "sha256": "6a50555e96ff9abcb401b8dcc38549691c116103eceb88fa5dc60b3e4661357a",
-        "bytes": 74631,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/typed-place-record-phone.png",
+        "sha256": "054bfd14effecb4f084864a91392a5af14fa7dc2fbad19bd317cba966dbb9573",
+        "bytes": 74858,
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/typed-place-record-phone.png",
         "committed": false
       },
       "observations": {
@@ -246,7 +246,7 @@
           "surface": "records",
           "deferred_state": "ready",
           "results_count": "2",
-          "scroll_y": 1825
+          "scroll_y": 1826
         },
         "listed_ids": [
           "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
@@ -272,7 +272,7 @@
           "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
           "heading": "Midwood",
           "surface": "records",
-          "scroll_y": 1825,
+          "scroll_y": 1826,
           "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
           "focus_class": "near-record-inspect near-record-title"
         },
@@ -290,7 +290,7 @@
           "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
           "heading": "Midwood",
           "surface": "records",
-          "scroll_y": 1825,
+          "scroll_y": 1826,
           "focus_record_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
           "focus_class": "near-record-full-record"
         },
@@ -343,7 +343,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "typed_place_selected": true,
         "count_read_from_page_covers_list": true,
         "record_is_listed": true,
@@ -364,7 +365,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
@@ -389,7 +390,7 @@
       "render": {
         "sha256": "a123dd693aab8711e57d5845119c47c3306e3ca1dfa643ed6b895cfef9a6af2b",
         "bytes": 54521,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/unsupported-place-escape-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/unsupported-place-escape-phone.png",
         "committed": false
       },
       "observations": {
@@ -428,7 +429,7 @@
           "url": "/browse/meetings/?when=all",
           "status": 200,
           "marker": "browse",
-          "overflow_x": 175,
+          "overflow_x": 0,
           "record_links": 792
         },
         "record_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
@@ -473,7 +474,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "unsupported_copy_shown": true,
         "unsupported_count_is_not_zero": true,
         "escape_is_visible_native_link": true,
@@ -492,7 +494,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
@@ -517,7 +519,7 @@
       "render": {
         "sha256": "6db47229627cece5ad250153308a3838a483038b8ea78a541bbfac27d4e33d6e",
         "bytes": 42540,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/citywide-bucket-record-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/citywide-bucket-record-phone.png",
         "committed": false
       },
       "observations": {
@@ -662,7 +664,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "preview_bounded": true,
         "view_all_opens_citywide_records": true,
         "rendered_total_matches_destination_count": true,
@@ -683,7 +686,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/",
         "viewport": {
@@ -709,7 +712,7 @@
       "render": {
         "sha256": "8a78ece1818c6721cd8674cc1977692b1722031994f7e80928ad3dd9fdf193d0",
         "bytes": 67676,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/suggested-place-record-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/suggested-place-record-phone.png",
         "committed": false
       },
       "observations": {
@@ -1002,7 +1005,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "suggestions_bounded": true,
         "labels_name_their_counts": true,
         "counts_descend": true,
@@ -1024,7 +1028,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -1048,9 +1052,9 @@
         "scroll_y": 0
       },
       "render": {
-        "sha256": "b12ef4fb76d31998c30298ef9d6c61afc33c6abb4614e5821043dfee3fd15e37",
-        "bytes": 68537,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/location-denied-phone.png",
+        "sha256": "b0067554e916354aba555fef63e205451fb69a7f20df38896cef5d3a8c756df2",
+        "bytes": 68483,
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/location-denied-phone.png",
         "committed": false
       },
       "observations": {
@@ -1104,7 +1108,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "status_explains": true,
         "at_most_two_actions": true,
         "scope_kept": true,
@@ -1122,7 +1127,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -1148,7 +1153,7 @@
       "render": {
         "sha256": "07c72b377cb8636e8694d18ef2a2939869799d4cbf13c3092c013cbccb909fc9",
         "bytes": 66275,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/location-timeout-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/location-timeout-phone.png",
         "committed": false
       },
       "observations": {
@@ -1205,7 +1210,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "status_explains": true,
         "at_most_two_actions": true,
         "scope_kept": true,
@@ -1223,7 +1229,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
@@ -1248,7 +1254,7 @@
       "render": {
         "sha256": "6c959a043b98e3daca05f724de9d6a6dc087804bb42c9bb796781b792333b0e1",
         "bytes": 51226,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/explicit-zero-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/explicit-zero-phone.png",
         "committed": false
       },
       "observations": {
@@ -1292,7 +1298,7 @@
           "url": "/browse/meetings/?when=all",
           "status": 200,
           "marker": "browse",
-          "overflow_x": 175
+          "overflow_x": 0
         }
       },
       "responses": [
@@ -1318,7 +1324,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "state_copy_shown": true,
         "count_state_is_distinct": true,
         "useful_state_kept": true,
@@ -1335,7 +1342,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -1360,7 +1367,7 @@
       "render": {
         "sha256": "50cc04d20f8a53174d5c5da35ee838fd4d78aa1c2a0312ca8c780c2f812da155",
         "bytes": 47389,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/failed-section-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/failed-section-phone.png",
         "committed": false
       },
       "observations": {
@@ -1417,7 +1424,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "fault_was_injected": true,
         "local_records_survive": true,
         "failed_section_is_unavailable_not_zero": true,
@@ -1434,7 +1442,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
@@ -1459,7 +1467,7 @@
       "render": {
         "sha256": "c58dfc39c3addd3bb2ec7bdbf96ca3f474ce8c3aa60e517beb1d6650cc12c15c",
         "bytes": 50240,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/missing-coverage-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/missing-coverage-phone.png",
         "committed": false
       },
       "observations": {
@@ -1503,7 +1511,7 @@
           "url": "/browse/meetings/?when=all",
           "status": 200,
           "marker": "browse",
-          "overflow_x": 175
+          "overflow_x": 0
         }
       },
       "responses": [
@@ -1529,7 +1537,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "state_copy_shown": true,
         "count_state_is_distinct": true,
         "useful_state_kept": true,
@@ -1547,7 +1556,7 @@
         "width": 390,
         "height": 844
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -1573,7 +1582,7 @@
       "render": {
         "sha256": "dfb5d068b298c2f432d70a84a2cae586091bca7b21d77ebe646cd7635d355e91",
         "bytes": 56969,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/detail-failure-phone.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/detail-failure-phone.png",
         "committed": false
       },
       "observations": {
@@ -1651,7 +1660,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "detail_failure_observed": true,
         "back_restores_scope_focus_scroll": true,
         "inspect_offers_full_record_again": true,
@@ -1668,7 +1678,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/",
         "viewport": {
@@ -1694,7 +1704,7 @@
       "render": {
         "sha256": "e4652b7a1f01b60bf16e25d5ee55432ca4e4f777336853b71ea8c04aae5d15df",
         "bytes": 91842,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/root-category-record-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/root-category-record-desktop.png",
         "committed": false
       },
       "observations": {
@@ -1751,7 +1761,7 @@
           "url": "/browse/meetings/",
           "status": 200,
           "marker": "browse",
-          "overflow_x": 11,
+          "overflow_x": 0,
           "record_links": 522
         },
         "record_href": "/meetings/meeting%3Aoath_trial_calendar%3A262213%3A2026-09-29%3A09%3A30%3A00%3AScheduled-For-Trial",
@@ -1806,7 +1816,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "six_record_families_offered": true,
         "family_link_is_native": true,
         "collection_reached": true,
@@ -1824,7 +1835,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records",
         "viewport": {
@@ -1850,7 +1861,7 @@
       "render": {
         "sha256": "3176ddc6be8dae81ca86e050751caa3932b47576aba138fe7bce37fcd519c3ac",
         "bytes": 94082,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/typed-place-record-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/typed-place-record-desktop.png",
         "committed": false
       },
       "observations": {
@@ -1971,7 +1982,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "typed_place_selected": true,
         "count_read_from_page_covers_list": true,
         "record_is_listed": true,
@@ -1992,7 +2004,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1503&surface=records&lens=meetings",
         "viewport": {
@@ -2017,7 +2029,7 @@
       "render": {
         "sha256": "cb9dc502d46f03cf695b8682fe0c580b4773ede082d4169aa915e99116e92b70",
         "bytes": 82556,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/unsupported-place-escape-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/unsupported-place-escape-desktop.png",
         "committed": false
       },
       "observations": {
@@ -2056,7 +2068,7 @@
           "url": "/browse/meetings/?when=all",
           "status": 200,
           "marker": "browse",
-          "overflow_x": 11,
+          "overflow_x": 0,
           "record_links": 792
         },
         "record_href": "/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Abrooklyn-cb-15%3A2023-03-28%3Ageneral-board-meeting",
@@ -2101,7 +2113,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "unsupported_copy_shown": true,
         "unsupported_count_is_not_zero": true,
         "escape_is_visible_native_link": true,
@@ -2120,7 +2133,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you?v=0&scope=citywide&surface=records",
         "viewport": {
@@ -2145,7 +2158,7 @@
       "render": {
         "sha256": "2d455f2dbf4b9be94df001ca35b89606aec6ec5ffc59294857fe3269e158fa62",
         "bytes": 64966,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/citywide-bucket-record-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/citywide-bucket-record-desktop.png",
         "committed": false
       },
       "observations": {
@@ -2290,7 +2303,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "preview_bounded": true,
         "view_all_opens_citywide_records": true,
         "rendered_total_matches_destination_count": true,
@@ -2311,7 +2325,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/",
         "viewport": {
@@ -2337,7 +2351,7 @@
       "render": {
         "sha256": "e4652b7a1f01b60bf16e25d5ee55432ca4e4f777336853b71ea8c04aae5d15df",
         "bytes": 91842,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/suggested-place-record-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/suggested-place-record-desktop.png",
         "committed": false
       },
       "observations": {
@@ -2630,7 +2644,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "suggestions_bounded": true,
         "labels_name_their_counts": true,
         "counts_descend": true,
@@ -2652,7 +2667,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -2678,7 +2693,7 @@
       "render": {
         "sha256": "f37d4cedacd3ded24c8846a45630a3e3d11328d8885d0dcf765854fa191fd531",
         "bytes": 96285,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/location-denied-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/location-denied-desktop.png",
         "committed": false
       },
       "observations": {
@@ -2732,7 +2747,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "status_explains": true,
         "at_most_two_actions": true,
         "scope_kept": true,
@@ -2750,7 +2766,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/",
         "viewport": {
@@ -2776,7 +2792,7 @@
       "render": {
         "sha256": "ebd56e2c9535d91dd527a0d9b68e94a54bc71daab9c437db932cc43ac1306fce",
         "bytes": 93461,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/location-timeout-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/location-timeout-desktop.png",
         "committed": false
       },
       "observations": {
@@ -2833,7 +2849,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "status_explains": true,
         "at_most_two_actions": true,
         "scope_kept": true,
@@ -2851,7 +2868,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABX0101&surface=records&lens=meetings",
         "viewport": {
@@ -2876,7 +2893,7 @@
       "render": {
         "sha256": "cdc911cd39044fe9edff4225ce634cc1f5c7de1794e119c5936095dd379e3ee0",
         "bytes": 71613,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/explicit-zero-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/explicit-zero-desktop.png",
         "committed": false
       },
       "observations": {
@@ -2920,7 +2937,7 @@
           "url": "/browse/meetings/?when=all",
           "status": 200,
           "marker": "browse",
-          "overflow_x": 11
+          "overflow_x": 0
         }
       },
       "responses": [
@@ -2946,7 +2963,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "state_copy_shown": true,
         "count_state_is_distinct": true,
         "useful_state_kept": true,
@@ -2963,7 +2981,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -2988,7 +3006,7 @@
       "render": {
         "sha256": "bcbc4834cee4f99839601231918247af1a88e77abbe3170060a4f32dc9550295",
         "bytes": 67494,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/failed-section-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/failed-section-desktop.png",
         "committed": false
       },
       "observations": {
@@ -3045,7 +3063,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "fault_was_injected": true,
         "local_records_survive": true,
         "failed_section_is_unavailable_not_zero": true,
@@ -3062,7 +3081,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3AQN0103&surface=records&lens=meetings",
         "viewport": {
@@ -3087,7 +3106,7 @@
       "render": {
         "sha256": "9978744a5d21e30841fbaa7fe25474d527e6f1b67db5eed641ef59e5138b71f0",
         "bytes": 71225,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/missing-coverage-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/missing-coverage-desktop.png",
         "committed": false
       },
       "observations": {
@@ -3131,7 +3150,7 @@
           "url": "/browse/meetings/?when=all",
           "status": 200,
           "marker": "browse",
-          "overflow_x": 11
+          "overflow_x": 0
         }
       },
       "responses": [
@@ -3157,7 +3176,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "state_copy_shown": true,
         "count_state_is_distinct": true,
         "useful_state_kept": true,
@@ -3175,7 +3195,7 @@
         "width": 1440,
         "height": 900
       },
-      "capture_run_id": "291f298b-b56d-4363-9526-f34f7a393c77",
+      "capture_run_id": "e1e1431e-f3c3-4ee7-a605-585008d397ec",
       "page": {
         "url": "/near-you/?geo=nta2020%3ABK1403&surface=records&lens=meetings",
         "viewport": {
@@ -3201,7 +3221,7 @@
       "render": {
         "sha256": "d66b0aeeb9c8b72a1ee4d5c568b91a689a3e21330dc8d6b5066d7fb6398239ce",
         "bytes": 87697,
-        "local_image": ".artifacts/discovery-recovery-journey/291f298b-b56d-4363-9526-f34f7a393c77/detail-failure-desktop.png",
+        "local_image": ".artifacts/discovery-recovery-journey/e1e1431e-f3c3-4ee7-a605-585008d397ec/detail-failure-desktop.png",
         "committed": false
       },
       "observations": {
@@ -3279,7 +3299,8 @@
       "assertions": {
         "viewport_applied": true,
         "real_stylesheet_applied": true,
-        "no_horizontal_overflow": true,
+        "entry_page_no_horizontal_overflow": true,
+        "visited_pages_no_horizontal_overflow": true,
         "detail_failure_observed": true,
         "back_restores_scope_focus_scroll": true,
         "inspect_offers_full_record_again": true,
@@ -3290,7 +3311,7 @@
     }
   ],
   "provenance": {
-    "capture_revision": "24b94b943fd8ca9c5d1ebeb7703328c4cb61344e",
+    "capture_revision": "e5f9987188f605064c592e0846bc78fe6d3adde5",
     "capture_revision_rule": "merge base of the capture checkout with origin/main",
     "frozen_activity": {
       "path": "site/data/district_activity.json",
@@ -3306,7 +3327,7 @@
       },
       {
         "path": "tools/discovery_recovery_journey.py",
-        "sha256": "8bff9931793db5f0d78885bd49a42f5a725c4e75217ee43a45f29cf0b75f43ba"
+        "sha256": "a2f8f9addb79c616c384cb951bc43e2bad9e8835c71e9933e0282ee2de6c762f"
       },
       {
         "path": "tools/serve_near_you_capture.mjs",
@@ -3328,55 +3349,6 @@
     "recapture_command": "python3 tools/capture_default_local_home_journey.py --scenario discovery-recovery --local",
     "server": "tools/serve_near_you_capture.mjs: the Worker Near You handler and the Pages edge handler"
   },
-  "findings": [
-    {
-      "row": "root-category-record-phone",
-      "surface": "collection",
-      "path": "/browse/meetings/",
-      "horizontal_overflow_px": 175
-    },
-    {
-      "row": "unsupported-place-escape-phone",
-      "surface": "collection",
-      "path": "/browse/meetings/",
-      "horizontal_overflow_px": 175
-    },
-    {
-      "row": "explicit-zero-phone",
-      "surface": "collection",
-      "path": "/browse/meetings/",
-      "horizontal_overflow_px": 175
-    },
-    {
-      "row": "missing-coverage-phone",
-      "surface": "collection",
-      "path": "/browse/meetings/",
-      "horizontal_overflow_px": 175
-    },
-    {
-      "row": "root-category-record-desktop",
-      "surface": "collection",
-      "path": "/browse/meetings/",
-      "horizontal_overflow_px": 11
-    },
-    {
-      "row": "unsupported-place-escape-desktop",
-      "surface": "collection",
-      "path": "/browse/meetings/",
-      "horizontal_overflow_px": 11
-    },
-    {
-      "row": "explicit-zero-desktop",
-      "surface": "collection",
-      "path": "/browse/meetings/",
-      "horizontal_overflow_px": 11
-    },
-    {
-      "row": "missing-coverage-desktop",
-      "surface": "collection",
-      "path": "/browse/meetings/",
-      "horizontal_overflow_px": 11
-    }
-  ],
+  "findings": [],
   "result": "pass"
 }

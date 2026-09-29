@@ -298,6 +298,20 @@ def _collection_ok(collection: dict, href) -> bool:
     )
 
 
+# The Browse and record documents a journey passes through after its entry
+# page: the same set derive_findings reports defects on, reused here so a
+# finding on one of these surfaces always fails its row's outcome too.
+VISITED_PAGE_SURFACES = ("collection", "destination", "browse")
+
+
+def _visited_pages_overflow_clean(obs: dict) -> bool:
+    return all(
+        int((obs.get(surface) or {}).get("overflow_x") or 0) <= 1
+        for surface in VISITED_PAGE_SURFACES
+        if "overflow_x" in (obs.get(surface) or {})
+    )
+
+
 def derive_assertions(row: dict, mode: str) -> dict[str, bool]:
     """Every assertion for one row, derived only from its recorded observations."""
     obs = row.get("observations") or {}
@@ -307,7 +321,13 @@ def derive_assertions(row: dict, mode: str) -> dict[str, bool]:
     out = {
         "viewport_applied": measured.get("width") == viewport.get("width") and measured.get("height") == viewport.get("height"),
         "real_stylesheet_applied": int(page.get("stylesheet_rules") or 0) > 0 and bool(page.get("stylesheets")),
-        "no_horizontal_overflow": int(page.get("overflow_x", 1_000)) <= 1,
+        # Two assertions, not one: the entry page is measured once, at settle;
+        # the Browse and record documents a journey passes through afterward
+        # (the same surfaces derive_findings reports on) are measured again on
+        # each visit, so an intermediate overflow cannot hide behind a row that
+        # only ever checked its own entry page.
+        "entry_page_no_horizontal_overflow": int(page.get("overflow_x", 1_000)) <= 1,
+        "visited_pages_no_horizontal_overflow": _visited_pages_overflow_clean(obs),
     }
     journey = row.get("journey")
     local = mode == LOCAL_MODE
@@ -512,7 +532,7 @@ def derive_findings(rows: list[dict]) -> list[dict]:
     findings = []
     for row in rows:
         obs = row.get("observations") or {}
-        for surface in ("collection", "destination", "browse"):
+        for surface in VISITED_PAGE_SURFACES:
             step = obs.get(surface) or {}
             if int(step.get("overflow_x") or 0) > 1:
                 findings.append({

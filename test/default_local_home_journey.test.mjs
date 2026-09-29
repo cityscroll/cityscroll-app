@@ -1156,7 +1156,9 @@ row["observations"]["results_count"] = None
 refused("assertion-mismatch", lambda: local(m))
 m = copy.deepcopy(LOCAL); m["result"] = "pending"
 refused("result-mismatch", lambda: local(m))
-m = copy.deepcopy(LOCAL); m["findings"] = []
+m = copy.deepcopy(LOCAL); m["findings"] = m["findings"] + [
+    {"row": "x", "surface": "collection", "path": "/browse/meetings/", "horizontal_overflow_px": 999},
+]
 refused("findings-mismatch", lambda: local(m))
 # Pending is legitimate only in served mode and only with its evidence.
 m = served(); row = next(r for r in m["captures"] if r["name"] == "suggested-place-record-phone")
@@ -1171,6 +1173,37 @@ refused("assertion-failed", lambda: local(rederive(m, d.LOCAL_MODE)))
 # The served manifest refuses loopback observations.
 m = served(); m["captures"][0]["page"]["url"] = "http://127.0.0.1:9/"
 refused("wrong-surface", lambda: d.validate_manifest(rederive(m, d.SERVED_MODE), mode=d.SERVED_MODE, git=Oracle(), delivery=DELIVERY))
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /checked/);
+});
+
+test("discovery-recovery a horizontal-overflow finding on a visited page fails its row, not only its own entry page", () => {
+  const result = runDiscoveryValidator(`
+# Negative control: the retained collection observation on an unmodified row is
+# clean, so the widened assertion is true and no finding is reported for it.
+clean = next(r for r in LOCAL["captures"] if r["journey"] == "root-category-record")
+assert clean["observations"]["collection"]["overflow_x"] <= 1, clean["observations"]["collection"]
+assert d.derive_assertions(clean, d.LOCAL_MODE)["visited_pages_no_horizontal_overflow"] is True
+assert d.derive_findings([clean]) == []
+
+# Positive control: recording the same overflow_x a real Chromium measurement
+# writes for an injected wide element on the collection surface -- here 175px,
+# the exact width the meeting feed card's scope line once overflowed by --
+# fails the widened assertion, fails the row's outcome, and is reported as a
+# finding, proving the check measures width rather than always passing.
+row = copy.deepcopy(clean)
+row["observations"] = dict(row["observations"])
+row["observations"]["collection"] = {**row["observations"]["collection"], "overflow_x": 175}
+assertions = d.derive_assertions(row, d.LOCAL_MODE)
+assert assertions["entry_page_no_horizontal_overflow"] is True, "the entry page itself is unaffected"
+assert assertions["visited_pages_no_horizontal_overflow"] is False, assertions
+assert d.derive_outcome(row, d.LOCAL_MODE) == "fail"
+findings = d.derive_findings([row])
+assert findings == [{
+    "row": row["name"], "surface": "collection",
+    "path": "/browse/meetings/", "horizontal_overflow_px": 175,
+}], findings
 `);
   assert.equal(result.status, 0, result.stderr || result.stdout);
   assert.match(result.stdout, /checked/);
