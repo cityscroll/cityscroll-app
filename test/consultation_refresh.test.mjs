@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { test } from "node:test";
 
 import { acquireConsultationSources, DOT_PILOT_SEEDS } from "../site/consultation_acquisition.mjs";
-import { consultationRefreshDisabled, runConsultationRefresh } from "../tools/refresh_consultations.mjs";
+import { consultationRefreshDisabled, consultationRefreshExitCode, runConsultationRefresh } from "../tools/refresh_consultations.mjs";
 import { withPinnedClock } from "./helpers/test_clock.mjs";
 import {
   buildConsultationRepairObservations,
@@ -174,5 +174,53 @@ test("A2 failed sources expose source-specific repair evidence for authenticated
     assert.equal(set.consumer, "authenticated desk");
     assert.equal(set.visibility, "private");
     assert.equal(set.counts.repair, rows.length);
+  });
+});
+
+test("A3 the scheduled producer fails visibly on a degraded acquisition and stays green on success or kill switch", async () => {
+  await withPinnedClock(DAY_TWO, async () => {
+    const root = mkdtempSync(join(tmpdir(), "consultation-exit-"));
+    try {
+      mkdirSync(join(root, "site/data"), { recursive: true });
+      const output = join(root, "site/data/consultations.json");
+      const retained = await goodMaterialization(DAY_ONE);
+      writeFileSync(output, `${JSON.stringify(retained, null, 2)}\n`);
+
+      // Every publisher source failed; the last verified materialization is
+      // preserved byte-identically, and the run still reports failure so the
+      // aging artifact cannot hide behind a green scheduled run.
+      const degraded = await runConsultationRefresh({
+        root,
+        asOf: DAY_TWO,
+        fetchImpl: async () => response(503, "busy"),
+        transportOptions: TRANSPORT,
+      });
+      assert.equal(degraded.status, "degraded");
+      assert.equal(degraded.receipt.last_good_preserved, true);
+      assert.equal(readFileSync(output, "utf8"), `${JSON.stringify(retained, null, 2)}\n`);
+      assert.equal(consultationRefreshExitCode(degraded), 1);
+
+      // A clean acquisition keeps the scheduled producer green.
+      const succeeded = await runConsultationRefresh({
+        root,
+        asOf: DAY_TWO,
+        fetchImpl: async () => response(200),
+        transportOptions: TRANSPORT,
+      });
+      assert.equal(succeeded.status, "succeeded");
+      assert.equal(consultationRefreshExitCode(succeeded), 0);
+
+      // The kill switch is an intentional skip, not a failure.
+      const skipped = await runConsultationRefresh({
+        root,
+        asOf: DAY_TWO,
+        env: { CITYSCROLL_CONSULTATIONS_REFRESH: "off" },
+        fetchImpl: async () => response(200),
+      });
+      assert.equal(skipped.status, "skipped");
+      assert.equal(consultationRefreshExitCode(skipped), 0);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 });
