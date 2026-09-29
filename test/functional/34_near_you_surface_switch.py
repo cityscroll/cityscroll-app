@@ -20,14 +20,19 @@ def is_visible(page: Page, selector: str) -> bool:
     )
 
 
-# Before a place is chosen, citywide records come first by design, so the map
-# may start below the first viewport; it must then follow them directly.
+# Before a place is chosen, citywide records and then any neighborhood
+# suggestions come first by design, so the map may start below the first
+# viewport; it must then follow the last of them directly.
 MAP_REACHED_JS = """([height, maxGap]) => {
   const map = document.querySelector('[data-near-surface-panel="map"]').getBoundingClientRect();
   if (map.top < height) return true;
   const citywide = document.querySelector('.near-special-records[data-near-special-records="entry"]');
-  if (!citywide) return false;
-  const gap = map.top - citywide.getBoundingClientRect().bottom;
+  const suggestions = document.querySelector('.near-place-suggestions');
+  const last = suggestions || citywide;
+  if (!last) return false;
+  if (suggestions && citywide
+    && suggestions.getBoundingClientRect().top < citywide.getBoundingClientRect().bottom) return false;
+  const gap = map.top - last.getBoundingClientRect().bottom;
   return gap >= 0 && gap <= maxGap;
 }"""
 MAXIMUM_MAP_GAP_AFTER_CITYWIDE = 48

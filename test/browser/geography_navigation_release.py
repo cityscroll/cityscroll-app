@@ -724,9 +724,13 @@ def shell_snapshot(page) -> dict:
             map_area: mapRect ? { width: mapRect.width, height: mapRect.height } : { width: 0, height: 0 },
             visible_map_height: mapRect ? Math.max(0, Math.min(innerHeight, mapRect.bottom) - Math.max(0, mapRect.top)) : 0,
             map_top: mapRect?.top ?? null,
+            // The last block before the map on the entry: neighborhood
+            // suggestions when shown, otherwise the citywide records.
             entry_special_bottom: (() => {
               const special = document.querySelector('.near-special-records[data-near-special-records="entry"]');
-              return visible(special) ? special.getBoundingClientRect().bottom : null;
+              const suggestions = document.querySelector('.near-place-suggestions');
+              const last = visible(suggestions) ? suggestions : special;
+              return visible(last) ? last.getBoundingClientRect().bottom : null;
             })(),
             place_choice_visible: visible(placeChoice),
             map_runtime: root?.dataset.nearMapRuntime || 'server-svg',
@@ -1128,8 +1132,9 @@ def browser_capture(
                 if special_bottom is None:
                     assert snapshot.get("visible_map_height", height) >= MINIMUM_VISIBLE_MAP_HEIGHT, snapshot
                 else:
-                    # Before a place is chosen, citywide records come first by
-                    # design; the full-size map follows them directly.
+                    # Before a place is chosen, citywide records and any
+                    # neighborhood suggestions come first by design; the
+                    # full-size map follows them directly.
                     assert snapshot["map_area"]["height"] >= MINIMUM_VISIBLE_MAP_HEIGHT, snapshot
                     assert 0 <= snapshot["map_top"] - special_bottom <= MAXIMUM_MAP_GAP_AFTER_CITYWIDE, snapshot
             if webgl_unavailable:
