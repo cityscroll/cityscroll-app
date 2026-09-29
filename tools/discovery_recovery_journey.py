@@ -29,10 +29,16 @@ Two modes keep the network apart from offline proof:
   requires both the Pages artifact revision and the Worker health revision to
   contain it, requires one read-model generation throughout, and compares all of
   them again at the end. It injects no faults, and a missing positive record is
-  recorded as a pending obligation, never as a pass.
+  recorded as a pending obligation, never as a pass. Its retained proof records
+  the harness capture revision (checked as an ancestor of the checked tree, with
+  the harness bytes unchanged), and the served revisions must also be history
+  of the checked tree. Beside it the run writes an evidence matrix, re-derived
+  by ``--check``, mapping each earlier recovered outcome to its served journeys
+  and to the offline recovery rows of the local proof.
 
-Render proof is a content hash plus the ignored local image path; no image
-binary is ever written into the repository.
+Render proof is a content hash plus the ignored local image path, bound to the
+row, run, URL and viewport it was taken from; no image binary is ever written
+into the repository.
 """
 
 from __future__ import annotations
@@ -55,12 +61,16 @@ ROOT = Path(__file__).resolve().parents[1]
 
 SCENARIO = "discovery-recovery"
 PUBLIC_ALIAS = "c94563a6bbaf3"
+# The served read-back owns the served manifest, its recorded delivery pin and
+# the evidence matrix derived from both proofs.
+READ_BACK_ALIAS = "c446cacfd1632"
 MANIFEST_SCHEMA = "cityscroll.recovered_discovery_journeys.v1"
 DELIVERY_SCHEMA = "cityscroll.capture_delivery.v1"
 EVIDENCE_DIR = ROOT / "docs" / "evidence" / "discovery-recovery-journey"
 LOCAL_MANIFEST_PATH = EVIDENCE_DIR / "local-capture-manifest.json"
 SERVED_MANIFEST_PATH = EVIDENCE_DIR / "capture-manifest.json"
 DELIVERY_PATH = EVIDENCE_DIR / "delivery.json"
+MATRIX_PATH = EVIDENCE_DIR / "evidence-matrix.md"
 IMAGE_DIR = Path(".artifacts") / "discovery-recovery-journey"
 LOCAL_MODE = "headless-playwright-local-fixture-server"
 SERVED_MODE = "headless-playwright-production-served-site"
@@ -143,6 +153,66 @@ MEASURED_INPUTS = (
 )
 PAGES_DATA_PATHS = ("site/data",)
 RECAPTURE_COMMAND = "python3 tools/capture_default_local_home_journey.py --scenario discovery-recovery --local"
+# Declared inputs of the served proof: the harness that drove and derived it.
+# The served code and data are identified by the served revisions and the
+# read-model generation instead, so a later product change never needs a
+# production recapture before it can merge.
+SERVED_MEASURED_INPUTS = (
+    "tools/capture_default_local_home_journey.py",
+    "tools/discovery_recovery_journey.py",
+)
+SERVED_RECAPTURE_COMMAND = "python3 tools/capture_default_local_home_journey.py --scenario discovery-recovery"
+
+# Each earlier recovered outcome, the served journey family that must reach a
+# real record for it, and the offline failure cases and tests that prove its
+# recovery paths. Statuses are never stored here: the matrix derives them from
+# the retained manifests, and --check refuses a reference that does not exist.
+OFFLINE_TEST_FILE = "test/default_local_home_journey.test.mjs"
+REFUSAL_TEST = "discovery-recovery [A4] the validator accepts the retained proof and refuses each weak shape specifically"
+EVIDENCE_MATRIX = (
+    {
+        "alias": "ca99610886948",
+        "outcome": "Leave an unsupported neighborhood filter without losing the question",
+        "served": ("unsupported-place-escape",),
+        "offline": ("explicit-zero", "missing-coverage"),
+    },
+    {
+        "alias": "c6bbe0ce1d028",
+        "outcome": "Expose the record collections before a visitor chooses a place",
+        "served": ("root-category-record",),
+        "offline": ("location-denied",),
+    },
+    {
+        "alias": "cdd6dee9bc973",
+        "outcome": "Make location selection lead directly to usable local records",
+        "served": ("typed-place-record",),
+        "offline": ("location-denied", "location-timeout", "detail-failure"),
+    },
+    {
+        "alias": "c419deec4d475",
+        "outcome": "Preserve geography coverage limits through route publication",
+        "served": ("unsupported-place-escape", "suggested-place-record"),
+        "offline": ("explicit-zero", "missing-coverage"),
+    },
+    {
+        "alias": "ccfaadd338534",
+        "outcome": "Keep usable records visible when one geography slice fails",
+        "served": ("typed-place-record", "citywide-bucket-record"),
+        "offline": ("failed-section",),
+    },
+    {
+        "alias": "c69db1aa1163d",
+        "outcome": "Show citywide records as relevant content with a bounded preview",
+        "served": ("citywide-bucket-record",),
+        "offline": ("failed-section", "explicit-zero"),
+    },
+    {
+        "alias": "c0cece577f277",
+        "outcome": "Suggest neighborhoods whose displayed record counts match their destinations",
+        "served": ("suggested-place-record",),
+        "offline": ("suggested-place-record",),
+    },
+)
 
 PENDING_EXIT = 3
 
@@ -574,6 +644,22 @@ def observed_generations(rows: list[dict]) -> tuple[set, list[str]]:
     return named, unnamed
 
 
+def owning_outcomes(journey) -> list[str]:
+    """Public aliases of the earlier outcomes a journey's served or offline row proves."""
+    return [
+        entry["alias"] for entry in EVIDENCE_MATRIX
+        if journey in entry["served"] or journey in entry["offline"]
+    ]
+
+
+def failure_context(row: dict) -> str:
+    """The exact route and state of a failed row, and the existing outcome that owns its repair."""
+    obs = row.get("observations") or {}
+    route = (obs.get("destination") or {}).get("url") or (row.get("page") or {}).get("url")
+    owners = owning_outcomes(row.get("journey"))
+    return f" (route {route!r}; owned by {', '.join(owners) or 'no recorded outcome'})"
+
+
 def validate_rows(manifest: dict, mode: str) -> str:
     rows = manifest.get("captures")
     if not isinstance(rows, list) or not rows:
@@ -608,15 +694,25 @@ def validate_rows(manifest: dict, mode: str) -> str:
         if outcome == "fail":
             obs = row.get("observations") or {}
             destination = obs.get("destination") or {}
+            where = failure_context(row)
             if destination.get("fragment") and destination.get("anchor_present") is not True:
-                refuse("missing-anchor", f"{name}: destination lacks the #{destination['fragment']} anchor its link named")
+                refuse("missing-anchor", f"{name}: destination lacks the #{destination['fragment']} anchor its link named{where}")
             if destination and expected_record(obs) and destination.get("record_id") != expected_record(obs):
-                refuse("nonexistent-record", f"{name}: destination {destination.get('record_id')!r} is not the linked record {expected_record(obs)!r}")
+                refuse("nonexistent-record", f"{name}: destination {destination.get('record_id')!r} is not the linked record {expected_record(obs)!r}{where}")
             if row.get("error"):
-                refuse("journey-error", f"{name}: {row['error']}")
+                refuse("journey-error", f"{name}: {row['error']}{where}")
             if row.get("pending_obligation"):
-                refuse("assertion-failed", f"{name}: {row['pending_obligation']} is not a legitimate pending state here")
-            refuse("assertion-failed", f"{name}: {sorted(key for key, value in derived.items() if value is not True)}")
+                refuse("assertion-failed", f"{name}: {row['pending_obligation']} is not a legitimate pending state here{where}")
+            refuse("assertion-failed", f"{name}: {sorted(key for key, value in derived.items() if value is not True)}{where}")
+        # A render is evidence only for the row, run and page state it was taken
+        # from; one copied from another row or run names a different origin.
+        page = row.get("page") or {}
+        if (
+            render.get("local_image") != render_image_path(manifest.get("capture_run_id"), name)
+            or render.get("url") != page.get("url")
+            or render.get("viewport") != page.get("viewport")
+        ):
+            refuse("reused-render", f"{name}: render was not taken from this row's page in this capture run")
     if manifest.get("findings") != derive_findings(rows):
         refuse("findings-mismatch", "stored findings do not re-derive from the observations")
     result = derive_result(rows, mode)
@@ -646,8 +742,8 @@ def validate_generation(manifest: dict, mode: str) -> None:
         refuse("mixed-generation", f"local generation {generation!r} is not the frozen activity {FROZEN_GENERATION!r}")
 
 
-def validate_local_provenance(manifest: dict, git: GitOracle) -> None:
-    provenance = manifest.get("provenance") or {}
+def require_capture_revision(provenance: dict, git: GitOracle) -> None:
+    """The recorded capture revision is on the default branch and an ancestor of the checked tree."""
     revision = str(provenance.get("capture_revision") or "")
     if not re.fullmatch(r"[0-9a-f]{40}", revision):
         refuse("wrong-pin", "capture revision is not a full commit")
@@ -657,12 +753,21 @@ def validate_local_provenance(manifest: dict, git: GitOracle) -> None:
     main = git.resolve(DEFAULT_BRANCH_REF)
     if main and not git.is_ancestor(revision, main):
         refuse("wrong-pin", f"capture revision {revision} is a branch-only commit, not on the default branch")
+
+
+def require_unchanged_inputs(provenance: dict, git: GitOracle, declared: tuple[str, ...], recapture: str) -> None:
     inputs = provenance.get("measured_inputs") or []
-    if sorted(str(item.get("path")) for item in inputs) != sorted(MEASURED_INPUTS):
+    if sorted(str(item.get("path")) for item in inputs) != sorted(declared):
         refuse("stale-inputs", "measured inputs do not match the declared input set")
     changed = [item["path"] for item in inputs if git.file_sha256(item["path"]) != item.get("sha256")]
     if changed:
-        refuse("stale-inputs", f"measured inputs changed after capture: {changed}; recapture with {RECAPTURE_COMMAND}")
+        refuse("stale-inputs", f"measured inputs changed after capture: {changed}; recapture with {recapture}")
+
+
+def validate_local_provenance(manifest: dict, git: GitOracle) -> None:
+    provenance = manifest.get("provenance") or {}
+    require_capture_revision(provenance, git)
+    require_unchanged_inputs(provenance, git, MEASURED_INPUTS, RECAPTURE_COMMAND)
     if provenance.get("frozen_activity") != FROZEN_ACTIVITY or provenance.get("clock") != FROZEN_CLOCK:
         refuse("wrong-pin", "the local proof is not bound to the frozen activity blob and pinned clock")
     if re.search(r"https?://(127\.0\.0\.1|localhost)", json.dumps(manifest)):
@@ -676,7 +781,7 @@ def load_delivery(path: Path = DELIVERY_PATH) -> dict:
         refuse("wrong-pin", f"recorded delivery is absent at {path.name}")
     except json.JSONDecodeError:
         refuse("wrong-pin", "recorded delivery is not valid JSON")
-    if not isinstance(payload, dict) or payload.get("schema") != DELIVERY_SCHEMA or payload.get("public_alias") != PUBLIC_ALIAS:
+    if not isinstance(payload, dict) or payload.get("schema") != DELIVERY_SCHEMA or payload.get("public_alias") != READ_BACK_ALIAS:
         refuse("wrong-pin", "recorded delivery has the wrong schema or alias")
     if sorted(payload.get("surfaces") or []) != ["pages", "worker"]:
         refuse("wrong-pin", "recorded delivery must name both the pages and worker surfaces")
@@ -709,6 +814,15 @@ def validate_served_provenance(manifest: dict, git: GitOracle, delivery: dict) -
     require_landed(pin, git)
     identity = (manifest.get("identity") or {}).get("before") or {}
     require_served_contains(identity, pin, git)
+    # The served code must be history of the checked tree: evidence observed on
+    # a revision this tree does not contain proves nothing about it.
+    head = git.resolve("HEAD")
+    for surface in ("pages_revision", "worker_revision"):
+        if not head or not git.is_ancestor(identity[surface], head):
+            refuse("wrong-pin", f"served {surface} {identity[surface]} is not an ancestor of the checked tree")
+    provenance = manifest.get("provenance") or {}
+    require_capture_revision(provenance, git)
+    require_unchanged_inputs(provenance, git, SERVED_MEASURED_INPUTS, SERVED_RECAPTURE_COMMAND)
     for key in ("pages_artifact_hash", "pages_data_receipt_sha256"):
         if not re.fullmatch(r"[0-9a-f]{64}", str(identity.get(key) or "")):
             refuse("missing-data", f"served identity lacks {key}")
@@ -722,6 +836,8 @@ def validate_manifest(manifest: dict, *, mode: str, git: GitOracle | None = None
     git = git or GitOracle()
     if manifest.get("schema") != MANIFEST_SCHEMA or manifest.get("scenario") != SCENARIO:
         refuse("wrong-schema", "not a discovery-recovery capture manifest")
+    if manifest.get("public_alias") != (PUBLIC_ALIAS if mode == LOCAL_MODE else READ_BACK_ALIAS):
+        refuse("wrong-schema", f"manifest alias {manifest.get('public_alias')!r} does not own the {mode} proof")
     if manifest.get("capture_mode") != mode:
         refuse("wrong-surface", f"manifest mode {manifest.get('capture_mode')!r} is not {mode!r}")
     if manifest.get("image_binaries_committed") is not False:
@@ -734,6 +850,130 @@ def validate_manifest(manifest: dict, *, mode: str, git: GitOracle | None = None
         validate_served_provenance(manifest, git, delivery or load_delivery())
     validate_generation(manifest, mode)
     return validate_rows(manifest, mode)
+
+
+# --- Evidence matrix ---------------------------------------------------------
+
+
+def require_matrix_references(local: dict, test_source: str) -> None:
+    """Every matrix reference names a real journey, a real local row and a real test."""
+    local_journeys = {row.get("journey") for row in local.get("captures") or []}
+    for entry in EVIDENCE_MATRIX:
+        unknown = [journey for journey in entry["served"] if journey not in FAMILIES]
+        absent = [journey for journey in entry["offline"] if journey not in local_journeys]
+        if unknown or absent or not entry["served"] or not entry["offline"]:
+            refuse("matrix-reference", f"{entry['alias']}: served {unknown} or offline {absent} is not a recorded journey")
+    uncovered = [family for family in FAMILIES if not owning_outcomes(family)]
+    if uncovered:
+        refuse("matrix-reference", f"served journeys owned by no recorded outcome: {uncovered}")
+    if f'test("{REFUSAL_TEST}"' not in test_source:
+        refuse("matrix-reference", f"{OFFLINE_TEST_FILE} has no test named {REFUSAL_TEST!r}")
+
+
+def _journey_status(manifest: dict, journey: str, mode: str) -> tuple[str, list[str]]:
+    by_name = {row.get("name"): row for row in manifest.get("captures") or []}
+    outcomes = []
+    for name, _width, _height in VIEWPORTS:
+        row = by_name.get(f"{journey}-{name}")
+        outcomes.append(derive_outcome(row, mode) if row else "absent")
+    if all(outcome == "pass" for outcome in outcomes):
+        return "pass", outcomes
+    if all(outcome in ("pass", "pending") for outcome in outcomes):
+        return "pending", outcomes
+    return "fail", outcomes
+
+
+def derive_matrix(served: dict, local: dict) -> list[dict]:
+    """Each outcome's status, derived only from the served and local rows it names."""
+    rows = []
+    for entry in EVIDENCE_MATRIX:
+        served_cells = [(journey, *_journey_status(served, journey, SERVED_MODE)) for journey in entry["served"]]
+        offline_cells = [(journey, *_journey_status(local, journey, LOCAL_MODE)) for journey in entry["offline"]]
+        statuses = [cell[1] for cell in served_cells + offline_cells]
+        status = "met" if all(value == "pass" for value in statuses) else (
+            "pending" if all(value in ("pass", "pending") for value in statuses) else "not met"
+        )
+        rows.append({**entry, "served_cells": served_cells, "offline_cells": offline_cells, "status": status})
+    return rows
+
+
+def _observed_line(row: dict) -> str:
+    """What one served row opened and counted, read from its recorded observations."""
+    obs = row.get("observations") or {}
+    parts = []
+    journey = row.get("journey")
+    if journey == "citywide-bucket-record":
+        parts.append(f"preview total {obs.get('total_text')} = destination {(obs.get('bucket') or {}).get('results_count')}")
+    elif journey == "suggested-place-record":
+        counts = [
+            f"{link.get('id')} {count_from_label(link.get('text'))} = {place.get('results_count')}"
+            for link, place in zip(obs.get("links") or [], obs.get("destinations") or [])
+        ]
+        parts.append("suggestions " + ", ".join(counts))
+    elif journey == "typed-place-record":
+        parts.append(f"{(obs.get('scope') or {}).get('results_count')} local records, {len(obs.get('listed_ids') or [])} listed")
+    elif journey == "unsupported-place-escape":
+        parts.append(f"local count {obs.get('results_count')!r}, escape {_path((obs.get('escape') or {}).get('href'))}")
+    opened = expected_record(obs)
+    if opened:
+        parts.append(f"opened `{opened}`")
+    if row.get("pending_obligation"):
+        parts.append(f"pending: {row['pending_obligation']}")
+    return "; ".join(parts) or "no record opened"
+
+
+def render_matrix(served: dict, local: dict) -> str:
+    identity = (served.get("identity") or {}).get("before") or {}
+    provenance = served.get("provenance") or {}
+    receipt = served.get("run_receipt") or {}
+    rows = derive_matrix(served, local)
+
+    def cells(values) -> str:
+        return "; ".join(f"{journey}: {' / '.join(outcomes)}" for journey, _status, outcomes in values)
+
+    lines = [
+        "# Recovered discovery: served evidence matrix",
+        "",
+        f"Derived by `{SERVED_RECAPTURE_COMMAND}` from `{SERVED_MANIFEST_PATH.name}` and "
+        f"`{LOCAL_MANIFEST_PATH.name}`; `--check` re-derives this file and refuses any difference.",
+        "",
+        f"- Served capture run: `{served.get('capture_run_id')}`, {receipt.get('started_at')} to {receipt.get('finished_at')}",
+        f"- Pinned landed commit: `{served.get('required_ancestor')}`",
+        f"- Served Pages revision: `{identity.get('pages_revision')}`; served Worker revision: `{identity.get('worker_revision')}`",
+        f"- Read-model generation: `{identity.get('data_generation')}`; Pages data receipt: `{identity.get('pages_data_receipt_sha256')}`",
+        f"- Harness capture revision: `{provenance.get('capture_revision')}`",
+        f"- Served result: {derive_result(served.get('captures') or [], SERVED_MODE)}",
+        "",
+        "Outcomes are shown by public alias. Journey cells read phone / desktop (390x844 / 1440x900).",
+        "",
+        "| Outcome | Served journeys | Offline recovery rows | Status |",
+        "| --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['outcome']} (`{row['alias']}`) | {cells(row['served_cells'])} | {cells(row['offline_cells'])} | {row['status']} |"
+        )
+    lines += [
+        "",
+        f"Refusal controls for every row: `{OFFLINE_TEST_FILE}`, \"{REFUSAL_TEST}\".",
+        "",
+        "## Served observations",
+        "",
+    ]
+    for row in served.get("captures") or []:
+        lines.append(f"- {row.get('name')}: {derive_outcome(row, SERVED_MODE)}; {_observed_line(row)}")
+    return "\n".join(lines) + "\n"
+
+
+def check_matrix(served: dict, local: dict, *, test_source: str | None = None, path: Path | None = None) -> None:
+    path = path or MATRIX_PATH
+    if test_source is None:
+        test_source = (ROOT / OFFLINE_TEST_FILE).read_text(encoding="utf-8")
+    require_matrix_references(local, test_source)
+    if not path.exists():
+        refuse("absent-capture-file", f"the evidence matrix is absent at {path.name}")
+    if path.read_text(encoding="utf-8") != render_matrix(served, local):
+        refuse("matrix-mismatch", f"{path.name} does not re-derive from the retained manifests; recapture with {SERVED_RECAPTURE_COMMAND}")
 
 
 # --- Browser observation -----------------------------------------------------
@@ -969,12 +1209,19 @@ class Journey:
         image.write_bytes(png)
         if not image.exists() or sha256_bytes(image.read_bytes()) != sha256_bytes(png):
             refuse("absent-capture-file", f"{label}: the render file was not retained locally")
+        state = self.page.evaluate("() => ({ url: location.href, viewport: { width: innerWidth, height: innerHeight } })")
         return {
             "sha256": sha256_bytes(png),
             "bytes": len(png),
-            "local_image": (IMAGE_DIR / self.run.run_id / image.name).as_posix(),
+            "local_image": render_image_path(self.run.run_id, label),
+            "url": state["url"],
+            "viewport": state["viewport"],
             "committed": False,
         }
+
+
+def render_image_path(run_id: str, label: str) -> str:
+    return (IMAGE_DIR / str(run_id) / f"{label}.png").as_posix()
 
 
 def local_card(record_id: str) -> str:
@@ -1423,9 +1670,13 @@ def served_identity(base: str, deployment_manifest) -> dict:  # noqa: ANN001
     }
 
 
+def measured_inputs(git: GitOracle, paths: tuple[str, ...]) -> list[dict]:
+    return [{"path": path, "sha256": git.file_sha256(path)} for path in paths]
+
+
 def local_identity(base: str, git: GitOracle) -> dict:
     return {
-        "measured_inputs": [{"path": path, "sha256": git.file_sha256(path)} for path in MEASURED_INPUTS],
+        "measured_inputs": measured_inputs(git, MEASURED_INPUTS),
         "data_generation": fetch_generation(urljoin(base, "near-you/deferred.json?lens=meetings")),
     }
 
@@ -1471,11 +1722,12 @@ def capture(*, base: str | None, local: bool, deployment_manifest=None, git: Git
     server = None
     provenance: dict = {}
     delivery: dict | None = None
+    capture_revision = git.merge_base()
+    if not capture_revision:
+        refuse("wrong-pin", f"no merge base with {DEFAULT_BRANCH_REF}; fetch the default branch first")
+    served_inputs = measured_inputs(git, SERVED_MEASURED_INPUTS)
     try:
         if local:
-            capture_revision = git.merge_base()
-            if not capture_revision:
-                refuse("wrong-pin", f"no merge base with {DEFAULT_BRANCH_REF}; fetch the default branch first")
             if not git.tree_matches(capture_revision, PAGES_DATA_PATHS):
                 refuse("missing-data", f"site/data differs from the capture revision {capture_revision}; the proof could not name its data")
             server, base = start_local_server()
@@ -1498,6 +1750,14 @@ def capture(*, base: str | None, local: bool, deployment_manifest=None, git: Git
             require_served_contains(before, delivery["landed_commit"], git)
             if not before.get("data_generation"):
                 refuse("deploy-pending", "the served Worker does not name its read-model generation yet")
+            provenance = {
+                "capture_revision": capture_revision,
+                "capture_revision_rule": f"merge base of the capture checkout with {DEFAULT_BRANCH_REF}",
+                "measured_inputs": served_inputs,
+                "recapture_command": SERVED_RECAPTURE_COMMAND,
+                "served_code": "identity.before.pages_revision and identity.before.worker_revision",
+                "served_data": "identity.before.data_generation and identity.before.pages_data_receipt_sha256",
+            }
         run = RunContext(base=base, mode=mode, run_id=run_id, image_dir=image_dir)
         started = now_iso()
         rows: list[dict] = []
@@ -1517,7 +1777,7 @@ def capture(*, base: str | None, local: bool, deployment_manifest=None, git: Git
     manifest = {
         "schema": MANIFEST_SCHEMA,
         "scenario": SCENARIO,
-        "public_alias": PUBLIC_ALIAS,
+        "public_alias": PUBLIC_ALIAS if local else READ_BACK_ALIAS,
         "capture_mode": mode,
         "capture_run_id": run_id,
         "base": "local-fixture-server" if local else base,
@@ -1534,9 +1794,11 @@ def capture(*, base: str | None, local: bool, deployment_manifest=None, git: Git
     if local:
         if after["measured_inputs"] != before["measured_inputs"]:
             refuse("stale-inputs", "measured inputs changed during the capture run")
-        manifest["provenance"] = provenance
     else:
+        if measured_inputs(git, SERVED_MEASURED_INPUTS) != served_inputs:
+            refuse("stale-inputs", "measured inputs changed during the capture run")
         manifest["required_ancestor"] = delivery["landed_commit"]
+    manifest["provenance"] = provenance
     manifest["findings"] = derive_findings(rows)
     manifest["result"] = derive_result(rows, mode)
     return manifest
@@ -1554,6 +1816,11 @@ def check(*, local: bool, git: GitOracle | None = None) -> str:
         refuse("absent-served-capture", f"no served capture is recorded at {path.relative_to(ROOT)}")
     manifest = json.loads(path.read_text(encoding="utf-8"))
     result = validate_manifest(manifest, mode=LOCAL_MODE if local else SERVED_MODE, git=git)
+    if not local:
+        # The matrix cites the local recovery rows, so the local proof must stand too.
+        local_manifest = json.loads(LOCAL_MANIFEST_PATH.read_text(encoding="utf-8"))
+        validate_manifest(local_manifest, mode=LOCAL_MODE, git=git)
+        check_matrix(manifest, local_manifest)
     if result == "pending":
         owed = sorted({row["pending_obligation"] for row in manifest["captures"] if row.get("pending_obligation")})
         refuse("pending-obligation", f"served journeys still owe positive evidence: {owed}")
@@ -1571,8 +1838,16 @@ def run_cli(*, base: str | None, local: bool, check_only: bool, deployment_manif
         # Refuse before writing: a failing or unprovable run never becomes retained evidence.
         validate_manifest(manifest, mode=manifest["capture_mode"], delivery=None if local else load_delivery())
         path = manifest_path(local)
+        matrix = None
+        if not local:
+            local_manifest = json.loads(LOCAL_MANIFEST_PATH.read_text(encoding="utf-8"))
+            validate_manifest(local_manifest, mode=LOCAL_MODE)
+            require_matrix_references(local_manifest, (ROOT / OFFLINE_TEST_FILE).read_text(encoding="utf-8"))
+            matrix = render_matrix(manifest, local_manifest)
         EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        if matrix is not None:
+            MATRIX_PATH.write_text(matrix, encoding="utf-8")
         print(json.dumps({
             "result": manifest["result"],
             "manifest": path.relative_to(ROOT).as_posix(),
@@ -1587,5 +1862,10 @@ def run_cli(*, base: str | None, local: bool, check_only: bool, deployment_manif
             refused = ROOT / IMAGE_DIR / manifest["capture_run_id"] / "refused-manifest.json"
             refused.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
             print(f"refused run observations: {refused.relative_to(ROOT).as_posix()}", file=sys.stderr)
+            for row in manifest["captures"]:
+                if derive_outcome(row, manifest["capture_mode"]) == "fail":
+                    failed = sorted(key for key, value in derive_assertions(row, manifest["capture_mode"]).items() if value is not True)
+                    detail = row.get("error") or row.get("pending_obligation") or failed
+                    print(f"failed journey {row['name']}: {detail}{failure_context(row)}", file=sys.stderr)
         print(f"{'pending' if error.pending else 'refused'}: {error}", file=sys.stderr)
         return PENDING_EXIT if error.pending else 1
