@@ -92,24 +92,102 @@ jobs:
         # request that fails its own freshness gates. The registry beside this
         # script records which gates it covers and which it deliberately leaves to
         # the warehouse-held half of the refresh.
+        #
+        # The script itself never aborts partway through the sequence: one failed
+        # or blocked step is recorded in .artifacts/first-class-rebuild-receipt.json
+        # and every step that does not depend on it still runs. continue-on-error
+        # here keeps that promise at the workflow level too — a report of failure
+        # on this step must not skip the summary and pull-request steps below it,
+        # or the datasets that did rebuild cleanly are discarded along with the
+        # one that did not. The job is still failed for visibility; see the last
+        # step in this file.
+        id: rebuild
+        continue-on-error: true
         run: node ops/first-class-refresh/rebuild-committed-read-models.mjs
+
+      # No `if:` here, deliberately: a step with continue-on-error: true does
+      # not fail the job, so the default success() condition on every step
+      # after it still runs exactly as if the rebuild had succeeded — that is
+      # what actually keeps publication from being skipped, not an always()
+      # override. always() would also run this against a genuinely broken
+      # checkout if an earlier, non-continue-on-error step (checkout, Worker
+      # dependency install, Playwright setup) had failed, which is not this
+      # fix's concern and must still stop the run as it always has.
+      #
+      # Written from the working tree exactly as it stands after the rebuild
+      # step and before the commit below stages it, so "published" reflects
+      # what is actually about to be committed rather than a later guess.
+      # Per dataset: was it due, did its acquisition and builder succeed, did
+      # the rebuild steps that feed it succeed, and is it publishing — the
+      # health of a dataset that never ran and one that ran and could not
+      # publish otherwise look identical from either receipt alone.
+      - name: Write the combined first-class refresh run receipt
+        run: node tools/first_class_refresh_run_receipt.mjs
+
+      - name: Retain the refresh receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: first-class-refresh-receipts-${{ github.run_id }}
+          path: |
+            .artifacts/first-class-refresh-receipt.json
+            .artifacts/first-class-rebuild-receipt.json
+            .artifacts/first-class-refresh-run-receipt.json
+            site/data/first_class_freshness_report.json
+          if-no-files-found: warn
 
       - name: Summarise what refreshed
         run: |
           set -euo pipefail
           node --input-type=module <<'NODE' >> "$GITHUB_STEP_SUMMARY"
-          import { readFileSync } from "node:fs";
-          const receipt = JSON.parse(readFileSync(".artifacts/first-class-refresh-receipt.json", "utf8"));
-          const report = JSON.parse(readFileSync("site/data/first_class_freshness_report.json", "utf8"));
-          const rows = report.surfaces.map((s) => `| ${s.public_artifact_path} | ${s.freshness_state} | ${s.age_hours ?? "—"} |`);
-          console.log(`## First-class freshness: ${report.status}\n`);
-          console.log(Object.entries(report.counts).map(([k, v]) => `- ${k}: ${v}`).join("\n"));
-          console.log(`\n| artifact | state | age (h) |\n| --- | --- | --- |`);
-          console.log(rows.join("\n"));
-          const failed = receipt.commands.filter((c) => c.status !== "succeeded");
-          if (failed.length) {
+          import { existsSync, readFileSync } from "node:fs";
+          const readJson = (path) => existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : null;
+          const receipt = readJson(".artifacts/first-class-refresh-receipt.json");
+          const report = readJson("site/data/first_class_freshness_report.json");
+          const rebuild = readJson(".artifacts/first-class-rebuild-receipt.json");
+          const run = readJson(".artifacts/first-class-refresh-run-receipt.json");
+          if (report) {
+            const rows = report.surfaces.map((s) => `| ${s.public_artifact_path} | ${s.freshness_state} | ${s.age_hours ?? "—"} |`);
+            console.log(`## First-class freshness: ${report.status}\n`);
+            console.log(Object.entries(report.counts).map(([k, v]) => `- ${k}: ${v}`).join("\n"));
+            console.log(`\n| artifact | state | age (h) |\n| --- | --- | --- |`);
+            console.log(rows.join("\n"));
+          } else {
+            console.log("## First-class freshness: no report was written\n");
+          }
+          const failedAcquisitions = (receipt?.commands || []).filter((c) => c.status !== "succeeded");
+          if (failedAcquisitions.length) {
             console.log(`\n### Commands that did not run cleanly\n`);
-            for (const c of failed) console.log(`- \`${c.command.join(" ")}\` — ${c.status}${c.reason ? ` (${c.reason})` : ""}`);
+            for (const c of failedAcquisitions) console.log(`- \`${c.command.join(" ")}\` — ${c.status}${c.reason ? ` (${c.reason})` : ""}`);
+          }
+          // One failed or skipped rebuild step no longer stops this run from
+          // reaching this summary or the pull request below it: whatever the
+          // other steps rebuilt is still published, and this table is exactly
+          // how a person or the reliability watchdog sees what did not.
+          if (rebuild) {
+            const problems = rebuild.steps.filter((s) => s.status !== "succeeded");
+            if (problems.length) {
+              console.log(`\n### Rebuild steps that did not succeed (${problems.length} of ${rebuild.total_steps})\n`);
+              console.log(`| step | status | detail |\n| --- | --- | --- |`);
+              for (const s of problems) {
+                const detail = s.blocked_by ? `blocked by ${s.blocked_by}` : s.reason || (s.exit_code != null ? `exit ${s.exit_code}` : "");
+                console.log(`| ${s.id} | ${s.status} | ${detail} |`);
+              }
+            } else {
+              console.log(`\nAll ${rebuild.total_steps} rebuild steps succeeded.\n`);
+            }
+          } else {
+            console.log("\n### Rebuild did not run to completion; no rebuild receipt was written\n");
+          }
+          if (run) {
+            const due = run.datasets.filter((d) => d.due);
+            console.log(`\n### Due datasets (${run.due_count} of ${run.total} declared, ${run.published_count} publishing)\n`);
+            if (due.length) {
+              console.log(`| dataset | acquisition | rebuild | published |\n| --- | --- | --- | --- |`);
+              for (const d of due) console.log(`| ${d.public_artifact_path} | ${d.acquisition_status} | ${d.rebuild_status} | ${d.published} |`);
+            } else {
+              console.log("No first-class dataset was due this run — an idempotent no-op.\n");
+            }
           }
           NODE
 
@@ -120,8 +198,30 @@ jobs:
       # and the pull request therefore both use the same automation token the
       # other scheduled refreshes already use, which does start the required
       # checks on the pull request's head commit.
+      #
+      # Reached normally (no always() needed — see the rebuild step's comment)
+      # even when the rebuild step above reported problems, so whatever it did
+      # manage to refresh is still published. A run with nothing to publish
+      # (including one where the rebuild produced no usable output at all)
+      # still reaches this step and exits cleanly with "No dataset changes to
+      # publish", which is how a caller tells an idempotent no-op apart from a
+      # run that refreshed something it could not publish.
       - name: Open a pull request with the refreshed datasets
         env:
           GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
           REPOSITORY: ${{ github.repository }}
         run: bash tools/open_first_class_refresh_pr.sh
+
+      # The rebuild step above never aborts partway through and always lets this
+      # run reach publication, but a step that failed or was blocked is still a
+      # real problem and the run must stay visibly red for it — the reliability
+      # watchdog and any operator reading run history depend on that signal.
+      # This runs last, after the pull request, so it fails the job without
+      # having withheld anything that did succeed.
+      - name: Fail the run if the rebuild reported a problem
+        if: always()
+        run: |
+          if [ "${{ steps.rebuild.outcome }}" != "success" ]; then
+            echo "the rebuild step reported one or more problems; see the run summary and .artifacts/first-class-rebuild-receipt.json" >&2
+            exit 1
+          fi

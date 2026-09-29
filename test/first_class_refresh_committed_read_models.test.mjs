@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
@@ -13,6 +14,7 @@ import {
   registryBuilders,
   registryDrift,
   describeDrift,
+  runRebuildSequence,
   unpublishedRebuildOutputs,
   workflowGateBuilders,
   verificationCommands,
@@ -95,6 +97,33 @@ test("both halves of the refresh run the rebuild", () => {
     warehouseRebuildAt > 0 && warehouseCommitAt > warehouseRebuildAt,
     "the warehouse-held refresh must rebuild before it commits",
   );
+});
+
+test("a failing rebuild step still reaches the summary and pull-request steps, and the run stays visibly red", () => {
+  const workflow = readFileSync(WORKFLOW, "utf8");
+  const steps = workflow.split(/^ {6}- name:/m).slice(1).map((body) => `- name:${body}`);
+  const named = (title) => {
+    const step = steps.find((body) => body.startsWith(`- name: ${title}`));
+    assert.ok(step, `workflow has no step named "${title}"`);
+    return step;
+  };
+  const rebuild = named("Rebuild the committed read models the refreshed datasets feed");
+  assert.match(rebuild, /id:\s*rebuild/);
+  assert.match(rebuild, /continue-on-error:\s*true/, "a failed rebuild step must not fail the job or skip the steps after it");
+  // continue-on-error on the rebuild step is what keeps these steps running
+  // with their ordinary default (success()) condition — an always() override
+  // here would also run them against a genuinely broken checkout if an
+  // earlier, non-continue-on-error step had failed, which these must not do.
+  for (const title of ["Write the combined first-class refresh run receipt", "Summarise what refreshed", "Open a pull request with the refreshed datasets"]) {
+    assert.doesNotMatch(named(title), /^\s*if:/m, `"${title}" must run under the default success() condition, not always()`);
+  }
+  const failClosed = named("Fail the run if the rebuild reported a problem");
+  assert.match(failClosed, /if:\s*always\(\)/, "the final visibility check must run even if a later step also failed");
+  assert.match(failClosed, /steps\.rebuild\.outcome/, "the final step must check the rebuild step's own outcome");
+  const summariseAt = workflow.indexOf("Summarise what refreshed");
+  const openPrAt = workflow.indexOf("Open a pull request with the refreshed datasets");
+  const failAt = workflow.indexOf("Fail the run if the rebuild reported a problem");
+  assert.ok(summariseAt > 0 && openPrAt > summariseAt && failAt > openPrAt, "publication must happen before the run is failed for visibility");
 });
 
 test("the paths the refresh publishes are declared once and exist", () => {
@@ -233,6 +262,89 @@ test("refresh checkout supplies the same complete history as CI to the test fami
     const checkout = steps.find((step) => step.startsWith("uses: actions/checkout@"));
     assert.ok(checkout);
     assert.match(checkout, /^          fetch-depth: 0$/m);
+  }
+});
+
+// A minimal rebuild-step fixture: a small tool that writes a marker file for
+// its own id, unless the caller named it in FORCE_FAIL, in which case it exits
+// non-zero and writes nothing. dirtyPaths() stands down outside a git working
+// tree, so a plain scratch directory is enough — no repository fixture needed.
+function isolationFixture() {
+  const root = mkdtempSync(path.join(tmpdir(), "first-class-rebuild-isolation-"));
+  const tool = path.join(root, "tool.mjs");
+  writeFileSync(
+    tool,
+    [
+      'import { writeFileSync } from "node:fs";',
+      "const id = process.argv[2];",
+      'const forced = (process.env.FORCE_FAIL || "").split(",").filter(Boolean);',
+      "if (forced.includes(id)) { console.error(`forced failure: ${id}`); process.exit(1); }",
+      'writeFileSync(`${id}.marker`, "built\\n");',
+    ].join("\n"),
+  );
+  const registry = {
+    schema: "cityscroll.committed_read_model_rebuild.v1",
+    published_paths: [{ path: "site", reason: "test fixture" }],
+    not_rebuilt: [],
+    rebuild_sequence: [
+      { id: "root", command: ["tool.mjs", "root"], after: [] },
+      { id: "leaf-a", command: ["tool.mjs", "leaf-a"], after: ["root"] },
+      { id: "leaf-b", command: ["tool.mjs", "leaf-b"], after: ["root"] },
+      { id: "dependent", command: ["tool.mjs", "dependent"], after: ["leaf-a"] },
+    ],
+  };
+  return { root, registry, marker: (id) => path.join(root, `${id}.marker`) };
+}
+
+test("one failed rebuild step is isolated: independent steps still run, only its own dependents are skipped", () => {
+  const fixture = isolationFixture();
+  try {
+    const { results, stranded } = runRebuildSequence(fixture.registry, fixture.root, {
+      ...process.env,
+      FORCE_FAIL: "leaf-a",
+    });
+    assert.deepEqual(stranded, []);
+    const byId = Object.fromEntries(results.map((row) => [row.id, row]));
+    assert.equal(byId.root.status, "succeeded");
+    assert.ok(existsSync(fixture.marker("root")));
+    assert.equal(byId["leaf-a"].status, "failed");
+    assert.ok(!existsSync(fixture.marker("leaf-a")), "the failed step must not have written its output");
+    // leaf-b shares no dependency with leaf-a and must still have run: this is
+    // "the datasets that refreshed successfully" from a sibling failure.
+    assert.equal(byId["leaf-b"].status, "succeeded");
+    assert.ok(existsSync(fixture.marker("leaf-b")));
+    // Only the step that actually depends on the failed one is blocked.
+    assert.equal(byId.dependent.status, "skipped");
+    assert.equal(byId.dependent.blocked_by, "leaf-a");
+    assert.ok(!existsSync(fixture.marker("dependent")));
+  } finally {
+    rmSync(fixture.root, { recursive: true, force: true });
+  }
+});
+
+test("when every rebuild step fails, nothing is rebuilt and the run reports it rather than publishing partial data", () => {
+  const fixture = isolationFixture();
+  try {
+    const { results } = runRebuildSequence(fixture.registry, fixture.root, {
+      ...process.env,
+      // Failing the root is enough to cascade a skip through every dependent,
+      // which is the shape a real total failure takes: nothing downstream of
+      // the first stage can run either.
+      FORCE_FAIL: "root",
+    });
+    assert.deepEqual(
+      results.map((row) => row.status),
+      ["failed", "skipped", "skipped", "skipped"],
+    );
+    assert.ok(results.every((row) => !existsSync(fixture.marker(row.id))));
+    const byId = Object.fromEntries(results.map((row) => [row.id, row]));
+    assert.equal(byId["leaf-a"].blocked_by, "root");
+    assert.equal(byId["leaf-b"].blocked_by, "root");
+    // Transitively blocked: dependent's immediate predecessor is leaf-a, which
+    // itself never ran, so it reports the dependency that actually stopped it.
+    assert.equal(byId.dependent.blocked_by, "leaf-a");
+  } finally {
+    rmSync(fixture.root, { recursive: true, force: true });
   }
 });
 

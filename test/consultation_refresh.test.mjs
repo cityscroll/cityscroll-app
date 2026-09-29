@@ -4,8 +4,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
 
-import { acquireConsultationSources, DOT_PILOT_SEEDS } from "../site/consultation_acquisition.mjs";
-import { consultationRefreshDisabled, runConsultationRefresh } from "../tools/refresh_consultations.mjs";
+import { acquireConsultationSources, DOT_PILOT_SEEDS, materializeConsultations } from "../site/consultation_acquisition.mjs";
+import { consultationRefreshDisabled, consultationRefreshExitCode, runConsultationRefresh } from "../tools/refresh_consultations.mjs";
+import { buildFirstClassFreshnessReport, productionFreshnessFindings } from "../tools/first_class_refresh.mjs";
 import { withPinnedClock } from "./helpers/test_clock.mjs";
 import {
   buildConsultationRepairObservations,
@@ -175,4 +176,101 @@ test("A2 failed sources expose source-specific repair evidence for authenticated
     assert.equal(set.visibility, "private");
     assert.equal(set.counts.repair, rows.length);
   });
+});
+
+test("A3 the scheduled producer fails visibly on a degraded acquisition and stays green on success or kill switch", async () => {
+  await withPinnedClock(DAY_TWO, async () => {
+    const root = mkdtempSync(join(tmpdir(), "consultation-exit-"));
+    try {
+      mkdirSync(join(root, "site/data"), { recursive: true });
+      const output = join(root, "site/data/consultations.json");
+      const retained = await goodMaterialization(DAY_ONE);
+      writeFileSync(output, `${JSON.stringify(retained, null, 2)}\n`);
+
+      // Every publisher source failed; the last verified materialization is
+      // preserved byte-identically, and the run still reports failure so the
+      // aging artifact cannot hide behind a green scheduled run.
+      const degraded = await runConsultationRefresh({
+        root,
+        asOf: DAY_TWO,
+        fetchImpl: async () => response(503, "busy"),
+        transportOptions: TRANSPORT,
+      });
+      assert.equal(degraded.status, "degraded");
+      assert.equal(degraded.receipt.last_good_preserved, true);
+      assert.equal(readFileSync(output, "utf8"), `${JSON.stringify(retained, null, 2)}\n`);
+      assert.equal(consultationRefreshExitCode(degraded), 1);
+
+      // A clean acquisition keeps the scheduled producer green.
+      const succeeded = await runConsultationRefresh({
+        root,
+        asOf: DAY_TWO,
+        fetchImpl: async () => response(200),
+        transportOptions: TRANSPORT,
+      });
+      assert.equal(succeeded.status, "succeeded");
+      assert.equal(consultationRefreshExitCode(succeeded), 0);
+
+      // The kill switch is an intentional skip, not a failure.
+      const skipped = await runConsultationRefresh({
+        root,
+        asOf: DAY_TWO,
+        env: { CITYSCROLL_CONSULTATIONS_REFRESH: "off" },
+        fetchImpl: async () => response(200),
+      });
+      assert.equal(skipped.status, "skipped");
+      assert.equal(consultationRefreshExitCode(skipped), 0);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});
+
+// The vintage that aged out and blocked every Pages deploy from 2026-09-29,
+// and the instant a deploy actually refused to publish it (run 36611318361:
+// "site/data/consultations.json: stale first-class artifact"). This dataset
+// and every other first-class dataset refresh through the same scheduled
+// first-class-refresh workflow, so this replays the deploy-blocking vintage
+// through the production gate directly rather than through a dedicated
+// workflow of its own.
+const EXPIRED_VINTAGE = "2026-09-22T17:22:12.050Z";
+const DEPLOY_REFUSAL_INSTANT = "2026-09-29T19:39:35Z";
+const CONSULTATIONS_ARTIFACT_PATH = "site/data/consultations.json";
+
+test("A4 the production freshness gate refuses the expired 2026-09-22 vintage and accepts a refreshed one", () => {
+  const registry = JSON.parse(readFileSync(new URL("../site/data/source_contracts.json", import.meta.url)));
+  const entry = registry.first_class_artifacts.find((artifact) => artifact.id === "public-consultations");
+  assert.ok(entry, "the freshness registry declares the public-consultations artifact");
+  const root = mkdtempSync(join(tmpdir(), "consultations-freshness-"));
+  try {
+    mkdirSync(join(root, "site/data"), { recursive: true });
+
+    // The artifact exactly as it stood when deploys began failing.
+    writeFileSync(
+      join(root, CONSULTATIONS_ARTIFACT_PATH),
+      `${JSON.stringify(materializeConsultations({ asOf: EXPIRED_VINTAGE }), null, 2)}\n`,
+    );
+    const expired = buildFirstClassFreshnessReport(registry, { root, now: DEPLOY_REFUSAL_INSTANT });
+    const expiredSurface = expired.surfaces.find((surface) => surface.public_artifact_path === CONSULTATIONS_ARTIFACT_PATH);
+    assert.equal(expiredSurface.freshness_state, "stale");
+    assert.equal(expiredSurface.age_hours > Number(entry.hard_maximum_age_hours), true);
+    const expiredFindings = productionFreshnessFindings(expired).filter((finding) => finding.startsWith(`${CONSULTATIONS_ARTIFACT_PATH}:`));
+    assert.deepEqual(expiredFindings, [`${CONSULTATIONS_ARTIFACT_PATH}: stale first-class artifact (vintage ${EXPIRED_VINTAGE})`]);
+
+    // The same observation cycle re-run at the deploy-refusal instant passes it.
+    writeFileSync(
+      join(root, CONSULTATIONS_ARTIFACT_PATH),
+      `${JSON.stringify(materializeConsultations({ asOf: DEPLOY_REFUSAL_INSTANT }), null, 2)}\n`,
+    );
+    const refreshed = buildFirstClassFreshnessReport(registry, { root, now: DEPLOY_REFUSAL_INSTANT });
+    const refreshedSurface = refreshed.surfaces.find((surface) => surface.public_artifact_path === CONSULTATIONS_ARTIFACT_PATH);
+    assert.equal(refreshedSurface.freshness_state, "fresh");
+    assert.equal(refreshedSurface.population_count, 4);
+    assert.deepEqual(
+      productionFreshnessFindings(refreshed).filter((finding) => finding.startsWith(`${CONSULTATIONS_ARTIFACT_PATH}:`)),
+      [],
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
