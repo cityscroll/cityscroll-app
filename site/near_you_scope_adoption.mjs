@@ -90,9 +90,50 @@ export function adoptNearYouDeferredShellsOnly(root, incoming, { importNode } = 
   return root;
 }
 
+/**
+ * A root region that names itself is adopted by that name, whatever this
+ * client's selector list says. The Worker renders Near You documents and
+ * deploys ahead of the Pages-served client, so for a while a newer document
+ * meets an older client: a region that document adds must still be removed
+ * or replaced when the reader moves to a scope that no longer carries it.
+ * The selector list above stays for regions that predate the name.
+ */
+export const NEAR_YOU_SCOPE_REGION_ATTRIBUTE = "data-near-scope-region";
+
+function isNamedRegion(node) {
+  return Boolean(node?.hasAttribute?.(NEAR_YOU_SCOPE_REGION_ATTRIBUTE));
+}
+
+/** Direct children of a root that name themselves, first one per name. */
+function namedRegions(node) {
+  const regions = new Map();
+  for (const child of Array.from(node?.children || [])) {
+    const name = child.getAttribute?.(NEAR_YOU_SCOPE_REGION_ATTRIBUTE);
+    if (name && !regions.has(name)) regions.set(name, child);
+  }
+  return regions;
+}
+
+function adoptNamedRegions(root, incoming, clone) {
+  const current = namedRegions(root);
+  const next = namedRegions(incoming);
+  for (const [name, node] of current) {
+    const replacement = next.get(name);
+    if (replacement) node.replaceWith(clone(replacement));
+    else node.remove();
+  }
+  for (const [name, replacement] of next) {
+    if (!current.has(name)) root.append(clone(replacement));
+  }
+}
+
+function firstUnnamed(node, selector) {
+  return Array.from(node.querySelectorAll(selector)).find((match) => !isNamedRegion(match)) || null;
+}
+
 function replaceRegion(root, selector, incoming, clone) {
-  const current = root.querySelector(selector);
-  const replacement = incoming.querySelector(selector);
+  const current = firstUnnamed(root, selector);
+  const replacement = firstUnnamed(incoming, selector);
   if (current && replacement) current.replaceWith(clone(replacement));
   else if (current && !replacement) current.remove();
   else if (!current && replacement) root.append(clone(replacement));
@@ -106,6 +147,7 @@ export function adoptNearYouDocumentScope(root, incoming, { importNode } = {}) {
   if (!root || !incoming) throw new Error("near-you-scope-adoption-missing-root");
   const clone = importNode || ((node) => node.cloneNode(true));
 
+  adoptNamedRegions(root, incoming, clone);
   for (const selector of NEAR_YOU_SCOPE_REGION_SELECTORS) {
     replaceRegion(root, selector, incoming, clone);
   }
