@@ -15,6 +15,11 @@ location. From a selected place the reader can inspect a record, dismiss it,
 open the full record and come Back to the same heading, category, scroll
 offset and focus.
 
+Before a place is chosen, a few real citywide meetings follow the entry row,
+ahead of the map, with their total and a View all link. The same inspect,
+dismiss, full record, Back and continue journey runs from that preview, whose
+links also work without JavaScript and after a failed deferred read.
+
 Every in-page checker is first run against a state built to fail it. Nothing
 is written to the repository and no screenshots are taken.
 """
@@ -486,6 +491,235 @@ def check_detail_failure_return(journey: Journey, *, name: str) -> dict:
     return {"case": f"detail-failure-return-{name}", "focus": "full-record link"}
 
 
+CITYWIDE_STATE_JS = """() => {
+  const section = document.querySelector('.near-special-records');
+  const cards = section ? [...section.querySelectorAll('li.near-record')] : [];
+  const viewAll = section?.querySelector('[data-near-special-link="citywide"]');
+  const workspace = document.querySelector('.near-geo-workspace');
+  return {
+    state: document.querySelector('[data-near-you-root]')?.dataset.nearDeferredState || null,
+    ids: cards.map((card) => card.dataset.recordId),
+    timing: cards.map((card) => card.querySelector('.near-record-timing')?.dataset.recordTiming || null),
+    full_links: cards.map((card) => card.querySelector('a.near-record-full-record')?.getAttribute('href') || null),
+    total: Number(section?.querySelector('h2 > strong')?.textContent),
+    view_all: viewAll?.getAttribute('href') || null,
+    collections: [...(section?.querySelectorAll('[data-near-special-link]') || [])].map((link) => link.dataset.nearSpecialLink),
+    in_disclosure: Boolean(section?.closest('details, [data-near-surface-panel]')),
+    before_map: Boolean(section && workspace
+      && section.getBoundingClientRect().top < workspace.getBoundingClientRect().top
+      && (section.compareDocumentPosition(workspace) & Node.DOCUMENT_POSITION_FOLLOWING)),
+    overflow_x: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
+  };
+}"""
+
+# Walks the Tab sequence from the collection row: the first of View all or any
+# map/directory control that keyboard focus reaches.
+TAB_ORDER_JS = """() => {
+  const active = document.activeElement;
+  if (!active || active === document.body) return 'none';
+  if (active.matches('[data-near-special-link="citywide"]')) return 'view-all';
+  if (active.closest('.near-geo-workspace')) return 'map';
+  return 'other';
+}"""
+
+
+def timing_order_ok(timing: list[str | None]) -> bool:
+    rank = {"upcoming": 0, "past": 1, "closed": 1}
+    ranks = [rank.get(state or "", 2) for state in timing]
+    return ranks == sorted(ranks)
+
+
+def assert_citywide_checkers_can_fail() -> None:
+    """Positive controls for the pure preview checks."""
+    assert not timing_order_ok(["past", "upcoming"])
+    assert not timing_order_ok([None, "upcoming"])
+    assert timing_order_ok(["upcoming", "upcoming", "past"])
+
+
+def await_root_settled(page: Page) -> None:
+    page.wait_for_function(
+        "() => ['ready', 'error'].includes(document.querySelector('[data-near-you-root]')?.dataset.nearDeferredState)",
+        timeout=60_000,
+    )
+
+
+def citywide_card_selector(record_id: str) -> str:
+    return f'.near-special-records [data-record-id="{record_id}"]'
+
+
+def check_citywide_preview(browser: Browser, base: str, viewport: tuple[str, int, int]) -> dict:
+    """Root citywide preview: bounded, ordered, before the map, and the record journey."""
+    name, width, height = viewport
+    journey = Journey(browser, width, height)
+    try:
+        page = journey.page
+        page.goto(base + "/near-you/", wait_until="domcontentloaded")
+        await_root_settled(page)
+        state = page.evaluate(CITYWIDE_STATE_JS)
+        assert state["state"] == "ready", state
+        assert 1 <= len(state["ids"]) <= 3 and len(set(state["ids"])) == len(state["ids"]), state
+        assert state["total"] >= len(state["ids"]), state
+        assert timing_order_ok(state["timing"]), state
+        assert state["collections"] == ["citywide", "virtual", "unlocated"], state
+        assert not state["in_disclosure"] and state["before_map"], state
+        view_all = query(state["view_all"])
+        assert view_all.get("scope") == ["citywide"] and view_all.get("surface") == ["records"], state
+        assert "geo" not in view_all and "neighborhood" not in view_all, state
+
+        # Long titles wrap inside the real stylesheet; the overflow reading is
+        # first shown to catch a page that does overflow.
+        page.evaluate("() => { const wide = document.createElement('div'); wide.id = 'overflow-control'; wide.style.width = '4000px'; wide.style.height = '1px'; document.body.append(wide); }")
+        assert page.evaluate(CITYWIDE_STATE_JS)["overflow_x"] > 0, "overflow checker missed a wide page"
+        page.evaluate("() => document.getElementById('overflow-control')?.remove()")
+        assert page.evaluate(CITYWIDE_STATE_JS)["overflow_x"] == 0
+        page.evaluate("""() => {
+          const title = document.querySelector('.near-special-records .near-record-title-link');
+          title.dataset.originalTitle = title.textContent;
+          title.textContent = 'Citywide-hearing-'.repeat(24) + ' ' + 'Proposed Rule relating to '.repeat(12);
+        }""")
+        assert page.evaluate(CITYWIDE_STATE_JS)["overflow_x"] == 0, "a long citywide title overflows the page"
+        page.evaluate("""() => {
+          const title = document.querySelector('.near-special-records .near-record-title-link');
+          title.textContent = title.dataset.originalTitle;
+        }""")
+
+        # Keyboard order: from the collection row, View all comes before any map
+        # or area-directory control. Control: tabbing on does reach the map.
+        if not journey.touch:
+            page.locator(".near-collection-entry a").last.focus()
+            reached = []
+            for _ in range(80):
+                page.keyboard.press("Tab")
+                where = page.evaluate(TAB_ORDER_JS)
+                if where in ("view-all", "map"):
+                    reached.append(where)
+                if "map" in reached:
+                    break
+            assert reached and reached[0] == "view-all", reached
+            assert "map" in reached, "the Tab walk never reached a map control, so it proves nothing"
+
+        # Scope set -> inspect -> dismiss -> full record -> Back -> continue, from
+        # the first preview record with its own record page.
+        index = next(i for i, href in enumerate(state["full_links"]) if href and "/meetings/" in href)
+        record_id = state["ids"][index]
+        card_selector = citywide_card_selector(record_id)
+        card = page.locator(card_selector)
+        title = card.locator(".near-record-title-link").inner_text().strip()
+        inspect = card.locator(".near-record-inspect")
+        inspect.scroll_into_view_if_needed()
+        journey.activate(inspect)
+        dialog = page.locator("dialog[open]")
+        dialog.wait_for(state="visible")
+        assert title in dialog.inner_text()
+        journey.activate(dialog.locator("[data-near-you-record-inspection-close]"))
+        page.wait_for_function("() => !document.querySelector('dialog[open]')")
+        dismissed = page.evaluate(RETURN_STATE_JS, card_selector)
+        assert dismissed["focus_in_card"] and "near-record-inspect" in dismissed["focus_class"], dismissed
+
+        full = card.locator("a.near-record-full-record")
+        full.scroll_into_view_if_needed()
+        departure = page.evaluate(RETURN_STATE_JS, card_selector)
+        journey.activate(full)
+        page.wait_for_url(f"**{state['full_links'][index]}", timeout=30_000)
+        # The destination is this record, by its canonical identity, not just the href.
+        assert page.locator("main[data-meeting-id]").get_attribute("data-meeting-id") == record_id
+        assert title in page.locator("h1").first.inner_text()
+
+        page.go_back(wait_until="domcontentloaded")
+        await_root_settled(page)
+        page.wait_for_function(
+            """([card, y]) => {
+              const node = document.querySelector(card);
+              return Boolean(node && node.contains(document.activeElement)) && Math.abs(scrollY - y) <= 4;
+            }""",
+            arg=[card_selector, departure["scroll_y"]],
+            timeout=15_000,
+        )
+        returned = page.evaluate(RETURN_STATE_JS, card_selector)
+        assert "near-record-full-record" in returned["focus_class"], returned
+        page.evaluate("() => document.activeElement?.blur()")
+        assert not page.evaluate(RETURN_STATE_JS, card_selector)["focus_in_card"]
+
+        # Continue: View all opens the whole citywide bucket as Records.
+        journey.activate(page.locator('[data-near-special-link="citywide"]'))
+        page.wait_for_url(lambda url: query(url).get("scope") == ["citywide"], timeout=30_000)
+        page.wait_for_function(
+            "() => document.querySelector('[data-near-you-root]')?.dataset.nearDeferredState === 'ready'",
+            timeout=60_000,
+        )
+        destination = page.evaluate("""() => ({
+          h1: document.querySelector('h1')?.textContent.trim(),
+          surface: document.querySelector('[data-near-you-root]')?.dataset.nearSurface,
+          count: Number(document.querySelector('.near-results')?.dataset.resultsCount),
+          ids: [...document.querySelectorAll('.near-results li.near-record')].map((node) => node.dataset.recordId),
+          preview: document.querySelectorAll('.near-special-records li.near-record').length,
+        })""")
+        assert destination["h1"] == "Citywide" and destination["surface"] == "records", destination
+        assert destination["count"] == state["total"], (destination, state)
+        assert all(record in destination["ids"] for record in state["ids"]), destination
+        assert destination["preview"] == 0, "the citywide route repeats its own preview"
+        return {
+            "case": f"citywide-preview-{name}",
+            "preview": len(state["ids"]),
+            "total": state["total"],
+            "journey_record": record_id,
+            "focus": "full-record link",
+        }
+    finally:
+        journey.close()
+
+
+def check_citywide_links_without_enhancement(browser: Browser, base: str) -> list[dict]:
+    """Preview links are native: no JavaScript, and a failed deferred read, keep them working."""
+    results = []
+    journey = Journey(browser, 390, 844, javascript=False)
+    try:
+        page = journey.page
+        page.goto(base + "/near-you/", wait_until="domcontentloaded")
+        state = page.evaluate(CITYWIDE_STATE_JS)
+        assert 1 <= len(state["ids"]) <= 3 and state["view_all"], state
+        index = next(i for i, href in enumerate(state["full_links"]) if href and "/meetings/" in href)
+        # Without enhancement the record title is the native record link.
+        page.locator(citywide_card_selector(state["ids"][index])).locator("a.near-record-title-link").click()
+        page.wait_for_url(f"**{state['full_links'][index]}", timeout=30_000)
+        assert page.locator("main[data-meeting-id]").get_attribute("data-meeting-id") == state["ids"][index]
+        page.go_back(wait_until="domcontentloaded")
+        page.locator('[data-near-special-link="citywide"]').click()
+        page.wait_for_url(lambda url: query(url).get("scope") == ["citywide"], timeout=30_000)
+        assert page.locator("h1").first.inner_text().strip() == "Citywide"
+        results.append({"case": "citywide-no-javascript", "preview": len(state["ids"])})
+    finally:
+        journey.close()
+
+    journey = Journey(browser, 1440, 900)
+    try:
+        page = journey.page
+        failed: list[str] = []
+
+        def unavailable_deferred(route: Route) -> None:
+            failed.append(route.request.url)
+            route.fulfill(status=503, content_type="application/json", body="{}")
+
+        page.route("**/near-you/deferred.json*", unavailable_deferred)
+        page.goto(base + "/near-you/", wait_until="domcontentloaded")
+        page.wait_for_function(
+            "() => document.querySelector('[data-near-you-root]')?.dataset.nearDeferredState === 'error'",
+            timeout=30_000,
+        )
+        assert failed, "the deferred read was never made to fail"
+        state = page.evaluate(CITYWIDE_STATE_JS)
+        assert 1 <= len(state["ids"]) <= 3 and state["view_all"], state
+        assert state["collections"] == ["citywide", "virtual", "unlocated"], state
+        # Every kept preview title is still a visible native record link.
+        titles = page.locator(".near-special-records li.near-record > a.near-record-title-link")
+        assert titles.count() == len(state["ids"]), state
+        assert all(titles.nth(i).is_visible() for i in range(titles.count())), "a preview title is hidden"
+        results.append({"case": "citywide-failed-hydration", "preview": len(state["ids"])})
+    finally:
+        journey.close()
+    return results
+
+
 def check_geolocation_entry(browser: Browser, base: str, viewport: tuple[str, int, int]) -> dict:
     name, width, height = viewport
     journey = Journey(browser, width, height, steps=[{"kind": "grant", "coords": ASTORIA}])
@@ -749,6 +983,7 @@ def check_location_request_gate(browser: Browser, base: str) -> list[dict]:
 def main() -> None:
     assert_leak_checker_can_fail()
     assert_recovery_checker_can_fail()
+    assert_citywide_checkers_can_fail()
     server, base = start_server()
     results: list[dict] = []
     try:
@@ -759,9 +994,11 @@ def main() -> None:
                 results.append(check_geolocation_entry(browser, base, viewport))
                 results.extend(check_location_failures(browser, base, viewport))
                 results.extend(check_entry_failures(browser, base, viewport))
+                results.append(check_citywide_preview(browser, base, viewport))
             results.append(check_stale_location_answer(browser, base))
             results.append(check_map_click_keeps_map(browser, base))
             results.extend(check_location_request_gate(browser, base))
+            results.extend(check_citywide_links_without_enhancement(browser, base))
             browser.close()
     finally:
         server.terminate()

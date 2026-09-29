@@ -2801,6 +2801,11 @@ select {
   display: none;
 }
 
+/* A card rendered without Inspect keeps its title as the record link. */
+[data-near-you-record-inspection-ready] .near-record:not(:has(> .near-record-inspect)) > .near-record-title-link {
+  display: inline;
+}
+
 [data-near-you-record-inspection-ready] .near-record-inspect {
   display: inline;
   width: 100%;
@@ -3052,6 +3057,57 @@ select {
 
 .near-bags {
   border-block-start: 1px solid var(--color-border);
+}
+
+/* Citywide records: a bounded preview with its honest total and a View all
+   link, then compact links to the online-only and unmapped collections. */
+.near-special-records {
+  padding-block: var(--space-5);
+}
+
+.near-special-records h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-1);
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+}
+
+.near-special-records h2 > strong,
+.near-special-records h2 > [aria-label] {
+  color: var(--color-text-muted);
+  font: 600 1rem/1.2 var(--font-interface);
+}
+
+.near-special-records .near-citywide-note {
+  margin: 0 0 var(--space-3);
+}
+
+.near-citywide-all {
+  margin: var(--space-3) 0 0;
+  font: 650 .95rem/1.4 var(--font-interface);
+}
+
+.near-special-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  font: 500 .875rem/1.4 var(--font-interface);
+}
+
+.near-special-links li {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.near-special-links a {
+  display: inline-block;
+  min-height: 24px;
+  padding-block: 2px;
 }
 
 .near-bag {
@@ -3921,6 +3977,8 @@ select {
 [data-near-you-root] > .near-map-section { order: 5; }
 [data-near-you-root] > .near-bags,
 [data-near-you-root] > .near-bags-shell { order: 8; }
+/* Before a place is chosen, citywide records follow the entry row, ahead of the map. */
+[data-near-you-root] > .near-special-records[data-near-special-records="entry"] { order: 4; }
 [data-near-you-root] > .near-explore,
 [data-near-you-root] > .local-constellation { order: 9; }
 

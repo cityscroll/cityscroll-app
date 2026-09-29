@@ -389,7 +389,7 @@ def run(base: str) -> None:
             """() => ({
               count: Number(document.querySelector('.near-results')?.dataset.resultsCount || 0),
               ids: [...document.querySelectorAll('.near-results [data-record-id]')].map(el => el.dataset.recordId),
-              bags: [...document.querySelectorAll('.near-bag')].map(el => el.dataset.bag),
+              bags: [...document.querySelectorAll('.near-special-records [data-bag]')].map(el => el.dataset.bag),
               controlsHidden: [...document.querySelectorAll('.js-only')].every(el => el.hidden),
             })"""
         )

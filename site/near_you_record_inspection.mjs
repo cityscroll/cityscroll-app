@@ -151,8 +151,16 @@ function dateLabel(value) {
   if (!value) return null;
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return inspectText(value, 40);
+  // A date-only value is a calendar day (parsed as UTC midnight); read it back in
+  // UTC so it never shows as the day before west of UTC.
+  const calendarDay = /^\d{4}-\d{2}-\d{2}$/.test(String(value).trim());
   // determinism-lint: allow timezone — published dates render in the reader's zone.
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date);
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    ...(calendarDay ? { timeZone: "UTC" } : {}),
+  }).format(date);
 }
 
 /** Clock time (HH:mm, America/New_York) when the source value carries a time. */

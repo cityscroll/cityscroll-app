@@ -1123,8 +1123,8 @@ SECTIONS_JS = """() => {
     return node ? {
       state: node.getAttribute('data-near-section-state') || 'ready',
       ids: ids(node.querySelectorAll('li.near-record')),
-      count_label: (node.querySelector('summary [aria-label]')?.getAttribute('aria-label')
-        || node.querySelector('summary strong')?.textContent || '').trim(),
+      count_label: (node.querySelector(':scope > h2 > [aria-label], :scope > [aria-label]')?.getAttribute('aria-label')
+        || node.querySelector(':scope > h2 > strong, :scope > strong')?.textContent || '').trim(),
     } : null;
   };
   const results = document.querySelector('.near-results');
@@ -1226,19 +1226,17 @@ def check_bucket_failure(browser, base: str, *, viewport_name: str, width: int, 
         if failed["citywide"]["count_label"] != "Count unavailable":
             raise AssertionError(f"{label}: citywide count reads {failed['citywide']['count_label']!r}, not unavailable")
         for bucket in ("virtual", "unlocated"):
-            if failed[bucket]["ids"] != control[bucket]["ids"]:
-                raise AssertionError(f"{label}: {bucket} records changed under a citywide failure")
+            if failed[bucket]["count_label"] != control[bucket]["count_label"] or not control[bucket]["count_label"].isdigit():
+                raise AssertionError(f"{label}: {bucket} collection changed under a citywide failure: {failed[bucket]}")
         if failed["overflow_x"] > 1:
             raise AssertionError(f"{label}: horizontal overflow {failed['overflow_x']}px")
         inspection = inspect_and_dismiss(page, label=label)
 
-        # Retry in place: open the failed bucket, then retry it.
+        # Retry in place: the failed citywide preview carries its own Retry.
         page.evaluate(MARK_JS, ".near-results")
         page.evaluate(MARK_JS, '[data-bag="virtual"]')
-        summary = page.locator('[data-bag="citywide"] > summary')
-        summary.scroll_into_view_if_needed()
-        summary.click()
         retry = page.locator('[data-bag="citywide"] [data-near-recovery="retry"]')
+        retry.scroll_into_view_if_needed()
         retry.wait_for(state="visible", timeout=10_000)
         before = page.evaluate(SECTIONS_JS)
         url_before = page.url

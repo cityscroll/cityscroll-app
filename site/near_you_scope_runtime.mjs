@@ -50,11 +50,14 @@ export function scopeWithPlace(input, place = {}) {
     next.place.location_scope = null;
   }
   if (has("location_scope") || has("locationScope") || has("scope")) {
+    // A special bucket (citywide, online, no mapped place) replaces every local
+    // place axis, including leftover neighborhood text.
     next.place.geographies = [];
     next.place.location_scope = locationScope || null;
     next.place.boroughs = [];
     next.place.community_districts = [];
     next.place.council_districts = [];
+    next.place.neighborhood = null;
   }
   if (has("neighborhood")) next.place.neighborhood = place.neighborhood || null;
   next.place.viewport = has("viewport") ? place.viewport || null : null;

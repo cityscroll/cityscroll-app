@@ -60,6 +60,7 @@
       <p class="near-map-status" data-map-status aria-live="polite"></p>
     </details>
 
+
     <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
       <a class="near-surface-link is-active" href="https://cityscroll.org/near-you?surface=map&amp;lens=consultations&amp;v=0" data-near-surface="map" aria-current="true">Map</a>
       <a class="near-surface-link" href="https://cityscroll.org/near-you?surface=records&amp;lens=consultations&amp;v=0" data-near-surface="records">Browse records (1)</a>
@@ -261,19 +262,49 @@
       <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
     </section>
     </div>
-    <section class="near-bags near-bags-shell" aria-labelledby="near-bags-heading" data-near-deferred="bags" data-near-deferred-state="pending" aria-busy="true">
-      <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
-      <p>Citywide, online, and records without a place stay visible. We do not assign them to a district.</p>
-      <details class="near-bag" data-bag="citywide">
-    <summary><span>Citywide</span><strong>2</strong></summary>
-    <p class="near-deferred-status" role="status" aria-live="polite">Loading citywide records…</p>
-  </details><details class="near-bag" data-bag="virtual">
-    <summary><span>Virtual / online only</span><strong>0</strong></summary>
-    <p class="near-deferred-status" role="status" aria-live="polite">Loading virtual / online only records…</p>
-  </details><details class="near-bag" data-bag="unlocated">
-    <summary><span>No place signal</span><strong>2</strong></summary>
-    <p class="near-deferred-status" role="status" aria-live="polite">Loading no place signal records…</p>
-  </details>
+    <section class="near-bags near-bags-shell near-special-records" aria-labelledby="near-bags-heading" data-near-special-records="after-results" data-near-deferred="bags" data-near-deferred-state="pending" data-near-deferred-content="complete">
+      <div class="near-citywide" data-bag="citywide">
+      <h2 id="near-bags-heading" tabindex="-1"><span>Citywide consultations</span> <strong>2</strong></h2>
+      <p class="near-citywide-note">These apply across NYC.</p>
+      <ol class="near-records"><li class="near-record" data-record-id="dot-public-ebike-charging">
+    <a class="near-record-title-link near-record-title" href="/consultations/dot-public-ebike-charging/"
+      data-pivot-schema="cityscroll.edge_summary.v1" data-pivot-status="accepted"
+      data-pivot-relation-label="nearby record" data-pivot-target-kind="notice"
+      data-pivot-target-id="dot-public-ebike-charging" data-pivot-source-kind="place"
+      data-pivot-source-id="near-you">Public E-Bike Charging</a>
+
+    <div class="near-record-meta">
+      <span>NYC Department of Transportation</span>
+      <span>Consultation</span>
+      <span>Date not published</span>
+    </div>
+
+    <div class="near-record-basis" data-appearance-reason="1"><strong>Citywide</strong></div>
+
+    <p class="near-record-timing" data-record-timing="unknown" data-action-open="false">Date not published</p>
+
+    <p class="near-record-actions"><a class="near-record-full-record" href="/consultations/dot-public-ebike-charging/" data-browse-return-uid="dot-public-ebike-charging" data-action-open="false">View the full record</a></p>
+  </li><li class="near-record" data-record-id="dot-secure-bike-parking">
+    <a class="near-record-title-link near-record-title" href="/consultations/dot-secure-bike-parking/"
+      data-pivot-schema="cityscroll.edge_summary.v1" data-pivot-status="accepted"
+      data-pivot-relation-label="nearby record" data-pivot-target-kind="notice"
+      data-pivot-target-id="dot-secure-bike-parking" data-pivot-source-kind="place"
+      data-pivot-source-id="near-you">Secure Bike Parking</a>
+
+    <div class="near-record-meta">
+      <span>NYC Department of Transportation</span>
+      <span>Consultation</span>
+      <span>Date not published</span>
+    </div>
+
+    <div class="near-record-basis" data-appearance-reason="1"><strong>Citywide</strong></div>
+
+    <p class="near-record-timing" data-record-timing="unknown" data-action-open="false">Date not published</p>
+
+    <p class="near-record-actions"><a class="near-record-full-record" href="/consultations/dot-secure-bike-parking/" data-browse-return-uid="dot-secure-bike-parking" data-action-open="false">View the full record</a></p>
+  </li></ol>
+      <p class="near-citywide-all"><a href="https://cityscroll.org/near-you?v=0&amp;lens=consultations&amp;scope=citywide&amp;surface=records" data-near-special-link="citywide">View all 2 citywide consultations</a></p>
+    </div><ul class="near-special-links" aria-label="Other collections"><li data-bag="unlocated"><a href="https://cityscroll.org/near-you?v=0&amp;lens=consultations&amp;scope=unlocated&amp;surface=records" data-near-special-link="unlocated">Consultations without a mapped place</a> <strong>2</strong></li></ul>
     </section>
   </main>
 <footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.</footer>

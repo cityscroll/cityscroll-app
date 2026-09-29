@@ -70,6 +70,7 @@ import {
   nearYouEventTimeLabel,
   nearYouHeldInLabel,
   nearYouRecordInspectionFacts,
+  nearYouRecordTiming,
   renderNearYouRecordFullRecordLink,
   renderNearYouRecordInspectButton,
 } from "./near_you_record_inspection.mjs";
@@ -116,11 +117,11 @@ const BAG_LABELS = Object.freeze({
   virtual: "Virtual / online only",
   unlocated: "No place signal",
 });
-/** Resident consequence when one special bucket could not be read. */
-const BAG_UNAVAILABLE_COPY = Object.freeze({
-  citywide: "Citywide records could not load.",
-  virtual: "Online-only records could not load.",
-  unlocated: "Records without a place could not load.",
+/** Page titles for an explicit special-bucket route; none of them is a place. */
+const NEAR_YOU_SPECIAL_SCOPE_TITLES = Object.freeze({
+  citywide: "Citywide",
+  virtual: "Online only",
+  unlocated: "Without a mapped place",
 });
 const BOROUGHS = Object.keys(BOROUGH_META);
 const NEAR_YOU_DATA_STATES = Object.freeze(["ready", "pending", "error"]);
@@ -414,6 +415,9 @@ function selectedPlacePresentation(scope, communityGeography = {}, {
   }
   if (council) return { label: formatCouncilDistrict(council) };
   if (borough) return { label: borough };
+  if (scope.place.location_scope && NEAR_YOU_SPECIAL_SCOPE_TITLES[scope.place.location_scope]) {
+    return { label: NEAR_YOU_SPECIAL_SCOPE_TITLES[scope.place.location_scope] };
+  }
   if (scope.place.neighborhood) return { label: scope.place.neighborhood };
   const geoKey = geographyState?.key || first(scope.place.geographies);
   if (geoKey) {
@@ -468,6 +472,46 @@ function recordSort(a, b) {
   return dateB - dateA || String(a.title).localeCompare(String(b.title));
 }
 
+/** Records a special-bucket preview shows before its View all link. */
+export const NEAR_YOU_SPECIAL_PREVIEW_LIMIT = 3;
+const NEAR_YOU_PREVIEW_TIMING_RANK = Object.freeze({ upcoming: 0, past: 1, closed: 1 });
+
+/**
+ * Preview order for a special bucket, read through the record timing contract
+ * at `now`: known future dates soonest first, then past dates most recent
+ * first, then records without a published date; the record ID breaks ties.
+ */
+export function orderNearYouSpecialPreview(records, { now = null } = {}) {
+  return (records || []).map((record) => {
+    const timing = nearYouRecordTiming(record, { now });
+    const source = timing.kind === "deadline"
+      ? record.deadline || record.due_date || record.comment_by_date
+      : record.event_date || record.date;
+    const instant = Date.parse(source || "");
+    return {
+      record,
+      rank: NEAR_YOU_PREVIEW_TIMING_RANK[timing.state] ?? 2,
+      day: timing.event_at || "",
+      instant: Number.isFinite(instant) ? instant : 0,
+      id: String(record.id),
+    };
+  }).sort((a, b) => {
+    if (a.rank !== b.rank) return a.rank - b.rank;
+    const direction = a.rank === 1 ? -1 : 1;
+    if (a.rank < 2 && a.day !== b.day) return (a.day < b.day ? -1 : 1) * direction;
+    if (a.rank < 2 && a.instant !== b.instant) return (a.instant - b.instant) * direction;
+    return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+  }).map((entry) => entry.record);
+}
+
+/** A special-bucket collection opens as its own Records list. */
+function withRecordsSurface(href) {
+  const absolute = /^[a-z][a-z\d+.-]*:\/\//i.test(href);
+  const url = new URL(href, "https://cityscroll.invalid");
+  url.searchParams.set("surface", GEOGRAPHY_NAVIGATION_SURFACE_RECORDS);
+  return absolute ? url.toString() : `${url.pathname}${url.search}`;
+}
+
 const INITIAL_RECORD_LIMIT = 30;
 
 function viewBoardCoverage(scope, geography) {
@@ -486,6 +530,8 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   const requestedLens = first(scope.facets.domains) || "meetings";
   const lens = requestedLens;
   const dataState = normalizeNearYouDataState(options.dataState ?? (activity ? "ready" : "error"));
+  // Record timing and preview order read this clock; unset, they read the current time.
+  const now = options.now instanceof Date ? options.now.toISOString() : options.now || null;
   const geometryState = normalizeNearYouGeometryState(options.geometryState, {
     navigationLayerDoc: options.navigationLayerDoc || null,
     boundaries,
@@ -768,20 +814,25 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       .filter((record) => recordMatches(record, scope, options.sectionActivity?.built_at))
       .map((record) => String(record.id)));
   const bags = Object.fromEntries(["citywide", "virtual", "unlocated"].map((kind) => {
-    const loaded = sectionStates[kind] === "ready" && mapped && Boolean(sectionRoot);
+    // A bucket the loaded slice does not publish for this category is unknown, never zero.
+    const loaded = sectionStates[kind] === "ready" && mapped
+      && Array.isArray(sectionRoot?.district_items?.[kind]?.[lens]);
     const ids = loaded
-      ? intersection(sectionRoot?.district_items?.[kind]?.[lens], sectionAllowed)
+      ? intersection(sectionRoot.district_items[kind][lens], sectionAllowed)
       : [];
     const count = loaded ? ids.length : null;
+    const bucketRecords = orderNearYouSpecialPreview(ids.map((id) => sectionRecords[id]).filter(Boolean), { now })
+      .map((record) => linkedRecord(record, { explain: false }));
     return [kind, {
       kind,
       label: BAG_LABELS[kind],
       state: sectionStates[kind],
       ids,
       count,
-      records: ids.map((id) => sectionRecords[id]).filter(Boolean).sort(recordSort)
-        .map((record) => linkedRecord(record, { explain: false })),
-      href: urlForScope(scopeWithPlace(scope, { locationScope: kind })),
+      records: bucketRecords,
+      preview: bucketRecords.slice(0, NEAR_YOU_SPECIAL_PREVIEW_LIMIT),
+      // The whole bucket, same filters, as its own Records list; no local place survives.
+      href: withRecordsSurface(urlForScope(scopeWithPlace(scope, { locationScope: kind }))),
     }];
   }));
   // Wider-district previews are meetings-only enrichment from the overlapping
@@ -856,6 +907,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     mapped,
     dataState,
     sectionStates,
+    now,
     geometryState,
     mapState,
     boundaryVintage,
@@ -1105,7 +1157,7 @@ function placeRoleBadge(role) {
   return `<span class="near-record-role" data-place-role="${esc(role)}">${esc(placeRoleUserLabel(role))}</span>`;
 }
 
-function recordCard(record) {
+function recordCard(record, { now = null, inspect = true } = {}) {
   const meetingSource = record.meeting_origin
     ? `<div class="near-record-source" data-meeting-origin="${esc(record.meeting_origin)}">${record.source_url
       ? `<a href="${esc(record.source_url)}" rel="noopener noreferrer">${esc(meetingOriginLabel(record.meeting_origin))}</a>`
@@ -1115,8 +1167,9 @@ function recordCard(record) {
       : "";
   const placement = appearanceReason(record);
   const venueAddress = venueAddressLabel(record);
-  const facts = nearYouRecordInspectionFacts(record);
-  const inspectButton = facts
+  const facts = nearYouRecordInspectionFacts(record, { now });
+  // A card without Inspect keeps its title as the record link.
+  const inspectButton = facts && inspect
     ? renderNearYouRecordInspectButton(facts, { escape: esc })
     : "";
   const fullRecord = facts
@@ -1151,9 +1204,9 @@ function recordCard(record) {
   </li>`;
 }
 
-function recordList(records, emptyCopy = "No records match these filters.") {
+function recordList(records, emptyCopy = "No records match these filters.", { now = null, inspect = true } = {}) {
   if (!records.length) return `<p class="near-empty">${esc(emptyCopy)}</p>`;
-  return `<ol class="near-records">${records.map(recordCard).join("")}</ol>`;
+  return `<ol class="near-records">${records.map((record) => recordCard(record, { now, inspect })).join("")}</ol>`;
 }
 
 function hiddenScopeFields(scope, omit = new Set()) {
@@ -1200,30 +1253,105 @@ function geographyOptions(options, current) {
   }).join("")}`;
 }
 
+/** Resident names for the special buckets of one category. */
+function nearYouSpecialLabels(lens) {
+  const noun = LOCAL_RECOVERY_NOUNS[lens] || "records";
+  const capitalized = `${noun.charAt(0).toUpperCase()}${noun.slice(1)}`;
+  return {
+    noun,
+    citywide: `Citywide ${noun}`,
+    virtual: `Online-only ${noun}`,
+    unlocated: `${capitalized} without a mapped place`,
+  };
+}
+
+/**
+ * Citywide records as relevant content: a bounded preview of real records with
+ * the honest bucket total and a View all link to the whole bucket as its own
+ * Records list, then online-only and unmapped records as compact links. The
+ * links are plain anchors in the document, so they work before and without
+ * any deferred read. A bucket that could not be read says so with Retry and
+ * never shows a zero; a bucket the category does not publish is left out.
+ */
+function renderNearYouSpecialRecords(view, { position = "after-results", shell = false } = {}) {
+  if (!view.mapped) return "";
+  const labels = nearYouSpecialLabels(view.lens);
+  const current = view.scope.place.location_scope;
+  const published = (bag) => bag.state !== "ready" || bag.count != null;
+  const citywide = view.bags.citywide;
+  const showCitywide = current !== "citywide" && published(citywide);
+  const secondary = ["virtual", "unlocated"]
+    .map((kind) => view.bags[kind])
+    .filter((bag) => bag.kind !== current && published(bag));
+  if (!showCitywide && !secondary.length) return "";
+  const pending = [citywide, ...secondary].some((bag) => bag.state === "pending");
+  let citywideHtml = "";
+  if (showCitywide) {
+    const failed = citywide.state === "error";
+    const allHref = esc(citywide.href);
+    const viewAll = citywide.count === 0
+      ? ""
+      : `<p class="near-citywide-all"><a href="${allHref}" data-near-special-link="citywide">${citywide.count == null
+        ? `View all ${esc(labels.citywide.toLowerCase())}`
+        : `View all ${citywide.count} ${esc(labels.citywide.toLowerCase())}`}</a></p>`;
+    let body;
+    if (failed) {
+      body = `<div class="near-coverage near-section-recovery" data-near-section-recovery="citywide" role="note">
+        <strong>${esc(`${labels.citywide} could not load.`)}</strong>
+        <p class="near-local-recovery-actions"><a href="${esc(view.recoveryHref)}" data-near-recovery="retry">Try again</a></p>
+      </div>`;
+    } else if (citywide.state === "pending") {
+      body = `<p class="near-deferred-status" role="status" aria-live="polite">${esc(`Loading ${labels.citywide.toLowerCase()}…`)}</p>`;
+    } else if (citywide.count === 0) {
+      // A place-role filter is never relaxed to fill the preview; the All NYC
+      // route names the filter it removes.
+      const roleFiltered = placeRoleSupportedForDomain(view.lens)
+        && PLACE_ROLES.includes(view.scope.facets.values?.place_role);
+      const removed = roleFiltered && view.allNyc
+        ? scopeForAllNycRecords(view.scope, { lens: view.lens }).removed.map(removedFilterLabel)
+        : [];
+      body = `<p class="near-empty">${esc(`No ${labels.citywide.toLowerCase()} match these filters.`)}</p>${roleFiltered && view.allNyc
+        ? `<p class="near-local-recovery-actions"><a href="${esc(view.allNyc.href)}" data-near-recovery="all-nyc">${esc(view.allNyc.label)}</a></p>${removed.length
+          ? `<p class="near-local-recovery-note">${esc(`Removes: ${removed.join(", ")}.`)}</p>`
+          : ""}`
+        : ""}`;
+    } else {
+      // The document's cards are plain record links; the deferred section that
+      // replaces them adds Inspect.
+      body = recordList(citywide.preview, undefined, { now: view.now, inspect: !shell });
+    }
+    citywideHtml = `<div class="near-citywide" data-bag="citywide"${failed ? ` data-near-section-state="unavailable"` : ""}>
+      <h2 id="near-bags-heading" tabindex="-1"><span>${esc(labels.citywide)}</span> ${countMarkup(citywide.count)}</h2>
+      <p class="near-citywide-note">These apply across NYC.</p>
+      ${body}
+      ${viewAll}
+    </div>`;
+  }
+  const secondaryHtml = secondary.length
+    ? `${showCitywide ? "" : `<h2 id="near-bags-heading" tabindex="-1">Other collections</h2>`}<ul class="near-special-links" aria-label="Other collections">${secondary.map((bag) => {
+      const label = labels[bag.kind];
+      if (bag.state === "error") {
+        return `<li data-bag="${bag.kind}" data-near-section-state="unavailable"><a href="${esc(bag.href)}" data-near-special-link="${bag.kind}">${esc(label)}</a> ${countMarkup(null)} <span>could not load.</span> <a href="${esc(view.recoveryHref)}" data-near-recovery="retry">Try again</a></li>`;
+      }
+      if (bag.count === 0) {
+        return `<li data-bag="${bag.kind}"><span>${esc(label)}</span> ${countMarkup(0)}</li>`;
+      }
+      return `<li data-bag="${bag.kind}"><a href="${esc(bag.href)}" data-near-special-link="${bag.kind}">${esc(label)}</a> ${countMarkup(bag.count)}</li>`;
+    }).join("")}</ul>`
+    : "";
+  // In the document the section is also the deferred host, so the deferred read
+  // owns each bucket's final state. Its content is already complete unless a
+  // bucket is still loading, and a failed deferred read never removes it.
+  const deferredHost = shell
+    ? ` data-near-deferred="bags" data-near-deferred-state="pending"${pending ? ` aria-busy="true"` : ` data-near-deferred-content="complete"`}`
+    : "";
+  return `<section class="near-bags${shell ? " near-bags-shell" : ""} near-special-records" aria-labelledby="near-bags-heading" data-near-special-records="${esc(position)}"${deferredHost}>
+      ${citywideHtml}${secondaryHtml}
+    </section>`;
+}
+
 /** Render the lower-priority record lists for the deferred Near-you artifact. */
 export function renderNearYouDeferredParts(view) {
-  const bags = Object.values(view.bags).map((bag) => {
-    // A bucket that could not be read says so, with Retry; it never renders
-    // an empty list or a zero.
-    const failed = bag.state === "error";
-    const body = failed
-      ? `<div class="near-coverage near-section-recovery" data-near-section-recovery="${esc(bag.kind)}" role="note">
-      <strong>${esc(BAG_UNAVAILABLE_COPY[bag.kind] || "These records could not load.")}</strong>
-      <p class="near-local-recovery-actions"><a href="${esc(view.recoveryHref)}" data-near-recovery="retry">Try again</a></p>
-    </div>`
-      : recordList(bag.records, bag.count == null
-        ? "These records are not available right now."
-        : `No ${bag.label.toLowerCase()} records match these filters.`);
-    return `<details class="near-bag" data-bag="${bag.kind}"${failed ? ` data-near-section-state="unavailable"` : ""}>
-    <summary><span>${esc(bag.label)}</span>${countMarkup(bag.count)}</summary>
-    <p>${bag.kind === "citywide"
-      ? "These records apply citywide, so they do not belong to one district."
-      : bag.kind === "virtual"
-        ? "These records are online only and have no physical place."
-        : "The source does not give enough place detail to map these records."}</p>
-    ${body}
-  </details>`;
-  }).join("");
   const resultCount = knownCount(view.results.count);
   const localRecoveryHtml = renderNearYouLocalRecovery(view, "records");
   const visibleResults = view.results.records.slice(0, INITIAL_RECORD_LIMIT);
@@ -1240,14 +1368,10 @@ export function renderNearYouDeferredParts(view) {
       ${broaderHtml}<div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${resultCount == null ? `Matching ${esc(view.lensLabel)} records` : `${resultCount} ${esc(view.lensLabel)} records for these filters`}</h2></div></div>
       ${requestedFailed ? renderNearYouRecordsRecovery(view) : localRecoveryHtml || recordList(visibleResults, view.mapState === "unsupported"
         ? `${view.lensLabel} records are not mapped here.`
-        : resultCount == null ? "Matching records are not available right now." : undefined)}
+        : resultCount == null ? "Matching records are not available right now." : undefined, { now: view.now })}
       ${moreResults}
     </section>`;
-  const bagsHtml = `<section class="near-bags" aria-labelledby="near-bags-heading">
-      <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
-      <p>Citywide, online, and records without a place stay visible. We do not assign them to a district.</p>
-      ${bags}
-    </section>`;
+  const bagsHtml = renderNearYouSpecialRecords(view, { position: view.hasPlace ? "after-results" : "entry" });
   return { resultsHtml, bagsHtml };
 }
 
@@ -1257,27 +1381,16 @@ export function renderNearYouDeferredBody(view) {
     ${bagsHtml}`;
 }
 
-function renderNearYouDeferredShell(view, part) {
-  if (part === "results") {
-    if (view.dataState === "error") {
-      return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="error" aria-busy="false">
+function renderNearYouDeferredResultsShell(view) {
+  if (view.dataState === "error") {
+    return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="error" aria-busy="false">
       <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>
       ${renderNearYouRecordsRecovery(view)}
     </section>`;
-    }
-    return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending" aria-busy="true">
+  }
+  return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-near-deferred="results" data-near-deferred-state="pending" aria-busy="true">
       <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>${renderNearYouLocalRecovery(view, "records")}
       <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
-    </section>`;
-  }
-  const bags = Object.values(view.bags).map((bag) => `<details class="near-bag" data-bag="${bag.kind}">
-    <summary><span>${esc(bag.label)}</span>${countMarkup(bag.count)}</summary>
-    <p class="near-deferred-status" role="status" aria-live="polite">Loading ${esc(bag.label.toLowerCase())} records…</p>
-  </details>`).join("");
-  return `<section class="near-bags near-bags-shell" aria-labelledby="near-bags-heading" data-near-deferred="bags" data-near-deferred-state="pending" aria-busy="true">
-      <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
-      <p>Citywide, online, and records without a place stay visible. We do not assign them to a district.</p>
-      ${bags}
     </section>`;
 }
 
@@ -1288,7 +1401,7 @@ function renderNearYouOverview(view) {
     return nearYouUrlFromScope(scope, { base: view.canonicalBase });
   };
   const sections = view.overview.sections.map((section) => {
-    const records = section.records.length ? recordList(section.records) : "";
+    const records = section.records.length ? recordList(section.records, undefined, { now: view.now }) : "";
     const count = knownCount(section.count) == null ? "" : ` <span class="near-overview-count">${section.count}</span>`;
     const destination = section.key === "board-activity" && view.placePresentation.boardHref
       ? view.placePresentation.boardHref
@@ -1534,7 +1647,7 @@ export function renderNearYouBody(view) {
   const recordsBlock = `<div class="near-records-surface" data-near-surface-panel="records">
       ${advancedFilters}
       ${coverageNotes}
-      ${renderNearYouDeferredShell(view, "results")}
+      ${renderNearYouDeferredResultsShell(view)}
     </div>`;
   const selectedHero = view.hasPlace ? `<section class="near-hero">
       <h1>${esc(view.placePresentation.label)}</h1>
@@ -1618,11 +1731,12 @@ export function renderNearYouBody(view) {
     data-translation-context-strip-label="Context">
     ${selectedHero}
     ${unselectedEntry}
+    ${view.hasPlace ? "" : renderNearYouSpecialRecords(view, { position: "entry", shell: true })}
     ${surfaceSwitch}
     ${renderNearYouGeoWorkspace(view)}
     ${selectedSecondary}
     ${recordsBlock}
-    ${renderNearYouDeferredShell(view, "bags")}
+    ${view.hasPlace ? renderNearYouSpecialRecords(view, { position: "after-results", shell: true }) : ""}
   </main>`;
 }
 
