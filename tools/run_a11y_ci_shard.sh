@@ -120,6 +120,7 @@ case "$shard" in
     ;;
   language-layout)
     tools/run_a11y_functional_check.sh language python3 test/functional/12_language.py
+    tools/run_a11y_functional_check.sh language-switcher-early-selection python3 test/functional/58_language_switcher_early_selection.py
     tools/run_a11y_functional_check.sh rtl python3 test/functional/15_rtl.py
     tools/run_a11y_functional_check.sh forecast-discoverability python3 test/functional/16_forecast_discoverability.py
     ;;

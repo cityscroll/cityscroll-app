@@ -867,23 +867,33 @@ async function sessionBoot(){
   function initLangSwitcher(){
     const sel = document.getElementById("langSelect");
     if(!sel) return;
-    sel.dataset.appLanguageSwitcher = "true";
-    const saved = window.LANG || "en";
-    if([...sel.options].some(function(o){ return o.value === saved; })) sel.value = saved;
+    // index.html binds this control's change handler inline, right after the
+    // <select> markup, so an early selection (made before this module — the
+    // application's last import — runs) has a listener instead of being
+    // dropped. When that already ran, only pick up the rerender it could not
+    // do yet (rerenderForLang doesn't exist until this module defines it).
+    if(sel.dataset.appLanguageSwitcher !== "true"){
+      sel.dataset.appLanguageSwitcher = "true";
+      const saved = window.LANG || "en";
+      if([...sel.options].some(function(o){ return o.value === saved; })) sel.value = saved;
+      sel.addEventListener("change", function(){
+        const lang = sel.value;
+        const changed = lang !== window.LANG;
+        // rerenderForLang() repaints DYNAMICALLY-BUILT content (search results, today-strip,
+        // detail panel — all t()/tn() template literals, invisible to applyStrings()'s
+        // [data-i18n] walk). setLang()'s second param re-runs it once a lazily-loaded
+        // shipping language's dictionary finishes fetching.
+        setLang(lang, changed ? rerenderForLang : null);
+        if(changed) rerenderForLang();
+      });
+    }
     // applyStrings() also runs updateLangNotice() (i18n.js), which shows the "notices stay
     // English" + machine-translation-disclosure banner — no manual #langNotice wiring here.
     if(window.applyStrings) applyStrings();
-
-    sel.addEventListener("change", function(){
-      const lang = sel.value;
-      const changed = lang !== window.LANG;
-      // rerenderForLang() repaints DYNAMICALLY-BUILT content (search results, today-strip,
-      // detail panel — all t()/tn() template literals, invisible to applyStrings()'s
-      // [data-i18n] walk). setLang()'s second param re-runs it once a lazily-loaded
-      // shipping language's dictionary finishes fetching.
-      setLang(lang, changed ? rerenderForLang : null);
-      if(changed) rerenderForLang();
-    });
+    if(sel.dataset.pendingRerender === "true"){
+      delete sel.dataset.pendingRerender;
+      rerenderForLang();
+    }
   }
   function boot(){
     initLangSwitcher();

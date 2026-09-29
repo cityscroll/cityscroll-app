@@ -8,20 +8,20 @@
   "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
   "production_measurement": {
     "state": "measured",
-    "runner": "python3 tools/capture_documented_history_journeys.py --production --landed-commit ac386f386bf33eb33c16b7f5dde0138544b13049 --write-manifest",
+    "runner": "python3 tools/capture_documented_history_journeys.py --production --landed-commit 1a875a22035fcce03d374bec731e14a22678265e --write-manifest",
     "requirement": "The runner refuses a non-main pin, a served revision that does not contain it, a revision change during capture, absent served materializations, a missing rendered journey, or a served failure control that is not intercepted, does not show the unavailable state, or does not recover through its retry link.",
-    "run_receipt_sha256": "2845b56743eba830cf97c3057c8c633b8f17fb371c9018f3ae69ab75627bd573",
+    "run_receipt_sha256": "635da9d6151fadfa4fe4751af798a2d7a2391cefcc2361063a682d31bfaff90e",
     "run_receipt": {
       "schema": "cityscroll.documented_history_production_read.v1",
       "evidence_class": "deployed-production-read-back",
-      "observed_at": "2026-09-29T16:33:05Z",
+      "observed_at": "2026-09-29T14:59:04Z",
       "origin": "https://cityscroll.org",
-      "repository_revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
-      "required_landed_commit": "ac386f386bf33eb33c16b7f5dde0138544b13049",
-      "served_revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
-      "served_revision_after": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+      "repository_revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+      "required_landed_commit": "1a875a22035fcce03d374bec731e14a22678265e",
+      "served_revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
+      "served_revision_after": "6a1721b871384e174f6be5375792fc76de02f4a7",
       "retained_measurement": {
-        "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+        "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
         "inputs_ref": "#/measurement_provenance/inputs"
       },
       "data_vintage": {
@@ -33,40 +33,40 @@
         {
           "url": "https://cityscroll.org/data/connected_history_relations.json",
           "http_status": 200,
-          "observed_at": "2026-09-29T16:32:44Z",
-          "served_revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "observed_at": "2026-09-29T14:58:43Z",
+          "served_revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "sha256": "20883bc7a09276e37f0ec85cfe299a398e496132dcd14763f5caeff38c47d56a",
           "headers": {
-            "Date": "Tue, 29 Sep 2026 16:32:44 GMT",
+            "Date": "Tue, 29 Sep 2026 14:58:43 GMT",
             "ETag": "\"7524af449bace8aa10ad1273c807e5a4\"",
             "Last-Modified": null,
-            "CF-Ray": "a42c62b7bd4460c8-EWR"
+            "CF-Ray": "a42bd8fec892519b-EWR"
           }
         },
         {
           "url": "https://cityscroll.org/data/connected_history_time.json",
           "http_status": 200,
-          "observed_at": "2026-09-29T16:32:44Z",
-          "served_revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "observed_at": "2026-09-29T14:58:43Z",
+          "served_revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "sha256": "2df8f0ebbcabf5b4ba3bb1ea87becf4252e694839bdbd5cfe92d08a602a1a889",
           "headers": {
-            "Date": "Tue, 29 Sep 2026 16:32:44 GMT",
+            "Date": "Tue, 29 Sep 2026 14:58:43 GMT",
             "ETag": "\"90770a5c326ae7f8bcbc43b2e72bb8cb\"",
             "Last-Modified": null,
-            "CF-Ray": "a42c62b8581042bd-EWR"
+            "CF-Ray": "a42bd8ff59996399-EWR"
           }
         },
         {
           "url": "https://cityscroll.org/data/connected_history_roles.json",
           "http_status": 200,
-          "observed_at": "2026-09-29T16:32:45Z",
-          "served_revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
-          "sha256": "d25ac875ec2d620002621959012df2731e908d150b026d9716d9ac525557a210",
+          "observed_at": "2026-09-29T14:58:43Z",
+          "served_revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
+          "sha256": "e7edfbee41e82a40288dbe53af5c61d2f0365718238f308423920af7d5a16997",
           "headers": {
-            "Date": "Tue, 29 Sep 2026 16:32:45 GMT",
-            "ETag": "\"0bc9688b5d89a510d563ed782a671acb\"",
+            "Date": "Tue, 29 Sep 2026 14:58:43 GMT",
+            "ETag": "\"3d2576b6168898bda68de29671d8d3e0\"",
             "Last-Modified": null,
-            "CF-Ray": "a42c62b93fe2c64a-EWR"
+            "CF-Ray": "a42bd8ffe83ac688-EWR"
           }
         }
       ],
@@ -81,10 +81,10 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "e00bc180b01fbdbdf2efeec1789953bb759545d7ff1258e7f1a82d649152baad",
+          "sha256": "7143703d4dc28fa6abb0dc0a9550cc32318cf1cf9984cf09d74f4f01ef734ab1",
           "hash_kind": "screenshot",
           "render_sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
           "runtime": {
@@ -109,10 +109,10 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "296df2658a320c5a945f8dd5f41eebdd4cdb604ec8d9897ac86ff7173810dc70",
+          "sha256": "568c0a464e73c763b099b647fa78ae7cd1527460a0a2586deeb6272a854bbfbb",
           "hash_kind": "screenshot",
           "render_sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
           "runtime": {
@@ -137,10 +137,10 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "540b621690480c829743b886e121dc4b3399762f3fd4e94c2057eb7fe2b03cca",
+          "sha256": "99834ef8ecc4ea9d67075d57218a8eb47053696b58ef2c2aeddb2c78f732b48d",
           "hash_kind": "screenshot",
           "render_sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
           "runtime": {
@@ -165,10 +165,10 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "74f37a74508c7a3c3ca637070a10fd708a0ae06cc9b6d33c67c271b69dc2e72f",
+          "sha256": "e790fb687d2234dc5a2e20455860315192feb25b0ed77265c9b62b78c1a258d4",
           "hash_kind": "screenshot",
           "render_sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
           "runtime": {
@@ -193,10 +193,10 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "472e96da91df5bcec041ae0edefef98e1bfe46ba6a6061c02f6479ca8a82a533",
+          "sha256": "890b83acdb03ce0f090435624489d26c2c4ea7e5f4d9c489041a2d3101987003",
           "hash_kind": "screenshot",
           "render_sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
           "runtime": {
@@ -221,10 +221,10 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "9494ffa9c6a80a39c959584b7873afdc0a3f5cf0243daecff9bf7d193470b1f3",
+          "sha256": "4d4b1b57d882b2326351de1742791954ada548959306ea3aa99714464af15cc7",
           "hash_kind": "screenshot",
           "render_sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
           "runtime": {
@@ -249,10 +249,10 @@
             "width": 390,
             "height": 844
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "9fa33f5882cbc6ba695703cdb279329dcf3be56f7c6bcef915ae5508666925dd",
+          "sha256": "4ed1a41af3566348f726e7c904d704151f18954d5375411735fb13f15fe909e2",
           "hash_kind": "screenshot",
           "render_sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
           "runtime": {
@@ -277,10 +277,10 @@
             "width": 390,
             "height": 844
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "273f454b39df3156e04fb569c4f48f1bdc6cf573414f73687b87c1f27bcbab79",
+          "sha256": "492fae0364010f2ef165f08ef006a100ffb09efcffd849c18f4ffc965eea4770",
           "hash_kind": "screenshot",
           "render_sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
           "runtime": {
@@ -305,10 +305,10 @@
             "width": 390,
             "height": 844
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "db212391ef98cd88be95a8475b96694d8c74af73c3d92c5ab0241a6dd44332af",
+          "sha256": "64d3c3e32b4c03575f73fd5d8a3b901ad561cd61d865c87502c9ca3235615c17",
           "hash_kind": "screenshot",
           "render_sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
           "runtime": {
@@ -333,10 +333,10 @@
             "width": 390,
             "height": 844
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "401d9159cc3a0ac1f805eb8ab4352f482d5d0c2078a2c4a0c3befa43475f3ad3",
+          "sha256": "8d142e823fe6860bba434a54d2486885f4e7ecf4ee51cf8cfb3bdfff246140f9",
           "hash_kind": "screenshot",
           "render_sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
           "runtime": {
@@ -361,10 +361,10 @@
             "width": 390,
             "height": 844
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "43e5f71b0c6a16d56b135dab4f231cec3b929b6d953795d6c44d1477ad47e628",
+          "sha256": "6abf9ea15d9838c140656f84606fca354ddbd22f78d48ce6e37b0f549afc8d53",
           "hash_kind": "screenshot",
           "render_sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
           "runtime": {
@@ -389,10 +389,10 @@
             "width": 390,
             "height": 844
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
-          "sha256": "54812ee76dae79f66b9dacfcb4017e8af3ab31548b5c1ae557bb6ba4cfc63156",
+          "sha256": "57a46d76f38c4d8f26d53a9c35b858b3f53202412371326838116007907e1703",
           "hash_kind": "screenshot",
           "render_sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
           "runtime": {
@@ -417,7 +417,7 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
           "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
@@ -438,7 +438,7 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
           "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
@@ -459,7 +459,7 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
           "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
@@ -480,7 +480,7 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
           "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
@@ -501,7 +501,7 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
           "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
@@ -522,7 +522,7 @@
             "width": 1440,
             "height": 900
           },
-          "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+          "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
           "data_vintage": "2026-09-26T00:00:00.000Z",
           "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
           "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
@@ -544,10 +544,10 @@
           "width": 1440,
           "height": 900
         },
-        "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
+        "revision": "6a1721b871384e174f6be5375792fc76de02f4a7",
         "data_vintage": "2026-09-26T00:00:00.000Z",
         "assertion": "On the served page, a browser-only interception of the relations payload shows the declared unavailable state with the query retained, a retry link, and one official source; lifting the interception and following the retry link restores the ready history.",
-        "sha256": "d59cdcce6f19be3b940aa1369eca1390abc5838261bb1109c2e089013de0908a",
+        "sha256": "9466fe125574c5fcfe70d9fe6e2a8d6f70f592e572efbe09d9979d8f71126e46",
         "hash_kind": "screenshot",
         "render_sha256": "4e2a5d2f38b2cf574599bd62d52568ecef19d74bbc4362d0f8c4e46810d359b2",
         "induced_failure": {
@@ -556,7 +556,7 @@
           "path": "/data/connected_history_relations.json",
           "response_status": 503,
           "failed_response_count": 1,
-          "served_revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0"
+          "served_revision": "6a1721b871384e174f6be5375792fc76de02f4a7"
         },
         "observed_state": "unavailable",
         "observed_family": "kingsbridge-armory",
@@ -580,7 +580,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
@@ -594,7 +594,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
@@ -608,7 +608,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
@@ -622,7 +622,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
@@ -636,7 +636,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
@@ -650,7 +650,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
@@ -664,7 +664,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
@@ -678,7 +678,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
@@ -692,7 +692,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
@@ -706,7 +706,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
@@ -720,7 +720,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
@@ -734,7 +734,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
@@ -748,7 +748,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -761,7 +761,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -774,7 +774,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -787,7 +787,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -800,7 +800,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -813,7 +813,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -826,7 +826,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+      "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Injected materialization failure preserves the exact query and exposes retry plus an official source without claiming a successful empty result.",
       "sha256": "4e2a5d2f38b2cf574599bd62d52568ecef19d74bbc4362d0f8c4e46810d359b2",
@@ -834,7 +834,7 @@
     }
   ],
   "measurement_provenance": {
-    "revision": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+    "revision": "952f2b259ea680f1384d3810a6ab14f7c03378e0",
     "inputs": [
       {
         "path": "capabilities/federated_search.mjs",
@@ -1058,7 +1058,7 @@
       },
       {
         "path": "site/search/index.html",
-        "sha256": "1d2ee8cabdeb85396144b461cbee96dc2290cbca9153ae82d3b6fdf1c7f5a88d"
+        "sha256": "8867c15c459ee8e489fa428366533e71d66336d994c271f659bd94a6aa8c796c"
       },
       {
         "path": "site/search_activity_receipt.mjs",
