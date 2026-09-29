@@ -711,6 +711,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/33_search_activity_receipt.py
   run_and_fail python3 test/functional/42_search_recent_history.py
   run_and_fail python3 test/functional/34_near_you_surface_switch.py
+  run_and_fail python3 test/functional/58_near_you_selected_map_viewport.py
   run_and_fail python3 test/functional/40_land_map_activation.py
   run_and_fail python3 test/functional/41_land_map_marker_join.py
   run_and_fail python3 test/functional/42_land_map_marker_selection.py

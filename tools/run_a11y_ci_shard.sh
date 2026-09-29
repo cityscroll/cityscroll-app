@@ -137,6 +137,7 @@ case "$shard" in
     tools/run_a11y_functional_check.sh search-activity-receipt python3 test/functional/33_search_activity_receipt.py
     tools/run_a11y_functional_check.sh search-recent-history python3 test/functional/42_search_recent_history.py
     tools/run_a11y_functional_check.sh near-you-surface-switch python3 test/functional/34_near_you_surface_switch.py
+    tools/run_a11y_functional_check.sh near-you-selected-map-viewport python3 test/functional/58_near_you_selected_map_viewport.py
     ;;
   functional-procurement-history)
     tools/run_a11y_functional_check.sh buyer-contracting-history python3 test/functional/30_buyer_contracting_history.py

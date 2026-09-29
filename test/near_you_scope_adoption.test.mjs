@@ -16,6 +16,7 @@ import {
   applyNearYouDeferredPayload,
   beginNearYouDeferredGeneration,
   isNearYouDeferredGenerationCurrent,
+  NEAR_YOU_SCOPE_REGION_ATTRIBUTE,
   NEAR_YOU_SCOPE_REGION_SELECTORS,
 } from "../site/near_you_scope_adoption.mjs";
 import { mountDocument } from "./helpers/preview_dom.mjs";
@@ -485,4 +486,45 @@ test("adopting a selected place removes the suggestions; adopting a new filter r
   adoptNearYouDocumentScope(root, selected);
   assert.equal(root.querySelector(".near-place-suggestions"), null);
   assert.deepEqual(suggestionLinkIds(root), []);
+});
+
+// Deploy skew: the Worker renders Near You documents and deploys ahead of the
+// Pages-served client, so a document can carry a root region this client's
+// selector list has never heard of. A region that names itself is adopted by
+// its name, so it cannot survive a move to a scope that no longer carries it.
+function namedRegionRoot(regions) {
+  const mounted = mountDocument(`<main id="main" data-near-you-root data-lens="meetings" data-near-deferred-state="pending">
+    ${regions}
+    <section class="near-geo-workspace"><p>map</p></section>
+  </main>`, { containerClass: "near-named-regions" });
+  return mounted.doc.querySelector("[data-near-you-root]");
+}
+
+const newerRow = (text) => `<nav class="near-newer-row" ${NEAR_YOU_SCOPE_REGION_ATTRIBUTE}="newer-row"><p>${text}</p></nav>`;
+
+test("a named root region no selector lists is removed, replaced or added by its name", () => {
+  assert.equal(NEAR_YOU_SCOPE_REGION_ATTRIBUTE, "data-near-scope-region");
+  assert.ok(!NEAR_YOU_SCOPE_REGION_SELECTORS.includes(".near-newer-row"), "the row must be unknown to the list");
+
+  const root = namedRegionRoot(newerRow("entry row"));
+  adoptNearYouDocumentScope(root, namedRegionRoot(""));
+  assert.equal(root.querySelector(".near-newer-row"), null, "a selected scope without the row removes it");
+
+  const replaced = namedRegionRoot(newerRow("first filter"));
+  adoptNearYouDocumentScope(replaced, namedRegionRoot(newerRow("second filter")));
+  assert.deepEqual(replaced.querySelectorAll(".near-newer-row").map((node) => node.textContent.trim()), ["second filter"]);
+
+  const added = namedRegionRoot("");
+  adoptNearYouDocumentScope(added, namedRegionRoot(newerRow("returned to the entry")));
+  assert.deepEqual(added.querySelectorAll(".near-newer-row").map((node) => node.textContent.trim()), ["returned to the entry"]);
+  assert.equal(added.querySelectorAll(".near-geo-workspace").length, 1);
+});
+
+test("a named region that also matches a listed selector is adopted once", () => {
+  const named = `<nav class="near-place-suggestions" ${NEAR_YOU_SCOPE_REGION_ATTRIBUTE}="place-suggestions"><p>old</p></nav>`;
+  const root = namedRegionRoot(named);
+  adoptNearYouDocumentScope(root, namedRegionRoot(named.replace("old", "new")));
+  assert.deepEqual(root.querySelectorAll(".near-place-suggestions").map((node) => node.textContent.trim()), ["new"]);
+  adoptNearYouDocumentScope(root, namedRegionRoot(""));
+  assert.equal(root.querySelector(".near-place-suggestions"), null);
 });
