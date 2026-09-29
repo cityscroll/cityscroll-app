@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -54,10 +55,7 @@ def build_slow_boot_clone(destination: pathlib.Path) -> None:
             f"built site missing at {SOURCE_SITE}; run tools/prepare_functional_site.sh"
         )
     clone = destination / "site"
-    subprocess.run(
-        ["cp", "-Rc", str(SOURCE_SITE), str(clone)],
-        check=True,
-    )
+    shutil.copytree(SOURCE_SITE, clone)
     main_mjs = clone / "app" / "main.mjs"
     original = main_mjs.read_text(encoding="utf-8")
     occurrences = original.count(IMPORT_MARKER)
