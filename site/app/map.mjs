@@ -12,8 +12,10 @@ import { nearYouUrlFromMapHash } from "../near_you_scope_runtime.mjs";
 import {
   adoptNearYouDocumentScope,
   applyNearYouDeferredPayload,
+  applyNearYouSectionRetry,
   beginNearYouDeferredGeneration,
   isNearYouDeferredGenerationCurrent,
+  nearYouDeferredPayloadHasMarkup,
 } from "../near_you_scope_adoption.mjs";
 import { bindNearYouRecordInspection } from "../near_you_record_inspection.mjs";
 import {
@@ -173,7 +175,7 @@ function parseDeferredHtml(html) {
 async function hydrateCurrentNearYouDeferred() {
   if (!root) return;
   const state = root.dataset.nearDeferredState;
-  if (state === "loading" || state === "ready") return;
+  if (state === "loading" || state === "ready" || state === "partial") return;
   const href = root.dataset.nearDeferredHref;
   const hosts = [...root.querySelectorAll("[data-near-deferred]")];
   if (!href || !hosts.length) {
@@ -189,9 +191,13 @@ async function hydrateCurrentNearYouDeferred() {
       headers: { Accept: "application/json" },
     });
     if (!isNearYouDeferredGenerationCurrent(root, generation)) return;
-    if (!response.ok) throw new Error(`near-you-deferred-response-${response.status}`);
-    const payload = await response.json();
+    // A partial envelope carries the sections that loaded even when the
+    // requested scope failed (503); anything else unsuccessful is a failure.
+    const payload = await response.json().catch(() => null);
     if (!isNearYouDeferredGenerationCurrent(root, generation)) return;
+    if (!response.ok && !nearYouDeferredPayloadHasMarkup(payload)) {
+      throw new Error(`near-you-deferred-response-${response.status}`);
+    }
     const applied = applyNearYouDeferredPayload(root, payload, {
       generation,
       parseHtml: parseDeferredHtml,
@@ -245,6 +251,52 @@ async function hydrateCurrentNearYouDeferred() {
     }
     root.dataset.nearDeferredState = "error";
     reportNearYouReadiness();
+  }
+}
+
+/**
+ * Retry the sections that failed, in place. Loaded sections, the selected
+ * place, focus and scroll stay as they are; a newer place or scope (a later
+ * generation) wins over this response. Without JavaScript the same control is
+ * an ordinary link to the scoped page.
+ */
+async function retryFailedNearYouSections(event) {
+  const trigger = event?.target?.closest?.("[data-near-recovery='retry']");
+  const section = trigger?.closest?.("[data-near-section-state]");
+  if (!trigger || !section || !root?.contains?.(section)) return;
+  if (event.defaultPrevented || event.button > 0) return;
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  const href = root.dataset.nearDeferredHref;
+  if (!href) return;
+  event.preventDefault();
+  const retried = section.dataset.bag || "primary";
+  const generation = beginNearYouDeferredGeneration(root);
+  trigger.setAttribute("aria-disabled", "true");
+  try {
+    const response = await fetch(new URL(href, document.baseURI), {
+      headers: { Accept: "application/json" },
+      cache: "no-store",
+    });
+    const payload = await response.json().catch(() => null);
+    if (!isNearYouDeferredGenerationCurrent(root, generation)) return;
+    if (!nearYouDeferredPayloadHasMarkup(payload)) throw new Error(`near-you-deferred-response-${response.status}`);
+    const applied = applyNearYouSectionRetry(root, payload, { generation, parseHtml: parseDeferredHtml });
+    if (!applied.applied) {
+      trigger.removeAttribute("aria-disabled");
+      trigger.focus?.({ preventScroll: true });
+      return;
+    }
+    wireMapAndList();
+    wireSurfaceSwitch();
+    const replacement = retried === "primary"
+      ? root.querySelector("#near-results-heading")
+      : root.querySelector(`[data-bag="${retried}"]`)?.firstElementChild;
+    replacement?.focus?.({ preventScroll: true });
+    reportNearYouReadiness();
+  } catch {
+    if (!isNearYouDeferredGenerationCurrent(root, generation)) return;
+    trigger.removeAttribute("aria-disabled");
+    trigger.focus?.({ preventScroll: true });
   }
 }
 
@@ -1295,6 +1347,7 @@ function wireIsland() {
 if (root && !forwardLegacyRootHashIfNeeded()) {
   bindDocumentRouteScroll(window);
   root.addEventListener("click", rememberNearYouDepartureScroll, true);
+  root.addEventListener("click", (event) => { void retryFailedNearYouSections(event); });
   wireIsland();
   addEventListener("hashchange", () => {
     if (forwardLegacyRootHashIfNeeded()) return;

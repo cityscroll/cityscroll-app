@@ -8,7 +8,14 @@ import { buildNearYou } from "../../tools/build_worker_route_read_models.mjs";
 import { geographyRecordProjection } from "../../site/geography_navigation_records.mjs";
 import { landGeographyArtifactState } from "../../site/land_nta_watch_scope.mjs";
 import {
+  MIDWOOD,
+  SHEEPSHEAD_BAY,
+  faultKv,
+  readSectionIsolationFixture,
+} from "../../test/helpers/near_you_section_isolation_fixture.mjs";
+import {
   COVERAGE_CONFLICT_REASON,
+  ROUTE_READ_MODEL_CAUSES,
   loadMeetingRecord,
   loadCommunityDistrictDigest,
   loadNearYouActivity,
@@ -49,12 +56,15 @@ test("a failed manifest read does not poison the next resident request", async (
   assert.ok(recovered.activity.records);
 });
 
-test("missing neighborhood coverage starts no orphaned shared slice reads", async () => {
+test("an unpublished neighborhood starts no read of its own and is not an empty local result", async () => {
   const store = kv(recoveryFixture());
-  await assert.rejects(loadNearYouActivity({ ALERT_STATE: store }, {
+  const loaded = await loadNearYouActivity({ ALERT_STATE: store }, {
     place: { geographies: ["geography:nta2020:missing"] }, facets: { domains: ["meetings"] },
-  }), /missing near-you slice/);
-  assert.equal(store.getCount(), 1, "validate all slice keys before beginning any slice I/O");
+  });
+  assert.deepEqual(loaded.sections.primary, { state: "unavailable", cause: ROUTE_READ_MODEL_CAUSES.unknownGeography });
+  assert.equal(loaded.partial, true);
+  // Manifest plus the one shared special-bucket slice: nothing for the unknown key.
+  assert.equal(store.getCount(), 2, "an unknown key never starts or orphans a slice read");
   assert.ok((await loadNearYouActivity({ ALERT_STATE: store }, recoveryScope)).activity.records);
 });
 
@@ -244,4 +254,117 @@ test("A4: slices without coverage merge without inventing any", async () => {
     place: { geographies: [pinnedRows.keys.unfilterable_meetings] }, facets: { domains: ["meetings"] },
   });
   assert.equal(geographyRecordProjection(meetings.activity, { key: pinnedRows.keys.unfilterable_meetings, lens: "meetings" }).state, "unfilterable");
+});
+
+// Independent sections (public alias ccfaadd338534): the real builder
+// materializes the frozen Midwood, Sheepshead Bay and special-bucket rows; each
+// test injects one fault at one slice key and reads through the real loader.
+const { provenance: _sectionProvenance, ...sectionRows } = readSectionIsolationFixture();
+const sectionBuild = buildNearYou(sectionRows, {}, "section-isolation");
+const sectionValues = new Map(sectionBuild.entries.map(({ key, value }) => [key, value]));
+sectionValues.set(NEAR_YOU_MANIFEST_KEY, JSON.stringify(sectionBuild.manifest));
+const sectionKey = (id) => sectionBuild.manifest.slices[`${id}:meetings`];
+const midwoodScope = { place: { geographies: [MIDWOOD] }, facets: { domains: ["meetings"] } };
+const bucketIds = (bucket) => sectionRows.district_items[bucket].meetings.map(String).sort();
+
+async function loadSections(controls, { scope = midwoodScope, values = sectionValues } = {}) {
+  const store = faultKv(values, new Map(controls));
+  const loaded = await loadNearYouActivity({ ALERT_STATE: store, NEAR_YOU_READ_MODEL_TIMEOUT_MS: 20 }, scope);
+  return { loaded, store };
+}
+
+test("A6 control: with no fault every section loads from one manifest version", async () => {
+  const { loaded, store } = await loadSections([]);
+  assert.equal(loaded.partial, false);
+  for (const section of ["primary", "citywide", "virtual", "unlocated"]) {
+    assert.deepEqual(loaded.sections[section], { state: "ready", cause: null }, section);
+  }
+  assert.equal(loaded.version, "section-isolation");
+  assert.deepEqual(loaded.activity.district_items.citywide.meetings, bucketIds("citywide"));
+  assert.equal(store.readCount(), 5, "manifest plus one read per section slice");
+});
+
+for (const [control, cause] of [
+  ["reject", ROUTE_READ_MODEL_CAUSES.readFailed],
+  ["timeout", ROUTE_READ_MODEL_CAUSES.timeout],
+  ["corrupt", ROUTE_READ_MODEL_CAUSES.malformed],
+  ["no-records", ROUTE_READ_MODEL_CAUSES.malformed],
+  ["missing", ROUTE_READ_MODEL_CAUSES.missing],
+]) {
+  test(`A6/A3: a ${control} citywide read fails only its section, with cause ${cause}`, async () => {
+    const { loaded, store } = await loadSections([[sectionKey("citywide"), control]]);
+    assert.equal(loaded.partial, true);
+    assert.deepEqual(loaded.sections.citywide, { state: "unavailable", cause });
+    for (const section of ["primary", "virtual", "unlocated"]) {
+      assert.equal(loaded.sections[section].state, "ready", section);
+    }
+    // The failed bucket contributes nothing: no IDs, no counts, no records.
+    assert.deepEqual(loaded.activity.district_items.citywide.meetings || [], []);
+    for (const id of bucketIds("citywide")) assert.equal(loaded.activity.records.meetings[id], undefined, id);
+    assert.deepEqual(loaded.activity.geography_items.by_key[MIDWOOD].meetings, sectionRows.geography_items.by_key[MIDWOOD].meetings);
+    assert.deepEqual(loaded.activity.district_items.virtual.meetings, bucketIds("virtual"));
+    assert.deepEqual(loaded.activity.district_items.unlocated.meetings, bucketIds("unlocated"));
+    assert.equal(store.reads.get(sectionKey("citywide")), 1, "no retry loop inside a request");
+  });
+}
+
+test("A3: unknown geography, missing and malformed manifests and a timed-out manifest keep distinct causes", async () => {
+  const unknown = await loadSections([], {
+    scope: { place: { geographies: ["geography:nta2020:BK9999"] }, facets: { domains: ["meetings"] } },
+  });
+  assert.deepEqual(unknown.loaded.sections.primary, { state: "unavailable", cause: ROUTE_READ_MODEL_CAUSES.unknownGeography });
+  assert.equal(unknown.loaded.sections.citywide.state, "ready");
+  const causes = [];
+  for (const control of ["missing", "corrupt", "timeout", "reject"]) {
+    const error = await loadSections([[NEAR_YOU_MANIFEST_KEY, control]]).then(() => null, (reason) => reason);
+    assert.ok(error, `${control} manifest rejects the whole request`);
+    causes.push(error.reason);
+  }
+  assert.deepEqual(causes, [
+    ROUTE_READ_MODEL_CAUSES.manifestMissing,
+    ROUTE_READ_MODEL_CAUSES.manifestInvalid,
+    ROUTE_READ_MODEL_CAUSES.timeout,
+    ROUTE_READ_MODEL_CAUSES.readFailed,
+  ]);
+  assert.equal(new Set([...causes, ROUTE_READ_MODEL_CAUSES.unknownGeography]).size, 5);
+});
+
+test("A1: a failed Sheepshead Bay read leaves the citywide bucket loaded without adding local IDs", async () => {
+  const { loaded } = await loadSections([[sectionKey(SHEEPSHEAD_BAY), "reject"]], {
+    scope: { place: { geographies: [SHEEPSHEAD_BAY] }, facets: { domains: ["meetings"] } },
+  });
+  assert.deepEqual(loaded.sections.primary, { state: "unavailable", cause: ROUTE_READ_MODEL_CAUSES.readFailed });
+  assert.deepEqual(loaded.activity.district_items.citywide.meetings, bucketIds("citywide"));
+  assert.equal(bucketIds("citywide").length, 20);
+  assert.equal(loaded.activity.geography_items.by_key[SHEEPSHEAD_BAY], undefined,
+    "the failed local slice publishes no membership, not even an empty one");
+});
+
+test("A4: for an explicit citywide scope the citywide read is the requested section", async () => {
+  const { loaded } = await loadSections([[sectionKey("citywide"), "reject"]], {
+    scope: { place: { location_scope: "citywide" }, facets: { domains: ["meetings"] } },
+  });
+  assert.equal(loaded.sections.primary.state, "unavailable");
+  assert.equal(loaded.sections.citywide.state, "unavailable");
+  assert.equal(loaded.sections.virtual.state, "ready");
+});
+
+test("A6: fail-then-success recovers on the next request and caches only the completed read", async () => {
+  const store = faultKv(sectionValues, new Map([[sectionKey("virtual"), { failTimes: 1 }]]));
+  const env = { ALERT_STATE: store, NEAR_YOU_READ_MODEL_TIMEOUT_MS: 20 };
+  const failed = await loadNearYouActivity(env, midwoodScope);
+  assert.equal(failed.sections.virtual.state, "unavailable");
+  const recovered = await loadNearYouActivity(env, midwoodScope);
+  assert.equal(recovered.partial, false);
+  assert.deepEqual(recovered.activity.district_items.virtual.meetings, bucketIds("virtual"));
+  assert.equal(store.reads.get(sectionKey("virtual")), 2);
+  assert.equal(store.reads.get(sectionKey(MIDWOOD)), 1, "the loaded Midwood slice is reused, not read again");
+});
+
+test("no readable section at all still rejects as a whole-request failure", async () => {
+  const controls = [MIDWOOD, "citywide", "virtual", "unlocated"].map((id) => [sectionKey(id), "reject"]);
+  const error = await loadSections(controls).then(() => null, (reason) => reason);
+  assert.ok(error);
+  assert.equal(error.reason, ROUTE_READ_MODEL_CAUSES.readFailed);
+  assert.equal(error.sections.primary.state, "unavailable");
 });

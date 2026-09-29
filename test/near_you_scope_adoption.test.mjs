@@ -301,3 +301,135 @@ test("A4 evidence records the K15 Staffing-to-Meetings journey with revision and
   const digest = createHash("sha256").update(`${JSON.stringify(manifest.assertions)}\n`).digest("hex");
   assert.equal(manifest.assertions_sha256, digest);
 });
+
+// Separately loaded Near You sections (public alias ccfaadd338534): deferred payloads
+// come from the real Worker handler over frozen rows with one injected KV fault,
+// and are applied to the real server document through the adoption functions.
+import { handleNearYou } from "../worker/src/near_you.mjs";
+import { buildNearYou } from "../tools/build_worker_route_read_models.mjs";
+import {
+  applyNearYouSectionRetry,
+  nearYouDeferredPayloadHasMarkup,
+} from "../site/near_you_scope_adoption.mjs";
+import {
+  MIDWOOD,
+  faultKv,
+  readSectionIsolationFixture,
+} from "./helpers/near_you_section_isolation_fixture.mjs";
+
+const { provenance: _sectionProvenance, ...sectionRows } = readSectionIsolationFixture();
+const sectionBuild = buildNearYou(sectionRows, {}, "section-isolation");
+const sectionValues = new Map(sectionBuild.entries.map(({ key, value }) => [key, value]));
+sectionValues.set("route-read-model:near-you:manifest:v1", JSON.stringify(sectionBuild.manifest));
+const sectionKey = (id) => sectionBuild.manifest.slices[`${id}:meetings`];
+const MIDWOOD_URL = "https://cityscroll.org/near-you/?geo=nta2020:BK1403&lens=meetings&surface=records";
+const MIDWOOD_IDS = sectionRows.geography_items.by_key[MIDWOOD].meetings.map(String).sort();
+const CITYWIDE_IDS = sectionRows.district_items.citywide.meetings.map(String).sort();
+
+async function served(url, controls = []) {
+  const env = { ALERT_STATE: faultKv(sectionValues, new Map(controls)), NEAR_YOU_READ_MODEL_TIMEOUT_MS: 20 };
+  const response = await handleNearYou(new Request(url), env);
+  return url.includes("/deferred.json") ? response.json() : response.text();
+}
+
+/** The served document's own deferred shells, mounted in a minimal Near You root. */
+function servedShell(page, part) {
+  const start = page.indexOf(`<section class="near-${part} near-${part}-shell"`);
+  assert.ok(start >= 0, `${part} shell is served`);
+  return page.slice(start, page.indexOf("</section>", start) + "</section>".length);
+}
+
+async function mountMidwood() {
+  const page = await served(MIDWOOD_URL);
+  const deferredHref = page.match(/data-near-deferred-href="([^"]+)"/)[1];
+  const mounted = mountDocument(`<main id="main" data-near-you-root data-lens="meetings"
+    data-near-deferred-href="${deferredHref}" data-near-deferred-state="pending">
+    ${servedShell(page, "results")}
+    ${servedShell(page, "bags")}
+  </main>`, { containerClass: "near-sections" });
+  const root = mounted.doc.querySelector("[data-near-you-root]");
+  assert.ok(root.querySelector("[data-near-deferred='results']"));
+  return { root, doc: mounted.doc, parse: (html) => parseHtml(mounted.doc, html) };
+}
+
+function sectionIds(node) {
+  return (node?.querySelectorAll("[data-record-id]") || [])
+    .filter((row) => row.tagName === "li")
+    .map((row) => row.getAttribute("data-record-id")).sort();
+}
+
+const deferredUrl = MIDWOOD_URL.replace("/near-you/?", "/near-you/deferred.json?");
+
+test("A5/A7: a partial payload applies loaded sections and keeps the failed one explicit", async () => {
+  const { root, parse } = await mountMidwood();
+  const generation = beginNearYouDeferredGeneration(root);
+  const payload = await served(deferredUrl, [[sectionKey("citywide"), "reject"]]);
+  assert.equal(nearYouDeferredPayloadHasMarkup(payload), true);
+  const applied = applyNearYouDeferredPayload(root, payload, { generation, parseHtml: parse });
+  assert.equal(applied.applied, true);
+  assert.equal(applied.partial, true);
+  assert.equal(root.dataset.nearDeferredState, "partial");
+  assert.deepEqual(sectionIds(root.querySelector(".near-results")), MIDWOOD_IDS);
+  assert.equal(root.querySelector(".near-results").querySelectorAll("[data-near-you-record-inspection]").length, MIDWOOD_IDS.length);
+  const citywide = root.querySelector("[data-bag='citywide']");
+  assert.equal(citywide.getAttribute("data-near-section-state"), "unavailable");
+  assert.deepEqual(sectionIds(citywide), []);
+
+  // Control: a whole-page error envelope carries no markup and is refused.
+  assert.equal(nearYouDeferredPayloadHasMarkup({ schema: "cityscroll.near_you_deferred_error.v1", reason: "x" }), false);
+});
+
+test("A2/A5: Retry replaces only the failed section, and a failed retry keeps the loaded ones", async () => {
+  const { root, parse } = await mountMidwood();
+  const first = beginNearYouDeferredGeneration(root);
+  applyNearYouDeferredPayload(root, await served(deferredUrl, [[sectionKey("citywide"), "reject"]]), { generation: first, parseHtml: parse });
+  const midwoodBefore = root.querySelector(".near-results");
+  const virtualBefore = root.querySelector("[data-bag='virtual']");
+
+  // A retry whose Midwood read now fails but whose citywide read succeeds.
+  const retry = beginNearYouDeferredGeneration(root);
+  const flaky = await served(deferredUrl, [[sectionKey(MIDWOOD), "reject"]]);
+  const outcome = applyNearYouSectionRetry(root, flaky, { generation: retry, parseHtml: parse });
+  assert.deepEqual(outcome.replaced, ["citywide"]);
+  assert.equal(root.dataset.nearDeferredState, "ready");
+  assert.equal(root.querySelector(".near-results"), midwoodBefore, "the loaded local section is untouched");
+  assert.equal(root.querySelector("[data-bag='virtual']"), virtualBefore);
+  assert.deepEqual(sectionIds(root.querySelector(".near-results")), MIDWOOD_IDS);
+  assert.deepEqual(sectionIds(root.querySelector("[data-bag='citywide']")), CITYWIDE_IDS);
+  assert.equal(root.querySelector("[data-near-section-state]"), null);
+
+  // Converse: a retry that fails again leaves the explicit failure in place.
+  const again = await mountMidwood();
+  const g = beginNearYouDeferredGeneration(again.root);
+  applyNearYouDeferredPayload(again.root, await served(deferredUrl, [[sectionKey("virtual"), "reject"]]), { generation: g, parseHtml: again.parse });
+  const failedAgain = applyNearYouSectionRetry(again.root, await served(deferredUrl, [[sectionKey("virtual"), "timeout"]]), {
+    generation: beginNearYouDeferredGeneration(again.root),
+    parseHtml: again.parse,
+  });
+  assert.equal(failedAgain.applied, false);
+  assert.equal(failedAgain.reason, "still_unavailable");
+  assert.equal(again.root.querySelector("[data-bag='virtual']").getAttribute("data-near-section-state"), "unavailable");
+  assert.equal(again.root.dataset.nearDeferredState, "partial");
+});
+
+test("A5: a retry overtaken by a newer place selection or a second retry never repaints", async () => {
+  const { root, parse } = await mountMidwood();
+  const first = beginNearYouDeferredGeneration(root);
+  applyNearYouDeferredPayload(root, await served(deferredUrl, [[sectionKey("citywide"), "reject"]]), { generation: first, parseHtml: parse });
+  const retry = beginNearYouDeferredGeneration(root);
+  const secondRetry = beginNearYouDeferredGeneration(root);
+  const response = await served(deferredUrl);
+  const stale = applyNearYouSectionRetry(root, response, { generation: retry, parseHtml: parse });
+  assert.equal(stale.applied, false);
+  assert.equal(stale.reason, "stale_generation");
+  assert.equal(root.querySelector("[data-bag='citywide']").getAttribute("data-near-section-state"), "unavailable");
+
+  // A newer place adoption bumps the generation past the pending retry.
+  const nextPlace = mountDocument(meetingsPendingMarkup(), { containerClass: "near-next" }).doc.querySelector("[data-near-you-root]");
+  adoptNearYouDocumentScope(root, nextPlace, { importNode: (node) => node.cloneNode(true) });
+  const late = applyNearYouSectionRetry(root, response, { generation: secondRetry, parseHtml: parse });
+  assert.equal(late.applied, false);
+  assert.equal(late.reason, "stale_generation");
+  assert.equal(root.querySelectorAll("[data-record-id]").length, 0, "no Midwood or citywide record repaints the newer place");
+  assert.match(root.dataset.nearDeferredHref, /cd=K15/);
+});

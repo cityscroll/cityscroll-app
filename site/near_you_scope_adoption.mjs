@@ -141,8 +141,38 @@ export function isNearYouDeferredGenerationCurrent(root, generation) {
 }
 
 /**
+ * Deferred envelopes that carry section markup. A full or partial success uses
+ * the deferred schema; when the requested scope failed but other sections
+ * loaded, the error schema carries those sections' markup too. An error
+ * envelope without markup is a whole-page failure and is never applied.
+ */
+export const NEAR_YOU_DEFERRED_MARKUP_SCHEMAS = Object.freeze([
+  "cityscroll.near_you_deferred.v1",
+  "cityscroll.near_you_deferred_error.v1",
+]);
+
+/** A section that could not be read carries this marker until a read succeeds. */
+const FAILED_SECTION_SELECTOR = "[data-near-section-state]";
+
+export function nearYouDeferredPayloadHasMarkup(payload) {
+  return NEAR_YOU_DEFERRED_MARKUP_SCHEMAS.includes(payload?.schema)
+    && typeof payload.results_html === "string"
+    && typeof payload.bags_html === "string";
+}
+
+function assertDeferredMarkup(payload) {
+  if (!nearYouDeferredPayloadHasMarkup(payload)) throw new Error("near-you-deferred-payload-invalid");
+}
+
+function settledDeferredState(root) {
+  return root.querySelector(FAILED_SECTION_SELECTOR) ? "partial" : "ready";
+}
+
+/**
  * Apply a deferred payload only when it still matches the current generation.
  * `parseHtml` must return a single element root for the supplied markup.
+ * A partial payload leaves each failed section explicit; the root state is then
+ * "partial" rather than "ready".
  */
 export function applyNearYouDeferredPayload(root, payload, {
   generation,
@@ -151,13 +181,7 @@ export function applyNearYouDeferredPayload(root, payload, {
   if (!isNearYouDeferredGenerationCurrent(root, generation)) {
     return { applied: false, reason: "stale_generation" };
   }
-  if (
-    payload?.schema !== "cityscroll.near_you_deferred.v1"
-    || typeof payload.results_html !== "string"
-    || typeof payload.bags_html !== "string"
-  ) {
-    throw new Error("near-you-deferred-payload-invalid");
-  }
+  assertDeferredMarkup(payload);
   const hosts = [...root.querySelectorAll("[data-near-deferred]")];
   if (!hosts.length) {
     return { applied: false, reason: "missing_hosts" };
@@ -171,8 +195,45 @@ export function applyNearYouDeferredPayload(root, payload, {
   if (!isNearYouDeferredGenerationCurrent(root, generation)) {
     return { applied: false, reason: "stale_generation" };
   }
-  root.dataset.nearDeferredState = "ready";
-  return { applied: true, reason: "ready" };
+  const state = settledDeferredState(root);
+  root.dataset.nearDeferredState = state;
+  return { applied: true, reason: state, partial: state === "partial" };
+}
+
+/**
+ * Retry only the sections that failed. A section that loaded stays in place
+ * (its records, focus and scroll are untouched); a failed section is replaced
+ * only by a replacement that loaded, so a retry that fails again keeps the
+ * explicit failure. The generation guard drops a retry that a newer place or
+ * scope has overtaken.
+ */
+export function applyNearYouSectionRetry(root, payload, {
+  generation,
+  parseHtml,
+} = {}) {
+  if (!isNearYouDeferredGenerationCurrent(root, generation)) {
+    return { applied: false, reason: "stale_generation", replaced: [] };
+  }
+  assertDeferredMarkup(payload);
+  const incomingResults = parseHtml(payload.results_html);
+  const incomingBags = parseHtml(payload.bags_html);
+  if (!incomingResults || !incomingBags) throw new Error("near-you-deferred-html-invalid");
+  const replaced = [];
+  for (const current of [...root.querySelectorAll(FAILED_SECTION_SELECTOR)]) {
+    const bag = current.dataset.bag;
+    const name = bag || (current.matches(".near-results") ? "primary" : null);
+    if (!name) continue;
+    const replacement = bag
+      ? incomingBags.querySelector(`[data-bag="${bag}"]`)
+      : incomingResults;
+    if (!replacement || replacement.hasAttribute("data-near-section-state")) continue;
+    if (bag && current.hasAttribute("open")) replacement.setAttribute("open", "");
+    current.replaceWith(replacement);
+    replaced.push(name);
+  }
+  const state = settledDeferredState(root);
+  root.dataset.nearDeferredState = state;
+  return { applied: replaced.length > 0, reason: replaced.length ? state : "still_unavailable", replaced };
 }
 
 export function nearYouScopeClientOnlyDatasetKeys() {

@@ -18,6 +18,36 @@ const values = new Map(materialized.entries.map(({key, value}) => [key, value]))
 values.set("route-read-model:near-you:manifest:v1", JSON.stringify(materialized.manifest));
 const env = { ALERT_STATE: { get: async (key) => values.get(key) ?? null } };
 
+// Offline fault controls for browser journeys: a request may name route slices
+// whose KV read fails, as `x-near-you-fixture-fail: citywide:meetings=reject`
+// (controls: reject, timeout, corrupt, missing). The Worker handler and loader
+// run unchanged over a request-scoped store, so nothing is cached across
+// requests and the served data is never altered.
+export const FIXTURE_FAIL_HEADER = "x-near-you-fixture-fail";
+const FAULT_READ_TIMEOUT_MS = 200;
+function faultedEnv(header) {
+  const controls = new Map();
+  for (const part of String(header || "").split(",")) {
+    const [sliceId, control] = part.trim().split("=");
+    const key = materialized.manifest.slices[sliceId];
+    if (key && ["reject", "timeout", "corrupt", "missing"].includes(control)) controls.set(key, control);
+  }
+  if (!controls.size) return env;
+  return {
+    NEAR_YOU_READ_MODEL_TIMEOUT_MS: FAULT_READ_TIMEOUT_MS,
+    ALERT_STATE: {
+      async get(key) {
+        const control = controls.get(key);
+        if (control === "reject") throw new Error("fixture read failure");
+        if (control === "timeout") return new Promise(() => {});
+        if (control === "corrupt") return "{not-json";
+        if (control === "missing") return null;
+        return values.get(key) ?? null;
+      },
+    },
+  };
+}
+
 // Links out of Near You (Browse collections, record search and the record
 // pages they open) go through the Pages edge handler, as in production. Its
 // static assets are this checkout's site/ tree plus the Browse documents,
@@ -120,7 +150,10 @@ const server = http.createServer(async (request, response) => {
   // Bare `/` is the Near You root, as on the Worker-routed apex.
   if (url.pathname === "/near-you" || url.pathname === "/near-you/" || url.pathname === "/near-you/deferred.json"
     || (url.pathname === "/" && !url.search)) {
-    const upstream = await handleNearYou(new Request(url, { method: request.method }), env);
+    const upstream = await handleNearYou(
+      new Request(url, { method: request.method }),
+      faultedEnv(request.headers[FIXTURE_FAIL_HEADER]),
+    );
     await send(response, upstream, request.method, (body) => body.replaceAll("https://cityscroll.org", base));
     return;
   }

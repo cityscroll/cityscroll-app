@@ -32,6 +32,7 @@ import { withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
 import { handleNearYou } from "../worker/src/near_you.mjs";
 import {
   loadNearYouActivity,
+  ROUTE_READ_MODEL_CAUSES,
   RouteReadModelUnavailable,
 } from "../worker/src/lib/route_read_model_kv.mjs";
 import {
@@ -176,41 +177,51 @@ test("unknown geography, transient KV failure, stale manifest, and partial publi
       geoKey: "geography:nta2020:BK9999",
       url: deferredUrl("BK9999"),
       values,
-      message: /missing near-you slice geography:nta2020:BK9999:meetings/,
+      cause: ROUTE_READ_MODEL_CAUSES.unknownGeography,
     },
     {
       name: "transient-kv-failure",
       geoKey: "geography:nta2020:BK0101",
       url: deferredUrl("BK0101"),
       values: new Map(),
-      message: /missing route read-model key route-read-model:near-you:manifest:v1/,
+      cause: ROUTE_READ_MODEL_CAUSES.manifestMissing,
     },
     {
       name: "stale-manifest",
       geoKey: "geography:nta2020:MN0102",
       url: deferredUrl("MN0102"),
       values: staleValues,
-      message: /invalid near-you route read-model manifest/,
+      cause: ROUTE_READ_MODEL_CAUSES.manifestInvalid,
     },
     {
       name: "partial-publication",
       geoKey: "geography:nta2020:BK0101",
       url: deferredUrl("BK0101"),
       values: partialValues,
-      message: /missing near-you slice geography:nta2020:BK0101:meetings/,
+      cause: ROUTE_READ_MODEL_CAUSES.unknownGeography,
     },
   ];
 
-  // Mechanism-level distinctness: each failure source rejects with its own
-  // fail-closed message before any response is rendered.
+  // Mechanism-level distinctness: an unusable manifest rejects the whole
+  // request with its own typed cause; a usable manifest that does not publish
+  // the requested key fails only the requested section, typed, and still loads
+  // the special buckets (never an empty or zero local result).
   const requiredSlices = new Set(requiredNearYouSliceIds(residentialPlaces));
   for (const mechanism of mechanisms) {
     const scope = { place: { geographies: [mechanism.geoKey] } };
-    await assert.rejects(
-      () => loadNearYouActivity({ ALERT_STATE: kv(mechanism.values) }, scope),
-      (error) => error instanceof RouteReadModelUnavailable && mechanism.message.test(error.message),
-      `${mechanism.name} must reject with its own unavailable message`,
-    );
+    const env = { ALERT_STATE: kv(mechanism.values) };
+    if (mechanism.cause === ROUTE_READ_MODEL_CAUSES.unknownGeography) {
+      const loaded = await loadNearYouActivity(env, scope);
+      assert.deepEqual(loaded.sections.primary, { state: "unavailable", cause: mechanism.cause }, mechanism.name);
+      assert.equal(loaded.sections.citywide.state, "ready", mechanism.name);
+      assert.equal(loaded.activity.geography_items.by_key[mechanism.geoKey], undefined, mechanism.name);
+    } else {
+      await assert.rejects(
+        () => loadNearYouActivity(env, scope),
+        (error) => error instanceof RouteReadModelUnavailable && error.reason === mechanism.cause,
+        `${mechanism.name} must reject with its own typed cause`,
+      );
+    }
   }
   // A partial publication misses a place the closed-world registry REQUIRES;
   // an unknown geography misses a place the registry never promised.
@@ -236,10 +247,25 @@ test("unknown geography, transient KV failure, stale manifest, and partial publi
     const payload = JSON.parse(row.body);
     assert.equal(payload.schema, DEFERRED_ERROR_SCHEMA, row.id);
     assert.equal(payload.reason, "near-you-read-model-unavailable", row.id);
-    assert.equal("results_html" in payload, false, `${row.id}: error body carries no results`);
-    assert.equal(row.body.includes(ZERO_COPY), false, `${row.id}: transient failure never relabels as published zero`);
+    const results = payload.results_html || "";
+    if (row.id === "unknown-geography" || row.id === "partial-publication") {
+      // The manifest is usable: a partial envelope keeps the special buckets
+      // while the requested section is an explicit failure.
+      assert.equal(payload.partial, true, row.id);
+      assert.equal(payload.sections.primary.state, "unavailable", row.id);
+      assert.equal(payload.sections.primary.count, null, row.id);
+      assert.match(results, /data-near-section-state="unavailable"/, row.id);
+    } else {
+      assert.equal("results_html" in payload, false, `${row.id}: an unusable manifest carries no results`);
+    }
+    assert.doesNotMatch(results, /data-record-id=|data-results-count=/, `${row.id}: no local records or count`);
+    assert.equal(results.includes(ZERO_COPY), false, `${row.id}: transient failure never relabels as published zero`);
+    assert.equal(results.includes(LOCAL_ZERO_COPY), false, `${row.id}: transient failure never relabels as published zero`);
     assert.equal(row.body.includes(UNAVAILABLE_COPY), false, `${row.id}: transient failure never relabels as source coverage`);
-    assert.equal(row.body.includes("data-near-local-recovery"), false, `${row.id}: transient failure never renders a local recovery state`);
+    assert.equal(results.includes(LOCAL_UNSUPPORTED_COPY), false, `${row.id}: transient failure never relabels as unsupported`);
+    for (const state of results.matchAll(/data-near-local-recovery="(\w+)"/g)) {
+      assert.equal(state[1], "error", `${row.id}: a local recovery state here is only the transient error`);
+    }
   }
 
   // Classifier-level honesty: all four mechanisms classify as the transient

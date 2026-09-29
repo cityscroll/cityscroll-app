@@ -9,10 +9,26 @@ export const ROUTE_READ_MODEL_TIMEOUT_MS = 5_000;
 const cacheByKv = new WeakMap();
 const boroughNames = ["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"];
 
+/**
+ * Typed internal causes for an unreadable route read model. They stay internal
+ * (tests, logs and the section envelope's `cause` token); resident copy only
+ * states the consequence and a recovery.
+ */
+export const ROUTE_READ_MODEL_CAUSES = Object.freeze({
+  manifestMissing: "manifest_missing",
+  manifestInvalid: "manifest_invalid",
+  unknownGeography: "unknown_geography",
+  missing: "missing_slice",
+  malformed: "malformed_slice",
+  timeout: "timeout",
+  readFailed: "read_failed",
+});
+
 class RouteReadModelUnavailable extends Error {
-  constructor(message) {
+  constructor(message, cause = ROUTE_READ_MODEL_CAUSES.readFailed) {
     super(message);
     this.name = "RouteReadModelUnavailable";
+    this.reason = cause;
   }
 }
 
@@ -30,16 +46,24 @@ async function getJson(kv, key, state, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) 
     const read = Promise.resolve().then(() => kv.get(key));
     let timer;
     const timeout = new Promise((_, reject) => {
-      timer = setTimeout(() => reject(new RouteReadModelUnavailable(`route read-model read exceeded ${timeoutMs}ms`)), timeoutMs);
+      timer = setTimeout(() => reject(new RouteReadModelUnavailable(
+        `route read-model read exceeded ${timeoutMs}ms`,
+        ROUTE_READ_MODEL_CAUSES.timeout,
+      )), timeoutMs);
     });
     const value = await Promise.race([read, timeout]).then((raw) => {
-      if (raw == null || raw === "") throw new RouteReadModelUnavailable(`missing route read-model key ${key}`);
+      if (raw == null || raw === "") {
+        throw new RouteReadModelUnavailable(`missing route read-model key ${key}`, ROUTE_READ_MODEL_CAUSES.missing);
+      }
       try {
         const value = typeof raw === "string" ? JSON.parse(raw) : raw;
         if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("not an object");
         return value;
       } catch (error) {
-        throw new RouteReadModelUnavailable(`invalid route read-model key ${key}: ${error.message}`);
+        throw new RouteReadModelUnavailable(
+          `invalid route read-model key ${key}: ${error.message}`,
+          ROUTE_READ_MODEL_CAUSES.malformed,
+        );
       }
     }).finally(() => {
       clearTimeout(timer);
@@ -60,11 +84,16 @@ async function manifestFor(kv, kind, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) {
       : kind === "community-district-digest"
         ? COMMUNITY_DISTRICT_DIGEST_MANIFEST_KEY
         : MEETING_MANIFEST_KEY;
-    const manifest = await getJson(kv, key, state, timeoutMs).then((manifest) => {
+    const manifest = await getJson(kv, key, state, timeoutMs).catch((error) => {
+      if (!(error instanceof RouteReadModelUnavailable)) throw error;
+      if (error.reason === ROUTE_READ_MODEL_CAUSES.missing) error.reason = ROUTE_READ_MODEL_CAUSES.manifestMissing;
+      if (error.reason === ROUTE_READ_MODEL_CAUSES.malformed) error.reason = ROUTE_READ_MODEL_CAUSES.manifestInvalid;
+      throw error;
+    }).then((manifest) => {
       if (Number(manifest.schema_version) !== ROUTE_READ_MODEL_SCHEMA_VERSION
         || manifest.kind !== kind || !manifest.version || !manifest.slices) {
         state.values.delete(key);
-        throw new RouteReadModelUnavailable(`invalid ${kind} route read-model manifest`);
+        throw new RouteReadModelUnavailable(`invalid ${kind} route read-model manifest`, ROUTE_READ_MODEL_CAUSES.manifestInvalid);
       }
       return manifest;
     });
@@ -73,7 +102,17 @@ async function manifestFor(kv, kind, timeoutMs = ROUTE_READ_MODEL_TIMEOUT_MS) {
   return state.manifests.get(kind);
 }
 
-function nearYouSliceIds(scope) {
+/** The special buckets, each an independently loaded Near You section. */
+const NEAR_YOU_SPECIAL_SECTIONS = Object.freeze(["citywide", "virtual", "unlocated"]);
+
+/**
+ * The slice reads one Near You request needs, partitioned into sections: the
+ * requested (primary) scope and each special bucket. A requested
+ * location_scope bucket is the primary scope for that request, so its failure
+ * is a requested-results failure even though the same read also feeds that
+ * bucket's section.
+ */
+function nearYouSectionPlan(scope) {
   const place = scope?.place || {};
   let primary;
   if (Array.isArray(place.geographies) && place.geographies.length) primary = place.geographies;
@@ -82,8 +121,14 @@ function nearYouSliceIds(scope) {
   else if (place.community_districts?.length) primary = [`community-district:${place.community_districts[0]}`];
   else if (place.boroughs?.length) primary = [`borough:${place.boroughs[0]}`];
   else primary = boroughNames.map((name) => `borough:${name}`);
-  const special = ["citywide", "virtual", "unlocated"];
-  return [...new Set([...primary, ...special])];
+  return {
+    primary: [...new Set(primary)],
+    ...Object.fromEntries(NEAR_YOU_SPECIAL_SECTIONS.map((bucket) => [bucket, [bucket]])),
+  };
+}
+
+function nearYouSliceIds(scope) {
+  return [...new Set(Object.values(nearYouSectionPlan(scope)).flat())];
 }
 
 function sliceKey(manifest, id, lens) {
@@ -234,33 +279,83 @@ export function clearRouteReadModelCache() {
   // tests use fresh KV objects, matching a new isolate's cache.
 }
 
+/**
+ * Load one Near You request from a single manifest version, one section at a
+ * time. Each section (the requested scope and each special bucket) settles on
+ * its own: a failed read marks only that section unavailable, with a typed
+ * cause, and never discards another section's records. Only slices of sections
+ * that loaded completely are merged, so a failed section contributes no IDs,
+ * counts or coverage. A manifest that is missing or invalid still rejects, as
+ * does a request in which no section loaded.
+ *
+ * Returns `sections`, one `{ state: "ready" | "unavailable", cause }` entry per
+ * section, and `partial` when any section is unavailable.
+ */
 export async function loadNearYouActivity(env, scope, lens = scope?.facets?.domains?.[0] || "meetings") {
-  if (missingBinding(env)) return { activity: NEAR_YOU_FLOOR, communityGeography: {} };
+  if (missingBinding(env)) {
+    return {
+      activity: NEAR_YOU_FLOOR,
+      communityGeography: {},
+      sections: Object.fromEntries(["primary", ...NEAR_YOU_SPECIAL_SECTIONS].map((name) => [name, { state: "ready", cause: null }])),
+      partial: false,
+    };
+  }
   const kv = env.ALERT_STATE;
   const configuredTimeout = Number(env.NEAR_YOU_READ_MODEL_TIMEOUT_MS);
   const timeoutMs = Number.isFinite(configuredTimeout) && configuredTimeout > 0
     ? configuredTimeout
     : ROUTE_READ_MODEL_TIMEOUT_MS;
-  const manifest = await manifestFor(kv, "near-you", timeoutMs);
-  const ids = nearYouSliceIds(scope);
+  // A manifest the store could not return at all is still a typed Near You
+  // read failure (503 with navigation), not an unhandled error.
+  const manifest = await manifestFor(kv, "near-you", timeoutMs).catch((error) => {
+    if (error instanceof RouteReadModelUnavailable) throw error;
+    throw new RouteReadModelUnavailable("near-you route read-model manifest read failed", ROUTE_READ_MODEL_CAUSES.readFailed);
+  });
+  const plan = nearYouSectionPlan(scope);
   const sliceLens = ["land", "property", "rules", "meetings", "money"].includes(lens) ? lens : "meetings";
   const state = stateFor(kv);
-  const keys = ids.map((id) => {
+  // One read per distinct slice key within this request, never shared with
+  // another request's active I/O. An id the manifest does not publish starts
+  // no read and is an unknown geography, not an empty result.
+  const reads = new Map();
+  const readFor = (id) => {
     const key = sliceKey(manifest, id, sliceLens);
-    if (!key) throw new RouteReadModelUnavailable(`missing near-you slice ${id}:${sliceLens}`);
-    return key;
-  });
-  // Deduplicate only within this request, never by sharing active I/O across
-  // requests. Validate every key first so missing coverage starts no reads.
-  const reads = new Map([...new Set(keys)].map((key) => [key, getJson(kv, key, state, timeoutMs)]));
-  const slices = await Promise.all(keys.map((key) => reads.get(key)));
-  if (!slices.length || slices.some((slice) => !slice.activity?.records)) {
-    throw new RouteReadModelUnavailable("near-you slice is empty");
+    if (!key) {
+      return Promise.resolve({ ok: false, cause: ROUTE_READ_MODEL_CAUSES.unknownGeography });
+    }
+    if (!reads.has(key)) {
+      reads.set(key, getJson(kv, key, state, timeoutMs).then((slice) => (slice?.activity?.records
+        ? { ok: true, slice }
+        : { ok: false, cause: ROUTE_READ_MODEL_CAUSES.malformed }
+      ), (error) => ({
+        ok: false,
+        cause: error instanceof RouteReadModelUnavailable ? error.reason : ROUTE_READ_MODEL_CAUSES.readFailed,
+      })));
+    }
+    return reads.get(key);
+  };
+  const settled = await Promise.all(Object.entries(plan).map(async ([section, ids]) => {
+    const outcomes = await Promise.all(ids.map(readFor));
+    const failed = outcomes.find((outcome) => !outcome.ok);
+    return [section, failed
+      ? { state: "unavailable", cause: failed.cause, slices: [] }
+      : { state: "ready", cause: null, slices: outcomes.map((outcome) => outcome.slice) }];
+  }));
+  const sections = Object.fromEntries(settled.map(([section, { state: sectionState, cause }]) => [
+    section, { state: sectionState, cause },
+  ]));
+  const loaded = [...new Set(settled.flatMap(([, outcome]) => outcome.slices))];
+  if (!loaded.length) {
+    const error = new RouteReadModelUnavailable("no near-you section could be read", sections.primary.cause);
+    error.sections = sections;
+    throw error;
   }
   return {
-    activity: mergeActivity(slices.map((slice) => slice.activity || slice)),
-    communityGeography: slices.find((slice) => slice.community_geography)?.community_geography || {},
+    activity: mergeActivity(loaded.map((slice) => slice.activity || slice)),
+    communityGeography: loaded.find((slice) => slice.community_geography)?.community_geography || {},
     version: manifest.version,
+    sections,
+    partial: Object.values(sections).some((section) => section.state !== "ready"),
   };
 }
 
