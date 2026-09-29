@@ -324,12 +324,31 @@ export async function readBack(args) {
     ? HISTORY_BYTES.every((key) => data[key]?.sha256 && data[key].sha256 === baseline.data?.[key]?.sha256)
     : null;
   const journeysPassed = capabilities.find((record) => record.id === "search-history-discovery")?.observed?.result?.families_passed || [];
+  const cycleReceiptPath = SCHEDULED_PUBLICATION_WORKFLOWS.find((entry) => entry.served_receipt)?.served_receipt;
+  let servedCycleReceipt = null;
+  if (cycleReceiptPath) {
+    const { payload, receipt } = await fetchServed(args.base, cycleReceiptPath);
+    servedCycleReceipt = payload
+      ? {
+          url: cycleReceiptPath,
+          sha256: receipt.sha256,
+          run_id: payload.run?.run_id ?? null,
+          github_run_id: payload.run?.github_run_id ?? null,
+          trigger: payload.run?.trigger ?? null,
+          outcome: payload.run?.outcome ?? null,
+          started_at: payload.run?.started_at ?? null,
+          finished_at: payload.run?.finished_at ?? null,
+          served_revision: payload.run?.served?.revision ?? null,
+        }
+      : { url: cycleReceiptPath, sha256: null, error: receipt.error };
+  }
   const scheduledCycle = scheduledCycleStatus({
     release_deployed_at: releaseDeployedAt,
     observed_at: observedAt,
     observations,
     journeys_passed_after_cycle: journeysPassed,
     unchanged_history_bytes: unchanged,
+    served_cycle_receipt: servedCycleReceipt,
   });
   if (scheduleError) scheduledCycle.query_error = scheduleError;
 

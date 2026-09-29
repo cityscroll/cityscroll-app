@@ -201,13 +201,13 @@ test("A3/A5: the scheduled cycle stays open until a served run, a non-CB15 journ
   const servedRun = {
     run_id: 1,
     event: "schedule",
-    created_at: "2026-09-29T09:47:00Z",
+    created_at: "2026-09-29T07:13:00Z",
     conclusion: "success",
     pull_request: 1,
     merge_commit: "b".repeat(40),
     served_contains_merge: true,
   };
-  const workflow = (runs) => [{ workflow: "geocoder-address-index.yml", runs }];
+  const workflow = (runs) => [{ workflow: "connected-history-cycle.yml", runs }];
   const input = (overrides) => ({
     release_deployed_at: deployed,
     observed_at: "2026-09-30T12:00:00Z",
@@ -219,11 +219,11 @@ test("A3/A5: the scheduled cycle stays open until a served run, a non-CB15 journ
 
   const none = scheduledCycleStatus(input({ observed_at: observedAt, observations: workflow([]) }));
   assert.equal(none.status, "open");
-  assert.equal(none.next_check_at, "2026-09-29T06:40:00.000Z");
+  assert.equal(none.next_check_at, "2026-09-29T07:13:00.000Z");
   assert.equal(none.readback_deadline, "2026-10-06T00:00:00.000Z");
   assert.equal(scheduledCycleStatus(input({ observations: null })).status, "open");
   assert.equal(
-    scheduledCycleStatus(input({ observations: workflow([{ ...servedRun, created_at: "2026-09-28T09:47:00Z" }]) })).status,
+    scheduledCycleStatus(input({ observations: workflow([{ ...servedRun, created_at: "2026-09-28T07:13:00Z" }]) })).status,
     "open",
     "a run that started before the release deployment never counts",
   );
@@ -236,7 +236,16 @@ test("A3/A5: the scheduled cycle stays open until a served run, a non-CB15 journ
   const observed = scheduledCycleStatus(input({}));
   assert.equal(observed.status, "observed");
   assert.deepEqual(observed.non_cb15_journeys_after_cycle, ["kingsbridge-armory"]);
-  assert.equal(nextScheduledCheck("2026-09-29T07:00:00Z"), "2026-09-29T09:47:00.000Z");
+  assert.equal(observed.served_cycle_receipt, null);
+  assert.equal(nextScheduledCheck("2026-09-29T07:00:00Z"), "2026-09-29T07:13:00.000Z");
+  assert.equal(nextScheduledCheck("2026-09-29T07:20:00Z"), "2026-09-30T07:13:00.000Z");
+
+  // The served cycle receipt is retained as read, and it never decides the status.
+  const servedReceipt = { url: "/data/connected_history_cycle.json", sha256: "c".repeat(64), run_id: "github-actions:1:1", github_run_id: 1, outcome: "unchanged" };
+  const withReceipt = scheduledCycleStatus(input({ served_cycle_receipt: servedReceipt }));
+  assert.deepEqual(withReceipt.served_cycle_receipt, servedReceipt);
+  assert.equal(withReceipt.status, "observed");
+  assert.equal(scheduledCycleStatus(input({ observations: workflow([]), served_cycle_receipt: servedReceipt })).status, "open");
 });
 
 test("acceptance is derived from facts and never met from a rehearsal", () => {
@@ -274,7 +283,7 @@ function productionReadback({ cycle = { status: "open" } } = {}) {
 
 const OBSERVED_CYCLE = Object.freeze({
   status: "observed",
-  observed_cycle: { workflow: "geocoder-address-index.yml", run_id: 1, merge_commit: "b".repeat(40) },
+  observed_cycle: { workflow: "connected-history-cycle.yml", run_id: 1, merge_commit: "b".repeat(40) },
 });
 
 function conditionValues(readback) {
