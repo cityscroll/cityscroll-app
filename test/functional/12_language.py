@@ -92,6 +92,12 @@ with sync_playwright() as pw:
         }""",
         label="Spanish language restored after reload",
     )
+    # The restored lang and translated chrome come from i18n.js in <head>, but on
+    # a hash route the #langSelect change handler is bound only when boot.mjs,
+    # the last module the application imports, runs. A selection made before
+    # then is dropped and boot resets the control to the saved language, so the
+    # switches below wait for the same boot barrier as the first load.
+    wait_for_app_ready(page)
     assert page.locator('[data-i18n="tab_money"]').first.inner_text().strip() == money_tab_es.strip(), "es must survive reload"
     step("OK", "persists across reload")
 
@@ -262,6 +268,8 @@ with sync_playwright() as pw:
     linked.goto(SPA_ENTRY + "?lang=es#notice/20260716022", timeout=30000)
     linked.wait_for_selector("#noticeview #ncopy", state="visible", timeout=10000)
     linked.wait_for_selector("#noticeview [data-more-tools-region], #noticeview #notice-more-tools", state="attached", timeout=10000)
+    # The notice renders before boot.mjs binds the language switcher used below.
+    wait_for_app_ready(linked)
     assert linked.locator("#langSelect").input_value() == "es"
     assert linked.evaluate("document.documentElement.lang") == "es"
     assert linked.locator('[data-i18n="tab_money"]').first.inner_text().strip().lower() != "contracts"
