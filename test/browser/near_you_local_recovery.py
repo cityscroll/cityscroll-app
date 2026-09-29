@@ -18,6 +18,14 @@ then open a record from that collection. The links stay present and working
 without JavaScript, with location denied, without WebGL or map tiles, and when
 the local records read fails.
 
+Collection entry under induced failures: location denied, WebGL unavailable,
+basemap tiles failing, and the local records hydration failing outright or
+partway are each induced alone, beside a control capture of the same page
+without that one failure. Both captures must keep the row with all six family
+links and the search anchor; the failed capture must also follow a family
+link to its collection and resolve the search anchor. The same captures are
+repeated with the row cut from the served document and must then fail.
+
 Every in-page checker is first run against a control element built to fail
 it, so a checker that cannot fail refuses the run. Nothing is written to the
 repository; no screenshots are taken.
@@ -27,9 +35,13 @@ from __future__ import annotations
 
 import datetime
 import json
+import re
+import struct
 import subprocess
 import sys
+import time
 import urllib.parse
+import zlib
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -676,6 +688,341 @@ def check_entry_failures(browser, base: str, expected: list[dict]) -> list[dict]
     return results
 
 
+# --- Collection entry under induced failures ---------------------------------
+#
+# Each failure is induced alone. Its control is the same route at the same
+# viewport under the same network policy, differing only in that failure, and
+# each capture's signal must match its own side and reject the other side, so
+# the observed difference is attributable to the induced condition.
+
+TILE_HOST_SUFFIX = ".basemaps.cartocdn.com"
+DEFERRED_PATH = "/near-you/deferred.json"
+ROW_MARKUP = re.compile(r'<nav class="near-collection-entry"[\s\S]*?</nav>')
+ROW_LINKS_MARKUP = re.compile(r'(<ul class="near-collection-links">)[\s\S]*?(</ul>)')
+# Software WebGL, so the controls mount the enhanced map on a GPU-less runner
+# as well; Playwright enables this fallback by default on macOS only.
+SOFTWARE_WEBGL_ARGS = ("--enable-unsafe-swiftshader",)
+EMPTY_SHELL = "<!doctype html><html><head><title></title></head><body></body></html>"
+# Location granted at a point outside the city: the explicit request succeeds
+# and the entry stays unselected, so the page is comparable to the denied one.
+OUTSIDE_CITY_POINT = {"latitude": 39.9526, "longitude": -75.1652}
+WEBGL_UNAVAILABLE_JS = """(() => {
+  const original = HTMLCanvasElement.prototype.getContext;
+  HTMLCanvasElement.prototype.getContext = function(type, ...args) {
+    if (String(type).toLowerCase().includes('webgl')) return null;
+    return original.call(this, type, ...args);
+  };
+})()"""
+ENTRY_SIGNAL_JS = """() => {
+  const root = document.querySelector('[data-near-you-root]');
+  return {
+    map_runtime: root?.dataset.nearMapRuntime || null,
+    map_runtime_reason: root?.dataset.nearMapRuntimeReason || null,
+    map_state: root?.dataset.nearGeographyMapState || null,
+    deferred_state: root?.dataset.nearDeferredState || null,
+    deferred_hosts: document.querySelectorAll('[data-near-deferred]').length,
+    location_status: (document.querySelector('[data-map-status]')?.textContent || '').trim(),
+  };
+}"""
+# Page script has finished its work: the records hydration and the map
+# controller have each reached a terminal state.
+SCRIPTS_SETTLED_JS = """() => {
+  const root = document.querySelector('[data-near-you-root]');
+  return ['ready', 'error'].includes(root?.dataset.nearDeferredState)
+    && ['ready', 'failed'].includes(root?.dataset.nearGeographyMapState);
+}"""
+
+
+class CollectionRowMissing(AssertionError):
+    """The collection row, one of its links, or its search anchor is gone."""
+
+
+def blank_tile_png(size: int = 256) -> bytes:
+    """A plain white raster tile built in memory, so the control's basemap loads offline."""
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xFFFFFFFF)
+    rows = b"".join(b"\x00" + b"\xff\xff\xff" * size for _ in range(size))
+    header = struct.pack(">IIBBBBB", size, size, 8, 2, 0, 0, 0)
+    return b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", header) + chunk(b"IDAT", zlib.compress(rows)) + chunk(b"IEND", b"")
+
+
+BLANK_TILE = blank_tile_png()
+
+
+def mutate_row(body: str, mutation: str) -> str:
+    if mutation == "removed":
+        return ROW_MARKUP.sub("", body, count=1)
+    return ROW_MARKUP.sub(lambda row: ROW_LINKS_MARKUP.sub(r"\1\2", row.group(0), count=1), body, count=1)
+
+
+def install_entry_network(page, base: str, *, tiles: str = "served", hydration: str = "real",
+                          row_mutation: str | None = None, entry_route: str = "/") -> dict:
+    """Same-origin requests reach the capture server; basemap tiles are answered
+    locally; every other remote request is refused. One argument changes one
+    condition: failing tiles, a failing or truncated records hydration, or the
+    collection row removed from, or emptied in, the served entry document."""
+    counters = {"tiles_served": 0, "tiles_failed": 0, "hydration_answers": 0, "rows_cut": 0, "uncut_documents": 0}
+
+    def handle(route):
+        request = route.request
+        url = urllib.parse.urlsplit(request.url)
+        if request.url.startswith(base):
+            if url.path == DEFERRED_PATH and hydration != "real":
+                counters["hydration_answers"] += 1
+                if hydration == "unavailable":
+                    route.fulfill(status=503, content_type="application/json", body="{}")
+                    return
+                payload = route.fetch().text()
+                route.fulfill(status=200, content_type="application/json", body=payload[: len(payload) // 2])
+                return
+            if row_mutation and url.path == entry_route and request.resource_type == "document":
+                response = route.fetch()
+                body = response.text()
+                cut = mutate_row(body, row_mutation)
+                counters["rows_cut" if cut != body else "uncut_documents"] += 1
+                route.fulfill(response=response, body=cut)
+                return
+            route.continue_()
+        elif (url.hostname or "").endswith(TILE_HOST_SUFFIX):
+            if tiles == "failed":
+                counters["tiles_failed"] += 1
+                route.fulfill(status=503, content_type="text/plain", body="")
+            else:
+                counters["tiles_served"] += 1
+                route.fulfill(status=200, content_type="image/png", body=BLANK_TILE)
+        else:
+            route.abort()
+
+    page.route("**/*", handle)
+    return counters
+
+
+def settle_entry_scripts(page, *, label: str) -> None:
+    try:
+        page.wait_for_function(SCRIPTS_SETTLED_JS, timeout=30_000)
+    except Exception as error:
+        raise AssertionError(f"{label}: page script never settled: {page.evaluate(ENTRY_SIGNAL_JS)}") from error
+
+
+def settle_geolocation(page, *, label: str) -> None:
+    location = page.locator("[data-use-location]:not([hidden])")
+    location.wait_for(state="visible", timeout=15_000)
+    location.click()
+    try:
+        page.wait_for_function(
+            "() => /not granted|outside/i.test(document.querySelector('[data-map-status]')?.textContent || '')",
+            timeout=20_000,
+        )
+    except Exception as error:
+        raise AssertionError(f"{label}: the location request never resolved: {page.evaluate(ENTRY_SIGNAL_JS)}") from error
+
+
+def settle_tiles(counters: dict, key: str, *, label: str) -> None:
+    deadline = time.monotonic() + 20
+    while counters[key] == 0 and time.monotonic() < deadline:
+        time.sleep(0.25)
+    if counters[key] == 0:
+        raise AssertionError(f"{label}: the map requested no basemap tile: {counters}")
+
+
+def run_geolocation(page, counters, *, induced: bool, label: str) -> None:
+    settle_entry_scripts(page, label=label)
+    settle_geolocation(page, label=label)
+
+
+def run_settled(page, counters, *, induced: bool, label: str) -> None:
+    settle_entry_scripts(page, label=label)
+
+
+def run_tiles(page, counters, *, induced: bool, label: str) -> None:
+    settle_entry_scripts(page, label=label)
+    settle_tiles(counters, "tiles_failed" if induced else "tiles_served", label=label)
+
+
+# Each case: its label, how the induced side differs from its control, how to
+# drive the page to a settled state, and the signal each side must show.
+ENTRY_FAILURE_CASES = (
+    {
+        "name": "geolocation-denied",
+        "context": lambda induced: {"permissions": []} if induced
+        else {"permissions": ["geolocation"], "geolocation": OUTSIDE_CITY_POINT},
+        "network": lambda induced: {},
+        "init_script": lambda induced: None,
+        "drive": run_geolocation,
+        "control_ok": lambda signal, counters: "outside" in signal["location_status"].lower(),
+        "induced_ok": lambda signal, counters: "not granted" in signal["location_status"].lower(),
+    },
+    {
+        "name": "webgl-unavailable",
+        "context": lambda induced: {},
+        "network": lambda induced: {},
+        "init_script": lambda induced: WEBGL_UNAVAILABLE_JS if induced else None,
+        "drive": run_settled,
+        "control_ok": lambda signal, counters: signal["map_runtime"] == "maplibre" and signal["map_state"] == "ready",
+        "induced_ok": lambda signal, counters: signal["map_runtime"] == "failed"
+        and signal["map_runtime_reason"] == "webgl_unsupported" and signal["map_state"] == "failed",
+    },
+    {
+        "name": "map-tiles-failed",
+        "context": lambda induced: {},
+        "network": lambda induced: {"tiles": "failed" if induced else "served"},
+        "init_script": lambda induced: None,
+        "drive": run_tiles,
+        "control_ok": lambda signal, counters: signal["map_runtime"] == "maplibre"
+        and counters["tiles_served"] > 0 and counters["tiles_failed"] == 0,
+        "induced_ok": lambda signal, counters: signal["map_runtime"] == "maplibre"
+        and counters["tiles_failed"] > 0 and counters["tiles_served"] == 0,
+    },
+    {
+        "name": "records-hydration-failed",
+        "context": lambda induced: {},
+        "network": lambda induced: {"hydration": "unavailable"} if induced else {},
+        "init_script": lambda induced: None,
+        "drive": run_settled,
+        # The control is the completed hydration: every deferred shell replaced.
+        "control_ok": lambda signal, counters: signal["deferred_state"] == "ready" and signal["deferred_hosts"] == 0
+        and counters["hydration_answers"] == 0,
+        "induced_ok": lambda signal, counters: signal["deferred_state"] == "error" and counters["hydration_answers"] > 0,
+    },
+    {
+        "name": "records-hydration-truncated",
+        "context": lambda induced: {},
+        "network": lambda induced: {"hydration": "truncated"} if induced else {},
+        "init_script": lambda induced: None,
+        "drive": run_settled,
+        "control_ok": lambda signal, counters: signal["deferred_state"] == "ready" and signal["deferred_hosts"] == 0
+        and counters["hydration_answers"] == 0,
+        "induced_ok": lambda signal, counters: signal["deferred_state"] == "error" and counters["hydration_answers"] > 0,
+    },
+)
+# Desktop reads the root entry, the narrow touch viewport the Near You entry.
+FAILURE_VIEWPORT_ROUTES = (("desktop", 1440, 900, "/"), ("narrow_touch", 390, 844, "/near-you/"))
+
+
+def assert_row_intact(page, expected: list[dict], *, label: str) -> dict:
+    """The row is present, visible, carries every family link and the search
+    anchor with their canonical routes, and the place search is still there."""
+    snapshot = page.evaluate(ENTRY_LAYOUT_JS, COLLECTION_ROW)
+    row = snapshot["row"]
+    if page.locator(COLLECTION_ROW).count() != 1 or not row or row["hidden"] or row["collapsed"]:
+        raise CollectionRowMissing(f"{label}: collection row is missing, hidden or collapsed: {row}")
+    observed = [
+        (link["kind"], link["family"], link["label"], urllib.parse.urlsplit(link["href"] or "").path)
+        for link in snapshot["links"]
+    ]
+    wanted = [(item["kind"], item["id"] if item["kind"] == "family" else None, item["label"], item["route"]) for item in expected]
+    if observed != wanted:
+        raise CollectionRowMissing(f"{label}: collection links {observed} are not the canonical {wanted}")
+    families = [link for link in snapshot["links"] if link["kind"] == "family"]
+    if len(families) != 6 or any(not link["box"] or link["box"]["hidden"] for link in families):
+        raise CollectionRowMissing(f"{label}: expected six visible family links: {families}")
+    search = [link for link in snapshot["links"] if link["kind"] == "search"]
+    if len(search) != 1 or not search[0]["box"] or search[0]["box"]["hidden"]:
+        raise CollectionRowMissing(f"{label}: the search anchor is missing or hidden: {search}")
+    if not snapshot["search"] or snapshot["search"]["hidden"]:
+        raise CollectionRowMissing(f"{label}: the place search is missing or hidden: {snapshot['search']}")
+    return {"family_links": len(families), "links": len(snapshot["links"]), "search_anchor": search[0]["href"]}
+
+
+def assert_row_links_resolve(page, base: str, expected: list[dict], family: str, *, label: str) -> dict:
+    """Resolve the search anchor and follow one family link through the capture
+    server, after proving the landing checker rejects the home shell and an empty shell."""
+    family_row = next(item for item in expected if item["id"] == family)
+    search_row = next(item for item in expected if item["kind"] == "search")
+    home_shell = page.content()
+    for control_label, body in (("home shell", home_shell), ("empty shell", EMPTY_SHELL)):
+        for row in (family_row, search_row):
+            if served_document_ok(200, row["route"], body, row):
+                raise AssertionError(f"{label}: landing checker accepted the {control_label} as {row['label']}")
+    href = page.locator(f'{COLLECTION_ROW} a[data-near-collection="search"]').get_attribute("href") or ""
+    response = page.request.get(urllib.parse.urljoin(f"{base}/", href))
+    if not served_document_ok(response.status, urllib.parse.urlsplit(response.url).path, response.text(), search_row):
+        raise AssertionError(f"{label}: the search anchor {href} answered {response.status}, not the search document")
+    landed = follow_collection_link(page, family_row, label=label)
+    return {"followed": landed, "search_anchor_resolved": urllib.parse.urlsplit(href).path}
+
+
+def capture_entry_case(browser, base: str, expected: list[dict], case: dict, *, induced: bool, viewport: tuple,
+                       row_mutation: str | None = None, follow_family: str | None = None) -> dict:
+    viewport_name, width, height, route = viewport
+    side = "induced" if induced else "control"
+    label = f"{case['name']}-{side}-{viewport_name}{f'-row-{row_mutation}' if row_mutation else ''}"
+    context = browser.new_context(viewport={"width": width, "height": height}, has_touch=width < 500,
+                                  **case["context"](induced))
+    page = context.new_page()
+    try:
+        init_script = case["init_script"](induced)
+        if init_script:
+            page.add_init_script(init_script)
+        counters = install_entry_network(page, base, row_mutation=row_mutation, entry_route=route,
+                                         **case["network"](induced))
+        response = page.goto(f"{base}{route}", wait_until="load", timeout=30_000)
+        if response is None or response.status != 200:
+            raise AssertionError(f"{label}: {route} answered {response and response.status}")
+        if row_mutation and (counters["rows_cut"] != 1 or counters["uncut_documents"]):
+            raise AssertionError(f"{label}: the served entry document carried no row to mutate: {counters}")
+        case["drive"](page, counters, induced=induced, label=label)
+        signal = page.evaluate(ENTRY_SIGNAL_JS)
+        # Attribution: this side's signal holds and the other side's checker rejects it.
+        own, other = ("induced_ok", "control_ok") if induced else ("control_ok", "induced_ok")
+        if not case[own](signal, counters):
+            raise AssertionError(f"{label}: the {side} capture does not show its condition: {signal} {counters}")
+        if case[other](signal, counters):
+            raise AssertionError(f"{label}: the {side} capture also satisfies the opposite condition: {signal} {counters}")
+        result = {"label": label, "route": route, "signal": signal,
+                  "tiles": {key: counters[key] for key in ("tiles_served", "tiles_failed")}}
+        result["row"] = assert_row_intact(page, expected, label=label)
+        if follow_family:
+            result.update(assert_row_links_resolve(page, base, expected, follow_family, label=label))
+        return result
+    finally:
+        context.close()
+
+
+def check_entry_failure_pairs(browser, base: str, expected: list[dict]) -> list[dict]:
+    families = [item["id"] for item in expected if item["kind"] == "family"]
+    results = []
+    step = 0
+    for case in ENTRY_FAILURE_CASES:
+        for viewport in FAILURE_VIEWPORT_ROUTES:
+            control = capture_entry_case(browser, base, expected, case, induced=False, viewport=viewport)
+            # Rotate the followed family so every family is followed somewhere in the matrix.
+            family = families[step % len(families)]
+            step += 1
+            induced = capture_entry_case(browser, base, expected, case, induced=True, viewport=viewport,
+                                         follow_family=family)
+            results.append({"label": f"{case['name']}-{viewport[0]}", "control": control, "induced": induced})
+    followed = {item["induced"]["followed"] for item in results}
+    if len(followed) < len(families):
+        raise AssertionError(f"the failure matrix followed only {sorted(followed)} of the six families")
+    return results
+
+
+def check_entry_failure_mutations(browser, base: str, expected: list[dict]) -> list[dict]:
+    """Mutation control: with the row removed from the served document, or
+    left with no links, every induced capture must fail on the row itself
+    while its induced failure still shows."""
+    results = []
+    viewport = FAILURE_VIEWPORT_ROUTES[0]
+    for case in ENTRY_FAILURE_CASES:
+        for mutation in ("removed", "emptied"):
+            try:
+                capture_entry_case(browser, base, expected, case, induced=True, viewport=viewport, row_mutation=mutation)
+            except CollectionRowMissing as error:
+                results.append({"label": f"{case['name']}-row-{mutation}", "failed_on": str(error).split(":", 1)[1].strip()[:80]})
+                continue
+            raise AssertionError(f"{case['name']}: the induced capture passed with the collection row {mutation}")
+    return results
+
+
+def run_entry_failure_matrix(browser, base: str) -> list[dict]:
+    expected = expected_collections()["collections"]
+    return [
+        *check_entry_failure_pairs(browser, base, expected),
+        *check_entry_failure_mutations(browser, base, expected),
+    ]
+
+
 LEGACY_TARGETS_JS = """
 import { migrateLegacyUrl } from './site/route_migration.mjs';
 const hashes = JSON.parse(process.argv[1]);
@@ -758,10 +1105,16 @@ def main() -> int:
         results = run(base)
         with launched_chromium() as browser:
             entry = run_collection_entry(browser, base)
+        with launched_chromium(args=SOFTWARE_WEBGL_ARGS) as browser:
+            failures = run_entry_failure_matrix(browser, base)
     finally:
         process.terminate()
         process.wait(timeout=10)
-    print(json.dumps({"near_you_local_recovery": results, "near_you_collection_entry": entry}, indent=2))
+    print(json.dumps({
+        "near_you_local_recovery": results,
+        "near_you_collection_entry": entry,
+        "near_you_collection_entry_failures": failures,
+    }, indent=2))
     return 0
 
 

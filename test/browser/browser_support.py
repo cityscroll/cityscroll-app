@@ -15,12 +15,12 @@ except ImportError as exc:  # pragma: no cover - exercised by the prerequisite g
 
 
 @contextmanager
-def launched_chromium() -> Iterator[Browser]:
+def launched_chromium(*, args: tuple[str, ...] = ()) -> Iterator[Browser]:
     """Launch Chromium or fail with a diagnosis instead of silently skipping."""
 
     with sync_playwright() as playwright:
         try:
-            browser = playwright.chromium.launch(headless=True)
+            browser = playwright.chromium.launch(headless=True, args=list(args))
         except Exception as exc:  # pragma: no cover - depends on host browser state
             raise RuntimeError(
                 "Browser journey cannot run: Playwright Chromium could not launch. "
