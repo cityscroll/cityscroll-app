@@ -74,6 +74,7 @@ function deferredResponseHeaders() {
 const DEFERRED_SCHEMA = "cityscroll.near_you_deferred.v1";
 const DEFERRED_ERROR_SCHEMA = "cityscroll.near_you_deferred_error.v1";
 const UNAVAILABLE_REASON = "near-you-read-model-unavailable";
+export const READ_MODEL_VERSION_HEADER = "X-CityScroll-Read-Model-Version";
 
 /**
  * Per-section health for the deferred envelope: the requested (primary) scope
@@ -220,6 +221,11 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
     });
   const headers = deferred ? deferredResponseHeaders() : responseHeaders();
   if (partial) headers["Cache-Control"] = "no-store";
+  // The route read-model generation this response was rendered from, so a
+  // served capture can prove every page it observed came from one generation.
+  if (typeof routeReadModel.version === "string" && routeReadModel.version) {
+    headers[READ_MODEL_VERSION_HEADER] = routeReadModel.version;
+  }
   const response = new Response(request.method === "HEAD" ? null : body, {
     status: requestedLoaded ? 200 : 503,
     headers,

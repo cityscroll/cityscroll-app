@@ -7,6 +7,11 @@ the production page at desktop and phone widths, and verifies that the served
 revision does not change during the run. Screenshot binaries stay in an
 ignored, repository-local run directory; the committed manifest retains their
 digests and textual browser observations.
+
+``--scenario discovery-recovery`` runs the recovered discovery journeys instead
+(``tools/discovery_recovery_journey.py``), with its own evidence directory so it
+never overwrites this packet; add ``--local`` to drive the local fixture server
+over frozen records rather than the served site.
 """
 
 from __future__ import annotations
@@ -1100,12 +1105,32 @@ def validate_manifest(manifest: dict) -> None:
                 raise SystemExit(f"capture manifest lacks {expected}")
 
 
+SCENARIOS = ("default-local-home", "discovery-recovery")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--scenario", choices=SCENARIOS, default="default-local-home")
     parser.add_argument("--base", default=DEFAULT_BASE)
     parser.add_argument("--host-images", action="store_true", help="upload captures to the retained HTTPS host")
     parser.add_argument("--check", action="store_true", help="validate the retained manifest without network access")
+    parser.add_argument(
+        "--local", action="store_true",
+        help="discovery-recovery only: drive the local fixture server over frozen records instead of the served site",
+    )
     args = parser.parse_args()
+    if args.scenario == "discovery-recovery":
+        if args.host_images:
+            parser.error("--host-images applies to the default scenario; discovery-recovery retains render hashes only")
+        if args.local and args.base != DEFAULT_BASE:
+            parser.error("--local serves the checkout itself and takes no --base")
+        from discovery_recovery_journey import run_cli  # noqa: PLC0415
+
+        return run_cli(
+            base=args.base, local=args.local, check_only=args.check, deployment_manifest=deployment_manifest,
+        )
+    if args.local:
+        parser.error("--local applies to --scenario discovery-recovery")
     if args.check:
         validate_manifest(json.loads(MANIFEST_PATH.read_text(encoding="utf-8")))
         print("ok")

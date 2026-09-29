@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import http from "node:http";
 import { readFile } from "node:fs/promises";
 import { join, normalize, relative } from "node:path";
@@ -9,11 +10,21 @@ import edgeWorker from "../site/pages_edge.mjs";
 import { BROWSE_FACETS } from "../site/browse_view.mjs";
 
 const root = join(process.cwd(), "site");
+// A journey that proves frozen record counts names the district-activity blob
+// it expects; the server then reads that exact object from the repository
+// instead of the working-tree file, and names its generation after it.
+export const ACTIVITY_BLOB_ENV = "NEAR_YOU_CAPTURE_ACTIVITY_BLOB";
+const activityBlob = process.env[ACTIVITY_BLOB_ENV] || "";
+if (activityBlob && !/^[0-9a-f]{40}$/.test(activityBlob)) {
+  throw new Error(`${ACTIVITY_BLOB_ENV} must be a 40-hex blob id, got ${JSON.stringify(activityBlob)}`);
+}
 // Exercise the same retained membership slices as the deployed route, not its
 // tiny no-binding floor fixture (which cannot prove neighborhood relevance).
-const activity = JSON.parse(await readFile(join(root, "data/district_activity.json"), "utf8"));
+const activity = JSON.parse(activityBlob
+  ? execFileSync("git", ["cat-file", "blob", activityBlob], { cwd: process.cwd(), maxBuffer: 256 * 1024 * 1024 }).toString("utf8")
+  : await readFile(join(root, "data/district_activity.json"), "utf8"));
 const geography = JSON.parse(await readFile(join(root, "data/community_board_geography_lookup.json"), "utf8"));
-const materialized = buildNearYou(activity, geography, "capture");
+const materialized = buildNearYou(activity, geography, activityBlob ? `capture-${activityBlob.slice(0, 12)}` : "capture");
 const values = new Map(materialized.entries.map(({key, value}) => [key, value]));
 values.set("route-read-model:near-you:manifest:v1", JSON.stringify(materialized.manifest));
 const env = { ALERT_STATE: { get: async (key) => values.get(key) ?? null } };

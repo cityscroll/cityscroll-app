@@ -7,7 +7,7 @@
  */
 
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -46,7 +46,7 @@ import {
   buildLocalGeographyPublication,
   residentialPlacesFromNtaLayer,
 } from "../tools/build_worker_route_read_models.mjs";
-import { handleNearYou } from "../worker/src/near_you.mjs";
+import { handleNearYou, READ_MODEL_VERSION_HEADER } from "../worker/src/near_you.mjs";
 import edgeWorker from "../site/pages_edge.mjs";
 import { BROWSE_GROUPS, browseGroupEntryRoute } from "../site/browse_view.mjs";
 import { browseSurfaceContractForRoute } from "../site/browse_surface_contracts.mjs";
@@ -933,4 +933,333 @@ test("facts: September 23 Midwood view keeps venue address (positive control)", 
   const facts = nearYouRecordInspectionFacts(record, { now: "2026-09-23T14:00:00.000Z" });
   assert.match(facts.venue_address || record.venue_address || "", /810 East 16th/);
   assert.match(midwoodView.html, /Held in Midwood/);
+});
+
+// --- Discovery-recovery scenario (public alias c94563a6bbaf3) ---------------
+
+const DISCOVERY_DIR = join(ROOT, "docs/evidence/discovery-recovery-journey");
+const DISCOVERY_LOCAL_MANIFEST = join(DISCOVERY_DIR, "local-capture-manifest.json");
+const DISCOVERY_SERVED_MANIFEST = join(DISCOVERY_DIR, "capture-manifest.json");
+const DISCOVERY_FAMILIES = [
+  "root-category-record",
+  "typed-place-record",
+  "unsupported-place-escape",
+  "citywide-bucket-record",
+  "suggested-place-record",
+];
+const DISCOVERY_RECOVERY_CASES = [
+  "location-denied",
+  "location-timeout",
+  "explicit-zero",
+  "failed-section",
+  "missing-coverage",
+  "detail-failure",
+];
+const FROZEN_ACTIVITY_BLOB = "5deaa202fe578e09b58380d43755419dbb85ec60";
+
+function runCapture(args, env = process.env) {
+  return spawnSync("python3", [CAPTURE_TOOL, ...args], { cwd: ROOT, encoding: "utf8", env });
+}
+
+const labelCount = (text) => Number(String(text).match(/\((\d+) [^()]+\)\s*$/)?.[1]);
+
+test("discovery-recovery [A5] the retained local proof passes --check as an ancestor with unchanged inputs", () => {
+  const result = runCapture(["--scenario", "discovery-recovery", "--local", "--check"]);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /^ok: discovery-recovery local evidence pass$/m);
+  // The earlier default-home packet is untouched and still validates.
+  const defaultCheck = runCapture(["--check"]);
+  assert.equal(defaultCheck.status, 0, defaultCheck.stderr);
+  assert.notEqual(DISCOVERY_LOCAL_MANIFEST, MANIFEST_PATH);
+  assert.notEqual(DISCOVERY_SERVED_MANIFEST, MANIFEST_PATH);
+});
+
+test("discovery-recovery [A4/A5] the served --check reports explicit pending while no served capture exists", () => {
+  // Served observation is the successor read-back's; until it is recorded the
+  // check neither passes nor fails silently.
+  assert.equal(existsSync(DISCOVERY_SERVED_MANIFEST), false);
+  const result = runCapture(["--scenario", "discovery-recovery", "--check"]);
+  assert.equal(result.status, 3, result.stderr || result.stdout);
+  assert.match(result.stderr, /^pending: absent-served-capture: /m);
+  assert.equal(result.stdout, "");
+});
+
+test("discovery-recovery [A1/A2] the local proof covers every journey at both widths, counts read from the page", () => {
+  const manifest = JSON.parse(readFileSync(DISCOVERY_LOCAL_MANIFEST, "utf8"));
+  assert.equal(manifest.capture_mode, "headless-playwright-local-fixture-server");
+  assert.equal(manifest.image_binaries_committed, false);
+  assert.equal(manifest.provenance.frozen_activity.blob, FROZEN_ACTIVITY_BLOB);
+  assert.equal(JSON.stringify(manifest).includes("127.0.0.1"), false);
+  const byName = new Map(manifest.captures.map((row) => [row.name, row]));
+  for (const [viewport, width, height] of [["phone", 390, 844], ["desktop", 1440, 900]]) {
+    for (const journey of [...DISCOVERY_FAMILIES, ...DISCOVERY_RECOVERY_CASES]) {
+      const row = byName.get(`${journey}-${viewport}`);
+      assert.ok(row, `${journey}-${viewport}`);
+      assert.deepEqual(row.page.viewport, { width, height }, row.name);
+      assert.ok(row.page.stylesheet_rules > 0, row.name);
+      assert.match(row.render.sha256, /^[0-9a-f]{64}$/);
+      assert.equal(row.render.committed, false);
+      assert.equal(row.outcome, "pass", row.name);
+    }
+    // Independent reading of the frozen controls from the recorded page text,
+    // not from the harness's own verdicts.
+    const citywide = byName.get(`citywide-bucket-record-${viewport}`).observations;
+    assert.equal(Number(citywide.total_text), 20);
+    assert.equal(Number(citywide.bucket.results_count), Number(citywide.total_text));
+    assert.ok(citywide.preview_ids.length >= 1 && citywide.preview_ids.length <= 3);
+    assert.ok(citywide.preview_ids.every((id) => citywide.bucket.listed_ids.includes(id)));
+    assert.equal(citywide.destination.record_id, citywide.record_id);
+
+    const suggested = byName.get(`suggested-place-record-${viewport}`).observations;
+    assert.deepEqual(suggested.links.map((link) => [link.id, labelCount(link.text)]), [
+      ["MN0102", 26], ["MN0402", 12], ["MN0101", 9],
+    ]);
+    assert.deepEqual(suggested.destinations.map((place) => Number(place.results_count)), [26, 12, 9]);
+    assert.equal(suggested.destination.record_id, suggested.record_id);
+
+    const midwood = byName.get(`typed-place-record-${viewport}`).observations;
+    assert.equal(midwood.listed_ids.length, 2);
+    assert.equal(midwood.destination.record_id, SEPT23_ID);
+    assert.equal(midwood.inspect.control_tag, "button");
+    assert.equal(midwood.full_link.tag, "a");
+    assert.equal(midwood.returned.focus_record_id, SEPT23_ID);
+    assert.ok(Math.abs(midwood.returned.scroll_y - midwood.departure.scroll_y) <= 4);
+
+    const unsupported = byName.get(`unsupported-place-escape-${viewport}`).observations;
+    assert.equal(unsupported.results_count, null, "an unsupported place never shows a zero");
+    assert.equal(new URL(unsupported.escape.href, "https://cityscroll.org").pathname, "/browse/meetings/");
+    const zero = byName.get(`explicit-zero-${viewport}`).observations;
+    assert.equal(zero.results_count, "0", "a published zero stays a zero");
+  }
+});
+
+function runDiscoveryValidator(body) {
+  return spawnSync("python3", ["-c", `
+import copy, json, sys
+sys.path.insert(0, ${JSON.stringify(join(ROOT, "tools"))})
+import discovery_recovery_journey as d
+LOCAL = json.load(open(${JSON.stringify(DISCOVERY_LOCAL_MANIFEST)}, encoding="utf-8"))
+PIN = "c" * 40
+
+class Oracle:
+    """Accepts everything except the pairs a case names."""
+    def __init__(self, deny=(), changed=()):
+        self.deny, self.changed = set(deny), set(changed)
+    def resolve(self, ref):
+        return "a" * 40 if ref in ("HEAD", d.DEFAULT_BRANCH_REF) else None
+    def is_ancestor(self, ancestor, descendant):
+        return (ancestor, descendant) not in self.deny
+    def file_sha256(self, path):
+        return "0" * 64 if path in self.changed else next(
+            item["sha256"] for item in LOCAL["provenance"]["measured_inputs"] if item["path"] == path)
+
+def rederive(manifest, mode):
+    for row in manifest["captures"]:
+        row["assertions"] = d.derive_assertions(row, mode)
+        row["outcome"] = d.derive_outcome(row, mode)
+    manifest["findings"] = d.derive_findings(manifest["captures"])
+    manifest["result"] = d.derive_result(manifest["captures"], mode)
+    return manifest
+
+def served():
+    manifest = copy.deepcopy(LOCAL)
+    manifest["capture_mode"] = d.SERVED_MODE
+    manifest.pop("provenance")
+    manifest["required_ancestor"] = PIN
+    manifest["captures"] = [row for row in manifest["captures"] if row["journey"] in d.FAMILIES]
+    for row in manifest["captures"]:
+        for response in row["responses"]:
+            if response["worker"]:
+                response["read_model_version"] = "served-generation"
+    identity = {
+        "pages_revision": "d" * 40, "worker_revision": "e" * 40, "pages_artifact_hash": "1" * 64,
+        "pages_data_receipt_sha256": "2" * 64, "data_generation": "served-generation",
+    }
+    manifest["identity"] = {"before": dict(identity), "after": dict(identity)}
+    return rederive(manifest, d.SERVED_MODE)
+
+DELIVERY = {"landed_commit": PIN}
+
+def refused(code, fn):
+    try:
+        fn()
+    except d.JourneyEvidenceError as error:
+        assert error.code == code, (code, str(error))
+        return error
+    raise SystemExit(f"expected {code} refusal")
+${body}
+print("checked")
+`], { cwd: ROOT, encoding: "utf8" });
+}
+
+test("discovery-recovery [A4] the validator accepts the retained proof and refuses each weak shape specifically", () => {
+  const result = runDiscoveryValidator(`
+local = lambda m, oracle=None: d.validate_manifest(m, mode=d.LOCAL_MODE, git=oracle or Oracle())
+# Positive control: the unmodified local proof and a well-formed served manifest pass.
+assert local(copy.deepcopy(LOCAL)) == "pass"
+assert d.validate_manifest(served(), mode=d.SERVED_MODE, git=Oracle(), delivery=DELIVERY) == "pass"
+
+# Wrong or pre-squash pins.
+m = copy.deepcopy(LOCAL)
+refused("wrong-pin", lambda: local(m, Oracle(deny={(m["provenance"]["capture_revision"], "a" * 40)})))
+refused("wrong-pin", lambda: d.validate_manifest(served(), mode=d.SERVED_MODE, git=Oracle(deny={(PIN, "a" * 40)}), delivery=DELIVERY))
+refused("wrong-pin", lambda: d.validate_manifest(served(), mode=d.SERVED_MODE, git=Oracle(), delivery={"landed_commit": "f" * 40}))
+# Pending deployment: a served surface does not contain the landed commit.
+error = refused("deploy-pending", lambda: d.validate_manifest(served(), mode=d.SERVED_MODE, git=Oracle(deny={(PIN, "e" * 40)}), delivery=DELIVERY))
+assert error.pending
+# Missing data: no observations, or a served identity without its data receipt.
+m = copy.deepcopy(LOCAL); m["captures"] = []
+refused("missing-data", lambda: local(m))
+m = served(); del m["identity"]["before"]["pages_data_receipt_sha256"]; m["identity"]["after"] = dict(m["identity"]["before"])
+refused("missing-data", lambda: d.validate_manifest(m, mode=d.SERVED_MODE, git=Oracle(), delivery=DELIVERY))
+m = served(); m["captures"] = []
+refused("missing-data", lambda: d.validate_manifest(m, mode=d.SERVED_MODE, git=Oracle(), delivery=DELIVERY))
+# Mixed generation: one Worker response from another generation, or identity moved mid-run.
+m = copy.deepcopy(LOCAL)
+next(r for row in m["captures"] for r in row["responses"] if r["worker"])["read_model_version"] = "capture-other"
+refused("mixed-generation", lambda: local(m))
+m = served(); m["identity"]["after"]["worker_revision"] = "9" * 40
+refused("mixed-generation", lambda: d.validate_manifest(m, mode=d.SERVED_MODE, git=Oracle(), delivery=DELIVERY))
+# A served Worker that names no generation is pending, not a pass.
+m = served()
+for row in m["captures"]:
+    for r in row["responses"]:
+        r["read_model_version"] = None
+error = refused("deploy-pending", lambda: d.validate_manifest(m, mode=d.SERVED_MODE, git=Oracle(), delivery=DELIVERY))
+assert error.pending
+# Missing viewport: a journey absent at one width, or a width not actually applied.
+m = copy.deepcopy(LOCAL); m["captures"] = [r for r in m["captures"] if r["name"] != "citywide-bucket-record-phone"]
+refused("missing-viewport", lambda: local(m))
+m = copy.deepcopy(LOCAL); m["captures"][0]["page"]["viewport"]["width"] = 980
+e = refused("assertion-mismatch", lambda: local(m))
+e = refused("assertion-failed", lambda: local(rederive(m, d.LOCAL_MODE)))
+assert "viewport_applied" in str(e), e
+# Nonexistent record, and a subject anchor missing from its destination.
+m = copy.deepcopy(LOCAL); row = next(r for r in m["captures"] if r["name"] == "typed-place-record-desktop")
+row["observations"]["destination"]["record_id"] = "meeting:not-a-record"
+refused("nonexistent-record", lambda: local(rederive(m, d.LOCAL_MODE)))
+m = copy.deepcopy(LOCAL); row = next(r for r in m["captures"] if r["name"] == "typed-place-record-desktop")
+row["observations"]["destination"].update({"fragment": "agenda-subject", "anchor_present": False})
+refused("missing-anchor", lambda: local(rederive(m, d.LOCAL_MODE)))
+# Absent capture files: no render hash; no retained proof; no served capture.
+m = copy.deepcopy(LOCAL); m["captures"][3]["render"]["sha256"] = None
+refused("absent-capture-file", lambda: local(m))
+d.LOCAL_MANIFEST_PATH = d.EVIDENCE_DIR / "absent-local-proof.json"
+d.SERVED_MANIFEST_PATH = d.EVIDENCE_DIR / "absent-served-capture.json"
+refused("absent-capture-file", lambda: d.check(local=True, git=Oracle()))
+assert refused("absent-served-capture", lambda: d.check(local=False, git=Oracle())).pending
+# Stale inputs after capture.
+refused("stale-inputs", lambda: local(copy.deepcopy(LOCAL), Oracle(changed={"site/near_you_view.mjs"})))
+# No expected-constant verdicts: stored values must re-derive from observations.
+m = copy.deepcopy(LOCAL); row = next(r for r in m["captures"] if r["name"] == "explicit-zero-phone")
+row["observations"]["results_count"] = None
+refused("assertion-mismatch", lambda: local(m))
+m = copy.deepcopy(LOCAL); m["result"] = "pending"
+refused("result-mismatch", lambda: local(m))
+m = copy.deepcopy(LOCAL); m["findings"] = []
+refused("findings-mismatch", lambda: local(m))
+# Pending is legitimate only in served mode and only with its evidence.
+m = served(); row = next(r for r in m["captures"] if r["name"] == "suggested-place-record-phone")
+row["observations"] = {"links": []}; row["pending_obligation"] = "no-suggested-place"
+m = rederive(m, d.SERVED_MODE)
+assert d.validate_manifest(m, mode=d.SERVED_MODE, git=Oracle(), delivery=DELIVERY) == "pending"
+row["observations"] = {"links": [{"id": "MN0102"}]}
+refused("assertion-failed", lambda: d.validate_manifest(rederive(m, d.SERVED_MODE), mode=d.SERVED_MODE, git=Oracle(), delivery=DELIVERY))
+m = copy.deepcopy(LOCAL); row = next(r for r in m["captures"] if r["name"] == "suggested-place-record-phone")
+row["observations"] = {"links": []}; row["pending_obligation"] = "no-suggested-place"
+refused("assertion-failed", lambda: local(rederive(m, d.LOCAL_MODE)))
+# The served manifest refuses loopback observations.
+m = served(); m["captures"][0]["page"]["url"] = "http://127.0.0.1:9/"
+refused("wrong-surface", lambda: d.validate_manifest(rederive(m, d.SERVED_MODE), mode=d.SERVED_MODE, git=Oracle(), delivery=DELIVERY))
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /checked/);
+});
+
+test("discovery-recovery [A4] the served pin is the recorded landed commit on the default branch", () => {
+  const delivery = JSON.parse(readFileSync(join(DISCOVERY_DIR, "delivery.json"), "utf8"));
+  assert.deepEqual([...delivery.surfaces].sort(), ["pages", "worker"]);
+  assert.match(delivery.landed_commit, /^[0-9a-f]{40}$/);
+  // Landed means reachable from the checked tree, never a branch-only commit.
+  const ancestor = spawnSync("git", ["merge-base", "--is-ancestor", delivery.landed_commit, "HEAD"], { cwd: ROOT });
+  assert.equal(ancestor.status, 0);
+  // Converse: an object absent from history is refused as a wrong pin, not a wait.
+  const result = runDiscoveryValidator(`
+error = refused("wrong-pin", lambda: d.require_landed("0" * 40, d.GitOracle()))
+assert "not on the default branch" in error.message or "unavailable" in error.message, error.message
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});
+
+test("discovery-recovery [A5] CLI keeps the scenarios and their modes apart", () => {
+  const cases = [
+    [["--scenario", "discovery-recovery", "--host-images"], /--host-images applies to the default scenario/],
+    [["--local", "--check"], /--local applies to --scenario discovery-recovery/],
+    [["--scenario", "discovery-recovery", "--local", "--base", "https://example.test/"], /--local serves the checkout itself/],
+    [["--scenario", "other"], /invalid choice/],
+  ];
+  for (const [args, message] of cases) {
+    const result = runCapture(args);
+    assert.equal(result.status, 2, args.join(" "));
+    assert.match(result.stderr, message);
+  }
+  // A served capture refuses any base other than the production site before touching the network.
+  const local = runCapture(["--scenario", "discovery-recovery", "--base", "http://127.0.0.1:9/"]);
+  assert.equal(local.status, 1);
+  assert.match(local.stderr, /refused: wrong-surface: served capture requires the production site/);
+});
+
+test("discovery-recovery [A1] every Near You response names the read-model generation it was rendered from", async () => {
+  const env = publicationEnv();
+  for (const path of ["/", "/near-you/deferred.json?geo=nta2020%3ABK1403&lens=meetings"]) {
+    const response = await handleNearYou(new Request(`https://cityscroll.org${path}`), env);
+    assert.equal(response.status, 200, path);
+    assert.equal(response.headers.get(READ_MODEL_VERSION_HEADER), "default-local-home", path);
+  }
+  // Converse: with no published manifest there is no generation to name.
+  const unavailable = await handleNearYou(
+    new Request("https://cityscroll.org/near-you/?geo=nta2020%3ABK1403"),
+    { ALERT_STATE: kv(new Map()) },
+  );
+  assert.equal(unavailable.status, 503);
+  assert.equal(unavailable.headers.get(READ_MODEL_VERSION_HEADER), null);
+  const floor = await handleNearYou(new Request("https://cityscroll.org/"), {});
+  assert.equal(floor.headers.get(READ_MODEL_VERSION_HEADER), null);
+});
+
+async function readCaptureServer(env, path) {
+  const server = spawn("node", ["tools/serve_near_you_capture.mjs"], { cwd: ROOT, env, stdio: ["ignore", "pipe", "pipe"] });
+  try {
+    const base = await new Promise((resolve, reject) => {
+      let out = "";
+      let err = "";
+      server.stdout.on("data", (chunk) => {
+        out += chunk;
+        if (out.includes("\n")) resolve(out.trim());
+      });
+      server.stderr.on("data", (chunk) => { err += chunk; });
+      server.on("exit", (code) => reject(new Error(`capture server exited ${code}: ${err.slice(0, 300)}`)));
+    });
+    const response = await fetch(`${base}${path}`);
+    return { status: response.status, generation: response.headers.get(READ_MODEL_VERSION_HEADER), body: await response.json() };
+  } finally {
+    server.kill();
+  }
+}
+
+test("discovery-recovery [A1] the capture server serves the pinned frozen blob and names it as its generation", async () => {
+  const pinned = await readCaptureServer(
+    { ...process.env, NEAR_YOU_CAPTURE_ACTIVITY_BLOB: FROZEN_ACTIVITY_BLOB },
+    "/near-you/deferred.json?lens=meetings",
+  );
+  assert.equal(pinned.status, 200);
+  assert.equal(pinned.generation, `capture-${FROZEN_ACTIVITY_BLOB.slice(0, 12)}`);
+  assert.equal(pinned.body.sections.citywide.count, 20, "the frozen citywide bucket");
+  // Converse: without a pin the server keeps reading the working tree, as before.
+  const unpinned = await readCaptureServer({ ...process.env, NEAR_YOU_CAPTURE_ACTIVITY_BLOB: "" }, "/near-you/deferred.json?lens=meetings");
+  assert.equal(unpinned.generation, "capture");
+  await assert.rejects(
+    readCaptureServer({ ...process.env, NEAR_YOU_CAPTURE_ACTIVITY_BLOB: "not-a-blob" }, "/near-you/deferred.json"),
+    /must be a 40-hex blob id/,
+  );
 });

@@ -1,0 +1,7 @@
+{
+  "schema": "cityscroll.capture_delivery.v1",
+  "public_alias": "c94563a6bbaf3",
+  "landed_commit": "c2a407d7d24258bf34153f85e56796081fa42bcd",
+  "surfaces": ["pages", "worker"],
+  "note": "A served discovery-recovery capture requires this landed commit, the last of the recovered discovery journeys, on both the served Pages revision and the served Worker revision. A Worker that does not yet name its read-model generation leaves the run pending."
+}

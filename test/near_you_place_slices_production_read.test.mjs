@@ -65,3 +65,18 @@ test("place-slices capture tool rejects alternate CLI targets", () => {
     assert.match(result.stderr, /unrecognized arguments/);
   }
 });
+
+// The discovery-recovery scenario of the default-local-home capture tool reads
+// the same served surfaces; like this read-back it owns its evidence paths and
+// accepts no alternate output or site target.
+test("discovery-recovery capture scenario rejects alternate CLI targets", () => {
+  for (const option of ["--site", "--output", "--manifest"]) {
+    const result = spawnSync(
+      "python3",
+      ["tools/capture_default_local_home_journey.py", "--scenario", "discovery-recovery", option, "alternate"],
+      { cwd: new URL("..", import.meta.url), encoding: "utf8" },
+    );
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /unrecognized arguments/);
+  }
+});
