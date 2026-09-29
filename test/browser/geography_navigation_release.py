@@ -65,6 +65,8 @@ ZERO_COPY = "No records match these filters."
 UNAVAILABLE_COPY = "This area’s materialized records are unavailable right now."
 GENERIC_UNAVAILABLE_COPY = "Matching records are not available right now."
 TEMPORARY_UNAVAILABLE_COPY = "Matching records are temporarily unavailable."
+# Current local recovery copy stems (the category noun and place noun vary).
+LOCAL_RECOVERY_NEEDLES = ("We can’t filter these", "is not complete yet", "could not load", "No mapped ")
 PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
 ARTIFACT_MANIFEST_PATH = "/artifact-manifest.json"
 ARTIFACT_MANIFEST_UA = "cityscroll-release-proof-served-revision/1"
@@ -368,7 +370,7 @@ def capture_production_route(
             results_count = metrics.get("results_count")
             if expect_results_populated:
                 assert isinstance(results_count, int) and results_count >= 1, metrics
-                for needle in (ZERO_COPY, UNAVAILABLE_COPY, GENERIC_UNAVAILABLE_COPY, TEMPORARY_UNAVAILABLE_COPY):
+                for needle in (ZERO_COPY, UNAVAILABLE_COPY, GENERIC_UNAVAILABLE_COPY, TEMPORARY_UNAVAILABLE_COPY, *LOCAL_RECOVERY_NEEDLES):
                     assert needle not in body, f"{route_name} carried unavailable/zero copy {needle!r}"
             image_digest = None
             image_path = None
@@ -430,6 +432,7 @@ def capture_production_route(
                         and UNAVAILABLE_COPY not in body
                         and GENERIC_UNAVAILABLE_COPY not in body
                         and TEMPORARY_UNAVAILABLE_COPY not in body
+                        and not any(needle in body for needle in LOCAL_RECOVERY_NEEDLES)
                     ),
                 },
                 "artifact": f"capture-manifest.json#production-journey-{route_name}-{viewport_name}",

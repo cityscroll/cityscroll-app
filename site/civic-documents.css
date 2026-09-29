@@ -4463,12 +4463,25 @@ select {
   border-radius: 22px;
 }
 .near-map-state a[data-near-recovery],
+.near-local-recovery a[data-near-recovery],
 .near-deferred-recovery {
   display: inline-flex;
   min-width: var(--control-min-size);
   min-height: var(--control-min-size);
   align-items: center;
   padding-inline: var(--space-3);
+}
+.near-local-recovery-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+}
+.near-local-recovery-actions a[data-near-recovery] {
+  padding-inline: 0 var(--space-3);
+}
+.near-local-recovery-note {
+  margin: var(--space-1) 0 0;
 }
 .near-map-enhanced .maplibregl-ctrl-attrib a {
   text-decoration: underline;

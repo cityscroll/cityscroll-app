@@ -53,6 +53,9 @@ const PROBE = join("test", "functional", "near_you_place_slice_coverage_classify
 const ZERO_COPY = "No records match these filters.";
 const UNAVAILABLE_COPY = "This area\u2019s materialized records are unavailable right now.";
 const GENERIC_UNAVAILABLE_COPY = "Matching records are not available right now.";
+// Current resident copy for the structured local recovery states.
+const LOCAL_UNSUPPORTED_COPY = "We can\u2019t filter these meetings to this neighborhood yet.";
+const LOCAL_ZERO_COPY = "No mapped meetings match these filters.";
 const DEFERRED_SCHEMA = "cityscroll.near_you_deferred.v1";
 const DEFERRED_ERROR_SCHEMA = "cityscroll.near_you_deferred_error.v1";
 const NEAR_YOU_MANIFEST_KEY = "route-read-model:near-you:manifest:v1";
@@ -111,22 +114,25 @@ test("the classifier types each served borough fixture into its published-covera
     assert.equal(byId[code].status, 200, code);
     assert.equal(JSON.parse(byId[code].body).schema, DEFERRED_SCHEMA, code);
     assert.equal(servedCount(byId[code].body), null, `${code}: unavailable coverage carries no fabricated count`);
-    assert.match(byId[code].body, new RegExp(escapeRe(UNAVAILABLE_COPY)), code);
-    assert.doesNotMatch(byId[code].body, new RegExp(escapeRe(ZERO_COPY)), code);
+    const unavailableResults = JSON.parse(byId[code].body).results_html;
+    assert.match(unavailableResults, /data-near-local-recovery="unsupported"/, code);
+    assert.match(unavailableResults, new RegExp(escapeRe(LOCAL_UNSUPPORTED_COPY)), code);
+    assert.doesNotMatch(unavailableResults, new RegExp(escapeRe(LOCAL_ZERO_COPY)), code);
   }
   const bxResults = JSON.parse(byId.BX0101.body).results_html;
   assert.match(bxResults, /data-results-count="0"/);
-  assert.match(bxResults, new RegExp(escapeRe(ZERO_COPY)));
+  assert.match(bxResults, /data-near-local-recovery="zero"/);
+  assert.match(bxResults, new RegExp(escapeRe(LOCAL_ZERO_COPY)));
   assert.equal(servedCount(byId.MN0102.body) >= 1, true, "positive membership publishes a positive count");
 
   const results = classifyCases(cases);
   const resultById = Object.fromEntries(results.map((row) => [row.id, row]));
   const expected = {
     MN0102: { state: "available_records", count: servedCount(byId.MN0102.body) },
-    BX0101: { state: "published_zero", count: 0, typed_copy: ZERO_COPY },
-    BK0101: { state: "unavailable_source_coverage", count: null, typed_copy: UNAVAILABLE_COPY },
-    QN0103: { state: "unavailable_source_coverage", count: null, typed_copy: UNAVAILABLE_COPY },
-    SI0101: { state: "unavailable_source_coverage", count: null, typed_copy: UNAVAILABLE_COPY },
+    BX0101: { state: "published_zero", count: 0, typed_copy: LOCAL_ZERO_COPY },
+    BK0101: { state: "unavailable_source_coverage", count: null, typed_copy: LOCAL_UNSUPPORTED_COPY },
+    QN0103: { state: "unavailable_source_coverage", count: null, typed_copy: LOCAL_UNSUPPORTED_COPY },
+    SI0101: { state: "unavailable_source_coverage", count: null, typed_copy: LOCAL_UNSUPPORTED_COPY },
   };
   for (const [code, want] of Object.entries(expected)) {
     const got = resultById[code];
@@ -222,6 +228,7 @@ test("unknown geography, transient KV failure, stale manifest, and partial publi
     assert.equal("results_html" in payload, false, `${row.id}: error body carries no results`);
     assert.equal(row.body.includes(ZERO_COPY), false, `${row.id}: transient failure never relabels as published zero`);
     assert.equal(row.body.includes(UNAVAILABLE_COPY), false, `${row.id}: transient failure never relabels as source coverage`);
+    assert.equal(row.body.includes("data-near-local-recovery"), false, `${row.id}: transient failure never renders a local recovery state`);
   }
 
   // Classifier-level honesty: all four mechanisms classify as the transient
@@ -240,6 +247,8 @@ test("fail-closed: ambiguous or missing classifier fixtures are rejected, never 
   const resultsSection = (inner) => `<section class="near-results" ${inner}</section>`;
   const availableHtml = resultsSection('data-results-count="2"><ol class="near-records"><li class="near-record">a</li></ol>');
   const unavailableHtml = resultsSection(`>${UNAVAILABLE_COPY}`);
+  const recoveryBlock = (state, copy) =>
+    `<div class="near-coverage near-local-recovery" data-near-local-recovery="${state}" data-near-local-recovery-surface="records" role="note">\n      <strong>${copy}</strong></div>`;
   const cases = [
     {
       id: "synthetic-available-records",
@@ -260,6 +269,36 @@ test("fail-closed: ambiguous or missing classifier fixtures are rejected, never 
       id: "synthetic-transient-publication-failure",
       status: 503,
       body: JSON.stringify({ ok: false, schema: DEFERRED_ERROR_SCHEMA, reason: "near-you-read-model-unavailable" }),
+    },
+    {
+      id: "synthetic-recovery-published-zero",
+      status: 200,
+      body: JSON.stringify({ schema: DEFERRED_SCHEMA, results_html: resultsSection(`data-results-count="0">${recoveryBlock("zero", LOCAL_ZERO_COPY)}`) }),
+    },
+    {
+      id: "synthetic-recovery-unavailable-source-coverage",
+      status: 200,
+      body: JSON.stringify({ schema: DEFERRED_SCHEMA, results_html: resultsSection(`>${recoveryBlock("unsupported", "We can&#39;t filter these meetings to this neighborhood yet.")}`) }),
+    },
+    {
+      id: "reject-two-recovery-states",
+      status: 200,
+      body: JSON.stringify({ schema: DEFERRED_SCHEMA, results_html: resultsSection(`>${recoveryBlock("unsupported", LOCAL_UNSUPPORTED_COPY)}${recoveryBlock("zero", LOCAL_ZERO_COPY)}`) }),
+    },
+    {
+      id: "reject-recovery-zero-mixed-with-legacy-zero-copy",
+      status: 200,
+      body: JSON.stringify({ schema: DEFERRED_SCHEMA, results_html: resultsSection(`data-results-count="0">${recoveryBlock("zero", LOCAL_ZERO_COPY)}${ZERO_COPY}`) }),
+    },
+    {
+      id: "reject-recovery-unsupported-mixed-with-legacy-unavailable-copy",
+      status: 200,
+      body: JSON.stringify({ schema: DEFERRED_SCHEMA, results_html: resultsSection(`>${recoveryBlock("unsupported", LOCAL_UNSUPPORTED_COPY)}${UNAVAILABLE_COPY}`) }),
+    },
+    {
+      id: "reject-recovery-state-without-typed-copy",
+      status: 200,
+      body: JSON.stringify({ schema: DEFERRED_SCHEMA, results_html: resultsSection(`>${recoveryBlock("unsupported", "")}`) }),
     },
     {
       id: "reject-positive-count-without-record-list",
@@ -315,11 +354,18 @@ test("fail-closed: ambiguous or missing classifier fixtures are rejected, never 
     "synthetic-published-zero": { state: "published_zero", count: 0 },
     "synthetic-unavailable-source-coverage": { state: "unavailable_source_coverage", count: null },
     "synthetic-transient-publication-failure": { state: "transient_publication_failure" },
+    "synthetic-recovery-published-zero": { state: "published_zero", count: 0, typed_copy: LOCAL_ZERO_COPY },
+    "synthetic-recovery-unavailable-source-coverage": {
+      state: "unavailable_source_coverage",
+      count: null,
+      typed_copy: "We can't filter these meetings to this neighborhood yet.",
+    },
   };
   for (const [id, expected] of Object.entries(want)) {
     assert.equal(byId[id].outcome, "classified", id);
     assert.equal(byId[id].state, expected.state, id);
     if ("count" in expected) assert.equal(byId[id].count, expected.count, id);
+    if ("typed_copy" in expected) assert.equal(byId[id].typed_copy, expected.typed_copy, id);
   }
   for (const row of results) {
     if (!row.id.startsWith("reject-")) continue;
@@ -332,6 +378,10 @@ test("fail-closed: ambiguous or missing classifier fixtures are rejected, never 
   assert.match(byId["reject-unavailable-mixed-with-zero-copy"].error, /mixed with generic or zero copy/);
   assert.match(byId["reject-unavailable-mixed-with-generic-copy"].error, /mixed with generic or zero copy/);
   assert.match(byId["reject-no-typed-state"].error, /matches no typed published coverage state/);
+  assert.match(byId["reject-two-recovery-states"].error, /more than one local recovery state/);
+  assert.match(byId["reject-recovery-zero-mixed-with-legacy-zero-copy"].error, /zero count without the published-zero copy/);
+  assert.match(byId["reject-recovery-unsupported-mixed-with-legacy-unavailable-copy"].error, /mixed with generic or zero copy/);
+  assert.match(byId["reject-recovery-state-without-typed-copy"].error, /matches no typed published coverage state/);
   assert.match(byId["reject-unexpected-schema"].error, /unexpected schema/);
   assert.match(byId["reject-missing-results-html"].error, /no results_html/);
   assert.match(byId["reject-unexpected-http-status"].error, /unexpected HTTP 500/);

@@ -1,0 +1,4606 @@
+{
+ "provenance": {
+  "path": "site/data/district_activity.json",
+  "revision": "d886b385d647f4534df985f5922749a9414fab26",
+  "blob": "5deaa202fe578e09b58380d43755419dbb85ec60",
+  "reduction": "test/helpers/near_you_local_escape_fixture.mjs#reduceDistrictActivity"
+ },
+ "schema": "cityscroll.district_activity.v1",
+ "boundary_vintage": "2026-05-26",
+ "built_at": "2026-09-26T07:41:27.793Z",
+ "lenses": [
+  "land",
+  "property",
+  "rules",
+  "meetings",
+  "money"
+ ],
+ "district_items": {
+  "schema": "cityscroll.district_items.v1",
+  "boundary_vintage": "2026-05-26",
+  "built_at": "2026-09-26T07:41:27.793Z",
+  "lenses": [
+   "land",
+   "property",
+   "rules",
+   "meetings",
+   "money"
+  ],
+  "by_level": {
+   "borough": {},
+   "community_district": {
+    "K12": {
+     "land": [
+      "2022K0171",
+      "2025K0232"
+     ],
+     "property": [
+      "20140128110",
+      "20140128114",
+      "20140128115",
+      "20140206104"
+     ],
+     "rules": [],
+     "meetings": [],
+     "money": []
+    },
+    "K14": {
+     "land": [
+      "2019K0301",
+      "2019K0383",
+      "2020K0276",
+      "2022K0416"
+     ],
+     "property": [],
+     "rules": [],
+     "meetings": [
+      "20260618050",
+      "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+      "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+      "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/"
+     ],
+     "money": []
+    }
+   },
+   "council_district": {}
+  },
+  "citywide": {},
+  "virtual": {},
+  "unlocated": {}
+ },
+ "geography_items": {
+  "schema": "cityscroll.geography_items.v1",
+  "built_at": "2026-09-26T07:41:27.793Z",
+  "lenses": [
+   "land",
+   "property",
+   "rules",
+   "meetings",
+   "money"
+  ],
+  "public_types": [
+   "borough",
+   "community_district",
+   "council_district",
+   "nta2020",
+   "police_precinct"
+  ],
+  "coverage": {
+   "status": "ready",
+   "by_lens": {
+    "land": {
+     "status": "ready",
+     "source": "land_place_membership",
+     "association_kind": "published_project_lot",
+     "generation_id": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7",
+     "content_id": "fnv1a32:49453cf1:244",
+     "source_dates": {
+      "catalog_content_id": "fnv1a32:06425590:244",
+      "catalog_materialized_at": "2026-09-09T06:54:36.054Z",
+      "catalog_generated_at": "2026-09-09T06:46:42.537Z",
+      "bbl_materialized_at": "2026-09-04T11:12:46.107Z",
+      "parcel_coordinate_vintage": "pluto_25v4",
+      "boundary_vintages": {
+       "borough": "2026-05-26",
+       "community_district": "2026-05-26",
+       "council_district": "2026-05-26",
+       "nta2020": "26B",
+       "police_precinct": "26B"
+      }
+     },
+     "admitted": 244,
+     "spatially_matched": 233,
+     "partially_covered": 22,
+     "match_bound": "spatially_matched_population",
+     "types": {
+      "nta2020": {
+       "status": "ready",
+       "reason": null,
+       "generation_id": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7",
+       "content_id": "fnv1a32:49453cf1:244",
+       "source_dates": {
+        "catalog_content_id": "fnv1a32:06425590:244",
+        "catalog_materialized_at": "2026-09-09T06:54:36.054Z",
+        "catalog_generated_at": "2026-09-09T06:46:42.537Z",
+        "bbl_materialized_at": "2026-09-04T11:12:46.107Z",
+        "parcel_coordinate_vintage": "pluto_25v4",
+        "boundary_vintages": {
+         "borough": "2026-05-26",
+         "community_district": "2026-05-26",
+         "council_district": "2026-05-26",
+         "nta2020": "26B",
+         "police_precinct": "26B"
+        }
+       },
+       "match_bound": "spatially_matched_population"
+      }
+     }
+    }
+   }
+  },
+  "definitions": {
+   "geography:nta2020:BK1503": {
+    "key": "geography:nta2020:BK1503",
+    "type": "nta2020",
+    "id": "BK1503",
+    "label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+    "class": "statistical",
+    "source_id": "dcp-nta2020-boundaries",
+    "boundary_vintage": "26B"
+   },
+   "geography:nta2020:MN0102": {
+    "key": "geography:nta2020:MN0102",
+    "type": "nta2020",
+    "id": "MN0102",
+    "label": "Tribeca-Civic Center",
+    "class": "statistical",
+    "source_id": "dcp-nta2020-boundaries",
+    "boundary_vintage": "26B"
+   },
+   "geography:nta2020:BX0101": {
+    "key": "geography:nta2020:BX0101",
+    "type": "nta2020",
+    "id": "BX0101",
+    "label": "Mott Haven-Port Morris",
+    "class": "statistical",
+    "source_id": "dcp-nta2020-boundaries",
+    "boundary_vintage": "26B"
+   }
+  },
+  "by_key": {
+   "geography:nta2020:BK1503": {
+    "land": [
+     "2019K0147"
+    ]
+   },
+   "geography:nta2020:MN0102": {
+    "land": [
+     "2020M0474",
+     "2023M0117",
+     "2025M0329"
+    ],
+    "property": [],
+    "rules": [],
+    "meetings": [
+     "20260106033",
+     "20260603039",
+     "20260612028",
+     "20260617039",
+     "20260623006",
+     "20260623060",
+     "20260625040",
+     "20260629003",
+     "20260630005",
+     "20260706036",
+     "20260707004",
+     "20260707021",
+     "20260707022",
+     "20260708015",
+     "20260709028",
+     "20260710032",
+     "20260714001",
+     "20260715002",
+     "20260716022",
+     "20260716025",
+     "20260723030",
+     "20260727031",
+     "20260729004",
+     "20260811003",
+     "20260819025",
+     "20260824048"
+    ],
+    "money": []
+   },
+   "geography:nta2020:BX0101": {
+    "land": [
+     "2022X0393",
+     "2025X0385",
+     "2026X0362"
+    ],
+    "property": [
+     "20140306105"
+    ],
+    "rules": [],
+    "meetings": [],
+    "money": []
+   }
+  }
+ },
+ "records": {
+  "meetings": {
+   "20260106033": {
+    "id": "20260106033",
+    "title": "Board of Correction Public Meeting",
+    "agency": "Board of Correction",
+    "type": "Meeting",
+    "date": "2026-07-14T13:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260106033",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106033",
+    "placement_methods": [
+     "venue_line",
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_line",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:5",
+       "type": "police_precinct",
+       "id": "5",
+       "label": "Police Precinct 5",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260603039": {
+    "id": "20260603039",
+    "title": "CITY OF NEW YORK AUDIT COMMITTEE MEETING",
+    "agency": "Comptroller",
+    "type": "Meeting",
+    "date": "2026-06-24T09:30:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260603039",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260603039",
+    "placement_methods": [
+     "venue_line",
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_line",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:5",
+       "type": "police_precinct",
+       "id": "5",
+       "label": "Police Precinct 5",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260612028": {
+    "id": "20260612028",
+    "title": "Board of Standards and Appeals Public Hearing Notice",
+    "agency": "Board of Standards and Appeals",
+    "type": "Public Hearings",
+    "date": "2026-07-13T10:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "strong",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260612028",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612028",
+    "placement_methods": [
+     "matter_body_borough",
+     "community_board",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "matter_body_borough",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:borough:4",
+       "type": "borough",
+       "id": "4",
+       "label": "Queens",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:Q01",
+       "type": "community_district",
+       "id": "Q01",
+       "label": "Queens Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:Q13",
+       "type": "community_district",
+       "id": "Q13",
+       "label": "Queens Community District 13",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:5",
+       "type": "police_precinct",
+       "id": "5",
+       "label": "Police Precinct 5",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260617039": {
+    "id": "20260617039",
+    "title": "7-1-26 Subcommittee on Zoning and Franchises meeting",
+    "agency": "City Council",
+    "type": "Public Hearings",
+    "date": "2026-07-01T11:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260617039",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617039",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260618050": {
+    "id": "20260618050",
+    "title": "Brooklyn Borough President ULURP Public Hearing",
+    "agency": "Borough President - Brooklyn",
+    "type": "Public Hearings",
+    "date": "2026-07-08T18:00:00.000",
+    "status": null,
+    "basis": "Matter place",
+    "confidence": "strong",
+    "basis_method": "matter_title_place",
+    "route": "/#notice/20260618050",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618050",
+    "placement_methods": [
+     "matter_title_place"
+    ],
+    "place": {
+     "location_role": "matter",
+     "basis": "Matter place",
+     "method": "matter_title_place",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "matter_title_place",
+      "source_method": "matter_title_place",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:3",
+       "type": "borough",
+       "id": "3",
+       "label": "Brooklyn",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "matter_title_place",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_title_place",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:K01",
+       "type": "community_district",
+       "id": "K01",
+       "label": "Brooklyn Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "matter_title_place",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_title_place",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:K02",
+       "type": "community_district",
+       "id": "K02",
+       "label": "Brooklyn Community District 2",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "matter_title_place",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_title_place",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:K14",
+       "type": "community_district",
+       "id": "K14",
+       "label": "Brooklyn Community District 14",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "matter_title_place",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_title_place",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260623006": {
+    "id": "20260623006",
+    "title": "July 14, 2026, Public Hearing Agenda CR",
+    "agency": "Landmarks Preservation Commission",
+    "type": "Public Hearings",
+    "date": "2026-07-14T09:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260623006",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623006",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260623060": {
+    "id": "20260623060",
+    "title": "NYC Civic Engagement Commission Public Meeting",
+    "agency": "Civic Engagement Commission",
+    "type": "Meeting",
+    "date": "2026-07-21T11:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260623060",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623060",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:5",
+       "type": "police_precinct",
+       "id": "5",
+       "label": "Police Precinct 5",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260625040": {
+    "id": "20260625040",
+    "title": "7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+    "agency": "City Council",
+    "type": "Public Hearings",
+    "date": "2026-07-09T11:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260625040",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625040",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260629003": {
+    "id": "20260629003",
+    "title": "Correction: Board of Standards and Appeals Public Hearing Notice",
+    "agency": "Board of Standards and Appeals",
+    "type": "Public Hearings",
+    "date": "2026-07-27T10:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "strong",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260629003",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629003",
+    "placement_methods": [
+     "matter_body_borough",
+     "community_board",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "matter_body_borough",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:borough:4",
+       "type": "borough",
+       "id": "4",
+       "label": "Queens",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:borough:5",
+       "type": "borough",
+       "id": "5",
+       "label": "Staten Island",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:Q07",
+       "type": "community_district",
+       "id": "Q07",
+       "label": "Queens Community District 7",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:Q09",
+       "type": "community_district",
+       "id": "Q09",
+       "label": "Queens Community District 9",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:R01",
+       "type": "community_district",
+       "id": "R01",
+       "label": "Staten Island Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:5",
+       "type": "police_precinct",
+       "id": "5",
+       "label": "Police Precinct 5",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260630005": {
+    "id": "20260630005",
+    "title": "July 21, 2026, Public Hearing Agenda",
+    "agency": "Landmarks Preservation Commission",
+    "type": "Public Hearings",
+    "date": "2026-07-21T09:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260630005",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260630005",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260706036": {
+    "id": "20260706036",
+    "title": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+    "agency": "City Council",
+    "type": "Public Hearings",
+    "date": "2026-07-14T10:30:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260706036",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706036",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260707004": {
+    "id": "20260707004",
+    "title": "July 28, 2026, Public Hearing Agenda",
+    "agency": "Landmarks Preservation Commission",
+    "type": "Public Hearings",
+    "date": "2026-07-28T09:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260707004",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707004",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260707021": {
+    "id": "20260707021",
+    "title": "7-21-26 Subcommittee on Zoning and Franchises meeting",
+    "agency": "City Council",
+    "type": "Public Hearings",
+    "date": "2026-07-21T11:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260707021",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707021",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260707022": {
+    "id": "20260707022",
+    "title": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+    "agency": "City Council",
+    "type": "Public Hearings",
+    "date": "2026-07-22T11:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260707022",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707022",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260708015": {
+    "id": "20260708015",
+    "title": "EEPC COMMISSION MEETING #289",
+    "agency": "Equal Employment Practices Commission",
+    "type": "Meeting",
+    "date": "2026-07-30T10:15:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260708015",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708015",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260709028": {
+    "id": "20260709028",
+    "title": "Concession for Operation and Maintenance of Cafeteria at the NYPD Police Academy",
+    "agency": "Police Department",
+    "type": "Public Hearings",
+    "date": "2026-08-10T14:30:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "strong",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260709028",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709028",
+    "placement_methods": [
+     "matter_title_place",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "matter_title_place",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260710032": {
+    "id": "20260710032",
+    "title": "FCRC AUGUST PUBLIC MEETING",
+    "agency": "Franchise and Concession Review Committee",
+    "type": "Meeting",
+    "date": "2026-08-12T14:30:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260710032",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260710032",
+    "placement_methods": [
+     "venue_line",
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_line",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260714001": {
+    "id": "20260714001",
+    "title": "August 4, 2026, Public Hearing Agenda CR",
+    "agency": "Landmarks Preservation Commission",
+    "type": "Public Hearings",
+    "date": "2026-08-04T09:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260714001",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714001",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260715002": {
+    "id": "20260715002",
+    "title": "Final Meeting of the Commission on Government Efficiency",
+    "agency": "Charter Revision Commission",
+    "type": "Meeting",
+    "date": "2026-07-20T00:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260715002",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715002",
+    "placement_methods": [
+     "venue_line",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_line",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260716022": {
+    "id": "20260716022",
+    "title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Café and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
+    "agency": "Parks and Recreation",
+    "type": "Public Hearings",
+    "date": "2026-08-10T14:30:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "strong",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260716022",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716022",
+    "placement_methods": [
+     "matter_title_place",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "matter_title_place",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_title_place",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260716025": {
+    "id": "20260716025",
+    "title": "New York City Environmental Control Board Meeting August 6, 2026",
+    "agency": "Environmental Control Board",
+    "type": "Meeting",
+    "date": "2026-08-06T09:30:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260716025",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716025",
+    "placement_methods": [
+     "venue_line",
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_line",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_line",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260723030": {
+    "id": "20260723030",
+    "title": "Board of Standards and Appeals Public Hearing Notice",
+    "agency": "Board of Standards and Appeals",
+    "type": "Public Hearings",
+    "date": "2026-08-10T10:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "strong",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260723030",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030",
+    "placement_methods": [
+     "matter_body_borough",
+     "community_board",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "matter_body_borough",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:borough:3",
+       "type": "borough",
+       "id": "3",
+       "label": "Brooklyn",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:borough:4",
+       "type": "borough",
+       "id": "4",
+       "label": "Queens",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:K15",
+       "type": "community_district",
+       "id": "K15",
+       "label": "Brooklyn Community District 15",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M04",
+       "type": "community_district",
+       "id": "M04",
+       "label": "Manhattan Community District 4",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:Q14",
+       "type": "community_district",
+       "id": "Q14",
+       "label": "Queens Community District 14",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "matter_body_borough",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "Matter place",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "matter_body_borough",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:5",
+       "type": "police_precinct",
+       "id": "5",
+       "label": "Police Precinct 5",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "matter_body_borough",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260727031": {
+    "id": "20260727031",
+    "title": "AUGUST 18, 2026 PUBLIC HEARING AGENDA",
+    "agency": "Landmarks Preservation Commission",
+    "type": "Public Hearings",
+    "date": "2026-08-18T09:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260727031",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727031",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260729004": {
+    "id": "20260729004",
+    "title": "8-12-26 Subcommittee on Zoning and Franchises meeting",
+    "agency": "City Council",
+    "type": "Public Hearings",
+    "date": "2026-08-12T11:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260729004",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729004",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260811003": {
+    "id": "20260811003",
+    "title": "September 1, 2026, Public Hearing Agenda CR",
+    "agency": "Landmarks Preservation Commission",
+    "type": "Public Hearings",
+    "date": "2026-09-01T09:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260811003",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260811003",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260819025": {
+    "id": "20260819025",
+    "title": "The Battery Conservancy, Inc. for the Operation and Maintenance of The Battery in Manhattan",
+    "agency": "Parks and Recreation",
+    "type": "Public Hearings",
+    "date": "2026-09-14T14:30:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "strong",
+    "basis_method": "parcel_membership",
+    "route": "/#notice/20260819025",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819025",
+    "placement_methods": [
+     "admitted_venue_membership",
+     "parcel_membership",
+     "civic_address_pip"
+    ],
+    "venue_address": "255 Greenwich St, New York, NY, 10007",
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "parcel_membership",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "parcel_membership",
+      "source_method": "admitted_venue_membership",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "20260824048": {
+    "id": "20260824048",
+    "title": "9-8-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+    "agency": "City Council",
+    "type": "Public Hearings",
+    "date": "2026-09-08T11:00:00.000",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "derived",
+    "basis_method": "civic_address_pip",
+    "route": "/#notice/20260824048",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260824048",
+    "placement_methods": [
+     "venue_column",
+     "civic_address_pip"
+    ],
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "civic_address_pip",
+     "confidence": "derived",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "civic_address_pip",
+      "source_method": "venue_column",
+      "confidence_tier": "derived"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:1",
+       "type": "borough",
+       "id": "1",
+       "label": "Manhattan",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:M01",
+       "type": "community_district",
+       "id": "M01",
+       "label": "Manhattan Community District 1",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:1",
+       "type": "council_district",
+       "id": "1",
+       "label": "City Council District 1",
+       "class": "political",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:MN0102",
+       "type": "nta2020",
+       "id": "MN0102",
+       "label": "Tribeca-Civic Center",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:1",
+       "type": "police_precinct",
+       "id": "1",
+       "label": "Police Precinct 1",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "civic_address_pip",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "derived",
+       "provenance": {
+        "placement_method": "civic_address_pip",
+        "source_method": "venue_column",
+        "confidence_tier": "derived"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/": {
+    "id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+    "title": "Housing and Land Use Committee Meeting",
+    "agency": null,
+    "type": "Community board meeting",
+    "date": "2026-09-23T18:30:00-04:00",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "strong",
+    "basis_method": "parcel_membership",
+    "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+    "meeting_origin": "community_board_source_observed",
+    "source_url": "https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+    "placement_methods": [
+     "board_covers_district",
+     "community_board_ontology",
+     "admitted_venue_membership",
+     "parcel_membership"
+    ],
+    "venue_address": "810 East 16th Street, Brooklyn, NY, 11230",
+    "venue_name": "Brooklyn CB14 District Office",
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "parcel_membership",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "community_board_ontology",
+      "source_method": "board_covers_district",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:3",
+       "type": "borough",
+       "id": "3",
+       "label": "Brooklyn",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "community_board_ontology",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "subject_affected_area",
+       "basis": "Community board district",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "community_board_ontology",
+        "source_method": "board_covers_district",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:K14",
+       "type": "community_district",
+       "id": "K14",
+       "label": "Brooklyn Community District 14",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "community_board_ontology",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "subject_affected_area",
+       "basis": "Community board district",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "community_board_ontology",
+        "source_method": "board_covers_district",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:45",
+       "type": "council_district",
+       "id": "45",
+       "label": "City Council District 45",
+       "class": "political",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:BK1403",
+       "type": "nta2020",
+       "id": "BK1403",
+       "label": "Midwood",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:70",
+       "type": "police_precinct",
+       "id": "70",
+       "label": "Police Precinct 70",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/": {
+    "id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+    "title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+    "agency": null,
+    "type": "Community board meeting",
+    "date": "2026-09-09",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "strong",
+    "basis_method": "parcel_membership",
+    "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+    "meeting_origin": "community_board_source_observed",
+    "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+    "placement_methods": [
+     "board_covers_district",
+     "community_board_ontology",
+     "admitted_venue_membership",
+     "parcel_membership"
+    ],
+    "venue_address": "810 East 16th Street, Brooklyn, NY, 11230",
+    "venue_name": "Brooklyn CB14 District Office",
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "parcel_membership",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "community_board_ontology",
+      "source_method": "board_covers_district",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:3",
+       "type": "borough",
+       "id": "3",
+       "label": "Brooklyn",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "community_board_ontology",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "subject_affected_area",
+       "basis": "Community board district",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "community_board_ontology",
+        "source_method": "board_covers_district",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:K14",
+       "type": "community_district",
+       "id": "K14",
+       "label": "Brooklyn Community District 14",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "community_board_ontology",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "subject_affected_area",
+       "basis": "Community board district",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "community_board_ontology",
+        "source_method": "board_covers_district",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:45",
+       "type": "council_district",
+       "id": "45",
+       "label": "City Council District 45",
+       "class": "political",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:BK1403",
+       "type": "nta2020",
+       "id": "BK1403",
+       "label": "Midwood",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:70",
+       "type": "police_precinct",
+       "id": "70",
+       "label": "Police Precinct 70",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/": {
+    "id": "meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+    "title": "September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028",
+    "agency": null,
+    "type": "Community board meeting",
+    "date": "2026-09-14T18:30:00-04:00",
+    "status": null,
+    "basis": "About 461 Coney Island Avenue",
+    "confidence": "strong",
+    "basis_method": "parcel_membership",
+    "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F",
+    "meeting_origin": "community_board_source_observed",
+    "source_url": "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+    "placement_methods": [
+     "board_covers_district",
+     "community_board_ontology",
+     "admitted_subject_membership",
+     "parcel_membership"
+    ],
+    "venue_address": "1625 Ocean Avenue, Brooklyn, New York, 11230",
+    "venue_name": "East Midwood Jewish Center",
+    "subject_address": "461 Coney Island Avenue",
+    "place": {
+     "location_role": "matter",
+     "basis": "About 461 Coney Island Avenue",
+     "method": "parcel_membership",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "community_board_ontology",
+      "source_method": "board_covers_district",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:3",
+       "type": "borough",
+       "id": "3",
+       "label": "Brooklyn",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "community_board_ontology",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "subject_affected_area",
+       "basis": "Community board district",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "community_board_ontology",
+        "source_method": "board_covers_district",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:K14",
+       "type": "community_district",
+       "id": "K14",
+       "label": "Brooklyn Community District 14",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "community_board_ontology",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "subject_affected_area",
+       "basis": "Community board district",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "community_board_ontology",
+        "source_method": "board_covers_district",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:40",
+       "type": "council_district",
+       "id": "40",
+       "label": "City Council District 40",
+       "class": "political",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "matter",
+       "basis": "About 461 Coney Island Avenue",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_subject_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:BK1402",
+       "type": "nta2020",
+       "id": "BK1402",
+       "label": "Flatbush (West)-Ditmas Park-Parkville",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "matter",
+       "basis": "About 461 Coney Island Avenue",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_subject_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:70",
+       "type": "police_precinct",
+       "id": "70",
+       "label": "Police Precinct 70",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "matter",
+       "basis": "About 461 Coney Island Avenue",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_subject_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   }
+  },
+  "land": {
+   "2019K0147": {
+    "id": "2019K0147",
+    "title": "2959 Avenue Y Rezoning",
+    "agency": "Shore Park Jewish Center",
+    "type": "Noticed",
+    "date": "2026-04-06T00:00:00.000",
+    "status": "EAS - Project Readiness",
+    "basis": "Affected area",
+    "confidence": "strong",
+    "basis_method": "publisher_council",
+    "route": "/#land/2019K0147",
+    "actions": "ZM; ZR",
+    "regulatory_effect": "upzone",
+    "regulatory_effect_confidence": "high",
+    "regulatory_effect_basis": {
+     "existing": {
+      "districts": [
+       {
+        "id": "R5",
+        "kind": "base_district",
+        "max_far": 2,
+        "citation": {
+         "section": "ZR 23-21",
+         "title": "Floor Area Regulations for R1 Through R5 Districts",
+         "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+        }
+       }
+      ],
+      "max_far": 2,
+      "has_overlay": false
+     },
+     "proposed": {
+      "districts": [
+       {
+        "id": "R7D",
+        "kind": "base_district",
+        "max_far": 5.6,
+        "citation": {
+         "section": "ZR 23-22",
+         "title": "Floor Area Regulations for R6 Through R12 Districts",
+         "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+        }
+       }
+      ],
+      "max_far": 5.6,
+      "has_overlay": false
+     },
+     "method": "project_brief_district_pair_max_far_v1",
+     "far_table": {
+      "schema": "cityscroll.zoning_max_far.v1",
+      "as_of": "2025-12-31"
+     }
+    },
+    "place": {
+     "location_role": "project_geometry",
+     "basis": "Affected area",
+     "method": "publisher_council",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "publisher_district",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:3",
+       "type": "borough",
+       "id": "3",
+       "label": "Brooklyn",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "publisher_council",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "project_geometry",
+       "basis": "Affected area",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "publisher_district",
+        "source_method": null,
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:K15",
+       "type": "community_district",
+       "id": "K15",
+       "label": "Brooklyn Community District 15",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "publisher_council",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "project_geometry",
+       "basis": "Affected area",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "publisher_district",
+        "source_method": null,
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:48",
+       "type": "council_district",
+       "id": "48",
+       "label": "City Council District 48",
+       "class": "political",
+       "relation": "located_in",
+       "method": "publisher_council",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "project_geometry",
+       "basis": "Affected area",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "publisher_district",
+        "source_method": null,
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:BK1503",
+       "type": "nta2020",
+       "id": "BK1503",
+       "label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "published_project_lot",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "project_geometry",
+       "basis": "Affected area",
+       "confidence": "strong",
+       "association_kind": "published_project_lot",
+       "provenance": {
+        "placement_method": "published_project_lot",
+        "source_method": "land_place_membership",
+        "confidence_tier": "strong",
+        "association_kind": "published_project_lot"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   }
+  }
+ }
+}

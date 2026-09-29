@@ -58,7 +58,8 @@ test("native place searches resolve retained names to canonical geography withou
   assert.equal(unknown.status, 200);
   const unknownBody = await unknown.json();
   assert.doesNotMatch(unknownBody.results_html, /data-record-id=/);
-  assert.match(unknownBody.results_html, /unavailable/i);
+  assert.match(unknownBody.results_html, /data-near-local-recovery="unknown"/);
+  assert.match(unknownBody.results_html, /We couldn’t find this place, so these meetings are not filtered to it\./);
 });
 
 test("A1: residential fixtures publish typed coverage instead of a fabricated zero or silent miss", async () => {
@@ -76,7 +77,9 @@ test("A1: residential fixtures publish typed coverage instead of a fabricated ze
     const body = await deferred.json();
     assert.equal(body.schema, "cityscroll.near_you_deferred.v1", code);
     assert.doesNotMatch(body.results_html, /data-results-count="0"/, code);
-    assert.match(body.results_html, /unavailable|not available|materializ/i, code);
+    assert.match(body.results_html, /data-near-local-recovery="unsupported"/, code);
+    assert.match(body.results_html, /We can’t filter these meetings to this neighborhood yet\./, code);
+    assert.doesNotMatch(body.results_html, /materializ/i, code);
   }
 });
 
@@ -99,7 +102,8 @@ test("A2: ready, zero, unknown geography, and transient failure remain distinct 
   const zeroBody = await zero.json();
   assert.equal(zeroBody.schema, "cityscroll.near_you_deferred.v1");
   assert.match(zeroBody.results_html, /data-results-count="0"/);
-  assert.doesNotMatch(zeroBody.results_html, /temporarily unavailable/i);
+  assert.doesNotMatch(zeroBody.results_html, /temporarily unavailable|could not load/i);
+  assert.match(zeroBody.results_html, /data-near-local-recovery="zero"/);
 
   // Pattern-valid but unpublished identity: distinct from source_unavailable slices.
   const unknown = await handleNearYou(new Request(
@@ -206,8 +210,13 @@ test("a failed Near You read serves an honest error document and scoped retry", 
   assert.match(html, /data-near-data-state="error"/);
   assert.match(html, /data-near-geometry-state="ready"/);
   assert.match(html, /data-near-map-state="ready"/);
-  assert.match(html, /Matching records are temporarily unavailable/);
+  assert.match(html, /These meetings could not load\./);
   assert.doesNotMatch(html, /buyer_history_retry/);
+  const allNycHref = html.match(/<a href="([^"]+)" data-near-recovery="all-nyc">All NYC meetings<\/a>/)?.[1]?.replaceAll("&amp;", "&");
+  assert.ok(allNycHref);
+  const allNyc = new URL(allNycHref, "https://cityscroll.org");
+  assert.equal(allNyc.pathname, "/browse/meetings/");
+  assert.equal(allNyc.searchParams.has("boro"), false);
   const retryHref = html.match(/<a href="([^"]+)" data-near-recovery="retry">/)?.[1]?.replaceAll("&amp;", "&");
   assert.ok(retryHref);
   assert.equal(new URL(retryHref).searchParams.get("agency"), "Transportation");
@@ -243,7 +252,7 @@ test("HTTP, malformed-payload, and bounded-timeout reads share the typed deferre
     assert.match(document, /data-near-data-state="error"/, trigger);
     assert.match(document, /data-near-geometry-state="ready"/, trigger);
     assert.match(document, /data-near-map-state="ready"/, trigger);
-    assert.match(document, /Matching records are temporarily unavailable/, trigger);
+    assert.match(document, /These meetings could not load\./, trigger);
     assert.match(document, /data-near-recovery="retry"/, trigger);
     assert.doesNotMatch(document, /buyer_history_retry/, trigger);
     assert.doesNotMatch(document, /data-count="0"/, trigger);

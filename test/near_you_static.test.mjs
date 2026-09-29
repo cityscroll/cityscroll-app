@@ -232,7 +232,9 @@ test("Near-you distinguishes supported empty, populated, unsupported, and pendin
   assert.equal(unsupportedView.mapState, "unsupported");
   assert.equal(unsupportedView.results.count, null);
   assert.match(unsupportedHtml, /data-near-map-state="unsupported"/);
-  assert.match(unsupportedHtml, /not mapped here/);
+  assert.equal(unsupportedView.localRecovery.state, "unsupported");
+  assert.match(unsupportedHtml, /We can’t filter these people and organizations to this borough yet\./);
+  assert.match(unsupportedHtml, /<a href="\/browse\/people\/" data-near-recovery="all-nyc">All NYC people and organizations<\/a>/);
   assert.doesNotMatch(unsupportedHtml, /data-map-(?:id|area)="[^"]+"[^>]+data-count="0"/);
 
   const pendingRecordsView = buildNearYouViewModel(
@@ -280,7 +282,7 @@ test("Near-you record failures keep geometry healthy and preserve scoped retry",
     assert.match(html, /data-near-data-state="error"/, trigger);
     assert.match(html, /data-near-geometry-state="ready"/, trigger);
     assert.match(html, /data-near-map-state="ready"/, trigger);
-    assert.match(html, /Matching records are temporarily unavailable/, trigger);
+    assert.match(html, /These meetings could not load\./, trigger);
     assert.doesNotMatch(html, /buyer_history_retry/, trigger);
     const retryHref = html.match(/<a href="([^"]+)" data-near-recovery="retry">/)?.[1]?.replaceAll("&amp;", "&");
     assert.ok(retryHref, trigger);
@@ -533,7 +535,7 @@ test("A1: selected neighborhoods keep friendly titles and geometry vintage when 
     assert.match(html, new RegExp(`<h1>${specimen.label.replace(/[()]/g, "\\$&")}</h1>`), specimen.id);
     assert.match(html, /Map boundaries: 26B/, specimen.id);
     assert.match(html, /data-near-map-state="ready"/, specimen.id);
-    assert.match(html, /Matching records are temporarily unavailable/, specimen.id);
+    assert.match(html, /These meetings could not load\./, specimen.id);
     assert.match(html, /data-near-recovery="retry">Try again/, specimen.id);
     assert.doesNotMatch(html, /buyer_history_retry/, specimen.id);
     assert.doesNotMatch(html, new RegExp(`<h1>${specimen.id}</h1>`), specimen.id);
@@ -694,7 +696,7 @@ test("A2: geometry and records health stay independent across truthful states", 
       assert.equal(view.results.count, 0, row.name);
     }
     if (row.name === "record-only-failure") {
-      assert.match(html, /Matching records are temporarily unavailable/, row.name);
+      assert.match(html, /These meetings could not load\./, row.name);
       assert.doesNotMatch(html, /buyer_history_retry/, row.name);
       assert.doesNotMatch(html, /The neighborhood map could not load/, row.name);
     }
@@ -722,4 +724,31 @@ test("A3: production journey retained for Midwood without claiming field vitals"
     assert.equal(row.visual_metrics.results_populated, true, row.name);
     assert.ok(Array.isArray(row.visual_metrics.focus_order) && row.visual_metrics.focus_order.length > 0, row.name);
   }
+});
+
+test("All NYC broadening keeps destination-applied facets per lens and clears place-shaped refs", async () => {
+  const { allNycRecordsRouteHash, scopeForAllNycRecords } = await import("../site/near_you_scope_runtime.mjs");
+  const { scopeFromRouteHash } = await import("../site/scope_v0.mjs");
+  const land = scopeWithPlace(
+    scopeFromLensState("land", { family: "rezoning", regulatoryEffect: "upzoning", q: "housing" }),
+    { communityDistrict: "K15", borough: "Brooklyn" },
+  );
+  const landHash = allNycRecordsRouteHash(land);
+  const landScope = scopeFromRouteHash(landHash);
+  assert.equal(landHash.startsWith("#land?"), true);
+  assert.equal(landScope.facets.values.family, "rezoning");
+  assert.equal(landScope.facets.values.regulatoryEffect, "upzoning");
+  assert.deepEqual(landScope.place.community_districts, []);
+  assert.deepEqual(landScope.place.boroughs, []);
+  assert.deepEqual(scopeForAllNycRecords(land).removed, []);
+
+  const board = scopeFromLensState("meetings", {
+    entity_refs_all: ["community-board:brooklyn-cb-15", "agency:id:transportation"],
+  });
+  const broadened = scopeForAllNycRecords(scopeWithPlace(board, { communityDistrict: "K15" }));
+  assert.deepEqual(broadened.scope.facets.values.entity_refs_all, ["agency:id:transportation"]);
+  assert.deepEqual(broadened.scope.place.community_districts, []);
+
+  assert.equal(allNycRecordsRouteHash(scopeWithPlace(scopeFromLensState("consultations"), { borough: "Queens" })), null);
+  assert.equal(allNycRecordsRouteHash(scopeFromLensState("meetings", { when: "week" })), "#meetings?when=week");
 });
