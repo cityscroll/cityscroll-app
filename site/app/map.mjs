@@ -1426,8 +1426,12 @@ function restoreNearYouDepartureFocus(token) {
     return;
   }
   if (!departure?.record || !NEAR_YOU_RETURN_FOCUS_CONTROLS.includes(departure.control)) return;
-  const card = root.querySelector(`[data-record-id="${CSS.escape(departure.record)}"]`);
-  card?.querySelector(departure.control)?.focus?.({ preventScroll: true });
+  // A record can be listed twice (a collapsed overview repeats it); return to
+  // the copy the reader could have left from, the one that is rendered.
+  const control = [...root.querySelectorAll(`[data-record-id="${CSS.escape(departure.record)}"]`)]
+    .map((card) => card.querySelector(departure.control))
+    .find((node) => node?.getClientRects?.().length > 0);
+  control?.focus?.({ preventScroll: true });
 }
 
 function rememberNearYouDepartureScroll(event) {

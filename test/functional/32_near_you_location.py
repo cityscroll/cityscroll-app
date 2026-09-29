@@ -663,6 +663,35 @@ def check_citywide_preview(browser: Browser, base: str, viewport: tuple[str, int
         assert destination["count"] == state["total"], (destination, state)
         assert all(record in destination["ids"] for record in state["ids"]), destination
         assert destination["preview"] == 0, "the citywide route repeats its own preview"
+
+        # Back from a full record opened in the whole collection returns focus to
+        # that card. The View all route also repeats records in a collapsed
+        # overview, so the checker is first shown to fail on that hidden copy.
+        bucket_record = next(
+            record for record in destination["ids"]
+            if page.locator(f'.near-results [data-record-id="{record}"] a.near-record-full-record[href*="/meetings/"]').count()
+        )
+        bucket_card = f'.near-results [data-record-id="{bucket_record}"]'
+        hidden_copy = page.locator(f'details:not([open]) [data-record-id="{bucket_record}"] .near-record-full-record')
+        if hidden_copy.count():
+            hidden_copy.first.evaluate("node => node.focus()")
+            assert not page.evaluate(RETURN_STATE_JS, bucket_card)["focus_in_card"], "focus checker accepted a hidden copy"
+        bucket_full = page.locator(f"{bucket_card} a.near-record-full-record")
+        bucket_full.scroll_into_view_if_needed()
+        bucket_departure = page.evaluate(RETURN_STATE_JS, bucket_card)
+        journey.activate(bucket_full)
+        page.wait_for_url("**/meetings/**", timeout=30_000)
+        page.go_back(wait_until="domcontentloaded")
+        await_root_settled(page)
+        page.wait_for_function(
+            """([card, y]) => {
+              const node = document.querySelector(card);
+              return Boolean(node && node.contains(document.activeElement)) && Math.abs(scrollY - y) <= 4;
+            }""",
+            arg=[bucket_card, bucket_departure["scroll_y"]],
+            timeout=15_000,
+        )
+        assert "near-record-full-record" in page.evaluate(RETURN_STATE_JS, bucket_card)["focus_class"]
         return {
             "case": f"citywide-preview-{name}",
             "preview": len(state["ids"]),
