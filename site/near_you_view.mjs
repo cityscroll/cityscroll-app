@@ -1204,9 +1204,9 @@ function recordCard(record, { now = null, inspect = true } = {}) {
   </li>`;
 }
 
-function recordList(records, emptyCopy = "No records match these filters.", { now = null, className = "", inspect = true } = {}) {
+function recordList(records, emptyCopy = "No records match these filters.", { now = null, inspect = true } = {}) {
   if (!records.length) return `<p class="near-empty">${esc(emptyCopy)}</p>`;
-  return `<ol class="near-records${className ? ` ${className}` : ""}">${records.map((record) => recordCard(record, { now, inspect })).join("")}</ol>`;
+  return `<ol class="near-records">${records.map((record) => recordCard(record, { now, inspect })).join("")}</ol>`;
 }
 
 function hiddenScopeFields(scope, omit = new Set()) {
@@ -1318,7 +1318,7 @@ function renderNearYouSpecialRecords(view, { position = "after-results", shell =
     } else {
       // The document's cards are plain record links; the deferred section that
       // replaces them adds Inspect.
-      body = recordList(citywide.preview, undefined, { now: view.now, className: "near-citywide-preview", inspect: !shell });
+      body = recordList(citywide.preview, undefined, { now: view.now, inspect: !shell });
     }
     citywideHtml = `<div class="near-citywide" data-bag="citywide"${failed ? ` data-near-section-state="unavailable"` : ""}>
       <h2 id="near-bags-heading" tabindex="-1"><span>${esc(labels.citywide)}</span> ${countMarkup(citywide.count)}</h2>
