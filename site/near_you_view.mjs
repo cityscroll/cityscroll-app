@@ -116,8 +116,27 @@ const BAG_LABELS = Object.freeze({
   virtual: "Virtual / online only",
   unlocated: "No place signal",
 });
+/** Resident consequence when one special bucket could not be read. */
+const BAG_UNAVAILABLE_COPY = Object.freeze({
+  citywide: "Citywide records could not load.",
+  virtual: "Online-only records could not load.",
+  unlocated: "Records without a place could not load.",
+});
 const BOROUGHS = Object.keys(BOROUGH_META);
 const NEAR_YOU_DATA_STATES = Object.freeze(["ready", "pending", "error"]);
+/** Independently loaded sections: the requested scope and each special bucket. */
+const NEAR_YOU_SECTIONS = Object.freeze(["primary", "citywide", "virtual", "unlocated"]);
+
+/**
+ * Per-section records state. A loader that reports section health decides each
+ * section on its own; without it every section follows the page's dataState.
+ */
+function nearYouSectionStates(sections, dataState) {
+  return Object.fromEntries(NEAR_YOU_SECTIONS.map((name) => {
+    const state = sections?.[name]?.state;
+    return [name, state === "ready" ? "ready" : state === "unavailable" ? "error" : dataState];
+  }));
+}
 /** Geometry health is independent of records-loading state. */
 const NEAR_YOU_GEOMETRY_STATES = Object.freeze(["ready", "pending", "missing", "error"]);
 
@@ -476,16 +495,19 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     && (scope.place.viewport?.basis || scope.facets.values?.basis) === "contract_action_address"
     ? "contract_action_address"
     : "performance";
+  const rootForBasis = (source) => {
+    const layer = basis === "contract_action_address"
+      ? source?.basis_layers?.contract_action_address
+      : null;
+    return layer
+      ? { ...layer, boundary_vintage: source?.boundary_vintage, built_at: source?.built_at }
+      : source;
+  };
   const basisLayer = basis === "contract_action_address"
     ? activity?.basis_layers?.contract_action_address
     : null;
-  const activityRoot = basisLayer
-    ? {
-        ...basisLayer,
-        boundary_vintage: activity?.boundary_vintage,
-        built_at: activity?.built_at,
-      }
-    : activity;
+  const activityRoot = rootForBasis(activity);
+  const sectionStates = nearYouSectionStates(options.sections, dataState);
   const records = dataState === "ready" ? activityRoot?.records?.[lens] || {} : {};
   const allowed = new Set(Object.values(records)
     .filter((record) => recordMatches(record, scope, activity?.built_at))
@@ -735,17 +757,29 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     })
     : null;
   const resultRecords = resultIds.map((id) => records[id]).filter(Boolean).sort(recordSort).map(linkedRecord);
+  // A special bucket reads only its own section. When the requested scope
+  // failed, its records come from the sections that did load
+  // (options.sectionActivity), never from the failed local read.
+  const sectionRoot = dataState === "ready" ? activityRoot : rootForBasis(options.sectionActivity || null);
+  const sectionRecords = sectionRoot?.records?.[lens] || {};
+  const sectionAllowed = dataState === "ready"
+    ? allowed
+    : new Set(Object.values(sectionRecords)
+      .filter((record) => recordMatches(record, scope, options.sectionActivity?.built_at))
+      .map((record) => String(record.id)));
   const bags = Object.fromEntries(["citywide", "virtual", "unlocated"].map((kind) => {
-    const ids = dataState === "ready" && mapped
-      ? intersection(activityRoot?.district_items?.[kind]?.[lens], allowed)
+    const loaded = sectionStates[kind] === "ready" && mapped && Boolean(sectionRoot);
+    const ids = loaded
+      ? intersection(sectionRoot?.district_items?.[kind]?.[lens], sectionAllowed)
       : [];
-    const count = dataState === "ready" && mapped ? ids.length : null;
+    const count = loaded ? ids.length : null;
     return [kind, {
       kind,
       label: BAG_LABELS[kind],
+      state: sectionStates[kind],
       ids,
       count,
-      records: ids.map((id) => records[id]).filter(Boolean).sort(recordSort)
+      records: ids.map((id) => sectionRecords[id]).filter(Boolean).sort(recordSort)
         .map((record) => linkedRecord(record, { explain: false })),
       href: urlForScope(scopeWithPlace(scope, { locationScope: kind })),
     }];
@@ -821,6 +855,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     lens,
     mapped,
     dataState,
+    sectionStates,
     geometryState,
     mapState,
     boundaryVintage,
@@ -1167,17 +1202,28 @@ function geographyOptions(options, current) {
 
 /** Render the lower-priority record lists for the deferred Near-you artifact. */
 export function renderNearYouDeferredParts(view) {
-  const bags = Object.values(view.bags).map((bag) => `<details class="near-bag" data-bag="${bag.kind}">
+  const bags = Object.values(view.bags).map((bag) => {
+    // A bucket that could not be read says so, with Retry; it never renders
+    // an empty list or a zero.
+    const failed = bag.state === "error";
+    const body = failed
+      ? `<div class="near-coverage near-section-recovery" data-near-section-recovery="${esc(bag.kind)}" role="note">
+      <strong>${esc(BAG_UNAVAILABLE_COPY[bag.kind] || "These records could not load.")}</strong>
+      <p class="near-local-recovery-actions"><a href="${esc(view.recoveryHref)}" data-near-recovery="retry">Try again</a></p>
+    </div>`
+      : recordList(bag.records, bag.count == null
+        ? "These records are not available right now."
+        : `No ${bag.label.toLowerCase()} records match these filters.`);
+    return `<details class="near-bag" data-bag="${bag.kind}"${failed ? ` data-near-section-state="unavailable"` : ""}>
     <summary><span>${esc(bag.label)}</span>${countMarkup(bag.count)}</summary>
     <p>${bag.kind === "citywide"
       ? "These records apply citywide, so they do not belong to one district."
       : bag.kind === "virtual"
         ? "These records are online only and have no physical place."
         : "The source does not give enough place detail to map these records."}</p>
-    ${recordList(bag.records, bag.count == null
-      ? "These records are not available right now."
-      : `No ${bag.label.toLowerCase()} records match these filters.`)}
-  </details>`).join("");
+    ${body}
+  </details>`;
+  }).join("");
   const resultCount = knownCount(view.results.count);
   const localRecoveryHtml = renderNearYouLocalRecovery(view, "records");
   const visibleResults = view.results.records.slice(0, INITIAL_RECORD_LIMIT);
@@ -1187,9 +1233,12 @@ export function renderNearYouDeferredParts(view) {
   // The wider-district block renders first so its scope label is read before
   // any exact result, including the honest unavailable exact-coverage copy.
   const broaderHtml = renderNearYouBroaderDistrictsHtml(view.broader_districts);
-  const resultsHtml = `<section class="near-results" aria-labelledby="${broaderHtml ? "near-broader-districts-heading" : "near-results-heading"}"${resultCount == null ? "" : ` data-results-count="${resultCount}"`}>
+  // The requested scope failed while other sections loaded: its section is an
+  // explicit failure with the scoped recovery, never an empty or zero result.
+  const requestedFailed = view.dataState === "error";
+  const resultsHtml = `<section class="near-results" aria-labelledby="${broaderHtml ? "near-broader-districts-heading" : "near-results-heading"}"${resultCount == null ? "" : ` data-results-count="${resultCount}"`}${requestedFailed ? ` data-near-section-state="unavailable"` : ""}>
       ${broaderHtml}<div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${resultCount == null ? `Matching ${esc(view.lensLabel)} records` : `${resultCount} ${esc(view.lensLabel)} records for these filters`}</h2></div></div>
-      ${localRecoveryHtml || recordList(visibleResults, view.mapState === "unsupported"
+      ${requestedFailed ? renderNearYouRecordsRecovery(view) : localRecoveryHtml || recordList(visibleResults, view.mapState === "unsupported"
         ? `${view.lensLabel} records are not mapped here.`
         : resultCount == null ? "Matching records are not available right now." : undefined)}
       ${moreResults}

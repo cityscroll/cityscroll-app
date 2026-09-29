@@ -804,3 +804,56 @@ test("All NYC broadening keeps destination-applied facets per lens and clears pl
   assert.equal(allNycRecordsRouteHash(scopeWithPlace(scopeFromLensState("consultations"), { borough: "Queens" })), null);
   assert.equal(allNycRecordsRouteHash(scopeFromLensState("meetings", { when: "week" })), "#meetings?when=week");
 });
+
+// Separately loaded Near You sections (public alias ccfaadd338534), over frozen rows
+// reduced from the pinned published snapshot.
+import { readSectionIsolationFixture, MIDWOOD } from "./helpers/near_you_section_isolation_fixture.mjs";
+
+const SECTION_READY = Object.freeze({ state: "ready", cause: null });
+
+function sectionsWith(overrides = {}) {
+  return Object.fromEntries(["primary", "citywide", "virtual", "unlocated"]
+    .map((name) => [name, overrides[name] || SECTION_READY]));
+}
+
+test("each Near You section renders from its own state; all-ready output is byte-identical", () => {
+  const { provenance: _provenance, ...rows } = readSectionIsolationFixture();
+  const scope = scopeFromNearYouUrl("https://cityscroll.org/near-you/?geo=nta2020:BK1403&lens=meetings&surface=records");
+  const midwood = rows.geography_items.by_key[MIDWOOD].meetings.map(String).sort();
+  const legacy = buildNearYouViewModel(scope, rows, fixtureBoundaries);
+  const ready = buildNearYouViewModel(scope, rows, fixtureBoundaries, { sections: sectionsWith() });
+  assert.deepEqual(renderNearYouDeferredParts(ready), renderNearYouDeferredParts(legacy),
+    "reporting every section ready changes no served byte");
+  assert.equal(ready.bags.citywide.count, 20);
+
+  const citywideFailed = buildNearYouViewModel(scope, rows, fixtureBoundaries, {
+    sections: sectionsWith({ citywide: { state: "unavailable", cause: "timeout" } }),
+  });
+  assert.deepEqual(citywideFailed.results.ids, midwood);
+  assert.equal(citywideFailed.bags.citywide.count, null);
+  assert.deepEqual(citywideFailed.bags.citywide.ids, []);
+  assert.equal(citywideFailed.bags.virtual.count, 1);
+  const parts = renderNearYouDeferredParts(citywideFailed);
+  assert.match(parts.bagsHtml, /data-bag="citywide" data-near-section-state="unavailable"/);
+  assert.doesNotMatch(parts.bagsHtml, /timeout/, "the internal cause never reaches resident markup");
+
+  // The requested section failed: loaded buckets render from the loaded
+  // sections only, and no local count, area count or lens count is derived.
+  const localFailed = buildNearYouViewModel(scope, null, fixtureBoundaries, {
+    dataState: "error",
+    sections: sectionsWith({ primary: { state: "unavailable", cause: "read_failed" } }),
+    sectionActivity: rows,
+  });
+  assert.equal(localFailed.results.count, null);
+  assert.deepEqual(localFailed.results.ids, []);
+  assert.equal(localFailed.bags.citywide.count, 20);
+  assert.equal(localFailed.localRecovery.state, "error");
+  assert.ok(Object.values(localFailed.navigationAreaCountsByKey).every((count) => count == null));
+  assert.deepEqual(localFailed.geographyLensCounts, {});
+  const failedParts = renderNearYouDeferredParts(localFailed);
+  assert.match(failedParts.resultsHtml, /data-near-section-state="unavailable"/);
+  assert.doesNotMatch(failedParts.resultsHtml, /data-record-id=/);
+  // Control: without the loaded sections every bucket stays unavailable.
+  const nothingLoaded = buildNearYouViewModel(scope, null, fixtureBoundaries, { dataState: "error" });
+  assert.equal(nothingLoaded.bags.citywide.count, null);
+});

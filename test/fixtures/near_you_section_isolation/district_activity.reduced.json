@@ -1,0 +1,3739 @@
+{
+ "provenance": {
+  "path": "site/data/district_activity.json",
+  "revision": "d886b385d647f4534df985f5922749a9414fab26",
+  "blob": "5deaa202fe578e09b58380d43755419dbb85ec60",
+  "reduction": "test/helpers/near_you_section_isolation_fixture.mjs#reduceSectionIsolationActivity"
+ },
+ "schema": "cityscroll.district_activity.v1",
+ "boundary_vintage": "2026-05-26",
+ "built_at": "2026-09-26T07:41:27.793Z",
+ "lenses": [
+  "land",
+  "property",
+  "rules",
+  "meetings",
+  "money"
+ ],
+ "district_items": {
+  "schema": "cityscroll.district_items.v1",
+  "boundary_vintage": "2026-05-26",
+  "built_at": "2026-09-26T07:41:27.793Z",
+  "lenses": [
+   "land",
+   "property",
+   "rules",
+   "meetings",
+   "money"
+  ],
+  "by_level": {
+   "borough": {},
+   "community_district": {},
+   "council_district": {}
+  },
+  "citywide": {
+   "meetings": [
+    "20260609003",
+    "20260617003",
+    "20260618036",
+    "20260623048",
+    "20260626034",
+    "20260626036",
+    "20260713006",
+    "20260714029",
+    "20260715041",
+    "20260728026",
+    "20260803009",
+    "20260803026",
+    "20260806002",
+    "20260810005",
+    "20260810007",
+    "20260812019",
+    "20260814012",
+    "20260817025",
+    "20260826001",
+    "meeting:nyc_legistar_events:22568"
+   ]
+  },
+  "virtual": {
+   "meetings": [
+    "20260624005"
+   ]
+  },
+  "unlocated": {
+   "meetings": [
+    "20260213014",
+    "20260213015",
+    "20260504036",
+    "20260504037",
+    "20260504038",
+    "20260504039",
+    "20260504040",
+    "20260504041",
+    "20260504042",
+    "20260504043",
+    "20260504044",
+    "20260729005",
+    "20260729019",
+    "20260729020",
+    "20260810024",
+    "20260810025",
+    "20260810050",
+    "20260810051",
+    "20260811001",
+    "20260812022",
+    "20260814016",
+    "20260819004",
+    "20260819023",
+    "20260826043",
+    "20260827001",
+    "20260827019",
+    "meeting:nyc_legistar_events:22541",
+    "meeting:nyc_legistar_events:22542",
+    "meeting:nyc_legistar_events:22543",
+    "meeting:nyc_legistar_events:22544",
+    "meeting:nyc_legistar_events:22545",
+    "meeting:nyc_legistar_events:22546",
+    "meeting:nyc_legistar_events:22547",
+    "meeting:nyc_legistar_events:22613",
+    "meeting:nyc_legistar_events:22614",
+    "meeting:nyc_legistar_events:22615",
+    "meeting:nyc_legistar_events:22616",
+    "meeting:nyc_legistar_events:22620",
+    "meeting:nyc_legistar_events:22621",
+    "meeting:nyc_legistar_events:22622",
+    "meeting:nyc_legistar_events:22627",
+    "meeting:nyc_legistar_events:22630",
+    "meeting:nyc_legistar_events:22633",
+    "meeting:nyc_legistar_events:22634",
+    "meeting:nyc_legistar_events:22635",
+    "meeting:nyc_legistar_events:22636",
+    "meeting:nyc_legistar_events:22637",
+    "meeting:nyc_legistar_events:22638",
+    "meeting:nyc_legistar_events:22639",
+    "meeting:nyc_legistar_events:22640",
+    "meeting:nyc_legistar_events:22645",
+    "meeting:nyc_legistar_events:22652",
+    "meeting:nyc_legistar_events:22653",
+    "meeting:nyc_legistar_events:22654",
+    "meeting:nyc_legistar_events:22661",
+    "meeting:nyc_legistar_events:22662",
+    "meeting:nyc_legistar_events:22665",
+    "meeting:nyc_legistar_events:22667",
+    "meeting:nyc_legistar_events:22668",
+    "meeting:nyc_legistar_events:22670",
+    "meeting:nyc_legistar_events:22672",
+    "meeting:nyc_legistar_events:22677",
+    "meeting:nyc_legistar_events:22678",
+    "meeting:nyc_legistar_events:22679",
+    "meeting:nyc_legistar_events:22685",
+    "meeting:nyc_legistar_events:22686",
+    "meeting:nyc_legistar_events:22688",
+    "meeting:nyc_legistar_events:22691",
+    "meeting:nyc_legistar_events:22692",
+    "meeting:nyc_legistar_events:22694",
+    "meeting:nyc_legistar_events:22695",
+    "meeting:nyc_legistar_events:22699",
+    "meeting:nyc_legistar_events:22700",
+    "meeting:nyc_legistar_events:22701",
+    "meeting:nyc_legistar_events:22702",
+    "meeting:nyc_legistar_events:22703",
+    "meeting:nyc_legistar_events:22704",
+    "meeting:nyc_legistar_events:22705",
+    "meeting:nyc_legistar_events:22707",
+    "meeting:nyc_legistar_events:22718",
+    "meeting:nyc_legistar_events:22721",
+    "meeting:nyc_legistar_events:22722",
+    "meeting:nyc_legistar_events:22723",
+    "meeting:nyc_legistar_events:22725",
+    "meeting:nyc_legistar_events:22728",
+    "meeting:nyc_legistar_events:22729",
+    "meeting:nyc_legistar_events:22730",
+    "meeting:nyc_legistar_events:22731",
+    "meeting:nyc_legistar_events:22733"
+   ]
+  }
+ },
+ "geography_items": {
+  "schema": "cityscroll.geography_items.v1",
+  "built_at": "2026-09-26T07:41:27.793Z",
+  "lenses": [
+   "land",
+   "property",
+   "rules",
+   "meetings",
+   "money"
+  ],
+  "public_types": [
+   "borough",
+   "community_district",
+   "council_district",
+   "nta2020",
+   "police_precinct"
+  ],
+  "coverage": {
+   "status": "ready",
+   "by_lens": {
+    "land": {
+     "status": "ready",
+     "source": "land_place_membership",
+     "association_kind": "published_project_lot",
+     "generation_id": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7",
+     "content_id": "fnv1a32:49453cf1:244",
+     "source_dates": {
+      "catalog_content_id": "fnv1a32:06425590:244",
+      "catalog_materialized_at": "2026-09-09T06:54:36.054Z",
+      "catalog_generated_at": "2026-09-09T06:46:42.537Z",
+      "bbl_materialized_at": "2026-09-04T11:12:46.107Z",
+      "parcel_coordinate_vintage": "pluto_25v4",
+      "boundary_vintages": {
+       "borough": "2026-05-26",
+       "community_district": "2026-05-26",
+       "council_district": "2026-05-26",
+       "nta2020": "26B",
+       "police_precinct": "26B"
+      }
+     },
+     "admitted": 244,
+     "spatially_matched": 233,
+     "partially_covered": 22,
+     "match_bound": "spatially_matched_population",
+     "types": {
+      "nta2020": {
+       "status": "ready",
+       "reason": null,
+       "generation_id": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7",
+       "content_id": "fnv1a32:49453cf1:244",
+       "source_dates": {
+        "catalog_content_id": "fnv1a32:06425590:244",
+        "catalog_materialized_at": "2026-09-09T06:54:36.054Z",
+        "catalog_generated_at": "2026-09-09T06:46:42.537Z",
+        "bbl_materialized_at": "2026-09-04T11:12:46.107Z",
+        "parcel_coordinate_vintage": "pluto_25v4",
+        "boundary_vintages": {
+         "borough": "2026-05-26",
+         "community_district": "2026-05-26",
+         "council_district": "2026-05-26",
+         "nta2020": "26B",
+         "police_precinct": "26B"
+        }
+       },
+       "match_bound": "spatially_matched_population"
+      }
+     }
+    }
+   }
+  },
+  "definitions": {
+   "geography:nta2020:BK1403": {
+    "key": "geography:nta2020:BK1403",
+    "type": "nta2020",
+    "id": "BK1403",
+    "label": "Midwood",
+    "class": "statistical",
+    "source_id": "dcp-nta2020-boundaries",
+    "boundary_vintage": "26B"
+   },
+   "geography:nta2020:BK1503": {
+    "key": "geography:nta2020:BK1503",
+    "type": "nta2020",
+    "id": "BK1503",
+    "label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+    "class": "statistical",
+    "source_id": "dcp-nta2020-boundaries",
+    "boundary_vintage": "26B"
+   }
+  },
+  "by_key": {
+   "geography:nta2020:BK1403": {
+    "land": [
+     "2019K0301",
+     "2019K0383",
+     "2020K0276"
+    ],
+    "property": [],
+    "rules": [],
+    "meetings": [
+     "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+     "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/"
+    ],
+    "money": []
+   },
+   "geography:nta2020:BK1503": {
+    "land": [
+     "2019K0147"
+    ]
+   }
+  }
+ },
+ "records": {
+  "meetings": {
+   "20260213014": {
+    "id": "20260213014",
+    "title": "BOARD MEETINGS",
+    "agency": "Board Meetings",
+    "type": "Meeting",
+    "date": "2026-06-22T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260213014",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213014",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260213015": {
+    "id": "20260213015",
+    "title": "BOARD MEETINGS",
+    "agency": "Board Meetings",
+    "type": "Meeting",
+    "date": "2026-06-29T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260213015",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213015",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260504036": {
+    "id": "20260504036",
+    "title": "BOARD MEETINGS",
+    "agency": "Board Meetings",
+    "type": "Meeting",
+    "date": "2026-07-06T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260504036",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504036",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260504037": {
+    "id": "20260504037",
+    "title": "BOARD MEETINGS",
+    "agency": "Board Meetings",
+    "type": "Meeting",
+    "date": "2026-07-13T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260504037",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504037",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260504038": {
+    "id": "20260504038",
+    "title": "BOARD MEETINGS",
+    "agency": "Board Meetings",
+    "type": "Meeting",
+    "date": "2026-07-20T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260504038",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504038",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260504039": {
+    "id": "20260504039",
+    "title": "BOARD MEETINGS",
+    "agency": "Board Meetings",
+    "type": "Meeting",
+    "date": "2026-07-27T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260504039",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504039",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260504040": {
+    "id": "20260504040",
+    "title": "BOARD MEETINGS",
+    "agency": "Board Meetings",
+    "type": "Meeting",
+    "date": "2026-08-03T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260504040",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504040",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260504041": {
+    "id": "20260504041",
+    "title": "BOARD MEETINGS",
+    "agency": "Board Meetings",
+    "type": "Meeting",
+    "date": "2026-08-10T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260504041",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504041",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260504042": {
+    "id": "20260504042",
+    "title": "BOARD MEETINGS",
+    "agency": "Board Meetings",
+    "type": "Meeting",
+    "date": "2026-08-17T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260504042",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504042",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260504043": {
+    "id": "20260504043",
+    "title": "BOARD MEETINGS",
+    "agency": "Board Meetings",
+    "type": "Meeting",
+    "date": "2026-08-24T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260504043",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504043",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260504044": {
+    "id": "20260504044",
+    "title": "BOARD MEETINGS",
+    "agency": "Board Meetings",
+    "type": "Meeting",
+    "date": "2026-08-31T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260504044",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504044",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260609003": {
+    "id": "20260609003",
+    "title": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services",
+    "agency": "Consumer and Worker Protection",
+    "type": "Public Hearings",
+    "date": "2026-07-16T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260609003",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609003",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260617003": {
+    "id": "20260617003",
+    "title": "Citywide Public Input Sessions",
+    "agency": "Charter Revision Commission",
+    "type": "Public Hearings",
+    "date": "2026-06-24T00:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "citywide",
+    "route": "/#notice/20260617003",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617003",
+    "placement_methods": [
+     "citywide_phrase",
+     "citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "citywide",
+      "source_method": "citywide_phrase",
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260618036": {
+    "id": "20260618036",
+    "title": "Proposed Amendment to 421-a(16) Workbook Rules",
+    "agency": "Housing Preservation and Development",
+    "type": "Public Hearings",
+    "date": "2026-08-04T14:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260618036",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618036",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260623048": {
+    "id": "20260623048",
+    "title": "JUNE 25, 2026 PUBLIC HEARING",
+    "agency": "Charter Revision Commission",
+    "type": "Public Hearings",
+    "date": "2026-06-25T18:30:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "citywide",
+    "route": "/#notice/20260623048",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623048",
+    "placement_methods": [
+     "citywide_phrase",
+     "citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "citywide",
+      "source_method": "citywide_phrase",
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260624005": {
+    "id": "20260624005",
+    "title": "Notice of Availability of Final Scope of Work, Completion of a Draft Environmental Impact Statement and Public Hearing",
+    "agency": "Sanitation",
+    "type": "Public Hearings",
+    "date": "2026-07-28T10:00:00.000",
+    "status": null,
+    "basis": "Virtual",
+    "confidence": "strong",
+    "basis_method": "virtual_only",
+    "route": "/#notice/20260624005",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624005",
+    "placement_methods": [
+     "virtual_only"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Virtual",
+     "method": "virtual_only",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "virtual_only",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260626034": {
+    "id": "20260626034",
+    "title": "DCWP NOH Requirements for HVFHV Services and Protections for Drivers",
+    "agency": "Consumer and Worker Protection",
+    "type": "Public Hearings",
+    "date": "2026-08-05T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260626034",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626034",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260626036": {
+    "id": "20260626036",
+    "title": "DCWP NOH Junk Fees",
+    "agency": "Consumer and Worker Protection",
+    "type": "Public Hearings",
+    "date": "2026-08-07T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260626036",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260626036",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260713006": {
+    "id": "20260713006",
+    "title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
+    "agency": "Consumer and Worker Protection",
+    "type": "Public Hearings",
+    "date": "2026-08-19T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260713006",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713006",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260714029": {
+    "id": "20260714029",
+    "title": "Notice of Public Hearing and Opportunity to Comment- FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
+    "agency": "Transportation",
+    "type": "Public Hearings",
+    "date": "2026-09-01T10:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260714029",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714029",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260715041": {
+    "id": "20260715041",
+    "title": "Amendments to Rules Relating to the Energy Conservation Code",
+    "agency": "Buildings",
+    "type": "Public Hearings",
+    "date": "2026-08-27T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260715041",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260728026": {
+    "id": "20260728026",
+    "title": "Proposed Rule - Rule relating to Incomplete Inspections",
+    "agency": "Buildings",
+    "type": "Public Hearings",
+    "date": "2026-09-09T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260728026",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728026",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260729005": {
+    "id": "20260729005",
+    "title": "NYPD IT Infrastructure Engineer Public Hearing.",
+    "agency": "Citywide Administrative Services",
+    "type": "Public Hearings",
+    "date": "2026-08-19T10:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260729005",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729005",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260729019": {
+    "id": "20260729019",
+    "title": "Public Hearing Office of Technology & Innovation [858] NYS Civil Service Commission Proposal",
+    "agency": "Citywide Administrative Services",
+    "type": "Public Hearings",
+    "date": "2026-08-19T22:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260729019",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729019",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260729020": {
+    "id": "20260729020",
+    "title": "Public Hearing Office of The Comptroller [015] NYS Civil Service Commission Proposal",
+    "agency": "Citywide Administrative Services",
+    "type": "Public Hearings",
+    "date": "2026-08-19T10:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260729020",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729020",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260803009": {
+    "id": "20260803009",
+    "title": "New Rules Relating to Rat Inspections",
+    "agency": "Health and Mental Hygiene",
+    "type": "Public Hearings",
+    "date": "2026-09-14T10:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260803009",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260803009",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260803026": {
+    "id": "20260803026",
+    "title": "Proposed Rule - Amendment of Rules relating to Certain Qualified Inspectors",
+    "agency": "Buildings",
+    "type": "Public Hearings",
+    "date": "2026-09-15T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260803026",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260803026",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260806002": {
+    "id": "20260806002",
+    "title": "Rules Regarding Restricted Substances in Personal Care Products",
+    "agency": "Health and Mental Hygiene",
+    "type": "Public Hearings",
+    "date": "2026-09-16T10:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260806002",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260806002",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260810005": {
+    "id": "20260810005",
+    "title": "DCWP NOH Rules Relating to Tax Preparation Fee Disclosures",
+    "agency": "Consumer and Worker Protection",
+    "type": "Public Hearings",
+    "date": "2026-09-16T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260810005",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260810005",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260810007": {
+    "id": "20260810007",
+    "title": "DCWP NOH Rules Relating to Amendment of Debt Collectors Rule Effective Date",
+    "agency": "Consumer and Worker Protection",
+    "type": "Public Hearings",
+    "date": "2026-09-17T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260810007",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260810007",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260810024": {
+    "id": "20260810024",
+    "title": "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - September 10th, 2026",
+    "agency": "Industrial Development Agency",
+    "type": "Public Hearings",
+    "date": "2026-09-10T10:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260810024",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260810024",
+    "placement_methods": [],
+    "venue_address": "1 Liberty Plaza, 14th Floor, New York, NY, 10006",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260810025": {
+    "id": "20260810025",
+    "title": "BUILD NYC RESOURCE CORPORATION NOTICE OF PUBLIC HEARING - September 10th, 2026",
+    "agency": "Build NYC Resource Corporation",
+    "type": "Public Hearings",
+    "date": "2026-09-10T10:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260810025",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260810025",
+    "placement_methods": [],
+    "venue_address": "1 Liberty Plaza, 14th Floor, New York, NY, 10006",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260810050": {
+    "id": "20260810050",
+    "title": "MOCs Public Hearing September 9, 2026",
+    "agency": "Environmental Protection",
+    "type": "Public Hearings",
+    "date": "2026-09-09T10:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260810050",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260810050",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260810051": {
+    "id": "20260810051",
+    "title": "MOCs Public Hearing September 9, 2026",
+    "agency": "Environmental Protection",
+    "type": "Public Hearings",
+    "date": "2026-09-09T10:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260810051",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260810051",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260811001": {
+    "id": "20260811001",
+    "title": "MOCs Public Hearing September 9, 2026",
+    "agency": "Environmental Protection",
+    "type": "Public Hearings",
+    "date": "2026-09-09T10:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260811001",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260811001",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260812019": {
+    "id": "20260812019",
+    "title": "DSNY Amendment of Penalty for Improper Disposal of Regulated Household Waste",
+    "agency": "Sanitation",
+    "type": "Public Hearings",
+    "date": "2026-09-18T10:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260812019",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260812019",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260812022": {
+    "id": "20260812022",
+    "title": "New York City Independent Budget Office Advisory Committee Meeting",
+    "agency": "Independent Budget Office",
+    "type": "Meeting",
+    "date": "2026-09-16T08:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260812022",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260812022",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260814012": {
+    "id": "20260814012",
+    "title": "Proposed Rule - Amendment of Rules regarding Fees for Electrical Permits and Licensing and Compensation of Registered Design Professionals",
+    "agency": "Buildings",
+    "type": "Public Hearings",
+    "date": "2026-09-23T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260814012",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260814012",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260814016": {
+    "id": "20260814016",
+    "title": "New York City Transit Authority - Selective Certification Request",
+    "agency": "Citywide Administrative Services",
+    "type": "Public Hearings",
+    "date": "2026-09-09T10:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260814016",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260814016",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260817025": {
+    "id": "20260817025",
+    "title": "Proposed Rule - Rules regarding Sidewalk Shed Designs",
+    "agency": "Buildings",
+    "type": "Public Hearings",
+    "date": "2026-09-24T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260817025",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260817025",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260819004": {
+    "id": "20260819004",
+    "title": "North Shore Waterfront Plan DSOW Public Hearing",
+    "agency": "Mayor's Office of Environmental Coordination",
+    "type": "Public Hearings",
+    "date": "2026-09-29T18:30:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260819004",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819004",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260819023": {
+    "id": "20260819023",
+    "title": "Mayoral Public Hearing",
+    "agency": "Office of the Mayor",
+    "type": "Public Hearings",
+    "date": "2026-08-21T00:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260819023",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819023",
+    "placement_methods": [],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260826001": {
+    "id": "20260826001",
+    "title": "Proposed Rule - Rule relating to Containment Netting",
+    "agency": "Buildings",
+    "type": "Public Hearings",
+    "date": "2026-10-05T11:00:00.000",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "rule_default_citywide",
+    "route": "/#notice/20260826001",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260826001",
+    "placement_methods": [
+     "rule_default_citywide"
+    ],
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "rule_default_citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "rule_default_citywide",
+      "source_method": null,
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "20260826043": {
+    "id": "20260826043",
+    "title": "BUILD NYC RESOURCE CORPORATION - SUPPLEMENTAL NOTICE OF PUBLIC HEARING - September 10th, 2026",
+    "agency": "Build NYC Resource Corporation",
+    "type": "Public Hearings",
+    "date": "2026-09-10T10:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260826043",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260826043",
+    "placement_methods": [],
+    "venue_address": "1 Liberty Plaza, 14th Floor, New York, NY, 10006",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260827001": {
+    "id": "20260827001",
+    "title": "Shore Road Bridge over Hutchinson River Project",
+    "agency": "Transportation",
+    "type": "Public Hearings",
+    "date": "2026-10-01T18:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260827001",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827001",
+    "placement_methods": [],
+    "venue_address": "Address Not Listed In The Dropdown",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "20260827019": {
+    "id": "20260827019",
+    "title": "Shore Road Bridge over Hutchinson River Project",
+    "agency": "Transportation",
+    "type": "Public Hearings",
+    "date": "2026-10-07T18:00:00.000",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/#notice/20260827019",
+    "meeting_origin": "city_record_notice",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827019",
+    "placement_methods": [],
+    "venue_address": "Address Not Listed In The Dropdown",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/": {
+    "id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+    "title": "Housing and Land Use Committee Meeting",
+    "agency": null,
+    "type": "Community board meeting",
+    "date": "2026-09-23T18:30:00-04:00",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "strong",
+    "basis_method": "parcel_membership",
+    "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F",
+    "meeting_origin": "community_board_source_observed",
+    "source_url": "https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
+    "placement_methods": [
+     "board_covers_district",
+     "community_board_ontology",
+     "admitted_venue_membership",
+     "parcel_membership"
+    ],
+    "venue_address": "810 East 16th Street, Brooklyn, NY, 11230",
+    "venue_name": "Brooklyn CB14 District Office",
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "parcel_membership",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "community_board_ontology",
+      "source_method": "board_covers_district",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:3",
+       "type": "borough",
+       "id": "3",
+       "label": "Brooklyn",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "community_board_ontology",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "subject_affected_area",
+       "basis": "Community board district",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "community_board_ontology",
+        "source_method": "board_covers_district",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:K14",
+       "type": "community_district",
+       "id": "K14",
+       "label": "Brooklyn Community District 14",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "community_board_ontology",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "subject_affected_area",
+       "basis": "Community board district",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "community_board_ontology",
+        "source_method": "board_covers_district",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:45",
+       "type": "council_district",
+       "id": "45",
+       "label": "City Council District 45",
+       "class": "political",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:BK1403",
+       "type": "nta2020",
+       "id": "BK1403",
+       "label": "Midwood",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:70",
+       "type": "police_precinct",
+       "id": "70",
+       "label": "Police Precinct 70",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/": {
+    "id": "meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+    "title": "Public Hearing on ULURP Application and Executive Committee Meeting",
+    "agency": null,
+    "type": "Community board meeting",
+    "date": "2026-09-09",
+    "status": null,
+    "basis": "Venue / logistics",
+    "confidence": "strong",
+    "basis_method": "parcel_membership",
+    "route": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F",
+    "meeting_origin": "community_board_source_observed",
+    "source_url": "https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/",
+    "placement_methods": [
+     "board_covers_district",
+     "community_board_ontology",
+     "admitted_venue_membership",
+     "parcel_membership"
+    ],
+    "venue_address": "810 East 16th Street, Brooklyn, NY, 11230",
+    "venue_name": "Brooklyn CB14 District Office",
+    "place": {
+     "location_role": "venue",
+     "basis": "Venue / logistics",
+     "method": "parcel_membership",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "community_board_ontology",
+      "source_method": "board_covers_district",
+      "confidence_tier": "strong"
+     },
+     "geographies": [
+      {
+       "key": "geography:borough:3",
+       "type": "borough",
+       "id": "3",
+       "label": "Brooklyn",
+       "class": "administrative",
+       "relation": "located_in",
+       "method": "community_board_ontology",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "subject_affected_area",
+       "basis": "Community board district",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "community_board_ontology",
+        "source_method": "board_covers_district",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:community_district:K14",
+       "type": "community_district",
+       "id": "K14",
+       "label": "Brooklyn Community District 14",
+       "class": "community_administrative",
+       "relation": "located_in",
+       "method": "community_board_ontology",
+       "source_id": "community-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "subject_affected_area",
+       "basis": "Community board district",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "community_board_ontology",
+        "source_method": "board_covers_district",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:council_district:45",
+       "type": "council_district",
+       "id": "45",
+       "label": "City Council District 45",
+       "class": "political",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "city-council-district-boundaries",
+       "boundary_vintage": "2026-05-26",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:nta2020:BK1403",
+       "type": "nta2020",
+       "id": "BK1403",
+       "label": "Midwood",
+       "class": "statistical",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-nta2020-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      },
+      {
+       "key": "geography:police_precinct:70",
+       "type": "police_precinct",
+       "id": "70",
+       "label": "Police Precinct 70",
+       "class": "service_administrative",
+       "relation": "located_in",
+       "method": "parcel_membership",
+       "source_id": "dcp-police-precinct-boundaries",
+       "boundary_vintage": "26B",
+       "location_role": "venue",
+       "basis": "Venue / logistics",
+       "confidence": "strong",
+       "provenance": {
+        "placement_method": "parcel_membership",
+        "source_method": "admitted_venue_membership",
+        "confidence_tier": "strong"
+       },
+       "visibility": "public"
+      }
+     ]
+    }
+   },
+   "meeting:nyc_legistar_events:22541": {
+    "id": "meeting:nyc_legistar_events:22541",
+    "title": "City Council",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-24T13:30:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22541",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22541&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22542": {
+    "id": "meeting:nyc_legistar_events:22542",
+    "title": "City Council",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-08T13:30:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22542",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22542&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22543": {
+    "id": "meeting:nyc_legistar_events:22543",
+    "title": "City Council",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-22T13:30:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22543",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22543&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22544": {
+    "id": "meeting:nyc_legistar_events:22544",
+    "title": "City Council",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-11-12T13:30:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22544",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22544&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22545": {
+    "id": "meeting:nyc_legistar_events:22545",
+    "title": "City Council",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-11-19T13:30:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22545",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22545&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22546": {
+    "id": "meeting:nyc_legistar_events:22546",
+    "title": "City Council",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-12-03T13:30:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22546",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22546&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22547": {
+    "id": "meeting:nyc_legistar_events:22547",
+    "title": "City Council",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-12-17T13:30:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22547",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22547&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22568": {
+    "id": "meeting:nyc_legistar_events:22568",
+    "title": "Committee on Environmental Protection and Waterfronts",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-20T12:00:00",
+    "status": null,
+    "basis": "Citywide",
+    "confidence": "strong",
+    "basis_method": "citywide",
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22568",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22568&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [
+     "citywide_phrase",
+     "citywide"
+    ],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "Citywide",
+     "method": "citywide",
+     "confidence": "strong",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "citywide",
+      "source_method": "citywide_phrase",
+      "confidence_tier": "strong"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22613": {
+    "id": "meeting:nyc_legistar_events:22613",
+    "title": "Subcommittee on Zoning and Franchises",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-23T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22613",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22614": {
+    "id": "meeting:nyc_legistar_events:22614",
+    "title": "Committee on Land Use",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-23T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22614",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22614&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22615": {
+    "id": "meeting:nyc_legistar_events:22615",
+    "title": "Subcommittee on Zoning and Franchises",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-06T11:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22615",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22616": {
+    "id": "meeting:nyc_legistar_events:22616",
+    "title": "Committee on Land Use",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-07T11:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22616",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22616&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22620": {
+    "id": "meeting:nyc_legistar_events:22620",
+    "title": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-17T11:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22620",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22620&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22621": {
+    "id": "meeting:nyc_legistar_events:22621",
+    "title": "Committee on Land Use",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-17T11:30:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22621",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22621&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22622": {
+    "id": "meeting:nyc_legistar_events:22622",
+    "title": "Committee on General Welfare",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-22T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22622",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22622&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 2",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22627": {
+    "id": "meeting:nyc_legistar_events:22627",
+    "title": "Committee on Cultural Affairs, Libraries and International Relations",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-28T11:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22627",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22627&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "The New York Public Library at 515 Malcolm X Boulevard, New York, NY 10037 (135th Street and Malcolm X Boulevard)",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22630": {
+    "id": "meeting:nyc_legistar_events:22630",
+    "title": "Committee on Environmental Protection and Waterfronts",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-29T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22630",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22630&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22633": {
+    "id": "meeting:nyc_legistar_events:22633",
+    "title": "Committee on Public Safety",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-16T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22633",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22633&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22634": {
+    "id": "meeting:nyc_legistar_events:22634",
+    "title": "Committee on Economic Development",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-16T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22634",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22634&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22635": {
+    "id": "meeting:nyc_legistar_events:22635",
+    "title": "Committee on Small Business",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-16T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22635",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22635&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22636": {
+    "id": "meeting:nyc_legistar_events:22636",
+    "title": "Committee on Transportation and Infrastructure",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-30T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22636",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22636&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22637": {
+    "id": "meeting:nyc_legistar_events:22637",
+    "title": "Committee on Consumer and Worker Protection",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-30T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22637",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22637&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22638": {
+    "id": "meeting:nyc_legistar_events:22638",
+    "title": "Committee on Aging",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-18T11:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22638",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22638&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22639": {
+    "id": "meeting:nyc_legistar_events:22639",
+    "title": "Committee on Disabilities",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-18T11:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22639",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22639&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22640": {
+    "id": "meeting:nyc_legistar_events:22640",
+    "title": "Committee on Finance",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-18T11:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22640",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22640&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22645": {
+    "id": "meeting:nyc_legistar_events:22645",
+    "title": "Committee on Governmental Operations, State & Federal Legislation",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-22T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22645",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22645&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22652": {
+    "id": "meeting:nyc_legistar_events:22652",
+    "title": "Committee on Mental Health and Substance Use",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-23T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22652",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22652&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22653": {
+    "id": "meeting:nyc_legistar_events:22653",
+    "title": "Committee on Hospitals",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-23T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22653",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22653&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22654": {
+    "id": "meeting:nyc_legistar_events:22654",
+    "title": "Committee on Women and Gender Equity",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-23T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22654",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22654&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22661": {
+    "id": "meeting:nyc_legistar_events:22661",
+    "title": "Committee on Economic Development",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-30T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22661",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22661&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22662": {
+    "id": "meeting:nyc_legistar_events:22662",
+    "title": "Committee on Small Business",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-30T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22662",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22662&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22665": {
+    "id": "meeting:nyc_legistar_events:22665",
+    "title": "Committee on Fire and Emergency Management",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-30T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22665",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22665&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 2",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22667": {
+    "id": "meeting:nyc_legistar_events:22667",
+    "title": "Committee on Women and Gender Equity",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-30T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22667",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22667&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22668": {
+    "id": "meeting:nyc_legistar_events:22668",
+    "title": "Committee on Public Safety",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-30T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22668",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22668&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Council Chambers - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22670": {
+    "id": "meeting:nyc_legistar_events:22670",
+    "title": "Committee on Higher Education",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-29T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22670",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22670&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 2",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22672": {
+    "id": "meeting:nyc_legistar_events:22672",
+    "title": "Subcommittee on Early Childhood Education",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-16T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22672",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22672&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 2",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22677": {
+    "id": "meeting:nyc_legistar_events:22677",
+    "title": "Committee on Education",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-22T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22677",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22677&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22678": {
+    "id": "meeting:nyc_legistar_events:22678",
+    "title": "Committee on Civil Service and Labor",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-22T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22678",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22678&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 2",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22679": {
+    "id": "meeting:nyc_legistar_events:22679",
+    "title": "Committee on Children and Youth",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-16T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22679",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22679&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 2",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22685": {
+    "id": "meeting:nyc_legistar_events:22685",
+    "title": "Committee on Criminal Justice",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-23T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22685",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22685&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22686": {
+    "id": "meeting:nyc_legistar_events:22686",
+    "title": "Committee on Immigration",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-22T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22686",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22686&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22688": {
+    "id": "meeting:nyc_legistar_events:22688",
+    "title": "Committee on Small Business",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-16T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22688",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22688&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22691": {
+    "id": "meeting:nyc_legistar_events:22691",
+    "title": "Committee on Contracts",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-23T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22691",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22691&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 2",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22692": {
+    "id": "meeting:nyc_legistar_events:22692",
+    "title": "Committee on Public Housing",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-22T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22692",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22692&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22694": {
+    "id": "meeting:nyc_legistar_events:22694",
+    "title": "Committee on Fire and Emergency Management",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-06T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22694",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22694&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22695": {
+    "id": "meeting:nyc_legistar_events:22695",
+    "title": "Committee on Hospitals",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-06T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22695",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22695&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22699": {
+    "id": "meeting:nyc_legistar_events:22699",
+    "title": "Committee on Land Use",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-21T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22699",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22699&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22700": {
+    "id": "meeting:nyc_legistar_events:22700",
+    "title": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-20T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22700",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22700&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22701": {
+    "id": "meeting:nyc_legistar_events:22701",
+    "title": "Subcommittee on Zoning and Franchises",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-20T11:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22701",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22702": {
+    "id": "meeting:nyc_legistar_events:22702",
+    "title": "Committee on Land Use",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-01T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22702",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22702&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22703": {
+    "id": "meeting:nyc_legistar_events:22703",
+    "title": "Subcommittee on Early Childhood Education",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-29T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22703",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22703&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22704": {
+    "id": "meeting:nyc_legistar_events:22704",
+    "title": "Committee on Veterans",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-18T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22704",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22704&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22705": {
+    "id": "meeting:nyc_legistar_events:22705",
+    "title": "Committee on Mental Health and Substance Use",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-18T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22705",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22705&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22707": {
+    "id": "meeting:nyc_legistar_events:22707",
+    "title": "Committee on Environmental Protection and Waterfronts",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-30T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22707",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22707&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 2",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22718": {
+    "id": "meeting:nyc_legistar_events:22718",
+    "title": "Committee on Workforce Development",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-15T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22718",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22718&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 2",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22721": {
+    "id": "meeting:nyc_legistar_events:22721",
+    "title": "Committee on Higher Education",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-15T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22721",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22721&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22722": {
+    "id": "meeting:nyc_legistar_events:22722",
+    "title": "Committee on Education",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-15T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22722",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22722&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22723": {
+    "id": "meeting:nyc_legistar_events:22723",
+    "title": "Committee on Cultural Affairs, Libraries and International Relations",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-19T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22723",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22723&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22725": {
+    "id": "meeting:nyc_legistar_events:22725",
+    "title": "Committee on Health",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-14T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22725",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22725&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 1",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22728": {
+    "id": "meeting:nyc_legistar_events:22728",
+    "title": "Committee on Public Safety",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-10-21T10:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22728",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22728&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 2",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22729": {
+    "id": "meeting:nyc_legistar_events:22729",
+    "title": "Subcommittee on Zoning and Franchises",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-22T11:30:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22729",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22729&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "Committee Room - City Hall",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22730": {
+    "id": "meeting:nyc_legistar_events:22730",
+    "title": "Subcommittee on Zoning and Franchises",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-11-10T11:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22730",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22730&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22731": {
+    "id": "meeting:nyc_legistar_events:22731",
+    "title": "Committee on Land Use",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-11-10T12:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22731",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22731&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   },
+   "meeting:nyc_legistar_events:22733": {
+    "id": "meeting:nyc_legistar_events:22733",
+    "title": "Committee on Technology",
+    "agency": null,
+    "type": "Record",
+    "date": "2026-09-30T13:00:00",
+    "status": null,
+    "basis": "No place signal",
+    "confidence": "unknown",
+    "basis_method": null,
+    "route": "/meetings/meeting%3Anyc_legistar_events%3A22733",
+    "meeting_origin": "nyc_legistar_events_observed",
+    "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22733&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+    "placement_methods": [],
+    "venue_address": "250 Broadway - 8th Floor - Hearing Room 3",
+    "place": {
+     "location_role": "subject_affected_area",
+     "basis": "No place signal",
+     "method": "structured_bag",
+     "confidence": "unknown",
+     "association_kind": null,
+     "provenance": {
+      "placement_method": "structured_bag",
+      "source_method": null,
+      "confidence_tier": "derived"
+     },
+     "geographies": []
+    }
+   }
+  }
+ }
+}

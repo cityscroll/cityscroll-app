@@ -269,3 +269,221 @@ test("HTTP, malformed-payload, and bounded-timeout reads share the typed deferre
     assert.equal(payload.recovery_href, recoveryHref, trigger);
   }
 });
+
+// Separately loaded Near You sections (public alias ccfaadd338534). The real builder
+// materializes frozen rows reduced from the pinned published snapshot; the real
+// handler reads them through an in-memory KV with one injected fault per case.
+import { ROUTE_READ_MODEL_CAUSES } from "../src/lib/route_read_model_kv.mjs";
+import {
+  MIDWOOD,
+  SHEEPSHEAD_BAY,
+  faultKv,
+  readSectionIsolationFixture,
+} from "../../test/helpers/near_you_section_isolation_fixture.mjs";
+import { readLocalEscapeFixture } from "../../test/helpers/near_you_local_escape_fixture.mjs";
+
+const { provenance: _isolationProvenance, ...isolationRows } = readSectionIsolationFixture();
+const isolation = materialize(isolationRows, "section-isolation");
+const isolationKey = (id) => isolation.built.manifest.slices[`${id}:meetings`];
+const frozenBucket = (bucket) => isolationRows.district_items[bucket].meetings.map(String).sort();
+const MIDWOOD_IDS = isolationRows.geography_items.by_key[MIDWOOD].meetings.map(String).sort();
+const MIDWOOD_QUERY = "geo=nta2020:BK1403&lens=meetings&surface=records";
+const SHEEPSHEAD_QUERY = "geo=nta2020:BK1503&lens=meetings&surface=records";
+const CITYWIDE_QUERY = "lens=meetings&scope=citywide&surface=records";
+const INTERNAL_TOKENS = [
+  ...Object.values(ROUTE_READ_MODEL_CAUSES),
+  "route-read-model", "near-you:v1", "section-isolation", "manifest", "KV", "schema_version",
+  "RouteReadModelUnavailable", "injected", "Error:", "stack",
+];
+
+/** What a resident reads: text content, not markup or attribute names. */
+function residentText(html) {
+  return String(html).replace(/<script[\s\S]*?<\/script>/g, " ").replace(/<[^>]+>/g, " ");
+}
+
+function recordIds(html) {
+  return [...String(html).matchAll(/<li class="near-record" data-record-id="([^"]+)"/g)]
+    .map((match) => match[1].replaceAll("&amp;", "&")).sort();
+}
+
+function bagHtml(html, kind) {
+  const start = html.indexOf(`<details class="near-bag" data-bag="${kind}"`);
+  assert.ok(start >= 0, `${kind} section is rendered`);
+  return html.slice(start, html.indexOf("</details>", start));
+}
+
+function withEdgeCache(body) {
+  const puts = [];
+  globalThis.caches = { default: {
+    async match() { return null; },
+    async put(request) { puts.push(request.url); },
+  } };
+  return Promise.resolve().then(() => body(puts)).finally(() => { delete globalThis.caches; });
+}
+
+async function sectionRequest(query, controls = [], { deferred = true, values = isolation.values } = {}) {
+  const store = faultKv(values, new Map(controls));
+  const path = deferred ? "/near-you/deferred.json" : "/near-you/";
+  const response = await handleNearYou(new Request(`https://cityscroll.org${path}?${query}`), {
+    ALERT_STATE: store,
+    NEAR_YOU_READ_MODEL_TIMEOUT_MS: 20,
+  });
+  return { response, store, body: deferred ? await response.json() : await response.text() };
+}
+
+test("A6 control: with no fault Midwood, citywide, online and unmapped sections all load and cache", async () => {
+  await withEdgeCache(async (puts) => {
+    const { response, body, store } = await sectionRequest(MIDWOOD_QUERY);
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get("cache-control"), /public/);
+    assert.equal(body.schema, "cityscroll.near_you_deferred.v1");
+    assert.equal(body.partial, undefined);
+    assert.deepEqual(recordIds(body.results_html), MIDWOOD_IDS);
+    assert.equal(MIDWOOD_IDS.length, 2);
+    for (const bucket of ["citywide", "virtual", "unlocated"]) {
+      assert.deepEqual(recordIds(bagHtml(body.bags_html, bucket)), frozenBucket(bucket), bucket);
+      assert.deepEqual(body.sections[bucket], { state: "ready", count: frozenBucket(bucket).length }, bucket);
+    }
+    assert.deepEqual(body.sections.primary, { state: "ready", count: 2 });
+    assert.doesNotMatch(body.bags_html + body.results_html, /data-near-section-state/);
+    assert.equal(puts.length, 1, "a complete response is edge-cached");
+    for (const [key, count] of store.reads) assert.equal(count, 1, key);
+  });
+});
+
+for (const control of ["reject", "timeout", "corrupt", "missing"]) {
+  test(`A1/A6: a ${control} citywide read keeps both Midwood meetings visible and citywide unavailable, never 0`, async () => {
+    await withEdgeCache(async (puts) => {
+      const { response, body, store } = await sectionRequest(MIDWOOD_QUERY, [[isolationKey("citywide"), control]]);
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get("cache-control"), "no-store");
+      assert.equal(body.schema, "cityscroll.near_you_deferred.v1");
+      assert.equal(body.partial, true);
+      assert.deepEqual(body.sections.citywide.state, "unavailable");
+      assert.equal(body.sections.citywide.count, null);
+      assert.deepEqual(recordIds(body.results_html), MIDWOOD_IDS);
+      assert.match(body.results_html, /data-results-count="2"/);
+      // Midwood records keep their native full-record and inspection controls.
+      assert.equal((body.results_html.match(/data-near-you-record-inspection=/g) || []).length, 2);
+      const citywide = bagHtml(body.bags_html, "citywide");
+      assert.match(citywide, /data-near-section-state="unavailable"/);
+      assert.match(citywide, /aria-label="Count unavailable"/);
+      assert.match(citywide, /Citywide records could not load\./);
+      assert.match(citywide, /data-near-recovery="retry"/);
+      assert.deepEqual(recordIds(citywide), []);
+      assert.doesNotMatch(citywide, /<strong>0<\/strong>|No citywide records match/);
+      for (const token of INTERNAL_TOKENS) assert.equal(residentText(body.bags_html).includes(token), false, token);
+      assert.deepEqual(recordIds(bagHtml(body.bags_html, "virtual")), frozenBucket("virtual"));
+      assert.equal(puts.length, 0, "a partial response is never edge-cached as complete");
+      for (const [key, count] of store.reads) assert.equal(count, 1, `no added or repeated read of ${key}`);
+    });
+  });
+}
+
+test("A1 reverse: a failed Sheepshead Bay read leaves the 20 frozen citywide meetings navigable and not local", async () => {
+  const control = await sectionRequest(SHEEPSHEAD_QUERY);
+  assert.equal(control.response.status, 200);
+  assert.match(control.body.results_html, /data-near-local-recovery="unsupported"/);
+
+  await withEdgeCache(async (puts) => {
+    const { response, body } = await sectionRequest(SHEEPSHEAD_QUERY, [[isolationKey(SHEEPSHEAD_BAY), "reject"]]);
+    assert.equal(response.status, 503);
+    assert.equal(response.headers.get("cache-control"), "no-store");
+    assert.equal(body.schema, "cityscroll.near_you_deferred_error.v1");
+    assert.equal(body.partial, true);
+    assert.deepEqual(body.sections.primary, { state: "unavailable", count: null, cause: ROUTE_READ_MODEL_CAUSES.readFailed });
+    const citywide = bagHtml(body.bags_html, "citywide");
+    assert.deepEqual(recordIds(citywide), frozenBucket("citywide"));
+    assert.equal(frozenBucket("citywide").length, 20);
+    assert.match(citywide, /<strong>20<\/strong>/);
+    for (const anchor of ["20260826001", "meeting:nyc_legistar_events:22568"]) assert.ok(citywide.includes(`data-record-id="${anchor}"`), anchor);
+    // The requested local section is an explicit failure, never those records.
+    assert.deepEqual(recordIds(body.results_html), []);
+    assert.doesNotMatch(body.results_html, /data-results-count=/);
+    assert.match(body.results_html, /data-near-section-state="unavailable"/);
+    assert.match(body.results_html, /data-near-local-recovery="error"/);
+    assert.match(body.results_html, /data-near-recovery="all-nyc"/);
+    assert.match(body.results_html, /data-near-recovery="retry"/);
+    assert.notEqual(body.results_html.match(/data-near-local-recovery="(\w+)"/)[1], control.body.results_html.match(/data-near-local-recovery="(\w+)"/)[1]);
+    assert.equal(puts.length, 0);
+  });
+
+  const page = await sectionRequest(SHEEPSHEAD_QUERY, [[isolationKey(SHEEPSHEAD_BAY), "reject"]], { deferred: false });
+  assert.equal(page.response.status, 503);
+  assert.equal(page.response.headers.get("cache-control"), "no-store");
+  assert.match(page.body, /data-near-data-state="error"/);
+  const allNyc = page.body.match(/<a href="([^"]+)" data-near-recovery="all-nyc">/)?.[1];
+  assert.ok(allNyc, "the no-JavaScript document keeps its All NYC Browse route");
+  assert.equal(new URL(allNyc.replaceAll("&amp;", "&")).pathname, "/browse/meetings/");
+  for (const token of INTERNAL_TOKENS) assert.equal(residentText(page.body).includes(token), false, token);
+  // Positive control: the same check finds a leaked cause in resident text.
+  assert.equal(residentText(`<p>${ROUTE_READ_MODEL_CAUSES.timeout}</p>`).includes(ROUTE_READ_MODEL_CAUSES.timeout), true);
+});
+
+test("A2: failing only online or only unmapped records leaves local and citywide ID sets unchanged, and Retry restores them", async () => {
+  const baseline = (await sectionRequest(MIDWOOD_QUERY)).body;
+  for (const bucket of ["virtual", "unlocated"]) {
+    const { response, body } = await sectionRequest(MIDWOOD_QUERY, [[isolationKey(bucket), "reject"]]);
+    assert.equal(response.status, 200, bucket);
+    assert.equal(body.partial, true, bucket);
+    assert.deepEqual(recordIds(body.results_html), recordIds(baseline.results_html), bucket);
+    assert.deepEqual(recordIds(bagHtml(body.bags_html, "citywide")), recordIds(bagHtml(baseline.bags_html, "citywide")), bucket);
+    assert.deepEqual(recordIds(bagHtml(body.bags_html, bucket)), [], bucket);
+    assert.equal(body.sections[bucket].count, null, bucket);
+    for (const other of ["virtual", "unlocated"].filter((name) => name !== bucket)) {
+      assert.deepEqual(recordIds(bagHtml(body.bags_html, other)), frozenBucket(other), `${bucket} failure leaves ${other}`);
+    }
+  }
+  // Retry: the same request after a transient failure succeeds with the right IDs.
+  const store = faultKv(isolation.values, new Map([[isolationKey("virtual"), { failTimes: 1 }]]));
+  const env = { ALERT_STATE: store, NEAR_YOU_READ_MODEL_TIMEOUT_MS: 20 };
+  const href = `https://cityscroll.org/near-you/deferred.json?${MIDWOOD_QUERY}`;
+  const failed = await (await handleNearYou(new Request(href), env)).json();
+  assert.equal(failed.sections.virtual.state, "unavailable");
+  const retried = await handleNearYou(new Request(href), env);
+  const retriedBody = await retried.json();
+  assert.equal(retried.status, 200);
+  assert.equal(retriedBody.partial, undefined);
+  assert.deepEqual(recordIds(bagHtml(retriedBody.bags_html, "virtual")), ["20260624005"]);
+  assert.deepEqual(recordIds(retriedBody.results_html), MIDWOOD_IDS);
+});
+
+test("A4: an explicit citywide scope whose citywide read fails is a requested-results failure", async () => {
+  const control = await sectionRequest(CITYWIDE_QUERY);
+  assert.equal(control.response.status, 200);
+  assert.deepEqual(recordIds(control.body.results_html), frozenBucket("citywide"));
+  assert.match(control.body.results_html, /data-results-count="20"/);
+
+  const { response, body } = await sectionRequest(CITYWIDE_QUERY, [[isolationKey("citywide"), "reject"]]);
+  assert.equal(response.status, 503);
+  assert.equal(body.schema, "cityscroll.near_you_deferred_error.v1");
+  assert.equal(body.sections.primary.state, "unavailable");
+  assert.equal(body.sections.citywide.state, "unavailable");
+  assert.deepEqual(recordIds(body.results_html), [], "loaded online and unmapped records do not stand in for citywide");
+  assert.doesNotMatch(body.results_html, /data-results-count=|No records match|No mapped meetings/);
+  assert.match(body.results_html, /data-near-section-state="unavailable"/);
+  assert.deepEqual(recordIds(bagHtml(body.bags_html, "virtual")), frozenBucket("virtual"));
+});
+
+test("A3: explicit published zero and a refused incomplete candidate stay distinct from read failures", async () => {
+  const { provenance: _escapeProvenance, ...escapeRows } = readLocalEscapeFixture();
+  const zeroValues = materialize(escapeRows, "published-zero").values;
+  const zero = await sectionRequest("geo=nta2020:BX0101&lens=meetings", [], { values: zeroValues });
+  assert.equal(zero.response.status, 200);
+  assert.deepEqual(zero.body.sections.primary, { state: "ready", count: 0 });
+  assert.match(zero.body.results_html, /data-near-local-recovery="zero"/);
+
+  const refused = decideNearYouManifestActivation({
+    previousManifest: isolation.built.manifest,
+    candidateManifest: { ...isolation.built.manifest, version: "candidate", slices: {} },
+    residentialPlaces: [{ key: MIDWOOD }],
+  });
+  assert.equal(refused.activate, false);
+  assert.equal(refused.activeManifest.version, "section-isolation");
+  const causes = new Set([
+    ...Object.values(ROUTE_READ_MODEL_CAUSES),
+    refused.reason,
+    zero.body.sections.primary.state,
+  ]);
+  assert.equal(causes.size, Object.values(ROUTE_READ_MODEL_CAUSES).length + 2);
+});

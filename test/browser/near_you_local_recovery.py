@@ -26,6 +26,15 @@ links and the search anchor; the failed capture must also follow a family
 link to its collection and resolve the search anchor. The same captures are
 repeated with the row cut from the served document and must then fail.
 
+Section isolation: with one section's read made to fail on the server (the
+capture server's fault header, so the real handler and loader run), the
+sections that loaded stay usable at both viewports. Midwood's records keep
+their inspect/dismiss control and native full-record link while the citywide
+bucket is unavailable; Retry reloads only the failed section in place,
+keeping the loaded sections, focus and scroll; when Midwood's own read fails
+the citywide records still load and, without JavaScript, the All NYC Browse
+route still works.
+
 Every in-page checker is first run against a control element built to fail
 it, so a checker that cannot fail refuses the run. Nothing is written to the
 repository; no screenshots are taken.
@@ -1099,12 +1108,263 @@ def run_collection_entry(browser, base: str) -> list[dict]:
     return results
 
 
+# --- Section isolation -------------------------------------------------------
+
+FAULT_HEADER = "x-near-you-fixture-fail"
+MIDWOOD_QUERY = "geo=nta2020%3ABK1403&lens=meetings&surface=records"
+CITYWIDE_FAULT = "citywide:meetings=reject"
+MIDWOOD_FAULT = "geography:nta2020:BK1403:meetings=reject"
+SECTIONS_JS = """() => {
+  const ids = (nodes) => [...nodes].map((node) => node.dataset.recordId).sort();
+  const local = [...document.querySelectorAll('.near-results li.near-record')]
+    .filter((node) => !node.closest('.near-broader-districts'));
+  const bag = (kind) => {
+    const node = document.querySelector(`[data-bag="${kind}"]`);
+    return node ? {
+      state: node.getAttribute('data-near-section-state') || 'ready',
+      ids: ids(node.querySelectorAll('li.near-record')),
+      count_label: (node.querySelector('summary [aria-label]')?.getAttribute('aria-label')
+        || node.querySelector('summary strong')?.textContent || '').trim(),
+    } : null;
+  };
+  const results = document.querySelector('.near-results');
+  return {
+    deferred_state: document.querySelector('[data-near-you-root]')?.dataset.nearDeferredState || null,
+    local_state: results?.getAttribute('data-near-section-state') || (results?.hasAttribute('data-near-deferred') ? 'shell' : 'ready'),
+    local: ids(local),
+    citywide: bag('citywide'),
+    virtual: bag('virtual'),
+    unlocated: bag('unlocated'),
+    scroll_y: scrollY,
+    overflow_x: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
+  };
+}"""
+MARK_JS = """(selector) => {
+  const node = document.querySelector(selector);
+  if (node) node.__sectionIdentity = 'kept';
+  return Boolean(node);
+}"""
+KEPT_JS = "(selector) => document.querySelector(selector)?.__sectionIdentity === 'kept'"
+DIALOG_OPEN_JS = "() => document.getElementById('near-you-record-inspection')?.open === true"
+
+
+def fault_deferred_once(page, fault: str) -> list[str]:
+    """Fail one section on the first deferred read only; later reads (Retry) pass."""
+    seen: list[str] = []
+
+    def handle(route):
+        seen.append(route.request.url)
+        headers = dict(route.request.headers)
+        if len(seen) == 1:
+            headers[FAULT_HEADER] = fault
+        route.continue_(headers=headers)
+
+    page.route("**/near-you/deferred.json*", handle)
+    return seen
+
+
+def wait_deferred(page, state: str) -> dict:
+    page.wait_for_function(
+        "(state) => document.querySelector('[data-near-you-root]')?.dataset.nearDeferredState === state",
+        arg=state,
+        timeout=20_000,
+    )
+    return page.evaluate(SECTIONS_JS)
+
+
+def assert_section_checkers_can_fail(page) -> None:
+    """Positive controls for the node-identity and dialog checkers."""
+    page.evaluate("() => { const control = document.createElement('p'); control.id = 'identity-control'; document.body.append(control); }")
+    if page.evaluate(KEPT_JS, "#identity-control"):
+        raise AssertionError("identity checker accepted an unmarked node")
+    page.evaluate("() => document.getElementById('identity-control')?.remove()")
+    if page.evaluate(DIALOG_OPEN_JS):
+        raise AssertionError("dialog checker reports an inspection open before any click")
+
+
+def inspect_and_dismiss(page, *, label: str) -> dict:
+    inspect = page.locator(".near-results li.near-record .near-record-inspect").first
+    inspect.wait_for(state="visible", timeout=15_000)
+    inspect.click()
+    page.wait_for_function(DIALOG_OPEN_JS, timeout=10_000)
+    page.keyboard.press("Escape")
+    page.wait_for_function(f"() => !({DIALOG_OPEN_JS})()", timeout=10_000)
+    returned = page.evaluate("() => document.activeElement?.classList.contains('near-record-inspect') === true")
+    if not returned:
+        raise AssertionError(f"{label}: dismissing the inspection did not return focus to its control")
+    return {"inspected": True, "focus_returned": returned}
+
+
+def open_full_record_and_back(page, base: str, *, label: str) -> str:
+    link = page.locator(".near-results li.near-record .near-record-full-record").first
+    link.wait_for(state="visible", timeout=15_000)
+    href = link.get_attribute("href") or ""
+    with page.expect_navigation(timeout=30_000) as navigation:
+        link.click()
+    response = navigation.value
+    if response is None or response.status != 200 or "/meetings/" not in page.url:
+        raise AssertionError(f"{label}: full-record link {href} answered {response and response.status} at {page.url}")
+    page.go_back(wait_until="domcontentloaded")
+    if urllib.parse.parse_qs(urllib.parse.urlsplit(page.url).query).get("geo") != ["nta2020:BK1403"]:
+        raise AssertionError(f"{label}: Back did not return to Midwood: {page.url}")
+    return href.replace(base, "")
+
+
+def check_bucket_failure(browser, base: str, *, viewport_name: str, width: int, height: int, control: dict) -> dict:
+    label = f"citywide-unavailable-{viewport_name}"
+    context = browser.new_context(viewport={"width": width, "height": height}, has_touch=width < 500)
+    page = context.new_page()
+    try:
+        reads = fault_deferred_once(page, CITYWIDE_FAULT)
+        page.goto(f"{base}/near-you/?{MIDWOOD_QUERY}", wait_until="domcontentloaded", timeout=30_000)
+        failed = wait_deferred(page, "partial")
+        assert_section_checkers_can_fail(page)
+        if failed["local"] != control["local"] or not failed["local"]:
+            raise AssertionError(f"{label}: Midwood records changed under a citywide failure: {failed['local']} != {control['local']}")
+        if failed["citywide"]["state"] != "unavailable" or failed["citywide"]["ids"]:
+            raise AssertionError(f"{label}: citywide is not an explicit unavailable section: {failed['citywide']}")
+        if failed["citywide"]["count_label"] != "Count unavailable":
+            raise AssertionError(f"{label}: citywide count reads {failed['citywide']['count_label']!r}, not unavailable")
+        for bucket in ("virtual", "unlocated"):
+            if failed[bucket]["ids"] != control[bucket]["ids"]:
+                raise AssertionError(f"{label}: {bucket} records changed under a citywide failure")
+        if failed["overflow_x"] > 1:
+            raise AssertionError(f"{label}: horizontal overflow {failed['overflow_x']}px")
+        inspection = inspect_and_dismiss(page, label=label)
+
+        # Retry in place: open the failed bucket, then retry it.
+        page.evaluate(MARK_JS, ".near-results")
+        page.evaluate(MARK_JS, '[data-bag="virtual"]')
+        summary = page.locator('[data-bag="citywide"] > summary')
+        summary.scroll_into_view_if_needed()
+        summary.click()
+        retry = page.locator('[data-bag="citywide"] [data-near-recovery="retry"]')
+        retry.wait_for(state="visible", timeout=10_000)
+        before = page.evaluate(SECTIONS_JS)
+        url_before = page.url
+        retry.click()
+        page.wait_for_function(
+            "() => { const bag = document.querySelector('[data-bag=\"citywide\"]'); return bag && !bag.hasAttribute('data-near-section-state'); }",
+            timeout=20_000,
+        )
+        after = wait_deferred(page, "ready")
+        if after["citywide"]["ids"] != control["citywide"]["ids"] or not after["citywide"]["ids"]:
+            raise AssertionError(f"{label}: Retry did not restore the citywide records: {after['citywide']}")
+        if not page.evaluate(KEPT_JS, ".near-results") or not page.evaluate(KEPT_JS, '[data-bag="virtual"]'):
+            raise AssertionError(f"{label}: Retry replaced a section that had loaded")
+        if after["local"] != control["local"]:
+            raise AssertionError(f"{label}: Retry changed the Midwood records")
+        if page.url != url_before or len(reads) != 2:
+            raise AssertionError(f"{label}: Retry navigated or read more than once: {page.url} {len(reads)} reads")
+        focused = page.evaluate("() => document.activeElement?.closest('[data-bag]')?.dataset.bag || null")
+        if focused != "citywide":
+            raise AssertionError(f"{label}: focus left the retried section: {focused}")
+        drift = abs(after["scroll_y"] - before["scroll_y"])
+        if drift > 1:
+            raise AssertionError(f"{label}: Retry moved the page by {drift}px")
+        deferred_reads = len(reads)
+        record = open_full_record_and_back(page, base, label=label)
+        return {
+            "label": label,
+            "local_records": len(failed["local"]),
+            "citywide_after_retry": len(after["citywide"]["ids"]),
+            "deferred_reads": deferred_reads,
+            "scroll_drift_css_px": drift,
+            "full_record": record,
+            **inspection,
+        }
+    finally:
+        context.close()
+
+
+def check_requested_failure(browser, base: str, *, viewport_name: str, width: int, height: int, control: dict) -> dict:
+    label = f"midwood-unavailable-{viewport_name}"
+    context = browser.new_context(viewport={"width": width, "height": height}, has_touch=width < 500)
+    page = context.new_page()
+    try:
+        faulted = {"on": True}
+
+        def handle(route):
+            headers = dict(route.request.headers)
+            if faulted["on"]:
+                headers[FAULT_HEADER] = MIDWOOD_FAULT
+            route.continue_(headers=headers)
+
+        page.route("**/near-you/**", handle)
+        response = page.goto(f"{base}/near-you/?{MIDWOOD_QUERY}", wait_until="domcontentloaded", timeout=30_000)
+        if response is None or response.status != 503:
+            raise AssertionError(f"{label}: requested failure answered {response and response.status}, expected 503")
+        failed = wait_deferred(page, "partial")
+        if failed["local_state"] != "unavailable" or failed["local"]:
+            raise AssertionError(f"{label}: Midwood is not an explicit failure: {failed['local_state']} {failed['local']}")
+        if failed["citywide"]["ids"] != control["citywide"]["ids"] or not failed["citywide"]["ids"]:
+            raise AssertionError(f"{label}: citywide records did not load beside the failed local read")
+        if page.locator('.near-results [data-near-recovery="all-nyc"]').count() != 1:
+            raise AssertionError(f"{label}: the failed local section lost its All NYC route")
+        # Retry the requested section in place once the read recovers.
+        faulted["on"] = False
+        page.evaluate(MARK_JS, ".near-bags")
+        page.locator('.near-results [data-near-recovery="retry"]').click()
+        after = wait_deferred(page, "ready")
+        if after["local"] != control["local"]:
+            raise AssertionError(f"{label}: Retry did not restore Midwood's records: {after['local']}")
+        if not page.evaluate(KEPT_JS, ".near-bags"):
+            raise AssertionError(f"{label}: Retry replaced the loaded citywide sections")
+        return {"label": label, "status": response.status, "citywide_records": len(failed["citywide"]["ids"]),
+                "local_after_retry": len(after["local"])}
+    finally:
+        context.close()
+
+
+def check_requested_failure_without_javascript(browser, base: str) -> dict:
+    context = browser.new_context(
+        viewport={"width": 390, "height": 844},
+        java_script_enabled=False,
+        extra_http_headers={FAULT_HEADER: MIDWOOD_FAULT},
+    )
+    page = context.new_page()
+    try:
+        page.goto(f"{base}/near-you/?{MIDWOOD_QUERY}", wait_until="domcontentloaded", timeout=30_000)
+        link = page.locator('[data-near-surface-panel="records"] [data-near-recovery="all-nyc"]')
+        if link.count() != 1:
+            raise AssertionError("no-javascript requested failure lost its All NYC route")
+        with page.expect_navigation(timeout=30_000) as navigation:
+            link.click()
+        landed = navigation.value
+        if landed is None or landed.status != 200 or urllib.parse.urlsplit(page.url).path != "/browse/meetings/":
+            raise AssertionError(f"no-javascript All NYC route answered {landed and landed.status} at {page.url}")
+        return {"label": "requested-failure-no-javascript", "browse": urllib.parse.urlsplit(page.url).path}
+    finally:
+        context.close()
+
+
+def run_section_isolation(browser, base: str) -> list[dict]:
+    results: list[dict] = []
+    for viewport_name, width, height in VIEWPORTS:
+        context = browser.new_context(viewport={"width": width, "height": height}, has_touch=width < 500)
+        page = context.new_page()
+        try:
+            page.goto(f"{base}/near-you/?{MIDWOOD_QUERY}", wait_until="domcontentloaded", timeout=30_000)
+            control = wait_deferred(page, "ready")
+        finally:
+            context.close()
+        if not control["local"] or not control["citywide"]["ids"]:
+            raise AssertionError(f"control Midwood load has no local or citywide records: {control}")
+        results.append({"label": f"control-{viewport_name}", "local_records": len(control["local"]),
+                        "citywide_records": len(control["citywide"]["ids"])})
+        results.append(check_bucket_failure(browser, base, viewport_name=viewport_name, width=width, height=height, control=control))
+        results.append(check_requested_failure(browser, base, viewport_name=viewport_name, width=width, height=height, control=control))
+    results.append(check_requested_failure_without_javascript(browser, base))
+    return results
+
+
 def main() -> int:
     process, base = serve_near_you()
     try:
         results = run(base)
         with launched_chromium() as browser:
             entry = run_collection_entry(browser, base)
+            sections = run_section_isolation(browser, base)
         with launched_chromium(args=SOFTWARE_WEBGL_ARGS) as browser:
             failures = run_entry_failure_matrix(browser, base)
     finally:
@@ -1114,6 +1374,7 @@ def main() -> int:
         "near_you_local_recovery": results,
         "near_you_collection_entry": entry,
         "near_you_collection_entry_failures": failures,
+        "near_you_section_isolation": sections,
     }, indent=2))
     return 0
 
