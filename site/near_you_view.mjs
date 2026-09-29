@@ -20,7 +20,9 @@ import { ACTION_LOCATION_BASIS_LABELS } from "./contract_action_location.mjs";
 import { civicGeographyKey } from "./civic_geography_registry.mjs";
 import { allNycRecordsRouteHash, scopeForAllNycRecords, scopeWithPlace } from "./near_you_scope_runtime.mjs";
 import {
+  GEOGRAPHY_RECORD_LENSES,
   geographyKeyForScope,
+  geographyPlaceSuggestions,
   geographyRecordProjection,
   geographyRecordLenses,
   recordIdsForScope,
@@ -78,6 +80,7 @@ import {
   GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM,
   aliasesByNtaIdFromGazetteer,
   geographyShellAreasListHtml,
+  geographyShellPlaceSuggestionsHtml,
   geographyShellSearchFormHtml,
   geographyShellLayerSwitcherHtml,
   navigationAreaEntriesFromLayerDoc,
@@ -649,6 +652,25 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
         aliasesByNtaId: directoryAliases,
       })
       : []);
+  // Neighborhoods to start from, before a place is chosen: ranked from the
+  // loaded current-category activity by the count each one's own Records list
+  // shows. Only a complete read of the requested scope can rank; a failed or
+  // partial read, an unsupported category or location basis, or a missing
+  // neighborhood directory offers none.
+  const placeSuggestionCandidates = !hasPlace && dataState === "ready" && sectionStates.primary === "ready"
+    && mapped && basis === "performance" && GEOGRAPHY_RECORD_LENSES.includes(lens)
+    && String(options.navigationLayerDoc?.type || "") === "nta2020"
+    ? navigationAreaEntriesFromLayerDoc(options.navigationLayerDoc, { layerType: "nta2020", membership: "residential" })
+    : [];
+  const placeSuggestions = geographyPlaceSuggestions(activityRoot, {
+    lens,
+    candidates: placeSuggestionCandidates,
+    // The destination's own predicate: the same filters with that place selected.
+    matches: (record, key) => recordMatches(record, scopeWithCanonicalGeography({
+      ...scope,
+      place: { ...scope.place, geographies: [key] },
+    }), activity?.built_at),
+  });
   const selectedGeographyKey = geographyState?.key || first(scope.place.geographies) || null;
   const selectedGeographyDefinition = selectedGeographyKey
     ? (activity?.geography_items?.definitions?.[selectedGeographyKey]
@@ -934,6 +956,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     features,
     navigationAreas,
     navigationDirectory,
+    placeSuggestions,
     directoryQuery,
     activeGeographyLayer,
     shellSurface,
@@ -1006,6 +1029,15 @@ const LOCAL_RECOVERY_NOUNS = Object.freeze({
   money: "contracts",
   consultations: "consultations",
   people: "people and organizations",
+});
+
+/** One record of each category, for a count of exactly one. */
+const LOCAL_RECOVERY_SINGULAR_NOUNS = Object.freeze({
+  meetings: "meeting",
+  land: "zoning record",
+  property: "property record",
+  rules: "rule",
+  money: "contract",
 });
 
 const LOCAL_RECOVERY_PLACE_NOUNS = Object.freeze({
@@ -1348,6 +1380,17 @@ function renderNearYouSpecialRecords(view, { position = "after-results", shell =
   return `<section class="near-bags${shell ? " near-bags-shell" : ""} near-special-records" aria-labelledby="near-bags-heading" data-near-special-records="${esc(position)}"${deferredHost}>
       ${citywideHtml}${secondaryHtml}
     </section>`;
+}
+
+/** Neighborhood starting points on an unselected page; absent when none qualifies. */
+function renderNearYouPlaceSuggestions(view) {
+  if (view.hasPlace || !view.placeSuggestions?.length) return "";
+  return `\n    ${geographyShellPlaceSuggestionsHtml(view.placeSuggestions, {
+    base: view.shareHref || view.canonicalBase || "/near-you/",
+    lens: view.lens,
+    noun: LOCAL_RECOVERY_NOUNS[view.lens] || "records",
+    singularNoun: LOCAL_RECOVERY_SINGULAR_NOUNS[view.lens] || "record",
+  })}`;
 }
 
 /** Render the lower-priority record lists for the deferred Near-you artifact. */
@@ -1731,7 +1774,7 @@ export function renderNearYouBody(view) {
     data-translation-context-strip-label="Context">
     ${selectedHero}
     ${unselectedEntry}
-    ${view.hasPlace ? "" : renderNearYouSpecialRecords(view, { position: "entry", shell: true })}
+    ${view.hasPlace ? "" : `${renderNearYouSpecialRecords(view, { position: "entry", shell: true })}${renderNearYouPlaceSuggestions(view)}`}
     ${surfaceSwitch}
     ${renderNearYouGeoWorkspace(view)}
     ${selectedSecondary}

@@ -632,3 +632,172 @@ test("coverage carried into a slice is bounded to the requested lens and absent 
   assert.equal(geographyCoverageLimit({ geography_items: { coverage } }, COVERAGE_KEY, "land"), null);
   assert.equal(geographyCoverageLimit({ geography_items: {} }, COVERAGE_KEY, "land"), null);
 });
+
+// Neighborhood suggestions before a place is chosen (public alias c0cece577f277):
+// ranked over a frozen reduction of the pinned published snapshot, which keeps
+// every neighborhood with a published Meetings list.
+import { GEOGRAPHY_PLACE_SUGGESTION_LIMIT, geographyPlaceSuggestions } from "../site/geography_navigation_records.mjs";
+import { CONTEXTUAL_SUGGESTION_LIMIT } from "../site/contextual_suggestions.mjs";
+import { navigationAreaEntriesFromLayerDoc } from "../site/geography_navigation_shell.mjs";
+import {
+  DYKER_BEACH_PARK,
+  FINANCIAL_DISTRICT,
+  HELLS_KITCHEN,
+  MOTT_HAVEN,
+  SHEEPSHEAD_BAY,
+  TRIBECA,
+  readPlaceSuggestionsFixture,
+} from "./helpers/near_you_place_suggestions_fixture.mjs";
+
+function suggestionRows() {
+  const { activity, layer } = readPlaceSuggestionsFixture();
+  return { activity, layer };
+}
+
+function residentialCandidates(layer) {
+  return navigationAreaEntriesFromLayerDoc(layer, { layerType: "nta2020", membership: "residential" });
+}
+
+/** Deterministic permutation (a small LCG), so a failure names a reproducible order. */
+function shuffled(values, seed) {
+  const out = [...values];
+  let state = seed >>> 0;
+  for (let index = out.length - 1; index > 0; index -= 1) {
+    state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+    const swap = state % (index + 1);
+    [out[index], out[swap]] = [out[swap], out[index]];
+  }
+  return out;
+}
+
+const summary = (rows) => rows.map((row) => `${row.id}:${row.count}`);
+const members = (activity, key, lens = "meetings") => [...new Set(activity.geography_items.by_key[key][lens].map(String))].sort();
+
+test("A1: over the frozen Meetings population the first three suggestions are Tribeca 26, Hell's Kitchen 12 and Financial District 9", () => {
+  const { activity, layer } = suggestionRows();
+  const candidates = residentialCandidates(layer);
+  const rows = geographyPlaceSuggestions(activity, { lens: "meetings", candidates });
+  assert.deepEqual(summary(rows), ["MN0102:26", "MN0402:12", "MN0101:9"]);
+  assert.deepEqual(rows.map((row) => row.label), ["Tribeca-Civic Center", "Hell's Kitchen", "Financial District-Battery Park City"]);
+  for (const [row, key] of [[rows[0], TRIBECA], [rows[1], HELLS_KITCHEN], [rows[2], FINANCIAL_DISTRICT]]) {
+    assert.equal(row.key, key);
+    assert.deepEqual([...row.ids], members(activity, key));
+  }
+  // The limit truncates a longer ranking; it is not the population size.
+  const all = geographyPlaceSuggestions(activity, { lens: "meetings", candidates, limit: Infinity });
+  assert.deepEqual(summary(all), [
+    "MN0102:26", "MN0402:12", "MN0101:9", "MN0202:7", "BK0502:4",
+    "BK1002:2", "BK1403:2", "BK1102:1", "BK1402:1", "MN1001:1",
+  ]);
+  // Shuffled directory order yields the same ranking.
+  for (const seed of [1, 7, 42, 2026]) {
+    assert.deepEqual(geographyPlaceSuggestions(activity, { lens: "meetings", candidates: shuffled(candidates, seed) }), rows, `seed ${seed}`);
+  }
+});
+
+test("A3: absent, published-zero, special-use and unknown places are never suggested", () => {
+  const { activity, layer } = suggestionRows();
+  const residential = residentialCandidates(layer);
+  const special = navigationAreaEntriesFromLayerDoc(layer, { layerType: "nta2020", membership: "special_use" });
+  const unknown = { key: "geography:nta2020:ZZ9999", id: "ZZ9999", label: "Nowhere" };
+  const rows = geographyPlaceSuggestions(activity, {
+    lens: "meetings",
+    candidates: [...residential, ...special, unknown],
+    limit: Infinity,
+  });
+  const keys = rows.map((row) => row.key);
+  for (const excluded of [SHEEPSHEAD_BAY, MOTT_HAVEN, DYKER_BEACH_PARK, unknown.key]) {
+    assert.equal(keys.includes(excluded), false, excluded);
+  }
+  // Each exclusion has its own published cause.
+  assert.equal(geographyRecordProjection(activity, { key: SHEEPSHEAD_BAY, lens: "meetings" }).state, "unfilterable");
+  assert.equal(geographyRecordProjection(activity, { key: MOTT_HAVEN, lens: "meetings" }).state, "zero");
+  assert.equal(geographyRecordProjection(activity, { key: unknown.key, lens: "meetings" }).state, "unavailable");
+  const dyker = special.find((entry) => entry.key === DYKER_BEACH_PARK);
+  assert.equal(dyker.is_special_use, true);
+  // Positive control: the park's one ready Meetings member ranks when the
+  // special-use flag is removed, so the flag is what excludes it.
+  const asResidential = geographyPlaceSuggestions(activity, {
+    lens: "meetings",
+    candidates: [{ ...dyker, is_special_use: false }],
+  });
+  assert.deepEqual(summary(asResidential), ["BK1091:1"]);
+  // A category the index does not project offers nothing, never a zero.
+  for (const lens of ["consultations", "people", "all"]) {
+    assert.deepEqual(geographyPlaceSuggestions(activity, { lens, candidates: residential }), [], lens);
+  }
+});
+
+test("A3: a declared coverage limit over retained neighborhood lists offers no suggestion", () => {
+  const { activity, layer } = suggestionRows();
+  const candidates = residentialCandidates(layer);
+  const withCoverage = (lensCoverage) => {
+    const next = structuredClone(activity);
+    next.geography_items.coverage = {
+      ...next.geography_items.coverage,
+      by_lens: { ...next.geography_items.coverage?.by_lens, meetings: lensCoverage },
+    };
+    return geographyPlaceSuggestions(next, { lens: "meetings", candidates });
+  };
+  for (const status of ["incomplete", "error", "unavailable"]) {
+    assert.deepEqual(withCoverage({ status: "ready", types: { nta2020: { status } } }), [], `type ${status}`);
+    assert.deepEqual(withCoverage({ status }), [], `lens ${status}`);
+  }
+  // Positive control: ready coverage over the same lists keeps the ranking.
+  assert.deepEqual(summary(withCoverage({ status: "ready", types: { nta2020: { status: "ready" } } })),
+    ["MN0102:26", "MN0402:12", "MN0101:9"]);
+});
+
+test("A5: ties break by canonical key, duplicates count once, and members without a record body are not counted", () => {
+  const { activity, layer } = suggestionRows();
+  const candidates = residentialCandidates(layer);
+  const perturbed = structuredClone(activity);
+  const byKey = perturbed.geography_items.by_key;
+  // A duplicated member counts once.
+  byKey[FINANCIAL_DISTRICT].meetings.push(byKey[FINANCIAL_DISTRICT].meetings[0]);
+  // A member whose record body is missing is not a listable record.
+  const dropped = byKey[HELLS_KITCHEN].meetings[0];
+  delete perturbed.records.meetings[dropped];
+  // Tie Tribeca with Hell's Kitchen at 11: Hell's Kitchen's key sorts after Tribeca's.
+  const kept = byKey[TRIBECA].meetings.slice(0, 11);
+  byKey[TRIBECA].meetings = kept;
+  const rows = geographyPlaceSuggestions(perturbed, { lens: "meetings", candidates, limit: Infinity });
+  assert.deepEqual(summary(rows).slice(0, 3), ["MN0102:11", "MN0402:11", "MN0101:9"]);
+  assert.equal(rows[1].ids.includes(String(dropped)), false);
+  assert.deepEqual(summary(rows).slice(4, 7), ["BK0502:4", "BK1002:2", "BK1403:2"]);
+  // A candidate listed twice is ranked once.
+  const twice = geographyPlaceSuggestions(perturbed, { lens: "meetings", candidates: [...candidates, ...candidates], limit: Infinity });
+  assert.deepEqual(twice, rows);
+  for (const seed of [3, 11, 99]) {
+    assert.deepEqual(geographyPlaceSuggestions(perturbed, { lens: "meetings", candidates: shuffled(candidates, seed), limit: Infinity }), rows, `seed ${seed}`);
+  }
+  // The record predicate decides membership: a place whose every record fails it disappears.
+  const financial = new Set(activity.geography_items.by_key[FINANCIAL_DISTRICT].meetings.map(String));
+  const filtered = geographyPlaceSuggestions(activity, {
+    lens: "meetings",
+    candidates,
+    matches: (record) => !financial.has(String(record.id)) || record.agency === "Transportation",
+  });
+  assert.deepEqual(summary(filtered), ["MN0102:26", "MN0402:12", "MN0202:7"]);
+});
+
+test("A5: a second category ranks its own lists with the same rules", () => {
+  const { activity, layer } = suggestionRows();
+  const candidates = residentialCandidates(layer);
+  const rows = geographyPlaceSuggestions(activity, { lens: "land", candidates, limit: Infinity });
+  // Land lists on the retained places, verbatim; a three-way tie at 3 breaks by key.
+  assert.deepEqual(summary(rows).slice(0, 4), ["MN0402:4", "BK1403:3", "BX0101:3", "MN0102:3"]);
+  for (const row of rows) assert.deepEqual([...row.ids], members(activity, row.key, "land"));
+  // Sheepshead Bay has one Land project; its missing Meetings list never borrows it.
+  assert.ok(rows.some((row) => row.key === SHEEPSHEAD_BAY));
+  assert.equal(geographyPlaceSuggestions(activity, { lens: "meetings", candidates, limit: Infinity })
+    .some((row) => row.key === SHEEPSHEAD_BAY), false);
+});
+
+test("the suggestion limit is the contextual suggestion limit, without importing its module", () => {
+  assert.equal(GEOGRAPHY_PLACE_SUGGESTION_LIMIT, CONTEXTUAL_SUGGESTION_LIMIT);
+  assert.equal(GEOGRAPHY_PLACE_SUGGESTION_LIMIT, 3);
+  const source = readFileSync(new URL("../site/geography_navigation_records.mjs", import.meta.url), "utf8");
+  assert.doesNotMatch(source, /from\s+["']\.\/contextual_suggestions\.mjs["']/);
+  assert.match(source, /CONTEXTUAL_SUGGESTION_LIMIT/, "the shared contract is named where it is restated");
+});

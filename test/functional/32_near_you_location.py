@@ -20,6 +20,11 @@ ahead of the map, with their total and a View all link. The same inspect,
 dismiss, full record, Back and continue journey runs from that preview, whose
 links also work without JavaScript and after a failed deferred read.
 
+At most three neighborhoods with mapped meetings follow that preview. Each is
+a plain link, at both widths and without JavaScript, to that neighborhood's
+Records list with the count the link names. The row adds no data request,
+and a failed borough read offers no ranking while the entry controls remain.
+
 Every in-page checker is first run against a state built to fail it. Nothing
 is written to the repository and no screenshots are taken.
 """
@@ -720,6 +725,208 @@ def check_citywide_links_without_enhancement(browser: Browser, base: str) -> lis
     return results
 
 
+SUGGESTION_STATE_JS = """() => {
+  const nav = document.querySelector('.near-place-suggestions');
+  const links = nav ? [...nav.querySelectorAll('a[data-near-place-suggestion]')] : [];
+  const citywide = document.querySelector('.near-special-records[data-near-special-records="entry"]');
+  const workspace = document.querySelector('.near-geo-workspace');
+  const top = (node) => (node ? node.getBoundingClientRect().top + window.scrollY : null);
+  const box = nav?.getBoundingClientRect();
+  return {
+    present: Boolean(nav),
+    visible: Boolean(box && box.height > 0 && getComputedStyle(nav).visibility !== 'hidden'),
+    heading: nav?.querySelector('h2')?.textContent.trim() || null,
+    height: box ? box.height : 0,
+    links: links.map((link) => {
+      const rect = link.getBoundingClientRect();
+      return {
+        href: link.getAttribute('href'),
+        id: link.dataset.nearPlaceSuggestion,
+        count: Number(link.dataset.count),
+        text: link.textContent.replace(/\\s+/g, ' ').trim(),
+        height: rect.height,
+        left: rect.left,
+        right: rect.right,
+      };
+    }),
+    in_disclosure: Boolean(nav?.closest('details, [data-near-surface-panel]')),
+    after_citywide: Boolean(nav && citywide && top(citywide) < top(nav)),
+    before_map: Boolean(nav && workspace && top(nav) < top(workspace)),
+    inner_width: window.innerWidth,
+    overflow_x: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
+  };
+}"""
+
+# A compact row: each link is at most two short lines of the row's own text.
+SUGGESTION_LINK_MAX_HEIGHT_CSS_PX = 48
+
+
+def suggestion_state_problems(state: dict) -> list[str]:
+    """Why a rendered suggestion row is not a bounded, compact, native row."""
+    problems = []
+    links = state.get("links") or []
+    if not state.get("present") or not state.get("visible"):
+        problems.append("row is not rendered visibly")
+    if not 1 <= len(links) <= 3:
+        problems.append(f"{len(links)} links")
+    if state.get("heading") != "Neighborhoods with mapped meetings":
+        problems.append(f"heading {state.get('heading')!r}")
+    if state.get("in_disclosure") or not state.get("after_citywide") or not state.get("before_map"):
+        problems.append("not between the citywide preview and the map, outside disclosures")
+    if state.get("overflow_x"):
+        problems.append(f"page scrolls sideways by {state['overflow_x']}px")
+    for link in links:
+        params = query(link.get("href") or "")
+        noun = "meeting" if link.get("count") == 1 else "meetings"
+        if not (link.get("count") or 0) > 0 or not str(link.get("text", "")).endswith(f"({link.get('count')} {noun})"):
+            problems.append(f"{link.get('id')} label does not name its count")
+        if params.get("geo") != [f"nta2020:{link.get('id')}"] or params.get("surface") != ["records"]:
+            problems.append(f"{link.get('id')} does not open its Records list")
+        if link.get("height", 0) > SUGGESTION_LINK_MAX_HEIGHT_CSS_PX:
+            problems.append(f"{link.get('id')} is {link.get('height')}px tall")
+        if link.get("left", 0) < 0 or link.get("right", 0) > state.get("inner_width", 0):
+            problems.append(f"{link.get('id')} is outside the viewport")
+    counts = [link.get("count") for link in links]
+    if counts != sorted(counts, reverse=True):
+        problems.append("counts are not in descending order")
+    return problems
+
+
+def assert_suggestion_checker_can_fail() -> None:
+    """Positive controls: the row checker rejects each broken shape."""
+    link = {"href": "/near-you?geo=nta2020%3AMN0102&surface=records", "id": "MN0102", "count": 26,
+            "text": "Tribeca-Civic Center (26 meetings)", "height": 24, "left": 16, "right": 300}
+    good = {"present": True, "visible": True, "heading": "Neighborhoods with mapped meetings", "links": [link],
+            "in_disclosure": False, "after_citywide": True, "before_map": True, "inner_width": 390, "overflow_x": 0}
+    assert suggestion_state_problems(good) == [], suggestion_state_problems(good)
+    for broken in (
+        {**good, "links": [link] * 4},
+        {**good, "links": []},
+        {**good, "in_disclosure": True},
+        {**good, "before_map": False},
+        {**good, "overflow_x": 12},
+        {**good, "links": [{**link, "text": "Tribeca-Civic Center"}]},
+        {**good, "links": [{**link, "href": "/near-you?geo=nta2020%3AMN0102&surface=map"}]},
+        {**good, "links": [{**link, "height": 90}]},
+        {**good, "links": [{**link, "right": 420}]},
+        {**good, "links": [{**link, "count": 3, "text": "A (3 meetings)"}, link]},
+    ):
+        assert suggestion_state_problems(broken), broken
+
+
+def data_requests(sent: list[str], base: str) -> list[str]:
+    """Same-origin data reads (JSON and the deferred records read), without query strings."""
+    out = []
+    for row in sent:
+        url = row.split(" ", 1)[0]
+        parsed = urlparse(url)
+        if not url.startswith(base):
+            continue
+        if parsed.path.endswith(".json") or "/data/" in parsed.path:
+            out.append(parsed.path)
+    return sorted(out)
+
+
+def results_count(page: Page) -> int:
+    return int(page.locator("[data-results-count]").first.get_attribute("data-results-count"))
+
+
+def check_place_suggestions(browser: Browser, base: str, viewport: tuple[str, int, int]) -> dict:
+    """Root suggestions: bounded, compact and native; each opens a list of exactly its count."""
+    name, width, height = viewport
+    journey = Journey(browser, width, height)
+    try:
+        page = journey.page
+        page.goto(base + "/near-you/", wait_until="domcontentloaded")
+        await_root_settled(page)
+        state = page.evaluate(SUGGESTION_STATE_JS)
+        assert suggestion_state_problems(state) == [], (name, suggestion_state_problems(state), state)
+        followed = []
+        for index, link in enumerate(state["links"]):
+            if index == 0:
+                journey.activate(page.locator(f'[data-near-place-suggestion="{link["id"]}"]'))
+            else:
+                page.goto(base + "/near-you/" + "?" + urlparse(link["href"]).query, wait_until="domcontentloaded")
+            journey.wait_records(f"nta2020:{link['id']}")
+            assert results_count(page) == link["count"], (name, link, results_count(page))
+            followed.append(f"{link['id']}:{link['count']}")
+        return {"case": f"place-suggestions-{name}", "followed": followed, "row_height": round(state["height"])}
+    finally:
+        journey.close()
+
+
+def check_place_suggestions_add_no_reads(browser: Browser, base: str) -> dict:
+    """The row adds no data read: the same root without it makes the same reads."""
+    reads = {}
+    for variant in ("served", "without-row"):
+        journey = Journey(browser, 1440, 900)
+        try:
+            page = journey.page
+            if variant == "without-row":
+                def strip_row(route: Route) -> None:
+                    response = route.fetch()
+                    body = response.text()
+                    stripped = body[:body.index('<nav class="near-place-suggestions"')] \
+                        + body[body.index("</nav>", body.index('<nav class="near-place-suggestions"')) + len("</nav>"):]
+                    assert "data-near-place-suggestion" not in stripped
+                    route.fulfill(response=response, body=stripped)
+                page.route(base + "/near-you/", strip_row)
+            page.goto(base + "/near-you/", wait_until="domcontentloaded")
+            await_root_settled(page)
+            page.wait_for_load_state("networkidle")
+            present = page.locator("[data-near-place-suggestion]").count()
+            assert present == (0 if variant == "without-row" else 3), (variant, present)
+            reads[variant] = data_requests(journey.sent, base)
+            assert not any("geo=" in row for row in journey.sent if row.startswith(base)), variant
+        finally:
+            journey.close()
+    assert reads["served"] == reads["without-row"], reads
+    # Positive control: choosing a place does read that place's records.
+    journey = Journey(browser, 1440, 900)
+    try:
+        journey.page.goto(base + "/near-you/?geo=nta2020%3AMN0102&surface=records&lens=meetings", wait_until="domcontentloaded")
+        journey.wait_records("nta2020:MN0102")
+        assert any("geo=" in row and "deferred.json" in row for row in journey.sent), journey.sent
+    finally:
+        journey.close()
+    return {"case": "place-suggestions-no-added-read", "reads": reads["served"]}
+
+
+def check_place_suggestions_without_enhancement(browser: Browser, base: str) -> dict:
+    """Without JavaScript each suggestion is a working link to its place's Records list."""
+    journey = Journey(browser, 390, 844, javascript=False)
+    try:
+        page = journey.page
+        page.goto(base + "/near-you/", wait_until="domcontentloaded")
+        state = page.evaluate(SUGGESTION_STATE_JS)
+        assert 1 <= len(state["links"]) <= 3, state
+        link = state["links"][0]
+        page.locator(f'[data-near-place-suggestion="{link["id"]}"]').click()
+        page.wait_for_url(lambda url: query(url).get("geo") == [f"nta2020:{link['id']}"], timeout=30_000)
+        records = page.locator('.near-surface-switch [data-near-surface="records"]').first.inner_text()
+        assert records.strip().endswith(f"({link['count']})"), (link, records)
+        return {"case": "place-suggestions-no-javascript", "id": link["id"], "count": link["count"]}
+    finally:
+        journey.close()
+
+
+def check_place_suggestions_partial_read(browser: Browser, base: str) -> dict:
+    """A failed borough read ranks nothing; search, location and collections stay usable."""
+    journey = Journey(browser, 390, 844)
+    try:
+        page = journey.page
+        page.set_extra_http_headers({"x-near-you-fixture-fail": "borough:Brooklyn:meetings=reject"})
+        response = page.goto(base + "/near-you/", wait_until="domcontentloaded")
+        assert response is not None and response.status == 503, response and response.status
+        assert page.locator("[data-near-place-suggestion], .near-place-suggestions").count() == 0
+        page.locator("[data-use-location]:not([hidden])").wait_for(state="visible", timeout=30_000)
+        assert page.locator("#near-geo-search-input").is_visible()
+        assert page.locator("[data-near-collection-entry] a").first.is_visible()
+        return {"case": "place-suggestions-failed-borough", "suggestions": 0}
+    finally:
+        journey.close()
+
+
 def check_geolocation_entry(browser: Browser, base: str, viewport: tuple[str, int, int]) -> dict:
     name, width, height = viewport
     journey = Journey(browser, width, height, steps=[{"kind": "grant", "coords": ASTORIA}])
@@ -984,6 +1191,7 @@ def main() -> None:
     assert_leak_checker_can_fail()
     assert_recovery_checker_can_fail()
     assert_citywide_checkers_can_fail()
+    assert_suggestion_checker_can_fail()
     server, base = start_server()
     results: list[dict] = []
     try:
@@ -995,10 +1203,14 @@ def main() -> None:
                 results.extend(check_location_failures(browser, base, viewport))
                 results.extend(check_entry_failures(browser, base, viewport))
                 results.append(check_citywide_preview(browser, base, viewport))
+                results.append(check_place_suggestions(browser, base, viewport))
             results.append(check_stale_location_answer(browser, base))
             results.append(check_map_click_keeps_map(browser, base))
             results.extend(check_location_request_gate(browser, base))
             results.extend(check_citywide_links_without_enhancement(browser, base))
+            results.append(check_place_suggestions_add_no_reads(browser, base))
+            results.append(check_place_suggestions_without_enhancement(browser, base))
+            results.append(check_place_suggestions_partial_read(browser, base))
             browser.close()
     finally:
         server.terminate()

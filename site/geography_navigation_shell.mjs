@@ -539,6 +539,41 @@ export function geographyShellCollectionEntryHtml({ siteBase = "" } = {}) {
 }
 
 /**
+ * A few neighborhoods to start from before a place is chosen. Each suggestion
+ * is a plain link that opens that neighborhood's Records list with the page's
+ * current filters, labeled with the count that list shows. Nothing renders
+ * when no neighborhood qualifies.
+ */
+export function geographyShellPlaceSuggestionsHtml(suggestions = [], {
+  base = "/near-you/",
+  lens = null,
+  noun = "records",
+  singularNoun = "record",
+} = {}) {
+  const items = (suggestions || []).filter((entry) => entry?.key && Number.isFinite(entry.count) && entry.count > 0)
+    .map((entry) => {
+      const type = String(entry.key).split(":")[1] || "nta2020";
+      const id = entry.id || String(entry.key).split(":").slice(2).join(":");
+      const href = geographyNavigationUrlFromState({
+        ok: true,
+        geo: `${type}:${id}`,
+        key: entry.key,
+        type,
+        id,
+        surface: GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
+        lens,
+      }, { base });
+      const countLabel = `${entry.count} ${entry.count === 1 ? singularNoun : noun}`;
+      return `<li><a href="${esc(href)}" data-near-place-suggestion="${esc(id)}" data-geography-key="${esc(entry.key)}" data-count="${esc(entry.count)}"><span>${esc(entry.label)}</span> <span>(${esc(countLabel)})</span></a></li>`;
+    });
+  if (!items.length) return "";
+  return `<nav class="near-place-suggestions" aria-labelledby="near-place-suggestions-heading" data-near-place-suggestions>
+      <h2 id="near-place-suggestions-heading">${esc(`Neighborhoods with mapped ${noun}`)}</h2>
+      <ul class="near-place-suggestion-links">${items.join("")}</ul>
+    </nav>`;
+}
+
+/**
  * Inline next steps after an address, place or location entry fails, placed
  * beside the entry status. Action ids come from the entry module's recovery
  * plan: Retry and Enter an address are buttons the map island binds; every

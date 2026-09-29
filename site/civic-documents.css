@@ -126,6 +126,7 @@ select {
 .near-map-section,
 .near-results,
 .near-bags,
+.near-place-suggestions,
 .near-coverage,
 .following-hero,
 .following-explainer,
@@ -3977,8 +3978,10 @@ select {
 [data-near-you-root] > .near-map-section { order: 5; }
 [data-near-you-root] > .near-bags,
 [data-near-you-root] > .near-bags-shell { order: 8; }
-/* Before a place is chosen, citywide records follow the entry row, ahead of the map. */
-[data-near-you-root] > .near-special-records[data-near-special-records="entry"] { order: 4; }
+/* Before a place is chosen, citywide records follow the entry row, ahead of the map,
+   and neighborhood suggestions follow them in document order. */
+[data-near-you-root] > .near-special-records[data-near-special-records="entry"],
+[data-near-you-root] > .near-place-suggestions { order: 4; }
 [data-near-you-root] > .near-explore,
 [data-near-you-root] > .local-constellation { order: 9; }
 
@@ -4101,6 +4104,38 @@ select {
   margin-inline-end: var(--space-2);
 }
 .near-collection-links a {
+  display: inline-block;
+  min-height: 24px;
+  padding-block: 2px;
+}
+/* Neighborhood suggestions: at most three plain links in a short list, in a
+   centered reading measure like the blocks above it, ahead of the map. */
+.near-place-suggestions {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 36rem;
+  padding-block: var(--space-4) var(--space-5);
+  border-block-start: 1px solid var(--color-border);
+  font: 500 .875rem/1.4 var(--font-interface);
+}
+.near-place-suggestions h2 {
+  margin: 0 0 var(--space-1);
+  font: inherit;
+  font-weight: 700;
+}
+.near-place-suggestion-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.near-place-suggestion-links li {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.near-place-suggestion-links a {
   display: inline-block;
   min-height: 24px;
   padding-block: 2px;
