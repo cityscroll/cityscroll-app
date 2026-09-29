@@ -21,6 +21,18 @@ origin that was read. Acceptance is re-derived from each read-back's facts by
 `deriveAcceptance` in
 [`tools/lib/connected_history_release.mjs`](../../../tools/lib/connected_history_release.mjs).
 Read-backs are appended, not rewritten, so earlier failures stay visible.
+
+`ACCEPTANCE_LETTERS` splits each acceptance letter into clauses that quote it.
+Each clause names the read-back conditions that observe it, or states what this
+repository cannot observe. A letter reads `met` only when every clause is
+observed and holds. The letter on writing realized outcomes through the existing
+realization records (A4) has one clause that cannot be observed here: those
+records live outside this repository. When its in-repo clauses hold, that
+letter reads `write_through_unobserved`, never `met`. The tests check that the
+clause spans cover every word of each letter apart from connectives, and that
+each named condition gates its letter. Read-backs retained before this rule
+(those without `acceptance_rule`) keep their original acceptance. The rule
+changed only A4 for them.
 Screenshot binaries are not committed. Rendered markup hashes are retained
 instead.
 
