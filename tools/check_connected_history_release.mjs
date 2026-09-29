@@ -165,8 +165,21 @@ function runJourneys(screenshotDir) {
       return { error: tail.replace(/\/(?:Users|private|var|tmp)\/\S+/g, "<local>") };
     }
     const receipt = JSON.parse(run.stdout);
+    const failure = receipt.failure_control;
     return {
       browser: receipt.browser,
+      failure_control: failure
+        ? {
+            case: failure.case,
+            family_id: failure.family_id,
+            route: failure.route,
+            assertion: failure.assertion,
+            render_sha256: failure.render_sha256,
+            induced_failure: failure.induced_failure,
+            observed_state: failure.observed_state,
+            recovery: failure.recovery,
+          }
+        : null,
       observed_at: receipt.observed_at,
       served_revision: receipt.served_revision,
       served_revision_after: receipt.served_revision_after,
