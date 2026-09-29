@@ -21,6 +21,9 @@ import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
 import {
+  ACCEPTANCE_CONDITIONS,
+  ACCEPTANCE_LETTERS,
+  ACCEPTANCE_RULE,
   CAPABILITIES,
   CB15_FAMILY,
   DOSSIER_FAMILIES,
@@ -32,6 +35,7 @@ import {
   SERVED_DATA,
   auditAdmittedFalsePositives,
   deriveAcceptance,
+  deriveLetter,
   evaluateCapability,
   nextScheduledCheck,
   scheduledCycleStatus,
@@ -245,7 +249,7 @@ test("acceptance is derived from facts and never met from a rehearsal", () => {
     scheduled_cycle: { status: cycleStatus },
   });
   const production = deriveAcceptance(readback("deployed_production_read_back", "open"));
-  assert.deepEqual(production, { A1: "met", A2: "met", A3: "open", A4: "met", A5: "open", A6: "met" });
+  assert.deepEqual(production, { A1: "met", A2: "met", A3: "open", A4: "write_through_unobserved", A5: "open", A6: "met" });
   assert.equal(deriveAcceptance(readback("deployed_production_read_back", "observed")).A3, "met");
   assert.equal(deriveAcceptance(readback("deployed_production_read_back", "overdue")).A5, "overdue");
   const rehearsal = deriveAcceptance(readback("local_origin_rehearsal", "observed"));
@@ -255,6 +259,135 @@ test("acceptance is derived from facts and never met from a rehearsal", () => {
   const failedJourney = readback("deployed_production_read_back", "open");
   failedJourney.capabilities.find((record) => record.id === "search-history-discovery").observed.status = "failed";
   assert.equal(deriveAcceptance(failedJourney).A1, "open");
+});
+
+function productionReadback({ cycle = { status: "open" } } = {}) {
+  const artifacts = { ...committedArtifacts(), journeys: passingJourneys() };
+  return {
+    evidence_class: "deployed_production_read_back",
+    delivery: { served_contains_delivery: true },
+    capabilities: CAPABILITIES.map((definition) => evaluateCapability(definition, artifacts, PRODUCTION_CONTEXT)),
+    false_positive_audit: auditAdmittedFalsePositives(artifacts),
+    scheduled_cycle: clone(cycle),
+  };
+}
+
+const OBSERVED_CYCLE = Object.freeze({
+  status: "observed",
+  observed_cycle: { workflow: "geocoder-address-index.yml", run_id: 1, merge_commit: "b".repeat(40) },
+});
+
+function conditionValues(readback) {
+  return Object.fromEntries(Object.entries(ACCEPTANCE_CONDITIONS).map(([name, condition]) => [name, condition(readback)]));
+}
+
+test("A4 names its unobservable write-through instead of reading met", () => {
+  const complete = productionReadback({ cycle: OBSERVED_CYCLE });
+  assert.equal(deriveAcceptance(complete).A4, "write_through_unobserved", "every in-repo fact present");
+  assert.match(
+    ACCEPTANCE_LETTERS.A4.clauses.find((clause) => clause.unobservable).unobservable,
+    /realization records live outside this repository/,
+  );
+
+  // Facts that claim a write-through are not observations of one.
+  const claimed = productionReadback({ cycle: OBSERVED_CYCLE });
+  claimed.realization_record = { target: "realization-record", realized_outcomes: ["delivered"], coverage_limits: ["complete"] };
+  claimed.write_through = true;
+  assert.equal(deriveAcceptance(claimed).A4, "write_through_unobserved");
+
+  // Each in-repo clause, broken alone, turns the letter open.
+  const withoutOutcome = productionReadback({ cycle: OBSERVED_CYCLE });
+  delete withoutOutcome.capabilities[0].realized_outcome;
+  assert.equal(deriveAcceptance(withoutOutcome).A4, "open", "a record without a realized outcome");
+
+  const withoutLimits = productionReadback({ cycle: OBSERVED_CYCLE });
+  withoutLimits.capabilities.find((record) => record.id === "board-coverage-census").unresolved_limits = [];
+  assert.equal(deriveAcceptance(withoutLimits).A4, "open", "the coverage limits are dropped");
+
+  const separateUpdate = productionReadback({ cycle: OBSERVED_CYCLE });
+  separateUpdate.capabilities[0].destination = "/weekly-update/";
+  assert.equal(deriveAcceptance(separateUpdate).A4, "open", "a record points at a separate update");
+});
+
+test("no combination of in-repo facts can make A4 read met", () => {
+  const names = Object.keys(ACCEPTANCE_CONDITIONS);
+  const states = new Set();
+  for (let mask = 0; mask < 2 ** names.length; mask += 1) {
+    const values = Object.fromEntries(names.map((name, index) => [name, Boolean(mask & (1 << index))]));
+    states.add(deriveLetter("A4", values));
+  }
+  assert.deepEqual([...states].sort(), ["open", "write_through_unobserved"]);
+});
+
+test("every acceptance letter is derived from conditions that cover each of its clauses", () => {
+  const letters = Object.keys(ACCEPTANCE_LETTERS);
+  assert.deepEqual(letters, ["A1", "A2", "A3", "A4", "A5", "A6"]);
+  assert.deepEqual(Object.keys(deriveAcceptance(productionReadback())), letters);
+  const referenced = new Set();
+  for (const [letter, definition] of Object.entries(ACCEPTANCE_LETTERS)) {
+    // The clause spans quote the letter and, between them, leave only connectives.
+    let rest = definition.letter;
+    for (const clause of definition.clauses) {
+      assert.ok(rest.includes(clause.span), `${letter}: "${clause.span}" is not an unclaimed span of its letter`);
+      rest = rest.replace(clause.span, " ");
+    }
+    const leftover = rest.split(/[\s;,.]+/).filter(Boolean);
+    assert.deepEqual(leftover.filter((word) => !["and", "or", "then"].includes(word)), [], `${letter} has clause text no rule covers`);
+
+    for (const clause of definition.clauses) {
+      const observable = Array.isArray(clause.conditions) && clause.conditions.length > 0;
+      const declared = typeof clause.unobservable === "string" && clause.unobservable.length > 0;
+      assert.ok(observable !== declared, `${letter}: "${clause.span}" names conditions or an unobservable half, exactly one`);
+      for (const name of clause.conditions || []) {
+        assert.equal(typeof ACCEPTANCE_CONDITIONS[name], "function", `${letter} reads unknown condition ${name}`);
+        referenced.add(name);
+      }
+    }
+    const unobservable = definition.clauses.some((clause) => clause.unobservable);
+    if (unobservable) assert.ok(!["met", "open", "overdue"].includes(definition.unobserved), `${letter} names a distinct unobserved state`);
+    if (definition.overdue) referenced.add(definition.overdue);
+
+    // With every condition true the letter reads met, or its named state when a half is unobservable.
+    const all = Object.fromEntries(Object.keys(ACCEPTANCE_CONDITIONS).map((name) => [name, true]));
+    if (definition.overdue) all[definition.overdue] = false;
+    assert.equal(deriveLetter(letter, all), unobservable ? definition.unobserved : "met", letter);
+    // Each condition a clause names actually gates the letter.
+    for (const name of new Set(definition.clauses.flatMap((clause) => clause.conditions || []))) {
+      assert.ok(["open", "overdue"].includes(deriveLetter(letter, { ...all, [name]: false })), `${letter} ignores ${name}`);
+    }
+  }
+  assert.deepEqual(Object.keys(ACCEPTANCE_CONDITIONS).filter((name) => !referenced.has(name)), [], "no condition is outside the letters");
+});
+
+test("acceptance conditions: each holds on a complete production read-back and fires on a violating mutation", () => {
+  const base = productionReadback({ cycle: OBSERVED_CYCLE });
+  const holding = conditionValues(base);
+  assert.deepEqual(Object.keys(holding).filter((name) => holding[name] !== (name !== "scheduled_cycle_overdue")), []);
+  assert.deepEqual(deriveAcceptance(base), { A1: "met", A2: "met", A3: "met", A4: "write_through_unobserved", A5: "met", A6: "met" });
+
+  const record = (readback, id) => readback.capabilities.find((entry) => entry.id === id);
+  const mutations = {
+    production_origin: (r) => { r.evidence_class = "local_origin_rehearsal"; },
+    complete_records: (r) => { r.capabilities[0].vintage = null; },
+    all_capabilities_passed: (r) => { r.capabilities[1].observed.status = "failed"; },
+    six_journeys_passed: (r) => { record(r, "search-history-discovery").observed.result.families_passed.pop(); },
+    false_positives_withheld: (r) => { r.false_positive_audit = { status: "withheld", admitted_false_positives: [{ relation: "x" }], withheld_relations: [] }; },
+    scheduled_cycle_classified: (r) => { r.scheduled_cycle = {}; },
+    no_citywide_completeness_claim: (r) => { record(r, "board-coverage-census").unresolved_limits = ["does not measure or equalize civic activity"]; },
+    no_equal_activity_claim: (r) => { record(r, "board-coverage-census").unresolved_limits = ["does not claim citywide completeness"]; },
+    outcomes_reported: (r) => { r.capabilities[2].unresolved_limits = "none"; },
+    destinations_are_existing_routes: (r) => { r.capabilities[3].destination = "/weekly-update/"; },
+    scheduled_cycle_observed: (r) => { r.scheduled_cycle.status = "open"; },
+    scheduled_cycle_overdue: (r) => { r.scheduled_cycle.status = "overdue"; },
+    observed_cycle_receipt: (r) => { delete r.scheduled_cycle.observed_cycle; },
+    dossier_only: (r) => { record(r, "search-history-discovery").observed.result.expected += 1; },
+  };
+  assert.deepEqual(Object.keys(mutations).sort(), Object.keys(ACCEPTANCE_CONDITIONS).sort());
+  for (const [name, mutate] of Object.entries(mutations)) {
+    const readback = clone(base);
+    mutate(readback);
+    assert.equal(ACCEPTANCE_CONDITIONS[name](readback), !holding[name], `${name} fires`);
+  }
 });
 
 test("retained production read-backs re-derive from committed bytes and a descendant of the delivery", () => {
@@ -277,7 +410,17 @@ test("retained production read-backs re-derive from committed bytes and a descen
     assert.equal(readback.delivery.landed_commit, RELEASE_DELIVERY.landed_commit);
     assert.ok(isAncestor(RELEASE_DELIVERY.landed_commit, readback.served.revision), "served revision contains the delivery");
     assert.ok(isAncestor(readback.code_revision, "HEAD"), "code revision is in this tree's history");
-    assert.deepEqual(readback.acceptance, deriveAcceptance(readback), "acceptance is derived, not declared");
+    const derived = deriveAcceptance(readback);
+    if (readback.acceptance_rule === ACCEPTANCE_RULE) {
+      assert.deepEqual(readback.acceptance, derived, "acceptance is derived, not declared");
+    } else {
+      // Retained before the clause table: it differs from the current rule only
+      // where that rule was strengthened, and the record itself is not rewritten.
+      assert.equal(readback.acceptance_rule, undefined);
+      assert.deepEqual({ ...readback.acceptance, A4: derived.A4 }, derived, "only A4 changed with the rule");
+      assert.equal(readback.acceptance.A4, "met");
+      assert.equal(derived.A4, "write_through_unobserved");
+    }
 
     // Served bytes equal to the committed bytes reproduce every observed result.
     const sameBytes = Object.keys(SERVED_DATA).every((key) => readback.data[key]?.sha256 === sha256(readBytes(`site${SERVED_DATA[key]}`)));
