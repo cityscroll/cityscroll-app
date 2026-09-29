@@ -807,7 +807,13 @@ test("All NYC broadening keeps destination-applied facets per lens and clears pl
 
 // Separately loaded Near You sections (public alias ccfaadd338534), over frozen rows
 // reduced from the pinned published snapshot.
-import { readSectionIsolationFixture, MIDWOOD } from "./helpers/near_you_section_isolation_fixture.mjs";
+import {
+  MIDWOOD,
+  SECTION_ISOLATION_SOURCE,
+  readPinnedDistrictActivity,
+  readSectionIsolationFixture,
+  reduceSectionIsolationActivity,
+} from "./helpers/near_you_section_isolation_fixture.mjs";
 
 const SECTION_READY = Object.freeze({ state: "ready", cause: null });
 
@@ -856,4 +862,21 @@ test("each Near You section renders from its own state; all-ready output is byte
   // Control: without the loaded sections every bucket stays unavailable.
   const nothingLoaded = buildNearYouViewModel(scope, null, fixtureBoundaries, { dataState: "error" });
   assert.equal(nothingLoaded.bags.citywide.count, null);
+});
+
+test("the section fixture is the exact reduction of the pinned published snapshot", (t) => {
+  const frozen = readSectionIsolationFixture();
+  assert.equal(frozen.provenance.revision, SECTION_ISOLATION_SOURCE.revision);
+  assert.equal(frozen.provenance.blob, SECTION_ISOLATION_SOURCE.blob);
+  const pinned = readPinnedDistrictActivity();
+  if (!pinned) {
+    t.skip(`pinned blob ${SECTION_ISOLATION_SOURCE.blob} is not in this checkout's object store`);
+    return;
+  }
+  const { provenance: _provenance, ...rows } = frozen;
+  assert.deepEqual(rows, reduceSectionIsolationActivity(pinned));
+  // Positive control: a changed row is caught.
+  const altered = structuredClone(rows);
+  altered.district_items.citywide.meetings.pop();
+  assert.notDeepEqual(altered, reduceSectionIsolationActivity(pinned));
 });
