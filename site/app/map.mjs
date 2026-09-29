@@ -225,13 +225,10 @@ async function hydrateCurrentNearYouDeferred() {
     const liveHosts = [...root.querySelectorAll("[data-near-deferred]")];
     for (const host of liveHosts) {
       // A host the document already rendered in full (citywide preview and
-      // collection links) keeps its records and links.
-      if (host.dataset.nearDeferredContent === "complete") {
-        host.setAttribute("aria-busy", "false");
-        host.dataset.nearDeferredState = "error";
-        continue;
-      }
-      const message = host.dataset.nearDeferred === "bags"
+      // collection links) keeps its records and links, and gains the failure
+      // status and Retry so a recovery stays visible on either surface.
+      const complete = host.dataset.nearDeferredContent === "complete";
+      const message = host.dataset.nearDeferred === "bags" && !complete
         ? copy("messageBagsUnavailable")
         : copy("messageDeferredUnavailable");
       const statusNode = document.createElement("p");
@@ -250,6 +247,12 @@ async function hydrateCurrentNearYouDeferred() {
         if (translated && translated !== "buyer_history_retry") retryLabel = translated;
       }
       recovery.textContent = retryLabel;
+      if (complete) {
+        host.append(statusNode, recovery);
+        host.setAttribute("aria-busy", "false");
+        host.dataset.nearDeferredState = "error";
+        continue;
+      }
       // Transient failure: Retry plus, for a selected place, the one explicit All NYC route.
       const allNycHref = host.dataset.nearDeferred === "results" ? root.dataset.nearAllNycHref : "";
       if (allNycHref) {

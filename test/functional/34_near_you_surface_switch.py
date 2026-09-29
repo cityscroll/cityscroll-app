@@ -20,6 +20,23 @@ def is_visible(page: Page, selector: str) -> bool:
     )
 
 
+# Before a place is chosen, citywide records come first by design, so the map
+# may start below the first viewport; it must then follow them directly.
+MAP_REACHED_JS = """([height, maxGap]) => {
+  const map = document.querySelector('[data-near-surface-panel="map"]').getBoundingClientRect();
+  if (map.top < height) return true;
+  const citywide = document.querySelector('.near-special-records[data-near-special-records="entry"]');
+  if (!citywide) return false;
+  const gap = map.top - citywide.getBoundingClientRect().bottom;
+  return gap >= 0 && gap <= maxGap;
+}"""
+MAXIMUM_MAP_GAP_AFTER_CITYWIDE = 48
+
+
+def map_reached(page: Page, height: int) -> bool:
+    return page.evaluate(MAP_REACHED_JS, [height, MAXIMUM_MAP_GAP_AFTER_CITYWIDE])
+
+
 def assert_switches(page: Page, width: int, height: int) -> None:
     page.set_viewport_size({"width": width, "height": height})
     page.goto(f"{BASE}/near-you/", wait_until="networkidle")
@@ -42,7 +59,7 @@ def assert_switches(page: Page, width: int, height: int) -> None:
     assert is_visible(page, map_panel)
     assert not is_visible(page, results)
     assert page.evaluate("document.activeElement?.dataset.nearSurface") == "map"
-    assert page.locator(map_panel).evaluate("node => node.getBoundingClientRect().top") < height
+    assert map_reached(page, height), f"the map does not follow the entry at {width}px"
 
     records.click()
     assert page.locator("[data-near-you-root]").get_attribute("data-near-mobile-surface") == "records"
