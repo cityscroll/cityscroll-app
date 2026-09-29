@@ -1955,6 +1955,34 @@
         <option value="ur" lang="ur" dir="rtl">اردو</option>
       </select>
     </div>
+    <script data-lang-select-early-bind="true">
+    (function(){
+      // Bind this control's change handler as soon as it exists, not when
+      // app/boot.mjs (the application's last import) gets around to it. A
+      // selection made in that gap used to hit no listener at all, and boot
+      // then overwrote the control back to the restored language, silently
+      // dropping the pick. Applying the change here (setLang/i18n.js already
+      // loaded in <head>) closes the gap; boot.mjs finishes the wiring once
+      // the rest of the application graph is ready.
+      // (This tag carries an attribute so its opening tag isn't a bare,
+      // attribute-free script element -- test/standards/stray_english.py's
+      // page scan looks for the first one of those as a boundary marker.
+      // index.html's own logic lives in app/*.mjs, already scanned there.)
+      var sel = document.getElementById("langSelect");
+      if(!sel) return;
+      var saved = window.LANG || "en";
+      if([].some.call(sel.options, function(o){ return o.value === saved; })) sel.value = saved;
+      sel.dataset.appLanguageSwitcher = "true";
+      sel.addEventListener("change", function(){
+        var lang = sel.value;
+        var changed = lang !== window.LANG;
+        var onReady = changed && typeof window.rerenderForLang === "function" ? window.rerenderForLang : null;
+        if(typeof window.setLang === "function") window.setLang(lang, onReady);
+        if(changed && !onReady) sel.dataset.pendingRerender = "true";
+        if(onReady) onReady();
+      });
+    })();
+    </script>
     <div class="cr-rule cr-rule--top"></div>
     <div class="nameplate">
       <a class="brand-lockup brand-lockup--masthead" href="/" aria-label="CityScroll home" data-i18n-aria="brand_home_aria">
