@@ -18,6 +18,8 @@ import {
   parseAddressQuery,
   resolveAddressFromShard,
 } from "./precomputed_address_geocoder.mjs";
+import { isAdmittedPhysicalVenue } from "./meeting_location_assertions.mjs";
+import { extractVenueStreetSpan } from "./meeting_venue_street_span.mjs";
 
 export const RECORD_ADDRESS_RESOLUTION_CACHE_SCHEMA = "cityscroll.record_address_resolution_cache.v1";
 export const RECORD_ADDRESS_RESOLUTION_ENTRY_SCHEMA = "cityscroll.record_address_resolution_entry.v1";
@@ -89,7 +91,10 @@ function cleanPublishedAddress(value) {
 /**
  * Shape one retained cache entry from a PAD resolver result.
  * Never copies a MapPLUTO / parcel-source street label into the entry —
- * published wording lives on the assertion reference.
+ * published wording lives on the assertion reference. `extractedSpan`
+ * records the bounded venue street span that fed parsing when the
+ * publisher's full venue line was not itself a leading-house-number
+ * address; it stays null for directly parsed input.
  */
 function shapeEntry({
   cacheKey,
@@ -97,6 +102,7 @@ function shapeEntry({
   padIdentity,
   manifest,
   result,
+  extractedSpan = null,
 }) {
   const matched = result?.status === "matched";
   const candidateCount = matched
@@ -120,7 +126,30 @@ function shapeEntry({
     method: matched ? (result.method || RECORD_ADDRESS_RESOLUTION_METHOD) : null,
     zip: matched ? (result.zip || query.zip || null) : null,
     borough: matched ? (result.borough || null) : null,
+    extracted_span: extractedSpan || null,
   };
+}
+
+/**
+ * Bounded venue street-span retry for admitted physical venue assertions
+ * whose published line is not a leading-house-number address (a building
+ * name prefix and/or trailing room). Extraction requires one unambiguous
+ * span; the re-parsed query still flows through the same exact PAD path.
+ * Subject-property, footer, and assertion-free inputs never take this path.
+ *
+ * @returns {{ query: object, extractedSpan: string }|null}
+ */
+function venueSpanRetryQuery(addressText, assertion) {
+  if (!assertion || !isAdmittedPhysicalVenue(assertion)) return null;
+  const extracted = extractVenueStreetSpan(addressText);
+  if (!extracted?.span) return null;
+  const query = parseAddressQuery(
+    [extracted.span, extracted.locality].filter(Boolean).join(", "),
+  );
+  if (!query || query.status === "not_full_address" || !query.house || !query.street) {
+    return null;
+  }
+  return { query, extractedSpan: extracted.span };
 }
 
 /**
@@ -153,6 +182,7 @@ export function linkAssertionToResolution(assertion, entry, {
     bbl: entry.bbl,
     status: entry.status,
     reason: entry.reason,
+    extracted_span: entry.extracted_span || null,
   };
 }
 
@@ -217,7 +247,15 @@ export function createRecordAddressResolutionCache({
 
     const fromAssertion = assertion && !input ? addressTextFromAssertion(assertion) : null;
     const addressText = cleanPublishedAddress(input) || fromAssertion;
-    const query = parseAddressQuery(addressText || "");
+    let query = parseAddressQuery(addressText || "");
+    let extractedSpan = null;
+    if (query?.status === "not_full_address" && addressText) {
+      const retry = venueSpanRetryQuery(addressText, assertion);
+      if (retry) {
+        query = retry.query;
+        extractedSpan = retry.extractedSpan;
+      }
+    }
     const identity = padIdentity;
     const cacheKey = normalizedAddressCacheKey(query, identity);
 
@@ -235,6 +273,7 @@ export function createRecordAddressResolutionCache({
         method: null,
         zip: null,
         borough: null,
+        extracted_span: null,
       };
       if (assertion) {
         assertionLinks.push(linkAssertionToResolution(assertion, emptyEntry, { parcel_source_label }));
@@ -296,6 +335,7 @@ export function createRecordAddressResolutionCache({
       padIdentity: identity,
       manifest: activeManifest,
       result,
+      extractedSpan,
     });
     entries.set(cacheKey, entry);
     rememberBbl(entry);

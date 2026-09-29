@@ -48,7 +48,7 @@ export const ATTENDANCE_MEANING = Object.freeze({
   NOT_STATED: "not_stated",
 });
 
-const mlaClean = (value, max = 500) => String(value ?? "")
+export const mlaClean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ")
   .trim()
@@ -264,7 +264,8 @@ function mlaSha256Hex(value) {
   return state.map((word) => word.toString(16).padStart(8, "0")).join("");
 }
 
-const MLA_SUBJECT_ADDRESS = String.raw`(\d{1,5}(?:-\d{1,5})?\s+[A-Za-z0-9][A-Za-z0-9.'’ -]{0,60}?\b(?:Street|St\.?|Avenue|Ave\.?|Road|Rd\.?|Boulevard|Blvd\.?|Place|Pl\.?|Lane|Ln\.?|Drive|Dr\.?|Parkway|Pkwy\.?|Broadway)\b)`;
+export const MLA_SUBJECT_ADDRESS = String.raw`(\d{1,5}(?:-\d{1,5})?\s+[A-Za-z0-9][A-Za-z0-9.'’ -]{0,60}?\b(?:Street|St\.?|Avenue|Ave\.?|Road|Rd\.?|Boulevard|Blvd\.?|Place|Pl\.?|Lane|Ln\.?|Drive|Dr\.?|Parkway|Pkwy\.?|Broadway)\b)`;
+
 const MLA_SUBJECT_CLAUSE_RES = Object.freeze([
   // "... application ... at 461 Coney Island Avenue"
   new RegExp(String.raw`\bapplications?\b[\s\S]{0,180}?\bat\s+${MLA_SUBJECT_ADDRESS}`, "gi"),
@@ -274,7 +275,7 @@ const MLA_SUBJECT_CLAUSE_RES = Object.freeze([
   new RegExp(String.raw`\bapplications?\b\s*[-–—:]\s*${MLA_SUBJECT_ADDRESS}`, "gi"),
 ]);
 
-function mlaNormalizeStreetKey(value) {
+export function mlaNormalizeStreetKey(value) {
   return String(value || "")
     .toLowerCase()
     .replace(/\./g, "")

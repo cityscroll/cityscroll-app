@@ -17,6 +17,7 @@ import {
   isDateShapedVenueText,
   parseIcsLocationWrapper,
 } from "../site/meeting_location_assertions.mjs";
+import { extractVenueStreetSpan } from "../site/meeting_venue_street_span.mjs";
 import {
   normalizeCommunityBoardMeeting,
   normalizeOathTrialCalendarMeeting,
@@ -30,6 +31,55 @@ const CB14_HOUSING_URL = "https://cb14brooklyn.com/meeting/housing-and-land-use-
 const CB14_SEPT14_URL = "https://cb14brooklyn.com/meeting/september-2026-board-meeting/";
 const QUEENS_CB1_URL = "https://www.nyc.gov/site/queenscb1/calendar/calendar.page";
 const QUEENS_CB2_ICS_URL = "https://calendar.google.com/calendar/ical/t613gs3ukqiab5hgeibu27rfjs%40group.calendar.google.com/public/basic.ics";
+
+test("A1 venue street-span extraction lifts one house-anchored span past building and room text", () => {
+  // Frozen CB15 September 29 venue wording (both published room orders).
+  const kingsborough = extractVenueStreetSpan(
+    "Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235",
+  );
+  assert.deepEqual(kingsborough, {
+    span: "2001 Oriental Boulevard",
+    locality: "Brooklyn, NY 11235",
+  });
+  assert.deepEqual(extractVenueStreetSpan(
+    "Kingsborough Community College, 2001 Oriental Boulevard, Faculty Dining Room U112, Brooklyn, NY 11235",
+  ), kingsborough);
+
+  // "at 515 Malcolm X Boulevard" shape; the parenthetical cross-street
+  // reference is display context, never a second span.
+  assert.deepEqual(extractVenueStreetSpan(
+    "The New York Public Library at 515 Malcolm X Boulevard, New York, NY 10037 (135th Street and Malcolm X Boulevard)",
+  ), {
+    span: "515 Malcolm X Boulevard",
+    locality: "New York, NY 10037",
+  });
+
+  // Abbreviated street types expand through the published-span expander.
+  assert.deepEqual(extractVenueStreetSpan(
+    "Board Office, 810 East 16th St, Brooklyn, NY 11230, USA",
+  ), {
+    span: "810 East 16th Street",
+    locality: "Brooklyn, NY 11230",
+  });
+});
+
+test("A3 intersection-only, dropdown placeholder, date-shaped, and competing spans stay unresolved", () => {
+  for (const text of [
+    "135th Street and Malcolm X Boulevard",
+    "Coney Island Avenue and Avenue Z",
+    "Address Not Listed In The Dropdown",
+    "October 20, 2026",
+    "October 20",
+    "via Video Conference",
+    "VFW Hall, 461 and 463 Coney Island Avenue, Brooklyn, NY 11218",
+    "461 Coney Island Avenue and 1625 Ocean Avenue, Brooklyn, NY 11218",
+    "affordable housing",
+    null,
+    "",
+  ]) {
+    assert.equal(extractVenueStreetSpan(text), null, `expected no span for ${JSON.stringify(text)}`);
+  }
+});
 
 test("A1 CB14 September 23 preserves structured venue, publisher URL, and in-person mode", () => {
   const records = parseHtmlPdfSource(fixture("cb14-housing-land-use-september-2026.html"), {
