@@ -224,6 +224,13 @@ async function hydrateCurrentNearYouDeferred() {
     if (!isNearYouDeferredGenerationCurrent(root, generation)) return;
     const liveHosts = [...root.querySelectorAll("[data-near-deferred]")];
     for (const host of liveHosts) {
+      // A host the document already rendered in full (citywide preview and
+      // collection links) keeps its records and links.
+      if (host.dataset.nearDeferredContent === "complete") {
+        host.setAttribute("aria-busy", "false");
+        host.dataset.nearDeferredState = "error";
+        continue;
+      }
       const message = host.dataset.nearDeferred === "bags"
         ? copy("messageBagsUnavailable")
         : copy("messageDeferredUnavailable");

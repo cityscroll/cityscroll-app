@@ -355,8 +355,8 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.deepEqual(view.results.ids, ["m-queens"]);
   assert.match(html, /data-near-you-root/);
   assert.match(html, /class="near-results near-results-shell"[^>]+data-near-deferred="results"/);
-  assert.match(html, /class="near-bags near-bags-shell"[^>]+data-near-deferred="bags"/);
-  assert.match(html, /class="near-bag" data-bag="(?:citywide|virtual|unlocated)"/);
+  assert.match(html, /class="near-bags near-bags-shell[^"]*"[^>]+data-near-deferred="bags"/);
+  assert.match(html, /data-bag="citywide"[\s\S]*data-record-id="m-citywide"/);
   assert.match(deferred, /data-results-count="1"/);
   assert.match(deferred, /data-record-id="m-queens"/);
   assert.match(deferred, /data-pivot-schema="cityscroll\.edge_summary\.v1"[^>]+data-pivot-target-kind="notice"/);
@@ -424,7 +424,7 @@ test("deferred Near-you parts preserve records, empty copy, and error-state hook
   };
   const emptyParts = renderNearYouDeferredParts(emptyView);
   assert.match(emptyParts.resultsHtml, /No records match these filters/);
-  assert.match(emptyParts.bagsHtml, /No citywide records match these filters/);
+  assert.match(emptyParts.bagsHtml, /No citywide meetings match these filters/);
 
   const mapRuntime = readFileSync(new URL("../site/app/map.mjs", import.meta.url), "utf8");
   assert.match(mapRuntime, /copy\("messageDeferredUnavailable"\)/);
@@ -879,4 +879,248 @@ test("the section fixture is the exact reduction of the pinned published snapsho
   const altered = structuredClone(rows);
   altered.district_items.citywide.meetings.pop();
   assert.notDeepEqual(altered, reduceSectionIsolationActivity(pinned));
+});
+
+// Citywide records as relevant content (public alias c69db1aa1163d): a bounded
+// preview over the frozen citywide bucket, read at a fixed clock.
+import {
+  NEAR_YOU_SPECIAL_PREVIEW_LIMIT,
+  orderNearYouSpecialPreview,
+} from "../site/near_you_view.mjs";
+import { SHEEPSHEAD_BAY } from "./helpers/near_you_section_isolation_fixture.mjs";
+
+const CITYWIDE_CLOCK = "2026-09-28T16:00:00.000Z";
+const CONTAINMENT_NETTING = "20260826001";
+const WATERFRONTS = "meeting:nyc_legistar_events:22568";
+const SIDEWALK_SHEDS = "20260817025";
+const VIRTUAL_NOTICE = "20260624005";
+const UNMAPPED_NOTICE = "20260213014";
+
+function citywideRows() {
+  const { provenance: _provenance, ...rows } = readSectionIsolationFixture();
+  return rows;
+}
+
+function citywideView(url, rows = citywideRows(), options = {}) {
+  return buildNearYouViewModel(scopeFromNearYouUrl(url), rows, fixtureBoundaries, { now: CITYWIDE_CLOCK, ...options });
+}
+
+/** The special-records section of a document or deferred part. */
+function specialSection(html) {
+  const start = html.indexOf('<section class="near-bags');
+  assert.ok(start >= 0, "special records section is rendered");
+  return html.slice(start, html.indexOf("</section>", start) + "</section>".length);
+}
+
+function previewIds(html) {
+  return [...specialSection(html).matchAll(/<li class="near-record" data-record-id="([^"]+)"/g)].map((match) => match[1]);
+}
+
+function viewAllHref(html) {
+  return specialSection(html).match(/<a href="([^"]+)" data-near-special-link="citywide">/)?.[1]?.replaceAll("&amp;", "&") || null;
+}
+
+/** The View all destination, built from the href alone, over the same rows and clock. */
+function destinationView(href, rows = citywideRows()) {
+  return citywideView(new URL(href, "https://cityscroll.org/").toString(), rows);
+}
+
+test("A1/A7: the citywide preview shows the next two meetings then the latest past one, with a full-count View all", () => {
+  const rows = citywideRows();
+  const frozen = rows.district_items.citywide.meetings.map(String).sort();
+  assert.equal(frozen.length, 20);
+  const view = citywideView("https://cityscroll.org/near-you/?lens=meetings", rows);
+  assert.equal(view.bags.citywide.count, 20);
+  assert.deepEqual(view.bags.citywide.preview.map((record) => record.id), [CONTAINMENT_NETTING, WATERFRONTS, SIDEWALK_SHEDS]);
+  const { bagsHtml } = renderNearYouDeferredParts(view);
+  assert.deepEqual(previewIds(bagsHtml), [CONTAINMENT_NETTING, WATERFRONTS, SIDEWALK_SHEDS]);
+  assert.equal(previewIds(bagsHtml).length, NEAR_YOU_SPECIAL_PREVIEW_LIMIT);
+  assert.match(specialSection(bagsHtml), /<h2 id="near-bags-heading" tabindex="-1"><span>Citywide meetings<\/span> <strong>20<\/strong><\/h2>/);
+  assert.match(specialSection(bagsHtml), /These apply across NYC\./);
+  assert.match(specialSection(bagsHtml), /View all 20 citywide meetings/);
+  // The two upcoming meetings keep their open action; the past one does not.
+  assert.match(bagsHtml, new RegExp(`data-record-id="${CONTAINMENT_NETTING}"[\\s\\S]*?data-record-timing="upcoming" data-action-open="true">Upcoming · Oct 5, 2026`));
+  assert.match(bagsHtml, new RegExp(`data-record-id="${SIDEWALK_SHEDS}"[\\s\\S]*?data-record-timing="past" data-action-open="false">Past event · Sep 24, 2026`));
+
+  // View all is the whole deduplicated bucket as its own Records list.
+  const href = viewAllHref(bagsHtml);
+  const url = new URL(href, "https://cityscroll.org/");
+  assert.equal(url.searchParams.get("scope"), "citywide");
+  assert.equal(url.searchParams.get("surface"), "records");
+  const destination = destinationView(href, rows);
+  assert.deepEqual(destination.results.ids, frozen);
+  assert.equal(destination.results.count, 20);
+  // On that route the bucket is the primary list, never a preview of itself too.
+  assert.doesNotMatch(renderNearYouDeferredParts(destination).bagsHtml, /data-bag="citywide"/);
+  const duplicated = structuredClone(rows);
+  duplicated.district_items.citywide.meetings.push(CONTAINMENT_NETTING);
+  assert.equal(citywideView("https://cityscroll.org/near-you/?lens=meetings", duplicated).bags.citywide.count, 20, "the total is deduplicated");
+
+  // Converse controls: the order is read from the clock, not fixed.
+  const later = citywideView("https://cityscroll.org/near-you/?lens=meetings", rows, { now: "2026-10-10T16:00:00.000Z" });
+  assert.deepEqual(later.bags.citywide.preview.map((record) => record.id), [WATERFRONTS, CONTAINMENT_NETTING, SIDEWALK_SHEDS]);
+  const allPast = citywideView("https://cityscroll.org/near-you/?lens=meetings", rows, { now: "2026-11-01T16:00:00.000Z" });
+  assert.deepEqual(allPast.bags.citywide.preview.map((record) => record.id), [WATERFRONTS, CONTAINMENT_NETTING, SIDEWALK_SHEDS]);
+  assert.match(renderNearYouDeferredParts(allPast).bagsHtml, new RegExp(`data-record-id="${CONTAINMENT_NETTING}"[\\s\\S]*?data-action-open="false">Past event · Oct 5, 2026`));
+});
+
+test("A7: preview order is future ascending, past descending, then undated, with the ID as the last tiebreaker", () => {
+  const now = CITYWIDE_CLOCK;
+  const rows = [
+    { id: "undated-b" },
+    { id: "past-near", date: "2026-09-27T09:00:00.000" },
+    { id: "future-far", date: "2026-11-02T09:00:00.000" },
+    { id: "undated-a" },
+    { id: "same-day-b", date: "2026-10-01T09:00:00.000" },
+    { id: "same-day-a", date: "2026-10-01T09:00:00.000" },
+    { id: "future-soon-later-hour", date: "2026-09-30T18:00:00.000" },
+    { id: "future-soon", date: "2026-09-30T10:00:00.000" },
+    { id: "past-far", date: "2026-01-05T09:00:00.000" },
+  ];
+  assert.deepEqual(orderNearYouSpecialPreview(rows, { now }).map((row) => row.id), [
+    "future-soon", "future-soon-later-hour", "same-day-a", "same-day-b", "future-far",
+    "past-near", "past-far", "undated-a", "undated-b",
+  ]);
+  // The input order never decides the output.
+  assert.deepEqual(
+    orderNearYouSpecialPreview([...rows].reverse(), { now }).map((row) => row.id),
+    orderNearYouSpecialPreview(rows, { now }).map((row) => row.id),
+  );
+});
+
+test("A2: from Sheepshead Bay the citywide preview follows the local recovery outside every disclosure, and View all clears the place", () => {
+  const rows = citywideRows();
+  const url = "https://cityscroll.org/near-you/?geo=nta2020:BK1503&lens=meetings&surface=records";
+  const view = citywideView(url, rows);
+  assert.equal(view.localRecovery.state, "unsupported");
+  assert.equal(view.results.count, null);
+  const html = renderNearYouDocument(view);
+  const section = specialSection(html);
+  // Server-rendered in the document itself, after the local result, outside
+  // the Map details drawer, About this place and either surface panel.
+  assert.ok(html.indexOf('data-near-local-recovery="unsupported"') < html.indexOf(section));
+  assert.equal(section.includes("data-near-surface-panel"), false);
+  const before = html.slice(0, html.indexOf(section));
+  const openDetails = (before.match(/<details\b/g) || []).length - (before.match(/<\/details>/g) || []).length;
+  const openAsides = (before.match(/<aside\b/g) || []).length - (before.match(/<\/aside>/g) || []).length;
+  assert.equal(openDetails, 0, "the preview is not inside a disclosure");
+  assert.equal(openAsides, 0, "the preview is not inside the Map details drawer");
+  assert.deepEqual(previewIds(html), [CONTAINMENT_NETTING, WATERFRONTS, SIDEWALK_SHEDS]);
+
+  const href = viewAllHref(html);
+  const next = scopeFromNearYouUrl(new URL(href, "https://cityscroll.org/"));
+  assert.equal(new URL(href, "https://cityscroll.org/").searchParams.has("geo"), false);
+  assert.deepEqual(next.place.geographies || [], []);
+  assert.deepEqual([next.place.boroughs, next.place.community_districts, next.place.council_districts], [[], [], []]);
+  assert.equal(next.place.neighborhood, null);
+  assert.equal(next.place.location_scope, "citywide");
+  assert.deepEqual(destinationView(href, rows).results.ids, [...view.bags.citywide.ids].sort());
+  // Control: the source page really was scoped to Sheepshead Bay.
+  assert.deepEqual(view.scope.place.geographies, [SHEEPSHEAD_BAY]);
+});
+
+test("A3: online-only and unmapped notices stay in their own collections, never in the citywide preview or total", () => {
+  const rows = citywideRows();
+  const view = citywideView("https://cityscroll.org/near-you/?lens=meetings", rows);
+  for (const id of [VIRTUAL_NOTICE, UNMAPPED_NOTICE]) {
+    assert.equal(view.bags.citywide.ids.includes(id), false, id);
+    assert.equal(rows.district_items.citywide.meetings.includes(id), false, id);
+  }
+  assert.equal(view.bags.citywide.count, 20);
+  const { bagsHtml } = renderNearYouDeferredParts(view);
+  for (const [kind, id, total] of [["virtual", VIRTUAL_NOTICE, 1], ["unlocated", UNMAPPED_NOTICE, 89]]) {
+    const link = specialSection(bagsHtml).match(new RegExp(`<a href="([^"]+)" data-near-special-link="${kind}">[^<]+</a> <strong>${total}</strong>`));
+    assert.ok(link, `${kind} is a compact link with its own total`);
+    const destination = destinationView(link[1].replaceAll("&amp;", "&"), rows);
+    assert.equal(destination.results.count, total, kind);
+    assert.ok(destination.results.ids.includes(id), `${id} is reachable through the ${kind} collection`);
+    assert.equal(destination.bags.citywide.ids.includes(id), false);
+  }
+  assert.doesNotMatch(previewIds(bagsHtml).join(" "), /20260624005|20260213014/);
+
+  // Past rows never promise an open action; an unknown time stays unknown.
+  const undated = structuredClone(rows);
+  undated.records.meetings["undated-citywide"] = { id: "undated-citywide", title: "Undated citywide notice", route: "/#notice/undated-citywide", basis: "Citywide" };
+  undated.district_items.citywide.meetings = ["undated-citywide", SIDEWALK_SHEDS];
+  const parts = renderNearYouDeferredParts(citywideView("https://cityscroll.org/near-you/?lens=meetings", undated));
+  assert.deepEqual(previewIds(parts.bagsHtml), [SIDEWALK_SHEDS, "undated-citywide"]);
+  assert.match(parts.bagsHtml, /data-record-id="undated-citywide"[\s\S]*?data-record-timing="unknown" data-action-open="false">Date not published/);
+  assert.doesNotMatch(parts.bagsHtml.slice(parts.bagsHtml.indexOf('data-record-id="undated-citywide"')), /Upcoming|\d{2}:\d{2}/);
+});
+
+test("A4: filters carry to the destination, and empty, failed and loading buckets each render their own state", () => {
+  const rows = citywideRows();
+  for (const query of ["agency=Buildings&q=Rule", "agency=Consumer%20and%20Worker%20Protection", "when=month", "q=Netting"]) {
+    const view = citywideView(`https://cityscroll.org/near-you/?lens=meetings&${query}`, rows);
+    const { bagsHtml } = renderNearYouDeferredParts(view);
+    const destination = destinationView(viewAllHref(bagsHtml), rows);
+    assert.ok(view.bags.citywide.count > 0 && view.bags.citywide.count < 20, query);
+    assert.equal(destination.results.count, view.bags.citywide.count, query);
+    for (const id of previewIds(bagsHtml)) assert.ok(destination.results.ids.includes(id), `${query}: ${id}`);
+    assert.equal(previewIds(bagsHtml).length, Math.min(3, view.bags.citywide.count), query);
+  }
+
+  // Empty: its own sentence, an honest zero and no View all to an empty list.
+  const empty = renderNearYouDeferredParts(citywideView("https://cityscroll.org/near-you/?lens=meetings&q=zzzz", rows)).bagsHtml;
+  assert.match(empty, /No citywide meetings match these filters\./);
+  assert.match(empty, /<span>Citywide meetings<\/span> <strong>0<\/strong>/);
+  assert.equal(viewAllHref(empty), null);
+
+  // Failed: unavailable with Retry and the View all route, never a zero.
+  const failed = renderNearYouDeferredParts(citywideView("https://cityscroll.org/near-you/?lens=meetings", rows, {
+    sections: sectionsWith({ citywide: { state: "unavailable", cause: "timeout" } }),
+  })).bagsHtml;
+  assert.match(failed, /data-bag="citywide" data-near-section-state="unavailable"/);
+  assert.match(failed, /Citywide meetings could not load\./);
+  assert.match(failed, /aria-label="Count unavailable"/);
+  assert.match(failed, /data-near-recovery="retry"/);
+  assert.doesNotMatch(failed, /<strong>0<\/strong>|No citywide meetings match/);
+  assert.ok(viewAllHref(failed));
+
+  // Loading: a deferred host that still carries every collection link.
+  const pending = renderNearYouDocument(citywideView("https://cityscroll.org/near-you/?lens=meetings", rows, { dataState: "pending" }));
+  const pendingSection = specialSection(pending);
+  assert.match(pendingSection, /data-near-deferred="bags" data-near-deferred-state="pending" aria-busy="true"/);
+  assert.match(pendingSection, /Loading citywide meetings…/);
+  for (const kind of ["citywide", "virtual", "unlocated"]) assert.match(pendingSection, new RegExp(`data-near-special-link="${kind}"`));
+  // Loaded content is complete in the document, so a failed deferred read keeps it.
+  assert.match(specialSection(renderNearYouDocument(citywideView("https://cityscroll.org/near-you/?lens=meetings", rows))),
+    /data-near-deferred="bags" data-near-deferred-state="pending" data-near-deferred-content="complete"/);
+
+  // Special scope clearing also drops leftover neighborhood text.
+  const texted = citywideView("https://cityscroll.org/near-you/?lens=meetings&neighborhood=Sheepshead%20Bay", rows);
+  assert.match(texted.shareHref, /neighborhood=Sheepshead/, "control: the source scope carries the text");
+  assert.equal(new URL(texted.bags.citywide.href).searchParams.has("neighborhood"), false);
+  assert.equal(scopeWithPlace(texted.scope, { locationScope: "citywide" }).place.neighborhood, null);
+});
+
+test("A4: a place-role filter is never relaxed to fill the citywide preview; the All NYC route names what it removes", () => {
+  const rows = citywideRows();
+  const view = citywideView("https://cityscroll.org/near-you/?geo=nta2020:BK1403&lens=meetings&placeRole=venue", rows);
+  assert.equal(view.bags.citywide.count, 0);
+  const section = specialSection(renderNearYouDeferredParts(view).bagsHtml);
+  assert.deepEqual(previewIds(section), []);
+  assert.match(section, /No citywide meetings match these filters\./);
+  assert.match(section, /<a href="[^"]+" data-near-recovery="all-nyc">All NYC meetings<\/a>/);
+  assert.match(section, /Removes: “Happening here”\./);
+  // Control: without the role filter the same place previews citywide meetings.
+  assert.equal(citywideView("https://cityscroll.org/near-you/?geo=nta2020:BK1403&lens=meetings", rows).bags.citywide.count, 20);
+});
+
+test("A6: before a place is chosen, citywide records come after the entry row and before the map in reading order", () => {
+  const html = renderNearYouDocument(citywideView("https://cityscroll.org/near-you/", citywideRows()));
+  const section = specialSection(html);
+  const at = html.indexOf(section);
+  assert.ok(html.indexOf('class="near-collection-entry"') < at, "after the collection row");
+  assert.ok(at < html.indexOf('class="near-geo-workspace"'), "before the map and area directory");
+  assert.match(section, /data-near-special-records="entry"/);
+  assert.equal(previewIds(html).length, NEAR_YOU_SPECIAL_PREVIEW_LIMIT);
+  // A category whose special buckets are not published shows no collection, not a zero.
+  const floor = citywideRows();
+  floor.district_items.citywide = {};
+  floor.district_items.virtual = {};
+  floor.district_items.unlocated = {};
+  const unpublished = citywideView("https://cityscroll.org/near-you/", floor);
+  assert.equal(unpublished.bags.citywide.count, null);
+  assert.doesNotMatch(renderNearYouDocument(unpublished), /data-bag=/);
 });

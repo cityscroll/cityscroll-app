@@ -164,7 +164,10 @@ test("the edge renderer returns an inspectable scoped HTML document and public c
   assert.equal(payload.schema, "cityscroll.near_you_deferred.v1");
   assert.match(payload.results_html, /data-results-count=/);
   assert.match(payload.results_html, /data-record-id=/);
-  assert.match(payload.bags_html, /data-bag=/);
+  // The floor slice publishes no special-bucket lists, so no citywide, online
+  // or unmapped collection is claimed, not even as zero.
+  assert.equal(payload.bags_html, "");
+  assert.doesNotMatch(html, /data-bag=/);
 });
 
 test("shared API-host Near-you documents permanently recover to the canonical host", async () => {
@@ -281,6 +284,7 @@ import {
   readSectionIsolationFixture,
 } from "../../test/helpers/near_you_section_isolation_fixture.mjs";
 import { readLocalEscapeFixture } from "../../test/helpers/near_you_local_escape_fixture.mjs";
+import { withPinnedClock } from "../../test/helpers/test_clock.mjs";
 
 const { provenance: _isolationProvenance, ...isolationRows } = readSectionIsolationFixture();
 const isolation = materialize(isolationRows, "section-isolation");
@@ -306,10 +310,45 @@ function recordIds(html) {
     .map((match) => match[1].replaceAll("&amp;", "&")).sort();
 }
 
+/** One special bucket's markup: the citywide preview block, or an online/unmapped link row. */
 function bagHtml(html, kind) {
-  const start = html.indexOf(`<details class="near-bag" data-bag="${kind}"`);
+  const start = html.search(new RegExp(`<(?:div|li) [^>]*data-bag="${kind}"`));
   assert.ok(start >= 0, `${kind} section is rendered`);
-  return html.slice(start, html.indexOf("</details>", start));
+  const end = kind === "citywide"
+    ? html.indexOf('<ul class="near-special-links"', start)
+    : html.indexOf("</li>", start);
+  return html.slice(start, end < 0 ? html.indexOf("</section>", start) : end);
+}
+
+// At the frozen clock the citywide preview is the next two meetings, then the most recent past one.
+const CITYWIDE_CLOCK = "2026-09-28T16:00:00.000Z";
+const CITYWIDE_PREVIEW = Object.freeze(["20260826001", "meeting:nyc_legistar_events:22568", "20260817025"]);
+
+/** A bucket's own Records route lists its whole membership; the page shows its preview and total. */
+function bucketHref(html, kind) {
+  const href = bagHtml(html, kind).match(/<a href="([^"]+)" data-near-special-link="/)?.[1];
+  assert.ok(href, `${kind} links to its collection`);
+  return href.replaceAll("&amp;", "&");
+}
+
+async function bucketRouteIds(html, kind, controls = []) {
+  const url = new URL(bucketHref(html, kind));
+  assert.equal(url.searchParams.get("scope"), kind);
+  assert.equal(url.searchParams.get("surface"), "records");
+  assert.equal(url.searchParams.has("geo"), false);
+  const { body } = await sectionRequest(url.search.slice(1), controls);
+  return recordIds(body.results_html);
+}
+
+/** The bucket route's total is the whole bucket; its first page lists members only. */
+async function assertBucketRoute(html, kind, controls = []) {
+  const url = new URL(bucketHref(html, kind));
+  const { body } = await sectionRequest(url.search.slice(1), controls);
+  const expected = frozenBucket(kind);
+  const listed = recordIds(body.results_html);
+  assert.match(body.results_html, new RegExp(`data-results-count="${expected.length}"`), kind);
+  assert.equal(listed.length, Math.min(expected.length, 30), kind);
+  assert.ok(listed.every((id) => expected.includes(id)), kind);
 }
 
 function withEdgeCache(body) {
@@ -331,7 +370,7 @@ async function sectionRequest(query, controls = [], { deferred = true, values = 
   return { response, store, body: deferred ? await response.json() : await response.text() };
 }
 
-test("A6 control: with no fault Midwood, citywide, online and unmapped sections all load and cache", async () => {
+test("A6 control: with no fault Midwood, citywide, online and unmapped sections all load and cache", () => withPinnedClock(CITYWIDE_CLOCK, async () => {
   await withEdgeCache(async (puts) => {
     const { response, body, store } = await sectionRequest(MIDWOOD_QUERY);
     assert.equal(response.status, 200);
@@ -340,8 +379,9 @@ test("A6 control: with no fault Midwood, citywide, online and unmapped sections 
     assert.equal(body.partial, undefined);
     assert.deepEqual(recordIds(body.results_html), MIDWOOD_IDS);
     assert.equal(MIDWOOD_IDS.length, 2);
+    assert.deepEqual(recordIds(bagHtml(body.bags_html, "citywide")), [...CITYWIDE_PREVIEW].sort());
     for (const bucket of ["citywide", "virtual", "unlocated"]) {
-      assert.deepEqual(recordIds(bagHtml(body.bags_html, bucket)), frozenBucket(bucket), bucket);
+      assert.match(bagHtml(body.bags_html, bucket), new RegExp(`<strong>${frozenBucket(bucket).length}</strong>`), bucket);
       assert.deepEqual(body.sections[bucket], { state: "ready", count: frozenBucket(bucket).length }, bucket);
     }
     assert.deepEqual(body.sections.primary, { state: "ready", count: 2 });
@@ -349,10 +389,10 @@ test("A6 control: with no fault Midwood, citywide, online and unmapped sections 
     assert.equal(puts.length, 1, "a complete response is edge-cached");
     for (const [key, count] of store.reads) assert.equal(count, 1, key);
   });
-});
+}));
 
 for (const control of ["reject", "timeout", "corrupt", "missing"]) {
-  test(`A1/A6: a ${control} citywide read keeps both Midwood meetings visible and citywide unavailable, never 0`, async () => {
+  test(`A1/A6: a ${control} citywide read keeps both Midwood meetings visible and citywide unavailable, never 0`, () => withPinnedClock(CITYWIDE_CLOCK, async () => {
     await withEdgeCache(async (puts) => {
       const { response, body, store } = await sectionRequest(MIDWOOD_QUERY, [[isolationKey("citywide"), control]]);
       assert.equal(response.status, 200);
@@ -368,19 +408,22 @@ for (const control of ["reject", "timeout", "corrupt", "missing"]) {
       const citywide = bagHtml(body.bags_html, "citywide");
       assert.match(citywide, /data-near-section-state="unavailable"/);
       assert.match(citywide, /aria-label="Count unavailable"/);
-      assert.match(citywide, /Citywide records could not load\./);
+      assert.match(citywide, /Citywide meetings could not load\./);
       assert.match(citywide, /data-near-recovery="retry"/);
       assert.deepEqual(recordIds(citywide), []);
-      assert.doesNotMatch(citywide, /<strong>0<\/strong>|No citywide records match/);
+      assert.doesNotMatch(citywide, /<strong>0<\/strong>|No citywide meetings match/);
       for (const token of INTERNAL_TOKENS) assert.equal(residentText(body.bags_html).includes(token), false, token);
-      assert.deepEqual(recordIds(bagHtml(body.bags_html, "virtual")), frozenBucket("virtual"));
+      assert.match(bagHtml(body.bags_html, "virtual"), /<strong>1<\/strong>/);
       assert.equal(puts.length, 0, "a partial response is never edge-cached as complete");
       for (const [key, count] of store.reads) assert.equal(count, 1, `no added or repeated read of ${key}`);
+      // The failed preview still links the whole bucket, which loads on its own.
+      assert.deepEqual(await bucketRouteIds(body.bags_html, "citywide"), frozenBucket("citywide"));
     });
-  });
+  }));
 }
 
-test("A1 reverse: a failed Sheepshead Bay read leaves the 20 frozen citywide meetings navigable and not local", async () => {
+test("A1 reverse: a failed Sheepshead Bay read leaves the 20 frozen citywide meetings navigable and not local", () => withPinnedClock(CITYWIDE_CLOCK, async () => {
+  let reverseBags = "";
   const control = await sectionRequest(SHEEPSHEAD_QUERY);
   assert.equal(control.response.status, 200);
   assert.match(control.body.results_html, /data-near-local-recovery="unsupported"/);
@@ -393,10 +436,12 @@ test("A1 reverse: a failed Sheepshead Bay read leaves the 20 frozen citywide mee
     assert.equal(body.partial, true);
     assert.deepEqual(body.sections.primary, { state: "unavailable", count: null, cause: ROUTE_READ_MODEL_CAUSES.readFailed });
     const citywide = bagHtml(body.bags_html, "citywide");
-    assert.deepEqual(recordIds(citywide), frozenBucket("citywide"));
+    assert.deepEqual(recordIds(citywide), [...CITYWIDE_PREVIEW].sort());
     assert.equal(frozenBucket("citywide").length, 20);
     assert.match(citywide, /<strong>20<\/strong>/);
+    assert.match(citywide, /View all 20 citywide meetings/);
     for (const anchor of ["20260826001", "meeting:nyc_legistar_events:22568"]) assert.ok(citywide.includes(`data-record-id="${anchor}"`), anchor);
+    reverseBags = body.bags_html;
     // The requested local section is an explicit failure, never those records.
     assert.deepEqual(recordIds(body.results_html), []);
     assert.doesNotMatch(body.results_html, /data-results-count=/);
@@ -407,6 +452,8 @@ test("A1 reverse: a failed Sheepshead Bay read leaves the 20 frozen citywide mee
     assert.notEqual(body.results_html.match(/data-near-local-recovery="(\w+)"/)[1], control.body.results_html.match(/data-near-local-recovery="(\w+)"/)[1]);
     assert.equal(puts.length, 0);
   });
+  // Navigable: View all lists all 20, with the local place cleared.
+  assert.deepEqual(await bucketRouteIds(reverseBags, "citywide", [[isolationKey(SHEEPSHEAD_BAY), "reject"]]), frozenBucket("citywide"));
 
   const page = await sectionRequest(SHEEPSHEAD_QUERY, [[isolationKey(SHEEPSHEAD_BAY), "reject"]], { deferred: false });
   assert.equal(page.response.status, 503);
@@ -418,20 +465,26 @@ test("A1 reverse: a failed Sheepshead Bay read leaves the 20 frozen citywide mee
   for (const token of INTERNAL_TOKENS) assert.equal(residentText(page.body).includes(token), false, token);
   // Positive control: the same check finds a leaked cause in resident text.
   assert.equal(residentText(`<p>${ROUTE_READ_MODEL_CAUSES.timeout}</p>`).includes(ROUTE_READ_MODEL_CAUSES.timeout), true);
-});
+}));
 
-test("A2: failing only online or only unmapped records leaves local and citywide ID sets unchanged, and Retry restores them", async () => {
+test("A2: failing only online or only unmapped records leaves local and citywide ID sets unchanged, and Retry restores them", () => withPinnedClock(CITYWIDE_CLOCK, async () => {
   const baseline = (await sectionRequest(MIDWOOD_QUERY)).body;
   for (const bucket of ["virtual", "unlocated"]) {
-    const { response, body } = await sectionRequest(MIDWOOD_QUERY, [[isolationKey(bucket), "reject"]]);
+    const controls = [[isolationKey(bucket), "reject"]];
+    const { response, body } = await sectionRequest(MIDWOOD_QUERY, controls);
     assert.equal(response.status, 200, bucket);
     assert.equal(body.partial, true, bucket);
     assert.deepEqual(recordIds(body.results_html), recordIds(baseline.results_html), bucket);
     assert.deepEqual(recordIds(bagHtml(body.bags_html, "citywide")), recordIds(bagHtml(baseline.bags_html, "citywide")), bucket);
-    assert.deepEqual(recordIds(bagHtml(body.bags_html, bucket)), [], bucket);
+    assert.deepEqual(recordIds(bagHtml(body.bags_html, "citywide")), [...CITYWIDE_PREVIEW].sort(), bucket);
+    // The whole citywide set is unchanged under the same fault, not just its preview.
+    assert.deepEqual(await bucketRouteIds(body.bags_html, "citywide", controls), frozenBucket("citywide"), bucket);
+    assert.match(bagHtml(body.bags_html, bucket), /data-near-section-state="unavailable"/, bucket);
+    assert.match(bagHtml(body.bags_html, bucket), /aria-label="Count unavailable"/, bucket);
     assert.equal(body.sections[bucket].count, null, bucket);
     for (const other of ["virtual", "unlocated"].filter((name) => name !== bucket)) {
-      assert.deepEqual(recordIds(bagHtml(body.bags_html, other)), frozenBucket(other), `${bucket} failure leaves ${other}`);
+      assert.match(bagHtml(body.bags_html, other), new RegExp(`<strong>${frozenBucket(other).length}</strong>`), `${bucket} failure leaves ${other}`);
+      await assertBucketRoute(body.bags_html, other, controls);
     }
   }
   // Retry: the same request after a transient failure succeeds with the right IDs.
@@ -444,9 +497,11 @@ test("A2: failing only online or only unmapped records leaves local and citywide
   const retriedBody = await retried.json();
   assert.equal(retried.status, 200);
   assert.equal(retriedBody.partial, undefined);
-  assert.deepEqual(recordIds(bagHtml(retriedBody.bags_html, "virtual")), ["20260624005"]);
+  assert.doesNotMatch(bagHtml(retriedBody.bags_html, "virtual"), /data-near-section-state/);
+  assert.match(bagHtml(retriedBody.bags_html, "virtual"), /<strong>1<\/strong>/);
+  assert.deepEqual(await bucketRouteIds(retriedBody.bags_html, "virtual"), ["20260624005"]);
   assert.deepEqual(recordIds(retriedBody.results_html), MIDWOOD_IDS);
-});
+}));
 
 test("A4: an explicit citywide scope whose citywide read fails is a requested-results failure", async () => {
   const control = await sectionRequest(CITYWIDE_QUERY);
@@ -462,7 +517,9 @@ test("A4: an explicit citywide scope whose citywide read fails is a requested-re
   assert.deepEqual(recordIds(body.results_html), [], "loaded online and unmapped records do not stand in for citywide");
   assert.doesNotMatch(body.results_html, /data-results-count=|No records match|No mapped meetings/);
   assert.match(body.results_html, /data-near-section-state="unavailable"/);
-  assert.deepEqual(recordIds(bagHtml(body.bags_html, "virtual")), frozenBucket("virtual"));
+  // The requested bucket is the page's primary list, so it has no preview of itself.
+  assert.doesNotMatch(body.bags_html, /data-bag="citywide"/);
+  assert.match(bagHtml(body.bags_html, "virtual"), /<strong>1<\/strong>/);
 });
 
 test("A3: explicit published zero and a refused incomplete candidate stay distinct from read failures", async () => {

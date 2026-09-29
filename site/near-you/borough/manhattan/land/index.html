@@ -60,6 +60,7 @@
       <p class="near-map-status" data-map-status aria-live="polite"></p>
     </details>
 
+
     <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
       <a class="near-surface-link is-active" href="https://cityscroll.org/near-you?surface=map&amp;lens=land&amp;v=0" data-near-surface="map" aria-current="true">Map</a>
       <a class="near-surface-link" href="https://cityscroll.org/near-you?surface=records&amp;lens=land&amp;v=0" data-near-surface="records">Browse records (62)</a>
@@ -261,19 +262,67 @@
       <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
     </section>
     </div>
-    <section class="near-bags near-bags-shell" aria-labelledby="near-bags-heading" data-near-deferred="bags" data-near-deferred-state="pending" aria-busy="true">
-      <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
-      <p>Citywide, online, and records without a place stay visible. We do not assign them to a district.</p>
-      <details class="near-bag" data-bag="citywide">
-    <summary><span>Citywide</span><strong>3</strong></summary>
-    <p class="near-deferred-status" role="status" aria-live="polite">Loading citywide records…</p>
-  </details><details class="near-bag" data-bag="virtual">
-    <summary><span>Virtual / online only</span><strong>0</strong></summary>
-    <p class="near-deferred-status" role="status" aria-live="polite">Loading virtual / online only records…</p>
-  </details><details class="near-bag" data-bag="unlocated">
-    <summary><span>No place signal</span><strong>0</strong></summary>
-    <p class="near-deferred-status" role="status" aria-live="polite">Loading no place signal records…</p>
-  </details>
+    <section class="near-bags near-bags-shell near-special-records" aria-labelledby="near-bags-heading" data-near-special-records="after-results" data-near-deferred="bags" data-near-deferred-state="pending" data-near-deferred-content="complete">
+      <div class="near-citywide" data-bag="citywide">
+      <h2 id="near-bags-heading" tabindex="-1"><span>Citywide zoning records</span> <strong>3</strong></h2>
+      <p class="near-citywide-note">These apply across NYC.</p>
+      <ol class="near-records near-citywide-preview"><li class="near-record" data-record-id="2025Y0279">
+    <a class="near-record-title-link near-record-title" href="/browse/zoning/?status=all&amp;stage=any#land/2025Y0279"
+      data-pivot-schema="cityscroll.edge_summary.v1" data-pivot-status="accepted"
+      data-pivot-relation-label="nearby record" data-pivot-target-kind="notice"
+      data-pivot-target-id="2025Y0279" data-pivot-source-kind="place"
+      data-pivot-source-id="near-you">Last-Mile Facility Text Amendment</a><button class="near-record-inspect near-record-title" type="button" data-near-you-record-inspection="{&quot;schema&quot;:&quot;cityscroll.near_you_record_inspection.v1&quot;,&quot;version&quot;:1,&quot;uid&quot;:&quot;2025Y0279&quot;,&quot;title&quot;:&quot;Last-Mile Facility Text Amendment&quot;,&quot;href&quot;:&quot;/browse/zoning/?status=all&amp;stage=any#land/2025Y0279&quot;,&quot;agency&quot;:&quot;New York City Department of City Planning&quot;,&quot;type&quot;:&quot;Filed&quot;,&quot;date_label&quot;:&quot;Jan 15, 2025&quot;,&quot;time_label&quot;:&quot;00:00&quot;,&quot;place_role&quot;:&quot;project_geometry&quot;,&quot;place_role_label&quot;:null,&quot;basis&quot;:&quot;Citywide&quot;,&quot;venue_address&quot;:null,&quot;venue_name&quot;:null,&quot;subject_address&quot;:null,&quot;source_url&quot;:null,&quot;source_label&quot;:null,&quot;timing&quot;:{&quot;kind&quot;:&quot;event&quot;,&quot;state&quot;:&quot;past&quot;,&quot;action_open&quot;:false,&quot;event_at&quot;:&quot;2025-01-15&quot;,&quot;days_left&quot;:-622,&quot;label&quot;:&quot;Past event · Jan 15, 2025&quot;},&quot;geography&quot;:null,&quot;why_here&quot;:null,&quot;uncertainty&quot;:null}" data-near-you-record-inspection-uid="2025Y0279" aria-label="Inspect: Last-Mile Facility Text Amendment">Last-Mile Facility Text Amendment</button>
+
+    <div class="near-record-meta">
+      <span>New York City Department of City Planning</span>
+      <span>Filed</span>
+      <span>Jan 15, 2025 · 00:00</span>
+    </div>
+
+    <div class="near-record-basis" data-appearance-reason="1"><strong>Citywide</strong></div>
+
+    <p class="near-record-timing" data-record-timing="past" data-action-open="false">Past event · Jan 15, 2025</p>
+
+    <p class="near-record-actions"><a class="near-record-full-record" href="/browse/zoning/?status=all&amp;stage=any#land/2025Y0279" data-browse-return-uid="2025Y0279" data-action-open="false">View the full record</a></p>
+  </li><li class="near-record" data-record-id="2022Y0395">
+    <a class="near-record-title-link near-record-title" href="/browse/zoning/?status=all&amp;stage=any#land/2022Y0395"
+      data-pivot-schema="cityscroll.edge_summary.v1" data-pivot-status="accepted"
+      data-pivot-relation-label="nearby record" data-pivot-target-kind="notice"
+      data-pivot-target-id="2022Y0395" data-pivot-source-kind="place"
+      data-pivot-source-id="near-you">Last-Mile Warehouse Special Permit (Private Application)</a><button class="near-record-inspect near-record-title" type="button" data-near-you-record-inspection="{&quot;schema&quot;:&quot;cityscroll.near_you_record_inspection.v1&quot;,&quot;version&quot;:1,&quot;uid&quot;:&quot;2022Y0395&quot;,&quot;title&quot;:&quot;Last-Mile Warehouse Special Permit (Private Application)&quot;,&quot;href&quot;:&quot;/browse/zoning/?status=all&amp;stage=any#land/2022Y0395&quot;,&quot;agency&quot;:&quot;Eddie Bautista&quot;,&quot;type&quot;:&quot;Filed&quot;,&quot;date_label&quot;:null,&quot;time_label&quot;:null,&quot;place_role&quot;:&quot;project_geometry&quot;,&quot;place_role_label&quot;:null,&quot;basis&quot;:&quot;Citywide&quot;,&quot;venue_address&quot;:null,&quot;venue_name&quot;:null,&quot;subject_address&quot;:null,&quot;source_url&quot;:null,&quot;source_label&quot;:null,&quot;timing&quot;:{&quot;kind&quot;:&quot;unknown&quot;,&quot;state&quot;:&quot;unknown&quot;,&quot;action_open&quot;:false,&quot;event_at&quot;:null,&quot;days_left&quot;:null,&quot;label&quot;:&quot;Date not published&quot;},&quot;geography&quot;:null,&quot;why_here&quot;:null,&quot;uncertainty&quot;:null}" data-near-you-record-inspection-uid="2022Y0395" aria-label="Inspect: Last-Mile Warehouse Special Permit (Private Application)">Last-Mile Warehouse Special Permit (Private Application)</button>
+
+    <div class="near-record-meta">
+      <span>Eddie Bautista</span>
+      <span>Filed</span>
+      <span>Date not published</span>
+    </div>
+
+    <div class="near-record-basis" data-appearance-reason="1"><strong>Citywide</strong></div>
+
+    <p class="near-record-timing" data-record-timing="unknown" data-action-open="false">Date not published</p>
+
+    <p class="near-record-actions"><a class="near-record-full-record" href="/browse/zoning/?status=all&amp;stage=any#land/2022Y0395" data-browse-return-uid="2022Y0395" data-action-open="false">View the full record</a></p>
+  </li><li class="near-record" data-record-id="2026Y0360">
+    <a class="near-record-title-link near-record-title" href="/browse/zoning/?status=all&amp;stage=any#land/2026Y0360"
+      data-pivot-schema="cityscroll.edge_summary.v1" data-pivot-status="accepted"
+      data-pivot-relation-label="nearby record" data-pivot-target-kind="notice"
+      data-pivot-target-id="2026Y0360" data-pivot-source-kind="place"
+      data-pivot-source-id="near-you">Affordable Housing Fast Track Methodology Rule</a><button class="near-record-inspect near-record-title" type="button" data-near-you-record-inspection="{&quot;schema&quot;:&quot;cityscroll.near_you_record_inspection.v1&quot;,&quot;version&quot;:1,&quot;uid&quot;:&quot;2026Y0360&quot;,&quot;title&quot;:&quot;Affordable Housing Fast Track Methodology Rule&quot;,&quot;href&quot;:&quot;/browse/zoning/?status=all&amp;stage=any#land/2026Y0360&quot;,&quot;agency&quot;:&quot;DCP Department of City Planning&quot;,&quot;type&quot;:&quot;In Public Review&quot;,&quot;date_label&quot;:null,&quot;time_label&quot;:null,&quot;place_role&quot;:&quot;project_geometry&quot;,&quot;place_role_label&quot;:null,&quot;basis&quot;:&quot;Citywide&quot;,&quot;venue_address&quot;:null,&quot;venue_name&quot;:null,&quot;subject_address&quot;:null,&quot;source_url&quot;:null,&quot;source_label&quot;:null,&quot;timing&quot;:{&quot;kind&quot;:&quot;unknown&quot;,&quot;state&quot;:&quot;unknown&quot;,&quot;action_open&quot;:false,&quot;event_at&quot;:null,&quot;days_left&quot;:null,&quot;label&quot;:&quot;Date not published&quot;},&quot;geography&quot;:null,&quot;why_here&quot;:null,&quot;uncertainty&quot;:null}" data-near-you-record-inspection-uid="2026Y0360" aria-label="Inspect: Affordable Housing Fast Track Methodology Rule">Affordable Housing Fast Track Methodology Rule</button>
+
+    <div class="near-record-meta">
+      <span>DCP Department of City Planning</span>
+      <span>In Public Review</span>
+      <span>Date not published</span>
+    </div>
+
+    <div class="near-record-basis" data-appearance-reason="1"><strong>Citywide</strong></div>
+
+    <p class="near-record-timing" data-record-timing="unknown" data-action-open="false">Date not published</p>
+
+    <p class="near-record-actions"><a class="near-record-full-record" href="/browse/zoning/?status=all&amp;stage=any#land/2026Y0360" data-browse-return-uid="2026Y0360" data-action-open="false">View the full record</a></p>
+  </li></ol>
+      <p class="near-citywide-all"><a href="https://cityscroll.org/near-you?v=0&amp;lens=land&amp;scope=citywide&amp;surface=records" data-near-special-link="citywide">View all 3 citywide zoning records</a></p>
+    </div><ul class="near-special-links" aria-label="Other collections"><li data-bag="virtual"><span>Online-only zoning records</span> <strong>0</strong></li><li data-bag="unlocated"><span>Zoning records without a mapped place</span> <strong>0</strong></li></ul>
     </section>
   </main>
 <footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.</footer>

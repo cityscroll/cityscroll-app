@@ -188,6 +188,11 @@ export function applyNearYouDeferredPayload(root, payload, {
   }
   for (const host of hosts) {
     const html = host.dataset.nearDeferred === "bags" ? payload.bags_html : payload.results_html;
+    // No special collection is published for this scope: nothing to show, not a zero.
+    if (host.dataset.nearDeferred === "bags" && html === "") {
+      host.remove();
+      continue;
+    }
     const next = parseHtml(html);
     if (!next) throw new Error("near-you-deferred-html-invalid");
     host.replaceWith(next);

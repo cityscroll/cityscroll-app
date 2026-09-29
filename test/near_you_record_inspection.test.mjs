@@ -818,3 +818,21 @@ test("A3: relevance acceptance manifest records live outcomes without a fixed ev
   const digest = createHash("sha256").update(JSON.stringify(manifest.assertions) + "\n").digest("hex");
   assert.equal(manifest.assertions_sha256, digest);
 });
+
+test("a published event day keeps its calendar day in the reader's zone", () => {
+  // A date-only day is a calendar day, not UTC midnight: west of UTC it must not
+  // read as the day before (the Oct 5 citywide hearing once read "Oct 4").
+  const previous = process.env.TZ;
+  process.env.TZ = "America/New_York";
+  try {
+    const now = "2026-09-28T16:00:00.000Z";
+    const upcoming = nearYouRecordTiming({ date: "2026-10-05T11:00:00.000" }, { now });
+    assert.equal(upcoming.event_at, "2026-10-05");
+    assert.equal(upcoming.label, "Upcoming · Oct 5, 2026");
+    assert.equal(nearYouRecordTiming({ date: "2026-09-24T11:00:00.000" }, { now }).label, "Past event · Sep 24, 2026");
+    assert.equal(nearYouRecordTiming({ deadline: "2026-10-01" }, { now }).label, "Deadline open through Oct 1, 2026");
+  } finally {
+    if (previous === undefined) delete process.env.TZ;
+    else process.env.TZ = previous;
+  }
+});

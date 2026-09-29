@@ -19,6 +19,7 @@ import {
   NEAR_YOU_SCOPE_REGION_SELECTORS,
 } from "../site/near_you_scope_adoption.mjs";
 import { mountDocument } from "./helpers/preview_dom.mjs";
+import { withPinnedClock } from "./helpers/test_clock.mjs";
 
 const ROOT = process.cwd();
 const EVIDENCE_PATH = join("docs", "evidence", "near-you-scope-adoption", "acceptance-manifest.json");
@@ -325,6 +326,9 @@ const sectionKey = (id) => sectionBuild.manifest.slices[`${id}:meetings`];
 const MIDWOOD_URL = "https://cityscroll.org/near-you/?geo=nta2020:BK1403&lens=meetings&surface=records";
 const MIDWOOD_IDS = sectionRows.geography_items.by_key[MIDWOOD].meetings.map(String).sort();
 const CITYWIDE_IDS = sectionRows.district_items.citywide.meetings.map(String).sort();
+// At the frozen clock the citywide preview is the next two meetings, then the most recent past one.
+const CITYWIDE_CLOCK = "2026-09-28T16:00:00.000Z";
+const CITYWIDE_PREVIEW_IDS = ["20260826001", "meeting:nyc_legistar_events:22568", "20260817025"];
 
 async function served(url, controls = []) {
   const env = { ALERT_STATE: faultKv(sectionValues, new Map(controls)), NEAR_YOU_READ_MODEL_TIMEOUT_MS: 20 };
@@ -334,7 +338,7 @@ async function served(url, controls = []) {
 
 /** The served document's own deferred shells, mounted in a minimal Near You root. */
 function servedShell(page, part) {
-  const start = page.indexOf(`<section class="near-${part} near-${part}-shell"`);
+  const start = page.indexOf(`<section class="near-${part} near-${part}-shell`);
   assert.ok(start >= 0, `${part} shell is served`);
   return page.slice(start, page.indexOf("</section>", start) + "</section>".length);
 }
@@ -379,7 +383,7 @@ test("A5/A7: a partial payload applies loaded sections and keeps the failed one 
   assert.equal(nearYouDeferredPayloadHasMarkup({ schema: "cityscroll.near_you_deferred_error.v1", reason: "x" }), false);
 });
 
-test("A2/A5: Retry replaces only the failed section, and a failed retry keeps the loaded ones", async () => {
+test("A2/A5: Retry replaces only the failed section, and a failed retry keeps the loaded ones", () => withPinnedClock(CITYWIDE_CLOCK, async () => {
   const { root, parse } = await mountMidwood();
   const first = beginNearYouDeferredGeneration(root);
   applyNearYouDeferredPayload(root, await served(deferredUrl, [[sectionKey("citywide"), "reject"]]), { generation: first, parseHtml: parse });
@@ -395,7 +399,11 @@ test("A2/A5: Retry replaces only the failed section, and a failed retry keeps th
   assert.equal(root.querySelector(".near-results"), midwoodBefore, "the loaded local section is untouched");
   assert.equal(root.querySelector("[data-bag='virtual']"), virtualBefore);
   assert.deepEqual(sectionIds(root.querySelector(".near-results")), MIDWOOD_IDS);
-  assert.deepEqual(sectionIds(root.querySelector("[data-bag='citywide']")), CITYWIDE_IDS);
+  // The restored section is the bounded preview over the whole bucket's total.
+  const restored = root.querySelector("[data-bag='citywide']");
+  assert.deepEqual(sectionIds(restored), [...CITYWIDE_PREVIEW_IDS].sort());
+  assert.ok(CITYWIDE_PREVIEW_IDS.every((id) => CITYWIDE_IDS.includes(id)));
+  assert.equal(restored.querySelector("strong").textContent, String(CITYWIDE_IDS.length));
   assert.equal(root.querySelector("[data-near-section-state]"), null);
 
   // Converse: a retry that fails again leaves the explicit failure in place.
@@ -410,7 +418,7 @@ test("A2/A5: Retry replaces only the failed section, and a failed retry keeps th
   assert.equal(failedAgain.reason, "still_unavailable");
   assert.equal(again.root.querySelector("[data-bag='virtual']").getAttribute("data-near-section-state"), "unavailable");
   assert.equal(again.root.dataset.nearDeferredState, "partial");
-});
+}));
 
 test("A5: a retry overtaken by a newer place selection or a second retry never repaints", async () => {
   const { root, parse } = await mountMidwood();
