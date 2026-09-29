@@ -4,7 +4,9 @@
 Fixture mode renders the actual generated Desk document and its inline product
 stylesheet in Chromium. Production mode is a read-only data observation: it
 requires a landed commit, proves the served Pages revision contains it, and
-refuses an absent or incomplete served census.
+refuses an absent or incomplete served census. Every served request keeps its
+own edge receipt, and the served revision is read again after the census so a
+redeploy during the read cannot pass.
 """
 
 from __future__ import annotations
@@ -18,6 +20,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
@@ -28,15 +31,32 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "test" / "browser"))
 sys.path.insert(0, str(ROOT / "tools"))
 
-from browser_support import launched_chromium  # noqa: E402
 from deployed_capture_ancestor import (  # noqa: E402
+    DEFAULT_BRANCH_REF,
+    PAGE_ARTIFACT_MANIFEST,
+    CaptureAncestorError,
+    DeployPendingError,
     ServedDataMissingError,
     require_served_page_revision_contains_delivery,
+    served_page_revision,
 )
 from repository_revision import resolve_repository_revision  # noqa: E402
 
 DEFAULT_BASE = "https://cityscroll.org"
 DATA_PATH = "/data/connected_history_coverage.json"
+REPOSITORY_DATA_PATH = "site/data/connected_history_coverage.json"
+BOARD_REGISTRY_PATH = "site/data/community_board_constellation_lookup.json"
+CANONICAL_BOARD_COUNT = 59
+STAGES = ("registered", "acquired", "extractable", "admitted", "discoverable")
+STAGE_STATES = frozenset({"observed", "partial", "measured_zero", "unknown"})
+RECEIPT_HEADERS = ("Date", "CF-Ray", "CF-Cache-Status", "Age", "ETag", "Last-Modified", "Content-Type")
+USER_AGENT = "cityscroll-history-coverage-capture/1"
+PRODUCTION_RUNNER = "python3 tools/capture_connected_history_coverage.py --production --landed-commit {commit} --write-manifest"
+PRODUCTION_REQUIREMENT = (
+    "The production read refuses a non-main pin, a served revision that does not contain it, "
+    "absent served data, incomplete board enumeration, or unsupported zero-denominator scores; "
+    "it also refuses a served revision change during the read and missing or repeated edge receipts."
+)
 MANIFEST_PATH = ROOT / "docs" / "evidence" / "connected-history-coverage" / "capture-manifest.json"
 PRODUCTION_HOSTS = frozenset({"cityscroll.org", "www.cityscroll.org"})
 VIEWPORTS = (
@@ -51,8 +71,20 @@ MEASURED_INPUTS = (
 )
 
 
+class ServedRevisionChangedError(CaptureAncestorError):
+    """The served Pages revision moved between the start and end of a read."""
+
+
+class RequestReceiptError(CaptureAncestorError):
+    """A served request lacks its own edge receipt."""
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def utc_now_precise() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -74,73 +106,259 @@ def require_production_base(base: str) -> str:
     return normalized
 
 
-def verify_payload(payload: dict) -> dict:
-    if payload.get("schema") != "cityscroll.connected_history_coverage.v1":
-        raise ServedDataMissingError("served coverage has the wrong or absent schema")
-    post = payload.get("snapshots", {}).get("post_change", {})
-    boards = post.get("boards")
-    if not isinstance(boards, list) or len(boards) != 59:
-        raise ServedDataMissingError("served coverage does not enumerate 59 boards")
-    ids = [row.get("board_id") for row in boards]
-    if len(set(ids)) != 59 or ids != sorted(ids):
-        raise ServedDataMissingError("served coverage board identities are missing, duplicated, or unordered")
-    stages = ("registered", "acquired", "extractable", "admitted", "discoverable")
-    allowed = {"observed", "partial", "measured_zero", "unknown"}
-    for row in boards:
-        if set(row.get("stages", {})) != set(stages):
-            raise ServedDataMissingError(f"served coverage stages are incomplete for {row.get('board_id')}")
-        if any(row["stages"][stage].get("state") not in allowed for stage in stages):
-            raise ServedDataMissingError(f"served coverage state is invalid for {row.get('board_id')}")
-    evaluation = payload.get("evaluation", {}).get("post_change", {})
+def require_board_enumeration(boards, canonical_ids: list[str] | None = None) -> None:
+    """Refuse a census that does not enumerate every canonical board exactly once."""
+
+    if not isinstance(boards, list) or len(boards) != CANONICAL_BOARD_COUNT:
+        count = len(boards) if isinstance(boards, list) else "no"
+        raise ServedDataMissingError(
+            f"served coverage board enumeration is incomplete: {count} boards, "
+            f"expected {CANONICAL_BOARD_COUNT}"
+        )
+    ids = [row.get("board_id") if isinstance(row, dict) else None for row in boards]
+    if len(set(ids)) != CANONICAL_BOARD_COUNT or ids != sorted(ids, key=str):
+        raise ServedDataMissingError(
+            "served coverage board enumeration is incomplete: identities are missing, duplicated, or unordered"
+        )
+    if canonical_ids is not None and ids != sorted(canonical_ids):
+        missing = sorted(set(canonical_ids) - set(ids))
+        extra = sorted(set(ids) - set(canonical_ids))
+        raise ServedDataMissingError(
+            "served coverage board enumeration is incomplete: "
+            f"differs from the canonical board registry (missing {missing}, unexpected {extra})"
+        )
+
+
+def require_estimable_scores(evaluation: dict) -> None:
+    """Refuse a zero-denominator metric presented as anything but not estimable."""
+
     for name in ("precision", "recall"):
         metric = evaluation.get(name, {})
         if not isinstance(metric.get("numerator"), int) or not isinstance(metric.get("denominator"), int):
             raise ServedDataMissingError(f"served coverage {name} lacks numerator and denominator")
-        if metric.get("denominator") == 0 and metric.get("status") != "not_estimable":
-            raise ServedDataMissingError(f"served coverage {name} converts a zero denominator into a score")
+        if metric["denominator"] != 0:
+            continue
+        scored = any(isinstance(metric.get(key), (int, float)) for key in ("value", "score", "rate"))
+        if metric.get("status") != "not_estimable" or scored:
+            raise ServedDataMissingError(
+                f"served coverage {name} converts a zero denominator into a score"
+            )
+
+
+def served_absences(boards: list[dict]) -> dict:
+    """Report what the served census does not supply, board by board."""
+
+    unavailable: dict[str, list[str]] = {}
+    for row in boards:
+        for stratum in row.get("unavailable_strata") or []:
+            unavailable.setdefault(stratum, []).append(row["board_id"])
+    unknown_by_stage = {
+        stage: sorted(row["board_id"] for row in boards if row["stages"][stage]["state"] == "unknown")
+        for stage in STAGES
+    }
+    measured_zero_boards = sorted(
+        row["board_id"]
+        for row in boards
+        if all(row["stages"][stage]["state"] == "measured_zero" for stage in STAGES)
+    )
+    observations = [
+        {"kind": "unavailable_stratum", "stratum": stratum, "board_count": len(ids), "board_ids": sorted(ids)}
+        for stratum, ids in sorted(unavailable.items())
+    ]
+    observations.extend(
+        {"kind": "unknown_stage", "stage": stage, "board_count": len(ids), "board_ids": ids}
+        for stage, ids in unknown_by_stage.items()
+        if ids
+    )
+    if measured_zero_boards:
+        observations.append({
+            "kind": "measured_zero_board",
+            "board_count": len(measured_zero_boards),
+            "board_ids": measured_zero_boards,
+        })
+    return {"negative_observation_count": len(observations), "observations": observations}
+
+
+def verify_payload(payload: dict, canonical_ids: list[str] | None = None) -> dict:
+    if not isinstance(payload, dict) or payload.get("schema") != "cityscroll.connected_history_coverage.v1":
+        raise ServedDataMissingError("served coverage has the wrong or absent schema")
+    post = payload.get("snapshots", {}).get("post_change", {})
+    boards = post.get("boards")
+    require_board_enumeration(boards, canonical_ids)
+    for row in boards:
+        if set(row.get("stages", {})) != set(STAGES):
+            raise ServedDataMissingError(f"served coverage stages are incomplete for {row.get('board_id')}")
+        if any(row["stages"][stage].get("state") not in STAGE_STATES for stage in STAGES):
+            raise ServedDataMissingError(f"served coverage state is invalid for {row.get('board_id')}")
+    evaluation = payload.get("evaluation", {}).get("post_change", {})
+    require_estimable_scores(evaluation)
     if evaluation.get("example_search_triggered") is not False:
         raise ServedDataMissingError("served coverage does not preserve the no-example-search boundary")
     return {
         "board_count": len(boards),
+        "board_ids": [row["board_id"] for row in boards],
         "selection_hash": payload.get("selection_hash"),
         "unknown_stage_cells": sum(
-            1 for row in boards for stage in stages if row["stages"][stage]["state"] == "unknown"
+            1 for row in boards for stage in STAGES if row["stages"][stage]["state"] == "unknown"
         ),
         "measured_zero_stage_cells": sum(
-            1 for row in boards for stage in stages if row["stages"][stage]["state"] == "measured_zero"
+            1 for row in boards for stage in STAGES if row["stages"][stage]["state"] == "measured_zero"
         ),
         "precision": evaluation["precision"],
         "recall": evaluation["recall"],
+        "sample_denominator": evaluation.get("sample_denominator"),
+        "source_judgment": evaluation.get("source_judgment"),
+        "absences": served_absences(boards),
     }
 
 
-def fetch_production(base: str, served_revision: str) -> tuple[dict, dict]:
-    url = urllib.parse.urljoin(base.rstrip("/") + "/", DATA_PATH.lstrip("/"))
+def canonical_board_ids(cwd: Path = ROOT) -> list[str]:
+    registry = json.loads((Path(cwd) / BOARD_REGISTRY_PATH).read_text(encoding="utf-8"))
+    return sorted(registry["by_id"])
+
+
+def http_get(url: str) -> dict:
+    """Fetch one served URL without following the edge cache's stale copy."""
+
     request = urllib.request.Request(
         url,
-        headers={"Accept": "application/json", "User-Agent": "cityscroll-history-coverage-capture/1"},
+        headers={"Accept": "application/json", "Cache-Control": "no-cache", "User-Agent": USER_AGENT},
     )
     try:
         with urllib.request.urlopen(request, timeout=60) as response:
-            raw = response.read()
-            status = int(response.status)
-            headers = {key: response.headers.get(key) for key in ("Date", "ETag", "Last-Modified", "CF-Ray")}
-    except Exception as error:
-        raise ServedDataMissingError(f"served coverage unavailable at {url}: {error}") from error
+            return {"status": int(response.status), "headers": response.headers, "body": response.read()}
+    except urllib.error.HTTPError as error:
+        return {"status": int(error.code), "headers": error.headers, "body": error.read()}
+
+
+def require_served_coverage_present(url: str, response: dict) -> None:
+    """Refuse a missing census, including Pages' 200 HTML answer for an absent path."""
+
+    status = response["status"]
+    content_type = str(response["headers"].get("Content-Type") or "")
+    body = response["body"] or b""
     if status != 200:
-        raise ServedDataMissingError(f"served coverage missing at {url} (HTTP {status})")
+        raise ServedDataMissingError(f"served coverage is absent at {url}: HTTP {status}")
+    if "json" not in content_type.lower() or not body.lstrip().startswith(b"{"):
+        raise ServedDataMissingError(
+            f"served coverage is absent at {url}: the origin answered {content_type or 'an untyped body'}"
+        )
+
+
+def require_distinct_receipts(receipts: list[dict]) -> None:
+    for receipt in receipts:
+        if not receipt.get("edge_ray") or not receipt.get("observed_at") or not receipt.get("headers", {}).get("Date"):
+            raise RequestReceiptError(
+                f"served request {receipt.get('request')} lacks its own edge receipt (ray, timestamp, date)"
+            )
+    rays = [receipt["edge_ray"] for receipt in receipts]
+    if len(set(rays)) != len(rays):
+        raise RequestReceiptError("served request receipts repeat an edge ray identifier across requests")
+
+
+def repository_copy_sha256(revision: str, cwd: Path) -> str | None:
+    shown = subprocess.run(
+        ["git", "-C", str(cwd), "show", f"{revision}:{REPOSITORY_DATA_PATH}"],
+        capture_output=True,
+        check=False,
+    )
+    return sha256_bytes(shown.stdout) if shown.returncode == 0 else None
+
+
+def production_read(
+    base: str,
+    landed_commit: str,
+    *,
+    get=http_get,
+    cwd: Path = ROOT,
+    main_ref: str = DEFAULT_BRANCH_REF,
+    canonical_ids: list[str] | None = None,
+) -> dict:
+    """Read the served census once, bracketed by two served-revision reads."""
+
+    receipts: list[dict] = []
+
+    def fetch(request_name: str, path: str) -> tuple[str, dict]:
+        url = urllib.parse.urljoin(base.rstrip("/") + "/", path.lstrip("/"))
+        try:
+            response = get(url)
+        except (OSError, urllib.error.URLError) as error:
+            raise ServedDataMissingError(f"served coverage is absent at {url}: {error}") from error
+        headers = response["headers"]
+        receipts.append({
+            "request": request_name,
+            "url": url,
+            "http_status": response["status"],
+            "observed_at": utc_now_precise(),
+            "edge_ray": headers.get("CF-Ray"),
+            "sha256": sha256_bytes(response["body"] or b""),
+            "bytes": len(response["body"] or b""),
+            "headers": {key: headers.get(key) for key in RECEIPT_HEADERS if headers.get(key) is not None},
+        })
+        return url, response
+
+    def served_manifest(request_name: str):
+        def fetch_json(_url: str) -> dict:
+            url, response = fetch(request_name, PAGE_ARTIFACT_MANIFEST)
+            try:
+                manifest = json.loads((response["body"] or b"").decode("utf-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError) as error:
+                raise DeployPendingError(f"served page artifact-manifest is not JSON: {url}") from error
+            if response["status"] != 200 or not isinstance(manifest, dict):
+                raise DeployPendingError(f"served page artifact-manifest unavailable: {url} (HTTP {response['status']})")
+            return manifest
+
+        return fetch_json
+
+    required = landed_commit.lower()
+    served_revision = require_served_page_revision_contains_delivery(
+        base,
+        required,
+        cwd=cwd,
+        main_ref=main_ref,
+        fetch_json=served_manifest("served_revision_start"),
+    )
+    url, response = fetch("coverage_census", DATA_PATH)
+    require_served_coverage_present(url, response)
     try:
-        payload = json.loads(raw.decode("utf-8"))
-    except json.JSONDecodeError as error:
-        raise ServedDataMissingError("served coverage is not JSON") from error
-    observed = verify_payload(payload)
-    return observed, {
-        "url": url,
-        "http_status": status,
+        payload = json.loads(response["body"].decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ServedDataMissingError(f"served coverage body is not valid JSON at {url}") from error
+    observed = verify_payload(payload, canonical_ids)
+    served_revision_after = served_page_revision(base, fetch_json=served_manifest("served_revision_end"))
+    if served_revision_after != served_revision:
+        raise ServedRevisionChangedError(
+            f"served revision changed during the production read: {served_revision} -> {served_revision_after}"
+        )
+    require_distinct_receipts(receipts)
+    census_sha256 = sha256_bytes(response["body"])
+    repository_sha256 = repository_copy_sha256(served_revision, Path(cwd))
+    exact = required == served_revision == served_revision_after
+    return {
+        "schema": "cityscroll.connected_history_coverage_production_read.v1",
+        "evidence_class": "deployed-production-read-back",
         "observed_at": utc_now(),
+        "origin": base.rstrip("/"),
+        "required_landed_commit": required,
         "served_revision": served_revision,
-        "sha256": sha256_bytes(raw),
-        "headers": headers,
+        "served_revision_after": served_revision_after,
+        "revision_pin": {
+            "state": "exact" if exact else "descendant",
+            "required_landed_commit": required,
+            "served_revision_start": served_revision,
+            "served_revision_end": served_revision_after,
+        },
+        "served_census": {
+            "url": url,
+            "bytes": len(response["body"]),
+            "sha256": census_sha256,
+            "repository_path": REPOSITORY_DATA_PATH,
+            "repository_sha256_at_served_revision": repository_sha256,
+            "byte_identical_to_repository": repository_sha256 == census_sha256,
+            "data_vintage": payload.get("input_vintages"),
+        },
+        "request_receipts": receipts,
+        "observed": observed,
     }
 
 
@@ -228,16 +446,17 @@ def browser_measurement(browser, base: str, screenshot_dir: Path | None) -> list
 
 
 def write_manifest(receipt: dict) -> None:
+    previous = json.loads(MANIFEST_PATH.read_text(encoding="utf-8")) if MANIFEST_PATH.exists() else {}
     manifest = {
         "schema": "cityscroll.connected_history_coverage_render_manifest.v1",
         "evidence_class": "runtime_browser_measurement",
         "surface": "authenticated Desk connected-history coverage extension",
         "image_binaries_committed": False,
         "capture_policy": "Screenshot binaries remain in task scratch; this manifest retains their hashes and runtime assertions.",
-        "production_measurement": {
+        "production_measurement": previous.get("production_measurement") or {
             "state": "awaiting_landed_deploy",
-            "runner": "python3 tools/capture_connected_history_coverage.py --production --landed-commit <40-hex landed commit>",
-            "requirement": "The production read refuses a non-main pin, a served revision that does not contain it, absent served data, incomplete board enumeration, or unsupported zero-denominator scores.",
+            "runner": PRODUCTION_RUNNER.format(commit="<40-hex landed commit>"),
+            "requirement": PRODUCTION_REQUIREMENT,
         },
         "measurement_provenance": {
             "revision": receipt["capture_revision"],
@@ -261,6 +480,31 @@ def write_manifest(receipt: dict) -> None:
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
 
+def write_production_manifest(read: dict) -> None:
+    """Retain the served read beside the unchanged hermetic browser measurement."""
+
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    run_receipt = {
+        **read,
+        "repository_revision": resolve_repository_revision(ROOT),
+        "retained_measurement": {
+            "revision": manifest["measurement_provenance"]["revision"],
+            "inputs_ref": "#/measurement_provenance/inputs",
+        },
+        "image_binaries_committed": False,
+    }
+    manifest["production_measurement"] = {
+        "state": "measured",
+        "runner": PRODUCTION_RUNNER.format(commit=read["required_landed_commit"]),
+        "requirement": PRODUCTION_REQUIREMENT,
+        "run_receipt_sha256": sha256_bytes(
+            json.dumps(run_receipt, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+        ),
+        "run_receipt": run_receipt,
+    }
+    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--production", action="store_true")
@@ -274,22 +518,13 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     if args.production:
-        if args.write_manifest:
-            raise SystemExit("--write-manifest is only available for the hermetic browser measurement")
         if not args.landed_commit:
             raise SystemExit("--production requires --landed-commit")
         base = require_production_base(args.base_url)
-        served_revision = require_served_page_revision_contains_delivery(base, args.landed_commit.lower(), cwd=ROOT)
-        observed, request_receipt = fetch_production(base, served_revision)
-        print(json.dumps({
-            "schema": "cityscroll.connected_history_coverage_production_read.v1",
-            "evidence_class": "live-production-read",
-            "observed_at": utc_now(),
-            "required_landed_commit": args.landed_commit.lower(),
-            "served_revision": served_revision,
-            "request_receipts": [request_receipt],
-            "observed": observed,
-        }, indent=2, sort_keys=True))
+        read = production_read(base, args.landed_commit, canonical_ids=canonical_board_ids())
+        if args.write_manifest:
+            write_production_manifest(read)
+        print(json.dumps(read, indent=2, sort_keys=True))
         return 0
 
     html = generated_desk_html()
@@ -311,6 +546,9 @@ def main() -> int:
         if screenshot_dir is None:
             temporary_shots = tempfile.TemporaryDirectory(prefix="connected-history-coverage-shots-")
             screenshot_dir = Path(temporary_shots.name)
+        # The production read needs no browser; only the hermetic path loads Playwright.
+        from browser_support import launched_chromium
+
         try:
             with launched_chromium() as browser:
                 captures = browser_measurement(
