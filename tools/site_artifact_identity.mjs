@@ -169,15 +169,31 @@ function verifyStamp(options) {
   const manifestPath = option(options, "manifest", "_site.identity.json");
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
   const expectedIdentity = sourceIdentity(options);
+  const mismatches = [];
 
   for (const field of ["schema", "build_contract", "commit_sha", "tree_sha", "build_input_identity"]) {
     if (manifest[field] !== expectedIdentity[field]) {
-      fail(`${field} mismatch: expected ${expectedIdentity[field]}, received ${manifest[field]}`);
+      mismatches.push(`${field}: expected ${expectedIdentity[field]}, received ${manifest[field]}`);
     }
   }
-  if (JSON.stringify(manifest.lockfile) !== JSON.stringify(expectedIdentity.lockfile)) fail("lockfile identity mismatch");
-  if (JSON.stringify(manifest.tool) !== JSON.stringify(expectedIdentity.tool)) fail("tool version mismatch");
-  if (JSON.stringify(manifest.build_inputs) !== JSON.stringify(expectedIdentity.build_inputs)) fail("build inputs mismatch");
+  if (JSON.stringify(manifest.lockfile) !== JSON.stringify(expectedIdentity.lockfile)) {
+    mismatches.push(
+      `lockfile: expected ${JSON.stringify(expectedIdentity.lockfile)}, received ${JSON.stringify(manifest.lockfile)}`,
+    );
+  }
+  if (JSON.stringify(manifest.tool) !== JSON.stringify(expectedIdentity.tool)) {
+    mismatches.push(
+      `tool: expected ${JSON.stringify(expectedIdentity.tool)}, received ${JSON.stringify(manifest.tool)}`,
+    );
+  }
+  if (JSON.stringify(manifest.build_inputs) !== JSON.stringify(expectedIdentity.build_inputs)) {
+    mismatches.push(
+      `build_inputs: expected ${JSON.stringify(expectedIdentity.build_inputs)}, received ${JSON.stringify(manifest.build_inputs)}`,
+    );
+  }
+  if (mismatches.length > 0) {
+    fail(`identity field mismatch(es): ${mismatches.join("; ")}`);
+  }
   if (manifest.site?.checksum_manifest !== checksumsPath) fail("checksum manifest path mismatch");
   if (manifest.site?.checksum_manifest_sha256 !== fileSha256(checksumsPath)) fail("checksum manifest digest mismatch");
 

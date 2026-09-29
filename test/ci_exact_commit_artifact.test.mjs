@@ -16,11 +16,14 @@ for (const name of Object.keys(ISOLATED_GIT_ENV)) {
 test("shared browser artifact is exact-input cached and every consumer verifies it", () => {
   const workflow = read(".github/workflows/ci.yml");
   const consumer = read(".github/actions/use-site-artifact/action.yml");
+  const builder = read(".github/actions/build-site/action.yml");
+  const nodePin = read(".node-version").trim();
   const producer = workflow.slice(
     workflow.indexOf("  browser-pr-site:\n"),
     workflow.indexOf("  required-functional-shard:\n"),
   );
 
+  assert.match(nodePin, /^\d+\.\d+\.\d+$/);
   assert.match(producer, /actions\/cache\/restore@v4/);
   assert.match(producer, /actions\/cache\/save@v4/);
   assert.match(producer, /steps\.site-identity\.outputs\.build-input-identity/);
@@ -31,6 +34,8 @@ test("shared browser artifact is exact-input cached and every consumer verifies 
   assert.doesNotMatch(producer, /name: browser-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/);
   assert.match(producer, /_site\.sha256/);
   assert.match(producer, /_site\.identity\.json/);
+  assert.match(producer, /node-version-file: \.node-version/);
+  assert.doesNotMatch(producer, /node-version:\s*["']?22["']?\s*$/m);
 
   const consumers = workflow.match(/uses: \.\/\.github\/actions\/use-site-artifact/g) || [];
   assert.equal(consumers.length, 8);
@@ -41,8 +46,20 @@ test("shared browser artifact is exact-input cached and every consumer verifies 
   assert.match(consumer, /actions\/download-artifact@v4/);
   assert.match(consumer, /actions\/cache\/restore@v4/);
   assert.match(consumer, /site_artifact_identity\.mjs verify --commit-sha "\$GITHUB_SHA"/);
+  assert.match(consumer, /node-version-file: \.node-version/);
+  assert.match(consumer, /refusing rebuild/);
   assert.match(consumer, /Rebuild site after artifact and cache miss/);
   assert.match(consumer, /Verify site digest and exact build identity/);
+  assert.match(builder, /node-version-file: \.node-version/);
+
+  // A downloaded run artifact that fails verify must fail closed (no silent rebuild).
+  const validateStep = consumer.slice(
+    consumer.indexOf("Validate downloaded site artifact"),
+    consumer.indexOf("Restore exact-input site cache"),
+  );
+  assert.match(validateStep, /steps\.download\.outcome.*"success"/);
+  assert.match(validateStep, /exit 1/);
+  assert.doesNotMatch(validateStep, /echo "ready=false".*rebuild/i);
 });
 
 test("artifact identity verifies digest, tree, lockfile, tool, and derived build inputs", (t) => {
@@ -93,5 +110,17 @@ test("artifact identity verifies digest, tree, lockfile, tool, and derived build
     env: ISOLATED_GIT_ENV,
   });
   assert.notEqual(wrongLock.status, 0);
-  assert.match(wrongLock.stderr, /build_input_identity mismatch|lockfile identity mismatch/);
+  assert.match(wrongLock.stderr, /identity field mismatch\(es\)/);
+  assert.match(wrongLock.stderr, /build_input_identity|lockfile/);
+});
+
+test("CI workflow Node 22 jobs share the exact .node-version pin", () => {
+  const workflow = read(".github/workflows/ci.yml");
+  const node22Pins = workflow.match(/node-version:\s*["']?22["']?/g) || [];
+  assert.equal(node22Pins.length, 0, "floating node-version: 22 must not remain in CI");
+  const filePins = workflow.match(/node-version-file: \.node-version/g) || [];
+  assert.ok(filePins.length >= 6, `expected >=6 node-version-file pins, found ${filePins.length}`);
+  // The remaining explicit pin is the intentional Node 20 surface elsewhere in CI.
+  const explicit = workflow.match(/node-version:\s*["']?\d+/g) || [];
+  assert.deepEqual(explicit, ["node-version: 20"]);
 });
