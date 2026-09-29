@@ -1,0 +1,2365 @@
+{
+  "schema": "cityscroll.connected_history_release_readback.v1",
+  "runner": "node tools/check_connected_history_release.mjs --write",
+  "verifier": "node --test test/connected_history_release.test.mjs",
+  "dossier_families": [
+    "coyle",
+    "franklin-avenue",
+    "kingsbridge-armory",
+    "sixth-avenue",
+    "thirty-first-avenue",
+    "lighthouse-point"
+  ],
+  "image_binaries_committed": false,
+  "policy": "Read-backs are appended, never rewritten, so original failures stay visible. Acceptance is re-derived from each read-back's facts.",
+  "measurement_provenance": {
+    "revision": "d8e20a0a69488a7359f5c550128610ad62e983fd",
+    "inputs": [
+      {
+        "path": "site/connected_history_journeys.mjs",
+        "sha256": "fb913cc3731e200b36988f34fdb0028c101e095fe5e0595830ae4352f4dd4e87"
+      },
+      {
+        "path": "site/data/connected_history_coverage.json",
+        "sha256": "3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed"
+      },
+      {
+        "path": "site/data/connected_history_documents.json",
+        "sha256": "51c54a94466b8d2b77630c621dbaa83802355eea2a0bceb314a9f312615ba161"
+      },
+      {
+        "path": "site/data/connected_history_evaluation_cohort.json",
+        "sha256": "eac74cfa6b2ce2d999ed07fa8742ddde6d49ca3b0e4a2754b61f9be980ebc5dc"
+      },
+      {
+        "path": "site/data/connected_history_relations.json",
+        "sha256": "20883bc7a09276e37f0ec85cfe299a398e496132dcd14763f5caeff38c47d56a"
+      },
+      {
+        "path": "site/data/connected_history_roles.json",
+        "sha256": "e7edfbee41e82a40288dbe53af5c61d2f0365718238f308423920af7d5a16997"
+      },
+      {
+        "path": "site/data/connected_history_time.json",
+        "sha256": "2df8f0ebbcabf5b4ba3bb1ea87becf4252e694839bdbd5cfe92d08a602a1a889"
+      },
+      {
+        "path": "site/data/site_lifecycle/manifest.json",
+        "sha256": "35f9fa5114ada2fb7e87ec9d0a7b40f8db6db7f9429a5e72082d1e0810fafe07"
+      },
+      {
+        "path": "site/site_lifecycle_reader.mjs",
+        "sha256": "04e31da523c1681598317b090ccefd5a09b6d040a3c5a480711896cc5165f6f0"
+      },
+      {
+        "path": "tools/capture_documented_history_journeys.py",
+        "sha256": "2d82becb2525c77ad4bf901e277834b3a5e855546117b32e1aa8df0742f58028"
+      },
+      {
+        "path": "tools/check_connected_history_release.mjs",
+        "sha256": "5a0d259be65c9af3a11e6bff4286c133812d07f701d3d10cbcd6ddfecf863e6c"
+      },
+      {
+        "path": "tools/lib/connected_history_release.mjs",
+        "sha256": "f19ed8d1c4aade108ad805ede6327d51edb2956c1141d48aa6a56500872f528c"
+      },
+      {
+        "path": "warehouse/receipts/proof/site_lifecycle_population_latest.json",
+        "sha256": "a8d757c9c6b2ef32747f7258491e5f9f6df6303ac4bcfda313a72ec790d25ab3"
+      }
+    ]
+  },
+  "readbacks": [
+    {
+      "observed_at": "2026-09-29T00:41:48Z",
+      "origin": "https://cityscroll.org",
+      "evidence_class": "deployed_production_read_back",
+      "delivery": {
+        "pull_request": 2410,
+        "landed_commit": "1a875a22035fcce03d374bec731e14a22678265e",
+        "served_contains_delivery": true,
+        "ancestry_check": "git merge-base --is-ancestor 1a875a22035fcce03d374bec731e14a22678265e 1a875a22035fcce03d374bec731e14a22678265e"
+      },
+      "served": {
+        "revision": "1a875a22035fcce03d374bec731e14a22678265e",
+        "deployment_at": "2026-09-29T00:19:42.304Z"
+      },
+      "code_revision": "1a875a22035fcce03d374bec731e14a22678265e",
+      "data": {
+        "cohort": {
+          "url": "/data/connected_history_evaluation_cohort.json",
+          "http_status": 200,
+          "sha256": "eac74cfa6b2ce2d999ed07fa8742ddde6d49ca3b0e4a2754b61f9be980ebc5dc",
+          "generated_at": null,
+          "error": null
+        },
+        "documents": {
+          "url": "/data/connected_history_documents.json",
+          "http_status": 200,
+          "sha256": "51c54a94466b8d2b77630c621dbaa83802355eea2a0bceb314a9f312615ba161",
+          "generated_at": "2026-09-21T20:19:01.507Z",
+          "error": null
+        },
+        "relations": {
+          "url": "/data/connected_history_relations.json",
+          "http_status": 200,
+          "sha256": "20883bc7a09276e37f0ec85cfe299a398e496132dcd14763f5caeff38c47d56a",
+          "generated_at": "2026-09-26T00:00:00.000Z",
+          "error": null
+        },
+        "roles": {
+          "url": "/data/connected_history_roles.json",
+          "http_status": 200,
+          "sha256": "e7edfbee41e82a40288dbe53af5c61d2f0365718238f308423920af7d5a16997",
+          "generated_at": "2026-09-26T00:00:00.000Z",
+          "error": null
+        },
+        "time": {
+          "url": "/data/connected_history_time.json",
+          "http_status": 200,
+          "sha256": "2df8f0ebbcabf5b4ba3bb1ea87becf4252e694839bdbd5cfe92d08a602a1a889",
+          "generated_at": "2026-09-26T00:00:00.000Z",
+          "error": null
+        },
+        "coverage": {
+          "url": "/data/connected_history_coverage.json",
+          "http_status": 200,
+          "sha256": "3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed",
+          "generated_at": null,
+          "error": null
+        },
+        "parcel_manifest": {
+          "url": "/data/site_lifecycle/manifest.json",
+          "http_status": 200,
+          "sha256": "35f9fa5114ada2fb7e87ec9d0a7b40f8db6db7f9429a5e72082d1e0810fafe07",
+          "generated_at": null,
+          "error": null
+        },
+        "parcel_shard_0000.json": {
+          "url": "/data/site_lifecycle/0000.json",
+          "http_status": 200,
+          "sha256": "df8a1f582cd40ec40102ebc5d92a31fe41707278676ab648f6638a2f2d449181",
+          "generated_at": null,
+          "error": null
+        },
+        "parcel_population": {
+          "url": "warehouse/receipts/proof/site_lifecycle_population_latest.json",
+          "http_status": null,
+          "sha256": "a8d757c9c6b2ef32747f7258491e5f9f6df6303ac4bcfda313a72ec790d25ab3",
+          "generated_at": "2026-09-26T00:00:00.000Z",
+          "error": null
+        },
+        "parcel_shards": {
+          "url": "/data/site_lifecycle/<declared shards>",
+          "http_status": null,
+          "sha256": "11fb8e75254c910819fb82fa402b53d6cbe40bfb2167b58eee0045748b655820",
+          "generated_at": null,
+          "error": null
+        },
+        "journeys": {
+          "url": "/search/",
+          "http_status": 200,
+          "sha256": "fb27c3c5e369d7605dec3942917355ec83f0fb826105c6f4766a56d7f532a4fb",
+          "generated_at": "2026-09-29T00:42:09Z",
+          "error": null
+        }
+      },
+      "journeys": {
+        "browser": "Chromium",
+        "observed_at": "2026-09-29T00:42:09Z",
+        "served_revision": "1a875a22035fcce03d374bec731e14a22678265e",
+        "served_revision_after": "1a875a22035fcce03d374bec731e14a22678265e",
+        "captures": [
+          {
+            "case": "coyle-desktop-keyboard",
+            "family_id": "coyle",
+            "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
+            "capture_sha256": "18416e1038b983a02a5815282218d374821594364f89b59afbffd424d26307a4",
+            "runtime": {
+              "continue_destination": "https://cityscroll.org/browse/zoning/?status=active&borough=Brooklyn#land/2020K0270",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "2025-54-A",
+              "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "franklin-avenue-desktop-keyboard",
+            "family_id": "franklin-avenue",
+            "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
+            "capture_sha256": "568c0a464e73c763b099b647fa78ae7cd1527460a0a2586deeb6272a854bbfbb",
+            "runtime": {
+              "continue_destination": "https://legistar.council.nyc.gov/LegislationDetail.aspx?GUID=AA282E61-19E6-44F0-A861-F7304A3E2740&ID=6874689&Options=&Search=",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://zap-api-production.herokuapp.com/document/projectaction/sites/nycdcppfs/dcp_projectaction/ZM%20-%20Zoning%20Map%20Amendment%20_90047288D727ED11B83C001DD80696EC/230356.pdf",
+              "official_source_document_departed": false,
+              "positive_tabindex_count": 0,
+              "query": "960 Franklin Avenue",
+              "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "kingsbridge-armory-desktop-keyboard",
+            "family_id": "kingsbridge-armory",
+            "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
+            "capture_sha256": "972e637b633bb7c8a2252cd0cda0509d94decf5c1bbf7253d6e9e340af61aea7",
+            "runtime": {
+              "continue_destination": "https://zap.planning.nyc.gov/projects/2025X0262",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Kingsbridge Armory",
+              "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "sixth-avenue-desktop-keyboard",
+            "family_id": "sixth-avenue",
+            "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
+            "capture_sha256": "d6da5ac1fb2df39e9c9e5a96bf5a500a502280e82b8bb7dc2ef487deefe3e0b0",
+            "runtime": {
+              "continue_destination": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Sixth Avenue",
+              "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "thirty-first-avenue-desktop-keyboard",
+            "family_id": "thirty-first-avenue",
+            "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
+            "capture_sha256": "039d831184af9ff7257c8a47d610c6f86b949a10e9672814b7d00c7344be8bdd",
+            "runtime": {
+              "continue_destination": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "31st Avenue",
+              "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "lighthouse-point-desktop-keyboard",
+            "family_id": "lighthouse-point",
+            "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
+            "capture_sha256": "0f0aa6f3870da186de3582bcf5ad3871c606c87b186d345a190d36c1bfc450cc",
+            "runtime": {
+              "continue_destination": "https://edc.nyc/project/lighthouse-point",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://edc.nyc/project/lighthouse-point",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Lighthouse Point",
+              "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "coyle-narrow-touch",
+            "family_id": "coyle",
+            "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
+            "capture_sha256": "ad7f5a7ce0de747e80e780587429d2d1888e616a1247ae072911e632916732eb",
+            "runtime": {
+              "continue_destination": "https://cityscroll.org/browse/zoning/?status=active&borough=Brooklyn#land/2020K0270",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "2025-54-A",
+              "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "franklin-avenue-narrow-touch",
+            "family_id": "franklin-avenue",
+            "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
+            "capture_sha256": "643982eeecc6478ff809c21c0dee72a28b866362fe7f65ac26dae5f8590b077a",
+            "runtime": {
+              "continue_destination": "https://legistar.council.nyc.gov/LegislationDetail.aspx?GUID=AA282E61-19E6-44F0-A861-F7304A3E2740&ID=6874689&Options=&Search=",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://zap-api-production.herokuapp.com/document/projectaction/sites/nycdcppfs/dcp_projectaction/ZM%20-%20Zoning%20Map%20Amendment%20_90047288D727ED11B83C001DD80696EC/230356.pdf",
+              "official_source_document_departed": false,
+              "positive_tabindex_count": 0,
+              "query": "960 Franklin Avenue",
+              "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "kingsbridge-armory-narrow-touch",
+            "family_id": "kingsbridge-armory",
+            "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
+            "capture_sha256": "03e33eb8e9abdbc1d9f16ae0963372c59b6e052f5c7446eb4ec53be1e05de677",
+            "runtime": {
+              "continue_destination": "https://zap.planning.nyc.gov/projects/2025X0262",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Kingsbridge Armory",
+              "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "sixth-avenue-narrow-touch",
+            "family_id": "sixth-avenue",
+            "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
+            "capture_sha256": "831affd68c3aa84d13672d67e1a7835a4b8cbd0c6bb2a582e030d85d7d80820c",
+            "runtime": {
+              "continue_destination": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Sixth Avenue",
+              "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "thirty-first-avenue-narrow-touch",
+            "family_id": "thirty-first-avenue",
+            "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
+            "capture_sha256": "900bf8dd5917e037d6795841881d6b003f64db5de911fea76d6c7a9c673aae3f",
+            "runtime": {
+              "continue_destination": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "31st Avenue",
+              "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "lighthouse-point-narrow-touch",
+            "family_id": "lighthouse-point",
+            "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
+            "capture_sha256": "96eccdb74bab42786a0302292c2771c03f53f0ee7b67ed12342de1ac38315c4c",
+            "runtime": {
+              "continue_destination": "https://edc.nyc/project/lighthouse-point",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://edc.nyc/project/lighthouse-point",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Lighthouse Point",
+              "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "coyle-no-javascript",
+            "family_id": "coyle",
+            "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "2025-54-A",
+              "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+              "width": 1440
+            }
+          },
+          {
+            "case": "franklin-avenue-no-javascript",
+            "family_id": "franklin-avenue",
+            "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "960 Franklin Avenue",
+              "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+              "width": 1440
+            }
+          },
+          {
+            "case": "kingsbridge-armory-no-javascript",
+            "family_id": "kingsbridge-armory",
+            "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "Kingsbridge Armory",
+              "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+              "width": 1440
+            }
+          },
+          {
+            "case": "sixth-avenue-no-javascript",
+            "family_id": "sixth-avenue",
+            "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "Sixth Avenue",
+              "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+              "width": 1440
+            }
+          },
+          {
+            "case": "thirty-first-avenue-no-javascript",
+            "family_id": "thirty-first-avenue",
+            "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "31st Avenue",
+              "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+              "width": 1440
+            }
+          },
+          {
+            "case": "lighthouse-point-no-javascript",
+            "family_id": "lighthouse-point",
+            "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "Lighthouse Point",
+              "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+              "width": 1440
+            }
+          }
+        ]
+      },
+      "capabilities": [
+        {
+          "id": "frozen-evaluation-baseline",
+          "delivered_by": {
+            "alias": "c5bb5a59d87f9",
+            "pull_requests": [
+              2115
+            ]
+          },
+          "capability": "A frozen cross-board evaluation population and held-out sample make discovery quality measurable without swapping difficult subjects.",
+          "before_limitation": "No fixed denominator existed, so improvements could only be shown with attractive examples.",
+          "route": "/data/connected_history_evaluation_cohort.json",
+          "steps": [
+            "Read the served cohort.",
+            "Confirm the recorded seed, selection hash and 59-board enumeration.",
+            "Confirm no fixed dossier subject is in the held-out sample and every judgment predates tuning."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2020K0270",
+            "2025-54-A",
+            "2025X0262",
+            "2026-09-A",
+            "25DME006X",
+            "3073670011",
+            "3073670029",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point",
+            "sixth-avenue-lispenard-w14",
+            "sixth-avenue-w14-w35",
+            "sixth-avenue-watts-w59"
+          ],
+          "relation_assertion": "Held-out subjects are selected by the recorded seed per board and judged before tuning.",
+          "negative_assertion": "None of the six fixed dossier histories is counted in the held-out sample.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "boards": 59,
+              "selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
+              "selected_held_out_subjects": 98,
+              "demo_excluded_subjects": 15,
+              "judgment_counts": {
+                "insufficient_evidence": 98
+              },
+              "dossier_subjects_in_held_out_sample": 0
+            }
+          },
+          "destination": "/data/connected_history_evaluation_cohort.json",
+          "revisions": {
+            "code": "1a875a22035fcce03d374bec731e14a22678265e",
+            "data": {
+              "cohort": "eac74cfa6b2ce2d999ed07fa8742ddde6d49ca3b0e4a2754b61f9be980ebc5dc"
+            },
+            "deploy": "1a875a22035fcce03d374bec731e14a22678265e"
+          },
+          "vintage": {
+            "cohort": null
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [],
+          "realized_outcome": "delivered"
+        },
+        {
+          "id": "retained-dossier-documents",
+          "delivered_by": {
+            "alias": "ce34e91058d33",
+            "pull_requests": [
+              2151,
+              2244
+            ]
+          },
+          "capability": "Official CEQR, DOT and EDC documents named by the fixed dossier are retained with hashes and dated locators, or retained as acquisition failures.",
+          "before_limitation": "Only the original neighborhood had retained official evidence.",
+          "route": "/data/connected_history_documents.json",
+          "steps": [
+            "Read the served document observations.",
+            "Confirm every observation belongs to a fixed family and a dossier host.",
+            "Confirm retained documents carry hashes and failures carry reasons."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2025X0262",
+            "25DME006X",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "edc:project:lighthouse-point",
+            "sixth-avenue-lispenard-w14",
+            "sixth-avenue-w14-w35",
+            "sixth-avenue-watts-w59"
+          ],
+          "relation_assertion": "Each retained document carries its publisher hash and located source span.",
+          "negative_assertion": "No document outside the fixed dossier hosts is retained or substituted for a failed acquisition.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "sources": 12,
+              "retained": 4,
+              "acquisition_failures": 8,
+              "retained_source_ids": [
+                "kingsbridge-ceqr-13dme013x-page",
+                "kingsbridge-ceqr-25dme006x-details",
+                "kingsbridge-ceqr-25dme006x-findings",
+                "thirty-first-avenue-may-2026-phase-ii"
+              ],
+              "failure_reasons": {
+                "kingsbridge-zap-2025x0262": "source_span_not_found",
+                "lighthouse-point-opening-announcement": "retrieval_failure",
+                "lighthouse-point-project-page": "retrieval_failure",
+                "sixth-avenue-february-2025-cb4-cb5": "link_label_not_found_under_heading",
+                "sixth-avenue-june-2024-cb2": "link_label_not_found_under_heading",
+                "sixth-avenue-june-2026-cb2-cb4-cb5": "link_label_not_found_under_heading",
+                "thirty-first-avenue-may-june-2024": "link_label_not_found_under_heading",
+                "thirty-first-avenue-september-2023-workshop": "link_label_not_found_under_heading"
+              }
+            }
+          },
+          "destination": "/data/connected_history_documents.json",
+          "revisions": {
+            "code": "1a875a22035fcce03d374bec731e14a22678265e",
+            "data": {
+              "documents": "51c54a94466b8d2b77630c621dbaa83802355eea2a0bceb314a9f312615ba161"
+            },
+            "deploy": "1a875a22035fcce03d374bec731e14a22678265e"
+          },
+          "vintage": {
+            "documents": "2026-09-21T20:19:01.507Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [
+            "8 of 12 fixed dossier documents are retained as acquisition failures; the affected proofs stay open and no substitute source was sought."
+          ],
+          "realized_outcome": "delivered_with_recorded_limits"
+        },
+        {
+          "id": "typed-history-relations",
+          "delivered_by": {
+            "alias": "c33016345e7ed",
+            "pull_requests": [
+              2383
+            ]
+          },
+          "capability": "Typed, source-backed relations connect proposals, proceedings, corridors and components while every identity stays separate.",
+          "before_limitation": "Related applications, cases and phases could not be traversed without merging them.",
+          "route": "/data/connected_history_relations.json",
+          "steps": [
+            "Read the served relations.",
+            "Confirm each expected dossier relation is admitted.",
+            "Confirm every negative control is retained as a rejection and no identity is merged."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2020K0270",
+            "2025-54-A",
+            "2025X0262",
+            "2026-09-A",
+            "25DME006X",
+            "3073670011",
+            "3073670029",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point",
+            "sixth-avenue-lispenard-w14",
+            "sixth-avenue-w14-w35",
+            "sixth-avenue-watts-w59"
+          ],
+          "relation_assertion": "bsa:case:2025-54-A discussed_in_document board_document:brooklyn-cb-15:agenda-2026-01-27; bsa:case:2026-09-A discussed_in_document board_document:brooklyn-cb-15:minutes-2026-02-24; land:application:C230356ZMK explicitly_references land:application:C200184ZMK; land:application:C230356ZMK explicitly_references land:application:N200185ZRK; land:application:C230356ZMK explicitly_references land:application:C200186ZSK; land:application:C230356ZMK explicitly_references land:application:C200187ZSK; ceqr:13DME013X successive_proposal ceqr:08DME004X; ceqr:25DME006X successive_proposal ceqr:13DME013X; land:project:2025X0262 shares_documented_footprint parcel:2032470010; land:project:2025X0262 shares_documented_footprint parcel:2032470002; dot:corridor:sixth-avenue-lispenard-w14 corridor_segment dot:corridor:sixth-avenue; dot:corridor:sixth-avenue-w14-w35 corridor_segment dot:corridor:sixth-avenue; dot:corridor:sixth-avenue-watts-w59 corridor_segment dot:corridor:sixth-avenue; dot:phase:31st-avenue-phase-i phase_component dot:corridor:31st-avenue-vernon-51; dot:phase:31st-avenue-phase-ii phase_component dot:corridor:31st-avenue-vernon-51; edc:opening:lighthouse-point-phase-1-2025-06-05 phase_component edc:project:lighthouse-point; edc:phase:lighthouse-point-phase-2 phase_component edc:project:lighthouse-point",
+          "negative_assertion": "31st Street, Emmons Avenue, the Stapleton related-news listing, a shared applicant label, a shared board and an assumed Coyle parcel never admit a relation.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "admitted": 17,
+              "rejected": 6,
+              "admitted_per_family": {
+                "coyle": 2,
+                "franklin-avenue": 4,
+                "kingsbridge-armory": 4,
+                "sixth-avenue": 3,
+                "thirty-first-avenue": 2,
+                "lighthouse-point": 2
+              },
+              "expected_relations_present": 17,
+              "negative_controls_retained": 6,
+              "identities_merged": 0
+            }
+          },
+          "destination": "/data/connected_history_relations.json",
+          "revisions": {
+            "code": "1a875a22035fcce03d374bec731e14a22678265e",
+            "data": {
+              "relations": "20883bc7a09276e37f0ec85cfe299a398e496132dcd14763f5caeff38c47d56a"
+            },
+            "deploy": "1a875a22035fcce03d374bec731e14a22678265e"
+          },
+          "vintage": {
+            "relations": "2026-09-26T00:00:00.000Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [],
+          "realized_outcome": "delivered"
+        },
+        {
+          "id": "time-scoped-roles",
+          "delivered_by": {
+            "alias": "cb955ed14a3ed",
+            "pull_requests": [
+              2386,
+              2388,
+              2389,
+              2398
+            ]
+          },
+          "capability": "Documented participants keep source-specific roles and dates without inventing ownership or formal board positions.",
+          "before_limitation": "Participation was either absent or implied by a repeated label.",
+          "route": "/data/connected_history_roles.json",
+          "steps": [
+            "Read the served role observations.",
+            "Confirm Franklin applicant roles and the Lighthouse Point chair statement.",
+            "Confirm no formal board action or recorded ownership is admitted."
+          ],
+          "expected_native_ids": [
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point"
+          ],
+          "relation_assertion": "applicant_of for C200184ZMK and C230356ZMK; a chair statement about Lighthouse Point.",
+          "negative_assertion": "A chair quote, a DOT presentation or testimony is never a formal board action; a shared applicant spelling is never recorded ownership.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "admitted": 4,
+              "rejected": 4,
+              "applicant_subjects": [
+                "land:application:C200184ZMK",
+                "land:application:C230356ZMK"
+              ],
+              "chair_statement_role": "speaker",
+              "formal_board_actions_admitted": 0,
+              "missing_strata": [
+                "formal_board_action",
+                "recorded_owner",
+                "sponsor"
+              ]
+            }
+          },
+          "destination": "/data/connected_history_roles.json",
+          "revisions": {
+            "code": "1a875a22035fcce03d374bec731e14a22678265e",
+            "data": {
+              "roles": "e7edfbee41e82a40288dbe53af5c61d2f0365718238f308423920af7d5a16997"
+            },
+            "deploy": "1a875a22035fcce03d374bec731e14a22678265e"
+          },
+          "vintage": {
+            "roles": "2026-09-26T00:00:00.000Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [
+            "Role strata not documented by the fixed dossier remain missing: formal_board_action, recorded_owner, sponsor."
+          ],
+          "realized_outcome": "delivered_with_recorded_limits"
+        },
+        {
+          "id": "dated-history-states",
+          "delivered_by": {
+            "alias": "cf441d1ae90eb",
+            "pull_requests": [
+              2390,
+              2391
+            ]
+          },
+          "capability": "Reproducible as-of states separate planned, decided and realized events and keep component scope.",
+          "before_limitation": "A forecast, a partial opening and a preliminary measurement could read as the same kind of event.",
+          "route": "/data/connected_history_time.json",
+          "steps": [
+            "Read the served temporal artifact.",
+            "Confirm the Kingsbridge 2018 operation stays a planned forecast.",
+            "Confirm the Lighthouse Point opening does not close the project and 31st Avenue results stay preliminary."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2025X0262",
+            "25DME006X",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point"
+          ],
+          "relation_assertion": "Franklin proposal epochs, Kingsbridge proposal epochs, Lighthouse Point component status and 31st Avenue periods are comparable as-of states.",
+          "negative_assertion": "The anticipated 2018 Kingsbridge operation is never shown as an opening; a first-phase opening never closes the whole project.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "observations": 13,
+              "query_pairs": [
+                "franklin-proposal-epochs",
+                "kingsbridge-proposal-epochs",
+                "lighthouse-component-status",
+                "thirty-first-avenue-periods"
+              ],
+              "forecast_event_class": "planned",
+              "opening_closes_parent_project": false,
+              "preliminary_measurement": true,
+              "families_without_temporal_facts": [
+                "coyle",
+                "sixth-avenue"
+              ]
+            }
+          },
+          "destination": "/data/connected_history_time.json",
+          "revisions": {
+            "code": "1a875a22035fcce03d374bec731e14a22678265e",
+            "data": {
+              "time": "2df8f0ebbcabf5b4ba3bb1ea87becf4252e694839bdbd5cfe92d08a602a1a889"
+            },
+            "deploy": "1a875a22035fcce03d374bec731e14a22678265e"
+          },
+          "vintage": {
+            "time": "2026-09-26T00:00:00.000Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [
+            "No retained dated comparison exists for coyle and sixth-avenue; that outcome is reported rather than filled."
+          ],
+          "realized_outcome": "delivered_with_recorded_limits"
+        },
+        {
+          "id": "parcel-history-reader",
+          "delivered_by": {
+            "alias": "ce1c513c690f5",
+            "pull_requests": [
+              2381,
+              2384
+            ]
+          },
+          "capability": "Every admitted parcel is served through a generation-checked manifest reader.",
+          "before_limitation": "The reader loaded one shard and selected only the first parcel.",
+          "route": "/data/site_lifecycle/manifest.json",
+          "steps": [
+            "Read the served manifest.",
+            "Read every shard it declares.",
+            "Confirm one generation and that the reader traverses every declared parcel."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2020K0270",
+            "2025-54-A",
+            "2025X0262",
+            "2026-09-A",
+            "25DME006X",
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_assertion": "The manifest generation equals every shard generation and the parcel count equals the traversed parcels.",
+          "negative_assertion": "A mixed-generation shard is never read as a successful history.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "generation": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854",
+              "shards": 1,
+              "parcels": [
+                "3073670011",
+                "3073670029"
+              ],
+              "members": 8,
+              "population_status": "incomplete"
+            }
+          },
+          "destination": "/parcels/3073670011/",
+          "revisions": {
+            "code": "1a875a22035fcce03d374bec731e14a22678265e",
+            "data": {
+              "parcel_manifest": "35f9fa5114ada2fb7e87ec9d0a7b40f8db6db7f9429a5e72082d1e0810fafe07",
+              "parcel_shards": "11fb8e75254c910819fb82fa402b53d6cbe40bfb2167b58eee0045748b655820",
+              "parcel_population": "a8d757c9c6b2ef32747f7258491e5f9f6df6303ac4bcfda313a72ec790d25ab3"
+            },
+            "deploy": "1a875a22035fcce03d374bec731e14a22678265e"
+          },
+          "vintage": {
+            "parcel_manifest": null,
+            "parcel_shards": null,
+            "parcel_population": "2026-09-26T00:00:00.000Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [
+            "The parcel population receipt is incomplete; strata without a published population: coyle, franklin-avenue, lighthouse-point, sixth-avenue, thirty-first-avenue.",
+            "The scheduled parcel-history materialization has not yet been observed after deployment."
+          ],
+          "realized_outcome": "delivered_with_recorded_limits"
+        },
+        {
+          "id": "search-history-discovery",
+          "delivered_by": {
+            "alias": "cf369ad9238fe",
+            "pull_requests": [
+              2399,
+              2418
+            ]
+          },
+          "capability": "Search exposes each fixed history with dated events, official sources, a continuation and working Back navigation.",
+          "before_limitation": "A resident could not reach these histories from an address, case or project name.",
+          "route": "/search/?q=<fixed query>&source_scope=all#connected-history",
+          "steps": [
+            "Open Search with each fixed query at the desktop-keyboard and narrow-touch viewports.",
+            "Inspect and dismiss one event, open its official source, return, and follow the continuation.",
+            "Repeat with scripting disabled."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2020K0270",
+            "2025-54-A",
+            "2025X0262",
+            "2026-09-A",
+            "25DME006X",
+            "3073670011",
+            "3073670029",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point",
+            "sixth-avenue-lispenard-w14",
+            "sixth-avenue-w14-w35",
+            "sixth-avenue-watts-w59"
+          ],
+          "relation_assertion": "Each fixed query renders its own family with at least one dated event and more than one retained identity.",
+          "negative_assertion": "Internal method fields never render, and an unavailable load is never shown as an empty history.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "browser": "Chromium",
+              "passed": 18,
+              "expected": 18,
+              "families_passed": [
+                "coyle",
+                "franklin-avenue",
+                "kingsbridge-armory",
+                "sixth-avenue",
+                "thirty-first-avenue",
+                "lighthouse-point"
+              ]
+            }
+          },
+          "destination": "Official publisher source and the family continuation link",
+          "revisions": {
+            "code": "1a875a22035fcce03d374bec731e14a22678265e",
+            "data": {
+              "journeys": "fb27c3c5e369d7605dec3942917355ec83f0fb826105c6f4766a56d7f532a4fb"
+            },
+            "deploy": "1a875a22035fcce03d374bec731e14a22678265e"
+          },
+          "vintage": {
+            "journeys": "2026-09-29T00:42:09Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [],
+          "realized_outcome": "delivered"
+        },
+        {
+          "id": "board-coverage-census",
+          "delivered_by": {
+            "alias": "cea7b8f3a22f7",
+            "pull_requests": [
+              2410
+            ]
+          },
+          "capability": "An operator census reports all 59 boards by acquisition and discovery stage against the frozen population.",
+          "before_limitation": "Gaps between boards were invisible, so absence could read as inactivity.",
+          "route": "/data/connected_history_coverage.json",
+          "steps": [
+            "Read the served coverage census.",
+            "Confirm every snapshot enumerates 59 boards.",
+            "Confirm zero-denominator scores stay not estimable and the civic-activity disclaimer is present."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2020K0270",
+            "2025-54-A",
+            "2025X0262",
+            "2026-09-A",
+            "25DME006X",
+            "3073670011",
+            "3073670029",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point",
+            "sixth-avenue-lispenard-w14",
+            "sixth-avenue-w14-w35",
+            "sixth-avenue-watts-w59"
+          ],
+          "relation_assertion": "Each board row separates registry coverage, acquired documents, extractable records, admitted relations and discoverable histories.",
+          "negative_assertion": "Unknown is never measured zero, and no row claims a level of civic activity.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "snapshot_board_counts": {
+                "baseline": 59,
+                "post_change": 59
+              },
+              "precision_status": "not_estimable",
+              "recall_status": "not_estimable"
+            }
+          },
+          "destination": "/data-sources#history-coverage",
+          "revisions": {
+            "code": "1a875a22035fcce03d374bec731e14a22678265e",
+            "data": {
+              "coverage": "3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed"
+            },
+            "deploy": "1a875a22035fcce03d374bec731e14a22678265e"
+          },
+          "vintage": {
+            "coverage": null
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [
+            "Coverage reports retained acquisition and discovery stages only; it does not measure or equalize civic activity between boards and does not claim citywide completeness."
+          ],
+          "realized_outcome": "delivered_with_recorded_limits"
+        }
+      ],
+      "false_positive_audit": {
+        "judged_relations": 0,
+        "judgment_counts": {
+          "insufficient_evidence": 98
+        },
+        "contaminated_samples": 0,
+        "admitted_false_positives": [],
+        "withheld_relations": [],
+        "status": "none_found"
+      },
+      "scheduled_cycle": {
+        "release_deployed_at": "2026-09-29T00:19:42.304Z",
+        "readback_deadline": "2026-10-06T00:19:42.304Z",
+        "scheduled_runs_after_release": [],
+        "status": "open",
+        "reason": "no scheduled publication run has started since the release deployment",
+        "next_check_at": "2026-09-29T06:40:00.000Z"
+      },
+      "acceptance": {
+        "A1": "met",
+        "A2": "met",
+        "A3": "open",
+        "A4": "met",
+        "A5": "open",
+        "A6": "met"
+      }
+    },
+    {
+      "observed_at": "2026-09-29T01:37:45Z",
+      "origin": "https://cityscroll.org",
+      "evidence_class": "deployed_production_read_back",
+      "delivery": {
+        "pull_request": 2410,
+        "landed_commit": "1a875a22035fcce03d374bec731e14a22678265e",
+        "served_contains_delivery": true,
+        "ancestry_check": "git merge-base --is-ancestor 1a875a22035fcce03d374bec731e14a22678265e ba834311d39c0500d1740e499f223625b09e20f1"
+      },
+      "served": {
+        "revision": "ba834311d39c0500d1740e499f223625b09e20f1",
+        "deployment_at": "2026-09-29T01:24:37.097Z"
+      },
+      "code_revision": "d8e20a0a69488a7359f5c550128610ad62e983fd",
+      "data": {
+        "cohort": {
+          "url": "/data/connected_history_evaluation_cohort.json",
+          "http_status": 200,
+          "sha256": "eac74cfa6b2ce2d999ed07fa8742ddde6d49ca3b0e4a2754b61f9be980ebc5dc",
+          "generated_at": null,
+          "error": null
+        },
+        "documents": {
+          "url": "/data/connected_history_documents.json",
+          "http_status": 200,
+          "sha256": "51c54a94466b8d2b77630c621dbaa83802355eea2a0bceb314a9f312615ba161",
+          "generated_at": "2026-09-21T20:19:01.507Z",
+          "error": null
+        },
+        "relations": {
+          "url": "/data/connected_history_relations.json",
+          "http_status": 200,
+          "sha256": "20883bc7a09276e37f0ec85cfe299a398e496132dcd14763f5caeff38c47d56a",
+          "generated_at": "2026-09-26T00:00:00.000Z",
+          "error": null
+        },
+        "roles": {
+          "url": "/data/connected_history_roles.json",
+          "http_status": 200,
+          "sha256": "e7edfbee41e82a40288dbe53af5c61d2f0365718238f308423920af7d5a16997",
+          "generated_at": "2026-09-26T00:00:00.000Z",
+          "error": null
+        },
+        "time": {
+          "url": "/data/connected_history_time.json",
+          "http_status": 200,
+          "sha256": "2df8f0ebbcabf5b4ba3bb1ea87becf4252e694839bdbd5cfe92d08a602a1a889",
+          "generated_at": "2026-09-26T00:00:00.000Z",
+          "error": null
+        },
+        "coverage": {
+          "url": "/data/connected_history_coverage.json",
+          "http_status": 200,
+          "sha256": "3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed",
+          "generated_at": null,
+          "error": null
+        },
+        "parcel_manifest": {
+          "url": "/data/site_lifecycle/manifest.json",
+          "http_status": 200,
+          "sha256": "35f9fa5114ada2fb7e87ec9d0a7b40f8db6db7f9429a5e72082d1e0810fafe07",
+          "generated_at": null,
+          "error": null
+        },
+        "parcel_shard_0000.json": {
+          "url": "/data/site_lifecycle/0000.json",
+          "http_status": 200,
+          "sha256": "df8a1f582cd40ec40102ebc5d92a31fe41707278676ab648f6638a2f2d449181",
+          "generated_at": null,
+          "error": null
+        },
+        "parcel_population": {
+          "url": "warehouse/receipts/proof/site_lifecycle_population_latest.json",
+          "http_status": null,
+          "sha256": "a8d757c9c6b2ef32747f7258491e5f9f6df6303ac4bcfda313a72ec790d25ab3",
+          "generated_at": "2026-09-26T00:00:00.000Z",
+          "error": null
+        },
+        "parcel_shards": {
+          "url": "/data/site_lifecycle/<declared shards>",
+          "http_status": null,
+          "sha256": "11fb8e75254c910819fb82fa402b53d6cbe40bfb2167b58eee0045748b655820",
+          "generated_at": null,
+          "error": null
+        },
+        "journeys": {
+          "url": "/search/",
+          "http_status": 200,
+          "sha256": "dd75ee56ad6af9b4459640f312ad16d05528fafe3c4cf634f88583de49e79e91",
+          "generated_at": "2026-09-29T01:38:06Z",
+          "error": null
+        }
+      },
+      "journeys": {
+        "browser": "Chromium",
+        "failure_control": {
+          "case": "history-materialization-failure-positive-control",
+          "family_id": "kingsbridge-armory",
+          "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+          "assertion": "A failed retained-history load preserves the query and exposes retry plus an official source without asserting an empty history.",
+          "render_sha256": "4e2a5d2f38b2cf574599bd62d52568ecef19d74bbc4362d0f8c4e46810d359b2",
+          "induced_failure": {
+            "failed_response_count": 1,
+            "method": "browser_request_interception",
+            "path": "/data/connected_history_relations.json",
+            "response_status": 503,
+            "scope": "this browser page only; the served origin received no write",
+            "served_revision": "ba834311d39c0500d1740e499f223625b09e20f1"
+          },
+          "observed_state": "unavailable",
+          "recovery": {
+            "action": "Try again",
+            "heading": "Kingsbridge Armory proposal history",
+            "observed_state": "ready",
+            "relations_http_status": 200,
+            "route": "/search/?q=Kingsbridge%20Armory#connected-history"
+          }
+        },
+        "observed_at": "2026-09-29T01:38:06Z",
+        "served_revision": "ba834311d39c0500d1740e499f223625b09e20f1",
+        "served_revision_after": "ba834311d39c0500d1740e499f223625b09e20f1",
+        "captures": [
+          {
+            "case": "coyle-desktop-keyboard",
+            "family_id": "coyle",
+            "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
+            "capture_sha256": "4cd7d8f607a204e1fcac570c5c49dc49b886711b0402a486b291d0629b1482c3",
+            "runtime": {
+              "continue_destination": "https://cityscroll.org/browse/zoning/?status=active&borough=Brooklyn#land/2020K0270",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "2025-54-A",
+              "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "franklin-avenue-desktop-keyboard",
+            "family_id": "franklin-avenue",
+            "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
+            "capture_sha256": "ad1d8731bf0a4667275c766c93c9e6e160f1e826388b22184c9d1ec6c1e92547",
+            "runtime": {
+              "continue_destination": "https://legistar.council.nyc.gov/LegislationDetail.aspx?GUID=AA282E61-19E6-44F0-A861-F7304A3E2740&ID=6874689&Options=&Search=",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://zap-api-production.herokuapp.com/document/projectaction/sites/nycdcppfs/dcp_projectaction/ZM%20-%20Zoning%20Map%20Amendment%20_90047288D727ED11B83C001DD80696EC/230356.pdf",
+              "official_source_document_departed": false,
+              "positive_tabindex_count": 0,
+              "query": "960 Franklin Avenue",
+              "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "kingsbridge-armory-desktop-keyboard",
+            "family_id": "kingsbridge-armory",
+            "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
+            "capture_sha256": "11043154cdd27b57ae393cd8a4417dad7328397d51267e68f0af5ea1f3be298b",
+            "runtime": {
+              "continue_destination": "https://zap.planning.nyc.gov/projects/2025X0262",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Kingsbridge Armory",
+              "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "sixth-avenue-desktop-keyboard",
+            "family_id": "sixth-avenue",
+            "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
+            "capture_sha256": "057164d201cc7f7c751c875d5d01fbf5f729298bef0b816763cf4a6c02dbe98c",
+            "runtime": {
+              "continue_destination": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Sixth Avenue",
+              "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "thirty-first-avenue-desktop-keyboard",
+            "family_id": "thirty-first-avenue",
+            "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
+            "capture_sha256": "ac2071888015e4971b7e7e3985e7524b7b7688939e6c6040a4fbea8013ecb39b",
+            "runtime": {
+              "continue_destination": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "31st Avenue",
+              "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "lighthouse-point-desktop-keyboard",
+            "family_id": "lighthouse-point",
+            "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "desktop-keyboard",
+              "width": 1440
+            },
+            "interaction": "keyboard",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
+            "capture_sha256": "1845160487d012e5faeccfa1d0657057c39676b7d4d65ffe20c001f5aac1dd92",
+            "runtime": {
+              "continue_destination": "https://edc.nyc/project/lighthouse-point",
+              "continue_document_departed": true,
+              "height": 900,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://edc.nyc/project/lighthouse-point",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Lighthouse Point",
+              "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 1440
+            }
+          },
+          {
+            "case": "coyle-narrow-touch",
+            "family_id": "coyle",
+            "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
+            "capture_sha256": "6dd32977ee83fd429ad7c7fa840505e01f08a207e1224c8dafa2b6ade21d3eb0",
+            "runtime": {
+              "continue_destination": "https://cityscroll.org/browse/zoning/?status=active&borough=Brooklyn#land/2020K0270",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723030",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "2025-54-A",
+              "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "franklin-avenue-narrow-touch",
+            "family_id": "franklin-avenue",
+            "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
+            "capture_sha256": "dab5dc741f958d775cd5bee15f3df83184e7dc1a37fe0170aad4feb2c0add4d4",
+            "runtime": {
+              "continue_destination": "https://legistar.council.nyc.gov/LegislationDetail.aspx?GUID=AA282E61-19E6-44F0-A861-F7304A3E2740&ID=6874689&Options=&Search=",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://zap-api-production.herokuapp.com/document/projectaction/sites/nycdcppfs/dcp_projectaction/ZM%20-%20Zoning%20Map%20Amendment%20_90047288D727ED11B83C001DD80696EC/230356.pdf",
+              "official_source_document_departed": false,
+              "positive_tabindex_count": 0,
+              "query": "960 Franklin Avenue",
+              "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "kingsbridge-armory-narrow-touch",
+            "family_id": "kingsbridge-armory",
+            "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
+            "capture_sha256": "d34106266487ce1702c5f8af7716fd45ad2032511da4ecd87f52a8680e192726",
+            "runtime": {
+              "continue_destination": "https://zap.planning.nyc.gov/projects/2025X0262",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Kingsbridge Armory",
+              "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "sixth-avenue-narrow-touch",
+            "family_id": "sixth-avenue",
+            "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
+            "capture_sha256": "cec01f1f5b58701b481f66437200d6abfea54f21d6bb341f4a030c3be1700d6c",
+            "runtime": {
+              "continue_destination": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Sixth Avenue",
+              "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "thirty-first-avenue-narrow-touch",
+            "family_id": "thirty-first-avenue",
+            "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
+            "capture_sha256": "87ed507681aa6638100005863b64b40c2c1ae3c71ce7a93b054d38862902e733",
+            "runtime": {
+              "continue_destination": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://www.nyc.gov/html/dot/downloads/pdf/31-ave-phase-ii-steinway-st-51-st-may2026-2.pdf",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "31st Avenue",
+              "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "lighthouse-point-narrow-touch",
+            "family_id": "lighthouse-point",
+            "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+            "viewport": {
+              "height": 844,
+              "name": "narrow-touch",
+              "width": 390
+            },
+            "interaction": "touch",
+            "assertion": "Measured scope, inspection, dismissal, official-source open, Back restoration, and continuation with the submitted query retained.",
+            "render_sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
+            "capture_sha256": "c7140709baeb5bfed76242cdd3727ea91c0245d350c447afdc0a6434594c1865",
+            "runtime": {
+              "continue_destination": "https://edc.nyc/project/lighthouse-point",
+              "continue_document_departed": true,
+              "height": 844,
+              "horizontal_overflow": false,
+              "official_source_destination": "https://edc.nyc/project/lighthouse-point",
+              "official_source_document_departed": true,
+              "positive_tabindex_count": 0,
+              "query": "Lighthouse Point",
+              "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+              "source_scope": "all",
+              "width": 390
+            }
+          },
+          {
+            "case": "coyle-no-javascript",
+            "family_id": "coyle",
+            "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "2025-54-A",
+              "route": "/search/?q=2025-54-A&source_scope=all#connected-history",
+              "width": 1440
+            }
+          },
+          {
+            "case": "franklin-avenue-no-javascript",
+            "family_id": "franklin-avenue",
+            "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "960 Franklin Avenue",
+              "route": "/search/?q=960+Franklin+Avenue&source_scope=all#connected-history",
+              "width": 1440
+            }
+          },
+          {
+            "case": "kingsbridge-armory-no-javascript",
+            "family_id": "kingsbridge-armory",
+            "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "Kingsbridge Armory",
+              "route": "/search/?q=Kingsbridge+Armory&source_scope=all#connected-history",
+              "width": 1440
+            }
+          },
+          {
+            "case": "sixth-avenue-no-javascript",
+            "family_id": "sixth-avenue",
+            "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "Sixth Avenue",
+              "route": "/search/?q=Sixth+Avenue&source_scope=all#connected-history",
+              "width": 1440
+            }
+          },
+          {
+            "case": "thirty-first-avenue-no-javascript",
+            "family_id": "thirty-first-avenue",
+            "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "31st Avenue",
+              "route": "/search/?q=31st+Avenue&source_scope=all#connected-history",
+              "width": 1440
+            }
+          },
+          {
+            "case": "lighthouse-point-no-javascript",
+            "family_id": "lighthouse-point",
+            "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+            "viewport": {
+              "height": 900,
+              "name": "no-javascript",
+              "width": 1440
+            },
+            "interaction": "ordinary anchor",
+            "assertion": "With scripting disabled, the submitted query remains in the route and the fixed history keeps a real official-source destination.",
+            "render_sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55",
+            "capture_sha256": null,
+            "runtime": {
+              "height": 900,
+              "query": "Lighthouse Point",
+              "route": "/search/?q=Lighthouse+Point&source_scope=all#connected-history",
+              "width": 1440
+            }
+          }
+        ]
+      },
+      "capabilities": [
+        {
+          "id": "frozen-evaluation-baseline",
+          "delivered_by": {
+            "alias": "c5bb5a59d87f9",
+            "pull_requests": [
+              2115
+            ]
+          },
+          "capability": "A frozen cross-board evaluation population and held-out sample make discovery quality measurable without swapping difficult subjects.",
+          "before_limitation": "No fixed denominator existed, so improvements could only be shown with attractive examples.",
+          "route": "/data/connected_history_evaluation_cohort.json",
+          "steps": [
+            "Read the served cohort.",
+            "Confirm the recorded seed, selection hash and 59-board enumeration.",
+            "Confirm no fixed dossier subject is in the held-out sample and every judgment predates tuning."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2020K0270",
+            "2025-54-A",
+            "2025X0262",
+            "2026-09-A",
+            "25DME006X",
+            "3073670011",
+            "3073670029",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point",
+            "sixth-avenue-lispenard-w14",
+            "sixth-avenue-w14-w35",
+            "sixth-avenue-watts-w59"
+          ],
+          "relation_assertion": "Held-out subjects are selected by the recorded seed per board and judged before tuning.",
+          "negative_assertion": "None of the six fixed dossier histories is counted in the held-out sample.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "boards": 59,
+              "selection_hash": "b4801f21d70b05d492be7acbc9ab387bd2b9758c415719d96c73e136bfcc2013",
+              "selected_held_out_subjects": 98,
+              "demo_excluded_subjects": 15,
+              "judgment_counts": {
+                "insufficient_evidence": 98
+              },
+              "dossier_subjects_in_held_out_sample": 0
+            }
+          },
+          "destination": "/data/connected_history_evaluation_cohort.json",
+          "revisions": {
+            "code": "d8e20a0a69488a7359f5c550128610ad62e983fd",
+            "data": {
+              "cohort": "eac74cfa6b2ce2d999ed07fa8742ddde6d49ca3b0e4a2754b61f9be980ebc5dc"
+            },
+            "deploy": "ba834311d39c0500d1740e499f223625b09e20f1"
+          },
+          "vintage": {
+            "cohort": null
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [],
+          "realized_outcome": "delivered"
+        },
+        {
+          "id": "retained-dossier-documents",
+          "delivered_by": {
+            "alias": "ce34e91058d33",
+            "pull_requests": [
+              2151,
+              2244
+            ]
+          },
+          "capability": "Official CEQR, DOT and EDC documents named by the fixed dossier are retained with hashes and dated locators, or retained as acquisition failures.",
+          "before_limitation": "Only the original neighborhood had retained official evidence.",
+          "route": "/data/connected_history_documents.json",
+          "steps": [
+            "Read the served document observations.",
+            "Confirm every observation belongs to a fixed family and a dossier host.",
+            "Confirm retained documents carry hashes and failures carry reasons."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2025X0262",
+            "25DME006X",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "edc:project:lighthouse-point",
+            "sixth-avenue-lispenard-w14",
+            "sixth-avenue-w14-w35",
+            "sixth-avenue-watts-w59"
+          ],
+          "relation_assertion": "Each retained document carries its publisher hash and located source span.",
+          "negative_assertion": "No document outside the fixed dossier hosts is retained or substituted for a failed acquisition.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "sources": 12,
+              "retained": 4,
+              "acquisition_failures": 8,
+              "retained_source_ids": [
+                "kingsbridge-ceqr-13dme013x-page",
+                "kingsbridge-ceqr-25dme006x-details",
+                "kingsbridge-ceqr-25dme006x-findings",
+                "thirty-first-avenue-may-2026-phase-ii"
+              ],
+              "failure_reasons": {
+                "kingsbridge-zap-2025x0262": "source_span_not_found",
+                "lighthouse-point-opening-announcement": "retrieval_failure",
+                "lighthouse-point-project-page": "retrieval_failure",
+                "sixth-avenue-february-2025-cb4-cb5": "link_label_not_found_under_heading",
+                "sixth-avenue-june-2024-cb2": "link_label_not_found_under_heading",
+                "sixth-avenue-june-2026-cb2-cb4-cb5": "link_label_not_found_under_heading",
+                "thirty-first-avenue-may-june-2024": "link_label_not_found_under_heading",
+                "thirty-first-avenue-september-2023-workshop": "link_label_not_found_under_heading"
+              }
+            }
+          },
+          "destination": "/data/connected_history_documents.json",
+          "revisions": {
+            "code": "d8e20a0a69488a7359f5c550128610ad62e983fd",
+            "data": {
+              "documents": "51c54a94466b8d2b77630c621dbaa83802355eea2a0bceb314a9f312615ba161"
+            },
+            "deploy": "ba834311d39c0500d1740e499f223625b09e20f1"
+          },
+          "vintage": {
+            "documents": "2026-09-21T20:19:01.507Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [
+            "8 of 12 fixed dossier documents are retained as acquisition failures; the affected proofs stay open and no substitute source was sought."
+          ],
+          "realized_outcome": "delivered_with_recorded_limits"
+        },
+        {
+          "id": "typed-history-relations",
+          "delivered_by": {
+            "alias": "c33016345e7ed",
+            "pull_requests": [
+              2383
+            ]
+          },
+          "capability": "Typed, source-backed relations connect proposals, proceedings, corridors and components while every identity stays separate.",
+          "before_limitation": "Related applications, cases and phases could not be traversed without merging them.",
+          "route": "/data/connected_history_relations.json",
+          "steps": [
+            "Read the served relations.",
+            "Confirm each expected dossier relation is admitted.",
+            "Confirm every negative control is retained as a rejection and no identity is merged."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2020K0270",
+            "2025-54-A",
+            "2025X0262",
+            "2026-09-A",
+            "25DME006X",
+            "3073670011",
+            "3073670029",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point",
+            "sixth-avenue-lispenard-w14",
+            "sixth-avenue-w14-w35",
+            "sixth-avenue-watts-w59"
+          ],
+          "relation_assertion": "bsa:case:2025-54-A discussed_in_document board_document:brooklyn-cb-15:agenda-2026-01-27; bsa:case:2026-09-A discussed_in_document board_document:brooklyn-cb-15:minutes-2026-02-24; land:application:C230356ZMK explicitly_references land:application:C200184ZMK; land:application:C230356ZMK explicitly_references land:application:N200185ZRK; land:application:C230356ZMK explicitly_references land:application:C200186ZSK; land:application:C230356ZMK explicitly_references land:application:C200187ZSK; ceqr:13DME013X successive_proposal ceqr:08DME004X; ceqr:25DME006X successive_proposal ceqr:13DME013X; land:project:2025X0262 shares_documented_footprint parcel:2032470010; land:project:2025X0262 shares_documented_footprint parcel:2032470002; dot:corridor:sixth-avenue-lispenard-w14 corridor_segment dot:corridor:sixth-avenue; dot:corridor:sixth-avenue-w14-w35 corridor_segment dot:corridor:sixth-avenue; dot:corridor:sixth-avenue-watts-w59 corridor_segment dot:corridor:sixth-avenue; dot:phase:31st-avenue-phase-i phase_component dot:corridor:31st-avenue-vernon-51; dot:phase:31st-avenue-phase-ii phase_component dot:corridor:31st-avenue-vernon-51; edc:opening:lighthouse-point-phase-1-2025-06-05 phase_component edc:project:lighthouse-point; edc:phase:lighthouse-point-phase-2 phase_component edc:project:lighthouse-point",
+          "negative_assertion": "31st Street, Emmons Avenue, the Stapleton related-news listing, a shared applicant label, a shared board and an assumed Coyle parcel never admit a relation.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "admitted": 17,
+              "rejected": 6,
+              "admitted_per_family": {
+                "coyle": 2,
+                "franklin-avenue": 4,
+                "kingsbridge-armory": 4,
+                "sixth-avenue": 3,
+                "thirty-first-avenue": 2,
+                "lighthouse-point": 2
+              },
+              "expected_relations_present": 17,
+              "negative_controls_retained": 6,
+              "identities_merged": 0
+            }
+          },
+          "destination": "/data/connected_history_relations.json",
+          "revisions": {
+            "code": "d8e20a0a69488a7359f5c550128610ad62e983fd",
+            "data": {
+              "relations": "20883bc7a09276e37f0ec85cfe299a398e496132dcd14763f5caeff38c47d56a"
+            },
+            "deploy": "ba834311d39c0500d1740e499f223625b09e20f1"
+          },
+          "vintage": {
+            "relations": "2026-09-26T00:00:00.000Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [],
+          "realized_outcome": "delivered"
+        },
+        {
+          "id": "time-scoped-roles",
+          "delivered_by": {
+            "alias": "cb955ed14a3ed",
+            "pull_requests": [
+              2386,
+              2388,
+              2389,
+              2398
+            ]
+          },
+          "capability": "Documented participants keep source-specific roles and dates without inventing ownership or formal board positions.",
+          "before_limitation": "Participation was either absent or implied by a repeated label.",
+          "route": "/data/connected_history_roles.json",
+          "steps": [
+            "Read the served role observations.",
+            "Confirm Franklin applicant roles and the Lighthouse Point chair statement.",
+            "Confirm no formal board action or recorded ownership is admitted."
+          ],
+          "expected_native_ids": [
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point"
+          ],
+          "relation_assertion": "applicant_of for C200184ZMK and C230356ZMK; a chair statement about Lighthouse Point.",
+          "negative_assertion": "A chair quote, a DOT presentation or testimony is never a formal board action; a shared applicant spelling is never recorded ownership.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "admitted": 4,
+              "rejected": 4,
+              "applicant_subjects": [
+                "land:application:C200184ZMK",
+                "land:application:C230356ZMK"
+              ],
+              "chair_statement_role": "speaker",
+              "formal_board_actions_admitted": 0,
+              "missing_strata": [
+                "formal_board_action",
+                "recorded_owner",
+                "sponsor"
+              ]
+            }
+          },
+          "destination": "/data/connected_history_roles.json",
+          "revisions": {
+            "code": "d8e20a0a69488a7359f5c550128610ad62e983fd",
+            "data": {
+              "roles": "e7edfbee41e82a40288dbe53af5c61d2f0365718238f308423920af7d5a16997"
+            },
+            "deploy": "ba834311d39c0500d1740e499f223625b09e20f1"
+          },
+          "vintage": {
+            "roles": "2026-09-26T00:00:00.000Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [
+            "Role strata not documented by the fixed dossier remain missing: formal_board_action, recorded_owner, sponsor."
+          ],
+          "realized_outcome": "delivered_with_recorded_limits"
+        },
+        {
+          "id": "dated-history-states",
+          "delivered_by": {
+            "alias": "cf441d1ae90eb",
+            "pull_requests": [
+              2390,
+              2391
+            ]
+          },
+          "capability": "Reproducible as-of states separate planned, decided and realized events and keep component scope.",
+          "before_limitation": "A forecast, a partial opening and a preliminary measurement could read as the same kind of event.",
+          "route": "/data/connected_history_time.json",
+          "steps": [
+            "Read the served temporal artifact.",
+            "Confirm the Kingsbridge 2018 operation stays a planned forecast.",
+            "Confirm the Lighthouse Point opening does not close the project and 31st Avenue results stay preliminary."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2025X0262",
+            "25DME006X",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point"
+          ],
+          "relation_assertion": "Franklin proposal epochs, Kingsbridge proposal epochs, Lighthouse Point component status and 31st Avenue periods are comparable as-of states.",
+          "negative_assertion": "The anticipated 2018 Kingsbridge operation is never shown as an opening; a first-phase opening never closes the whole project.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "observations": 13,
+              "query_pairs": [
+                "franklin-proposal-epochs",
+                "kingsbridge-proposal-epochs",
+                "lighthouse-component-status",
+                "thirty-first-avenue-periods"
+              ],
+              "forecast_event_class": "planned",
+              "opening_closes_parent_project": false,
+              "preliminary_measurement": true,
+              "families_without_temporal_facts": [
+                "coyle",
+                "sixth-avenue"
+              ]
+            }
+          },
+          "destination": "/data/connected_history_time.json",
+          "revisions": {
+            "code": "d8e20a0a69488a7359f5c550128610ad62e983fd",
+            "data": {
+              "time": "2df8f0ebbcabf5b4ba3bb1ea87becf4252e694839bdbd5cfe92d08a602a1a889"
+            },
+            "deploy": "ba834311d39c0500d1740e499f223625b09e20f1"
+          },
+          "vintage": {
+            "time": "2026-09-26T00:00:00.000Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [
+            "No retained dated comparison exists for coyle and sixth-avenue; that outcome is reported rather than filled."
+          ],
+          "realized_outcome": "delivered_with_recorded_limits"
+        },
+        {
+          "id": "parcel-history-reader",
+          "delivered_by": {
+            "alias": "ce1c513c690f5",
+            "pull_requests": [
+              2381,
+              2384
+            ]
+          },
+          "capability": "Every admitted parcel is served through a generation-checked manifest reader.",
+          "before_limitation": "The reader loaded one shard and selected only the first parcel.",
+          "route": "/data/site_lifecycle/manifest.json",
+          "steps": [
+            "Read the served manifest.",
+            "Read every shard it declares.",
+            "Confirm one generation and that the reader traverses every declared parcel."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2020K0270",
+            "2025-54-A",
+            "2025X0262",
+            "2026-09-A",
+            "25DME006X",
+            "3073670011",
+            "3073670029"
+          ],
+          "relation_assertion": "The manifest generation equals every shard generation and the parcel count equals the traversed parcels.",
+          "negative_assertion": "A mixed-generation shard is never read as a successful history.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "generation": "182c096174874ed6a8bdf5f1b5ca77765d162849625ad1ef01c3237f2787c854",
+              "shards": 1,
+              "parcels": [
+                "3073670011",
+                "3073670029"
+              ],
+              "members": 8,
+              "population_status": "incomplete"
+            }
+          },
+          "destination": "/parcels/3073670011/",
+          "revisions": {
+            "code": "d8e20a0a69488a7359f5c550128610ad62e983fd",
+            "data": {
+              "parcel_manifest": "35f9fa5114ada2fb7e87ec9d0a7b40f8db6db7f9429a5e72082d1e0810fafe07",
+              "parcel_shards": "11fb8e75254c910819fb82fa402b53d6cbe40bfb2167b58eee0045748b655820",
+              "parcel_population": "a8d757c9c6b2ef32747f7258491e5f9f6df6303ac4bcfda313a72ec790d25ab3"
+            },
+            "deploy": "ba834311d39c0500d1740e499f223625b09e20f1"
+          },
+          "vintage": {
+            "parcel_manifest": null,
+            "parcel_shards": null,
+            "parcel_population": "2026-09-26T00:00:00.000Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [
+            "The parcel population receipt is incomplete; strata without a published population: coyle, franklin-avenue, lighthouse-point, sixth-avenue, thirty-first-avenue.",
+            "The scheduled parcel-history materialization has not yet been observed after deployment."
+          ],
+          "realized_outcome": "delivered_with_recorded_limits"
+        },
+        {
+          "id": "search-history-discovery",
+          "delivered_by": {
+            "alias": "cf369ad9238fe",
+            "pull_requests": [
+              2399,
+              2418
+            ]
+          },
+          "capability": "Search exposes each fixed history with dated events, official sources, a continuation and working Back navigation.",
+          "before_limitation": "A resident could not reach these histories from an address, case or project name.",
+          "route": "/search/?q=<fixed query>&source_scope=all#connected-history",
+          "steps": [
+            "Open Search with each fixed query at the desktop-keyboard and narrow-touch viewports.",
+            "Inspect and dismiss one event, open its official source, return, and follow the continuation.",
+            "Repeat with scripting disabled."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2020K0270",
+            "2025-54-A",
+            "2025X0262",
+            "2026-09-A",
+            "25DME006X",
+            "3073670011",
+            "3073670029",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point",
+            "sixth-avenue-lispenard-w14",
+            "sixth-avenue-w14-w35",
+            "sixth-avenue-watts-w59"
+          ],
+          "relation_assertion": "Each fixed query renders its own family with at least one dated event and more than one retained identity.",
+          "negative_assertion": "Internal method fields never render, and an unavailable load is never shown as an empty history.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "browser": "Chromium",
+              "passed": 18,
+              "expected": 18,
+              "families_passed": [
+                "coyle",
+                "franklin-avenue",
+                "kingsbridge-armory",
+                "sixth-avenue",
+                "thirty-first-avenue",
+                "lighthouse-point"
+              ]
+            }
+          },
+          "destination": "Official publisher source and the family continuation link",
+          "revisions": {
+            "code": "d8e20a0a69488a7359f5c550128610ad62e983fd",
+            "data": {
+              "journeys": "dd75ee56ad6af9b4459640f312ad16d05528fafe3c4cf634f88583de49e79e91"
+            },
+            "deploy": "ba834311d39c0500d1740e499f223625b09e20f1"
+          },
+          "vintage": {
+            "journeys": "2026-09-29T01:38:06Z"
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [],
+          "realized_outcome": "delivered"
+        },
+        {
+          "id": "board-coverage-census",
+          "delivered_by": {
+            "alias": "cea7b8f3a22f7",
+            "pull_requests": [
+              2410
+            ]
+          },
+          "capability": "An operator census reports all 59 boards by acquisition and discovery stage against the frozen population.",
+          "before_limitation": "Gaps between boards were invisible, so absence could read as inactivity.",
+          "route": "/data/connected_history_coverage.json",
+          "steps": [
+            "Read the served coverage census.",
+            "Confirm every snapshot enumerates 59 boards.",
+            "Confirm zero-denominator scores stay not estimable and the civic-activity disclaimer is present."
+          ],
+          "expected_native_ids": [
+            "08DME004X",
+            "13DME013X",
+            "2020K0270",
+            "2025-54-A",
+            "2025X0262",
+            "2026-09-A",
+            "25DME006X",
+            "3073670011",
+            "3073670029",
+            "31st-avenue-phase-i",
+            "31st-avenue-phase-ii",
+            "C200184ZMK",
+            "C200186ZSK",
+            "C200187ZSK",
+            "C230356ZMK",
+            "N200185ZRK",
+            "edc:project:lighthouse-point",
+            "sixth-avenue-lispenard-w14",
+            "sixth-avenue-w14-w35",
+            "sixth-avenue-watts-w59"
+          ],
+          "relation_assertion": "Each board row separates registry coverage, acquired documents, extractable records, admitted relations and discoverable histories.",
+          "negative_assertion": "Unknown is never measured zero, and no row claims a level of civic activity.",
+          "observed": {
+            "status": "passed",
+            "failures": [],
+            "result": {
+              "snapshot_board_counts": {
+                "baseline": 59,
+                "post_change": 59
+              },
+              "precision_status": "not_estimable",
+              "recall_status": "not_estimable"
+            }
+          },
+          "destination": "/data-sources#history-coverage",
+          "revisions": {
+            "code": "d8e20a0a69488a7359f5c550128610ad62e983fd",
+            "data": {
+              "coverage": "3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed"
+            },
+            "deploy": "ba834311d39c0500d1740e499f223625b09e20f1"
+          },
+          "vintage": {
+            "coverage": null
+          },
+          "evidence_class": "deployed_production_read_back",
+          "unresolved_limits": [
+            "Coverage reports retained acquisition and discovery stages only; it does not measure or equalize civic activity between boards and does not claim citywide completeness."
+          ],
+          "realized_outcome": "delivered_with_recorded_limits"
+        }
+      ],
+      "false_positive_audit": {
+        "judged_relations": 0,
+        "judgment_counts": {
+          "insufficient_evidence": 98
+        },
+        "contaminated_samples": 0,
+        "admitted_false_positives": [],
+        "withheld_relations": [],
+        "status": "none_found"
+      },
+      "scheduled_cycle": {
+        "release_deployed_at": "2026-09-29T00:19:42.304Z",
+        "readback_deadline": "2026-10-06T00:19:42.304Z",
+        "scheduled_runs_after_release": [],
+        "status": "open",
+        "reason": "no scheduled publication run has started since the release deployment",
+        "next_check_at": "2026-09-29T06:40:00.000Z"
+      },
+      "acceptance": {
+        "A1": "met",
+        "A2": "met",
+        "A3": "open",
+        "A4": "met",
+        "A5": "open",
+        "A6": "met"
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/connected-history-release-readback",
+  "status": "implemented",
+  "fingerprint": "connected-history-release-readback.v1",
+  "updated_at": "2026-09-28T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "connected-history-release-contract",
+      "path": "tools/lib/connected_history_release.mjs"
+    },
+    {
+      "id": "connected-history-release-runner",
+      "path": "tools/check_connected_history_release.mjs"
+    },
+    {
+      "id": "connected-history-release-readback",
+      "path": "docs/evidence/connected-history-release/release-readback.json"
+    },
+    {
+      "id": "connected-history-release-tests",
+      "path": "test/connected_history_release.test.mjs"
+    }
+  ]
+}
