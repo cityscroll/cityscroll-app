@@ -14,13 +14,19 @@ import {
 } from "../site/geography_navigation_capability.mjs";
 import {
   BOUNDARIES_AT_LOCATION_HEADING,
+  GEOGRAPHY_ENTRY_ADOPTION_FAILURE,
   GEOGRAPHY_ENTRY_RECOVERY,
+  GEOGRAPHY_ENTRY_RECOVERY_ACTIONS,
   GEOGRAPHY_ENTRY_RECOVERY_COPY,
   GEOGRAPHY_ENTRY_SOURCES,
   RESIDENT_GEOGRAPHY_ENTRY_SCHEMA,
+  geographyEntryDestinationSurface,
   geographyEntryPayloadLeaksEphemeral,
   geographyEntryPublicProjection,
+  geographyEntryRecoveryActions,
   geographyEntryRecoveryCopy,
+  geographyEntryRecoveryResult,
+  geographyEntrySelectionState,
   geographyEntryUnavailableApiResult,
   geographyPlaceAliasIndexFromGazetteer,
   matchGeographyPlaceLabels,
@@ -52,8 +58,19 @@ import {
 } from "../site/civic_geography.mjs";
 import {
   GEOGRAPHY_NAVIGATION_EPHEMERAL_KEYS,
+  geographyNavigationUrlWithFilters,
+  parseGeographyNavigationState,
   serializeGeographyNavigationState,
+  writeGeographyNavigationHistory,
 } from "../site/geography_navigation_state.mjs";
+import {
+  GEOGRAPHY_SHELL_BROWSE_ALL_LABEL,
+  GEOGRAPHY_SHELL_BROWSE_ALL_ROUTE,
+  GEOGRAPHY_SHELL_ENTER_ADDRESS_LABEL,
+  GEOGRAPHY_SHELL_ENTRY_RETRY_LABEL,
+  geographyShellEntryRecoveryHtml,
+} from "../site/geography_navigation_shell.mjs";
+import { rememberDocumentRouteScroll } from "../site/document_route_scroll.mjs";
 
 const ROOT = process.cwd();
 const MODULE_SOURCE = readFileSync(join(ROOT, "site/geography_navigation_entry.mjs"), "utf8");
@@ -224,11 +241,10 @@ test("A5: geolocation recovery reasons stay distinct and plain", () => {
     assert.match(message, /choose an area from the list/i);
   }
 
-  // Gesture gate: map island still requests geolocation only inside the click handler.
-  assert.match(MAP_SOURCE, /function wireGeolocation\(/);
-  assert.match(MAP_SOURCE, /addEventListener\("click"/);
-  assert.match(MAP_SOURCE, /navigator\.geolocation\.getCurrentPosition/);
+  // Gesture gate: the map island requests location only from the button's
+  // click handler (observed at runtime in test/functional/32_near_you_location.py).
   const start = MAP_SOURCE.indexOf("function wireGeolocation(");
+  assert.ok(start >= 0);
   const bodyStart = MAP_SOURCE.indexOf("{", start);
   let depth = 0;
   let end = bodyStart;
@@ -237,9 +253,15 @@ test("A5: geolocation recovery reasons stay distinct and plain", () => {
     if (MAP_SOURCE[end] === "}" && --depth === 0) break;
   }
   const wireBody = MAP_SOURCE.slice(start, end + 1);
-  assert.match(wireBody, /addEventListener\("click"/);
-  assert.match(wireBody, /getCurrentPosition/);
-  assert.ok(wireBody.indexOf("addEventListener(\"click\"") < wireBody.indexOf("getCurrentPosition"));
+  const handler = wireBody.indexOf('button.addEventListener("click", () => {');
+  assert.ok(handler >= 0);
+  assert.ok(wireBody.indexOf("getCurrentPosition") > handler);
+  assert.equal((MAP_SOURCE.match(/getCurrentPosition/g) || []).length, 1);
+  // Retry repeats the request only by pressing the same button.
+  assert.match(wireBody, /const retry = \(\) => button\.click\(\);/);
+  assert.ok(wireBody.indexOf("button.hidden = false") > wireBody.lastIndexOf("getCurrentPosition"));
+  // The existing low-accuracy request, 10-second timeout and cached-position window.
+  assert.match(wireBody, /\{ enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 \}/);
 });
 
 test("A6: raw coordinates and address query text never persist, serialize, or report", () => {
@@ -294,6 +316,137 @@ test("A6: raw coordinates and address query text never persist, serialize, or re
   assert.equal(failed.ok, false);
   assert.doesNotMatch(JSON.stringify(failed), /1508 Sheepshead Bay Road/);
   assert.doesNotMatch(JSON.stringify(geographyEntryPublicProjection(failed)), /1508|provider down/);
+});
+
+test("entry action: search and location open Records; a map click keeps the Map and its drawer", () => {
+  assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.ADDRESS), "records");
+  assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.PLACE_LABEL), "records");
+  assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION), "records");
+  assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.MAP_CLICK), "map");
+  assert.equal(geographyEntryDestinationSurface(GEOGRAPHY_ENTRY_SOURCES.POINT), "map");
+  assert.equal(geographyEntryDestinationSurface(undefined), "map");
+
+  // Current state from a shared comparison URL with filters.
+  const current = parseGeographyNavigationState(
+    "?geo=nta2020%3ABK0101&compare=council_district&surface=map&drawer=closed&lens=land",
+  );
+  const [lon, lat] = [-73.9235, 40.7644];
+  const located = resolveGeographyEntryFromGeolocation(lon, lat, { layerData: LAYER_DATA });
+  assert.equal(located.ok, true);
+  const records = geographyEntrySelectionState(current, located);
+  assert.equal(records.surface, "records");
+  assert.equal(records.drawer, null);
+  assert.equal(records.focus, null);
+  assert.equal(records.geo, "nta2020:QN0103");
+  assert.equal(records.compare, "council_district", "comparison layer is untouched");
+  assert.equal(records.lens, "land", "category is untouched");
+
+  const clicked = resolveGeographyEntryFromMapClick(lon, lat, { layerData: LAYER_DATA });
+  const map = geographyEntrySelectionState(current, clicked);
+  assert.equal(map.surface, "map");
+  assert.equal(map.drawer, "open");
+  assert.equal(map.focus, clicked.selection.key);
+  assert.equal(map.compare, "council_district");
+
+  const url = new URL(geographyNavigationUrlWithFilters(records, { base: "https://cityscroll.org/near-you/" }));
+  assert.equal(url.searchParams.get("surface"), "records");
+  assert.equal(url.searchParams.get("geo"), "nta2020:QN0103");
+  assert.equal(url.searchParams.has("drawer"), false);
+  // A failed entry has no destination state.
+  assert.equal(geographyEntrySelectionState(current, resolveGeographyEntryFromGeolocationError({ code: 1 })), null);
+});
+
+test("entry recovery: at most two working next steps, Retry only when trying again can help", () => {
+  const { RETRY, ENTER_ADDRESS, BROWSE_ALL } = GEOGRAPHY_ENTRY_RECOVERY_ACTIONS;
+  const plan = (reason, options) => [...geographyEntryRecoveryActions(reason, options)];
+  const location = { source: GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION };
+  const typed = { source: GEOGRAPHY_ENTRY_SOURCES.ADDRESS };
+  for (const reason of [
+    GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_DENIED,
+    GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_UNAVAILABLE,
+    GEOGRAPHY_ENTRY_RECOVERY.OUTSIDE_COVERED_LAND,
+  ]) {
+    assert.deepEqual(plan(reason, location), [ENTER_ADDRESS, BROWSE_ALL], reason);
+  }
+  assert.deepEqual(plan(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_TIMEOUT, location), [RETRY, ENTER_ADDRESS]);
+  assert.deepEqual(plan(GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE, location), [RETRY, ENTER_ADDRESS]);
+  assert.deepEqual(plan(GEOGRAPHY_ENTRY_ADOPTION_FAILURE, location), [RETRY, ENTER_ADDRESS]);
+  // A typed search keeps its text in the input, so its second step is every NYC record.
+  assert.deepEqual(plan(GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE, typed), [RETRY, BROWSE_ALL]);
+  assert.deepEqual(plan(GEOGRAPHY_ENTRY_ADOPTION_FAILURE, typed), [RETRY, BROWSE_ALL]);
+  for (const reason of [
+    GEOGRAPHY_ENTRY_RECOVERY.NO_RESULT,
+    GEOGRAPHY_ENTRY_RECOVERY.AMBIGUOUS_ADDRESS,
+    GEOGRAPHY_ENTRY_RECOVERY.PARCEL_GEOGRAPHY_UNAVAILABLE,
+  ]) {
+    assert.deepEqual(plan(reason, typed), [ENTER_ADDRESS, BROWSE_ALL], reason);
+  }
+  // Without a retry path or an address field the plan never offers a dead control.
+  assert.deepEqual(plan(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_TIMEOUT, { ...location, canRetry: false }), [ENTER_ADDRESS, BROWSE_ALL]);
+  assert.deepEqual(plan(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_DENIED, { ...location, hasAddressInput: false }), [BROWSE_ALL]);
+  assert.deepEqual(plan(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_TIMEOUT, { ...location, hasAddressInput: false }), [RETRY, BROWSE_ALL]);
+  for (const reason of [...Object.values(GEOGRAPHY_ENTRY_RECOVERY), GEOGRAPHY_ENTRY_ADOPTION_FAILURE]) {
+    for (const options of [location, typed, { hasAddressInput: false }, { canRetry: false }]) {
+      const actions = plan(reason, options);
+      assert.ok(actions.length >= 1 && actions.length <= 2, `${reason} ${JSON.stringify(options)}`);
+      assert.equal(new Set(actions).size, actions.length);
+    }
+  }
+
+  // The shell renders every planned action: buttons for in-page steps, a link for Browse.
+  const html = geographyShellEntryRecoveryHtml(Object.values(GEOGRAPHY_ENTRY_RECOVERY_ACTIONS));
+  assert.match(html, /^<div class="near-place-actions near-entry-recovery" role="group" aria-label="[^"]+" data-near-entry-recovery>/);
+  assert.ok(html.includes(`<button type="button" data-near-entry-recovery-action="${RETRY}">${GEOGRAPHY_SHELL_ENTRY_RETRY_LABEL}</button>`));
+  assert.ok(html.includes(`<button type="button" data-near-entry-recovery-action="${ENTER_ADDRESS}">${GEOGRAPHY_SHELL_ENTER_ADDRESS_LABEL}</button>`));
+  assert.ok(html.includes(`<a href="${GEOGRAPHY_SHELL_BROWSE_ALL_ROUTE}" data-near-entry-recovery-action="${BROWSE_ALL}">${GEOGRAPHY_SHELL_BROWSE_ALL_LABEL}</a>`));
+  assert.equal(GEOGRAPHY_SHELL_ENTER_ADDRESS_LABEL, "Enter an address");
+  assert.equal(GEOGRAPHY_SHELL_BROWSE_ALL_LABEL, "Browse all NYC records");
+  assert.equal(geographyShellEntryRecoveryHtml([]), "");
+  assert.equal(geographyShellEntryRecoveryHtml(["unknown"]), "");
+  assert.equal(
+    geographyEntryRecoveryResult(GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE, { source: GEOGRAPHY_ENTRY_SOURCES.ADDRESS }).source,
+    GEOGRAPHY_ENTRY_SOURCES.ADDRESS,
+  );
+});
+
+test("entry no-leak: the location an entry resolves never reaches its URL, history, storage or analytics", () => {
+  const [lon, lat] = [-73.9235, 40.7644];
+  const needles = [String(lon), String(lat), "73.9235", "40.7644"];
+  const leaks = (text) => needles.filter((needle) => String(text).includes(needle));
+  // Positive control: the checker catches a coordinate in any of these payloads.
+  assert.deepEqual(leaks(`?lat=${lat}&lon=${lon}`).length > 0, true);
+
+  const entry = resolveGeographyEntryFromGeolocation(lon, lat, { layerData: LAYER_DATA });
+  const state = geographyEntrySelectionState(parseGeographyNavigationState(""), entry);
+  const url = geographyNavigationUrlWithFilters(state, { base: "https://cityscroll.org/near-you/" });
+  assert.deepEqual(leaks(url), []);
+
+  const pushed = [];
+  const historyLike = { pushState: (data, _title, href) => pushed.push({ data, href }) };
+  assert.equal(writeGeographyNavigationHistory(historyLike, new URL(url), state), true);
+  assert.equal(pushed.length, 1);
+  assert.deepEqual(leaks(JSON.stringify(pushed)), []);
+  assert.equal(geographyEntryPayloadLeaksEphemeral(pushed[0].data), false);
+
+  const analytics = geographyEntryPublicProjection(entry);
+  assert.deepEqual(leaks(JSON.stringify(analytics)), []);
+  assert.equal(analytics.selected_key, "geography:nta2020:QN0103");
+
+  const stored = new Map();
+  const win = {
+    location: new URL(url),
+    scrollX: 0,
+    scrollY: 812,
+    sessionStorage: { setItem: (key, value) => stored.set(key, value) },
+  };
+  assert.equal(rememberDocumentRouteScroll(win, {
+    focus: JSON.stringify({ record: "meeting:1", control: ".near-record-full-record" }),
+  }), true);
+  assert.deepEqual(leaks(JSON.stringify([...stored])), []);
+  // A failed entry keeps nothing but its reason.
+  const failed = geographyEntryPublicProjection(resolveGeographyEntryFromPoint(0, 0, { layerData: LAYER_DATA }));
+  assert.equal(failed.recovery_reason, GEOGRAPHY_ENTRY_RECOVERY.OUTSIDE_COVERED_LAND);
+  assert.deepEqual(leaks(JSON.stringify(failed)), []);
 });
 
 test("A7: boundary points retain multiple matches; special-use NTAs keep subtype language", () => {

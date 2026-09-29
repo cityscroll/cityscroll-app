@@ -20,8 +20,10 @@ import {
 import { bindNearYouRecordInspection } from "../near_you_record_inspection.mjs";
 import {
   bindDocumentRouteScroll,
+  isDocumentHistoryTraversal,
   rememberDocumentRouteScroll,
   restoreDocumentRouteScroll,
+  takeDocumentRouteScrollEntry,
 } from "../document_route_scroll.mjs";
 import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
 import {
@@ -47,11 +49,19 @@ import {
   GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM,
   aliasesByNtaIdFromGazetteer,
   geographyShellAreasListHtml,
+  geographyShellEntryRecoveryHtml,
   navigationDirectoryFromLayerDoc,
 } from "../geography_navigation_shell.mjs";
 import neighborhoodGazetteer from "../data/neighborhood_gazetteer.json" with { type: "json" };
 import { GEOGRAPHY_NAVIGATION_LAYER_TYPES } from "../geography_navigation_capability.mjs";
 import {
+  GEOGRAPHY_ENTRY_ADOPTION_FAILURE,
+  GEOGRAPHY_ENTRY_RECOVERY,
+  GEOGRAPHY_ENTRY_RECOVERY_ACTIONS,
+  GEOGRAPHY_ENTRY_SOURCES,
+  geographyEntryRecoveryActions,
+  geographyEntryRecoveryResult,
+  geographyEntrySelectionState,
   geographyEntryUnavailableApiResult,
   resolveGeographyEntryFromGeolocation,
   resolveGeographyEntryFromGeolocationError,
@@ -489,6 +499,64 @@ function geographyEntryStatusMessage(entry) {
   return entry.recovery?.message || copy("messageLocationUnmatched");
 }
 
+/**
+ * An entry action (typed search, location, map click) claims the document
+ * adoption generation, so it supersedes an adoption still in flight and is
+ * itself superseded by any later action or navigation. A superseded action
+ * never changes the page or its status.
+ */
+function beginGeographyEntry() {
+  clearGeographyEntryRecovery();
+  return ++documentAdoptionGeneration;
+}
+
+function isGeographyEntryCurrent(generation) {
+  return generation === documentAdoptionGeneration;
+}
+
+function clearGeographyEntryRecovery() {
+  for (const node of root?.querySelectorAll("[data-near-entry-recovery]") || []) node.remove();
+}
+
+function focusGeographyEntryInput() {
+  const input = root?.querySelector("#near-geo-search-input");
+  if (!input) return;
+  for (let disclosure = input.closest("details"); disclosure; disclosure = disclosure.parentElement?.closest("details")) {
+    disclosure.open = true;
+  }
+  input.focus();
+  input.select?.();
+}
+
+/** Status plus at most two working next steps beside the entry controls. */
+function showGeographyEntryFailure(entry, { reason = entry?.recovery?.reason, message = null, retry = null } = {}) {
+  status(message || geographyEntryStatusMessage(entry));
+  clearGeographyEntryRecovery();
+  const statusNode = root?.querySelector("[data-map-status]");
+  if (!statusNode) return;
+  const actions = geographyEntryRecoveryActions(reason, {
+    source: entry?.source || null,
+    hasAddressInput: Boolean(root.querySelector("#near-geo-search-input")),
+    canRetry: typeof retry === "function",
+  });
+  statusNode.insertAdjacentHTML("afterend", geographyShellEntryRecoveryHtml(actions));
+  const group = statusNode.nextElementSibling;
+  if (!group?.matches("[data-near-entry-recovery]")) return;
+  for (const control of group.querySelectorAll("[data-near-entry-recovery-action]")) {
+    const action = control.dataset.nearEntryRecoveryAction;
+    // Browse all NYC records is an ordinary link; only the in-page steps bind.
+    if (action === GEOGRAPHY_ENTRY_RECOVERY_ACTIONS.BROWSE_ALL) continue;
+    control.addEventListener("click", () => {
+      if (action === GEOGRAPHY_ENTRY_RECOVERY_ACTIONS.RETRY) {
+        clearGeographyEntryRecovery();
+        void retry();
+      } else if (action === GEOGRAPHY_ENTRY_RECOVERY_ACTIONS.ENTER_ADDRESS) {
+        focusGeographyEntryInput();
+      }
+    });
+  }
+}
+
 function geographySelectionHref(state) {
   // The default local shell is also served at `/`, but query-bearing root
   // requests can fall through to the Pages topic document. Always move a
@@ -501,29 +569,32 @@ function geographySelectionHref(state) {
   return geographyNavigationUrlWithFilters(state, {base});
 }
 
-async function adoptGeographyEntrySelection(entry, { ephemeralPoint = null } = {}) {
+async function adoptGeographyEntrySelection(entry, {
+  ephemeralPoint = null,
+  generation = documentAdoptionGeneration,
+  retry = null,
+} = {}) {
+  if (!isGeographyEntryCurrent(generation)) return false;
   if (!entry?.ok || !entry.selection) {
-    status(geographyEntryStatusMessage(entry));
+    showGeographyEntryFailure(entry, { retry });
     return false;
   }
-  const nextState = {
-    ...parseGeographyNavigationState(location.search),
-    ok: true,
-    geo: entry.selection.geo,
-    key: entry.selection.key,
-    type: entry.selection.type,
-    id: entry.selection.id,
-    surface: GEOGRAPHY_NAVIGATION_SURFACE_MAP,
-    drawer: GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
-    focus: entry.selection.key,
-  };
+  // Search and location open the place's Records; a map click keeps the Map.
+  const nextState = geographyEntrySelectionState(parseGeographyNavigationState(location.search), entry);
+  const adoption = adoptDocument(geographySelectionHref(nextState));
+  const adoptionGeneration = documentAdoptionGeneration;
   try {
-    if (!await adoptDocument(geographySelectionHref(nextState))) {
-      throw new Error("geography-entry-adoption-stale");
-    }
+    // False: a newer entry action or navigation owns the page now.
+    if (!await adoption) return false;
   } catch {
+    if (adoptionGeneration !== documentAdoptionGeneration) return false;
+    // The prior page stays in place; retry adopts the same resolved place.
     const label = entry.selected?.label || entry.selection?.id || "area";
-    status(copy("messageLocationUpdateFailed", { district: label }));
+    showGeographyEntryFailure(entry, {
+      reason: GEOGRAPHY_ENTRY_ADOPTION_FAILURE,
+      message: copy("messageLocationUpdateFailed", { district: label }),
+      retry: () => adoptGeographyEntrySelection(entry, { generation: beginGeographyEntry() }),
+    });
     return false;
   }
   overlapPointBundle = entry.bundle
@@ -589,16 +660,22 @@ function wireGeolocation() {
   if (!button || wired.has(button)) return;
   wired.add(button);
   button.addEventListener("click", () => {
+    const generation = beginGeographyEntry();
+    // Retry repeats this explicit request through the same button.
+    const retry = () => button.click();
     if (!navigator.geolocation) {
-      status(geographyEntryStatusMessage(geographyEntryUnavailableApiResult()));
+      showGeographyEntryFailure(geographyEntryUnavailableApiResult());
       return;
     }
     button.disabled = true;
     status(copy("messageLocationFinding"));
     navigator.geolocation.getCurrentPosition(async ({ coords }) => {
       try {
+        // A later search, map click or navigation replaced this request.
+        if (!isGeographyEntryCurrent(generation)) return;
         if (root.dataset.geographyShell) {
           const layerData = await loadGeographyEntryLayers();
+          if (!isGeographyEntryCurrent(generation)) return;
           const entry = resolveGeographyEntryFromGeolocation(
             coords.longitude,
             coords.latitude,
@@ -609,20 +686,28 @@ function wireGeolocation() {
             ephemeralPoint: entry.ok
               ? { lon: coords.longitude, lat: coords.latitude }
               : null,
+            generation,
+            retry,
           });
         } else {
           await adoptCompatibilityDistrictSelection(coords);
         }
       } catch {
-        status(copy("messageLocationLookupFailed") || copy("messageLocationUnmatched"));
+        if (!isGeographyEntryCurrent(generation)) return;
+        showGeographyEntryFailure(geographyEntryRecoveryResult(GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE, {
+          source: GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION,
+        }), { retry });
       } finally {
         button.disabled = false;
       }
     }, (error) => {
       button.disabled = false;
-      status(geographyEntryStatusMessage(resolveGeographyEntryFromGeolocationError(error)));
+      if (!isGeographyEntryCurrent(generation)) return;
+      showGeographyEntryFailure(resolveGeographyEntryFromGeolocationError(error), { retry });
     }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
   });
+  // Shown only once the handler above is bound; without it the button stays hidden.
+  button.hidden = false;
 }
 
 function wireForms() {
@@ -632,9 +717,12 @@ function wireForms() {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (root.dataset.geographyShell && form.matches("[data-geography-search]")) {
+        const generation = beginGeographyEntry();
+        const retry = () => form.requestSubmit();
         const query = String(new FormData(form).get("neighborhood") || "").trim();
         try {
           const layerData = await loadGeographyEntryLayers();
+          if (!isGeographyEntryCurrent(generation)) return;
           let entry = resolveGeographyEntryFromPlaceLabel(query, { layerData });
           let ephemeralPoint = null;
           if (!entry.ok) {
@@ -644,16 +732,14 @@ function wireForms() {
             entry = resolved.entry;
             ephemeralPoint = resolved.ephemeralPoint || null;
           }
-          if (entry.ok) {
-            await adoptGeographyEntrySelection(entry, { ephemeralPoint });
-            return;
-          }
-          status(geographyEntryStatusMessage(entry));
-          return;
+          await adoptGeographyEntrySelection(entry, { ephemeralPoint, generation, retry });
         } catch {
-          status(copy("messageLocationLookupFailed") || copy("messageLocationUnmatched"));
-          return;
+          if (!isGeographyEntryCurrent(generation)) return;
+          showGeographyEntryFailure(geographyEntryRecoveryResult(GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE, {
+            source: GEOGRAPHY_ENTRY_SOURCES.ADDRESS,
+          }), { retry });
         }
+        return;
       }
       const url = new URL(form.action, location.href);
       url.search = new URLSearchParams(new FormData(form)).toString();
@@ -1211,13 +1297,15 @@ async function initializeGeographyNavigationMap() {
       onSelect: ({ key, originalEvent }) => {
         const lngLat = originalEvent?.lngLat;
         if (lngLat && Number.isFinite(lngLat.lng) && Number.isFinite(lngLat.lat)) {
+          const generation = beginGeographyEntry();
           void loadGeographyEntryLayers()
             .then((layerData) => resolveGeographyEntryFromMapClick(lngLat.lng, lngLat.lat, { layerData }))
             .then((entry) => adoptGeographyEntrySelection(entry, {
               ephemeralPoint: entry?.ok ? { lon: lngLat.lng, lat: lngLat.lat } : null,
+              generation,
             }))
             .catch(() => {
-              status(copy("messageLocationLookupFailed"));
+              if (isGeographyEntryCurrent(generation)) status(copy("messageLocationLookupFailed"));
             });
           return;
         }
@@ -1301,12 +1389,48 @@ function wireRecordInspection() {
   bindNearYouRecordInspection(root);
 }
 
+// Record controls a reader can leave from, as selectors inside the record card.
+const NEAR_YOU_RETURN_FOCUS_CONTROLS = Object.freeze([
+  ".near-record-full-record",
+  ".near-record-title-link",
+  ".near-record-inspect",
+]);
+let nearYouDepartureFocus = null;
+
+function nearYouDepartureFocusToken(link) {
+  // The inspection dialog's full-record link returns to the card's Inspect control.
+  if (link.matches("[data-near-you-record-inspection-open]")) {
+    const uid = link.getAttribute("data-browse-return-uid");
+    return uid ? JSON.stringify({ record: uid, control: NEAR_YOU_RETURN_FOCUS_CONTROLS[2] }) : null;
+  }
+  const card = link.closest("[data-record-id]");
+  const control = NEAR_YOU_RETURN_FOCUS_CONTROLS.find((selector) => link.matches(selector));
+  return card && control ? JSON.stringify({ record: card.dataset.recordId, control }) : null;
+}
+
+function restoreNearYouDepartureFocus(token) {
+  let departure = null;
+  try {
+    departure = JSON.parse(token || "null");
+  } catch {
+    return;
+  }
+  if (!departure?.record || !NEAR_YOU_RETURN_FOCUS_CONTROLS.includes(departure.control)) return;
+  const card = root.querySelector(`[data-record-id="${CSS.escape(departure.record)}"]`);
+  card?.querySelector(departure.control)?.focus?.({ preventScroll: true });
+}
+
 function rememberNearYouDepartureScroll(event) {
-  // Remember only the full-record handoff from inspection; pagehide covers the
-  // same URL key for other same-origin exits from this document.
-  const link = event?.target?.closest?.("[data-near-you-record-inspection-open]");
-  if (!link || !root?.contains?.(link)) return;
+  // Remember a record handoff (the card's links or the inspection dialog's
+  // full-record link); pagehide covers the same URL key for other same-origin
+  // exits from this document.
+  const link = event?.target?.closest?.("a[href]");
+  if (!link) return;
+  const inspectionOpen = link.matches("[data-near-you-record-inspection-open]");
+  if (!inspectionOpen && !(root?.contains?.(link) && link.closest("[data-record-id]"))) return;
   if (event?.metaKey || event?.ctrlKey || event?.shiftKey || event?.altKey) return;
+  // A link that opens another tab leaves this document in place.
+  if (link.target && link.target !== "_self") return;
   const href = link.getAttribute?.("href");
   if (!href || href.startsWith("#")) return;
   let destination;
@@ -1317,22 +1441,29 @@ function rememberNearYouDepartureScroll(event) {
   }
   if (destination.origin !== location.origin) return;
   if (destination.pathname === location.pathname && destination.search === location.search) return;
-  rememberDocumentRouteScroll(window);
+  nearYouDepartureFocus = nearYouDepartureFocusToken(link);
+  rememberDocumentRouteScroll(window, { focus: nearYouDepartureFocus });
 }
 
 function settleNearYouDocumentRouteScroll() {
+  // Back/Forward to this document: once deferred records and the map settle,
+  // return focus to the record control the reader left from, then the offset.
+  const departure = isDocumentHistoryTraversal(window) ? takeDocumentRouteScrollEntry(window) : null;
   return Promise.all([
     hydrateCurrentNearYouDeferred(),
     wireGeographyNavigationMap(),
   ]).then(() => {
-    restoreDocumentRouteScroll(window, { maxAttempts: 40, intervalMs: 50 });
+    if (!departure) return;
+    restoreNearYouDepartureFocus(departure.focus);
+    restoreDocumentRouteScroll(window, { entry: departure, maxAttempts: 40, intervalMs: 50 });
   });
 }
 
 function wireIsland() {
   if (!root) return;
   root.dataset.enhanced = "true";
-  for (const control of root.querySelectorAll(".js-only")) control.hidden = false;
+  // The location button is revealed by wireGeolocation once its handler is bound.
+  for (const control of root.querySelectorAll(".js-only:not([data-use-location])")) control.hidden = false;
   wireMapAndList();
   wirePanZoom();
   wireGeolocation();
@@ -1346,8 +1477,16 @@ function wireIsland() {
 
 if (root && !forwardLegacyRootHashIfNeeded()) {
   bindDocumentRouteScroll(window);
-  root.addEventListener("click", rememberNearYouDepartureScroll, true);
+  // The inspection dialog lives outside the root, so listen at the document.
+  document.addEventListener("click", rememberNearYouDepartureScroll, true);
   root.addEventListener("click", (event) => { void retryFailedNearYouSections(event); });
+  // Runs after the shared pagehide writer so the record focus token survives it.
+  addEventListener("pagehide", () => {
+    if (nearYouDepartureFocus) rememberDocumentRouteScroll(window, { focus: nearYouDepartureFocus });
+  });
+  addEventListener("pageshow", () => {
+    nearYouDepartureFocus = null;
+  });
   wireIsland();
   addEventListener("hashchange", () => {
     if (forwardLegacyRootHashIfNeeded()) return;

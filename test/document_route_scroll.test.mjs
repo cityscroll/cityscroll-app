@@ -166,3 +166,23 @@ test("restore retries until the remembered offset sticks after late layout shift
   assert.equal(win.scrollY, 1127);
   assert.ok(calls >= 3);
 });
+
+test("a leaving control's focus token travels with the offset and is bounded", () => {
+  const win = makeWindow({ scrollY: 640 });
+  const token = JSON.stringify({ record: "meeting:1", control: ".near-record-full-record" });
+  assert.equal(rememberDocumentRouteScroll(win, { focus: token }), true);
+  assert.deepEqual(takeDocumentRouteScrollEntry(win), { x: 0, y: 640, focus: token });
+  assert.equal(takeDocumentRouteScrollEntry(win), null, "taken once");
+
+  // Without a token the entry keeps its original shape.
+  rememberDocumentRouteScroll(win);
+  assert.deepEqual(readDocumentRouteScrollEntry(win.sessionStorage, win.location), { x: 0, y: 640 });
+  // Non-string and oversized tokens are dropped rather than stored.
+  for (const focus of [42, { record: "meeting:1" }, "x".repeat(513)]) {
+    writeDocumentRouteScrollEntry(win.sessionStorage, win.location, { x: 0, y: 5, focus });
+    assert.deepEqual(readDocumentRouteScrollEntry(win.sessionStorage, win.location), { x: 0, y: 5 });
+  }
+  // Positive control: a bounded token is kept.
+  writeDocumentRouteScrollEntry(win.sessionStorage, win.location, { x: 0, y: 5, focus: "x".repeat(512) });
+  assert.equal(readDocumentRouteScrollEntry(win.sessionStorage, win.location).focus.length, 512);
+});

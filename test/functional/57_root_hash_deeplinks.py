@@ -199,15 +199,13 @@ def main() -> None:
 
         # The bare root is a Worker-owned Near You shell, but a query-bearing
         # root can fall through to the Pages topic document. A resolved place
-        # must therefore adopt the canonical /near-you/ document explicitly.
+        # must therefore adopt the canonical /near-you/ document explicitly,
+        # opening the place's Records as a typed entry does.
         root_place = new_page(browser)
         root_place.goto(base, wait_until="domcontentloaded", timeout=60_000)
         root_place.locator("#near-geo-search-input").fill("Midwood")
         root_place.locator("form.near-geo-search button[type='submit']").click()
-        expected_midwood = (
-            f"{base}near-you/?geo=nta2020%3ABK1403&surface=map"
-            "&drawer=open&focus=geography%3Anta2020%3ABK1403"
-        )
+        expected_midwood = f"{base}near-you/?geo=nta2020%3ABK1403&surface=records"
         root_place.wait_for_url(expected_midwood, timeout=ROUTE_TIMEOUT_MS)
         root_place.locator("[data-near-you-root]").wait_for(state="visible", timeout=ROUTE_TIMEOUT_MS)
         assert "Near you" in root_place.title()
