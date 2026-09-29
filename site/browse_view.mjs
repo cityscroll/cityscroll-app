@@ -1206,6 +1206,18 @@ export function buildBrowseLanding(payloads = {}, options = {}) {
   };
 }
 
+// The collection a family opens: its primary facet's route, else the first
+// child with a route of its own.
+export function browseGroupEntryRoute(group) {
+  const children = (group?.children || []).map((child) => ({
+    ...child,
+    route: child.route || (child.facet ? BROWSE_FACETS[child.facet]?.route : null) || null,
+  }));
+  const primary = children.find((child) => child.facet && child.facet === group.primaryFacet)
+    || children.find((child) => child.route);
+  return primary?.route || null;
+}
+
 // A top-level object is useful only when its primary content has a positive,
 // known count. Unknown and empty counts stay hidden until the content is ready.
 export function browseObjectIsReady(card) {
@@ -1242,19 +1254,15 @@ export function renderBrowseLanding(landing) {
     </article>`;
   }).join("");
   const cardGrid = cards ? `<div class="browse-source-grid">${cards}</div>` : "";
-  const walkFamilies = (landing?.cards || []).map((card) => {
-    const primary = (card.children || []).find((child) => child.facet === card.primaryFacet)
-      || (card.children || []).find((child) => child.route);
-    return {
-      id: card.id,
-      label: card.label,
-      kicker: card.label,
-      description: card.description,
-      count: card.count,
-      status: card.count == null ? "unknown" : card.count > 0 ? "available" : "empty",
-      href: primary?.route || null,
-    };
-  });
+  const walkFamilies = (landing?.cards || []).map((card) => ({
+    id: card.id,
+    label: card.label,
+    kicker: card.label,
+    description: card.description,
+    count: card.count,
+    status: card.count == null ? "unknown" : card.count > 0 ? "available" : "empty",
+    href: browseGroupEntryRoute(card),
+  }));
   // Browse answers "I want to choose a kind of record and refine a collection",
   // so the record families own the first viewport. Graph traversal answers a
   // different question and follows underneath, with its own explicit context.

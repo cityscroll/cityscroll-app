@@ -9,12 +9,19 @@ import { test } from "node:test";
 
 import {
   GEOGRAPHY_SHELL_BASEMAP_CONTRAST_SAMPLES,
+  GEOGRAPHY_SHELL_BROWSE_ALL_LABEL,
+  GEOGRAPHY_SHELL_BROWSE_ALL_ROUTE,
   GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL,
+  GEOGRAPHY_SHELL_COLLECTIONS_HEADING,
   GEOGRAPHY_SHELL_DIRECTORY_EMPTY,
   GEOGRAPHY_SHELL_DIRECTORY_FILTER_PARAM,
   GEOGRAPHY_SHELL_HEADING,
   GEOGRAPHY_SHELL_LABEL_BUDGET,
+  GEOGRAPHY_SHELL_LOCAL_RECORDS_LABEL,
   GEOGRAPHY_SHELL_MORE_BOUNDARIES_LABEL,
+  GEOGRAPHY_SHELL_RECORD_FAMILIES,
+  GEOGRAPHY_SHELL_SEARCH_ALL_LABEL,
+  GEOGRAPHY_SHELL_SEARCH_ALL_ROUTE,
   GEOGRAPHY_SHELL_SPECIAL_USE_SUMMARY,
   GEOGRAPHY_SHELL_USE_LOCATION_LABEL,
   RESIDENT_GEOGRAPHY_SHELL_SCHEMA,
@@ -56,6 +63,7 @@ import {
   __test__ as geographyMapTest,
 } from "../site/geography_navigation_map.mjs";
 import { buildNearYouViewModel, renderNearYouDocument } from "../site/near_you_view.mjs";
+import { BROWSE_FACETS, BROWSE_GROUPS, browseGroupEntryRoute } from "../site/browse_view.mjs";
 import { scopeFromLensState, scopeWithGeographies } from "../site/scope_v0.mjs";
 import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
 
@@ -203,7 +211,7 @@ test("A1/A6/A8/A10: unselected document leads with map-first shell and keeps no-
   assert.match(html, /Community districts/);
   assert.match(html, /Council districts/);
   assert.match(html, /More boundaries/);
-  assert.match(html, /Browse records/);
+  assert.match(html, /data-near-surface="records">Local records<\/a>/);
   assert.match(html, /data-near-surface="map"/);
   assert.match(html, /data-near-surface="records"/);
   assert.match(html, /id="near-map-enhanced"/);
@@ -306,7 +314,7 @@ test("entry chrome render includes required first-viewport controls", () => {
   assert.match(html, /What(?:'|&#39;)s near you\?/);
   assert.match(html, /near-geo-search-input/);
   assert.match(html, /Use my location/);
-  assert.match(html, /Browse records/);
+  assert.match(html, /data-near-surface="records">Local records<\/a>/);
   assert.match(html, /near-geo-primary-controls[\s\S]*near-surface-switch[\s\S]*data-use-location/);
   assert.match(html, /data-near-surface="map"[^>]*aria-current="true"|aria-current="true"[^>]*data-near-surface="map"/);
   assert.match(html, /<details class="near-entry-secondary">\s*<summary>More ways to choose<\/summary>/);
@@ -315,7 +323,114 @@ test("entry chrome render includes required first-viewport controls", () => {
   assert.ok(html.indexOf("near-geo-search-input") < html.indexOf("near-entry-secondary"));
   assert.ok(html.indexOf('data-near-surface="records"') < html.indexOf("near-entry-secondary"));
   assert.ok(html.indexOf("data-use-location") < html.indexOf("near-entry-secondary"));
+  assert.ok(html.indexOf("data-use-location") < html.indexOf("data-near-collection-entry"));
+  assert.ok(html.indexOf("data-near-collection-entry") < html.indexOf("near-entry-secondary"));
   assert.ok(html.indexOf("near-entry-secondary") < html.indexOf("data-geography-layer-switcher"));
+});
+
+// The entry's collection links, as rendered: order, kind, family, label, href.
+function collectionEntryLinks(html) {
+  const row = String(html).match(/<nav class="near-collection-entry"[\s\S]*?<\/nav>/)?.[0] || "";
+  return [...row.matchAll(/<a href="([^"]*)" data-near-collection="([^"]*)"(?: data-browse-family="([^"]*)")?>([^<]*)<\/a>/g)]
+    .map(([, href, kind, family, label]) => ({ kind, family: family || null, label, href }));
+}
+
+// What Browse itself offers: each family's label and the collection it opens,
+// derived from BROWSE_GROUPS and the facet/surface routes, then the landing
+// and record search.
+function canonicalCollectionEntryLinks() {
+  return [
+    ...BROWSE_GROUPS.map((group) => ({
+      kind: "family",
+      family: group.id,
+      label: group.label,
+      href: browseGroupEntryRoute(group),
+    })),
+    { kind: "browse-all", family: null, label: GEOGRAPHY_SHELL_BROWSE_ALL_LABEL, href: "/browse/" },
+    { kind: "search", family: null, label: GEOGRAPHY_SHELL_SEARCH_ALL_LABEL, href: "/search/" },
+  ];
+}
+
+function unselectedEntryDocument(lens = "meetings") {
+  return renderNearYouDocument(buildNearYouViewModel(scopeFromLensState(lens), fixtureActivity(), fixtureBoundaries, {
+    canonicalBase: "https://cityscroll.org/near-you",
+    navigationLayerDoc: NTA_LAYER,
+    navigationLayerType: "nta2020",
+  }));
+}
+
+test("A5: the entry row links the six Browse families in Browse order to their established collections", () => {
+  const expected = canonicalCollectionEntryLinks();
+  assert.equal(expected.filter((link) => link.kind === "family").length, 6);
+  const links = collectionEntryLinks(unselectedEntryDocument());
+  assert.deepEqual(links, expected);
+  assert.deepEqual(links.map((link) => link.label).slice(0, 6), [
+    "Contracts", "People + organizations", "Land", "Rules", "Meetings", "Exams",
+  ]);
+  // Land opens Zoning; Property stays inside Land and Browse, not a seventh family.
+  assert.equal(links.find((link) => link.family === "land-property").href, BROWSE_FACETS.zoning.route);
+  assert.equal(links.some((link) => link.href === BROWSE_FACETS.property.route), false);
+  // One compact group: a heading and links only; no counts, grid or second search box.
+  const row = unselectedEntryDocument().match(/<nav class="near-collection-entry"[\s\S]*?<\/nav>/)[0];
+  assert.match(row, new RegExp(`<h2 id="near-collection-entry-heading">${GEOGRAPHY_SHELL_COLLECTIONS_HEADING}</h2>`));
+  assert.doesNotMatch(row, /<(?:input|form|button|script|img|strong)\b/);
+  assert.doesNotMatch(row.replace(/<[^>]*>/g, " "), /\d/, "no category counts");
+
+  // Positive controls: the comparison fails on a reordered, shortened or absent row.
+  const swapped = [...expected];
+  [swapped[0], swapped[1]] = [swapped[1], swapped[0]];
+  assert.notDeepEqual(swapped, links);
+  assert.notDeepEqual(links.slice(0, -1), expected);
+  assert.deepEqual(collectionEntryLinks("<main></main>"), []);
+});
+
+test("A5: the shell's record-family list matches the Browse taxonomy", () => {
+  const parity = (families) => families.map((family) => [family.id, family.label, family.route]);
+  const canonical = BROWSE_GROUPS.map((group) => [group.id, group.label, browseGroupEntryRoute(group)]);
+  assert.deepEqual(parity(GEOGRAPHY_SHELL_RECORD_FAMILIES), canonical);
+  assert.equal(GEOGRAPHY_SHELL_BROWSE_ALL_ROUTE, "/browse/");
+  assert.equal(GEOGRAPHY_SHELL_SEARCH_ALL_ROUTE, "/search/");
+  // Positive controls: a drifted route or a reordered family is caught.
+  const drifted = GEOGRAPHY_SHELL_RECORD_FAMILIES.map((family) => family.id === "rules-mandates"
+    ? { ...family, route: "/browse/" }
+    : family);
+  assert.notDeepEqual(parity(drifted), canonical);
+  assert.notDeepEqual(parity([...GEOGRAPHY_SHELL_RECORD_FAMILIES].reverse()), canonical);
+});
+
+test("A2/A4: the collection row follows place entry, precedes the map, and appears only before a place is chosen", () => {
+  const html = unselectedEntryDocument();
+  const order = ["near-geo-search-input", "data-use-location", "data-near-collection-entry", 'class="near-map-wrap"']
+    .map((marker) => html.indexOf(marker));
+  assert.ok(order.every((at) => at > 0), `markers present: ${order}`);
+  assert.deepEqual([...order].sort((left, right) => left - right), order);
+  assert.equal((html.match(/data-near-collection-entry/g) || []).length, 1);
+  // The row is outside every disclosure: its nav is not nested in a details element.
+  const beforeRow = html.slice(0, html.indexOf("data-near-collection-entry"));
+  assert.equal((beforeRow.match(/<details\b/g) || []).length, (beforeRow.match(/<\/details>/g) || []).length);
+
+  // Converse: a selected neighborhood keeps its own records switch and no entry row.
+  const selected = renderNearYouDocument(buildNearYouViewModel(
+    scopeWithGeographies(scopeFromLensState("meetings"), ["geography:nta2020:BK0101"]),
+    fixtureActivity(),
+    fixtureBoundaries,
+    { canonicalBase: "https://cityscroll.org/near-you", navigationLayerDoc: NTA_LAYER, navigationLayerType: "nta2020" },
+  ));
+  assert.equal(selected.includes("data-near-collection-entry"), false);
+  assert.match(selected, new RegExp(`data-near-surface="records">${GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL}`));
+});
+
+test("Local records names the category the local views show", () => {
+  const meetings = unselectedEntryDocument("meetings");
+  assert.match(meetings, new RegExp(`data-near-surface="records">${GEOGRAPHY_SHELL_LOCAL_RECORDS_LABEL}</a>`));
+  assert.match(meetings, /aria-label="Show local Meetings as" data-near-surface-switch/);
+  assert.match(meetings, /Find local <strong data-near-entry-category>Meetings<\/strong> by address or place/);
+  const land = unselectedEntryDocument("land");
+  assert.match(land, /aria-label="Show local Zoning as" data-near-surface-switch/);
+  assert.match(land, /<strong data-near-entry-category>Zoning<\/strong>/);
+  assert.doesNotMatch(land, /data-near-entry-category>Meetings/);
+  // The collection row itself does not change with the local category.
+  assert.deepEqual(collectionEntryLinks(land), collectionEntryLinks(meetings));
 });
 
 test("A1: residential directory groups by borough and keeps special-use behind a labeled option", () => {

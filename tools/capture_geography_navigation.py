@@ -163,7 +163,7 @@ def assert_shell_semantics(page, *, enhanced: bool, failed: bool = False) -> dic
             has_use_location: Boolean(document.querySelector('[data-use-location]')),
             has_more_boundaries: Boolean(document.querySelector('.near-geo-more-boundaries'))
               || /More boundaries/i.test(document.body.innerText || ''),
-            has_browse_records: /Browse records/i.test(document.body.innerText || ''),
+            has_browse_records: Boolean(document.querySelector('[data-near-surface-switch] [data-near-surface="records"]')),
             has_neighborhoods: /Neighborhoods/i.test(document.body.innerText || ''),
             has_map_svg: Boolean(mapSvg),
             map_svg_visible: mapSvg ? getComputedStyle(mapSvg).display !== 'none' && getComputedStyle(mapSvg).visibility !== 'hidden' : false,
@@ -232,8 +232,8 @@ def validate_snapshot(snapshot: dict, *, mode: str, width: int) -> list[str]:
     assertions.append("Neighborhoods layer present")
     require(snapshot["has_more_boundaries"], "More boundaries missing")
     assertions.append("More boundaries present")
-    require(snapshot["has_browse_records"], "Browse records missing")
-    assertions.append("Browse records present")
+    require(snapshot["has_browse_records"], "records view switch missing")
+    assertions.append("records view switch present")
     require(snapshot["has_areas"], "Areas list missing")
     assertions.append("Areas list present")
     require(snapshot["has_map_svg"] or snapshot["has_map_canvas"], "map surface missing")

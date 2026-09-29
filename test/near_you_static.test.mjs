@@ -466,6 +466,58 @@ test("the Near-you cold wire inventory stays below the 455,000-byte ceiling", ()
   assert.ok(bytes <= 455_000, `Near-you cold transfer ${bytes} exceeds 455,000 bytes`);
 });
 
+// Static import closure of a browser entry module, optionally without one
+// edge or with one extra edge, as repository-relative paths.
+function browserModuleClosure(entry, { without = null, extra = null } = {}) {
+  const root = join(process.cwd(), "site");
+  const seen = new Set();
+  const pending = [join(root, entry)];
+  const relative = (path) => path.slice(root.length + 1);
+  while (pending.length) {
+    const path = pending.pop();
+    if (seen.has(path)) continue;
+    seen.add(path);
+    const source = readFileSync(path, "utf8");
+    const targets = [...source.matchAll(/(?:import|export)\s[^;]*?from\s+["'](\.[^"']+\.mjs)["']|import\(\s*["'](\.[^"']+\.mjs)["']\s*\)/g)]
+      .map((match) => join(path, "..", match[1] || match[2]));
+    if (extra && relative(path) === extra.from) targets.push(join(root, extra.to));
+    for (const target of targets) {
+      if (without && relative(path) === without.from && relative(target) === without.to) continue;
+      if (target.startsWith(root)) pending.push(target);
+    }
+  }
+  return new Set([...seen].map(relative));
+}
+
+test("A6: the collection entry adds anchors only, no browser module and no data read", (t) => {
+  const root = readFileSync(new URL("../site/near-you/index.html", import.meta.url), "utf8");
+  const row = root.match(/<nav class="near-collection-entry"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(row, "committed root document carries the collection row");
+  const withoutRow = root.replace(row, "");
+  const gzipDelta = gzipSync(root).length - gzipSync(withoutRow).length;
+  t.diagnostic(`collection entry: ${Buffer.byteLength(row)} bytes raw, ${gzipDelta} bytes gzip of a ${gzipSync(root).length}-byte gzip root document`);
+  assert.ok(gzipDelta > 0);
+  // Anchors and a heading only: nothing that loads a module, image or data file.
+  assert.doesNotMatch(row, /<(?:script|link|img|iframe|object|form|input)\b|data-near-deferred|\.json/);
+  assert.equal(
+    [...root.matchAll(/<script\b[^>]*>/g)].length,
+    [...withoutRow.matchAll(/<script\b[^>]*>/g)].length,
+  );
+
+  // The shell's new import is already in the Near You browser graph through
+  // another path, so it adds no module the page must fetch.
+  const edge = { from: "geography_navigation_shell.mjs", to: "browse_surface_contracts.mjs" };
+  const shellSource = readFileSync(new URL("../site/geography_navigation_shell.mjs", import.meta.url), "utf8");
+  assert.match(shellSource, /from "\.\/browse_surface_contracts\.mjs"/);
+  const withEdge = browserModuleClosure("app/map.mjs");
+  const withoutEdge = browserModuleClosure("app/map.mjs", { without: edge });
+  assert.ok(withEdge.has(edge.from) && withEdge.has(edge.to));
+  assert.deepEqual([...withEdge].filter((path) => !withoutEdge.has(path)), []);
+  // Positive control: importing the Browse renderer instead would add modules.
+  const heavier = browserModuleClosure("app/map.mjs", { extra: { from: edge.from, to: "browse_view.mjs" } });
+  assert.ok([...heavier].filter((path) => !withEdge.has(path)).length > 0);
+});
+
 const NTA_OWNER_LAYER = Object.freeze({
   schema: "cityscroll.geography_layer.v1",
   type: "nta2020",
