@@ -832,6 +832,14 @@ GEOLOCATION_STUB = """
 """
 
 
+# Near You asks for location once per session on a fresh load with no place
+# chosen. These journeys press Use my location themselves, so each context
+# starts as a session that already asked.
+LOCATION_ALREADY_ASKED = (
+    "try { sessionStorage.setItem('near-you:location-asked', '1'); } catch {}"
+)
+
+
 class PendingObligation(Exception):
     def __init__(self, code: str):
         super().__init__(code)
@@ -856,6 +864,7 @@ class Journey:
         self.context = browser.new_context(
             viewport={"width": width, "height": height}, has_touch=self.touch, user_agent=USER_AGENT,
         )
+        self.context.add_init_script(LOCATION_ALREADY_ASKED)
         if geolocation is not None:
             self.context.add_init_script(GEOLOCATION_STUB % json.dumps(geolocation))
         self.page = self.context.new_page()

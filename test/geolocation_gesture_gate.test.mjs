@@ -36,16 +36,30 @@ function extractFunction(source, name) {
   throw new Error(`unbalanced ${name}`);
 }
 
-test("every geolocation request is downstream of an explicit click handler", () => {
+test("every geolocation request is downstream of a click or Near You's one load-time gate", () => {
   const request = extractFunction(awareness, "requestCurrentArea");
   const bind = extractFunction(awareness, "bindLocationControl");
   const mapGate = extractFunction(map, "wireGeolocation");
+  const mapOnLoad = extractFunction(map, "requestGeographyEntryLocationOnLoad");
+  // Its parameter defaults use braces, so slice to the next declaration.
+  const mapRequest = map.slice(
+    map.indexOf("async function requestGeographyEntryLocation("),
+    map.indexOf("function wireGeolocation("),
+  );
 
   assert.match(request, /geolocation\.getCurrentPosition/);
   assert.match(bind, /addEventListener\("click", async function/);
   assert.match(bind, /requestCurrentArea\(settings\)/);
   assert.match(mapGate, /addEventListener\("click", \(\) =>/);
-  assert.match(mapGate, /navigator\.geolocation\.getCurrentPosition/);
+  assert.match(mapGate, /requestGeographyEntryLocation\(button\)/);
+  assert.match(mapRequest, /navigator\.geolocation\.getCurrentPosition/);
+  // Near You asks on load only through the site owner's load-time policy, and
+  // never calls the browser while it reports a block.
+  assert.match(mapOnLoad, /shouldRequestGeographyEntryLocationOnLoad\(/);
+  assert.match(mapOnLoad, /requestGeographyEntryLocation\(button, \{ automatic: true \}\)/);
+  assert.match(mapRequest, /automatic && await geolocationPermissionState\(\) === "denied"/);
+  assert.equal((map.match(/\brequestGeographyEntryLocation\(/g) || []).length, 3);
+  assert.equal((map.match(/\bgetCurrentPosition\b/g) || []).length, 1);
   // Directory exact-address location is asked only after the resident presses
   // the panel button; never on directory load or mount. Parameter defaults use
   // braces, so assert against the module source rather than brace-sliced body.

@@ -819,7 +819,7 @@ def settle_geolocation(page, *, label: str) -> None:
     location.click()
     try:
         page.wait_for_function(
-            "() => /not granted|outside/i.test(document.querySelector('[data-map-status]')?.textContent || '')",
+            "() => /not granted|blocked|outside/i.test(document.querySelector('[data-map-status]')?.textContent || '')",
             timeout=20_000,
         )
     except Exception as error:
@@ -859,7 +859,9 @@ ENTRY_FAILURE_CASES = (
         "init_script": lambda induced: None,
         "drive": run_geolocation,
         "control_ok": lambda signal, counters: "outside" in signal["location_status"].lower(),
-        "induced_ok": lambda signal, counters: "not granted" in signal["location_status"].lower(),
+        # An empty grant list refuses location in the browser itself, which the
+        # page reports as a block with the way to allow it.
+        "induced_ok": lambda signal, counters: "blocked for this site" in signal["location_status"].lower(),
     },
     {
         "name": "webgl-unavailable",

@@ -681,6 +681,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/57_root_hash_deeplinks.py
   run_and_fail python3 test/functional/24_geolocation_gesture_gate.py
   run_and_fail python3 test/functional/32_near_you_location.py
+  run_and_fail python3 test/functional/59_near_you_location_permission.py
   run_and_fail python3 test/functional/11_accessibility.py
   run_and_fail python3 test/standards/rendered_schema_vocabulary.py
   run_and_fail python3 test/functional/12_language.py

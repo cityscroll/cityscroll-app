@@ -44,6 +44,12 @@ export const GEOGRAPHY_ENTRY_RECOVERY = Object.freeze({
   OUTSIDE_COVERED_LAND: "outside_covered_land",
   GEOLOCATION_UNAVAILABLE: "geolocation_unavailable",
   GEOLOCATION_DENIED: "geolocation_denied",
+  /**
+   * The browser holds a remembered block for this site, so it answers a
+   * location request at once without asking. Only the browser's own site
+   * settings can lift it, so the copy says where.
+   */
+  GEOLOCATION_BLOCKED: "geolocation_blocked",
   GEOLOCATION_TIMEOUT: "geolocation_timeout",
   LOOKUP_FAILURE: "lookup_failure",
   EMPTY_QUERY: "empty_query",
@@ -70,6 +76,8 @@ export const GEOGRAPHY_ENTRY_RECOVERY_COPY = Object.freeze({
     "Location is not available in this browser. Choose an area from the list.",
   [GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_DENIED]:
     "Location permission was not granted. Choose an area from the list.",
+  [GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_BLOCKED]:
+    "Location is blocked for this site in your browser, so it cannot ask. To allow it, open the site settings beside the web address, set Location to Allow, then press Use my location. Or choose an area from the list.",
   [GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_TIMEOUT]:
     "Location timed out. Try again or choose an area from the list.",
   [GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE]:
@@ -818,11 +826,19 @@ export async function resolveGeographyEntryFromAddressAsync(query, {
   return resolveGeographyEntryFromPoint(lon, lat, { layerData, source });
 }
 
-/** Map a browser PositionError (or code) into a distinct recovery result. */
+/**
+ * Map a browser PositionError (or code) into a distinct recovery result. A
+ * refusal while the browser's permission state reads "denied" is a remembered
+ * block rather than an answer to a prompt, and gets its own recovery.
+ */
 export function resolveGeographyEntryFromGeolocationError(error, {
   source = GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION,
+  permission = null,
 } = {}) {
   const code = Number(error?.code);
+  if (code === 1 && permission === "denied") {
+    return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_BLOCKED, { source });
+  }
   if (code === 1) return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_DENIED, { source });
   if (code === 3) return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_TIMEOUT, { source });
   if (code === 2) return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE, { source });
@@ -834,6 +850,41 @@ export function geographyEntryUnavailableApiResult() {
   return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_UNAVAILABLE, {
     source: GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION,
   });
+}
+
+/** The browser already blocks location for this site; no request was made. */
+export function geographyEntryBlockedLocationResult() {
+  return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_BLOCKED, {
+    source: GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION,
+  });
+}
+
+/** Session key recording that Near You already asked for location once. */
+export const GEOGRAPHY_ENTRY_LOCATION_ASKED_KEY = "near-you:location-asked";
+
+// Query parameters that name or restore a place; any of them means a place
+// is already chosen, so the page does not ask for location on its own.
+const PLACE_BEARING_PARAMS = Object.freeze(["geo", "compare", "focus", "neighborhood"]);
+
+/**
+ * Whether a freshly loaded Near You document should ask for location without
+ * a button press: only when it offers the location control, nothing selects
+ * or restores a place (URL parameters, a map hash route, a server-rendered
+ * selection, or a Back/Forward traversal), and this session has not asked yet.
+ */
+export function shouldRequestGeographyEntryLocationOnLoad({
+  search = "",
+  hash = "",
+  hasLocationControl = false,
+  selectedKey = "",
+  historyTraversal = false,
+  askedThisSession = false,
+} = {}) {
+  if (!hasLocationControl || askedThisSession || historyTraversal) return false;
+  if (selectedKey) return false;
+  if (String(hash || "").startsWith("#map")) return false;
+  const params = new URLSearchParams(String(search || ""));
+  return !PLACE_BEARING_PARAMS.some((name) => params.has(name));
 }
 
 /**

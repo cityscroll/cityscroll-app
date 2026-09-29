@@ -56,9 +56,11 @@ import neighborhoodGazetteer from "../data/neighborhood_gazetteer.json" with { t
 import { GEOGRAPHY_NAVIGATION_LAYER_TYPES } from "../geography_navigation_capability.mjs";
 import {
   GEOGRAPHY_ENTRY_ADOPTION_FAILURE,
+  GEOGRAPHY_ENTRY_LOCATION_ASKED_KEY,
   GEOGRAPHY_ENTRY_RECOVERY,
   GEOGRAPHY_ENTRY_RECOVERY_ACTIONS,
   GEOGRAPHY_ENTRY_SOURCES,
+  geographyEntryBlockedLocationResult,
   geographyEntryRecoveryActions,
   geographyEntryRecoveryResult,
   geographyEntrySelectionState,
@@ -67,6 +69,7 @@ import {
   resolveGeographyEntryFromGeolocationError,
   resolveGeographyEntryFromMapClick,
   resolveGeographyEntryFromPlaceLabel,
+  shouldRequestGeographyEntryLocationOnLoad,
 } from "../geography_navigation_entry.mjs";
 import { resolveGeographyAddressEntry } from "../geography_address_entry.mjs";
 import {
@@ -665,59 +668,123 @@ async function adoptCompatibilityDistrictSelection(coords) {
   }
 }
 
+/** The browser's geolocation permission state, or null when it cannot say. */
+async function geolocationPermissionState() {
+  try {
+    const result = await navigator.permissions?.query?.({ name: "geolocation" });
+    return result?.state || null;
+  } catch {
+    return null;
+  }
+}
+
+function rememberLocationAsked() {
+  try {
+    sessionStorage.setItem(GEOGRAPHY_ENTRY_LOCATION_ASKED_KEY, "1");
+  } catch {
+    // Without storage the page may ask again on a later load; nothing breaks.
+  }
+}
+
+function locationAskedThisSession() {
+  try {
+    return sessionStorage.getItem(GEOGRAPHY_ENTRY_LOCATION_ASKED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * One location request, from a button press or from the page load. A press
+ * always calls the browser, so a permission the resident has just re-allowed
+ * prompts again; an automatic request on load never calls it while the
+ * browser reports a block, and leaves the button free while a prompt waits.
+ */
+async function requestGeographyEntryLocation(button, { automatic = false } = {}) {
+  const generation = beginGeographyEntry();
+  // Retry repeats this explicit request through the same button.
+  const retry = () => button.click();
+  rememberLocationAsked();
+  if (!navigator.geolocation) {
+    showGeographyEntryFailure(geographyEntryUnavailableApiResult());
+    return;
+  }
+  if (automatic && await geolocationPermissionState() === "denied") {
+    if (!isGeographyEntryCurrent(generation)) return;
+    showGeographyEntryFailure(geographyEntryBlockedLocationResult(), { retry });
+    return;
+  }
+  if (!automatic) {
+    button.disabled = true;
+    status(copy("messageLocationFinding"));
+  }
+  navigator.geolocation.getCurrentPosition(async ({ coords }) => {
+    try {
+      // A later search, map click or navigation replaced this request.
+      if (!isGeographyEntryCurrent(generation)) return;
+      if (root.dataset.geographyShell) {
+        const layerData = await loadGeographyEntryLayers();
+        if (!isGeographyEntryCurrent(generation)) return;
+        const entry = resolveGeographyEntryFromGeolocation(
+          coords.longitude,
+          coords.latitude,
+          { layerData },
+        );
+        // Coordinates are used for containment and optional marker only.
+        await adoptGeographyEntrySelection(entry, {
+          ephemeralPoint: entry.ok
+            ? { lon: coords.longitude, lat: coords.latitude }
+            : null,
+          generation,
+          retry,
+        });
+      } else {
+        await adoptCompatibilityDistrictSelection(coords);
+      }
+    } catch {
+      if (!isGeographyEntryCurrent(generation)) return;
+      showGeographyEntryFailure(geographyEntryRecoveryResult(GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE, {
+        source: GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION,
+      }), { retry });
+    } finally {
+      button.disabled = false;
+    }
+  }, async (error) => {
+    button.disabled = false;
+    if (!isGeographyEntryCurrent(generation)) return;
+    // A refusal with no prompt is a remembered block; say so and where to lift it.
+    const permission = Number(error?.code) === 1 ? await geolocationPermissionState() : null;
+    if (!isGeographyEntryCurrent(generation)) return;
+    showGeographyEntryFailure(resolveGeographyEntryFromGeolocationError(error, { permission }), { retry });
+  }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+}
+
 function wireGeolocation() {
   const button = root.querySelector("[data-use-location]");
   if (!button || wired.has(button)) return;
   wired.add(button);
   button.addEventListener("click", () => {
-    const generation = beginGeographyEntry();
-    // Retry repeats this explicit request through the same button.
-    const retry = () => button.click();
-    if (!navigator.geolocation) {
-      showGeographyEntryFailure(geographyEntryUnavailableApiResult());
-      return;
-    }
-    button.disabled = true;
-    status(copy("messageLocationFinding"));
-    navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-      try {
-        // A later search, map click or navigation replaced this request.
-        if (!isGeographyEntryCurrent(generation)) return;
-        if (root.dataset.geographyShell) {
-          const layerData = await loadGeographyEntryLayers();
-          if (!isGeographyEntryCurrent(generation)) return;
-          const entry = resolveGeographyEntryFromGeolocation(
-            coords.longitude,
-            coords.latitude,
-            { layerData },
-          );
-          // Coordinates are used for containment and optional marker only.
-          await adoptGeographyEntrySelection(entry, {
-            ephemeralPoint: entry.ok
-              ? { lon: coords.longitude, lat: coords.latitude }
-              : null,
-            generation,
-            retry,
-          });
-        } else {
-          await adoptCompatibilityDistrictSelection(coords);
-        }
-      } catch {
-        if (!isGeographyEntryCurrent(generation)) return;
-        showGeographyEntryFailure(geographyEntryRecoveryResult(GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE, {
-          source: GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION,
-        }), { retry });
-      } finally {
-        button.disabled = false;
-      }
-    }, (error) => {
-      button.disabled = false;
-      if (!isGeographyEntryCurrent(generation)) return;
-      showGeographyEntryFailure(resolveGeographyEntryFromGeolocationError(error), { retry });
-    }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+    void requestGeographyEntryLocation(button);
   });
   // Shown only once the handler above is bound; without it the button stays hidden.
   button.hidden = false;
+}
+
+/**
+ * A fresh Near You load with no chosen place asks for location once per
+ * session, as if the resident had pressed Use my location.
+ */
+function requestGeographyEntryLocationOnLoad() {
+  const button = root.querySelector("[data-use-location]");
+  const ask = shouldRequestGeographyEntryLocationOnLoad({
+    search: location.search,
+    hash: location.hash,
+    hasLocationControl: Boolean(button && wired.has(button) && root.dataset.geographyShell),
+    selectedKey: root.querySelector("[data-geography-selected-key]")?.dataset.geographySelectedKey || "",
+    historyTraversal: isDocumentHistoryTraversal(window),
+    askedThisSession: locationAskedThisSession(),
+  });
+  if (ask) void requestGeographyEntryLocation(button, { automatic: true });
 }
 
 function wireForms() {
@@ -1507,6 +1574,7 @@ if (root && !forwardLegacyRootHashIfNeeded()) {
     if (location.hash.startsWith("#map")) void adoptMapHashRoute();
   });
   void adoptMapHashRoute();
+  requestGeographyEntryLocationOnLoad();
   bindGeographyNavigationPopState(window, (state) => {
     // History changes the data scope too, not just the selected outline.
     void adoptDocument(location.href, { restoreHistory: true }).catch(() => location.reload());
