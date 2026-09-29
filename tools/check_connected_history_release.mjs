@@ -23,6 +23,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  ACCEPTANCE_RULE,
   CAPABILITIES,
   DOSSIER_FAMILIES,
   PRODUCTION_HOSTS,
@@ -349,6 +350,7 @@ export async function readBack(args) {
     false_positive_audit: auditAdmittedFalsePositives(artifacts),
     scheduled_cycle: scheduledCycle,
   };
+  readback.acceptance_rule = ACCEPTANCE_RULE;
   readback.acceptance = deriveAcceptance(readback);
   return readback;
 }

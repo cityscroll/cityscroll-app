@@ -754,32 +754,144 @@ export function scheduledCycleStatus({ release_deployed_at: deployedAt, observed
   };
 }
 
+/**
+ * Facts read from a read-back, one per observable clause. Each is a pure
+ * function of the read-back; nothing here is set by the runner.
+ */
+export const ACCEPTANCE_CONDITIONS = Object.freeze({
+  production_origin: (readback) => readback.evidence_class === "deployed_production_read_back"
+    && readback.delivery?.served_contains_delivery === true,
+  complete_records: (readback) => {
+    const records = readback.capabilities || [];
+    return records.length === CAPABILITIES.length
+      && records.every((record) => RECORD_FIELDS.every((field) => record[field] !== undefined && record[field] !== null));
+  },
+  all_capabilities_passed: (readback) => (readback.capabilities || []).every((record) => record.observed?.status === "passed"),
+  six_journeys_passed: (readback) => {
+    const journeys = (readback.capabilities || []).find((record) => record.id === "search-history-discovery");
+    return journeys?.observed?.result?.families_passed?.length === DOSSIER_FAMILIES.length;
+  },
+  false_positives_withheld: (readback) => {
+    const audit = readback.false_positive_audit || {};
+    return audit.status === "none_found"
+      || (audit.status === "withheld" && (audit.admitted_false_positives || []).every((row) => (audit.withheld_relations || []).includes(row.relation)));
+  },
+  scheduled_cycle_classified: (readback) => ["observed", "open", "overdue"].includes(readback.scheduled_cycle?.status),
+  no_citywide_completeness_claim: (readback) => coverageLimits(readback).some((limit) => /does not claim citywide completeness/.test(limit)),
+  no_equal_activity_claim: (readback) => coverageLimits(readback).some((limit) => /does not measure or equalize civic activity/.test(limit)),
+  outcomes_reported: (readback) => {
+    const records = readback.capabilities || [];
+    return records.length > 0
+      && records.every((record) => typeof record.realized_outcome === "string" && Array.isArray(record.unresolved_limits));
+  },
+  destinations_are_existing_routes: (readback) => (readback.capabilities || []).every((record) => (
+    CAPABILITIES.some((definition) => definition.id === record.id && definition.destination === record.destination)
+  )),
+  scheduled_cycle_observed: (readback) => readback.scheduled_cycle?.status === "observed",
+  scheduled_cycle_overdue: (readback) => readback.scheduled_cycle?.status === "overdue",
+  observed_cycle_receipt: (readback) => Boolean(readback.scheduled_cycle?.observed_cycle?.run_id),
+  dossier_only: (readback) => {
+    const journeys = (readback.capabilities || []).find((record) => record.id === "search-history-discovery");
+    return CAPABILITIES.every((definition) => definition.families.every((family) => DOSSIER_FAMILIES.includes(family)))
+      && (journeys?.observed?.result === null || journeys?.observed?.result?.expected === DOSSIER_FAMILIES.length * JOURNEY_VIEWPORTS.length);
+  },
+});
+
+function coverageLimits(readback) {
+  return (readback.capabilities || []).find((record) => record.id === "board-coverage-census")?.unresolved_limits || [];
+}
+
+/**
+ * Each acceptance letter split into its clauses. Every clause quotes a span
+ * of its letter and names either the conditions that observe it or, when this
+ * repository cannot observe it, what is unobservable. A letter reads `met` only
+ * when every clause is observed and holds; when every observable clause holds
+ * but one is unobservable, the letter reads its `unobserved` state instead.
+ * A failed condition yields `open`, or `overdue` where the letter sets a
+ * deadline that has passed.
+ */
+export const ACCEPTANCE_LETTERS = Object.freeze({
+  A1: Object.freeze({
+    letter: "Record exact query/route, steps, expected native IDs, relation and negative assertion, observed result, destination, code/data/deploy revisions, vintage and evidence class for each delivered capability; all six histories pass rendered release journeys.",
+    clauses: [
+      { span: "Record exact query/route, steps, expected native IDs, relation and negative assertion, observed result, destination, code/data/deploy revisions, vintage and evidence class", conditions: ["complete_records"] },
+      { span: "for each delivered capability", conditions: ["complete_records", "all_capabilities_passed"] },
+      { span: "all six histories pass rendered release journeys", conditions: ["production_origin", "six_journeys_passed"] },
+    ],
+  }),
+  A2: Object.freeze({
+    letter: "Correct or withhold every admitted false-positive join found in evaluation, preserving original failures; unobserved scheduled runs and unavailable public routes leave acceptance open; no claim of equal board activity or complete citywide coverage.",
+    clauses: [
+      { span: "Correct or withhold every admitted false-positive join found in evaluation, preserving original failures", conditions: ["false_positives_withheld"] },
+      { span: "unobserved scheduled runs", conditions: ["scheduled_cycle_classified"] },
+      { span: "unavailable public routes leave acceptance open", conditions: ["production_origin"] },
+      { span: "no claim of equal board activity", conditions: ["no_equal_activity_claim"] },
+      { span: "complete citywide coverage", conditions: ["no_citywide_completeness_claim"] },
+    ],
+  }),
+  A3: Object.freeze({
+    letter: "Deliver the release test and a read-only capability-check runner with retained outputs; observe a real scheduled acquisition, materialization and serving cycle, then repeat a journey outside Brooklyn Community Board 15 and an unchanged-source/idempotency check.",
+    clauses: [
+      { span: "Deliver the release test and a read-only capability-check runner with retained outputs", conditions: ["complete_records"] },
+      // scheduledCycleStatus returns "observed" only after a served scheduled run,
+      // a repeated journey outside the board and byte-identical history files.
+      { span: "observe a real scheduled acquisition, materialization and serving cycle", conditions: ["scheduled_cycle_observed"] },
+      { span: "repeat a journey outside Brooklyn Community Board 15", conditions: ["scheduled_cycle_observed"] },
+      { span: "an unchanged-source/idempotency check", conditions: ["scheduled_cycle_observed"] },
+    ],
+  }),
+  A4: Object.freeze({
+    letter: "Write realized outcomes and acceptance evidence through existing realization records for later reviewers; include remaining coverage limits and do not build or publish a separate weekly update.",
+    unobserved: "write_through_unobserved",
+    clauses: [
+      {
+        span: "through existing realization records for later reviewers",
+        unobservable: "The realization records live outside this repository; no read-back fact observes a write to them, their target, or what they carry.",
+      },
+      { span: "Write realized outcomes and acceptance evidence", conditions: ["complete_records", "outcomes_reported"] },
+      { span: "include remaining coverage limits", conditions: ["outcomes_reported", "no_citywide_completeness_claim"] },
+      { span: "do not build or publish a separate weekly update", conditions: ["destinations_are_existing_routes"] },
+    ],
+  }),
+  A5: Object.freeze({
+    letter: "Begin read-back at the first scheduled cycle after deployment, within seven days; retain the observed receipt or keep the obligation open with the next check date.",
+    overdue: "scheduled_cycle_overdue",
+    clauses: [
+      { span: "Begin read-back at the first scheduled cycle after deployment, within seven days", conditions: ["scheduled_cycle_observed"] },
+      { span: "retain the observed receipt", conditions: ["observed_cycle_receipt"] },
+      { span: "keep the obligation open with the next check date", conditions: ["scheduled_cycle_classified"] },
+    ],
+  }),
+  A6: Object.freeze({
+    letter: "Implement from the fixed six-case dossier and existing retained inputs only; do not search for or substitute additional examples. Missing sample strata and insufficient retained evidence are reportable outcomes, never positive-example quotas.",
+    clauses: [
+      { span: "Implement from the fixed six-case dossier and existing retained inputs only", conditions: ["dossier_only"] },
+      { span: "do not search for or substitute additional examples", conditions: ["dossier_only"] },
+      { span: "Missing sample strata and insufficient retained evidence are reportable outcomes, never positive-example quotas", conditions: ["outcomes_reported"] },
+    ],
+  }),
+});
+
+/**
+ * Names the clause-table derivation. Read-backs retained before it carry no
+ * rule name and were derived by an earlier expression whose A4 read `met`
+ * without observing the write-through.
+ */
+export const ACCEPTANCE_RULE = "letter-clauses.v1";
+
+/** Derive one letter's state from the condition values it reads. */
+export function deriveLetter(letter, values) {
+  const definition = ACCEPTANCE_LETTERS[letter];
+  const observable = definition.clauses.filter((clause) => clause.conditions);
+  const holds = observable.every((clause) => clause.conditions.every((name) => values[name] === true));
+  if (!holds) return definition.overdue && values[definition.overdue] === true ? "overdue" : "open";
+  return definition.clauses.some((clause) => clause.unobservable) ? definition.unobserved : "met";
+}
+
 /** Derive acceptance from a read-back. Nothing here is set by the runner. */
 export function deriveAcceptance(readback) {
-  const records = readback.capabilities || [];
-  const production = readback.evidence_class === "deployed_production_read_back" && readback.delivery?.served_contains_delivery === true;
-  const complete = records.length === CAPABILITIES.length
-    && records.every((record) => RECORD_FIELDS.every((field) => record[field] !== undefined && record[field] !== null));
-  const allPassed = records.every((record) => record.observed?.status === "passed");
-  const journeys = records.find((record) => record.id === "search-history-discovery");
-  const sixJourneys = journeys?.observed?.result?.families_passed?.length === DOSSIER_FAMILIES.length;
-  const audit = readback.false_positive_audit || {};
-  const auditClosed = audit.status === "none_found"
-    || (audit.status === "withheld" && (audit.admitted_false_positives || []).every((row) => (audit.withheld_relations || []).includes(row.relation)));
-  const coverageLimits = records.find((record) => record.id === "board-coverage-census")?.unresolved_limits || [];
-  const noActivityClaim = coverageLimits.some((limit) => /does not claim citywide completeness/.test(limit));
-  const cycle = readback.scheduled_cycle || {};
-  const dossierOnly = CAPABILITIES.every((definition) => definition.families.every((family) => DOSSIER_FAMILIES.includes(family)))
-    && (journeys?.observed?.result === null || journeys?.observed?.result?.expected === DOSSIER_FAMILIES.length * JOURNEY_VIEWPORTS.length);
-  const state = (condition, open) => (condition ? "met" : open);
-  return {
-    A1: state(production && complete && allPassed && sixJourneys, "open"),
-    A2: state(auditClosed && noActivityClaim && production, "open"),
-    A3: cycle.status === "observed" ? "met" : "open",
-    A4: state(complete && records.every((record) => typeof record.realized_outcome === "string") && noActivityClaim, "open"),
-    A5: cycle.status === "observed" ? "met" : (cycle.status === "overdue" ? "overdue" : "open"),
-    A6: state(dossierOnly, "open"),
-  };
+  const values = Object.fromEntries(Object.entries(ACCEPTANCE_CONDITIONS).map(([name, condition]) => [name, condition(readback) === true]));
+  return Object.fromEntries(Object.keys(ACCEPTANCE_LETTERS).map((letter) => [letter, deriveLetter(letter, values)]));
 }
 
 export { RECORD_FIELDS, EXPECTED_RELATIONS, MERGE_REJECTIONS, ROLE_REJECTIONS };
