@@ -38,26 +38,28 @@
     data-translation-context-strip-label="Context">
 
     <section class="near-geo-entry" aria-labelledby="near-geo-heading" data-geography-entry>
-      <p class="near-kicker">Local geography</p>
       <h1 id="near-geo-heading">What&#39;s near you?</h1>
-      <p class="near-entry-prompt">Search for a place.</p>
       <form class="near-geo-search" method="get" action="https://cityscroll.org/near-you" data-geography-search><input type="hidden" name="v" value="0"><input type="hidden" name="lens" value="property">
-      <label for="near-geo-search-input">Address or place</label>
+      <label for="near-geo-search-input">Find local <strong data-near-entry-category>Property</strong> by address or place</label>
       <div class="near-geo-search-row">
         <input id="near-geo-search-input" name="neighborhood" type="search" value="" placeholder="Neighborhood, district, or address" autocomplete="street-address" enterkeyhint="search">
         <button type="submit">Search</button>
       </div>
     </form>
       <div class="near-geo-primary-controls">
-        <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
+        <nav class="near-surface-switch" aria-label="Show local Property as" data-near-surface-switch>
           <a class="near-surface-link is-active" href="https://cityscroll.org/near-you?surface=map&amp;lens=property&amp;v=0" data-near-surface="map" aria-current="true">Map</a>
-          <a class="near-surface-link" href="https://cityscroll.org/near-you?surface=records&amp;lens=property&amp;v=0" data-near-surface="records">Browse records</a>
+          <a class="near-surface-link" href="https://cityscroll.org/near-you?surface=records&amp;lens=property&amp;v=0" data-near-surface="records">Local records</a>
         </nav>
         <div class="near-place-actions near-geo-actions">
           <button type="button" class="js-only near-location-action" data-use-location hidden>Use my location</button>
         </div>
       </div>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
+      <nav class="near-collection-entry" aria-labelledby="near-collection-entry-heading" data-near-collection-entry>
+        <h2 id="near-collection-entry-heading">Explore NYC records</h2>
+        <ul class="near-collection-links"><li><a href="/browse/contracts/" data-near-collection="family" data-browse-family="money">Contracts</a></li><li><a href="/browse/people/" data-near-collection="family" data-browse-family="people-organizations">People + organizations</a></li><li><a href="/browse/zoning/" data-near-collection="family" data-browse-family="land-property">Land</a></li><li><a href="/browse/rules/" data-near-collection="family" data-browse-family="rules-mandates">Rules</a></li><li><a href="/browse/meetings/" data-near-collection="family" data-browse-family="meetings-decisions">Meetings</a></li><li><a href="/browse/exams/" data-near-collection="family" data-browse-family="exams">Exams</a></li><li><a href="/browse/" data-near-collection="browse-all">Browse all NYC records</a></li><li><a href="/search/" data-near-collection="search">Search all records</a></li></ul>
+      </nav>
       <details class="near-entry-secondary">
         <summary>More ways to choose</summary>
         <div class="near-place-actions">

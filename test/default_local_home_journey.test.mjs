@@ -43,6 +43,10 @@ import {
   residentialPlacesFromNtaLayer,
 } from "../tools/build_worker_route_read_models.mjs";
 import { handleNearYou } from "../worker/src/near_you.mjs";
+import edgeWorker from "../site/pages_edge.mjs";
+import { BROWSE_GROUPS, browseGroupEntryRoute } from "../site/browse_view.mjs";
+import { browseSurfaceContractForRoute } from "../site/browse_surface_contracts.mjs";
+import { ASSETS as NEAR_YOU_CAPTURE_ASSETS } from "../tools/serve_near_you_capture.mjs";
 import {
   MEETING_MANIFEST_KEY,
   NEAR_YOU_MANIFEST_KEY,
@@ -272,6 +276,72 @@ test("A1 [outcome] root shell + typed Midwood address reach September 23 in thre
   const sharedPayload = await sharedDeferred.json();
   assert.match(sharedPayload.results_html, /Held in Midwood/);
   assert.match(sharedPayload.results_html, new RegExp(SEPT23_ID.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+});
+
+// Each collection the unselected entry offers, from the canonical Browse
+// taxonomy, with the server-built marker its own document carries.
+function canonicalCollections() {
+  return [
+    ...BROWSE_GROUPS.map((group) => {
+      const route = browseGroupEntryRoute(group);
+      return {
+        label: group.label,
+        route,
+        marker: group.primaryFacet
+          ? `data-browse-facet="${group.primaryFacet}"`
+          : `data-browse-surface="${browseSurfaceContractForRoute(route).surfaceId}"`,
+      };
+    }),
+    { label: "Browse all NYC records", route: "/browse/", marker: 'data-build-rendered="browse-landing"' },
+    { label: "Search all records", route: "/search/", marker: "data-search-document" },
+  ];
+}
+
+function entryCollectionLinks(html) {
+  const row = String(html).match(/<nav class="near-collection-entry"[\s\S]*?<\/nav>/)?.[0] || "";
+  return [...row.matchAll(/<a href="([^"]*)" data-near-collection="[^"]*"(?: data-browse-family="[^"]*")?>([^<]*)<\/a>/g)]
+    .map(([, href, label]) => ({ label, route: new URL(href, "https://cityscroll.org").pathname }));
+}
+
+// A followed link landed on its collection: a 200 answer (never a redirect
+// home), the collection's own document marker, and not the Near You shell.
+function landedOnCollection(status, body, collection) {
+  return status === 200 && body.includes(collection.marker) && !body.includes("data-near-you-root");
+}
+
+test("A1/A5 [outcome] root collection links open each Browse collection through the Pages handler, not the home shell", async () => {
+  const collections = canonicalCollections();
+  assert.equal(collections.length, 8);
+  const pages = { ASSETS: NEAR_YOU_CAPTURE_ASSETS };
+  const env = publicationEnv();
+  const roots = [
+    ["Worker /", await (await handleNearYou(new Request("https://cityscroll.org/"), env)).text()],
+    ["Worker /near-you/", await (await handleNearYou(new Request("https://cityscroll.org/near-you/"), env)).text()],
+    ["Pages /", await (await edgeWorker.fetch(new Request("https://cityscroll.org/"), pages)).text()],
+  ];
+  for (const [label, html] of roots) {
+    assert.match(html, /data-near-you-root/, `${label} is the Near You entry`);
+    assert.deepEqual(
+      entryCollectionLinks(html),
+      collections.map(({ label: name, route }) => ({ label: name, route })),
+      `${label} collection links`,
+    );
+  }
+  for (const collection of collections) {
+    const response = await edgeWorker.fetch(
+      new Request(`https://cityscroll.org${collection.route}`, { redirect: "manual" }),
+      pages,
+    );
+    const body = await response.text();
+    assert.ok(
+      landedOnCollection(response.status, body, collection),
+      `${collection.label} (${collection.route}) answered ${response.status} without ${collection.marker}`,
+    );
+  }
+  // Positive controls: the home shell and a redirect home cannot pass as a collection.
+  assert.equal(landedOnCollection(200, roots[2][1], collections[0]), false);
+  const home = Response.redirect("https://cityscroll.org/", 302);
+  assert.equal(landedOnCollection(home.status, "", collections[0]), false);
 });
 
 test("A2 [outcome] Kensington wider-district + BK1402 subject from root; root and /near-you agree on place", async () => {

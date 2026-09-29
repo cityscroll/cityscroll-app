@@ -6,6 +6,7 @@
  * not recompute membership, overlap percentages, or record scope.
  */
 
+import { EXAMS_SURFACE, PEOPLE_ORGANIZATIONS_SURFACE } from "./browse_surface_contracts.mjs";
 import {
   geographyNavigationMoreBoundaryLayers,
   geographyNavigationPrimaryLayers,
@@ -25,6 +26,12 @@ export const RESIDENT_GEOGRAPHY_SHELL_SCHEMA = "cityscroll.resident_geography_sh
 
 export const GEOGRAPHY_SHELL_HEADING = "What's near you?";
 export const GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL = "Browse records";
+/** Records control on the unselected entry: the current category, near a place. */
+export const GEOGRAPHY_SHELL_LOCAL_RECORDS_LABEL = "Local records";
+export const GEOGRAPHY_SHELL_DEFAULT_CATEGORY_LABEL = "Meetings";
+export const GEOGRAPHY_SHELL_COLLECTIONS_HEADING = "Explore NYC records";
+export const GEOGRAPHY_SHELL_BROWSE_ALL_LABEL = "Browse all NYC records";
+export const GEOGRAPHY_SHELL_SEARCH_ALL_LABEL = "Search all records";
 export const GEOGRAPHY_SHELL_MORE_BOUNDARIES_LABEL = "More boundaries";
 export const GEOGRAPHY_SHELL_USE_LOCATION_LABEL = "Use my location";
 export const GEOGRAPHY_SHELL_SEARCH_LABEL = "Address or place";
@@ -38,6 +45,28 @@ export const GEOGRAPHY_SHELL_SPECIAL_USE_NOTE =
   "Airports, parks, cemeteries, and other places that are not neighborhoods.";
 export const GEOGRAPHY_SHELL_DIRECTORY_EMPTY =
   "No neighborhoods match that name. Clear the filter or choose a special-use area below.";
+
+/**
+ * Browse's six top-level record families in Browse order, each with the
+ * collection its Browse card opens. People and Exams read their surface
+ * contracts; the other four are their primary facet routes. This module ships
+ * in the Near You browser graph, which does not load the Browse renderer, so
+ * the shell suite holds this list equal to BROWSE_GROUPS.
+ */
+export const GEOGRAPHY_SHELL_RECORD_FAMILIES = Object.freeze([
+  Object.freeze({ id: "money", label: "Contracts", route: "/browse/contracts/" }),
+  Object.freeze({
+    id: "people-organizations",
+    label: PEOPLE_ORGANIZATIONS_SURFACE.label,
+    route: PEOPLE_ORGANIZATIONS_SURFACE.canonicalRoute,
+  }),
+  Object.freeze({ id: "land-property", label: "Land", route: "/browse/zoning/" }),
+  Object.freeze({ id: "rules-mandates", label: "Rules", route: "/browse/rules/" }),
+  Object.freeze({ id: "meetings-decisions", label: "Meetings", route: "/browse/meetings/" }),
+  Object.freeze({ id: "exams", label: EXAMS_SURFACE.label, route: EXAMS_SURFACE.canonicalRoute }),
+]);
+export const GEOGRAPHY_SHELL_BROWSE_ALL_ROUTE = "/browse/";
+export const GEOGRAPHY_SHELL_SEARCH_ALL_ROUTE = "/search/";
 
 /** Borough order for the residential directory. */
 export const GEOGRAPHY_SHELL_BOROUGH_ORDER = Object.freeze([
@@ -467,7 +496,13 @@ export function geographyShellAreasListHtml(entriesOrDirectory, {
 export function geographyShellSearchFormHtml({
   action = "/near-you/",
   value = "",
+  category = null,
 } = {}) {
+  // On the unselected entry the label also names the category the local
+  // Map / Local records views show, so it never reads as every record type.
+  const label = category
+    ? `Find local <strong data-near-entry-category>${esc(category)}</strong> by address or place`
+    : esc(GEOGRAPHY_SHELL_SEARCH_LABEL);
   const filters = geographyNavigationFilterParams(action);
   const target = new URL(action, "https://cityscroll.invalid");
   target.search = "";
@@ -475,7 +510,7 @@ export function geographyShellSearchFormHtml({
   const actionPath = /^[a-z][a-z\d+.-]*:\/\//i.test(action) ? target.toString() : target.pathname;
   const hidden = [...filters].map(([key, value]) => `<input type="hidden" name="${esc(key)}" value="${esc(value)}">`).join("");
   return `<form class="near-geo-search" method="get" action="${esc(actionPath)}" data-geography-search>${hidden}
-      <label for="near-geo-search-input">${esc(GEOGRAPHY_SHELL_SEARCH_LABEL)}</label>
+      <label for="near-geo-search-input">${label}</label>
       <div class="near-geo-search-row">
         <input id="near-geo-search-input" name="neighborhood" type="search" value="${esc(value)}" placeholder="${esc(GEOGRAPHY_SHELL_SEARCH_PLACEHOLDER)}" autocomplete="street-address" enterkeyhint="search">
         <button type="submit">Search</button>
@@ -484,8 +519,26 @@ export function geographyShellSearchFormHtml({
 }
 
 /**
+ * Links from the unselected entry to the established citywide collections:
+ * each Browse record family, the Browse landing and record search. These are
+ * plain server-rendered anchors, so they work before and without the map.
+ */
+export function geographyShellCollectionEntryHtml({ siteBase = "" } = {}) {
+  const base = String(siteBase || "").replace(/\/$/, "");
+  const link = (route, label, kind, familyId = null) => `<li><a href="${esc(`${base}${route}`)}" data-near-collection="${esc(kind)}"${familyId ? ` data-browse-family="${esc(familyId)}"` : ""}>${esc(label)}</a></li>`;
+  const families = GEOGRAPHY_SHELL_RECORD_FAMILIES
+    .map((family) => link(family.route, family.label, "family", family.id))
+    .join("");
+  return `<nav class="near-collection-entry" aria-labelledby="near-collection-entry-heading" data-near-collection-entry>
+        <h2 id="near-collection-entry-heading">${esc(GEOGRAPHY_SHELL_COLLECTIONS_HEADING)}</h2>
+        <ul class="near-collection-links">${families}${link(GEOGRAPHY_SHELL_BROWSE_ALL_ROUTE, GEOGRAPHY_SHELL_BROWSE_ALL_LABEL, "browse-all")}${link(GEOGRAPHY_SHELL_SEARCH_ALL_ROUTE, GEOGRAPHY_SHELL_SEARCH_ALL_LABEL, "search")}</ul>
+      </nav>`;
+}
+
+/**
  * Entry chrome for a fresh, unselected Near You page: heading, search, location,
- * layer switcher, and Browse records.
+ * the Map / Local records switch for the current category, the citywide
+ * collection links, and the layer switcher.
  */
 export function renderGeographyShellEntry({
   canonicalBase = "/near-you/",
@@ -497,7 +550,10 @@ export function renderGeographyShellEntry({
   watchHref = null,
   shareHref = null,
   followDiscoveryHtml = "",
+  siteBase = "",
+  categoryLabel = GEOGRAPHY_SHELL_DEFAULT_CATEGORY_LABEL,
 } = {}) {
+  const category = String(categoryLabel || GEOGRAPHY_SHELL_DEFAULT_CATEGORY_LABEL);
   const browseHref = recordsHref || geographyNavigationUrlFromState({
     ok: true,
     surface: GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
@@ -516,27 +572,28 @@ export function renderGeographyShellEntry({
         ${actionLinks}
       </nav>`
     : "";
-  // Browse records and the one-shot location action stay outside the secondary
+  // Local records and the one-shot location action stay outside the secondary
   // disclosure so the primary ways to enter a local scope remain immediately
-  // available. Layer chrome and follow/share stay inside so the map remains in
-  // the first viewport. Nested details/summaries are avoided here: focusing a
-  // parent summary can reveal an inner summary under the enhanced map canvas and
-  // fail the focus-not-obscured gate.
+  // available. The citywide collection links follow them, still ahead of the
+  // map, so a visitor who is not looking for a place never needs the map or a
+  // location. Layer chrome and follow/share stay inside the disclosure. Nested
+  // details/summaries are avoided here: focusing a parent summary can reveal an
+  // inner summary under the enhanced map canvas and fail the
+  // focus-not-obscured gate.
   return `<section class="near-geo-entry" aria-labelledby="near-geo-heading" data-geography-entry>
-      <p class="near-kicker">Local geography</p>
       <h1 id="near-geo-heading">${esc(GEOGRAPHY_SHELL_HEADING)}</h1>
-      <p class="near-entry-prompt">Search for a place.</p>
-      ${geographyShellSearchFormHtml({ action: shareHref || canonicalBase, value: searchValue })}
+      ${geographyShellSearchFormHtml({ action: shareHref || canonicalBase, value: searchValue, category })}
       <div class="near-geo-primary-controls">
-        <nav class="near-surface-switch" aria-label="Near you view" data-near-surface-switch>
+        <nav class="near-surface-switch" aria-label="${esc(`Show local ${category} as`)}" data-near-surface-switch>
           <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? " is-active" : ""}" href="${esc(mapHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_MAP}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? ' aria-current="true"' : ""}>Map</a>
-          <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? " is-active" : ""}" href="${esc(browseHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_RECORDS}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? ' aria-current="true"' : ""}>${esc(GEOGRAPHY_SHELL_BROWSE_RECORDS_LABEL)}</a>
+          <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? " is-active" : ""}" href="${esc(browseHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_RECORDS}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? ' aria-current="true"' : ""}>${esc(GEOGRAPHY_SHELL_LOCAL_RECORDS_LABEL)}</a>
         </nav>
         <div class="near-place-actions near-geo-actions">
           <button type="button" class="js-only near-location-action" data-use-location hidden>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
         </div>
       </div>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
+      ${geographyShellCollectionEntryHtml({ siteBase })}
       <details class="near-entry-secondary">
         <summary>More ways to choose</summary>
         <div class="near-place-actions">

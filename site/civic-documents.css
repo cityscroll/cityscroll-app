@@ -4009,9 +4009,42 @@ select {
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   line-height: 1.1;
 }
-.near-entry-prompt {
+/* Citywide collections: one compact wrapping line of plain links ahead of the
+   map. Inline-size containment keeps the row from widening the entry column. */
+.near-collection-entry {
+  contain: inline-size;
+  margin: var(--space-1) 0 0;
+  font: 500 .875rem/1.4 var(--font-interface);
+}
+.near-collection-entry h2 {
+  display: inline;
+  margin: 0 var(--space-2) 0 0;
+  font: inherit;
+  font-weight: 700;
+}
+.near-collection-links {
+  display: inline;
   margin: 0;
-  color: var(--color-text-soft);
+  padding: 0;
+  list-style: none;
+}
+.near-collection-links li {
+  display: inline-block;
+  margin-inline-end: var(--space-2);
+}
+.near-collection-links a {
+  display: inline-block;
+  min-height: 24px;
+  padding-block: 2px;
+}
+@media (max-width: 560px) {
+  [data-geography-shell] > .near-geo-entry {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  [data-geography-shell] .near-geo-entry .near-geo-primary-controls {
+    margin-top: var(--space-2);
+  }
 }
 [data-geography-shell] .near-hero {
   padding-block: var(--space-4) var(--space-3);
@@ -4545,9 +4578,6 @@ select {
   }
 }
 @media (max-width: 560px) {
-  [data-geography-shell] .near-geo-entry > .near-kicker {
-    margin-bottom: var(--space-1);
-  }
   [data-geography-shell] .near-geo-entry h1 {
     font-size: 1.75rem;
   }

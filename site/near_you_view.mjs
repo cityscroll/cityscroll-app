@@ -1530,6 +1530,8 @@ export function renderNearYouBody(view) {
     watchHref: view.watchHref,
     shareHref: view.shareHref,
     followDiscoveryHtml: renderFollowDiscoveryForNearYou(view),
+    siteBase: view.siteBase,
+    categoryLabel: view.lensLabel,
   });
   const surfaceSwitch = view.hasPlace
     ? renderGeographyShellSurfaceSwitch({
