@@ -87,4 +87,4 @@ fi
 # one from being opened for the same head branch.
 gh pr create --head "$branch" --base main \
   --title "Refresh first-class resident datasets" \
-  --body "Scheduled refresh of every first-class resident dataset that was past its declared cadence. The run summary lists each dataset's freshness state and any acquisition that could not complete."
+  --body "Scheduled refresh of every first-class resident dataset that was past its declared cadence. Only datasets whose acquisition and rebuild succeeded are included here; the run summary and .artifacts/first-class-rebuild-receipt.json name any acquisition or rebuild step that did not."

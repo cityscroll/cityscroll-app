@@ -62,7 +62,22 @@ node tools/first_class_refresh.mjs --run-due
 # request carries a read model whose coherence receipt no longer matches the
 # served keyword index. The registry beside this script is the single list both
 # halves of the refresh share, and it is checked against the freshness gates.
+#
+# The rebuild itself never aborts partway through: one failed or blocked step
+# is recorded in .artifacts/first-class-rebuild-receipt.json and every step
+# that does not depend on it still runs, so this call's own exit status can
+# report a real problem even though the working tree still holds everything
+# that did rebuild cleanly. Capturing that status without tripping this
+# script's own errexit is what lets the commit and pull request below still
+# carry that partial success instead of discarding it — the same defect this
+# script's sibling workflow had for the hosted half of the refresh.
+set +e
 tools/with_local_a11y_python.sh node "$SCRIPT_DIR/rebuild-committed-read-models.mjs"
+rebuild_status=$?
+set -e
+if [ "$rebuild_status" -ne 0 ]; then
+  echo "the rebuild reported one or more problems; see .artifacts/first-class-rebuild-receipt.json. Publishing whatever it did rebuild cleanly." >&2
+fi
 
 # The registry beside this script names the paths the refresh publishes as well
 # as the read models it rebuilds, so both halves stage the same list.
@@ -78,7 +93,7 @@ fi
 
 if [ -z "$(git status --porcelain -- "${commit_paths[@]}")" ]; then
   echo "No warehouse-backed dataset changes."
-  exit 0
+  exit "$rebuild_status"
 fi
 
 git add -- "${commit_paths[@]}"
@@ -93,3 +108,7 @@ else
   PR_URL="$(gh pr view "$DATA_BRANCH" --json url --jq .url 2>/dev/null || true)"
   echo "pull request already open: ${PR_URL:-unknown}"
 fi
+
+# The pull request above already carries whatever rebuilt cleanly; this only
+# decides whether the run itself is reported healthy.
+exit "$rebuild_status"

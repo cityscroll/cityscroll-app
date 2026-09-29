@@ -29,7 +29,7 @@
 //   node ops/first-class-refresh/rebuild-committed-read-models.mjs --check-registry
 //   node ops/first-class-refresh/rebuild-committed-read-models.mjs --published-paths
 
-import { appendFileSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { appendFileSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -176,13 +176,37 @@ function assertExecutables(registry, root) {
   }
 }
 
-function runSequence(registry, root, env) {
+export const REBUILD_RECEIPT_SCHEMA = "cityscroll.first_class_rebuild_receipt.v1";
+export const REBUILD_RECEIPT_PATH = ".artifacts/first-class-rebuild-receipt.json";
+
+/**
+ * Run every declared rebuild step, in registry order, without letting one
+ * step's failure stop the ones after it. A step whose `after` list names an
+ * already-failed-or-skipped step is skipped rather than attempted, and that
+ * skip propagates to whatever depends on it in turn — so a step with no
+ * dependents (an evidence capture with nothing downstream, for instance) can
+ * fail on its own without taking any other dataset's rebuild down with it,
+ * while a genuinely required predecessor still blocks only its real
+ * descendants. Every step's outcome is recorded and returned; nothing here
+ * throws or exits for an individual step failure, so a caller always gets a
+ * complete accounting of what ran, what failed, and what was blocked.
+ */
+export function runRebuildSequence(registry, root, env) {
   assertExecutables(registry, root);
   const before = dirtyPaths(root);
   const gaps = `\n### Read-model rebuild boundaries\n\n${registry.not_rebuilt.map((entry) => `- ${entry.builder} (${entry.disposition}): ${entry.reason}`).join("\n")}\n`;
   console.log(gaps);
   if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, gaps);
+  const results = [];
+  const blocked = new Map();
   for (const step of registry.rebuild_sequence) {
+    const blockingDependency = (step.after || []).find((dependency) => blocked.has(dependency));
+    if (blockingDependency) {
+      console.error(`skipping ${step.id}: blocked by ${blockingDependency}, which did not succeed`);
+      results.push({ id: step.id, tool: step.command[0], status: "skipped", blocked_by: blockingDependency });
+      blocked.set(step.id, blockingDependency);
+      continue;
+    }
     const [tool, ...args] = step.command;
     console.log(`rebuilding ${step.id}: ${tool} ${args.join(" ")}`.trimEnd());
     // Serial by design. These builders are the repository's heavy ones and the
@@ -190,13 +214,42 @@ function runSequence(registry, root, env) {
     // budget; running them side by side would make that measurement meaningless.
     const executable = step.runtime === "python3" ? "python3" : process.execPath;
     const result = spawnSync(executable, [join(root, tool), ...args], { cwd: root, stdio: "inherit", env });
-    if (result.error) throw result.error;
-    if (result.status !== 0) {
-      console.error(`rebuild step ${step.id} failed (${tool})`);
-      process.exit(result.status ?? 1);
+    if (result.error) {
+      console.error(`rebuild step ${step.id} failed (${tool}): ${result.error.message}`);
+      results.push({ id: step.id, tool, status: "failed", reason: result.error.message });
+      blocked.set(step.id, step.id);
+      continue;
     }
+    if (result.status !== 0) {
+      console.error(`rebuild step ${step.id} failed (${tool}), exit code ${result.status}`);
+      results.push({ id: step.id, tool, status: "failed", exit_code: result.status });
+      blocked.set(step.id, step.id);
+      continue;
+    }
+    results.push({ id: step.id, tool, status: "succeeded" });
   }
   const stranded = unpublishedRebuildOutputs(before, dirtyPaths(root), publishedPaths(registry));
+  return { results, stranded };
+}
+
+export function writeRebuildReceipt(root, results, options = {}) {
+  const receipt = {
+    schema: REBUILD_RECEIPT_SCHEMA,
+    generated_at: options.now || new Date().toISOString(),
+    total_steps: results.length,
+    succeeded: results.filter((row) => row.status === "succeeded").length,
+    failed: results.filter((row) => row.status === "failed").length,
+    skipped: results.filter((row) => row.status === "skipped").length,
+    steps: results,
+  };
+  const output = join(root, options.receiptPath || REBUILD_RECEIPT_PATH);
+  mkdirSync(dirname(output), { recursive: true });
+  writeFileSync(output, `${JSON.stringify(receipt, null, 2)}\n`);
+  return receipt;
+}
+
+function runSequence(registry, root, env) {
+  const { results, stranded } = runRebuildSequence(registry, root, env);
   if (stranded.length) {
     console.error("the rebuild wrote files outside the paths the refresh commits:");
     for (const file of stranded) console.error(`  ${file}`);
@@ -207,7 +260,19 @@ function runSequence(registry, root, env) {
     );
     process.exit(1);
   }
-  console.log(`rebuilt ${registry.rebuild_sequence.length} committed read-model steps`);
+  const receipt = writeRebuildReceipt(root, results);
+  const problems = results.filter((row) => row.status !== "succeeded");
+  if (problems.length) {
+    const summary = problems.map((row) => `${row.id} (${row.status}${row.blocked_by ? `: blocked by ${row.blocked_by}` : ""})`).join(", ");
+    console.error(
+      `rebuild sequence completed with ${problems.length} of ${results.length} step(s) not succeeding: ${summary}. ` +
+        "Every other step still ran, and the datasets it rebuilt are still eligible for publication; " +
+        `see ${REBUILD_RECEIPT_PATH} for the complete accounting.`,
+    );
+  } else {
+    console.log(`rebuilt ${registry.rebuild_sequence.length} committed read-model steps`);
+  }
+  return receipt;
 }
 
 export function verificationCommands(registry, root = ROOT) {
@@ -251,8 +316,22 @@ function main(argv) {
   // One production day for builders, browser captures and the test readers,
   // including runs that cross midnight. Check-only registry reads never use it.
   const env = { ...process.env, CROL_BUILD_DAY: process.env.CROL_BUILD_DAY || new Date().toISOString().slice(0, 10) };
-  if (!argv.includes("--verify-only")) runSequence(registry, ROOT, env);
-  if (!argv.includes("--rebuild-only")) verifyFreshnessTests(registry, ROOT, env);
+  let receipt = null;
+  if (!argv.includes("--verify-only")) receipt = runSequence(registry, ROOT, env);
+  if (!argv.includes("--rebuild-only")) {
+    try {
+      verifyFreshnessTests(registry, ROOT, env);
+    } catch (error) {
+      // A failed verification is reported, not thrown: the receipt above already
+      // named which rebuild steps did not succeed, and the caller (the scheduled
+      // workflow) still needs to reach its own publication step so whatever did
+      // rebuild cleanly is not held hostage by whatever did not. The run's exit
+      // code below still marks it unhealthy.
+      console.error(error.message);
+      process.exitCode = 1;
+    }
+  }
+  if (receipt && (receipt.failed > 0 || receipt.skipped > 0)) process.exitCode = 1;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {

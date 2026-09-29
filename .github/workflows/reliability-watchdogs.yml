@@ -26,6 +26,49 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: node tools/first_class_refresh_health.mjs
 
+  # A healthy refresh loop can still leave one first-class artifact aging past
+  # its warning window — a slow publisher, a paused acquisition, a dataset
+  # that simply was not due yet the day the window opened. Before this job,
+  # the first thing anyone saw about that was a failed Pages deploy once the
+  # artifact reached its hard maximum. This raises the same owner alert
+  # served-artifact-freshness.yml already delivers, comfortably ahead of that.
+  first-class-freshness-warning-age:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Compute the current first-class freshness report
+        # Read-only against whatever main already has committed: no acquisition
+        # runs here, only the age math against the declared registry.
+        run: node tools/first_class_refresh.mjs --write-report
+      - name: Name every artifact past its warning age but not yet stale
+        run: node tools/first_class_freshness_warning_alert.mjs --write-findings
+      - name: Deliver the owner alert
+        env:
+          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          set -euo pipefail
+          finding=false
+          if [ -s .artifacts/first-class-freshness-warning-findings.txt ]; then finding=true; fi
+          node tools/deliver_ops_alert.mjs \
+            --findings-file .artifacts/first-class-freshness-warning-findings.txt \
+            --receipt .artifacts/first-class-freshness-warning-delivery-receipt.json \
+            --marker .artifacts/first-class-freshness-warning-sent-marker.json \
+            --guard first-class-freshness-warning-age \
+            --stage first_class_freshness_warning_age \
+            --finding "$finding"
+      - name: Retain the warning-age findings and delivery receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: first-class-freshness-warning-age-${{ github.run_id }}
+          path: |
+            .artifacts/first-class-freshness-warning-findings.txt
+            .artifacts/first-class-freshness-warning-delivery-receipt.json
+          if-no-files-found: warn
+
   watchdog:
     runs-on: ubuntu-latest
     steps:

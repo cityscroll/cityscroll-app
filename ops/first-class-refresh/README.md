@@ -197,6 +197,51 @@ node ops/first-class-refresh/rebuild-committed-read-models.mjs --check-registry
 uses the full command. Both refresh entry points run the same registry before
 committing; neither may publish a snapshot that failed its own freshness tests.
 
+### One failed rebuild step no longer skips every dataset's publication
+
+The sequence never aborts partway through. Each step's `after` list is the
+only thing that can stop a later one from running: a step is skipped only when
+something it actually depends on failed or was skipped, and that skip
+propagates to its own dependents in turn. A leaf step with nothing downstream —
+an evidence capture, say — can fail entirely on its own without taking any
+other dataset's rebuild down with it. Every step's outcome, including
+`skipped` ones and why, is written to
+`.artifacts/first-class-rebuild-receipt.json` (`REBUILD_RECEIPT_SCHEMA`).
+
+The scheduled workflow runs this step with `continue-on-error: true` and marks
+every step after it `if: always()`, so whatever did rebuild cleanly still
+reaches the commit and the pull request even when something else did not; the
+job still ends red for visibility, in a step that runs last, after
+publication. `test/first_class_refresh_committed_read_models.test.mjs`
+exercises the isolation directly against a small synthetic registry, including
+the positive control of every step failing (nothing publishes, and the run
+says so) and of one independent step failing (its siblings still run).
+
+`tools/first_class_refresh_run_receipt.mjs` then combines that receipt with the
+acquisition/builder receipt (`tools/first_class_refresh.mjs --run-due`) and the
+working tree's pending changes into one per-dataset accounting —
+`.artifacts/first-class-refresh-run-receipt.json` — naming, per first-class
+artifact, whether it was due, whether its acquisition and builder succeeded,
+whether the rebuild steps that feed it succeeded, and whether it is about to
+be published. Neither receipt alone can tell an idempotent run that refreshed
+nothing apart from a run that refreshed something it could not publish; this
+one can. Both refresh entry points retain all three receipts and the
+freshness report as a workflow artifact.
+
+### Warning before the hard maximum, not after
+
+A healthy refresh loop can still leave one artifact aging past its warning
+window without ever failing a run — a slow publisher, a paused acquisition, a
+dataset that was not due on the day its window opened.
+`tools/first_class_freshness_warning_alert.mjs` re-derives, from the current
+freshness report and the registry's own `warning_age_hours`, every artifact
+that has passed its warning age but not yet its hard maximum, and the
+`first-class-freshness-warning-age` job in `reliability-watchdogs.yml` delivers
+those findings through the same owner-alert rail `served-artifact-freshness.yml`
+already uses (`tools/deliver_ops_alert.mjs`, the `ADMIN_KEY` secret). Before
+this job, the first thing anyone saw about an aging artifact was a failed
+Pages deploy once it reached its hard maximum.
+
 ## Running a builder is not publishing it
 
 Both halves of the refresh commit a fixed list of pathspecs rather than the
