@@ -16,7 +16,10 @@ import {
   resolveGeographyNavigationKey,
 } from "./geography_navigation_capability.mjs";
 import {
+  GEOGRAPHY_NAVIGATION_DRAWER_OPEN,
   GEOGRAPHY_NAVIGATION_EPHEMERAL_KEYS,
+  GEOGRAPHY_NAVIGATION_SURFACE_MAP,
+  GEOGRAPHY_NAVIGATION_SURFACE_RECORDS,
   geographyNavigationPayloadLeaksEphemeral,
   omitGeographyNavigationEphemeral,
 } from "./geography_navigation_state.mjs";
@@ -831,6 +834,82 @@ export function geographyEntryUnavailableApiResult() {
   return recoveryResult(GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_UNAVAILABLE, {
     source: GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION,
   });
+}
+
+/**
+ * Typed addresses, place names and an explicit location request are a request
+ * for local records, so they open the Records surface. A click on the map is
+ * a map gesture and keeps the Map surface with its drawer.
+ */
+const RECORDS_ENTRY_SOURCES = new Set([
+  GEOGRAPHY_ENTRY_SOURCES.ADDRESS,
+  GEOGRAPHY_ENTRY_SOURCES.PLACE_LABEL,
+  GEOGRAPHY_ENTRY_SOURCES.GEOLOCATION,
+]);
+
+export function geographyEntryDestinationSurface(source) {
+  return RECORDS_ENTRY_SOURCES.has(source)
+    ? GEOGRAPHY_NAVIGATION_SURFACE_RECORDS
+    : GEOGRAPHY_NAVIGATION_SURFACE_MAP;
+}
+
+/**
+ * Durable navigation state after a successful entry action. The current state
+ * keeps its comparison layer and filters; only the selection and the surface
+ * the interaction asked for change. Coordinates never enter this state.
+ */
+export function geographyEntrySelectionState(current, entry) {
+  if (!entry?.ok || !entry.selection) return null;
+  const surface = geographyEntryDestinationSurface(entry.source);
+  const mapSurface = surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP;
+  return {
+    ...(current || {}),
+    ok: true,
+    geo: entry.selection.geo,
+    key: entry.selection.key,
+    type: entry.selection.type,
+    id: entry.selection.id,
+    surface,
+    drawer: mapSurface ? GEOGRAPHY_NAVIGATION_DRAWER_OPEN : null,
+    focus: mapSurface ? entry.selection.key : null,
+  };
+}
+
+/** A resolved place whose document could not be adopted. */
+export const GEOGRAPHY_ENTRY_ADOPTION_FAILURE = "adoption_failure";
+
+export const GEOGRAPHY_ENTRY_RECOVERY_ACTIONS = Object.freeze({
+  RETRY: "retry",
+  ENTER_ADDRESS: "enter_address",
+  BROWSE_ALL: "browse_all",
+});
+
+// Trying again can change the outcome only for a transient failure.
+const RETRYABLE_ENTRY_REASONS = new Set([
+  GEOGRAPHY_ENTRY_RECOVERY.GEOLOCATION_TIMEOUT,
+  GEOGRAPHY_ENTRY_RECOVERY.LOOKUP_FAILURE,
+  GEOGRAPHY_ENTRY_ADOPTION_FAILURE,
+]);
+
+/**
+ * At most two inline next steps for a failed entry action: typing an address
+ * and every NYC record, with Retry taking one place when it is meaningful. A
+ * typed search that failed transiently already has its text in the input, so
+ * its second step is the citywide collection instead.
+ */
+export function geographyEntryRecoveryActions(reason, {
+  source = null,
+  hasAddressInput = true,
+  canRetry = true,
+} = {}) {
+  const { RETRY, ENTER_ADDRESS, BROWSE_ALL } = GEOGRAPHY_ENTRY_RECOVERY_ACTIONS;
+  const retry = canRetry && RETRYABLE_ENTRY_REASONS.has(reason);
+  const typed = source === GEOGRAPHY_ENTRY_SOURCES.ADDRESS
+    || source === GEOGRAPHY_ENTRY_SOURCES.PLACE_LABEL;
+  const actions = retry ? [RETRY] : [];
+  if (hasAddressInput && !(retry && typed)) actions.push(ENTER_ADDRESS);
+  if (actions.length < 2) actions.push(BROWSE_ALL);
+  return Object.freeze(actions);
 }
 
 /** Strip ephemeral keys from a candidate URL/storage/analytics/error bag. */

@@ -2268,6 +2268,11 @@ select {
   cursor: pointer;
 }
 
+/* Until the map island binds it, the location button stays out of the page. */
+.near-location-action[hidden] {
+  display: none;
+}
+
 .near-form label,
 .following-form label,
 .following-subscribe label {
@@ -2400,6 +2405,11 @@ select {
 
 .near-map-status,
 .following-form [role="status"] {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.near-entry-recovery {
   grid-column: 1 / -1;
   margin: 0;
 }

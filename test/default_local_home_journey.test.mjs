@@ -15,10 +15,14 @@ import test from "node:test";
 
 import { createGeographyAddressEntryResolver } from "../site/geography_address_entry.mjs";
 import {
+  geographyEntrySelectionState,
   resolveGeographyEntryFromGeolocationError,
   resolveGeographyEntryFromPlaceLabel,
 } from "../site/geography_navigation_entry.mjs";
-import { parseGeographyNavigationState } from "../site/geography_navigation_state.mjs";
+import {
+  geographyNavigationUrlWithFilters,
+  parseGeographyNavigationState,
+} from "../site/geography_navigation_state.mjs";
 import {
   isNearYouDeferredPath,
   isNearYouDocumentPath,
@@ -276,6 +280,64 @@ test("A1 [outcome] root shell + typed Midwood address reach September 23 in thre
   const sharedPayload = await sharedDeferred.json();
   assert.match(sharedPayload.results_html, /Held in Midwood/);
   assert.match(sharedPayload.results_html, new RegExp(SEPT23_ID.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+});
+
+const ENTRY_CLOCK = "2026-09-28T16:00:00.000Z";
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// The destination a typed entry adopts, built the way the map island builds it.
+function typedEntryDestination(entry) {
+  const state = geographyEntrySelectionState(parseGeographyNavigationState(""), entry);
+  return geographyNavigationUrlWithFilters(state, { base: "https://cityscroll.org/near-you/" });
+}
+
+function recordCard(html, id) {
+  const start = html.indexOf(`data-record-id="${id}"`);
+  if (start < 0) return "";
+  const open = html.lastIndexOf("<li", start);
+  const close = html.indexOf("</li>", start);
+  return html.slice(open, close);
+}
+
+test("A1 [outcome] typed Midwood and subject addresses open their Records; September 23 is past at the pinned clock", async () => {
+  const env = publicationEnv();
+  const resolve = productionAddressResolver();
+  await withPinnedClock(ENTRY_CLOCK, async () => {
+    const midwood = await resolve("810 East 16th Street", { layerData: LAYER_DATA });
+    assert.equal(midwood.entry.ok, true);
+    assert.equal(midwood.entry.selection.geo, MIDWOOD_GEO);
+    const href = typedEntryDestination(midwood.entry);
+    const url = new URL(href);
+    assert.equal(url.searchParams.get("surface"), "records");
+    assert.equal(url.searchParams.has("drawer"), false);
+    assert.doesNotMatch(href, /810|East|16th/i, "typed text stays out of the destination");
+
+    const response = await handleNearYou(new Request(href), env);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, /data-near-you-root[^>]*data-near-surface="records"/);
+    assert.match(html, /<h1>Midwood<\/h1>/);
+    assert.match(html, /data-lens="meetings"/);
+    assert.match(html, /data-near-surface="map"[^>]*>Map<\/a>/);
+
+    const deferredUrl = new URL(href);
+    deferredUrl.pathname = "/near-you/deferred.json";
+    const deferred = await (await handleNearYou(new Request(deferredUrl), env)).json();
+    assert.match(deferred.results_html, /Meetings records/);
+    const card = recordCard(deferred.results_html, SEPT23_ID);
+    assert.ok(card, "September 23 meeting is in Midwood's Records");
+    assert.match(card, /data-record-timing="past"/);
+    assert.match(card, /810 East 16th Street, Brooklyn, NY, 11230/);
+    assert.match(card, new RegExp(`href="[^"]*${escapeRegExp(SEPT23_DETAIL)}"`));
+
+    const subject = await resolve("461 Coney Island Avenue", { layerData: LAYER_DATA });
+    assert.equal(subject.entry.ok, true);
+    assert.equal(subject.entry.selection.geo, SUBJECT_GEO);
+    assert.equal(new URL(typedEntryDestination(subject.entry)).searchParams.get("surface"), "records");
+  });
+  // Converse control: the same row is upcoming before its date, so "past" is the clock's reading.
+  const before = await viewForGeo(MIDWOOD_GEO, "2026-09-23T14:00:00.000Z");
+  assert.match(recordCard(before.html, SEPT23_ID), /data-record-timing="upcoming"/);
 });
 
 // Each collection the unselected entry offers, from the canonical Browse

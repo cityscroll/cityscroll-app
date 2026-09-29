@@ -7,11 +7,13 @@
  * restoration can land correctly, then scroll anchoring from those late
  * insertions moves the viewport. This module remembers the leaving offset on
  * `pagehide` and re-applies it after the island settles on a back/forward
- * traversal.
+ * traversal. A leaving control may also leave a short focus token so the
+ * returning document can put keyboard focus back where the reader left.
  */
 
 export const DOCUMENT_ROUTE_SCROLL_SCHEMA = "cityscroll.document_route_scroll.v1";
 export const DOCUMENT_ROUTE_SCROLL_KEY_PREFIX = "cityscroll:route-scroll:";
+export const DOCUMENT_ROUTE_FOCUS_TOKEN_MAX_LENGTH = 512;
 
 const boundWindows = new WeakSet();
 
@@ -43,14 +45,22 @@ export function normalizeDocumentRouteScrollPoint(value) {
   return Math.round(number);
 }
 
+function documentRouteFocusToken(value) {
+  return typeof value === "string" && value && value.length <= DOCUMENT_ROUTE_FOCUS_TOKEN_MAX_LENGTH
+    ? value
+    : null;
+}
+
 export function readDocumentRouteScrollEntry(storage, locationLike) {
   if (!storage || typeof storage.getItem !== "function") return null;
   try {
     const parsed = JSON.parse(storage.getItem(documentRouteScrollKey(locationLike)) || "null");
     if (!Number.isFinite(parsed?.x) || !Number.isFinite(parsed?.y)) return null;
+    const focus = documentRouteFocusToken(parsed.focus);
     return {
       x: normalizeDocumentRouteScrollPoint(parsed.x),
       y: normalizeDocumentRouteScrollPoint(parsed.y),
+      ...(focus ? { focus } : {}),
     };
   } catch {
     return null;
@@ -59,12 +69,14 @@ export function readDocumentRouteScrollEntry(storage, locationLike) {
 
 export function writeDocumentRouteScrollEntry(storage, locationLike, point) {
   if (!storage || typeof storage.setItem !== "function") return false;
+  const focus = documentRouteFocusToken(point?.focus);
   try {
     storage.setItem(
       documentRouteScrollKey(locationLike),
       JSON.stringify({
         x: normalizeDocumentRouteScrollPoint(point?.x),
         y: normalizeDocumentRouteScrollPoint(point?.y),
+        ...(focus ? { focus } : {}),
       }),
     );
     return true;
@@ -82,7 +94,7 @@ export function clearDocumentRouteScrollEntry(storage, locationLike) {
   }
 }
 
-export function rememberDocumentRouteScroll(win = globalThis) {
+export function rememberDocumentRouteScroll(win = globalThis, { focus = null } = {}) {
   const target = asWindow(win);
   if (!target?.location) return false;
   return writeDocumentRouteScrollEntry(
@@ -91,6 +103,7 @@ export function rememberDocumentRouteScroll(win = globalThis) {
     {
       x: target.scrollX || 0,
       y: target.scrollY || 0,
+      focus,
     },
   );
 }

@@ -54,6 +54,13 @@ def ready(page, selected=False, allow_unavailable=False):
         }""", timeout=30000)
     assert page.locator('#nearMapSvg').is_hidden()
 
+def show_map(page):
+    """Typed entry opens the place's Records; the Map switch brings the map back."""
+    page.wait_for_function("() => document.querySelector('[data-near-you-root]')?.dataset.nearSurface === 'records'")
+    assert page.locator('#near-results-heading').is_visible()
+    page.locator('[data-near-surface-switch] [data-near-surface="map"]').first.click()
+    page.wait_for_function("() => document.querySelector('[data-near-you-root]')?.dataset.nearSurface === 'map'")
+
 def main():
     server = None
     base = os.environ.get('CROL_BASE')
@@ -74,7 +81,8 @@ def main():
                 search=page.locator('[data-geography-search] input[name="neighborhood"]')
                 search.fill('Tribeca-Civic Center')
                 search.press('Enter')
-                page.wait_for_url('**geo=nta2020%3AMN0102**')
+                page.wait_for_url('**geo=nta2020%3AMN0102**surface=records**')
+                show_map(page)
                 ready(page,selected=True)
                 assert page.url.find('scope=') == -1
                 assert 'lens=meetings' in page.url
@@ -96,10 +104,18 @@ def main():
                 if os.environ.get('CROL_SCREENSHOT_DIR'):
                     page.screenshot(path=os.environ['CROL_SCREENSHOT_DIR']+f'/selected-{width}.png',full_page=True)
                 assert 'nta2020%3AMN0102' in page.locator('[data-near-you-root]').get_attribute('data-near-deferred-href')
+                # Back first returns to the Records the typed entry opened, then
+                # to the unselected entry; Forward replays both steps.
+                page.go_back(wait_until='domcontentloaded')
+                page.wait_for_function("() => new URL(location.href).searchParams.get('surface') === 'records'")
+                assert 'geo=nta2020%3AMN0102' in page.url
                 page.go_back(wait_until='domcontentloaded')
                 page.wait_for_function("() => !new URL(location.href).searchParams.has('geo')")
                 ready(page)
                 page.go_forward(wait_until='domcontentloaded')
+                page.wait_for_function("() => new URL(location.href).searchParams.get('surface') === 'records'")
+                page.go_forward(wait_until='domcontentloaded')
+                page.wait_for_function("() => new URL(location.href).searchParams.get('surface') === 'map'")
                 ready(page,selected=True)
                 page.reload(wait_until='domcontentloaded')
                 print('reload',flush=True)
@@ -112,6 +128,8 @@ def main():
                 }""")
                 canvas.click(position=point)
                 page.wait_for_url('**geo=nta2020%3AMN0101**')
+                # A map click is a map gesture: it keeps the Map, unlike typed entry.
+                assert parse_qs(urlparse(page.url).query).get('surface')==['map'], page.url
                 ready(page,selected=True)
                 page.evaluate('window.__sameDocument=true')
                 # Residential directory keeps the long borough list behind a closed
@@ -188,7 +206,8 @@ def main():
                 page.locator('.near-place-guide > summary').click()
                 page.locator('[data-geography-search] input[name="neighborhood"]').fill('Tribeca-Civic Center')
                 page.locator('[data-geography-search] button[type="submit"]').click()
-                page.wait_for_url('**geo=nta2020%3AMN0102**')
+                page.wait_for_url('**geo=nta2020%3AMN0102**surface=records**')
+                show_map(page)
                 ready(page,selected=True,allow_unavailable=True)
                 query=parse_qs(urlparse(page.url).query)
                 assert query.get('agency')==['Transportation'] and query.get('q')==['curb']

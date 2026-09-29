@@ -34,6 +34,9 @@ export const GEOGRAPHY_SHELL_BROWSE_ALL_LABEL = "Browse all NYC records";
 export const GEOGRAPHY_SHELL_SEARCH_ALL_LABEL = "Search all records";
 export const GEOGRAPHY_SHELL_MORE_BOUNDARIES_LABEL = "More boundaries";
 export const GEOGRAPHY_SHELL_USE_LOCATION_LABEL = "Use my location";
+export const GEOGRAPHY_SHELL_ENTER_ADDRESS_LABEL = "Enter an address";
+export const GEOGRAPHY_SHELL_ENTRY_RETRY_LABEL = "Try again";
+export const GEOGRAPHY_SHELL_ENTRY_RECOVERY_LABEL = "Other ways to find records";
 export const GEOGRAPHY_SHELL_SEARCH_LABEL = "Address or place";
 export const GEOGRAPHY_SHELL_SEARCH_PLACEHOLDER = "Neighborhood, district, or address";
 export const GEOGRAPHY_SHELL_AREAS_HEADING = "Areas";
@@ -533,6 +536,24 @@ export function geographyShellCollectionEntryHtml({ siteBase = "" } = {}) {
         <h2 id="near-collection-entry-heading">${esc(GEOGRAPHY_SHELL_COLLECTIONS_HEADING)}</h2>
         <ul class="near-collection-links">${families}${link(GEOGRAPHY_SHELL_BROWSE_ALL_ROUTE, GEOGRAPHY_SHELL_BROWSE_ALL_LABEL, "browse-all")}${link(GEOGRAPHY_SHELL_SEARCH_ALL_ROUTE, GEOGRAPHY_SHELL_SEARCH_ALL_LABEL, "search")}</ul>
       </nav>`;
+}
+
+/**
+ * Inline next steps after an address, place or location entry fails, placed
+ * beside the entry status. Action ids come from the entry module's recovery
+ * plan: Retry and Enter an address are buttons the map island binds; every
+ * NYC record is an ordinary link.
+ */
+export function geographyShellEntryRecoveryHtml(actions = [], { siteBase = "" } = {}) {
+  const base = String(siteBase || "").replace(/\/$/, "");
+  const controls = {
+    retry: `<button type="button" data-near-entry-recovery-action="retry">${esc(GEOGRAPHY_SHELL_ENTRY_RETRY_LABEL)}</button>`,
+    enter_address: `<button type="button" data-near-entry-recovery-action="enter_address">${esc(GEOGRAPHY_SHELL_ENTER_ADDRESS_LABEL)}</button>`,
+    browse_all: `<a href="${esc(`${base}${GEOGRAPHY_SHELL_BROWSE_ALL_ROUTE}`)}" data-near-entry-recovery-action="browse_all">${esc(GEOGRAPHY_SHELL_BROWSE_ALL_LABEL)}</a>`,
+  };
+  const items = (actions || []).map((action) => controls[action]).filter(Boolean);
+  if (!items.length) return "";
+  return `<div class="near-place-actions near-entry-recovery" role="group" aria-label="${esc(GEOGRAPHY_SHELL_ENTRY_RECOVERY_LABEL)}" data-near-entry-recovery>${items.join("")}</div>`;
 }
 
 /**
