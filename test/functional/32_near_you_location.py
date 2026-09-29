@@ -710,6 +710,10 @@ def check_citywide_links_without_enhancement(browser: Browser, base: str) -> lis
         state = page.evaluate(CITYWIDE_STATE_JS)
         assert 1 <= len(state["ids"]) <= 3 and state["view_all"], state
         assert state["collections"] == ["citywide", "virtual", "unlocated"], state
+        # Every kept preview title is still a visible native record link.
+        titles = page.locator(".near-special-records li.near-record > a.near-record-title-link")
+        assert titles.count() == len(state["ids"]), state
+        assert all(titles.nth(i).is_visible() for i in range(titles.count())), "a preview title is hidden"
         results.append({"case": "citywide-failed-hydration", "preview": len(state["ids"])})
     finally:
         journey.close()

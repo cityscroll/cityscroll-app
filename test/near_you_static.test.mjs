@@ -1115,6 +1115,12 @@ test("A6: before a place is chosen, citywide records come after the entry row an
   assert.ok(at < html.indexOf('class="near-geo-workspace"'), "before the map and area directory");
   assert.match(section, /data-near-special-records="entry"/);
   assert.equal(previewIds(html).length, NEAR_YOU_SPECIAL_PREVIEW_LIMIT);
+  // In the document each preview title is the native record link; the deferred
+  // section that replaces it adds the title-sized Inspect control.
+  assert.equal((section.match(/class="near-record-title-link near-record-title"/g) || []).length, 3);
+  assert.doesNotMatch(section, /<button\b/);
+  const deferredSection = specialSection(renderNearYouDeferredParts(citywideView("https://cityscroll.org/near-you/", citywideRows())).bagsHtml);
+  assert.equal((deferredSection.match(/<button class="near-record-inspect near-record-title"/g) || []).length, 3);
   // A category whose special buckets are not published shows no collection, not a zero.
   const floor = citywideRows();
   floor.district_items.citywide = {};

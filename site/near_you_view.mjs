@@ -1157,7 +1157,7 @@ function placeRoleBadge(role) {
   return `<span class="near-record-role" data-place-role="${esc(role)}">${esc(placeRoleUserLabel(role))}</span>`;
 }
 
-function recordCard(record, { now = null } = {}) {
+function recordCard(record, { now = null, inspect = true } = {}) {
   const meetingSource = record.meeting_origin
     ? `<div class="near-record-source" data-meeting-origin="${esc(record.meeting_origin)}">${record.source_url
       ? `<a href="${esc(record.source_url)}" rel="noopener noreferrer">${esc(meetingOriginLabel(record.meeting_origin))}</a>`
@@ -1168,7 +1168,8 @@ function recordCard(record, { now = null } = {}) {
   const placement = appearanceReason(record);
   const venueAddress = venueAddressLabel(record);
   const facts = nearYouRecordInspectionFacts(record, { now });
-  const inspectButton = facts
+  // A card without Inspect keeps its title as the record link.
+  const inspectButton = facts && inspect
     ? renderNearYouRecordInspectButton(facts, { escape: esc })
     : "";
   const fullRecord = facts
@@ -1203,9 +1204,9 @@ function recordCard(record, { now = null } = {}) {
   </li>`;
 }
 
-function recordList(records, emptyCopy = "No records match these filters.", { now = null, className = "" } = {}) {
+function recordList(records, emptyCopy = "No records match these filters.", { now = null, className = "", inspect = true } = {}) {
   if (!records.length) return `<p class="near-empty">${esc(emptyCopy)}</p>`;
-  return `<ol class="near-records${className ? ` ${className}` : ""}">${records.map((record) => recordCard(record, { now })).join("")}</ol>`;
+  return `<ol class="near-records${className ? ` ${className}` : ""}">${records.map((record) => recordCard(record, { now, inspect })).join("")}</ol>`;
 }
 
 function hiddenScopeFields(scope, omit = new Set()) {
@@ -1315,7 +1316,9 @@ function renderNearYouSpecialRecords(view, { position = "after-results", shell =
           : ""}`
         : ""}`;
     } else {
-      body = recordList(citywide.preview, undefined, { now: view.now, className: "near-citywide-preview" });
+      // The document's cards are plain record links; the deferred section that
+      // replaces them adds Inspect.
+      body = recordList(citywide.preview, undefined, { now: view.now, className: "near-citywide-preview", inspect: !shell });
     }
     citywideHtml = `<div class="near-citywide" data-bag="citywide"${failed ? ` data-near-section-state="unavailable"` : ""}>
       <h2 id="near-bags-heading" tabindex="-1"><span>${esc(labels.citywide)}</span> ${countMarkup(citywide.count)}</h2>

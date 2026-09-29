@@ -2801,6 +2801,11 @@ select {
   display: none;
 }
 
+/* A card rendered without Inspect keeps its title as the record link. */
+[data-near-you-record-inspection-ready] .near-record:not(:has(> .near-record-inspect)) > .near-record-title-link {
+  display: inline;
+}
+
 [data-near-you-record-inspection-ready] .near-record-inspect {
   display: inline;
   width: 100%;
