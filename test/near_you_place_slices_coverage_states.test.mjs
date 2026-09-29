@@ -36,10 +36,21 @@ import {
 } from "../worker/src/lib/route_read_model_kv.mjs";
 import {
   buildNearYou,
+  decideLocalGeographyPublicationActivation,
   decideNearYouManifestActivation,
+  placeCoverageState,
   requiredNearYouSliceIds,
   residentialPlacesFromNtaLayer,
 } from "../tools/build_worker_route_read_models.mjs";
+import {
+  geographyCoverageForLens,
+  geographyRecordProjection,
+} from "../site/geography_navigation_records.mjs";
+import {
+  LAND_GEOGRAPHY_ARTIFACT_UNAVAILABLE,
+  landNtaWatchMatchingIds,
+  transformLandGeographyWatchRows,
+} from "../site/land_nta_watch_scope.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const ROOT_PATH = fileURLToPath(ROOT);
@@ -386,4 +397,269 @@ test("fail-closed: ambiguous or missing classifier fixtures are rejected, never 
   assert.match(byId["reject-missing-results-html"].error, /no results_html/);
   assert.match(byId["reject-unexpected-http-status"].error, /unexpected HTTP 500/);
   assert.match(byId["reject-error-status-with-deferred-schema"].error, /unexpected HTTP 503/);
+});
+
+// --- Coverage metadata through route publication (public alias c419deec4d475)
+//
+// A compact fixture extracted verbatim from a pinned commit carries the Land
+// coverage shape (index status, per-lens generation and source dates, and the
+// nta2020 type row) with the BK1503 missing-meetings, BX0101 explicit [] and
+// MN0102 positive memberships. Each case compares the same key/lens projection
+// on the full artifact with the one read back through the real builder, an
+// in-memory KV, and loadNearYouActivity.
+
+const pinned = readJson("test/fixtures/near_you_coverage_semantics.v1.json");
+const PINNED_KEYS = pinned.keys;
+const PINNED_RESIDENTIAL = pinned.residential_places;
+
+function pinnedActivity(mutate = () => {}) {
+  const activity = structuredClone(pinned.activity);
+  mutate(activity);
+  return activity;
+}
+
+function readCountingKv(values) {
+  const reads = [];
+  return { reads, store: { async get(key) { reads.push(key); return values.get(key) || null; } } };
+}
+
+// Publish through the real builder, load through the real loader, and require
+// that the observation actually traversed the published slice: a loader stub
+// that returns the source object (or any value not read from KV) is refused.
+async function publishAndLoad(activity, key, lens, { load = loadNearYouActivity, transform = (v) => v } = {}) {
+  const version = `coverage-${lens}`;
+  const built = buildNearYou(activity, {}, version, { residentialPlaces: PINNED_RESIDENTIAL });
+  const values = new Map(built.entries.map(({ key: k, value }) => [k, transform(value)]));
+  values.set(NEAR_YOU_MANIFEST_KEY, JSON.stringify(built.manifest));
+  const sliceKey = built.manifest.slices[`${key}:${lens}`];
+  const { reads, store } = readCountingKv(values);
+  const loaded = await load({ ALERT_STATE: store }, { place: { geographies: [key] }, facets: { domains: [lens] } }, lens);
+  const traversed = reads.includes(sliceKey) && loaded?.version === version && loaded.activity !== activity;
+  return { built, values, sliceKey, loaded, traversed, slice: JSON.parse(values.get(sliceKey)) };
+}
+
+function projectionFacts(projection) {
+  return { state: projection.state, exact: projection.exact, count: projection.count, ids: [...projection.ids] };
+}
+
+// Findings, never a bare boolean: a failure names what diverged.
+async function roundTripFindings(activity, key, lens, options = {}) {
+  const findings = [];
+  const before = geographyRecordProjection(activity, { key, lens });
+  const { loaded, traversed, slice } = await publishAndLoad(activity, key, lens, options);
+  if (!traversed) findings.push("observation did not traverse the published slice");
+  const after = geographyRecordProjection(loaded.activity, { key, lens });
+  if (JSON.stringify(projectionFacts(before)) !== JSON.stringify(projectionFacts(after))) {
+    findings.push(`projection ${JSON.stringify(projectionFacts(before))} became ${JSON.stringify(projectionFacts(after))}`);
+  }
+  const expectedCoverage = geographyCoverageForLens(activity.geography_items.coverage, lens);
+  const loadedCoverage = loaded.activity.geography_items?.coverage;
+  if (JSON.stringify(expectedCoverage) !== JSON.stringify(loadedCoverage)) {
+    findings.push(`coverage ${JSON.stringify(expectedCoverage)?.slice(0, 80)} became ${JSON.stringify(loadedCoverage)?.slice(0, 80)}`);
+  }
+  return { findings, before, after, loaded, slice };
+}
+
+function flipNtaLandCoverage(activity) {
+  activity.geography_items.coverage.by_lens.land.types.nta2020.status = "unavailable";
+  activity.geography_items.coverage.by_lens.land.types.nta2020.reason = "source_generation_failed";
+}
+
+test("A1: an unavailable nta2020 Land coverage never publishes its old IDs as current exact membership", async () => {
+  const key = PINNED_KEYS.positive_meetings;
+  const flipped = pinnedActivity(flipNtaLandCoverage);
+  const oldIds = flipped.geography_items.by_key[key].land;
+  assert.ok(oldIds.length > 0, "the old IDs are still present in the source");
+
+  const before = geographyRecordProjection(flipped, { key, lens: "land" });
+  assert.deepEqual(projectionFacts(before), { state: "unavailable", exact: false, count: null, ids: [] });
+
+  const { findings, after, loaded, slice } = await roundTripFindings(flipped, key, "land");
+  assert.deepEqual(findings, []);
+  assert.deepEqual(projectionFacts(after), { state: "unavailable", exact: false, count: null, ids: [] });
+  // The failure is carried, not the absence of data: the slice still lists the
+  // old IDs, and its coverage row is what keeps them from counting.
+  assert.deepEqual(slice.activity.geography_items.by_key[key].land, oldIds);
+  assert.equal(slice.activity.geography_items.coverage.by_lens.land.types.nta2020.status, "unavailable");
+  assert.equal(slice.coverage.state, "source_unavailable");
+  assert.equal(placeCoverageState(flipped, key, "land"), "source_unavailable");
+
+  // The Worker Land watch reads the same loaded metadata and refuses too.
+  assert.throws(
+    () => transformLandGeographyWatchRows(loaded, { status: "all", stage: "any", geographies: [key] }, { catalogRows: [] }),
+    (error) => error?.code === LAND_GEOGRAPHY_ARTIFACT_UNAVAILABLE,
+  );
+
+  // Converse control: the unflipped pinned coverage publishes the same IDs as
+  // current exact membership, and the watch accepts the loaded artifact.
+  const ready = await roundTripFindings(pinnedActivity(), key, "land");
+  assert.deepEqual(ready.findings, []);
+  assert.deepEqual(projectionFacts(ready.after), { state: "ready", exact: true, count: oldIds.length, ids: [...oldIds].map(String).sort() });
+  assert.equal(ready.slice.coverage.state, "ready");
+  const watch = landNtaWatchMatchingIds({
+    filter: { status: "all", stage: "any", geographies: [key] }, activityPayload: ready.loaded, source: "activity",
+  });
+  assert.equal(watch.status, "ready");
+});
+
+test("A2: ready, explicit zero, unfilterable, incomplete and error round-trip with their generation fields", async () => {
+  const landGeneration = pinned.activity.geography_items.coverage.by_lens.land;
+  const cases = [
+    { name: "positive meetings (MN0102)", key: PINNED_KEYS.positive_meetings, lens: "meetings", state: "ready" },
+    { name: "positive land (MN0102)", key: PINNED_KEYS.positive_meetings, lens: "land", state: "ready" },
+    { name: "explicit zero meetings (BX0101)", key: PINNED_KEYS.explicit_zero_meetings, lens: "meetings", state: "zero" },
+    { name: "missing meetings lens (BK1503)", key: PINNED_KEYS.unfilterable_meetings, lens: "meetings", state: "unfilterable" },
+    {
+      name: "non-list membership",
+      key: PINNED_KEYS.explicit_zero_meetings,
+      lens: "meetings",
+      state: "incomplete",
+      mutate: (a) => { a.geography_items.by_key[PINNED_KEYS.explicit_zero_meetings].meetings = null; },
+    },
+    {
+      name: "partial Land lens coverage",
+      key: PINNED_KEYS.explicit_zero_meetings,
+      lens: "land",
+      state: "incomplete",
+      mutate: (a) => { a.geography_items.coverage.by_lens.land.status = "partial"; },
+    },
+    {
+      name: "failed coverage index",
+      key: PINNED_KEYS.positive_meetings,
+      lens: "meetings",
+      state: "error",
+      mutate: (a) => { a.geography_items.coverage.status = "error"; },
+    },
+    { name: "unpublished residential neighborhood", key: PINNED_KEYS.unpublished, lens: "meetings", state: "unavailable" },
+  ];
+  for (const row of cases) {
+    const activity = pinnedActivity(row.mutate);
+    const { findings, before, after, loaded } = await roundTripFindings(activity, row.key, row.lens);
+    assert.deepEqual(findings, [], row.name);
+    assert.equal(before.state, row.state, row.name);
+    assert.equal(after.state, row.state, row.name);
+    assert.equal(after.exact, row.state === "ready" || row.state === "zero", row.name);
+    assert.equal(after.count === null, !(row.state === "ready" || row.state === "zero"), row.name);
+    if (row.lens === "land") {
+      const lensCoverage = loaded.activity.geography_items.coverage.by_lens.land;
+      assert.equal(lensCoverage.generation_id, landGeneration.generation_id, row.name);
+      assert.equal(lensCoverage.content_id, landGeneration.content_id, row.name);
+      assert.deepEqual(lensCoverage.source_dates, landGeneration.source_dates, row.name);
+      assert.equal(lensCoverage.types.nta2020.generation_id, landGeneration.types.nta2020.generation_id, row.name);
+    } else {
+      // Bounded to the requested category: a meetings slice carries no Land row.
+      assert.deepEqual(Object.keys(loaded.activity.geography_items.coverage.by_lens), [], row.name);
+    }
+  }
+
+  // The producer's three meetings shapes stay distinct, and no Land or
+  // Property member is lent to BK1503 as meetings membership.
+  const { after: bk } = await roundTripFindings(pinnedActivity(), PINNED_KEYS.unfilterable_meetings, "meetings");
+  assert.deepEqual(bk.ids, []);
+  assert.equal(bk.count, null);
+  assert.equal(Object.hasOwn(pinned.activity.geography_items.by_key[PINNED_KEYS.unfilterable_meetings], "meetings"), false);
+});
+
+test("A4: a legacy slice without coverage keeps explicit membership and unavailable-key behavior", async () => {
+  const legacy = pinnedActivity((a) => { delete a.geography_items.coverage; });
+  const expected = [
+    [PINNED_KEYS.positive_meetings, "meetings", "ready"],
+    [PINNED_KEYS.explicit_zero_meetings, "meetings", "zero"],
+    [PINNED_KEYS.unfilterable_meetings, "meetings", "unfilterable"],
+    [PINNED_KEYS.unpublished, "meetings", "unavailable"],
+    [PINNED_KEYS.unpublished, "land", "unavailable"],
+  ];
+  for (const [key, lens, state] of expected) {
+    const { findings, after, slice } = await roundTripFindings(legacy, key, lens);
+    assert.deepEqual(findings, [], `${key}:${lens}`);
+    assert.equal(after.state, state, `${key}:${lens}`);
+    assert.equal(Object.hasOwn(slice.activity.geography_items, "coverage"), false, "no coverage is invented for a legacy source");
+  }
+
+  // Absent coverage is not permission to publish zero: every published zero
+  // corresponds to an explicit [] in the source membership.
+  const built = buildNearYou(legacy, {}, "legacy-census", { residentialPlaces: PINNED_RESIDENTIAL });
+  const zeros = Object.entries(built.coverageBySlice).filter(([sliceId, state]) => state === "zero" && sliceId.startsWith("geography:"));
+  assert.ok(zeros.length > 0, "the census includes explicit zeros");
+  for (const [sliceId] of zeros) {
+    const lens = sliceId.split(":").at(-1);
+    const key = sliceId.slice(0, -(lens.length + 1));
+    const source = legacy.geography_items.by_key[key]?.[lens];
+    assert.ok(Array.isArray(source) && source.length === 0, `${sliceId} published zero without an explicit []`);
+  }
+  assert.equal(built.coverageBySlice[`${PINNED_KEYS.unpublished}:meetings`], "source_unavailable");
+  assert.equal(built.coverageBySlice[`${PINNED_KEYS.unfilterable_meetings}:meetings`], "source_unavailable");
+});
+
+test("A5 positive controls: a serializer that drops coverage, and a loader that never reads KV, both fail", async () => {
+  const key = PINNED_KEYS.positive_meetings;
+  const flipped = pinnedActivity(flipNtaLandCoverage);
+
+  // Mutation: strip coverage from every serialized slice, as the serializer did
+  // before this change. The same round-trip checker must report the loss, and
+  // the stale IDs would read as current exact membership.
+  const stripCoverage = (raw) => {
+    const value = JSON.parse(raw);
+    if (value.activity?.geography_items) delete value.activity.geography_items.coverage;
+    return JSON.stringify(value);
+  };
+  const mutated = await roundTripFindings(flipped, key, "land", { transform: stripCoverage });
+  assert.ok(mutated.findings.some((finding) => finding.startsWith("projection ")), mutated.findings.join("; "));
+  assert.ok(mutated.findings.some((finding) => finding.startsWith("coverage ")), mutated.findings.join("; "));
+  assert.equal(mutated.after.state, "ready");
+  assert.equal(mutated.after.exact, true);
+
+  // A shared constant is not evidence: a loader that hands back the source
+  // object makes before and after trivially equal without any publication.
+  const echo = async () => ({ activity: flipped, version: "coverage-land" });
+  const echoed = await roundTripFindings(flipped, key, "land", { load: echo });
+  assert.deepEqual(echoed.findings, ["observation did not traverse the published slice"]);
+  const constant = await roundTripFindings(flipped, key, "land", {
+    load: async () => ({ activity: structuredClone(flipped), version: "coverage-land" }),
+  });
+  assert.deepEqual(constant.findings, ["observation did not traverse the published slice"]);
+});
+
+test("A6: an invalid candidate built from the pinned rows leaves the prior generation active", () => {
+  const prior = buildNearYou(pinnedActivity(), {}, "prior-good", { residentialPlaces: PINNED_RESIDENTIAL });
+  const candidate = buildNearYou(pinnedActivity(flipNtaLandCoverage), {}, "candidate", { residentialPlaces: PINNED_RESIDENTIAL });
+  const meetingsManifest = { schema_version: 1, kind: "meetings", version: "candidate", slices: {}, id_to_slice: {} };
+  const previous = { nearYouManifest: prior.manifest, meetingsManifest: { ...meetingsManifest, version: "prior-good" } };
+
+  // Missing generation dependencies refuse activation.
+  const dependencyRefusal = decideLocalGeographyPublicationActivation({
+    previous,
+    candidate: { nearYouManifest: candidate.manifest, meetingsManifest, nearYouEntries: candidate.entries, meetingsEntries: [] },
+    residentialPlaces: PINNED_RESIDENTIAL,
+    dependencies: { parcel_membership_generation: null, parcel_coordinate_vintage: "pluto_25v4", assertion_generation: "a", source_generation: "s" },
+  });
+  assert.equal(dependencyRefusal.activate, false);
+  assert.equal(dependencyRefusal.reason, "missing_publication_dependencies");
+  assert.equal(dependencyRefusal.active.nearYouManifest.version, "prior-good");
+
+  // An incomplete candidate (a required residential slice missing) refuses.
+  const unpublishedSlice = `${PINNED_KEYS.unpublished}:land`;
+  const incomplete = {
+    ...candidate.manifest,
+    slices: Object.fromEntries(Object.entries(candidate.manifest.slices).filter(([sliceId]) => sliceId !== unpublishedSlice)),
+  };
+  const incompleteRefusal = decideNearYouManifestActivation({
+    previousManifest: prior.manifest, candidateManifest: incomplete, residentialPlaces: PINNED_RESIDENTIAL,
+  });
+  assert.equal(incompleteRefusal.activate, false);
+  assert.deepEqual(incompleteRefusal.missing, [unpublishedSlice]);
+  assert.equal(incompleteRefusal.activeManifest.version, "prior-good");
+
+  // Converse control: the complete candidate with named dependencies
+  // activates, carrying its unavailable coverage as a published state.
+  const accepted = decideLocalGeographyPublicationActivation({
+    previous,
+    candidate: { nearYouManifest: candidate.manifest, meetingsManifest, nearYouEntries: [], meetingsEntries: [] },
+    residentialPlaces: PINNED_RESIDENTIAL,
+    dependencies: { parcel_membership_generation: "p", parcel_coordinate_vintage: "pluto_25v4", assertion_generation: "a", source_generation: "s" },
+  });
+  assert.equal(accepted.activate, true);
+  assert.equal(accepted.active.nearYouManifest.version, "candidate");
+  assert.equal(candidate.coverageBySlice[`${PINNED_KEYS.positive_meetings}:land`], "source_unavailable");
+  assert.equal(prior.coverageBySlice[`${PINNED_KEYS.positive_meetings}:land`], "ready");
 });

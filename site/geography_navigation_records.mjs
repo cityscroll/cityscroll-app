@@ -62,20 +62,49 @@ function coverageStatusRank(status) {
   return null;
 }
 
-function coverageState(activity, key, lens) {
+function lensCoverageOf(coverage, lens) {
+  return coverage?.by_lens?.[lens] || coverage?.lenses?.[lens] || null;
+}
+
+/**
+ * The coverage-declared state for a key/lens pair, or null when the published
+ * coverage metadata raises no limitation. Geography type, then lens, then the
+ * whole index: the narrowest declared failure wins. A key of null checks only
+ * the lens and index levels. Absent coverage (a legacy artifact) returns null
+ * and leaves membership semantics to the explicit by_key entry.
+ */
+export function geographyCoverageLimit(activity, key, lens) {
   const coverage = activity?.geography_items?.coverage;
-  const lensCoverage = coverage?.by_lens?.[lens] || coverage?.lenses?.[lens] || null;
+  const lensCoverage = lensCoverageOf(coverage, lens);
   const geographyType = geographyTypeFromKey(key);
   const typeCoverage = geographyType
     ? (lensCoverage?.types?.[geographyType] || null)
     : null;
-  const typeRank = coverageStatusRank(typeCoverage?.status || typeCoverage?.state);
-  if (typeRank) return typeRank;
-  const lensRank = coverageStatusRank(lensCoverage?.status || lensCoverage?.state);
-  if (lensRank) return lensRank;
+  return coverageStatusRank(typeCoverage?.status || typeCoverage?.state)
+    || coverageStatusRank(lensCoverage?.status || lensCoverage?.state)
+    || coverageStatusRank(coverage?.status || coverage?.state);
+}
 
-  const statusRank = coverageStatusRank(coverage?.status || coverage?.state);
-  if (statusRank) return statusRank;
+/**
+ * Coverage metadata a single key/lens slice must carry: the index status and
+ * only the requested lens (with its per-type status and generation fields).
+ * Returns undefined for a legacy artifact that published no coverage, so a
+ * slice never invents metadata its source did not have.
+ */
+export function geographyCoverageForLens(coverage, lens) {
+  if (!coverage || typeof coverage !== "object" || Array.isArray(coverage)) return undefined;
+  const lensCoverage = lensCoverageOf(coverage, lens);
+  const out = {};
+  for (const field of ["status", "state", "reason"]) {
+    if (hasOwn(coverage, field)) out[field] = coverage[field];
+  }
+  out.by_lens = lensCoverage ? { [lens]: lensCoverage } : {};
+  return out;
+}
+
+function coverageState(activity, key, lens) {
+  const limit = geographyCoverageLimit(activity, key, lens);
+  if (limit) return limit;
 
   const entry = activity?.geography_items?.by_key?.[key];
   if (!entry || typeof entry !== "object") return "unavailable";

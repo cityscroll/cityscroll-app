@@ -1,0 +1,378 @@
+{
+  "schema": "cityscroll.test_fixture.near_you_coverage_semantics.v1",
+  "note": "Compact frozen rows for route-publication coverage tests. Coverage, definitions and membership lists are verbatim; records keep only id and title.",
+  "source": {
+    "commit": "d886b385d647f4534df985f5922749a9414fab26",
+    "activity": {
+      "path": "site/data/district_activity.json",
+      "blob": "5deaa202fe578e09b58380d43755419dbb85ec60",
+      "fields": [
+        "schema",
+        "boundary_vintage",
+        "built_at",
+        "levels",
+        "lenses",
+        "geography_items.{schema,built_at,lenses,public_types,coverage,note}",
+        "geography_items.definitions[keys]",
+        "geography_items.by_key[keys]",
+        "records[lens][member].{id,title}"
+      ]
+    },
+    "residential_place": {
+      "path": "site/data/geography/layers/nta2020/26B.json",
+      "blob": "d1adafa84a543842ec28d8c79f3c96afa33b86c0",
+      "id": "BK0103",
+      "reason": "a published residential neighborhood with no membership entry"
+    }
+  },
+  "keys": {
+    "unfilterable_meetings": "geography:nta2020:BK1503",
+    "explicit_zero_meetings": "geography:nta2020:BX0101",
+    "positive_meetings": "geography:nta2020:MN0102",
+    "unpublished": "geography:nta2020:BK0103"
+  },
+  "residential_places": [
+    {
+      "key": "geography:nta2020:BK0103",
+      "type": "nta2020",
+      "id": "BK0103",
+      "label": "South Williamsburg",
+      "class": "statistical",
+      "subtype": "residential",
+      "source_id": "dcp-nta2020-boundaries",
+      "boundary_vintage": "26B"
+    }
+  ],
+  "activity": {
+    "schema": "cityscroll.district_activity.v1",
+    "boundary_vintage": "2026-05-26",
+    "built_at": "2026-09-26T07:41:27.793Z",
+    "levels": [
+      "borough",
+      "community_district",
+      "council_district"
+    ],
+    "lenses": [
+      "land",
+      "property",
+      "rules",
+      "meetings",
+      "money"
+    ],
+    "by_level": {},
+    "citywide": {},
+    "virtual": {},
+    "unlocated": {},
+    "district_items": {
+      "by_level": {},
+      "citywide": {},
+      "virtual": {},
+      "unlocated": {}
+    },
+    "geography_items": {
+      "schema": "cityscroll.geography_items.v1",
+      "built_at": "2026-09-26T07:41:27.793Z",
+      "lenses": [
+        "land",
+        "property",
+        "rules",
+        "meetings",
+        "money"
+      ],
+      "public_types": [
+        "borough",
+        "community_district",
+        "council_district",
+        "nta2020",
+        "police_precinct"
+      ],
+      "definitions": {
+        "geography:nta2020:BK1503": {
+          "key": "geography:nta2020:BK1503",
+          "type": "nta2020",
+          "id": "BK1503",
+          "label": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:BX0101": {
+          "key": "geography:nta2020:BX0101",
+          "type": "nta2020",
+          "id": "BX0101",
+          "label": "Mott Haven-Port Morris",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        },
+        "geography:nta2020:MN0102": {
+          "key": "geography:nta2020:MN0102",
+          "type": "nta2020",
+          "id": "MN0102",
+          "label": "Tribeca-Civic Center",
+          "class": "statistical",
+          "source_id": "dcp-nta2020-boundaries",
+          "boundary_vintage": "26B"
+        }
+      },
+      "by_key": {
+        "geography:nta2020:BK1503": {
+          "land": [
+            "2019K0147"
+          ]
+        },
+        "geography:nta2020:BX0101": {
+          "land": [
+            "2022X0393",
+            "2025X0385",
+            "2026X0362"
+          ],
+          "property": [
+            "20140306105"
+          ],
+          "rules": [],
+          "meetings": [],
+          "money": []
+        },
+        "geography:nta2020:MN0102": {
+          "land": [
+            "2020M0474",
+            "2023M0117",
+            "2025M0329"
+          ],
+          "property": [],
+          "rules": [],
+          "meetings": [
+            "20260106033",
+            "20260603039",
+            "20260612028",
+            "20260617039",
+            "20260623006",
+            "20260623060",
+            "20260625040",
+            "20260629003",
+            "20260630005",
+            "20260706036",
+            "20260707004",
+            "20260707021",
+            "20260707022",
+            "20260708015",
+            "20260709028",
+            "20260710032",
+            "20260714001",
+            "20260715002",
+            "20260716022",
+            "20260716025",
+            "20260723030",
+            "20260727031",
+            "20260729004",
+            "20260811003",
+            "20260819025",
+            "20260824048"
+          ],
+          "money": []
+        }
+      },
+      "coverage": {
+        "status": "ready",
+        "by_lens": {
+          "land": {
+            "status": "ready",
+            "source": "land_place_membership",
+            "association_kind": "published_project_lot",
+            "generation_id": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7",
+            "content_id": "fnv1a32:49453cf1:244",
+            "source_dates": {
+              "catalog_content_id": "fnv1a32:06425590:244",
+              "catalog_materialized_at": "2026-09-09T06:54:36.054Z",
+              "catalog_generated_at": "2026-09-09T06:46:42.537Z",
+              "bbl_materialized_at": "2026-09-04T11:12:46.107Z",
+              "parcel_coordinate_vintage": "pluto_25v4",
+              "boundary_vintages": {
+                "borough": "2026-05-26",
+                "community_district": "2026-05-26",
+                "council_district": "2026-05-26",
+                "nta2020": "26B",
+                "police_precinct": "26B"
+              }
+            },
+            "admitted": 244,
+            "spatially_matched": 233,
+            "partially_covered": 22,
+            "match_bound": "spatially_matched_population",
+            "types": {
+              "nta2020": {
+                "status": "ready",
+                "reason": null,
+                "generation_id": "6ebf3a8542b1a6cf44d43757266333032bbba4fb598306d0da12b155242027a7",
+                "content_id": "fnv1a32:49453cf1:244",
+                "source_dates": {
+                  "catalog_content_id": "fnv1a32:06425590:244",
+                  "catalog_materialized_at": "2026-09-09T06:54:36.054Z",
+                  "catalog_generated_at": "2026-09-09T06:46:42.537Z",
+                  "bbl_materialized_at": "2026-09-04T11:12:46.107Z",
+                  "parcel_coordinate_vintage": "pluto_25v4",
+                  "boundary_vintages": {
+                    "borough": "2026-05-26",
+                    "community_district": "2026-05-26",
+                    "council_district": "2026-05-26",
+                    "nta2020": "26B",
+                    "police_precinct": "26B"
+                  }
+                },
+                "match_bound": "spatially_matched_population"
+              }
+            }
+          }
+        }
+      },
+      "note": "Public typed geography membership from the same role- and basis-preserving placement pass as Near You. Sanitation districts and BIDs remain ingestion-only. Land NTA slots come from land_place_membership only."
+    },
+    "records": {
+      "land": {
+        "2019K0147": {
+          "id": "2019K0147",
+          "title": "2959 Avenue Y Rezoning"
+        },
+        "2022X0393": {
+          "id": "2022X0393",
+          "title": "110 East 138th Street/63 Exterior Street"
+        },
+        "2025X0385": {
+          "id": "2025X0385",
+          "title": "139th Street Demapping"
+        },
+        "2026X0362": {
+          "id": "2026X0362",
+          "title": "351 Powers Avenue (HPD ELURP)"
+        },
+        "2020M0474": {
+          "id": "2020M0474",
+          "title": "33 Thomas Street"
+        },
+        "2023M0117": {
+          "id": "2023M0117",
+          "title": "Independence Plaza Modifications"
+        },
+        "2025M0329": {
+          "id": "2025M0329",
+          "title": "67 Vestry Street Parking Authorization"
+        }
+      },
+      "property": {
+        "20140306105": {
+          "id": "20140306105",
+          "title": "PROPERTY DISPOSITIONS"
+        }
+      },
+      "rules": {},
+      "meetings": {
+        "20260106033": {
+          "id": "20260106033",
+          "title": "Board of Correction Public Meeting"
+        },
+        "20260603039": {
+          "id": "20260603039",
+          "title": "CITY OF NEW YORK AUDIT COMMITTEE MEETING"
+        },
+        "20260612028": {
+          "id": "20260612028",
+          "title": "Board of Standards and Appeals Public Hearing Notice"
+        },
+        "20260617039": {
+          "id": "20260617039",
+          "title": "7-1-26 Subcommittee on Zoning and Franchises meeting"
+        },
+        "20260623006": {
+          "id": "20260623006",
+          "title": "July 14, 2026, Public Hearing Agenda CR"
+        },
+        "20260623060": {
+          "id": "20260623060",
+          "title": "NYC Civic Engagement Commission Public Meeting"
+        },
+        "20260625040": {
+          "id": "20260625040",
+          "title": "7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting"
+        },
+        "20260629003": {
+          "id": "20260629003",
+          "title": "Correction: Board of Standards and Appeals Public Hearing Notice"
+        },
+        "20260630005": {
+          "id": "20260630005",
+          "title": "July 21, 2026, Public Hearing Agenda"
+        },
+        "20260706036": {
+          "id": "20260706036",
+          "title": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting"
+        },
+        "20260707004": {
+          "id": "20260707004",
+          "title": "July 28, 2026, Public Hearing Agenda"
+        },
+        "20260707021": {
+          "id": "20260707021",
+          "title": "7-21-26 Subcommittee on Zoning and Franchises meeting"
+        },
+        "20260707022": {
+          "id": "20260707022",
+          "title": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting"
+        },
+        "20260708015": {
+          "id": "20260708015",
+          "title": "EEPC COMMISSION MEETING #289"
+        },
+        "20260709028": {
+          "id": "20260709028",
+          "title": "Concession for Operation and Maintenance of Cafeteria at the NYPD Police Academy"
+        },
+        "20260710032": {
+          "id": "20260710032",
+          "title": "FCRC AUGUST PUBLIC MEETING"
+        },
+        "20260714001": {
+          "id": "20260714001",
+          "title": "August 4, 2026, Public Hearing Agenda CR"
+        },
+        "20260715002": {
+          "id": "20260715002",
+          "title": "Final Meeting of the Commission on Government Efficiency"
+        },
+        "20260716022": {
+          "id": "20260716022",
+          "title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Café and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)"
+        },
+        "20260716025": {
+          "id": "20260716025",
+          "title": "New York City Environmental Control Board Meeting August 6, 2026"
+        },
+        "20260723030": {
+          "id": "20260723030",
+          "title": "Board of Standards and Appeals Public Hearing Notice"
+        },
+        "20260727031": {
+          "id": "20260727031",
+          "title": "AUGUST 18, 2026 PUBLIC HEARING AGENDA"
+        },
+        "20260729004": {
+          "id": "20260729004",
+          "title": "8-12-26 Subcommittee on Zoning and Franchises meeting"
+        },
+        "20260811003": {
+          "id": "20260811003",
+          "title": "September 1, 2026, Public Hearing Agenda CR"
+        },
+        "20260819025": {
+          "id": "20260819025",
+          "title": "The Battery Conservancy, Inc. for the Operation and Maintenance of The Battery in Manhattan"
+        },
+        "20260824048": {
+          "id": "20260824048",
+          "title": "9-8-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting"
+        }
+      },
+      "money": {}
+    }
+  }
+}

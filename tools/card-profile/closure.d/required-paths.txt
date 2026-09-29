@@ -545,6 +545,7 @@ site/following_view.mjs
 site/franchise_notice.mjs
 site/franchise_phase_spine.mjs
 site/geography_navigation_entry.mjs
+site/geography_navigation_records.mjs
 site/geography_navigation_state.mjs
 site/graph_edge_provenance.mjs
 site/hearing_attend_pack.mjs
@@ -1137,6 +1138,7 @@ test/fixtures/land_prediction_features/unknown.json
 test/fixtures/land_prediction_shadow/gold.v1.json
 test/fixtures/land_use_action_type/2024M0158.json
 test/fixtures/legistar/upcoming_contracts_22691.json
+test/fixtures/near_you_coverage_semantics.v1.json
 test/fixtures/oath/daily-calendar-2026-09-15.csv
 test/fixtures/procurement_search/golden_cohort.json
 test/fixtures/repository_governance/positive/test-example.mjs
