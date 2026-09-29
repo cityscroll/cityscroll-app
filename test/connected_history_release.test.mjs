@@ -32,15 +32,19 @@ import {
   RECORD_FIELDS,
   RELEASE_DELIVERY,
   RELEASE_READBACK_SCHEMA,
+  REVIEWED_REPUBLICATIONS,
   SERVED_DATA,
   auditAdmittedFalsePositives,
   deriveAcceptance,
   deriveLetter,
   evaluateCapability,
+  historyBytesUnchanged,
   nextScheduledCheck,
+  reviewedHistoryDigests,
   scheduledCycleStatus,
 } from "../tools/lib/connected_history_release.mjs";
-import { MEASURED_INPUTS, RETAINED_PATH } from "../tools/check_connected_history_release.mjs";
+import { HISTORY_BYTES, MEASURED_INPUTS, RETAINED_PATH } from "../tools/check_connected_history_release.mjs";
+import { retainedEvidencePins } from "../tools/lib/connected_history_cycle.mjs";
 import { retainedMeasurementStatus } from "../tools/repository_revision.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
@@ -537,4 +541,64 @@ test("A3 runner: a loopback origin is a rehearsal, and a served build without th
   }
   const retainedAfter = existsSync(join(ROOT, RETAINED_PATH)) ? sha256(readBytes(RETAINED_PATH)) : null;
   assert.equal(retainedAfter, retainedBefore, "the runner never rewrites the retained record from a test");
+});
+
+test("served history bytes count as unchanged only at the baseline or through a reviewed republication", () => {
+  const digest = (label) => sha256(label);
+  const [base, reviewed, later, stray] = ["base", "reviewed", "later", "stray"].map(digest);
+  const republications = [
+    { key: "roles", from_sha256: base, to_sha256: reviewed },
+    { key: "roles", from_sha256: reviewed, to_sha256: later },
+    { key: "time", from_sha256: stray, to_sha256: base },
+  ];
+  const keys = ["roles", "time"];
+  const baseline = { roles: { sha256: base }, time: { sha256: base } };
+  const served = (roles, time = base) => ({ roles: { sha256: roles }, time: { sha256: time } });
+  const unchanged = (data, entries = republications) => historyBytesUnchanged({ keys, data, baseline, republications: entries });
+
+  assert.deepEqual(reviewedHistoryDigests("roles", base, republications), [base, reviewed, later]);
+  assert.equal(unchanged(served(base)), true, "the baseline bytes");
+  assert.equal(unchanged(served(reviewed)), true, "a reviewed republication");
+  assert.equal(unchanged(served(later)), true, "a chain of reviewed republications");
+  // Positive controls: each of these is a change.
+  assert.equal(unchanged(served(stray)), false, "an unreviewed change");
+  assert.equal(unchanged(served(reviewed), []), false, "the same change without its review");
+  assert.equal(unchanged(served(base, stray)), false, "a republication of another key does not transfer");
+  assert.equal(historyBytesUnchanged({ keys, data: served(base), baseline: { roles: { sha256: reviewed }, time: { sha256: base } }, republications }), false, "a republication never runs backwards");
+  assert.equal(unchanged({ roles: { sha256: base } }), false, "a missing served digest");
+  assert.equal(historyBytesUnchanged({ keys, data: served(base), baseline: null, republications }), false, "a missing baseline");
+  // A cycle in the register terminates.
+  assert.deepEqual(reviewedHistoryDigests("roles", base, [
+    { key: "roles", from_sha256: base, to_sha256: reviewed },
+    { key: "roles", from_sha256: reviewed, to_sha256: base },
+  ]), [base, reviewed]);
+});
+
+test("each reviewed republication starts at the first read-back, ends at the committed bytes, and names the measurements it invalidated", () => {
+  const retained = JSON.parse(readFileSync(join(ROOT, RETAINED_PATH), "utf8"));
+  const baseline = retained.readbacks[0].data;
+  const pins = retainedEvidencePins(ROOT);
+  assert.ok(REVIEWED_REPUBLICATIONS.length > 0);
+  for (const entry of REVIEWED_REPUBLICATIONS) {
+    assert.ok(HISTORY_BYTES.includes(entry.key), entry.key);
+    assert.equal(`site${SERVED_DATA[entry.key]}`, entry.path, entry.key);
+    assert.match(entry.from_sha256, /^[a-f0-9]{64}$/);
+    assert.match(entry.to_sha256, /^[a-f0-9]{64}$/);
+    assert.notEqual(entry.from_sha256, entry.to_sha256);
+    assert.ok(entry.cause.length > 0);
+    const chain = reviewedHistoryDigests(entry.key, baseline[entry.key].sha256);
+    assert.ok(chain.includes(entry.from_sha256) && chain.includes(entry.to_sha256), `${entry.key}: reachable from the first read-back`);
+    assert.deepEqual(
+      [...entry.invalidated_measurements].sort(),
+      pins.filter((pin) => pin.inputs.includes(entry.path)).map((pin) => pin.path).sort(),
+      `${entry.key}: every retained measurement pinning the path is named`,
+    );
+  }
+  for (const key of new Set(REVIEWED_REPUBLICATIONS.map((entry) => entry.key))) {
+    assert.equal(
+      reviewedHistoryDigests(key, baseline[key].sha256).at(-1),
+      sha256(readBytes(`site${SERVED_DATA[key]}`)),
+      `${key}: the last reviewed republication is the committed bytes`,
+    );
+  }
 });

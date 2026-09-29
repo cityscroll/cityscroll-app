@@ -30,6 +30,8 @@ node tools/build_connected_history_relations.mjs --check
 node --test test/connected_history_relations.test.mjs
 
 node tools/build_connected_history_roles.mjs
+# Byte-exact: the committed artifact and receipt must equal a fresh
+# materialization, not only its selection hash, counts and strata.
 node tools/build_connected_history_roles.mjs --check
 node --test test/connected_history_roles.test.mjs
 
@@ -61,7 +63,14 @@ manual dispatch). The declaration is checked by
    `published` or `held`. A change is held, and the served bytes stay as they
    are, when a committed observation could not be re-fetched or when a
    retained production measurement under `docs/evidence/` pins a changed path.
-   Held files are uploaded with the run.
+   Held files are uploaded with the run. A held change is republished only by
+   a reviewed pull request that regenerates it through its builder, records
+   the move in `REVIEWED_REPUBLICATIONS`
+   ([`tools/lib/connected_history_release.mjs`](../../../tools/lib/connected_history_release.mjs)),
+   and re-measures the pinned read-backs. The measurements that pin each
+   served artifact are named in `test/connected_history_cycle.test.mjs`, and
+   a builder run prints the ones its regeneration invalidates
+   ([`tools/lib/retained_evidence_pins.mjs`](../../../tools/lib/retained_evidence_pins.mjs)).
 4. **verification**: the owning builders' `--check` modes run over the tree
    the run leaves. A failure restores the committed bytes.
 

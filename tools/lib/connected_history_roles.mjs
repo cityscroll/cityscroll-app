@@ -297,3 +297,48 @@ export function materializeConnectedHistoryRoles(options = {}) {
   });
   return { artifact, receipt };
 }
+
+export const CONNECTED_HISTORY_ROLES_ARTIFACT_PATH = "site/data/connected_history_roles.json";
+export const CONNECTED_HISTORY_ROLES_RECEIPT_PATH =
+  "site/data/connected_history_sources/verification_receipts/connected_history_roles_latest.json";
+
+/** The exact bytes the builder writes for an artifact or receipt. */
+export function serializeConnectedHistoryRolesJson(value) {
+  return `${JSON.stringify(value, null, 2)}\n`;
+}
+
+function firstDifference(left, right) {
+  const length = Math.min(left.length, right.length);
+  for (let index = 0; index < length; index += 1) {
+    if (left[index] !== right[index]) return index;
+  }
+  return left.length === right.length ? -1 : length;
+}
+
+/**
+ * Byte-exact drift between committed texts and a fresh materialization. Equal
+ * selection hashes, counts and strata do not make an artifact current: only
+ * identical bytes do, for the artifact and for the receipt that describes it.
+ * Returns one finding per file that differs; an empty list means current.
+ */
+export function connectedHistoryRolesDrift({ artifactText, receiptText }, materialized = materializeConnectedHistoryRoles()) {
+  const findings = [];
+  for (const [path, committed, value] of [
+    [CONNECTED_HISTORY_ROLES_ARTIFACT_PATH, artifactText, materialized.artifact],
+    [CONNECTED_HISTORY_ROLES_RECEIPT_PATH, receiptText, materialized.receipt],
+  ]) {
+    const expected = serializeConnectedHistoryRolesJson(value);
+    if (committed === expected) continue;
+    const committedBytes = Buffer.from(String(committed ?? ""), "utf8");
+    const expectedBytes = Buffer.from(expected, "utf8");
+    findings.push({
+      path,
+      committed_bytes: committedBytes.length,
+      materialized_bytes: expectedBytes.length,
+      committed_sha256: sha256(String(committed ?? "")),
+      materialized_sha256: sha256(expected),
+      first_difference_at: firstDifference(committedBytes, expectedBytes),
+    });
+  }
+  return findings;
+}

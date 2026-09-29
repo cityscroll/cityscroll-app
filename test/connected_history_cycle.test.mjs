@@ -14,8 +14,10 @@ import {
   connectedHistoryCyclePublishedPaths,
   cronMaximumGapHours,
   documentContentFingerprint,
+  evidenceInvalidatedBy,
   materializeConnectedHistories,
   parseWorkflowTriggers,
+  retainedEvidencePins,
   runConnectedHistoryCycle,
   verifyConnectedHistoryCycleReceipt,
 } from "../tools/lib/connected_history_cycle.mjs";
@@ -456,4 +458,104 @@ test("a receipt carries no local path and stays small enough to serve", async (t
   const text = readFileSync(join(root, CONNECTED_HISTORY_CYCLE.receipt_path), "utf8");
   assert.doesNotMatch(text, /\/(?:Users|private|var\/folders|home)\//);
   assert.ok(text.length < 200_000, `${text.length} bytes`);
+});
+
+const RELEASE_READBACK = "docs/evidence/connected-history-release/release-readback.json";
+const JOURNEYS_MANIFEST = "docs/evidence/documented-history-journeys/capture-manifest.json";
+const COVERAGE_MANIFEST = "docs/evidence/connected-history-coverage/capture-manifest.json";
+
+/**
+ * Every retained production measurement that pins the bytes of a served data
+ * artifact, per artifact. Regenerating a listed artifact invalidates each
+ * measurement named for it: the cycle holds that change, the builder names
+ * them, and a reviewed publication re-measures them.
+ */
+const RETAINED_SERVED_PINS = Object.freeze({
+  "site/data/connected_history_coverage.json": [COVERAGE_MANIFEST, RELEASE_READBACK],
+  "site/data/connected_history_documents.json": [RELEASE_READBACK],
+  "site/data/connected_history_evaluation_cohort.json": [RELEASE_READBACK],
+  "site/data/connected_history_relations.json": [RELEASE_READBACK, JOURNEYS_MANIFEST],
+  "site/data/connected_history_roles.json": [RELEASE_READBACK, JOURNEYS_MANIFEST],
+  "site/data/connected_history_time.json": [RELEASE_READBACK, JOURNEYS_MANIFEST],
+  "site/data/site_lifecycle/manifest.json": [RELEASE_READBACK],
+});
+
+function evidenceFiles(root, directory, found = []) {
+  for (const entry of readdirSync(join(root, directory), { withFileTypes: true })) {
+    const path = `${directory}/${entry.name}`;
+    if (entry.isDirectory()) evidenceFiles(root, path, found);
+    else if (entry.isFile()) found.push(path);
+  }
+  return found;
+}
+
+/**
+ * Retained measurements pinning each served data artifact in a tree: those
+ * declaring it as a measured input, and any evidence file quoting its current
+ * digest. A quoted digest that is not a declared input is reported, because
+ * the cycle would not hold a change to it.
+ */
+function servedArtifactPins(root, extraServed = []) {
+  const pins = retainedEvidencePins(root);
+  const served = new Set([
+    ...CONNECTED_HISTORY_MATERIALIZATIONS.flatMap((entry) => [entry.path, entry.receipt]),
+    ...extraServed,
+  ]);
+  for (const pin of pins) for (const input of pin.inputs) if (input.startsWith("site/data/")) served.add(input);
+  const texts = evidenceFiles(root, "docs/evidence").map((path) => [path, readFileSync(join(root, path), "latin1")]);
+  const pinned = {};
+  const undeclaredQuotes = [];
+  for (const path of [...served].sort()) {
+    if (!existsSync(join(root, path))) continue;
+    const digest = sha256(readFileSync(join(root, path)));
+    const declared = pins.filter((pin) => pin.inputs.includes(path)).map((pin) => pin.path);
+    const quoted = texts.filter(([, text]) => text.includes(digest)).map(([file]) => file);
+    for (const file of quoted) if (!declared.includes(file)) undeclaredQuotes.push(`${file} -> ${path}`);
+    const pinning = [...new Set([...declared, ...quoted])].sort();
+    if (pinning.length) pinned[path] = pinning;
+  }
+  return { pins, pinned, undeclaredQuotes };
+}
+
+test("every retained measurement that pins a served data artifact is named, so a regeneration surfaces what it invalidates", () => {
+  const { pins, pinned, undeclaredQuotes } = servedArtifactPins(ROOT);
+  assert.deepEqual(undeclaredQuotes, [], "an evidence file quotes a served digest without declaring it as a measured input");
+  assert.deepEqual(
+    pinned,
+    Object.fromEntries(Object.entries(RETAINED_SERVED_PINS).map(([path, files]) => [path, [...files].sort()])),
+    "name each retained measurement that pins a served artifact in RETAINED_SERVED_PINS",
+  );
+
+  // What a regeneration of each artifact would invalidate is exactly that list.
+  for (const [path, files] of Object.entries(RETAINED_SERVED_PINS)) {
+    assert.deepEqual(evidenceInvalidatedBy(pins, [path]).map((entry) => entry.path).sort(), [...files].sort(), path);
+  }
+});
+
+test("the pin census finds a new declared pin and a quoted digest that no measurement declares", (t) => {
+  const root = mkdtempSync(join(tmpdir(), "connected-history-pins-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const served = "site/data/example_served.json";
+  writeText(root, served, "{\"example\": true}\n");
+  const digest = sha256(readFileSync(join(root, served)));
+  writeText(root, "docs/evidence/unrelated/notes.md", "no digests here\n");
+  assert.deepEqual(servedArtifactPins(root, [served]).pinned, {}, "nothing pins it yet");
+
+  writeText(root, "docs/evidence/declared/capture-manifest.json", serialize({
+    measurement_provenance: { revision: "c".repeat(40), inputs: [{ path: served, sha256: digest }] },
+  }));
+  const declared = servedArtifactPins(root, [served]);
+  assert.deepEqual(declared.pinned, { [served]: ["docs/evidence/declared/capture-manifest.json"] });
+  assert.deepEqual(declared.undeclaredQuotes, []);
+
+  writeText(root, "docs/evidence/quoted/readme.md", `served digest ${digest}\n`);
+  const quoted = servedArtifactPins(root, [served]);
+  assert.deepEqual(quoted.pinned[served], ["docs/evidence/declared/capture-manifest.json", "docs/evidence/quoted/readme.md"]);
+  assert.deepEqual(quoted.undeclaredQuotes, [`docs/evidence/quoted/readme.md -> ${served}`]);
+
+  // A changed artifact no longer matches the quoted digest; only the declared
+  // input still names it, and a regeneration reports exactly that one.
+  writeText(root, served, "{\"example\": false}\n");
+  assert.deepEqual(servedArtifactPins(root, [served]).pinned, { [served]: ["docs/evidence/declared/capture-manifest.json"] });
+  assert.deepEqual(evidenceInvalidatedBy(retainedEvidencePins(root), [served]).map((entry) => entry.path), ["docs/evidence/declared/capture-manifest.json"]);
 });

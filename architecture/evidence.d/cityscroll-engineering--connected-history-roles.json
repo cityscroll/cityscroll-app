@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/connected-history-roles",
   "status": "implemented",
-  "fingerprint": "connected-history-roles.v1",
-  "updated_at": "2026-09-26T00:00:00.000Z",
+  "fingerprint": "connected-history-roles.v2",
+  "updated_at": "2026-09-29T00:00:00.000Z",
   "projections": [
     {
       "id": "connected-history-roles-site",
@@ -16,6 +16,10 @@
     {
       "id": "connected-history-roles-builder",
       "path": "tools/build_connected_history_roles.mjs"
+    },
+    {
+      "id": "connected-history-roles-retained-pins",
+      "path": "tools/lib/retained_evidence_pins.mjs"
     },
     {
       "id": "connected-history-roles-artifact",

@@ -696,6 +696,55 @@ export function nextScheduledCheck(observedAt) {
 }
 
 /**
+ * Reviewed republications of served history bytes that no acquisition caused.
+ * The scheduled cycle holds such a change because retained measurements pin
+ * the old bytes; a reviewed pull request then republishes it and re-measures
+ * the pinned read-backs. Each entry moves one history digest to another and
+ * names the retained measurements that pinned the old digest. Nothing else may
+ * explain a served history byte change.
+ */
+export const REVIEWED_REPUBLICATIONS = Object.freeze([
+  Object.freeze({
+    key: "roles",
+    path: "site/data/connected_history_roles.json",
+    from_sha256: "e7edfbee41e82a40288dbe53af5c61d2f0365718238f308423920af7d5a16997",
+    to_sha256: "d25ac875ec2d620002621959012df2731e908d150b026d9716d9ac525557a210",
+    cause: "The committed roles artifact lagged its builder: the same selection hash, counts and missing strata, but a rejected basis and the scope field position differed. A byte-exact builder check detected it and the artifact was regenerated without changing any admitted or rejected role.",
+    invalidated_measurements: Object.freeze([
+      "docs/evidence/connected-history-release/release-readback.json",
+      "docs/evidence/documented-history-journeys/capture-manifest.json",
+    ]),
+  }),
+]);
+
+/**
+ * The digest a history key may be served at after `baselineSha256`: the
+ * baseline itself, or where the reviewed republications chain it to.
+ */
+export function reviewedHistoryDigests(key, baselineSha256, republications = REVIEWED_REPUBLICATIONS) {
+  const digests = [baselineSha256];
+  for (;;) {
+    const next = republications.find((entry) => entry.key === key && entry.from_sha256 === digests.at(-1));
+    if (!next || digests.includes(next.to_sha256)) return digests;
+    digests.push(next.to_sha256);
+  }
+}
+
+/**
+ * Whether every served history materialization still carries the baseline
+ * read-back's bytes, or bytes a reviewed republication moved it to. An
+ * unreviewed change, a missing digest or a missing baseline is a change.
+ */
+export function historyBytesUnchanged({ keys, data, baseline, republications = REVIEWED_REPUBLICATIONS }) {
+  return keys.every((key) => {
+    const served = data?.[key]?.sha256;
+    const base = baseline?.[key]?.sha256;
+    if (!served || !base) return false;
+    return reviewedHistoryDigests(key, base, republications).includes(served);
+  });
+}
+
+/**
  * Classify the scheduled acquisition -> materialization -> serving cycle.
  *
  * `observations` lists, per scheduled workflow, the runs created after the

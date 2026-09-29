@@ -34,6 +34,7 @@ import {
   auditAdmittedFalsePositives,
   deriveAcceptance,
   evaluateCapability,
+  historyBytesUnchanged,
   scheduledCycleStatus,
 } from "./lib/connected_history_release.mjs";
 import { resolveRepositoryRevision } from "./repository_revision.mjs";
@@ -42,7 +43,7 @@ const ROOT = fileURLToPath(new URL("..", import.meta.url));
 export const RETAINED_PATH = "docs/evidence/connected-history-release/release-readback.json";
 const REPOSITORY = "cityscroll/cityscroll-app";
 const PARCEL_POPULATION_RECEIPT = "warehouse/receipts/proof/site_lifecycle_population_latest.json";
-const HISTORY_BYTES = Object.freeze(["cohort", "documents", "relations", "roles", "time", "coverage"]);
+export const HISTORY_BYTES = Object.freeze(["cohort", "documents", "relations", "roles", "time", "coverage"]);
 
 /** Repository inputs whose bytes the retained read-back describes. */
 export const MEASURED_INPUTS = Object.freeze([
@@ -321,7 +322,7 @@ export async function readBack(args) {
     }
   }
   const unchanged = baseline
-    ? HISTORY_BYTES.every((key) => data[key]?.sha256 && data[key].sha256 === baseline.data?.[key]?.sha256)
+    ? historyBytesUnchanged({ keys: HISTORY_BYTES, data, baseline: baseline.data })
     : null;
   const journeysPassed = capabilities.find((record) => record.id === "search-history-discovery")?.observed?.result?.families_passed || [];
   const cycleReceiptPath = SCHEDULED_PUBLICATION_WORKFLOWS.find((entry) => entry.served_receipt)?.served_receipt;

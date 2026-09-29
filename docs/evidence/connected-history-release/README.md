@@ -65,6 +65,26 @@ origin served at `/data/connected_history_cycle.json`, as
 status. Read-backs retained before the cycle existed name the earlier proxy
 workflows. They are not rewritten.
 
+## Reviewed republications
+
+A served history file may change without an acquisition only through a
+reviewed republication, listed in `REVIEWED_REPUBLICATIONS` in
+[`tools/lib/connected_history_release.mjs`](../../../tools/lib/connected_history_release.mjs).
+Each entry moves one digest to another, gives the cause, and names every
+retained measurement that pinned the old digest. The unchanged-bytes check
+accepts the first read-back's digest or a digest a listed republication
+reaches from it; any other change keeps the cycle open.
+
+The roles file is the first entry. Its committed bytes lagged the builder while
+the selection hash, counts and missing strata still matched, and the earlier
+summary check could not see it. The builder check is now byte-exact, and the
+file was regenerated without changing any admitted or rejected role. The old
+digest was pinned by this read-back and by the documented-history journeys
+manifest. Both are re-measured in the same change against the origin, which
+still serves the old bytes at that point. After the regenerated file is
+deployed, both are re-measured again so the retained record observes the new
+served bytes.
+
 ## Limits that stay visible
 
 - Coverage describes retained acquisition and discovery stages. It does not
