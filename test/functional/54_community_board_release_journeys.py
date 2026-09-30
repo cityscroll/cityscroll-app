@@ -7,14 +7,17 @@ import hashlib
 import json
 import os
 import subprocess
+import sys
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
 from playwright.sync_api import sync_playwright
 
-from assets.fixture_clock import fixture_today, pin_fixture_clock
-
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent / "assets"))
+from assets.fixture_clock import fixture_today, pin_fixture_clock  # noqa: E402
+from route_response_text import fetch_uncompressed, fulfill_with_text, response_text  # noqa: E402
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000").rstrip("/")
 BOARD = "/community-boards/brooklyn-cb-15/"
 DENSE_BOARD = "/community-boards/manhattan-cb-06/"
@@ -304,8 +307,8 @@ def main() -> None:
             install_outbound_probe(fixture_page)
 
             def serve_accepted_fixture(route):
-                response = route.fetch()
-                body = response.body().decode("utf-8")
+                response = fetch_uncompressed(route)
+                body = response_text(response)
                 start = body.index('<div class="board-next-meeting board-next-meeting-empty"')
                 end = body.index("</div>", start) + len("</div>")
                 replacement = (
@@ -315,7 +318,7 @@ def main() -> None:
                     f'<p>June 30, 2026 · 7:00 PM EDT</p>'
                     f'<p><a href="{FIXTURE_MEETING_HREF}">Meeting details</a></p></div>'
                 )
-                route.fulfill(response=response, body=body[:start] + replacement + body[end:])
+                fulfill_with_text(route, response, body[:start] + replacement + body[end:])
 
             fixture_page.route(f"**{BOARD}", serve_accepted_fixture)
             fixture_page.route(
