@@ -37,7 +37,7 @@ test("consultation rounds are admitted as a complete canonical search family", (
   });
 });
 
-test("rendering, safe handoff, archive status, and failed retrieval stay explicit", () => {
+test("rendering, safe handoff, archive status, and failed retrieval stay explicit", async () => {
   const corpus = buildConsultationSearchDocuments();
   const keyword = { match_mode: "keyword", results: corpus.documents.map((document) => ({ ...document, entity_type: document.object_type })) };
   const plan = buildSearchRenderPlan({ state: "legacy", payload: keyword, coverage: { lanes: [{ id: "consultations", status: "matched" }] } });
@@ -66,6 +66,13 @@ test("rendering, safe handoff, archive status, and failed retrieval stay explici
   assert.match(buildSearchLensHandoffHref(archived, { query: "budget", resolved_term: { canonical_tokens: ["budget"] } }, "/search/?q=budget"), /^\/consultations\/\?.*q=budget/);
   const failed = buildSearchRenderPlan({ state: "combined", keyword: null, semantic: { groups: [] }, keywordCoverage: { lanes: [{ id: "consultations", status: "unknown" }] } });
   assert.ok(failed.incomplete_families.includes("consultations"));
+  const { combinedEmptyLanePresentation } = await import("../site/search_document.mjs");
+  const notCovered = combinedEmptyLanePresentation({
+    familyStatus: "not_covered",
+    incomplete: true,
+  });
+  assert.equal(notCovered.className, "", "standing consultation index gaps must not paint Retry error chrome");
+  assert.equal(notCovered.retry, false);
 });
 
 test("search facets refuse stale corpus vintages while compaction stays independent", () => {
