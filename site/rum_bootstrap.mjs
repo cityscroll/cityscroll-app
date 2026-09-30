@@ -85,10 +85,10 @@ export function scheduleProductionRumCollector({
             loadedManifest,
             runtime?.location?.pathname || "",
           );
-          const noticeEdge = await import("./notice_edge_response.mjs");
-          const recordCacheOutcome = classification?.surface_id === "notice"
-            ? noticeEdge.navigationRecordCacheOutcome(runtime)
-            : noticeEdge.NOTICE_RECORD_CACHE_OUTCOME_NONE;
+          const recordCacheOutcome = collector.resolveRecordCacheOutcomeForSurface?.(
+            classification?.surface_id,
+            runtime,
+          ) ?? "none";
           const sink = production.createProductionObservationSink({
             manifest: loadedManifest,
             classification,

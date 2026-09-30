@@ -11,17 +11,17 @@
     "files": [
       {
         "path": "site/rum_bootstrap.mjs",
-        "raw_bytes": 6251,
-        "gzip_bytes": 1775,
-        "brotli_bytes": 1536,
-        "sha256": "f4bad0614bd74afe46a949bf5300c73507c0ae060d825078bf2ea799f581ac85"
+        "raw_bytes": 6149,
+        "gzip_bytes": 1709,
+        "brotli_bytes": 1489,
+        "sha256": "ac8a3abd6fd6c82641bb6738b04c2629a169a266500ba347c6f571c251a0cdd4"
       },
       {
         "path": "site/rum_collector.mjs",
-        "raw_bytes": 7220,
-        "gzip_bytes": 2370,
-        "brotli_bytes": 2014,
-        "sha256": "9fd62318db3784bf75b592ee3b7e17f198d5f4876ad8bea00c619dabd2d9b991"
+        "raw_bytes": 7500,
+        "gzip_bytes": 2435,
+        "brotli_bytes": 2081,
+        "sha256": "b0c16679de6aa8ae2503c5458a540a3492024f6eaf6017fd5534800d5181c3eb"
       },
       {
         "path": "site/rum_delivery.mjs",
@@ -45,9 +45,9 @@
         "sha256": "c2b1011155c2a9800197d1f831019a281cba58cd6cee05cb99e9b925c75d34ac"
       }
     ],
-    "total_raw_bytes": 35387,
-    "total_gzip_bytes": 12121,
-    "total_brotli_bytes": 10381
+    "total_raw_bytes": 35565,
+    "total_gzip_bytes": 12120,
+    "total_brotli_bytes": 10401
   },
   "production_default": {
     "collector_requested": true,

@@ -6,6 +6,12 @@ import {
 
 export { classifyPerformancePathname };
 
+/** Resolve the cache-outcome dimension for one classified surface. */
+export function resolveRecordCacheOutcomeForSurface(surfaceId, runtime = globalThis) {
+  if (surfaceId === "notice") return navigationRecordCacheOutcome(runtime);
+  return NOTICE_RECORD_CACHE_OUTCOME_NONE;
+}
+
 const WEB_VITAL_NAMES = Object.freeze({
   CLS: "cls_score",
   FCP: "fcp_ms",

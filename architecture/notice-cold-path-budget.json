@@ -1,5 +1,5 @@
 {
-  "comment": "Ceiling for the module graph a cold Notice boot must fetch before the application reports itself ready. Measured by tools/notice_cold_path.mjs; enforced by test/notice_cold_path.test.mjs. Reintroducing a lens group the Notice route never shows fails here rather than in a report months later. Measured after comma-aware locality/unit address parsing landed in the precomputed geocoder (shared by Notice address entry): 150 modules, 2259271 bytes, 60 serial request stages.",
+  "comment": "Ceiling for the module graph a cold Notice boot must fetch before the application reports itself ready. Measured by tools/notice_cold_path.mjs; enforced by test/notice_cold_path.test.mjs. Reintroducing a lens group the Notice route never shows fails here rather than in a report months later. Measured after the resident collector began retaining the Notice record-subrequest cache outcome (site/notice_edge_response.mjs joins the deferred RUM graph): 151 modules, 2267648 bytes, 61 serial request stages.",
   "gatedLensModules": [
     "money",
     "land",
@@ -7,7 +7,7 @@
     "staffing",
     "meetings"
   ],
-  "maxBytes": 2265000,
-  "maxModules": 150,
+  "maxBytes": 2275000,
+  "maxModules": 151,
   "maxSerialRequestStages": 62
 }

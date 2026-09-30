@@ -163,6 +163,7 @@ test("canonical production hosts project field vitals into the intake observatio
     navigation_type: "navigate",
     delivery_class: "static",
     result_state: "content",
+      record_cache_outcome: "none",
     collector_version: "rum-browser-v1",
     manifest_version: MANIFEST.manifest_version,
     release_id: RELEASE_ID,

@@ -997,6 +997,10 @@
         "sha256": "534652073b908e24b0c26a663be5d05da5736ad98ba33e59d06f6f635e08b94a"
       },
       {
+        "path": "site/notice_edge_response.mjs",
+        "sha256": "a75fe36226abf6e139c508eb85b32cf59f0080524f4832d5b5c67d1e1f93e538"
+      },
+      {
         "path": "site/performance_route_classifier.mjs",
         "sha256": "c5d8740b2fd282a19698c022bf9981e3d157acca80e77c87a2292d3518fd85c2"
       },
@@ -1030,11 +1034,11 @@
       },
       {
         "path": "site/rum_bootstrap.mjs",
-        "sha256": "f7cbca8594bbbcead5340d121b0d7c474132c20c1f1ffa839016d32ad1ba3a3c"
+        "sha256": "ac8a3abd6fd6c82641bb6738b04c2629a169a266500ba347c6f571c251a0cdd4"
       },
       {
         "path": "site/rum_collector.mjs",
-        "sha256": "995971046496e5ae1873eb0f3dbd85ae7bbf61ae8edf8c8c8386a915a8906661"
+        "sha256": "b0c16679de6aa8ae2503c5458a540a3492024f6eaf6017fd5534800d5181c3eb"
       },
       {
         "path": "site/rum_delivery.mjs",
@@ -1042,7 +1046,7 @@
       },
       {
         "path": "site/rum_production.mjs",
-        "sha256": "4ecf943fae66bbf294bc9a9edc4129e1d14fa4950a0867bc4b789a0847e27671"
+        "sha256": "8b10612ba314e0b99786af888593c1709eca5803f4388d9cae649e51635905d9"
       },
       {
         "path": "site/rum_semantic_milestones.mjs",
