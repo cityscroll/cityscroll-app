@@ -22,16 +22,25 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { NOTICE_EDGE_CACHE_OUTCOMES, parseNoticeEdgeTiming } from "../site/notice_edge_response.mjs";
 import { readMeasurementGroup } from "./read_rum_measurement_group.mjs";
 import {
+  NOTICE_READBACK_CACHE_OUTCOME_UNREAD_REASON,
+  NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP,
+  NOTICE_READBACK_CACHE_OUTCOMES,
   NOTICE_READBACK_DELIVERIES,
   NOTICE_READBACK_GROUP_SPECS,
   NOTICE_READBACK_RETAINED_PATH,
   NOTICE_READBACK_REQUIRED_GROUPS,
   NOTICE_READBACK_SAMPLE_FLOOR,
   buildNoticeReadbackAggregate,
+  buildUnreadRecordCacheOutcomeDistribution,
   validateNoticeReadbackAggregate,
 } from "./lib/notice_readback_aggregate.mjs";
+import {
+  DEFAULT_RUM_ANALYTICS_DATASET,
+  performanceReadConfiguration,
+} from "../worker/src/lib/performance_query.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT = resolve(ROOT, NOTICE_READBACK_RETAINED_PATH);
@@ -57,7 +66,9 @@ function parseArgs(argv) {
         "       [--window 7d] [--production-revision <sha>] [--now ISO]",
         "",
         "Reads cold_module_path, first_byte, and synthetic Notice groups from",
-        "production and retains the aggregate under docs/evidence/performance-drift/.",
+        "production, plus the record subrequest cache outcome distribution for the",
+        "first_byte window (read with counts, or unread with a reason), and retains",
+        "the aggregate under docs/evidence/performance-drift/.",
       ].join("\n"));
       process.exit(0);
     } else throw new Error(`unknown argument: ${arg}`);
@@ -86,6 +97,81 @@ async function resolveProductionRevision(explicit, fetchImpl = globalThis.fetch)
     throw new Error("production health did not return a 40-character commit SHA");
   }
   return commit;
+}
+
+const CACHE_OUTCOME_PROBE_URLS = Object.freeze([
+  "https://cityscroll.org/notices/20260805014",
+  "https://cityscroll.org/notices/20260708002",
+  "https://cityscroll.org/notices/20260716009",
+]);
+
+/**
+ * Ask whether production retains a windowed record-cache-outcome distribution
+ * in the same Analytics Engine dataset the sibling groups use. The RUM
+ * observation schema has no cache-outcome dimension, so this returns unread
+ * with a precise reason rather than fabricating counts from live headers.
+ *
+ * Live Server-Timing probes only confirm that responses still carry the
+ * vocabulary; they are never tallied into a windowed distribution.
+ */
+export async function resolveRecordCacheOutcomeDistribution({
+  window = null,
+  delivery = null,
+  queriedAt = null,
+  env = process.env,
+  fetchImpl = globalThis.fetch,
+} = {}) {
+  const config = performanceReadConfiguration(env);
+  const dataset = String(env.RUM_ANALYTICS_DATASET || DEFAULT_RUM_ANALYTICS_DATASET).trim()
+    || DEFAULT_RUM_ANALYTICS_DATASET;
+  const source = {
+    response_header: "Server-Timing",
+    metric: "cs-record",
+    closed_outcomes: [...NOTICE_READBACK_CACHE_OUTCOMES],
+    retained_query_path: null,
+    analytics_engine_dataset: dataset,
+    analytics_engine_configured: config.configured === true,
+  };
+
+  let liveOutcomesSeen = [];
+  for (const url of CACHE_OUTCOME_PROBE_URLS) {
+    try {
+      const response = await fetchImpl(url, {
+        method: "GET",
+        headers: {
+          "User-Agent": "cityscroll-notice-readback-aggregate/1.0",
+          Accept: "text/html",
+        },
+        redirect: "follow",
+      });
+      const timing = parseNoticeEdgeTiming(response.headers.get("Server-Timing"));
+      const outcome = timing?.["cs-record"]?.outcome;
+      if (NOTICE_EDGE_CACHE_OUTCOMES.includes(outcome)) liveOutcomesSeen.push(outcome);
+    } catch {
+      // Probe failure does not invent a distribution; it only weakens the live evidence.
+    }
+  }
+  liveOutcomesSeen = [...new Set(liveOutcomesSeen)].sort();
+  if (liveOutcomesSeen.length) source.live_response_outcomes_observed = liveOutcomesSeen;
+
+  // No retained query path exists for this vocabulary in the RUM dataset. An
+  // empty read would require a query that returned zero rows of a known
+  // cache-outcome series; absence of that series is unread, not empty.
+  return buildUnreadRecordCacheOutcomeDistribution({
+    reason: NOTICE_READBACK_CACHE_OUTCOME_UNREAD_REASON,
+    detail: [
+      "Notice responses carry the record subrequest cache outcome on Server-Timing (cs-record),",
+      "but the RUM Analytics Engine observation set used for the sibling measurement groups",
+      "retains no cache-outcome dimension, so no windowed distribution can be read.",
+      liveOutcomesSeen.length
+        ? `Live responses observed outcomes: ${liveOutcomesSeen.join(", ")}.`
+        : "Live Server-Timing probes did not return a parseable cs-record outcome during this run.",
+    ].join(" "),
+    window,
+    delivery,
+    queriedAt,
+    source,
+  });
 }
 
 function queryPlan() {
@@ -136,11 +222,28 @@ export async function buildFromProduction({
       document,
     });
   }
+
+  // Inherit the first_byte window so the cache-outcome field sits beside that group.
+  const windowSeed = buildNoticeReadbackAggregate({
+    reads,
+    productionRevision: revision,
+    queriedAt: now,
+    sampleFloor: NOTICE_READBACK_SAMPLE_FLOOR,
+  });
+  const firstByte = windowSeed.measurement_groups[NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP];
+  const recordCacheOutcomeDistribution = await resolveRecordCacheOutcomeDistribution({
+    window: firstByte?.window || null,
+    delivery: firstByte?.delivery || null,
+    queriedAt: now,
+    env,
+    fetchImpl,
+  });
   const aggregate = buildNoticeReadbackAggregate({
     reads,
     productionRevision: revision,
     queriedAt: now,
     sampleFloor: NOTICE_READBACK_SAMPLE_FLOOR,
+    recordCacheOutcomeDistribution,
   });
   const validation = validateNoticeReadbackAggregate(aggregate);
   if (!validation.ok) {
@@ -166,12 +269,20 @@ function summaryLine(aggregate) {
       })),
     };
   }
+  const cache = aggregate.record_cache_outcome_distribution || null;
   return {
     schema: aggregate.schema,
     retained_path: NOTICE_READBACK_RETAINED_PATH,
     production_revision: aggregate.production_revision,
     queried_at: aggregate.queried_at,
     groups,
+    record_cache_outcome_distribution: cache ? {
+      state: cache.state,
+      reason: cache.reason || null,
+      sampled_count: cache.sampled_count ?? null,
+      outcomes: cache.outcomes || null,
+      keyed_to_measurement_group: cache.window?.keyed_to_measurement_group || null,
+    } : null,
   };
 }
 
