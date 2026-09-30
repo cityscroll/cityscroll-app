@@ -623,6 +623,15 @@
   },
   "prior_runs": [
     {
+      "run_id": "github-actions:36723175863:1",
+      "trigger": "schedule",
+      "started_at": "2026-09-30T13:39:26.483Z",
+      "finished_at": "2026-09-30T13:39:32.748Z",
+      "outcome": "held",
+      "served_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
+      "receipt_sha256": "sha256:de213d84bdbffbb6428726880f341dfdee05f199fbf769ccb9ee1a3de2c04f28"
+    },
+    {
       "run_id": "github-actions:36555302802:1",
       "trigger": "workflow_dispatch",
       "started_at": "2026-09-29T10:24:15.855Z",

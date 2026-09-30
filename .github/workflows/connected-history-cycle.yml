@@ -38,16 +38,41 @@ jobs:
         with:
           node-version: "22"
 
+      # A still-open automation-branch receipt must enter prior_runs before this
+      # run force-updates that branch; otherwise a later dispatch drops it.
+      - name: Capture any unmerged cycle receipt
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/connected-history-cycle
+          if git ls-remote --exit-code --heads origin automation/connected-history-cycle >/dev/null 2>&1; then
+            git fetch --depth=1 origin automation/connected-history-cycle
+            git show FETCH_HEAD:site/data/connected_history_cycle.json > .artifacts/connected-history-cycle/pending-receipt.json
+          fi
+
       # A failed stage still writes a receipt naming the stage, so the run
       # continues to publish it and fails at the end.
       - name: Run the cycle
         id: cycle
         continue-on-error: true
-        run: node tools/connected_history_cycle.mjs --run
+        run: |
+          set -euo pipefail
+          pending_args=()
+          if [ -f .artifacts/connected-history-cycle/pending-receipt.json ]; then
+            pending_args+=(--pending-receipt .artifacts/connected-history-cycle/pending-receipt.json)
+          fi
+          node tools/connected_history_cycle.mjs --run "${pending_args[@]}"
 
       - name: Summarise the cycle receipt
         if: ${{ !cancelled() && hashFiles('site/data/connected_history_cycle.json') != '' }}
         run: node tools/connected_history_cycle.mjs --summarize site/data/connected_history_cycle.json >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the cycle receipt with the run
+        if: ${{ !cancelled() && hashFiles('site/data/connected_history_cycle.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: connected-history-cycle-receipt
+          path: site/data/connected_history_cycle.json
+          retention-days: 90
 
       - name: Keep held materializations with the run
         if: ${{ !cancelled() && hashFiles('.artifacts/connected-history-cycle/held/**') != '' }}

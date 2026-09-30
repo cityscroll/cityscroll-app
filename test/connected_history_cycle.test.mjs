@@ -10,13 +10,19 @@ import { test } from "node:test";
 import {
   CONNECTED_HISTORY_CYCLE,
   CONNECTED_HISTORY_MATERIALIZATIONS,
+  assertPriorRunsAppendOnly,
+  buildPriorRunsLedger,
   checkConnectedHistoryCycleDeclaration,
   connectedHistoryCyclePublishedPaths,
   cronMaximumGapHours,
   documentContentFingerprint,
   evidenceInvalidatedBy,
+  ledgerHistoryOf,
+  loadPendingCycleReceipt,
   materializeConnectedHistories,
+  mergePriorRunHistories,
   parseWorkflowTriggers,
+  priorRunsDropped,
   retainedEvidencePins,
   runConnectedHistoryCycle,
   verifyConnectedHistoryCycleReceipt,
@@ -145,6 +151,9 @@ test("the cycle is declared as a scheduled workflow with its cadence, and a desc
   assert.match(checkConnectedHistoryCycleDeclaration(WORKFLOW.replace("13 7 * * *", "13 7 * * 1")).errors.join(), /more than 24 hours/);
   assert.match(checkConnectedHistoryCycleDeclaration(WORKFLOW.replace(CONNECTED_HISTORY_CYCLE.command, "node tools/other.mjs")).errors.join(), /no workflow step runs/);
   assert.match(checkConnectedHistoryCycleDeclaration(WORKFLOW.replace(/^\s+workflow_dispatch:\s*$/m, "")).errors.join(), /started by hand/);
+  assert.match(checkConnectedHistoryCycleDeclaration(WORKFLOW.replaceAll("--pending-receipt", "--other-flag")).errors.join(), /unmerged automation-branch receipt/);
+  assert.match(WORKFLOW, /Capture any unmerged cycle receipt/);
+  assert.match(WORKFLOW, /connected-history-cycle-receipt/);
   assert.deepEqual(parseWorkflowTriggers("name: x\n# on:\n#   schedule:\n#     - cron: \"1 1 * * *\"\n").schedules, []);
   assert.equal(cronMaximumGapHours("0 */6 * * *"), 6);
   assert.equal(cronMaximumGapHours("30 7 * * 1,4"), 96);
@@ -227,7 +236,94 @@ test("an idempotent run emits a receipt, changes no served history byte, and is 
   assert.notEqual(second.receipt.run.run_id, receipt.run.run_id);
   assert.deepEqual(historySnapshot(root), before);
   assert.equal(second.receipt.prior_runs[0].run_id, receipt.run.run_id);
+  assert.equal(second.receipt.prior_runs[0].trigger, "schedule", "the prior entry keeps its trigger");
   assert.equal(second.receipt.prior_runs[0].receipt_sha256, `sha256:${sha256(serialize(receipt))}`);
+  // The first run stays when a third run lands; later runs do not displace earlier ones.
+  const third = await runCycle(root, { at: "2026-10-03T07:13:00.000Z", run: { run_id: "test:third", trigger: "workflow_dispatch" } });
+  assert.deepEqual(third.receipt.prior_runs.map((entry) => entry.run_id), [
+    second.receipt.run.run_id,
+    receipt.run.run_id,
+  ]);
+  assert.equal(third.receipt.prior_runs[0].trigger, "schedule");
+  assert.equal(third.receipt.run.trigger, "workflow_dispatch");
+});
+
+test("prior_runs is append-only: dropping a retained run fails instead of publishing", () => {
+  const retained = [
+    { run_id: "run-a", trigger: "schedule", started_at: "2026-09-30T13:39:26.483Z" },
+    { run_id: "run-b", trigger: "workflow_dispatch", started_at: "2026-09-29T10:24:15.855Z" },
+  ];
+  assert.deepEqual(priorRunsDropped(retained, retained), []);
+  assertPriorRunsAppendOnly(retained, retained);
+  const dropped = priorRunsDropped(retained, [retained[1]]);
+  assert.deepEqual(dropped.map((entry) => entry.run_id), ["run-a"]);
+  assert.throws(
+    () => assertPriorRunsAppendOnly(retained, [retained[1]]),
+    /would drop retained run\(s\): run-a \(schedule, 2026-09-30T13:39:26.483Z\)/,
+  );
+  // Oldest entries past the ledger window may age out; in-window drops may not.
+  const windowed = Array.from({ length: CONNECTED_HISTORY_CYCLE.ledger_limit + 1 }, (_, index) => ({
+    run_id: `run-${index}`,
+    trigger: "schedule",
+    started_at: new Date(Date.parse("2026-09-01T00:00:00.000Z") + index * 86_400_000).toISOString(),
+  })).reverse();
+  const proposed = windowed.slice(0, CONNECTED_HISTORY_CYCLE.ledger_limit);
+  assertPriorRunsAppendOnly(windowed, proposed);
+  assert.throws(() => assertPriorRunsAppendOnly(windowed, proposed.slice(1)), /would drop retained run/);
+});
+
+test("an unmerged automation-branch receipt is merged into prior_runs and cannot be silent-dropped", async (t) => {
+  const root = await fixtureRoot(t);
+  const first = await runCycle(root, {
+    at: "2026-10-01T07:13:00.000Z",
+    run: { run_id: "test:scheduled", trigger: "schedule" },
+  });
+  assert.equal(first.exitCode, 0);
+  const pendingText = serialize(first.receipt);
+  const pending = loadPendingCycleReceipt(pendingText);
+
+  // Main still holds only the pre-first state: remove the unmerged tip receipt.
+  rmSync(join(root, CONNECTED_HISTORY_CYCLE.receipt_path));
+
+  // Without the pending receipt, a later dispatch would publish a history that
+  // never names the scheduled run — the defect this guard closes.
+  const naive = buildPriorRunsLedger({ committedPrevious: null, committedDigest: null });
+  assert.deepEqual(naive, []);
+  assert.throws(
+    () => assertPriorRunsAppendOnly(ledgerHistoryOf(pending.receipt, pending.digest), naive),
+    /would drop retained run\(s\): test:scheduled/,
+  );
+
+  const second = await runCycle(root, {
+    at: "2026-10-01T18:02:00.000Z",
+    run: { run_id: "test:manual", trigger: "workflow_dispatch" },
+    pendingReceipts: [pending],
+  });
+  assert.equal(second.exitCode, 0);
+  assert.equal(second.receipt.run.trigger, "workflow_dispatch");
+  assert.equal(second.receipt.prior_runs[0].run_id, "test:scheduled");
+  assert.equal(second.receipt.prior_runs[0].trigger, "schedule");
+  assert.equal(second.receipt.prior_runs[0].receipt_sha256, pending.digest);
+  assert.deepEqual(
+    mergePriorRunHistories(ledgerHistoryOf(pending.receipt, pending.digest), second.receipt.prior_runs)
+      .map((entry) => entry.run_id),
+    ["test:scheduled"],
+  );
+});
+
+test("the retained tip names the recovered 2026-09-30 scheduled cycle in prior_runs", () => {
+  const tip = JSON.parse(readFileSync(join(ROOT, CONNECTED_HISTORY_CYCLE.receipt_path), "utf8"));
+  assert.equal(tip.run.github_run_id, 36755699826);
+  assert.equal(tip.run.trigger, "workflow_dispatch");
+  const scheduled = tip.prior_runs.find((entry) => entry.run_id === "github-actions:36723175863:1");
+  assert.ok(scheduled, "the first scheduled cycle must remain readable in the retained ledger");
+  assert.equal(scheduled.trigger, "schedule");
+  assert.equal(scheduled.started_at, "2026-09-30T13:39:26.483Z");
+  assert.equal(scheduled.finished_at, "2026-09-30T13:39:32.748Z");
+  assert.equal(scheduled.outcome, "held");
+  assert.equal(scheduled.served_revision, "c9381ab637d8970e8653a0e7616d76f5faa45653");
+  assert.equal(scheduled.receipt_sha256, "sha256:de213d84bdbffbb6428726880f341dfdee05f199fbf769ccb9ee1a3de2c04f28");
+  assert.ok(tip.prior_runs.some((entry) => entry.run_id === "github-actions:36555302802:1"));
 });
 
 test("per-response markup is not a change, and the recorded fingerprint makes the next run exact", async (t) => {
