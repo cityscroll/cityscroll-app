@@ -47,6 +47,19 @@ ENTRY_ROUTES = (
     ("greenpoint", "/near-you/?geo=nta2020%3ABK0101&surface=map"),
     ("tribeca", "/near-you/?geo=nta2020%3AMN0102&surface=map"),
 )
+# Routes outside the geography-navigation surface for A8's first half.
+# Each capture records observed request paths and derives measured booleans
+# for navigator runtime / layer artifact requests (never constant falses).
+UNRELATED_ROUTES = (
+    ("unrelated-about-desktop", "/about.html", 1440, 900),
+    ("unrelated-standards-desktop", "/standards.html", 1440, 900),
+)
+GEOGRAPHY_NAVIGATION_RUNTIME_PATH_RE = re.compile(
+    r"geography_navigation_(?:map|shell|runtime)(?:\.mjs)?"
+)
+GEOGRAPHY_NAVIGATION_LAYER_PATH_RE = re.compile(
+    r"/data/geography/(?:layer_registry\.json|layers/)"
+)
 PRODUCTION_JOURNEY_ROUTES = (
     ("default", "/near-you/", {"expect_selected_label": False, "expect_results_populated": False}),
     ("greenpoint", "/near-you/?geo=nta2020%3ABK0101&surface=map", {"expect_selected_label": True, "expect_results_populated": False}),
@@ -91,6 +104,13 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 def serve() -> tuple[ThreadingHTTPServer, str]:
     server = ThreadingHTTPServer(("127.0.0.1", 0), partial(QuietHandler, directory=str(ROOT)))
+    Thread(target=server.serve_forever, daemon=True).start()
+    return server, f"http://127.0.0.1:{server.server_port}"
+
+
+def serve_site() -> tuple[ThreadingHTTPServer, str]:
+    """Serve ``site/`` at the origin root so unrelated-route paths match production shape."""
+    server = ThreadingHTTPServer(("127.0.0.1", 0), partial(QuietHandler, directory=str(ROOT / "site")))
     Thread(target=server.serve_forever, daemon=True).start()
     return server, f"http://127.0.0.1:{server.server_port}"
 
@@ -1313,6 +1333,179 @@ def update_a2_boundary_evidence(*, write: bool) -> dict:
     }
 
 
+def request_path_from_url(url: str) -> str | None:
+    """Normalize a Playwright request URL to a stable pathname (+query when present)."""
+    text = str(url or "").strip()
+    if not text or text.startswith(("data:", "blob:", "about:")):
+        return None
+    parsed = urllib.parse.urlsplit(text)
+    path = parsed.path or "/"
+    if parsed.query:
+        return f"{path}?{parsed.query}"
+    return path
+
+
+def derive_geography_navigation_artifact_requests(observed_request_paths: list[str]) -> dict:
+    """Derive measured runtime/layer request booleans from retained request paths."""
+    paths = [str(path) for path in observed_request_paths or []]
+    runtime_requested = any(GEOGRAPHY_NAVIGATION_RUNTIME_PATH_RE.search(path) for path in paths)
+    layer_requested = any(GEOGRAPHY_NAVIGATION_LAYER_PATH_RE.search(path) for path in paths)
+    return {
+        "geography_navigation_runtime_requested": bool(runtime_requested),
+        "geography_navigation_layer_artifact_requested": bool(layer_requested),
+    }
+
+
+def browser_capture_unrelated_route(
+    base: str,
+    *,
+    name: str,
+    route: str,
+    width: int,
+    height: int,
+) -> dict:
+    """Capture an outside-surface route and record measured navigator artifact requests."""
+    page_url = f"{base.rstrip('/')}{route}"
+    observed: list[str] = []
+    seen: set[str] = set()
+
+    def on_request(request) -> None:
+        path = request_path_from_url(request.url)
+        if path is None or path in seen:
+            return
+        seen.add(path)
+        observed.append(path)
+
+    with launched_chromium() as browser:
+        context = browser.new_context(
+            viewport={"width": width, "height": height},
+            has_touch=width < 500,
+        )
+        page = context.new_page()
+        try:
+            page.on("request", on_request)
+            page.goto(page_url, wait_until="domcontentloaded", timeout=30_000)
+            page.wait_for_load_state("networkidle", timeout=15_000)
+            page.wait_for_timeout(250)
+            rendered = normalize_html(page.content())
+            timing_ms = page.evaluate(
+                "() => performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart"
+            )
+        finally:
+            context.close()
+
+    derived = derive_geography_navigation_artifact_requests(observed)
+    assertion = (
+        "headless Chromium loaded an outside geography-navigation route, retained the observed "
+        "network request paths, and derived measured false values for geography-navigation "
+        "runtime and layer-artifact requests"
+    )
+    return {
+        "name": name,
+        "route": route,
+        "surface_role": "unrelated",
+        "viewport": {"width": width, "height": height},
+        "assertion": assertion,
+        "failure_mode": "none",
+        "asset_classes": ["server_html", "document_chrome"],
+        "timing_samples": {"dom_content_loaded_ms": timing_ms},
+        "render_content_sha256": sha256(rendered),
+        "observed_request_paths": observed,
+        "geography_navigation_runtime_requested": derived[
+            "geography_navigation_runtime_requested"
+        ],
+        "geography_navigation_layer_artifact_requested": derived[
+            "geography_navigation_layer_artifact_requested"
+        ],
+        "visual_metrics": {
+            "viewport": {"width": width, "height": height},
+            "surface_role": "unrelated",
+        },
+    }
+
+
+def capture_unrelated_routes(*, write: bool) -> dict:
+    """Append or refresh A8 unrelated-route rows without rewriting the Near You captures."""
+    observations = []
+    server, base = serve_site()
+    try:
+        for name, route, width, height in UNRELATED_ROUTES:
+            capture = browser_capture_unrelated_route(
+                base,
+                name=name,
+                route=route,
+                width=width,
+                height=height,
+            )
+            if capture["geography_navigation_runtime_requested"]:
+                raise AssertionError(
+                    f"unrelated route {route} requested geography-navigation runtime"
+                )
+            if capture["geography_navigation_layer_artifact_requested"]:
+                raise AssertionError(
+                    f"unrelated route {route} requested geography-navigation layer artifact"
+                )
+            observations.append(capture)
+    finally:
+        server.shutdown()
+        server.server_close()
+
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    existing_by_name = {
+        row.get("name"): row
+        for row in (manifest.get("captures") or [])
+        if isinstance(row, dict) and isinstance(row.get("name"), str)
+    }
+    refreshed = []
+    for capture in observations:
+        row = dict(existing_by_name.get(capture["name"]) or {})
+        row.update(capture)
+        row["repository_revision"] = manifest.get("repository_revision")
+        row["candidate_revision"] = manifest.get("candidate_revision")
+        row["deployed_version"] = dict(manifest.get("deployed_version") or {})
+        row["data_vintages"] = dict(manifest.get("data_vintages") or {})
+        row["artifact"] = f"capture-manifest.json#capture-{capture['name']}"
+        refreshed.append(row)
+
+    retained = [
+        row
+        for row in (manifest.get("captures") or [])
+        if isinstance(row, dict) and row.get("surface_role") != "unrelated"
+        and not str(row.get("name") or "").startswith("unrelated-")
+    ]
+    refreshed_names = {row["name"] for row in refreshed}
+    retained = [row for row in retained if row.get("name") not in refreshed_names]
+    manifest["captures"] = [*retained, *refreshed]
+
+    for entry in manifest.get("closure_evidence") or []:
+        if isinstance(entry, dict) and entry.get("letter") == "A8":
+            entry["result"] = "accepted"
+            entry["assertion"] = (
+                "Named A8 assertion with retained unrelated-route captures recording "
+                "measured geography-navigation runtime and layer-artifact request negatives."
+            )
+
+    performance = manifest.get("performance") if isinstance(manifest.get("performance"), dict) else {}
+    route_budget = performance.get("route_budget") if isinstance(performance.get("route_budget"), dict) else {}
+    if route_budget.get("status") == "not_taken":
+        route_budget["reason"] = (
+            "A7 keeper review remains open: the full route baseline needs generated simplified "
+            "layer artifacts; the reduced-copy observation is retained without turning it into a ceiling."
+        )
+        performance["route_budget"] = route_budget
+        manifest["performance"] = performance
+
+    if write:
+        MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return {
+        "manifest": str(MANIFEST_PATH.relative_to(ROOT)),
+        "added": [row["name"] for row in refreshed],
+        "routes": [row["route"] for row in refreshed],
+        "wrote": bool(write),
+        "capture_count": len(manifest["captures"]),
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--write-evidence", action="store_true")
@@ -1347,6 +1540,14 @@ def main() -> int:
         action="store_true",
         help="Skip optional local screenshot digests when writing the production journey.",
     )
+    parser.add_argument(
+        "--capture-unrelated-routes",
+        action="store_true",
+        help=(
+            "Capture outside geography-navigation routes and record measured "
+            "runtime/layer artifact request negatives for A8 without rewriting Near You rows."
+        ),
+    )
     args = parser.parse_args()
     exclusive = [
         args.fill_deployed_version,
@@ -1354,11 +1555,13 @@ def main() -> int:
         args.check,
         args.check_production_journey,
         args.update_a2_boundary,
+        args.capture_unrelated_routes,
     ]
     if sum(1 for flag in exclusive if flag) > 1:
         raise SystemExit(
             "use only one of --fill-deployed-version, --write-production-journey, "
-            "--check, --check-production-journey, or --update-a2-boundary"
+            "--check, --check-production-journey, --update-a2-boundary, "
+            "or --capture-unrelated-routes"
         )
     if args.fill_deployed_version:
         print(json.dumps(fill_deployed_version(write=True), indent=2))
@@ -1374,6 +1577,9 @@ def main() -> int:
         return 0
     if args.update_a2_boundary:
         print(json.dumps(update_a2_boundary_evidence(write=True), indent=2))
+        return 0
+    if args.capture_unrelated_routes:
+        print(json.dumps(capture_unrelated_routes(write=True), indent=2))
         return 0
     observations = []
     fixture_html = ""
