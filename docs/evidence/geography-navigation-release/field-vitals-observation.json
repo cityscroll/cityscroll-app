@@ -1,0 +1,458 @@
+{
+  "schema": "cityscroll.geography_navigation_field_vitals_observation.v1",
+  "queried_at": "2026-09-30T18:41:06.194Z",
+  "dataset": "crol_rum_observations_v1",
+  "traffic_class": "production",
+  "component_id": "none",
+  "required_quantile": 0.75,
+  "required_viewports": [
+    "desktop",
+    "mobile"
+  ],
+  "sample_floor": 30,
+  "budgets": {
+    "lcp_ms": 2500,
+    "inp_ms": 200,
+    "cls_score": 0.1
+  },
+  "deployed_revision": {
+    "pages_source_commit_sha": "27d239333a0e225c98aa7b9e7aea009acfdf9bff",
+    "pages_generated_at": "2026-09-30T18:14:18.119Z",
+    "worker_commit": "18d60ca624aab0819bf4c0f5f18b1e7544ea3828"
+  },
+  "delivery_merged_at": "2026-09-21T15:18:47Z",
+  "delivery_merge_commit": "f0b1c418aba65b7e928f24c5fe6349e80f8c8caf",
+  "default_local_home_merged_at": "2026-09-26T23:51:28Z",
+  "classification_note": "After default-local-home delivery, pathname / classifies as surface home while /near-you classifies as near-you. Geography-navigation journeys use both.",
+  "observations": [
+    {
+      "surface_id": "near-you",
+      "metric_id": "lcp_ms",
+      "device_class": "desktop",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:06.000Z",
+        "requested_end": "2026-09-30T18:41:06.000Z",
+        "available_since": "2026-07-02T18:41:06.000Z",
+        "query_start": "2026-09-23T18:41:06.000Z",
+        "query_end": "2026-09-30T18:41:06.000Z"
+      },
+      "sampled_count": 2,
+      "estimated_count": 2,
+      "status": "insufficient_sample",
+      "reason": "below_floor",
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": null,
+      "budget": 2500,
+      "pass": null,
+      "first_observation_at": "2026-09-25T18:40:19.000Z",
+      "latest_observation_at": "2026-09-25T23:50:43.000Z",
+      "earliest_floor_date": {
+        "earliest_date": "2026-10-03",
+        "basis": "linear_extrapolation_from_observed_window",
+        "observed_rate_per_day": 9.278,
+        "samples_needed": 28,
+        "latest_observation_lag_days": 4.01,
+        "note": "Optimistic bound assuming the observed rate resumes; a stall since the latest observation pushes the date later."
+      }
+    },
+    {
+      "surface_id": "near-you",
+      "metric_id": "lcp_ms",
+      "device_class": "mobile",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:06.000Z",
+        "requested_end": "2026-09-30T18:41:06.000Z",
+        "available_since": "2026-07-02T18:41:06.000Z",
+        "query_start": "2026-09-23T18:41:06.000Z",
+        "query_end": "2026-09-30T18:41:06.000Z"
+      },
+      "sampled_count": 0,
+      "estimated_count": 0,
+      "status": "no_data",
+      "reason": "no_rows",
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": null,
+      "budget": 2500,
+      "pass": null,
+      "first_observation_at": null,
+      "latest_observation_at": null,
+      "earliest_floor_date": {
+        "earliest_date": null,
+        "basis": "no_positive_sample_rate",
+        "note": "No retained rows in the queried window from which to project a floor date."
+      }
+    },
+    {
+      "surface_id": "near-you",
+      "metric_id": "inp_ms",
+      "device_class": "desktop",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:06.000Z",
+        "requested_end": "2026-09-30T18:41:06.000Z",
+        "available_since": "2026-07-02T18:41:06.000Z",
+        "query_start": "2026-09-23T18:41:06.000Z",
+        "query_end": "2026-09-30T18:41:06.000Z"
+      },
+      "sampled_count": 0,
+      "estimated_count": 0,
+      "status": "no_data",
+      "reason": "no_rows",
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": null,
+      "budget": 200,
+      "pass": null,
+      "first_observation_at": null,
+      "latest_observation_at": null,
+      "earliest_floor_date": {
+        "earliest_date": null,
+        "basis": "no_positive_sample_rate",
+        "note": "No retained rows in the queried window from which to project a floor date."
+      }
+    },
+    {
+      "surface_id": "near-you",
+      "metric_id": "inp_ms",
+      "device_class": "mobile",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:06.000Z",
+        "requested_end": "2026-09-30T18:41:06.000Z",
+        "available_since": "2026-07-02T18:41:06.000Z",
+        "query_start": "2026-09-23T18:41:06.000Z",
+        "query_end": "2026-09-30T18:41:06.000Z"
+      },
+      "sampled_count": 0,
+      "estimated_count": 0,
+      "status": "no_data",
+      "reason": "no_rows",
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": null,
+      "budget": 200,
+      "pass": null,
+      "first_observation_at": null,
+      "latest_observation_at": null,
+      "earliest_floor_date": {
+        "earliest_date": null,
+        "basis": "no_positive_sample_rate",
+        "note": "No retained rows in the queried window from which to project a floor date."
+      }
+    },
+    {
+      "surface_id": "near-you",
+      "metric_id": "cls_score",
+      "device_class": "desktop",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:07.000Z",
+        "requested_end": "2026-09-30T18:41:07.000Z",
+        "available_since": "2026-07-02T18:41:07.000Z",
+        "query_start": "2026-09-23T18:41:07.000Z",
+        "query_end": "2026-09-30T18:41:07.000Z"
+      },
+      "sampled_count": 2,
+      "estimated_count": 2,
+      "status": "insufficient_sample",
+      "reason": "below_floor",
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": null,
+      "budget": 0.1,
+      "pass": null,
+      "first_observation_at": "2026-09-25T18:40:19.000Z",
+      "latest_observation_at": "2026-09-25T23:50:43.000Z",
+      "earliest_floor_date": {
+        "earliest_date": "2026-10-03",
+        "basis": "linear_extrapolation_from_observed_window",
+        "observed_rate_per_day": 9.278,
+        "samples_needed": 28,
+        "latest_observation_lag_days": 4.01,
+        "note": "Optimistic bound assuming the observed rate resumes; a stall since the latest observation pushes the date later."
+      }
+    },
+    {
+      "surface_id": "near-you",
+      "metric_id": "cls_score",
+      "device_class": "mobile",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:07.000Z",
+        "requested_end": "2026-09-30T18:41:07.000Z",
+        "available_since": "2026-07-02T18:41:07.000Z",
+        "query_start": "2026-09-23T18:41:07.000Z",
+        "query_end": "2026-09-30T18:41:07.000Z"
+      },
+      "sampled_count": 0,
+      "estimated_count": 0,
+      "status": "no_data",
+      "reason": "no_rows",
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": null,
+      "budget": 0.1,
+      "pass": null,
+      "first_observation_at": null,
+      "latest_observation_at": null,
+      "earliest_floor_date": {
+        "earliest_date": null,
+        "basis": "no_positive_sample_rate",
+        "note": "No retained rows in the queried window from which to project a floor date."
+      }
+    },
+    {
+      "surface_id": "home",
+      "metric_id": "lcp_ms",
+      "device_class": "desktop",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:07.000Z",
+        "requested_end": "2026-09-30T18:41:07.000Z",
+        "available_since": "2026-07-02T18:41:07.000Z",
+        "query_start": "2026-09-23T18:41:07.000Z",
+        "query_end": "2026-09-30T18:41:07.000Z"
+      },
+      "sampled_count": 34,
+      "estimated_count": 34,
+      "status": "available",
+      "reason": null,
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": 600,
+      "budget": 2500,
+      "pass": true,
+      "first_observation_at": "2026-09-23T19:39:43.000Z",
+      "latest_observation_at": "2026-09-29T19:25:12.000Z",
+      "earliest_floor_date": null
+    },
+    {
+      "surface_id": "home",
+      "metric_id": "lcp_ms",
+      "device_class": "mobile",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:07.000Z",
+        "requested_end": "2026-09-30T18:41:07.000Z",
+        "available_since": "2026-07-02T18:41:07.000Z",
+        "query_start": "2026-09-23T18:41:07.000Z",
+        "query_end": "2026-09-30T18:41:07.000Z"
+      },
+      "sampled_count": 11,
+      "estimated_count": 11,
+      "status": "insufficient_sample",
+      "reason": "below_floor",
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": null,
+      "budget": 2500,
+      "pass": null,
+      "first_observation_at": "2026-09-24T17:18:42.000Z",
+      "latest_observation_at": "2026-09-29T19:24:28.000Z",
+      "earliest_floor_date": {
+        "earliest_date": "2026-10-08",
+        "basis": "linear_extrapolation_from_observed_window",
+        "observed_rate_per_day": 2.162,
+        "samples_needed": 19,
+        "latest_observation_lag_days": 0.19,
+        "note": "Optimistic bound assuming the observed rate resumes; a stall since the latest observation pushes the date later."
+      }
+    },
+    {
+      "surface_id": "home",
+      "metric_id": "inp_ms",
+      "device_class": "desktop",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:07.000Z",
+        "requested_end": "2026-09-30T18:41:07.000Z",
+        "available_since": "2026-07-02T18:41:07.000Z",
+        "query_start": "2026-09-23T18:41:07.000Z",
+        "query_end": "2026-09-30T18:41:07.000Z"
+      },
+      "sampled_count": 11,
+      "estimated_count": 11,
+      "status": "insufficient_sample",
+      "reason": "below_floor",
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": null,
+      "budget": 200,
+      "pass": null,
+      "first_observation_at": "2026-09-23T19:39:44.000Z",
+      "latest_observation_at": "2026-09-26T19:24:37.000Z",
+      "earliest_floor_date": {
+        "earliest_date": "2026-10-05",
+        "basis": "linear_extrapolation_from_observed_window",
+        "observed_rate_per_day": 3.68,
+        "samples_needed": 19,
+        "latest_observation_lag_days": 3.19,
+        "note": "Optimistic bound assuming the observed rate resumes; a stall since the latest observation pushes the date later."
+      }
+    },
+    {
+      "surface_id": "home",
+      "metric_id": "inp_ms",
+      "device_class": "mobile",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:07.000Z",
+        "requested_end": "2026-09-30T18:41:07.000Z",
+        "available_since": "2026-07-02T18:41:07.000Z",
+        "query_start": "2026-09-23T18:41:07.000Z",
+        "query_end": "2026-09-30T18:41:07.000Z"
+      },
+      "sampled_count": 3,
+      "estimated_count": 3,
+      "status": "insufficient_sample",
+      "reason": "below_floor",
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": null,
+      "budget": 200,
+      "pass": null,
+      "first_observation_at": "2026-09-26T19:24:39.000Z",
+      "latest_observation_at": "2026-09-26T19:24:47.000Z",
+      "earliest_floor_date": {
+        "earliest_date": "2026-09-30",
+        "basis": "linear_extrapolation_from_observed_window",
+        "observed_rate_per_day": 72.0,
+        "samples_needed": 27,
+        "latest_observation_lag_days": 3.19,
+        "note": "Optimistic bound assuming the observed rate resumes; a stall since the latest observation pushes the date later."
+      }
+    },
+    {
+      "surface_id": "home",
+      "metric_id": "cls_score",
+      "device_class": "desktop",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:08.000Z",
+        "requested_end": "2026-09-30T18:41:08.000Z",
+        "available_since": "2026-07-02T18:41:08.000Z",
+        "query_start": "2026-09-23T18:41:08.000Z",
+        "query_end": "2026-09-30T18:41:08.000Z"
+      },
+      "sampled_count": 35,
+      "estimated_count": 35,
+      "status": "available",
+      "reason": null,
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": 0.015667289576903293,
+      "budget": 0.1,
+      "pass": true,
+      "first_observation_at": "2026-09-23T21:07:10.000Z",
+      "latest_observation_at": "2026-09-29T19:25:12.000Z",
+      "earliest_floor_date": null
+    },
+    {
+      "surface_id": "home",
+      "metric_id": "cls_score",
+      "device_class": "mobile",
+      "window": "7d",
+      "retention": {
+        "status": "complete",
+        "window_fraction": 1,
+        "requested_start": "2026-09-23T18:41:08.000Z",
+        "requested_end": "2026-09-30T18:41:08.000Z",
+        "available_since": "2026-07-02T18:41:08.000Z",
+        "query_start": "2026-09-23T18:41:08.000Z",
+        "query_end": "2026-09-30T18:41:08.000Z"
+      },
+      "sampled_count": 9,
+      "estimated_count": 9,
+      "status": "insufficient_sample",
+      "reason": "below_floor",
+      "sample_floor": 30,
+      "quantile": 0.75,
+      "quantile_value": null,
+      "budget": 0.1,
+      "pass": null,
+      "first_observation_at": "2026-09-24T17:18:42.000Z",
+      "latest_observation_at": "2026-09-29T19:24:28.000Z",
+      "earliest_floor_date": {
+        "earliest_date": "2026-10-11",
+        "basis": "linear_extrapolation_from_observed_window",
+        "observed_rate_per_day": 1.769,
+        "samples_needed": 21,
+        "latest_observation_lag_days": 0.19,
+        "note": "Optimistic bound assuming the observed rate resumes; a stall since the latest observation pushes the date later."
+      }
+    }
+  ],
+  "scope_evaluations": {
+    "near_you_only": {
+      "surfaces": [
+        "near-you"
+      ],
+      "status": "not_taken",
+      "reason": "Every required vital\u00d7viewport cell is below the sample floor or has no_data on surface near-you (INP has zero rows)."
+    },
+    "home_and_near_you": {
+      "surfaces": [
+        "home",
+        "near-you"
+      ],
+      "status": "not_taken",
+      "reason": "After the default-local-home delivery, pathname / classifies as home and carries most Near You field traffic. Desktop LCP and CLS clear the floor and pass budgets; mobile LCP/CLS and all INP cells remain below the floor.",
+      "partial_passes": [
+        {
+          "surface_id": "home",
+          "metric_id": "lcp_ms",
+          "device_class": "desktop",
+          "sampled_count": 34,
+          "quantile_value": 600,
+          "pass": true
+        },
+        {
+          "surface_id": "home",
+          "metric_id": "cls_score",
+          "device_class": "desktop",
+          "sampled_count": 35,
+          "quantile_value": 0.015667289576903293,
+          "pass": true
+        }
+      ]
+    }
+  },
+  "clause_status": {
+    "status": "not_taken",
+    "reason": "Production Analytics Engine retains LCP/INP/CLS for geography-navigation routes, but the repository sample floor (30) is not met for the required vital\u00d7viewport matrix on surface near-you. INP has no near-you rows in the 7d window. Pathname / traffic after the default-local-home delivery classifies as home and is retained separately for the site owner decision on route scope.",
+    "sample_floor": 30,
+    "required_quantile": 0.75,
+    "required_viewports": [
+      "desktop",
+      "mobile"
+    ],
+    "earliest_date_near_you_only": "2026-10-03",
+    "earliest_date_note": "near-you LCP/CLS project to roughly 2026-11-04 at the observed ~0.8 samples/day; INP has no positive rate on near-you so no floor date can be projected for that vital on that surface. If home is admitted as a geography-navigation route surface, mobile LCP/CLS and INP still need more samples (optimistic ~2026-10-08 to 2026-10-11) and INP recently stalled."
+  }
+}
