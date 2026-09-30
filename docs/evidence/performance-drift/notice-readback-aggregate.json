@@ -1,0 +1,197 @@
+{
+  "schema": "cityscroll.notice_readback_aggregate.v1",
+  "version": 1,
+  "public_alias": "c7a6b040d3706",
+  "title": "Notice post-delivery read-back aggregate",
+  "queried_at": "2026-09-30T12:40:12.376Z",
+  "production_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
+  "sample_floor": 30,
+  "producer": {
+    "repository": "cityscroll-app",
+    "source": "tools/read_rum_drift.mjs",
+    "builder": "tools/build_notice_readback_aggregate.mjs",
+    "retained_path": "docs/evidence/performance-drift/notice-readback-aggregate.json",
+    "command": "node tools/build_notice_readback_aggregate.mjs",
+    "dataset": "crol_rum_observations_v1",
+    "notes": [
+      "Each measurement group is read on its own query through the shared RUM grammar.",
+      "Groups are never combined into one distribution."
+    ]
+  },
+  "required_groups": [
+    "cold_module_path",
+    "first_byte",
+    "synthetic"
+  ],
+  "measurement_groups": {
+    "cold_module_path": {
+      "measurement_group": "cold_module_path",
+      "population": "resident",
+      "traffic_class": "production",
+      "rum_measurement_group": "resident",
+      "sample_floor": 30,
+      "clears_sample_floor": true,
+      "delivery": {
+        "kind": "delivery_merge",
+        "at": "2026-09-06T19:15:53.000Z",
+        "merge_commit": "8a2fba61b4192481a8d6b7852f6094b79599dbca",
+        "pull_request": 1769,
+        "note": "Cold module path change that opened the readiness read-back."
+      },
+      "window": {
+        "requested_start": "2026-09-23T12:40:12.000Z",
+        "requested_end": "2026-09-30T12:40:12.000Z",
+        "status": "complete",
+        "complete": true,
+        "begins_at_or_after_delivery": true,
+        "post_dates_delivery": true
+      },
+      "queried_at": "2026-09-30T12:40:12.376Z",
+      "metrics": [
+        {
+          "metric_id": "component_ready_ms",
+          "surface_id": "notice",
+          "component_id": "notice-context",
+          "sample_floor": 30,
+          "sampled_count": 121,
+          "estimated_count": 121,
+          "sufficiency": "sufficient",
+          "p50_ms": 1175.5,
+          "p75_ms": 2004.4,
+          "p95_ms": 6908.1,
+          "p95_tail_support_estimate": 6,
+          "first_observation_at": "2026-09-23T13:48:21.000Z",
+          "latest_observation_at": "2026-09-30T10:29:05.000Z"
+        },
+        {
+          "metric_id": "content_ready_ms",
+          "surface_id": "notice",
+          "component_id": "none",
+          "sample_floor": 30,
+          "sampled_count": 121,
+          "estimated_count": 121,
+          "sufficiency": "sufficient",
+          "p50_ms": 993.9,
+          "p75_ms": 1431.1,
+          "p95_ms": 3971.9,
+          "p95_tail_support_estimate": 6,
+          "first_observation_at": "2026-09-23T13:48:21.000Z",
+          "latest_observation_at": "2026-09-30T10:29:05.000Z"
+        }
+      ]
+    },
+    "first_byte": {
+      "measurement_group": "first_byte",
+      "population": "resident",
+      "traffic_class": "production",
+      "rum_measurement_group": "resident",
+      "sample_floor": 30,
+      "clears_sample_floor": true,
+      "delivery": {
+        "kind": "delivery_merge",
+        "at": "2026-09-06T20:18:09.000Z",
+        "merge_commit": "8a43f7e8009818295c7561e04032c0ea17f60892",
+        "pull_request": 1774,
+        "note": "Edge response change that opened the first-byte read-back."
+      },
+      "window": {
+        "requested_start": "2026-09-23T12:40:12.000Z",
+        "requested_end": "2026-09-30T12:40:12.000Z",
+        "status": "complete",
+        "complete": true,
+        "begins_at_or_after_delivery": true,
+        "post_dates_delivery": true
+      },
+      "queried_at": "2026-09-30T12:40:12.376Z",
+      "metrics": [
+        {
+          "metric_id": "ttfb_ms",
+          "surface_id": "notice",
+          "component_id": "none",
+          "sample_floor": 30,
+          "sampled_count": 140,
+          "estimated_count": 140,
+          "sufficiency": "sufficient",
+          "p50_ms": 20.2,
+          "p75_ms": 395.8,
+          "p95_ms": 2844.2,
+          "p95_tail_support_estimate": 7,
+          "first_observation_at": "2026-09-23T13:48:21.000Z",
+          "latest_observation_at": "2026-09-30T10:29:05.000Z"
+        },
+        {
+          "metric_id": "ttfb_ms",
+          "surface_id": "home",
+          "component_id": "none",
+          "role": "same_window_comparison",
+          "sample_floor": 30,
+          "sampled_count": 110,
+          "estimated_count": 110,
+          "sufficiency": "sufficient",
+          "p50_ms": 71.8,
+          "p75_ms": 106,
+          "p95_ms": 630.4,
+          "p95_tail_support_estimate": 6,
+          "first_observation_at": "2026-09-23T13:06:06.000Z",
+          "latest_observation_at": "2026-09-30T07:13:49.000Z"
+        }
+      ]
+    },
+    "synthetic": {
+      "measurement_group": "synthetic",
+      "population": "synthetic",
+      "traffic_class": "synthetic",
+      "rum_measurement_group": "synthetic",
+      "sample_floor": 30,
+      "clears_sample_floor": true,
+      "delivery": {
+        "kind": "first_probe_slot",
+        "at": "2026-09-08T08:07:00.000Z",
+        "merge_commit": null,
+        "pull_request": null,
+        "note": "First synthetic probe slot that retained an observation."
+      },
+      "window": {
+        "requested_start": "2026-09-23T12:40:12.000Z",
+        "requested_end": "2026-09-30T12:40:12.000Z",
+        "status": "complete",
+        "complete": true,
+        "begins_at_or_after_delivery": true,
+        "post_dates_delivery": true
+      },
+      "queried_at": "2026-09-30T12:40:12.376Z",
+      "metrics": [
+        {
+          "metric_id": "content_ready_ms",
+          "surface_id": "notice",
+          "component_id": "none",
+          "sample_floor": 30,
+          "sampled_count": 216,
+          "estimated_count": 216,
+          "sufficiency": "sufficient",
+          "p50_ms": 6127.8,
+          "p75_ms": 6523.4,
+          "p95_ms": 7542.3,
+          "p95_tail_support_estimate": 11,
+          "first_observation_at": "2026-09-23T14:08:17.000Z",
+          "latest_observation_at": "2026-09-30T08:09:43.000Z"
+        },
+        {
+          "metric_id": "component_ready_ms",
+          "surface_id": "notice",
+          "component_id": "notice-context",
+          "sample_floor": 30,
+          "sampled_count": 210,
+          "estimated_count": 210,
+          "sufficiency": "sufficient",
+          "p50_ms": 6707.6,
+          "p75_ms": 7108.1,
+          "p95_ms": 8018.4,
+          "p95_tail_support_estimate": 11,
+          "first_observation_at": "2026-09-23T14:08:17.000Z",
+          "latest_observation_at": "2026-09-30T08:09:43.000Z"
+        }
+      ]
+    }
+  }
+}
