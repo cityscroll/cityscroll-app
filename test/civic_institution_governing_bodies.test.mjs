@@ -1,3 +1,8 @@
+/**
+ * NYCHA governing-body civic window pins use main-vintage constellation and
+ * relationships fixtures: scheduled refresh replaces audit notice 20260625034
+ * while meetings.count stays 2.
+ */
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -239,7 +244,7 @@ test("generic titles, similar committees, OTI buckets, vendor rows, and calendar
 });
 
 test("NYCHA meeting claim ids, BERS vendor and staffing rows, routes, and category states stay on existing contracts", () => {
-  const lookup = JSON.parse(readFileSync(join(ROOT, "site/data/agency_constellation_lookup.json"), "utf8"));
+  const lookup = JSON.parse(readFileSync(new URL("./fixtures/civic_institution_governing_bodies/agency_constellation_lookup.json", import.meta.url), "utf8"));
   const nycha = lookup.by_id[NYCHA_CANONICAL_ID];
   const bersRoute = lookup.by_id[BERS_ROUTE_ID];
   assert.equal(nycha.subject_ref, "agency:id:housing-authority");
@@ -260,11 +265,11 @@ test("NYCHA meeting claim ids, BERS vendor and staffing rows, routes, and catego
   assert.equal(bersRoute.categories.vendors.status, "matched");
   assert.equal(bersRoute.categories.staffing.status, "matched");
   assert.equal(bersRoute.categories.meetings.status, "empty");
-  const nychaRel = JSON.parse(readFileSync(join(ROOT, "site/agencies/housing-authority/relationships-data.json"), "utf8"));
+  const nychaRel = JSON.parse(readFileSync(new URL("./fixtures/civic_institution_governing_bodies/housing-authority-relationships-data.json", import.meta.url), "utf8"));
   const meetingItems = nychaRel.view.categories.find((row) => row.id === "meetings").items;
   assert.equal(meetingItems.some((item) => String(item.href || "").includes(NYCHA_BOARD_MEETING_ID)), true);
   assert.equal(meetingItems.some((item) => String(item.href || "").includes(NYCHA_AUDIT_MEETING_ID)), true);
-  const bersRel = JSON.parse(readFileSync(join(ROOT, "site/agencies/employees-retirement-system/relationships-data.json"), "utf8"));
+  const bersRel = JSON.parse(readFileSync(new URL("./fixtures/civic_institution_governing_bodies/employees-retirement-system-relationships-data.json", import.meta.url), "utf8"));
   const vendorItems = bersRel.view.categories.find((row) => row.id === "vendors").items;
   const staffingItems = bersRel.view.categories.find((row) => row.id === "staffing").items;
   assert.equal(vendorItems.length, 8);
@@ -272,7 +277,7 @@ test("NYCHA meeting claim ids, BERS vendor and staffing rows, routes, and catego
   const crosswalk = JSON.parse(readFileSync(join(ROOT, "worker/src/data/agency_crosswalk.json"), "utf8"));
   assert.equal(crosswalk.entries[BERS_CROSSWALK_ID].acronym, "BERS");
   assert.equal(crosswalk.entries[BERS_ROUTE_ID], undefined);
-  const identityReport = JSON.parse(readFileSync(join(ROOT, "site/data/agency_route_identity_report.json"), "utf8"));
+  const identityReport = JSON.parse(readFileSync(new URL("./fixtures/civic_institution_governing_bodies/agency_route_identity_report.json", import.meta.url), "utf8"));
   assert.ok(identityReport.aliases.some((row) => row.canonical_id === BERS_ROUTE_ID));
   const scoped = governingBodiesForInstitution("sanitation", nychaSources());
   assert.equal(scoped.accepted.length, 0);

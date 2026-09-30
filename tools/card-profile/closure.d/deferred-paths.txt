@@ -30,7 +30,6 @@ entity_resolution/review/boards_wall_measurement.json
 entity_resolution/review/mayoral_board_registry.json
 entity_resolution/review/title_code_registry.json
 site/agencies/aging/relationships.json
-site/agencies/employees-retirement-system/relationships-data.json
 site/agencies/housing-authority/relationships-data.json
 site/agencies/housing-preservation-and-development/relationships.json
 site/agencies/index.html
@@ -111,7 +110,6 @@ site/data/exam_sources/oasys_exam_map.json
 site/data/exam_sources/title_code_alias_registry.json
 site/data/exam_sources/title_code_family_coverage.json
 site/data/exam_sources/verification_receipts/civil_service_list_closed_exams_2026-07-30.json
-site/data/exam_sources/verification_receipts/dcas_open_competitive_2026-07-29.json
 site/data/exam_sources/verification_receipts/noe_differentiators_latest.json
 site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json
 site/data/first_class_freshness_report.json

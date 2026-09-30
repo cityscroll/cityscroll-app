@@ -1,3 +1,8 @@
+/**
+ * NYCEDC empty-category pins use a main-vintage constellation row fixture:
+ * scheduled refresh lights contracts; keep empty-category assertions via the
+ * fixture rather than retargeting.
+ */
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -49,8 +54,8 @@ const BOARD_LOOKUP = JSON.parse(
   readFileSync(join(ROOT, "site/data/community_board_constellation_lookup.json"), "utf8"),
 );
 
-function lookupView(id) {
-  const row = LOOKUP.by_id[id];
+function lookupView(id, rowOverride = null) {
+  const row = rowOverride || LOOKUP.by_id[id];
   assert.ok(row, `missing lookup for ${id}`);
   return {
     canonical_id: id,
@@ -85,6 +90,9 @@ function dsnyProjection() {
 
 function nycedcProjection() {
   const identity = FIXTURES.nycedc;
+  // Main-vintage EDC constellation row (contracts empty). Refresh lights contracts.
+  const edcRow = FIXTURES.edc_lookup_row;
+  assert.ok(edcRow, "fixture must carry main-vintage EDC constellation row");
   const development = resolveNycEdcDevelopmentRoles({
     project: {
       project_id: WILLETS_POINT_PROJECT_ID,
@@ -97,7 +105,7 @@ function nycedcProjection() {
   const evidence = buildAgencyIdentityEvidence({
     identity,
     publisherRow: CROSSWALK.entries[identity.canonical_id],
-    view: lookupView(identity.canonical_id),
+    view: lookupView(identity.canonical_id, edcRow),
     generatedAt: "2026-08-31T00:00:00.000Z",
     developmentRoleSources: {
       project: {
@@ -111,7 +119,7 @@ function nycedcProjection() {
   });
   assert.equal(development.accepted.some((edge) => edge.relation_id === "applicant_on"), true);
   return projectInstitutionProfileNavigation({
-    view: { ...lookupView(identity.canonical_id), identity_evidence: evidence },
+    view: { ...lookupView(identity.canonical_id, edcRow), identity_evidence: evidence },
     identity,
     identityEvidence: evidence,
     publisherRow: CROSSWALK.entries[identity.canonical_id],

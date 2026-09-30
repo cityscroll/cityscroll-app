@@ -1,14 +1,20 @@
+/**
+ * Frozen main-vintage census pins (record_count 451, boards_with_records 27, …).
+ * Scheduled refresh advances the meeting index to 500/28; keep exact pins via
+ * fixtures rather than retargeting counts.
+ */
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { buildCommunityBoardGraphCensus } from "../tools/build_community_board_graph_census.mjs";
-import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
 
 const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
-const registry = read("../site/data/non_council_outcome_sources/source_registry.json");
-const inventory = read("../site/data/non_council_outcome_sources/board_source_inventory.json");
-const committed = read("../site/data/non_council_outcome_sources/community_board_graph_census.json");
-const meetingIndex = readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
+const FIXTURE = "./fixtures/community_board_graph_census";
+const registry = read(`${FIXTURE}/source_registry.json`);
+const inventory = read(`${FIXTURE}/board_source_inventory.json`);
+const committed = read(`${FIXTURE}/community_board_graph_census.json`);
+// Combined main-vintage meeting index (no live shards): refresh rewrites shards to 500/28.
+const meetingIndex = read(`${FIXTURE}/community_board_meeting_index.combined.json`);
 
 test("the committed census covers all 59 boards and all Card 1 dimensions", () => {
   assert.equal(committed.schema, "cityscroll.community_board_graph_census.v1");

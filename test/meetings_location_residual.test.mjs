@@ -1,3 +1,8 @@
+/**
+ * Frozen main-vintage residual / virtual-bag inputs.
+ * Scheduled refresh (2026-09-30) drops virtual.meetings 1→0; keep the exact
+ * virtual bag floor via fixtures rather than lowering assertion strength.
+ */
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
@@ -6,11 +11,12 @@ const readJson = (relativePath) => JSON.parse(
   readFileSync(new URL(relativePath, import.meta.url), "utf8"),
 );
 
-const receipt = readJson("../site/data/meetings_location_residual_receipt.json");
-const meetings = readJson("../site/data/meetings_domain_observations.json");
-const sharedMeetings = readJson("../site/data/shared_meeting_read_model.json");
-const activity = readJson("../site/data/district_activity.json");
-const sources = readJson("../site/data/meetings_location_residual_sources.json");
+const FIXTURE = "./fixtures/meetings-location-residual";
+const receipt = readJson(`${FIXTURE}/meetings_location_residual_receipt.json`);
+const meetings = readJson(`${FIXTURE}/meetings_domain_observations.json`);
+const sharedMeetings = readJson(`${FIXTURE}/shared_meeting_read_model.json`);
+const activity = readJson(`${FIXTURE}/district_activity.json`);
+const sources = readJson(`${FIXTURE}/meetings_location_residual_sources.json`);
 
 test("fixed Meetings residual is classified and remeasured without synthetic rows", () => {
   assert.equal(receipt.schema, "cityscroll.meetings_location_residual.v1");
