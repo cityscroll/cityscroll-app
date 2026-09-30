@@ -32,7 +32,7 @@ import {
 import { subscriptionKey, buildSubscription, deriveSubscriberId, deriveWatchId } from "../src/lib/subscriptions.mjs";
 import { matterJournalDatabase } from "./helpers/matter_observation_d1.mjs";
 
-const snapshot = JSON.parse(readFileSync(new URL("../../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
+const snapshot = JSON.parse(readFileSync(new URL("./fixtures/matter-coverage-recovery/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
 const outboxSql = readFileSync(new URL("../migrations/0018_digest_outbox.sql", import.meta.url), "utf8");
 const MATTER = "legistar:nyc:matter:79200";
 const FIVE = ["79201", "79203", "79202", "79204", "79205"];

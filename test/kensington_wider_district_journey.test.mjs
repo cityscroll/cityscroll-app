@@ -203,7 +203,7 @@ test("A1 [outcome] Kensington meetings show September 23 under wider-district ac
   assert.ok(found, "September 23 record must appear under wider-district activity");
   assert.equal(found.district.id, "K14");
   assert.equal(found.record.title, "Housing and Land Use Committee Meeting");
-  assert.equal(found.record.venue_address, "810 East 16th Street, Brooklyn, NY, 11230");
+  assert.equal(found.record.venue_address, "810 East 16th Street, Brooklyn, NY 11230");
   assert.match(morning.html, /810 East 16th Street/);
   assert.match(morning.html, /18:30/);
   assert.match(morning.html, /Held in Midwood/);
@@ -214,10 +214,10 @@ test("A1 [outcome] Kensington meetings show September 23 under wider-district ac
   const facts = nearYouRecordInspectionFacts(found.record, { now: "2026-09-23T14:00:00.000Z" });
   assert.equal(facts.basis, "Held in Midwood");
   assert.equal(facts.time_label, "18:30");
-  assert.equal(facts.venue_address, "810 East 16th Street, Brooklyn, NY, 11230");
+  assert.equal(facts.venue_address, "810 East 16th Street, Brooklyn, NY 11230");
   assert.equal(
     parseNearYouRecordInspection(serializeNearYouRecordInspection(facts))?.venue_address,
-    "810 East 16th Street, Brooklyn, NY, 11230",
+    "810 East 16th Street, Brooklyn, NY 11230",
   );
 
   const { card, dialog } = mountSeptBroaderCard(morning.html);

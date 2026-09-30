@@ -87,6 +87,20 @@ function alwaysMaterialized(id) {
   return DEMO_IDS.includes(id) || CORRECTED_IDENTITY_IDS.includes(id);
 }
 
+// Agencies already published in the committed constellation lookup stay findable
+// when a rolling publisher window empties their only matched category (for
+// example a borough president whose sole hosted hearing rolls out of the
+// meeting materialization). New empty candidates still stay unpublished.
+export function previouslyPublishedAgencyIds(lookupPath = join(SITE, "data/agency_constellation_lookup.json")) {
+  if (!existsSync(lookupPath)) return new Set();
+  try {
+    const previous = readJson(lookupPath);
+    return new Set(Object.keys(previous?.by_id || {}));
+  } catch {
+    return new Set();
+  }
+}
+
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
@@ -657,6 +671,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
   });
   const identityReport = buildAgencyRouteIdentityReport(sources, publisherRows, generatedAt);
   const reconciledSources = reconcileAgencyConstellationSources(sources, publisherRows);
+  const previouslyPublished = previouslyPublishedAgencyIds();
   const byId = {};
   const documents = [];
 
@@ -715,9 +730,14 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       }))
       : [];
     if (capacityIndex.length) view.record_capacity_rows = capacityIndex;
-    // Keep pages for agencies with at least one matched category, plus demos
-    // and the identities a reviewed correction separated.
-    if (view.summary.matched_categories === 0 && !alwaysMaterialized(id)) continue;
+    // Keep pages for agencies with at least one matched category, demos, reviewed
+    // identity corrections, and agencies already published in the committed
+    // lookup whose only rolling-window category emptied on this refresh.
+    if (
+      view.summary.matched_categories === 0
+      && !alwaysMaterialized(id)
+      && !previouslyPublished.has(id)
+    ) continue;
     // A denser PASSPort graph can light up unmatched route spellings. Public
     // pages stay on identities the SearchDocument producer can admit.
     const matched = (view.categories || []).filter((category) => category.status === "matched");

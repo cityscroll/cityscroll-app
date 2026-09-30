@@ -32,7 +32,7 @@ import { matterJournalDatabase } from "./helpers/matter_observation_d1.mjs";
 import { observedSnapshot } from "../../site/matter_coverage_recovery.mjs";
 
 const rawSnapshot = JSON.parse(
-  readFileSync(new URL("../../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"),
+  readFileSync(new URL("./fixtures/matter-coverage-recovery/meeting_outcomes_snapshot.json", import.meta.url), "utf8"),
 );
 
 // Retain the snapshot as of its own vintage: meetings scheduled after it carry
