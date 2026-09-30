@@ -23,7 +23,7 @@ import { processOneSub, subDigestHtml } from "../src/alerts.mjs";
 import { buildSubscription, deriveSubscriberId, deriveWatchId } from "../src/lib/subscriptions.mjs";
 import { projectCivicOutcomeTransition } from "../../site/civic_outcome_transition.mjs";
 
-const snapshot = JSON.parse(readFileSync(new URL("../../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
+const snapshot = JSON.parse(readFileSync(new URL("./fixtures/matter-coverage-recovery/meeting_outcomes_snapshot.json", import.meta.url), "utf8"));
 const outboxSql = readFileSync(new URL("../migrations/0018_digest_outbox.sql", import.meta.url), "utf8");
 const sourceSql = readFileSync(new URL("../migrations/0008_source_records.sql", import.meta.url), "utf8");
 const journalSql = readFileSync(new URL("../migrations/0027_matter_observation_journal.sql", import.meta.url), "utf8");

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
+import { mkdtempSync, readFileSync, existsSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
@@ -27,6 +28,7 @@ import { AGENCY_CONSTELLATION_SECTIONS } from "../site/agency_constellation_sect
 import { agencyIdentityCorrection, reconcileAgencyIdentity, resolveAgencyIdentity } from "../site/agency_identity.mjs";
 import { AGENCY_ROUTE_CLASSIFICATIONS } from "../tools/lib/agency_route_classifications.mjs";
 import { agencyPublisherCollisions, publisherAgencyRows } from "../tools/lib/agency_publisher_crosswalk.mjs";
+import { previouslyPublishedAgencyIds } from "../tools/build_agency_constellation_documents.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { renderEdgeProvenanceInspector } from "../site/graph_edge_provenance.mjs";
 import { buildAgencyObligationsLookup } from "../site/agency_obligations.mjs";
@@ -932,4 +934,24 @@ test("lookup materialization includes Parks multi-category demo when built", () 
   });
   assert.equal(report.cases.length, 23);
   assert.ok(report.cases.every((row) => row.classification && row.basis));
+});
+
+test("previously published constellation agencies are recoverable after a rolling window empties", () => {
+  const root = mkdtempSync(join(tmpdir(), "agency-constellation-previous-"));
+  try {
+    const lookupPath = join(root, "agency_constellation_lookup.json");
+    writeFileSync(lookupPath, JSON.stringify({
+      by_id: {
+        "borough-president-brooklyn": { path: "/agencies/borough-president-brooklyn/" },
+        "rent-guidelines-board": { path: "/agencies/rent-guidelines-board/" },
+      },
+    }));
+    const previous = previouslyPublishedAgencyIds(lookupPath);
+    assert.equal(previous.has("borough-president-brooklyn"), true);
+    assert.equal(previous.has("rent-guidelines-board"), true);
+    assert.equal(previous.has("charter-revision-commission"), false);
+    assert.deepEqual(previouslyPublishedAgencyIds(join(root, "missing.json")), new Set());
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });

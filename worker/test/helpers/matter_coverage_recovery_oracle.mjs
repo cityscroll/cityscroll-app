@@ -51,8 +51,11 @@ import {
   fixtureItemId,
 } from "./matter_exact_refresh_oracle.mjs";
 
+// Frozen acceptance vintage. Daily first-class refresh rewrites
+// site/data/meeting_outcomes_snapshot.json; these recovery tests pin the
+// admitted population and must not read the live publisher window.
 const RAW_SNAPSHOT = JSON.parse(
-  readFileSync(new URL("../../../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"),
+  readFileSync(new URL("../fixtures/matter-coverage-recovery/meeting_outcomes_snapshot.json", import.meta.url), "utf8"),
 );
 
 // Replay the snapshot as of its own vintage. The committed file also carries

@@ -27,7 +27,7 @@ import { matterJournalDatabase } from "./helpers/matter_observation_d1.mjs";
 // Replayed as of the snapshot's own vintage, the same restriction the frozen
 // coverage oracle applies: a meeting scheduled after it has no outcome yet.
 const snapshot = observedSnapshot(JSON.parse(
-  readFileSync(new URL("../../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"),
+  readFileSync(new URL("./fixtures/matter-coverage-recovery/meeting_outcomes_snapshot.json", import.meta.url), "utf8"),
 ));
 
 function expectedFromEventPairs(source) {

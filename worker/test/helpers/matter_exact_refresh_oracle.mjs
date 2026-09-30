@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { LEGISTAR_SOURCE_RECORD_DUAL_WRITE_FLAG } from "../../src/lib/legistar_source_records.mjs";
 
 export const SNAPSHOT = JSON.parse(
-  readFileSync(new URL("../../../site/data/meeting_outcomes_snapshot.json", import.meta.url), "utf8"),
+  readFileSync(new URL("../fixtures/matter-coverage-recovery/meeting_outcomes_snapshot.json", import.meta.url), "utf8"),
 );
 
 export const BASELINE = Object.freeze([

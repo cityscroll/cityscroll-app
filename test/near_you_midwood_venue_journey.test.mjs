@@ -126,7 +126,7 @@ test("A1 [outcome] Midwood meetings list shows September 23 with time, venue, He
   const record = septRecord(morning.view);
   assert.ok(record, "September 23 record must be in Midwood meetings");
   assert.equal(record.title, "Housing and Land Use Committee Meeting");
-  assert.equal(record.venue_address, "810 East 16th Street, Brooklyn, NY, 11230");
+  assert.equal(record.venue_address, "810 East 16th Street, Brooklyn, NY 11230");
   assert.equal(record.geography_evidence?.location_role, "venue");
   assert.equal(record.geography_evidence?.label, "Midwood");
   assert.match(morning.html, /Held in Midwood/);
@@ -139,7 +139,7 @@ test("A1 [outcome] Midwood meetings list shows September 23 with time, venue, He
   const facts = nearYouRecordInspectionFacts(record, { now: "2026-09-23T14:00:00.000Z" });
   assert.equal(facts.basis, "Held in Midwood");
   assert.equal(facts.time_label, "18:30");
-  assert.equal(facts.venue_address, "810 East 16th Street, Brooklyn, NY, 11230");
+  assert.equal(facts.venue_address, "810 East 16th Street, Brooklyn, NY 11230");
   assert.equal(facts.geography?.resident_label, "Held in Midwood");
   assert.equal(facts.geography?.method, "parcel membership");
   assert.equal(facts.geography?.boundary_vintage, "26B");
