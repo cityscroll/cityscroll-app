@@ -18,10 +18,10 @@
       },
       {
         "path": "site/rum_collector.mjs",
-        "raw_bytes": 7500,
-        "gzip_bytes": 2435,
-        "brotli_bytes": 2081,
-        "sha256": "b0c16679de6aa8ae2503c5458a540a3492024f6eaf6017fd5534800d5181c3eb"
+        "raw_bytes": 8658,
+        "gzip_bytes": 2812,
+        "brotli_bytes": 2414,
+        "sha256": "6b4d180686c1f58ee297b15afc25c88d35a1a35fb2dc8604102bf067d2a1ee36"
       },
       {
         "path": "site/rum_delivery.mjs",
@@ -32,10 +32,10 @@
       },
       {
         "path": "site/rum_production.mjs",
-        "raw_bytes": 10429,
-        "gzip_bytes": 3457,
-        "brotli_bytes": 2894,
-        "sha256": "8b10612ba314e0b99786af888593c1709eca5803f4388d9cae649e51635905d9"
+        "raw_bytes": 10551,
+        "gzip_bytes": 3545,
+        "brotli_bytes": 2973,
+        "sha256": "a392b9e788691c8d824cb34a0c37a68f0e382424b99aa9c0f3b9a8244a5e5adc"
       },
       {
         "path": "site/vendor/web-vitals-6.0.1.mjs",
@@ -45,9 +45,9 @@
         "sha256": "c2b1011155c2a9800197d1f831019a281cba58cd6cee05cb99e9b925c75d34ac"
       }
     ],
-    "total_raw_bytes": 35565,
-    "total_gzip_bytes": 12120,
-    "total_brotli_bytes": 10401
+    "total_raw_bytes": 36845,
+    "total_gzip_bytes": 12585,
+    "total_brotli_bytes": 10813
   },
   "production_default": {
     "collector_requested": true,

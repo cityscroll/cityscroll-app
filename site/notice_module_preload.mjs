@@ -46,7 +46,6 @@ export const NOTICE_MODULE_PRELOADS = Object.freeze([
   "/rum_static_record_instrumentation.mjs",
   "/rum_semantic_milestones.mjs",
   "/rum_production.mjs",
-  "/notice_edge_response.mjs",
   "/app/search-share.mjs",
   "/ask_cited_synthesis.mjs",
   "/interpret_preview.mjs",
