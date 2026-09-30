@@ -16,32 +16,37 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "repository_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "167f2dd56c6db8cbad6eaae01323f4a2baa85c3f"
+        "site/civic-documents.css": "2ebfa2803a61cc993365063906e62908ecd99035"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-09-09T06:30:42Z",
-        "committee_graph_as_of": "2026-09-09",
-        "person_hub_retrieved_at": "2026-09-09T06:52:23.394Z"
+        "committee_graph_generated_at": "2026-09-30T12:58:55Z",
+        "committee_graph_as_of": "2026-09-30",
+        "person_hub_retrieved_at": "2026-09-30T13:14:27.823Z"
       },
       "assertion": "The record names the 22 other committees its own members sit on, gives each the count of distinct people behind it, lists no caucus among them, keeps one document outline with a single main landmark, and does not scroll sideways.",
       "assertion_holds": true,
       "render_scope": "outerHTML of #committee-shared-membership",
-      "render_sha256": "ad04369ae0852e37cb2bcd99c107e642ef9052745c7c42d7a52af03e144c1f15",
+      "render_sha256": "8b64bab6a202274799410c1ccedfa47408e22cc2e7b5db7b6f2963db05cdad63",
       "observed": {
         "section": {
           "heading": "Committees these members also serve on",
-          "summary": "22 other City Council committees have members in common with this one, as recorded on 2026-09-09.",
-          "basis": "Drawn from the City Council office records published here, dated 2026-09-09. Other members can serve on these committees without a record in this set.",
-          "as_of": "2026-09-09",
-          "committee_count": 22,
+          "summary": "23 other City Council committees have members in common with this one, as recorded on 2026-09-30.",
+          "basis": "Drawn from the City Council office records published here, dated 2026-09-30. Other members can serve on these committees without a record in this set.",
+          "as_of": "2026-09-30",
+          "committee_count": 23,
           "subject_members": 6,
-          "represented_officials": 24,
+          "represented_officials": 25,
           "excluded_caucus_bodies": 6,
           "rows": [
+            {
+              "committee_id": "5224",
+              "shared_members": 6,
+              "href": "/committees/5224/"
+            },
             {
               "committee_id": "11",
               "shared_members": 3,
@@ -160,7 +165,7 @@
         "keyboard": {
           "visible": 17,
           "reachable": 17,
-          "disclosed": 83,
+          "disclosed": 92,
           "native": true,
           "new_tab": 0
         },
@@ -187,32 +192,37 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "repository_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "167f2dd56c6db8cbad6eaae01323f4a2baa85c3f"
+        "site/civic-documents.css": "2ebfa2803a61cc993365063906e62908ecd99035"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-09-09T06:30:42Z",
-        "committee_graph_as_of": "2026-09-09",
-        "person_hub_retrieved_at": "2026-09-09T06:52:23.394Z"
+        "committee_graph_generated_at": "2026-09-30T12:58:55Z",
+        "committee_graph_as_of": "2026-09-30",
+        "person_hub_retrieved_at": "2026-09-30T13:14:27.823Z"
       },
       "assertion": "The record names the 22 other committees its own members sit on, gives each the count of distinct people behind it, lists no caucus among them, keeps one document outline with a single main landmark, and does not scroll sideways.",
       "assertion_holds": true,
       "render_scope": "outerHTML of #committee-shared-membership",
-      "render_sha256": "ad04369ae0852e37cb2bcd99c107e642ef9052745c7c42d7a52af03e144c1f15",
+      "render_sha256": "8b64bab6a202274799410c1ccedfa47408e22cc2e7b5db7b6f2963db05cdad63",
       "observed": {
         "section": {
           "heading": "Committees these members also serve on",
-          "summary": "22 other City Council committees have members in common with this one, as recorded on 2026-09-09.",
-          "basis": "Drawn from the City Council office records published here, dated 2026-09-09. Other members can serve on these committees without a record in this set.",
-          "as_of": "2026-09-09",
-          "committee_count": 22,
+          "summary": "23 other City Council committees have members in common with this one, as recorded on 2026-09-30.",
+          "basis": "Drawn from the City Council office records published here, dated 2026-09-30. Other members can serve on these committees without a record in this set.",
+          "as_of": "2026-09-30",
+          "committee_count": 23,
           "subject_members": 6,
-          "represented_officials": 24,
+          "represented_officials": 25,
           "excluded_caucus_bodies": 6,
           "rows": [
+            {
+              "committee_id": "5224",
+              "shared_members": 6,
+              "href": "/committees/5224/"
+            },
             {
               "committee_id": "11",
               "shared_members": 3,
@@ -331,7 +341,7 @@
         "keyboard": {
           "visible": 17,
           "reachable": 17,
-          "disclosed": 83,
+          "disclosed": 92,
           "native": true,
           "new_tab": 0
         },
@@ -358,21 +368,21 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "repository_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "167f2dd56c6db8cbad6eaae01323f4a2baa85c3f"
+        "site/civic-documents.css": "2ebfa2803a61cc993365063906e62908ecd99035"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-09-09T06:30:42Z",
-        "committee_graph_as_of": "2026-09-09",
-        "person_hub_retrieved_at": "2026-09-09T06:52:23.394Z"
+        "committee_graph_generated_at": "2026-09-30T12:58:55Z",
+        "committee_graph_as_of": "2026-09-30",
+        "person_hub_retrieved_at": "2026-09-30T13:14:27.823Z"
       },
       "assertion": "Each named committee expands in place to exactly the people the projection reports, with both roles and the days both memberships cover, each name linking to that person's own record, and every revealed link focusable.",
       "assertion_holds": true,
       "render_scope": "outerHTML of #committee-shared-membership",
-      "render_sha256": "ad04369ae0852e37cb2bcd99c107e642ef9052745c7c42d7a52af03e144c1f15",
+      "render_sha256": "8b64bab6a202274799410c1ccedfa47408e22cc2e7b5db7b6f2963db05cdad63",
       "observed": {
         "expansions": {
           "11": {
@@ -470,32 +480,37 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "repository_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "167f2dd56c6db8cbad6eaae01323f4a2baa85c3f"
+        "site/civic-documents.css": "2ebfa2803a61cc993365063906e62908ecd99035"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-09-09T06:30:42Z",
-        "committee_graph_as_of": "2026-09-09",
-        "person_hub_retrieved_at": "2026-09-09T06:52:23.394Z"
+        "committee_graph_generated_at": "2026-09-30T12:58:55Z",
+        "committee_graph_as_of": "2026-09-30",
+        "person_hub_retrieved_at": "2026-09-30T13:14:27.823Z"
       },
       "assertion": "Opening a shared-member expansion, following the linked committee, and pressing Back returns to the originating record with the same expansion still open, because the expansion lives in the URL.",
       "assertion_holds": true,
       "render_scope": "outerHTML of #committee-shared-membership",
-      "render_sha256": "ad04369ae0852e37cb2bcd99c107e642ef9052745c7c42d7a52af03e144c1f15",
+      "render_sha256": "8b64bab6a202274799410c1ccedfa47408e22cc2e7b5db7b6f2963db05cdad63",
       "observed": {
         "destination": {
           "heading": "Committees these members also serve on",
-          "summary": "28 other City Council committees have members in common with this one, as recorded on 2026-09-09.",
-          "basis": "Drawn from the City Council office records published here, dated 2026-09-09. Other members can serve on these committees without a record in this set.",
-          "as_of": "2026-09-09",
-          "committee_count": 28,
+          "summary": "29 other City Council committees have members in common with this one, as recorded on 2026-09-30.",
+          "basis": "Drawn from the City Council office records published here, dated 2026-09-30. Other members can serve on these committees without a record in this set.",
+          "as_of": "2026-09-30",
+          "committee_count": 29,
           "subject_members": 8,
-          "represented_officials": 24,
+          "represented_officials": 25,
           "excluded_caucus_bodies": 5,
           "rows": [
+            {
+              "committee_id": "5224",
+              "shared_members": 8,
+              "href": "/committees/5224/"
+            },
             {
               "committee_id": "5268",
               "shared_members": 3,
@@ -676,21 +691,21 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "repository_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "167f2dd56c6db8cbad6eaae01323f4a2baa85c3f"
+        "site/civic-documents.css": "2ebfa2803a61cc993365063906e62908ecd99035"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-09-09T06:30:42Z",
-        "committee_graph_as_of": "2026-09-09",
-        "person_hub_retrieved_at": "2026-09-09T06:52:23.394Z"
+        "committee_graph_generated_at": "2026-09-30T12:58:55Z",
+        "committee_graph_as_of": "2026-09-30",
+        "person_hub_retrieved_at": "2026-09-30T13:14:27.823Z"
       },
       "assertion": "Following a shared member to their own record and pressing Back returns to the originating committee with the same expansion still open.",
       "assertion_holds": true,
       "render_scope": "outerHTML of #committee-shared-membership",
-      "render_sha256": "ad04369ae0852e37cb2bcd99c107e642ef9052745c7c42d7a52af03e144c1f15",
+      "render_sha256": "8b64bab6a202274799410c1ccedfa47408e22cc2e7b5db7b6f2963db05cdad63",
       "observed": {
         "member_route": "/officials/7801/",
         "expansion": {
@@ -727,32 +742,37 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "repository_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "167f2dd56c6db8cbad6eaae01323f4a2baa85c3f"
+        "site/civic-documents.css": "2ebfa2803a61cc993365063906e62908ecd99035"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-09-09T06:30:42Z",
-        "committee_graph_as_of": "2026-09-09",
-        "person_hub_retrieved_at": "2026-09-09T06:52:23.394Z"
+        "committee_graph_generated_at": "2026-09-30T12:58:55Z",
+        "committee_graph_as_of": "2026-09-30",
+        "person_hub_retrieved_at": "2026-09-30T13:14:27.823Z"
       },
       "assertion": "The Parks record identifies the same two members, Marte and Nurse, as shared with the subcommittee, with the two roles swapped and the same overlapping days.",
       "assertion_holds": true,
       "render_scope": "outerHTML of #committee-shared-membership",
-      "render_sha256": "1951a0aeaf12bbb51b1a26b6abf161215dd890dd26c97e2e03f40dd8f0b914ca",
+      "render_sha256": "973b06a6701de64acca614c751959b2cffaa52aedf926dbe70c14ec5a6ccd86e",
       "observed": {
         "section": {
           "heading": "Committees these members also serve on",
-          "summary": "20 other City Council committees have members in common with this one, as recorded on 2026-09-09.",
-          "basis": "Drawn from the City Council office records published here, dated 2026-09-09. Other members can serve on these committees without a record in this set.",
-          "as_of": "2026-09-09",
-          "committee_count": 20,
+          "summary": "21 other City Council committees have members in common with this one, as recorded on 2026-09-30.",
+          "basis": "Drawn from the City Council office records published here, dated 2026-09-30. Other members can serve on these committees without a record in this set.",
+          "as_of": "2026-09-30",
+          "committee_count": 21,
           "subject_members": 5,
-          "represented_officials": 24,
+          "represented_officials": 25,
           "excluded_caucus_bodies": 5,
           "rows": [
+            {
+              "committee_id": "5224",
+              "shared_members": 5,
+              "href": "/committees/5224/"
+            },
             {
               "committee_id": "11",
               "shared_members": 2,
@@ -891,24 +911,24 @@
       },
       "javascript": "disabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "repository_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "167f2dd56c6db8cbad6eaae01323f4a2baa85c3f"
+        "site/civic-documents.css": "2ebfa2803a61cc993365063906e62908ecd99035"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-09-09T06:30:42Z",
-        "committee_graph_as_of": "2026-09-09",
-        "person_hub_retrieved_at": "2026-09-09T06:52:23.394Z"
+        "committee_graph_generated_at": "2026-09-30T12:58:55Z",
+        "committee_graph_as_of": "2026-09-30",
+        "person_hub_retrieved_at": "2026-09-30T13:14:27.823Z"
       },
       "assertion": "With scripting unavailable the section still lists every linked committee and the URL still opens one of them onto its three named people.",
       "assertion_holds": true,
       "render_scope": "outerHTML of #committee-shared-membership",
-      "render_sha256": "ad04369ae0852e37cb2bcd99c107e642ef9052745c7c42d7a52af03e144c1f15",
+      "render_sha256": "8b64bab6a202274799410c1ccedfa47408e22cc2e7b5db7b6f2963db05cdad63",
       "observed": {
         "expansion_open": true,
-        "linked_committees": 22,
+        "linked_committees": 23,
         "revealed_people": 3
       }
     },
@@ -923,16 +943,16 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "repository_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "167f2dd56c6db8cbad6eaae01323f4a2baa85c3f"
+        "site/civic-documents.css": "2ebfa2803a61cc993365063906e62908ecd99035"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-09-09T06:30:42Z",
-        "committee_graph_as_of": "2026-09-09",
-        "person_hub_retrieved_at": "2026-09-09T06:52:23.394Z"
+        "committee_graph_generated_at": "2026-09-30T12:58:55Z",
+        "committee_graph_as_of": "2026-09-30",
+        "person_hub_retrieved_at": "2026-09-30T13:14:27.823Z"
       },
       "assertion": "Its recorded roster is entirely historical at this vintage, so the record keeps every recorded membership period and renders no connections section at all — not an empty one, and not a zero.",
       "assertion_holds": true,
@@ -958,16 +978,16 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "repository_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "167f2dd56c6db8cbad6eaae01323f4a2baa85c3f"
+        "site/civic-documents.css": "2ebfa2803a61cc993365063906e62908ecd99035"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-09-09T06:30:42Z",
-        "committee_graph_as_of": "2026-09-09",
-        "person_hub_retrieved_at": "2026-09-09T06:52:23.394Z"
+        "committee_graph_generated_at": "2026-09-30T12:58:55Z",
+        "committee_graph_as_of": "2026-09-30",
+        "person_hub_retrieved_at": "2026-09-30T13:14:27.823Z"
       },
       "assertion": "A caucus reaches the reader through the same office-record family as a committee, and never lends its roster to a committee connection, so this record renders no connections section.",
       "assertion_holds": true,
@@ -993,16 +1013,16 @@
       },
       "javascript": "enabled",
       "served_by": "site/pages_edge.mjs responses rendered by tools/render_committee_shared_members_fixtures.mjs, answered over the built site",
-      "repository_revision": "f89e02b4a3a30ef8dd59a482806a602ee5eccbcf",
+      "repository_revision": "c9381ab637d8970e8653a0e7616d76f5faa45653",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/committee_document.mjs": "d78e61e28b748ccf0bccf656984029d40a2dd0e2",
-        "site/civic-documents.css": "167f2dd56c6db8cbad6eaae01323f4a2baa85c3f"
+        "site/civic-documents.css": "2ebfa2803a61cc993365063906e62908ecd99035"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-09-09T06:30:42Z",
-        "committee_graph_as_of": "2026-09-09",
-        "person_hub_retrieved_at": "2026-09-09T06:52:23.394Z"
+        "committee_graph_generated_at": "2026-09-30T12:58:55Z",
+        "committee_graph_as_of": "2026-09-30",
+        "person_hub_retrieved_at": "2026-09-30T13:14:27.823Z"
       },
       "assertion": "A committee whose own graph asset cannot be read answers plainly and paints no partial connections section.",
       "assertion_holds": true,

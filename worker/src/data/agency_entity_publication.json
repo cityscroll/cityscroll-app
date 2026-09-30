@@ -1534,7 +1534,6 @@
         "name": "Office of the Borough President of Brooklyn"
       },
       "agency_id": "borough-president-brooklyn",
-      "constellation_display_name": "Office of the Borough President of Brooklyn",
       "dossier_rows": [
         {
           "entity_id": "agency:id:borough-president-brooklyn",
@@ -2594,7 +2593,6 @@
         "name": "Charter Revision Commission"
       },
       "agency_id": "charter-revision-commission",
-      "constellation_display_name": "Charter Revision Commission",
       "dossier_rows": [
         {
           "entity_id": "agency:id:charter-revision-commission",
@@ -9285,6 +9283,30 @@
             }
           },
           {
+            "id": "contract:CT1-057-20278802113",
+            "type": "contract",
+            "name": "Contract CT1-057-20278802113",
+            "classification": "source_observation",
+            "provenance": {
+              "source": {
+                "system": "passport-public-contracts",
+                "id": "passport-public-contracts:5778239"
+              },
+              "source_fields": [
+                "agency",
+                "contract_id",
+                "ctr_id",
+                "epin",
+                "vendor"
+              ],
+              "observed_at": "2026-09-07"
+            },
+            "confidence": {
+              "status": "not_scored",
+              "basis": "publisher_record"
+            }
+          },
+          {
             "id": "contract:CT1-057-20278801790",
             "type": "contract",
             "name": "Contract CT1-057-20278801790",
@@ -9451,30 +9473,6 @@
               "status": "not_scored",
               "basis": "publisher_record"
             }
-          },
-          {
-            "id": "contract:CT1-057-20278800762",
-            "type": "contract",
-            "name": "Contract CT1-057-20278800762",
-            "classification": "source_observation",
-            "provenance": {
-              "source": {
-                "system": "passport-public-contracts",
-                "id": "passport-public-contracts:5679174"
-              },
-              "source_fields": [
-                "agency",
-                "contract_id",
-                "ctr_id",
-                "epin",
-                "vendor"
-              ],
-              "observed_at": "2026-06-29"
-            },
-            "confidence": {
-              "status": "not_scored",
-              "basis": "publisher_record"
-            }
           }
         ],
         "edges": [
@@ -9497,6 +9495,25 @@
                 "head_title"
               ],
               "observed_at": "2026-08-09"
+            }
+          },
+          {
+            "type": "published_by_agency",
+            "from": "contract:CT1-057-20278802113",
+            "to": "agency:id:fire-department",
+            "provenance": {
+              "source": {
+                "system": "passport-public-contracts",
+                "id": "passport-public-contracts:5778239"
+              },
+              "source_fields": [
+                "agency",
+                "contract_id",
+                "ctr_id",
+                "epin",
+                "vendor"
+              ],
+              "observed_at": "2026-09-07"
             }
           },
           {
@@ -9630,25 +9647,6 @@
                 "vendor"
               ],
               "observed_at": "2026-07-06"
-            }
-          },
-          {
-            "type": "published_by_agency",
-            "from": "contract:CT1-057-20278800762",
-            "to": "agency:id:fire-department",
-            "provenance": {
-              "source": {
-                "system": "passport-public-contracts",
-                "id": "passport-public-contracts:5679174"
-              },
-              "source_fields": [
-                "agency",
-                "contract_id",
-                "ctr_id",
-                "epin",
-                "vendor"
-              ],
-              "observed_at": "2026-06-29"
             }
           }
         ]
@@ -17618,7 +17616,6 @@
         "name": "Rent Guidelines Board"
       },
       "agency_id": "rent-guidelines-board",
-      "constellation_display_name": "Rent Guidelines Board",
       "dossier_rows": [
         {
           "entity_id": "agency:id:rent-guidelines-board",

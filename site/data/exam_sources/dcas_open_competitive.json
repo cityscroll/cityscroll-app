@@ -3,11 +3,11 @@
     "id": "dcas-open-competitive",
     "name": "DCAS Open Competitive Exams for Anyone",
     "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-    "verified_at": "2026-09-09",
+    "verified_at": "2026-09-30",
     "refresh_cadence": "Check daily while an application window is open; DCAS publishes a monthly schedule and may amend individual NOEs between releases.",
     "stale_after_days": 35,
     "method": "The published schedule table is read directly and cross-checked against the OASys active-exam listing. Reviewed Notice of Examination prose from the previous snapshot is carried forward only while the exam and its filing window are unchanged.",
-    "fetched_at": "2026-09-09"
+    "fetched_at": "2026-09-30"
   },
   "records": [
     {
@@ -114,7 +114,7 @@
       "application_end": "2026-09-22",
       "fee": 88,
       "test_method": "Multiple-choice test",
-      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary."
+      "salary_publication": "The notice does not state a minimum annual salary for this title."
     },
     {
       "exam_number": "7307",

@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-09-23T05:09:59.711Z",
+  "generated_at": "2026-09-30T13:15:13.798Z",
   "available": true,
   "source_count": 64,
   "sources": [
@@ -467,8 +467,10 @@
       "expected_cadence": "Registration-driven ongoing updates; no fixed daily publication promise (Checkbook API)",
       "mode": "continuous",
       "health": {
-        "status": "Healthy",
-        "reason_codes": [],
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -476,9 +478,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-09-09T06:33:01.880Z",
-            "state": "KNOWN",
-            "basis": "cityscroll_acquisition"
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
           },
           "cityscroll_serving": {
             "at": "2026-09-09T06:33:01.880Z",
@@ -498,7 +500,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-09-09T06:33:01.880Z",
+        "retrieved_at": null,
         "expected_lag_tolerance_days": 45,
         "current_lag": {
           "value": null,
@@ -567,8 +569,10 @@
       "expected_cadence": "Ongoing spending and payment updates",
       "mode": "continuous",
       "health": {
-        "status": "Healthy",
-        "reason_codes": [],
+        "status": "Delayed",
+        "reason_codes": [
+          "acquisition-clock-stale"
+        ],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -1488,12 +1492,12 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-09-21T14:33:19.328Z",
+            "at": "2026-09-28T15:56:30.870Z",
             "state": "KNOWN",
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-09-21T14:33:19.497Z",
+            "at": "2026-09-28T15:56:31.040Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
@@ -1510,7 +1514,7 @@
           "max_date": null
         },
         "publisher_vintage": null,
-        "retrieved_at": "2026-09-21T14:33:19.328Z",
+        "retrieved_at": "2026-09-28T15:56:30.870Z",
         "expected_lag_tolerance_days": 400,
         "current_lag": {
           "value": null,
@@ -3224,7 +3228,7 @@
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-09-09T06:54:36.054Z",
+            "at": "2026-09-30T13:15:13.798Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }
