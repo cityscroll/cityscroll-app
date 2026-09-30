@@ -322,6 +322,43 @@ function setSemanticLaneState(root, family, statusText, bodyText, className = ""
   }
 }
 
+/**
+ * Empty-lane paint for combined Search. `not_covered` is a standing coverage
+ * gap (index not ready), not a transient fetch failure — keep it aligned with
+ * the legacy keyword path so readers do not see a false Retry error.
+ */
+export function combinedEmptyLanePresentation({
+  familyStatus = null,
+  incomplete = false,
+  translate = null,
+} = {}) {
+  const trFn = typeof translate === "function"
+    ? translate
+    : (key, _vars, fallback) => fallback || key;
+  if (familyStatus === "not_covered") {
+    return Object.freeze({
+      status: "Not covered",
+      body: "Keyword search is not available for this family yet.",
+      className: "",
+      retry: false,
+    });
+  }
+  if (incomplete || familyStatus === "unknown") {
+    return Object.freeze({
+      status: trFn("topic_search_unavailable_status", null, "Unavailable"),
+      body: trFn("could_not_reach", null, "The latest CityScroll snapshot is unavailable. Retry."),
+      className: "is-error",
+      retry: true,
+    });
+  }
+  return Object.freeze({
+    status: trFn("topic_search_no_matches_status", null, "No matches"),
+    body: trFn("topic_search_bounded_empty", null, "No matches in this bounded source set."),
+    className: "",
+    retry: false,
+  });
+}
+
 export function searchResultHref(record) {
   return relevanceResultHref(record);
 }
@@ -665,15 +702,19 @@ function renderCombinedResults(root, plan) {
       const family = families.get(group.id);
       const incomplete = (plan.incomplete_families || []).includes(group.id)
         || family?.status === "unknown";
-      if (incomplete) {
-        elements.status.textContent = tr("topic_search_unavailable_status", null, "Unavailable");
-        elements.body.classList.add("is-error");
+      const presentation = combinedEmptyLanePresentation({
+        familyStatus: family?.status || null,
+        incomplete,
+        translate: tr,
+      });
+      elements.status.removeAttribute("data-i18n");
+      elements.body.removeAttribute("data-i18n");
+      elements.status.textContent = presentation.status;
+      elements.body.className = `topic-search-lane-body${presentation.className ? ` ${presentation.className}` : ""}`;
+      elements.body.replaceChildren();
+      if (presentation.retry) {
         const note = document.createElement("p");
-        note.textContent = tr(
-          "could_not_reach",
-          null,
-          "The latest CityScroll snapshot is unavailable. Retry.",
-        );
+        note.textContent = presentation.body;
         elements.body.append(note);
         const query = clean(new URLSearchParams(location.search).get("q"), MAX_QUERY_LENGTH);
         if (query) {
@@ -686,11 +727,7 @@ function renderCombinedResults(root, plan) {
           elements.body.append(recovery);
         }
       } else {
-        elements.body.textContent = tr(
-          "topic_search_bounded_empty",
-          null,
-          "No matches in this bounded source set.",
-        );
+        elements.body.textContent = presentation.body;
       }
       appendFamilyReceipt(elements.body, family);
       continue;

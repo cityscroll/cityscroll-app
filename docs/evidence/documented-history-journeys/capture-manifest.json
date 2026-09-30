@@ -882,7 +882,7 @@
       },
       {
         "path": "site/app/place-context.mjs",
-        "sha256": "2c951eb46fe8f66a14321904138439bb076d0abae0b724f36194edc3ad32af69"
+        "sha256": "be50b541a900fe6d97c36554b66639e9eb55d7b3ea68154558311b770ff27f02"
       },
       {
         "path": "site/app/traversal.mjs",
@@ -982,7 +982,7 @@
       },
       {
         "path": "site/legacy_hash_forward.mjs",
-        "sha256": "e5cb749e5179569fde83a35d2bc381b14f57903fdd005cdccd0da8e5d5c799bf"
+        "sha256": "62f5094bf7f0d6add7d851866389e459b93e12b17cfde2080a4ba95e21adcf90"
       },
       {
         "path": "site/location_awareness.js",
@@ -1070,7 +1070,7 @@
       },
       {
         "path": "site/search_document.mjs",
-        "sha256": "461eb143beec75c954befd1210aa202b78b4e103d1ce114b99be6d404c28d0fa"
+        "sha256": "3251a2e3b607559eb65d6988d87ed41f66663aff00b5de1c6f7a44f24b02e23c"
       },
       {
         "path": "site/search_document_contract.mjs",

@@ -1,7 +1,18 @@
 import { migrateLegacyUrl } from "./route_migration.mjs";
 import { matchSpaHashRoute } from "./spa_hash_routes.mjs";
 
-if (globalThis.location?.search || globalThis.location?.hash?.includes("?")) {
+function isRootIngressPath(pathname) {
+  const normalized = String(pathname || "").replace(/\/+$/, "") || "/";
+  return normalized === "/" || normalized === "/index.html";
+}
+
+// Place-context sync needs the destination document's i18n globals. On the
+// Near You apex the hash forward replaces the document first; importing here
+// would race a shell that does not ship i18n.js.
+if (
+  (globalThis.location?.search || globalThis.location?.hash?.includes("?"))
+  && !isRootIngressPath(globalThis.location?.pathname)
+) {
   import("./app/place-context.mjs");
 }
 if (globalThis.location?.hash || globalThis.location?.pathname?.startsWith("/browse/")) import("./app/traversal.mjs");

@@ -85,13 +85,20 @@ function routeForScope(scope) {
   return `${url.pathname}${url.hash}`;
 }
 
+function translate(key, fallback = key) {
+  // Near You apex and other shells can load this module before i18n.js. Keep
+  // the banner readable instead of throwing when the translate helper is absent.
+  if (typeof globalThis.t === "function") return globalThis.t(key);
+  return fallback;
+}
+
 function renderBanner(context) {
   const banner = ensureBanner();
   const label = placeContextLabel(context);
   banner.dataset.open = label ? "true" : "false";
   if (!label) return;
   const text = banner.querySelector("[data-place-context-label]");
-  if (text) text.textContent = `${globalThis.t("context_strip_lbl")}: ${label}`;
+  if (text) text.textContent = `${translate("context_strip_lbl", "Context")}: ${label}`;
   const select = banner.querySelector("[data-place-context-borough]");
   if (select) {
     select.value = context.borough || "";
