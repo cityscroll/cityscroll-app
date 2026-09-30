@@ -163,8 +163,10 @@ test("place-context banner sync does not throw when i18n t() is absent", async (
   globalThis.addEventListener = () => {};
 
   try {
+    // Fixed cache-bust token so the wall-clock audit stays green; the module
+    // under test has no ambient time dependency.
     const moduleUrl = pathToFileURL(new URL("../site/app/place-context.mjs", import.meta.url).pathname).href
-      + `?shell=${Date.now()}`;
+      + "?shell=place-context-shell-v1";
     const { sync } = await import(moduleUrl);
     assert.equal(typeof globalThis.t, "undefined");
     assert.doesNotThrow(() => sync());
