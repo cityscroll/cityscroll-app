@@ -1,0 +1,88 @@
+{
+  "schema": "cityscroll.parcel-geography-shard.v1",
+  "key": "parcel-membership-subsets",
+  "provenance": {
+    "statement": "Real parcel memberships copied from committed parcel-geography shards for the named BBLs.",
+    "source": "NYC MapPLUTO / parcel-geography generation"
+  },
+  "memberships": {
+    "schema": "cityscroll.parcel-memberships.v1",
+    "layers": {
+      "borough": {
+        "status": "resolved",
+        "vintage": "2026-05-26",
+        "geometry_fidelity": "full",
+        "sha256": "b2e7e038a50fc7f8df27e7ef3005153d55fd5d0e56ffd579b1773315d075b137",
+        "source_contract": "community-district-boundaries",
+        "feature_count": 5
+      },
+      "community_district": {
+        "status": "resolved",
+        "vintage": "2026-05-26",
+        "geometry_fidelity": "full",
+        "sha256": "07b00972e656fe9ef51e38510cabc42b10368fa1db87d24d5ff1f8c32b8b8ca8",
+        "source_contract": "community-district-boundaries",
+        "feature_count": 71
+      },
+      "council_district": {
+        "status": "resolved",
+        "vintage": "2026-05-26",
+        "geometry_fidelity": "full",
+        "sha256": "207205e5c4c48f45869737793552ed6d8ab4c346b36512e67dcad25656d91242",
+        "source_contract": "city-council-district-boundaries",
+        "feature_count": 51
+      },
+      "nta2020": {
+        "status": "resolved",
+        "vintage": "26B",
+        "geometry_fidelity": "full",
+        "sha256": "cc45246a78753a1d46f7925e5269200406de230e4e1f8d4082e7bf07de280ac8",
+        "source_contract": "dcp-nta2020-boundaries",
+        "feature_count": 262
+      },
+      "police_precinct": {
+        "status": "resolved",
+        "vintage": "26B",
+        "geometry_fidelity": "full",
+        "sha256": "3eafc22012253bb95f2dca62fe6e3e7ad378d7c10244b02a09f32ff2c37aa3b0",
+        "source_contract": "dcp-police-precinct-boundaries",
+        "feature_count": 78
+      }
+    }
+  },
+  "parcels": {
+    "4032400041": {
+      "lat": 40.7103628,
+      "lon": -73.8488012,
+      "memberships": {
+        "borough": "4",
+        "community_district": "Q06",
+        "council_district": "29",
+        "nta2020": "QN0602",
+        "police_precinct": "112"
+      }
+    },
+    "1001680032": {
+      "lat": 40.7156689,
+      "lon": -74.002352,
+      "memberships": {
+        "borough": "1",
+        "community_district": "M01",
+        "council_district": "1",
+        "nta2020": "MN0102",
+        "police_precinct": "5"
+      }
+    },
+    "3087600060": {
+      "lat": 40.5779717,
+      "lon": -73.9341477,
+      "memberships": {
+        "borough": "3",
+        "community_district": "K15",
+        "council_district": "48",
+        "nta2020": "BK1503",
+        "police_precinct": "61"
+      }
+    }
+  }
+}

@@ -15,6 +15,7 @@
 
 import {
   addressShardKey,
+  localityConflictsWithZip,
   parseAddressQuery,
   resolveAddressFromShard,
 } from "./precomputed_address_geocoder.mjs";
@@ -48,7 +49,9 @@ export function padContentIdentity(manifest) {
  * @returns {string|null}
  */
 export function normalizedAddressCacheKey(query, padIdentity) {
-  if (!query || query.status === "not_full_address") return null;
+  if (!query || query.status === "not_full_address" || query.status === "unsupported_zip") {
+    return null;
+  }
   const house = String(query.house || "").trim();
   const street = String(query.street || "").trim();
   if (!house || !street) return null;
@@ -116,6 +119,7 @@ function shapeEntry({
       street: query.street,
       borough_code: query.borough_code || null,
       zip: query.zip || null,
+      locality: query.locality || null,
     },
     pad_content_identity: padIdentity,
     source_version: manifest?.source?.version || result?.source_version || null,
@@ -256,18 +260,40 @@ export function createRecordAddressResolutionCache({
         extractedSpan = retry.extractedSpan;
       }
     }
+    // Publisher components may supply a locality the free-text line also
+    // carries; prefer an explicit component when the free-text parse left none.
+    if (assertion?.components?.address_locality && query && !query.locality) {
+      query = {
+        ...query,
+        locality: String(assertion.components.address_locality).trim() || null,
+      };
+      if (localityConflictsWithZip(query.locality, query.zip)) {
+        query = { ...query, locality_conflict: true };
+      }
+    }
     const identity = padIdentity;
     const cacheKey = normalizedAddressCacheKey(query, identity);
 
     if (!cacheKey) {
+      const emptyReason = query?.status === "unsupported_zip"
+        ? "unsupported_zip"
+        : (query?.status === "not_full_address" ? "not_full_address" : "empty_or_malformed");
       const emptyEntry = {
         schema: RECORD_ADDRESS_RESOLUTION_ENTRY_SCHEMA,
         cache_key: null,
-        normalized: null,
+        normalized: query?.house && query?.street
+          ? {
+            house: query.house,
+            street: query.street,
+            borough_code: query.borough_code || null,
+            zip: query.zip || null,
+            locality: query.locality || null,
+          }
+          : null,
         pad_content_identity: identity,
         source_version: activeManifest?.source?.version || null,
         status: "unknown",
-        reason: query?.status === "not_full_address" ? "not_full_address" : "empty_or_malformed",
+        reason: emptyReason,
         bbl: null,
         candidate_count: 0,
         method: null,

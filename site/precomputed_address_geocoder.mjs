@@ -43,6 +43,32 @@ const BOROUGH_PATTERNS = Object.freeze([
   ["1", /\bMANHATTAN\b|\bNEW\s+YORK(?:\s+CITY)?\b/],
 ]);
 
+// Sub-borough place names that imply a borough and a bounded ZIP set. A
+// published ZIP outside the allowlist is a typed locality conflict — dropping
+// the place name to force a PAD hit is refused.
+const CONSTRAINED_LOCALITY_ZIPS = Object.freeze({
+  FLUSHING: Object.freeze(["11354", "11355", "11356", "11357", "11358", "11367"]),
+  JAMAICA: Object.freeze(["11432", "11433", "11434", "11435", "11436"]),
+  ASTORIA: Object.freeze(["11102", "11103", "11105", "11106"]),
+  "LONG ISLAND CITY": Object.freeze(["11101", "11109"]),
+});
+
+const CONSTRAINED_LOCALITY_BOROUGH = Object.freeze({
+  FLUSHING: "4",
+  JAMAICA: "4",
+  ASTORIA: "4",
+  "LONG ISLAND CITY": "4",
+});
+
+const HOUSE_PREFIX_RE = /^(\d{1,6}(?:-\d{1,3})?(?:\s+1\/2|[A-Z])?)\s+(.+)$/;
+const UNIT_SEGMENT_RE = /^(?:(?:APT|APARTMENT|UNIT|SUITE|STE|ROOM|RM|FL|FLOOR|LOBBY|BLDG|BUILDING)\b|#)|(?:\d{1,2}(?:ST|ND|RD|TH)\s+(?:FLOOR|FL)\b)/i;
+const INLINE_UNIT_RE = /(?:\s+(?:APT|APARTMENT|UNIT|SUITE|STE|ROOM|RM|FL|FLOOR|LOBBY|BLDG|BUILDING)\b|\s+#)\s*[A-Z0-9-]+.*$/i;
+const COUNTRY_SEGMENT_RE = /^(?:USA|U\s*S\s*A|U\.S\.A\.?|UNITED STATES(?: OF AMERICA)?)$/i;
+const STATE_SEGMENT_RE = /^(?:NY|NEW YORK)$/i;
+const ZIP_SEGMENT_RE = /^(\d{5})(?:-\d{4})?$/;
+const STATE_ZIP_SEGMENT_RE = /^(?:NY|NEW YORK)\s+(\d{5})(?:-\d{4})?$/i;
+const NYC_ZIP_RE = /^(?:10[0-9]{3}|11[0-6][0-9]{2})$/;
+
 function asciiUpper(value) {
   return String(value || "")
     .normalize("NFKD")
@@ -86,22 +112,145 @@ function stripLocality(value) {
   return out;
 }
 
+function boroughCodeFromText(value) {
+  return BOROUGH_PATTERNS.find(([, pattern]) => pattern.test(value))?.[0] || null;
+}
+
+function isUnitSegment(segment) {
+  return UNIT_SEGMENT_RE.test(segment);
+}
+
+function isCountrySegment(segment) {
+  return COUNTRY_SEGMENT_RE.test(segment);
+}
+
+function isStateSegment(segment) {
+  return STATE_SEGMENT_RE.test(segment);
+}
+
+/**
+ * True when a constrained locality's published ZIP falls outside its allowlist.
+ * Unlisted neighborhood names (e.g. Forest Hills) are decorative context kept
+ * off the street key; they do not invent a conflict on their own.
+ */
+export function localityConflictsWithZip(locality, zip) {
+  const key = asciiUpper(locality || "").replace(/\s+/g, " ").trim();
+  if (!key || !zip) return false;
+  const allowed = CONSTRAINED_LOCALITY_ZIPS[key];
+  if (!allowed) return false;
+  return !allowed.includes(String(zip));
+}
+
+export function isSupportedNycZip(zip) {
+  if (!zip) return true;
+  return NYC_ZIP_RE.test(String(zip));
+}
+
+/**
+ * Separate house/street from room, locality, borough, state, ZIP, and country
+ * before street normalization. Comma boundaries are preserved so trailing
+ * "Forest Hills, NY 11375, USA" and "2nd Floor Auditorium" leave a usable
+ * street key while borough/ZIP constraints stay attached.
+ */
 export function parseAddressQuery(value) {
-  const raw = asciiUpper(value).replace(/[,.]/g, " ").replace(/\s+/g, " ").trim();
-  const match = raw.match(/^(\d{1,6}(?:-\d{1,3})?(?:\s+1\/2|[A-Z])?)\s+(.+)$/);
-  if (!match) return { status: "not_full_address" };
-  const house = normalizeHouseDisplay(match[1]);
-  const zip = raw.match(/\b(\d{5})(?:-\d{4})?\b/)?.[1] || null;
-  const boroughCode = BOROUGH_PATTERNS.find(([, pattern]) => pattern.test(raw))?.[0] || null;
-  const street = normalizeStreetName(stripLocality(match[2]));
+  const original = String(value || "").trim();
+  if (!original) return { status: "not_full_address" };
+
+  const hasComma = original.includes(",");
+  let house = null;
+  let streetSource = null;
+  let zip = null;
+  let boroughCode = null;
+  let locality = null;
+  let unsupportedZip = false;
+
+  if (hasComma) {
+    const segments = original
+      .split(",")
+      .map((part) => asciiUpper(part).replace(/\./g, " ").replace(/\s+/g, " ").trim())
+      .filter(Boolean);
+
+    // Leading house number only. Building-name prefixes stay on the venue-span
+    // extraction path; this parser does not scan later segments for a house.
+    const streetMatch = segments[0]?.match(HOUSE_PREFIX_RE);
+    if (!streetMatch) return { status: "not_full_address" };
+
+    house = normalizeHouseDisplay(streetMatch[1]);
+    // Drop trailing room/unit markers that share the street segment
+    // ("3 Washington Square Village #1A") before street normalization.
+    streetSource = streetMatch[2].replace(INLINE_UNIT_RE, " ").trim();
+
+    const localityParts = [];
+    for (let index = 1; index < segments.length; index += 1) {
+      const segment = segments[index];
+      if (isCountrySegment(segment) || isUnitSegment(segment)) continue;
+
+      const stateZip = segment.match(STATE_ZIP_SEGMENT_RE);
+      if (stateZip) {
+        zip = stateZip[1];
+        continue;
+      }
+      const zipOnly = segment.match(ZIP_SEGMENT_RE);
+      if (zipOnly) {
+        zip = zipOnly[1];
+        continue;
+      }
+      if (isStateSegment(segment)) continue;
+
+      if (/^(?:STATEN\s+ISLAND|THE\s+BRONX|BRONX|BROOKLYN|QUEENS|MANHATTAN|NEW\s+YORK(?:\s+CITY)?)$/.test(segment)) {
+        boroughCode = boroughCode || boroughCodeFromText(segment);
+        continue;
+      }
+
+      const constrainedBorough = CONSTRAINED_LOCALITY_BOROUGH[segment];
+      if (constrainedBorough) {
+        boroughCode = boroughCode || constrainedBorough;
+        localityParts.push(segment);
+        continue;
+      }
+
+      localityParts.push(segment);
+    }
+
+    locality = localityParts.length ? localityParts.join(", ") : null;
+  } else {
+    const raw = asciiUpper(original).replace(/[.]/g, " ").replace(/\s+/g, " ").trim();
+    const match = raw.match(HOUSE_PREFIX_RE);
+    if (!match) return { status: "not_full_address" };
+    house = normalizeHouseDisplay(match[1]);
+    streetSource = stripLocality(match[2]);
+    zip = raw.match(/\b(\d{5})(?:-\d{4})?\b/)?.[1] || null;
+    boroughCode = boroughCodeFromText(raw);
+  }
+
+  if (zip && !isSupportedNycZip(zip)) {
+    unsupportedZip = true;
+  }
+
+  boroughCode = boroughCode || boroughCodeFromText(asciiUpper(original));
+  if (!boroughCode && locality) {
+    boroughCode = CONSTRAINED_LOCALITY_BOROUGH[asciiUpper(locality).replace(/\s+/g, " ").trim()] || null;
+  }
+
+  const street = normalizeStreetName(streetSource);
   if (!street || street.length < 2) return { status: "not_full_address" };
-  return {
+
+  const query = {
     house,
     house_sort: houseSortKey(house),
     street,
     borough_code: boroughCode,
-    zip,
+    zip: unsupportedZip ? null : zip,
+    locality,
   };
+  if (unsupportedZip) {
+    query.unsupported_zip = zip;
+    query.status = "unsupported_zip";
+  }
+  if (localityConflictsWithZip(locality, zip)) {
+    query.locality_conflict = true;
+  }
+  return query;
 }
 
 function fnv1a(value) {
@@ -143,6 +292,12 @@ function titleCaseStreet(street) {
 
 export function resolveAddressFromShard(query, shard, manifest = null) {
   if (!query || query.status === "not_full_address") return { status: "unknown", reason: "not_full_address" };
+  if (query.status === "unsupported_zip" || query.unsupported_zip) {
+    return { status: "unknown", reason: "unsupported_zip" };
+  }
+  if (query.locality_conflict) {
+    return { status: "unknown", reason: "contradictory_locality", candidate_count: 0 };
+  }
   if (!shard || shard.schema !== SHARD_SCHEMA) return { status: "unknown", reason: "snapshot_unavailable" };
   const rows = shard.streets?.[query.street] || [];
   const candidates = new Map();

@@ -21,6 +21,9 @@ import {
   resolveAddressFromShard,
 } from "../site/precomputed_address_geocoder.mjs";
 import {
+  lookupParcelMemberships,
+} from "../site/parcel_geography.mjs";
+import {
   RECORD_ADDRESS_RESOLUTION_CACHE_SCHEMA,
   RECORD_ADDRESS_RESOLUTION_ENTRY_SCHEMA,
   addressTextFromAssertion,
@@ -220,6 +223,7 @@ test("named-building venue wording resolves through one extracted span; subjects
     street: "ORIENTAL BLVD",
     borough_code: "3",
     zip: "11235",
+    locality: null,
   });
   assert.equal(resolveCalls, 1);
 
@@ -419,4 +423,141 @@ test("A4 materializer reuses resolutions under one PAD identity and invalidates 
   // only through exact matches, never fuzzy text.
   const coneyKey = third.results[2].cache_key;
   assert.deepEqual(cache.entriesForBbl("3050700035"), [coneyKey]);
+});
+
+test("locality and unit suffixes leave a usable street key through PAD and parcel shards", () => {
+  const { manifest, shard, loadShard } = loadPadFixture();
+  const parcelShard = fixtureJson("parcel-membership-subsets.json");
+  const cache = createRecordAddressResolutionCache({ manifest, loadShard });
+
+  const forestHillsAddress =
+    "104-01 Metropolitan Ave, Forest Hills, NY 11375, USA";
+  const forestHillsId =
+    "meeting:community_board:0pue8uab456hejvloi8sikfpke@google.com::2026-09-08";
+  const worthAddress =
+    "125 Worth Street, 2nd Floor Auditorium, New York, NY, 10013";
+  const worthId = "meeting:city_record:20260106034";
+
+  // Mutation control: the pre-fix contaminated street keys cannot hit PAD.
+  const contaminatedForest = {
+    house: "104-01",
+    house_sort: 100104001,
+    street: "METROPOLITAN AVE FOREST HILLS NY USA",
+    borough_code: null,
+    zip: "11375",
+  };
+  assert.equal(
+    resolveAddressFromShard(contaminatedForest, shard, manifest).reason,
+    "not_covered",
+  );
+  const contaminatedWorth = {
+    house: "125",
+    house_sort: 125000,
+    street: "WORTH ST 2",
+    borough_code: "1",
+    zip: "10013",
+  };
+  assert.equal(
+    resolveAddressFromShard(contaminatedWorth, shard, manifest).reason,
+    "not_covered",
+  );
+
+  // A1: Forest Hills / USA suffix separates from the street; exact PAD BBL
+  // and parcel Q06 / QN0602 produce venue membership inputs.
+  const forestQuery = parseAddressQuery(forestHillsAddress);
+  assert.equal(forestQuery.street, "METROPOLITAN AVE");
+  assert.equal(forestQuery.zip, "11375");
+  assert.equal(forestQuery.locality, "FOREST HILLS");
+  assert.equal(forestQuery.locality_conflict, undefined);
+
+  const forestAssertion = buildLocationAssertion({
+    meeting_id: forestHillsId,
+    role: LOCATION_ROLES.VENUE,
+    original_address: forestHillsAddress,
+    source_field: "venue.address",
+    mode: "in-person",
+  });
+  assert.equal(forestAssertion.validity, "admitted_physical_venue");
+  const forestEntry = cache.resolveAddress(null, { assertion: forestAssertion });
+  assert.equal(forestEntry.status, "matched");
+  assert.equal(forestEntry.bbl, "4032400041");
+  assert.equal(forestEntry.normalized.street, "METROPOLITAN AVE");
+  assert.equal(forestEntry.normalized.locality, "FOREST HILLS");
+  const forestKey = normalizedAddressCacheKey(forestQuery, padContentIdentity(manifest));
+  assert.equal(forestEntry.cache_key, forestKey);
+
+  const forestParcel = lookupParcelMemberships(parcelShard, forestEntry.bbl);
+  assert.ok(forestParcel);
+  assert.equal(forestParcel.memberships.nta2020.ids[0], "QN0602");
+  assert.equal(forestParcel.memberships.community_district.ids[0], "Q06");
+
+  // A2: City Record second-floor auditorium is a floor, not a second house.
+  const worthQuery = parseAddressQuery(worthAddress);
+  assert.equal(worthQuery.street, "WORTH ST");
+  assert.equal(worthQuery.house, "125");
+  assert.equal(worthQuery.borough_code, "1");
+  assert.equal(worthQuery.zip, "10013");
+  assert.equal(worthQuery.locality, null);
+
+  const worthAssertion = buildLocationAssertion({
+    meeting_id: worthId,
+    role: LOCATION_ROLES.VENUE,
+    original_address: worthAddress,
+    source_field: "venue.address",
+    mode: "in-person",
+  });
+  assert.equal(worthAssertion.validity, "admitted_physical_venue");
+  const worthEntry = cache.resolveAddress(null, { assertion: worthAssertion });
+  assert.equal(worthEntry.status, "matched");
+  assert.equal(worthEntry.bbl, "1001680032");
+  assert.equal(worthEntry.normalized.street, "WORTH ST");
+  const worthParcel = lookupParcelMemberships(parcelShard, worthEntry.bbl);
+  assert.ok(worthParcel);
+  assert.equal(worthParcel.memberships.nta2020.ids[0], "MN0102");
+  assert.equal(worthParcel.memberships.community_district.ids[0], "M01");
+
+  // A3: contradictory Flushing locality, unsupported ZIP, intersection-only,
+  // and multiple parcel hits stay unresolved — never drop conflict text.
+  const flushing = cache.resolveAddress(
+    "104-01 Metropolitan Ave, Flushing, NY 11375, USA",
+  );
+  assert.equal(flushing.status, "unknown");
+  assert.equal(flushing.reason, "contradictory_locality");
+  assert.equal(flushing.bbl, null);
+  // Dropping Flushing would still yield the Forest Hills BBL — prove that.
+  const dropped = resolveAddressFromShard(
+    parseAddressQuery("104-01 Metropolitan Ave, NY 11375, USA"),
+    shard,
+    manifest,
+  );
+  assert.equal(dropped.status, "matched");
+  assert.equal(dropped.bbl, "4032400041");
+
+  const badZip = cache.resolveAddress(
+    "104-01 Metropolitan Ave, Forest Hills, NY 90210, USA",
+  );
+  assert.equal(badZip.status, "unknown");
+  assert.equal(badZip.reason, "unsupported_zip");
+  assert.equal(badZip.bbl, null);
+
+  const intersection = cache.resolveAddress("135th Street and Malcolm X Boulevard");
+  assert.equal(intersection.status, "unknown");
+  assert.equal(intersection.bbl, null);
+  assert.ok(
+    intersection.reason === "not_full_address" || intersection.reason === "empty_or_malformed",
+  );
+
+  const ambiguous = cache.resolveAddress("250 Broadway");
+  assert.equal(ambiguous.status, "unknown");
+  assert.equal(ambiguous.reason, "ambiguous");
+  assert.equal(ambiguous.candidate_count, 2);
+  assert.equal(ambiguous.bbl, null);
+
+  // A5: already-clean Brooklyn rows keep their prior cache keys / BBLs
+  // (role and ID sets unchanged for the frozen physical-venue positives).
+  for (const row of BROOKLYN_NAMED) {
+    const entry = cache.resolveAddress(row.address);
+    assert.equal(entry.status, "matched");
+    assert.equal(entry.bbl, row.bbl);
+  }
 });

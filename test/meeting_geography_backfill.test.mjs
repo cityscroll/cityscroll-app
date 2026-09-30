@@ -677,3 +677,122 @@ test("input hash reuse skips unchanged meetings across resume", () => {
   const assertions = buildMeetingLocationAssertions(dateShapedRow());
   assert.equal(assertions[0].validity, LOCATION_VALIDITY.REJECTED_DATE_SHAPED);
 });
+
+test("locality and unit suffixes resolve through production PAD and parcel shards", () => {
+  const FOREST_HILLS_ID =
+    "meeting:community_board:0pue8uab456hejvloi8sikfpke@google.com::2026-09-08";
+  const WORTH_ID = "meeting:city_record:20260106034";
+  const FOREST_HILLS_ADDRESS =
+    "104-01 Metropolitan Ave, Forest Hills, NY 11375, USA";
+  const WORTH_ADDRESS =
+    "125 Worth Street, 2nd Floor Auditorium, New York, NY, 10013";
+
+  const rows = [
+    {
+      meeting_id: FOREST_HILLS_ID,
+      source_system: "community_board",
+      meeting_origin: "community_board_source_observed",
+      board_id: "queens-cb-06",
+      title: "Community Board 6 Public Meeting",
+      event_date: "2026-09-08T19:00:00-04:00",
+      venue: {
+        name: null,
+        address: FOREST_HILLS_ADDRESS,
+        mode: "in-person",
+      },
+    },
+    {
+      meeting_id: WORTH_ID,
+      source_system: "city_record",
+      title: "Board of Health",
+      event_date: "2026-01-06T10:00:00-05:00",
+      venue: {
+        name: null,
+        address: WORTH_ADDRESS,
+        mode: "in-person",
+      },
+    },
+    {
+      meeting_id: "meeting:example:flushing-conflict",
+      source_system: "community_board",
+      board_id: "queens-cb-06",
+      title: "Contradictory locality control",
+      event_date: "2026-09-08T19:00:00-04:00",
+      venue: {
+        name: null,
+        address: "104-01 Metropolitan Ave, Flushing, NY 11375, USA",
+        mode: "in-person",
+      },
+    },
+  ];
+
+  const runner = createProductionRunner();
+  const result = runner.run({
+    rows,
+    generation: "test-locality-unit",
+    sourceGenerationHash: "locality-unit",
+    observedAt: "2026-09-29T12:00:00.000Z",
+  });
+
+  const forest = result.outcomes.find((outcome) => outcome.meeting_id === FOREST_HILLS_ID);
+  assert.equal(forest.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  const forestVenue = forest.memberships.find((membership) => membership.role === LOCATION_ROLES.VENUE);
+  assert.ok(forestVenue);
+  assert.equal(forestVenue.bbl, "4032400041");
+  assert.equal(forestVenue.memberships.nta2020, "QN0602");
+  assert.equal(forestVenue.memberships.community_district, "Q06");
+  assert.equal(
+    forest.assertions.find((assertion) => assertion.role === LOCATION_ROLES.VENUE).original_address,
+    FOREST_HILLS_ADDRESS,
+  );
+
+  const worth = result.outcomes.find((outcome) => outcome.meeting_id === WORTH_ID);
+  assert.equal(worth.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  const worthVenue = worth.memberships.find((membership) => membership.role === LOCATION_ROLES.VENUE);
+  assert.ok(worthVenue);
+  assert.equal(worthVenue.bbl, "1001680032");
+  assert.equal(worthVenue.memberships.nta2020, "MN0102");
+  assert.equal(worthVenue.memberships.community_district, "M01");
+
+  const flushing = result.outcomes.find(
+    (outcome) => outcome.meeting_id === "meeting:example:flushing-conflict",
+  );
+  assert.notEqual(flushing.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  assert.equal(
+    flushing.memberships.some((membership) => membership.role === LOCATION_ROLES.VENUE
+      && (membership.bbl || Object.keys(membership.memberships || {}).length > 0)),
+    false,
+  );
+
+  // A4: frozen physical-venue and virtual role/ID sets from the retained
+  // corpus stay unchanged under the locality/unit parse.
+  const retained = loadJson(path.join(ROOT, "site/data/meeting-geography-backfill/per-id-outcomes.json"));
+  const physical = retained.outcomes.filter((row) => row.outcome === BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  const virtual = retained.outcomes.filter((row) => row.outcome === BACKFILL_OUTCOME.VIRTUAL);
+  assert.equal(physical.length, 31);
+  assert.equal(virtual.length, 63);
+
+  const shared = loadJson(SHARED_MEETING_PATH);
+  const retainedIds = new Set([...physical, ...virtual].map((row) => row.meeting_id));
+  const replayRows = shared.rows.filter((row) => retainedIds.has(row.meeting_id));
+  assert.equal(replayRows.length, physical.length + virtual.length);
+
+  const replay = createProductionRunner().run({
+    rows: replayRows,
+    generation: "test-locality-unit-parity",
+    sourceGenerationHash: "locality-unit-parity",
+    observedAt: "2026-09-29T12:30:00.000Z",
+  });
+  const byId = new Map(replay.outcomes.map((row) => [row.meeting_id, row]));
+  for (const prior of [...physical, ...virtual]) {
+    const next = byId.get(prior.meeting_id);
+    assert.ok(next, prior.meeting_id);
+    assert.equal(next.outcome, prior.outcome, prior.meeting_id);
+    const priorRoles = [...new Set((prior.assertions || []).map((row) => row.role))].sort();
+    const nextRoles = [...new Set((next.assertions || []).map((row) => row.role))].sort();
+    assert.deepEqual(nextRoles, priorRoles, prior.meeting_id);
+    const priorAssertionIds = [...(prior.assertion_ids || [])].sort();
+    const nextAssertionIds = [...(next.assertion_ids || [])].sort();
+    assert.deepEqual(nextAssertionIds, priorAssertionIds, prior.meeting_id);
+  }
+});
