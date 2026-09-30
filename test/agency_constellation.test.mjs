@@ -28,7 +28,10 @@ import { AGENCY_CONSTELLATION_SECTIONS } from "../site/agency_constellation_sect
 import { agencyIdentityCorrection, reconcileAgencyIdentity, resolveAgencyIdentity } from "../site/agency_identity.mjs";
 import { AGENCY_ROUTE_CLASSIFICATIONS } from "../tools/lib/agency_route_classifications.mjs";
 import { agencyPublisherCollisions, publisherAgencyRows } from "../tools/lib/agency_publisher_crosswalk.mjs";
-import { previouslyPublishedAgencyIds } from "../tools/build_agency_constellation_documents.mjs";
+import {
+  candidateAgencyIds,
+  previouslyPublishedAgencyIds,
+} from "../tools/build_agency_constellation_documents.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { renderEdgeProvenanceInspector } from "../site/graph_edge_provenance.mjs";
 import { buildAgencyObligationsLookup } from "../site/agency_obligations.mjs";
@@ -944,13 +947,26 @@ test("previously published constellation agencies are recoverable after a rollin
       by_id: {
         "borough-president-brooklyn": { path: "/agencies/borough-president-brooklyn/" },
         "rent-guidelines-board": { path: "/agencies/rent-guidelines-board/" },
+        "charter-revision-commission": { path: "/agencies/charter-revision-commission/" },
       },
     }));
     const previous = previouslyPublishedAgencyIds(lookupPath);
     assert.equal(previous.has("borough-president-brooklyn"), true);
     assert.equal(previous.has("rent-guidelines-board"), true);
-    assert.equal(previous.has("charter-revision-commission"), false);
+    assert.equal(previous.has("charter-revision-commission"), true);
     assert.deepEqual(previouslyPublishedAgencyIds(join(root, "missing.json")), new Set());
+
+    // Agencies absent from AGENCY_GROUPS still enter the candidate set when they
+    // were previously published, so retention can keep their directory entries.
+    const candidates = new Set(candidateAgencyIds({
+      intelligence: { by_ref: {} },
+      certification: { by_agency: [] },
+      fiscal_context: { by_agency: {} },
+      authority_procurement: { notices: [] },
+      publisher_agency_rows: [],
+    }, previous));
+    assert.equal(candidates.has("rent-guidelines-board"), true);
+    assert.equal(candidates.has("charter-revision-commission"), true);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

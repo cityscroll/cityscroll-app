@@ -6,13 +6,15 @@ import { readFileSync } from "node:fs";
 
 const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
-const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
+// Frozen exam-schedule vintage for openness and deadline-first contract cases.
+// Daily first-class refresh rewrites the live staffing exams and NOE feed.
+const artifact = JSON.parse(readFileSync(new URL("./fixtures/exam-openness/staffing_exams.json", import.meta.url)));
 const receipt = JSON.parse(
-  readFileSync(new URL("../site/data/exam_sources/verification_receipts/dcas_open_competitive_2026-07-29.json", import.meta.url)),
+  readFileSync(new URL("./fixtures/exam-openness/dcas_open_competitive_receipt.json", import.meta.url)),
 );
 const contracts = JSON.parse(readFileSync(new URL("../site/data/source_contracts.json", import.meta.url)));
 const openCompetitive = JSON.parse(
-  readFileSync(new URL("../site/data/exam_sources/dcas_open_competitive.json", import.meta.url)),
+  readFileSync(new URL("./fixtures/exam-openness/dcas_open_competitive.json", import.meta.url)),
 );
 const oasysMap = JSON.parse(
   readFileSync(new URL("../site/data/exam_sources/oasys_exam_map.json", import.meta.url)),

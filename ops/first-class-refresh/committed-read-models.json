@@ -394,6 +394,20 @@
       ]
     },
     {
+      "id": "land-project-map-points",
+      "command": [
+        "tools/build_land_project_map_points.mjs"
+      ],
+      "covers": [
+        "tools/build_land_project_map_points.mjs"
+      ],
+      "after": [
+        "derived-json-build-boundary",
+        "land-mapability"
+      ],
+      "note": "Re-derives the map-point receipt whenever land catalog / default ULURP inputs move. Shared browser site artifact runs this builder in --check mode, so a refresh that advances land_default without restamping the receipt fails its own pull request."
+    },
+    {
       "id": "land-filter-parity",
       "command": [
         "tools/land_filter_parity_receipt.mjs"
@@ -503,6 +517,20 @@
       "after": [
         "data-health-page"
       ]
+    },
+    {
+      "id": "assistant-setup-capture",
+      "command": [
+        "tools/capture_assistant_setup_evidence.py"
+      ],
+      "covers": [
+        "tools/capture_assistant_setup_evidence.py"
+      ],
+      "after": [
+        "capture-site"
+      ],
+      "runtime": "python3",
+      "note": "Restamp docs/evidence/assistant-setup/capture-manifest.json (and related digests) against the rebuilt site so capability_discovery A6 digest checks verify the refreshed bytes rather than a stale vintage."
     },
     {
       "id": "official-colleagues-capture",

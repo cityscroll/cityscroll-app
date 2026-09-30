@@ -535,7 +535,7 @@ export function reconcileAgencyConstellationSources(sources, publisherRows = pub
   };
 }
 
-function candidateAgencyIds(sources) {
+export function candidateAgencyIds(sources, previouslyPublished = new Set()) {
   const ids = new Set(Object.keys(AGENCY_GROUPS).map((name) =>
     reconcileAgencyIdentity(name, sources.publisher_agency_rows).canonical_id));
   for (const ref of Object.keys(sources.intelligence?.by_ref || {})) {
@@ -557,6 +557,11 @@ function candidateAgencyIds(sources) {
   }
   for (const demo of DEMO_IDS) ids.add(reconcileAgencyIdentity(demo, sources.publisher_agency_rows).canonical_id);
   for (const corrected of CORRECTED_IDENTITY_IDS) ids.add(corrected);
+  // Agencies already in the committed lookup stay candidates even when they are
+  // absent from AGENCY_GROUPS and the current EI/certification windows (e.g.
+  // Charter Revision Commission, Rent Guidelines Board). Retention below then
+  // keeps their directory entries when matched categories empty.
+  for (const id of previouslyPublished) ids.add(id);
   return [...ids].sort();
 }
 
@@ -675,7 +680,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
   const byId = {};
   const documents = [];
 
-  for (const id of candidateAgencyIds(reconciledSources)) {
+  for (const id of candidateAgencyIds(reconciledSources, previouslyPublished)) {
     const view = buildAgencyConstellationView(id, {
       ...reconciledSources,
       vendor_rollups: vendorRollups,
