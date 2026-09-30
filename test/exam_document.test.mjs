@@ -26,7 +26,8 @@ import { examFacetValue } from "../site/exam_detail_facets.mjs";
 
 const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
-const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
+// Frozen staffing-exams vintage shared with deadline_exam_cards openness cases.
+const artifact = JSON.parse(readFileSync(new URL("./fixtures/exam-openness/staffing_exams.json", import.meta.url)));
 
 test("exam browse exposes a people-scoped calendar subscription", () => {
   const view = buildExamsBrowseView(artifact, new URLSearchParams("agency=Parks%20and%20Recreation"), { limit: 4 });

@@ -1,0 +1,180 @@
+{
+  "source": {
+    "id": "dcas-open-competitive",
+    "name": "DCAS Open Competitive Exams for Anyone",
+    "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+    "verified_at": "2026-09-09",
+    "refresh_cadence": "Check daily while an application window is open; DCAS publishes a monthly schedule and may amend individual NOEs between releases.",
+    "stale_after_days": 35,
+    "method": "The published schedule table is read directly and cross-checked against the OASys active-exam listing. Reviewed Notice of Examination prose from the previous snapshot is carried forward only while the exam and its filing window are unchanged.",
+    "fetched_at": "2026-09-09"
+  },
+  "records": [
+    {
+      "exam_number": "7002",
+      "title": "Administrative Housing Development Specialist",
+      "eligibility": "open_competitive",
+      "notice_url": null,
+      "application_notes": "Canceled"
+    },
+    {
+      "exam_number": "7003",
+      "title": "Administrative Labor Relations Analyst",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277003000.pdf",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "fee": 82,
+      "test_method": "Education and experience exam",
+      "salary_publication": "The notice does not state a minimum annual salary for this title."
+    },
+    {
+      "exam_number": "7006",
+      "title": "Assistant Civil Engineer",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277006000.pdf",
+      "application_start": "2026-07-01",
+      "application_end": "2026-09-11",
+      "fee": 82,
+      "title_code": "20210",
+      "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
+      "salary_min": 66330,
+      "salary_note": "Current minimum annual salary",
+      "summary": "Help design, inspect, and supervise City construction and infrastructure work.",
+      "qualifications": "The NOE lists several paths, including a civil engineering degree plus experience or specified graduate study.",
+      "test_method": "Education and experience exam"
+    },
+    {
+      "exam_number": "7302",
+      "title": "Correction Officer",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277302000.pdf",
+      "application_start": "2026-09-02",
+      "application_end": "2026-10-27",
+      "fee": 0,
+      "salary_min": 56838,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test"
+    },
+    {
+      "exam_number": "7034",
+      "title": "Exterminator",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277034000.pdf",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "fee": 68,
+      "salary_min": 48154,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam"
+    },
+    {
+      "exam_number": "7035",
+      "title": "Exterminator (CUNY)",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277035000.pdf",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "fee": 54,
+      "salary_min": 39922,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam"
+    },
+    {
+      "exam_number": "7036",
+      "title": "Forester",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277036000.pdf",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "fee": 68,
+      "salary_min": 50458,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam"
+    },
+    {
+      "exam_number": "7041",
+      "title": "Inspector (Electrical)",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277041000.pdf",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "fee": 68,
+      "salary_min": 57717,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test"
+    },
+    {
+      "exam_number": "7070",
+      "title": "Plant Maintainer (Hospitals)/Tender (NYC H+H)",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277070000.pdf",
+      "application_start": "2026-08-05",
+      "application_end": "2026-09-22",
+      "fee": 88,
+      "test_method": "Multiple-choice test",
+      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary."
+    },
+    {
+      "exam_number": "7307",
+      "title": "Police Communications Technician",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277307000.pdf",
+      "application_start": "2026-09-02",
+      "application_end": "2026-10-13",
+      "fee": 68,
+      "salary_min": 51790,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test"
+    },
+    {
+      "exam_number": "7313",
+      "title": "Police Officer",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277313000.pdf",
+      "application_start": "2026-09-01",
+      "application_end": "2026-09-14",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary"
+    },
+    {
+      "exam_number": "7065",
+      "title": "Scientist (Water Ecology)",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277065000.pdf",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "fee": 68,
+      "salary_min": 52804,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam"
+    },
+    {
+      "exam_number": "7327",
+      "title": "Special Officer",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277327000.pdf",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "fee": 61,
+      "salary_min": 40480,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test"
+    },
+    {
+      "exam_number": "7329",
+      "title": "Special Officer (NYC H+H)",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277329000.pdf",
+      "application_start": "2026-09-02",
+      "application_end": "2026-10-27",
+      "fee": 61,
+      "salary_min": 40480,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test"
+    }
+  ]
+}

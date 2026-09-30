@@ -72,9 +72,11 @@ const SHIPPING_LANGS = globalThis.window.SHIPPING_LANGS;
 
 const read = (path) => JSON.parse(readFileSync(new URL(`../${path}`, import.meta.url), "utf8"));
 
-const AUTHORITY = read("site/data/land_authority_summary.json");
-const LAND_PROJECTS = read("site/data/land_default_ulurp.json");
-const LOOKUP = read("site/data/community_board_land_positions.json");
+// Frozen acceptance vintage for named board-position records (Dewitt Clinton,
+// Monitor Point, etc.). Daily first-class refresh rewrites the live lookup.
+const AUTHORITY = read("test/fixtures/community-board-land-positions/land_authority_summary.json");
+const LAND_PROJECTS = read("test/fixtures/community-board-land-positions/land_default_ulurp.json");
+const LOOKUP = read("test/fixtures/community-board-land-positions/community_board_land_positions.json");
 const REGISTRY = read("site/data/non_council_outcome_sources/source_registry.json");
 const SCORECARD = read("site/data/community_board_minutes_scorecard.json");
 const GEOGRAPHY = read("site/data/community_board_geography_lookup.json");
