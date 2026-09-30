@@ -4,6 +4,10 @@ import performanceAllowlist from "./data/performance-validation-allowlist.v1.jso
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { bumpStat } from "./lib/stats.mjs";
 import {
+  NOTICE_EDGE_CACHE_OUTCOMES,
+  NOTICE_RECORD_CACHE_OUTCOME_NONE,
+} from "../../site/notice_edge_response.mjs";
+import {
   RUM_MARKED_TRAFFIC_CLASSES,
   RUM_RESIDENT_TRAFFIC_CLASS,
   RUM_TRAFFIC_CLASSES as RUM_TRAFFIC_CLASS_VALUES,
@@ -72,7 +76,14 @@ const OBSERVATION_KEYS = Object.freeze([
   "unit",
   "value",
 ]);
-const OPTIONAL_OBSERVATION_KEYS = Object.freeze(["owner_timestamp_ms"]);
+const OPTIONAL_OBSERVATION_KEYS = Object.freeze([
+  "owner_timestamp_ms",
+  "record_cache_outcome",
+]);
+const RECORD_CACHE_OUTCOMES = new Set([
+  ...NOTICE_EDGE_CACHE_OUTCOMES,
+  NOTICE_RECORD_CACHE_OUTCOME_NONE,
+]);
 const BATCH_KEYS = Object.freeze(["observations", "schema"]);
 const FORBIDDEN_KEYS = new Set([
   "account",
@@ -255,6 +266,11 @@ function normalizeObservation(input) {
     || !resultStates.has(input.result_state)
   ) return rejected("invalid_enum");
 
+  const recordCacheOutcome = Object.hasOwn(input, "record_cache_outcome")
+    ? input.record_cache_outcome
+    : NOTICE_RECORD_CACHE_OUTCOME_NONE;
+  if (!RECORD_CACHE_OUTCOMES.has(recordCacheOutcome)) return rejected("invalid_enum");
+
   const surfaceId = canonicalSurfaceId(input.surface_id);
   const componentId = canonicalComponentId(input.component_id);
   const surface = performanceAllowlist.surfaces?.[surfaceId];
@@ -287,6 +303,7 @@ function normalizeObservation(input) {
       navigationType: input.navigation_type,
       deliveryClass: input.delivery_class,
       resultState: input.result_state,
+      recordCacheOutcome,
       collectorVersion: input.collector_version,
       manifestVersion: input.manifest_version,
       releaseId: input.release_id,
@@ -334,6 +351,8 @@ export function rumDataPoint(observation, trafficClass = RUM_RESIDENT_TRAFFIC_CL
       observation.collectorVersion,
       observation.manifestVersion,
       observation.releaseId,
+      // blob14 retains the Notice record-subrequest cache outcome (or "none").
+      observation.recordCacheOutcome || NOTICE_RECORD_CACHE_OUTCOME_NONE,
     ],
     doubles: [
       observation.value,

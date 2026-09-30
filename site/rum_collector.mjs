@@ -1,4 +1,8 @@
 import { classifyPerformancePathname } from "./performance_route_classifier.mjs";
+import {
+  NOTICE_RECORD_CACHE_OUTCOME_NONE,
+  navigationRecordCacheOutcome,
+} from "./notice_edge_response.mjs";
 
 export { classifyPerformancePathname };
 
@@ -148,6 +152,12 @@ export async function startBrowserRumCollector({
   const allowedNavigationTypes = new Set(manifest.collector.navigation_types || []);
   const deviceClass = coarseDeviceClass(runtime, manifest.collector.device_classes);
   const reported = new Set();
+  // Notice pages retain the record-subrequest cache outcome from Server-Timing.
+  // Every other surface stamps the explicit none sentinel so the dimension is
+  // always present on the resident measurement set.
+  const recordCacheOutcome = classification.surface_id === "notice"
+    ? navigationRecordCacheOutcome(runtime)
+    : NOTICE_RECORD_CACHE_OUTCOME_NONE;
 
   for (const [webVitalName, metricId] of Object.entries(WEB_VITAL_NAMES)) {
     if (!configuredMetricIds.has(metricId) || !applicableMetricIds.has(metricId)) continue;
@@ -179,6 +189,7 @@ export async function startBrowserRumCollector({
           navigation_type: navType,
           delivery_class: classification.delivery_class,
           traffic_class: production === true ? "production" : "test",
+          record_cache_outcome: recordCacheOutcome,
           collector_version: manifest.collector.collector_version,
           manifest_version: manifest.manifest_version,
         });
@@ -188,5 +199,5 @@ export async function startBrowserRumCollector({
     }
   }
 
-  return { state: "collecting", classification };
+  return { state: "collecting", classification, record_cache_outcome: recordCacheOutcome };
 }

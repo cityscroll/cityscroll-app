@@ -28,9 +28,12 @@ function fakeVitals() {
   };
 }
 
-function runtimeFor(widthClass = "mobile") {
+function runtimeFor(widthClass = "mobile", {
+  pathname = "/",
+  serverTiming = null,
+} = {}) {
   return {
-    location: { pathname: "/" },
+    location: { pathname },
     matchMedia(query) {
       if (widthClass === "mobile") return { matches: query.includes("599px") };
       if (widthClass === "tablet") return { matches: query.includes("1023px") };
@@ -38,7 +41,10 @@ function runtimeFor(widthClass = "mobile") {
     },
     performance: {
       getEntriesByType(type) {
-        return type === "navigation" ? [{ type: "navigate" }] : [];
+        if (type !== "navigation") return [];
+        const entry = { type: "navigate" };
+        if (Array.isArray(serverTiming)) entry.serverTiming = serverTiming;
+        return [entry];
       },
     },
   };
@@ -303,6 +309,54 @@ test("local debug sink snapshots are copies and never expose a network transport
   assert.equal("send" in sink, false);
   assert.equal("flush" in sink, false);
   assert.equal("endpoint" in sink, false);
+});
+
+test("notice observations retain the record-subrequest cache outcome dimension", async () => {
+  const sink = createLocalRumDebugSink();
+  const active = fakeVitals();
+  const started = await startBrowserRumCollector({
+    testOnly: true,
+    production: true,
+    manifest: {
+      ...MANIFEST,
+      collector: { ...MANIFEST.collector, production_enabled: true },
+    },
+    pathname: "/notices/20260805014",
+    runtime: runtimeFor("mobile", {
+      pathname: "/notices/20260805014",
+      serverTiming: [
+        { name: "cs-doc", description: "dynamic", duration: 10 },
+        { name: "cs-record", description: "hit", duration: 12 },
+      ],
+    }),
+    sink,
+    webVitals: active.api,
+  });
+  assert.equal(started.state, "collecting");
+  assert.equal(started.record_cache_outcome, "hit");
+  active.callbacks.get("TTFB")({ name: "TTFB", id: "ttfb-1", value: 22, navigationType: "navigate" });
+  const rows = observations(sink);
+  assert.ok(rows.length >= 1);
+  assert.equal(rows[0].surface_id, "notice");
+  assert.equal(rows[0].record_cache_outcome, "hit");
+});
+
+test("non-notice observations stamp the none cache-outcome sentinel", async () => {
+  const sink = createLocalRumDebugSink();
+  const active = fakeVitals();
+  const started = await startBrowserRumCollector({
+    testOnly: true,
+    manifest: MANIFEST,
+    pathname: "/",
+    runtime: runtimeFor(),
+    sink,
+    webVitals: active.api,
+  });
+  assert.equal(started.record_cache_outcome, "none");
+  active.callbacks.get("TTFB")({ name: "TTFB", id: "ttfb-home", value: 30, navigationType: "navigate" });
+  const rows = observations(sink);
+  assert.ok(rows.length >= 1);
+  assert.equal(rows[0].record_cache_outcome, "none");
 });
 
 test("committed overhead receipt matches source bytes and records deferred production loading", () => {

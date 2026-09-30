@@ -138,12 +138,14 @@ test("enabled production intake writes one normalized point per numeric observat
       "rum-browser-v1",
       "rum-surfaces-v1",
       "a".repeat(40),
+      "none",
     ],
     doubles: [123.5],
     indexes: ["ttfb_ms|home|none"],
   });
   assert.equal(points[1].blobs[2], "browse-contracts", "registered aliases normalize before storage");
   assert.equal(points[1].blobs[3], "browse-results");
+  assert.equal(points[1].blobs[13], "none");
   assert.equal(healthCount(health, "accepted"), 2);
   assert.equal(health.store.get("rum:health:latest-accepted"), new Date(NOW_MS).toISOString());
 });
@@ -172,6 +174,7 @@ test("semantic owner timestamps are additive and occupy the second Analytics Eng
       "rum-browser-v1",
       "rum-surfaces-v1",
       "a".repeat(40),
+      "none",
     ],
     doubles: [456, 137.5],
     indexes: ["content_ready_ms|home|none"],
@@ -180,6 +183,55 @@ test("semantic owner timestamps are additive and occupy the second Analytics Eng
     metric_id: "content_ready_ms",
     owner_timestamp_ms: -1,
   })])), { ok: false, reason: "invalid_value" });
+});
+
+test("record_cache_outcome is retained on blob14 and defaults to none", async () => {
+  const points = [];
+  const withHit = await post(batch([observation({
+    surface_id: "notice",
+    delivery_class: "pages_edge",
+    record_cache_outcome: "hit",
+  })]), {
+    env: {
+      RUM_ANALYTICS: analyticsBinding(points),
+      RUM_INGEST_ENABLED: "true",
+      ANALYTICS_ENVIRONMENT: "production",
+    },
+  });
+  assert.equal(withHit.status, 204);
+  assert.equal(points[0].blobs[13], "hit");
+
+  const withMiss = await post(batch([observation({
+    surface_id: "notice",
+    delivery_class: "pages_edge",
+    record_cache_outcome: "miss",
+  })]), {
+    env: {
+      RUM_ANALYTICS: analyticsBinding(points),
+      RUM_INGEST_ENABLED: "true",
+      ANALYTICS_ENVIRONMENT: "production",
+    },
+  });
+  assert.equal(withMiss.status, 204);
+  assert.equal(points[1].blobs[13], "miss");
+  assert.notEqual(points[0].blobs[13], points[1].blobs[13]);
+
+  const withoutField = await post(batch([observation()]), {
+    env: {
+      RUM_ANALYTICS: analyticsBinding(points),
+      RUM_INGEST_ENABLED: "true",
+      ANALYTICS_ENVIRONMENT: "production",
+    },
+  });
+  assert.equal(withoutField.status, 204);
+  assert.equal(points[2].blobs[13], "none");
+
+  const rejected = normalizeRumBatch(batch([observation({
+    surface_id: "notice",
+    delivery_class: "pages_edge",
+    record_cache_outcome: "warm",
+  })]));
+  assert.deepEqual(rejected, { ok: false, reason: "invalid_enum" });
 });
 
 test("controlled lab intake is retained and tagged separately from field traffic", async () => {

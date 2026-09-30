@@ -4,7 +4,7 @@
 
 A retained production aggregate for the three Notice measurement groups that the
 post-delivery letters require, plus the record subrequest's cache outcome
-distribution for the same window as the first-byte group:
+distribution over a window of the same shape as the first-byte group:
 
 | Measurement group | Population | Metrics |
 | --- | --- | --- |
@@ -18,8 +18,24 @@ into one distribution.
 
 `record_cache_outcome_distribution` is always present and always named as either
 `read` (counts per closed cache outcome, zeros allowed) or `unread` (that word
-and a reason). An absent field is a refusal. The distribution is keyed to the
-`first_byte` window.
+and a reason). An absent field is a refusal.
+
+### Window rule for the cache outcome distribution
+
+The site owner settled that "the same window" means a window of the **same
+shape** as the first-byte group — the same length (`7d`) and the same
+completeness rules — once the cache dimension exists. Each of the other
+measurement groups keeps its own calendar window; the distribution opens its
+own same-shape window after the dimension-collection delivery. The distribution
+records that rule as `window.window_rule = "same_shape"` and
+`window.keyed_to_measurement_group = "first_byte"`, and carries its own
+`dimension_collection` delivery so a reader can see whether the window
+post-dates the change that began collecting the dimension.
+
+The resident measurement collector stamps the Server-Timing `cs-record` outcome
+onto observations as `record_cache_outcome` (Analytics Engine `blob14`). The
+builder reads that dimension through the shared RUM grammar; a successful empty
+query is retained as read-with-zeroes, which stays distinguishable from unread.
 
 The machine-readable file is
 [`notice-readback-aggregate.json`](./notice-readback-aggregate.json)

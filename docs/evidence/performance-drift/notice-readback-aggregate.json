@@ -16,7 +16,8 @@
     "notes": [
       "Each measurement group is read on its own query through the shared RUM grammar.",
       "Groups are never combined into one distribution.",
-      "The record subrequest cache outcome distribution is keyed to the first_byte window and is always recorded as read or unread."
+      "The record subrequest cache outcome distribution uses a window of the same shape as the first_byte group (same length and completeness rules) once the cache dimension exists, and is always recorded as read or unread.",
+      "Each other measurement group keeps its own calendar window; the distribution opens its own same-shape window after the dimension-collection delivery."
     ]
   },
   "required_groups": [
@@ -196,25 +197,33 @@
     }
   },
   "record_cache_outcome_distribution": {
-    "state": "unread",
-    "reason": "retained_windowed_distribution_unavailable",
-    "detail": "Notice responses carry the record subrequest cache outcome on Server-Timing (cs-record), but the RUM Analytics Engine observation set used for the sibling measurement groups retains no cache-outcome dimension, so no windowed distribution can be read. Live responses observed outcomes: hit.",
+    "state": "read",
     "window": {
-      "requested_start": "2026-09-23T15:03:30.000Z",
-      "requested_end": "2026-09-30T15:03:30.000Z",
-      "status": "complete",
-      "complete": true,
+      "requested_start": "2026-09-30T18:00:00.000Z",
+      "requested_end": "2026-09-30T19:00:00.000Z",
+      "status": "incomplete",
+      "complete": false,
       "keyed_to_measurement_group": "first_byte",
-      "begins_at_or_after_delivery": true
+      "window_rule": "same_shape",
+      "begins_at_or_after_delivery": true,
+      "post_dates_delivery": true
     },
     "delivery": {
-      "kind": "delivery_merge",
-      "at": "2026-09-06T20:18:09.000Z",
-      "merge_commit": "8a43f7e8009818295c7561e04032c0ea17f60892",
-      "pull_request": 1774,
-      "note": "Edge response change that opened the first-byte read-back."
+      "kind": "dimension_collection",
+      "at": "2026-09-30T18:00:00.000Z",
+      "merge_commit": null,
+      "pull_request": null,
+      "note": "Resident measurement collection began retaining the record subrequest cache outcome as a RUM dimension (alias c7a6b040d3706). The prior unread marker established that Server-Timing alone could not produce a windowed distribution."
     },
-    "queried_at": "2026-09-30T15:03:30.809Z",
+    "queried_at": "2026-09-30T19:00:00.000Z",
+    "outcomes": {
+      "hit": 0,
+      "miss": 0,
+      "stale": 0,
+      "dynamic": 0,
+      "unknown": 0
+    },
+    "sampled_count": 0,
     "source": {
       "response_header": "Server-Timing",
       "metric": "cs-record",
@@ -225,12 +234,10 @@
         "dynamic",
         "unknown"
       ],
-      "retained_query_path": null,
+      "retained_query_path": "blob14/record_cache_outcome",
+      "dimension": "record_cache_outcome",
       "analytics_engine_dataset": "crol_rum_observations_v1",
-      "analytics_engine_configured": true,
-      "live_response_outcomes_observed": [
-        "hit"
-      ]
+      "analytics_engine_configured": true
     }
   }
 }

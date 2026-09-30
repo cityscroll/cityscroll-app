@@ -1,7 +1,16 @@
+import {
+  NOTICE_EDGE_CACHE_OUTCOMES,
+  NOTICE_RECORD_CACHE_OUTCOME_NONE,
+} from "./notice_edge_response.mjs";
+
 const RUM_BATCH_SCHEMA = "cityscroll.rum.batch.v1";
 const RUM_OBSERVATION_SCHEMA = "cityscroll.performance_observation.v1";
 const RELEASE_ID = /^[a-f0-9]{40}$/;
 const RESULT_STATES = new Set(["content", "empty", "unavailable", "error"]);
+const RECORD_CACHE_OUTCOMES = new Set([
+  ...NOTICE_EDGE_CACHE_OUTCOMES,
+  NOTICE_RECORD_CACHE_OUTCOME_NONE,
+]);
 const DEV_TOKEN_STORAGE_KEY = "crol_analytics_dev_token_v1";
 const MAX_BATCH = 16;
 const MAX_BUFFERED_MILESTONES = 32;
@@ -112,11 +121,18 @@ function metricCatalog(manifest) {
   return new Map((manifest?.metrics || []).map((metric) => [metric.metric_id, metric]));
 }
 
+function resolveRecordCacheOutcome(record, fallback = NOTICE_RECORD_CACHE_OUTCOME_NONE) {
+  const candidate = record?.record_cache_outcome;
+  if (RECORD_CACHE_OUTCOMES.has(candidate)) return candidate;
+  return RECORD_CACHE_OUTCOMES.has(fallback) ? fallback : NOTICE_RECORD_CACHE_OUTCOME_NONE;
+}
+
 export function projectProductionObservation(record, {
   manifest,
   classification,
   releaseId,
   deviceClass,
+  recordCacheOutcome = NOTICE_RECORD_CACHE_OUTCOME_NONE,
 } = {}) {
   if (!record || !manifest || !RELEASE_ID.test(releaseId || "")) return null;
   const metricId = record.metric_id;
@@ -142,6 +158,7 @@ export function projectProductionObservation(record, {
     navigation_type: navigationType,
     delivery_class: record.delivery_class || classification?.delivery_class || "static",
     result_state: resultState,
+    record_cache_outcome: resolveRecordCacheOutcome(record, recordCacheOutcome),
     collector_version: manifest.collector.collector_version,
     manifest_version: manifest.manifest_version,
     release_id: releaseId,
@@ -156,6 +173,7 @@ export function createProductionObservationSink({
   classification,
   releaseId,
   deviceClass,
+  recordCacheOutcome = NOTICE_RECORD_CACHE_OUTCOME_NONE,
   deliver,
   schedule = globalThis.setTimeout,
   cancelSchedule = globalThis.clearTimeout,
@@ -210,6 +228,7 @@ export function createProductionObservationSink({
         classification,
         releaseId,
         deviceClass,
+        recordCacheOutcome,
       });
       if (!observation) return { state: "ignored" };
       pending.push(observation);
