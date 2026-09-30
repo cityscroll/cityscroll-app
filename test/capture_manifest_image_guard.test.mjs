@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 
 import { findOffendingImages, loadAllowlist, readPaths } from "../tools/check_capture_manifest_images.mjs";
+import { withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
 import { manifestPaths, missingShaEntries } from "../tools/lint_capture_manifest_schema.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
@@ -176,24 +177,20 @@ function sanitizedGitEnv() {
   return env;
 }
 
-function initTempRepo() {
-  const dir = mkdtempSync(join(tmpdir(), "capture-manifest-repo-"));
-  try {
+function withTempRepo(fn) {
+  // withTempDirSync owns cleanup on success, thrown git-init failure, and SIGTERM.
+  return withTempDirSync("capture-manifest-repo", (dir) => {
     const env = sanitizedGitEnv();
     const run = (...args) => execFileSync("git", args, { cwd: dir, encoding: "utf8", env });
     run("init", "--quiet", "-b", "main");
     run("config", "user.email", "capture-manifest-guard-test");
     run("config", "user.name", "Test");
-    return { dir, run };
-  } catch (error) {
-    rmSync(dir, { recursive: true, force: true });
-    throw error;
-  }
+    return fn({ dir, run });
+  });
 }
 
 test("git diff --diff-filter=A -M does not list a renamed pre-existing image as added", () => {
-  const { dir, run } = initTempRepo();
-  try {
+  withTempRepo(({ dir, run }) => {
     mkdirSync(join(dir, "docs", "screenshots"), { recursive: true });
     writeFileSync(join(dir, "docs", "screenshots", "old-name.png"), "fake-png-bytes-for-rename-test");
     run("add", "-A");
@@ -204,14 +201,11 @@ test("git diff --diff-filter=A -M does not list a renamed pre-existing image as 
     const head = run("rev-parse", "HEAD").trim();
     const added = run("diff", "--diff-filter=A", "-M", "--name-only", `${base}...${head}`).trim();
     assert.equal(added, "");
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
+  });
 });
 
 test("git diff --diff-filter=A does not list a modified pre-existing image as added", () => {
-  const { dir, run } = initTempRepo();
-  try {
+  withTempRepo(({ dir, run }) => {
     mkdirSync(join(dir, "docs", "screenshots"), { recursive: true });
     writeFileSync(join(dir, "docs", "screenshots", "legacy.png"), "fake-png-bytes-v1");
     run("add", "-A");
@@ -223,14 +217,11 @@ test("git diff --diff-filter=A does not list a modified pre-existing image as ad
     const head = run("rev-parse", "HEAD").trim();
     const added = run("diff", "--diff-filter=A", "-M", "--name-only", `${base}...${head}`).trim();
     assert.equal(added, "");
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
+  });
 });
 
 test("git diff --diff-filter=A -M still lists a genuinely new image as added", () => {
-  const { dir, run } = initTempRepo();
-  try {
+  withTempRepo(({ dir, run }) => {
     mkdirSync(join(dir, "docs", "screenshots"), { recursive: true });
     writeFileSync(join(dir, "docs", "screenshots", "existing.png"), "fake-png-bytes");
     run("add", "-A");
@@ -242,9 +233,7 @@ test("git diff --diff-filter=A -M still lists a genuinely new image as added", (
     const head = run("rev-parse", "HEAD").trim();
     const added = run("diff", "--diff-filter=A", "-M", "--name-only", `${base}...${head}`).trim();
     assert.equal(added, "docs/screenshots/brand-new.png");
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
+  });
 });
 
 // --- Advisory manifest-schema lint ---
