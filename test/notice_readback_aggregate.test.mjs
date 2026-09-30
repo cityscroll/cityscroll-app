@@ -12,14 +12,21 @@ import { test } from "node:test";
 
 import {
   NOTICE_READBACK_AGGREGATE_SCHEMA,
+  NOTICE_READBACK_CACHE_OUTCOME_UNREAD_REASON,
+  NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP,
+  NOTICE_READBACK_CACHE_OUTCOMES,
   NOTICE_READBACK_DELIVERIES,
   NOTICE_READBACK_RETAINED_PATH,
   NOTICE_READBACK_REQUIRED_GROUPS,
   NOTICE_READBACK_SAMPLE_FLOOR,
   buildNoticeReadbackAggregate,
+  buildReadRecordCacheOutcomeDistribution,
+  buildUnreadRecordCacheOutcomeDistribution,
   cloneNoticeReadbackAggregate,
+  emptyRecordCacheOutcomeCounts,
   validateNoticeReadbackAggregate,
   withoutMeasurementGroup,
+  withoutRecordCacheOutcomeDistribution,
 } from "../tools/lib/notice_readback_aggregate.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -122,11 +129,48 @@ function wellFormedReads() {
   ];
 }
 
-function wellFormedAggregate() {
+function wellFormedCacheDistribution({
+  state = "unread",
+  outcomes = null,
+} = {}) {
+  const window = {
+    requested_start: "2026-09-23T12:00:00.000Z",
+    requested_end: "2026-09-30T12:00:00.000Z",
+    complete: true,
+    begins_at_or_after_delivery: true,
+  };
+  const delivery = {
+    kind: NOTICE_READBACK_DELIVERIES.first_byte.kind,
+    at: NOTICE_READBACK_DELIVERIES.first_byte.merged_at,
+    merge_commit: NOTICE_READBACK_DELIVERIES.first_byte.merge_commit,
+    pull_request: NOTICE_READBACK_DELIVERIES.first_byte.pull_request,
+    note: NOTICE_READBACK_DELIVERIES.first_byte.note,
+  };
+  if (state === "read") {
+    return buildReadRecordCacheOutcomeDistribution({
+      outcomes: outcomes ?? emptyRecordCacheOutcomeCounts(),
+      window,
+      delivery,
+      queriedAt: "2026-09-30T12:37:18.000Z",
+    });
+  }
+  return buildUnreadRecordCacheOutcomeDistribution({
+    reason: NOTICE_READBACK_CACHE_OUTCOME_UNREAD_REASON,
+    detail: "fixture unread distribution for validator coverage",
+    window,
+    delivery,
+    queriedAt: "2026-09-30T12:37:18.000Z",
+  });
+}
+
+function wellFormedAggregate({
+  recordCacheOutcomeDistribution = wellFormedCacheDistribution({ state: "unread" }),
+} = {}) {
   return buildNoticeReadbackAggregate({
     reads: wellFormedReads(),
     productionRevision: "c9381ab637d8970e8653a0e7616d76f5faa45653",
     queriedAt: "2026-09-30T12:37:18.000Z",
+    recordCacheOutcomeDistribution,
   });
 }
 
@@ -223,4 +267,70 @@ test("the committed retained aggregate validates when present", () => {
       name,
     );
   }
+  const cache = document.record_cache_outcome_distribution;
+  assert.ok(cache, "record_cache_outcome_distribution must be present");
+  assert.ok(cache.state === "read" || cache.state === "unread", cache.state);
+  assert.equal(
+    cache.window.keyed_to_measurement_group,
+    NOTICE_READBACK_CACHE_OUTCOME_WINDOW_GROUP,
+  );
+});
+
+test("positive control: read-and-empty cache distribution satisfies the clause", () => {
+  const aggregate = wellFormedAggregate({
+    recordCacheOutcomeDistribution: wellFormedCacheDistribution({
+      state: "read",
+      outcomes: emptyRecordCacheOutcomeCounts(),
+    }),
+  });
+  const cache = aggregate.record_cache_outcome_distribution;
+  assert.equal(cache.state, "read");
+  assert.equal(cache.sampled_count, 0);
+  for (const name of NOTICE_READBACK_CACHE_OUTCOMES) {
+    assert.equal(cache.outcomes[name], 0, name);
+  }
+  const validation = validateNoticeReadbackAggregate(aggregate);
+  assert.equal(validation.ok, true, JSON.stringify(validation.refusals));
+});
+
+test("positive control: unread cache distribution with a reason validates", () => {
+  const aggregate = wellFormedAggregate({
+    recordCacheOutcomeDistribution: wellFormedCacheDistribution({ state: "unread" }),
+  });
+  const cache = aggregate.record_cache_outcome_distribution;
+  assert.equal(cache.state, "unread");
+  assert.equal(cache.reason, NOTICE_READBACK_CACHE_OUTCOME_UNREAD_REASON);
+  assert.equal(cache.outcomes, undefined);
+  const validation = validateNoticeReadbackAggregate(aggregate);
+  assert.equal(validation.ok, true, JSON.stringify(validation.refusals));
+});
+
+test("refusal: missing_record_cache_outcome_distribution names the absent field", () => {
+  const aggregate = withoutRecordCacheOutcomeDistribution(wellFormedAggregate());
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(aggregate, "record_cache_outcome_distribution"),
+    false,
+  );
+  const validation = validateNoticeReadbackAggregate(aggregate);
+  assert.equal(validation.ok, false);
+  const hit = validation.refusals.find((row) => (
+    row.reason === "missing_record_cache_outcome_distribution"
+  ));
+  assert.ok(hit, JSON.stringify(validation.refusals));
+});
+
+test("non-vacuity: missing cache field fails while read-and-empty passes", () => {
+  const emptyRead = wellFormedAggregate({
+    recordCacheOutcomeDistribution: wellFormedCacheDistribution({
+      state: "read",
+      outcomes: emptyRecordCacheOutcomeCounts(),
+    }),
+  });
+  assert.equal(validateNoticeReadbackAggregate(emptyRead).ok, true);
+  const missing = withoutRecordCacheOutcomeDistribution(cloneNoticeReadbackAggregate(emptyRead));
+  const validation = validateNoticeReadbackAggregate(missing);
+  assert.equal(validation.ok, false);
+  assert.ok(validation.refusals.some((row) => (
+    row.reason === "missing_record_cache_outcome_distribution"
+  )));
 });

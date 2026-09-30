@@ -3,7 +3,8 @@
 ## What this is
 
 A retained production aggregate for the three Notice measurement groups that the
-post-delivery letters require:
+post-delivery letters require, plus the record subrequest's cache outcome
+distribution for the same window as the first-byte group:
 
 | Measurement group | Population | Metrics |
 | --- | --- | --- |
@@ -15,9 +16,14 @@ Each group carries its own delivery (or first probe slot) anchor, observation
 window, sample count per percentile, and sufficiency. Groups are never combined
 into one distribution.
 
+`record_cache_outcome_distribution` is always present and always named as either
+`read` (counts per closed cache outcome, zeros allowed) or `unread` (that word
+and a reason). An absent field is a refusal. The distribution is keyed to the
+`first_byte` window.
+
 The machine-readable file is
 [`notice-readback-aggregate.json`](./notice-readback-aggregate.json)
-(`schema`: `cityscroll.notice_readback_aggregate.v1`).
+(`schema`: `cityscroll.notice_readback_aggregate.v2`).
 
 ## Regenerate
 
