@@ -60,10 +60,76 @@ function activityFixture() {
   };
 }
 
-function allCaptureRows() {
-  return RELEASE_MANIFEST.captures.flatMap((capture) => (
+function allCaptureRows(manifest = RELEASE_MANIFEST) {
+  return (manifest.captures || []).flatMap((capture) => (
     Array.isArray(capture.captures) ? capture.captures : [capture]
   ));
+}
+
+function isUnrelatedCapture(capture) {
+  return capture?.surface_role === "unrelated"
+    || String(capture?.name || "").startsWith("unrelated-");
+}
+
+function geographyNavigationSurfaceRows(manifest = RELEASE_MANIFEST) {
+  return allCaptureRows(manifest).filter((capture) => !isUnrelatedCapture(capture));
+}
+
+function unrelatedCaptureRows(manifest = RELEASE_MANIFEST) {
+  return allCaptureRows(manifest).filter(isUnrelatedCapture);
+}
+
+const GEOGRAPHY_NAVIGATION_RUNTIME_PATH_RE = /geography_navigation_(?:map|shell|runtime)(?:\.mjs)?/;
+const GEOGRAPHY_NAVIGATION_LAYER_PATH_RE = /\/data\/geography\/(?:layer_registry\.json|layers\/)/;
+
+function deriveGeographyNavigationArtifactRequests(observedRequestPaths) {
+  const paths = Array.isArray(observedRequestPaths) ? observedRequestPaths.map(String) : [];
+  return {
+    geography_navigation_runtime_requested: paths.some((path) => GEOGRAPHY_NAVIGATION_RUNTIME_PATH_RE.test(path)),
+    geography_navigation_layer_artifact_requested: paths.some((path) => GEOGRAPHY_NAVIGATION_LAYER_PATH_RE.test(path)),
+  };
+}
+
+/**
+ * Delivery-side A8 unrelated-route boundary: require ≥2 outside-surface rows whose
+ * measured request booleans re-derive from retained observed_request_paths, and
+ * refuse any unrelated row that requested the navigator runtime or a layer artifact.
+ */
+function assertUnrelatedRouteArtifactBoundary(manifest) {
+  const unrelated = unrelatedCaptureRows(manifest);
+  if (unrelated.length < 2) {
+    throw new Error(
+      `unrelated route captures missing: need at least 2 outside geography-navigation rows, found ${unrelated.length}`,
+    );
+  }
+  for (const capture of unrelated) {
+    const route = capture.route || capture.name || "<unknown>";
+    if (!Array.isArray(capture.observed_request_paths)) {
+      throw new Error(`unrelated route ${route} is missing observed_request_paths`);
+    }
+    const derived = deriveGeographyNavigationArtifactRequests(capture.observed_request_paths);
+    if (capture.geography_navigation_runtime_requested !== derived.geography_navigation_runtime_requested) {
+      throw new Error(
+        `unrelated route ${route} geography_navigation_runtime_requested does not re-derive from observed_request_paths`,
+      );
+    }
+    if (capture.geography_navigation_layer_artifact_requested !== derived.geography_navigation_layer_artifact_requested) {
+      throw new Error(
+        `unrelated route ${route} geography_navigation_layer_artifact_requested does not re-derive from observed_request_paths`,
+      );
+    }
+    if (derived.geography_navigation_runtime_requested) {
+      throw new Error(
+        `unrelated route ${route} requested geography-navigation runtime`,
+      );
+    }
+    if (derived.geography_navigation_layer_artifact_requested) {
+      throw new Error(
+        `unrelated route ${route} requested geography-navigation layer artifact`,
+      );
+    }
+  }
+  return unrelated;
 }
 
 function productionJourneyRows() {
@@ -211,13 +277,60 @@ test("A7: field-vital budgets and retained route samples are explicit, while pro
 });
 
 test("A8: unrelated routes omit the navigator runtime and the map requests simplified geometry only", () => {
-  const unrelated = readFileSync(join(ROOT, "site/index.html"), "utf8");
-  assert.doesNotMatch(unrelated, /geography_navigation_(?:map|shell)/);
+  const sourceProbe = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  assert.doesNotMatch(sourceProbe, /geography_navigation_(?:map|shell)/);
   assert.doesNotMatch(LAND_SOURCE, /geography_navigation_(?:map|shell)/);
   assert.match(MAP_SOURCE, /loadSimplifiedNavigationLayer|simplifiedLayerSiteUrl/);
   assert.doesNotMatch(MAP_SOURCE, /artifacts\.full/);
   assert.equal(RELEASE_MANIFEST.boundaries.full_fidelity_geometry_requested, false);
   assert.equal(RELEASE_MANIFEST.performance.route_budget.status, "not_taken");
+  assert.match(RELEASE_BROWSER_SOURCE, /--capture-unrelated-routes/);
+  assert.match(RELEASE_BROWSER_SOURCE, /UNRELATED_ROUTES/);
+  assert.match(RELEASE_BROWSER_SOURCE, /derive_geography_navigation_artifact_requests/);
+
+  const unrelated = assertUnrelatedRouteArtifactBoundary(RELEASE_MANIFEST);
+  assert.ok(unrelated.length >= 2);
+  for (const capture of unrelated) {
+    assertCaptureContract(capture);
+    assert.equal(capture.surface_role, "unrelated");
+    assert.equal(capture.geography_navigation_runtime_requested, false);
+    assert.equal(capture.geography_navigation_layer_artifact_requested, false);
+    assert.ok(capture.observed_request_paths.length > 0, capture.route);
+    assert.equal(capture.route.includes("/near-you"), false, capture.route);
+  }
+  const a8 = RELEASE_MANIFEST.closure_evidence.find((row) => row.letter === "A8");
+  assert.equal(a8?.result, "accepted");
+});
+
+test("A8 positive control: an unrelated row that requests a navigator artifact is refused by name", () => {
+  const baseline = assertUnrelatedRouteArtifactBoundary(RELEASE_MANIFEST);
+  assert.ok(baseline.length >= 2);
+
+  const runtimePoisoned = structuredClone(RELEASE_MANIFEST);
+  const runtimeRow = unrelatedCaptureRows(runtimePoisoned)[0];
+  assert.ok(runtimeRow?.route);
+  runtimeRow.observed_request_paths = [
+    ...runtimeRow.observed_request_paths,
+    "/geography_navigation_map.mjs",
+  ];
+  runtimeRow.geography_navigation_runtime_requested = true;
+  assert.throws(
+    () => assertUnrelatedRouteArtifactBoundary(runtimePoisoned),
+    new RegExp(`${runtimeRow.route.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.*geography-navigation runtime`),
+  );
+
+  const layerPoisoned = structuredClone(RELEASE_MANIFEST);
+  const layerRow = unrelatedCaptureRows(layerPoisoned)[1] || unrelatedCaptureRows(layerPoisoned)[0];
+  assert.ok(layerRow?.route);
+  layerRow.observed_request_paths = [
+    ...layerRow.observed_request_paths,
+    "/data/geography/layer_registry.json",
+  ];
+  layerRow.geography_navigation_layer_artifact_requested = true;
+  assert.throws(
+    () => assertUnrelatedRouteArtifactBoundary(layerPoisoned),
+    new RegExp(`${layerRow.route.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.*geography-navigation layer artifact`),
+  );
 });
 
 test("A9: every retained manifest entry carries route, viewport, vintages, assertion, timings, mode, assets, and render hash", () => {
@@ -280,7 +393,7 @@ test("A13: closure evidence maps every letter to a named test or manifest assert
 });
 
 test("A14: desktop and mobile manifests record visual metrics and meet the binding map contract", () => {
-  const metrics = allCaptureRows().map((capture) => capture.visual_metrics);
+  const metrics = geographyNavigationSurfaceRows().map((capture) => capture.visual_metrics);
   assert.ok(metrics.some((row) => row.viewport.width === 1440));
   assert.ok(metrics.some((row) => row.viewport.width === 390));
   assert.ok(metrics.some((row) => row.viewport.width === 360));
