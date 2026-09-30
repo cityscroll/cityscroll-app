@@ -30,12 +30,5 @@
     "meeting_id": "meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/",
     "expected_nta2020": "BK1403",
     "expected_role": "venue"
-  },
-  "active_generation": "gen-cfcb6c2fbc90-2026-09-30",
-  "evidence": {
-    "summary": "docs/evidence/meeting-geography-backfill/summary.json",
-    "full_outcomes": "site/data/meeting-geography-backfill/per-id-outcomes.json",
-    "neighborhood_publication_receipt": "docs/evidence/meeting-geography-backfill/neighborhood-publication-receipt.json",
-    "note": "Full per-id outcomes restate publisher calendar UIDs already present in the shared meeting corpus; the summary and neighborhood receipt stay on the open web."
   }
 }

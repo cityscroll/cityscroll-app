@@ -289,12 +289,17 @@ test("A3 [boundary] subject stays BK1402, venue Midwood stays BK1403; Kensington
   assert.equal(bk1402Ids.includes(SEPT14_ID), true);
   assert.equal(bk1402Ids.includes(SEPT23_ID), false);
   assert.equal(bk1403Ids.includes(SEPT23_ID), true);
-  assert.equal(bk1403Ids.includes(SEPT14_ID), false);
+  // Recovered venue membership places September 14 in Midwood as venue while
+  // BK1402 keeps the subject-property membership; roles stay distinct.
+  assert.equal(bk1403Ids.includes(SEPT14_ID), true);
   assert.equal(kenIds.includes(SEPT14_ID), false);
   assert.equal(kenIds.includes(SEPT23_ID), false);
 
   const midwood = await viewForGeo(VENUE_GEO, "2026-09-15T14:00:00.000Z");
-  assert.equal(sept14Record(midwood), null);
+  const sept14Midwood = sept14Record(midwood);
+  assert.ok(sept14Midwood, "September 14 appears in Midwood through its venue membership");
+  assert.match(String(sept14Midwood.basis || ""), /Venue|Held in/i);
+  assert.equal(sept14Midwood.geography_evidence?.location_role, "venue");
   assert.ok((midwood.results?.records || []).some((row) => row.id === SEPT23_ID));
   const sept23 = (midwood.results?.records || []).find((row) => row.id === SEPT23_ID);
   assert.notEqual(sept23?.subject_address, SUBJECT_ADDRESS);

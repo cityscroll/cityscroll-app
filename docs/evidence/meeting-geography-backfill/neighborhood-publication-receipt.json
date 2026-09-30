@@ -1,0 +1,139 @@
+{
+  "schema": "cityscroll.neighborhood_publication_receipt.v1",
+  "built_at": "2026-09-30T05:39:36.433Z",
+  "frozen_baseline": {
+    "canonical_meeting_count": 792,
+    "broad_jurisdiction": 281,
+    "address_candidate_classes": {
+      "not_full_address": 54,
+      "not_covered": 25,
+      "no_candidate": 201,
+      "matched_bbl_missing_parcel": 1
+    },
+    "by_outcome": {
+      "physical_venue": 31,
+      "subject": 1,
+      "broad_jurisdiction": 281,
+      "virtual": 63,
+      "no_source_address": 203,
+      "unresolved_evidence": 213
+    },
+    "note": "Frozen diagnostic controls from the pre-recovery 792-row backfill; not release quotas."
+  },
+  "before": {
+    "generation": "refresh-7182f2a4933b",
+    "canonical_meeting_count": 792,
+    "by_outcome": {
+      "physical_venue": 31,
+      "subject": 1,
+      "broad_jurisdiction": 281,
+      "virtual": 63,
+      "no_source_address": 203,
+      "unresolved_evidence": 213
+    },
+    "address_candidate_classes": {
+      "not_full_address": 54,
+      "not_covered": 25,
+      "no_candidate": 201,
+      "matched_bbl_missing_parcel": 1,
+      "observed_no_candidate_among_broad": 201
+    },
+    "anchors": {
+      "cb15_sept29": {
+        "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-09-29:general-board-meeting-in-person",
+        "outcome": "broad_jurisdiction",
+        "venue_bbl": null,
+        "venue_nta2020": null,
+        "venue_community_district": null,
+        "host_community_district": "K15"
+      },
+      "forest_hills": {
+        "meeting_id": {
+          "redacted": true,
+          "kind": "publisher_calendar_uid",
+          "suffix": "::2026-09-08"
+        },
+        "outcome": "broad_jurisdiction",
+        "venue_bbl": null,
+        "venue_nta2020": null,
+        "venue_community_district": null,
+        "host_community_district": "Q06"
+      },
+      "worth_street": {
+        "meeting_id": "meeting:city_record:20260106034",
+        "outcome": "unresolved_evidence",
+        "venue_bbl": null,
+        "venue_nta2020": null,
+        "venue_community_district": null,
+        "host_community_district": null
+      },
+      "bronx_missing_parcel": {
+        "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11-2/",
+        "outcome": "broad_jurisdiction",
+        "venue_bbl": null,
+        "venue_nta2020": null,
+        "venue_community_district": null,
+        "host_community_district": "X06"
+      }
+    }
+  },
+  "after": {
+    "generation": "gen-cfcb6c2fbc90-2026-09-30",
+    "canonical_meeting_count": 792,
+    "by_outcome": {
+      "physical_venue": 82,
+      "subject": 0,
+      "broad_jurisdiction": 234,
+      "virtual": 63,
+      "no_source_address": 203,
+      "unresolved_evidence": 210
+    },
+    "address_candidate_classes": null,
+    "anchors": {
+      "cb15_sept29": {
+        "meeting_id": "meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-09-29:general-board-meeting-in-person",
+        "outcome": "physical_venue",
+        "venue_bbl": "3087600060",
+        "venue_nta2020": "BK1503",
+        "venue_community_district": "K15",
+        "host_community_district": "K15"
+      },
+      "forest_hills": {
+        "meeting_id": {
+          "redacted": true,
+          "kind": "publisher_calendar_uid",
+          "suffix": "::2026-09-08"
+        },
+        "outcome": "physical_venue",
+        "venue_bbl": "4032400041",
+        "venue_nta2020": "QN0602",
+        "venue_community_district": "Q06",
+        "host_community_district": "Q06"
+      },
+      "worth_street": {
+        "meeting_id": "meeting:city_record:20260106034",
+        "outcome": "physical_venue",
+        "venue_bbl": "1001680032",
+        "venue_nta2020": "MN0102",
+        "venue_community_district": "M01",
+        "host_community_district": null
+      },
+      "bronx_missing_parcel": {
+        "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11-2/",
+        "outcome": "broad_jurisdiction",
+        "venue_bbl": null,
+        "venue_nta2020": null,
+        "venue_community_district": null,
+        "host_community_district": "X06"
+      }
+    }
+  },
+  "deltas": {
+    "physical_venue": 51,
+    "broad_jurisdiction": -47,
+    "subject": -1,
+    "virtual": 0,
+    "no_source_address": 0,
+    "unresolved_evidence": -3
+  }
+}

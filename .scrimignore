@@ -8,6 +8,7 @@ docs/evidence/meeting-geography-backfill/per-id-outcomes.json
 site/data/meeting-geography-backfill/per-id-outcomes.json
 site/data/meeting-geography-backfill/**/per-id-outcomes.json
 site/data/meeting-geography-backfill/**/projection.json
+site/data/meeting-geography-backfill/frozen-baseline-ids.json
 # These public production evidence receipts intentionally retain deployed commit
 # identities so revision drift can be detected and each browser read can be
 # tied to the served bundle. They contain no private source material.

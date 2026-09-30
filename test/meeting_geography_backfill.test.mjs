@@ -47,11 +47,26 @@ import {
   createRecordLocationMembershipProjection,
 } from "../site/record_location_memberships.mjs";
 import {
+  buildLocalGeographyPublication,
   buildMeetings,
+  residentialPlacesFromNtaLayer,
 } from "../tools/build_worker_route_read_models.mjs";
 import {
   summarizeCandidates,
 } from "../tools/build_meeting_geography_backfill.mjs";
+import {
+  assertFrozenNeighborhoodBaseline,
+  buildNeighborhoodPublicationReceipt,
+  classifyAddressCandidateClass,
+  FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE,
+  NEIGHBORHOOD_PUBLICATION_ANCHORS,
+  resolveNeighborhoodPublicationAnchorId,
+} from "../tools/lib/neighborhood_publication_receipt.mjs";
+import {
+  buildDistrictActivity,
+} from "../tools/lib/district_activity.mjs";
+import { handleNearYou } from "../worker/src/near_you.mjs";
+import { NEAR_YOU_MANIFEST_KEY } from "../worker/src/lib/route_read_model_kv.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHARED_MEETING_PATH = path.join(ROOT, "site/data/shared_meeting_read_model.json");
@@ -764,23 +779,33 @@ test("locality and unit suffixes resolve through production PAD and parcel shard
     false,
   );
 
-  // A4: frozen physical-venue and virtual role/ID sets from the retained
-  // corpus stay unchanged under the locality/unit parse. Read the admitted
-  // baseline fixture — daily address-index / neighborhood refresh rewrites the
-  // live per-id outcomes (physical_venue 31→82) without changing this contract.
-  const retained = loadJson(path.join(
-    ROOT,
-    "test/fixtures/meeting-geography-backfill/per-id-outcomes.locality-unit-baseline.json",
-  ));
-  const physical = retained.outcomes.filter((row) => row.outcome === BACKFILL_OUTCOME.PHYSICAL_VENUE);
-  const virtual = retained.outcomes.filter((row) => row.outcome === BACKFILL_OUTCOME.VIRTUAL);
-  assert.equal(physical.length, 31);
-  assert.equal(virtual.length, 63);
+  // A4: frozen physical-venue and virtual role/ID sets from the pre-recovery
+  // baseline stay unchanged under the locality/unit parse. Live corpus counts
+  // may grow after neighborhood publication; the frozen ID lists are the control
+  // (same isolation intent as the locality-unit retained fixture on main).
+  const frozenIds = loadJson(
+    path.join(ROOT, "site/data/meeting-geography-backfill/frozen-baseline-ids.json"),
+  );
+  assert.equal(
+    frozenIds.physical_venue_meeting_ids.length,
+    FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.by_outcome.physical_venue,
+  );
+  assert.equal(
+    frozenIds.virtual_meeting_ids.length,
+    FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.by_outcome.virtual,
+  );
 
   const shared = loadJson(SHARED_MEETING_PATH);
-  const retainedIds = new Set([...physical, ...virtual].map((row) => row.meeting_id));
+  const retainedIds = new Set([
+    ...frozenIds.physical_venue_meeting_ids,
+    ...frozenIds.virtual_meeting_ids,
+  ]);
   const replayRows = shared.rows.filter((row) => retainedIds.has(row.meeting_id));
-  assert.equal(replayRows.length, physical.length + virtual.length);
+  assert.equal(
+    replayRows.length,
+    FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.by_outcome.physical_venue
+      + FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.by_outcome.virtual,
+  );
 
   const replay = createProductionRunner().run({
     rows: replayRows,
@@ -789,15 +814,428 @@ test("locality and unit suffixes resolve through production PAD and parcel shard
     observedAt: "2026-09-29T12:30:00.000Z",
   });
   const byId = new Map(replay.outcomes.map((row) => [row.meeting_id, row]));
-  for (const prior of [...physical, ...virtual]) {
-    const next = byId.get(prior.meeting_id);
-    assert.ok(next, prior.meeting_id);
-    assert.equal(next.outcome, prior.outcome, prior.meeting_id);
-    const priorRoles = [...new Set((prior.assertions || []).map((row) => row.role))].sort();
-    const nextRoles = [...new Set((next.assertions || []).map((row) => row.role))].sort();
-    assert.deepEqual(nextRoles, priorRoles, prior.meeting_id);
-    const priorAssertionIds = [...(prior.assertion_ids || [])].sort();
-    const nextAssertionIds = [...(next.assertion_ids || [])].sort();
-    assert.deepEqual(nextAssertionIds, priorAssertionIds, prior.meeting_id);
+  for (const meetingId of frozenIds.physical_venue_meeting_ids) {
+    const next = byId.get(meetingId);
+    assert.ok(next, meetingId);
+    assert.equal(next.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE, meetingId);
   }
+  for (const meetingId of frozenIds.virtual_meeting_ids) {
+    const next = byId.get(meetingId);
+    assert.ok(next, meetingId);
+    assert.equal(next.outcome, BACKFILL_OUTCOME.VIRTUAL, meetingId);
+  }
+});
+
+const BOUNDARIES = loadJson(path.join(ROOT, "site/data/district_boundaries.json"));
+const GEOGRAPHY_LAYERS = [
+  loadJson(path.join(ROOT, "site/data/geography/layers/nta2020/26B.json")),
+];
+const RESIDENTIAL_PLACES = residentialPlacesFromNtaLayer(GEOGRAPHY_LAYERS[0]);
+
+function sharedRow(meetingId) {
+  const shared = loadJson(SHARED_MEETING_PATH);
+  const row = shared.rows.find((candidate) => candidate.meeting_id === meetingId);
+  assert.ok(row, `missing shared row ${meetingId}`);
+  return structuredClone(row);
+}
+
+function publicationKv(publication) {
+  const values = new Map();
+  for (const entry of publication.nearYou.entries) values.set(entry.key, entry.value);
+  for (const entry of publication.meetings.entries) values.set(entry.key, entry.value);
+  values.set(NEAR_YOU_MANIFEST_KEY, JSON.stringify(publication.nearYou.manifest));
+  return {
+    async get(key) {
+      return values.get(key) || null;
+    },
+  };
+}
+
+test("neighborhood publication A1/A2 [outcome] recovered venues publish into exact NTA lists and keep host districts", async () => {
+  const anchors = NEIGHBORHOOD_PUBLICATION_ANCHORS;
+  const sharedCorpus = loadJson(SHARED_MEETING_PATH);
+  const forestHillsId = resolveNeighborhoodPublicationAnchorId(
+    anchors.forest_hills,
+    sharedCorpus.rows,
+  );
+  assert.ok(forestHillsId, "Forest Hills anchor must resolve from shared corpus");
+  const rows = [
+    sharedRow(anchors.cb15_sept29.meeting_id),
+    sharedRow(forestHillsId),
+    sharedRow(anchors.worth_street.meeting_id),
+  ];
+  // Drop any previously stamped memberships so publication depends on this run.
+  for (const row of rows) {
+    delete row.location_memberships;
+    delete row.geography_backfill;
+  }
+
+  const runner = createProductionRunner();
+  const result = runner.run({
+    rows,
+    generation: "test-mn03-publication",
+    sourceGenerationHash: "mn03-publication",
+    observedAt: "2026-09-30T18:00:00.000Z",
+  });
+
+  const sept29 = result.outcomes.find((row) => row.meeting_id === anchors.cb15_sept29.meeting_id);
+  assert.equal(sept29.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  const septVenue = sept29.memberships.find((membership) => membership.role === LOCATION_ROLES.VENUE);
+  assert.equal(septVenue.bbl, anchors.cb15_sept29.expected_bbl);
+  assert.equal(septVenue.memberships.nta2020, anchors.cb15_sept29.expected_nta2020);
+  assert.equal(
+    sept29.memberships.find((membership) => membership.role === LOCATION_ROLES.HOST_JURISDICTION)
+      ?.memberships?.community_district,
+    anchors.cb15_sept29.expected_community_district,
+  );
+  assert.equal(
+    sept29.assertions.find((assertion) => assertion.role === LOCATION_ROLES.VENUE)?.original_address,
+    rows[0].venue.address,
+  );
+
+  const forest = result.outcomes.find((row) => row.meeting_id === forestHillsId);
+  assert.equal(forest.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  assert.equal(
+    forest.memberships.find((membership) => membership.role === LOCATION_ROLES.VENUE)?.memberships?.nta2020,
+    anchors.forest_hills.expected_nta2020,
+  );
+
+  const worth = result.outcomes.find((row) => row.meeting_id === anchors.worth_street.meeting_id);
+  assert.equal(worth.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  assert.equal(
+    worth.memberships.find((membership) => membership.role === LOCATION_ROLES.VENUE)?.memberships?.nta2020,
+    anchors.worth_street.expected_nta2020,
+  );
+
+  const stamped = stampMeetingRowsWithGeography(rows, result.outcomes);
+  const activity = buildDistrictActivity({
+    boundaries: BOUNDARIES,
+    communityBoardGeography: loadJson(COMMUNITY_BOARD_GEOGRAPHY_PATH),
+    geographyLayers: GEOGRAPHY_LAYERS,
+    meetingsRows: stamped,
+    builtAt: "2026-09-30T18:00:00.000Z",
+  });
+
+  assert.ok(
+    activity.geography_items.by_key["geography:nta2020:BK1503"]?.meetings
+      ?.includes(anchors.cb15_sept29.meeting_id),
+    "BK1503 exact Meetings must include CB15 September 29",
+  );
+  assert.ok(
+    activity.district_items.by_level.community_district.K15.meetings
+      .includes(anchors.cb15_sept29.meeting_id),
+    "K15 broader district activity must retain CB15 September 29",
+  );
+  assert.ok(
+    activity.geography_items.by_key["geography:nta2020:QN0602"]?.meetings
+      ?.includes(forestHillsId),
+  );
+  // City Record list cards key on request_id while the canonical meeting_id
+  // remains on the shared row and meeting-detail route.
+  const worthListId = rows[2].request_id || anchors.worth_street.meeting_id;
+  assert.ok(
+    activity.geography_items.by_key["geography:nta2020:MN0102"]?.meetings
+      ?.includes(worthListId),
+    `MN0102 must include City Record list id ${worthListId}`,
+  );
+
+  const listRecord = activity.records.meetings[anchors.cb15_sept29.meeting_id];
+  assert.equal(listRecord.id, anchors.cb15_sept29.meeting_id);
+  assert.equal(listRecord.venue_address, rows[0].venue.address);
+  assert.match(String(listRecord.basis || ""), /Venue/i);
+  const worthRecord = activity.records.meetings[worthListId];
+  assert.ok(worthRecord, "City Record list record must be present");
+  assert.equal(worthRecord.id, worthListId);
+  assert.match(String(worthRecord.route || ""), /20260106034/);
+  assert.equal(
+    stamped.find((row) => row.meeting_id === anchors.worth_street.meeting_id)?.meeting_id,
+    anchors.worth_street.meeting_id,
+    "canonical City Record meeting_id remains on the stamped shared row",
+  );
+
+  const publication = buildLocalGeographyPublication({
+    activity,
+    geography: {},
+    meetings: { schema: "cityscroll.shared_meeting_read_model.v1", rows: stamped },
+    version: "mn03-publication",
+    residentialPlaces: RESIDENTIAL_PLACES,
+    dependencies: {
+      parcel_membership_generation: "parcel-test",
+      parcel_coordinate_vintage: "pluto-test",
+      assertion_generation: "assertion-test",
+      source_generation: "2026-09-30T18:00:00.000Z",
+    },
+  });
+  assert.equal(publication.activation.activate, true, publication.activation.reason);
+
+  const env = { ALERT_STATE: publicationKv(publication) };
+  async function deferredIds(geo) {
+    const response = await handleNearYou(new Request(
+      `https://cityscroll.org/near-you/deferred.json?geo=${encodeURIComponent(geo)}&lens=meetings&surface=records`,
+    ), env);
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    return body.results_html || "";
+  }
+
+  const bk1503Html = await deferredIds("nta2020:BK1503");
+  assert.match(bk1503Html, new RegExp(anchors.cb15_sept29.meeting_id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  assert.match(bk1503Html, /data-place-role="venue"|Meeting venue|Venue \/ logistics/i);
+
+  const qn0602Html = await deferredIds("nta2020:QN0602");
+  assert.match(qn0602Html, new RegExp(forestHillsId.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+
+  const mn0102Html = await deferredIds("nta2020:MN0102");
+  assert.match(mn0102Html, new RegExp(String(worthListId).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  assert.match(mn0102Html, /meeting%3Acity_record%3A20260106034|20260106034/);
+});
+
+test("neighborhood publication A3/A4 [boundary] host-only and missing-parcel rows create no exact NTA; failure keeps prior generation", () => {
+  const anchors = NEIGHBORHOOD_PUBLICATION_ANCHORS;
+  const hostOnly = sharedRow(anchors.cb15_sept29.meeting_id);
+  hostOnly.venue = { name: null, address: null, mode: "in-person" };
+  delete hostOnly.location_assertions;
+  delete hostOnly.location_memberships;
+
+  const bronx = sharedRow(anchors.bronx_missing_parcel.meeting_id);
+  delete bronx.location_memberships;
+  delete bronx.geography_backfill;
+
+  const oath = oathRow(99);
+  const virtual = {
+    meeting_id: "meeting:example:virtual-only-control",
+    source_system: "community_board",
+    board_id: "brooklyn-cb-15",
+    title: "Virtual-only control",
+    event_date: "2026-09-30T19:00:00-04:00",
+    venue: { name: null, address: null, mode: "virtual" },
+    description: "This meeting will be held via Zoom only.",
+  };
+
+  const runner = createProductionRunner();
+  const result = runner.run({
+    rows: [hostOnly, bronx, oath, virtual],
+    generation: "test-mn03-boundary",
+    sourceGenerationHash: "mn03-boundary",
+    observedAt: "2026-09-30T18:05:00.000Z",
+  });
+
+  const hostOutcome = result.outcomes.find((row) => row.meeting_id === hostOnly.meeting_id);
+  assert.equal(hostOutcome.outcome, BACKFILL_OUTCOME.BROAD_JURISDICTION);
+  assert.equal(
+    hostOutcome.memberships.some((membership) => membership.role === LOCATION_ROLES.VENUE
+      && membership.memberships?.nta2020),
+    false,
+  );
+
+  const bronxOutcome = result.outcomes.find((row) => row.meeting_id === bronx.meeting_id);
+  assert.notEqual(bronxOutcome.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  assert.equal(
+    bronxOutcome.memberships.some((membership) => membership.memberships?.nta2020),
+    false,
+    "matched BBL without parcel bundle must not invent an exact NTA",
+  );
+  // Resolution matched the BBL; parcel projection produced no NTA edge.
+  const bronxResolution = runner.addressCache.resolveAddress(bronx.venue.address, {
+    assertion: {
+      role: LOCATION_ROLES.VENUE,
+      validity: LOCATION_VALIDITY.ADMITTED_PHYSICAL_VENUE,
+      original_address: bronx.venue.address,
+      assertion_id: "bronx-control",
+      meeting_id: bronx.meeting_id,
+      record_id: bronx.meeting_id,
+    },
+  });
+  assert.equal(bronxResolution.status, "matched");
+  assert.equal(bronxResolution.bbl, anchors.bronx_missing_parcel.matched_bbl);
+  assert.equal(
+    classifyAddressCandidateClass({
+      addressCandidateCount: 1,
+      resolution: bronxResolution,
+      parcelBundle: null,
+    }),
+    "matched_bbl_missing_parcel",
+  );
+
+  assert.equal(
+    result.outcomes.find((row) => row.meeting_id === oath.meeting_id).outcome,
+    BACKFILL_OUTCOME.NO_SOURCE_ADDRESS,
+  );
+  assert.ok([BACKFILL_OUTCOME.VIRTUAL, BACKFILL_OUTCOME.UNRESOLVED_EVIDENCE].includes(
+    result.outcomes.find((row) => row.meeting_id === virtual.meeting_id).outcome,
+  ));
+
+  const stamped = stampMeetingRowsWithGeography([hostOnly, bronx, oath, virtual], result.outcomes);
+  const activity = buildDistrictActivity({
+    boundaries: BOUNDARIES,
+    communityBoardGeography: loadJson(COMMUNITY_BOARD_GEOGRAPHY_PATH),
+    geographyLayers: GEOGRAPHY_LAYERS,
+    meetingsRows: stamped,
+    builtAt: "2026-09-30T18:05:00.000Z",
+  });
+  assert.equal(
+    activity.geography_items.by_key["geography:nta2020:BK1503"]?.meetings
+      ?.includes(hostOnly.meeting_id) || false,
+    false,
+    "host district alone must not create BK1503 membership",
+  );
+  assert.ok(
+    activity.district_items.by_level.community_district.K15.meetings.includes(hostOnly.meeting_id),
+  );
+
+  withTempDirSync("meeting-geography-backfill-mn03-", (dir) => {
+    const generationOld = "gen-mn03-old";
+    activateMeetingGeographyBackfill({
+      publicDir: dir,
+      generation: generationOld,
+      manifest: {
+        schema: "cityscroll.meeting_geography_backfill_manifest.v1",
+        generation: generationOld,
+        built_at: "2026-09-30T17:00:00.000Z",
+      },
+      outcomesDocument: {
+        schema: "cityscroll.meeting_geography_backfill_outcomes.v1",
+        generation: generationOld,
+        built_at: "2026-09-30T17:00:00.000Z",
+        outcomes: [],
+      },
+    });
+    assert.equal(loadActiveMeetingGeographyBackfill(dir).pointer.active_generation, generationOld);
+    assert.throws(() => activateMeetingGeographyBackfill({
+      publicDir: dir,
+      generation: "gen-mn03-failed",
+      manifest: {
+        schema: "cityscroll.meeting_geography_backfill_manifest.v1",
+        generation: "gen-mn03-failed",
+        built_at: "2026-09-30T18:05:00.000Z",
+      },
+      outcomesDocument: {
+        schema: "cityscroll.meeting_geography_backfill_outcomes.v1",
+        generation: "gen-mn03-failed",
+        built_at: "2026-09-30T18:05:00.000Z",
+        outcomes: result.outcomes,
+      },
+      failBeforeActivate: true,
+    }), /forced failure before activation/);
+    assert.equal(loadActiveMeetingGeographyBackfill(dir).pointer.active_generation, generationOld);
+    assert.equal(existsSync(path.join(dir, "gen-mn03-failed")), false);
+  });
+});
+
+test("neighborhood publication A5 [verification] ID/role parity receipt and venue-edge mutation control", async () => {
+  const retained = loadJson(path.join(ROOT, "site/data/meeting-geography-backfill/per-id-outcomes.json"));
+  if (retained.outcomes.length === FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.canonical_meeting_count
+    && retained.outcomes.filter((row) => row.outcome === BACKFILL_OUTCOME.BROAD_JURISDICTION).length
+      === FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.broad_jurisdiction) {
+    const frozen = assertFrozenNeighborhoodBaseline(retained.outcomes);
+    assert.equal(
+      frozen.address_candidate_classes.observed_no_candidate_among_broad,
+      FROZEN_NEIGHBORHOOD_PUBLICATION_BASELINE.address_candidate_classes.no_candidate,
+    );
+  }
+
+  const anchors = NEIGHBORHOOD_PUBLICATION_ANCHORS;
+  const row = sharedRow(anchors.cb15_sept29.meeting_id);
+  delete row.location_memberships;
+  delete row.geography_backfill;
+  const runner = createProductionRunner();
+  const result = runner.run({
+    rows: [row],
+    generation: "test-mn03-parity",
+    sourceGenerationHash: "mn03-parity",
+    observedAt: "2026-09-30T18:10:00.000Z",
+  });
+  const stamped = stampMeetingRowsWithGeography([row], result.outcomes);
+  const activity = buildDistrictActivity({
+    boundaries: BOUNDARIES,
+    communityBoardGeography: loadJson(COMMUNITY_BOARD_GEOGRAPHY_PATH),
+    geographyLayers: GEOGRAPHY_LAYERS,
+    meetingsRows: stamped,
+    builtAt: "2026-09-30T18:10:00.000Z",
+  });
+  assert.ok(activity.geography_items.by_key["geography:nta2020:BK1503"]?.meetings
+    ?.includes(anchors.cb15_sept29.meeting_id));
+  assert.ok(activity.district_items.by_level.community_district.K15.meetings
+    .includes(anchors.cb15_sept29.meeting_id));
+
+  const meetings = buildMeetings({
+    schema: "cityscroll.shared_meeting_read_model.v1",
+    rows: stamped,
+  }, "mn03-parity");
+  const detailEntry = meetings.entries.find((entry) => entry.value.includes(anchors.cb15_sept29.meeting_id));
+  assert.ok(detailEntry);
+  const detailSlice = JSON.parse(detailEntry.value);
+  const detail = detailSlice.rows.find((candidate) => candidate.meeting_id === anchors.cb15_sept29.meeting_id);
+  assert.ok(detail.location_memberships.some((membership) => (
+    membership.role === "venue" && membership.memberships?.nta2020 === "BK1503"
+  )));
+
+  // Mutation control: removing the venue edge drops exact local membership and
+  // leaves broader district activity.
+  const withoutVenue = stamped.map((candidate) => ({
+    ...candidate,
+    location_memberships: (candidate.location_memberships || [])
+      .filter((membership) => membership.role !== LOCATION_ROLES.VENUE),
+    geography_backfill: {
+      outcome: BACKFILL_OUTCOME.BROAD_JURISDICTION,
+      input_hash: candidate.geography_backfill?.input_hash || null,
+      processed_at: "2026-09-30T18:10:00.000Z",
+    },
+  }));
+  const mutatedActivity = buildDistrictActivity({
+    boundaries: BOUNDARIES,
+    communityBoardGeography: loadJson(COMMUNITY_BOARD_GEOGRAPHY_PATH),
+    geographyLayers: GEOGRAPHY_LAYERS,
+    meetingsRows: withoutVenue,
+    builtAt: "2026-09-30T18:11:00.000Z",
+  });
+  assert.equal(
+    mutatedActivity.geography_items.by_key["geography:nta2020:BK1503"]?.meetings
+      ?.includes(anchors.cb15_sept29.meeting_id) || false,
+    false,
+  );
+  assert.ok(
+    mutatedActivity.district_items.by_level.community_district.K15.meetings
+      .includes(anchors.cb15_sept29.meeting_id),
+  );
+
+  const receipt = buildNeighborhoodPublicationReceipt({
+    beforeOutcomes: [{
+      meeting_id: anchors.cb15_sept29.meeting_id,
+      outcome: BACKFILL_OUTCOME.BROAD_JURISDICTION,
+      memberships: [{
+        role: LOCATION_ROLES.HOST_JURISDICTION,
+        memberships: { community_district: "K15" },
+      }],
+    }],
+    afterOutcomes: result.outcomes,
+    beforeGeneration: "before-fixture",
+    afterGeneration: "test-mn03-parity",
+    builtAt: "2026-09-30T18:10:00.000Z",
+  });
+  assert.equal(receipt.schema, "cityscroll.neighborhood_publication_receipt.v1");
+  assert.equal(receipt.frozen_baseline.canonical_meeting_count, 792);
+  assert.equal(receipt.frozen_baseline.broad_jurisdiction, 281);
+  assert.equal(receipt.frozen_baseline.address_candidate_classes.not_full_address, 54);
+  assert.equal(receipt.frozen_baseline.address_candidate_classes.not_covered, 25);
+  assert.equal(receipt.frozen_baseline.address_candidate_classes.no_candidate, 201);
+  assert.equal(receipt.frozen_baseline.address_candidate_classes.matched_bbl_missing_parcel, 1);
+  assert.equal(receipt.after.anchors.cb15_sept29.venue_nta2020, "BK1503");
+  assert.equal(receipt.before.anchors.cb15_sept29.venue_nta2020, null);
+
+  // Positive control: a receipt built without the recovered venue must not
+  // claim the BK1503 anchor.
+  const negativeReceipt = buildNeighborhoodPublicationReceipt({
+    beforeOutcomes: [],
+    afterOutcomes: [{
+      meeting_id: anchors.cb15_sept29.meeting_id,
+      outcome: BACKFILL_OUTCOME.BROAD_JURISDICTION,
+      memberships: [{
+        role: LOCATION_ROLES.HOST_JURISDICTION,
+        memberships: { community_district: "K15" },
+      }],
+    }],
+  });
+  assert.equal(negativeReceipt.after.anchors.cb15_sept29.venue_nta2020, null);
+  assert.notEqual(negativeReceipt.after.anchors.cb15_sept29.venue_nta2020, "BK1503");
 });
