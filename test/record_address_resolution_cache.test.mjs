@@ -183,6 +183,122 @@ test("A1 four Brooklyn addresses resolve to their PAD BBLs and share one resolut
   assert.notEqual(eightTenLinks[0].assertion_id, eightTenLinks[1].assertion_id);
 });
 
+test("named-building venue wording resolves through one extracted span; subjects never do", () => {
+  const { manifest, loadShard } = loadPadFixture();
+  let resolveCalls = 0;
+  const resolveFn = (query, shard, indexManifest) => {
+    resolveCalls += 1;
+    return resolveAddressFromShard(query, shard, indexManifest);
+  };
+  const cache = createRecordAddressResolutionCache({ manifest, loadShard, resolveFn });
+
+  // Frozen CB15 September 29 venue wording: building-name prefix and trailing
+  // room kept the full line from parsing as a leading-house-number address.
+  const kingsboroughAddress =
+    "Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235";
+  const venueAssertion = buildLocationAssertion({
+    meeting_id: "meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-09-29:general-board-meeting-in-person",
+    role: LOCATION_ROLES.VENUE,
+    original_address: kingsboroughAddress,
+    source_field: "venue.address",
+    mode: "in-person",
+  });
+
+  // Positive control: the raw full line alone is not a full address, so
+  // removing the extraction path breaks the positive resolution below.
+  const direct = cache.resolveAddress(kingsboroughAddress);
+  assert.equal(direct.status, "unknown");
+  assert.equal(direct.reason, "not_full_address");
+  assert.equal(direct.bbl, null);
+
+  const entry = cache.resolveAddress(null, { assertion: venueAssertion });
+  assert.equal(entry.status, "matched");
+  assert.equal(entry.bbl, "3087600060");
+  assert.equal(entry.extracted_span, "2001 Oriental Boulevard");
+  assert.deepEqual(entry.normalized, {
+    house: "2001",
+    street: "ORIENTAL BLVD",
+    borough_code: "3",
+    zip: "11235",
+  });
+  assert.equal(resolveCalls, 1);
+
+  // The June 30 replay with identical wording shares the exact normalized
+  // cache entry but keeps its own assertion provenance.
+  const juneAssertion = buildLocationAssertion({
+    meeting_id: "meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-06-30:general-board-meeting-in-person",
+    role: LOCATION_ROLES.VENUE,
+    original_address: kingsboroughAddress,
+    source_field: "venue.address",
+    mode: "in-person",
+  });
+  const juneEntry = cache.resolveAddress(null, { assertion: juneAssertion });
+  assert.equal(juneEntry.bbl, "3087600060");
+  assert.equal(juneEntry.cache_key, entry.cache_key);
+  assert.equal(resolveCalls, 1);
+
+  const links = cache.assertionLinks().filter((link) => link.bbl === "3087600060");
+  assert.equal(links.length, 2);
+  assert.notEqual(links[0].assertion_id, links[1].assertion_id);
+  assert.notEqual(links[0].meeting_id, links[1].meeting_id);
+  for (const link of links) {
+    assert.equal(link.published_address, kingsboroughAddress);
+    assert.equal(link.role, LOCATION_ROLES.VENUE);
+    assert.equal(link.extracted_span, "2001 Oriental Boulevard");
+  }
+
+  // A subject-property assertion with the same wording never takes the venue
+  // span path: a subject edge is never rewritten as a venue.
+  const subjectAssertion = buildLocationAssertion({
+    meeting_id: "meeting:community_board:example:kingsborough-as-subject",
+    role: LOCATION_ROLES.SUBJECT_PROPERTY,
+    original_address: kingsboroughAddress,
+    source_field: "description.cannabis_application",
+  });
+  const subjectEntry = cache.resolveAddress(null, { assertion: subjectAssertion });
+  assert.equal(subjectEntry.status, "unknown");
+  assert.equal(subjectEntry.reason, "not_full_address");
+  assert.equal(subjectEntry.bbl, null);
+  assert.equal(subjectEntry.extracted_span, null);
+
+  // An extracted span PAD does not cover stays a typed unresolved result —
+  // never a fuzzy alias onto another street name.
+  const legistarAssertion = buildLocationAssertion({
+    meeting_id: "meeting:nyc_legistar_events:22627",
+    role: LOCATION_ROLES.VENUE,
+    original_address:
+      "The New York Public Library at 515 Malcolm X Boulevard, New York, NY 10037 (135th Street and Malcolm X Boulevard)",
+    source_field: "venue.address",
+    mode: "in-person",
+  });
+  const legistarEntry = cache.resolveAddress(null, { assertion: legistarAssertion });
+  assert.equal(legistarEntry.status, "unknown");
+  assert.equal(legistarEntry.reason, "not_covered");
+  assert.equal(legistarEntry.bbl, null);
+  assert.equal(legistarEntry.extracted_span, "515 Malcolm X Boulevard");
+
+  // Intersection-only, dropdown-placeholder, and competing-span venues never
+  // invent a span or a BBL.
+  for (const wording of [
+    "135th Street and Malcolm X Boulevard",
+    "Address Not Listed In The Dropdown",
+    "VFW Hall, 461 and 463 Coney Island Avenue, Brooklyn, NY 11218",
+    "461 Coney Island Avenue and 1625 Ocean Avenue, Brooklyn, NY 11218",
+  ]) {
+    const assertion = buildLocationAssertion({
+      meeting_id: `meeting:example:negative:${wording.length}`,
+      role: LOCATION_ROLES.VENUE,
+      original_address: wording,
+      source_field: "venue.address",
+      mode: "in-person",
+    });
+    const negative = cache.resolveAddress(null, { assertion });
+    assert.equal(negative.bbl, null, `expected no BBL for ${JSON.stringify(wording)}`);
+    assert.equal(negative.status, "unknown");
+    assert.equal(negative.extracted_span, null);
+  }
+});
+
 test("A2 published 461 Coney Island Avenue is retained beside the MapPLUTO 901 Church Avenue label", () => {
   const { manifest, loadShard } = loadPadFixture();
   const row = BROOKLYN_NAMED[2];

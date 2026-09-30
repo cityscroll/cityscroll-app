@@ -16,8 +16,8 @@
   "shards": {
     "00": {
       "file": "./pad-street-subsets.json",
-      "records": 6,
-      "streets": 5
+      "records": 7,
+      "streets": 6
     }
   }
 }

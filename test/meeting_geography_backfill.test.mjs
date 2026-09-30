@@ -524,6 +524,148 @@ test("A4 [verification] retained-corpus interrupt/resume and exact per-id outcom
   });
 });
 
+test("A5 [G1/G2] named-building venues resolve to exact venue membership through the real PAD and parcel shards", () => {
+  const KINGSBOROUGH =
+    "Kingsborough Community College, 2001 Oriental Boulevard, Room U112 Faculty Dining Room, Brooklyn, NY 11235";
+  const SEPT29_ID =
+    "meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-09-29:general-board-meeting-in-person";
+  const JUNE30_ID =
+    "meeting:community_board:nyc-calendar:brooklyn-cb-15:2026-06-30:general-board-meeting-in-person";
+  const LEGISTAR_ID = "meeting:nyc_legistar_events:22627";
+
+  const cb15Row = (meetingId, address = KINGSBOROUGH, mode = "in-person") => ({
+    meeting_id: meetingId,
+    source_system: "community_board",
+    meeting_origin: "community_board_source_observed",
+    board_id: "brooklyn-cb-15",
+    title: "General Board Meeting (In Person)",
+    event_date: "2026-09-29T19:00:00-04:00",
+    venue: { name: "Kingsborough Community College", address, mode },
+  });
+
+  const rows = [
+    cb15Row(SEPT29_ID),
+    cb15Row(JUNE30_ID),
+    {
+      meeting_id: LEGISTAR_ID,
+      source_system: "nyc_legistar_events",
+      title: "Committee on Public Safety",
+      event_date: "2026-09-28T10:00:00-04:00",
+      venue: {
+        name: "The New York Public Library",
+        address: "The New York Public Library at 515 Malcolm X Boulevard, New York, NY 10037 (135th Street and Malcolm X Boulevard)",
+        mode: "in-person",
+      },
+    },
+    cb15Row("meeting:community_board:example:cb15-intersection-only",
+      "135th Street and Malcolm X Boulevard"),
+    cb15Row("meeting:community_board:example:cb15-dropdown-placeholder",
+      "Kingsborough Community College, Address Not Listed In The Dropdown, Brooklyn, NY 11235"),
+    cb15Row("meeting:community_board:example:cb15-competing-spans",
+      "VFW Hall, 461 and 463 Coney Island Avenue, Brooklyn, NY 11218"),
+    cb15Row("meeting:community_board:example:cb15-virtual-only", KINGSBOROUGH, "virtual"),
+  ];
+
+  const runner = createProductionRunner();
+  const result = runner.run({
+    rows,
+    generation: "test-a5-venue-span",
+    sourceGenerationHash: "a5",
+    observedAt: "2026-09-24T12:00:00.000Z",
+  });
+
+  // A1: the frozen CB15 September 29 wording yields an exact parcel-backed
+  // venue edge; original wording and host district remain distinct.
+  const sept29 = result.outcomes.find((outcome) => outcome.meeting_id === SEPT29_ID);
+  assert.equal(sept29.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  const venue = sept29.memberships.find((membership) => membership.role === LOCATION_ROLES.VENUE);
+  assert.ok(venue, "expected venue membership");
+  assert.equal(venue.bbl, "3087600060");
+  assert.equal(venue.memberships.nta2020, "BK1503");
+  assert.equal(venue.memberships.community_district, "K15");
+  const host = sept29.memberships.find((membership) => membership.role === LOCATION_ROLES.HOST_JURISDICTION);
+  assert.ok(host, "host district activity remains");
+  assert.equal(host.memberships.community_district, "K15");
+  assert.equal(host.bbl, null);
+  const venueAssertion = sept29.assertions.find((assertion) => assertion.role === LOCATION_ROLES.VENUE);
+  assert.equal(venueAssertion.original_address, KINGSBOROUGH);
+  assert.equal(venueAssertion.source_field, "venue.address");
+
+  // A2: June 30 replay shares the one normalized cache entry (one resolver
+  // call for both) while keeping separate assertion provenance.
+  const june30 = result.outcomes.find((outcome) => outcome.meeting_id === JUNE30_ID);
+  assert.equal(june30.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  const juneVenue = june30.memberships.find((membership) => membership.role === LOCATION_ROLES.VENUE);
+  assert.equal(juneVenue.bbl, "3087600060");
+  assert.equal(juneVenue.memberships.nta2020, "BK1503");
+  const venueLinks = runner.addressCache.assertionLinks()
+    .filter((link) => link.bbl === "3087600060" && link.role === LOCATION_ROLES.VENUE);
+  assert.equal(venueLinks.length, 2);
+  assert.deepEqual(
+    venueLinks.map((link) => link.meeting_id).sort(),
+    [JUNE30_ID, SEPT29_ID].sort(),
+  );
+  assert.equal(new Set(venueLinks.map((link) => link.cache_key)).size, 1);
+  // One resolver call for the shared Kingsborough key, one for the distinct
+  // Malcolm X Boulevard key; every boundary row failed before resolution.
+  assert.equal(runner.addressCache.resolveCallCount(), 2);
+
+  // A2: the non-board named-building source gives a typed unresolved result
+  // (PAD has no MALCOLM X BLVD street record) — never a fuzzy alias, and no
+  // NTA inferred from the institution name.
+  const legistar = result.outcomes.find((outcome) => outcome.meeting_id === LEGISTAR_ID);
+  assert.equal(legistar.outcome, BACKFILL_OUTCOME.UNRESOLVED_EVIDENCE);
+  assert.equal(
+    legistar.memberships.some((membership) => membership.bbl
+      || Object.keys(membership.memberships || {}).length > 0),
+    false,
+  );
+
+  // A3: intersection-only, dropdown placeholder, competing spans, and
+  // virtual-only rows create no new venue NTA.
+  for (const id of [
+    "meeting:community_board:example:cb15-intersection-only",
+    "meeting:community_board:example:cb15-dropdown-placeholder",
+    "meeting:community_board:example:cb15-competing-spans",
+    "meeting:community_board:example:cb15-virtual-only",
+  ]) {
+    const outcome = result.outcomes.find((candidate) => candidate.meeting_id === id);
+    assert.ok(outcome, `expected outcome for ${id}`);
+    assert.notEqual(outcome.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE, id);
+    assert.equal(
+      outcome.memberships.some((membership) => membership.role === LOCATION_ROLES.VENUE
+        && (membership.bbl || Object.keys(membership.memberships || {}).length > 0)),
+      false,
+      `${id} must not create a venue NTA`,
+    );
+  }
+
+  // A4: a changed source address cannot retain the old NTA — the input-hash
+  // checkpoint reprocesses the row and the projection drops the prior edge.
+  const changed = runner.run({
+    rows: [cb15Row(SEPT29_ID, "Kingsborough Community College, Address Not Listed In The Dropdown, Brooklyn, NY 11235")],
+    generation: "test-a5-venue-span",
+    sourceGenerationHash: "a5",
+    checkpoint: result.checkpoint,
+    observedAt: "2026-09-24T12:30:00.000Z",
+  });
+  assert.equal(changed.counts.newly_processed, 1);
+  const relocated = changed.outcomes.find((outcome) => outcome.meeting_id === SEPT29_ID);
+  assert.notEqual(relocated.outcome, BACKFILL_OUTCOME.PHYSICAL_VENUE);
+  assert.equal(
+    relocated.memberships.some((membership) => membership.role === LOCATION_ROLES.VENUE
+      && (membership.bbl || Object.keys(membership.memberships || {}).length > 0)),
+    false,
+  );
+  const projectionEdges = changed.projection.edges || [];
+  assert.equal(
+    projectionEdges.some((edge) => edge.record_id === SEPT29_ID
+      && edge.role === LOCATION_ROLES.VENUE && edge.bbl),
+    false,
+    "failed re-resolution removes the prior venue edge",
+  );
+});
+
 test("input hash reuse skips unchanged meetings across resume", () => {
   const runner = createFixtureRunner();
   const row = sept23Row();
