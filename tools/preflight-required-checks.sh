@@ -380,6 +380,7 @@ family_static_standards() {
   run_and_fail node tools/governance_cutover_receipt.mjs --check
   run_and_fail python3 test/functional/a11y_gate_test.py
   run_and_fail python3 test/functional/ci_waits_test.py
+  run_and_fail python3 test/functional/route_response_text_test.py
   run_and_fail python3 test/functional/land_map_visual_parity_receipt_test.py
   run_and_fail python3 test/functional/detail_panel_fixture_test.py
 

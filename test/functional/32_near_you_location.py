@@ -37,12 +37,15 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 from urllib.parse import parse_qs, unquote, urlparse
 
 from playwright.sync_api import Browser, BrowserContext, Page, Route, sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from route_response_text import fetch_uncompressed, fulfill_with_text, response_text  # noqa: E402
 CLOCK = "2026-09-28T16:00:00.000Z"
 VIEWPORTS = (("narrow_touch", 390, 844), ("desktop", 1440, 900))
 TARGET_SIZE_FLOOR_CSS_PX = 44
@@ -901,12 +904,12 @@ def check_place_suggestions_add_no_reads(browser: Browser, base: str) -> dict:
             page = journey.page
             if variant == "without-row":
                 def strip_row(route: Route) -> None:
-                    response = route.fetch()
-                    body = response.text()
+                    response = fetch_uncompressed(route)
+                    body = response_text(response)
                     stripped = body[:body.index('<nav class="near-place-suggestions"')] \
                         + body[body.index("</nav>", body.index('<nav class="near-place-suggestions"')) + len("</nav>"):]
                     assert "data-near-place-suggestion" not in stripped
-                    route.fulfill(response=response, body=stripped)
+                    fulfill_with_text(route, response, stripped)
                 page.route(base + "/near-you/", strip_row)
             page.goto(base + "/near-you/", wait_until="domcontentloaded")
             await_root_settled(page)

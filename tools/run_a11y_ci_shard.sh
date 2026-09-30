@@ -134,6 +134,7 @@ case "$shard" in
     python3 test/standards/heading_uniqueness.py
     ;;
   functional-near-search)
+    tools/run_a11y_functional_check.sh route-response-gzip python3 test/functional/60_route_response_gzip.py
     tools/run_a11y_functional_check.sh near-you-location python3 test/functional/32_near_you_location.py
     tools/run_a11y_functional_check.sh near-you-location-permission python3 test/functional/59_near_you_location_permission.py
     tools/run_a11y_functional_check.sh search-activity-receipt python3 test/functional/33_search_activity_receipt.py

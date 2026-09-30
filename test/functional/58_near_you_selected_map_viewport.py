@@ -28,12 +28,15 @@ Nothing is written to the repository and no screenshots are taken.
 from __future__ import annotations
 
 import subprocess
+import sys
 from pathlib import Path
 
 from playwright.sync_api import Page, Route, sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from route_response_text import fetch_uncompressed, fulfill_with_text, response_text  # noqa: E402
 VIEWPORTS = ((390, 844), (1440, 900))
 # The live smoke's rule: at least this much of the map shows on the first screen.
 MIN_VISIBLE_MAP_CSS_PX = 160
@@ -129,11 +132,11 @@ def assert_measurement_can_fail(page: Page, label: str) -> None:
 
 
 def newer_document(route: Route) -> None:
-    response = route.fetch()
-    body = response.text()
+    response = fetch_uncompressed(route)
+    body = response_text(response)
     marker = '<div class="near-geo-workspace"'
     assert marker in body, "entry document has no map workspace to precede"
-    route.fulfill(response=response, body=body.replace(marker, NEWER_REGION + marker, 1))
+    fulfill_with_text(route, response, body.replace(marker, NEWER_REGION + marker, 1))
 
 
 def select_in_page(page: Page) -> None:
